@@ -15,9 +15,8 @@
  */
 
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
-import sinon from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -77,9 +76,9 @@ describe("<FileInput>", () => {
     });
 
     it("invokes change callbacks", () => {
-        const inputProps = { onChange: sinon.spy() };
-        const onChange = sinon.spy();
-        const onInputChange = sinon.spy();
+        const inputProps = { onChange: vi.fn() };
+        const onChange = vi.fn();
+        const onInputChange = vi.fn();
 
         const wrapper = shallow(
             <FileInput inputProps={inputProps} onChange={onChange} onInputChange={onInputChange} />,
@@ -87,9 +86,9 @@ describe("<FileInput>", () => {
         const input = getInput(wrapper);
         input.simulate("change");
 
-        assert.isFalse(onChange.called, "onChange not called"); // because it's spread to the label, not the input
-        assert.isTrue(onInputChange.calledOnce, "onInputChange called");
-        assert.isTrue(inputProps.onChange.calledOnce, "inputProps.onChange called");
+        expect(onChange).not.toHaveBeenCalled(); // because it's spread to the label, not the input
+        expect(onInputChange).toHaveBeenCalledOnce();
+        expect(inputProps.onChange).toHaveBeenCalledOnce();
     });
 });
 

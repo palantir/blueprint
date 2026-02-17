@@ -15,10 +15,9 @@
  */
 
 import { mount } from "enzyme";
-import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -65,11 +64,11 @@ describe("<RangeSlider>", () => {
     });
 
     it("disabled slider does not respond to key presses", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = vi.fn();
         const handles = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />).find(Handle);
         handles.first().simulate("keydown", { key: "ArrowDown" });
         handles.last().simulate("keydown", { key: "ArrowDown" });
-        assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
+        expect(changeSpy).not.toHaveBeenCalled();
     });
 
     function renderSlider(slider: React.JSX.Element) {

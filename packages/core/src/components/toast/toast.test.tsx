@@ -15,9 +15,8 @@
  */
 
 import { mount, shallow } from "enzyme";
-import { type SinonSpy, spy } from "sinon";
 
-import { assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { sleep } from "../../common/test-utils";
 import { AnchorButton, Button } from "../button/buttons";
@@ -32,10 +31,10 @@ describe("<Toast>", () => {
     });
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {
-        const handleDismiss = spy();
+        const handleDismiss = vi.fn();
         wrap(<Toast message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
-        assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
-        assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
+        expect(handleDismiss).toHaveBeenCalledOnce();
+        expect(handleDismiss).toHaveBeenCalledWith(false);
     });
 
     it("renders action button when action string prop provided", () => {
@@ -46,16 +45,16 @@ describe("<Toast>", () => {
     });
 
     it("clicking action button triggers onClick callback", () => {
-        const onClick = spy();
+        const onClick = vi.fn();
         wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
-        assert.isTrue(onClick.calledOnce, "action onClick not called once");
+        expect(onClick).toHaveBeenCalledOnce();
     });
 
     it("clicking action button also triggers onDismiss callback with `false`", () => {
-        const handleDismiss = spy();
+        const handleDismiss = vi.fn();
         wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
-        assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
-        assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
+        expect(handleDismiss).toHaveBeenCalledOnce();
+        expect(handleDismiss).toHaveBeenCalledWith(false);
     });
 
     function wrap(toast: React.JSX.Element) {
@@ -68,16 +67,16 @@ describe("<Toast>", () => {
     }
 
     describe("timeout", () => {
-        let handleDismiss: SinonSpy;
-        beforeEach(() => (handleDismiss = spy()));
+        let handleDismiss: ReturnType<typeof vi.fn>;
+        beforeEach(() => (handleDismiss = vi.fn()));
 
         it("calls onDismiss automatically after timeout expires with `true`", async () => {
             // mounting for lifecycle methods to start timeout
             mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
             await sleep(20);
 
-            assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
-            assert.isTrue(handleDismiss.firstCall.args[0], "onDismiss not called with `true`");
+            expect(handleDismiss).toHaveBeenCalledOnce();
+            expect(handleDismiss.mock.calls[0][0]).toBe(true);
         });
 
         it("updating with timeout={0} cancels timeout", async () => {
@@ -85,7 +84,7 @@ describe("<Toast>", () => {
                 timeout: 0,
             });
             await sleep(20);
-            assert.isTrue(handleDismiss.notCalled, "onDismiss was called");
+            expect(handleDismiss).not.toHaveBeenCalled();
         });
 
         it("updating timeout={0} with timeout={X} starts timeout", async () => {
@@ -94,8 +93,8 @@ describe("<Toast>", () => {
             });
             await sleep(20);
 
-            assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
-            assert.isTrue(handleDismiss.firstCall.args[0], "onDismiss not called with `true`");
+            expect(handleDismiss).toHaveBeenCalledOnce();
+            expect(handleDismiss.mock.calls[0][0]).toBe(true);
         });
     });
 });
