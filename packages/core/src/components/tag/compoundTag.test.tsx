@@ -18,7 +18,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 
-import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Icon } from "../icon/icon";
@@ -27,12 +27,11 @@ import { CompoundTag } from "./compoundTag";
 
 describe("<CompoundTag>", () => {
     it("renders its text", () => {
-        assert.strictEqual(
+        expect(
             shallow(<CompoundTag leftContent="Hello">World</CompoundTag>)
                 .find(`.${Classes.COMPOUND_TAG_RIGHT_CONTENT}`)
                 .prop("children"),
-            "World",
-        );
+        ).toBe("World");
     });
 
     it("renders icons", () => {
@@ -41,7 +40,7 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        assert.lengthOf(wrapper.find(Icon), 2);
+        expect(wrapper.find(Icon)).toHaveLength(2);
     });
 
     it("prefers endIcon to rightIcon", () => {
@@ -63,7 +62,7 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
+        expect(wrapper.find(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
     });
 
     it("clicking close button triggers onRemove", () => {
@@ -84,7 +83,7 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         ).find(`.${Classes.COMPOUND_TAG}`);
-        assert.deepEqual(element.prop("title"), "baz qux");
+        expect(element.prop("title")).toEqual("baz qux");
     });
 
     it("passes all props to the onRemove handler", () => {
@@ -121,7 +120,7 @@ describe("<CompoundTag>", () => {
 
         // wait for the whole lifecycle to run
         await waitFor(() => {
-            assert.equal(elementRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
+            expect(elementRef.current).toBe(wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
         });
     });
 });

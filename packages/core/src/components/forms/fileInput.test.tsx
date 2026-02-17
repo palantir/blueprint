@@ -16,7 +16,7 @@
 
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 
-import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -26,10 +26,10 @@ describe("<FileInput>", () => {
     it(`supports className, fill, & size="large"`, () => {
         const CUSTOM_CLASS = "foo";
         const wrapper = shallow(<FileInput className={CUSTOM_CLASS} fill={true} size="large" />);
-        assert.isTrue(wrapper.hasClass(Classes.FILE_INPUT), "Classes.FILE_INPUT");
-        assert.isTrue(wrapper.hasClass(CUSTOM_CLASS), CUSTOM_CLASS);
-        assert.isTrue(wrapper.hasClass(Classes.FILL), "Classes.FILL");
-        assert.isTrue(wrapper.hasClass(Classes.LARGE), "Classes.LARGE");
+        expect(wrapper.hasClass(Classes.FILE_INPUT), "Classes.FILE_INPUT").toBe(true);
+        expect(wrapper.hasClass(CUSTOM_CLASS), CUSTOM_CLASS).toBe(true);
+        expect(wrapper.hasClass(Classes.FILL), "Classes.FILL").toBe(true);
+        expect(wrapper.hasClass(Classes.LARGE), "Classes.LARGE").toBe(true);
     });
 
     it("supports custom input props", () => {
@@ -44,23 +44,23 @@ describe("<FileInput>", () => {
         );
         const input = getInput(wrapper);
 
-        assert.isTrue(input.hasClass("bar"), "has custom class");
-        assert.isTrue(input.prop("required"), "required attribute");
-        assert.strictEqual(input.prop("type"), "file", "type attribute");
+        expect(input.hasClass("bar"), "has custom class").toBe(true);
+        expect(input.prop("required"), "required attribute").toBe(true);
+        expect(input.prop("type"), "type attribute").toBe("file");
     });
 
     it("applies top-level disabled prop to the root and input (overriding inputProps.disabled)", () => {
         const wrapper = mount(<FileInput disabled={true} inputProps={{ disabled: false }} />);
 
         // should ignore inputProps.disabled in favor of the top-level prop
-        assert.isTrue(wrapper.children().hasClass(Classes.DISABLED), "wrapper has disabled class");
-        assert.isTrue(getInput(wrapper).prop("disabled"), "input is disabled");
+        expect(wrapper.children().hasClass(Classes.DISABLED), "wrapper has disabled class").toBe(true);
+        expect(getInput(wrapper).prop("disabled"), "input is disabled").toBe(true);
 
         wrapper.setProps({ disabled: false, inputProps: { disabled: true } });
 
         // ensure inputProps.disabled is overriden in this case too
-        assert.isFalse(wrapper.children().hasClass(Classes.DISABLED), "wrapper no longer has disabled class");
-        assert.isFalse(getInput(wrapper).prop("disabled"), "input no longer disabled");
+        expect(wrapper.children().hasClass(Classes.DISABLED), "wrapper no longer has disabled class").toBe(false);
+        expect(getInput(wrapper).prop("disabled"), "input no longer disabled").toBe(false);
     });
 
     it("renders default or custom text", () => {
@@ -68,11 +68,11 @@ describe("<FileInput>", () => {
         const span = wrapper.find(`.${Classes.FILE_UPLOAD_INPUT}`);
 
         // default text
-        assert.strictEqual(span.text(), "Choose file...");
+        expect(span.text()).toBe("Choose file...");
 
         // custom text
         wrapper.setProps({ text: "Input file..." });
-        assert.strictEqual(span.text(), "Input file...");
+        expect(span.text()).toBe("Input file...");
     });
 
     it("invokes change callbacks", () => {
