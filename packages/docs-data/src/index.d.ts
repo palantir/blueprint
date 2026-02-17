@@ -7,3 +7,13 @@ import { NpmPluginData, MarkdownPluginData, KssPluginData, TypescriptPluginData 
 export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginData & TypescriptPluginData;
 
 export const docsData: DocsCompleteData;
+
+export interface NpmPackageInfo {
+    name: string;
+    version: string;
+    versions: string[];
+}
+
+export type NpmData = Record<string, NpmPackageInfo>;
+
+export const npmData: NpmData;

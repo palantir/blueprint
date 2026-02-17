@@ -5,4 +5,5 @@
 
 module.exports = {
     docsData: require("./generated/docs.json"),
+    npmData: require("./generated/npm-data.json"),
 };
