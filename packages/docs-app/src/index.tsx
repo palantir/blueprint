@@ -39,12 +39,7 @@ const root = createRoot(container);
 root.render(
     <StrictMode>
         <MDXProvider components={mdxComponents as any}>
-            <BlueprintDocs
-                defaultPageId="blueprint"
-                docs={docsData}
-                npmPackages={npmVersions}
-                useNextVersion={false}
-            />
+            <BlueprintDocs defaultPageId="blueprint" docs={docsData} npmPackages={npmVersions} useNextVersion={false} />
         </MDXProvider>
     </StrictMode>,
 );

@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    type HeadingNode,
-    isPageNode,
-    type NpmPackageInfo,
-    type PageRegistryEntry,
-} from "@blueprintjs/docs-data";
+import { type HeadingNode, isPageNode, type NpmPackageInfo, type PageRegistryEntry } from "@blueprintjs/docs-data";
 import classNames from "classnames";
 import { Component } from "react";
 

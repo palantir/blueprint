@@ -29,11 +29,7 @@ import {
     ExtendedColorsPalette,
     GrayscalePalette,
 } from "./components/colorPalettes";
-import {
-    DivergingSchemePalette,
-    QualitativeSchemePalette,
-    SequentialSchemePalette,
-} from "./components/colorSchemes";
+import { DivergingSchemePalette, QualitativeSchemePalette, SequentialSchemePalette } from "./components/colorSchemes";
 import { Icons } from "./components/icons";
 import { Welcome } from "./components/welcome";
 
