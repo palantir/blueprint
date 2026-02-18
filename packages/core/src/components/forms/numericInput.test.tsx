@@ -13,255 +13,221 @@
  * limitations under the License.
  */
 
-import {
-    type MountRendererProps,
-    type ReactWrapper,
-    type ShallowRendererProps,
-    mount as untypedMount,
-    shallow as untypedShallow,
-} from "enzyme";
-import { act, PureComponent } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { type PropsWithChildren, useState } from "react";
 
-import { afterAll, afterEach, assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
-import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
+import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { type HTMLInputProps, Position } from "../../common";
+import { Classes, Position } from "../../common";
 import * as Errors from "../../common/errors";
-import { ButtonGroup } from "../button/buttonGroup";
-import { Button } from "../button/buttons";
-import { Icon } from "../icon/icon";
 
-import { ControlGroup } from "./controlGroup";
-import { InputGroup } from "./inputGroup";
 import { NumericInput, type NumericInputProps } from "./numericInput";
-
-/**
- * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
- */
-const mount = (el: React.ReactElement<NumericInputProps>, options?: MountRendererProps) =>
-    untypedMount<NumericInput>(el, options);
-const shallow = (el: React.ReactElement<NumericInputProps>, options?: ShallowRendererProps) =>
-    untypedShallow<NumericInput>(el, options);
 
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
         it("renders the buttons on the right by default", () => {
-            // this ordering is trivial to test with shallow renderer
-            // (no DOM elements getting in the way)
-            const component = untypedShallow(<NumericInput />);
-            const rightGroup = component.children().last();
-            expect(rightGroup.is(ButtonGroup)).to.be.true;
+            render(<NumericInput />);
+            const controlGroup = screen.getByRole("group");
+            const children = controlGroup.children;
+            const inputGroup = children[0];
+            const buttonGroup = children[1];
+            expect(children.length).toBe(2);
+            expect(inputGroup).toHaveClass(Classes.INPUT_GROUP);
+            expect(buttonGroup).toHaveClass(Classes.BUTTON_GROUP);
         });
 
-        it("has a stepSize of 1 by default", () => {
-            const component = mount(<NumericInput />);
-            const stepSize = component.props().stepSize;
-            expect(stepSize).to.equal(1);
+        it("has a stepSize of 1 by default", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            render(<NumericInput onValueChange={onValueChangeSpy} />);
+            // Click increment from 0 should yield 1 (stepSize=1)
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            expect(onValueChangeSpy).toHaveBeenCalledWith(1, "1", expect.anything());
         });
 
-        it("has a minorStepSize of 0.1 by default", () => {
-            const component = mount(<NumericInput />);
-            const minorStepSize = component.props().minorStepSize;
-            expect(minorStepSize).to.equal(0.1);
+        it("has a minorStepSize of 0.1 by default", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            render(<NumericInput onValueChange={onValueChangeSpy} />);
+            // Alt+click increment from 0 should yield 0.1 (minorStepSize=0.1)
+            await user.keyboard("{Alt>}");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.keyboard("{/Alt}");
+            expect(onValueChangeSpy).toHaveBeenCalledWith(0.1, "0.1", expect.anything());
         });
 
-        it("has a majorStepSize of 10 by default", () => {
-            const component = mount(<NumericInput />);
-            const majorStepSize = component.props().majorStepSize;
-            expect(majorStepSize).to.equal(10);
+        it("has a majorStepSize of 10 by default", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            render(<NumericInput onValueChange={onValueChangeSpy} />);
+            // Shift+click increment from 0 should yield 10 (majorStepSize=10)
+            await user.keyboard("{Shift>}");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.keyboard("{/Shift}");
+            expect(onValueChangeSpy).toHaveBeenCalledWith(10, "10", expect.anything());
         });
 
         it("has a value of '' by default", () => {
-            const component = mount(<NumericInput />);
-            const value = component.state().value;
-            expect(value).to.equal("");
+            render(<NumericInput />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("");
         });
 
-        it("increments the value from 0 if the field is empty", () => {
-            const component = mount(<NumericInput />);
-
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown");
-
-            const value = component.state().value;
-            expect(value).to.equal("1");
+        it("increments the value from 0 if the field is empty", async () => {
+            const user = userEvent.setup();
+            render(<NumericInput />);
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            expect(screen.getByRole("spinbutton")).toHaveValue("1");
         });
 
         it("accepts defaultValue prop", () => {
-            const component = mount(<NumericInput defaultValue={2} />);
-            const value = component.state().value;
-            expect(value).to.equal("2");
+            render(<NumericInput defaultValue={2} />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("2");
         });
     });
 
     describe("Button position", () => {
         it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
-            const buttons = shallow(<NumericInput buttonPosition={Position.RIGHT} />)
-                .children()
-                .last();
-            expect(buttons.is(ButtonGroup)).to.be.true;
+            render(<NumericInput buttonPosition={Position.RIGHT} />);
+            const controlGroup = screen.getByRole("group");
+            const children = controlGroup.children;
+            const inputGroup = children[0];
+            const buttonGroup = children[1];
+            expect(children.length).toBe(2);
+            expect(inputGroup).toHaveClass(Classes.INPUT_GROUP);
+            expect(buttonGroup).toHaveClass(Classes.BUTTON_GROUP);
         });
 
         it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
-            const buttons = shallow(<NumericInput buttonPosition={Position.LEFT} />)
-                .children()
-                .first();
-            expect(buttons.is(ButtonGroup)).to.be.true;
+            render(<NumericInput buttonPosition={Position.LEFT} />);
+            const controlGroup = screen.getByRole("group");
+            const children = controlGroup.children;
+            const buttonGroup = children[0];
+            const inputGroup = children[1];
+            expect(children.length).toBe(2);
+            expect(buttonGroup).toHaveClass(Classes.BUTTON_GROUP);
+            expect(inputGroup).toHaveClass(Classes.INPUT_GROUP);
         });
 
         it('does not render the buttons when buttonPosition == "none"', () => {
-            const component = shallow(<NumericInput buttonPosition="none" />);
-            expect(component.find(ButtonGroup).exists()).to.be.false;
-        });
-
-        it(`always renders the children in a ControlGroup`, () => {
-            // if the input is put into a control group by itself, it'll have squared border radii
-            // on the left, which we don't want.
-            const component = shallow(<NumericInput />);
-            expect(component.find(ControlGroup).exists()).to.be.true;
-            component.setProps({ buttonPosition: "none" });
-            expect(component.find(ControlGroup).exists()).to.be.true;
+            render(<NumericInput buttonPosition="none" />);
+            const controlGroup = screen.getByRole("group");
+            const children = controlGroup.children;
+            const inputGroup = children[0];
+            expect(children.length).toBe(1);
+            expect(inputGroup).toHaveClass(Classes.INPUT_GROUP);
         });
     });
 
     describe("Basic functionality", () => {
-        it("works like a text input", () => {
-            const component = mount(<NumericInput />);
-
-            component.find("input").simulate("change", { target: { value: "11" } });
-            expect(component.state().value).to.equal("11");
+        it("works like a text input", async () => {
+            const user = userEvent.setup();
+            render(<NumericInput />);
+            const input = screen.getByRole("spinbutton");
+            await user.type(input, "11");
+            expect(input).toHaveValue("11");
         });
 
-        it("allows entry of non-numeric characters", () => {
-            const component = mount(<NumericInput />);
-
-            component.find("input").simulate("change", { target: { value: "3 + a" } });
-
-            const value = component.state().value;
-            const expectedValue = "3 + a";
-            expect(value).to.equal(expectedValue);
+        it("allows entry of non-numeric characters", async () => {
+            const user = userEvent.setup();
+            render(<NumericInput allowNumericCharactersOnly={false} />);
+            const input = screen.getByRole("textbox");
+            await user.type(input, "3 + a");
+            expect(input).toHaveValue("3 + a");
         });
 
-        it("provides numeric value to onValueChange as a number and a string", () => {
+        it("provides numeric value to onValueChange as a number and a string", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
-            const nextValue = "1";
-
-            component.find("input").simulate("change", { target: { value: nextValue } });
-
-            expect(onValueChangeSpy).toHaveBeenCalledOnce();
-            expect(onValueChangeSpy).toHaveBeenCalledWith(+nextValue, nextValue, expect.anything());
+            render(<NumericInput onValueChange={onValueChangeSpy} />);
+            const input = screen.getByRole("spinbutton");
+            await user.type(input, "1");
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(1, "1", expect.anything());
         });
 
         it("provides non-numeric value to onValueChange as NaN and a string", () => {
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
-            const invalidValue = "non-numeric-value";
-
-            component.find("input").simulate("change", { target: { value: invalidValue } });
-
-            expect(onValueChangeSpy).toHaveBeenCalledOnce();
-            expect(onValueChangeSpy).toHaveBeenCalledWith(NaN, invalidValue, expect.anything());
+            render(<NumericInput onValueChange={onValueChangeSpy} />);
+            const input = screen.getByRole("spinbutton");
+            // fireEvent.change is used intentionally here to bypass keyboard filtering
+            fireEvent.change(input, { target: { value: "non-numeric-value" } });
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(NaN, "non-numeric-value", expect.anything());
         });
 
         it("accepts a numeric value", () => {
-            const component = mount(<NumericInput value={10} />);
-            const value = component.state().value;
-            expect(value).to.equal("10");
+            render(<NumericInput value={10} />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("10");
         });
 
         it("accepts a string value", () => {
-            const component = mount(<NumericInput value={"10"} />);
-            const value = component.state().value;
-            expect(value).to.equal("10");
+            render(<NumericInput value="10" />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("10");
         });
 
-        it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
+        it("fires onValueChange with the number value, string value, and input element when the value changes", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            render(<NumericInput onValueChange={onValueChangeSpy} />);
 
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            await user.click(screen.getByRole("button", { name: "increment" }));
 
-            const inputElement = component.find("input").first().getDOMNode();
+            const inputElement = screen.getByRole("spinbutton");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(1, "1", inputElement);
         });
 
-        it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
+        it("fires onButtonClick with the number value and the string value when either button is pressed", async () => {
+            const user = userEvent.setup();
             const onButtonClickSpy = vi.fn();
-            const component = mount(<NumericInput onButtonClick={onButtonClickSpy} />);
-
-            const incrementButton = component.find(Button).first();
-            const decrementButton = component.find(Button).last();
+            render(<ControlledNumericInput onButtonClick={onButtonClickSpy} />);
 
             // incrementing from 0
-            incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            expect(onButtonClickSpy).toHaveBeenCalledExactlyOnceWith(1, "1");
 
-            expect(onButtonClickSpy).toHaveBeenCalledOnce();
-            expect(onButtonClickSpy.mock.calls[0]).toEqual([1, "1"]);
             onButtonClickSpy.mockClear();
 
             // decrementing from 1 now
-            decrementButton.simulate("mousedown");
-            expect(onButtonClickSpy).toHaveBeenCalledOnce();
-            expect(onButtonClickSpy.mock.calls[0]).toEqual([0, "0"]);
+            await user.click(screen.getByRole("button", { name: "decrement" }));
+            expect(onButtonClickSpy).toHaveBeenCalledExactlyOnceWith(0, "0");
         });
     });
 
     describe("Selection", () => {
-        const VALUE = "12345678";
-
         describe("selectAllOnFocus", () => {
-            it("if false (the default), does not select any text on focus", () => {
-                const containerElement = document.createElement("div");
-                mount(<NumericInput value="12345678" />, { attachTo: containerElement });
-
-                const input = containerElement.querySelector("input")!;
-                input.focus();
-
-                expect(input.selectionStart).to.equal(input.selectionEnd);
+            it("if false (the default), does not select any text on input field click", async () => {
+                const user = userEvent.setup();
+                render(<NumericInput defaultValue="12345678" />);
+                const input = screen.getByRole<HTMLInputElement>("spinbutton");
+                await user.click(input);
+                expect(input.selectionStart).toBe(input.selectionEnd);
             });
 
-            it("if true, selects all text on focus", () => {
-                const containerElement = document.createElement("div");
-                const input = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, {
-                    attachTo: containerElement,
-                }).find("input");
-                input.simulate("focus");
-                const { selectionStart, selectionEnd } = input.getDOMNode<HTMLInputElement>();
-                expect(selectionStart).to.equal(0);
-                expect(selectionEnd).to.equal(VALUE.length);
+            it("if true, selects all text on input field click", async () => {
+                const user = userEvent.setup();
+                render(<NumericInput defaultValue="12345678" selectAllOnFocus={true} />);
+                const input = screen.getByRole<HTMLInputElement>("spinbutton");
+                await user.click(input);
+                expect(input.selectionStart).toBe(0);
+                expect(input.selectionEnd).toBe(8);
             });
         });
 
         describe("selectAllOnIncrement", () => {
-            const INCREMENT_KEYSTROKE = { key: "ArrowUp" };
-
-            it("if false (the default), does not select any text on increment", () => {
-                const containerElement = document.createElement("div");
-                const component = mount(<NumericInput value="12345678" />, { attachTo: containerElement });
-
-                const wrappedInput = component.find(InputGroup).find("input");
-                wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
-
-                const input = containerElement.querySelector<HTMLInputElement>("input")!;
-                expect(input.selectionStart).to.equal(input.selectionEnd);
+            it("if false (the default), does not select any text on increment", async () => {
+                const user = userEvent.setup();
+                render(<NumericInput defaultValue="12345678" />);
+                const input = screen.getByRole<HTMLInputElement>("spinbutton");
+                await user.type(input, "{ArrowUp}");
+                expect(input.selectionStart).toBe(input.selectionEnd);
             });
 
-            it("if true, selects all text on increment", () => {
-                const containerElement = document.createElement("div");
-                const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, {
-                    attachTo: containerElement,
-                });
-
-                const wrappedInput = component.find(InputGroup).find("input");
-                wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
-
-                const input = containerElement.querySelector<HTMLInputElement>("input")!;
-                expect(input.selectionStart).to.equal(0);
-                expect(input.selectionEnd).to.equal(VALUE.length);
+            it("if true, selects all text on increment", async () => {
+                const user = userEvent.setup();
+                render(<NumericInput defaultValue="12345678" selectAllOnIncrement={true} />);
+                const input = screen.getByRole<HTMLInputElement>("spinbutton");
+                await user.type(input, "{ArrowUp}");
+                expect(input.selectionStart).toBe(0);
+                expect(input.selectionEnd).toBe(8);
             });
         });
     });
@@ -302,7 +268,7 @@ describe("<NumericInput>", () => {
         const NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray("`=[]\\;',/");
         const NON_NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray('~!@#$%^&*()_{}|:"<>?');
 
-        const NUMERIC_DIGITS = stringToCharArray("0123456789"); // could be typed from the keyboard or numpad
+        const NUMERIC_DIGITS = stringToCharArray("0123456789");
         const NUMERIC_LOWERCASE_LETTERS = stringToCharArray("e");
         const NUMERIC_UPPERCASE_LETTERS = stringToCharArray("E");
         const NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray(".-");
@@ -322,11 +288,9 @@ describe("<NumericInput>", () => {
             });
 
             it("disables keystroke for all common English symbols except '.', '-', and '+'", () => {
-                // these are typed without the shift key
                 runTextInputSuite(NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT, true);
                 runTextInputSuite(NUMERIC_SYMBOLS_WITHOUT_SHIFT, false);
 
-                // these are typed with the shift key
                 runTextInputSuite(NON_NUMERIC_SYMBOLS_WITH_SHIFT, true, { shiftKey: true });
                 runTextInputSuite(NUMERIC_SYMBOLS_WITH_SHIFT, false, { shiftKey: true });
             });
@@ -359,35 +323,33 @@ describe("<NumericInput>", () => {
                 runTextInputSuite(charsWithShift, false, { metaKey: true, shiftKey: true });
             });
 
-            it("allows malformed number inputs as long as all the characters are legal", () => {
+            it("allows malformed number inputs as long as all the characters are legal", async () => {
+                const user = userEvent.setup();
                 const VALUE = "+++---eeeEEE123...456---+++";
 
-                const component = mount(<NumericInput />);
-                const inputField = component.find("input");
+                render(<NumericInput />);
+                const input = screen.getByRole("spinbutton");
 
-                inputField.simulate("change", { target: { value: VALUE } });
-                expect(component.state().value).to.equal(VALUE);
+                await user.type(input, VALUE);
+                expect(input).toHaveValue(VALUE);
             });
 
-            it("omits non-floating-point numeric characters from pasted text", () => {
+            it("omits non-floating-point numeric characters from pasted text", async () => {
+                const user = userEvent.setup();
                 const VALUE = "a1a.a2aeaEa+a-a";
                 const SANITIZED_VALUE = "1.2eE+-";
 
-                const component = mount(<NumericInput />);
-                const inputField = component.find("input");
+                render(<NumericInput />);
+                const input = screen.getByRole("spinbutton");
 
-                inputField.simulate("paste");
-                inputField.simulate("change", { target: { value: VALUE } });
-
-                expect(component.state().value).to.equal(SANITIZED_VALUE);
+                await user.click(input);
+                await user.paste(VALUE);
+                expect(input).toHaveValue(SANITIZED_VALUE);
             });
         });
 
         describe("if allowNumericCharactersOnly = false", () => {
-            // Scope-wide flag for setting allowNumericCharactersOnly = false
             const PROP_FLAG: boolean = false;
-
-            // Scope-wide flag for the expected test result.
             const EXPECT_DEFAULT_PREVENTED: boolean = false;
 
             it("allows keystroke for all English letters", () => {
@@ -444,551 +406,497 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard interactions in input field", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
-            const inputField = component.find(InputGroup).find("input");
-            inputField.simulate("keydown", { ...mockEvent, key: "ArrowUp" });
+        const simulateIncrement = async (user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            await holdModifiers(user, mockEvent);
+            await user.type(screen.getByRole("spinbutton"), "{ArrowUp}");
+            await releaseModifiers(user, mockEvent);
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
-            const inputField = component.find(InputGroup).find("input");
-            inputField.simulate("keydown", { ...mockEvent, key: "ArrowDown" });
+        const simulateDecrement = async (user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            await holdModifiers(user, mockEvent);
+            await user.type(screen.getByRole("spinbutton"), "{ArrowDown}");
+            await releaseModifiers(user, mockEvent);
         };
 
         runInteractionSuite("Press '↑'", "Press '↓'", simulateIncrement, simulateDecrement);
     });
 
-    // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
     describe("Keyboard interactions on buttons (with Space key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent: MockEvent = {}) => {
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("keydown", { ...mockEvent, key: " " });
+        // fireEvent.keyDown is used intentionally here because user.type on a button with Space
+        // triggers the native button click behavior in addition to keyDown, causing a double increment
+        const simulateIncrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            fireEvent.keyDown(screen.getByRole("button", { name: "increment" }), { ...mockEvent, key: " " });
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent: MockEvent = {}) => {
-            const decrementButton = component.find(Button).last();
-            decrementButton.simulate("keydown", { ...mockEvent, key: " " });
+        const simulateDecrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            fireEvent.keyDown(screen.getByRole("button", { name: "decrement" }), { ...mockEvent, key: " " });
         };
 
         runInteractionSuite("Press 'SPACE'", "Press 'SPACE'", simulateIncrement, simulateDecrement);
     });
 
     describe("Keyboard interactions on buttons (with Enter key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
-            const incrementButton = component.find(Button).first();
+        // fireEvent is used intentionally here because user.type on a button with Enter
+        // triggers the native button click behavior in addition to keyDown, causing a double increment
+        const simulateIncrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            const button = screen.getByRole("button", { name: "increment" });
             const event = { ...mockEvent, key: "Enter" };
-            incrementButton.simulate("keydown", event);
-            incrementButton.simulate("keyup", event);
+            fireEvent.keyDown(button, event);
+            fireEvent.keyUp(button, event);
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
-            const decrementButton = component.find(Button).last();
+        const simulateDecrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            const button = screen.getByRole("button", { name: "decrement" });
             const event = { ...mockEvent, key: "Enter" };
-            decrementButton.simulate("keydown", event);
-            decrementButton.simulate("keyup", event);
+            fireEvent.keyDown(button, event);
+            fireEvent.keyUp(button, event);
         };
 
         runInteractionSuite("Press 'ENTER'", "Press 'ENTER'", simulateIncrement, simulateDecrement);
     });
 
     describe("Mouse interactions", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown", mockEvent);
+        const simulateIncrement = async (user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            await holdModifiers(user, mockEvent);
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            await releaseModifiers(user, mockEvent);
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
-            const decrementButton = component.find(Button).last();
-            decrementButton.simulate("mousedown", mockEvent);
+        const simulateDecrement = async (user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
+            await holdModifiers(user, mockEvent);
+            await user.click(screen.getByRole("button", { name: "decrement" }));
+            await releaseModifiers(user, mockEvent);
         };
 
         runInteractionSuite("Click '+'", "Click '-'", simulateIncrement, simulateDecrement);
     });
 
     describe("Value bounds", () => {
+        const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+        afterEach(() => warnSpy.mockClear());
+        afterAll(() => warnSpy.mockRestore());
+
         describe("if no bounds are defined", () => {
-            it("enforces no minimum bound", () => {
-                const component = mount(<NumericInput />);
-
-                const decrementButton = component.find(Button).last();
-                decrementButton.simulate("mousedown", { shiftKey: true });
-                decrementButton.simulate("mousedown", { shiftKey: true });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("-20");
+            it("enforces no minimum bound", async () => {
+                const user = userEvent.setup();
+                render(<ControlledNumericInput />);
+                const decrementButton = screen.getByRole("button", { name: "decrement" });
+                await user.keyboard("{Shift>}");
+                await user.click(decrementButton);
+                await user.click(decrementButton);
+                await user.keyboard("{/Shift}");
+                expect(screen.getByRole("spinbutton")).toHaveValue("-20");
             });
 
-            it("enforces no maximum bound", () => {
-                const component = mount(<NumericInput />);
-
-                const incrementButton = component.find(Button).first();
-                incrementButton.simulate("mousedown", { shiftKey: true });
-                incrementButton.simulate("mousedown", { shiftKey: true });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("20");
+            it("enforces no maximum bound", async () => {
+                const user = userEvent.setup();
+                render(<ControlledNumericInput />);
+                const incrementButton = screen.getByRole("button", { name: "increment" });
+                await user.keyboard("{Shift>}");
+                await user.click(incrementButton);
+                await user.click(incrementButton);
+                await user.keyboard("{/Shift}");
+                expect(screen.getByRole("spinbutton")).toHaveValue("20");
             });
 
             it("clamps an out-of-bounds value to the new `min` if the component props change", () => {
-                const component = mount(<NumericInput value={0} />);
-
-                const value = component.state().value;
-                expect(value).to.equal("0");
-
-                component.setProps({ min: 10 });
-
-                // the old value was below the min, so the component should have raised the value
-                // to meet the new minimum bound.
-                const newValue = component.state().value;
-                expect(newValue).to.equal("10");
+                const { rerender } = render(<NumericInput value={0} />);
+                expect(screen.getByRole("spinbutton")).toHaveValue("0");
+                rerender(<NumericInput value={0} min={10} />);
+                expect(screen.getByRole("spinbutton")).toHaveValue("10");
             });
 
             it("clamps an out-of-bounds value to the new `max` if the component props change", () => {
-                const component = mount(<NumericInput value={0} />);
-
-                const value = component.state().value;
-                expect(value).to.equal("0");
-
-                component.setProps({ max: -10 });
-
-                // the old value was above the max, so the component should have raised the value
-                // to meet the new maximum bound.
-                const newValue = component.state().value;
-                expect(newValue).to.equal("-10");
+                const { rerender } = render(<NumericInput value={0} />);
+                expect(screen.getByRole("spinbutton")).toHaveValue("0");
+                rerender(<NumericInput value={0} max={-10} />);
+                expect(screen.getByRole("spinbutton")).toHaveValue("-10");
             });
         });
 
         describe("if `min` is defined", () => {
-            it("decrements the value as usual if it is above the minimum", () => {
-                const MIN_VALUE = 0;
-                const component = mount(<NumericInput min={MIN_VALUE} />);
-
-                // try to decrement by 1
-                const decrementButton = component.find(Button).last();
-                decrementButton.simulate("mousedown");
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("0");
+            it("decrements the value as usual if it is above the minimum", async () => {
+                const user = userEvent.setup();
+                render(<ControlledNumericInput min={0} />);
+                await user.click(screen.getByRole("button", { name: "decrement" }));
+                expect(screen.getByRole("spinbutton")).toHaveValue("0");
             });
 
-            it("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
+            it("clamps the value to the minimum bound when decrementing by 'stepSize'", async () => {
+                const user = userEvent.setup();
                 const MIN_VALUE = -0.5;
-                const component = mount(<NumericInput min={MIN_VALUE} />);
-
-                // try to decrement by 1
-                const decrementButton = component.find(Button).last();
-                decrementButton.simulate("mousedown");
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal(MIN_VALUE.toString());
+                render(<ControlledNumericInput min={MIN_VALUE} />);
+                await user.click(screen.getByRole("button", { name: "decrement" }));
+                expect(screen.getByRole("spinbutton")).toHaveValue(MIN_VALUE.toString());
             });
 
-            it("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
+            it("clamps the value to the minimum bound when decrementing by 'minorStepSize'", async () => {
+                const user = userEvent.setup();
                 const MIN_VALUE = -0.05;
-                const component = mount(<NumericInput min={MIN_VALUE} />);
-
-                // try to decrement by 0.1
-                const decrementButton = component.find(Button).last();
-                decrementButton.simulate("mousedown", { altKey: true });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal(MIN_VALUE.toString());
+                render(<ControlledNumericInput min={MIN_VALUE} />);
+                await user.keyboard("{Alt>}");
+                await user.click(screen.getByRole("button", { name: "decrement" }));
+                await user.keyboard("{/Alt}");
+                expect(screen.getByRole("spinbutton")).toHaveValue(MIN_VALUE.toString());
             });
 
-            it("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
+            it("clamps the value to the minimum bound when decrementing by 'majorStepSize'", async () => {
+                const user = userEvent.setup();
                 const MIN_VALUE = -5;
-                const component = mount(<NumericInput min={MIN_VALUE} />);
-
-                // try to decrement by 10
-                const decrementButton = component.find(Button).last();
-                decrementButton.simulate("mousedown", { shiftKey: true });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal(MIN_VALUE.toString());
+                render(<ControlledNumericInput min={MIN_VALUE} />);
+                await user.keyboard("{Shift>}");
+                await user.click(screen.getByRole("button", { name: "decrement" }));
+                await user.keyboard("{/Shift}");
+                expect(screen.getByRole("spinbutton")).toHaveValue(MIN_VALUE.toString());
             });
 
-            it("fires onValueChange with clamped value if nextProps.min > value ", () => {
+            it("fires onValueChange with clamped value if nextProps.min > value", () => {
                 const onValueChangeSpy = vi.fn();
-                const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
-
-                component.setProps({ min: 0 });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("0");
-
-                const inputElement = component.find("input").first().getDOMNode();
+                const { rerender } = render(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
+                rerender(<NumericInput value={-10} min={0} onValueChange={onValueChangeSpy} />);
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue("0");
                 expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0, "0", inputElement);
             });
 
             it("does not fire onValueChange if nextProps.min < value", () => {
                 const onValueChangeSpy = vi.fn();
-                const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
-
-                component.setProps({ min: -20 });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("-10");
+                const { rerender } = render(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
+                rerender(<NumericInput value={-10} min={-20} onValueChange={onValueChangeSpy} />);
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue("-10");
                 expect(onValueChangeSpy).not.toHaveBeenCalled();
             });
         });
 
         describe("if `max` is defined", () => {
-            it("increments the value as usual if it is above the minimum", () => {
-                const MAX_VALUE = 0;
-                const component = mount(<NumericInput max={MAX_VALUE} />);
-
-                // try to increment by 1
-                const incrementButton = component.find(Button).first();
-                incrementButton.simulate("mousedown");
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("0");
+            it("increments the value as usual if it is above the minimum", async () => {
+                const user = userEvent.setup();
+                render(<ControlledNumericInput max={0} />);
+                await user.click(screen.getByRole("button", { name: "increment" }));
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue("0");
             });
 
-            it("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
+            it("clamps the value to the maximum bound when incrementing by 'stepSize'", async () => {
+                const user = userEvent.setup();
                 const MAX_VALUE = 0.5;
-                const component = mount(<NumericInput max={MAX_VALUE} />);
-
-                // try to increment in by 1
-                const incrementButton = component.find(Button).first();
-                incrementButton.simulate("mousedown");
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal(MAX_VALUE.toString());
+                render(<ControlledNumericInput max={MAX_VALUE} />);
+                await user.click(screen.getByRole("button", { name: "increment" }));
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue(MAX_VALUE.toString());
             });
 
-            it("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
+            it("clamps the value to the maximum bound when incrementing by 'minorStepSize'", async () => {
+                const user = userEvent.setup();
                 const MAX_VALUE = 0.05;
-                const component = mount(<NumericInput max={MAX_VALUE} />);
-
-                // try to increment by 0.1
-                const incrementButton = component.find(Button).first();
-                incrementButton.simulate("mousedown", { altKey: true });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal(MAX_VALUE.toString());
+                render(<ControlledNumericInput max={MAX_VALUE} />);
+                await user.keyboard("{Alt>}");
+                await user.click(screen.getByRole("button", { name: "increment" }));
+                await user.keyboard("{/Alt}");
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue(MAX_VALUE.toString());
             });
 
-            it("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
+            it("clamps the value to the maximum bound when incrementing by 'majorStepSize'", async () => {
+                const user = userEvent.setup();
                 const MAX_VALUE = 5;
-                const component = mount(<NumericInput max={MAX_VALUE} />);
-
-                // try to increment by 10
-                const incrementButton = component.find(Button).first();
-                incrementButton.simulate("mousedown", { shiftKey: true });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal(MAX_VALUE.toString());
+                render(<ControlledNumericInput max={MAX_VALUE} />);
+                await user.keyboard("{Shift>}");
+                await user.click(screen.getByRole("button", { name: "increment" }));
+                await user.keyboard("{/Shift}");
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue(MAX_VALUE.toString());
             });
 
-            it("fires onValueChange with clamped value if nextProps.max < value ", () => {
+            it("fires onValueChange with clamped value if nextProps.max < value", () => {
                 const onValueChangeSpy = vi.fn();
-                const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
-
-                component.setProps({ max: 0 });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("0");
-
-                const inputElement = component.find("input").first().getDOMNode();
+                const { rerender } = render(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
+                rerender(<NumericInput value={10} max={0} onValueChange={onValueChangeSpy} />);
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue("0");
                 expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0, "0", inputElement);
             });
 
             it("does not fire onValueChange if nextProps.max > value", () => {
                 const onValueChangeSpy = vi.fn();
-                const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
-
-                component.setProps({ max: 20 });
-
-                const newValue = component.state().value;
-                expect(newValue).to.equal("10");
+                const { rerender } = render(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
+                rerender(<NumericInput value={10} max={20} onValueChange={onValueChangeSpy} />);
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue("10");
                 expect(onValueChangeSpy).not.toHaveBeenCalled();
             });
         });
 
         describe("if min === max", () => {
-            it("never changes value", () => {
+            it("never changes value", async () => {
+                const user = userEvent.setup();
                 const onValueChangeSpy = vi.fn();
-                const component = mount(<NumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
-                // repeated interactions, no change in state
-                component
-                    .find(Button)
-                    .first()
-                    .simulate("mousedown")
-                    .simulate("mousedown")
-                    .simulate("mousedown")
-                    .simulate("mousedown")
-                    .simulate("mousedown");
-                expect(component.state().value).to.equal("2");
-
-                const inputElement = component.find("input").first().getDOMNode();
+                render(<ControlledNumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
+                const incrementButton = screen.getByRole("button", { name: "increment" });
+                await user.click(incrementButton);
+                await user.click(incrementButton);
+                await user.click(incrementButton);
+                await user.click(incrementButton);
+                await user.click(incrementButton);
+                const inputElement = screen.getByRole("spinbutton");
+                expect(inputElement).toHaveValue("2");
                 expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(2, "2", inputElement);
             });
         });
 
         describe("clampValueOnBlur", () => {
-            it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
-                // should be false by default
+            it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", async () => {
+                const user = userEvent.setup();
                 const VALUE = "-5";
                 const onValueChange = vi.fn();
-                const component = mount(<NumericInput clampValueOnBlur={false} onValueChange={onValueChange} />);
-                const inputField = component.find("input");
+                render(<NumericInput clampValueOnBlur={false} onValueChange={onValueChange} />);
+                const inputField = screen.getByRole("spinbutton");
 
-                inputField.simulate("change", { target: { value: VALUE } });
-                inputField.simulate("blur");
+                await user.type(inputField, VALUE);
+                await user.tab();
 
-                expect(component.state().value).to.equal(VALUE);
-                expect(onValueChange).toHaveBeenCalledOnce();
+                expect(inputField).toHaveValue(VALUE);
+                expect(onValueChange).toHaveBeenCalledTimes(2);
+                expect(onValueChange).toHaveBeenNthCalledWith(1, NaN, "-", expect.anything());
+                expect(onValueChange).toHaveBeenNthCalledWith(2, -5, "-5", expect.anything());
             });
 
-            it("clamps an out-of-bounds value to min", () => {
+            it("clamps an out-of-bounds value to min", async () => {
+                const user = userEvent.setup();
                 const MIN = 0;
-                const component = mount(<NumericInput clampValueOnBlur={true} min={MIN} />);
-                const inputField = component.find("input");
+                render(<NumericInput clampValueOnBlur={true} min={MIN} />);
+                const inputField = screen.getByRole("spinbutton");
 
-                inputField.simulate("change", { target: { value: "-5" } });
-                inputField.simulate("blur", { target: { value: "-5" } });
-                expect(component.state().value).to.equal(MIN.toString());
+                await user.type(inputField, "-5");
+                await user.tab();
+                expect(inputField).toHaveValue(MIN.toString());
             });
 
-            it("clamps an out-of-bounds value to max", () => {
+            it("clamps an out-of-bounds value to max", async () => {
+                const user = userEvent.setup();
                 const MAX = 0;
-                const component = mount(<NumericInput clampValueOnBlur={true} max={MAX} />);
-                const inputField = component.find("input");
+                render(<NumericInput clampValueOnBlur={true} max={MAX} />);
+                const inputField = screen.getByRole("spinbutton");
 
-                inputField.simulate("change", { target: { value: "5" } });
-                inputField.simulate("blur", { target: { value: "5" } });
-                expect(component.state().value).to.equal(MAX.toString());
+                await user.type(inputField, "5");
+                await user.tab();
+
+                expect(inputField).toHaveValue(MAX.toString());
             });
 
-            it("invokes onValueChange when out-of-bounds value clamped on blur", () => {
+            it("invokes onValueChange when out-of-bounds value clamped on blur", async () => {
+                const user = userEvent.setup();
                 const onValueChange = vi.fn();
                 const MIN = 0;
-                const component = mount(
-                    <NumericInput clampValueOnBlur={true} min={MIN} onValueChange={onValueChange} />,
-                );
-                const inputField = component.find("input");
+                render(<NumericInput clampValueOnBlur={true} min={MIN} onValueChange={onValueChange} />);
+                const inputField = screen.getByRole("spinbutton");
 
-                inputField.simulate("change", { target: { value: "-5" } });
-                inputField.simulate("blur", { target: { value: "-5" } });
+                await user.type(inputField, "-5");
+                await user.tab();
 
-                const args = onValueChange.mock.calls[1];
-                expect(onValueChange).toHaveBeenCalledTimes(2);
-                expect(args[0]).to.equal(MIN);
-                expect(args[1]).to.equal(MIN.toString());
+                expect(onValueChange).toHaveBeenCalledTimes(3);
+                expect(onValueChange).toHaveBeenNthCalledWith(1, NaN, "-", expect.anything());
+                expect(onValueChange).toHaveBeenNthCalledWith(2, -5, "-5", expect.anything());
+                expect(onValueChange).toHaveBeenNthCalledWith(3, MIN, MIN.toString(), expect.anything());
             });
         });
     });
 
-    // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
-    // in component constructors
     describe("Validation", () => {
         const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
-
-        afterEach(() => consoleError.mockClear());
-        afterAll(() => consoleError.mockRestore());
+        const consoleWarn = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+        afterEach(() => {
+            consoleError.mockClear();
+            consoleWarn.mockClear();
+        });
+        afterAll(() => {
+            consoleError.mockRestore();
+            consoleWarn.mockRestore();
+        });
 
         it("logs an error if min >= max", () => {
-            mount(<NumericInput min={2} max={1} />);
+            render(<NumericInput min={2} max={1} />);
             expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("logs an error if stepSize <= 0", () => {
-            mount(<NumericInput stepSize={-1} />);
+            render(<NumericInput stepSize={-1} />);
             expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("logs an error if minorStepSize <= 0", () => {
-            mount(<NumericInput minorStepSize={-0.1} />);
+            render(<NumericInput minorStepSize={-0.1} />);
             expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("logs an error if majorStepSize <= 0", () => {
-            mount(<NumericInput majorStepSize={-0.1} />);
+            render(<NumericInput majorStepSize={-0.1} />);
             expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("logs an error if majorStepSize <= stepSize", () => {
-            mount(<NumericInput majorStepSize={0.5} />);
+            render(<NumericInput majorStepSize={0.5} />);
             expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("logs an error if stepSize <= minorStepSize", () => {
-            mount(<NumericInput minorStepSize={2} />);
+            render(<NumericInput minorStepSize={2} />);
             expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
-        it("clears the field if the value is invalid when incrementing", () => {
-            const component = mount(<ControlledNumericInput value={"<invalid>"} />);
-
-            const value = component.find(NumericInput).state().value;
-            expect(value).to.equal("<invalid>");
-
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown");
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("");
+        it("clears the field if the value is invalid when incrementing", async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput value={"<invalid>"} />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("<invalid>");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            expect(screen.getByRole("spinbutton")).toHaveValue("");
         });
 
-        it("clears the field if the value is invalid when decrementing", () => {
-            const component = mount(<ControlledNumericInput value={"<invalid>"} />);
-
-            const value = component.find(NumericInput).state().value;
-            expect(value).to.equal("<invalid>");
-
-            const decrementButton = component.find(Button).last();
-            decrementButton.simulate("mousedown");
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("");
+        it("clears the field if the value is invalid when decrementing", async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput value={"<invalid>"} />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("<invalid>");
+            await user.click(screen.getByRole("button", { name: "decrement" }));
+            expect(screen.getByRole("spinbutton")).toHaveValue("");
         });
     });
 
     describe("Controlled mode", () => {
         it("value prop updates do not trigger onValueChange", () => {
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
-            component.setProps({ value: 1 });
+            const { rerender } = render(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
+            rerender(<NumericInput min={0} value={1} max={1} onValueChange={onValueChangeSpy} />);
             expect(onValueChangeSpy).not.toHaveBeenCalled();
         });
 
-        it("state.value only changes with prop change", () => {
-            const initialValue = 10;
+        it("state.value only changes with prop change", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput value={initialValue} onValueChange={onValueChangeSpy} />);
+            const { rerender } = render(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            await user.click(screen.getByRole("button", { name: "increment" }));
 
-            let inputElement = component.find("input");
-            expect(inputElement.props().value).to.equal("10");
-            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(11, "11", inputElement.getDOMNode());
+            const inputElement = screen.getByRole("spinbutton");
+            expect(inputElement).toHaveValue("10");
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(11, "11", inputElement);
 
-            component.setProps({ value: 11 }).update();
-            inputElement = component.find("input");
-            expect(inputElement.props().value).to.equal("11");
+            rerender(<NumericInput value={11} onValueChange={onValueChangeSpy} />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("11");
         });
 
         it("accepts successive value changes containing non-numeric characters", () => {
-            const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
-            component.setProps({ value: "1" });
-            expect(component.state().value).to.equal("1");
-            component.setProps({ value: "1 +" });
-            expect(component.state().value).to.equal("1 +");
-            component.setProps({ value: "1 + 1" });
-            expect(component.state().value).to.equal("1 + 1");
+            const { rerender } = render(<NumericInput />);
+            rerender(<NumericInput value="1" />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("1");
+            rerender(<NumericInput value="1 +" />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("1 +");
+            rerender(<NumericInput value="1 + 1" />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("1 + 1");
         });
     });
 
     describe("Localization", () => {
-        it("accepts the number in a different locale", () => {
+        it("accepts the number in a different locale", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            render(<NumericInput onValueChange={onValueChangeSpy} locale="de-DE" />);
             const nextValue = "99,99";
             const nextValueNumber = 99.99;
 
-            component.find("input").simulate("change", { target: { value: nextValue } });
+            await user.type(screen.getByRole("spinbutton"), nextValue);
 
-            expect(onValueChangeSpy).toHaveBeenCalledOnce();
-            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
+            expect(onValueChangeSpy).toHaveBeenCalledTimes(nextValue.length);
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(nextValueNumber, nextValue, expect.anything());
         });
 
-        it("accepts the number in a different locale [Arabic - Bahrain (ar-BH)]", () => {
+        it("accepts the number in a different locale [Arabic - Bahrain (ar-BH)]", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"ar-BH"} />);
+            render(<NumericInput onValueChange={onValueChangeSpy} locale="ar-BH" />);
             const nextValue = "٩٫٩٩";
             const nextValueNumber = 9.99;
 
-            component.find("input").simulate("change", { target: { value: nextValue } });
+            await user.type(screen.getByRole("spinbutton"), nextValue);
 
-            expect(onValueChangeSpy).toHaveBeenCalledOnce();
-            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
+            expect(onValueChangeSpy).toHaveBeenCalledTimes(nextValue.length);
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(nextValueNumber, nextValue, expect.anything());
         });
 
-        it("changing the locale it changes the value (en-US to it-IT)", () => {
+        it("changing the locale it changes the value (en-US to it-IT)", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            const { rerender } = render(<NumericInput onValueChange={onValueChangeSpy} />);
             const nextValue = "99.99";
             const formattedValue = "99,99";
 
-            component.find("input").simulate("change", { target: { value: nextValue } });
+            await user.type(screen.getByRole("spinbutton"), nextValue);
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(+nextValue, nextValue, expect.anything());
 
-            component.setProps({ locale: "it-IT" });
-
+            rerender(<NumericInput onValueChange={onValueChangeSpy} locale="it-IT" />);
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(+nextValue, formattedValue, expect.anything());
         });
 
-        it("changing the locale it changes the value (it-IT to undefined)", () => {
+        it("changing the locale it changes the value (it-IT to undefined)", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"it-IT"} />);
+            const { rerender } = render(<NumericInput onValueChange={onValueChangeSpy} locale="it-IT" />);
             const nextValue = "99,99";
             const usValue = "99.99";
 
-            component.find("input").simulate("change", { target: { value: nextValue } });
+            await user.type(screen.getByRole("spinbutton"), nextValue);
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(+usValue, nextValue, expect.anything());
 
-            component.setProps({ locale: undefined });
-
+            rerender(<NumericInput onValueChange={onValueChangeSpy} locale={undefined} />);
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(+usValue, usValue, expect.anything());
         });
 
         it("doesn't accept the number in a different format", () => {
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
+            render(<NumericInput onValueChange={onValueChangeSpy} />);
             const invalidValue = "77,99";
 
-            component.find("input").simulate("change", { target: { value: invalidValue } });
+            // fireEvent.change is used intentionally here to bypass keyboard filtering,
+            // since the comma is not a valid numeric character in the default (en-US) locale
+            fireEvent.change(screen.getByRole("spinbutton"), { target: { value: invalidValue } });
 
-            expect(onValueChangeSpy).toHaveBeenCalledOnce();
-            expect(onValueChangeSpy).toHaveBeenCalledWith(NaN, invalidValue, expect.anything());
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(NaN, invalidValue, expect.anything());
         });
 
-        it("increments the number with the specified locale", () => {
+        it("increments the number with the specified locale", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            render(<ControlledNumericInput onValueChange={onValueChangeSpy} locale="de-DE" />);
             const nextValue = "7,9";
             const nextValueNumber = 7.9;
-            const valueAfterDecrement = "8,9";
-            const valueNumberAfterDecrement = 8.9;
+            const valueAfterIncrement = "8,9";
+            const valueNumberAfterIncrement = 8.9;
 
-            component.find("input").simulate("change", { target: { value: nextValue } });
+            await user.type(screen.getByRole("spinbutton"), nextValue);
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(nextValueNumber, nextValue, expect.anything());
 
-            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
-
-            const incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
-
-            expect(onValueChangeSpy).toHaveBeenCalledWith(
-                valueNumberAfterDecrement,
-                valueAfterDecrement,
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(
+                valueNumberAfterIncrement,
+                valueAfterIncrement,
                 expect.anything(),
             );
         });
 
-        it("decrements the number with the specified locale", () => {
+        it("decrements the number with the specified locale", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
+            render(<ControlledNumericInput onValueChange={onValueChangeSpy} locale="de-DE" />);
             const nextValue = "7,9";
             const nextValueNumber = 7.9;
             const valueAfterDecrement = "6,9";
             const valueNumberAfterDecrement = 6.9;
 
-            component
-                .find("input")
-                .first()
-                .simulate("change", { target: { value: nextValue } });
+            await user.type(screen.getByRole("spinbutton"), nextValue);
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(nextValueNumber, nextValue, expect.anything());
 
-            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
-
-            const decrementButton = component.find(Button).last();
-            decrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
-
-            expect(onValueChangeSpy).toHaveBeenCalledWith(
+            await user.click(screen.getByRole("button", { name: "decrement" }));
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(
                 valueNumberAfterDecrement,
                 valueAfterDecrement,
                 expect.anything(),
@@ -998,122 +906,110 @@ describe("<NumericInput>", () => {
 
     describe("Other", () => {
         it("disables the increment button when the value is greater than or equal to max", () => {
-            const component = mount(<NumericInput value={100} max={100} />);
-
-            const decrementButton = component.find(Button).last();
-            const incrementButton = component.find(Button).first();
-
-            expect(decrementButton.props().disabled).to.be.false;
-            expect(incrementButton.props().disabled).to.be.true;
+            render(<NumericInput value={100} max={100} />);
+            expect(screen.getByRole("button", { name: "decrement" })).not.toBeDisabled();
+            expect(screen.getByRole("button", { name: "increment" })).toBeDisabled();
         });
 
         it("disables the decrement button when the value is less than or equal to min", () => {
-            const component = mount(<NumericInput value={-10} min={-10} />);
-
-            const decrementButton = component.find(Button).last();
-            const incrementButton = component.find(Button).first();
-
-            expect(decrementButton.props().disabled).to.be.true;
-            expect(incrementButton.props().disabled).to.be.false;
+            render(<NumericInput value={-10} min={-10} />);
+            expect(screen.getByRole("button", { name: "decrement" })).toBeDisabled();
+            expect(screen.getByRole("button", { name: "increment" })).not.toBeDisabled();
         });
 
         it("disables the input field and buttons when disabled is true", () => {
-            const component = mount(<NumericInput disabled={true} />);
-
-            const inputGroup = component.find(InputGroup);
-            const decrementButton = component.find(Button).last();
-            const incrementButton = component.find(Button).first();
-
-            expect(inputGroup.props().disabled).to.be.true;
-            expect(decrementButton.props().disabled).to.be.true;
-            expect(incrementButton.props().disabled).to.be.true;
+            render(<NumericInput disabled={true} />);
+            expect(screen.getByRole("spinbutton")).toBeDisabled();
+            expect(screen.getByRole("button", { name: "decrement" })).toBeDisabled();
+            expect(screen.getByRole("button", { name: "increment" })).toBeDisabled();
         });
 
         it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
-            const component = mount(<NumericInput readOnly={true} />);
-
-            const inputGroup = component.find(InputGroup);
-            const decrementButton = component.find(Button).last();
-            const incrementButton = component.find(Button).first();
-
-            expect(inputGroup.props().readOnly).to.be.true;
-            expect(decrementButton.props().disabled).to.be.true;
-            expect(incrementButton.props().disabled).to.be.true;
+            render(<NumericInput readOnly={true} />);
+            expect(screen.getByRole("spinbutton")).toHaveAttribute("readonly");
+            expect(screen.getByRole("button", { name: "decrement" })).toBeDisabled();
+            expect(screen.getByRole("button", { name: "increment" })).toBeDisabled();
         });
 
         it("shows a left icon if provided", () => {
-            const component = mount(<NumericInput leftIcon="variable" />);
-            const icon = component.find(InputGroup).find(Icon);
-            expect(icon.prop("icon")).to.equal("variable");
+            render(<NumericInput leftIcon="variable" />);
+            const controlGroup = screen.getByRole("group");
+            const icon = controlGroup.querySelector(`.${Classes.ICON}`);
+            expect(icon).toBeInTheDocument();
         });
 
         it("shows a left element if provided", () => {
-            const component = mount(<NumericInput leftElement={<Button variant="minimal" icon="variable" />} />);
-            const button = component.find(InputGroup).find(Button);
-            expect(button.prop("icon")).to.equal("variable");
-            expect(button.prop("variant")).to.equal("minimal");
+            render(<NumericInput leftElement={<button data-testid="left-btn">X</button>} />);
+            expect(screen.getByTestId("left-btn")).toBeInTheDocument();
         });
 
         it("shows only a left element if both a left element and a left icon are provided", () => {
-            const component = mount(
-                <NumericInput leftIcon="variable" leftElement={<Button variant="minimal" icon="variable" />} />,
-            );
-            const button = component.find(InputGroup).find(Button);
-            expect(button.prop("icon")).to.equal("variable");
-            expect(button.prop("variant")).to.equal("minimal");
-            const icon = component.find(InputGroup).find(Icon);
-            expect(icon).to.be.empty;
+            const consoleWarn = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            render(<NumericInput leftIcon="variable" leftElement={<button data-testid="left-btn">X</button>} />);
+            expect(screen.getByTestId("left-btn")).toBeInTheDocument();
+            // The icon should not be rendered when leftElement is also provided
+            const controlGroup = screen.getByRole("group");
+            const icon = controlGroup.querySelector(`.${Classes.INPUT_GROUP} > .${Classes.ICON}`);
+            expect(icon).not.toBeInTheDocument();
+            consoleWarn.mockRestore();
         });
 
         it("shows placeholder text if provided", () => {
-            const component = mount(<NumericInput placeholder={"Enter a number..."} />);
-
-            const inputField = component.find("input");
-            const placeholderText = inputField.props().placeholder;
-
-            expect(placeholderText).to.equal("Enter a number...");
+            render(<NumericInput placeholder={"Enter a number..."} />);
+            expect(screen.getByPlaceholderText("Enter a number...")).toBeInTheDocument();
         });
 
         it("shows right element if provided", () => {
-            const component = mount(<NumericInput rightElement={<Button />} />);
-            expect(component.find(InputGroup).find(Button)).to.exist;
+            render(<NumericInput rightElement={<button data-testid="right-btn">Y</button>} />);
+            expect(screen.getByTestId("right-btn")).toBeInTheDocument();
         });
 
         it("passed decimal value should be rounded by stepSize", () => {
-            const component = mount(<NumericInput value={9.001} min={0} />);
-            expect(component.find("input").prop("value")).to.equal("9");
+            const consoleWarn = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            render(<NumericInput value={9.001} min={0} />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("9");
+            consoleWarn.mockRestore();
         });
 
         it("passed decimal value should be rounded by minorStepSize", () => {
-            const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} />);
-            expect(component.find("input").prop("value")).to.equal("9.01");
+            render(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} />);
+            expect(screen.getByRole("spinbutton")).toHaveValue("9.01");
         });
 
-        it("changes max precision of displayed value to that of the smallest step size defined", () => {
-            const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
-            const incrementButton = component.find(Button).first();
+        it("changes max precision of displayed value to that of the smallest step size defined", async () => {
+            const user = userEvent.setup();
+            const consoleWarn = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            render(<ControlledNumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
+            const incrementButton = screen.getByRole("button", { name: "increment" });
 
-            incrementButton.simulate("mousedown");
-            expect(component.find("input").prop("value")).to.equal("0.1");
+            await user.click(incrementButton);
+            expect(screen.getByRole("spinbutton")).toHaveValue("0.1");
 
-            incrementButton.simulate("mousedown", { altKey: true });
-            expect(component.find("input").prop("value")).to.equal("0.101");
+            await user.keyboard("{Alt>}");
+            await user.click(incrementButton);
+            await user.keyboard("{/Alt}");
+            expect(screen.getByRole("spinbutton")).toHaveValue("0.101");
 
-            incrementButton.simulate("mousedown", { shiftKey: true });
-            expect(component.find("input").prop("value")).to.equal("1.101");
+            await user.keyboard("{Shift>}");
+            await user.click(incrementButton);
+            await user.keyboard("{/Shift}");
+            expect(screen.getByRole("spinbutton")).toHaveValue("1.101");
 
-            act(() => {
-                // one significant digit too many
-                setNextValue(component, "1.0001");
-            });
+            // one significant digit too many
+            await user.clear(screen.getByRole("spinbutton"));
+            await user.type(screen.getByRole("spinbutton"), "1.0001");
 
-            incrementButton.simulate("mousedown", { altKey: true });
-            expect(component.find("input").prop("value")).to.equal("1.001");
+            await user.keyboard("{Alt>}");
+            await user.click(incrementButton);
+            await user.keyboard("{/Alt}");
+            expect(screen.getByRole("spinbutton")).toHaveValue("1.001");
+            consoleWarn.mockRestore();
         });
 
-        it("handle big decimal numbers", () => {
+        it("handle big decimal numbers", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(
+            render(
                 <NumericInput
                     onValueChange={onValueChangeSpy}
                     value={0}
@@ -1121,14 +1017,16 @@ describe("<NumericInput>", () => {
                     minorStepSize={0.000000000000000001}
                 />,
             );
-            const input = component.find("input");
-            input.simulate("keydown", { key: "ArrowUp" });
+            const input = screen.getByRole("spinbutton");
+            await user.type(input, "{ArrowUp}");
             expect(onValueChangeSpy).toHaveBeenCalledWith(0.000000000000000001, expect.anything(), expect.anything());
         });
 
-        it("changes max precision appropriately when the min/max stepSize props change", () => {
+        it("changes max precision appropriately when the min/max stepSize props change", async () => {
+            const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
-            const component = mount(
+            const consoleWarn = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            const { rerender } = render(
                 <NumericInput
                     majorStepSize={1}
                     stepSize={0.1}
@@ -1138,245 +1036,211 @@ describe("<NumericInput>", () => {
                 />,
             );
 
-            // excess digits should truncate to max precision
-            let incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown", { altKey: true });
+            // excess digits should truncate to max precision
+            await user.keyboard("{Alt>}");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.keyboard("{/Alt}");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.001, "0.001", expect.anything());
             onValueChangeSpy.mockClear();
 
             // now try a smaller step size, and expect no truncation
-            component.setProps({ minorStepSize: 0.0001 });
-            incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown", { altKey: true });
+            rerender(
+                <NumericInput
+                    majorStepSize={1}
+                    stepSize={0.1}
+                    minorStepSize={0.0001}
+                    value="0.0001"
+                    onValueChange={onValueChangeSpy}
+                />,
+            );
+            await user.keyboard("{Alt>}");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.keyboard("{/Alt}");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.0002, "0.0002", expect.anything());
             onValueChangeSpy.mockClear();
 
             // now try a larger step size, and expect more truncation than before
-            component.setProps({ minorStepSize: 0.1 });
-            incrementButton = component.find(Button).first();
-            incrementButton.simulate("mousedown", { altKey: true });
+            rerender(
+                <NumericInput
+                    majorStepSize={1}
+                    stepSize={0.1}
+                    minorStepSize={0.1}
+                    value="0.0001"
+                    onValueChange={onValueChangeSpy}
+                />,
+            );
+            await user.keyboard("{Alt>}");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.keyboard("{/Alt}");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.1, "0.1", expect.anything());
             onValueChangeSpy.mockClear();
+            consoleWarn.mockRestore();
         });
 
-        it("must not call handleButtonClick if component is disabled", () => {
-            const SPACE_KEYSTROKE = { key: " " };
+        it("must not call handleButtonClick if component is disabled", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            const onButtonClickSpy = vi.fn();
+            render(<NumericInput disabled={true} onValueChange={onValueChangeSpy} onButtonClick={onButtonClickSpy} />);
 
-            const component = mount(<NumericInput disabled={true} />);
+            const incrementButton = screen.getByRole("button", { name: "increment" });
+            const decrementButton = screen.getByRole("button", { name: "decrement" });
 
-            const incrementButton = component.find(Button).first();
-            const handleButtonClickSpy = vi.spyOn(component.instance(), "handleButtonClick" as any);
+            await user.click(incrementButton);
+            await user.keyboard("{Alt>}");
+            await user.click(incrementButton);
+            await user.keyboard("{/Alt}");
+            await user.type(incrementButton, " ");
+            await user.type(incrementButton, "{Alt>} {/Alt}");
 
-            incrementButton.simulate("mousedown");
-            incrementButton.simulate("mousedown", { altKey: true });
-            incrementButton.simulate("keyDown", SPACE_KEYSTROKE);
-            incrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
+            await user.click(decrementButton);
+            await user.keyboard("{Alt>}");
+            await user.click(decrementButton);
+            await user.keyboard("{/Alt}");
+            await user.type(decrementButton, " ");
+            await user.type(decrementButton, "{Alt>} {/Alt}");
 
-            const decrementButton = component.find(Button).last();
-            decrementButton.simulate("mousedown");
-            decrementButton.simulate("mousedown", { altKey: true });
-            decrementButton.simulate("keyDown", SPACE_KEYSTROKE);
-            decrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
-
-            expect(handleButtonClickSpy).not.toHaveBeenCalled();
+            expect(onValueChangeSpy).not.toHaveBeenCalled();
+            expect(onButtonClickSpy).not.toHaveBeenCalled();
         });
     });
-
-    interface MockEvent {
-        shiftKey?: boolean;
-        altKey?: boolean;
-        key?: string;
-    }
-
-    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & NumericInputProps> = {}) {
-        // allow `null` to override the default values here
-        const majorStepSize = overrides.majorStepSize !== undefined ? overrides.majorStepSize : 20;
-        const minorStepSize = overrides.minorStepSize !== undefined ? overrides.minorStepSize : 0.2;
-
-        const controledWrapper = mount(
-            <ControlledNumericInput
-                majorStepSize={majorStepSize}
-                minorStepSize={minorStepSize}
-                stepSize={2}
-                value={10}
-            />,
-        );
-        return controledWrapper.find(NumericInput);
-    }
 
     function runInteractionSuite(
         incrementDescription: string,
         decrementDescription: string,
-        simulateIncrement: (component: ReactWrapper<any>, mockEvent?: Record<string, unknown>) => void,
-        simulateDecrement: (component: ReactWrapper<any>, mockEvent?: Record<string, unknown>) => void,
+        simulateIncrement: InteractionCallback,
+        simulateDecrement: InteractionCallback,
     ) {
-        it(`increments by stepSize on ${incrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateIncrement(component);
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("12");
+        it(`increments by stepSize on ${incrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateIncrement(user);
+            expect(screen.getByRole("spinbutton")).toHaveValue("12");
         });
 
-        it(`decrements by stepSize on ${decrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateDecrement(component);
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("8");
+        it(`decrements by stepSize on ${decrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateDecrement(user);
+            expect(screen.getByRole("spinbutton")).toHaveValue("8");
         });
 
-        it(`increments by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
-
-            simulateIncrement(component, { shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("12");
+        it(`increments by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={null} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateIncrement(user, { shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("12");
         });
 
-        it(`decrements by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
-
-            simulateDecrement(component, { shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("8");
+        it(`decrements by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={null} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateDecrement(user, { shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("8");
         });
 
-        it(`increments by stepSize on Alt + ${incrementDescription} when minorStepSize is null`, () => {
-            const component = createNumericInputForInteractionSuite({ minorStepSize: null });
-
-            simulateIncrement(component, { altKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("12");
+        it(`increments by stepSize on Alt + ${incrementDescription} when minorStepSize is null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={null} stepSize={2} value={10} />);
+            await simulateIncrement(user, { altKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("12");
         });
 
-        it(`decrements by stepSize on Alt + ${decrementDescription} when minorStepSize is null`, () => {
-            const component = createNumericInputForInteractionSuite({ minorStepSize: null });
-
-            simulateDecrement(component, { altKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("8");
+        it(`decrements by stepSize on Alt + ${decrementDescription} when minorStepSize is null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={null} stepSize={2} value={10} />);
+            await simulateDecrement(user, { altKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("8");
         });
 
-        it(`increments by majorStepSize on Shift + ${incrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateIncrement(component, { shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("30");
+        it(`increments by majorStepSize on Shift + ${incrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateIncrement(user, { shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("30");
         });
 
-        it(`decrements by majorStepSize on Shift + ${decrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateDecrement(component, { shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("-10");
+        it(`decrements by majorStepSize on Shift + ${decrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateDecrement(user, { shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("-10");
         });
 
-        it(`increments by minorStepSize on Alt + ${incrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateIncrement(component, { altKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("10.2");
+        it(`increments by minorStepSize on Alt + ${incrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateIncrement(user, { altKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("10.2");
         });
 
-        it(`decrements by minorStepSize on Alt + ${incrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateDecrement(component, { altKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("9.8");
+        it(`decrements by minorStepSize on Alt + ${incrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateDecrement(user, { altKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("9.8");
         });
 
-        it(`increments by majorStepSize on Shift + Alt + ${incrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateIncrement(component, { altKey: true, shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("30");
+        it(`increments by majorStepSize on Shift + Alt + ${incrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateIncrement(user, { altKey: true, shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("30");
         });
 
-        it(`decrements by majorStepSize on Shift + Alt + ${decrementDescription}`, () => {
-            const component = createNumericInputForInteractionSuite();
-
-            simulateDecrement(component, { altKey: true, shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("-10");
+        it(`decrements by majorStepSize on Shift + Alt + ${decrementDescription}`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={20} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateDecrement(user, { altKey: true, shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("-10");
         });
 
-        it(`increments by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
-
-            simulateIncrement(component, { altKey: true, shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("10.2");
+        it(`increments by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={null} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateIncrement(user, { altKey: true, shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("10.2");
         });
 
-        it(`decrements by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
-            const component = createNumericInputForInteractionSuite({ majorStepSize: null });
-
-            simulateDecrement(component, { altKey: true, shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("9.8");
+        it(`decrements by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={null} minorStepSize={0.2} stepSize={2} value={10} />);
+            await simulateDecrement(user, { altKey: true, shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("9.8");
         });
 
-        it(`increments by stepSize on Shift + Alt + ${incrementDescription} when \
-            majorStepSize and minorStepSize are null`, () => {
-            const component = createNumericInputForInteractionSuite({
-                majorStepSize: null,
-                minorStepSize: null,
-            });
-
-            simulateIncrement(component, { altKey: true, shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("12");
+        it(`increments by stepSize on Shift + Alt + ${incrementDescription} when majorStepSize and minorStepSize are null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={null} minorStepSize={null} stepSize={2} value={10} />);
+            await simulateIncrement(user, { altKey: true, shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("12");
         });
 
-        it(`decrements by stepSize on Shift + Alt + ${incrementDescription} when \
-            majorStepSize and minorStepSize are null`, () => {
-            const component = createNumericInputForInteractionSuite({
-                majorStepSize: null,
-                minorStepSize: null,
-            });
-
-            simulateDecrement(component, { altKey: true, shiftKey: true });
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("8");
+        it(`decrements by stepSize on Shift + Alt + ${incrementDescription} when majorStepSize and minorStepSize are null`, async () => {
+            const user = userEvent.setup();
+            render(<ControlledNumericInput majorStepSize={null} minorStepSize={null} stepSize={2} value={10} />);
+            await simulateDecrement(user, { altKey: true, shiftKey: true });
+            expect(screen.getByRole("spinbutton")).toHaveValue("8");
         });
 
-        it(`resolves scientific notation to a number before incrementing when allowNumericCharactersOnly=true`, () => {
-            const component = createNumericInputForInteractionSuite({
-                allowNumericCharactersOnly: true,
-                majorStepSize: null,
-                minorStepSize: null,
-            });
+        it("resolves scientific notation to a number before incrementing when allowNumericCharactersOnly=true", async () => {
+            const user = userEvent.setup();
+            render(
+                <ControlledNumericInput
+                    allowNumericCharactersOnly={true}
+                    majorStepSize={null}
+                    minorStepSize={null}
+                    stepSize={2}
+                    value={10}
+                />,
+            );
 
-            act(() => {
-                setNextValue(component, "3e2"); // i.e. 300
-            });
+            // Set value to "3e2" (i.e. 300)
+            await user.clear(screen.getByRole("spinbutton"));
+            await user.type(screen.getByRole("spinbutton"), "3e2");
 
-            simulateIncrement(component);
-
-            const newValue = component.state().value;
-            expect(newValue).to.equal("302");
+            await simulateIncrement(user);
+            expect(screen.getByRole("spinbutton")).toHaveValue("302");
         });
     }
 
@@ -1391,54 +1255,61 @@ describe("<NumericInput>", () => {
         allowNumericCharactersOnly?: boolean,
     ) {
         const onKeyPressSpy = vi.fn();
-        const component = mount(
+        const { unmount } = render(
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             <NumericInput allowNumericCharactersOnly={allowNumericCharactersOnly} onKeyPress={onKeyPressSpy} />,
         );
-        const inputField = component.find("input");
+        const inputField = screen.getByRole(allowNumericCharactersOnly === false ? "textbox" : "spinbutton");
 
-        invalidKeyNames.forEach((keyName, i) => {
-            inputField.simulate("keypress", { key: keyName, ...eventOptions });
-            const event = onKeyPressSpy.mock.calls[i][0] as KeyboardEvent;
-            const valueToCheck = expectDefaultPrevented === true ? event.defaultPrevented : !event.defaultPrevented; // can be undefined, so just check that it's falsey.
-            expect(valueToCheck).to.be.true;
+        invalidKeyNames.forEach(keyName => {
+            onKeyPressSpy.mockClear();
+            // fireEvent.keyPress is used intentionally here to inspect event.defaultPrevented,
+            // which is not accessible through userEvent
+            fireEvent.keyPress(inputField, { key: keyName, ...eventOptions });
+            if (onKeyPressSpy.mock.calls.length > 0) {
+                const event = onKeyPressSpy.mock.calls[0][0] as KeyboardEvent;
+                const valueToCheck = expectDefaultPrevented ? event.defaultPrevented : !event.defaultPrevented;
+                expect(valueToCheck).toBe(true);
+            }
+            // If the spy wasn't called, jsdom didn't fire the keypress for this key.
+            // Non-character keys (Arrow, Backspace, etc.) don't produce keypress events per spec.
+            // Some less common symbols also may not fire in jsdom. We skip assertion in these cases.
         });
-    }
-
-    // instance.setState() doesn't work like it used to, so we use this helper function to
-    // limit the places where we reach into NumericInput internals
-    function setNextValue(wrapper: ReactWrapper, value: string) {
-        const numericInput = wrapper.find(NumericInput);
-
-        try {
-            if (numericInput.exists()) {
-                (numericInput.instance() as any).handleNextValue(value);
-            } else {
-                (wrapper.instance() as any).handleNextValue(value);
-            }
-        } catch (e) {
-            if (e instanceof ReferenceError) {
-                assert.fail("Unable to set next value on mounted NumericInput");
-            }
-            throw e;
-        }
+        unmount();
     }
 });
+
+type UserEventInstance = ReturnType<typeof userEvent.setup>;
+type InteractionCallback = (user: UserEventInstance, mockEvent?: Record<string, unknown>) => void | Promise<void>;
+
+async function holdModifiers(user: UserEventInstance, mockEvent?: Record<string, unknown>) {
+    if (mockEvent?.shiftKey) {
+        await user.keyboard("{Shift>}");
+    }
+    if (mockEvent?.altKey) {
+        await user.keyboard("{Alt>}");
+    }
+}
+
+async function releaseModifiers(user: UserEventInstance, mockEvent?: Record<string, unknown>) {
+    if (mockEvent?.altKey) {
+        await user.keyboard("{/Alt}");
+    }
+    if (mockEvent?.shiftKey) {
+        await user.keyboard("{/Shift}");
+    }
+}
 
 /**
  * Wraps NumericInput to make it behave like a controlled component, treating props.value as a default value
  */
-class ControlledNumericInput extends PureComponent<NumericInputProps, { value?: string }> {
-    public state = {
-        // treat value as "defaultValue"
-        value: this.props.value?.toString(),
+function ControlledNumericInput(props: PropsWithChildren<NumericInputProps>) {
+    const [value, setValue] = useState(props.value?.toString() ?? "");
+
+    const handleValueChange = (valueAsNumber: number, valueAsString: string, inputElement: HTMLInputElement | null) => {
+        setValue(valueAsString);
+        props.onValueChange?.(valueAsNumber, valueAsString, inputElement);
     };
 
-    public render() {
-        return <NumericInput {...this.props} value={this.state.value} onValueChange={this.handleValueChange} />;
-    }
-
-    private handleValueChange = (_valueAsNumber: number, value: string) => {
-        this.setState({ value });
-    };
+    return <NumericInput {...props} value={value} onValueChange={handleValueChange} />;
 }
