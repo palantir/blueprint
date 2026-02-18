@@ -28,6 +28,6 @@ const container = document.getElementById("blueprint-documentation");
 const root = createRoot(container);
 root.render(
     <StrictMode>
-        <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} />
+        <BlueprintDocs defaultPageId="blueprint" docs={docsData} />
     </StrictMode>,
 );
