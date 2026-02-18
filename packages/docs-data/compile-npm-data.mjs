@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * @license Copyright 2024 Palantir Technologies, Inc. All rights reserved.
+ * @license Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  * @fileoverview Generates npm package metadata for packages/docs-app, without using @documentalist.
  */
 
