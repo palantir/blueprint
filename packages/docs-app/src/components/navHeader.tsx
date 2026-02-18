@@ -76,7 +76,17 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
         const VERSION_MENU_ID = "version-menu";
         const { version, versions } = this.props.packageInfo;
         if (versions.length === 1) {
-            return <div className={Classes.TEXT_MUTED}>v{versions[0]}</div>;
+            return (
+                <Tag
+                    interactive={false}
+                    minimal={true}
+                    round={true}
+                    role="button"
+                    aria-label={`Version ${major(versions[0])}`}
+                >
+                    v{major(versions[0])}
+                </Tag>
+            );
         }
 
         const versionFromUrl = getVersionFromUrl();
