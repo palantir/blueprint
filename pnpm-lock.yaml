@@ -494,6 +494,9 @@ importers:
       '@blueprintjs/test-commons':
         specifier: workspace:^
         version: link:../test-commons
+      '@mdx-js/react':
+        specifier: ^3.1.1
+        version: 3.1.1(@types/react@18.3.12)(react@18.3.1)
       chroma-js:
         specifier: ^2.4.2
         version: 2.6.0
@@ -549,9 +552,6 @@ importers:
       '@mdx-js/loader':
         specifier: ^3.1.1
         version: 3.1.1(webpack@5.102.1)
-      '@mdx-js/react':
-        specifier: ^3.1.1
-        version: 3.1.1(@types/react@18.3.12)(react@18.3.1)
       '@types/chroma-js':
         specifier: ~2.4.3
         version: 2.4.5

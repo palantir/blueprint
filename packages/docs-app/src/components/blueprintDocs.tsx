@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type HeadingNode, isPageNode, type NpmPackageInfo, type PageRegistryEntry } from "@blueprintjs/docs-data";
+import { type HeadingNode, type NpmPackageInfo, type PageNode, type PageRegistryEntry } from "@blueprintjs/docs-data";
 import {
     Banner,
     type DocsData,
@@ -33,6 +33,10 @@ import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
+
+function isPageNode(node: HeadingNode | PageNode): node is PageNode {
+    return "children" in node && "reference" in node;
+}
 
 const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";

@@ -1,0 +1,44 @@
+{
+  "@blueprintjs/core": {
+    "name": "@blueprintjs/core",
+    "version": "6.8.0",
+    "versions": [
+      "6.8.0"
+    ]
+  },
+  "@blueprintjs/datetime": {
+    "name": "@blueprintjs/datetime",
+    "version": "6.0.15",
+    "versions": [
+      "6.0.15"
+    ]
+  },
+  "@blueprintjs/icons": {
+    "name": "@blueprintjs/icons",
+    "version": "6.5.2",
+    "versions": [
+      "6.5.2"
+    ]
+  },
+  "@blueprintjs/select": {
+    "name": "@blueprintjs/select",
+    "version": "6.1.0",
+    "versions": [
+      "6.1.0"
+    ]
+  },
+  "@blueprintjs/table": {
+    "name": "@blueprintjs/table",
+    "version": "6.0.15",
+    "versions": [
+      "6.0.15"
+    ]
+  },
+  "@blueprintjs/labs": {
+    "name": "@blueprintjs/labs",
+    "version": "6.1.8",
+    "versions": [
+      "6.1.8"
+    ]
+  }
+}
