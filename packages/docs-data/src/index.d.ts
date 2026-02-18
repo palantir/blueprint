@@ -32,4 +32,4 @@ export interface PageNode extends HeadingNode {
     reference: string;
 }
 
-export function isPageNode(node: HeadingNode | PageNode): node is PageNode;
+

@@ -37,13 +37,13 @@ try {
         mkdirSync(generatedSrcDir);
     }
     await generateDocumentalistData();
+    generateNpmVersions();
 } catch (err) {
-    // console.error messages get swallowed by lerna but console.log is emitted to terminal.
-    console.error(`[docs-data] ERROR when generating JSON docs data:`);
-    throw new Error(err);
+    console.error("[docs-data] ERROR:", err);
+    process.exit(1);
 }
 
-console.info(`[docs-data] successfully generated docs.json`);
+console.info(`[docs-data] successfully generated docs.json and npmVersions.ts`);
 
 /**
  * Run documentalist to generate docs data from source code.
@@ -339,4 +339,28 @@ function extractHeadingChildren(page, pageNavLevel) {
     }
 
     return result;
+}
+
+// ---------------------------------------------------------------------------
+// NPM version data generation
+// ---------------------------------------------------------------------------
+
+function generateNpmVersions() {
+    /** @type {Record<string, { name: string; version: string; versions: string[] }>} */
+    const result = {};
+
+    for (const pkg of LIBRARY_PACKAGES) {
+        const pkgJsonPath = resolve(monorepoRootDir, "packages", pkg, "package.json");
+        if (!existsSync(pkgJsonPath)) continue;
+
+        const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
+        result[pkgJson.name] = {
+            name: pkgJson.name,
+            version: pkgJson.version,
+            versions: [pkgJson.version],
+        };
+    }
+
+    writeFileSync(join(generatedSrcDir, "npm-data.json"), JSON.stringify(result, null, 2) + "\n");
+    console.info("[docs-data] generated npm-data.json");
 }

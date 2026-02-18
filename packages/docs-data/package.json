@@ -6,27 +6,19 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs && node ./compile-npm-data.mjs"
+        "compile": "node ./compile-docs-data.mjs"
     },
     "nx": {
         "targets": {
             "compile": {
                 "inputs": [
                     "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
+                    "{workspaceRoot}/packages/*/package.json",
                     "{projectRoot}/*.mjs",
                     "{projectRoot}/nav.json"
                 ],
                 "outputs": [
                     "{projectRoot}/src/generated"
-                ]
-            },
-            "compile:npm": {
-                "inputs": [
-                    "{workspaceRoot}/packages/*/package.json",
-                    "{projectRoot}/compile-npm-data.mjs"
-                ],
-                "outputs": [
-                    "{projectRoot}/src/generated/npm-data.json"
                 ]
             }
         }
