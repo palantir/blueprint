@@ -31,5 +31,3 @@ export interface PageNode extends HeadingNode {
     children: Array<PageNode | HeadingNode>;
     reference: string;
 }
-
-
