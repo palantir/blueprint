@@ -6,7 +6,7 @@
 
 // @ts-check
 
-import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin } from "@documentalist/compiler";
+import { Documentalist, KssPlugin, MarkdownPlugin, TypescriptPlugin } from "@documentalist/compiler";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
@@ -37,13 +37,13 @@ try {
         mkdirSync(generatedSrcDir);
     }
     await generateDocumentalistData();
-    generateNpmVersions();
+    await generateNpmVersions();
 } catch (err) {
     console.error("[docs-data] ERROR:", err);
     process.exit(1);
 }
 
-console.info(`[docs-data] successfully generated docs.json and npmVersions.ts`);
+console.info(`[docs-data] successfully generated docs.json and npm-data.json`);
 
 /**
  * Run documentalist to generate docs data from source code.
@@ -75,14 +75,12 @@ async function generateDocumentalistData() {
                 verbose: true,
             }),
         )
-        .use(".scss", new KssPlugin())
-        .use("package.json", new NpmPlugin());
+        .use(".scss", new KssPlugin());
 
     const docs = await documentalist.documentGlobs(
         `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
-        `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
     // Post-process: replace documentalist's nav with one built from nav.json
@@ -99,19 +97,6 @@ async function generateDocumentalistData() {
  * @returns {any}
  */
 function transformDocumentalistData(key, value) {
-    if (key === "versions" && Array.isArray(value)) {
-        // one major version per release
-        const majors = new Map();
-        for (const version of value) {
-            const major = semver.major(version);
-            if (!majors.has(major) || semver.gt(version, majors.get(major))) {
-                majors.set(major, version);
-            }
-        }
-        // reverse the list so highest version is first (easier indexing)
-        return Array.from(majors.values()).reverse();
-    }
-
     if (typeof value === "string") {
         return interpolateClassNamespace(value);
     }
@@ -330,7 +315,7 @@ function extractHeadingChildren(page, pageNavLevel) {
 // NPM version data generation
 // ---------------------------------------------------------------------------
 
-function generateNpmVersions() {
+async function generateNpmVersions() {
     /** @type {Record<string, { name: string; version: string; versions: string[] }>} */
     const result = {};
 
@@ -339,10 +324,35 @@ function generateNpmVersions() {
         if (!existsSync(pkgJsonPath)) continue;
 
         const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
-        result[pkgJson.name] = {
-            name: pkgJson.name,
+        const packageName = pkgJson.name;
+
+        let versions = [pkgJson.version];
+        try {
+            const response = await fetch(`https://registry.npmjs.org/${packageName}`);
+            if (response.ok) {
+                const data = await response.json();
+                const allVersions = Object.keys(data.versions);
+                // keep one (latest) version per major, sorted descending
+                const majors = new Map();
+                for (const v of allVersions) {
+                    const maj = semver.major(v);
+                    if (maj === 0) continue;
+                    if (!majors.has(maj) || semver.gt(v, majors.get(maj))) {
+                        majors.set(maj, v);
+                    }
+                }
+                versions = Array.from(majors.values()).sort((a, b) => semver.rcompare(a, b));
+            } else {
+                console.warn(`[docs-data] npm registry returned ${response.status} for ${packageName}, using local version`);
+            }
+        } catch (e) {
+            console.warn(`[docs-data] failed to fetch npm versions for ${packageName}, using local version:`, e.message);
+        }
+
+        result[packageName] = {
+            name: packageName,
             version: pkgJson.version,
-            versions: [pkgJson.version],
+            versions,
         };
     }
 
