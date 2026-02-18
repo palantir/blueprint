@@ -24,7 +24,8 @@
         }
     },
     "dependencies": {
-        "react": "^18.3.1"
+        "react": "^18.3.1",
+        "semver": "^7.7.3"
     },
     "repository": {
         "type": "git",

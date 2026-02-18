@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 /**
- * @license Copyright 2025 Palantir Technologies, Inc. All rights reserved.
- * @fileoverview Generates the page registry and npm version data for packages/docs-app.
- *
- * This script reads nav.json and the MDX files on disk to generate:
- *   - src/generated/pageRegistry.ts  (lazy-loaded MDX component map)
- *   - src/generated/npmVersions.ts   (package version metadata)
+ * @license Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * @fileoverview Generates data for packages/docs-app
  */
 
 // @ts-check
@@ -14,10 +10,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, join, relative, resolve } from "node:path";
 import { cwd } from "node:process";
 import { globSync } from "node:fs";
-
-// ---------------------------------------------------------------------------
-// Config
-// ---------------------------------------------------------------------------
+import semver from "semver";
 
 /** Library packages whose MDX docs are included in the docs site */
 const LIBRARY_PACKAGES = ["core", "datetime", "icons", "select", "table", "labs"];
@@ -28,10 +21,6 @@ const ALL_DOC_PACKAGES = [...LIBRARY_PACKAGES, "docs-app"];
 const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const navConfigPath = new URL("./nav.json", import.meta.url);
-
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
 
 try {
     if (!existsSync(generatedSrcDir)) {
@@ -51,10 +40,6 @@ try {
     console.error("[docs-data] ERROR:", err);
     process.exit(1);
 }
-
-// ---------------------------------------------------------------------------
-// MDX file discovery
-// ---------------------------------------------------------------------------
 
 /**
  * Discover all .mdx files across doc packages and build a map of filename stem -> file path.
@@ -313,7 +298,7 @@ function generatePageRegistry(mdxFileMap, routeMap, allRefs) {
 // NPM version data generation
 // ---------------------------------------------------------------------------
 
-function generateNpmVersions() {
+async function generateNpmVersions() {
     /** @type {Record<string, { name: string; version: string; versions: string[] }>} */
     const result = {};
 
@@ -322,10 +307,37 @@ function generateNpmVersions() {
         if (!existsSync(pkgJsonPath)) continue;
 
         const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
-        result[pkgJson.name] = {
-            name: pkgJson.name,
+        const packageName = pkgJson.name;
+
+        let versions = [pkgJson.version];
+        try {
+            const response = await fetch(`https://registry.npmjs.org/${packageName}`);
+            if (response.ok) {
+                const data = await response.json();
+                const allVersions = Object.keys(data.versions);
+                // keep one (latest) version per major, sorted descending
+                const majors = new Map();
+                for (const v of allVersions) {
+                    const maj = semver.major(v);
+                    if (maj === 0) continue;
+                    if (!majors.has(maj) || semver.gt(v, majors.get(maj))) {
+                        majors.set(maj, v);
+                    }
+                }
+                versions = Array.from(majors.values()).sort((a, b) => semver.rcompare(a, b));
+            } else {
+                console.warn(
+                    `[docs-data] npm registry returned ${response.status} for ${packageName}, using local version`,
+                );
+            }
+        } catch (error) {
+            console.warn(`[docs-data] failed to fetch npm versions for ${packageName}, using local version:`, error);
+        }
+
+        result[packageName] = {
+            name: packageName,
             version: pkgJson.version,
-            versions: [pkgJson.version],
+            versions,
         };
     }
 
