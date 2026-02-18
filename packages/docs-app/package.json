@@ -40,6 +40,7 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-transition-group": "^4.4.5",
+        "@mdx-js/react": "^3.1.1",
         "tslib": "catalog:"
     },
     "devDependencies": {
@@ -47,7 +48,6 @@
         "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
         "@mdx-js/loader": "^3.1.1",
-        "@mdx-js/react": "^3.1.1",
         "@types/chroma-js": "~2.4.3",
         "@types/downloadjs": "~1.4.6",
         "@types/lodash": "~4.14.202",
