@@ -65,8 +65,6 @@ export function setTheme(themeName: string) {
 export interface BlueprintDocsProps {
     docs: DocsData;
     defaultPageId: DocumentationProps["defaultPageId"];
-    /** Whether to use `next` versions for packages (as opposed to `latest`). */
-    useNextVersion: boolean;
     /** npm version metadata for all packages. */
     npmPackages: Record<string, NpmPackageInfo>;
 }
@@ -95,7 +93,6 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
             <NavHeader
                 onToggleDark={this.handleToggleDark}
                 useDarkTheme={this.state.themeName === DARK_THEME}
-                useNextVersion={this.props.useNextVersion}
                 packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />
         );
@@ -201,10 +198,9 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         if (pkg == null) {
             return null;
         }
-        const version = this.props.useNextVersion && pkg.nextVersion ? pkg.nextVersion : pkg.version;
         return (
             <a className={Classes.TEXT_MUTED} href={`https://www.npmjs.com/package/${pkg.name}`} target="_blank">
-                <small>{version}</small>
+                <small>{pkg.version}</small>
             </a>
         );
     }
