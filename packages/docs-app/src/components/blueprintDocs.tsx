@@ -68,7 +68,6 @@ export function setTheme(themeName: string) {
 export interface BlueprintDocsProps {
     docs: DocsCompleteData;
     defaultPageId: DocumentationProps["defaultPageId"];
-    tagRenderers: DocumentationProps["tagRenderers"];
 }
 
 export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
