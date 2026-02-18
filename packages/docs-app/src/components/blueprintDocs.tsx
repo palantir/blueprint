@@ -18,8 +18,7 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import type { DocsCompleteData } from "@blueprintjs/docs-data";
-import { npmData } from "@blueprintjs/docs-data";
+import { type DocsCompleteData, npmData } from "@blueprintjs/docs-data";
 import {
     Banner,
     Documentation,
