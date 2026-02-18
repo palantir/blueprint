@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type DocsCompleteData, npmData } from "@blueprintjs/docs-data";
+import { type DocsCompleteData, type HeadingNode, isPageNode, npmData } from "@blueprintjs/docs-data";
 import {
     Banner,
     Documentation,
@@ -33,22 +33,6 @@ import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
-
-// Minimal types replacing "@documentalist/client"
-interface HeadingNode {
-    route: string;
-    level: number;
-    title: string;
-}
-
-interface PageNode extends HeadingNode {
-    children: Array<PageNode | HeadingNode>;
-    reference: string;
-}
-
-function isPageNode(node: HeadingNode | PageNode): node is PageNode {
-    return "children" in node && node.children != null;
-}
 
 const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
