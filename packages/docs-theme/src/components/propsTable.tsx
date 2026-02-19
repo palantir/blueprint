@@ -22,6 +22,7 @@ import type { PropInfo } from "@blueprintjs/docs-data/src/types";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { PropsDataContext } from "../common/propsDataContext";
+
 import { ModifierTable } from "./modifierTable";
 import { DeprecatedTag } from "./typescript/deprecatedTag";
 

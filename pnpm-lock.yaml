@@ -618,9 +618,6 @@ importers:
       '@blueprintjs/select':
         specifier: workspace:^
         version: link:../select
-      '@documentalist/client':
-        specifier: ^5.0.0
-        version: 5.0.0
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -1762,10 +1759,6 @@ packages:
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
     engines: {node: '>=10.0.0'}
-
-  '@documentalist/client@5.0.0':
-    resolution: {integrity: sha512-I4yh9qcP4jO2LeBU9y9K+ms0uhDHzmIEnhUpcPnjXKAoK2O4wrOKRM6JhzDEZ1WL5X2eW6h/zX5q+/PqIimfFw==}
-    engines: {node: '>=18'}
 
   '@dual-bundle/import-meta-resolve@4.2.1':
     resolution: {integrity: sha512-id+7YRUgoUX6CgV0DtuhirQWodeeA7Lf4i2x71JS/vtA5pRb/hIGWlw+G6MeXvsM+MXrz0VAydTGElX1rAfgPg==}
@@ -10287,8 +10280,6 @@ snapshots:
       postcss-selector-parser: 7.1.0
 
   '@discoveryjs/json-ext@0.5.7': {}
-
-  '@documentalist/client@5.0.0': {}
 
   '@dual-bundle/import-meta-resolve@4.2.1': {}
 
