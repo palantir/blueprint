@@ -6,7 +6,8 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs"
+        "compile": "node ./compile-docs-data.mjs",
+        "compile:props": "node ./compile-props-data.mjs"
     },
     "nx": {
         "targets": {
@@ -37,5 +38,9 @@
         "directory": "packages/docs-data"
     },
     "author": "Palantir Technologies",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "glob": "^10.5.0",
+        "react-docgen-typescript": "^2.4.0"
+    }
 }
