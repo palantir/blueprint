@@ -2,6 +2,7 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
+// TODO(#7444): delete assert and Enzyme imports once isomorphic tests are fully migrated to vitest/react-dom
 import { strictEqual } from "assert";
 import Enzyme from "enzyme";
 import { type ComponentClass, createElement, type FC, type ReactNode } from "react";
