@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type OptionProps } from "../../common";
 
@@ -26,9 +26,10 @@ describe("<HtmlSelect>", () => {
     const emptyHandler = () => true;
 
     it("renders options strings", () => {
-        const options = mount(<HTMLSelect onChange={emptyHandler} options={["a", "b"]} />).find("option");
-        assert.equal(options.at(0).text(), "a");
-        assert.equal(options.at(1).text(), "b");
+        render(<HTMLSelect onChange={emptyHandler} options={["a", "b"]} />);
+        const options = screen.getAllByRole("option");
+        expect(options[0]).toHaveTextContent("a");
+        expect(options[1]).toHaveTextContent("b");
     });
 
     it("renders options props", () => {
@@ -38,10 +39,11 @@ describe("<HtmlSelect>", () => {
             { disabled: true, value: "c" },
             { label: "Dog", value: "d" },
         ];
-        const options = mount(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />).find("option");
-        assert.equal(options.at(0).text(), "a", "value");
-        assert.isTrue(options.at(1).hasClass("foo"), "className");
-        assert.isTrue(options.at(2).prop("disabled"), "disabled");
-        assert.equal(options.at(3).text(), "Dog", "label");
+        render(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />);
+        const options = screen.getAllByRole("option");
+        expect(options[0]).toHaveTextContent("a");
+        expect(options[1]).toHaveClass("foo");
+        expect(options[2]).toBeDisabled();
+        expect(options[3]).toHaveTextContent("Dog");
     });
 });
