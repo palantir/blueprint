@@ -14,41 +14,46 @@
  * limitations under the License.
  */
 
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { H6 } from "../html/html";
 
 import { Menu } from "./menu";
 import { MenuDivider } from "./menuDivider";
 import { MenuItem } from "./menuItem";
 
 describe("<MenuDivider>", () => {
-    it("React renders MenuDivider", () => {
-        const divider = shallow(<MenuDivider />);
-        assert.isTrue(divider.hasClass(Classes.MENU_DIVIDER));
-        assert.isFalse(divider.hasClass(Classes.MENU_HEADER));
-        assert.isFalse(divider.find(H6).exists());
+    it("renders MenuDivider", () => {
+        render(<MenuDivider />);
+
+        const divider = screen.getByRole("separator");
+        expect(divider).toHaveClass(Classes.MENU_DIVIDER);
+        expect(divider).not.toHaveClass(Classes.MENU_HEADER);
     });
 
-    it("React renders MenuDivider with title", () => {
-        const divider = shallow(<MenuDivider title="Subject" />);
-        assert.isFalse(divider.hasClass(Classes.MENU_DIVIDER));
-        assert.isTrue(divider.hasClass(Classes.MENU_HEADER));
-        assert.isTrue(divider.find(H6).exists());
+    it("renders MenuDivider with title", () => {
+        render(<MenuDivider title="Subject" />);
+
+        const divider = screen.getByRole("separator");
+        expect(divider).not.toHaveClass(Classes.MENU_DIVIDER);
+        expect(divider).toHaveClass(Classes.MENU_HEADER);
+
+        const title = screen.getByText("Subject");
+        expect(title.tagName.toLowerCase()).toBe("h6");
     });
 });
 
 describe("<Menu>", () => {
-    it("React renders Menu with children", () => {
-        const menu = shallow(
+    it("renders Menu with children", () => {
+        render(
             <Menu>
                 <MenuItem icon="graph" text="Graph" />
             </Menu>,
         );
-        assert.isTrue(menu.hasClass(Classes.MENU));
-        assert.lengthOf(menu.find(MenuItem), 1);
+
+        expect(screen.getByRole("menu")).toHaveClass(Classes.MENU);
+        expect(screen.getByRole("menuitem", { name: "Graph" })).toBeInTheDocument();
     });
 });
