@@ -2,11 +2,7 @@
 
 Blueprint design tokens generated with [Style Dictionary](https://styledictionary.com/).
 
-## Output
-
-The tokens are compiled to `dist/_tokens.scss`, a SCSS partial that gets inlined into `blueprint.css` during compilation.
-
-## Usage
+## Configuration
 
 Tokens are available as CSS custom properties on `:root`:
 
