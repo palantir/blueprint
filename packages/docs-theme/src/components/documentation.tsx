@@ -22,7 +22,7 @@ import { type HeadingNode, isPageNode, type PageNode, type PageRegistryEntry } f
 import { Search } from "@blueprintjs/icons";
 
 import { type DocsData, DocumentationContext, type DocumentationContextApi } from "../common/context";
-import { eachLayoutNode } from "../common/documentalistUtils";
+import { eachLayoutNode } from "../common/documentationUtils";
 
 import { MdxPage } from "./mdxPage";
 import { NavButton } from "./navButton";

@@ -19,7 +19,7 @@ export { Classes };
 
 export * from "./constants";
 export * from "./context";
-export * from "./documentalistUtils";
+export * from "./documentationUtils";
 export * from "./eventHandlerUtils";
 export * from "./propsDataContext";
 export * from "./stringUtils";

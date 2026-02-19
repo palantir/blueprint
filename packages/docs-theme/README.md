@@ -4,9 +4,7 @@
 
 Blueprint is a React UI toolkit for the web.
 
-This package provides a React-based documentation theme for
-[Documentalist](https://github.com/palantir/documentalist/), a tool for generating documentation
-data from markdown files and documented source code.
+This package provides a React-based documentation theme for documentation data from markdown files and documented source code.
 
 ## Installation
 
