@@ -21,5 +21,6 @@ export * from "./constants";
 export * from "./context";
 export * from "./documentalistUtils";
 export * from "./eventHandlerUtils";
+export * from "./propsDataContext";
 export * from "./stringUtils";
 export * from "./themeContext";

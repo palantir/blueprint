@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,8 @@
  * limitations under the License.
  */
 
-export * from "./components/banner";
-export * from "./components/documentation";
-export * from "./components/example";
-export * from "./components/codeExample";
-export * from "./components/mdxPage";
-export * from "./components/navMenuItem";
-export * from "./components/navButton";
-export * from "./components/propsTable";
-export * from "./common";
-export * from "./tags";
+import { createContext } from "react";
+
+import type { PropsRegistry } from "@blueprintjs/docs-data/src/types";
+
+export const PropsDataContext = createContext<PropsRegistry>({});

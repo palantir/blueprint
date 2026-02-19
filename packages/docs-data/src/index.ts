@@ -15,8 +15,10 @@
 
 // Types (safe to import from any package — no .mdx or JSON dependencies)
 export { isPageNode, type HeadingNode, type NpmPackageInfo, type PageNode, type PageRegistryEntry } from "./types";
+export type { PropInfo, PropsInfo, PropsRegistry } from "./types";
 
 // Runtime exports (only import these from docs-app)
 export { pageRegistry } from "./generated/pageRegistry";
+export { propsRegistry } from "./generated/propsRegistry";
 export { buildNavigation } from "./navTree";
 export { npmVersions } from "./generated/npmVersions";

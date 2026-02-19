@@ -17,8 +17,9 @@ import { MDXProvider } from "@mdx-js/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { buildNavigation, npmVersions, pageRegistry } from "@blueprintjs/docs-data";
+import { buildNavigation, npmVersions, pageRegistry, propsRegistry } from "@blueprintjs/docs-data";
 import type { DocsData } from "@blueprintjs/docs-theme";
+import { PropsDataContext } from "@blueprintjs/docs-theme";
 import { Icons } from "@blueprintjs/icons";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
@@ -38,8 +39,10 @@ const container = document.getElementById("blueprint-documentation");
 const root = createRoot(container);
 root.render(
     <StrictMode>
-        <MDXProvider components={mdxComponents as any}>
-            <BlueprintDocs defaultPageId="blueprint" docs={docsData} npmPackages={npmVersions} />
-        </MDXProvider>
+        <PropsDataContext.Provider value={propsRegistry}>
+            <MDXProvider components={mdxComponents as any}>
+                <BlueprintDocs defaultPageId="blueprint" docs={docsData} npmPackages={npmVersions} />
+            </MDXProvider>
+        </PropsDataContext.Provider>
     </StrictMode>,
 );

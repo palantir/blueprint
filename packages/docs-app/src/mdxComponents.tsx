@@ -17,6 +17,8 @@
 /** Component map accepted by MDXProvider. Non-component values are ignored at runtime. */
 type MDXComponents = Record<string, unknown>;
 
+import { PropsTable } from "@blueprintjs/docs-theme";
+
 import {
     BlackWhitePalette,
     CoreColorsPalette,
@@ -31,12 +33,6 @@ import * as datetimeExamples from "./examples/datetime-examples";
 import * as labsExamples from "./examples/labs-examples";
 import * as selectExamples from "./examples/select-examples";
 import * as tableExamples from "./examples/table-examples";
-
-/**
- * Placeholder for InterfaceTable — API docs have been removed for now.
- * These will render nothing until a replacement TypeScript API renderer is built.
- */
-const InterfaceTable: React.FC<{ name: string }> = () => null;
 
 /** Placeholder for MethodTable. */
 const MethodTable: React.FC<{ name: string }> = () => null;
@@ -65,10 +61,12 @@ export const mdxComponents: MDXComponents = {
     QualitativeSchemePalette,
     SequentialSchemePalette,
 
-    // Placeholder no-ops (API docs removed)
+    // API docs
+    InterfaceTable: PropsTable,
+
+    // Placeholder no-ops
     CssExample,
     Icons,
-    InterfaceTable,
     MethodTable,
     Welcome,
 };
