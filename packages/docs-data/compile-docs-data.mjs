@@ -242,7 +242,7 @@ function buildPageNode(ref, level, navConfig, pages, routeMap) {
     const navChildren = navConfig[ref] || [];
     const hasHeadingMarkers = navChildren.some(c => typeof c === "object");
 
-    // Extract heading children from page contents (level >= 2, i.e. not the @# title)
+    // Extract heading children from page contents (level >= 2, i.e. not the # title)
     const headingChildren = extractHeadingChildren(page, level);
 
     /** @type {any[]} */
@@ -343,10 +343,15 @@ async function generateNpmVersions() {
                 }
                 versions = Array.from(majors.values()).sort((a, b) => semver.rcompare(a, b));
             } else {
-                console.warn(`[docs-data] npm registry returned ${response.status} for ${packageName}, using local version`);
+                console.warn(
+                    `[docs-data] npm registry returned ${response.status} for ${packageName}, using local version`,
+                );
             }
         } catch (e) {
-            console.warn(`[docs-data] failed to fetch npm versions for ${packageName}, using local version:`, e.message);
+            console.warn(
+                `[docs-data] failed to fetch npm versions for ${packageName}, using local version:`,
+                e.message,
+            );
         }
 
         result[packageName] = {
