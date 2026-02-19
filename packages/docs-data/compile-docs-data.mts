@@ -64,14 +64,13 @@ async function generateDocumentalistData(): Promise<void> {
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
         sourceBaseDir: monorepoRootDir,
     })
-        .use(".md", {
+        .use(".mdx", {
             compile: files =>
                 // HACKHACK: special case for Windows environment
                 // see https://github.com/palantir/documentalist/issues/98
                 process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
         })
-        // TODO: once documentalist is fully removed, stop generating nav via documentalist
-        .use(".md", new MarkdownPlugin({ navPage: "_nav" }))
+        .use(".mdx", new MarkdownPlugin({ navPage: "_nav" }))
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
@@ -83,7 +82,7 @@ async function generateDocumentalistData(): Promise<void> {
         .use(".scss", new KssPlugin());
 
     const docs = await documentalist.documentGlobs(
-        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
+        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.mdx`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
     );
