@@ -109,7 +109,7 @@ Surface tokens control the button's dimensions and structural properties:
 
 ```scss
 // Layout — spacing token used as a multiplier base
-@include pt-button-height(calc(var(--bp-surface-spacing) * 7.5)); // 30px default height
+height: calc(var(--bp-surface-spacing) * 7.5); // 30px default height
 padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2); // 4px 8px
 border-radius: var(--bp-surface-border-radius); // 4px
 
