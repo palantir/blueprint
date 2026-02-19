@@ -29,6 +29,28 @@ root.render(
 );
 ```
 
+## Usage with other providers
+
+If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest
+**BlueprintProvider** underneath them:
+
+```tsx
+import { BlueprintProvider } from "@blueprintjs/core";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([...]);
+
+function App() {
+    return (
+        <RouterProvider router={router}>
+            <BlueprintProvider>
+                <div>My app has overlays, hotkeys, and portal customization 😎</div>
+            </BlueprintProvider>
+        </RouterProvider>
+    );
+}
+```
+
 ## Props interface
 
 @interface BlueprintProviderProps
