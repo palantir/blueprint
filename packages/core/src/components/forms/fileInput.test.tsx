@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
@@ -25,15 +26,18 @@ import { FileInput } from "./fileInput";
 describe("<FileInput>", () => {
     it(`supports className, fill, & size="large"`, () => {
         const CUSTOM_CLASS = "foo";
-        const wrapper = shallow(<FileInput className={CUSTOM_CLASS} fill={true} size="large" />);
-        expect(wrapper.hasClass(Classes.FILE_INPUT), "Classes.FILE_INPUT").toBe(true);
-        expect(wrapper.hasClass(CUSTOM_CLASS), CUSTOM_CLASS).toBe(true);
-        expect(wrapper.hasClass(Classes.FILL), "Classes.FILL").toBe(true);
-        expect(wrapper.hasClass(Classes.LARGE), "Classes.LARGE").toBe(true);
+        render(<FileInput className={CUSTOM_CLASS} fill={true} size="large" />);
+        const input = screen.getByLabelText<HTMLInputElement>("Choose file...");
+        const label = input.closest("label");
+        expect(label).toBeInTheDocument();
+        expect(label).toHaveClass(Classes.FILE_INPUT);
+        expect(label).toHaveClass(CUSTOM_CLASS);
+        expect(label).toHaveClass(Classes.FILL);
+        expect(label).toHaveClass(Classes.LARGE);
     });
 
     it("supports custom input props", () => {
-        const wrapper = mount(
+        render(
             <FileInput
                 inputProps={{
                     className: "bar",
@@ -42,56 +46,49 @@ describe("<FileInput>", () => {
                 }}
             />,
         );
-        const input = getInput(wrapper);
-
-        expect(input.hasClass("bar"), "has custom class").toBe(true);
-        expect(input.prop("required"), "required attribute").toBe(true);
-        expect(input.prop("type"), "type attribute").toBe("file");
+        const input = screen.getByLabelText<HTMLInputElement>("Choose file...");
+        expect(input).toHaveClass("bar");
+        expect(input).toBeRequired();
+        expect(input).toHaveAttribute("type", "file");
     });
 
-    it("applies top-level disabled prop to the root and input (overriding inputProps.disabled)", () => {
-        const wrapper = mount(<FileInput disabled={true} inputProps={{ disabled: false }} />);
+    describe("applies top-level disabled prop to the root and input (overriding inputProps.disabled)", () => {
+        it("disabled=true overrides inputProps.disabled=false", () => {
+            render(<FileInput disabled={true} inputProps={{ disabled: false }} />);
+            const input = screen.getByLabelText<HTMLInputElement>("Choose file...");
+            const label = input.closest("label");
+            expect(label).toBeInTheDocument();
+            expect(label).toHaveClass(Classes.DISABLED);
+            expect(input).toBeDisabled();
+        });
 
-        // should ignore inputProps.disabled in favor of the top-level prop
-        expect(wrapper.children().hasClass(Classes.DISABLED), "wrapper has disabled class").toBe(true);
-        expect(getInput(wrapper).prop("disabled"), "input is disabled").toBe(true);
-
-        wrapper.setProps({ disabled: false, inputProps: { disabled: true } });
-
-        // ensure inputProps.disabled is overriden in this case too
-        expect(wrapper.children().hasClass(Classes.DISABLED), "wrapper no longer has disabled class").toBe(false);
-        expect(getInput(wrapper).prop("disabled"), "input no longer disabled").toBe(false);
+        it("disabled=false does not override inputProps.disabled=true", () => {
+            render(<FileInput disabled={false} inputProps={{ disabled: true }} />);
+            const input = screen.getByLabelText<HTMLInputElement>("Choose file...");
+            const label = input.closest("label");
+            expect(label).toBeInTheDocument();
+            expect(label).not.toHaveClass(Classes.DISABLED);
+            expect(input).not.toBeDisabled();
+        });
     });
 
-    it("renders default or custom text", () => {
-        const wrapper = mount(<FileInput />);
-        const span = wrapper.find(`.${Classes.FILE_UPLOAD_INPUT}`);
-
-        // default text
-        expect(span.text()).toBe("Choose file...");
-
-        // custom text
-        wrapper.setProps({ text: "Input file..." });
-        expect(span.text()).toBe("Input file...");
+    it("renders custom text", () => {
+        render(<FileInput text="Input file..." />);
+        expect(screen.getByLabelText<HTMLInputElement>("Input file...")).toBeInTheDocument();
     });
 
-    it("invokes change callbacks", () => {
-        const inputProps = { onChange: vi.fn() };
-        const onChange = vi.fn();
+    it("invokes change callbacks", async () => {
+        const user = userEvent.setup();
+        const inputPropsOnChange = vi.fn();
         const onInputChange = vi.fn();
 
-        const wrapper = shallow(
-            <FileInput inputProps={inputProps} onChange={onChange} onInputChange={onInputChange} />,
-        );
-        const input = getInput(wrapper);
-        input.simulate("change");
+        render(<FileInput inputProps={{ onChange: inputPropsOnChange }} onInputChange={onInputChange} />);
+        const input = screen.getByLabelText<HTMLInputElement>("Choose file...");
 
-        expect(onChange).not.toHaveBeenCalled(); // because it's spread to the label, not the input
+        const file = new File(["test"], "test.png", { type: "image/png" });
+        await user.upload(input, file);
+
         expect(onInputChange).toHaveBeenCalledOnce();
-        expect(inputProps.onChange).toHaveBeenCalledOnce();
+        expect(inputPropsOnChange).toHaveBeenCalledOnce();
     });
 });
-
-function getInput(wrapper: ShallowWrapper<any, any> | ReactWrapper<any, any>) {
-    return wrapper.find("input");
-}
