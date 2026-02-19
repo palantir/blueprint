@@ -34,15 +34,55 @@ pnpm run build:tokens  # Generate tokens
 
 ## Additional Notes
 
-### Distribution
+### Token Structure
 
-The output is named with an underscore prefix (`_tokens.scss`) to follow the SCSS partial convention. This ensures the token definitions are **inlined** during SCSS compilation rather than left as a CSS `@import` statement (which would cause path resolution issues in the compiled output).
+Tokens follow the [DTCG](https://tr.designtokens.org/format/) specification. Source files live in `tokens/base/` (5 files: palette, intent, surface, typography, emphasis) with theme overrides in `tokens/themes/` (which currently includes only dark tokens).
 
-**Source:** `src/design-tokens/tokens/*.json`
+Each token uses these standard DTCG properties:
+
+| Property       | Purpose                                                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------------------------- |
+| `$type`        | Data type: `color`, `dimension`, `shadow`, `fontFamily`, `fontWeight`, `number`, `duration`, `cubicBezier` |
+| `$value`       | The token value — a literal, a reference like `"{palette.blue.3}"`, or a complex object                    |
+| `$description` | Human-readable explanation                                                                                 |
+| `$extensions`  | Custom Blueprint metadata                                                                                  |
+
+#### Custom extensions
+
+**`com.blueprint.derive`** — derives a new color from the referenced `$value` using OKLCH color space transforms:
+
+```json
+{
+    "$value": "{intent.default.rest}",
+    "$extensions": {
+        "com.blueprint.derive": {
+            "alpha": 0.25
+        }
+    }
+}
+```
+
+Available derivation properties: `alpha`, `lightnessScale`, `chromaScale`, `lightnessOffset`, `chromaOffset`, `hueOffset`. These are applied during build to produce both a static hex fallback and a relative color syntax expression (`oklch(from ...)`).
+
+**`com.blueprint.role`** — assigns special build handling to a token. Currently one role exists:
+
+- `"stackable-layer"` — wraps the compiled color in `linear-gradient(color 0 0)` so it can be composited as a `background-image` layer.
+
+#### Theme overrides
+
+Dark mode files in `tokens/themes/dark/` override base tokens by redefining `$value` and/or `$extensions`. For example, `surface.border-color.strong` changes from gray-based in light mode to white-based in dark mode:
+
+```json
+// base/surface.tokens.json
+"strong": { "$value": "{intent.default.rest}", "$extensions": { "com.blueprint.derive": { "alpha": 0.25 } } }
+
+// themes/dark/surface.tokens.json
+"strong": { "$value": "{palette.white}", "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } } }
+```
 
 ### Browser Compatibility
 
-Some tokens use the CSS [relative color syntax(https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors) (`oklch(from ...)`) for deriving hover, active, and alpha-modified colors. This requires:
+Some tokens use the CSS [relative color syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors) (`oklch(from ...)`) for deriving hover, active, and alpha-modified colors. This requires:
 
 | Browser | Minimum Version |
 | ------- | --------------- |

@@ -45,12 +45,12 @@ Beyond structural properties, surface tokens provide a three-tier system for bac
 
 These are fully resolved, ready-to-use background colors for each intent and interaction state. For the **default** intent, they are derived from intent colors with lightness/chroma scaling — `default-rest` compiles to white in light mode despite deriving from gray, because the token applies `lightnessScale: 1.909`:
 
-| Token | Light mode | Dark mode |
-| ----- | ---------- | --------- |
-| `--bp-surface-background-color-default-rest` | `#ffffff` | Derived with `lightnessScale: 0.248` |
-| `--bp-surface-background-color-default-hover` | `#f6f7f9` | Darker gray |
-| `--bp-surface-background-color-default-active` | `#edeff2` | Darker gray |
-| `--bp-surface-background-color-default-disabled` | `#ffffff` | Derived with `lightnessScale: 0.319` |
+| Token                                            | Light mode | Dark mode                            |
+| ------------------------------------------------ | ---------- | ------------------------------------ |
+| `--bp-surface-background-color-default-rest`     | `#ffffff`  | Derived with `lightnessScale: 0.248` |
+| `--bp-surface-background-color-default-hover`    | `#f6f7f9`  | Darker gray                          |
+| `--bp-surface-background-color-default-active`   | `#edeff2`  | Darker gray                          |
+| `--bp-surface-background-color-default-disabled` | `#ffffff`  | Derived with `lightnessScale: 0.319` |
 
 For **non-default** intents (primary, success, warning, danger), background colors pass through directly from the intent tokens with no derivation — the same blue works in both themes.
 
@@ -62,14 +62,14 @@ Dark mode overrides in `tokens/themes/dark/surface.tokens.json` only redefine th
 
 These are semi-transparent tints of each intent color, controlled by a shared opacity token:
 
-| Token | Value |
-| ----- | ----- |
-| `--bp-surface-layer-opacity` | `0.05` (5%) |
+| Token                              | Value                             |
+| ---------------------------------- | --------------------------------- |
+| `--bp-surface-layer-opacity`       | `0.05` (5%)                       |
 | `--bp-surface-layer-color-default` | `intent.default.rest` at 5% alpha |
 | `--bp-surface-layer-color-primary` | `intent.primary.rest` at 5% alpha |
 | `--bp-surface-layer-color-success` | `intent.success.rest` at 5% alpha |
 | `--bp-surface-layer-color-warning` | `intent.warning.rest` at 5% alpha |
-| `--bp-surface-layer-color-danger` | `intent.danger.rest` at 5% alpha |
+| `--bp-surface-layer-color-danger`  | `intent.danger.rest` at 5% alpha  |
 
 In browsers supporting relative color syntax, each layer-color reactively references the opacity token:
 
@@ -113,11 +113,17 @@ Surface tokens control the button's dimensions and structural properties:
 padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2); // 4px 8px
 border-radius: var(--bp-surface-border-radius); // 4px
 
-// Box shadow — border-width token for inset border simulation
+// Box shadow — two layers: inset border + depth shadow
 box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) color-mix(in oklch, var(--bp-palette-black) 20%, transparent),
+    inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
     0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
 ```
+
+The button's box-shadow has two layers that use tokens differently:
+
+- **Inset border layer**: Simulates a 1px border using `--bp-surface-border-width`. In light mode, `--bp-surface-border-color-strong` is mixed 90% with `--bp-palette-black` to darken the gray token toward black for sufficient contrast. In dark mode, `--bp-surface-border-color-default` is scaled to 50% with `transparent` to halve the token's built-in 20% alpha down to 10%.
+- **Depth shadow layer**: Uses `--bp-palette-black` at varying opacity (`10%` at rest, `20%` on hover/active) for a consistent drop shadow across themes.
 
 The large button variant simply scales the multiplier: `calc(var(--bp-surface-spacing) * 10)` for height and `calc(var(--bp-surface-spacing) * 4)` for horizontal padding.
 
