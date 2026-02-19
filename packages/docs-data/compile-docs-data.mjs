@@ -6,134 +6,154 @@
 
 // @ts-check
 
-import { Documentalist, KssPlugin, MarkdownPlugin, TypescriptPlugin } from "@documentalist/compiler";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { basename, join, relative, resolve } from "node:path";
 import { cwd } from "node:process";
+import { globSync } from "node:fs";
 import semver from "semver";
 
-import { Classes } from "@blueprintjs/core";
-
-import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-
-/** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
+/** Library packages whose .mdx files are scanned */
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
 
 /** This package is expected to have the markdown "navPage" */
 const DOCS_PACKAGE = "docs-app";
 
-/** Run Documentalist on Markdown files in these packages */
+/** All packages containing .mdx documentation */
 const LIBRARY_AND_DOCS_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
 
 console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
 
-// assume we are running from packages/docs-app
+// assume we are running from packages/docs-data
 const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
-const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
 try {
     if (!existsSync(generatedSrcDir)) {
-        mkdirSync(generatedSrcDir);
+        mkdirSync(generatedSrcDir, { recursive: true });
     }
-    await generateDocumentalistData();
+    generatePageRegistry();
     await generateNpmVersions();
 } catch (err) {
     console.error("[docs-data] ERROR:", err);
     process.exit(1);
 }
 
-console.info(`[docs-data] successfully generated docs.json and npm-data.json`);
+console.info(`[docs-data] successfully generated pageRegistry.ts and npmVersions.ts`);
+
+// ---------------------------------------------------------------------------
+// MDX file discovery
+// ---------------------------------------------------------------------------
 
 /**
- * Run documentalist to generate docs data from source code.
+ * Discover all .mdx files across the documentation packages.
+ * Returns two maps for resolving nav refs to file paths:
+ *   stemMap:  file stem (without .mdx extension) → absolute path
+ *   indexMap: parent directory name → absolute path (for index.mdx files)
  *
- * @returns {Promise<void>}
+ * For files whose stem is prefixed with a package name (e.g. table-api.mdx in the table package),
+ * an additional entry is added with the prefix stripped (e.g. "api" → path).
+ *
+ * @returns {{ stemMap: Map<string, string>, indexMap: Map<string, string> }}
  */
-async function generateDocumentalistData() {
-    const documentalist = new Documentalist({
-        markdown: {
-            hooks,
-            renderer: markedRenderer,
-        },
-        // must mark our @Decorator APIs as reserved so we can use them in code samples
-        reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
-        sourceBaseDir: monorepoRootDir,
-    })
-        .use(/\.mdx?$/, {
-            compile: files =>
-                // HACKHACK: special case for Windows environment
-                // see https://github.com/palantir/documentalist/issues/98
-                process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
-        })
-        .use(/\.mdx?$/, new MarkdownPlugin({ navPage: "_nav" }))
-        .use(
-            /\.tsx?$/,
-            new TypescriptPlugin({
-                excludeNames: [/.+State$/],
-                excludePaths: ["node_modules/", "-app/", "test-commons/", "-build-scripts/", "test/"],
-                verbose: true,
-            }),
-        )
-        .use(".scss", new KssPlugin());
+function discoverMdxFiles() {
+    /** @type {Map<string, string>} */
+    const stemMap = new Map();
+    /** @type {Map<string, string>} */
+    const indexMap = new Map();
 
-    const docs = await documentalist.documentGlobs(
-        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.{md,mdx}`,
-        `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
-        `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
-    );
+    for (const pkg of LIBRARY_AND_DOCS_PACKAGES) {
+        const pkgDir = resolve(monorepoRootDir, "packages", pkg);
+        const pattern = join(pkgDir, "src/**/*.mdx");
+        const files = globSync(pattern);
 
-    // Post-process: replace documentalist's nav with one built from nav.json
-    const navConfig = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
-    applyNavConfig(docs, navConfig);
+        for (const absPath of files) {
+            const stem = basename(absPath, ".mdx");
 
-    const content = JSON.stringify(docs, transformDocumentalistData, 2);
-    return writeFileSync(docsDataFilePath, content);
-}
+            if (stem === "index") {
+                // index.mdx → map parent dir name (or package name for top-level src/index.mdx)
+                const relFromSrc = relative(join(pkgDir, "src"), absPath);
+                const parts = relFromSrc.split("/");
+                if (parts.length === 1) {
+                    // src/index.mdx → use package name
+                    indexMap.set(pkg, absPath);
+                } else {
+                    // src/.../index.mdx → use parent dir name
+                    const dirName = parts[parts.length - 2];
+                    indexMap.set(dirName, absPath);
+                    // Also register under package name if parent dir is "docs"
+                    // (e.g. core/src/docs/index.mdx → "core")
+                    if (dirName === "docs") {
+                        indexMap.set(pkg, absPath);
+                    }
+                }
+            } else {
+                stemMap.set(stem, absPath);
 
-/**
- * @param {string} key
- * @param {any} value
- * @returns {any}
- */
-function transformDocumentalistData(key, value) {
-    if (typeof value === "string") {
-        return interpolateClassNamespace(value);
+                // If stem is prefixed with the package name, also register without prefix
+                // e.g. "table-api" in package "table" → also register "api"
+                if (stem.startsWith(pkg + "-")) {
+                    const stripped = stem.slice(pkg.length + 1);
+                    if (!stemMap.has(stripped)) {
+                        stemMap.set(stripped, absPath);
+                    }
+                }
+            }
+        }
     }
 
-    return value;
+    return { stemMap, indexMap };
 }
 
 /**
- * Replaces `#{$ns}` placeholder in string values  with the actual Blueprint class namespace.
+ * Resolve a nav reference to an absolute .mdx file path.
  *
- * @param {string} value
+ * @param {string} ref
+ * @param {{ stemMap: Map<string, string>, indexMap: Map<string, string> }} mdxFileMap
+ * @returns {string | undefined}
  */
-function interpolateClassNamespace(value) {
-    return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
+function resolveRef(ref, mdxFileMap) {
+    return mdxFileMap.stemMap.get(ref) ?? mdxFileMap.indexMap.get(ref);
 }
 
 // ---------------------------------------------------------------------------
-// Nav post-processing: build nav tree & fix routes from nav.json
+// Collect all page references from nav.json
 // ---------------------------------------------------------------------------
 
 /**
- * Applies the nav config to documentalist output: fixes page routes and
- * replaces the nav tree.
+ * Walk nav.json and collect every page reference (strings only, not heading markers).
  *
- * @param {{ pages: Record<string, any>, nav: any[] }} docs
- * @param {Record<string, any[]>} navConfig
+ * @param {Record<string, any>} navConfig
+ * @returns {string[]}
  */
-function applyNavConfig(docs, navConfig) {
-    // Step 2a: build route map
-    const routeMap = buildRouteMap(navConfig);
+function collectAllRefs(navConfig) {
+    /** @type {Set<string>} */
+    const refs = new Set();
 
-    // Step 2b: fix routes in docs.pages
-    fixPageRoutes(docs.pages, routeMap);
+    /**
+     * @param {string} ref
+     */
+    function walk(ref) {
+        refs.add(ref);
+        const children = navConfig[ref];
+        if (children) {
+            for (const child of children) {
+                if (typeof child === "string") {
+                    walk(child);
+                }
+            }
+        }
+    }
 
-    // Step 2c + 2d: build nav tree and replace docs.nav
-    docs.nav = buildNavTree(navConfig, docs.pages, routeMap);
+    for (const ref of navConfig["_nav"]) {
+        walk(ref);
+    }
+
+    return Array.from(refs);
 }
+
+// ---------------------------------------------------------------------------
+// Route map (reused from previous version)
+// ---------------------------------------------------------------------------
 
 /**
  * Walk nav config to compute the full route for every page reference.
@@ -158,7 +178,6 @@ function buildRouteMap(navConfig) {
                 if (typeof child === "string") {
                     walk(child, route);
                 }
-                // heading markers are skipped — they don't define pages
             }
         }
     }
@@ -170,57 +189,86 @@ function buildRouteMap(navConfig) {
     return routeMap;
 }
 
+// ---------------------------------------------------------------------------
+// Heading extraction from MDX source
+// ---------------------------------------------------------------------------
+
 /**
- * Fix routes in every page and its content heading objects.
- * Without @page tags, documentalist produces empty heading routes,
- * so we reconstruct them from the page route and heading value.
+ * Extract markdown headings from MDX source content.
+ * Only extracts lines that start with # (ignoring code blocks).
  *
- * @param {Record<string, any>} pages
- * @param {Map<string, string>} routeMap
+ * @param {string} content
+ * @returns {Array<{ title: string; slug: string; level: number }>}
  */
-function fixPageRoutes(pages, routeMap) {
-    for (const [ref, page] of Object.entries(pages)) {
-        const correctRoute = routeMap.get(ref);
-        if (correctRoute === undefined) {
-            // Page not in nav config (e.g. _nav) — leave as-is
+function extractHeadings(content) {
+    /** @type {Array<{ title: string; slug: string; level: number }>} */
+    const headings = [];
+    let inCodeBlock = false;
+
+    for (const line of content.split("\n")) {
+        if (line.startsWith("```")) {
+            inCodeBlock = !inCodeBlock;
             continue;
         }
+        if (inCodeBlock) continue;
 
-        page.route = correctRoute;
-
-        // Extract page title from the first <h1> in contents.
-        // With plain `#` headings (mdx), Documentalist renders them as HTML strings
-        // instead of heading tag objects, so page.title is "(untitled)".
-        if (page.title === "(untitled)") {
-            for (const item of page.contents) {
-                if (typeof item === "string") {
-                    const h1Match = item.match(/<h1>(.*?)<\/h1>/);
-                    if (h1Match) {
-                        page.title = h1Match[1];
-                        break;
-                    }
-                }
-            }
-        }
-
-        // Reconstruct heading routes in page.contents
-        for (const item of page.contents) {
-            if (typeof item === "object" && item !== null && item.tag === "heading") {
-                if (item.level === 1) {
-                    // Level 1 heading = page title, route is the page route
-                    item.route = correctRoute;
-                } else {
-                    // Level 2+ headings: pageRoute.slugified-heading-value
-                    item.route = correctRoute + "." + slugify(item.value);
-                }
-            }
+        const match = line.match(/^(#{1,6})\s+(.+)$/);
+        if (match) {
+            const level = match[1].length;
+            const title = match[2].trim();
+            const slug = slugify(title);
+            headings.push({ title, slug, level });
         }
     }
+
+    return headings;
+}
+
+/**
+ * Extract frontmatter metadata from MDX source.
+ *
+ * @param {string} content
+ * @returns {{ metadata: Record<string, unknown>, body: string }}
+ */
+function extractFrontmatter(content) {
+    if (!content.startsWith("---")) {
+        return { metadata: {}, body: content };
+    }
+
+    const endIndex = content.indexOf("---", 3);
+    if (endIndex === -1) {
+        return { metadata: {}, body: content };
+    }
+
+    const frontmatter = content.slice(3, endIndex).trim();
+    /** @type {Record<string, unknown>} */
+    const metadata = {};
+    for (const line of frontmatter.split("\n")) {
+        const colonIdx = line.indexOf(":");
+        if (colonIdx > 0) {
+            const key = line.slice(0, colonIdx).trim();
+            const value = line.slice(colonIdx + 1).trim();
+            metadata[key] = value;
+        }
+    }
+
+    return { metadata, body: content.slice(endIndex + 3) };
+}
+
+/**
+ * Extract the page title from headings (first h1, or first heading of any level).
+ *
+ * @param {Array<{ title: string; level: number }>} headings
+ * @returns {string}
+ */
+function extractTitle(headings) {
+    const h1 = headings.find(h => h.level === 1);
+    if (h1) return h1.title;
+    return headings.length > 0 ? headings[0].title : "(untitled)";
 }
 
 /**
  * Convert a heading value to a URL-friendly slug.
- * Matches documentalist's slugification: lowercase, replace non-[a-z0-9-] with hyphens.
  *
  * @param {string} value
  * @returns {string}
@@ -229,101 +277,57 @@ function slugify(value) {
     return value.toLowerCase().replace(/[^a-z0-9-]/g, "-");
 }
 
-/**
- * Build the full nav tree from nav.json and page data.
- *
- * @param {Record<string, any[]>} navConfig
- * @param {Record<string, any>} pages
- * @param {Map<string, string>} routeMap
- * @returns {any[]}
- */
-function buildNavTree(navConfig, pages, routeMap) {
-    return navConfig["_nav"].map(ref => buildPageNode(ref, 1, navConfig, pages, routeMap));
-}
+// ---------------------------------------------------------------------------
+// Page registry generation
+// ---------------------------------------------------------------------------
 
-/**
- * Recursively build a PageNode for the nav tree.
- *
- * @param {string} ref
- * @param {number} level
- * @param {Record<string, any[]>} navConfig
- * @param {Record<string, any>} pages
- * @param {Map<string, string>} routeMap
- * @returns {any}
- */
-function buildPageNode(ref, level, navConfig, pages, routeMap) {
-    const page = pages[ref];
-    const route = routeMap.get(ref);
-    const navChildren = navConfig[ref] || [];
-    const hasHeadingMarkers = navChildren.some(c => typeof c === "object");
+function generatePageRegistry() {
+    const navConfig = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
+    const allRefs = collectAllRefs(navConfig);
+    const routeMap = buildRouteMap(navConfig);
+    const mdxFileMap = discoverMdxFiles();
 
-    // Extract heading children from page contents (level >= 2, i.e. not the @# title)
-    const headingChildren = extractHeadingChildren(page, level);
+    /** @type {string[]} */
+    const entries = [];
 
-    /** @type {any[]} */
-    let children;
-
-    if (hasHeadingMarkers) {
-        // Interleaved mode: walk nav.json entries in order, matching heading markers
-        // against page content headings by title
-        const headingsByTitle = new Map();
-        for (const h of headingChildren) {
-            headingsByTitle.set(h.title, h);
+    for (const ref of allRefs) {
+        const absPath = resolveRef(ref, mdxFileMap);
+        if (!absPath) {
+            console.warn(`[docs-data] WARNING: no .mdx file found for nav ref "${ref}"`);
+            continue;
         }
 
-        children = [];
-        for (const entry of navChildren) {
-            if (typeof entry === "string") {
-                children.push(buildPageNode(entry, level + 1, navConfig, pages, routeMap));
-            } else if (entry.heading) {
-                const matched = headingsByTitle.get(entry.heading);
-                if (matched) {
-                    children.push(matched);
-                }
-            }
-        }
-    } else {
-        // Default mode: headings first, then page children
-        const pageChildren = navChildren
-            .filter(c => typeof c === "string")
-            .map(childRef => buildPageNode(childRef, level + 1, navConfig, pages, routeMap));
-        children = [...headingChildren, ...pageChildren];
+        const route = routeMap.get(ref) ?? ref;
+        const relPathFromGenerated = relative(generatedSrcDir, absPath).replace(/\\/g, "/");
+        const content = readFileSync(absPath, "utf-8");
+        const { metadata } = extractFrontmatter(content);
+        const headings = extractHeadings(content);
+        const title = extractTitle(headings);
+
+        entries.push(
+            `    ${JSON.stringify(ref)}: {\n` +
+            `        component: lazy(() => import(${JSON.stringify(relPathFromGenerated)})),\n` +
+            `        title: ${JSON.stringify(title)},\n` +
+            `        route: ${JSON.stringify(route)},\n` +
+            `        sourcePath: ${JSON.stringify(relPathFromGenerated)},\n` +
+            `        metadata: ${JSON.stringify(metadata)},\n` +
+            `        headings: ${JSON.stringify(headings)},\n` +
+            `    }`
+        );
     }
 
-    return {
-        children,
-        level,
-        reference: ref,
-        route,
-        title: page.title,
-    };
-}
+    const output =
+        `// Auto-generated by compile-docs-data.mjs — do not edit\n` +
+        `import { lazy } from "react";\n` +
+        `\n` +
+        `import type { PageRegistryEntry } from "../types";\n` +
+        `\n` +
+        `export const pageRegistry: Record<string, PageRegistryEntry> = {\n` +
+        entries.join(",\n") + ",\n" +
+        `};\n`;
 
-/**
- * Extract heading nodes from page contents for the nav tree.
- * Skips level-1 headings (the page title). Adjusts heading levels
- * relative to the page's position in the nav tree.
- *
- * @param {any} page
- * @param {number} pageNavLevel
- * @returns {any[]}
- */
-function extractHeadingChildren(page, pageNavLevel) {
-    const levelOffset = pageNavLevel - 1;
-    /** @type {any[]} */
-    const result = [];
-
-    for (const item of page.contents) {
-        if (typeof item === "object" && item !== null && item.tag === "heading" && item.level >= 2) {
-            result.push({
-                title: item.value,
-                level: item.level + levelOffset,
-                route: item.route,
-            });
-        }
-    }
-
-    return result;
+    writeFileSync(join(generatedSrcDir, "pageRegistry.ts"), output);
+    console.info(`[docs-data] generated pageRegistry.ts (${entries.length} pages)`);
 }
 
 // ---------------------------------------------------------------------------
@@ -371,6 +375,12 @@ async function generateNpmVersions() {
         };
     }
 
-    writeFileSync(join(generatedSrcDir, "npm-data.json"), JSON.stringify(result, null, 2) + "\n");
-    console.info("[docs-data] generated npm-data.json");
+    const output =
+        `// Auto-generated by compile-docs-data.mjs — do not edit\n` +
+        `import type { NpmPackageInfo } from "../types";\n` +
+        `\n` +
+        `export const npmVersions: Record<string, NpmPackageInfo> = ${JSON.stringify(result, null, 4)};\n`;
+
+    writeFileSync(join(generatedSrcDir, "npmVersions.ts"), output);
+    console.info("[docs-data] generated npmVersions.ts");
 }

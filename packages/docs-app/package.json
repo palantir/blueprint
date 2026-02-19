@@ -40,12 +40,14 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-transition-group": "^4.4.5",
+        "@mdx-js/react": "^3.1.1",
         "tslib": "catalog:"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
+        "@mdx-js/loader": "^3.1.1",
         "@types/chroma-js": "~2.4.3",
         "@types/downloadjs": "~1.4.6",
         "@types/lodash": "~4.14.202",
@@ -53,6 +55,8 @@
         "monaco-editor-webpack-plugin": "^7.1.0",
         "npm-run-all": "^4.1.5",
         "raw-loader": "^4.0.2",
+        "rehype-slug": "^6.0.0",
+        "remark-gfm": "^4.0.1",
         "webpack": "^5.90.0",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1"

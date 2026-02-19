@@ -13,21 +13,33 @@
  * limitations under the License.
  */
 
+import { MDXProvider } from "@mdx-js/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { docsData } from "@blueprintjs/docs-data";
+import { buildNavigation, npmVersions, pageRegistry } from "@blueprintjs/docs-data";
+import type { DocsData } from "@blueprintjs/docs-theme";
 import { Icons } from "@blueprintjs/icons";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
+import { mdxComponents } from "./mdxComponents";
 
 // load all icons up front so that they do not experience a flash of unstyled content (but we don't need to block on this promise)
 Icons.loadAll();
+
+// Build navigation tree and docs data from the page registry
+const nav = buildNavigation(pageRegistry);
+const docsData: DocsData = {
+    nav,
+    pages: pageRegistry,
+};
 
 const container = document.getElementById("blueprint-documentation");
 const root = createRoot(container);
 root.render(
     <StrictMode>
-        <BlueprintDocs defaultPageId="blueprint" docs={docsData} />
+        <MDXProvider components={mdxComponents as any}>
+            <BlueprintDocs defaultPageId="blueprint" docs={docsData} npmPackages={npmVersions} />
+        </MDXProvider>
     </StrictMode>,
 );

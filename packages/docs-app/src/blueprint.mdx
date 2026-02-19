@@ -27,10 +27,10 @@ pnpm add @blueprintjs/core react react-dom
 
 Additional UI components and APIs are available in:
 
--   [**@blueprintjs/icons**](https://www.npmjs.com/package/@blueprintjs/icons)
--   [**@blueprintjs/datetime**](https://www.npmjs.com/package/@blueprintjs/datetime)
--   [**@blueprintjs/select**](https://www.npmjs.com/package/@blueprintjs/select)
--   [**@blueprintjs/table**](https://www.npmjs.com/package/@blueprintjs/table)
+- [**@blueprintjs/icons**](https://www.npmjs.com/package/@blueprintjs/icons)
+- [**@blueprintjs/datetime**](https://www.npmjs.com/package/@blueprintjs/datetime)
+- [**@blueprintjs/select**](https://www.npmjs.com/package/@blueprintjs/select)
+- [**@blueprintjs/table**](https://www.npmjs.com/package/@blueprintjs/table)
 
 The navigation sidebar lists all the available packages, separated by use case and significant dependencies.
 All have peer dependencies on **react** and **react-dom**.
