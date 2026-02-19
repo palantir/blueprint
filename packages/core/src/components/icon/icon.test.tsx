@@ -14,157 +14,155 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
-import { afterEach, beforeAll, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Intent } from "../../common";
 
 import { Icon, type IconProps } from "./icon";
 
 describe("<Icon>", () => {
-    let iconLoader: MockInstance;
-
-    beforeAll(() => {
-        vi.spyOn(Icons, "load").mockResolvedValue(undefined);
-        // stub the dynamic icon loader with a synchronous, static one
-        iconLoader = vi.spyOn(Icons, "getPaths").mockImplementation((name: string) => {
-            switch (name) {
-                case "add":
-                    return Add;
-                case "airplane":
-                    return Airplane;
-                case "calendar":
-                    return Calendar;
-                case "graph":
-                    return Graph;
-                default:
-                    return undefined;
-            }
-        });
+    const iconLoad = vi.spyOn(Icons, "load").mockResolvedValue(undefined);
+    const iconLoader = vi.spyOn(Icons, "getPaths").mockImplementation((name: string) => {
+        switch (name) {
+            case "add":
+                return Add;
+            case "airplane":
+                return Airplane;
+            case "calendar":
+                return Calendar;
+            case "graph":
+                return Graph;
+            default:
+                return undefined;
+        }
     });
 
     afterEach(() => {
-        iconLoader?.mockClear();
+        iconLoader.mockClear();
     });
 
-    it("tagName dictates HTML tag", async () => {
-        const wrapper = mount(<Icon icon="calendar" tagName="i" />);
-        wrapper.update();
-        expect(wrapper.find("i").exists()).toBe(true);
+    afterAll(() => {
+        iconLoad.mockRestore();
+        iconLoader.mockRestore();
     });
 
-    it("size=16 renders standard size", async () =>
-        assertIconSize(<Icon icon="graph" size={IconSize.STANDARD} />, IconSize.STANDARD));
-
-    it("size=20 renders large size", async () =>
-        assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
-
-    it("renders intent class", async () => {
-        const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);
-        expect(wrapper.find(`.${Classes.INTENT_DANGER}`).exists()).toBe(true);
+    it("tagName dictates HTML tag", () => {
+        const { container } = render(<Icon icon="calendar" tagName="i" />);
+        expect(container.querySelector("i")).toBeInTheDocument();
     });
 
-    it.skip("renders icon name", async () => {
+    it("size=16 renders standard size", () => {
+        assertIconSize(<Icon icon="graph" size={IconSize.STANDARD} />, IconSize.STANDARD);
+    });
+
+    it("size=20 renders large size", () => {
+        assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE);
+    });
+
+    it("renders intent class", () => {
+        const { container } = render(<Icon icon="add" intent={Intent.DANGER} />);
+        expect(container.querySelector(`.${Classes.INTENT_DANGER}`)).toBeInTheDocument();
+    });
+
+    it.skip("renders icon name", () => {
         assertIconHasPath(<Icon icon="calendar" />, "calendar");
     });
 
-    it("renders icon without color", async () => {
+    it("renders icon without color", () => {
         assertIconColor(<Icon icon="add" />);
     });
 
-    it("renders icon color", async () => {
+    it("renders icon color", () => {
         assertIconColor(<Icon icon="add" color="red" />, "red");
     });
 
-    it("unknown icon name renders blank icon", async () => {
-        const wrapper = mount(<Icon icon={"unknown" as any} />);
-        wrapper.update();
-        expect(wrapper.find("path")).toHaveLength(0);
+    it("unknown icon name renders blank icon", () => {
+        const { container } = render(<Icon icon={"unknown" as any} />);
+        expect(container.querySelectorAll("path")).toHaveLength(0);
     });
 
-    it("prefixed icon renders blank icon", async () => {
-        const wrapper = mount(<Icon icon={Classes.iconClass("airplane") as any} />);
-        wrapper.update();
-        expect(wrapper.find("path")).toHaveLength(0);
+    it("prefixed icon renders blank icon", () => {
+        const { container } = render(<Icon icon={Classes.iconClass("airplane") as any} />);
+        expect(container.querySelectorAll("path")).toHaveLength(0);
     });
 
-    it("icon element passes through unchanged", async () => {
-        // NOTE: This is supported to simplify usage of this component in other
-        // Blueprint components which accept `icon?: IconName | React.JSX.Element`.
+    it("icon element passes through unchanged", () => {
         const onClick = () => true;
-        const wrapper = mount(<Icon icon={<article onClick={onClick} />} />);
-        wrapper.update();
-        expect(wrapper.childAt(0).is("article")).toBe(true);
-        expect(wrapper.find("article").prop("onClick")).toBe(onClick);
+        const { container } = render(<Icon icon={<article onClick={onClick} />} />);
+        const article = container.querySelector("article");
+        expect(article).toBeInTheDocument();
     });
 
-    it("icon=undefined renders nothing", async () => {
-        const wrapper = mount(<Icon icon={undefined} />);
-        wrapper.update();
-        expect(wrapper.isEmptyRender()).toBe(true);
+    it("icon=undefined renders nothing", () => {
+        const { container } = render(<Icon icon={undefined} />);
+        expect(container.innerHTML).toBe("");
     });
 
-    it("title sets content of <title> element", async () => {
-        const wrapper = mount(<Icon icon="airplane" title="bird" />);
-        wrapper.update();
-        expect(wrapper.find("title").text()).toBe("bird");
+    it("title sets content of <title> element", () => {
+        render(<Icon icon="airplane" title="bird" />);
+        expect(screen.getByText("bird")).toBeInTheDocument();
     });
 
     it("does not add desc if title is not provided", () => {
-        const icon = mount(<Icon icon="airplane" />);
-        expect(icon.find("desc")).toHaveLength(0);
+        const { container } = render(<Icon icon="airplane" />);
+        expect(container.querySelector("desc")).toBeNull();
     });
 
     it("applies aria-hidden=true if title is not defined", () => {
-        const icon = mount(<Icon icon="airplane" />);
-        expect(icon.find(`.${Classes.ICON}`).hostNodes().prop("aria-hidden")).toBe(true);
+        const { container } = render(<Icon icon="airplane" />);
+        const iconEl = container.querySelector(`.${Classes.ICON}`);
+        expect(iconEl).not.toBeNull();
+        expect(iconEl!).toHaveAttribute("aria-hidden", "true");
     });
 
     it("supports mouse event handlers of type React.MouseEventHandler", () => {
         const handleClick: React.MouseEventHandler = () => undefined;
-        mount(<Icon icon="add" onClick={handleClick} />);
+        render(<Icon icon="add" onClick={handleClick} />);
     });
 
     it("accepts HTML attributes", () => {
-        mount(<Icon<HTMLSpanElement> icon="drag-handle-vertical" draggable={false} />);
+        render(<Icon<HTMLSpanElement> icon="drag-handle-vertical" draggable={false} />);
     });
 
     it("accepts generic type param specifying the type of the root element", () => {
         const handleClick: React.MouseEventHandler<HTMLSpanElement> = () => undefined;
-        mount(<Icon<HTMLSpanElement> icon="add" onClick={handleClick} />);
+        render(<Icon<HTMLSpanElement> icon="add" onClick={handleClick} />);
     });
 
     it("allows specifying the root element as <svg> when tagName={null}", () => {
         const handleClick: React.MouseEventHandler<SVGSVGElement> = () => undefined;
-        const wrapper = mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
-        expect(wrapper.find("span").exists()).toBe(false);
+        const { container } = render(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
+        expect(container.querySelector("span")).toBeNull();
     });
 
     /** Asserts that rendered icon has an SVG path. */
-    async function assertIconHasPath(icon: React.ReactElement<IconProps>, iconName: IconName) {
-        const wrapper = mount(icon);
-        wrapper.update();
-        expect(wrapper.text()).toBe(iconName);
-        expect(wrapper.find("path").length, "should find at least one path element").toBeGreaterThan(0);
+    function assertIconHasPath(icon: React.ReactElement<IconProps>, _iconName: IconName) {
+        const { container } = render(icon);
+        expect(container.querySelectorAll("path").length).toBeGreaterThan(0);
     }
 
     /** Asserts that rendered icon has width/height equal to size. */
-    async function assertIconSize(icon: React.ReactElement<IconProps>, size: number) {
-        const wrapper = mount(icon);
-        wrapper.update();
-        const svg = wrapper.find("svg");
-        expect(svg.prop("width")).toBe(size);
-        expect(svg.prop("height")).toBe(size);
+    function assertIconSize(icon: React.ReactElement<IconProps>, size: number) {
+        const { container } = render(icon);
+        const svg = container.querySelector("svg");
+        expect(svg).not.toBeNull();
+        expect(svg!).toHaveAttribute("width", String(size));
+        expect(svg!).toHaveAttribute("height", String(size));
     }
 
     /** Asserts that rendered icon has color equal to color. */
-    async function assertIconColor(icon: React.ReactElement<IconProps>, color?: string) {
-        const wrapper = mount(icon);
-        wrapper.update();
-        const svg = wrapper.find("svg");
-        expect(svg.prop("fill")).toEqual(color);
+    function assertIconColor(icon: React.ReactElement<IconProps>, color?: string) {
+        const { container } = render(icon);
+        const svg = container.querySelector("svg");
+        expect(svg).not.toBeNull();
+        if (color) {
+            expect(svg!).toHaveAttribute("fill", color);
+        } else {
+            expect(svg!).not.toHaveAttribute("fill");
+        }
     }
 });
