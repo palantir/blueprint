@@ -4,6 +4,7 @@
         "declaration": false,
         "module": "es2020",
         "outDir": "../dist",
+        "resolveJsonModule": true,
         "sourceMap": false,
         "strictNullChecks": false
     }
