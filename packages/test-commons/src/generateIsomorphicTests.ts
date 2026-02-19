@@ -18,7 +18,9 @@ export function isReactClass(Component: any): Component is ComponentClass<any> {
 
 /** Janky heuristic for detecting function components. */
 export function isReactFunctionComponent(Component: any, name: string): Component is FC<any> {
-    return typeof Component === "function" && name.charAt(0) === name.charAt(0).toUpperCase();
+    return (
+        typeof Component === "function" && !isReactClass(Component) && name.charAt(0) === name.charAt(0).toUpperCase()
+    );
 }
 
 export interface IsomorphicTestConfig {
