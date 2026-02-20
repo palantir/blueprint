@@ -252,7 +252,7 @@ a.#{$ns}-button {
   }
 
   &.#{$ns}-disabled {
-    color: var(--bp-typography-color-default-rest);
+    color: var(--bp-typography-color-default-disabled);
   }
 }
 
