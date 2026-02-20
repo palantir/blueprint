@@ -17,7 +17,7 @@
 import { formatInTimeZone } from "date-fns-tz";
 
 import { getCurrentTimezone } from "./getTimezone";
-import { MINIMAL_TIMEZONE_ITEMS, TIMEZONE_ITEMS } from "./timezoneItems";
+import { MINIMAL_TIMEZONES, TIMEZONES } from "./timezoneItems";
 import type { Timezone, TimezoneWithNames } from "./timezoneTypes";
 
 const CURRENT_DATE = Date.now();
@@ -59,7 +59,7 @@ export const mapTimezonesWithNames = (
 export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezone: boolean): TimezoneWithNames[] {
     const systemTimezone = getCurrentTimezone();
     const localTimezone = showLocalTimezone
-        ? TIMEZONE_ITEMS.find(timezone => timezone.ianaCode === systemTimezone)
+        ? TIMEZONES.find(timezone => timezone.ianaCode === systemTimezone)
         : undefined;
     const localTimezoneItem =
         localTimezone !== undefined
@@ -69,7 +69,7 @@ export function getInitialTimezoneItems(date: Date | undefined, showLocalTimezon
                   shortName: formatInTimeZone(date ?? CURRENT_DATE, localTimezone.ianaCode, SHORT_NAME_FORMAT_STR),
               }
             : undefined;
-    const minimalTimezoneItemsWithNames = mapTimezonesWithNames(date, MINIMAL_TIMEZONE_ITEMS).filter(
+    const minimalTimezoneItemsWithNames = mapTimezonesWithNames(date, MINIMAL_TIMEZONES).filter(
         tz => tz.ianaCode !== localTimezoneItem?.ianaCode,
     );
     return localTimezoneItem === undefined

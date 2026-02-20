@@ -313,8 +313,14 @@ const minimalTimezonesWithoutOffset: TimezoneWithoutOffset[] = [
     { label: "Kiritimati", ianaCode: "Pacific/Kiritimati" },
 ];
 
-/** List of standard timezones */
-export const TIMEZONE_ITEMS = timezonesWithoutOffset.map(tz => lookupTimezoneOffset(tz));
+/**
+ * Comprehensive list of timezones with their IANA codes, labels, and UTC offsets.
+ * Useful for building custom timezone selection components.
+ */
+export const TIMEZONES = timezonesWithoutOffset.map(tz => lookupTimezoneOffset(tz));
 
-/** Minimal list of timezones */
-export const MINIMAL_TIMEZONE_ITEMS = minimalTimezonesWithoutOffset.map(tz => lookupTimezoneOffset(tz));
+/**
+ * Curated minimal list of timezones covering major world regions.
+ * Useful for simplified timezone selection UI where a full list would be overwhelming.
+ */
+export const MINIMAL_TIMEZONES = minimalTimezonesWithoutOffset.map(tz => lookupTimezoneOffset(tz));

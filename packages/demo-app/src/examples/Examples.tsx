@@ -24,6 +24,7 @@ import { ButtonExample } from "./ButtonExample";
 import { ButtonGroupExample } from "./ButtonGroupExample";
 import { CalloutExample } from "./CalloutExample";
 import { CheckboxRadioExample } from "./CheckboxRadioExample";
+import { DateInputTimezoneExample } from "./DateInputTimezoneExample";
 import { DatePickerExample } from "./DatePickerExample";
 import { DateRangePickerExample } from "./DateRangePickerExample";
 import { DialogExample } from "./DialogExample";
@@ -71,6 +72,7 @@ const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) =
             <CheckboxRadioExample />
             <DatePickerExample />
             <DateRangePickerExample />
+            <DateInputTimezoneExample />
             <DialogExample className={className} />
             <EditableTextExample />
             <EntityTitleExample />
