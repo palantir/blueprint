@@ -1,8 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<path id="lock_3_" d="M13.96,7H12V3.95C12,1.77,10.21,0,8,0S4,1.77,4,3.95V7H1.96C1.41,7,1,7.35,1,7.9v6.91C1,15.35,1.41,16,1.96,16
-	h12c0.55,0,1.04-0.65,1.04-1.19V7.9C15,7.35,14.51,7,13.96,7z M6,7V3.95c0-1.09,0.9-1.97,2-1.97s2,0.88,2,1.97V7H6z"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <g opacity=".1">
+    <mask id="a" width="12" height="10" x="2" y="5" maskUnits="userSpaceOnUse" style="mask-type:luminance">
+      <path d="M13.25 5.75H2.75A.75.75 0 0 0 2 6.5V14c0 .414.336.75.75.75h10.5A.75.75 0 0 0 14 14V6.5a.75.75 0 0 0-.75-.75" opacity=".1"/>
+    </mask>
+    <g mask="url(#a)">
+      <path d="M3.5 13.25h9v-6h-9zm12 .75a2.25 2.25 0 0 1-2.25 2.25H2.75A2.25 2.25 0 0 1 .5 14V6.5a2.25 2.25 0 0 1 2.25-2.25h10.5A2.25 2.25 0 0 1 15.5 6.5z"/>
+    </g>
+  </g>
+  <path d="M3.5 12.745h9V7.25h-9zm10.5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25V7c0-.69.56-1.25 1.25-1.25h9.5c.69 0 1.25.56 1.25 1.25z"/>
+  <path d="M9.25 3.5a1.25 1.25 0 1 0-2.5 0v3h-1.5v-3a2.75 2.75 0 0 1 5.5 0v3h-1.5zM8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
 </svg>
