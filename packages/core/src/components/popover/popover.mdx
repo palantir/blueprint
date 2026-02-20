@@ -26,7 +26,7 @@ Popper.js is a small library that offers a powerful, customizable, and performan
 import { Popover } from "@blueprintjs/core";
 ```
 
-<ReactExample name="PopoverExample" />
+<PopoverExample />
 ## Usage
 
 <div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
@@ -149,7 +149,7 @@ The following example shows all supported `Position` values and how each behaves
 Note that if <strong><code>\-<span className="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
 the popover will align to the **center** of the target.
 
-<ReactExample name="PopoverPlacementExample" />
+<PopoverPlacementExample />
 #### Automatic placement
 
 Lastly, there is an `"auto"` placement which picks the side with the best available space.
@@ -270,7 +270,7 @@ The supported values are:
 The following example demonstrates the various interaction kinds (note: these Popovers contain
 [MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
-<ReactExample name="PopoverInteractionKindExample" />
+<PopoverInteractionKindExample />
 <div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
     <h5 className="bp5-heading">Conditionally styling popover targets</h5>
 
@@ -308,7 +308,7 @@ any submenu item will close all submenus, which is desirable behavior for a menu
 </div>
 ```
 
-<ReactExample name="PopoverDismissExample" />
+<PopoverDismissExample />
 <div className="bp5-callout bp5-intent-primary bp5-icon-info-sign">
 
 Dismiss elements won't have any effect in a popover with `interactionKind="hover-target"` because there is no way to
@@ -363,7 +363,7 @@ This behavior can be desirable to inherit CSS styles from surrounding elements, 
 when scrolling. Not using a **Portal** works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
-<ReactExample name="PopoverPortalExample" />
+<PopoverPortalExample />
 ## Style
 
 ### Dark theme
@@ -394,13 +394,13 @@ scrollable, add a custom class to your popover content element and attach styles
 }
 ```
 
-<ReactExample name="PopoverSizingExample" />
+<PopoverSizingExample />
 ### Minimal style
 
 You can create a minimal popover by setting `minimal={true}`.
 This removes the arrow from the popover and makes the transitions more subtle.
 
-<ReactExample name="PopoverMinimalExample" />
+<PopoverMinimalExample />
 This minimal style is recommended for popovers that are not triggered by an obvious action like the
 user clicking or hovering over something. For example, a minimal popover is useful for making
 typeahead menus where the menu appears almost instantly after the user starts typing.

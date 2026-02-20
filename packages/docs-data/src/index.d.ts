@@ -2,13 +2,6 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-// TODO: delete this import once @documentalist/client dependency is fully removed
-import { NpmPluginData, MarkdownPluginData, KssPluginData, TypescriptPluginData } from "@documentalist/client";
-
-export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginData & TypescriptPluginData;
-
-export const docsData: DocsCompleteData;
-
 export interface NpmPackageInfo {
     name: string;
     version: string;
@@ -68,3 +61,13 @@ export interface PageRegistryEntry {
 }
 
 export const pageRegistry: Record<string, PageRegistryEntry>;
+
+// Assembled docs data (replaces docs.json)
+
+export interface DocsCompleteData {
+    nav: Array<PageNode | HeadingNode>;
+    pages: Record<string, PageRegistryEntry>;
+    npm?: Record<string, NpmPackageInfo>;
+}
+
+export const docsData: DocsCompleteData;

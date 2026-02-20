@@ -83,3 +83,14 @@ export interface PropsInfo {
 
 /** Registry mapping interface names to their PropsInfo. */
 export type PropsRegistry = Record<string, PropsInfo>;
+
+// ---------------------------------------------------------------------------
+// Assembled docs data (replaces the old docs.json blob)
+// ---------------------------------------------------------------------------
+
+/** Complete documentation data consumed by the Documentation component. */
+export interface DocsCompleteData {
+    nav: Array<PageNode | HeadingNode>;
+    pages: Record<string, PageRegistryEntry>;
+    npm?: Record<string, NpmPackageInfo>;
+}

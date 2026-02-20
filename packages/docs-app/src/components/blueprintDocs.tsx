@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { MDXProvider } from "@mdx-js/react";
 import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type DocsCompleteData, type HeadingNode, npmData, type PageNode, pageRegistry } from "@blueprintjs/docs-data";
+import { type HeadingNode, npmData, type PageNode, type PageRegistryEntry } from "@blueprintjs/docs-data";
 import {
     Banner,
+    type DocsData,
     Documentation,
     type DocumentationProps,
     NavMenuItem,
@@ -29,38 +29,20 @@ import {
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
-import { DARK_THEME, getTheme, LIGHT_THEME, setTheme } from "../common/theme";
-import { mdxComponents, PageRouteContext } from "../mdx/mdxComponents";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
-// Build pageComponents dynamically from pageRegistry — every page whose .mdx
-// has been converted to JSX syntax will automatically render through the MDX path.
-const pageComponents: Record<string, React.ComponentType> = {};
-for (const [pageId, entry] of Object.entries(pageRegistry)) {
-    const LazyMdx = entry.component;
-    const route = entry.route;
-    pageComponents[pageId] = () => (
-        <PageRouteContext.Provider value={route}>
-            <MDXProvider components={mdxComponents}>
-                <div className="docs-section">
-                    <div className="bp5-running-text bp5-text-large">
-                        <LazyMdx />
-                    </div>
-                </div>
-            </MDXProvider>
-        </PageRouteContext.Provider>
-    );
-}
-
 function isPageNode(node: HeadingNode | PageNode): node is PageNode {
     return "children" in node && "reference" in node;
 }
 
+const DARK_THEME = Classes.DARK;
+const LIGHT_THEME = "";
+const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
+
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
-const NPM_URL = "https://www.npmjs.com/package";
 
 // HACKHACK: this is brittle
 // detect Components page and subheadings
@@ -74,10 +56,19 @@ const isNavSection = ({ route }: HeadingNode) =>
     HOOKS_PATTERN.test(route) ||
     LEGACY_PATTERN.test(route);
 
+/** Return the current theme className. */
+export function getTheme(): string {
+    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY) || LIGHT_THEME;
+}
+
+/** Persist the current theme className in local storage. */
+export function setTheme(themeName: string) {
+    localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
+}
+
 export interface BlueprintDocsProps {
-    docs: DocsCompleteData;
+    docs: DocsData;
     defaultPageId: DocumentationProps["defaultPageId"];
-    tagRenderers: DocumentationProps["tagRenderers"];
 }
 
 export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
@@ -116,14 +107,14 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
             <BlueprintProvider>
                 <ThemeProvider value={themeContextValue}>
                     <Documentation
-                        {...this.props}
+                        defaultPageId={this.props.defaultPageId}
+                        docs={this.props.docs}
                         className={this.state.themeName}
                         banner={banner}
                         footer={footer}
                         header={header}
                         navigatorExclude={isNavSection}
                         onComponentUpdate={this.handleComponentUpdate}
-                        pageComponents={pageComponents}
                         renderNavMenuItem={this.renderNavMenuItem}
                         renderPageActions={this.renderPageActions}
                         renderViewSourceLinkText={this.renderViewSourceLinkText}
@@ -158,7 +149,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions = (page: { sourcePath: string }) => {
+    private renderPageActions = (page: PageRegistryEntry) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -171,7 +162,8 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
     };
 
     private maybeRenderPageTag(reference: string) {
-        const tag = this.props.docs.pages[reference].metadata.tag;
+        const page = this.props.docs.pages[reference];
+        const tag = page?.metadata?.tag as string | undefined;
 
         if (tag == null) {
             return null;
@@ -206,7 +198,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
             return null;
         }
         return (
-            <a className={Classes.TEXT_MUTED} href={`${NPM_URL}/${pkg.name}`} target="_blank">
+            <a className={Classes.TEXT_MUTED} href={`https://www.npmjs.com/package/${pkg.name}`} target="_blank">
                 <small>{pkg.version}</small>
             </a>
         );

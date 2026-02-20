@@ -17,14 +17,12 @@
 import classNames from "classnames";
 import { createContext, createElement, useContext } from "react";
 
-import { AnchorButton, Classes, Code, Intent } from "@blueprintjs/core";
+import { Classes, Code } from "@blueprintjs/core";
 import { propsRegistry } from "@blueprintjs/docs-data";
-import { CssExample as CssExampleTag, Method as MethodTag, PropsTable } from "@blueprintjs/docs-theme";
-import { Code as CodeIcon, Link } from "@blueprintjs/icons";
+import { PropsTable } from "@blueprintjs/docs-theme";
+import { Link } from "@blueprintjs/icons";
 
 import * as ReactDocsComponents from "../tags/reactDocs";
-import { reactExamples } from "../tags/reactExamples";
-
 // ---------------------------------------------------------------------------
 // Page route context — used by MdxHeading to construct data-route attributes
 // ---------------------------------------------------------------------------
@@ -51,50 +49,6 @@ function InterfaceTable({ name }: { name: string }) {
 }
 
 /**
- * Bridge component: renders a code example by name (no source link).
- */
-function ReactCodeExample({ name }: { name: string }) {
-    const example = reactExamples[name];
-    if (example == null) {
-        return (
-            <div className="bp5-callout bp5-intent-warning">
-                Unknown example: <Code>{name}</Code>
-            </div>
-        );
-    }
-    return example.render({ id: name }) ?? null;
-}
-
-/**
- * Bridge component: renders an interactive example with "View source on GitHub" link.
- */
-function ReactExample({ name }: { name: string }) {
-    const example = reactExamples[name];
-    if (example == null) {
-        return (
-            <div className="bp5-callout bp5-intent-warning">
-                Unknown example: <Code>{name}</Code>
-            </div>
-        );
-    }
-    return (
-        <>
-            {example.render({ id: name })}
-            <AnchorButton
-                className="docs-example-view-source"
-                fill={true}
-                href={example.sourceUrl}
-                icon={<CodeIcon />}
-                intent={Intent.PRIMARY}
-                target="_blank"
-                text="View source on GitHub"
-                variant="minimal"
-            />
-        </>
-    );
-}
-
-/**
  * Bridge component: renders a @reactDocs component by name.
  */
 function ReactDocs({ name }: { name: string }) {
@@ -109,22 +63,11 @@ function ReactDocs({ name }: { name: string }) {
     return <Component />;
 }
 
-/**
- * Bridge component: renders a CSS example via the existing CssExample tag renderer.
- * CssExample uses DocumentationContext internally, which is available because MDX
- * pages render inside the Documentation component tree.
- */
-function CssExample({ name }: { name: string }) {
-    return <CssExampleTag tag="css" value={name} />;
-}
+// placeholder
+const CssExample: React.FC<{ reference: string }> = () => null;
 
-/**
- * Bridge component: renders a method/function table via the existing Method tag renderer.
- * Method uses DocumentationContext internally.
- */
-function MethodTable({ name }: { name: string }) {
-    return <MethodTag tag="method" value={name} />;
-}
+/** Placeholder for MethodTable. */
+const MethodTable: React.FC<{ name: string }> = () => null;
 
 // ---------------------------------------------------------------------------
 // Heading overrides — replicate docs-theme Heading tag renderer DOM structure
@@ -181,9 +124,7 @@ export const mdxComponents = {
     CssExample,
     InterfaceTable,
     MethodTable,
-    ReactCodeExample,
     ReactDocs,
-    ReactExample,
     // Heading overrides for scroll/nav integration
     h1: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={1}>{children}</MdxHeading>,
     h2: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={2}>{children}</MdxHeading>,

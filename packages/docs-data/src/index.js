@@ -4,10 +4,12 @@
  */
 
 module.exports = {
-    docsData: require("./generated/docs.json"),
     npmData: require("./generated/npm-data.json"),
-    // Note: propsRegistry and pageRegistry are loaded at runtime by webpack's TS compilation.
+    // Note: docsData, propsRegistry, and pageRegistry are loaded at runtime by webpack's TS compilation.
     // The lazy getters here ensure they work when resolved through the CJS entry.
+    get docsData() {
+        return require("./generated/docsData").docsData;
+    },
     get propsRegistry() {
         return require("./generated/propsRegistry").propsRegistry;
     },

@@ -5,7 +5,7 @@ A toast is a lightweight, ephemeral notice from an application in direct respons
 **Toasts** can be configured to appear at either the top or the bottom of an application window.
 It is possible to show more than one toast on-screen at a time.
 
-<ReactExample name="ToastExample" />
+<ToastExample />
 ## Usage
 
 ### Toast
@@ -172,7 +172,7 @@ export const App: React.FC = () => {
 
 The example below uses the `OverlayToaster.create()` static method. Clicking the button will create a new toaster mounted to `<body>`, show a message, and unmount the toaster from the DOM once the message is dismissed.
 
-<ReactExample name="ToastCreateAsyncExample" />
+<ToastCreateAsyncExample />
 ## React component usage
 
 Render the `<OverlayToaster>` component like any other element and supply `<Toast>` elements as

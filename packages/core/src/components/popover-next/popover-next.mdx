@@ -15,7 +15,7 @@ Floating UI is a modern library that offers powerful, customizable, and performa
 import { PopoverNext } from "@blueprintjs/core";
 ```
 
-<ReactExample name="PopoverNextExample" />
+<PopoverNextExample />
 ## Usage
 
 <div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
@@ -149,7 +149,7 @@ When no alignment is specified (e.g., just `"top"`), the popover will be centere
 
 The following example shows how each placement value behaves in practice:
 
-<ReactExample name="PopoverNextPlacementExample" />
+<PopoverNextPlacementExample />
 #### Automatic placement
 
 If a `placement` prop is not specified (default behavior), PopoverNext will use automatic placement to choose the side with the best available space and continually update the position to avoid overflowing the boundary element (when scrolling within it, for instance).
@@ -276,7 +276,7 @@ The supported values are:
 The following example demonstrates the various interaction kinds (note: these PopoverNext contain
 [MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
-<ReactExample name="PopoverNextInteractionKindExample" />
+<PopoverNextInteractionKindExample />
 <div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
     <h5 className="bp5-heading">Conditionally styling popover targets</h5>
 
@@ -332,7 +332,7 @@ This behavior can be desirable to inherit CSS styles from surrounding elements, 
 when scrolling. Not using a **Portal** works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Floating UI will keep them nicely positioned.
 
-<ReactExample name="PopoverNextPortalExample" />
+<PopoverNextPortalExample />
 ## Style
 
 ### Dark theme
@@ -363,7 +363,7 @@ scrollable, add a custom class to your popover content element and attach styles
 }
 ```
 
-<ReactExample name="PopoverNextSizingExample" />
+<PopoverNextSizingExample />
 ### Arrow control
 
 You can control whether the popover shows an arrow pointing to its target using the `arrow` prop:
@@ -387,7 +387,7 @@ The minimal animation is recommended for popovers that are not triggered by an o
 user clicking or hovering over something. For example, a minimal popover is useful for making
 typeahead menus where the menu appears almost instantly after the user starts typing.
 
-<ReactExample name="PopoverNextMinimalExample" />
+<PopoverNextMinimalExample />
 Minimal popovers are also useful for context menus that require quick enter and leave animations to
 support fast workflows. You can see an example in the [context menus](#core/components/context-menu)
 documentation.
