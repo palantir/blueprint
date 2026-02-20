@@ -38,7 +38,7 @@ export const CustomIcon = forwardRef(<T extends Element>(props: CustomIconProps<
     } = props;
 
     const size = props.size ?? IconSize.STANDARD;
-    const pathElements = customIconData.paths.map((d, i) => <path d={d} fillRule="evenodd" key={i} />);
+    const pathElements = customIconData.paths.map((d, i) => <path d={d} key={i} />);
 
     return (
         <SVGIconContainer<any>

@@ -98,23 +98,20 @@ export class Icons {
     public static async loadAll(options?: IconLoaderOptions) {
         const allIcons = Object.values(IconNames);
         wrapWithTimer(`[Blueprint] loading all icons`, async () => {
-            await Promise.all([
-                this.load(allIcons, IconSize.STANDARD, options),
-                this.load(allIcons, IconSize.LARGE, options),
-            ]);
+            await Promise.all([this.load(allIcons, IconSize.STANDARD, options)]);
         });
     }
 
     /**
      * Get the icon SVG paths. Returns `undefined` if the icon has not been loaded yet.
      */
-    public static getPaths(icon: IconName, size: IconSize): IconPaths | undefined {
+    public static getPaths(icon: IconName, _size: IconSize): IconPaths | undefined {
         if (!this.isValidIconName(icon)) {
             // don't warn, since this.load() will have warned already
             return undefined;
         }
 
-        const loadedIcons = size < IconSize.LARGE ? singleton.loadedIconPaths16 : singleton.loadedIconPaths20;
+        const loadedIcons = singleton.loadedIconPaths16;
         return loadedIcons.get(icon);
     }
 
@@ -124,7 +121,7 @@ export class Icons {
             return;
         }
 
-        const loadedIcons = size < IconSize.LARGE ? singleton.loadedIconPaths16 : singleton.loadedIconPaths20;
+        const loadedIcons = singleton.loadedIconPaths16;
 
         if (loadedIcons.has(icon)) {
             // already loaded, no-op

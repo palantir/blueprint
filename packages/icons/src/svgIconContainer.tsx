@@ -59,9 +59,7 @@ export const SVGIconContainer: SVGIconContainerComponent = forwardRef(
             title,
             ...htmlProps
         } = props;
-
-        const isLarge = size >= IconSize.LARGE;
-        const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
+        const pixelGridSize = IconSize.STANDARD;
         const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
         const titleId = uniqueId("iconTitle");
         const sharedSvgProps: React.SVGProps<SVGSVGElement> = {

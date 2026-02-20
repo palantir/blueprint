@@ -183,7 +183,7 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
             title: htmlTitle,
         });
     } else {
-        const pathElements = iconPaths.map((d, i) => <path d={d} key={i} fillRule="evenodd" />);
+        const pathElements = iconPaths.map((d, i) => <path d={d} key={i} />);
         // HACKHACK: there is no good way to narrow the type of SVGIconContainerProps here because of the use
         // of a conditional type within the type union that defines that interface. So we cast to <any>.
         // see https://github.com/microsoft/TypeScript/issues/24929, https://github.com/microsoft/TypeScript/issues/33014

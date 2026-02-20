@@ -19,7 +19,7 @@ import { pascalCase } from "change-case";
 import * as IconSvgPaths16 from "./generated/16px/paths";
 import * as IconSvgPaths20 from "./generated/20px/paths";
 import type { IconName } from "./iconNames";
-import { type IconPaths, IconSize } from "./iconTypes";
+import type { IconPaths, IconSize } from "./iconTypes";
 import type { PascalCase } from "./type-utils";
 export { IconSvgPaths16, IconSvgPaths20 };
 
@@ -32,9 +32,9 @@ export { IconSvgPaths16, IconSvgPaths20 };
  * JS bundle. Only use this API if your app is likely to use all Blueprint icons at runtime. If you are looking for a
  * dynamic icon loader which loads icon definitions on-demand, use `{ Icons } from "@blueprintjs/icons"` instead.
  */
-export function getIconPaths(name: IconName, size: IconSize): IconPaths {
+export function getIconPaths(name: IconName, _size: IconSize): IconPaths {
     const key = pascalCase(name) as PascalCase<IconName>;
-    return size === IconSize.STANDARD ? IconSvgPaths16[key] : IconSvgPaths20[key];
+    return IconSvgPaths16[key];
 }
 
 /**
