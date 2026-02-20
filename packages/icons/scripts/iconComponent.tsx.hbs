@@ -21,7 +21,9 @@ import { SVGIconContainer } from "../../svgIconContainer";
 export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => {
     return (
         <SVGIconContainer iconName="{{iconName}}" ref={ref} {...props}>
-            <path d="{{icon16pxPath}}" />
+{{#each iconPaths}}
+            <path d="{{this}}" />
+{{/each}}
         </SVGIconContainer>
    );
 });
