@@ -23,9 +23,9 @@ import {
     type TsDocBase,
 } from "@documentalist/client";
 import classNames from "classnames";
-import { PureComponent } from "react";
+import { PureComponent, Suspense } from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props, Spinner } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
 import {
@@ -117,6 +117,13 @@ export interface DocumentationProps extends Props {
      * @default document.documentElement
      */
     scrollParent?: HTMLElement;
+
+    /**
+     * Map of page IDs to React components that override the default Documentalist
+     * page rendering. When activePageId matches a key, the component is rendered
+     * instead of the Documentalist-based Page.
+     */
+    pageComponents?: Record<string, React.ComponentType>;
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: TagRendererMap;
@@ -238,11 +245,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                 ref={this.refHandlers.content}
                                 role="main"
                             >
-                                <Page
-                                    page={pages[activePageId]!}
-                                    renderActions={this.props.renderPageActions}
-                                    tagRenderers={this.props.tagRenderers}
-                                />
+                                {this.renderPage(activePageId, pages)}
                             </main>
                             <Drawer
                                 className={apiClasses}
@@ -292,6 +295,29 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         }
 
         this.props.onComponentUpdate?.(activePageId);
+    }
+
+    private renderPage(activePageId: string, pages: Record<string, PageData>) {
+        const PageOverride = this.props.pageComponents?.[activePageId];
+        if (PageOverride != null) {
+            return (
+                <Suspense fallback={<Spinner />}>
+                    <div className="docs-page" data-page-id={activePageId}>
+                        {this.props.renderPageActions && (
+                            <div className="docs-page-actions">{this.props.renderPageActions(pages[activePageId]!)}</div>
+                        )}
+                        <PageOverride />
+                    </div>
+                </Suspense>
+            );
+        }
+        return (
+            <Page
+                page={pages[activePageId]!}
+                renderActions={this.props.renderPageActions}
+                tagRenderers={this.props.tagRenderers}
+            />
+        );
     }
 
     private getDocumentationContextApi(): DocumentationContextApi {

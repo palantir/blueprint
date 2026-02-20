@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+import { MDXProvider } from "@mdx-js/react";
 import classNames from "classnames";
-import { Component } from "react";
+import { Component, lazy } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
 import { type DocsCompleteData, type HeadingNode, npmData, type PageNode } from "@blueprintjs/docs-data";
@@ -28,10 +29,27 @@ import {
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
+import { mdxComponents } from "../mdx/mdxComponents";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
+
+const BreadcrumbsMdx = lazy(() => import("../../../core/src/components/breadcrumbs/breadcrumbs.mdx"));
+
+const BreadcrumbsPage = () => (
+    <MDXProvider components={mdxComponents}>
+        <div className="docs-section">
+            <div className="bp5-running-text bp5-text-large">
+                <BreadcrumbsMdx />
+            </div>
+        </div>
+    </MDXProvider>
+);
+
+const pageComponents: Record<string, React.ComponentType> = {
+    breadcrumbs: BreadcrumbsPage,
+};
 
 function isPageNode(node: HeadingNode | PageNode): node is PageNode {
     return "children" in node && "reference" in node;
@@ -114,6 +132,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                         header={header}
                         navigatorExclude={isNavSection}
                         onComponentUpdate={this.handleComponentUpdate}
+                        pageComponents={pageComponents}
                         renderNavMenuItem={this.renderNavMenuItem}
                         renderPageActions={this.renderPageActions}
                         renderViewSourceLinkText={this.renderViewSourceLinkText}

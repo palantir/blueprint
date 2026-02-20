@@ -17,6 +17,8 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
+        "@mdx-js/loader": "^3.1.0",
+        "@mdx-js/react": "^3.1.0",
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/datetime": "workspace:^",
         "@blueprintjs/docs-data": "workspace:^",
