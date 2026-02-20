@@ -366,11 +366,17 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         }
     }
 
-    public setActiveItem(activeItem: T | CreateNewItem | null) {
+    public setActiveItem(activeItem: T | CreateNewItem | null, shouldScrollIntoView = true) {
         this.expectedNextActiveItem = activeItem;
         if (this.props.activeItem === undefined) {
             // indicate that the active item may need to be scrolled into view after update.
-            this.shouldCheckActiveItemInViewport = true;
+            // when the active item change is triggered by a mouse/focus event (e.g. clicking
+            // or hovering over a partially visible item at the edge of a scrollable menu),
+            // we skip scrolling to prevent the item from moving out from under the cursor
+            // between mousedown and mouseup, which would cause the click to not register.
+            if (shouldScrollIntoView) {
+                this.shouldCheckActiveItemInViewport = true;
+            }
             this.setState({ activeItem });
         }
 
@@ -418,7 +424,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
-                handleFocus: () => this.setActiveItem(item),
+                handleFocus: () => this.setActiveItem(item, false),
                 id: itemId,
                 index,
                 modifiers,
@@ -504,7 +510,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        this.setActiveItem(item);
+        this.setActiveItem(item, false);
         this.props.onItemSelect?.(item, event);
         this.maybeResetQuery();
     };
