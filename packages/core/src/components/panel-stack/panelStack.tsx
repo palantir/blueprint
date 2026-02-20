@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { useCallback, useMemo, useState } from "react";
+import { createRef, useCallback, useMemo, useRef, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
@@ -107,6 +107,18 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
     const prevStackLength = usePrevious(stack.length) ?? stack.length;
     const direction = stack.length - prevStackLength < 0 ? "pop" : "push";
 
+    // Map of CSSTransition key -> RefObject for the PanelView root DOM node.
+    // Each CSSTransition needs its own nodeRef to avoid ReactDOM.findDOMNode() usage.
+    const panelNodeRefs = useRef<Map<number, React.RefObject<HTMLDivElement>>>(new Map());
+    const getOrCreatePanelRef = useCallback((key: number): React.RefObject<HTMLDivElement> => {
+        let ref = panelNodeRefs.current.get(key);
+        if (ref == null) {
+            ref = createRef<HTMLDivElement>();
+            panelNodeRefs.current.set(key, ref);
+        }
+        return ref;
+    }, []);
+
     const handlePanelOpen = useCallback(
         (panel: T) => {
             onOpen?.(panel);
@@ -142,13 +154,15 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
             // second one, active changes only when the panel becomes or stops being active.
             const layer = stack.length - index;
             const key = renderActivePanelOnly ? stack.length : layer;
+            const panelRef = getOrCreatePanelRef(key);
 
             return (
-                <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
+                <CSSTransition classNames={Classes.PANEL_STACK} key={key} nodeRef={panelRef} timeout={400}>
                     <PanelView<T>
                         onClose={handlePanelClose}
                         onOpen={handlePanelOpen}
                         panel={panel}
+                        panelNodeRef={panelRef}
                         previousPanel={stack[index + 1]}
                         showHeader={showPanelHeader}
                     />
