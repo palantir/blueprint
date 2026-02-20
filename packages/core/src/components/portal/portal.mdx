@@ -22,8 +22,8 @@ import { Portal } from "@blueprintjs/core";
 **Portal** is used inside [Overlay2](#core/components/overlay2) to actually overlay the content on the
 application.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-move @ns-callout-has-body-content">
-    <h5 class="@ns-heading">A note about responsive layouts</h5>
+<div className="bp5-callout bp5-intent-warning bp5-icon-move bp5-callout-has-body-content">
+    <h5 className="bp5-heading">A note about responsive layouts</h5>
 
 For a single-page app, if the `<body>` is styled with `width: 100%` and `height: 100%`, a `Portal`
 may take up extra whitespace and cause the window to undesirably scroll. To fix this, instead
@@ -33,8 +33,7 @@ apply `position: absolute` to the `<body>` tag.
 
 ## Props interface
 
-@interface PortalProps
-
+<InterfaceTable name="PortalProps" />
 ## React context options
 
 **Portal** supports some customization through [React context](https://react.dev/learn/passing-data-deeply-with-context).

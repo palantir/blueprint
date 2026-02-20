@@ -23,10 +23,8 @@ component, so the `value` prop determines its current appearance. Provide an
 `onChange` handler to receive updates and an `onRelease` handler to determine
 when the user has stopped interacting with the slider.
 
-@reactExample SliderExample
-
-@interface SliderProps
-
+<ReactExample name="SliderExample" />
+<InterfaceTable name="SliderProps" />
 ## Range slider
 
 Use `RangeSlider` to choose a range between upper and lower bounds. The
@@ -39,20 +37,16 @@ current appearance. Provide an `onChange` handler to receive updates and an
 `onRelease` handler to determine when the user has stopped interacting with the
 slider.
 
-@reactExample RangeSliderExample
-
-@interface RangeSliderProps
-
+<ReactExample name="RangeSliderExample" />
+<InterfaceTable name="RangeSliderProps" />
 ## Multi slider
 
 `MultiSlider` is a flexible solution for picking arbitrary values on a number
 line. It powers both `Slider` and `RangeSlider` internally and can be used for
 implementing more advanced use cases than one or two numbers.
 
-@reactExample MultiSliderExample
-
-@interface MultiSliderProps
-
+<ReactExample name="MultiSliderExample" />
+<InterfaceTable name="MultiSliderProps" />
 ### Handle
 
 Handles for a `MultiSlider` are configured as `MultiSliderHandle` children
@@ -75,4 +69,4 @@ elements, each with their own `value` and other properties.
 </MultiSlider>
 ```
 
-@interface HandleProps
+<InterfaceTable name="HandleProps" />

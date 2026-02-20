@@ -16,10 +16,10 @@
 
 import { MDXProvider } from "@mdx-js/react";
 import classNames from "classnames";
-import { Component, lazy } from "react";
+import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type DocsCompleteData, type HeadingNode, npmData, type PageNode } from "@blueprintjs/docs-data";
+import { type DocsCompleteData, type HeadingNode, npmData, type PageNode, pageRegistry } from "@blueprintjs/docs-data";
 import {
     Banner,
     Documentation,
@@ -29,27 +29,30 @@ import {
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
-import { mdxComponents } from "../mdx/mdxComponents";
+import { mdxComponents, PageRouteContext } from "../mdx/mdxComponents";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
-const BreadcrumbsMdx = lazy(() => import("../../../core/src/components/breadcrumbs/breadcrumbs.mdx"));
-
-const BreadcrumbsPage = () => (
-    <MDXProvider components={mdxComponents}>
-        <div className="docs-section">
-            <div className="bp5-running-text bp5-text-large">
-                <BreadcrumbsMdx />
-            </div>
-        </div>
-    </MDXProvider>
-);
-
-const pageComponents: Record<string, React.ComponentType> = {
-    breadcrumbs: BreadcrumbsPage,
-};
+// Build pageComponents dynamically from pageRegistry — every page whose .mdx
+// has been converted to JSX syntax will automatically render through the MDX path.
+const pageComponents: Record<string, React.ComponentType> = {};
+for (const [pageId, entry] of Object.entries(pageRegistry)) {
+    const LazyMdx = entry.component;
+    const route = entry.route;
+    pageComponents[pageId] = () => (
+        <PageRouteContext.Provider value={route}>
+            <MDXProvider components={mdxComponents}>
+                <div className="docs-section">
+                    <div className="bp5-running-text bp5-text-large">
+                        <LazyMdx />
+                    </div>
+                </div>
+            </MDXProvider>
+        </PageRouteContext.Provider>
+    );
+}
 
 function isPageNode(node: HeadingNode | PageNode): node is PageNode {
     return "children" in node && "reference" in node;

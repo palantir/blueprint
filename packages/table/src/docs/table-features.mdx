@@ -17,14 +17,13 @@ In the table below, try:
 - Sorting with the menu in each column header
 - Selecting cells and copying with the right-click context menu or with <kbd>Cmd/Ctrl</kbd> + <kbd>C</kbd> hotkeys
 
-<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+<div className="bp5-callout bp5-large bp5-intent-primary bp5-icon-info-sign">
 
 This example utilizes `cellRendererDependencies`; [see why in the section below](#table/features.re-rendering-cells).
 
 </div>
 
-@reactExample TableSortableExample
-
+<ReactExample name="TableSortableExample" />
 ## Re-rendering cells
 
 Sometimes you may need to re-render table cells based on new data or some user interaction, like a sorting operation as
@@ -45,7 +44,7 @@ after a sorting operation, and those renderers will reference the up-to-date `so
 You may allow users to focus on a single cell and navigate around the table with arrow keys by setting
 `enableFocusedCell={true}`. Try out this interaction in the table above &mdash; the table container will also scroll
 around if you move focus outside the current viewport. You can expand and shrink the selected cell range using
-kbd>Shift</kbd> + arrow keys. For a full reference of enabled keyboard hotkeys, press <kbd>?</kbd> to bring up the
+<kbd>Shift</kbd> + arrow keys. For a full reference of enabled keyboard hotkeys, press <kbd>?</kbd> to bring up the
 hotkeys dialog after you have clicked into the table once.
 
 ## Editing
@@ -60,8 +59,7 @@ The following example renders a table with editable column names (single click),
 and selectable column types. In this example, the editable values are validated against an alpha character-only
 regular expression (`[a-zA-Z]`). If the content is invalid, a `Intent.DANGER` style is applied to the cell.
 
-@reactExample TableEditableExample
-
+<ReactExample name="TableEditableExample" />
 ## Reordering
 
 The table supports drag-reordering of columns and rows via the `enableColumnReordering` and `enableRowReordering`
@@ -107,8 +105,7 @@ reordering to work:
 
 ### Example
 
-@reactExample TableReorderableExample
-
+<ReactExample name="TableReorderableExample" />
 ## Loading states
 
 When fetching or updating data, it may be desirable to show a loading state. The table components provide fine-grain
@@ -124,23 +121,20 @@ given year.
 **Table** exposes a `loadingOptions` prop that allows you to control the loading state behavior of all column header,
 row header, and body cells. Try toggling the different options.
 
-@reactExample TableLoadingExample
-
+<ReactExample name="TableLoadingExample" />
 ### Column loading states
 
 **Column** exposes a `loadingOptions` prop that allows you to control the loading state behavior of an individual
 column's header and body cells. Try selecting a different column in the dropdown below.
 
-@reactExample ColumnLoadingExample
-
+<ReactExample name="ColumnLoadingExample" />
 ### Cells
 
 **Cell**, **EditableCell**, **ColumnHeaderCell**, and **RowHeaderCell** expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 
-@reactExample CellLoadingExample
-
+<ReactExample name="CellLoadingExample" />
 ## Formatting
 
 To display long strings or native JavaScript objects, the table package provides **TruncatedFormat** and **JSONFormat**
@@ -151,8 +145,7 @@ Below is a table of timezones including the local time when this page was render
 `<TruncatedFormat detectTruncation={true}>` component to show the long date string and a
 `<JSONFormat detectTruncation={true}>` component to show the timezone info object.
 
-@reactExample TableFormatsExample
-
+<ReactExample name="TableFormatsExample" />
 ## Freezing
 
 The table supports column and row freezing via the `numFrozenColumns` and `numFrozenRows` props, respectively.
@@ -161,4 +154,4 @@ Likewise, passing `numFrozenRows={m}` will freeze the `m` topmost rows in place,
 
 Here's an example of a table with 1 frozen columns and 2 frozen rows:
 
-@reactExample TableFreezingExample
+<ReactExample name="TableFreezingExample" />

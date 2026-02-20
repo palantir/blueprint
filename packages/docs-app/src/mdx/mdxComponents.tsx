@@ -14,12 +14,26 @@
  * limitations under the License.
  */
 
-import { AnchorButton, Code, Intent } from "@blueprintjs/core";
-import { propsRegistry } from "@blueprintjs/docs-data";
-import { PropsTable } from "@blueprintjs/docs-theme";
-import { Code as CodeIcon } from "@blueprintjs/icons";
+import classNames from "classnames";
+import { createContext, createElement, useContext } from "react";
 
+import { AnchorButton, Classes, Code, Intent } from "@blueprintjs/core";
+import { propsRegistry } from "@blueprintjs/docs-data";
+import { CssExample as CssExampleTag, Method as MethodTag, PropsTable } from "@blueprintjs/docs-theme";
+import { Code as CodeIcon, Link } from "@blueprintjs/icons";
+
+import * as ReactDocsComponents from "../tags/reactDocs";
 import { reactExamples } from "../tags/reactExamples";
+
+// ---------------------------------------------------------------------------
+// Page route context — used by MdxHeading to construct data-route attributes
+// ---------------------------------------------------------------------------
+
+export const PageRouteContext = createContext<string>("");
+
+// ---------------------------------------------------------------------------
+// Bridge components
+// ---------------------------------------------------------------------------
 
 /**
  * Bridge component: looks up propsRegistry by name and renders a PropsTable.
@@ -80,9 +94,101 @@ function ReactExample({ name }: { name: string }) {
     );
 }
 
+/**
+ * Bridge component: renders a @reactDocs component by name.
+ */
+function ReactDocs({ name }: { name: string }) {
+    const Component = (ReactDocsComponents as any)[name] as React.ComponentType | undefined;
+    if (Component == null) {
+        return (
+            <div className="bp5-callout bp5-intent-warning">
+                Unknown reactDocs component: <Code>{name}</Code>
+            </div>
+        );
+    }
+    return <Component />;
+}
+
+/**
+ * Bridge component: renders a CSS example via the existing CssExample tag renderer.
+ * CssExample uses DocumentationContext internally, which is available because MDX
+ * pages render inside the Documentation component tree.
+ */
+function CssExample({ name }: { name: string }) {
+    return <CssExampleTag tag="css" value={name} />;
+}
+
+/**
+ * Bridge component: renders a method/function table via the existing Method tag renderer.
+ * Method uses DocumentationContext internally.
+ */
+function MethodTable({ name }: { name: string }) {
+    return <MethodTag tag="method" value={name} />;
+}
+
+// ---------------------------------------------------------------------------
+// Heading overrides — replicate docs-theme Heading tag renderer DOM structure
+// ---------------------------------------------------------------------------
+
+/**
+ * Slugify a heading string to match documentalist's slugification:
+ * lowercase, replace non-[a-z0-9-] chars with hyphens.
+ */
+function slugify(text: string): string {
+    return text.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+}
+
+/**
+ * Extract plain text from React children (handles strings and nested elements).
+ */
+function childrenToText(children: React.ReactNode): string {
+    if (typeof children === "string") {
+        return children;
+    }
+    if (Array.isArray(children)) {
+        return children.map(childrenToText).join("");
+    }
+    if (children != null && typeof children === "object" && "props" in children) {
+        return childrenToText((children as React.ReactElement).props.children);
+    }
+    return "";
+}
+
+function MdxHeading({ level, children }: { level: number; children?: React.ReactNode }) {
+    const pageRoute = useContext(PageRouteContext);
+    const text = childrenToText(children);
+    const slug = slugify(text);
+    const route = level === 1 ? pageRoute : `${pageRoute}.${slug}`;
+
+    return createElement(
+        `h${level}`,
+        { className: classNames(Classes.HEADING, "docs-title") },
+        <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
+        <a className="docs-anchor-link" href={`#${route}`} key="link" aria-hidden={true} tabIndex={-1}>
+            <Link />
+        </a>,
+        children,
+    );
+}
+
+// ---------------------------------------------------------------------------
+// Component map for MDXProvider
+// ---------------------------------------------------------------------------
+
 /** Component map for MDXProvider. */
 export const mdxComponents = {
+    // Custom component tags (sorted alphabetically)
+    CssExample,
     InterfaceTable,
+    MethodTable,
     ReactCodeExample,
+    ReactDocs,
     ReactExample,
+    // Heading overrides for scroll/nav integration
+    h1: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={1}>{children}</MdxHeading>,
+    h2: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={2}>{children}</MdxHeading>,
+    h3: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={3}>{children}</MdxHeading>,
+    h4: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={4}>{children}</MdxHeading>,
+    h5: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={5}>{children}</MdxHeading>,
+    h6: ({ children }: { children?: React.ReactNode }) => <MdxHeading level={6}>{children}</MdxHeading>,
 };

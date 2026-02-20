@@ -15,25 +15,22 @@ import { ButtonGroup } from "@blueprintjs/core";
 
 Wrap buttons in a **ButtonGroup** to arrange them together horizontally.
 
-@reactCodeExample ButtonGroupBasicExample
-
+<ReactCodeExample name="ButtonGroupBasicExample" />
 ## Intent
 
 Use the `intent` prop on individual buttons to convey purpose. For a consistent
 visual style, it’s recommended to apply the same `intent` to all buttons within the same group.
 
-@reactCodeExample ButtonGroupIntentExample
-
+<ReactCodeExample name="ButtonGroupIntentExample" />
 ## Variant
 
 Use the `variant` prop to change the visual style of button child elements within the group.
 
-@reactCodeExample ButtonGroupVariantExample
-
+<ReactCodeExample name="ButtonGroupVariantExample" />
 ## Outlined and minimal
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
-    <h5 class="@ns-heading">
+<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign">
+    <h5 className="bp5-heading">
 
 Deprecated: use [`variant`](#core/components/buttons.variant) instead
 
@@ -43,14 +40,12 @@ Deprecated: use [`variant`](#core/components/buttons.variant) instead
 
 Use the `outlined` and `minimal` props to change the visual style of button child elements within the group.
 
-@reactCodeExample ButtonGroupOutlinedMinimalExample
-
+<ReactCodeExample name="ButtonGroupOutlinedMinimalExample" />
 ## Size
 
 The `size` prop can be used to control the size of all child buttons within the button group.
 
-@reactCodeExample ButtonGroupSizeExample
-
+<ReactCodeExample name="ButtonGroupSizeExample" />
 ## Flex layout
 
 **ButtonGroup** renders a CSS flex row (or column if `vertical` is enabled) and
@@ -63,8 +58,7 @@ includes modifier props for common flexbox patterns:
 
 For precise size adjustments, use the `flex-basis` or `width` CSS properties on individual buttons.
 
-@reactCodeExample ButtonGroupFlexExample
-
+<ReactCodeExample name="ButtonGroupFlexExample" />
 ## Vertical layout
 
 Enable the `vertical` prop to stack buttons vertically. Buttons in a vertical
@@ -73,19 +67,16 @@ group automatically adjust to the width of the widest button in the group.
 Use the `alignText` prop to control text and icon alignment within the buttons.
 Set it at the group level for uniform alignment or on individual buttons for specific adjustments.
 
-@reactCodeExample ButtonGroupVerticalExample
-
+<ReactCodeExample name="ButtonGroupVerticalExample" />
 ## Usage with popovers
 
 **Button** elements inside a **ButtonGroup** can be wrapped with a
 [**Popover**](#core/components/popover) to create complex toolbars.
 
-@reactExample ButtonGroupPopoverExample
-
+<ReactExample name="ButtonGroupPopoverExample" />
 ## Interactive Playground
 
-@reactExample ButtonGroupPlaygroundExample
-
+<ReactExample name="ButtonGroupPlaygroundExample" />
 ## Props interface
 
-@interface ButtonGroupProps
+<InterfaceTable name="ButtonGroupProps" />

@@ -4,8 +4,8 @@ tag: deprecated
 
 # Overlay
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
+<div className="bp5-callout bp5-intent-danger bp5-icon-error bp5-callout-has-body-content">
+    <h5 className="bp5-heading">
 
 Deprecated: use [**Overlay2**](#core/components/overlay2)
 
@@ -36,8 +36,7 @@ directly should be rare in your application; it should only be necessary if no e
 import { Overlay } from "@blueprintjs/core";
 ```
 
-@reactExample OverlayExample
-
+<ReactExample name="OverlayExample" />
 ## Usage
 
 **Overlay** is a controlled component that renders its children only when `isOpen={true}`. The optional backdrop element
@@ -46,8 +45,8 @@ will be inserted before the children if `hasBackdrop={true}`.
 The `onClose` callback prop is invoked when user interaction causes the overlay to close, but your application is
 responsible for updating the state that actually closes the overlay.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">A note about overlay content positioning</h5>
+<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
+    <h5 className="bp5-heading">A note about overlay content positioning</h5>
 
 When rendered inline, content will automatically be set to `position: absolute` to respect
 document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
@@ -78,4 +77,4 @@ automatically.
 
 ## Props interface
 
-@interface OverlayProps
+<InterfaceTable name="OverlayProps" />

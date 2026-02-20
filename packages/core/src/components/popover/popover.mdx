@@ -4,8 +4,8 @@ tag: deprecated
 
 # Popover
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
+<div className="bp5-callout bp5-intent-danger bp5-icon-error bp5-callout-has-body-content">
+    <h5 className="bp5-heading">
 
 Deprecated: use [**PopoverNext**](#core/components/popover-next)
 
@@ -26,12 +26,11 @@ Popper.js is a small library that offers a powerful, customizable, and performan
 import { Popover } from "@blueprintjs/core";
 ```
 
-@reactExample PopoverExample
-
+<ReactExample name="PopoverExample" />
 ## Usage
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
+<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
+    <h5 className="bp5-heading">
 
 [OverlaysProvider](#core/context/overlays-provider) recommended
 
@@ -55,8 +54,7 @@ usage guides.
 
 ## Props interface
 
-@interface PopoverProps
-
+<InterfaceTable name="PopoverProps" />
 ## Concepts
 
 ### Structure
@@ -70,7 +68,7 @@ In Popper.js terms, this is the popper "reference". There are two ways to render
 in different DOM layout depending on your application's needs:
 
 - The simplest way to specify a target is via `children`. Provide a single React child to
-  `<Popover>` and the component will render that child wrapped in a `@ns-popover-target` HTML element.
+  `<Popover>` and the component will render that child wrapped in a `bp5-popover-target` HTML element.
   This wrapper is configured with event handling logic necessary for the Popover to function. Its tag name
   (e.g. `div`, `span`) and props can be customized with the `targetTagName` and `targetProps` props, respectively.
 
@@ -89,8 +87,8 @@ The **content** will be shown inside the popover itself. When opened, the popove
 positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Button targets</h5>
+<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
+    <h5 className="bp5-heading">Button targets</h5>
 
 Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
 events, which interferes with the popover functioning. If you need to disable a button which
@@ -104,7 +102,7 @@ import { Button, Classes, Popover } from "@blueprintjs/core";
 
 export class PopoverExample extends React.PureComponent {
     public render() {
-        // popover content gets no padding by default; add the "@ns-popover-content-sizing"
+        // popover content gets no padding by default; add the "bp5-popover-content-sizing"
         // class to the popover to set nice padding between its border and content.
         return (
             <Popover
@@ -137,37 +135,36 @@ to Popper.js; it uses the same semantics and supported values
 There are straightforward base placements (`"top"`, `"bottom"`, `"left"`, `"right"`) and their variations, which
 each consist of two attributes:
 
-- Which <span class="docs-popover-placement-label-side">**side**</span> of the target the popover should render on.
-- The popover's <span class="docs-popover-placement-label-alignment">**alignment**</span> relative to the target.
+- Which <span className="docs-popover-placement-label-side">**side**</span> of the target the popover should render on.
+- The popover's <span className="docs-popover-placement-label-alignment">**alignment**</span> relative to the target.
 
 These two attributes can be expressed with a single value having the following structure:
 
-<pre class="docs-popover-placement-value-code-block">
-    <span class="docs-popover-placement-label-side">[SIDE]</span>-
-    <span class="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
+<pre className="docs-popover-placement-value-code-block">
+    <span className="docs-popover-placement-label-side">[SIDE]</span>-
+    <span className="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
 </pre>
 
 The following example shows all supported `Position` values and how each behaves in practice.
-Note that if <strong><code>\-<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
+Note that if <strong><code>\-<span className="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
 the popover will align to the **center** of the target.
 
-@reactExample PopoverPlacementExample
-
+<ReactExample name="PopoverPlacementExample" />
 #### Automatic placement
 
 Lastly, there is an `"auto"` placement which picks the side with the best available space.
 See the [popper.js docs](https://popper.js.org/docs/v2/constructors/#options) for more info.
 
 The Popover's `placement` can also be chosen _automatically_ by specifying `"auto"`, `"auto-start"`, or `"auto-end"`.
-All of these options choose and continually update the <span class="docs-popover-placement-label-side">**side**</span>
+All of these options choose and continually update the <span className="docs-popover-placement-label-side">**side**</span>
 for you to avoid overflowing the boundary element (when scrolling within it, for instance).
-The options differ in how they handle <span class="docs-popover-placement-label-alignment">**alignment**</span>:
+The options differ in how they handle <span className="docs-popover-placement-label-alignment">**alignment**</span>:
 
 - In `"auto"` mode (the default value for the `placement` prop), the Popover will align itself to the center of the target as it flips sides.
 - In `"auto-start"` mode, the Popover will align itself to the `start` of the target (i.e., the top edge when the popover is on the left or right, or the left edge when the popover is on the top or bottom).
 - In `"auto-end"` mode, the Popover will align itself to the `end` of the target (i.e., the bottom edge when the popover is on the left or right, or the right edge when the popover is on the top or bottom).
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign">
 
 You can also specify a specific initial placement (e.g. `"left"`, `"bottom-start"`) and still update the Popover's position
 automatically by enabling the modifiers `flip` and `preventOverflow`.
@@ -184,8 +181,8 @@ You may override the default modifiers with the `modifiers` prop, which is an ob
 the modifier name and its options object, respectively. See the
 [Popper.js modifiers docs page](https://popper.js.org/docs/v2/modifiers/) for more info.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Auto placement requires flip modifier</h5>
+<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
+    <h5 className="bp5-heading">Auto placement requires flip modifier</h5>
 
 Be careful when disabling the "flip" modifier, since the default "auto" placement relies on it. If you _do_ decide
 to disable this modifier, be sure to also specify a placement which is not "auto".
@@ -210,8 +207,8 @@ It is important to pay attention to the value of the `nextOpenState` parameter a
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the **Popover**'s current state).
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Disabling controlled popovers</h5>
+<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
+    <h5 className="bp5-heading">Disabling controlled popovers</h5>
 
 If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
 The popover will re-open when `disabled` is set to `false`.
@@ -273,10 +270,9 @@ The supported values are:
 The following example demonstrates the various interaction kinds (note: these Popovers contain
 [MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
-@reactExample PopoverInteractionKindExample
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Conditionally styling popover targets</h5>
+<ReactExample name="PopoverInteractionKindExample" />
+<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
+    <h5 className="bp5-heading">Conditionally styling popover targets</h5>
 
 When a popover is open, `Classes.POPOVER_OPEN` is applied to the target.
 You can use this to style the target differently when the popover is open.
@@ -312,9 +308,8 @@ any submenu item will close all submenus, which is desirable behavior for a menu
 </div>
 ```
 
-@reactExample PopoverDismissExample
-
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<ReactExample name="PopoverDismissExample" />
+<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign">
 
 Dismiss elements won't have any effect in a popover with `interactionKind="hover-target"` because there is no way to
 interact with the popover content itself: the popover is dismissed the moment the user mouses away from the target.
@@ -342,13 +337,13 @@ An error is thrown if used otherwise.
 #### Styling the backdrop
 
 By default, the popover backdrop is invisible, but you can easily add your own styles to
-`.@ns-popover-backdrop` to customize the appearance of the backdrop (for example, you could give it
+`.bp5-popover-backdrop` to customize the appearance of the backdrop (for example, you could give it
 a translucent background color, like the backdrop for the [`Dialog`](#core/components/dialog) component).
 
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Dangerous edge case</h5>
+<div className="bp5-callout bp5-intent-danger bp5-icon-error bp5-callout-has-body-content">
+    <h5 className="bp5-heading">Dangerous edge case</h5>
 
 Rendering a `<Popover isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break your application
 by covering the UI with an invisible non-interactive backdrop. This edge case must be handled by your application code
@@ -368,15 +363,14 @@ This behavior can be desirable to inherit CSS styles from surrounding elements, 
 when scrolling. Not using a **Portal** works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
-@reactExample PopoverPortalExample
-
+<ReactExample name="PopoverPortalExample" />
 ## Style
 
 ### Dark theme
 
-**Popover** automatically detects whether its trigger is nested inside a `.@ns-dark` container and applies the
+**Popover** automatically detects whether its trigger is nested inside a `.bp5-dark` container and applies the
 same class to itself. You can also explicitly apply the dark theme to the React component by providing the prop
-`popoverClassName="@ns-dark"`.
+`popoverClassName="bp5-dark"`.
 
 As a result, any component that you place inside a **Popover** (such as a `Menu`) automatically inherits the dark theme
 styles. Note that [`Tooltip`](#core/components/tooltip) uses **Popover** internally, so it also benefits from this
@@ -400,15 +394,13 @@ scrollable, add a custom class to your popover content element and attach styles
 }
 ```
 
-@reactExample PopoverSizingExample
-
+<ReactExample name="PopoverSizingExample" />
 ### Minimal style
 
 You can create a minimal popover by setting `minimal={true}`.
 This removes the arrow from the popover and makes the transitions more subtle.
 
-@reactExample PopoverMinimalExample
-
+<ReactExample name="PopoverMinimalExample" />
 This minimal style is recommended for popovers that are not triggered by an obvious action like the
 user clicking or hovering over something. For example, a minimal popover is useful for making
 typeahead menus where the menu appears almost instantly after the user starts typing.
@@ -419,7 +411,7 @@ documentation.
 
 ## Testing
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign">
 
 Your best resource for strategies in popover testing is
 [its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/core/test/popover/popoverTests.tsx)
@@ -474,7 +466,7 @@ setTimeout(() => {
 #### Element refs
 
 If `usePortal={false}` rendering is not an option, **Popover** instances expose `popoverElement` and `targetElement`
-refs of the actual DOM elements. Importantly, `popoverElement` points to the `.@ns-popover` element inside the
+refs of the actual DOM elements. Importantly, `popoverElement` points to the `.bp5-popover` element inside the
 **Portal** so you can use it to easily query popover contents without knowing precisely where they are in the DOM.
 These properties exist primarily to simplify testing; do not rely on them for feature work.
 
@@ -482,6 +474,6 @@ These properties exist primarily to simplify testing; do not rely on them for fe
 // using mount() from enzyme
 const wrapper = mount(<Popover content={<div className="test">test</div>} />);
 const { popoverElement } = wrapper.instance();
-// popoverElement is the parent element of .@ns-popover
+// popoverElement is the parent element of .bp5-popover
 popoverElement.querySelector(".test").textContent; // "test"
 ```

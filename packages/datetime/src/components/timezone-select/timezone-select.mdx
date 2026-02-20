@@ -10,8 +10,7 @@ does not depend on any external packages for the list of timezones. It uses
 import { TimezoneSelect } from "@blueprintjs/datetime";
 ```
 
-@reactExample TimezoneSelectExample
-
+<ReactExample name="TimezoneSelectExample" />
 ## Usage
 
 This component only supports **controlled** usage.
@@ -45,8 +44,8 @@ in this case, all button-specific props will be ignored:
 </TimezonePicker>
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Local timezone detection</h5>
+<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
+    <h5 className="bp5-heading">Local timezone detection</h5>
 
 **TimezoneSelect** detects the local timezone using the
 [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions)
@@ -56,4 +55,4 @@ when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in
 
 ## Props interface
 
-@interface TimezoneSelectProps
+<InterfaceTable name="TimezoneSelectProps" />

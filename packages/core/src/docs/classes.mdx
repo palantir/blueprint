@@ -10,7 +10,7 @@ downstream users (although in practice this happens very rarely).
 
 ```tsx
 // Don't do this! Avoid hardcoding Blueprint class names.
-<button className="@ns-button @ns-large">Don't do this!</button>
+<button className="bp5-button bp5-large">Don't do this!</button>
 ```
 
 The **best practice** is to add your own class to an element and then reference
@@ -69,7 +69,7 @@ by a descendant.
 
 All Blueprint CSS classes begin with a namespace prefix to isolate our styles
 from other frameworks: `.button` is a very common name, but only Blueprint
-defines `.@ns-button`.
+defines `.bp5-button`.
 
 This CSS namespace is versioned by major version of the library so two major versions of Blueprint
 can be used together on a single page.
