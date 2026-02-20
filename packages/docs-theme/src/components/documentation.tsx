@@ -304,7 +304,9 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                 <Suspense fallback={<Spinner />}>
                     <div className="docs-page" data-page-id={activePageId}>
                         {this.props.renderPageActions && (
-                            <div className="docs-page-actions">{this.props.renderPageActions(pages[activePageId]!)}</div>
+                            <div className="docs-page-actions">
+                                {this.props.renderPageActions(pages[activePageId]!)}
+                            </div>
                         )}
                         <PageOverride />
                     </div>
