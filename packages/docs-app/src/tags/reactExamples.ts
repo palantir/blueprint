@@ -18,7 +18,7 @@ import { type ComponentClass, createElement } from "react";
 
 import type { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
-import { getTheme } from "../components/blueprintDocs";
+import { getTheme } from "../common/theme";
 import * as CoreExamples from "../examples/core-examples";
 import * as DatetimeExamples from "../examples/datetime-examples";
 import * as LabsExamples from "../examples/labs-examples";

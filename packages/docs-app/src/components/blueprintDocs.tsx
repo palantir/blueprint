@@ -29,6 +29,7 @@ import {
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
+import { DARK_THEME, getTheme, LIGHT_THEME, setTheme } from "../common/theme";
 import { mdxComponents, PageRouteContext } from "../mdx/mdxComponents";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
@@ -58,10 +59,6 @@ function isPageNode(node: HeadingNode | PageNode): node is PageNode {
     return "children" in node && "reference" in node;
 }
 
-const DARK_THEME = Classes.DARK;
-const LIGHT_THEME = "";
-const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
-
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
@@ -77,15 +74,6 @@ const isNavSection = ({ route }: HeadingNode) =>
     HOOKS_PATTERN.test(route) ||
     LEGACY_PATTERN.test(route);
 
-/** Return the current theme className. */
-export function getTheme(): string {
-    return localStorage.getItem(THEME_LOCAL_STORAGE_KEY) || LIGHT_THEME;
-}
-
-/** Persist the current theme className in local storage. */
-export function setTheme(themeName: string) {
-    localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
-}
 export interface BlueprintDocsProps {
     docs: DocsCompleteData;
     defaultPageId: DocumentationProps["defaultPageId"];
