@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="calculator_1_">
-	<g>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M16,0H4C3.45,0,3,0.45,3,1v18c0,0.55,0.45,1,1,1h12c0.55,0,1-0.45,1-1V1
-			C17,0.45,16.55,0,16,0z M7,18H5v-2h2V18z M7,14H5v-2h2V14z M7,10H5V8h2V10z M11,18H9v-2h2V18z M11,14H9v-2h2V14z M11,10H9V8h2V10z
-			 M15,18h-2v-6h2V18z M15,10h-2V8h2V10z M15,6H5V2h10V6z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M3.75 13.5h8.5v-11h-8.5zm10 .25c0 .69-.56 1.25-1.25 1.25H3.75c-.356 0-.723-.074-1.02-.295a1.18 1.18 0 0 1-.48-.955V2.25c0-.362.158-.715.48-.955.297-.22.664-.295 1.02-.295h8.75c.69 0 1.25.56 1.25 1.25z"/>
+  <path d="M10.25 3.75a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5zM6.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2m-3 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2m3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
 </svg>

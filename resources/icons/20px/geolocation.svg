@@ -1,11 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="geolocation_1_">
-	<g>
-		<polygon fill-rule="evenodd" clip-rule="evenodd" points="0,8.33 9.17,10.83 11.67,20 20,0 		"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M13.978 1.105a.7.7 0 0 1 .917.917l-5.5 13a.7.7 0 0 1-1.332-.135L6.904 9.094 1.112 7.936a.7.7 0 0 1-.134-1.331zM3.614 7.008l4.023.805.1.028a.7.7 0 0 1 .449.52l.803 4.022 3.943-9.317z"/>
 </svg>

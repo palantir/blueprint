@@ -1,12 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="desktop_1_">
-	<g>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M19,0H1C0.45,0,0,0.45,0,1v13c0,0.55,0.45,1,1,1h5.67l-0.5,3H5
-			c-0.55,0-1,0.45-1,1c0,0.55,0.45,1,1,1h10c0.55,0,1-0.45,1-1c0-0.55-0.45-1-1-1h-1.17l-0.5-3H19c0.55,0,1-0.45,1-1V1
-			C20,0.45,19.55,0,19,0z M18,13H2V2h16V13z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M13.25 3.75A.25.25 0 0 0 13 3.5H3a.25.25 0 0 0-.25.25v6.75c0 .138.112.25.25.25h10a.25.25 0 0 0 .25-.25zm1.5 6.75A1.75 1.75 0 0 1 13 12.25H3a1.75 1.75 0 0 1-1.75-1.75V3.75C1.25 2.784 2.034 2 3 2h10c.966 0 1.75.784 1.75 1.75zm-4.5 2.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1 0-1.5z"/>
+  <path d="M7.314 11.195a.75.75 0 0 1 1.372.61l-1 2.249a.75.75 0 0 1-1.372-.61z"/>
+  <path d="M7.695 10.814a.75.75 0 0 1 .99.381l1 2.25a.75.75 0 0 1-1.37.609l-1-2.25a.75.75 0 0 1 .38-.99"/>
 </svg>

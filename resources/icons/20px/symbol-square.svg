@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="symbol_square_2_">
-	<g>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M15,4.01H5c-0.55,0-1,0.45-1,1v10c0,0.55,0.45,1,1,1h10c0.55,0,1-0.45,1-1v-10
-			C16,4.45,15.55,4.01,15,4.01z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M11.667 4H4.333C4.15 4 4 4.179 4 4.4v7.2c0 .22.15.4.333.4h7.334c.184 0 .333-.18.333-.4V4.4c0-.221-.15-.4-.333-.4"/>
+  <path d="M4.5 11.5h7v-7h-7zm8 .1c0 .407-.291.9-.833.9H4.333c-.542 0-.833-.493-.833-.9V4.4c0-.408.291-.9.833-.9h7.334c.542 0 .833.492.833.9z"/>
 </svg>

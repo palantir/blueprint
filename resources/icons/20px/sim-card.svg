@@ -1,12 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="sim_card_1_">
-	<g>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M16.71,5.29l-5-5C11.53,0.11,11.28,0,11,0H4C3.45,0,3,0.45,3,1v18
-			c0,0.55,0.45,1,1,1h12c0.55,0,1-0.45,1-1V6C17,5.72,16.89,5.47,16.71,5.29z M9,7h2v3H9V7z M6,7h2v3H6V7z M8,18H6v-3h2V18z M11,18
-			H9v-3h2V18z M14,18h-2v-3h2V18z M14,14H6v-3h8V14z M14,10h-2V7h2V10z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M3.75 13.25h8.5V5.81L9.19 2.75H3.75zm10 .25c0 .29-.101.57-.283.792l-.083.092a1.25 1.25 0 0 1-.884.366h-9c-.29 0-.57-.101-.792-.283l-.092-.083a1.25 1.25 0 0 1-.366-.884v-11A1.25 1.25 0 0 1 3.5 1.25h6c.199 0 .39.08.53.22l3.5 3.5c.14.14.22.331.22.53z"/>
+  <path d="M10.5 7a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-.75.75h-5a.75.75 0 0 1-.75-.75V7.75A.75.75 0 0 1 5.5 7zm-4.25 3.75h3.5V8.5h-3.5z"/>
+  <path d="M7.25 11.5V7.75a.75.75 0 0 1 1.5 0v3.75a.75.75 0 0 1-1.5 0"/>
 </svg>

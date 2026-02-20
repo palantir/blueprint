@@ -1,12 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="control_1_">
-	<g>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M17,10h-7v7h7V10z M17,3h-7v6h7V3z M9,3H3v14h6V3z M19,0H1C0.45,0,0,0.45,0,1v18
-			c0,0.55,0.45,1,1,1h18c0.55,0,1-0.45,1-1V1C20,0.45,19.55,0,19,0z M18,18H2V2h16V18z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M5 11V5h1.75v6z"/>
+  <path d="M6.75 4.25A.75.75 0 0 1 7.5 5v6a.75.75 0 0 1-.75.75H5a.75.75 0 0 1-.75-.75V5A.75.75 0 0 1 5 4.25zm-1 6H6v-4.5h-.25zm3.5-3.5V5H11v1.75z"/>
+  <path d="M11 4.25a.75.75 0 0 1 .75.75v1.75a.75.75 0 0 1-.75.75H9.25a.75.75 0 0 1-.75-.75V5a.75.75 0 0 1 .75-.75zM10 6h.25v-.25H10zm-.75 5V9.25H11V11z"/>
+  <path d="M11 8.5a.75.75 0 0 1 .75.75V11a.75.75 0 0 1-.75.75H9.25A.75.75 0 0 1 8.5 11V9.25a.75.75 0 0 1 .75-.75zm-1 1.75h.25V10H10z"/>
+  <path d="M13.5 1.749a.75.75 0 0 1 .75.75v11a.75.75 0 0 1-.75.75h-11a.75.75 0 0 1-.75-.75v-11a.75.75 0 0 1 .75-.75zm-10.25 11h9.5v-9.5h-9.5z"/>
 </svg>
