@@ -22,6 +22,11 @@ import { propsRegistry } from "@blueprintjs/docs-data";
 import { PropsTable } from "@blueprintjs/docs-theme";
 import { Link } from "@blueprintjs/icons";
 
+import * as coreExamples from "../examples/core-examples";
+import * as datetimeExamples from "../examples/datetime-examples";
+import * as labsExamples from "../examples/labs-examples";
+import * as selectExamples from "../examples/select-examples";
+import * as tableExamples from "../examples/table-examples";
 import * as ReactDocsComponents from "../tags/reactDocs";
 // ---------------------------------------------------------------------------
 // Page route context — used by MdxHeading to construct data-route attributes
@@ -120,7 +125,15 @@ function MdxHeading({ level, children }: { level: number; children?: React.React
 
 /** Component map for MDXProvider. */
 export const mdxComponents = {
-    // Custom component tags (sorted alphabetically)
+    // Example components from each package
+    ...coreExamples,
+    ...datetimeExamples,
+    ...selectExamples,
+    ...tableExamples,
+    ...labsExamples,
+    // ReactDocs components (color palettes, color schemes, icons, welcome)
+    ...ReactDocsComponents,
+    // Bridge components
     CssExample,
     InterfaceTable,
     MethodTable,
