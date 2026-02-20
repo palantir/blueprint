@@ -15,9 +15,9 @@
  */
 
 import { expect } from "chai";
-import { format, parse } from "date-fns";
+import { format, type Locale, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
-import esLocale from "date-fns/locale/es";
+import { es as esLocale } from "date-fns/locale/es";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";

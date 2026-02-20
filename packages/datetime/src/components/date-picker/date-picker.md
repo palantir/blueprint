@@ -118,7 +118,7 @@ Use the `locale: Locale` type if you wish to statically load date-fns locale mod
 
 ```ts
 import { DatePicker } from "@blueprintjs/datetime";
-import enUS from "date-fns/locale/en-US";
+import { enUS } from "date-fns/locale/en-US";
 
 function Example() {
     return <DatePicker locale={enUS} />;
