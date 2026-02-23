@@ -218,10 +218,11 @@
     &:disabled,
     &.#{$ns}-disabled {
       background-color: color-mix(in oklch, var(--bp-intent-warning-rest) 50%, transparent);
+      color: color-mix(in oklch, var(--bp-intent-warning-foreground), 38%, transparent);
 
       .#{$ns}-dark &,
       [data-bp-color-scheme="dark"] & {
-        color: var(--bp-typography-color-default-disabled);
+        color: color-mix(in oklch, var(--bp-intent-warning-foreground) 50%, transparent);
       }
     }
 
@@ -232,7 +233,7 @@
       .#{$ns}-dark &,
       [data-bp-color-scheme="dark"] & {
         &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-          fill: var(--bp-intent-warning-rest);
+          fill: var(--bp6-button-warning-rest);
         }
       }
     }
