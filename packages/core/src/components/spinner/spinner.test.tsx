@@ -38,7 +38,7 @@ describe("Spinner", () => {
             const spinner = screen.getByRole("progressbar");
             expect(spinner).toHaveAttribute("aria-valuenow", String(VALUE * 100));
         });
-        ``;
+
         it("supports arbitrary ARIA HTML attributes", () => {
             const LABEL = "widget loading";
             render(<Spinner aria-label={LABEL} />);
