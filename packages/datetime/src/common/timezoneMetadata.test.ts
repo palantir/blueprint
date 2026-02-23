@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { UTC_TIME } from "../../src/common/timezoneItems";
-import { getTimezoneMetadata } from "../../src/common/timezoneMetadata";
-import { lookupTimezoneOffset } from "../../src/common/timezoneOffsetUtils";
-import type { TimezoneWithoutOffset } from "../../src/common/timezoneTypes";
+import { UTC_TIME } from "./timezoneItems";
+import { getTimezoneMetadata } from "./timezoneMetadata";
+import { lookupTimezoneOffset } from "./timezoneOffsetUtils";
+import type { TimezoneWithoutOffset } from "./timezoneTypes";
 
 const LONDON_TZ_IANA = "Europe/London";
 const NEW_YORK_TZ_IANA = "America/New_York";
@@ -28,13 +28,13 @@ const TOKYO_TIMEZONE: TimezoneWithoutOffset = { ianaCode: "Asia/Tokyo", label: "
 const NEPAL_TIMEZONE: TimezoneWithoutOffset = { ianaCode: "Asia/Kathmandu", label: "Kathmandu" };
 
 describe("getTimezoneMetadata", () => {
-    it("Returns valid metadata for common timezones", () => {
+    it("should return valid metadata for common timezones", () => {
         for (const tzCode of [UTC_TIME.ianaCode, LONDON_TZ_IANA, NEW_YORK_TZ_IANA]) {
             const metadata = getTimezoneMetadata(tzCode);
-            expect(metadata).not.to.be.undefined;
-            expect(metadata?.label).to.exist;
-            expect(metadata?.longName).to.exist;
-            expect(metadata?.ianaCode).to.equal(tzCode);
+            expect(metadata).toBeDefined();
+            expect(metadata?.label).toBeTruthy();
+            expect(metadata?.longName).toBeTruthy();
+            expect(metadata?.ianaCode).toBe(tzCode);
         }
     });
 });
@@ -43,23 +43,23 @@ describe("lookupTimezoneOffset", () => {
     const WINTER_DATE = new Date(2023, 0, 1, 12);
     const SUMMER_DATE = new Date(2023, 6, 1, 12);
 
-    it("gets the correct offset for New York during standard time", () => {
+    it("should get the correct offset for New York during standard time", () => {
         const { offset } = lookupTimezoneOffset(NEW_YORK_TIMEZONE, WINTER_DATE);
-        expect(offset).to.equal("-05:00");
+        expect(offset).toBe("-05:00");
     });
 
-    it("gets the correct offset for New York during daylight saving time", () => {
+    it("should get the correct offset for New York during daylight saving time", () => {
         const { offset } = lookupTimezoneOffset(NEW_YORK_TIMEZONE, SUMMER_DATE);
-        expect(offset).to.equal("-04:00");
+        expect(offset).toBe("-04:00");
     });
 
-    it("gets the corret offset for a timezone that doesn't use daylight saving", () => {
+    it("should get the correct offset for a timezone that doesn't use daylight saving", () => {
         const { offset } = lookupTimezoneOffset(TOKYO_TIMEZONE, SUMMER_DATE);
-        expect(offset).to.equal("+09:00");
+        expect(offset).toBe("+09:00");
     });
 
-    it("gets the correct offset for non-standard offset timezones", () => {
+    it("should get the correct offset for non-standard offset timezones", () => {
         const { offset } = lookupTimezoneOffset(NEPAL_TIMEZONE, SUMMER_DATE);
-        expect(offset).to.equal("+05:45");
+        expect(offset).toBe("+05:45");
     });
 });

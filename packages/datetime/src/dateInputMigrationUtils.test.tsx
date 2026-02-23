@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { useCallback, useMemo } from "react";
 
-import { DateInput as DateInput2, DateInputMigrationUtils, TimePrecision } from "../src";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
+import { TimePrecision } from "./common/timePrecision";
+import { DateInput } from "./components/date-input/dateInput";
+import * as DateInputMigrationUtils from "./dateInputMigrationUtils";
 
 const dateFormattingProps = {
     formatDate: (date: Date | null | undefined) =>
@@ -41,9 +44,9 @@ const uncontrolledDateInputProps = {
 };
 
 describe("DateInput2MigrationUtils", () => {
-    it("Applying onChange + value adapters renders DateInput without error", () => {
-        mount(
-            <DateInput2
+    it("should render DateInput without error when applying onChange + value adapters", () => {
+        render(
+            <DateInput
                 {...dateFormattingProps}
                 onChange={DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
                 value={DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value)}
@@ -51,10 +54,10 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("Value adapter accepts time precision", () => {
+    it("should accept time precision with value adapter", () => {
         const precision = TimePrecision.MINUTE;
-        mount(
-            <DateInput2
+        render(
+            <DateInput
                 {...dateFormattingProps}
                 timePrecision={precision}
                 onChange={DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
@@ -63,7 +66,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("Value adapter infers time precision from Date object", () => {
+    it("should infer time precision from Date object with value adapter", () => {
         const date = new Date();
 
         // TimePrecision.SECOND forces the string to exclude the date's milliseconds value
@@ -71,16 +74,16 @@ describe("DateInput2MigrationUtils", () => {
         const valueWithExplicitPrecision = DateInputMigrationUtils.valueAdapter(date, TimePrecision.SECOND);
 
         date.setHours(0, 0, 10, 0);
-        assert.strictEqual(DateInputMigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+        expect(DateInputMigrationUtils.valueAdapter(date)).toBe(valueWithExplicitPrecision);
 
         date.setHours(0, 0, 10, 100);
-        assert.notStrictEqual(DateInputMigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+        expect(DateInputMigrationUtils.valueAdapter(date)).not.toBe(valueWithExplicitPrecision);
     });
 
-    it("Default value adapter works as expected", () => {
+    it("should work with default value adapter", () => {
         const precision = TimePrecision.MINUTE;
-        mount(
-            <DateInput2
+        render(
+            <DateInput
                 {...dateFormattingProps}
                 timePrecision={precision}
                 onChange={DateInputMigrationUtils.onChangeAdapter(uncontrolledDateInputProps.onChange)}
@@ -92,7 +95,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("Adapters work in common usage pattern with React.useCallback + React.useMemo", () => {
+    it("should work with React.useCallback + React.useMemo", () => {
         function TestComponent() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             const handleChange = useCallback(
@@ -101,9 +104,9 @@ describe("DateInput2MigrationUtils", () => {
             );
             const value = useMemo(() => DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value), []);
 
-            return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;
+            return <DateInput {...dateFormattingProps} onChange={handleChange} value={value} />;
         }
 
-        mount(<TestComponent />);
+        render(<TestComponent />);
     });
 });
