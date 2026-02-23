@@ -16,20 +16,17 @@
 
 import { render, screen } from "@testing-library/react";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { type OptionProps } from "../../common";
 
 import { HTMLSelect } from "./htmlSelect";
 
 describe("<HtmlSelect>", () => {
-    const emptyHandler = () => true;
-
     it("renders options strings", () => {
-        render(<HTMLSelect onChange={emptyHandler} options={["a", "b"]} />);
-        const options = screen.getAllByRole("option");
-        expect(options[0]).toHaveTextContent("a");
-        expect(options[1]).toHaveTextContent("b");
+        render(<HTMLSelect onChange={vi.fn()} options={["a", "b"]} />);
+        expect(screen.getByRole("option", { name: "a" })).toHaveValue("a");
+        expect(screen.getByRole("option", { name: "b" })).toHaveValue("b");
     });
 
     it("renders options props", () => {
@@ -39,11 +36,12 @@ describe("<HtmlSelect>", () => {
             { disabled: true, value: "c" },
             { label: "Dog", value: "d" },
         ];
-        render(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />);
-        const options = screen.getAllByRole("option");
-        expect(options[0]).toHaveTextContent("a");
-        expect(options[1]).toHaveClass("foo");
-        expect(options[2]).toBeDisabled();
-        expect(options[3]).toHaveTextContent("Dog");
+        render(<HTMLSelect onChange={vi.fn()} options={OPTIONS} />);
+        expect(screen.getByRole("option", { name: "a" })).toHaveValue("a");
+        expect(screen.getByRole("option", { name: "b" })).toHaveValue("b");
+        expect(screen.getByRole("option", { name: "b" })).toHaveClass("foo");
+        expect(screen.getByRole("option", { name: "c" })).toHaveValue("c");
+        expect(screen.getByRole("option", { name: "c" })).toBeDisabled();
+        expect(screen.getByRole("option", { name: "Dog" })).toHaveValue("d");
     });
 });
