@@ -228,7 +228,6 @@ $button-dark-minimal-active-text-colors: (
 
 @mixin pt-button-default-colors() {
   // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
-  /* stylelint-disable-next-line color-named */
   background-color: color-mix(in srgb, var(--bp-intent-default-rest) 5%, var(--bp-palette-white));
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
@@ -240,7 +239,6 @@ $button-dark-minimal-active-text-colors: (
 @mixin pt-button-hover() {
   background-clip: padding-box;
   // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
-  /* stylelint-disable-next-line color-named */
   background-color: color-mix(in srgb, var(--bp-intent-default-hover) 9%, var(--bp-palette-white));
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
@@ -249,8 +247,7 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-active() {
-  // TODO: Consider changing color channels for color mix
-  /* stylelint-disable-next-line color-named */
+  // Use srgb to avoid hue shift with near-neutral gray
   background-color: color-mix(
     in srgb,
     var(--bp-intent-default-active) 16%,
@@ -341,7 +338,6 @@ $button-dark-minimal-active-text-colors: (
   &:active,
   &.#{$ns}-active {
     // Use srgb to avoid hue shift with near-neutral gray
-    /* stylelint-disable-next-line color-named */
     color: color-mix(in srgb, var(--bp-intent-default-hover) 4%, var(--bp-palette-white));
   }
 
