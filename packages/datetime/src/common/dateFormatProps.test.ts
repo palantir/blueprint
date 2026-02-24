@@ -5,9 +5,9 @@
 import { expect } from "chai";
 import { format } from "date-fns";
 
-import { getFormattedDateString } from "../../src/common/dateFormatProps";
-import { Months } from "../../src/common/months";
-import { OUT_OF_RANGE_MESSAGE } from "../../src/components/dateConstants";
+import { getFormattedDateString } from "./dateFormatProps";
+import { Months } from "./months";
+import { OUT_OF_RANGE_MESSAGE } from "../components/dateConstants";
 
 const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
 

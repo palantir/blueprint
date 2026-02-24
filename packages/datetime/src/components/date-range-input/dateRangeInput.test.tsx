@@ -35,10 +35,10 @@ import {
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, type DateFormatProps, type DateRange, Months, TimePrecision } from "../../src";
-import { ReactDayPickerClasses } from "../../src/common/classes";
-import { DateRangeInput, type DateRangeInputProps } from "../../src/components/date-range-input/dateRangeInput";
-import { DateRangePicker } from "../../src/components/date-range-picker/dateRangePicker";
+import { Classes, type DateFormatProps, type DateRange, Months, TimePrecision } from "../..";
+import { ReactDayPickerClasses } from "../../common/classes";
+import { DateRangeInput, type DateRangeInputProps } from "../date-range-input/dateRangeInput";
+import { DateRangePicker } from "./dateRangePicker";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 type NullableRange<T> = [T | null, T | null];

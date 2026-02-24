@@ -35,12 +35,12 @@ import {
     type NonNullDateRange,
     TimePicker,
     type TimePrecision,
-} from "../../src";
-import { ReactDayPickerClasses } from "../../src/common/classes";
-import { DateRangePicker, type DateRangePickerProps } from "../../src/components/date-range-picker/dateRangePicker";
-import type { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePickerState";
-import { assertDayDisabled } from "../common/dayPickerTestUtils";
-import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
+} from "../..";
+import { ReactDayPickerClasses } from "../../common/classes";
+import { DateRangePicker, type DateRangePickerProps } from "../date-range-picker/dateRangePicker";
+import type { DateRangePickerState } from "../date-range-picker/dateRangePickerState";
+import { assertDayDisabled } from "../../common/dayPickerTestUtils";
+import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
 
 // Change the default for testability
 (DateRangePicker.defaultProps as DateRangePickerProps).dateFnsLocaleLoader = loadDateFnsLocaleFake;

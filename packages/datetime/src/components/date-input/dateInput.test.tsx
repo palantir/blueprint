@@ -33,12 +33,12 @@ import {
     TimezoneNameUtils,
     TimezoneSelect,
     TimezoneUtils,
-} from "../../src";
-import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
-import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
-import { DateInput, type DateInputProps } from "../../src/components/date-input/dateInput";
-import { DatePicker } from "../../src/components/date-picker/datePicker";
-import { INVALID_DATE_MESSAGE, LOCALE } from "../../src/components/dateConstants";
+} from "../..";
+import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../common/dateFnsFormatUtils";
+import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
+import { DateInput, type DateInputProps } from "./dateInput";
+import { DatePicker } from "../date-picker/datePicker";
+import { INVALID_DATE_MESSAGE, LOCALE } from "../dateConstants";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;

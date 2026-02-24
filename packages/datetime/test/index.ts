@@ -8,15 +8,15 @@ import "./test-debugging-styles.scss";
 
 import "@blueprintjs/test-commons/bootstrap";
 
-import "./common/dateFormatPropsTests";
-import "./common/dateUtilsTests";
-import "./common/timezoneMetadataTests";
-import "./common/timezoneUtilsTest";
+import "../src/common/dateFormatProps.test";
+import "../src/common/dateUtils.test";
+import "../src/common/timezoneMetadata.test";
+import "../src/common/timezoneUtils.test";
 
-import "./components/dateInputTests";
-import "./components/datePickerTests";
-import "./components/dateRangeInputTests";
-import "./components/dateRangePickerTests";
+import "../src/components/date-input/dateInput.test";
+import "../src/components/date-picker/datePicker.test";
+import "../src/components/date-range-input/dateRangeInput.test";
+import "../src/components/date-range-picker/dateRangePicker.test";
 import "./components/timePickerTests";
 
-import "./dateInputMigrationUtilsTests";
+import "../src/dateInputMigrationUtils.test";

@@ -30,11 +30,11 @@ import {
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
 
-import { TimezoneSelect, type TimezoneSelectProps } from "../../src";
-import { getCurrentTimezone } from "../../src/common/getTimezone";
-import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
-import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../src/common/timezoneNameUtils";
-import type { TimezoneWithNames } from "../../src/common/timezoneTypes";
+import { TimezoneSelect, type TimezoneSelectProps } from "../..";
+import { getCurrentTimezone } from "../../common/getTimezone";
+import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
+import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../common/timezoneNameUtils";
+import type { TimezoneWithNames } from "../../common/timezoneTypes";
 
 const LOS_ANGELES_TZ = "America/Los_Angeles";
 let CURRENT_TZ = getCurrentTimezone();

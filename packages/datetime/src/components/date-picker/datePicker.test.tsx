@@ -32,9 +32,9 @@ import {
     Months,
     TimePicker,
     TimePrecision,
-} from "../../src";
-import { DatePicker, type DatePickerProps } from "../../src/components/date-picker/datePicker";
-import type { DatePickerState } from "../../src/components/date-picker/datePickerState";
+} from "../..";
+import { DatePicker, type DatePickerProps } from "./datePicker";
+import type { DatePickerState } from "./datePickerState";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
