@@ -18,7 +18,13 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type HeadingNode, npmData, type PageNode, type PageRegistryEntry, propsRegistry } from "@blueprintjs/docs-data";
+import {
+    type HeadingNode,
+    npmData,
+    type PageNode,
+    type PageRegistryEntry,
+    propsRegistry,
+} from "@blueprintjs/docs-data";
 import {
     Banner,
     type DocsData,
