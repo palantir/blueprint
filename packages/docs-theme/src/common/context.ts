@@ -18,6 +18,8 @@ import { createContext, type ReactNode } from "react";
 
 import type { HeadingNode, PageNode, PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 
+import type { PropsTableProps } from "../components/propsTable";
+
 /** Documentation data needed by the theme. */
 export interface DocsData {
     nav: Array<PageNode | HeadingNode>;
@@ -38,6 +40,9 @@ export interface DocumentationContextApi {
 
     /** Open the API browser to the given member name. */
     showApiDocs: (name: string) => void;
+
+    /** Look up props/interface data by name for rendering parent interface drawers. */
+    getPropsData?: (name: string) => PropsTableProps | undefined;
 }
 
 export const DocumentationContext = createContext<DocumentationContextApi>({

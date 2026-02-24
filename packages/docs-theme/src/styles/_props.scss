@@ -133,3 +133,49 @@
   margin-bottom: $heading-margin;
   margin-top: $heading-margin * 0.5;
 }
+
+// Clickable interface link (extends clause, type references, "Inherited from" tag)
+.docs-parent-link {
+  cursor: pointer;
+  color: $blue3;
+
+  &:hover {
+    color: $blue2;
+    text-decoration: underline;
+  }
+
+  code {
+    color: $blue3 !important;
+  }
+
+  &:hover code {
+    color: $blue2 !important;
+    text-decoration: underline;
+  }
+
+  .#{$ns}-dark & {
+    color: $blue4;
+
+    &:hover {
+      color: $blue5;
+    }
+
+    code {
+      color: $blue4 !important;
+    }
+
+    &:hover code {
+      color: $blue5 !important;
+    }
+  }
+}
+
+// "extends" keyword and comma separators in interface header
+.docs-extends-clause {
+  font-weight: 400;
+  color: $pt-text-color-muted;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-text-color-muted;
+  }
+}

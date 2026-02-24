@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type HeadingNode, npmData, type PageNode, type PageRegistryEntry } from "@blueprintjs/docs-data";
+import { type HeadingNode, npmData, type PageNode, type PageRegistryEntry, propsRegistry } from "@blueprintjs/docs-data";
 import {
     Banner,
     type DocsData,
@@ -26,6 +26,7 @@ import {
     type DocumentationProps,
     NavMenuItem,
     type NavMenuItemProps,
+    type PropsTableProps,
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
@@ -55,6 +56,10 @@ const isNavSection = ({ route }: HeadingNode) =>
     CONTEXT_PATTERN.test(route) ||
     HOOKS_PATTERN.test(route) ||
     LEGACY_PATTERN.test(route);
+
+function getPropsData(name: string): PropsTableProps | undefined {
+    return propsRegistry[name];
+}
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -112,6 +117,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                         className={this.state.themeName}
                         banner={banner}
                         footer={footer}
+                        getPropsData={getPropsData}
                         header={header}
                         navigatorExclude={isNavSection}
                         onComponentUpdate={this.handleComponentUpdate}

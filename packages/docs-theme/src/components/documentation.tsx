@@ -29,6 +29,7 @@ import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import type { NavMenuItemProps } from "./navMenuItem";
+import type { PropsTableProps } from "./propsTable";
 import { addScrollbarStyle } from "./scrollbar";
 
 export interface DocumentationProps extends Props {
@@ -91,6 +92,13 @@ export interface DocumentationProps extends Props {
      * Actions appear in an element in the upper-right corner of the page.
      */
     renderPageActions?: (page: PageRegistryEntry) => React.ReactNode;
+
+    /**
+     * Optional callback to look up interface/props data by name.
+     * When provided, PropsTable will render parent interface names as clickable links
+     * that open a Drawer with the parent's props.
+     */
+    getPropsData?: (name: string) => PropsTableProps | undefined;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
@@ -256,9 +264,10 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     }
 
     private getDocumentationContextApi(): DocumentationContextApi {
-        const { docs, renderViewSourceLinkText } = this.props;
+        const { docs, getPropsData, renderViewSourceLinkText } = this.props;
         return {
             getDocsData: () => docs,
+            getPropsData,
             renderViewSourceLinkText: renderViewSourceLinkText ?? (() => "View source"),
             showApiDocs: () => void 0,
         };
