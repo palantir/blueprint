@@ -218,7 +218,6 @@
     &:disabled,
     &.#{$ns}-disabled {
       background-color: color-mix(in oklch, var(--bp-intent-warning-rest) 40%, transparent);
-      color: color-mix(in oklch, var(--bp-intent-warning-foreground), 38%, transparent);
 
       .#{$ns}-dark &,
       [data-bp-color-scheme="dark"] & {
@@ -239,13 +238,7 @@
       .#{$ns}-dark &,
       [data-bp-color-scheme="dark"] & {
         &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-          fill: color-mix(in oklch, var(--bp-intent-warning-rest) 50%, transparent);
-        }
-
-        // Use rest color at lower opacity instead of the pre-lightened dark text color
-        &:disabled,
-        &.#{$ns}-disabled {
-          color: color-mix(in oklch, var(--bp-intent-warning-rest) 35%, transparent);
+          fill: color-mix(in oklch, var(--bp-intent-warning-rest) 35%, transparent);
         }
       }
     }
