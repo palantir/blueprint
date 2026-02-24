@@ -136,8 +136,8 @@
 
 // Clickable interface link (extends clause, type references, "Inherited from" tag)
 .docs-parent-link {
-  cursor: pointer;
   color: $blue3;
+  cursor: pointer;
 
   &:hover {
     color: $blue2;
@@ -145,6 +145,7 @@
   }
 
   code {
+    /* stylelint-disable declaration-no-important */
     color: $blue3 !important;
   }
 
@@ -172,8 +173,8 @@
 
 // "extends" keyword and comma separators in interface header
 .docs-extends-clause {
-  font-weight: 400;
   color: $pt-text-color-muted;
+  font-weight: 400;
 
   .#{$ns}-dark & {
     color: $pt-dark-text-color-muted;
