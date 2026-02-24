@@ -17,7 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 import { useState } from "react";
 
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { NumericInput } from "../forms/numericInput";
@@ -73,45 +73,45 @@ describe("<PanelStack>", () => {
     describe("uncontrolled mode", () => {
         it("renders a basic panel and allows opening and closing", () => {
             panelStackWrapper = renderPanelStack({ initialPanel });
-            assert.exists(panelStackWrapper);
+            expect(panelStackWrapper).toBeDefined();
 
             const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            assert.exists(newPanelButton);
+            expect(newPanelButton).toBeDefined();
             newPanelButton.simulate("click");
 
             const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(newPanelHeader);
-            assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
+            expect(newPanelHeader).toBeDefined();
+            expect(newPanelHeader.at(0).text()).toBe("New Panel 1");
 
             const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            assert.exists(backButton);
+            expect(backButton).toBeDefined();
             backButton.simulate("click");
 
             const oldPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(oldPanelHeader);
-            assert.equal(oldPanelHeader.at(1).text(), "Test Title");
+            expect(oldPanelHeader).toBeDefined();
+            expect(oldPanelHeader.at(1).text()).toBe("Test Title");
         });
 
         it("renders a panel stack without header and allows opening and closing", () => {
             panelStackWrapper = renderPanelStack({ initialPanel, showPanelHeader: false });
-            assert.exists(panelStackWrapper);
+            expect(panelStackWrapper).toBeDefined();
 
             const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            assert.exists(newPanelButton);
+            expect(newPanelButton).toBeDefined();
             newPanelButton.simulate("click");
 
             const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.lengthOf(newPanelHeader, 0);
+            expect(newPanelHeader).toHaveLength(0);
 
             const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            assert.lengthOf(backButton, 0);
+            expect(backButton).toHaveLength(0);
 
             const closePanel = panelStackWrapper.find("#close-panel-button");
-            assert.exists(closePanel);
+            expect(closePanel).toBeDefined();
             closePanel.last().simulate("click");
 
             const oldPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.lengthOf(oldPanelHeader, 0);
+            expect(oldPanelHeader).toHaveLength(0);
         });
 
         it("does not call the callback handler onClose when there is only a single panel on the stack", () => {
@@ -119,7 +119,7 @@ describe("<PanelStack>", () => {
             panelStackWrapper = renderPanelStack({ initialPanel, onClose });
 
             const closePanel = panelStackWrapper.find("#close-panel-button");
-            assert.exists(closePanel);
+            expect(closePanel).toBeDefined();
 
             closePanel.simulate("click");
             expect(onClose).not.toHaveBeenCalled();
@@ -131,13 +131,13 @@ describe("<PanelStack>", () => {
             panelStackWrapper = renderPanelStack({ initialPanel, onClose, onOpen });
 
             const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            assert.exists(newPanelButton);
+            expect(newPanelButton).toBeDefined();
             newPanelButton.simulate("click");
             expect(onOpen).toHaveBeenCalledOnce();
             expect(onClose).not.toHaveBeenCalled();
 
             const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            assert.exists(backButton);
+            expect(backButton).toBeDefined();
             backButton.simulate("click");
             expect(onClose).toHaveBeenCalledOnce();
             expect(onOpen).toHaveBeenCalledOnce();
@@ -146,44 +146,42 @@ describe("<PanelStack>", () => {
         it("does not have the back button when only a single panel is on the stack", () => {
             panelStackWrapper = renderPanelStack({ initialPanel });
             const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            assert.lengthOf(backButton, 0);
+            expect(backButton).toHaveLength(0);
         });
 
         it("assigns the class to TransitionGroup", () => {
             const TEST_CLASS_NAME = "TEST_CLASS_NAME";
             panelStackWrapper = renderPanelStack({ className: TEST_CLASS_NAME, initialPanel });
-            assert.isTrue(panelStackWrapper.hasClass(TEST_CLASS_NAME));
+            expect(panelStackWrapper.hasClass(TEST_CLASS_NAME)).toBe(true);
 
             const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;
-            assert.exists(transitionGroupClassName);
-            assert.equal(transitionGroupClassName!.indexOf(Classes.PANEL_STACK), 0);
+            expect(transitionGroupClassName).toBeDefined();
+            expect(transitionGroupClassName!.indexOf(Classes.PANEL_STACK)).toBe(0);
         });
 
         it("can render a panel without a title", () => {
             panelStackWrapper = renderPanelStack({ initialPanel: emptyTitleInitialPanel });
-            assert.exists(panelStackWrapper);
+            expect(panelStackWrapper).toBeDefined();
 
             const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            assert.exists(newPanelButton);
+            expect(newPanelButton).toBeDefined();
             newPanelButton.simulate("click");
 
             const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            assert.equal(
+            expect(
                 backButtonWithoutTitle.prop("aria-label"),
-                "Back",
                 "expected icon-only back button to have accessible label",
-            );
+            ).toBe("Back");
 
             const newPanelButtonOnNotEmpty = panelStackWrapper.find("#new-panel-button").hostNodes().at(1);
-            assert.exists(newPanelButtonOnNotEmpty);
+            expect(newPanelButtonOnNotEmpty).toBeDefined();
             newPanelButtonOnNotEmpty.simulate("click");
 
             const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK).hostNodes().at(1);
-            assert.equal(
+            expect(
                 backButtonWithTitle.prop("aria-label"),
-                "Back",
                 "expected icon-only back button to have accessible label",
-            );
+            ).toBe("Back");
         });
     });
 
@@ -191,16 +189,16 @@ describe("<PanelStack>", () => {
         it("can render a panel stack in controlled mode", () => {
             const stack = [initialPanel];
             panelStackWrapper = renderPanelStack({ stack });
-            assert.exists(panelStackWrapper);
+            expect(panelStackWrapper).toBeDefined();
 
             const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            assert.exists(newPanelButton);
+            expect(newPanelButton).toBeDefined();
             newPanelButton.simulate("click");
 
             // Expect the same panel as before since onOpen is not handled
             const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(newPanelHeader);
-            assert.equal(newPanelHeader.at(0).text(), "Test Title");
+            expect(newPanelHeader).toBeDefined();
+            expect(newPanelHeader.at(0).text()).toBe("Test Title");
         });
 
         it("can open a panel in controlled mode", () => {
@@ -211,16 +209,16 @@ describe("<PanelStack>", () => {
                 },
                 stack,
             });
-            assert.exists(panelStackWrapper);
+            expect(panelStackWrapper).toBeDefined();
 
             const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            assert.exists(newPanelButton);
+            expect(newPanelButton).toBeDefined();
             newPanelButton.simulate("click");
             panelStackWrapper.setProps({ stack });
 
             const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(newPanelHeader);
-            assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
+            expect(newPanelHeader).toBeDefined();
+            expect(newPanelHeader.at(0).text()).toBe("New Panel 1");
         });
 
         it("can render a panel stack with multiple initial panels and close one", () => {
@@ -231,20 +229,20 @@ describe("<PanelStack>", () => {
                 },
                 stack,
             });
-            assert.exists(panelStackWrapper);
+            expect(panelStackWrapper).toBeDefined();
 
             const panelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(panelHeader);
-            assert.equal(panelHeader.at(0).text(), "New Panel 1");
+            expect(panelHeader).toBeDefined();
+            expect(panelHeader.at(0).text()).toBe("New Panel 1");
 
             const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            assert.exists(backButton);
+            expect(backButton).toBeDefined();
             backButton.simulate("click");
             panelStackWrapper.setProps({ stack });
 
             const firstPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(firstPanelHeader);
-            assert.equal(firstPanelHeader.at(0).text(), "Test Title");
+            expect(firstPanelHeader).toBeDefined();
+            expect(firstPanelHeader.at(0).text()).toBe("Test Title");
         });
 
         it("renders only one panel by default", () => {
@@ -255,9 +253,9 @@ describe("<PanelStack>", () => {
             panelStackWrapper = renderPanelStack({ stack });
 
             const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
-            assert.exists(panelHeaders);
-            assert.lengthOf(panelHeaders, 1);
-            assert.equal(panelHeaders.at(0).text(), stack[1].title);
+            expect(panelHeaders).toBeDefined();
+            expect(panelHeaders).toHaveLength(1);
+            expect(panelHeaders.at(0).text()).toBe(stack[1].title);
         });
 
         describe("with renderActivePanelOnly={false}", () => {
@@ -269,10 +267,10 @@ describe("<PanelStack>", () => {
                 panelStackWrapper = renderPanelStack({ renderActivePanelOnly: false, stack });
 
                 const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
-                assert.exists(panelHeaders);
-                assert.lengthOf(panelHeaders, 2);
-                assert.equal(panelHeaders.at(0).text(), stack[0].title);
-                assert.equal(panelHeaders.at(1).text(), stack[1].title);
+                expect(panelHeaders).toBeDefined();
+                expect(panelHeaders).toHaveLength(2);
+                expect(panelHeaders.at(0).text()).toBe(stack[0].title);
+                expect(panelHeaders.at(1).text()).toBe(stack[1].title);
             });
 
             it("keeps panels mounted", () => {
@@ -289,9 +287,9 @@ describe("<PanelStack>", () => {
                 });
 
                 const incrementButton = panelStackWrapper.find(`[aria-label="increment"]`);
-                assert.exists(incrementButton);
+                expect(incrementButton).toBeDefined();
                 incrementButton.hostNodes().simulate("mousedown");
-                assert.equal(getFirstPanelCounterValue(), 1, "clicking increment button should increase counter");
+                expect(getFirstPanelCounterValue(), "clicking increment button should increase counter").toBe(1);
 
                 const newPanelButton = panelStackWrapper.find("#new-panel-button");
                 newPanelButton.hostNodes().simulate("click");
@@ -300,16 +298,15 @@ describe("<PanelStack>", () => {
                 const backButton = panelStackWrapper.find(`[aria-label="Back"]`);
                 backButton.hostNodes().simulate("click");
                 panelStackWrapper.setProps({ stack });
-                assert.equal(
+                expect(
                     getFirstPanelCounterValue(),
-                    1,
                     "first panel should retain its counter state when we return to it",
-                );
+                ).toBe(1);
             });
 
             function getFirstPanelCounterValue() {
                 const counterValue = panelStackWrapper.find(`[aria-label="counter value"]`);
-                assert.exists(counterValue);
+                expect(counterValue).toBeDefined();
                 return parseInt(counterValue.hostNodes().first().text().trim(), 10);
             }
         });

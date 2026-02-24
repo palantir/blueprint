@@ -17,16 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
 
-import {
-    afterAll,
-    afterEach,
-    assert,
-    describe,
-    expect,
-    it,
-    type MockInstance,
-    vi,
-} from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
 import { sleep } from "../../common/test-utils";
 
@@ -96,8 +87,8 @@ describe.skip("<ResizeSensor>", () => {
         await resize({ width: RESIZE_WIDTH });
         expect(onResize).toHaveBeenCalledOnce();
         assertResizeArgs(onResize, [`${RESIZE_WIDTH}x0`]);
-        assert.isNotNull(targetRef.current, "user-provided targetRef should be set");
-        assert.strictEqual(targetRef.current?.clientWidth, RESIZE_WIDTH, "user-provided targetRef.current.clientWidth");
+        expect(targetRef.current, "user-provided targetRef should be set").not.toBeNull();
+        expect(targetRef.current?.clientWidth, "user-provided targetRef.current.clientWidth").toBe(RESIZE_WIDTH);
     });
 
     function mountResizeSensor(props: Omit<ResizeSensorProps, "children">) {

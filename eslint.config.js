@@ -63,7 +63,12 @@ module.exports = tseslint.config([
         },
     },
     {
-        files: ["**/webpack.config.{js,mjs}", "**/vitest.config.{ts,js,mts,mjs}", "**/scripts/*.{js,mjs}"],
+        files: [
+            "**/webpack.config.{js,mjs}",
+            "**/vitest.config.{ts,js,mts,mjs}",
+            "**/scripts/*.{js,mjs}",
+            "**/src/design-tokens/*.ts",
+        ],
         languageOptions: {
             globals: { ...globals.node },
         },

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { removeNonHTMLProps } from "./props";
 
@@ -36,7 +36,7 @@ describe("Props", () => {
         });
 
         it("removes only from curated denylist when supplied 1 argument", () => {
-            assert.deepEqual(removeNonHTMLProps(props), {
+            expect(removeNonHTMLProps(props)).toEqual({
                 apple: true,
                 banana: true,
                 cat: true,
@@ -44,7 +44,7 @@ describe("Props", () => {
         });
 
         it("removes only from the supplied array when supplied 2 arguments", () => {
-            assert.deepEqual(removeNonHTMLProps(props, ["apple", "banana"]), {
+            expect(removeNonHTMLProps(props, ["apple", "banana"])).toEqual({
                 cat: true,
                 containerRef: true,
                 icon: true,
@@ -55,7 +55,7 @@ describe("Props", () => {
         });
 
         it("removes from the curated denylist and the supplied array when shouldMerge=true", () => {
-            assert.deepEqual(removeNonHTMLProps(props, ["apple", "banana"], true), { cat: true });
+            expect(removeNonHTMLProps(props, ["apple", "banana"], true)).toEqual({ cat: true });
         });
     });
 });

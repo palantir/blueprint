@@ -35,16 +35,23 @@
         },
         "shadow": {
             "$type": "shadow",
-            "$description": "BP6 elevation shadows (0-4)",
+            "$description": "BP6 light mode elevation shadows (0-4)",
             "0": {
-                "$description": "Level 0 - border only",
+                "$description": "Level 0 - border only, 0 0 0 1px rgba(black, 15%), 0 0 5px 0 rgba(0,0,0, 2%)",
                 "$value": [
                     {
                         "offsetX": { "value": 0, "unit": "px" },
                         "offsetY": { "value": 0, "unit": "px" },
                         "blur": { "value": 0, "unit": "px" },
                         "spread": { "value": 1, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.15 }
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.15 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 5, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.02 }
                     }
                 ]
             },
@@ -56,14 +63,21 @@
                         "offsetY": { "value": 0, "unit": "px" },
                         "blur": { "value": 0, "unit": "px" },
                         "spread": { "value": 1, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.1 }
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     },
                     {
                         "offsetX": { "value": 0, "unit": "px" },
                         "offsetY": { "value": 1, "unit": "px" },
-                        "blur": { "value": 1, "unit": "px" },
+                        "blur": { "value": 3, "unit": "px" },
                         "spread": { "value": 0, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.2 }
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 2, "unit": "px" },
+                        "spread": { "value": -1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     }
                 ]
             },
@@ -75,21 +89,21 @@
                         "offsetY": { "value": 0, "unit": "px" },
                         "blur": { "value": 0, "unit": "px" },
                         "spread": { "value": 1, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.1 }
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     },
                     {
                         "offsetX": { "value": 0, "unit": "px" },
-                        "offsetY": { "value": 1, "unit": "px" },
-                        "blur": { "value": 1, "unit": "px" },
-                        "spread": { "value": 0, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.2 }
-                    },
-                    {
-                        "offsetX": { "value": 0, "unit": "px" },
-                        "offsetY": { "value": 2, "unit": "px" },
+                        "offsetY": { "value": 4, "unit": "px" },
                         "blur": { "value": 6, "unit": "px" },
-                        "spread": { "value": 0, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.2 }
+                        "spread": { "value": -4, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 15, "unit": "px" },
+                        "spread": { "value": -3, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     }
                 ]
             },
@@ -101,21 +115,21 @@
                         "offsetY": { "value": 0, "unit": "px" },
                         "blur": { "value": 0, "unit": "px" },
                         "spread": { "value": 1, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.1 }
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     },
                     {
                         "offsetX": { "value": 0, "unit": "px" },
-                        "offsetY": { "value": 2, "unit": "px" },
-                        "blur": { "value": 4, "unit": "px" },
-                        "spread": { "value": 0, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.2 }
+                        "offsetY": { "value": 20, "unit": "px" },
+                        "blur": { "value": 25, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     },
                     {
                         "offsetX": { "value": 0, "unit": "px" },
-                        "offsetY": { "value": 8, "unit": "px" },
-                        "blur": { "value": 24, "unit": "px" },
-                        "spread": { "value": 0, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.2 }
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 15, "unit": "px" },
+                        "spread": { "value": -3, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     }
                 ]
             },
@@ -127,21 +141,14 @@
                         "offsetY": { "value": 0, "unit": "px" },
                         "blur": { "value": 0, "unit": "px" },
                         "spread": { "value": 1, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.1 }
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
                     },
                     {
                         "offsetX": { "value": 0, "unit": "px" },
-                        "offsetY": { "value": 4, "unit": "px" },
-                        "blur": { "value": 8, "unit": "px" },
-                        "spread": { "value": 0, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.2 }
-                    },
-                    {
-                        "offsetX": { "value": 0, "unit": "px" },
-                        "offsetY": { "value": 18, "unit": "px" },
-                        "blur": { "value": 46, "unit": "px" },
-                        "spread": { "value": 6, "unit": "px" },
-                        "color": { "colorSpace": "srgb", "components": [0.067, 0.078, 0.094], "alpha": 0.2 }
+                        "offsetY": { "value": 25, "unit": "px" },
+                        "blur": { "value": 50, "unit": "px" },
+                        "spread": { "value": -12, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
                     }
                 ]
             }
@@ -219,30 +226,27 @@
         },
         "background-color": {
             "$type": "color",
+            "$description": "Light mode app backgrounds: white → light-gray on interaction",
             "default": {
                 "rest": {
                     "$value": "{intent.default.rest}",
-                    "$extensions": {
-                        "com.blueprint.derive": { "lightnessOffset": 0.452, "chromaOffset": -0.028, "hueOffset": 7.5 }
-                    }
+                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 1.909, "chromaScale": 0 } }
                 },
                 "hover": {
                     "$value": "{intent.default.hover}",
                     "$extensions": {
-                        "com.blueprint.derive": { "lightnessOffset": 0.552, "chromaOffset": -0.018, "hueOffset": 0 }
+                        "com.blueprint.derive": { "lightnessOffset": 0.577, "chromaOffset": -0.02, "hueOffset": 6.2 }
                     }
                 },
                 "active": {
                     "$value": "{intent.default.active}",
                     "$extensions": {
-                        "com.blueprint.derive": { "lightnessOffset": 0.568, "chromaOffset": -0.012, "hueOffset": -10.5 }
+                        "com.blueprint.derive": { "lightnessOffset": 0.59, "chromaOffset": -0.013, "hueOffset": 0 }
                     }
                 },
                 "disabled": {
                     "$value": "{intent.default.disabled}",
-                    "$extensions": {
-                        "com.blueprint.derive": { "lightnessOffset": 0.296, "chromaOffset": -0.022, "hueOffset": 6.2 }
-                    }
+                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 1.471, "chromaScale": 0 } }
                 }
             },
             "primary": {
