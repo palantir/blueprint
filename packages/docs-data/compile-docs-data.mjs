@@ -128,10 +128,6 @@ function interpolateClassNamespace(value) {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
 }
 
-// ---------------------------------------------------------------------------
-// Nav post-processing: build nav tree & fix routes from nav.json
-// ---------------------------------------------------------------------------
-
 /**
  * Applies the nav config to documentalist output: fixes page routes and
  * replaces the nav tree.
@@ -140,13 +136,8 @@ function interpolateClassNamespace(value) {
  * @param {Record<string, any[]>} navConfig
  */
 function applyNavConfig(docs, navConfig) {
-    // Step 2a: build route map
     const routeMap = buildRouteMap(navConfig);
-
-    // Step 2b: fix routes in docs.pages
     fixPageRoutes(docs.pages, routeMap);
-
-    // Step 2c + 2d: build nav tree and replace docs.nav
     docs.nav = buildNavTree(navConfig, docs.pages, routeMap);
 }
 
@@ -166,6 +157,9 @@ function buildRouteMap(navConfig) {
      */
     function walk(ref, parentRoute) {
         const route = parentRoute ? `${parentRoute}/${ref}` : ref;
+        if (routeMap.has(ref)) {
+            console.warn(`[docs-data] duplicate nav ref "${ref}" (route "${route}" overwrites "${routeMap.get(ref)}")`);
+        }
         routeMap.set(ref, route);
         const children = navConfig[ref];
         if (children) {
@@ -220,7 +214,8 @@ function fixPageRoutes(pages, routeMap) {
 
 /**
  * Convert a heading value to a URL-friendly slug.
- * Matches documentalist's slugification: lowercase, replace non-[a-z0-9-] with hyphens.
+ * Hand-rolled to match documentalist's slugification: lowercase, replace non-[a-z0-9-] with hyphens.
+ * N.B. this does not collapse consecutive hyphens or trim edges — keep in sync if documentalist changes.
  *
  * @param {string} value
  * @returns {string}
@@ -253,6 +248,9 @@ function buildNavTree(navConfig, pages, routeMap) {
  */
 function buildPageNode(ref, level, navConfig, pages, routeMap) {
     const page = pages[ref];
+    if (page === undefined) {
+        throw new Error(`[docs-data] nav.json references page "${ref}" which does not exist in docs.pages`);
+    }
     const route = routeMap.get(ref);
     const navChildren = navConfig[ref] || [];
     const hasHeadingMarkers = navChildren.some(c => typeof c === "object");
@@ -267,8 +265,8 @@ function buildPageNode(ref, level, navConfig, pages, routeMap) {
         // Interleaved mode: walk nav.json entries in order, matching heading markers
         // against page content headings by title
         const headingsByTitle = new Map();
-        for (const h of headingChildren) {
-            headingsByTitle.set(h.title, h);
+        for (const header of headingChildren) {
+            headingsByTitle.set(header.title, header);
         }
 
         children = [];
@@ -279,6 +277,8 @@ function buildPageNode(ref, level, navConfig, pages, routeMap) {
                 const matched = headingsByTitle.get(entry.heading);
                 if (matched) {
                     children.push(matched);
+                } else {
+                    console.warn(`[docs-data] nav.json heading marker "${entry.heading}" not found in page contents`);
                 }
             }
         }
