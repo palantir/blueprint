@@ -146,7 +146,7 @@ function generatePropsRegistry() {
             },
         });
 
-        // Discover .tsx files, excluding tests and examples
+        // Discover .tsx files, excluding tests, examples, and generated files
         const pkgSrcDir = resolve(monorepoRootDir, "packages", pkg, "src");
         const tsxFiles = globSync(join(pkgSrcDir, "**/*.tsx")).filter(f => {
             const rel = relative(pkgSrcDir, f);
@@ -155,6 +155,8 @@ function generatePropsRegistry() {
                 rel.includes("/__tests__/") ||
                 rel.includes("/examples/") ||
                 rel.includes("/_examples/") ||
+                rel.startsWith("generated/") ||
+                rel.includes("/generated/") ||
                 rel.endsWith(".test.tsx") ||
                 rel.endsWith(".test.ts") ||
                 rel.endsWith(".mdx")
@@ -163,57 +165,64 @@ function generatePropsRegistry() {
 
         console.info(`[docs-data]   parsing ${tsxFiles.length} .tsx files in ${pkg}...`);
 
-        for (const filePath of tsxFiles) {
-            let docs;
-            try {
-                docs = parser.parse(filePath);
-            } catch (err) {
-                console.warn(`[docs-data] WARNING: failed to parse ${relative(monorepoRootDir, filePath)}: ${err.message}`);
-                continue;
+        /** @type {import("react-docgen-typescript").ComponentDoc[]} */
+        let allDocs = [];
+        try {
+            allDocs = parser.parse(tsxFiles);
+        } catch {
+            // Batch parsing can fail on some packages; fall back to per-file parsing
+            console.info(`[docs-data]   batch parse failed for ${pkg}, falling back to per-file parsing...`);
+            for (const filePath of tsxFiles) {
+                try {
+                    const docs = parser.parse(filePath);
+                    allDocs.push(...docs);
+                } catch {
+                    console.warn(`[docs-data] WARNING: failed to parse ${relative(monorepoRootDir, filePath)}`);
+                }
+            }
+        }
+
+        for (const doc of allDocs) {
+            if (Object.keys(doc.props).length === 0) continue;
+
+            const primaryName = detectPrimaryInterface(doc);
+            const allNormalized = Object.values(doc.props).map(normalizeProp);
+
+            // Register the full flattened set under the primary interface name
+            if (!registry[primaryName]) {
+                registry[primaryName] = {
+                    name: primaryName,
+                    description: doc.description || "",
+                    filePath: relative(monorepoRootDir, doc.filePath),
+                    props: allNormalized.sort((a, b) => a.name.localeCompare(b.name)),
+                };
             }
 
-            for (const doc of docs) {
-                if (Object.keys(doc.props).length === 0) continue;
+            // Also register sub-interfaces (per unique parentName) with only their declared props
+            /** @type {Map<string, ReturnType<typeof normalizeProp>[]>} */
+            const byParent = new Map();
+            for (const prop of allNormalized) {
+                const parent = prop.parentName || primaryName;
+                if (!byParent.has(parent)) byParent.set(parent, []);
+                byParent.get(parent).push(prop);
+            }
 
-                const primaryName = detectPrimaryInterface(doc);
-                const allNormalized = Object.values(doc.props).map(normalizeProp);
+            for (const [ifaceName, props] of byParent) {
+                if (ifaceName === primaryName) continue; // already registered
+                if (registry[ifaceName]) continue; // first registration wins
 
-                // Register the full flattened set under the primary interface name
-                if (!registry[primaryName]) {
-                    registry[primaryName] = {
-                        name: primaryName,
-                        description: doc.description || "",
-                        filePath: relative(monorepoRootDir, doc.filePath),
-                        props: allNormalized.sort((a, b) => a.name.localeCompare(b.name)),
-                    };
-                }
+                // Find the file path for this sub-interface
+                const sample = Object.values(doc.props).find(p => p.parent?.name === ifaceName);
+                const ifaceFilePath = sample?.parent?.fileName
+                    ? relative(monorepoRootDir, sample.parent.fileName)
+                    : relative(monorepoRootDir, doc.filePath);
 
-                // Also register sub-interfaces (per unique parentName) with only their declared props
-                /** @type {Map<string, ReturnType<typeof normalizeProp>[]>} */
-                const byParent = new Map();
-                for (const prop of allNormalized) {
-                    const parent = prop.parentName || primaryName;
-                    if (!byParent.has(parent)) byParent.set(parent, []);
-                    byParent.get(parent).push(prop);
-                }
-
-                for (const [ifaceName, props] of byParent) {
-                    if (ifaceName === primaryName) continue; // already registered
-                    if (registry[ifaceName]) continue; // first registration wins
-
-                    // Find the file path for this sub-interface
-                    const sample = Object.values(doc.props).find(p => p.parent?.name === ifaceName);
-                    const ifaceFilePath = sample?.parent?.fileName
-                        ? relative(monorepoRootDir, sample.parent.fileName)
-                        : relative(monorepoRootDir, doc.filePath);
-
-                    registry[ifaceName] = {
-                        name: ifaceName,
-                        description: "",
-                        filePath: ifaceFilePath,
-                        props: props.sort((a, b) => a.name.localeCompare(b.name)),
-                    };
-                }
+                registry[ifaceName] = {
+                    name: ifaceName,
+                    description: "",
+                    filePath: ifaceFilePath,
+                    props: props.sort((a, b) => a.name.localeCompare(b.name)),
+                };
             }
         }
 

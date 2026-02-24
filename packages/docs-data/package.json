@@ -6,7 +6,9 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs && node ./compile-props-data.mjs"
+        "compile": "run-p compile:docs compile:props",
+        "compile:docs": "node ./compile-docs-data.mjs",
+        "compile:props": "node ./compile-props-data.mjs"
     },
     "nx": {
         "targets": {

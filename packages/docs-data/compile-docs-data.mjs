@@ -472,47 +472,53 @@ async function generateNpmVersions() {
     /** @type {Record<string, { name: string; version: string; versions: string[] }>} */
     const result = {};
 
+    /** @type {Array<{ pkg: string, pkgJson: any, packageName: string }>} */
+    const packages = [];
     for (const pkg of LIBRARY_PACKAGES) {
         const pkgJsonPath = resolve(monorepoRootDir, "packages", pkg, "package.json");
         if (!existsSync(pkgJsonPath)) continue;
-
         const pkgJson = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
-        const packageName = pkgJson.name;
+        packages.push({ pkg, pkgJson, packageName: pkgJson.name });
+    }
 
-        let versions = [pkgJson.version];
-        try {
-            const response = await fetch(`https://registry.npmjs.org/${packageName}`);
-            if (response.ok) {
-                const data = await response.json();
-                const allVersions = Object.keys(data.versions);
-                // keep one (latest) version per major, sorted descending
-                const majors = new Map();
-                for (const v of allVersions) {
-                    const maj = semver.major(v);
-                    if (maj === 0) continue;
-                    if (!majors.has(maj) || semver.gt(v, majors.get(maj))) {
-                        majors.set(maj, v);
+    // Fetch all npm registry data in parallel
+    await Promise.all(
+        packages.map(async ({ pkgJson, packageName }) => {
+            let versions = [pkgJson.version];
+            try {
+                const response = await fetch(`https://registry.npmjs.org/${packageName}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const allVersions = Object.keys(data.versions);
+                    // keep one (latest) version per major, sorted descending
+                    const majors = new Map();
+                    for (const v of allVersions) {
+                        const maj = semver.major(v);
+                        if (maj === 0) continue;
+                        if (!majors.has(maj) || semver.gt(v, majors.get(maj))) {
+                            majors.set(maj, v);
+                        }
                     }
+                    versions = Array.from(majors.values()).sort((a, b) => semver.rcompare(a, b));
+                } else {
+                    console.warn(
+                        `[docs-data] npm registry returned ${response.status} for ${packageName}, using local version`,
+                    );
                 }
-                versions = Array.from(majors.values()).sort((a, b) => semver.rcompare(a, b));
-            } else {
+            } catch (e) {
                 console.warn(
-                    `[docs-data] npm registry returned ${response.status} for ${packageName}, using local version`,
+                    `[docs-data] failed to fetch npm versions for ${packageName}, using local version:`,
+                    e.message,
                 );
             }
-        } catch (e) {
-            console.warn(
-                `[docs-data] failed to fetch npm versions for ${packageName}, using local version:`,
-                e.message,
-            );
-        }
 
-        result[packageName] = {
-            name: packageName,
-            version: pkgJson.version,
-            versions,
-        };
-    }
+            result[packageName] = {
+                name: packageName,
+                version: pkgJson.version,
+                versions,
+            };
+        }),
+    );
 
     writeFileSync(join(generatedSrcDir, "npm-data.json"), JSON.stringify(result, null, 2) + "\n");
     console.info("[docs-data] generated npm-data.json");
