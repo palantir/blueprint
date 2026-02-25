@@ -9,7 +9,7 @@
         "sections": [
             {
                 "section": "components",
-                "children": [
+                "pages": [
                     "breadcrumbs",
                     "buttons",
                     "button-group",
@@ -42,7 +42,7 @@
                     "text",
                     "tree",
                     {
-                        "heading": "Form controls",
+                        "group": "Form controls",
                         "pages": [
                             "form-group",
                             "control-group",
@@ -56,11 +56,11 @@
                         ]
                     },
                     {
-                        "heading": "Form inputs",
+                        "group": "Form inputs",
                         "pages": ["input-group", "text-area", "file-input", "numeric-input", "tag-input"]
                     },
                     {
-                        "heading": "Overlays",
+                        "group": "Overlays",
                         "pages": [
                             "overlay",
                             "overlay2",
@@ -80,11 +80,11 @@
             },
             {
                 "section": "context",
-                "children": ["blueprint-provider", "hotkeys-provider", "overlays-provider", "portal-provider"]
+                "pages": ["blueprint-provider", "hotkeys-provider", "overlays-provider", "portal-provider"]
             },
             {
                 "section": "hooks",
-                "children": ["use-hotkeys", "use-overlay-stack"]
+                "pages": ["use-hotkeys", "use-overlay-stack"]
             }
         ]
     },

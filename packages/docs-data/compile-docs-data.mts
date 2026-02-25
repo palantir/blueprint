@@ -172,7 +172,7 @@ function buildRouteMap(navConfig) {
         for (const section of entry.sections ?? []) {
             const sectionRoute = addRoute(section.section, packageRoute);
 
-            for (const child of section.children) {
+            for (const child of section.pages) {
                 if (typeof child === "string") {
                     addRoute(child, sectionRoute);
                 } else {
@@ -270,16 +270,16 @@ function buildSectionNode(section, level, pages, routeMap) {
 
     /** @type {any[]} */
     const children = [];
-    for (const child of section.children) {
+    for (const child of section.pages) {
         if (typeof child === "string") {
             children.push(buildLeafPageNode(child, childLevel, pages, routeMap));
         } else {
             // NavHeadingGroup — emit the heading node, then its pages
-            const matched = headingsByTitle.get(child.heading);
+            const matched = headingsByTitle.get(child.group);
             if (matched) {
                 children.push(matched);
             } else {
-                console.warn(`[docs-data] nav.json heading "${child.heading}" not found in page "${section.section}" contents`);
+                console.warn(`[docs-data] nav.json group "${child.group}" not found in page "${section.section}" contents`);
             }
             for (const pageRef of child.pages) {
                 children.push(buildLeafPageNode(pageRef, childLevel, pages, routeMap));
