@@ -1,8 +1,6 @@
 @# Compound Tag
 
-A variant of [**Tag**](#core/components/tag) that displays content as a visually segmented key-value pair.
-
-@reactCodeExample CompoundTagBasicExample
+CompoundTag is a variant of [**Tag**](#core/components/tag) that displays content as a visually segmented key-value pair.
 
 @## Import
 
@@ -19,6 +17,10 @@ Content for the left side of the tag is specified with the `leftContent` prop, w
 ```
 
 @## Examples
+
+@### Basic Usage
+
+@reactCodeExample CompoundTagBasicExample
 
 @### Intent
 
@@ -71,21 +73,6 @@ Use the `interactive` prop to enable hover and cursor styling. This is recommend
 @## Interactive Playground
 
 @reactExample CompoundTagPlaygroundExample
-
-@### Best practices
-
-**Do:**
-- Use CompoundTag to display key-value metadata, such as `Region: US East` or `Status: Active`.
-- Use `intent` to reflect the semantic meaning of the value (e.g. `danger` for an error state, `success` for a healthy state).
-- Set `interactive` to `true` when the tag is clickable, so users receive appropriate visual feedback.
-- Pair `onRemove` with filter or selection interfaces where users need to dismiss individual tags.
-
-**Don't:**
-- Don't use CompoundTag when a simple [**Tag**](#core/components/tag) would suffice. CompoundTag is specifically for paired content.
-- Don't use `intent` purely for color decoration. Each intent carries a semantic meaning that should match the context.
-- Don't set `interactive` without also providing an `onClick` handler, as the hover styling would imply interactivity that does not exist.
-- Don't use the deprecated `large` prop. Use `size="large"` instead.
-- Don't use the deprecated `rightIcon` prop. Use `endIcon` instead.
 
 @## Props interface
 
