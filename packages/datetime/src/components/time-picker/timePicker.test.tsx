@@ -22,7 +22,7 @@ import { spy } from "sinon";
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 import { createTimeObject } from "@blueprintjs/test-commons";
 
-import { Classes, TimePicker, TimePrecision } from "../../src";
+import { Classes, TimePicker, TimePrecision } from "../..";
 
 describe("<TimePicker>", () => {
     it("should render its contents", () => {

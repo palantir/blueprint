@@ -48,6 +48,7 @@ module.exports = tseslint.config([
             "**/test/isotest.mjs",
             "**/vitest.setup.{ts,js,mts,mjs}",
             "**/*.test.{ts,tsx}",
+            "**/*TestUtils*.{ts,tsx}",
         ],
         languageOptions: {
             globals: {
