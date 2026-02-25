@@ -1,4 +1,13 @@
 {
-    "files": [],
-    "references": [{ "path": "./tsconfig.build.json" }, { "path": "./tsconfig.test.json" }]
+    "extends": "../../../config/tsconfig.web",
+    "compilerOptions": {
+        "outDir": "../lib/esm"
+    },
+    "exclude": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/dateFormatTestUtils.ts",
+        "**/dayPickerTestUtils.ts",
+        "**/loadDateFnsLocaleFake.ts"
+    ]
 }
