@@ -37,10 +37,10 @@ import {
     type TimePrecision,
 } from "../..";
 import { ReactDayPickerClasses } from "../../common/classes";
-import { DateRangePicker, type DateRangePickerProps } from "../date-range-picker/dateRangePicker";
-import type { DateRangePickerState } from "../date-range-picker/dateRangePickerState";
 import { assertDayDisabled } from "../../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
+import { DateRangePicker, type DateRangePickerProps } from "../date-range-picker/dateRangePicker";
+import type { DateRangePickerState } from "../date-range-picker/dateRangePickerState";
 
 // Change the default for testability
 (DateRangePicker.defaultProps as DateRangePickerProps).dateFnsLocaleLoader = loadDateFnsLocaleFake;

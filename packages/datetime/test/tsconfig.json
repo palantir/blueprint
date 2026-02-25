@@ -1,5 +1,5 @@
 {
-    "extends": "../src/tsconfig",
+    "extends": "../src/tsconfig.build",
     "compilerOptions": {
         "declaration": false,
         "noEmit": true

@@ -19,6 +19,7 @@ import { expect } from "chai";
 import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
 
 import type { DateRange } from "../";
+
 import * as DateUtils from "./dateUtils";
 import { Months } from "./months";
 
