@@ -38,6 +38,9 @@ export interface PanelViewProps<T extends Panel<object>> {
     /** The panel to be displayed. */
     panel: T;
 
+    /** Ref to the root DOM element, used by PanelStack to provide `nodeRef` to CSSTransition. */
+    panelNodeRef?: React.Ref<HTMLDivElement>;
+
     /** The previous panel in the stack, for rendering the "back" button. */
     previousPanel?: T;
 
@@ -54,6 +57,7 @@ export const PanelView: PanelViewComponent = <T extends Panel<object>>({
     panel,
     onClose,
     onOpen,
+    panelNodeRef,
     previousPanel,
     showHeader,
 }: PanelViewProps<T>) => {
@@ -97,7 +101,7 @@ export const PanelView: PanelViewComponent = <T extends Panel<object>>({
     );
 
     return (
-        <div className={Classes.PANEL_STACK_VIEW}>
+        <div className={Classes.PANEL_STACK_VIEW} ref={panelNodeRef}>
             {showHeader && (
                 <div className={Classes.PANEL_STACK_HEADER}>
                     {/* two <span> tags here ensure title is centered as long as possible, with `flex: 1` styling */}
