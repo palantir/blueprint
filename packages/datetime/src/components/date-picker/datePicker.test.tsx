@@ -35,8 +35,8 @@ import {
 } from "../..";
 import { DatePicker, type DatePickerProps } from "./datePicker";
 import type { DatePickerState } from "./datePickerState";
-import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
-import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
+import { assertDayDisabled, assertDayHidden } from "../../common/dayPickerTestUtils";
+import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
 
 const LOCALE_LOADER: DatePickerProps = {
     dateFnsLocaleLoader: loadDateFnsLocaleFake,
