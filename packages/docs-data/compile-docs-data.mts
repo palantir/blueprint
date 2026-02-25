@@ -131,7 +131,7 @@ function interpolateClassNamespace(value: string): string {
  * replaces the nav tree.
  *
  * @param {{ pages: Record<string, any>, nav: any[] }} docs
- * @param {Record<string, any[]>} navConfig
+ * @param {import("./navTypes.d.ts").NavStructure} navConfig
  */
 function applyNavConfig(docs, navConfig) {
     const routeMap = buildRouteMap(navConfig);
@@ -140,9 +140,9 @@ function applyNavConfig(docs, navConfig) {
 }
 
 /**
- * Walk nav config to compute the full route for every page reference.
+ * Walk the hierarchical nav config to compute the full route for every page reference.
  *
- * @param {Record<string, any[]>} navConfig
+ * @param {import("./navTypes.d.ts").NavStructure} navConfig
  * @returns {Map<string, string>}
  */
 function buildRouteMap(navConfig) {
@@ -153,25 +153,36 @@ function buildRouteMap(navConfig) {
      * @param {string} ref
      * @param {string} parentRoute
      */
-    function walk(ref, parentRoute) {
+    function addRoute(ref, parentRoute) {
         const route = parentRoute ? `${parentRoute}/${ref}` : ref;
         if (routeMap.has(ref)) {
             console.warn(`[docs-data] duplicate nav ref "${ref}" (route "${route}" overwrites "${routeMap.get(ref)}")`);
         }
         routeMap.set(ref, route);
-        const children = navConfig[ref];
-        if (children) {
-            for (const child of children) {
-                if (typeof child === "string") {
-                    walk(child, route);
-                }
-                // heading markers are skipped — they don't define pages
-            }
-        }
+        return route;
     }
 
-    for (const ref of navConfig["_nav"]) {
-        walk(ref, "");
+    for (const entry of navConfig) {
+        const packageRoute = addRoute(entry.package, "");
+
+        for (const pageRef of entry.pages) {
+            addRoute(pageRef, packageRoute);
+        }
+
+        for (const section of entry.sections ?? []) {
+            const sectionRoute = addRoute(section.section, packageRoute);
+
+            for (const child of section.children) {
+                if (typeof child === "string") {
+                    addRoute(child, sectionRoute);
+                } else {
+                    // NavHeadingGroup — pages within the group share the section route
+                    for (const pageRef of child.pages) {
+                        addRoute(pageRef, sectionRoute);
+                    }
+                }
+            }
+        }
     }
 
     return routeMap;
@@ -225,76 +236,108 @@ function slugify(value) {
 /**
  * Build the full nav tree from nav.json and page data.
  *
- * @param {Record<string, any[]>} navConfig
+ * @param {import("./navTypes.d.ts").NavStructure} navConfig
  * @param {Record<string, any>} pages
  * @param {Map<string, string>} routeMap
  * @returns {any[]}
  */
 function buildNavTree(navConfig, pages, routeMap) {
-    return navConfig["_nav"].map(ref => buildPageNode(ref, 1, navConfig, pages, routeMap));
+    return navConfig.map(entry => {
+        const packageChildren = [
+            ...entry.pages.map(ref => buildLeafPageNode(ref, 2, pages, routeMap)),
+            ...(entry.sections ?? []).map(section => buildSectionNode(section, 2, pages, routeMap)),
+        ];
+        return buildPageNodeFromChildren(entry.package, 1, pages, routeMap, packageChildren);
+    });
 }
 
 /**
- * Recursively build a PageNode for the nav tree.
+ * Build a PageNode for a section, which may contain bare pages and heading groups.
  *
- * @param {string} ref
+ * @param {import("./navTypes.d.ts").NavSection} section
  * @param {number} level
- * @param {Record<string, any[]>} navConfig
  * @param {Record<string, any>} pages
  * @param {Map<string, string>} routeMap
  * @returns {any}
  */
-function buildPageNode(ref, level, navConfig, pages, routeMap) {
-    const page = pages[ref];
-    if (page === undefined) {
-        throw new Error(`[docs-data] nav.json references page "${ref}" which does not exist in docs.pages`);
+function buildSectionNode(section, level, pages, routeMap) {
+    const childLevel = level + 1;
+    const page = pages[section.section];
+    const headingsByTitle = new Map();
+    for (const h of extractHeadingChildren(page, level)) {
+        headingsByTitle.set(h.title, h);
     }
-    const route = routeMap.get(ref);
-    const navChildren = navConfig[ref] || [];
-    const hasHeadingMarkers = navChildren.some(c => typeof c === "object");
-
-    // Extract heading children from page contents (level >= 2, i.e. not the # title)
-    const headingChildren = extractHeadingChildren(page, level);
 
     /** @type {any[]} */
-    let children;
-
-    if (hasHeadingMarkers) {
-        // Interleaved mode: walk nav.json entries in order, matching heading markers
-        // against page content headings by title
-        const headingsByTitle = new Map();
-        for (const header of headingChildren) {
-            headingsByTitle.set(header.title, header);
-        }
-
-        children = [];
-        for (const entry of navChildren) {
-            if (typeof entry === "string") {
-                children.push(buildPageNode(entry, level + 1, navConfig, pages, routeMap));
-            } else if (entry.heading) {
-                const matched = headingsByTitle.get(entry.heading);
-                if (matched) {
-                    children.push(matched);
-                } else {
-                    console.warn(`[docs-data] nav.json heading marker "${entry.heading}" not found in page contents`);
-                }
+    const children = [];
+    for (const child of section.children) {
+        if (typeof child === "string") {
+            children.push(buildLeafPageNode(child, childLevel, pages, routeMap));
+        } else {
+            // NavHeadingGroup — emit the heading node, then its pages
+            const matched = headingsByTitle.get(child.heading);
+            if (matched) {
+                children.push(matched);
+            } else {
+                console.warn(`[docs-data] nav.json heading "${child.heading}" not found in page "${section.section}" contents`);
+            }
+            for (const pageRef of child.pages) {
+                children.push(buildLeafPageNode(pageRef, childLevel, pages, routeMap));
             }
         }
-    } else {
-        // Default mode: headings first, then page children
-        const pageChildren = navChildren
-            .filter(c => typeof c === "string")
-            .map(childRef => buildPageNode(childRef, level + 1, navConfig, pages, routeMap));
-        children = [...headingChildren, ...pageChildren];
     }
 
+    return buildPageNodeFromChildren(section.section, level, pages, routeMap, children);
+}
+
+/**
+ * Build a PageNode for a leaf page (no nav children, only content headings).
+ *
+ * @param {string} ref
+ * @param {number} level
+ * @param {Record<string, any>} pages
+ * @param {Map<string, string>} routeMap
+ * @returns {any}
+ */
+function buildLeafPageNode(ref, level, pages, routeMap) {
+    const headingChildren = extractHeadingChildren(requirePage(ref, pages), level);
+    return buildPageNodeFromChildren(ref, level, pages, routeMap, headingChildren);
+}
+
+/**
+ * Assemble a PageNode from a ref and pre-built children array.
+ *
+ * @param {string} ref
+ * @param {number} level
+ * @param {Record<string, any>} pages
+ * @param {Map<string, string>} routeMap
+ * @param {any[]} children
+ * @returns {any}
+ */
+function buildPageNodeFromChildren(ref, level, pages, routeMap, children) {
+    const page = requirePage(ref, pages);
     return {
         children,
         level,
         reference: ref,
-        route,
+        route: routeMap.get(ref),
         title: page.title,
     };
+}
+
+/**
+ * Look up a page by reference, throwing if not found.
+ *
+ * @param {string} ref
+ * @param {Record<string, any>} pages
+ * @returns {any}
+ */
+function requirePage(ref, pages) {
+    const page = pages[ref];
+    if (page === undefined) {
+        throw new Error(`[docs-data] nav.json references page "${ref}" which does not exist in docs.pages`);
+    }
+    return page;
 }
 
 /**
