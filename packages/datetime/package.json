@@ -17,9 +17,9 @@
     "scripts": {
         "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
-        "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
-        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "compile:esm": "tsc -p ./src/tsconfig.build.json",
+        "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src/tsconfig.build.json -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",

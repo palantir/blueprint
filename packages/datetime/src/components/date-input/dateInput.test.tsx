@@ -37,10 +37,10 @@ import {
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../common/dateFnsFormatUtils";
 import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
+import { DateInput, type DateInputProps } from "../date-input/dateInput";
 import { DatePicker } from "../date-picker/datePicker";
 import { INVALID_DATE_MESSAGE, LOCALE } from "../dateConstants";
 
-import { DateInput, type DateInputProps } from "../date-input/dateInput";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
