@@ -56,9 +56,9 @@
   &.#{$ns}-large,
   .#{$ns}-large & {
     @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+    font-size: var(--bp-typography-size-body-large);
     min-height: calc(var(--bp-surface-spacing) * 10);
     min-width: calc(var(--bp-surface-spacing) * 10);
-    font-size: var(--bp-typography-size-body-large);
     padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 4);
   }
 
