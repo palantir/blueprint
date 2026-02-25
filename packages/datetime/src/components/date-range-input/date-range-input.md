@@ -28,7 +28,7 @@ dates entered in the text inputs.
 @## Date formatting
 
 You may customize the date display format with the required `formatDate` and `parseDate` props.
-See [DateInput's date formatting docs](#datetime3/date-input.date-formatting) for more details.
+See [DateInput's date formatting docs](#datetime/date-input.date-formatting) for more details.
 
 @## Props interface
 

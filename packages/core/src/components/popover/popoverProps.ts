@@ -16,6 +16,13 @@ export const PopoverInteractionKind = {
 };
 export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
 
+export const PopoverAnimation = {
+    MINIMAL: "minimal",
+    SCALE: "scale",
+} as const;
+
+export type PopoverAnimation = (typeof PopoverAnimation)[keyof typeof PopoverAnimation];
+
 export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends PopoverSharedProps<TProps> {
     /**

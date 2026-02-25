@@ -1,0 +1,129 @@
+/*
+ * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { mount, type ReactWrapper } from "enzyme";
+import { createRef } from "react";
+
+import { afterAll, afterEach, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
+
+import { sleep } from "../../common/test-utils";
+
+import { ResizeSensor, type ResizeSensorProps } from "./resizeSensor";
+
+describe.skip("<ResizeSensor>", () => {
+    // this scope variable is assigned in mountResizeSensor() and used in resize()
+    let wrapper: ReactWrapper<ResizeTesterProps, any> | undefined;
+    const containerElement = document.createElement("div");
+    document.documentElement.appendChild(containerElement);
+
+    afterEach(() => {
+        // clean up wrapper after each test, if it was used
+        wrapper?.unmount();
+        wrapper?.detach();
+    });
+
+    afterAll(() => containerElement.remove());
+
+    it("onResize is called when size changes", async () => {
+        const onResize = vi.fn();
+        mountResizeSensor({ onResize });
+        await resize({ width: 200 });
+        await resize({ height: 100 });
+        await resize({ width: 55 });
+        expect(onResize).toHaveBeenCalledTimes(3);
+        assertResizeArgs(onResize, ["200x0", "200x100", "55x100"]);
+    });
+
+    it("onResize is NOT called redundantly when size is unchanged", async () => {
+        const onResize = vi.fn();
+        mountResizeSensor({ onResize });
+        await resize({ width: 200 });
+        await resize({ width: 200 }); // this one should be ignored
+        expect(onResize).toHaveBeenCalledOnce();
+        assertResizeArgs(onResize, ["200x0"]);
+    });
+
+    it("onResize is called when element changes", async () => {
+        const onResize = vi.fn();
+        mountResizeSensor({ onResize });
+        await resize({ id: 1, width: 200 });
+        await resize({ id: 2, width: 200 }); // not ignored bc element recreated
+        await resize({ id: 3, width: 55 });
+        assertResizeArgs(onResize, ["200x0", "200x0", "55x0"]);
+    });
+
+    it("onResize can be changed", async () => {
+        const onResize1 = vi.fn();
+        mountResizeSensor({ onResize: onResize1 });
+        await resize({ id: 1, width: 200 });
+
+        const onResize2 = vi.fn();
+        wrapper!.setProps({ onResize: onResize2 });
+        await resize({ height: 100, id: 2 });
+        await resize({ id: 3, width: 55 });
+
+        expect(onResize1).toHaveBeenCalledOnce();
+        expect(onResize2).toHaveBeenCalledTimes(2);
+    });
+
+    it("still works when user sets their own targetRef", async () => {
+        const onResize = vi.fn();
+        const targetRef = createRef<HTMLElement>();
+        const RESIZE_WIDTH = 200;
+        mountResizeSensor({ onResize, targetRef });
+        await resize({ width: RESIZE_WIDTH });
+        expect(onResize).toHaveBeenCalledOnce();
+        assertResizeArgs(onResize, [`${RESIZE_WIDTH}x0`]);
+        expect(targetRef.current, "user-provided targetRef should be set").not.toBeNull();
+        expect(targetRef.current?.clientWidth, "user-provided targetRef.current.clientWidth").toBe(RESIZE_WIDTH);
+    });
+
+    function mountResizeSensor(props: Omit<ResizeSensorProps, "children">) {
+        return (wrapper = mount<ResizeTesterProps>(
+            <ResizeTester id={0} {...props} />,
+            // must be in the DOM for measurement
+            { attachTo: containerElement },
+        ));
+    }
+
+    async function resize(size: SizeProps) {
+        wrapper!.setProps(size);
+        wrapper!.update();
+        await sleep(30);
+    }
+
+    function assertResizeArgs(onResize: MockInstance, sizes: string[]) {
+        const mapped = onResize.mock.calls
+            .map(args => (args[0] as ResizeObserverEntry[])[0].contentRect)
+            .map(r => `${r.width}x${r.height}`);
+        expect(mapped).toHaveLength(sizes.length);
+        expect(mapped).toEqual(expect.arrayContaining(sizes));
+    }
+});
+
+interface SizeProps {
+    /** Used as React `key`, so changing it will force a new element to be created. */
+    id?: number;
+    width?: number;
+    height?: number;
+}
+
+type ResizeTesterProps = Omit<ResizeSensorProps, "children"> & SizeProps;
+const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...sensorProps }) => (
+    <ResizeSensor {...sensorProps}>
+        <div key={id} style={{ height, width }} ref={sensorProps.targetRef as React.RefObject<HTMLDivElement>} />
+    </ResizeSensor>
+);

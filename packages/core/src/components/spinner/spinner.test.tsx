@@ -1,0 +1,102 @@
+/*
+ * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { mount, type ReactWrapper, shallow } from "enzyme";
+
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+
+import { Classes } from "../../common";
+import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
+
+import { Spinner, SpinnerSize } from "./spinner";
+
+describe("Spinner", () => {
+    it("renders a spinner and two paths", () => {
+        const root = mount(<Spinner />);
+        assert.lengthOf(root.find(`.${Classes.SPINNER}`), 1);
+        assert.lengthOf(root.find("path"), 2);
+    });
+
+    describe("accessibility", () => {
+        it("sets 'aria-valuenow' attribute", () => {
+            const VALUE = 0.4;
+            const spinner = shallow(<Spinner value={VALUE} />);
+            assert.strictEqual(spinner.prop("aria-valuenow"), VALUE * 100);
+        });
+
+        it("supports arbitrary ARIA HTML attributes", () => {
+            const LABEL = "widget loading";
+            const spinner = shallow(<Spinner aria-label={LABEL} />);
+            assert.strictEqual(spinner.prop("aria-label"), LABEL);
+        });
+    });
+
+    it("tagName determines both container elements", () => {
+        const tagName = "article";
+        const root = mount(<Spinner tagName={tagName} />);
+        assert.isTrue(root.is({ tagName }));
+        assert.lengthOf(root.find(tagName), 2);
+    });
+
+    it("Classes.LARGE/SMALL determine default size", () => {
+        const root = mount(<Spinner className={Classes.SMALL} />);
+        assert.equal(root.find("svg").prop("height"), SpinnerSize.SMALL, "small");
+
+        root.setProps({ className: Classes.LARGE });
+        assert.equal(root.find("svg").prop("height"), SpinnerSize.LARGE, "large");
+    });
+
+    it("size overrides Classes.LARGE/SMALL", () => {
+        const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+        const root = mount(<Spinner className={Classes.SMALL} size={32} />);
+        assert.equal(root.find("svg").prop("height"), 32, "size prop");
+        expect(warnSpy.mock.calls[0][0]).toBe(SPINNER_WARN_CLASSES_SIZE);
+        warnSpy.mockRestore();
+    });
+
+    it("defaults to spinning quarter circle", () => {
+        const root = mount(<Spinner />);
+        assert.isFalse(root.find(`.${Classes.SPINNER}`).hasClass(Classes.SPINNER_NO_SPIN));
+        assertStrokePercent(root, 0.25);
+    });
+
+    it("value sets stroke-dashoffset", () => {
+        // dash offset = X * (1 - value)
+        const root = mount(<Spinner value={0.35} />);
+        assert.isTrue(
+            root.find(`.${Classes.SPINNER}`).hasClass(Classes.SPINNER_NO_SPIN),
+            `missing class ${Classes.SPINNER_NO_SPIN}`,
+        );
+        assertStrokePercent(root, 0.35);
+    });
+
+    it("viewBox adjusts based on size", () => {
+        function viewBox(size: number) {
+            return mount(<Spinner size={size} />)
+                .find("svg")
+                .prop("viewBox");
+        }
+        assert.notEqual(viewBox(SpinnerSize.SMALL), viewBox(SpinnerSize.LARGE), "expected different viewBoxes");
+    });
+
+    function assertStrokePercent(wrapper: ReactWrapper<any>, percent: number) {
+        const head = wrapper.find(`.${Classes.SPINNER_HEAD}`);
+        // NOTE: strokeDasharray is string "X X", but parseInt terminates at non-numeric character
+        const pathLength = parseInt(head.prop("strokeDasharray")!.toString(), 10);
+        const offset = head.prop("strokeDashoffset");
+        assert.strictEqual(offset, pathLength * (1 - percent));
+    }
+});

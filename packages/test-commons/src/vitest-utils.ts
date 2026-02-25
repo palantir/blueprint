@@ -23,23 +23,6 @@
  * For Karma/Chrome tests, use the utilities from utils.ts instead.
  */
 
-/**
- * Dispatch a native KeyboardEvent on the target element.
- * Works with Vitest + jsdom/happy-dom environments.
- */
-export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, shift = false) {
-    const event = new KeyboardEvent(eventType, {
-        altKey: false,
-        bubbles: true,
-        cancelable: true,
-        ctrlKey: false,
-        key,
-        location: 0,
-        shiftKey: shift,
-    });
-    target.dispatchEvent(event);
-}
-
 // see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
 // tl;dr PhantomJS sucks so we have to manually create click events
 export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
