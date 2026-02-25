@@ -17,6 +17,6 @@ import "../src/components/date-input/dateInput.test";
 import "../src/components/date-picker/datePicker.test";
 import "../src/components/date-range-input/dateRangeInput.test";
 import "../src/components/date-range-picker/dateRangePicker.test";
-import "./components/timePickerTests";
+import "../src/components/time-picker/timePicker.test";
 
 import "../src/dateInputMigrationUtils.test";
