@@ -1,5 +1,6 @@
 /* !
- * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
