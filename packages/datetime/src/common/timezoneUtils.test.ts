@@ -17,11 +17,8 @@
 import { expect } from "chai";
 import { getTimezoneOffset } from "date-fns-tz";
 
-import { getCurrentTimezone } from "../../src/common/getTimezone";
-import {
-    convertDateToLocalEquivalentOfTimezoneTime,
-    convertLocalDateToTimezoneTime,
-} from "../../src/common/timezoneUtils";
+import { getCurrentTimezone } from "./getTimezone";
+import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "./timezoneUtils";
 
 const CURRENT_TZ = getCurrentTimezone();
 // try to pick timezones which are different from the ones where developers live and where CI tests are run (UTC)

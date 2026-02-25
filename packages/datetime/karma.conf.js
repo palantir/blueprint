@@ -24,6 +24,12 @@ module.exports = async function (config) {
                 "src/common/classes.ts",
                 // these functions are mocked out in tests to avoid using dynamic imports
                 "src/common/dateFnsLocaleUtils.ts",
+                // colocated test files and test utilities should not be coverage-checked
+                "src/**/*.test.ts",
+                "src/**/*.test.tsx",
+                "src/**/dateFormatTestUtils.ts",
+                "src/**/dayPickerTestUtils.ts",
+                "src/**/loadDateFnsLocaleFake.ts",
             ],
             coverageOverrides: {
                 // HACKHACK: need to add more tests here

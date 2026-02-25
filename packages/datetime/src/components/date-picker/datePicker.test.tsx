@@ -32,11 +32,12 @@ import {
     Months,
     TimePicker,
     TimePrecision,
-} from "../../src";
-import { DatePicker, type DatePickerProps } from "../../src/components/date-picker/datePicker";
-import type { DatePickerState } from "../../src/components/date-picker/datePickerState";
-import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
-import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
+} from "../..";
+import { assertDayDisabled, assertDayHidden } from "../../common/dayPickerTestUtils";
+import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
+
+import { DatePicker, type DatePickerProps } from "./datePicker";
+import type { DatePickerState } from "./datePickerState";
 
 const LOCALE_LOADER: DatePickerProps = {
     dateFnsLocaleLoader: loadDateFnsLocaleFake,
