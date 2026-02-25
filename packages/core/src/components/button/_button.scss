@@ -7,7 +7,8 @@
 
 .#{$ns}-button {
   @include pt-button-layout;
-  @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
 
   &:empty {
     // override padding from other modifiers (for CSS icon support)
@@ -54,15 +55,18 @@
   // size modifiers
   &.#{$ns}-large,
   .#{$ns}-large & {
-    @include pt-button-height(calc(var(--bp-surface-spacing) * 10));
     @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+    min-height: calc(var(--bp-surface-spacing) * 10);
+    min-width: calc(var(--bp-surface-spacing) * 10);
     font-size: var(--bp-typography-size-body-large);
     padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 4);
   }
 
   &.#{$ns}-small,
   .#{$ns}-small & {
-    @include pt-button-height-small;
+    min-height: calc(var(--bp-surface-spacing) * 6);
+    min-width: calc(var(--bp-surface-spacing) * 6);
+    padding: 0 calc(var(--bp-surface-spacing) * 2);
   }
 
   // loading state

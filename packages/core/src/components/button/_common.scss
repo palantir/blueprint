@@ -187,12 +187,14 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-height-default() {
-  @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
   padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
 }
 
 @mixin pt-button-height-small() {
-  @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
+  min-height: calc(var(--bp-surface-spacing) * 6);
+  min-width: calc(var(--bp-surface-spacing) * 6);
   padding: 0 calc(var(--bp-surface-spacing) * 2);
 }
 
