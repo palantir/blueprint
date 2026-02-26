@@ -103,6 +103,9 @@ The wrapping is triggered by the `com.blueprint.role: "stackable-layer"` annotat
 
 The Button component (`src/components/button/`) demonstrates how surface and intent tokens work together. The key files are `_common.scss` (shared mixins) and `_button.scss` (component styles).
 
+> [!NOTE]
+> The Button component in dark mode currently derives the `active` and `hover` states for minimal and outline buttons from the `rest` token. This is expected to be updated with an updated palette.
+
 ### Surface tokens in Button
 
 Surface tokens control the button's dimensions and structural properties:
