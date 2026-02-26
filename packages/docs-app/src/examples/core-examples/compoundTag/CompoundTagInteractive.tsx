@@ -4,10 +4,10 @@ export default function CompoundTagInteractive() {
     return (
         <div className="group">
             <CompoundTag leftContent="Filter" interactive={true}>
-                Region: US East
+                Region
             </CompoundTag>
             <CompoundTag leftContent="Filter" interactive={true} intent="primary">
-                Status: Active
+                Status
             </CompoundTag>
         </div>
     );

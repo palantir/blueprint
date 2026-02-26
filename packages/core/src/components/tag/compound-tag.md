@@ -13,7 +13,9 @@ import { CompoundTag } from "@blueprintjs/core";
 Content for the left side of the tag is specified with the `leftContent` prop, while `children` are rendered on the right side. CompoundTag supports all valid `<span>` DOM attributes.
 
 ```tsx
-<CompoundTag leftContent="City">London</CompoundTag>
+<CompoundTag leftContent="City" id="city-tag">
+    Chicago
+</CompoundTag>
 ```
 
 @## Examples

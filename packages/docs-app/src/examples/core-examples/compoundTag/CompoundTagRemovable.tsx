@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { CompoundTag } from "@blueprintjs/core";
+import { Button, CompoundTag } from "@blueprintjs/core";
 
 const INITIAL_TAGS = ["London", "New York", "Seattle"];
 
@@ -12,13 +12,20 @@ export default function CompoundTagRemovable() {
         [],
     );
 
+    const handleReset = useCallback(() => setTags(INITIAL_TAGS), []);
+
     return (
-        <div className="group">
-            {tags.map(tag => (
-                <CompoundTag key={tag} leftContent="City" onRemove={handleRemove(tag)}>
-                    {tag}
-                </CompoundTag>
-            ))}
+        <div className="group center">
+            <div className="group">
+                {tags.map(tag => (
+                    <CompoundTag key={tag} leftContent="City" onRemove={handleRemove(tag)}>
+                        {tag}
+                    </CompoundTag>
+                ))}
+            </div>
+            {tags.length < INITIAL_TAGS.length && (
+                <Button icon="refresh" variant="outlined" text="Reset tags" onClick={handleReset} />
+            )}
         </div>
     );
 }

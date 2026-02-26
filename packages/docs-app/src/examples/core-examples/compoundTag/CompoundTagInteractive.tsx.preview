@@ -1,3 +1,2 @@
-<CompoundTag leftContent="Filter" interactive={true}>
-    Region: US East
-</CompoundTag>
+<CompoundTag leftContent="Filter" interactive={true}>Region</CompoundTag>
+<CompoundTag leftContent="Filter" interactive={true} intent="primary">Status</CompoundTag>
