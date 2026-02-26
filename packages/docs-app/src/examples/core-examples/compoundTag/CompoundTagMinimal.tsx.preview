@@ -1,0 +1,2 @@
+<CompoundTag leftContent="Env" minimal={true}>Production</CompoundTag>
+<CompoundTag leftContent="Env" minimal={true} intent="primary">Staging</CompoundTag>
