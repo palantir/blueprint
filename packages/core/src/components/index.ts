@@ -92,6 +92,10 @@ export type {
     PopoverNextRootBoundary,
 } from "./popover-next/popoverNextProps";
 export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
+export {
+    popoverPositionToNextPlacement,
+    popperModifiersToNextMiddleware,
+} from "./popover-next/popoverNextMigrationUtils";
 export type {
     DefaultPopoverTargetHTMLProps,
     PopoverSharedProps,

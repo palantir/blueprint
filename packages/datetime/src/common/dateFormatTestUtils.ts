@@ -16,7 +16,7 @@
 
 import { format, type Locale, parse } from "date-fns";
 
-import type { DateFormatProps } from "../../src/common";
+import type { DateFormatProps } from ".";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const locales: { [localeCode: string]: Locale } = require("date-fns/locale");

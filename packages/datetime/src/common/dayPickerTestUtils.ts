@@ -19,7 +19,7 @@
 import { assert } from "chai";
 import type { ReactWrapper } from "enzyme";
 
-import { Classes } from "../../src";
+import { Classes } from "..";
 
 const isDayHidden = (day: ReactWrapper<any, any>): boolean => !day.find(`.${Classes.DATEPICKER3_DAY}`).exists();
 
