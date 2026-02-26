@@ -603,6 +603,10 @@ importers:
       semver:
         specifier: ^7.5.4
         version: 7.7.3
+    devDependencies:
+      '@blueprintjs/test-commons':
+        specifier: workspace:^
+        version: link:../test-commons
 
   packages/docs-theme:
     dependencies:
