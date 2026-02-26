@@ -3,9 +3,9 @@
 # This script submits a Github comment on the current PR with links to built artifacts hosted in CircleCI.
 #
 # To do this, it first queries the CircleCI API using a personal access token which is stored as an env variable.
-# If this token expires it will disable the ability for svc-palantir-github to comment on PRs, including helpful PR previews
+# The GITHUB_API_TOKEN provides the ability for svc-palantir-github to comment on PRs and provide PR previews.
 # The GITHUB_API_TOKEN is used in [submit-comment-with-artifact-links.mjs](https://github.com/palantir/blueprint/blob/221b87c31bd2cce638a1a0da409b0df0e85cd89a/scripts/submit-comment-with-artifact-links.mjs#L40)
-# If CI checks indicate this token has expired, please create an issue and tag one of our team admins: https://github.com/palantir/blueprint/issues  [@mm-wang, @ggdouglas, @cameronjoyner]
+# If CI checks indicate this token has expired, please create an issue and tag the blueprint team (https://github.com/orgs/palantir/teams/blueprint)
 # See https://support.circleci.com/hc/en-us/articles/360045457592-Access-uploaded-artifact-URL-in-job
 # See https://circleci.com/docs/managing-api-tokens/#creating-a-personal-api-token
 #
