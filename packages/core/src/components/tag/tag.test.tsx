@@ -33,7 +33,7 @@ describe("<Tag>", () => {
 
     it("text is not rendered if omitted", () => {
         const { container } = render(<Tag icon="tick" />);
-        expect(container.querySelector(`.${Classes.FILL}`)).toBeNull();
+        expect(container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`)).not.toBeInTheDocument();
     });
 
     it("renders icons", () => {
