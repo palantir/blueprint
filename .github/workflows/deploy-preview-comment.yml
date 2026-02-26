@@ -1,0 +1,111 @@
+name: Deploy Preview Comment
+
+# Triggered when any external CI system (e.g. CircleCI) reports a commit status to GitHub.
+# We filter in the job's `if` condition to only act on the deploy-preview job's success status.
+on: status
+
+jobs:
+  post-preview-comment:
+    # Only run when CircleCI's deploy-preview job succeeds.
+    # CircleCI reports statuses with context "ci/circleci: <job-name>".
+    if: >-
+      github.event.context == 'ci/circleci: deploy-preview' &&
+      github.event.state == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: write
+      statuses: read
+
+    steps:
+      - name: Extract CircleCI job number from target_url
+        id: extract
+        run: |
+          # CircleCI target_url formats:
+          #   Old: https://circleci.com/gh/palantir/blueprint/12345
+          #   New: https://app.circleci.com/pipelines/github/palantir/blueprint/111/workflows/uuid/jobs/12345
+          # In both cases, the last path segment (before query string) is the job number.
+          TARGET_URL="${{ github.event.target_url }}"
+          BUILD_NUM=$(echo "$TARGET_URL" | sed 's/[?#].*//' | awk -F'/' '{print $NF}')
+          if [ -z "$BUILD_NUM" ] || ! echo "$BUILD_NUM" | grep -qE '^[0-9]+$'; then
+            echo "::error::Could not extract numeric job number from target_url: $TARGET_URL"
+            exit 1
+          fi
+          echo "build_num=$BUILD_NUM" >> "$GITHUB_OUTPUT"
+
+      - name: Fetch artifact URLs from CircleCI
+        id: artifacts
+        env:
+          CIRCLE_API_TOKEN: ${{ secrets.CIRCLE_API_TOKEN }}
+        run: |
+          RESPONSE=$(curl -sf -X GET \
+            "https://circleci.com/api/v2/project/github/palantir/blueprint/${{ steps.extract.outputs.build_num }}/artifacts" \
+            -H "Accept: application/json" \
+            -u "${CIRCLE_API_TOKEN}:")
+
+          echo "docs_url=$(echo "$RESPONSE" | jq -r '.items[] | select(.path == "packages/docs-app/dist/index.html") | .url')" >> "$GITHUB_OUTPUT"
+          echo "landing_url=$(echo "$RESPONSE" | jq -r '.items[] | select(.path == "packages/landing-app/dist/index.html") | .url')" >> "$GITHUB_OUTPUT"
+          echo "table_url=$(echo "$RESPONSE" | jq -r '.items[] | select(.path == "packages/table-dev-app/dist/index.html") | .url')" >> "$GITHUB_OUTPUT"
+          echo "demo_url=$(echo "$RESPONSE" | jq -r '.items[] | select(.path == "packages/demo-app/dist/index.html") | .url')" >> "$GITHUB_OUTPUT"
+
+      - name: Post comment
+        uses: actions/github-script@v7
+        env:
+          DOCS_URL: ${{ steps.artifacts.outputs.docs_url }}
+          LANDING_URL: ${{ steps.artifacts.outputs.landing_url }}
+          TABLE_URL: ${{ steps.artifacts.outputs.table_url }}
+          DEMO_URL: ${{ steps.artifacts.outputs.demo_url }}
+        with:
+          script: |
+            const sha = '${{ github.event.sha }}';
+
+            // Get commit message via API (no checkout needed)
+            const { data: commit } = await github.rest.repos.getCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: sha,
+            });
+            const commitMessage = commit.commit.message.split('\n')[0];
+
+            // Build artifact links (same format as the old CircleCI-based comment)
+            const links = [
+              `<a href="${process.env.DOCS_URL}">documentation</a>`,
+              `<a href="${process.env.LANDING_URL}">landing</a>`,
+              `<a href="${process.env.TABLE_URL}">table</a>`,
+              `<a href="${process.env.DEMO_URL}">demo</a>`,
+            ].join(' | ');
+
+            const body = [
+              `<h3>${commitMessage}</h3>`,
+              `Build artifact links for this commit: <strong>${links}</strong>`,
+              ``,
+              `<em>This is an automated comment from the deploy-preview CircleCI job.</em>`,
+            ].join('\n');
+
+            // Find associated open PR for this commit
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: sha,
+            });
+            const openPr = prs.find(pr => pr.state === 'open');
+
+            if (openPr) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: openPr.number,
+                body,
+              });
+              core.info(`Posted comment on PR #${openPr.number}`);
+            } else {
+              // Fall back to a commit comment (useful for pushes to develop/next)
+              await github.rest.repos.createCommitComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                commit_sha: sha,
+                body,
+              });
+              core.info(`Posted comment on commit ${sha}`);
+            }
