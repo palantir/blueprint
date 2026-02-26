@@ -465,14 +465,14 @@ $button-dark-minimal-active-text-colors: (
 
     &:hover {
       // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // Using incorrect semantic token to get closer to current values
+      // TODO(BP7): Update this semantic token to use `--bp-intent-default-hover`
       background-color: color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent);
     }
 
     &:active,
     &.#{$ns}-active {
       // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // Using incorrect semantic token to get closer to current values
+      // TODO(BP7): Update this semantic token to use `--bp-intent-default-active`
       background-color: color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent);
     }
 
