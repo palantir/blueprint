@@ -48,7 +48,6 @@ import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { DatePicker, type DatePickerProps } from "./datePicker";
 
 describe("<DatePicker>", () => {
-     
     let consoleErrorSpy: any;
 
     beforeEach(() => {

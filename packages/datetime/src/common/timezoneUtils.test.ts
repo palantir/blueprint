@@ -36,10 +36,6 @@ function getTimzoneOffsetRelativeToCurrentInHours(tz: string, date: Date): numbe
     return (tzOffsetInMinutes - currentOffsetInMinutes) / 60;
 }
 
-function checkIfDatesAreEqual(date1: Date, date2: Date) {
-    return date1.getTime() === date2.getTime();
-}
-
 describe("convertLocalDateToTimezoneTime", () => {
     it("should return the same date when current tz is the same as passed", () => {
         const convertedDate = convertLocalDateToTimezoneTime(MOCK_SUMMER_DATE, CURRENT_TZ);
@@ -125,3 +121,7 @@ describe("convertDateToLocalEquivalentOfTimezoneTime", () => {
         expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 });
+
+function checkIfDatesAreEqual(date1: Date, date2: Date) {
+    return date1.getTime() === date2.getTime();
+}

@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
-
 import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import type { DateRange } from "../";
+import type { DateRange } from "../common/dateRange";
 
 import * as DateUtils from "./dateUtils";
 import { Months } from "./months";
 
 describe("DateUtils", () => {
-    it("isSameTime", () => {
+    it("should verify isSameTime", () => {
         const d1 = new Date(2022, Months.JULY, 8);
         const d2 = new Date(2022, Months.JULY, 8);
         const d3 = new Date(2022, Months.JULY, 9);
-        expect(DateUtils.isSameTime(d1, d2), "same day, same time").to.be.true;
-        expect(DateUtils.isSameTime(d1, d3), "different day, same time").to.be.true;
+        expect(DateUtils.isSameTime(d1, d2)).toBe(true);
+        expect(DateUtils.isSameTime(d1, d3)).toBe(true);
     });
 
-    it("isDayInRange", () => {
+    it("should verify isDayInRange", () => {
         const d1 = new Date(2022, Months.JULY, 7);
         const d2 = new Date(2022, Months.JULY, 8);
         const d3 = new Date(2022, Months.JULY, 9);
-        expect(DateUtils.isDayInRange(d2, [d1, d3])).to.be.true;
+        expect(DateUtils.isDayInRange(d2, [d1, d3])).toBe(true);
     });
 
     describe("areRangesEqual", () => {
@@ -67,90 +66,90 @@ describe("DateUtils", () => {
             expectedResult: boolean,
         ) {
             it(description, () => {
-                expect(DateUtils.areRangesEqual(dateRange1, dateRange2)).to.equal(expectedResult);
+                expect(DateUtils.areRangesEqual(dateRange1, dateRange2)).toBe(expectedResult);
             });
         }
     });
 
-    it("getDateOnlyWithTime returns Date object with constant year, month, and day", () => {
+    it("should return Date object with constant year, month, and day from getDateOnlyWithTime", () => {
         const time = DateUtils.getDateOnlyWithTime(createTimeObject(14, 10, 10, 600));
 
-        expect(time.getFullYear()).to.equal(1899);
-        expect(time.getMonth()).to.equal(11);
-        expect(time.getDay()).to.equal(0);
+        expect(time.getFullYear()).toBe(1899);
+        expect(time.getMonth()).toBe(11);
+        expect(time.getDay()).toBe(0);
 
-        expect(time.getHours()).to.equal(14);
-        expect(time.getMinutes()).to.equal(10);
-        expect(time.getSeconds()).to.equal(10);
-        expect(time.getMilliseconds()).to.equal(600);
+        expect(time.getHours()).toBe(14);
+        expect(time.getMinutes()).toBe(10);
+        expect(time.getSeconds()).toBe(10);
+        expect(time.getMilliseconds()).toBe(600);
     });
 
     describe("isTimeSameOrAfter", () => {
-        it("returns true if given time is greater than another time", () => {
+        it("should return true if given time is greater than another time", () => {
             const time = createTimeObject(14, 22, 30, 600);
             const time2 = createTimeObject(14, 20, 30, 600);
 
-            expect(DateUtils.isTimeSameOrAfter(time, time2)).to.be.true;
+            expect(DateUtils.isTimeSameOrAfter(time, time2)).toBe(true);
         });
 
-        it("returns true if given time is equal to another time", () => {
+        it("should return true if given time is equal to another time", () => {
             const time = createTimeObject(14, 20, 30, 600);
             const time2 = createTimeObject(14, 20, 30, 600);
 
-            expect(DateUtils.isTimeSameOrAfter(time, time2)).to.be.true;
+            expect(DateUtils.isTimeSameOrAfter(time, time2)).toBe(true);
         });
 
-        it("returns false if given time is smaller than another time", () => {
+        it("should return false if given time is smaller than another time", () => {
             const time = createTimeObject(14, 10, 50, 900);
             const time2 = createTimeObject(14, 20, 30, 600);
 
-            expect(DateUtils.isTimeSameOrAfter(time, time2)).to.be.false;
+            expect(DateUtils.isTimeSameOrAfter(time, time2)).toBe(false);
         });
     });
 
     describe("isTimeEqualOrGreaterThan", () => {
-        it("returns true if time is greater then another time", () => {
+        it("should return true if time is greater than another time", () => {
             const time = createTimeObject(14, 20);
             const time2 = createTimeObject(14, 10);
 
-            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).to.be.true;
+            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).toBe(true);
         });
 
-        it("returns true if time is equal to another time", () => {
+        it("should return true if time is equal to another time", () => {
             const time = createTimeObject(14, 10);
             const time2 = createTimeObject(14, 10);
 
-            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).to.be.true;
+            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).toBe(true);
         });
 
-        it("returns false if time is smaller then another time", () => {
+        it("should return false if time is smaller than another time", () => {
             const time = createTimeObject(12, 10);
             const time2 = createTimeObject(13, 10);
 
-            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).to.be.false;
+            expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).toBe(false);
         });
     });
 
     describe("isTimeEqualOrSmallerThan", () => {
-        it("returns true if time is smaller then another time", () => {
+        it("should return true if time is smaller than another time", () => {
             const time = createTimeObject(10, 10);
             const time2 = createTimeObject(14, 10);
 
-            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).to.be.true;
+            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).toBe(true);
         });
 
-        it("returns true if time is equal to another time", () => {
+        it("should return true if time is equal to another time", () => {
             const time = createTimeObject(14, 10);
             const time2 = createTimeObject(14, 10);
 
-            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).to.be.true;
+            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).toBe(true);
         });
 
-        it("returns false if time is greater then another time", () => {
+        it("should return false if time is greater than another time", () => {
             const time = createTimeObject(14, 10);
             const time2 = createTimeObject(13, 10);
 
-            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).to.be.false;
+            expect(DateUtils.isTimeEqualOrSmallerThan(time, time2)).toBe(false);
         });
     });
 
@@ -159,43 +158,43 @@ describe("DateUtils", () => {
         const minTime = createTimeObject(14, 20, 30, 600);
         const maxTime = createTimeObject(18, 40, 10, 200);
 
-        it("returns true if given time is in range", () => {
+        it("should return true if given time is in range", () => {
             const time = createTimeObject(17, 0, 0, 0);
-            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).to.be.true;
+            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).toBe(true);
         });
 
-        it("returns true if given time is in range, and minTime > maxTime", () => {
+        it("should return true if given time is in range, and minTime > maxTime", () => {
             const minTimeBeforeMidnight = createTimeObject(22, 0, 0, 0);
             const maxTimeAfterMidnight = createTimeObject(2, 0, 0, 0);
 
             const timeAfterMidnight = createTimeObject(1, 0, 0, 0);
-            expect(DateUtils.isTimeInRange(timeAfterMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight)).to.be.true;
+            expect(DateUtils.isTimeInRange(timeAfterMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight)).toBe(true);
 
             const timeBeforeMidnight = createTimeObject(23, 0, 0, 0);
-            expect(DateUtils.isTimeInRange(timeBeforeMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight)).to.be.true;
+            expect(DateUtils.isTimeInRange(timeBeforeMidnight, minTimeBeforeMidnight, maxTimeAfterMidnight)).toBe(true);
         });
 
-        it("returns false if given time is not in range, and minTime > maxTime", () => {
+        it("should return false if given time is not in range, and minTime > maxTime", () => {
             const minTimeBeforeMidnight = createTimeObject(22, 0, 0, 0);
             const maxTimeAfterMidnight = createTimeObject(2, 0, 0, 0);
 
             const time = createTimeObject(16, 0, 0, 0);
-            expect(DateUtils.isTimeInRange(time, minTimeBeforeMidnight, maxTimeAfterMidnight)).to.be.false;
+            expect(DateUtils.isTimeInRange(time, minTimeBeforeMidnight, maxTimeAfterMidnight)).toBe(false);
         });
 
-        it("returns false if given time is smaller than minTime", () => {
+        it("should return false if given time is smaller than minTime", () => {
             const time = createTimeObject(13, 10, 50, 900);
-            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).to.be.false;
+            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).toBe(false);
         });
 
-        it("returns false if given time is greater than maxTime", () => {
+        it("should return false if given time is greater than maxTime", () => {
             const time = createTimeObject(18, 41, 9, 50);
-            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).to.be.false;
+            expect(DateUtils.isTimeInRange(time, minTime, maxTime)).toBe(false);
         });
     });
 
     describe("getTimeInRange", () => {
-        it("returns given time, if it's between minTime and MaxTime", () => {
+        it("should return given time, if it's between minTime and MaxTime", () => {
             const timeInRange = createTimeObject(14, 10);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -204,7 +203,7 @@ describe("DateUtils", () => {
             assertTimeIs(time, 14, 10);
         });
 
-        it("returns given maxTime, if given time is after maxTime", () => {
+        it("should return given maxTime, if given time is after maxTime", () => {
             const timeAfterMaxTime = createTimeObject(15, 40);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -214,7 +213,7 @@ describe("DateUtils", () => {
             assertTimeIs(time, 15, 30);
         });
 
-        it("returns given maxTime, if given time is same as maxTime", () => {
+        it("should return given maxTime, if given time is same as maxTime", () => {
             const timeSameAsMaxTime = createTimeObject(15, 30);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -224,7 +223,7 @@ describe("DateUtils", () => {
             assertTimeIs(time, 15, 30);
         });
 
-        it("returns given minTime, if given time is before minTime", () => {
+        it("should return given minTime, if given time is before minTime", () => {
             const timeBeforeMinTime = createTimeObject(9, 25);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -234,7 +233,7 @@ describe("DateUtils", () => {
             assertTimeIs(time, 10, 20);
         });
 
-        it("returns given minTime, if given time is same as minTime", () => {
+        it("should return given minTime, if given time is same as minTime", () => {
             const timeSameAsMinTime = createTimeObject(10, 20);
             const minTime = createTimeObject(10, 20);
             const maxTime = createTimeObject(15, 30);
@@ -244,7 +243,7 @@ describe("DateUtils", () => {
             assertTimeIs(time, 10, 20);
         });
 
-        it("returns given maxTime, if minTime === maxTime", () => {
+        it("should return given maxTime, if minTime === maxTime", () => {
             const minTime = createTimeObject(11, 20);
             const maxTime = createTimeObject(11, 20);
 
@@ -255,130 +254,130 @@ describe("DateUtils", () => {
     });
 
     describe("convert24HourMeridiem", () => {
-        it("returns given hour, if hour is PM and toPm", () => {
-            expect(DateUtils.convert24HourMeridiem(12, true)).to.equal(12);
-            expect(DateUtils.convert24HourMeridiem(13, true)).to.equal(13);
-            expect(DateUtils.convert24HourMeridiem(22, true)).to.equal(22);
-            expect(DateUtils.convert24HourMeridiem(23, true)).to.equal(23);
+        it("should return given hour, if hour is PM and toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(12, true)).toBe(12);
+            expect(DateUtils.convert24HourMeridiem(13, true)).toBe(13);
+            expect(DateUtils.convert24HourMeridiem(22, true)).toBe(22);
+            expect(DateUtils.convert24HourMeridiem(23, true)).toBe(23);
         });
 
-        it("returns given hour in AM, if hour is PM and not toPm", () => {
-            expect(DateUtils.convert24HourMeridiem(12, false)).to.equal(0);
-            expect(DateUtils.convert24HourMeridiem(13, false)).to.equal(1);
-            expect(DateUtils.convert24HourMeridiem(22, false)).to.equal(10);
-            expect(DateUtils.convert24HourMeridiem(23, false)).to.equal(11);
+        it("should return given hour in AM, if hour is PM and not toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(12, false)).toBe(0);
+            expect(DateUtils.convert24HourMeridiem(13, false)).toBe(1);
+            expect(DateUtils.convert24HourMeridiem(22, false)).toBe(10);
+            expect(DateUtils.convert24HourMeridiem(23, false)).toBe(11);
         });
 
-        it("returns given hour, if hour is AM and not toPm", () => {
-            expect(DateUtils.convert24HourMeridiem(0, false)).to.equal(0);
-            expect(DateUtils.convert24HourMeridiem(1, false)).to.equal(1);
-            expect(DateUtils.convert24HourMeridiem(10, false)).to.equal(10);
-            expect(DateUtils.convert24HourMeridiem(11, false)).to.equal(11);
+        it("should return given hour, if hour is AM and not toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(0, false)).toBe(0);
+            expect(DateUtils.convert24HourMeridiem(1, false)).toBe(1);
+            expect(DateUtils.convert24HourMeridiem(10, false)).toBe(10);
+            expect(DateUtils.convert24HourMeridiem(11, false)).toBe(11);
         });
 
-        it("returns given hour in PM, if hour is AM and toPm", () => {
-            expect(DateUtils.convert24HourMeridiem(0, true)).to.equal(12);
-            expect(DateUtils.convert24HourMeridiem(1, true)).to.equal(13);
-            expect(DateUtils.convert24HourMeridiem(10, true)).to.equal(22);
-            expect(DateUtils.convert24HourMeridiem(11, true)).to.equal(23);
+        it("should return given hour in PM, if hour is AM and toPm", () => {
+            expect(DateUtils.convert24HourMeridiem(0, true)).toBe(12);
+            expect(DateUtils.convert24HourMeridiem(1, true)).toBe(13);
+            expect(DateUtils.convert24HourMeridiem(10, true)).toBe(22);
+            expect(DateUtils.convert24HourMeridiem(11, true)).toBe(23);
         });
 
-        it("throws an error only for invalid hours", () => {
-            expect(() => DateUtils.convert24HourMeridiem(-1, true)).to.throw();
-            expect(() => DateUtils.convert24HourMeridiem(24, true)).to.throw();
-            expect(() => DateUtils.convert24HourMeridiem(0, true)).to.not.throw();
-            expect(() => DateUtils.convert24HourMeridiem(23, true)).to.not.throw();
+        it("should throw an error only for invalid hours", () => {
+            expect(() => DateUtils.convert24HourMeridiem(-1, true)).toThrow();
+            expect(() => DateUtils.convert24HourMeridiem(24, true)).toThrow();
+            expect(() => DateUtils.convert24HourMeridiem(0, true)).not.toThrow();
+            expect(() => DateUtils.convert24HourMeridiem(23, true)).not.toThrow();
         });
     });
 
     describe("getIsPmFrom24Hour", () => {
-        it("returns true, if hour (in 24 range) is PM", () => {
-            expect(DateUtils.getIsPmFrom24Hour(12)).to.equal(true);
-            expect(DateUtils.getIsPmFrom24Hour(13)).to.equal(true);
-            expect(DateUtils.getIsPmFrom24Hour(17)).to.equal(true);
-            expect(DateUtils.getIsPmFrom24Hour(22)).to.equal(true);
-            expect(DateUtils.getIsPmFrom24Hour(23)).to.equal(true);
+        it("should return true, if hour (in 24 range) is PM", () => {
+            expect(DateUtils.getIsPmFrom24Hour(12)).toBe(true);
+            expect(DateUtils.getIsPmFrom24Hour(13)).toBe(true);
+            expect(DateUtils.getIsPmFrom24Hour(17)).toBe(true);
+            expect(DateUtils.getIsPmFrom24Hour(22)).toBe(true);
+            expect(DateUtils.getIsPmFrom24Hour(23)).toBe(true);
         });
 
-        it("returns false, if hour (in 24 range) is AM", () => {
-            expect(DateUtils.getIsPmFrom24Hour(0)).to.equal(false);
-            expect(DateUtils.getIsPmFrom24Hour(1)).to.equal(false);
-            expect(DateUtils.getIsPmFrom24Hour(5)).to.equal(false);
-            expect(DateUtils.getIsPmFrom24Hour(10)).to.equal(false);
-            expect(DateUtils.getIsPmFrom24Hour(11)).to.equal(false);
+        it("should return false, if hour (in 24 range) is AM", () => {
+            expect(DateUtils.getIsPmFrom24Hour(0)).toBe(false);
+            expect(DateUtils.getIsPmFrom24Hour(1)).toBe(false);
+            expect(DateUtils.getIsPmFrom24Hour(5)).toBe(false);
+            expect(DateUtils.getIsPmFrom24Hour(10)).toBe(false);
+            expect(DateUtils.getIsPmFrom24Hour(11)).toBe(false);
         });
 
-        it("throws an error only for invalid hours", () => {
-            expect(() => DateUtils.getIsPmFrom24Hour(-1)).to.throw();
-            expect(() => DateUtils.getIsPmFrom24Hour(24)).to.throw();
-            expect(() => DateUtils.getIsPmFrom24Hour(0)).to.not.throw();
-            expect(() => DateUtils.getIsPmFrom24Hour(23)).to.not.throw();
+        it("should throw an error only for invalid hours", () => {
+            expect(() => DateUtils.getIsPmFrom24Hour(-1)).toThrow();
+            expect(() => DateUtils.getIsPmFrom24Hour(24)).toThrow();
+            expect(() => DateUtils.getIsPmFrom24Hour(0)).not.toThrow();
+            expect(() => DateUtils.getIsPmFrom24Hour(23)).not.toThrow();
         });
     });
 
     describe("get12HourFrom24Hour", () => {
-        it("returns correct 12-hour format from 24-hour format", () => {
-            expect(DateUtils.get12HourFrom24Hour(0)).to.equal(12);
-            expect(DateUtils.get12HourFrom24Hour(5)).to.equal(5);
-            expect(DateUtils.get12HourFrom24Hour(11)).to.equal(11);
-            expect(DateUtils.get12HourFrom24Hour(12)).to.equal(12);
-            expect(DateUtils.get12HourFrom24Hour(18)).to.equal(6);
-            expect(DateUtils.get12HourFrom24Hour(23)).to.equal(11);
+        it("should return correct 12-hour format from 24-hour format", () => {
+            expect(DateUtils.get12HourFrom24Hour(0)).toBe(12);
+            expect(DateUtils.get12HourFrom24Hour(5)).toBe(5);
+            expect(DateUtils.get12HourFrom24Hour(11)).toBe(11);
+            expect(DateUtils.get12HourFrom24Hour(12)).toBe(12);
+            expect(DateUtils.get12HourFrom24Hour(18)).toBe(6);
+            expect(DateUtils.get12HourFrom24Hour(23)).toBe(11);
         });
 
-        it("throws an error only for invalid 24-hours", () => {
-            expect(() => DateUtils.get12HourFrom24Hour(-1)).to.throw();
-            expect(() => DateUtils.get12HourFrom24Hour(24)).to.throw();
-            expect(() => DateUtils.get12HourFrom24Hour(0)).to.not.throw();
-            expect(() => DateUtils.get12HourFrom24Hour(23)).to.not.throw();
+        it("should throw an error only for invalid 24-hours", () => {
+            expect(() => DateUtils.get12HourFrom24Hour(-1)).toThrow();
+            expect(() => DateUtils.get12HourFrom24Hour(24)).toThrow();
+            expect(() => DateUtils.get12HourFrom24Hour(0)).not.toThrow();
+            expect(() => DateUtils.get12HourFrom24Hour(23)).not.toThrow();
         });
     });
 
     describe("get24HourFrom12Hour", () => {
-        it("returns correct 24-hour format from 12-hour format, if isPm", () => {
-            expect(DateUtils.get24HourFrom12Hour(1, true)).to.equal(13);
-            expect(DateUtils.get24HourFrom12Hour(7, true)).to.equal(19);
-            expect(DateUtils.get24HourFrom12Hour(11, true)).to.equal(23);
-            expect(DateUtils.get24HourFrom12Hour(12, true)).to.equal(12);
+        it("should return correct 24-hour format from 12-hour format, if isPm", () => {
+            expect(DateUtils.get24HourFrom12Hour(1, true)).toBe(13);
+            expect(DateUtils.get24HourFrom12Hour(7, true)).toBe(19);
+            expect(DateUtils.get24HourFrom12Hour(11, true)).toBe(23);
+            expect(DateUtils.get24HourFrom12Hour(12, true)).toBe(12);
         });
 
-        it("returns correct 24-hour format from 12-hour format, if not isPm", () => {
-            expect(DateUtils.get24HourFrom12Hour(1, false)).to.equal(1);
-            expect(DateUtils.get24HourFrom12Hour(4, false)).to.equal(4);
-            expect(DateUtils.get24HourFrom12Hour(11, false)).to.equal(11);
-            expect(DateUtils.get24HourFrom12Hour(12, false)).to.equal(0);
+        it("should return correct 24-hour format from 12-hour format, if not isPm", () => {
+            expect(DateUtils.get24HourFrom12Hour(1, false)).toBe(1);
+            expect(DateUtils.get24HourFrom12Hour(4, false)).toBe(4);
+            expect(DateUtils.get24HourFrom12Hour(11, false)).toBe(11);
+            expect(DateUtils.get24HourFrom12Hour(12, false)).toBe(0);
         });
 
-        it("throws an error only for invalid 12-hours", () => {
-            expect(() => DateUtils.get24HourFrom12Hour(0, true)).to.throw();
-            expect(() => DateUtils.get24HourFrom12Hour(13, true)).to.throw();
-            expect(() => DateUtils.get24HourFrom12Hour(1, true)).to.not.throw();
-            expect(() => DateUtils.get24HourFrom12Hour(12, true)).to.not.throw();
+        it("should throw an error only for invalid 12-hours", () => {
+            expect(() => DateUtils.get24HourFrom12Hour(0, true)).toThrow();
+            expect(() => DateUtils.get24HourFrom12Hour(13, true)).toThrow();
+            expect(() => DateUtils.get24HourFrom12Hour(1, true)).not.toThrow();
+            expect(() => DateUtils.get24HourFrom12Hour(12, true)).not.toThrow();
         });
     });
 
     describe("getDateTime", () => {
         const DATE = new Date("July 1 1999 4:30");
 
-        it("null date returns null", () => expect(DateUtils.getDateTime(null)).to.be.null);
+        it("should return null for null date", () => expect(DateUtils.getDateTime(null)).toBeNull());
 
-        it("clears time if time arg omitted", () => {
+        it("should clear time if time arg omitted", () => {
             assertDateTime(DateUtils.getDateTime(DATE));
         });
 
-        it("null time arg clears time", () => {
+        it("should clear time with null time arg", () => {
             assertDateTime(DateUtils.getDateTime(DATE, null));
         });
 
-        it("sets time if given", () => {
+        it("should set time if given", () => {
             const time = createTimeObject(12, 12, 12, 12);
             assertDateTime(DateUtils.getDateTime(DATE, time), time);
         });
 
         function assertDateTime(date: Date | null, time: Date = createTimeObject(0)) {
-            expect(date).to.not.be.null;
-            expect(date!.toDateString()).to.equal(DATE.toDateString(), "date not preserved");
-            expect(date!.toTimeString()).to.equal(time.toTimeString());
+            expect(date).not.toBeNull();
+            expect(date!.toDateString()).toBe(DATE.toDateString());
+            expect(date!.toTimeString()).toBe(time.toTimeString());
         }
     });
 });

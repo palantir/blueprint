@@ -1563,7 +1563,6 @@ describe("<DateRangePicker>", () => {
         });
     });
 
-     
     function renderDateRangePicker(props: Record<string, any> = {}) {
         const mergedProps: DateRangePickerProps = {
             dateFnsLocaleLoader: loadDateFnsLocaleFake,
@@ -1627,7 +1626,6 @@ describe("<DateRangePicker>", () => {
             getYear: () => displayedYear,
         };
     }
-
 
     function getMonthIndex(monthName: string) {
         return parse(monthName, "LLLL", new Date(), { locale: enUSLocale }).getMonth();
