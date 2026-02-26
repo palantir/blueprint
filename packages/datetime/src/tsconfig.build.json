@@ -7,9 +7,9 @@
     "exclude": [
         "**/*.test.ts",
         "**/*.test.tsx",
-        "vitest-env.d.ts",
         "common/dateFormatTestUtils.ts",
         "common/dayPickerTestUtils.ts",
-        "common/loadDateFnsLocaleFake.ts"
+        "common/loadDateFnsLocaleFake.ts",
+        "vitest-env.d.ts"
     ]
 }

@@ -14,22 +14,32 @@
  * limitations under the License.
  */
 
-import { fireEvent, render, screen } from "@testing-library/react";
+import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
-import { zonedTimeToUtc } from "date-fns-tz";
+import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
+import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
+import * as sinon from "sinon";
 
-import { Classes as CoreClasses } from "@blueprintjs/core";
-import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
 
-import { Classes, Months, TimePrecision, TimezoneNameUtils, TimezoneUtils } from "../../common";
+import {
+    Classes,
+    type DateFormatProps,
+    Months,
+    TimePrecision,
+    TimeUnit,
+    TimezoneNameUtils,
+    TimezoneSelect,
+    TimezoneUtils,
+} from "../..";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../common/dateFnsFormatUtils";
 import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
+import { DateInput, type DateInputProps } from "../date-input/dateInput";
+import { DatePicker } from "../date-picker/datePicker";
 import { INVALID_DATE_MESSAGE, LOCALE } from "../dateConstants";
-
-import { DateInput, type DateInputProps } from "./dateInput";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
@@ -37,8 +47,12 @@ const TOKYO_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Tokyo")!;
 
 const VALUE = "2021-11-29T10:30:00z";
 
-const DEFAULT_PROPS: Partial<DateInputProps> = {
+const LOCALE_LOADER = {
     dateFnsLocaleLoader: loadDateFnsLocaleFake,
+};
+
+const DEFAULT_PROPS: DateInputProps & DateFormatProps = {
+    ...LOCALE_LOADER,
     defaultTimezone: TimezoneUtils.UTC_TIME.ianaCode,
     formatDate: (date: Date | null | undefined, localeCode?: string) => {
         if (date == null) {
@@ -65,17 +79,8 @@ const DEFAULT_PROPS: Partial<DateInputProps> = {
     timePrecision: TimePrecision.SECOND,
 };
 
-function renderDateInput(props: Partial<DateInputProps> = {}) {
-    const result = render(<DateInput {...DEFAULT_PROPS} {...props} />);
-    return {
-        ...result,
-        getInput: () => screen.getByRole("combobox") as HTMLInputElement,
-        getPopover: () => result.container.querySelector(`.${Classes.DATE_INPUT_POPOVER}`),
-    };
-}
-
 describe("<DateInput>", () => {
-    const onChange = vi.fn();
+    const onChange = sinon.spy();
     let containerElement: HTMLElement;
 
     beforeEach(() => {
@@ -85,140 +90,136 @@ describe("<DateInput>", () => {
 
     afterEach(() => {
         containerElement.remove();
-        onChange.mockReset();
+        onChange.resetHistory();
     });
 
     describe("basic rendering", () => {
-        it("should pass custom classNames to popover target", () => {
+        it("passes custom classNames to popover target", () => {
             const CLASS_1 = "foo";
             const CLASS_2 = "bar";
 
-            const { container } = renderDateInput({
-                className: CLASS_1,
-                popoverProps: { ...DEFAULT_PROPS.popoverProps, className: CLASS_2 },
-            });
-
-            const popoverTarget = container.querySelector(`.${Classes.DATE_INPUT}.${CoreClasses.POPOVER_TARGET}`);
-            expect(popoverTarget).toHaveClass(CLASS_1);
-            expect(popoverTarget).toHaveClass(CLASS_2);
-        });
-
-        it("should support custom input props", () => {
-            renderDateInput({ inputProps: { style: { background: "yellow" }, tabIndex: 4 } });
-            const inputElement = screen.getByRole("combobox") as HTMLInputElement;
-            expect(inputElement.style.background).toBe("yellow");
-            expect(inputElement.tabIndex).toBe(4);
-        });
-
-        it("should support inputProps.inputRef", () => {
-            const inputRef = createRef<HTMLInputElement>();
-            renderDateInput({ inputProps: { inputRef } });
-            expect(inputRef.current).toBeInstanceOf(HTMLInputElement);
-        });
-
-        it("should not render a TimezoneSelect if timePrecision is undefined", () => {
-            const { container } = renderDateInput({ timePrecision: undefined });
-            expect(container.querySelector(`.${Classes.TIMEZONE_SELECT}`)).not.toBeInTheDocument();
-        });
-
-        it("should correctly pass on defaultTimezone to TimezoneSelect", () => {
-            const defaultTimezone = "Europe/Paris";
-            const { container } = renderDateInput({ defaultTimezone });
-            const timezoneSelect = container.querySelector(`.${Classes.TIMEZONE_SELECT}`);
-            expect(timezoneSelect).toBeInTheDocument();
-            // The timezone select shows the short name
-            expect(timezoneSelect).toHaveTextContent(
-                TimezoneNameUtils.getTimezoneShortName(defaultTimezone, undefined),
+            const wrapper = mount(
+                <DateInput
+                    {...DEFAULT_PROPS}
+                    className={CLASS_1}
+                    popoverProps={{ ...DEFAULT_PROPS.popoverProps, className: CLASS_2 }}
+                />,
             );
+
+            const popoverTarget = wrapper.find(`.${Classes.DATE_INPUT}.${CoreClasses.POPOVER_TARGET}`).hostNodes();
+            assert.isTrue(popoverTarget.hasClass(CLASS_1));
+            assert.isTrue(popoverTarget.hasClass(CLASS_2));
         });
 
-        // SKIP: In jsdom, focusing the input does not reliably open the Popover and render the
-        // DatePicker footer. The datePickerProps are correctly forwarded (tested at the DatePicker level).
-        it.skip("should pass datePickerProps to DatePicker correctly", () => {
-            const { container, getInput } = renderDateInput({
+        it("supports custom input props", () => {
+            const wrapper = mount(
+                <DateInput {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
+            );
+            const inputElement = wrapper.find("input").getDOMNode<HTMLInputElement>();
+            assert.equal(inputElement.style.background, "yellow");
+            assert.equal(inputElement.tabIndex, 4);
+        });
+
+        it("supports inputProps.inputRef", () => {
+            const inputRef = createRef<HTMLInputElement>();
+            mount(<DateInput {...DEFAULT_PROPS} inputProps={{ inputRef }} />);
+            assert.instanceOf(inputRef.current, HTMLInputElement);
+        });
+
+        it("does not render a TimezoneSelect if timePrecision is undefined", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} timePrecision={undefined} />);
+            assert.isFalse(wrapper.find(TimezoneSelect).exists());
+        });
+
+        it("correctly passes on defaultTimezone to TimezoneSelect", () => {
+            const defaultTimezone = "Europe/Paris";
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
+            const timezoneSelect = wrapper.find(TimezoneSelect);
+            assert.strictEqual(timezoneSelect.prop("value"), defaultTimezone);
+        });
+
+        it("passes datePickerProps to DatePicker correctly", () => {
+            const datePickerProps = {
                 clearButtonText: "clear",
-                showActionsBar: true,
                 todayButtonText: "today",
-            });
-            fireEvent.focus(getInput());
-            const allButtons = [
-                ...Array.from(container.querySelectorAll("button")),
-                ...Array.from(document.body.querySelectorAll("button")),
-            ];
-            const clearButton = allButtons.find(btn => btn.textContent?.includes("clear"));
-            expect(clearButton).toBeDefined();
-            expect(clearButton).toHaveTextContent("clear");
+            };
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} {...datePickerProps} />);
+            focusInput(wrapper);
+            const datePicker = wrapper.find(DatePicker);
+            assert.equal(datePicker.prop("clearButtonText"), "clear");
+            assert.equal(datePicker.prop("todayButtonText"), "today");
         });
 
-        it("should pass fill and inputProps to InputGroup", () => {
-            const inputRef = vi.fn();
-            const onFocus = vi.fn();
-            const { getInput } = renderDateInput({
-                fill: true,
-                inputProps: {
-                    inputRef,
-                    leftIcon: "star",
-                    onFocus,
-                    required: true,
-                },
-            });
+        it("passes fill and inputProps to InputGroup", () => {
+            const inputRef = sinon.spy();
+            const onFocus = sinon.spy();
+            const wrapper = mount(
+                <DateInput
+                    {...DEFAULT_PROPS}
+                    fill={true}
+                    inputProps={{
+                        inputRef,
+                        leftIcon: "star",
+                        onFocus,
+                        required: true,
+                    }}
+                />,
+            );
+            focusInput(wrapper);
 
-            const input = getInput();
-            fireEvent.focus(input);
-
-            expect(input.closest(`.${CoreClasses.INPUT_GROUP}`)).toHaveClass(CoreClasses.FILL);
-            expect(input.closest(`.${CoreClasses.INPUT_GROUP}`)?.querySelector(".bp6-icon-star")).toBeInTheDocument();
-            expect(input.required).toBe(true);
-            expect(inputRef).toHaveBeenCalled();
-            expect(onFocus).toHaveBeenCalled();
+            const input = wrapper.find(InputGroup);
+            assert.isTrue(input.prop("fill"));
+            assert.strictEqual(input.prop("leftIcon"), "star");
+            assert.isTrue(input.prop("required"));
+            assert.isTrue(inputRef.called, "inputRef not invoked");
+            assert.isTrue(onFocus.called, "onFocus not invoked");
         });
 
-        it("should pass popoverProps to Popover", () => {
-            const onOpening = vi.fn();
-            const { container, getInput } = renderDateInput({
-                popoverProps: {
-                    onOpening,
-                    placement: "top",
-                    usePortal: false,
-                },
-            });
+        it("passes popoverProps to Popover", () => {
+            const onOpening = sinon.spy();
+            const wrapper = mount(
+                <DateInput
+                    {...DEFAULT_PROPS}
+                    popoverProps={{
+                        onOpening,
+                        placement: "top",
+                        usePortal: false,
+                    }}
+                />,
+            );
+            focusInput(wrapper);
 
-            fireEvent.focus(getInput());
-
-            const popover = container.querySelector(`.${Classes.DATE_INPUT_POPOVER}`);
-            expect(popover).toBeInTheDocument();
-            expect(onOpening).toHaveBeenCalledOnce();
+            const popover = wrapper.find(Popover).first();
+            assert.strictEqual(popover.prop("placement"), "top");
+            assert.isFalse(popover.prop("usePortal"));
+            assert.isTrue(onOpening.calledOnce);
         });
 
-        it("should gracefully handle invalid defaultTimezone prop value", () => {
-            expect(() => renderDateInput({ defaultTimezone: "Foo/Bar" })).not.toThrow();
+        it("gracefully handles invalid defaultTimezone prop value", () => {
+            mount(<DateInput {...DEFAULT_PROPS} defaultTimezone="Foo/Bar" />);
         });
     });
 
     describe("popover interaction", () => {
-        it("should open the popover when focusing input", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS} />, { container: containerElement });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            assertPopoverIsOpen(container);
+        it("opens the popover when focusing input", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            assertPopoverIsOpen(wrapper);
         });
 
-        it("should not open the popover when disabled", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS} disabled={true} />, {
-                container: containerElement,
+        it("doesn't open the popover when disabled", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} disabled={true} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            assertPopoverIsOpen(container, false);
+            focusInput(wrapper);
+            assertPopoverIsOpen(wrapper, false);
         });
 
-        it("should close popover when ESC key pressed", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS} />, { container: containerElement });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.focus(input);
-            fireEvent.keyDown(input, { key: "Escape" });
-            assertPopoverIsOpen(container, false);
+        it("popover closes when ESC key pressed", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            wrapper.find(InputGroup).find("input").simulate("keydown", { key: "Escape" });
+            assertPopoverIsOpen(wrapper, false);
         });
     });
 
@@ -229,223 +230,210 @@ describe("<DateInput>", () => {
             onChange,
         };
 
-        it("should call onChange on date changes", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
-            });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            const firstDay = container.querySelector(
-                `.${Classes.DATEPICKER3_DAY}:not(.${Classes.DATEPICKER3_DAY_OUTSIDE})`,
-            ) as HTMLElement;
-            fireEvent.click(firstDay);
-
-            expect(onChange).toHaveBeenCalledOnce();
+        it("calls onChange on date changes", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            wrapper
+                .find(`.${Classes.DATEPICKER3_DAY}:not(.${Classes.DATEPICKER3_DAY_OUTSIDE})`)
+                .first()
+                .simulate("click")
+                .update();
+            assert.isTrue(onChange.calledOnce);
             // first non-outside day should be the November 1st
-            expect(onChange.mock.calls[0][0]).toBe("2021-11-01T10:30:00+00:00");
+            assert.strictEqual(onChange.firstCall.args[0], "2021-11-01T10:30:00+00:00");
         });
 
-        it("should call onChange on timezone changes", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
-            });
-            clickTimezoneItem(container, NEW_YORK_TIMEZONE.label);
-            expect(onChange).toHaveBeenCalledOnce();
+        it("calls onChange on timezone changes", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            clickTimezoneItem(wrapper, NEW_YORK_TIMEZONE.label);
+            assert.isTrue(onChange.calledOnce);
             // New York is UTC-5
-            expect(onChange.mock.calls[0][0]).toBe("2021-11-29T10:30:00-05:00");
+            assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00-05:00");
         });
 
         // HACKHACK: this test ported from Blueprint v4.x doesn't seem to match any real UX, since pressing Shift+Tab
         // on the first focussable day in a calendar month doesn't move you to the previous month; instead it moves focus
         // to the year dropdown. It might be worth testing behavior when pressing the left arrow key, since that _does_
         // move focus to the last day of the previous month.
-        it.skip("should not close popover if focus moves to previous day (last day of prev month)", () => {
-            /* SKIP: Complex Enzyme-specific test with focus/blur relatedTarget simulation */
-        });
+        it.skip("popover should not close if focus moves to previous day (last day of prev month)", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            blurInput(wrapper);
+            const firstTabbable = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 }).first();
+            const lastDayOfPrevMonth = wrapper
+                .find(Popover)
+                .find(".DayPicker-Body > .DayPicker-Week .DayPicker-Day--outside")
+                .last();
 
-        it("should not close popover if focus moves to month select", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
+            firstTabbable.simulate("focus");
+            firstTabbable.simulate("blur", {
+                relatedTarget: lastDayOfPrevMonth.getDOMNode(),
+                target: firstTabbable.getDOMNode(),
             });
-            const input = screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(input);
-            fireEvent.blur(input);
-            changeSelectDropdown(container, Classes.DATEPICKER_MONTH_SELECT, Months.NOVEMBER);
-            assertPopoverIsOpen(container);
+            wrapper.update();
+            assertPopoverIsOpen(wrapper);
         });
 
-        it("should not close popover if focus moves to year select", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
-            });
-            const input = screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(input);
-            fireEvent.blur(input);
-            changeSelectDropdown(container, Classes.DATEPICKER_YEAR_SELECT, 2020);
-            assertPopoverIsOpen(container);
+        it("popover should not close if focus moves to month select", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            blurInput(wrapper);
+            changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.NOVEMBER);
+            assertPopoverIsOpen(wrapper);
         });
 
-        it("should not close popover when time picker arrows are clicked after selecting a month", () => {
-            const { container } = render(
+        it("popover should not close if focus moves to year select", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            blurInput(wrapper);
+            changeSelectDropdown(wrapper, Classes.DATEPICKER_YEAR_SELECT, 2020);
+            assertPopoverIsOpen(wrapper);
+        });
+
+        it("popover should not close when time picker arrows are clicked after selecting a month", () => {
+            const wrapper = mount(
                 <DateInput {...DEFAULT_PROPS_UNCONTROLLED} timePickerProps={{ showArrowButtons: true }} />,
-                { container: containerElement },
+                { attachTo: containerElement },
             );
-            const input = screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(input);
-            changeSelectDropdown(container, Classes.DATEPICKER_MONTH_SELECT, Months.OCTOBER);
-            const hourArrowButton = container.querySelector(
-                `.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`,
-            ) as HTMLElement;
-            fireEvent.click(hourArrowButton);
-            assertPopoverIsOpen(container);
+            focusInput(wrapper);
+            changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.OCTOBER);
+            wrapper.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
+            assertPopoverIsOpen(wrapper);
         });
 
-        it("should save the inputted date and close the popover when pressing Enter", () => {
+        it("pressing Enter saves the inputted date and closes the popover", () => {
             const IMPROPERLY_FORMATTED_DATE_STRING = "002/0015/2015";
             const PROPERLY_FORMATTED_DATE_STRING = "2/15/2015";
-            const onKeyDown = vi.fn();
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onKeyDown }} />, {
-                container: containerElement,
+            const onKeyDown = sinon.spy();
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onKeyDown }} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.focus(input);
-            fireEvent.change(input, { target: { value: IMPROPERLY_FORMATTED_DATE_STRING } });
-            fireEvent.keyDown(input, { key: "Enter" });
-            assertPopoverIsOpen(container, false);
-            expect(document.activeElement).not.toBe(input);
-            expect(input.value).toBe(PROPERLY_FORMATTED_DATE_STRING);
-            expect(onKeyDown).toHaveBeenCalledOnce();
+            focusInput(wrapper);
+            const input = wrapper.find(InputGroup).find("input");
+            input.simulate("change", { target: { value: IMPROPERLY_FORMATTED_DATE_STRING } });
+            input.simulate("keydown", { key: "Enter" });
+            assertPopoverIsOpen(wrapper, false);
+            assert.notStrictEqual(document.activeElement, input.getDOMNode(), "input should not be focused");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
+            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
         });
 
-        it("should put clicked date in the input box and close the popover", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS} />, { container: containerElement });
-            const input = screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(input);
-            expect(input.value).toBe("");
+        it("clicking a date puts it in the input box and closes the popover", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "");
             const dayToClick = 12;
-            clickCalendarDay(container, dayToClick);
+            clickCalendarDay(wrapper, dayToClick);
             const today = new Date();
-            expect(input.value).toBe(`${today.getMonth() + 1}/${dayToClick}/${today.getFullYear()}`);
-            assertPopoverIsOpen(container, false);
+            assert.equal(
+                wrapper.find(InputGroup).prop("value"),
+                `${today.getMonth() + 1}/${dayToClick}/${today.getFullYear()}`,
+            );
+            assertPopoverIsOpen(wrapper, false);
         });
 
-        it("should close the popover when clicking a date in the same month with existing default value", () => {
+        it("clicking a date in the same month closes the popover when there is already a default value", () => {
             const DAY = 15;
             const PREV_DAY = DAY - 1;
             const defaultValue = `2022-07-${DAY}T15:00:00z`; // include an arbitrary non-zero hour
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} defaultValue={defaultValue} />, {
-                container: containerElement,
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} defaultValue={defaultValue} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            clickCalendarDay(container, PREV_DAY);
-            assertPopoverIsOpen(container, false);
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, PREV_DAY);
+            assertPopoverIsOpen(wrapper, false);
         });
 
-        it("should clear the input and call onChange with null when clearing the date in the DatePicker", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
+        it("clearing the date in the DatePicker clears the input, and calls onChange with null", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.focus(input);
-            expect(input.value).toBe("11/29/2021");
-            // default value is 29th day of November - clicking it again should clear it
-            clickCalendarDay(container, 29);
-            expect(input.value).toBe("");
-            expect(onChange).toHaveBeenCalledWith(null, expect.anything());
+            focusInput(wrapper);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "11/29/2021");
+            // default value is 29th day of November
+            clickCalendarDay(wrapper, 29);
+            wrapper.update();
+            assert.equal(wrapper.find(InputGroup).prop("value"), "");
+            assert.isTrue(onChange.calledWith(null));
         });
 
-        it("should clear the selection and invoke onChange with null when clearing the date in the input", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
-            });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.change(input, { target: { value: "" } });
+        it("clearing the date in the input clears the selection and invokes onChange with null", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            wrapper
+                .find(InputGroup)
+                .find("input")
+                .simulate("change", { target: { value: "" } });
 
-            expect(container.querySelectorAll(`.${Classes.DATEPICKER3_DAY_SELECTED}`)).toHaveLength(0);
-            expect(onChange).toHaveBeenCalledWith(null, expect.anything());
+            assert.lengthOf(wrapper.find(`.${Classes.DATEPICKER3_DAY_SELECTED}`), 0);
+            assert.isTrue(onChange.calledWith(null));
         });
 
-        it("should keep popover open on date click if closeOnSelection=false", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} closeOnSelection={false} />, {
-                container: containerElement,
+        it("popover stays open on date click if closeOnSelection=false", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} closeOnSelection={false} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            const firstDay = container.querySelector(`.${Classes.DATEPICKER3_DAY}`) as HTMLElement;
-            fireEvent.click(firstDay);
-            assertPopoverIsOpen(container);
+            focusInput(wrapper);
+            wrapper.find(`.${Classes.DATEPICKER3_DAY}`).first().simulate("click").update();
+            assertPopoverIsOpen(wrapper);
         });
 
-        it("should keep popover open when month changes", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
-            });
-            const input = screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(input);
-            changeSelectDropdown(container, Classes.DATEPICKER_MONTH_SELECT, Months.DECEMBER);
-            assertPopoverIsOpen(container);
+        it("popover stays open when month changes", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.DECEMBER);
+            assertPopoverIsOpen(wrapper);
         });
 
-        it("should keep popover open when time changes", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
-            });
-            const input = screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(input);
+        it("popover stays open when time changes", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
 
             // try typing a new time
-            setTimeUnit(container, Classes.TIMEPICKER_SECOND, 1);
-            assertPopoverIsOpen(container);
+            setTimeUnit(wrapper, TimeUnit.SECOND, 1);
+            assertPopoverIsOpen(wrapper);
 
             // try keyboard-incrementing to a new time
-            const secondInput = container.querySelector(`.${Classes.TIMEPICKER_SECOND}`) as HTMLInputElement;
-            fireEvent.keyDown(secondInput, { key: "ArrowUp" });
-            assertPopoverIsOpen(container);
+            wrapper.find(`.${Classes.TIMEPICKER_SECOND}`).first().simulate("keydown", { key: "ArrowUp" });
+            assertPopoverIsOpen(wrapper);
         });
 
-        it("should set input value and keep popover open when clicking a day in a different month", () => {
-            const { container } = render(
-                <DateInput {...DEFAULT_PROPS_UNCONTROLLED} defaultValue="2016-04-03T00:00:00z" />,
-                { container: containerElement },
-            );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.focus(input);
-            expect(input.value).toBe("4/3/2016");
+        it("clicking a day in a different month sets input value but keeps popover open", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} defaultValue="2016-04-03T00:00:00z" />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "4/3/2016");
 
-            const days = Array.from(container.querySelectorAll(`.${Classes.DATEPICKER3_DAY}`));
-            const day27 = days.find(day => day.textContent === "27") as HTMLElement;
-            fireEvent.click(day27);
+            wrapper
+                .find(`.${Classes.DATEPICKER3_DAY}`)
+                .filterWhere(day => day.text() === "27")
+                .first()
+                .simulate("click");
 
-            assertPopoverIsOpen(container);
-            expect(input.value).toBe("3/27/2016");
+            assertPopoverIsOpen(wrapper);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "3/27/2016");
         });
 
-        it("should invoke onChange and inputProps.onChange when typing in a valid date", () => {
+        it("typing in a valid date invokes onChange and inputProps.onChange", () => {
             const DATE_VALUE = "2015-02-10T00:00:00+00:00";
             const DATE_STR = "2/10/2015";
-            const onInputChange = vi.fn();
-            render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onChange: onInputChange }} />, {
-                container: containerElement,
-            });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.change(input, { target: { value: DATE_STR } });
+            const onInputChange = sinon.spy();
+            const wrapper = mount(
+                <DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onChange: onInputChange }} />,
+                { attachTo: containerElement },
+            );
+            changeInput(wrapper, DATE_STR);
 
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][0]).toBe(DATE_VALUE);
-            expect(onInputChange).toHaveBeenCalledOnce();
-            expect(onInputChange.mock.calls[0][0].type).toBe("change");
+            assert.isTrue(onChange.calledOnce);
+            assert.strictEqual(onChange.args[0][0], DATE_VALUE);
+            assert.isTrue(onInputChange.calledOnce);
+            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
         });
 
-        it("should display error message and call onError when typing in a date out of range", () => {
+        it("typing in a date out of range displays the error message and calls onError with invalid date", () => {
             const rangeMessage = "RANGE ERROR";
-            const onError = vi.fn();
-            render(
+            const onError = sinon.spy();
+            const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
                     defaultValue={new Date(2015, Months.MAY, 1).toISOString()}
@@ -454,26 +442,23 @@ describe("<DateInput>", () => {
                     outOfRangeMessage={rangeMessage}
                 />,
             );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
             const value = "2/1/2030";
-            fireEvent.change(input, { target: { value } });
-            fireEvent.blur(input);
+            wrapper.find("input").simulate("change", { target: { value } }).simulate("blur");
 
-            const inputGroup = input.closest(`.${CoreClasses.INPUT_GROUP}`);
-            expect(inputGroup).toHaveClass(CoreClasses.intentClass("danger"));
-            expect(input.value).toBe(rangeMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
 
-            expect(onError).toHaveBeenCalledOnce();
-            expect(DEFAULT_PROPS.formatDate!(onError.mock.calls[0][0], undefined)).toBe(
-                DEFAULT_PROPS.formatDate!(new Date(value), undefined),
+            assert.isTrue(onError.calledOnce);
+            assert.strictEqual(
+                DEFAULT_PROPS.formatDate!(onError.args[0][0]),
+                DEFAULT_PROPS.formatDate!(new Date(value)),
             );
         });
 
-        it("should display error message and call onError when typing in an invalid date", () => {
+        it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
             const invalidDateMessage = INVALID_DATE_MESSAGE;
-            const onError = vi.fn();
-            render(
+            const onError = sinon.spy();
+            const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
                     defaultValue={new Date(2015, Months.MAY, 1).toISOString()}
@@ -481,95 +466,83 @@ describe("<DateInput>", () => {
                     invalidDateMessage={invalidDateMessage}
                 />,
             );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.change(input, { target: { value: "not a date" } });
-            fireEvent.blur(input);
+            wrapper
+                .find("input")
+                .simulate("change", { target: { value: "not a date" } })
+                .simulate("blur");
 
-            const inputGroup = input.closest(`.${CoreClasses.INPUT_GROUP}`);
-            expect(inputGroup).toHaveClass(CoreClasses.intentClass("danger"));
-            expect(input.value).toBe(invalidDateMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), invalidDateMessage);
 
-            expect(onError).toHaveBeenCalledOnce();
-            expect(isNaN((onError.mock.calls[0][0] as Date).valueOf())).toBe(true);
+            assert.isTrue(onError.calledOnce);
+            assert.isNaN((onError.args[0][0] as Date).valueOf());
         });
 
-        it("should not be possible to clear a date with canClearSelection=false and timePrecision enabled", () => {
+        it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
             const DATE = new Date(2016, Months.APRIL, 4);
-            const { container } = render(
+            const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
                     canClearSelection={false}
                     defaultValue={dateToIsoString(DATE)}
                     timePrecision={TimePrecision.SECOND}
                 />,
-                { container: containerElement },
+                { attachTo: containerElement },
             );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            clickCalendarDay(container, DATE.getDate());
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(isEqual(parseISO(onChange.mock.calls[0][0]), DATE)).toBe(true);
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, DATE.getDate());
+            assert.isTrue(onChange.calledOnce);
+            assert.isTrue(isEqual(parseISO(onChange.firstCall.args[0]), DATE));
         });
 
         describe("allows changing timezone via user interaction (uncontrolled timezone value)", () => {
-            it("should change timezone before selecting a date", () => {
-                const { container } = render(<DateInput {...DEFAULT_PROPS} />, {
-                    container: containerElement,
-                });
-                const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-                fireEvent.focus(getInput());
+            it("before selecting a date", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: containerElement });
+                focusInput(wrapper);
                 // Japan is one of the few countries that does not have any kind of daylight savings, so this unit test
                 // keeps working all year round
-                clickTimezoneItem(container, TOKYO_TIMEZONE.label);
-                assertTimezoneIsSelected(container, "GMT+9");
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
-            it("should change timezone after selecting a date", () => {
-                const { container } = render(<DateInput {...DEFAULT_PROPS} />, {
-                    container: containerElement,
-                });
-                const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-                fireEvent.focus(getInput());
-                clickCalendarDay(container, 1);
-                clickTimezoneItem(container, TOKYO_TIMEZONE.label);
-                assertTimezoneIsSelected(container, "GMT+9");
+            it("after selecting a date", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: containerElement });
+                focusInput(wrapper);
+                clickCalendarDay(wrapper, 1);
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
         });
 
         describe("allows changing timezone programmatically (controlled timezone value)", () => {
-            it("should change timezone before selecting a date", () => {
-                const { container, rerender } = render(
-                    <DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />,
-                    { container: containerElement },
-                );
-                rerender(<DateInput {...DEFAULT_PROPS} timezone={TOKYO_TIMEZONE.ianaCode} />);
-                assertTimezoneIsSelected(container, "GMT+9");
+            it("before selecting a date", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
+                    attachTo: containerElement,
+                });
+                wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
-            it("should change timezone after selecting a date", () => {
-                const { container, rerender } = render(
-                    <DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />,
-                    { container: containerElement },
-                );
-                const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-                fireEvent.focus(getInput());
-                clickCalendarDay(container, 1);
-                rerender(<DateInput {...DEFAULT_PROPS} timezone={TOKYO_TIMEZONE.ianaCode} />);
-                assertTimezoneIsSelected(container, "GMT+9");
+            it("after selecting a date", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
+                    attachTo: containerElement,
+                });
+                focusInput(wrapper);
+                clickCalendarDay(wrapper, 1);
+                wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
         });
 
-        it("should allow changing defaultTimezone", () => {
-            const { container, rerender } = render(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
-                container: containerElement,
-            });
-            const timezoneSelect = container.querySelector(`.${Classes.TIMEZONE_SELECT}`);
-            expect(timezoneSelect).toHaveTextContent(
+        it("allows changing defaultTimezone", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
             );
-            rerender(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} defaultTimezone={TOKYO_TIMEZONE.ianaCode} />);
-            expect(timezoneSelect).toHaveTextContent(
+            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode }).update();
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
@@ -582,26 +555,25 @@ describe("<DateInput>", () => {
             value: VALUE,
         };
 
-        it("should handle null inputs without crashing", () => {
-            expect(() => renderDateInput({ ...DEFAULT_PROPS_CONTROLLED, value: null })).not.toThrow();
+        it("handles null inputs without crashing", () => {
+            assert.doesNotThrow(() => mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={null} />));
         });
 
-        it("should call onChange with the updated ISO string when changing the time", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
-                container: containerElement,
-            });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            setTimeUnit(container, Classes.TIMEPICKER_HOUR, 11);
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0]).toEqual(["2021-11-29T11:30:00+00:00", true]);
+        it("changing the time calls onChange with the updated ISO string", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+            focusInput(wrapper);
+            setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00+00:00", true]);
         });
 
-        it("should invoke onChange with null when clearing the input", () => {
-            const { getInput } = renderDateInput(DEFAULT_PROPS_CONTROLLED);
-            const input = getInput();
-            fireEvent.change(input, { target: { value: "" } });
-            expect(onChange).toHaveBeenCalledWith(null, true);
+        it("clearing the input invokes onChange with null", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />);
+            wrapper
+                .find(InputGroup)
+                .find("input")
+                .simulate("change", { target: { value: "" } });
+            assert.isTrue(onChange.calledOnceWithExactly(null, true));
         });
 
         // tests ported from DateInput
@@ -616,184 +588,187 @@ describe("<DateInput>", () => {
         // This results in the onChange callback getting the previous day (Jan 31), since the local timezone
         // for most Blueprint development is before UTC time (negative offset). This is buggy and needs to be
         // fixed.
-        it.skip("should save the inputted date and close the popover when pressing Enter", () => {
-            /* SKIP: Bug with timezone interpretation - local timezone affects date parsing */
-        });
-
-        it("should invoke onChange callback with that date when clicking a date", () => {
-            const { container } = render(
-                <DateInput {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
-                { container: containerElement },
+        it.skip("pressing Enter saves the inputted date and closes the popover", () => {
+            const onKeyDown = sinon.spy();
+            const wrapper = mount(
+                <DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} inputProps={{ onKeyDown }} />,
+                { attachTo: containerElement },
             );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            clickCalendarDay(container, 27);
+            focusInput(wrapper);
+            changeInput(wrapper, DATE2_UI_STR);
+            submitInput(wrapper);
 
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][0]).toBe("2016-04-27T00:00:00+00:00");
-            expect(onChange.mock.calls[0][1]).toBe(true);
-        });
-
-        it("should invoke onChange with null but not change UI when clearing the date in the DatePicker", () => {
-            const { container } = render(
-                <DateInput {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
-                { container: containerElement },
+            // onChange is called once on change, once on Enter
+            assert.isTrue(onChange.calledTwice, "onChange called twice");
+            assert.strictEqual(
+                onChange.args[1][0],
+                formatInTimeZone(parseISO(DATE2_VALUE), TimezoneUtils.UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
             );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.focus(input);
-            clickCalendarDay(container, 4);
-            expect(input.value).toBe("4/4/2016");
-            expect(onChange).toHaveBeenCalledWith(null, true);
+            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
+            assert.strictEqual(
+                document.activeElement,
+                wrapper.find(InputGroup).find("input").getDOMNode(),
+                "input should remain focused",
+            );
+            assertPopoverIsOpen(wrapper, false);
         });
 
-        it("should update the text input when updating controlled value", () => {
-            const { rerender } = render(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
-                container: containerElement,
+        it("clicking a date invokes onChange callback with that date", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            expect(input.value).toBe(DATE1_UI_STR);
-            rerender(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE2_VALUE} />);
-            expect(input.value).toBe(DATE2_UI_STR);
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, 27);
+
+            assert.isTrue(onChange.calledOnce);
+            assert.strictEqual(onChange.args[0][0], "2016-04-27T00:00:00+00:00");
+            assert.isTrue(onChange.args[0][1], "expected isUserChange to be true");
         });
 
-        it("should invoke onChange and inputProps.onChange when typing in a date", () => {
-            const onInputChange = vi.fn();
-            render(
+        it("clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, 4);
+            assert.equal(wrapper.find(InputGroup).prop("value"), "4/4/2016");
+            assert.isTrue(onChange.calledWith(null, true));
+        });
+
+        it("updating controlled value updates the text input", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
+            });
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE1_UI_STR);
+            wrapper.setProps({ value: DATE2_VALUE });
+            wrapper.update();
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR);
+        });
+
+        it("typing in a date invokes onChange and inputProps.onChange", () => {
+            const onInputChange = sinon.spy();
+            const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_CONTROLLED}
                     inputProps={{ onChange: onInputChange }}
                     onChange={onChange}
                     value={DATE1_VALUE}
                 />,
-                { container: containerElement },
+                { attachTo: containerElement },
             );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.change(input, { target: { value: DATE2_UI_STR } });
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][0]).toBe(DATE2_VALUE);
-            expect(onInputChange).toHaveBeenCalledOnce();
-            expect(onInputChange.mock.calls[0][0].type).toBe("change");
+            changeInput(wrapper, DATE2_UI_STR);
+            assert.isTrue(onChange.calledOnce);
+            assert.strictEqual(onChange.args[0][0], DATE2_VALUE);
+            assert.isTrue(onInputChange.calledOnce);
+            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
         });
 
-        it("should update the text input with the 'invalid date' message when typing an invalid date", () => {
-            render(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
-                container: containerElement,
+        it("typing an invalid date updates the text input with the 'invalid date' message", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.focus(input);
-            fireEvent.change(input, { target: { value: "4/77/2016" } });
-            fireEvent.blur(input);
-            expect(input.value).toBe(INVALID_DATE_MESSAGE);
+            focusInput(wrapper);
+            changeInput(wrapper, "4/77/2016");
+            blurInput(wrapper);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), INVALID_DATE_MESSAGE);
         });
 
-        it("should not show error styling until user is done typing and blurs the input", () => {
-            render(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
-                container: containerElement,
+        it("text input does not show error styling until user is done typing and blurs the input", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            const inputGroup = input.closest(`.${CoreClasses.INPUT_GROUP}`);
-            fireEvent.focus(input);
-            fireEvent.change(input, { target: { value: "4/77/201" } });
-            expect(inputGroup).not.toHaveClass(CoreClasses.intentClass("danger"));
-            fireEvent.blur(input);
-            expect(inputGroup).toHaveClass(CoreClasses.intentClass("danger"));
+            focusInput(wrapper);
+            changeInput(wrapper, "4/77/201");
+            assert.notEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            blurInput(wrapper);
+            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
         });
 
-        it("should invoke onChange with null when clearing the date in the input", () => {
-            render(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
-                container: containerElement,
+        it("clearing the date in the input invokes onChange with null", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            const input = getInput();
-            fireEvent.change(input, { target: { value: "" } });
-            expect(onChange).toHaveBeenCalledWith(null, true);
+            changeInput(wrapper, "");
+            assert.isTrue(onChange.calledWith(null, true));
         });
 
-        it("should not be possible to clear a date with canClearSelection=false and timePrecision enabled", () => {
-            const { container } = render(
+        it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
+            const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_CONTROLLED}
                     canClearSelection={false}
                     timePrecision="second"
                     value={DATE1_VALUE}
                 />,
-                { container: containerElement },
+                { attachTo: containerElement },
             );
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            clickCalendarDay(container, 4);
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0]).toEqual([DATE1_VALUE, true]);
+            focusInput(wrapper);
+            clickCalendarDay(wrapper, 4);
+            assert.isTrue(onChange.calledOnce);
+            assert.deepEqual(onChange.firstCall.args, [DATE1_VALUE, true]);
         });
 
-        it("should have isUserChange=false when month changes", () => {
-            const { container } = render(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
-                container: containerElement,
+        it("isUserChange is false when month changes", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+                attachTo: containerElement,
             });
-            const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-            fireEvent.focus(getInput());
-            changeSelectDropdown(container, Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][1]).toBe(false);
+            focusInput(wrapper);
+            changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
+            assert.isTrue(onChange.calledOnce);
+            assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
         });
 
-        it("should format locale-specific format strings properly", () => {
-            const { getInput } = renderDateInput({ ...DEFAULT_PROPS_CONTROLLED, locale: "de", value: DATE2_VALUE });
-            expect(getInput().value).toBe(DATE2_UI_STR_DE);
+        it("formats locale-specific format strings properly", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR_DE);
         });
 
         describe("when changing timezone", () => {
-            it("should call onChange with the updated ISO string", () => {
-                const { container } = render(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
-                    container: containerElement,
+            it("calls onChange with the updated ISO string", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
+                    attachTo: containerElement,
                 });
-                clickTimezoneItem(container, PARIS_TIMEZONE.label);
-                expect(onChange).toHaveBeenCalledOnce();
-                expect(onChange.mock.calls[0][0]).toBe("2021-11-29T10:30:00+01:00");
+                clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
+                assert.isTrue(onChange.calledOnce);
+                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00+01:00");
             });
 
-            it("should format the returned ISO string according to timePrecision", () => {
-                const { container } = render(
+            it("formats the returned ISO string according to timePrecision", () => {
+                const wrapper = mount(
                     <DateInput {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
-                    { container: containerElement },
+                    { attachTo: containerElement },
                 );
-                clickTimezoneItem(container, PARIS_TIMEZONE.label);
-                expect(onChange).toHaveBeenCalledOnce();
-                expect(onChange.mock.calls[0][0]).toBe("2021-11-29T10:30+01:00");
+                clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
+                assert.isTrue(onChange.calledOnce);
+                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30+01:00");
             });
 
-            it("should update the displayed timezone", () => {
-                const { container } = render(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
-                    container: containerElement,
+            it("updates the displayed timezone", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
+                    attachTo: containerElement,
                 });
-                clickTimezoneItem(container, TOKYO_TIMEZONE.label);
-                assertTimezoneIsSelected(container, "GMT+9");
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
-            it("should work before selecting a date (initial value={null})", () => {
-                const { container } = render(<DateInput {...DEFAULT_PROPS} value={null} />, {
-                    container: containerElement,
+            it("before selecting a date (initial value={null})", () => {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} value={null} />, {
+                    attachTo: containerElement,
                 });
-                clickTimezoneItem(container, TOKYO_TIMEZONE.label);
-                assertTimezoneIsSelected(container, "GMT+9");
+                clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
+                assertTimezoneIsSelected(wrapper, "GMT+9");
             });
         });
 
-        it("should allow changing defaultTimezone", () => {
-            const { container, rerender } = render(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
-                container: containerElement,
-            });
-            const timezoneSelect = container.querySelector(`.${Classes.TIMEZONE_SELECT}`);
-            expect(timezoneSelect).toHaveTextContent(
+        describe("allows changing defaultTimezone", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
             );
-            rerender(<DateInput {...DEFAULT_PROPS_CONTROLLED} defaultTimezone={TOKYO_TIMEZONE.ianaCode} />);
-            expect(timezoneSelect).toHaveTextContent(
+            wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
@@ -804,10 +779,10 @@ describe("<DateInput>", () => {
         const todayIsoString = dateToIsoString(today);
 
         describe("with formatDate & parseDate defined", () => {
-            const formatDate = vi.fn().mockReturnValue("custom date");
-            const parseDate = vi.fn().mockReturnValue(today);
+            const formatDate = sinon.stub().returns("custom date");
+            const parseDate = sinon.stub().returns(today);
             const localeCode = LOCALE;
-            const FORMATTING_PROPS: Partial<DateInputProps> = {
+            const FORMATTING_PROPS: DateInputProps = {
                 dateFnsLocaleLoader: DEFAULT_PROPS.dateFnsLocaleLoader,
                 formatDate,
                 locale: localeCode,
@@ -815,168 +790,180 @@ describe("<DateInput>", () => {
             };
 
             beforeEach(() => {
-                formatDate.mockClear();
-                parseDate.mockClear();
+                formatDate.resetHistory();
+                parseDate.resetHistory();
             });
 
-            it("should call formatDate on render with locale prop", () => {
-                render(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, { container: containerElement });
-                expect(formatDate).toHaveBeenCalledWith(today, localeCode);
+            it("formatDate called on render with locale prop", () => {
+                mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: containerElement });
+                assert.isTrue(formatDate.calledWith(today, localeCode));
             });
 
-            it("should use formatDate result as input value", () => {
-                render(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, {
-                    container: containerElement,
+            it("formatDate result becomes input value", () => {
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, {
+                    attachTo: containerElement,
                 });
-                const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-                expect(getInput().value).toBe("custom date");
+                assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
             });
 
-            it("should call parseDate on change with locale prop", () => {
+            it("parseDate called on change with locale prop", () => {
                 const value = "new date";
-                render(<DateInput {...FORMATTING_PROPS} />, { container: containerElement });
-                const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-                const input = getInput();
-                fireEvent.change(input, { target: { value } });
-                expect(parseDate).toHaveBeenCalledWith(value, localeCode);
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} />, { attachTo: containerElement });
+                changeInput(wrapper, value);
+                assert.isTrue(parseDate.calledWith(value, localeCode));
             });
 
-            it("should render invalid date when parseDate returns false", () => {
-                const invalidParse = vi.fn().mockReturnValue(false);
-                render(<DateInput {...FORMATTING_PROPS} parseDate={invalidParse} />, {
-                    container: containerElement,
+            it("parseDate returns false renders invalid date", () => {
+                const invalidParse = sinon.stub().returns(false);
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} parseDate={invalidParse} />, {
+                    attachTo: containerElement,
                 });
-                const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
-                const input = getInput();
-                fireEvent.change(input, { target: { value: "invalid" } });
-                fireEvent.blur(input);
-                expect(input.value).toBe(INVALID_DATE_MESSAGE);
+                changeInput(wrapper, "invalid");
+                blurInput(wrapper);
+                assert.strictEqual(wrapper.find("input").prop("value"), INVALID_DATE_MESSAGE);
             });
         });
 
         describe("with formatDate & parseDate undefined", () => {
             describe("with dateFnsFormat defined", () => {
-                it("should use the specified format", () => {
+                it("uses the specified format", () => {
                     const format = "Pp";
-                    render(
-                        <DateInput
-                            dateFnsLocaleLoader={loadDateFnsLocaleFake}
-                            dateFnsFormat={format}
-                            value={todayIsoString}
-                        />,
-                        { container: containerElement },
+                    const wrapper = mount(
+                        <DateInput {...LOCALE_LOADER} dateFnsFormat={format} value={todayIsoString} />,
+                        {
+                            attachTo: containerElement,
+                        },
                     );
-                    const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
                     const formatter = getDateFnsFormatter(format, enUSLocale);
-                    expect(getInput().value).toBe(formatter(today));
+                    assert.strictEqual(wrapper.find("input").prop("value"), formatter(today));
                 });
             });
 
             describe("with dateFnsFormat undefined", () => {
-                it(`should use default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
-                    render(<DateInput dateFnsLocaleLoader={loadDateFnsLocaleFake} value={todayIsoString} />, {
-                        container: containerElement,
+                it(`uses default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
+                    const wrapper = mount(<DateInput {...LOCALE_LOADER} value={todayIsoString} />, {
+                        attachTo: containerElement,
                     });
-                    const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
-                    expect(getInput().value).toBe(defaultFormatter(today));
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });
 
-                it(`should use default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
-                    render(
-                        <DateInput
-                            dateFnsLocaleLoader={loadDateFnsLocaleFake}
-                            value={todayIsoString}
-                            timePrecision="minute"
-                        />,
-                        { container: containerElement },
+                it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
+                    const wrapper = mount(
+                        <DateInput {...LOCALE_LOADER} value={todayIsoString} timePrecision="minute" />,
+                        {
+                            attachTo: containerElement,
+                        },
                     );
-                    const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_MINUTES, enUSLocale);
-                    expect(getInput().value).toBe(defaultFormatter(today));
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });
 
-                it(`should use default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
-                    render(
-                        <DateInput
-                            dateFnsLocaleLoader={loadDateFnsLocaleFake}
-                            value={todayIsoString}
-                            timePrecision="second"
-                        />,
-                        { container: containerElement },
+                it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
+                    const wrapper = mount(
+                        <DateInput {...LOCALE_LOADER} value={todayIsoString} timePrecision="second" />,
+                        {
+                            attachTo: containerElement,
+                        },
                     );
-                    const getInput = () => screen.getByRole("combobox") as HTMLInputElement;
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_SECONDS, enUSLocale);
-                    expect(getInput().value).toBe(defaultFormatter(today));
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });
             });
         });
     });
+
+    function focusInput(wrapper: ReactWrapper<DateInputProps>) {
+        wrapper.find(InputGroup).find("input").simulate("focus");
+    }
+
+    function changeInput(wrapper: ReactWrapper<DateInputProps>, value: string) {
+        wrapper.find(InputGroup).find("input").simulate("change", { target: { value } });
+    }
+
+    function blurInput(wrapper: ReactWrapper<DateInputProps>) {
+        wrapper.find(InputGroup).find("input").simulate("blur");
+    }
+
+    function submitInput(wrapper: ReactWrapper<DateInputProps>) {
+        wrapper.find(InputGroup).find("input").simulate("keydown", { key: "Enter" });
+    }
+
+    function clickTimezoneItem(wrapper: ReactWrapper<DateInputProps>, searchQuery: string) {
+        wrapper.find(`.${Classes.TIMEZONE_SELECT}`).hostNodes().simulate("click");
+        const tzItem = wrapper
+            .find(`.${Classes.TIMEZONE_SELECT_POPOVER}`)
+            .find(`.${CoreClasses.MENU_ITEM}`)
+            .hostNodes()
+            .findWhere(item => item.text().includes(searchQuery))
+            .first();
+
+        if (tzItem.exists()) {
+            tzItem.simulate("click");
+        } else {
+            assert.fail(`Could not find timezone option with query '${searchQuery}'`);
+        }
+    }
+
+    function clickCalendarDay(wrapper: ReactWrapper<DateInputProps>, dayNumber: number) {
+        wrapper
+            .find(`.${Classes.DATEPICKER3_DAY}`)
+            .filterWhere(day => day.text() === `${dayNumber}` && !day.hasClass(Classes.DATEPICKER3_DAY_OUTSIDE))
+            .hostNodes()
+            .simulate("click");
+    }
+
+    function setTimeUnit(wrapper: ReactWrapper<DateInputProps>, unit: TimeUnit, value: number) {
+        focusInput(wrapper);
+        let inputClass: string;
+        switch (unit) {
+            case TimeUnit.HOUR_12:
+            case TimeUnit.HOUR_24:
+                inputClass = Classes.TIMEPICKER_HOUR;
+                break;
+            case TimeUnit.MINUTE:
+                inputClass = Classes.TIMEPICKER_MINUTE;
+                break;
+            case TimeUnit.SECOND:
+                inputClass = Classes.TIMEPICKER_SECOND;
+                break;
+            case TimeUnit.MS:
+                inputClass = Classes.TIMEPICKER_MILLISECOND;
+                break;
+        }
+        const input = wrapper.find(`.${inputClass}`).first();
+        input.simulate("focus");
+        input.simulate("change", { target: { value } });
+        input.simulate("blur");
+    }
+
+    function changeSelectDropdown(wrapper: ReactWrapper<DateInputProps>, className: string, value: string | number) {
+        wrapper
+            .find(`.${className}`)
+            .find("select")
+            .simulate("change", { target: { value: value.toString() } });
+    }
+
+    function assertPopoverIsOpen(wrapper: ReactWrapper<DateInputProps>, expectedIsOpen: boolean = true) {
+        const openPopoverTarget = wrapper.find(`.${CoreClasses.POPOVER_OPEN}`);
+        if (expectedIsOpen) {
+            assert.isTrue(
+                openPopoverTarget.exists(),
+                `Expected .${CoreClasses.POPOVER_OPEN} to exist, indicating the popover is open`,
+            );
+        } else {
+            assert.isFalse(
+                openPopoverTarget.exists(),
+                `Expected .${CoreClasses.POPOVER_OPEN} NOT to exist, indicating the popover is closed`,
+            );
+        }
+    }
+
+    function assertTimezoneIsSelected(wrapper: ReactWrapper<DateInputProps>, tzCode: string) {
+        const tzTag = wrapper.find(Tag);
+        assert.strictEqual(tzTag.text(), tzCode);
+    }
 });
-
-// Helper functions
-
-function clickTimezoneItem(container: HTMLElement, searchQuery: string) {
-    const timezoneSelect = container.querySelector(`.${Classes.TIMEZONE_SELECT}`) as HTMLElement;
-    fireEvent.click(timezoneSelect);
-    // The timezone select popover might be in container or document body
-    const popover =
-        container.querySelector(`.${Classes.TIMEZONE_SELECT_POPOVER}`) ||
-        document.body.querySelector(`.${Classes.TIMEZONE_SELECT_POPOVER}`);
-    if (!popover) {
-        throw new Error("Could not find timezone select popover");
-    }
-    const menuItems = popover.querySelectorAll(`.${CoreClasses.MENU_ITEM}`);
-    const tzItem = Array.from(menuItems).find(item => item.textContent?.includes(searchQuery));
-
-    if (tzItem) {
-        fireEvent.click(tzItem);
-    } else {
-        throw new Error(`Could not find timezone option with query '${searchQuery}'`);
-    }
-}
-
-function clickCalendarDay(container: HTMLElement, dayNumber: number) {
-    const days = Array.from(container.querySelectorAll(`.${Classes.DATEPICKER3_DAY}`));
-    const day = days.find(
-        d => d.textContent === `${dayNumber}` && !d.classList.contains(Classes.DATEPICKER3_DAY_OUTSIDE),
-    ) as HTMLElement;
-    if (day) {
-        fireEvent.click(day);
-    } else {
-        throw new Error(`Could not find calendar day ${dayNumber}`);
-    }
-}
-
-function setTimeUnit(container: HTMLElement, unitClass: string, value: number) {
-    const input = container.querySelector(`.${unitClass}`) as HTMLInputElement;
-    if (input) {
-        fireEvent.focus(input);
-        fireEvent.change(input, { target: { value } });
-        fireEvent.blur(input);
-    }
-}
-
-function changeSelectDropdown(container: HTMLElement, className: string, value: string | number) {
-    const select = container.querySelector(`.${className} select`) as HTMLSelectElement;
-    if (select) {
-        fireEvent.change(select, { target: { value: value.toString() } });
-    }
-}
-
-function assertPopoverIsOpen(container: HTMLElement, expectedIsOpen: boolean = true) {
-    const openPopoverTarget = container.querySelector(`.${CoreClasses.POPOVER_OPEN}`);
-    if (expectedIsOpen) {
-        expect(openPopoverTarget).toBeInTheDocument();
-    } else {
-        expect(openPopoverTarget).not.toBeInTheDocument();
-    }
-}
-
-function assertTimezoneIsSelected(container: HTMLElement, tzCode: string) {
-    const tzTag = container.querySelector(`.${Classes.TIMEZONE_SELECT} .${CoreClasses.TAG}`);
-    expect(tzTag).toHaveTextContent(tzCode);
-}
 
 /**
  * When we construct a Date() object in this test file, it sets it to the local timezone.

@@ -20,7 +20,7 @@ import { useCallback, useMemo } from "react";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { TimePrecision } from "./common/timePrecision";
-import { DateInput } from "./components/date-input/dateInput";
+import { DateInput as DateInput2 } from "./components/date-input/dateInput";
 import * as DateInputMigrationUtils from "./dateInputMigrationUtils";
 
 const dateFormattingProps = {
@@ -46,7 +46,7 @@ const uncontrolledDateInputProps = {
 describe("DateInput2MigrationUtils", () => {
     it("should render DateInput without error when applying onChange + value adapters", () => {
         render(
-            <DateInput
+            <DateInput2
                 {...dateFormattingProps}
                 onChange={DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
                 value={DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value)}
@@ -57,7 +57,7 @@ describe("DateInput2MigrationUtils", () => {
     it("should accept time precision with value adapter", () => {
         const precision = TimePrecision.MINUTE;
         render(
-            <DateInput
+            <DateInput2
                 {...dateFormattingProps}
                 timePrecision={precision}
                 onChange={DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
@@ -83,7 +83,7 @@ describe("DateInput2MigrationUtils", () => {
     it("should work with default value adapter", () => {
         const precision = TimePrecision.MINUTE;
         render(
-            <DateInput
+            <DateInput2
                 {...dateFormattingProps}
                 timePrecision={precision}
                 onChange={DateInputMigrationUtils.onChangeAdapter(uncontrolledDateInputProps.onChange)}
@@ -104,7 +104,7 @@ describe("DateInput2MigrationUtils", () => {
             );
             const value = useMemo(() => DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value), []);
 
-            return <DateInput {...dateFormattingProps} onChange={handleChange} value={value} />;
+            return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;
         }
 
         render(<TestComponent />);
