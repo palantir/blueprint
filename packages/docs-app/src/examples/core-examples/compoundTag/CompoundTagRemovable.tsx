@@ -24,7 +24,13 @@ export default function CompoundTagRemovable() {
                 ))}
             </div>
             {tags.length === 0 && (
-                <Button icon="refresh" variant="outlined" size="small" text="Reset tags" onClick={handleReset} />
+                <Button
+                    icon="refresh"
+                    variant="outlined"
+                    size="small"
+                    text="Reset tags"
+                    onClick={handleReset}
+                />
             )}
         </div>
     );
