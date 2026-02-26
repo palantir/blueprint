@@ -635,9 +635,6 @@ importers:
       '@blueprintjs/test-commons':
         specifier: workspace:^
         version: link:../test-commons
-      tsx:
-        specifier: 'catalog:'
-        version: 4.21.0
 
   packages/docs-theme:
     dependencies:

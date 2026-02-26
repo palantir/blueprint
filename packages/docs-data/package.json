@@ -6,7 +6,10 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs"
+        "compile": "node ./compile-docs-data.mjs",
+        "test": "vitest run",
+        "test:vitest": "vitest",
+        "test:vitest:run": "vitest run"
     },
     "nx": {
         "targets": {
@@ -32,8 +35,7 @@
         "semver": "^7.5.4"
     },
     "devDependencies": {
-        "@blueprintjs/test-commons": "workspace:^",
-        "tsx": "catalog:"
+        "@blueprintjs/test-commons": "workspace:^"
     },
     "repository": {
         "type": "git",
