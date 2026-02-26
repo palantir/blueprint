@@ -8,11 +8,18 @@
 
 // Submits a comment to the change PR or commit with links to artifacts that
 // show the results of the code change being applied.
+//
+// Authentication is done via a GitHub App. The following environment variables are required:
+//   - GITHUB_APP_ID: The App ID from the GitHub App settings page
+//   - GITHUB_APP_PRIVATE_KEY: The full private key (.pem) contents from the key generated on the GitHub App settings page
+//   - GITHUB_APP_INSTALLATION_ID: The installation ID (visible in the URL after installing the app on the repo)
+//
+// See https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app
 
 import dedent from "dedent";
 import { execSync } from "node:child_process";
 import { basename } from "node:path";
-import { Octokit } from "octokit";
+import { App } from "octokit";
 
 /**
  * @type {Array<{path: string; url: string;}>}
@@ -37,11 +44,14 @@ function getArtifactAnchorLink(pkg) {
     return `<a href="${artifactInfo?.url}">${pkg}</a>`;
 }
 
-if (process.env.GITHUB_API_TOKEN) {
-    // We can post a comment on the PR if we have the necessary Github.com personal access token with access to this
-    // repository and PR read/write permissions.
-    // See https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token
-    const octokit = new Octokit({ auth: process.env.GITHUB_API_TOKEN });
+if (process.env.GITHUB_APP_ID && process.env.GITHUB_APP_PRIVATE_KEY && process.env.GITHUB_APP_INSTALLATION_ID) {
+    // Authenticate as a GitHub App to post PR comments.
+    // See https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app#using-the-octokitjs-sdk-to-authenticate-as-a-github-app
+    const app = new App({
+        appId: process.env.GITHUB_APP_ID,
+        privateKey: process.env.GITHUB_APP_PRIVATE_KEY,
+    });
+    const octokit = await app.getInstallationOctokit(Number(process.env.GITHUB_APP_INSTALLATION_ID));
 
     const artifactLinks = Object.keys(ARTIFACTS).map(getArtifactAnchorLink).join(" | ");
     const currentGitCommitMessage = execSync('git --no-pager log --pretty=format:"%s" -1')
@@ -76,9 +86,10 @@ if (process.env.GITHUB_API_TOKEN) {
         });
     }
 } else {
-    // If the access token is missing, simply log artifact URLs (typical in builds on repository forks).
+    // If the GitHub App credentials are missing, simply log artifact URLs (typical in builds on repository forks).
     console.warn(
-        "No Github API token available, so we cannot post a preview comment on this build's PR. This is expected on forks which have enabled CircleCI building.",
+        "GitHub App credentials not available, so we cannot post a preview comment on this build's PR. This is expected on forks which have enabled CircleCI building.",
     );
+    console.warn("Required environment variables: GITHUB_APP_ID, GITHUB_APP_PRIVATE_KEY, GITHUB_APP_INSTALLATION_ID");
     Object.keys(ARTIFACTS).forEach(pkg => console.info(`${ARTIFACTS[pkg]}: ${getArtifactAnchorLink(pkg)}`));
 }
