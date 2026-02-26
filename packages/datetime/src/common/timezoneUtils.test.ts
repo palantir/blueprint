@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
 import { getTimezoneOffset } from "date-fns-tz";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { getCurrentTimezone } from "./getTimezone";
 import { convertDateToLocalEquivalentOfTimezoneTime, convertLocalDateToTimezoneTime } from "./timezoneUtils";
@@ -35,92 +36,92 @@ function getTimzoneOffsetRelativeToCurrentInHours(tz: string, date: Date): numbe
     return (tzOffsetInMinutes - currentOffsetInMinutes) / 60;
 }
 
+function checkIfDatesAreEqual(date1: Date, date2: Date) {
+    return date1.getTime() === date2.getTime();
+}
+
 describe("convertLocalDateToTimezoneTime", () => {
-    it("Returns the same date when current tz is the same as passed", () => {
+    it("should return the same date when current tz is the same as passed", () => {
         const convertedDate = convertLocalDateToTimezoneTime(MOCK_SUMMER_DATE, CURRENT_TZ);
-        expect(checkIfDatesAreEqual(MOCK_SUMMER_DATE, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(MOCK_SUMMER_DATE, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through", () => {
+    it("should return a date converted to the local timezone passed through", () => {
         const convertedDate = convertLocalDateToTimezoneTime(MOCK_WINTER_DATE, OSLO_TZ);
         const expectedDate = new Date(MOCK_WINTER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() + getTimzoneOffsetRelativeToCurrentInHours(OSLO_TZ, MOCK_WINTER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through adapting for daylight savings", () => {
+    it("should return a date converted to the local timezone passed through adapting for daylight savings", () => {
         const convertedDate = convertLocalDateToTimezoneTime(MOCK_SUMMER_DATE, OSLO_TZ);
         const expectedDate = new Date(MOCK_SUMMER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() + getTimzoneOffsetRelativeToCurrentInHours(OSLO_TZ, MOCK_SUMMER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through 2", () => {
+    it("should return a date converted to the local timezone passed through 2", () => {
         const convertedDate = convertLocalDateToTimezoneTime(MOCK_WINTER_DATE, HAWAII_TZ);
         const expectedDate = new Date(MOCK_WINTER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() + getTimzoneOffsetRelativeToCurrentInHours(HAWAII_TZ, MOCK_WINTER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through adapting for daylight savings 2", () => {
+    it("should return a date converted to the local timezone passed through adapting for daylight savings 2", () => {
         const convertedDate = convertLocalDateToTimezoneTime(MOCK_SUMMER_DATE, HAWAII_TZ);
         const expectedDate = new Date(MOCK_SUMMER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() + getTimzoneOffsetRelativeToCurrentInHours(HAWAII_TZ, MOCK_SUMMER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 });
 
 describe("convertDateToLocalEquivalentOfTimezoneTime", () => {
-    it("Returns the same date when current tz is the same as passed", () => {
+    it("should return the same date when current tz is the same as passed", () => {
         const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_SUMMER_DATE, CURRENT_TZ);
-        expect(checkIfDatesAreEqual(MOCK_SUMMER_DATE, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(MOCK_SUMMER_DATE, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through", () => {
+    it("should return a date converted to the local timezone passed through", () => {
         const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_WINTER_DATE, OSLO_TZ);
         const expectedDate = new Date(MOCK_WINTER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() - getTimzoneOffsetRelativeToCurrentInHours(OSLO_TZ, MOCK_WINTER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through adapting for daylight savings", () => {
+    it("should return a date converted to the local timezone passed through adapting for daylight savings", () => {
         const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_SUMMER_DATE, OSLO_TZ);
         const expectedDate = new Date(MOCK_SUMMER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() - getTimzoneOffsetRelativeToCurrentInHours(OSLO_TZ, MOCK_SUMMER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through 2", () => {
+    it("should return a date converted to the local timezone passed through 2", () => {
         const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_WINTER_DATE, HAWAII_TZ);
         const expectedDate = new Date(MOCK_WINTER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() - getTimzoneOffsetRelativeToCurrentInHours(HAWAII_TZ, MOCK_WINTER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 
-    it("Returns a date converted to the local timezone passed through adapting for daylight savings 2", () => {
+    it("should return a date converted to the local timezone passed through adapting for daylight savings 2", () => {
         const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(MOCK_SUMMER_DATE, HAWAII_TZ);
         const expectedDate = new Date(MOCK_SUMMER_DATE);
         expectedDate.setHours(
             expectedDate.getHours() - getTimzoneOffsetRelativeToCurrentInHours(HAWAII_TZ, MOCK_SUMMER_DATE),
         );
-        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).to.equal(true);
+        expect(checkIfDatesAreEqual(expectedDate, convertedDate)).toBe(true);
     });
 });
-
-function checkIfDatesAreEqual(date1: Date, date2: Date) {
-    return date1.getTime() === date2.getTime();
-}

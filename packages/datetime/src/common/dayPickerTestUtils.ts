@@ -16,17 +16,23 @@
 
 /** @fileoverview test utils for react-day-picker v8 */
 
-import { assert } from "chai";
-import type { ReactWrapper } from "enzyme";
+import { expect } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "..";
+import { DATEPICKER3_DAY, DATEPICKER3_DAY_DISABLED } from "./classes";
 
-const isDayHidden = (day: ReactWrapper<any, any>): boolean => !day.find(`.${Classes.DATEPICKER3_DAY}`).exists();
-
-export function assertDayDisabled(day: ReactWrapper<any, any>, expectDisabled: boolean = true) {
-    assert.equal(day.hasClass(Classes.DATEPICKER3_DAY_DISABLED), expectDisabled);
+export function assertDayDisabled(day: HTMLElement, expectDisabled = true) {
+    if (expectDisabled) {
+        expect(day).toHaveClass(DATEPICKER3_DAY_DISABLED);
+    } else {
+        expect(day).not.toHaveClass(DATEPICKER3_DAY_DISABLED);
+    }
 }
 
-export function assertDayHidden(day: ReactWrapper<any, any>, expectHidden: boolean = true) {
-    assert.equal(isDayHidden(day), expectHidden);
+export function assertDayHidden(day: HTMLElement, expectHidden = true) {
+    const inner = day.querySelector(`.${DATEPICKER3_DAY}`);
+    if (expectHidden) {
+        expect(inner).toBeNull();
+    } else {
+        expect(inner).not.toBeNull();
+    }
 }
