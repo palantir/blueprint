@@ -82,8 +82,65 @@ $button-outlined-border-disabled-intent-opacity: 0.2 !default;
   }
 }
 
-// "intent": (default, hover, active colors)
+// TODO(bp7): Replace with $button-intent-states
 $button-intents: (
+  "primary": (
+    $blue3,
+    $blue2,
+    $blue1,
+  ),
+  "success": (
+    $green3,
+    $green2,
+    $green1,
+  ),
+  "warning": (
+    $orange3,
+    $orange2,
+    $orange1,
+  ),
+  "danger": (
+    $red3,
+    $red2,
+    $red1,
+  ),
+) !default;
+
+// Intent at each state
+$button-intent-states: (
+  "primary": (
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
+    var(--bp-intent-primary-foreground),
+  ),
+  "success": (
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
+    var(--bp-intent-success-foreground),
+  ),
+  "warning": (
+    var(--bp6-button-warning-rest),
+    var(--bp-intent-warning-hover),
+    var(--bp-intent-warning-active),
+    var(--bp-intent-warning-foreground),
+  ),
+  "danger": (
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
+    var(--bp-intent-danger-foreground),
+  ),
+  "default": (
+    var(--bp-intent-default-rest),
+    var(--bp-intent-default-hover),
+    var(--bp-intent-default-active),
+    var(--bp-intent-default-foreground),
+  ),
+) !default;
+
+$button-intent-states: (
   "primary": (
     var(--bp-intent-primary-rest),
     var(--bp-intent-primary-hover),
@@ -490,7 +547,7 @@ $button-dark-minimal-active-text-colors: (
     }
   }
 
-  @each $intent, $colors in $button-intents {
+  @each $intent, $colors in $button-intent-states {
     &.#{$ns}-intent-#{$intent} {
       @include pt-button-minimal-intent($intent);
     }
@@ -590,7 +647,7 @@ $button-dark-minimal-active-text-colors: (
     }
   }
 
-  @each $intent, $colors in $button-intents {
+  @each $intent, $colors in $button-intent-states {
     $text-color: map.get($button-minimal-intent-text-colors, $intent);
     $dark-text-color: map.get($button-dark-intent-text-colors, $intent);
 

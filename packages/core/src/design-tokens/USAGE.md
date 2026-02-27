@@ -132,7 +132,7 @@ The large button variant simply scales the multiplier: `calc(var(--bp-surface-sp
 Intent tokens drive the button's color across every interaction state. For non-default intents (primary, success, warning, danger), a Sass map wires each intent to its tokens:
 
 ```scss
-$button-intents: (
+$button-intent-states: (
     "primary": (
         var(--bp-intent-primary-rest),
         // background
