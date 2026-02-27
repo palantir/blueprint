@@ -20,7 +20,17 @@ import { mount, type ReactWrapper } from "enzyme";
 import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
 
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
-import { afterAll, afterEach, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import {
+    afterAll,
+    afterEach,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
