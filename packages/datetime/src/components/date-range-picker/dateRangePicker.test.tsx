@@ -24,7 +24,6 @@ import sinon from "sinon";
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-
 import {
     Classes,
     DatePickerShortcutMenu,
