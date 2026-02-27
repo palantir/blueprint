@@ -282,7 +282,7 @@ describe("DateUtils", () => {
             expect(DateUtils.convert24HourMeridiem(11, true)).toBe(23);
         });
 
-        it("should throw an error only for invalid hours", () => {
+        it("throws an error only for invalid hours", () => {
             expect(() => DateUtils.convert24HourMeridiem(-1, true)).toThrow();
             expect(() => DateUtils.convert24HourMeridiem(24, true)).toThrow();
             expect(() => DateUtils.convert24HourMeridiem(0, true)).not.toThrow();
@@ -307,7 +307,7 @@ describe("DateUtils", () => {
             expect(DateUtils.getIsPmFrom24Hour(11)).toBe(false);
         });
 
-        it("should throw an error only for invalid hours", () => {
+        it("throws an error only for invalid hours", () => {
             expect(() => DateUtils.getIsPmFrom24Hour(-1)).toThrow();
             expect(() => DateUtils.getIsPmFrom24Hour(24)).toThrow();
             expect(() => DateUtils.getIsPmFrom24Hour(0)).not.toThrow();
@@ -325,7 +325,7 @@ describe("DateUtils", () => {
             expect(DateUtils.get12HourFrom24Hour(23)).toBe(11);
         });
 
-        it("should throw an error only for invalid 24-hours", () => {
+        it("throws an error only for invalid 24-hours", () => {
             expect(() => DateUtils.get12HourFrom24Hour(-1)).toThrow();
             expect(() => DateUtils.get12HourFrom24Hour(24)).toThrow();
             expect(() => DateUtils.get12HourFrom24Hour(0)).not.toThrow();
@@ -348,7 +348,7 @@ describe("DateUtils", () => {
             expect(DateUtils.get24HourFrom12Hour(12, false)).toBe(0);
         });
 
-        it("should throw an error only for invalid 12-hours", () => {
+        it("throws an error only for invalid 12-hours", () => {
             expect(() => DateUtils.get24HourFrom12Hour(0, true)).toThrow();
             expect(() => DateUtils.get24HourFrom12Hour(13, true)).toThrow();
             expect(() => DateUtils.get24HourFrom12Hour(1, true)).not.toThrow();
@@ -361,15 +361,15 @@ describe("DateUtils", () => {
 
         it("null date returns null", () => expect(DateUtils.getDateTime(null)).toBeNull());
 
-        it("clearstime if time arg omitted", () => {
+        it("clears time if time arg omitted", () => {
             assertDateTime(DateUtils.getDateTime(DATE));
         });
 
-        it("clearstime with null time arg", () => {
+        it("null time arg clears time", () => {
             assertDateTime(DateUtils.getDateTime(DATE, null));
         });
 
-        it("should set time if given", () => {
+        it("sets time if given", () => {
             const time = createTimeObject(12, 12, 12, 12);
             assertDateTime(DateUtils.getDateTime(DATE, time), time);
         });
