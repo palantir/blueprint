@@ -2,4 +2,4 @@ type: fix
 fix:
   description: Fix broken @see links in props interface tables
   links:
-    - https://github.com/palantir/blueprint/pull/7832
+  - https://github.com/palantir/blueprint/pull/7832
