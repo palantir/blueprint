@@ -29,6 +29,7 @@ import {
     type PopoverProps,
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
+import { afterEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { TimezoneSelect, type TimezoneSelectProps } from "../..";
 import { getCurrentTimezone } from "../../common/getTimezone";

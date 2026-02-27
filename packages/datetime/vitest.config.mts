@@ -13,6 +13,6 @@ export default defineConfig({
         environment: "jsdom",
         include: ["src/**/*.test.{ts,tsx}"],
         exclude: ["lib/**", "node_modules/**", "src/isotest.test.ts"],
-        setupFiles: "@blueprintjs/test-commons/vitest-setup-no-enzyme",
+        setupFiles: "@blueprintjs/test-commons/vitest.setup",
     },
 });

@@ -324,6 +324,9 @@ importers:
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))
+      enzyme:
+        specifier: 'catalog:'
+        version: 3.11.0
       jsdom:
         specifier: 'catalog:'
         version: 27.1.0
@@ -336,6 +339,9 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      sinon:
+        specifier: ^17.0.1
+        version: 17.0.2
       typescript:
         specifier: ~5.3.3
         version: 5.3.3
