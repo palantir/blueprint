@@ -20,10 +20,8 @@ import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
-import * as sinon from "sinon";
-
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
-import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import type { DateFormatProps } from "../../common/dateFormatProps";
@@ -79,7 +77,7 @@ const DEFAULT_PROPS: DateInputProps & DateFormatProps = {
 };
 
 describe("<DateInput>", () => {
-    const onChange = sinon.spy();
+    const onChange = vi.fn();
     let containerElement: HTMLElement;
 
     beforeEach(() => {
@@ -89,7 +87,7 @@ describe("<DateInput>", () => {
 
     afterEach(() => {
         containerElement.remove();
-        onChange.resetHistory();
+        onChange.mockClear();
     });
 
     describe("basic rendering", () => {
@@ -150,8 +148,8 @@ describe("<DateInput>", () => {
         });
 
         it("passes fill and inputProps to InputGroup", () => {
-            const inputRef = sinon.spy();
-            const onFocus = sinon.spy();
+            const inputRef = vi.fn();
+            const onFocus = vi.fn();
             const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS}
@@ -170,12 +168,12 @@ describe("<DateInput>", () => {
             assert.isTrue(input.prop("fill"));
             assert.strictEqual(input.prop("leftIcon"), "star");
             assert.isTrue(input.prop("required"));
-            assert.isTrue(inputRef.called, "inputRef not invoked");
-            assert.isTrue(onFocus.called, "onFocus not invoked");
+            expect(inputRef).toHaveBeenCalled();
+            expect(onFocus).toHaveBeenCalled();
         });
 
         it("passes popoverProps to Popover", () => {
-            const onOpening = sinon.spy();
+            const onOpening = vi.fn();
             const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS}
@@ -191,7 +189,7 @@ describe("<DateInput>", () => {
             const popover = wrapper.find(Popover).first();
             assert.strictEqual(popover.prop("placement"), "top");
             assert.isFalse(popover.prop("usePortal"));
-            assert.isTrue(onOpening.calledOnce);
+            expect(onOpening).toHaveBeenCalledOnce();
         });
 
         it("gracefully handles invalid defaultTimezone prop value", () => {
@@ -237,17 +235,17 @@ describe("<DateInput>", () => {
                 .first()
                 .simulate("click")
                 .update();
-            assert.isTrue(onChange.calledOnce);
+            expect(onChange).toHaveBeenCalledOnce();
             // first non-outside day should be the November 1st
-            assert.strictEqual(onChange.firstCall.args[0], "2021-11-01T10:30:00+00:00");
+            assert.strictEqual(onChange.mock.calls[0][0], "2021-11-01T10:30:00+00:00");
         });
 
         it("calls onChange on timezone changes", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             clickTimezoneItem(wrapper, NEW_YORK_TIMEZONE.label);
-            assert.isTrue(onChange.calledOnce);
+            expect(onChange).toHaveBeenCalledOnce();
             // New York is UTC-5
-            assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00-05:00");
+            assert.strictEqual(onChange.mock.calls[0][0], "2021-11-29T10:30:00-05:00");
         });
 
         // HACKHACK: this test ported from Blueprint v4.x doesn't seem to match any real UX, since pressing Shift+Tab
@@ -303,7 +301,7 @@ describe("<DateInput>", () => {
         it("pressing Enter saves the inputted date and closes the popover", () => {
             const IMPROPERLY_FORMATTED_DATE_STRING = "002/0015/2015";
             const PROPERLY_FORMATTED_DATE_STRING = "2/15/2015";
-            const onKeyDown = sinon.spy();
+            const onKeyDown = vi.fn();
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onKeyDown }} />, {
                 attachTo: containerElement,
             });
@@ -314,7 +312,7 @@ describe("<DateInput>", () => {
             assertPopoverIsOpen(wrapper, false);
             assert.notStrictEqual(document.activeElement, input.getDOMNode(), "input should not be focused");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
-            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
+            expect(onKeyDown).toHaveBeenCalledOnce();
         });
 
         it("clicking a date puts it in the input box and closes the popover", () => {
@@ -353,7 +351,7 @@ describe("<DateInput>", () => {
             clickCalendarDay(wrapper, 29);
             wrapper.update();
             assert.equal(wrapper.find(InputGroup).prop("value"), "");
-            assert.isTrue(onChange.calledWith(null));
+            expect(onChange).toHaveBeenCalledWith(null, expect.anything());
         });
 
         it("clearing the date in the input clears the selection and invokes onChange with null", () => {
@@ -364,7 +362,7 @@ describe("<DateInput>", () => {
                 .simulate("change", { target: { value: "" } });
 
             assert.lengthOf(wrapper.find(`.${Classes.DATEPICKER3_DAY_SELECTED}`), 0);
-            assert.isTrue(onChange.calledWith(null));
+            expect(onChange).toHaveBeenCalledWith(null, expect.anything());
         });
 
         it("popover stays open on date click if closeOnSelection=false", () => {
@@ -416,22 +414,22 @@ describe("<DateInput>", () => {
         it("typing in a valid date invokes onChange and inputProps.onChange", () => {
             const DATE_VALUE = "2015-02-10T00:00:00+00:00";
             const DATE_STR = "2/10/2015";
-            const onInputChange = sinon.spy();
+            const onInputChange = vi.fn();
             const wrapper = mount(
                 <DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onChange: onInputChange }} />,
                 { attachTo: containerElement },
             );
             changeInput(wrapper, DATE_STR);
 
-            assert.isTrue(onChange.calledOnce);
-            assert.strictEqual(onChange.args[0][0], DATE_VALUE);
-            assert.isTrue(onInputChange.calledOnce);
-            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.strictEqual(onChange.mock.calls[0][0], DATE_VALUE);
+            expect(onInputChange).toHaveBeenCalledOnce();
+            assert.strictEqual(onInputChange.mock.calls[0][0].type, "change", "inputProps.onChange expects change event");
         });
 
         it("typing in a date out of range displays the error message and calls onError with invalid date", () => {
             const rangeMessage = "RANGE ERROR";
-            const onError = sinon.spy();
+            const onError = vi.fn();
             const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
@@ -447,16 +445,16 @@ describe("<DateInput>", () => {
             assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
 
-            assert.isTrue(onError.calledOnce);
+            expect(onError).toHaveBeenCalledOnce();
             assert.strictEqual(
-                DEFAULT_PROPS.formatDate!(onError.args[0][0]),
+                DEFAULT_PROPS.formatDate!(onError.mock.calls[0][0]),
                 DEFAULT_PROPS.formatDate!(new Date(value)),
             );
         });
 
         it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
             const invalidDateMessage = INVALID_DATE_MESSAGE;
-            const onError = sinon.spy();
+            const onError = vi.fn();
             const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
@@ -473,8 +471,8 @@ describe("<DateInput>", () => {
             assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), invalidDateMessage);
 
-            assert.isTrue(onError.calledOnce);
-            assert.isNaN((onError.args[0][0] as Date).valueOf());
+            expect(onError).toHaveBeenCalledOnce();
+            assert.isNaN((onError.mock.calls[0][0] as Date).valueOf());
         });
 
         it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
@@ -490,8 +488,8 @@ describe("<DateInput>", () => {
             );
             focusInput(wrapper);
             clickCalendarDay(wrapper, DATE.getDate());
-            assert.isTrue(onChange.calledOnce);
-            assert.isTrue(isEqual(parseISO(onChange.firstCall.args[0]), DATE));
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.isTrue(isEqual(parseISO(onChange.mock.calls[0][0]), DATE));
         });
 
         describe("allows changing timezone via user interaction (uncontrolled timezone value)", () => {
@@ -562,8 +560,8 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
             focusInput(wrapper);
             setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
-            assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, ["2021-11-29T11:30:00+00:00", true]);
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.deepEqual(onChange.mock.calls[0], ["2021-11-29T11:30:00+00:00", true]);
         });
 
         it("clearing the input invokes onChange with null", () => {
@@ -572,7 +570,7 @@ describe("<DateInput>", () => {
                 .find(InputGroup)
                 .find("input")
                 .simulate("change", { target: { value: "" } });
-            assert.isTrue(onChange.calledOnceWithExactly(null, true));
+            expect(onChange).toHaveBeenCalledExactlyOnceWith(null, true);
         });
 
         // tests ported from DateInput
@@ -588,7 +586,7 @@ describe("<DateInput>", () => {
         // for most Blueprint development is before UTC time (negative offset). This is buggy and needs to be
         // fixed.
         it.skip("pressing Enter saves the inputted date and closes the popover", () => {
-            const onKeyDown = sinon.spy();
+            const onKeyDown = vi.fn();
             const wrapper = mount(
                 <DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} inputProps={{ onKeyDown }} />,
                 { attachTo: containerElement },
@@ -598,12 +596,12 @@ describe("<DateInput>", () => {
             submitInput(wrapper);
 
             // onChange is called once on change, once on Enter
-            assert.isTrue(onChange.calledTwice, "onChange called twice");
+            expect(onChange).toHaveBeenCalledTimes(2);
             assert.strictEqual(
-                onChange.args[1][0],
+                onChange.mock.calls[1][0],
                 formatInTimeZone(parseISO(DATE2_VALUE), TimezoneUtils.UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
             );
-            assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
+            expect(onKeyDown).toHaveBeenCalledOnce();
             assert.strictEqual(
                 document.activeElement,
                 wrapper.find(InputGroup).find("input").getDOMNode(),
@@ -619,9 +617,9 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             clickCalendarDay(wrapper, 27);
 
-            assert.isTrue(onChange.calledOnce);
-            assert.strictEqual(onChange.args[0][0], "2016-04-27T00:00:00+00:00");
-            assert.isTrue(onChange.args[0][1], "expected isUserChange to be true");
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.strictEqual(onChange.mock.calls[0][0], "2016-04-27T00:00:00+00:00");
+            assert.isTrue(onChange.mock.calls[0][1], "expected isUserChange to be true");
         });
 
         it("clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
@@ -631,7 +629,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             clickCalendarDay(wrapper, 4);
             assert.equal(wrapper.find(InputGroup).prop("value"), "4/4/2016");
-            assert.isTrue(onChange.calledWith(null, true));
+            expect(onChange).toHaveBeenCalledWith(null, true);
         });
 
         it("updating controlled value updates the text input", () => {
@@ -645,7 +643,7 @@ describe("<DateInput>", () => {
         });
 
         it("typing in a date invokes onChange and inputProps.onChange", () => {
-            const onInputChange = sinon.spy();
+            const onInputChange = vi.fn();
             const wrapper = mount(
                 <DateInput
                     {...DEFAULT_PROPS_CONTROLLED}
@@ -656,10 +654,10 @@ describe("<DateInput>", () => {
                 { attachTo: containerElement },
             );
             changeInput(wrapper, DATE2_UI_STR);
-            assert.isTrue(onChange.calledOnce);
-            assert.strictEqual(onChange.args[0][0], DATE2_VALUE);
-            assert.isTrue(onInputChange.calledOnce);
-            assert.strictEqual(onInputChange.args[0][0].type, "change", "inputProps.onChange expects change event");
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.strictEqual(onChange.mock.calls[0][0], DATE2_VALUE);
+            expect(onInputChange).toHaveBeenCalledOnce();
+            assert.strictEqual(onInputChange.mock.calls[0][0].type, "change", "inputProps.onChange expects change event");
         });
 
         it("typing an invalid date updates the text input with the 'invalid date' message", () => {
@@ -688,7 +686,7 @@ describe("<DateInput>", () => {
                 attachTo: containerElement,
             });
             changeInput(wrapper, "");
-            assert.isTrue(onChange.calledWith(null, true));
+            expect(onChange).toHaveBeenCalledWith(null, true);
         });
 
         it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
@@ -703,8 +701,8 @@ describe("<DateInput>", () => {
             );
             focusInput(wrapper);
             clickCalendarDay(wrapper, 4);
-            assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.firstCall.args, [DATE1_VALUE, true]);
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.deepEqual(onChange.mock.calls[0], [DATE1_VALUE, true]);
         });
 
         it("isUserChange is false when month changes", () => {
@@ -713,8 +711,8 @@ describe("<DateInput>", () => {
             });
             focusInput(wrapper);
             changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
-            assert.isTrue(onChange.calledOnce);
-            assert.isFalse(onChange.args[0][1], "expected isUserChange to be false");
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.isFalse(onChange.mock.calls[0][1], "expected isUserChange to be false");
         });
 
         it("formats locale-specific format strings properly", () => {
@@ -728,8 +726,8 @@ describe("<DateInput>", () => {
                     attachTo: containerElement,
                 });
                 clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
-                assert.isTrue(onChange.calledOnce);
-                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00+01:00");
+                expect(onChange).toHaveBeenCalledOnce();
+                assert.strictEqual(onChange.mock.calls[0][0], "2021-11-29T10:30:00+01:00");
             });
 
             it("formats the returned ISO string according to timePrecision", () => {
@@ -738,8 +736,8 @@ describe("<DateInput>", () => {
                     { attachTo: containerElement },
                 );
                 clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
-                assert.isTrue(onChange.calledOnce);
-                assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30+01:00");
+                expect(onChange).toHaveBeenCalledOnce();
+                assert.strictEqual(onChange.mock.calls[0][0], "2021-11-29T10:30+01:00");
             });
 
             it("updates the displayed timezone", () => {
@@ -779,8 +777,8 @@ describe("<DateInput>", () => {
         const todayIsoString = dateToIsoString(today);
 
         describe("with formatDate & parseDate defined", () => {
-            const formatDate = sinon.stub().returns("custom date");
-            const parseDate = sinon.stub().returns(today);
+            const formatDate = vi.fn().mockReturnValue("custom date");
+            const parseDate = vi.fn().mockReturnValue(today);
             const localeCode = LOCALE;
             const FORMATTING_PROPS: DateInputProps = {
                 dateFnsLocaleLoader: DEFAULT_PROPS.dateFnsLocaleLoader,
@@ -790,13 +788,13 @@ describe("<DateInput>", () => {
             };
 
             beforeEach(() => {
-                formatDate.resetHistory();
-                parseDate.resetHistory();
+                formatDate.mockClear();
+                parseDate.mockClear();
             });
 
             it("formatDate called on render with locale prop", () => {
                 mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: containerElement });
-                assert.isTrue(formatDate.calledWith(today, localeCode));
+                expect(formatDate).toHaveBeenCalledWith(today, localeCode);
             });
 
             it("formatDate result becomes input value", () => {
@@ -810,11 +808,11 @@ describe("<DateInput>", () => {
                 const value = "new date";
                 const wrapper = mount(<DateInput {...FORMATTING_PROPS} />, { attachTo: containerElement });
                 changeInput(wrapper, value);
-                assert.isTrue(parseDate.calledWith(value, localeCode));
+                expect(parseDate).toHaveBeenCalledWith(value, localeCode);
             });
 
             it("parseDate returns false renders invalid date", () => {
-                const invalidParse = sinon.stub().returns(false);
+                const invalidParse = vi.fn().mockReturnValue(false);
                 const wrapper = mount(<DateInput {...FORMATTING_PROPS} parseDate={invalidParse} />, {
                     attachTo: containerElement,
                 });
