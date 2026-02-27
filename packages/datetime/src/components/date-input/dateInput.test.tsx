@@ -424,7 +424,11 @@ describe("<DateInput>", () => {
             expect(onChange).toHaveBeenCalledOnce();
             assert.strictEqual(onChange.mock.calls[0][0], DATE_VALUE);
             expect(onInputChange).toHaveBeenCalledOnce();
-            assert.strictEqual(onInputChange.mock.calls[0][0].type, "change", "inputProps.onChange expects change event");
+            assert.strictEqual(
+                onInputChange.mock.calls[0][0].type,
+                "change",
+                "inputProps.onChange expects change event",
+            );
         });
 
         it("typing in a date out of range displays the error message and calls onError with invalid date", () => {
@@ -657,7 +661,11 @@ describe("<DateInput>", () => {
             expect(onChange).toHaveBeenCalledOnce();
             assert.strictEqual(onChange.mock.calls[0][0], DATE2_VALUE);
             expect(onInputChange).toHaveBeenCalledOnce();
-            assert.strictEqual(onInputChange.mock.calls[0][0].type, "change", "inputProps.onChange expects change event");
+            assert.strictEqual(
+                onInputChange.mock.calls[0][0].type,
+                "change",
+                "inputProps.onChange expects change event",
+            );
         });
 
         it("typing an invalid date updates the text input with the 'invalid date' message", () => {
