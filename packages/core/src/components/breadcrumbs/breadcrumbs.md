@@ -37,6 +37,11 @@ minimum number of items remain visible.
 
 @reactCodeExample BreadcrumbsOverflowExample
 
+The **Breadcrumbs** component supports customization through the `breadcrumbRenderer`
+and `currentBreadcrumbRenderer` props, which allow custom rendering of individual breadcrumbs.
+
+@reactCodeExample BreadcrumbsRendererExample
+
 @### Collapse direction
 
 By default, **Breadcrumbs** collapses items from the start. Use the `collapseFrom` prop
