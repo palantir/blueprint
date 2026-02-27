@@ -11,7 +11,7 @@ const ITEMS = [
 
 export default function BreadcrumbsCollapseFrom() {
     return (
-        <div>
+        <div style={{ maxWidth: 350 }}>
             <Breadcrumbs items={ITEMS} collapseFrom={Boundary.START} />
             <br />
             <Breadcrumbs items={ITEMS} collapseFrom={Boundary.END} />

@@ -50,16 +50,9 @@ Set `disabled: true` on individual breadcrumb items to render them as non-intera
 
 @reactCodeExample BreadcrumbsDisabledExample
 
-@### Custom renderer
-
-Use the `breadcrumbRenderer` and `currentBreadcrumbRenderer` props to customize
-how breadcrumbs are rendered.
-
-@reactCodeExample BreadcrumbsRendererExample
-
 @### With Popover
 
-Use the `popoverProps` prop to customize the overflow menu popover.
+Use the `popoverProps` prop to customize the overflow menu popover. Below, left placement is specificed for the Popover that contains the hidden Breadcrumb items.
 
 @reactCodeExample BreadcrumbsPopoverExample
 
