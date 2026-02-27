@@ -19,12 +19,13 @@ import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
+
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import type { DateFormatProps } from "../../common/dateFormatProps";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../common/dateFnsFormatUtils";
+import type { DateFormatProps } from "../../common/dateFormatProps";
 import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
 import { Months } from "../../common/months";
 import { TimePrecision } from "../../common/timePrecision";
@@ -32,10 +33,11 @@ import { TimeUnit } from "../../common/timeUnit";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
 import * as TimezoneNameUtils from "../../common/timezoneNameUtils";
 import * as TimezoneUtils from "../../common/timezoneUtils";
-import { DateInput, type DateInputProps } from "./dateInput";
 import { DatePicker } from "../date-picker/datePicker";
-import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 import { INVALID_DATE_MESSAGE, LOCALE } from "../dateConstants";
+import { TimezoneSelect } from "../timezone-select/timezoneSelect";
+
+import { DateInput, type DateInputProps } from "./dateInput";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;

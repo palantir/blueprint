@@ -18,19 +18,9 @@ import { addDays, format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
-import {
-    afterAll,
-    afterEach,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    type MockInstance,
-    vi,
-} from "@blueprintjs/test-commons/vitest";
 
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,

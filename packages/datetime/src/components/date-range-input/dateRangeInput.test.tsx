@@ -38,9 +38,9 @@ import {
     beforeAll,
     beforeEach,
     describe,
-    expect as vitestExpect,
     it,
     vi,
+    expect as vitestExpect,
 } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type DateFormatProps, type DateRange, Months, TimePrecision } from "../..";
