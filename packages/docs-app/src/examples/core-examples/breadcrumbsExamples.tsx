@@ -25,6 +25,9 @@ import BreadcrumbsOverflowButtonCode from "./breadcrumbs/BreadcrumbsOverflowButt
 import BreadcrumbsPopover from "./breadcrumbs/BreadcrumbsPopover";
 import BreadcrumbsPopoverPreview from "./breadcrumbs/BreadcrumbsPopover.tsx.preview?raw";
 import BreadcrumbsPopoverCode from "./breadcrumbs/BreadcrumbsPopover.tsx?raw";
+import BreadcrumbsRendererPreview from "./breadcrumbs/BreadcrumbsRenderer.tsx.preview?raw";
+import BreadcrumbsRendererCode from "./breadcrumbs/BreadcrumbsRenderer.tsx?raw";
+import BreadcrumbsRenderer from "./breadcrumbs/BreadcrumbsRenderer";
 
 export const BreadcrumbsBasicExample: React.FC<ExampleProps> = props => {
     return (
@@ -34,6 +37,18 @@ export const BreadcrumbsBasicExample: React.FC<ExampleProps> = props => {
             {...props}
         >
             <BreadcrumbsBasic />
+        </CodeExample>
+    );
+};
+
+export const BreadcrumbsRendererExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={BreadcrumbsRendererPreview}
+            sourceCode={BreadcrumbsRendererCode}
+            {...props}
+        >
+            <BreadcrumbsRenderer />
         </CodeExample>
     );
 };

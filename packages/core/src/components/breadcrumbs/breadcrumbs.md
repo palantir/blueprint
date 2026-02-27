@@ -40,6 +40,8 @@ minimum number of items remain visible.
 The **Breadcrumbs** component supports customization through the `breadcrumbRenderer`
 and `currentBreadcrumbRenderer` props, which allow custom rendering of individual breadcrumbs.
 
+@### Customizing breadcrumbs
+
 @reactCodeExample BreadcrumbsRendererExample
 
 @### Collapse direction
