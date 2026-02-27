@@ -154,7 +154,7 @@ jobs:
             case $CIRCLE_NODE_INDEX in \
             0) pnpm nx run-many -t test:typeCheck ;; \
             1) pnpm nx test:vitest:run @blueprintjs/core ;; \
-            2) pnpm nx test:karma @blueprintjs/datetime ;; \
+            2) pnpm nx test:vitest:run @blueprintjs/datetime ;; \
             4) pnpm nx test:karma @blueprintjs/select ;; \
             5) pnpm nx test:karma @blueprintjs/table
             esac
