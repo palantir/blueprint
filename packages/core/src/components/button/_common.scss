@@ -522,15 +522,15 @@ $button-dark-minimal-active-text-colors: (
 
     &:hover {
       // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // Higher % than light theme because base color is close to dark backgrounds
-      background-color: color-mix(in srgb, var(--bp-intent-default-hover) 15%, transparent);
+      // TODO(BP7): Update this semantic token to use `--bp-intent-default-hover`
+      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent);
     }
 
     &:active,
     &.#{$ns}-active {
       // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // Higher % than light theme because base color is close to dark backgrounds
-      background-color: color-mix(in srgb, var(--bp-intent-default-active) 30%, transparent);
+      // TODO(BP7): Update this semantic token to use `--bp-intent-default-active`
+      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent);
     }
 
     &:disabled,
