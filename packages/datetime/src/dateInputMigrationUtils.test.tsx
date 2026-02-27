@@ -44,7 +44,7 @@ const uncontrolledDateInputProps = {
 };
 
 describe("DateInput2MigrationUtils", () => {
-    it("should render DateInput without error when applying onChange + value adapters", () => {
+    it("Applying onChange + value adapters renders DateInput without error", () => {
         render(
             <DateInput2
                 {...dateFormattingProps}
@@ -54,7 +54,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("should accept time precision with value adapter", () => {
+    it("Value adapter accepts time precision", () => {
         const precision = TimePrecision.MINUTE;
         render(
             <DateInput2
@@ -66,7 +66,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("should infer time precision from Date object with value adapter", () => {
+    it("Value adapter infers time precision from Date object", () => {
         const date = new Date();
 
         // TimePrecision.SECOND forces the string to exclude the date's milliseconds value
@@ -80,7 +80,7 @@ describe("DateInput2MigrationUtils", () => {
         expect(DateInputMigrationUtils.valueAdapter(date)).not.toBe(valueWithExplicitPrecision);
     });
 
-    it("should work with default value adapter", () => {
+    it("Default value adapter works as expected", () => {
         const precision = TimePrecision.MINUTE;
         render(
             <DateInput2
@@ -95,7 +95,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("should work with React.useCallback + React.useMemo", () => {
+    it("Adapters work in common usage pattern with React.useCallback + React.useMemo", () => {
         function TestComponent() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             const handleChange = useCallback(

@@ -115,7 +115,7 @@ describe("DateUtils", () => {
             expect(DateUtils.isTimeEqualOrGreaterThan(time, time2)).toBe(true);
         });
 
-        it("returns true if time is equal to another time", () => {
+        it("returns false if time is greater then another time", () => {
             const time = createTimeObject(14, 10);
             const time2 = createTimeObject(14, 10);
 
