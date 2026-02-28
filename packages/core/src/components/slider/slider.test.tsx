@@ -14,73 +14,58 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { fireEvent, render, screen } from "@testing-library/react";
 
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
-import { Handle } from "./handle";
 import { Slider } from "./slider";
 import { simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;
-const TRACK_SELECTOR = `.${Classes.SLIDER_TRACK}`;
 
 describe("<Slider>", () => {
-    let containerElement: HTMLElement;
-
-    beforeEach(() => {
-        // need an element in the document for tickSize to be a real number
-        containerElement = document.createElement("div");
-        // default min-max is 0-10 so there are 10 steps
-        containerElement.style.width = `${STEP_SIZE * 10}px`;
-        document.body.appendChild(containerElement);
-    });
-
-    afterEach(() => containerElement.remove());
-
-    it("renders one interactive <Handle>", () => {
-        const handles = renderSlider(<Slider />).find(Handle);
-        assert.lengthOf(handles, 1);
+    it("renders one interactive slider handle", () => {
+        render(<Slider />);
+        expect(screen.getAllByRole("slider")).toHaveLength(1);
     });
 
     it.skip("renders primary track segment between initialValue and value", () => {
-        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={2} value={5} />).find(
-            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
-        );
-        assert.lengthOf(tracks, 1);
-        assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
+        const { container } = render(<Slider showTrackFill={true} initialValue={2} value={5} />);
+        const tracks = container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`);
+        expect(tracks).toHaveLength(1);
+        expect(tracks[0].getBoundingClientRect().width).toBe(STEP_SIZE * 3);
     });
 
     it.skip("renders primary track segment between initialValue and value when value is less than initial value", () => {
-        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={5} value={2} />).find(
-            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
-        );
-        assert.lengthOf(tracks, 1);
-        assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
+        const { container } = render(<Slider showTrackFill={true} initialValue={5} value={2} />);
+        const tracks = container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`);
+        expect(tracks).toHaveLength(1);
+        expect(tracks[0].getBoundingClientRect().width).toBe(STEP_SIZE * 3);
     });
 
     it("renders no primary track segment when value equals initial value", () => {
-        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={2} value={2} min={0} max={5} />).find(
-            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
-        );
-        assert.lengthOf(tracks, 0);
+        const { container } = render(<Slider showTrackFill={true} initialValue={2} value={2} min={0} max={5} />);
+        const tracks = container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`);
+        expect(tracks).toHaveLength(0);
     });
 
     it("renders result of labelRenderer() in each label and differently in handle", () => {
         const labelRenderer = (val: number, opts?: { isHandleTooltip: boolean }) =>
             val + (opts?.isHandleTooltip ? "!" : "#");
-        const wrapper = renderSlider(
+        const { container } = render(
             <Slider min={0} max={50} value={10} labelStepSize={10} labelRenderer={labelRenderer} />,
         );
-        assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
-        assert.strictEqual(wrapper.find(`.${Classes.SLIDER_HANDLE}`).find(`.${Classes.SLIDER_LABEL}`).text(), "10!");
+        expect(container.querySelector(`.${Classes.SLIDER}-axis`)).toHaveTextContent("0#10#20#30#40#50#");
+        const handleLabel = container.querySelector(`.${Classes.SLIDER_HANDLE} .${Classes.SLIDER_LABEL}`);
+        expect(handleLabel).toHaveTextContent("10!");
     });
 
     it.skip("moving mouse calls onChange with nearest value", () => {
         const changeSpy = vi.fn();
-        simulateMovement(renderSlider(<Slider onChange={changeSpy} />), {
+        render(<Slider onChange={changeSpy} />);
+        simulateMovement(screen.getByRole("slider"), {
             dragSize: STEP_SIZE,
             dragTimes: 4,
         });
@@ -91,7 +76,8 @@ describe("<Slider>", () => {
 
     it.skip("releasing mouse calls onRelease with nearest value", () => {
         const releaseSpy = vi.fn();
-        simulateMovement(renderSlider(<Slider onRelease={releaseSpy} />), {
+        render(<Slider onRelease={releaseSpy} />);
+        simulateMovement(screen.getByRole("slider"), {
             dragSize: STEP_SIZE,
             dragTimes: 1,
         });
@@ -101,16 +87,13 @@ describe("<Slider>", () => {
 
     it.skip("disabled slider never invokes event handlers", () => {
         const eventSpy = vi.fn();
-        const slider = renderSlider(<Slider disabled={true} onChange={eventSpy} onRelease={eventSpy} />);
+        const { container } = render(<Slider disabled={true} onChange={eventSpy} onRelease={eventSpy} />);
         // handle drag and keys
-        simulateMovement(slider, { dragTimes: 3 });
-        slider.simulate("keydown", { key: "ArrowUp" });
+        simulateMovement(screen.getByRole("slider"), { dragTimes: 3 });
+        fireEvent.keyDown(screen.getByRole("slider"), { key: "ArrowUp" });
         // track click
-        slider.find(TRACK_SELECTOR).simulate("mousedown", { target: containerElement.querySelector(TRACK_SELECTOR) });
+        const track = container.querySelector(`.${Classes.SLIDER_TRACK}`)!;
+        fireEvent.mouseDown(track);
         expect(eventSpy).not.toHaveBeenCalled();
     });
-
-    function renderSlider(slider: React.JSX.Element) {
-        return mount(slider, { attachTo: containerElement });
-    }
 });

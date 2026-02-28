@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import type { ReactWrapper } from "enzyme";
+// HACKHACK: need act() to flush React state updates before dispatching subsequent move events.
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { act } from "@testing-library/react";
 
 import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons/vitest-utils";
-
-import { Handle, type InternalHandleProps } from "./handle";
 
 interface MoveOptions {
     /** Size in pixels of one drag event. Direction of drag is determined by `vertical` option. */
@@ -27,8 +27,6 @@ interface MoveOptions {
     dragTimes: number;
     /** Initial pixel of drag operation: where the mouse is initially pressed. */
     from?: number;
-    /** Index of `Handle` to move. */
-    handleIndex?: number;
     /** Whether to use touch events. */
     touch?: boolean;
     /** Whether to use vertical events. */
@@ -42,22 +40,31 @@ export const DRAG_SIZE = 20;
 /**
  * Simulates a full move of a slider handle: engage, move, release.
  * Supports touch and vertical events. Use options to configure exact movement.
+ *
+ * @param handleElement - The DOM element of the handle to move
+ * @param options - Configuration for the movement simulation
  */
-export function simulateMovement(wrapper: ReactWrapper<InternalHandleProps>, options: MoveOptions) {
-    const { from = 0, handleIndex = 0, touch = false } = options;
-    const handle = wrapper.find(Handle).at(handleIndex);
-    const eventData =
-        options.vertical !== undefined && options.verticalHeight !== undefined
-            ? { clientY: options.verticalHeight - from }
-            : { clientX: from };
-    if (touch) {
-        handle.simulate("touchstart", { changedTouches: [eventData] });
-    } else {
-        handle.simulate("mousedown", eventData);
-    }
+export function simulateMovement(handleElement: HTMLElement, options: MoveOptions) {
+    const { from = 0, touch = false } = options;
+    // Wrap the initial engagement in act() so React 18 flushes the setState({ isMoving: true })
+    // before subsequent move events check the isMoving flag.
+    act(() => {
+        if (touch) {
+            const eventData =
+                options.vertical !== undefined && options.verticalHeight !== undefined
+                    ? { clientX: 0, clientY: options.verticalHeight - from }
+                    : { clientX: from, clientY: 0 };
+            dispatchTouchEvent(handleElement, "touchstart", eventData.clientX, eventData.clientY);
+        } else {
+            const eventData =
+                options.vertical !== undefined && options.verticalHeight !== undefined
+                    ? { clientX: 0, clientY: options.verticalHeight - from }
+                    : { clientX: from, clientY: 0 };
+            dispatchMouseEvent(handleElement, "mousedown", eventData.clientX, eventData.clientY);
+        }
+    });
     genericMove(options);
     genericRelease(options);
-    return wrapper;
 }
 
 /** Release the mouse at the given clientX pixel. Useful for ending a drag interaction. */
