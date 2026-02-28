@@ -7,7 +7,7 @@ export default function ButtonIconWithText() {
             <Button icon="user" endIcon="caret-down" text="Profile settings" />
             <Button endIcon="arrow-right" intent="success" text="Next step" />
             <Button>
-                <Icon icon="document" /> Upload... <Icon icon="small-cross" />
+                <Icon icon="document" /> Upload... <Icon icon="cross" />
             </Button>
         </div>
     );

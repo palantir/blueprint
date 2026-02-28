@@ -1,10 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="pie_chart">
-	<path d="M9,0.98c-4.5,0.5-8,4.31-8,8.94c0,4.97,4.03,9.04,9,9.04c4.63,0,8.44-3.96,8.94-7.96H9V0.98z"/>
-	<path d="M10-0.08V10h10C20,4,15.52-0.08,10-0.08z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M6.259 1.321 6.25 1.5v1.285A5.502 5.502 0 0 0 8 13.5a5.5 5.5 0 0 0 5.214-3.75H14.5q.146-.001.284-.025a7 7 0 1 1-8.51-8.51q-.009.052-.015.106"/>
+  <path d="M8 .75a7.3 7.3 0 0 1 2.774.552l.327.144a7.25 7.25 0 0 1 3.597 3.78l.128.333A7.3 7.3 0 0 1 15.25 8a.75.75 0 0 1-.75.75H8A.75.75 0 0 1 7.25 8V1.5A.75.75 0 0 1 8 .75m.75 6.5h4.95A5.75 5.75 0 0 0 8.75 2.3z"/>
 </svg>

@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve">
-<g id="unlock_1_">
-	<g>
-		<path d="M14,1c-2.21,0-4,1.79-4,4v4H2c-0.55,0-1,0.45-1,1v8c0,0.55,0.45,1,1,1h12c0.55,0,1-0.45,1-1v-8c0-0.55-0.45-1-1-1h-2V5
-			c0-1.1,0.9-2,2-2s2,0.9,2,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V5C18,2.79,16.21,1,14,1z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M9.25 4v-.5a1.25 1.25 0 1 0-2.5 0v3a.75.75 0 0 1-1.5 0v-3a2.75 2.75 0 0 1 5.5 0V4a.75.75 0 0 1-1.5 0M8 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+  <path d="M3.5 12.745h9V7.25h-9zm10.5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25V7c0-.69.56-1.25 1.25-1.25h9.5c.69 0 1.25.56 1.25 1.25z"/>
 </svg>

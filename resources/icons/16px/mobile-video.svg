@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<g id="facetime_video">
-	<g>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M15,4c-0.28,0-0.53,0.11-0.71,0.29L12,6.59V4c0-0.55-0.45-1-1-1H1
-			C0.45,3,0,3.45,0,4v8c0,0.55,0.45,1,1,1h10c0.55,0,1-0.45,1-1V9.41l2.29,2.29C14.47,11.89,14.72,12,15,12c0.55,0,1-0.45,1-1V5
-			C16,4.45,15.55,4,15,4z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M2.25 11.25h9v-6.5h-9zm10.5.25c0 .69-.56 1.25-1.25 1.25H2c-.69 0-1.25-.56-1.25-1.25v-7c0-.69.56-1.25 1.25-1.25h9.5c.69 0 1.25.56 1.25 1.25z"/>
+  <path d="M14.309 4.394A.751.751 0 0 1 15.5 5v6a.75.75 0 0 1-1.191.606l-2.75-2a.75.75 0 0 1 .882-1.212L14 9.526V6.473l-1.559 1.133a.75.75 0 0 1-.882-1.212z"/>
 </svg>

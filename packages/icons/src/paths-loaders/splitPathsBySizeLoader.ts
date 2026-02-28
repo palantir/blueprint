@@ -18,27 +18,17 @@ import { pascalCase } from "change-case";
 
 import type { IconPathsLoader } from "../iconLoader";
 import type { IconName } from "../iconNames";
-import { type IconPaths, IconSize } from "../iconTypes";
 import type { PascalCase } from "../type-utils";
 
 /**
  * A dynamic loader for icon paths that generates separate chunks for the two size variants.
  */
-export const splitPathsBySizeLoader: IconPathsLoader = async (name, size) => {
+export const splitPathsBySizeLoader: IconPathsLoader = async (name, _size) => {
     const key = pascalCase(name) as PascalCase<IconName>;
-    let pathsRecord: Record<PascalCase<IconName>, IconPaths>;
-
-    if (size === IconSize.STANDARD) {
-        pathsRecord = await import(
-            /* webpackChunkName: "blueprint-icons-16px-paths" */
-            "../generated/16px/paths"
-        );
-    } else {
-        pathsRecord = await import(
-            /* webpackChunkName: "blueprint-icons-20px-paths" */
-            "../generated/20px/paths"
-        );
-    }
+    const pathsRecord = await import(
+        /* webpackChunkName: "blueprint-icons-16px-paths" */
+        "../generated/16px/paths"
+    );
 
     return pathsRecord[key];
 };

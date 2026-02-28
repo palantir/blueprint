@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<g id="step_backward">
-	<g>
-		<path fill-rule="evenodd" clip-rule="evenodd" d="M12,3c-0.24,0-0.44,0.09-0.62,0.23l-0.01-0.01L7,6.72V4c0-0.55-0.45-1-1-1H5
-			C4.45,3,4,3.45,4,4v8c0,0.55,0.45,1,1,1h1c0.55,0,1-0.45,1-1V9.28l4.38,3.5l0.01-0.01C11.56,12.91,11.76,13,12,13
-			c0.55,0,1-0.45,1-1V4C13,3.45,12.55,3,12,3z"/>
-	</g>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.75 13.5v-11a.75.75 0 0 1 1.5 0v3.875l7.09-4.434.005-.003c.187-.115.403-.18.623-.185l.164.007q.164.017.317.076l.15.07.138.087q.133.097.237.226l.094.135.077.146c.066.15.102.313.105.478v10.045a1.253 1.253 0 0 1-1.282 1.224 1.25 1.25 0 0 1-.623-.185l-.004-.003L4.25 9.624V13.5a.75.75 0 0 1-1.5 0M4.481 8l7.269 4.545v-9.09z"/></svg>

@@ -1,11 +1,35 @@
+/* stylelint-disable order/properties-alphabetical-order, value-keyword-case */
+
+@import "normalize.css/normalize.css";
 @import "@blueprintjs/core/lib/css/blueprint.css";
 @import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
+@import "@blueprintjs/select/lib/css/blueprint-select.css";
 @import "@blueprintjs/table/lib/css/table.css";
 @import "@blueprintjs/labs/lib/css/blueprint-labs.css";
+@import "@blueprintjs/core/lib/scss/variables";
 
 @import "./styles/examples";
+
+:root {
+  --icon-font-family:
+    -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans,
+    Helvetica Neue, blueprint-icons-16, sans-serif;
+  --icon-font-weight: 400;
+}
 
 body {
   margin: 0;
   overflow-y: scroll;
+  font-family: var(--icon-font-family);
+  font-weight: var(--icon-font-weight);
+  font-optical-sizing: auto;
+}
+
+.#{$ns}-dark {
+  color-scheme: dark;
+  background-color: $dark-gray3;
+}
+
+.#{$ns}-file-input input {
+  width: 100%;
 }

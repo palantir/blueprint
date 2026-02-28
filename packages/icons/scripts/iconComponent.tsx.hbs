@@ -19,18 +19,11 @@ import { IconSize } from "../../iconTypes";
 import { SVGIconContainer } from "../../svgIconContainer";
 
 export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => {
-    const isLarge = (props.size ?? IconSize.STANDARD) >= IconSize.LARGE;
-    const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
-    const translation = `${-1 * pixelGridSize / {{pathScaleFactor}} / 2}`;
-    const style = { transformOrigin: "center" };
     return (
         <SVGIconContainer iconName="{{iconName}}" ref={ref} {...props}>
-            <path
-                d={isLarge ? "{{icon20pxPath}}" : "{{icon16pxPath}}"}
-                fillRule="evenodd"
-                transform={`scale({{pathScaleFactor}}, -{{pathScaleFactor}}) translate(${translation}, ${translation})`}
-                style={style}
-            />
+{{#each iconPaths}}
+            <path d="{{this}}" />
+{{/each}}
         </SVGIconContainer>
    );
 });

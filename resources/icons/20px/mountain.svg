@@ -1,10 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
-    <title>Artboard 2 Copy</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Artboard-2-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M20,16 L4,16 L11,5 L12,5 L14,7 L15,7 L20,16 Z M16,11 L14.5,8 L13.5,8 L12.5,7 L11.5,6 L8,11.5 L11,10 L12,11 L13,10 L16,11 Z M8.05455983,8 L2.78960257,16 L0,16 L7,8 L8.05455983,8 Z" id="Combined-Shape" fill="#000000"></path>
-    </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="m6.818 1.5.148.015a.75.75 0 0 1 .384.206l2.143 2.153h.87l.108.008a.75.75 0 0 1 .57.42l2.134 4.496 2 4.125A.75.75 0 0 1 14.5 14h-13a.75.75 0 0 1-.702-1.014l4.137-11 .048-.105a.75.75 0 0 1 .654-.381zM3.652 9.656 2.583 12.5h10.72L11.93 9.669 9.522 8.365l-1.261.775a.75.75 0 0 1-.768.01L6.12 8.355zm.795-2.116 1.34-.704.087-.04a.75.75 0 0 1 .638.055l1.344.776 1.252-.767.088-.046a.75.75 0 0 1 .661.027l.98.53-.947-1.997h-.708a.75.75 0 0 1-.532-.22L6.507 3h-.352z"/>
 </svg>

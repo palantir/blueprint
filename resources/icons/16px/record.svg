@@ -1,10 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 18.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
-<g id="record_1_">
-	<g>
-		<circle fill-rule="evenodd" clip-rule="evenodd" cx="8" cy="8" r="5"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <path d="M13.5 8a5.5 5.5 0 1 0-11 0 5.5 5.5 0 0 0 11 0M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0"/>
+  <path d="M10.5 8a2.5 2.5 0 1 0-5 0 2.5 2.5 0 0 0 5 0M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0"/>
 </svg>
