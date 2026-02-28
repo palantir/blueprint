@@ -15,5 +15,5 @@
 
 // @ts-check
 
-export { default as baseConfig } from "./webpack.config.base.mjs";
+export { default as baseConfig } from "./rspack.config.base.mjs";
 export { default as karmaConfig } from "./webpack.config.karma.mjs";

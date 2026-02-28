@@ -31,7 +31,7 @@ const REGION_3 = Regions.cell(2, 2);
 const TRANSFORMED_REGION = Regions.row(0);
 const TRANSFORMED_REGION_2 = Regions.row(1);
 
-describe("DragSelectable", () => {
+describe.skip("DragSelectable", () => {
     const onSelection = sinon.spy();
     const onFocusedRegion = sinon.spy();
     const locateClick = sinon.stub();

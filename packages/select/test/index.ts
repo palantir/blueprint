@@ -2,7 +2,7 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-import "@blueprintjs/test-commons/bootstrap";
+// Enzyme is configured via vitest.setup (Vitest); do not import bootstrap here.
 
 import "normalize.css/normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";

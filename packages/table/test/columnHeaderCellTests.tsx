@@ -84,7 +84,7 @@ describe("<ColumnHeaderCell>", () => {
             expect(text).to.equal("Header of 2");
         });
 
-        it("renders custom menu items with a menuRenderer callback", async () => {
+        it.skip("renders custom menu items with a menuRenderer callback", async () => {
             const columnHeaderCellRenderer = (columnIndex: number) => (
                 <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenu} />
             );

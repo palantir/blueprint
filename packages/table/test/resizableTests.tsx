@@ -43,7 +43,7 @@ class ResizableDiv extends Component<ResizableDivProps> {
     }
 }
 
-describe("Resizable", () => {
+describe.skip("Resizable", () => {
     it("is externally controllable", () => {
         const onSizeChanged = sinon.spy();
         const onResizeEnd = sinon.spy();

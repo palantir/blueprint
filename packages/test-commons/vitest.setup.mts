@@ -12,7 +12,13 @@ import "@testing-library/jest-dom/vitest";
 import Adapter from "@cfaester/enzyme-adapter-react-18";
 import { cleanup } from "@testing-library/react";
 import Enzyme from "enzyme";
-import { afterEach } from "vitest";
+import { afterAll, afterEach, beforeAll, it } from "vitest";
+
+// Mocha-style lifecycle hooks for packages that still use them (e.g. table)
+(globalThis as any).before = beforeAll;
+(globalThis as any).after = afterAll;
+// Mocha-style xit = skip (e.g. table selectionTests)
+(globalThis as any).xit = (name: string, fn: () => void) => it.skip(name, fn);
 
 Enzyme.configure({ adapter: new Adapter() });
 

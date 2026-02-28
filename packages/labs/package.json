@@ -46,7 +46,7 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
-        "@blueprintjs/webpack-build-scripts": "workspace:^",
+        "@blueprintjs/rspack-build-scripts": "workspace:^",
         "@testing-library/dom": "catalog:",
         "@testing-library/jest-dom": "catalog:",
         "@testing-library/react": "catalog:",

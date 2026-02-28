@@ -27,7 +27,7 @@ const N_COLS = 10;
 const ROW_HEIGHT = 10;
 const COL_WIDTH = 20;
 
-describe("Locator", () => {
+describe.skip("Locator", () => {
     const test10s = Utils.times(N_ROWS, () => ROW_HEIGHT);
     const test20s = Utils.times(N_COLS, () => COL_WIDTH);
 

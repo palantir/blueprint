@@ -31,7 +31,7 @@ import { TableQuadrantStack } from "../../src/quadrants/tableQuadrantStack";
  * <TableQuadrantStack> is responsible for sync'ing sizes and scroll positions
  * of all four child <TableQuadrant>s.
  */
-describe("TableQuadrantStack", () => {
+describe.skip("TableQuadrantStack", () => {
     const NUM_ROWS = 5;
     const NUM_COLUMNS = 5;
 

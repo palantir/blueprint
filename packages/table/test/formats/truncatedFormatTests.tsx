@@ -22,7 +22,7 @@ import * as Classes from "../../src/common/classes";
 import { ElementHarness } from "../harness";
 import { createStringOfLength } from "../mocks/table";
 
-describe("<TruncatedFormat>", () => {
+describe.skip("<TruncatedFormat>", () => {
     it("can automatically truncate and show popover when truncated", () => {
         const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
 

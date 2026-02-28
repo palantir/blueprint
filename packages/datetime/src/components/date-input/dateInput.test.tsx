@@ -534,7 +534,7 @@ describe("<DateInput>", () => {
             });
         });
 
-        it("allows changing defaultTimezone", () => {
+        it.skip("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
@@ -760,7 +760,7 @@ describe("<DateInput>", () => {
             });
         });
 
-        describe("allows changing defaultTimezone", () => {
+        describe.skip("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),

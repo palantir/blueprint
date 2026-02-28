@@ -15,19 +15,18 @@
 
 // @ts-check
 
-import CopyWebpackPlugin from "copy-webpack-plugin";
+import { rspack } from "@rspack/core";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
 
-import { baseConfig } from "@blueprintjs/webpack-build-scripts";
+import { baseConfig } from "@blueprintjs/rspack-build-scripts";
 
 export default {
     ...baseConfig,
 
     entry: {
         "docs-app": [
-            // bundle entry points
             "./src/index.tsx",
             "./src/index.scss",
         ],
@@ -36,14 +35,12 @@ export default {
     module: {
         ...baseConfig.module,
         rules: [
-            // Import files with ?raw query parameter as strings
             {
                 resourceQuery: /raw/,
                 type: "asset/source",
             },
             ...(baseConfig.module?.rules
                 ?.map(rule => {
-                    // prevent ?raw TS files from being processed by TypeScript loader
                     const isTypescriptRule =
                         rule && typeof rule === "object" && rule.test?.toString().includes("tsx?") && "loader" in rule;
                     if (isTypescriptRule) {
@@ -63,9 +60,8 @@ export default {
 
     plugins: [
         ...(baseConfig.plugins || []),
-        new CopyWebpackPlugin({
+        new rspack.CopyRspackPlugin({
             patterns: [
-                // to: is relative to dist/
                 { from: "src/index.html", to: "." },
                 { from: "src/assets/favicon.png", to: "assets" },
             ],

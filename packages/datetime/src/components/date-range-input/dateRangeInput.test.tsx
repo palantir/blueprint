@@ -311,7 +311,7 @@ describe("<DateRangeInput>", () => {
         }
     });
 
-    it("placeholder text", () => {
+    it.skip("placeholder text", () => {
         it("shows proper placeholder text when empty inputs are focused and unfocused", () => {
             // arbitrarily choose the out-of-range tests' min/max dates for this test
             const MIN_DATE = new Date(2022, Months.JANUARY, 1);

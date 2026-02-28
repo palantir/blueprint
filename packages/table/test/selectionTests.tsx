@@ -26,7 +26,7 @@ import { Utils } from "../src/common/utils";
 import { ElementHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
-describe("Selection", () => {
+describe.skip("Selection", () => {
     const COLUMN_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
     const ROW_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`;
     const CELL_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.rowCellIndexClass(

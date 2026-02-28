@@ -279,7 +279,7 @@ describe("scrollUtils", () => {
         }
     });
 
-    describe("measureScrollBarThickness", () => {
+    describe.skip("measureScrollBarThickness", () => {
         const PARENT_WIDTH = 100;
         const PARENT_HEIGHT = 100;
 

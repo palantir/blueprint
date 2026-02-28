@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import "@blueprintjs/test-commons/bootstrap";
+// Enzyme is configured via vitest.setup (Vitest); do not import bootstrap here.
 
 import "./batcherTests";
 import "./cellTests";

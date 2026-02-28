@@ -15,11 +15,11 @@
 
 // @ts-check
 
-import CopyWebpackPlugin from "copy-webpack-plugin";
+import { rspack } from "@rspack/core";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
 
-import { baseConfig } from "@blueprintjs/webpack-build-scripts";
+import { baseConfig } from "@blueprintjs/rspack-build-scripts";
 
 export default {
     ...baseConfig,
@@ -35,13 +35,13 @@ export default {
         path: resolve(cwd(), "./dist"),
     },
 
-    plugins: baseConfig.plugins.concat([
-        new CopyWebpackPlugin({
+    plugins: [
+        ...(baseConfig.plugins || []),
+        new rspack.CopyRspackPlugin({
             patterns: [
-                // to: is relative to dist/
                 { from: "src/index.html", to: "." },
                 { from: "src/features.html", to: "." },
             ],
         }),
-    ]),
+    ],
 };

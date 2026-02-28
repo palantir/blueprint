@@ -1,8 +1,8 @@
 {
-    "name": "@blueprintjs/webpack-build-scripts",
+    "name": "@blueprintjs/rspack-build-scripts",
     "version": "6.2.16",
     "private": true,
-    "description": "Webpack build scripts for @blueprintjs packages",
+    "description": "Rspack build scripts for @blueprintjs packages",
     "type": "module",
     "main": "index.mjs",
     "files": [
@@ -13,16 +13,14 @@
     },
     "dependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
-        "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
-        "@swc/core": "^1.3.105",
+        "@rspack/core": "^1.0.0",
+        "@rspack/dev-server": "^1.0.0",
+        "@rspack/plugin-react-refresh": "^1.0.0",
         "assert": "^2.1.0",
         "autoprefixer": "^10.4.17",
         "css-loader": "^6.9.1",
         "cssnano": "^6.0.3",
-        "fork-ts-checker-notifier-webpack-plugin": "^9.0.0",
-        "fork-ts-checker-webpack-plugin": "^9.0.2",
         "istanbul-instrumenter-loader": "^3.0.1",
-        "mini-css-extract-plugin": "^2.7.7",
         "postcss": "^8.4.33",
         "postcss-discard-comments": "^6.0.1",
         "postcss-loader": "^8.0.0",
@@ -34,12 +32,10 @@
         "stream-browserify": "^3.0.0",
         "style-loader": "^3.3.4",
         "swc-loader": "^0.2.3",
-        "terser-webpack-plugin": "^5.3.10",
+        "ts-checker-rspack-plugin": "^1.0.0",
         "typescript": "^5.3.3",
         "webpack": "^5.90.0",
-        "webpack-bundle-analyzer": "^4.10.1",
-        "webpack-dev-server": "^4.15.1",
-        "webpack-notifier": "^1.15.0"
+        "fork-ts-checker-webpack-plugin": "^9.0.2"
     },
     "engines": {
         "node": ">=20.11"
@@ -47,7 +43,7 @@
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",
-        "directory": "packages/webpack-build-scripts"
+        "directory": "packages/rspack-build-scripts"
     },
     "author": "Palantir Technologies",
     "license": "Apache-2.0"

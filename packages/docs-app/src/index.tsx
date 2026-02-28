@@ -13,6 +13,25 @@
  * limitations under the License.
  */
 
+// Configure Monaco worker URLs before any Monaco code runs. The monaco-editor-webpack-plugin
+// injects this via a loader on Monaco's editor bundle; with Rspack that injection may not
+// run, so we set it explicitly so syntax highlighting (colorizeElement) can load language workers.
+if (typeof window !== "undefined") {
+    const workerNames: Record<string, string> = {
+        css: "css.worker.js",
+        editor: "editor.worker.js",
+        html: "html.worker.js",
+        javascript: "ts.worker.js",
+        json: "json.worker.js",
+        typescript: "ts.worker.js",
+    };
+    (window as any).MonacoEnvironment = {
+        getWorkerUrl(_module: string, label: string) {
+            return workerNames[label] ?? `${label}.worker.js`;
+        },
+    };
+}
+
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 

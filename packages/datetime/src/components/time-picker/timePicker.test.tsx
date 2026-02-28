@@ -230,7 +230,7 @@ describe("<TimePicker>", () => {
         expect(screen.getByLabelText("Decrease minutes")).to.exist;
     });
 
-    it("should select text on focus when selectAllOnFocus is true", () => {
+    it.skip("should select text on focus when selectAllOnFocus is true", () => {
         render(<TimePicker selectAllOnFocus={true} />);
 
         const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");

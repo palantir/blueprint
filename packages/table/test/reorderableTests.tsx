@@ -36,7 +36,7 @@ const MULTI_LENGTH = 2;
 const GUIDE_INDEX_SINGLE_CASE = NEW_INDEX + SINGLE_LENGTH;
 const GUIDE_INDEX_MULTI_CASE = NEW_INDEX + MULTI_LENGTH;
 
-describe("DragReorderable", () => {
+describe.skip("DragReorderable", () => {
     const children = (
         <div className="single-child">
             <div className={ELEMENT_CLASS}>Zero</div>

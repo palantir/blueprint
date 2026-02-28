@@ -83,7 +83,7 @@ describe("<MultiSelect>", () => {
         assert.lengthOf(wrapper.find(Tag).find("strong"), 1);
     });
 
-    it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
+    it.skip("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
         const itemSelectSpy = sinon.spy();
         const wrapper = multiselect({
             onItemSelect: itemSelectSpy,

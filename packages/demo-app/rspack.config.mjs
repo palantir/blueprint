@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,31 +15,17 @@
 
 // @ts-check
 
-import CopyWebpackPlugin from "copy-webpack-plugin";
+import { rspack } from "@rspack/core";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
 
-import { baseConfig } from "@blueprintjs/webpack-build-scripts";
+import { baseConfig } from "@blueprintjs/rspack-build-scripts";
 
 export default {
     ...baseConfig,
 
     entry: {
-        "blueprint-landing": ["./src/index.tsx", "./src/index.scss"],
-    },
-
-    module: {
-        // override the image module rule to avoid the asset modules loader being triggered for inline SVGs
-        rules: [
-            ...baseConfig.module.rules.filter(rule => !rule.test.toString().includes("svg")),
-            {
-                test: /^((?!svgs).)*\.(eot|ttf|woff|woff2|svg|png)$/,
-                type: "asset/resource",
-                generator: {
-                    filename: "assets/[hash][ext][query]",
-                },
-            },
-        ],
+        "demo-app": "./src/index.tsx",
     },
 
     output: {
@@ -48,13 +34,13 @@ export default {
         path: resolve(cwd(), "./dist"),
     },
 
-    plugins: baseConfig.plugins.concat([
-        new CopyWebpackPlugin({
+    plugins: [
+        ...(baseConfig.plugins || []),
+        new rspack.CopyRspackPlugin({
             patterns: [
-                // to: is relative to dist/
-                { from: "src/assets", to: "assets" },
                 { from: "src/index.html", to: "." },
+                { from: "src/assets/favicon.png", to: "assets" },
             ],
         }),
-    ]),
+    ],
 };

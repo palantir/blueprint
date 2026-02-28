@@ -9,7 +9,7 @@ import { createRequire } from "node:module";
 import { basename, join } from "node:path";
 import { cwd, env } from "node:process";
 
-import { karmaConfig as webpackConfig } from "@blueprintjs/webpack-build-scripts";
+import { karmaConfig as webpackConfig } from "@blueprintjs/rspack-build-scripts";
 
 // TODO: refactor to use `await import()`, requires breaking change to make this API async
 // see https://nodejs.org/docs/latest-v20.x/api/esm.html#import-attributes
