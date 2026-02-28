@@ -2,7 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:list";
-@import "./card-variables";
+@use "../../common" as *;
+@use "./card-variables" as *;
 
 .#{$ns}-card {
   background-color: $card-background-color;

@@ -1,12 +1,11 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/mixins";
-
-@import "./common";
-@import "./submenu";
+@use "../../common" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../icon/icon-mixins" as *;
+@use "./common" as *;
+@use "./submenu" as *;
 
 .#{$ns}-menu {
   background: $menu-background-color;

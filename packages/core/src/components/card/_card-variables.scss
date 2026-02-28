@@ -1,7 +1,7 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables-extended";
+@use "../../common" as *;
 
 $card-padding: $pt-spacing * 5 !default;
 $card-padding-compact: $pt-spacing * 4 !default;

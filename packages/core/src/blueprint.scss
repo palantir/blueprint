@@ -5,16 +5,13 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
-// Import files in the same order that they are documented in the docs
+@use "common" as *;
+@use "reset";
+@use "typography";
+@use "accessibility/focus-states";
+@use "dark-theme";
+@use "components/index";
+
+// Design-tokens build outputs plain CSS; keep @import until Sass provides a non-deprecated way to include CSS.
 @import "design-tokens/build/tokens";
 @import "design-tokens/build/tokens-dark";
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "common/variables";
-@import "common/variables-extended";
-@import "common/mixins";
-
-@import "reset";
-@import "typography";
-@import "accessibility/focus-states";
-@import "dark-theme";
-@import "components/index";

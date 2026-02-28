@@ -2,12 +2,14 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:color";
-@import "./common";
-@import "./popover-in-button-group";
-@import "./popover-in-control-group";
-@import "./popover-in-label";
-@import "./popover-in-submenu";
-@import "./popover-in-tree";
+@use "../../common" as *;
+@use "../../common/react-transition" as *;
+@use "./common" as *;
+@use "./popover-in-button-group";
+@use "./popover-in-control-group";
+@use "./popover-in-label";
+@use "./popover-in-submenu";
+@use "./popover-in-tree";
 
 $popover-width: $pt-spacing * 87.5 !default;
 $popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;

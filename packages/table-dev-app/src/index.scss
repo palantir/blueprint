@@ -1,10 +1,12 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "@blueprintjs/core/src/common" as *;
+@use "@blueprintjs/table/src/table";
+
 @import "normalize.css/normalize.css";
 @import "@blueprintjs/core/lib/css/blueprint.css";
 @import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-@import "@blueprintjs/table/src/table";
 
 body {
   background-color: $pt-app-background-color;

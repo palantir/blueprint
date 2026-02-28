@@ -3,9 +3,7 @@
 
 @use "sass:list";
 @use "sass:map";
-@import "../../common/mixins";
-@import "../../common/variables";
-@import "../../common/variables-extended";
+@use "../../common" as *;
 
 $menu-item-border-radius: $pt-border-radius !default;
 

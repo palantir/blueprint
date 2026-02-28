@@ -3,6 +3,7 @@
 
 @use "sass:list";
 @use "sass:map";
+@use "@blueprintjs/core/src/common" as *;
 
 $pkg-icon-width: $pt-spacing * 6;
 
@@ -78,7 +79,7 @@ $dark-package-colors: (
 
 .docs-logo {
   display: block;
-  margin-right: $sidebar-padding;
+  margin-right: $pt-spacing * 4;
   opacity: 0.8;
   transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 

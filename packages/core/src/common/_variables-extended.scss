@@ -1,7 +1,7 @@
 // Copyright 2022 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "variables";
+@use "variables" as *;
 
 // ----------------------------------------------------------------------------
 // This file contains additional common variables which we do not want to export in public API via variables.scss,

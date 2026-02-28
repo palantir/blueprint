@@ -1,5 +1,5 @@
 @use "sass:math";
-@import "../../common/variables";
+@use "../../common" as *;
 
 .#{$ns}-segmented-control {
   background-color: $light-gray5;

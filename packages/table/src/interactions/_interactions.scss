@@ -1,6 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/variables";
+@use "@blueprintjs/core/src/common" as *;
+@use "../common/variables" as *;
 
 $resize-handle-target-width: $pt-spacing !default;
 $resize-handle-width: $pt-spacing * 0.75 !default;

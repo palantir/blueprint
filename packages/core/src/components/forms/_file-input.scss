@@ -1,9 +1,9 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../button/common";
-@import "../../common/mixins";
+@use "../../common" as *;
+@use "../button/common" as *;
+@use "./common" as *;
 
 $file-input-button-width: $pt-spacing * 17.5 !default;
 $file-input-button-width-large: $pt-spacing * 21.25 !default;

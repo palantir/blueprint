@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "../../common" as *;
 
 $table-row-height: $pt-spacing * 10 !default;
 $table-row-height-small: $pt-spacing * 7.5 !default;

@@ -1,7 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
 @use "sass:map";
-@import "../common/variables";
+@use "@blueprintjs/core/src/common" as *;
+@use "../common/variables" as *;
 
 $cell-border-width: 1px !default;
 $frozen-cell-border-width: $pt-spacing * 0.75 !default;

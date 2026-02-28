@@ -1,0 +1,11 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+// Single entry that forwards colors, color-aliases, variables, variables-extended, and mixins so that
+// @use "common" or @use "../../common" brings all common APIs into scope.
+@forward "@blueprintjs/colors/lib/scss/colors";
+@forward "color-aliases";
+@forward "variables";
+@forward "variables-extended";
+@forward "mixins";
+@forward "flex";

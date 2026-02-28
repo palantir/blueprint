@@ -3,6 +3,7 @@
 
 @use "sass:list";
 @use "sass:map";
+@use "variables" as *;
 
 /*
 A mixin to generate the classes for a React CSSTransition which animates any number of CSS

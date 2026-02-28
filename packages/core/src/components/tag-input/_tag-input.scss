@@ -1,9 +1,10 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../forms/common";
-@import "../tag/common";
+@use "../../common" as *;
+@use "../button/common" as *;
+@use "../forms/common" as *;
+@use "../tag/common" as *;
 
 $tag-input-padding: $pt-spacing !default;
 

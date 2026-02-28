@@ -2,9 +2,10 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
-@import "@blueprintjs/core/src/components/forms/common";
-@import "@blueprintjs/core/src/components/icon/icon-mixins";
-@import "../../common";
+@use "@blueprintjs/core/src/common" as *;
+@use "@blueprintjs/core/src/components/forms/common" as *;
+@use "@blueprintjs/core/src/components/icon/icon-mixins" as *;
+@use "../../common" as *;
 
 $timepicker-input-row-height: $pt-spacing * 7.5 !default;
 // subtract two because of inset shadow

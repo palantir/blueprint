@@ -2,10 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
-@import "../../common/variables";
-@import "../../common/variables-extended";
-@import "../../common/mixins";
-@import "./common";
+@use "../../common" as *;
+@use "./common" as *;
 
 /*
 Compound Tags

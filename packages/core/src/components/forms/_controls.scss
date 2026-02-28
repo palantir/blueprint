@@ -4,9 +4,8 @@
 @use "sass:list";
 @use "sass:map";
 @use "sass:math";
-@import "../../common/mixins";
-@import "../../common/variables";
-@import "../button/common";
+@use "../../common" as *;
+@use "../button/common" as *;
 
 $control-background-color: transparent !default;
 $control-background-color-hover: $minimal-button-background-color-hover !default;

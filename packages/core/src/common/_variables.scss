@@ -1,8 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "color-aliases";
-@import "mixins";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "color-aliases" as *;
 
 // ----------------------------------------------------------------------------
 // This file is part of the public Sass API of @blueprintjs/core.
@@ -160,8 +160,9 @@ $pt-dialog-box-shadow: $pt-elevation-shadow-3 !default;
 $pt-popover-box-shadow: $pt-elevation-shadow-3 !default;
 $pt-tooltip-box-shadow: $pt-popover-box-shadow !default;
 // Equivalent to $pt-dark-elevation-shadow-3, but swaps the outset border for an inset one
+// Inlined from mixins border-shadow(0.2) to avoid circular dependency with mixins
 $pt-toast-box-shadow:
-  inset border-shadow(0.2),
+  inset 0 0 0 1px rgba($black, 0.2),
   0 2px 4px rgba($black, $pt-drop-shadow-opacity),
   0 8px 24px rgba($black, $pt-drop-shadow-opacity) !default;
 

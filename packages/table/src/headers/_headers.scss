@@ -1,10 +1,11 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
 @use "sass:color";
-@import "../common/loading";
-@import "../common/variables";
-@import "../cell/common";
-@import "./common";
+@use "@blueprintjs/core/src/common" as *;
+@use "../common/loading" as *;
+@use "../common/variables" as *;
+@use "../cell/common" as *;
+@use "./common" as *;
 
 @function menu-background($color) {
   @return linear-gradient(90deg, rgba($color, 0) 0%, $color 50%);

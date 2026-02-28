@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:list";
-@import "../../common/variables";
-@import "../button/common";
-@import "./common";
-@import "../divider/divider";
+@use "../../common" as *;
+@use "../button/common" as *;
+@use "./common" as *;
+@use "../divider/divider";
 
 .#{$ns}-control-group {
   // create a new stacking context to isolate all the z-indices

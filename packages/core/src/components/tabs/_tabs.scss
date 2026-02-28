@@ -1,8 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/mixins";
+@use "../../common" as *;
 
 $tab-color-selected: $pt-link-color !default;
 $dark-tab-color-selected: $pt-dark-link-color !default;

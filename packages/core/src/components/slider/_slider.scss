@@ -1,8 +1,11 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../tooltip/tooltip";
-@import "./common";
+@use "../../common" as *;
+@use "../button/common" as *;
+@use "../tooltip/common" as *;
+@use "../tooltip/tooltip";
+@use "./common" as *;
 
 $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - ($pt-spacing * 2.5) !default;

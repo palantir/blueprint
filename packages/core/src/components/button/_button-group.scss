@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
-@import "../../common/variables";
-@import "../forms/common";
-@import "./common";
+@use "../../common" as *;
+@use "../forms/common" as *;
+@use "./common" as *;
 
 // z-index values for button stacking order (derived from $control-group-stack in forms/_common.scss)
 $button-group-z-index: (
