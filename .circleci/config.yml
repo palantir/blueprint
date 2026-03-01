@@ -87,6 +87,9 @@ jobs:
       - run:
           command: pnpm lint
           no_output_timeout: 20m
+      - run:
+          command: pnpm run lint:cycles
+          name: Lint import cycles (oxlint)
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 

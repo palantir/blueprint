@@ -24,8 +24,8 @@ module.exports = tseslint.config([
         rules: {
             // we have these across the codebase, it's not useful for this repo
             "@blueprintjs/no-deprecated-type-references": "off",
-            // Run import/no-cycle only in CI because it is slow.
-            "import/no-cycle": process.env.CI ? "error" : "off",
+            // import/no-cycle is disabled in ESLint (slow). In CI we run oxlint for cycle detection instead (lint:cycles).
+            "import/no-cycle": "off",
             "no-console": "error",
             // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
             "no-restricted-imports": [

@@ -1,0 +1,16 @@
+{
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "plugins": ["import"],
+    "ignorePatterns": [
+        "**/node_modules",
+        "**/dist",
+        "**/lib",
+        "**/fixtures",
+        "**/coverage",
+        "**/__snapshots__",
+        "**/generated"
+    ],
+    "rules": {
+        "import/no-cycle": "error"
+    }
+}
