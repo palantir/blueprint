@@ -65,7 +65,7 @@ interface OverlayToasterQueueState {
     toasts: ToastOptions[];
 }
 
-const OVERLAY_TOASTER_DELAY_MS = 50;
+export const OVERLAY_TOASTER_DELAY_MS = 50;
 
 /**
  * OverlayToaster component.

@@ -30,7 +30,7 @@ const globalStackListeners: Array<() => void> = [];
  *
  * @public for testing
  */
-const modifyGlobalStack = (fn: (stack: OverlayInstance[]) => void) => {
+export const modifyGlobalStack = (fn: (stack: OverlayInstance[]) => void) => {
     fn(globalStack);
     globalStackListeners.forEach(listener => listener());
 };

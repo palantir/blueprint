@@ -15,7 +15,7 @@ interface UseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextAr
  * The amount of time (in milliseconds) which the input will wait after a compositionEnd event before
  * unlocking its state value for external updates via props. See `handleCompositionEnd` for more details.
  */
-const ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY = 10;
+export const ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY = 10;
 
 /**
  * A hook to workaround the following [React bug](https://github.com/facebook/react/issues/3926).
