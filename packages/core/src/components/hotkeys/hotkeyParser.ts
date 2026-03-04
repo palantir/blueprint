@@ -17,10 +17,6 @@
 // alph sorting is unintuitive here
 /* eslint-disable sort-keys */
 
-export interface KeyCodeTable {
-    [code: number]: string;
-}
-
 export interface KeyCodeReverseTable {
     [key: string]: number;
 }
@@ -36,14 +32,14 @@ export interface KeyMap {
  */
 const MODIFIER_KEYS = new Set(["Shift", "Control", "Alt", "Meta"]);
 
-export const MODIFIER_BIT_MASKS: KeyCodeReverseTable = {
+const MODIFIER_BIT_MASKS: KeyCodeReverseTable = {
     alt: 1,
     ctrl: 2,
     meta: 4,
     shift: 8,
 };
 
-export const CONFIG_ALIASES: KeyMap = {
+const CONFIG_ALIASES: KeyMap = {
     cmd: "meta",
     command: "meta",
     del: "delete",
@@ -69,7 +65,7 @@ export const CONFIG_ALIASES: KeyMap = {
  * straightforward way by using the `event.code` property, which will always tell us the identifiers represented by the
  * _values_ in this object (the default physical keys, unaltered by modifier keys or keyboard layout).
  */
-export const SHIFT_KEYS: KeyMap = {
+const SHIFT_KEYS: KeyMap = {
     "~": "`",
     _: "-",
     "+": "=",

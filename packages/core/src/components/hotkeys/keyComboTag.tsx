@@ -50,7 +50,7 @@ const KEY_ICONS: Record<string, { icon: React.JSX.Element; iconTitle: string; is
 };
 
 /** Reverse table of some CONFIG_ALIASES fields, for display by KeyComboTag */
-export const DISPLAY_ALIASES: Record<string, string> = {
+const DISPLAY_ALIASES: Record<string, string> = {
     arrowdown: "down",
     arrowleft: "left",
     arrowright: "right",
@@ -76,7 +76,7 @@ interface KeyComboTagInternalProps extends KeyComboTagProps {
     platformOverride?: string;
 }
 
-export class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagInternalProps> {
+class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagInternalProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
 
     public render() {

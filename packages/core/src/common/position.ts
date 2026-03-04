@@ -42,18 +42,6 @@ export function isPositionHorizontal(position: Position) {
     );
 }
 
-export function isPositionVertical(position: Position) {
-    /* istanbul ignore next */
-    return (
-        position === Position.LEFT ||
-        position === Position.LEFT_TOP ||
-        position === Position.LEFT_BOTTOM ||
-        position === Position.RIGHT ||
-        position === Position.RIGHT_TOP ||
-        position === Position.RIGHT_BOTTOM
-    );
-}
-
 export function getPositionIgnoreAngles(position: Position) {
     if (position === Position.TOP || position === Position.TOP_LEFT || position === Position.TOP_RIGHT) {
         return Position.TOP;

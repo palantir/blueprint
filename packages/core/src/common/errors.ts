@@ -24,19 +24,6 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
-export const ALIGN_INDICATOR_LEFT =
-    ns + ` alignIndicator="left" is deprecated. Please use alignIndicator="start" instead.`;
-export const ALIGN_INDICATOR_RIGHT =
-    ns + ` alignIndicator="right" is deprecated. Please use alignIndicator="end" instead.`;
-export const ALIGN_INDICATOR_CENTER =
-    ns + `alignIndicator="center" is not supported on control components and will be ignored.`;
-export const ALIGN_TEXT_LEFT = ns + ` alignText="left" is deprecated. Please use alignText="start" instead.`;
-export const ALIGN_TEXT_RIGHT = ns + ` alignText="right" is deprecated. Please use alignText="end" instead.`;
-
-export const BUTTON_WARN_MINIMAL = ns + ` <Button> minimal is deprecated. Please use variant="minimal".`;
-export const BUTTON_GROUP_WARN_MINIMAL = ns + ` <ButtonGroup> minimal is deprecated. Please use variant="minimal".`;
-export const BUTTON_WARN_OUTLINED = ns + ` <Button> outlined is deprecated. Please use variant="outlined".`;
-export const BUTTON_GROUP_WARN_OUTLINED = ns + ` <ButtonGroup> outlined is deprecated. Please use variant="outlined".`;
 
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
 
@@ -126,16 +113,3 @@ export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
 export const OVERLAY_CHILD_REQUIRES_KEY =
     ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
 
-export function logDeprecatedSizeWarning(component: string, props: Partial<Record<"large" | "small", boolean>>) {
-    const { large, small } = props;
-    if (large && small) {
-        console.warn(
-            ns +
-                ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
-        );
-    } else if (large) {
-        console.warn(ns + ` <${component}> large is deprecated. Please use size="large" instead.`);
-    } else if (small) {
-        console.warn(ns + ` <${component}> small is deprecated. Please use size="small" instead.`);
-    }
-}
