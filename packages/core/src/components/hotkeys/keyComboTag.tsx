@@ -76,7 +76,7 @@ interface KeyComboTagInternalProps extends KeyComboTagProps {
     platformOverride?: string;
 }
 
-class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagInternalProps> {
+export class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagInternalProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
 
     public render() {

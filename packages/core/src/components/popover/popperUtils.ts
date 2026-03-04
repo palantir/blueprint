@@ -32,7 +32,7 @@ function isVerticalPlacement(side: BasePlacement) {
 }
 
 /** Returns the opposite position. */
-function getOppositePlacement(side: BasePlacement) {
+export function getOppositePlacement(side: BasePlacement) {
     switch (side) {
         case "top":
             return "bottom";
@@ -46,7 +46,7 @@ function getOppositePlacement(side: BasePlacement) {
 }
 
 /** Returns the CSS alignment keyword corresponding to given placement. */
-function getAlignment(placement: Placement) {
+export function getAlignment(placement: Placement) {
     const align = placement.split("-")[1] as "start" | "end" | undefined;
     switch (align) {
         case "start":
