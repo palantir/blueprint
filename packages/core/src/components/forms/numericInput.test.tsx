@@ -1080,14 +1080,24 @@ describe("<NumericInput>", () => {
             expect(component.find(InputGroup).find(Button)).to.exist;
         });
 
-        it("passed decimal value should be rounded by stepSize", () => {
+        it("preserves passed decimal value precision on initial render", () => {
             const component = mount(<NumericInput value={9.001} min={0} />);
-            expect(component.find("input").prop("value")).to.equal("9");
+            expect(component.find("input").prop("value")).to.equal("9.001");
         });
 
         it("passed decimal value should be rounded by minorStepSize", () => {
             const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} />);
             expect(component.find("input").prop("value")).to.equal("9.01");
+        });
+
+        it("preserves floating-point precision on initial render when min/max are set", () => {
+            const component = mount(<NumericInput value={"0.001"} min={0} />);
+            expect(component.find("input").prop("value")).to.equal("0.001");
+        });
+
+        it("preserves small floating-point value on initial render when min/max are set", () => {
+            const component = mount(<NumericInput value={"2.7E-10"} min={-Number.MAX_VALUE} />);
+            expect(Number(component.find("input").prop("value"))).to.equal(2.7e-10);
         });
 
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
