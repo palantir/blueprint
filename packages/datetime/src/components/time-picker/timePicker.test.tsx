@@ -21,7 +21,7 @@ import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 import { createTimeObject } from "@blueprintjs/test-commons";
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { TIMEPICKER } from "../../common/classes";
+import { Classes } from "../..";
 import { TimePrecision } from "../../common/timePrecision";
 
 import { TimePicker } from "./timePicker";
@@ -36,7 +36,7 @@ describe("<TimePicker>", () => {
 
     it("should propagate class names correctly", () => {
         const { container } = render(<TimePicker className="foo" />);
-        const timePicker = container.querySelector(`.${TIMEPICKER}`);
+        const timePicker = container.querySelector(`.${Classes.TIMEPICKER}`);
 
         expect(timePicker).toBeInTheDocument();
         expect(timePicker).toHaveClass("foo");
