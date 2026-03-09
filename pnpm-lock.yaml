@@ -636,7 +636,7 @@ importers:
         specifier: workspace:^
         version: link:../test-commons
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
 
   packages/docs-theme:
