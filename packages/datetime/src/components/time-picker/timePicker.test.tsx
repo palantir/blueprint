@@ -281,8 +281,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            screen.getByDisplayValue("15"); // hour
-            screen.getByDisplayValue("30"); // minute
+            expect(screen.getByDisplayValue("15")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("30")).toBeInTheDocument(); // minute
         });
 
         it("should use maxTime as initial time if defaultValue is greater than maxTime", () => {
@@ -295,8 +295,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            screen.getByDisplayValue("18"); // hour
-            screen.getByDisplayValue("30"); // minute
+            expect(screen.getByDisplayValue("18")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("30")).toBeInTheDocument(); // minute
         });
 
         it("should allow any time to be selected by default", async () => {
@@ -476,8 +476,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            screen.getByDisplayValue("15"); // hour
-            screen.getByDisplayValue("32"); // minute
+            expect(screen.getByDisplayValue("15")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("32")).toBeInTheDocument(); // minute
         });
 
         it("should immediately adjust selected time when maxTime prop changes", () => {
@@ -493,8 +493,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            screen.getByDisplayValue("10"); // hour
-            screen.getByDisplayValue("30"); // minute
+            expect(screen.getByDisplayValue("10")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("30")).toBeInTheDocument(); // minute
         });
 
         it("should keep time at boundary value when minTime equals maxTime", async () => {
@@ -564,10 +564,10 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            screen.getByDisplayValue("10"); // hour
-            screen.getByDisplayValue("11"); // minute
-            screen.getByDisplayValue("12"); // second
-            screen.getByDisplayValue("013"); // millisecond
+            expect(screen.getByDisplayValue("10")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("11")).toBeInTheDocument(); // minute
+            expect(screen.getByDisplayValue("12")).toBeInTheDocument(); // second
+            expect(screen.getByDisplayValue("013")).toBeInTheDocument(); // millisecond
         });
 
         it("should fire onChange events on arrow key press", async () => {
@@ -653,32 +653,32 @@ describe("<TimePicker>", () => {
             const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
             const { rerender } = render(<TimePicker value={zeroDate} />);
 
-            screen.getByDisplayValue("0"); // hour
-            screen.getByDisplayValue("00"); // minute
+            expect(screen.getByDisplayValue("0")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("00")).toBeInTheDocument(); // minute
 
             rerender(<TimePicker value={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
 
-            screen.getByDisplayValue("1"); // hour
-            screen.getByDisplayValue("02"); // minute
+            expect(screen.getByDisplayValue("1")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("02")).toBeInTheDocument(); // minute
         });
 
         it("should reset state when value changes to null", () => {
             const { rerender } = render(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
 
-            screen.getByDisplayValue("1"); // hour
-            screen.getByDisplayValue("02"); // minute
+            expect(screen.getByDisplayValue("1")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("02")).toBeInTheDocument(); // minute
 
             rerender(
                 <TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} value={new Date(2015, 1, 1, 5, 6, 7, 8)} />,
             );
 
-            screen.getByDisplayValue("5"); // hour
-            screen.getByDisplayValue("06"); // minute
+            expect(screen.getByDisplayValue("5")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("06")).toBeInTheDocument(); // minute
 
             rerender(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} value={null} />);
 
-            screen.getByDisplayValue("1"); // hour
-            screen.getByDisplayValue("02"); // minute
+            expect(screen.getByDisplayValue("1")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("02")).toBeInTheDocument(); // minute
         });
 
         it("should fire onChange events on arrow key press", async () => {
