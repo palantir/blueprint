@@ -10,7 +10,7 @@ aliases:
   - &docker-node-browsers-image
     - image: cimg/node:24.11-browsers
       environment:
-        CHROME_BIN: "/usr/local/bin/chrome"
+        CHROME_BIN: "/usr/bin/google-chrome"
 
   - &restore-pnpm-cache
     name: Restore pnpm store cache
@@ -134,17 +134,12 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # Use an explicit version of Chrome for better test reproducibility.
-      - run: sudo apt-get update
-      - browser-tools/install_chrome_for_testing:
-          version: "145.0.7632.159"
-          install_chromedriver: false
-      - run: sudo ln -fs /usr/local/bin/chrome /usr/bin/google-chrome
+      - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:
           name: Verify Chrome browser installed
           command: |
-            chrome --version
+            google-chrome --version
             chromedriver --version
       - run: mkdir -p ./reports
       - run:
