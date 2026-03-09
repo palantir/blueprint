@@ -139,6 +139,7 @@ jobs:
       - browser-tools/install_chrome_for_testing:
           version: "145.0.7632.159"
           install_chromedriver: false
+      - run: sudo ln -fs /usr/local/bin/chrome /usr/bin/google-chrome
       - browser-tools/install_chromedriver
       - run:
           name: Verify Chrome browser installed
