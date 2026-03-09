@@ -138,6 +138,7 @@ jobs:
       - run: sudo apt-get update
       - browser-tools/install_chrome_for_testing:
           version: "145.0.7632.159"
+          install_chromedriver: true
       - run:
           name: Verify Chrome browser installed
           command: |
