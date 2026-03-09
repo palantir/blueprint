@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     buildLeafPageNode,
@@ -24,9 +24,11 @@ import {
     buildSectionNode,
     extractHeadingChildren,
     fixPageRoutes,
+    normalizeNavConfig,
     requirePage,
     slugify,
-} from "./navHelpers.mjs";
+} from "./navHelpers.mts";
+import type { NavSection, NavStructure, RawNavStructure } from "./navTypes.ts";
 
 /** Minimal page object with a title and contents array. */
 function makePage(title: string, contents: any[] = []) {
@@ -38,18 +40,26 @@ function heading(value: string, level: number, route = "") {
     return { tag: "heading", value, level, route };
 }
 
-describe("buildRouteMap", () => {
-    it("should compute flat routes for a package with direct pages", () => {
-        const navConfig = [{ package: "core", pages: ["getting-started", "reading-list"], sections: [] }];
-        const routeMap = buildRouteMap(navConfig as any);
+describe("normalizeNavConfig", () => {
+    it("should convert bare strings to NavPageRef objects", () => {
+        const raw: RawNavStructure = [{ package: "core", pages: ["getting-started", "reading-list"] }];
 
-        expect(routeMap.get("core")).toBe("core");
-        expect(routeMap.get("getting-started")).toBe("core/getting-started");
-        expect(routeMap.get("reading-list")).toBe("core/reading-list");
+        const result = normalizeNavConfig(raw);
+
+        expect(result).toEqual([
+            {
+                package: "core",
+                pages: [
+                    { type: "page", ref: "getting-started" },
+                    { type: "page", ref: "reading-list" },
+                ],
+                sections: undefined,
+            },
+        ]);
     });
 
-    it("should compute nested routes through sections and heading groups", () => {
-        const navConfig = [
+    it("should convert section pages with bare strings and untagged groups", () => {
+        const raw: RawNavStructure = [
             {
                 package: "core",
                 pages: [],
@@ -61,7 +71,65 @@ describe("buildRouteMap", () => {
                 ],
             },
         ];
-        const routeMap = buildRouteMap(navConfig as any);
+
+        const result = normalizeNavConfig(raw);
+
+        expect(result[0].sections).toEqual([
+            {
+                section: "components",
+                pages: [
+                    { type: "page", ref: "buttons" },
+                    { type: "group", group: "Overlays", pages: ["dialog", "popover"] },
+                ],
+            },
+        ]);
+    });
+
+    it("should handle packages with no sections", () => {
+        const raw: RawNavStructure = [{ package: "icons", pages: ["icons-list"] }];
+
+        const result = normalizeNavConfig(raw);
+
+        expect(result[0].sections).toBeUndefined();
+    });
+});
+
+describe("buildRouteMap", () => {
+    it("should compute flat routes for a package with direct pages", () => {
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [
+                    { type: "page", ref: "getting-started" },
+                    { type: "page", ref: "reading-list" },
+                ],
+                sections: [],
+            },
+        ];
+        const routeMap = buildRouteMap(navConfig);
+
+        expect(routeMap.get("core")).toBe("core");
+        expect(routeMap.get("getting-started")).toBe("core/getting-started");
+        expect(routeMap.get("reading-list")).toBe("core/reading-list");
+    });
+
+    it("should compute nested routes through sections and heading groups", () => {
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [],
+                sections: [
+                    {
+                        section: "components",
+                        pages: [
+                            { type: "page", ref: "buttons" },
+                            { type: "group", group: "Overlays", pages: ["dialog", "popover"] },
+                        ],
+                    },
+                ],
+            },
+        ];
+        const routeMap = buildRouteMap(navConfig);
 
         expect(routeMap.get("components")).toBe("core/components");
         expect(routeMap.get("buttons")).toBe("core/components/buttons");
@@ -118,10 +186,10 @@ describe("buildNavTree", () => {
             core: makePage("Core"),
             overview: makePage("Overview"),
         };
-        const navConfig = [{ package: "core", pages: ["overview"] }];
-        const routeMap = buildRouteMap(navConfig as any);
+        const navConfig: NavStructure = [{ package: "core", pages: [{ type: "page", ref: "overview" }] }];
+        const routeMap = buildRouteMap(navConfig);
 
-        const tree = buildNavTree(navConfig as any, pages, routeMap);
+        const tree = buildNavTree(navConfig, pages, routeMap);
 
         expect(tree).toHaveLength(1);
         expect(tree[0].reference).toBe("core");
@@ -136,16 +204,21 @@ describe("buildNavTree", () => {
             components: makePage("Components"),
             buttons: makePage("Buttons"),
         };
-        const navConfig = [
+        const navConfig: NavStructure = [
             {
                 package: "core",
                 pages: [],
-                sections: [{ section: "components", pages: ["buttons"] }],
+                sections: [
+                    {
+                        section: "components",
+                        pages: [{ type: "page", ref: "buttons" }],
+                    },
+                ],
             },
         ];
-        const routeMap = buildRouteMap(navConfig as any);
+        const routeMap = buildRouteMap(navConfig);
 
-        const tree = buildNavTree(navConfig as any, pages, routeMap);
+        const tree = buildNavTree(navConfig, pages, routeMap);
 
         const sectionNode = tree[0].children[0];
         expect(sectionNode.reference).toBe("components");
@@ -167,9 +240,15 @@ describe("buildSectionNode", () => {
             ["buttons", "core/components/buttons"],
             ["dialog", "core/components/dialog"],
         ]);
-        const section = { section: "components", pages: ["buttons", "dialog"] };
+        const section: NavSection = {
+            section: "components",
+            pages: [
+                { type: "page", ref: "buttons" },
+                { type: "page", ref: "dialog" },
+            ],
+        };
 
-        const node = buildSectionNode(section as any, 2, pages, routeMap);
+        const node = buildSectionNode(section, 2, pages, routeMap);
 
         expect(node.reference).toBe("components");
         expect(node.level).toBe(2);
@@ -190,12 +269,12 @@ describe("buildSectionNode", () => {
             ["components", "core/components"],
             ["dialog", "core/components/dialog"],
         ]);
-        const section = {
+        const section: NavSection = {
             section: "components",
-            pages: [{ group: "Overlays", pages: ["dialog"] }],
+            pages: [{ type: "group", group: "Overlays", pages: ["dialog"] }],
         };
 
-        const node = buildSectionNode(section as any, 2, pages, routeMap);
+        const node = buildSectionNode(section, 2, pages, routeMap);
 
         // First child should be the matched heading node, second is the leaf page
         expect(node.children).toHaveLength(2);

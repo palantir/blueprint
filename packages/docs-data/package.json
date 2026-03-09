@@ -6,7 +6,7 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs",
+        "compile": "tsx ./compile-docs-data.mts",
         "test": "vitest run",
         "test:vitest": "vitest",
         "test:vitest:run": "vitest run"
@@ -16,7 +16,7 @@
             "compile": {
                 "inputs": [
                     "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
-                    "{projectRoot}/*.mjs",
+                    "{projectRoot}/*.{mjs,mts}",
                     "{projectRoot}/nav.json"
                 ],
                 "outputs": [
@@ -34,7 +34,8 @@
         "semver": "^7.5.4"
     },
     "devDependencies": {
-        "@blueprintjs/test-commons": "workspace:^"
+        "@blueprintjs/test-commons": "workspace:^",
+        "tsx": "^4.21.0"
     },
     "repository": {
         "type": "git",
