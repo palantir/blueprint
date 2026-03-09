@@ -30,8 +30,8 @@ describe("<TimePicker>", () => {
     it("should render its contents", () => {
         render(<TimePicker />);
 
-        screen.getByLabelText("hours (24hr clock)");
-        screen.getByLabelText("minutes");
+        expect(screen.getByLabelText("hours (24hr clock)")).toBeInTheDocument();
+        expect(screen.getByLabelText("minutes")).toBeInTheDocument();
     });
 
     it("should propagate class names correctly", () => {
@@ -226,10 +226,10 @@ describe("<TimePicker>", () => {
     it("should render arrow buttons when showArrowButtons is true", () => {
         render(<TimePicker showArrowButtons={true} />);
 
-        screen.getByLabelText("Increase hours (24hr clock)");
-        screen.getByLabelText("Decrease hours (24hr clock)");
-        screen.getByLabelText("Increase minutes");
-        screen.getByLabelText("Decrease minutes");
+        expect(screen.getByLabelText("Increase hours (24hr clock)")).toBeInTheDocument();
+        expect(screen.getByLabelText("Decrease hours (24hr clock)")).toBeInTheDocument();
+        expect(screen.getByLabelText("Increase minutes")).toBeInTheDocument();
+        expect(screen.getByLabelText("Decrease minutes")).toBeInTheDocument();
     });
 
     it("should select text on focus when selectAllOnFocus is true", () => {
