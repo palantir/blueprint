@@ -232,22 +232,20 @@ describe("<TimePicker>", () => {
         screen.getByLabelText("Decrease minutes");
     });
 
-    // SKIP: jsdom does not support input selection APIs (selectionStart/selectionEnd return null)
-    it.skip("should select text on focus when selectAllOnFocus is true", () => {
+    it("should select text on focus when selectAllOnFocus is true", () => {
         render(<TimePicker selectAllOnFocus={true} />);
 
         const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
         const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
 
-        fireEvent.focus(hourInput);
+        const hourSelect = vi.spyOn(hourInput, "select");
+        const minuteSelect = vi.spyOn(minuteInput, "select");
 
-        expect(hourInput.selectionStart).toBe(0);
-        expect(hourInput.selectionEnd).toBe(hourInput.value.length);
+        fireEvent.focus(hourInput);
+        expect(hourSelect).toHaveBeenCalledOnce();
 
         fireEvent.focus(minuteInput);
-
-        expect(minuteInput.selectionStart).toBe(0);
-        expect(minuteInput.selectionEnd).toBe(minuteInput.value.length);
+        expect(minuteSelect).toHaveBeenCalledOnce();
     });
 
     it("should not change value when disabled", async () => {
