@@ -4,9 +4,7 @@
  * @fileoverview Generates data for packages/docs-app
  */
 
-// @ts-check
-
-import { Documentalist, KssPlugin, MarkdownPlugin, TypescriptPlugin } from "@documentalist/compiler";
+import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin } from "@documentalist/compiler";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
@@ -15,7 +13,8 @@ import semver from "semver";
 import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-import { buildNavTree, buildRouteMap, fixPageRoutes } from "./navHelpers.mjs";
+import { buildNavTree, buildRouteMap, fixPageRoutes, normalizeNavConfig } from "./navHelpers.mts";
+import type { NavStructure, RawNavStructure } from "./navTypes.ts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
@@ -40,8 +39,9 @@ try {
     await generateDocumentalistData();
     await generateNpmVersions();
 } catch (err) {
-    console.error("[docs-data] ERROR:", err);
-    process.exit(1);
+    // console.error messages get swallowed by lerna but console.log is emitted to terminal.
+    console.error(`[docs-data] ERROR when generating JSON docs data:`);
+    throw new Error(err as string);
 }
 
 console.info(`[docs-data] successfully generated docs.json and npm-data.json`);
@@ -80,7 +80,8 @@ async function generateDocumentalistData(): Promise<void> {
     );
 
     // Post-process: replace documentalist's nav with one built from nav.json
-    const navConfig = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
+    const rawConfig: RawNavStructure = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
+    const navConfig = normalizeNavConfig(rawConfig);
     applyNavConfig(docs, navConfig);
 
     const content = JSON.stringify(docs, transformDocumentalistData, 2);
@@ -96,12 +97,20 @@ async function generateDocumentalistData(): Promise<void> {
     writeFileSync(join(generatedSrcDir, "nav-constants.js"), navConstants);
 }
 
-/**
- * @param {string} key
- * @param {any} value
- * @returns {any}
- */
-function transformDocumentalistData(key, value) {
+function transformDocumentalistData(key: string, value: any): any {
+    if (key === "versions" && Array.isArray(value)) {
+        // one major version per release
+        const majors = new Map<number, string>();
+        for (const version of value) {
+            const major = semver.major(version);
+            if (!majors.has(major) || semver.gt(version, majors.get(major)!)) {
+                majors.set(major, version);
+            }
+        }
+        // reverse the list so highest version is first (easier indexing)
+        return Array.from(majors.values()).reverse();
+    }
+
     if (typeof value === "string") {
         return interpolateClassNamespace(value);
     }
@@ -109,25 +118,12 @@ function transformDocumentalistData(key, value) {
     return value;
 }
 
-/**
- * Replaces `#{$ns}` placeholder in string values  with the actual Blueprint class namespace.
- *
- * @param {string} value
- */
 function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
 }
 
-/**
- * Applies the nav config to documentalist output: fixes page routes and
- * replaces the nav tree.
- *
- * @param {{ pages: Record<string, any>, nav: any[] }} docs
- * @param {import("./navTypes.d.ts").NavStructure} navConfig
- */
-function applyNavConfig(docs, navConfig) {
+function applyNavConfig(docs: { pages: Record<string, any>; nav: any[] }, navConfig: NavStructure): void {
     const routeMap = buildRouteMap(navConfig);
     fixPageRoutes(docs.pages, routeMap);
     docs.nav = buildNavTree(navConfig, docs.pages, routeMap);
 }
-
