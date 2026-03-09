@@ -100,7 +100,7 @@ importers:
         specifier: ^9.20.0
         version: 9.38.0(jiti@2.6.1)
       gh-pages:
-        specifier: ^6.1.1
+        specifier: ^6.3.0
         version: 6.3.0
       globals:
         specifier: ^15.14.0
