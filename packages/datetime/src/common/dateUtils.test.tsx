@@ -23,7 +23,7 @@ import * as DateUtils from "./dateUtils";
 import { Months } from "./months";
 
 describe("DateUtils", () => {
-    it("isSameTime", () => {
+    it("should return true for isSameTime when times match", () => {
         const d1 = new Date(2022, Months.JULY, 8);
         const d2 = new Date(2022, Months.JULY, 8);
         const d3 = new Date(2022, Months.JULY, 9);
@@ -31,7 +31,7 @@ describe("DateUtils", () => {
         expect(DateUtils.isSameTime(d1, d3)).toBe(true);
     });
 
-    it("isDayInRange", () => {
+    it("should return true for isDayInRange when day is within range", () => {
         const d1 = new Date(2022, Months.JULY, 7);
         const d2 = new Date(2022, Months.JULY, 8);
         const d3 = new Date(2022, Months.JULY, 9);
@@ -71,7 +71,7 @@ describe("DateUtils", () => {
         }
     });
 
-    it("getDateOnlyWithTime returns Date object with constant year, month, and day", () => {
+    it("should return Date object with constant year, month, and day from getDateOnlyWithTime", () => {
         const time = DateUtils.getDateOnlyWithTime(createTimeObject(14, 10, 10, 600));
 
         expect(time.getFullYear()).toBe(1899);
@@ -359,17 +359,17 @@ describe("DateUtils", () => {
     describe("getDateTime", () => {
         const DATE = new Date("July 1 1999 4:30");
 
-        it("null date returns null", () => expect(DateUtils.getDateTime(null)).toBeNull());
+        it("should return null for null date", () => expect(DateUtils.getDateTime(null)).toBeNull());
 
-        it("clears time if time arg omitted", () => {
+        it("should clear time if time arg is omitted", () => {
             assertDateTime(DateUtils.getDateTime(DATE));
         });
 
-        it("null time arg clears time", () => {
+        it("should clear time when time arg is null", () => {
             assertDateTime(DateUtils.getDateTime(DATE, null));
         });
 
-        it("sets time if given", () => {
+        it("should set time if given", () => {
             const time = createTimeObject(12, 12, 12, 12);
             assertDateTime(DateUtils.getDateTime(DATE, time), time);
         });
