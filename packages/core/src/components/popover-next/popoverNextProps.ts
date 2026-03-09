@@ -2,6 +2,8 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import type { AutoUpdateOptions } from "@floating-ui/react";
+
 import type { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -27,6 +29,7 @@ export type {
     PopoverNextPositioningStrategy,
     PopoverNextRootBoundary,
 } from "./middlewareTypes";
+export type { AutoUpdateOptions } from "@floating-ui/react";
 
 /**
  * Props interface for PopoverNext component.
@@ -45,6 +48,20 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * @default true
      */
     arrow?: boolean;
+
+    /**
+     * Options forwarded to floating-ui's `autoUpdate` to configure how the popover
+     * position is automatically updated while it is open. By default, all `autoUpdate`
+     * behaviors are enabled (`ancestorScroll`, `ancestorResize`, `elementResize`, and
+     * `layoutShift`).
+     *
+     * Use this prop to disable specific behaviors when they cause issues — for example,
+     * disabling `layoutShift` to prevent a positioning feedback loop with adjacent
+     * `ResizeObserver`-driven elements.
+     *
+     * @see https://floating-ui.com/docs/autoUpdate
+     */
+    autoUpdateOptions?: AutoUpdateOptions;
 
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.

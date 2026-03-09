@@ -4,6 +4,7 @@
 
 import {
     autoUpdate,
+    type AutoUpdateOptions,
     type Middleware,
     type Placement,
     useClick,
@@ -20,6 +21,7 @@ import { PopoverInteractionKind } from "../popover/popoverProps";
 import type { PopoverNextPositioningStrategy } from "./middlewareTypes";
 
 interface PopoverOptions {
+    autoUpdateOptions?: AutoUpdateOptions;
     canEscapeKeyClose?: boolean;
     disabled?: boolean;
     hasBackdrop?: boolean;
@@ -38,6 +40,7 @@ interface UsePopoverReturn extends UseFloatingReturn, UseInteractionsReturn {
 }
 
 export function usePopover({
+    autoUpdateOptions,
     canEscapeKeyClose,
     disabled = false,
     hasBackdrop = false,
@@ -76,7 +79,9 @@ export function usePopover({
         open: isOpenState,
         placement,
         strategy: positioningStrategy,
-        whileElementsMounted: autoUpdate,
+        whileElementsMounted: autoUpdateOptions
+            ? (reference, floating, update) => autoUpdate(reference, floating, update, autoUpdateOptions)
+            : autoUpdate,
     });
 
     const { context } = data;
