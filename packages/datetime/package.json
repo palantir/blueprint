@@ -33,7 +33,7 @@
         "test:typeCheck": "tsc -p ./src/tsconfig.test.json",
         "test:iso": "vitest run --config vitest.config.isotest.mts",
         "test:vitest": "vitest",
-        "test:vitest:run": "TZ=Etc/UTC vitest run",
+        "test:vitest:run": "vitest run",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
