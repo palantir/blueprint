@@ -18,7 +18,7 @@ const { autoUpdateSpy } = vi.hoisted(() => ({
 }));
 
 vi.mock("@floating-ui/react", async importOriginal => {
-    const actual = await importOriginal<typeof import("@floating-ui/react")>();
+    const actual = await importOriginal();
     return {
         ...actual,
         autoUpdate: autoUpdateSpy,
@@ -52,7 +52,7 @@ describe("<PopoverNext> autoUpdateOptions", () => {
 
     it("forwards autoUpdateOptions to autoUpdate", async () => {
         const user = userEvent.setup();
-        const options = { layoutShift: false, ancestorScroll: true };
+        const options = { ancestorScroll: true, layoutShift: false };
 
         render(
             <PopoverNext content="content" autoUpdateOptions={options}>
@@ -75,8 +75,8 @@ describe("<PopoverNext> autoUpdateOptions", () => {
     it("forwards autoUpdateOptions with all behaviors disabled", async () => {
         const user = userEvent.setup();
         const options = {
-            ancestorScroll: false,
             ancestorResize: false,
+            ancestorScroll: false,
             elementResize: false,
             layoutShift: false,
         };
