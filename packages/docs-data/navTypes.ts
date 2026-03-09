@@ -76,3 +76,39 @@ export interface NavPackageEntry {
 }
 
 export type NavStructure = NavPackageEntry[];
+
+// Doc page types
+
+export interface DocHeadingItem {
+    tag: "heading";
+    value: string;
+    level: number;
+    route: string;
+}
+
+export type DocContentItem = DocHeadingItem | string | null | { tag: string; [key: string]: unknown };
+
+export interface DocPage {
+    title: string;
+    route: string;
+    contents: DocContentItem[];
+}
+
+/** Fields common to all nav tree nodes. */
+interface NavTreeNodeBase {
+    title: string;
+    level: number;
+    route: string | undefined;
+}
+
+/** A content heading extracted from a page (no children, no reference). */
+export interface NavTreeHeading extends NavTreeNodeBase {}
+
+/** A page or section node in the nav tree. */
+export interface NavTreePage extends NavTreeNodeBase {
+    reference: string;
+    children: NavTreeNode[];
+}
+
+/** Any node in the assembled nav tree. */
+export type NavTreeNode = NavTreePage | NavTreeHeading;

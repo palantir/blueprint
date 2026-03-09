@@ -2,7 +2,17 @@
  * @license Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  */
 
-import type { NavSection, NavStructure, RawNavStructure } from "./navTypes.ts";
+import type {
+    DocContentItem,
+    DocHeadingItem,
+    DocPage,
+    NavSection,
+    NavStructure,
+    NavTreeHeading,
+    NavTreeNode,
+    NavTreePage,
+    RawNavStructure,
+} from "./navTypes.ts";
 
 /**
  * Convert raw nav.json data (bare strings + untagged groups) into a fully
@@ -71,7 +81,7 @@ export function buildRouteMap(navConfig: NavStructure): Map<string, string> {
  * Without @page tags, documentalist produces empty heading routes,
  * so we reconstruct them from the page route and heading value.
  */
-export function fixPageRoutes(pages: Record<string, any>, routeMap: Map<string, string>): void {
+export function fixPageRoutes(pages: Record<string, DocPage>, routeMap: Map<string, string>): void {
     for (const [ref, page] of Object.entries(pages)) {
         const correctRoute = routeMap.get(ref);
         if (correctRoute === undefined) {
@@ -83,7 +93,7 @@ export function fixPageRoutes(pages: Record<string, any>, routeMap: Map<string, 
 
         // Reconstruct heading routes in page.contents
         for (const item of page.contents) {
-            if (typeof item === "object" && item !== null && item.tag === "heading") {
+            if (isHeading(item)) {
                 if (item.level === 1) {
                     // Level 1 heading = page title, route is the page route
                     item.route = correctRoute;
@@ -94,6 +104,11 @@ export function fixPageRoutes(pages: Record<string, any>, routeMap: Map<string, 
             }
         }
     }
+}
+
+/** Type guard for heading content items. */
+function isHeading(item: DocContentItem): item is DocHeadingItem {
+    return typeof item === "object" && item !== null && "tag" in item && item.tag === "heading";
 }
 
 /**
@@ -110,9 +125,9 @@ export function slugify(value: string): string {
  */
 export function buildNavTree(
     navConfig: NavStructure,
-    pages: Record<string, any>,
+    pages: Record<string, DocPage>,
     routeMap: Map<string, string>,
-): any[] {
+): NavTreePage[] {
     return navConfig.map(entry => {
         const packageChildren = [
             ...entry.pages.map(pageRef => buildLeafPageNode(pageRef.ref, 2, pages, routeMap)),
@@ -128,17 +143,17 @@ export function buildNavTree(
 export function buildSectionNode(
     section: NavSection,
     level: number,
-    pages: Record<string, any>,
+    pages: Record<string, DocPage>,
     routeMap: Map<string, string>,
-): any {
+): NavTreePage {
     const childLevel = level + 1;
     const page = pages[section.section];
-    const headingsByTitle = new Map<string, any>();
+    const headingsByTitle = new Map<string, NavTreeHeading>();
     for (const h of extractHeadingChildren(page, level)) {
         headingsByTitle.set(h.title, h);
     }
 
-    const children: any[] = [];
+    const children: NavTreeNode[] = [];
     for (const child of section.pages) {
         switch (child.type) {
             case "page":
@@ -170,9 +185,9 @@ export function buildSectionNode(
 export function buildLeafPageNode(
     ref: string,
     level: number,
-    pages: Record<string, any>,
+    pages: Record<string, DocPage>,
     routeMap: Map<string, string>,
-): any {
+): NavTreePage {
     const headingChildren = extractHeadingChildren(requirePage(ref, pages), level);
     return buildPageNodeFromChildren(ref, level, pages, routeMap, headingChildren);
 }
@@ -183,10 +198,10 @@ export function buildLeafPageNode(
 export function buildPageNodeFromChildren(
     ref: string,
     level: number,
-    pages: Record<string, any>,
+    pages: Record<string, DocPage>,
     routeMap: Map<string, string>,
-    children: any[],
-): any {
+    children: NavTreeNode[],
+): NavTreePage {
     const page = requirePage(ref, pages);
     return {
         children,
@@ -200,7 +215,7 @@ export function buildPageNodeFromChildren(
 /**
  * Look up a page by reference, throwing if not found.
  */
-export function requirePage(ref: string, pages: Record<string, any>): any {
+export function requirePage(ref: string, pages: Record<string, DocPage>): DocPage {
     const page = pages[ref];
     if (page === undefined) {
         throw new Error(`[docs-data] nav.json references page "${ref}" which does not exist in docs.pages`);
@@ -213,12 +228,12 @@ export function requirePage(ref: string, pages: Record<string, any>): any {
  * Skips level-1 headings (the page title). Adjusts heading levels
  * relative to the page's position in the nav tree.
  */
-export function extractHeadingChildren(page: any, pageNavLevel: number): any[] {
+export function extractHeadingChildren(page: DocPage, pageNavLevel: number): NavTreeHeading[] {
     const levelOffset = pageNavLevel - 1;
-    const result: any[] = [];
+    const result: NavTreeHeading[] = [];
 
     for (const item of page.contents) {
-        if (typeof item === "object" && item !== null && item.tag === "heading" && item.level >= 2) {
+        if (isHeading(item) && item.level >= 2) {
             result.push({
                 title: item.value,
                 level: item.level + levelOffset,
