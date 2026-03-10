@@ -2,15 +2,11 @@
 
 CompoundTag is a variant of [**Tag**](#core/components/tag) that displays content as a visually segmented key-value pair.
 
-@## Import
+@## Usage
 
 ```tsx
 import { CompoundTag } from "@blueprintjs/core";
 ```
-
-@## Usage
-
-Content for the left side of the tag is specified with the `leftContent` prop, while `children` are rendered on the right side. CompoundTag supports all valid `<span>` DOM attributes.
 
 ```tsx
 <CompoundTag leftContent="City" id="city-tag">
@@ -20,7 +16,9 @@ Content for the left side of the tag is specified with the `leftContent` prop, w
 
 @## Examples
 
-@### Basic Usage
+@### Basic
+
+Content for the left side of the tag is specified with the `leftContent` prop, while `children` are rendered on the right side. CompoundTag supports all valid `<span>` DOM attributes.
 
 @reactCodeExample CompoundTagBasicExample
 
