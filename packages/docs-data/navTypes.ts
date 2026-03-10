@@ -25,16 +25,11 @@ export type Package = "blueprint" | "core" | "datetime" | "icons" | "select" | "
  * Sections are pages that also contain child pages and create a route segment
  * (e.g. "components" -> core/components/buttons).
  */
-export type Section = "components" | "context" | "hooks";
+export type Section = "components" | "context" | "hooks" | "form-controls" | "form-inputs" | "overlays";
 
-// Raw types to match nav.json
+// "Raw" types come directly from nav.json
 
-export interface RawNavHeadingGroup {
-    group: string;
-    pages: string[];
-}
-
-export type RawNavSectionItem = string | RawNavHeadingGroup;
+export type RawNavSectionItem = string;
 
 export interface RawNavSection {
     section: Section;
@@ -56,13 +51,7 @@ export interface NavPageRef {
     ref: string;
 }
 
-export interface NavHeadingGroup {
-    type: "group";
-    group: string;
-    pages: string[];
-}
-
-export type NavSectionItem = NavPageRef | NavHeadingGroup;
+export type NavSectionItem = NavPageRef;
 
 export interface NavSection {
     section: Section;

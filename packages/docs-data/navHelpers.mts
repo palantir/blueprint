@@ -15,10 +15,8 @@ import type {
 } from "./navTypes.ts";
 
 /**
- * Convert raw nav.json data (bare strings + untagged groups) into a fully
- * typed {@link NavStructure} with discriminated union items.
- *
- * This is the single parse boundary where `typeof` checks exist.
+ * Convert raw nav.json data (bare strings) into a fully
+ * typed {@link NavStructure} with union items.
  */
 export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
     return raw.map(entry => ({
@@ -26,9 +24,7 @@ export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
         pages: entry.pages.map(ref => ({ type: "page" as const, ref })),
         sections: entry.sections?.map(section => ({
             section: section.section,
-            pages: section.pages.map(item =>
-                typeof item === "string" ? { type: "page" as const, ref: item } : { type: "group" as const, ...item },
-            ),
+            pages: section.pages.map(ref => ({ type: "page" as const, ref })),
         })),
     }));
 }
@@ -59,16 +55,7 @@ export function buildRouteMap(navConfig: NavStructure): Map<string, string> {
             const sectionRoute = addRoute(section.section, packageRoute);
 
             for (const child of section.pages) {
-                switch (child.type) {
-                    case "page":
-                        addRoute(child.ref, sectionRoute);
-                        break;
-                    case "group":
-                        for (const pageRef of child.pages) {
-                            addRoute(pageRef, sectionRoute);
-                        }
-                        break;
-                }
+                addRoute(child.ref, sectionRoute);
             }
         }
     }
@@ -138,7 +125,7 @@ export function buildNavTree(
 }
 
 /**
- * Build a PageNode for a section, which may contain bare pages and heading groups.
+ * Build a PageNode for a section containing child pages.
  */
 export function buildSectionNode(
     section: NavSection,
@@ -147,36 +134,23 @@ export function buildSectionNode(
     routeMap: Map<string, string>,
 ): NavTreePage {
     const childLevel = level + 1;
+    const children: NavTreeNode[] = section.pages.map(child =>
+        buildLeafPageNode(child.ref, childLevel, pages, routeMap),
+    );
+
     const page = pages[section.section];
-    const headingsByTitle = new Map<string, NavTreeHeading>();
-    for (const h of extractHeadingChildren(page, level)) {
-        headingsByTitle.set(h.title, h);
+    if (page !== undefined) {
+        return buildPageNodeFromChildren(section.section, level, pages, routeMap, children);
     }
 
-    const children: NavTreeNode[] = [];
-    for (const child of section.pages) {
-        switch (child.type) {
-            case "page":
-                children.push(buildLeafPageNode(child.ref, childLevel, pages, routeMap));
-                break;
-            case "group": {
-                const matched = headingsByTitle.get(child.group);
-                if (matched) {
-                    children.push(matched);
-                } else {
-                    console.warn(
-                        `[docs-data] nav.json group "${child.group}" not found in page "${section.section}" contents`,
-                    );
-                }
-                for (const pageRef of child.pages) {
-                    children.push(buildLeafPageNode(pageRef, childLevel, pages, routeMap));
-                }
-                break;
-            }
-        }
-    }
-
-    return buildPageNodeFromChildren(section.section, level, pages, routeMap, children);
+    // Section has no backing page — use section name as title
+    return {
+        children,
+        level,
+        reference: section.section,
+        route: routeMap.get(section.section),
+        title: section.section,
+    };
 }
 
 /**

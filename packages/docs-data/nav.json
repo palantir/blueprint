@@ -40,42 +40,42 @@
                     "tag",
                     "compound-tag",
                     "text",
-                    "tree",
-                    {
-                        "group": "Form controls",
-                        "pages": [
-                            "form-group",
-                            "control-group",
-                            "label",
-                            "checkbox",
-                            "radio",
-                            "html-select",
-                            "segmented-control",
-                            "sliders",
-                            "switch"
-                        ]
-                    },
-                    {
-                        "group": "Form inputs",
-                        "pages": ["input-group", "text-area", "file-input", "numeric-input", "tag-input"]
-                    },
-                    {
-                        "group": "Overlays",
-                        "pages": [
-                            "overlay",
-                            "overlay2",
-                            "portal",
-                            "alert",
-                            "context-menu",
-                            "context-menu-popover",
-                            "dialog",
-                            "drawer",
-                            "popover",
-                            "popover-next",
-                            "toast",
-                            "tooltip"
-                        ]
-                    }
+                    "tree"
+                ]
+            },
+            {
+                "section": "form-controls",
+                "pages": [
+                    "form-group",
+                    "control-group",
+                    "label",
+                    "checkbox",
+                    "radio",
+                    "html-select",
+                    "segmented-control",
+                    "sliders",
+                    "switch"
+                ]
+            },
+            {
+                "section": "form-inputs",
+                "pages": ["input-group", "text-area", "file-input", "numeric-input", "tag-input"]
+            },
+            {
+                "section": "overlays",
+                "pages": [
+                    "overlay",
+                    "overlay2",
+                    "portal",
+                    "alert",
+                    "context-menu",
+                    "context-menu-popover",
+                    "dialog",
+                    "drawer",
+                    "popover",
+                    "popover-next",
+                    "toast",
+                    "tooltip"
                 ]
             },
             {
