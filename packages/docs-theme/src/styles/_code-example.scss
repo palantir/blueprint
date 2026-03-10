@@ -1,3 +1,6 @@
+@use "@blueprintjs/core/src/common" as *;
+@use "variables" as *;
+
 .docs-code-example-frame {
   display: flex;
   flex-direction: column;

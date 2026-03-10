@@ -2,9 +2,9 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:list";
-
-@import "@blueprintjs/core/src/common/variables";
-@import "@blueprintjs/core/src/components/button/common";
+@use "@blueprintjs/core/src/common" as *;
+@use "@blueprintjs/core/src/components/button/common" as *;
+@use "variables" as *;
 
 $banner-height: $pt-spacing * 10;
 

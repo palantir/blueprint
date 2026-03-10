@@ -2,10 +2,9 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
-@import "../../common/mixins";
-@import "../../common/variables";
-@import "../../common/variables-extended";
-@import "../progress-bar/common";
+@use "../../common" as *;
+@use "../icon/icon-mixins" as *;
+@use "../progress-bar/common" as *;
 
 // N.B. Keeping existing SCSS variables for backward-compatibility.
 // These are **not used** in button, and should be removed in

@@ -1,9 +1,10 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/core/src/components/icon/icon-mixins";
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "variables";
+@use "@blueprintjs/core/src/common" as *;
+@use "@blueprintjs/core/src/components/icon/icon-mixins" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "variables" as *;
 
 $heading-margin: $pt-spacing * 10;
 $link-icon-padding: $pt-spacing * 2;

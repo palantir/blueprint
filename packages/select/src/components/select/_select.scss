@@ -1,7 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "@blueprintjs/core/src/common" as *;
+@use "../../common/variables" as *;
 
 $select-padding: $pt-spacing;
 

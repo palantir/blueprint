@@ -1,8 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../forms/common";
+@use "../../common" as *;
+@use "../forms/common" as *;
 
 .#{$ns}-editable-text {
   cursor: text;

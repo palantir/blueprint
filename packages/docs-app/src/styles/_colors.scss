@@ -3,7 +3,8 @@
 
 @use "sass:map";
 @use "sass:math";
-@import "@blueprintjs/icons/lib/scss/variables";
+@use "@blueprintjs/core/src/common" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
 
 $palette-spacing: $pt-spacing * 5;
 $palette-border-radius: $pt-spacing;

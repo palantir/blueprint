@@ -1,8 +1,9 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "../../common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common" as *;
+@use "../../common" as *;
 
 .#{$ns}-datepicker-caption {
   @include pt-flex-container(row, $fill: ":first-child");

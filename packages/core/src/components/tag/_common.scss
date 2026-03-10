@@ -3,8 +3,9 @@
 
 @use "sass:list";
 @use "sass:map";
-@import "../../common/variables";
-@import "../../common/variables-extended";
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../../common" as *;
+@use "../icon/icon-mixins" as *;
 
 // Variables
 // ---------------------------------------------------------------------------------------------------------------------

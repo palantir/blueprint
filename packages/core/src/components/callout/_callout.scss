@@ -2,7 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
-@import "../../common/variables-extended";
+@use "../../common" as *;
+@use "../icon/icon-mixins" as *;
 
 $callout-padding: $pt-spacing * 4;
 $callout-header-margin-top: $pt-spacing * 0.5;

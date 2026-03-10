@@ -5,18 +5,19 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/common/variables";
-@import "@blueprintjs/core/src/common/mixins";
-@import "./common/loading";
-@import "./common/variables";
-@import "./cell/cell";
-@import "./cell/formats/formats";
-@import "./cell/borders";
-@import "./headers/headers";
-@import "./interactions/interactions";
-@import "./layers/layers";
-@import "./quadrants/quadrants";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common" as *;
+@use "./common/loading" as *;
+@use "./common/variables" as *;
+@use "./cell/common" as *;
+@use "./cell/cell";
+@use "./cell/formats/formats";
+@use "./cell/borders";
+@use "./headers/common" as *;
+@use "./headers/headers";
+@use "./interactions/interactions";
+@use "./layers/layers";
+@use "./quadrants/quadrants";
 
 $body-z-index: $pt-z-index-content !default;
 $column-z-index: $body-z-index + 1 !default;

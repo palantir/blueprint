@@ -1,10 +1,9 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/mixins";
-@import "../../common/react-transition";
-@import "../../common/variables";
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../../common" as *;
+@use "../../common/react-transition" as *;
 
 $drawer-margin: ($pt-spacing * 7.5) 0 !default;
 $drawer-padding: $pt-spacing * 5 !default;

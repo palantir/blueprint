@@ -4,8 +4,10 @@
 @use "sass:map";
 @use "sass:math";
 @use "sass:meta";
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "flex";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "variables";
+@use "color-aliases" as *;
+@use "flex";
 
 $pt-intent-colors: (
   "primary": $pt-intent-primary,
@@ -45,15 +47,15 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin base-typography() {
-  font-size: $pt-font-size;
+  font-size: variables.$pt-font-size;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: $pt-line-height;
+  line-height: variables.$pt-line-height;
   text-transform: none;
 }
 
 @mixin running-typography() {
-  font-size: $pt-font-size;
+  font-size: variables.$pt-font-size;
   line-height: 1.5;
 }
 
@@ -61,21 +63,21 @@ $pt-dark-intent-text-colors: (
   color: $pt-heading-color;
   font-weight: 600;
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     color: $pt-dark-heading-color;
   }
 
-  &.#{$ns}-text-muted {
+  &.#{variables.$ns}-text-muted {
     color: $pt-text-color-muted;
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       color: $pt-dark-text-color-muted;
     }
   }
 }
 
 @mixin monospace-typography() {
-  font-family: $pt-font-family-monospace;
+  font-family: variables.$pt-font-family-monospace;
   text-transform: none;
 }
 
@@ -86,12 +88,12 @@ $pt-dark-intent-text-colors: (
   word-wrap: normal;
 }
 
-@mixin focus-outline($offset: $pt-spacing * 0.5) {
-  outline: $pt-focus-indicator-color solid ($pt-spacing * 0.5);
+@mixin focus-outline($offset: variables.$pt-spacing * 0.5) {
+  outline: $pt-focus-indicator-color solid (variables.$pt-spacing * 0.5);
   outline-offset: $offset;
-  -moz-outline-radius: $pt-spacing * 1.5;
+  -moz-outline-radius: variables.$pt-spacing * 1.5;
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     outline-color: $pt-dark-focus-indicator-color;
   }
 }
@@ -103,7 +105,10 @@ $pt-dark-intent-text-colors: (
 // returns the padding necessary to center text in a container of the given height.
 // default line-height is that of base typography, 18px assuming 14px font-size.
 
-@function centered-text($height, $line-height: math.floor($pt-font-size * $pt-line-height)) {
+@function centered-text(
+  $height,
+  $line-height: math.floor(variables.$pt-font-size * variables.$pt-line-height)
+) {
   @return math.floor(($height - $line-height) * 0.5);
 }
 

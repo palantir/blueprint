@@ -1,8 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/react-transition";
+@use "../../common" as *;
+@use "../../common/react-transition" as *;
 
 $toast-height: $pt-button-height-large !default;
 $toast-min-width: $pt-spacing * 75 !default;

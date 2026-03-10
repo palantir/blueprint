@@ -4,6 +4,13 @@
 @use "sass:list";
 @use "sass:map";
 
+// Duplicated from _variables.scss to avoid pulling in @blueprintjs/colors (which _variables.scss @use-s).
+// Consumers that compile this source file may not have @blueprintjs/colors resolvable in their node_modules.
+/* stylelint-disable scss/dollar-variable-pattern */
+$_pt-transition-duration: 100ms;
+$_pt-transition-ease: cubic-bezier(0.4, 1, 0.75, 0.9);
+/* stylelint-enable scss/dollar-variable-pattern */
+
 /*
 A mixin to generate the classes for a React CSSTransition which animates any number of CSS
 properties at once.
@@ -29,8 +36,8 @@ $after: selector text to insert after transiton name (to select children)
 @mixin react-transition(
   $name,
   $properties,
-  $duration: $pt-transition-duration,
-  $easing: $pt-transition-ease,
+  $duration: $_pt-transition-duration,
+  $easing: $_pt-transition-ease,
   $delay: 0,
   $before: "",
   $after: ""
@@ -66,14 +73,14 @@ If `exit` phase is given then property values are animated in reverse, from fina
 
 **Example:**
 @include react-transition-phase(toast, enter, $enter-translate, $before: "&");
-@include react-transition-phase(toast, leave, $leave-blur, $pt-transition-duration * 3, $before: "&");
+@include react-transition-phase(toast, leave, $leave-blur, $_pt-transition-duration * 3, $before: "&");
 */
 @mixin react-transition-phase(
   $name,
   $phase,
   $properties,
-  $duration: $pt-transition-duration,
-  $easing: $pt-transition-ease,
+  $duration: $_pt-transition-duration,
+  $easing: $_pt-transition-ease,
   $delay: 0,
   $before: "",
   $after: ""

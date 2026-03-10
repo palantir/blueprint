@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@import "@blueprintjs/core/src/common/variables";
+@use "@blueprintjs/core/src/common" as *;
 
 $svg-icon-size: $pt-spacing * 9;
 

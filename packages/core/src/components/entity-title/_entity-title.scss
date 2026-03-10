@@ -2,8 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:list";
-@import "../../common/variables";
-@import "../../common/variables-extended";
+@use "../../common" as *;
+@use "../../typography" as *;
 
 .#{$ns}-entity-title {
   align-items: center;

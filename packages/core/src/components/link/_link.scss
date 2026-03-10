@@ -2,7 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-@import "../../common/variables";
+@use "../../common" as *;
 
 .#{$ns}-link {
   cursor: pointer;

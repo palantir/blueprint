@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
-@import "@blueprintjs/core/src/common/react-transition";
-@import "@blueprintjs/core/src/common/variables-extended";
-@import "@blueprintjs/core/src/components/icon/icon-mixins";
-@import "@blueprintjs/icons/lib/scss/variables";
+@use "@blueprintjs/core/src/common" as *;
+@use "@blueprintjs/core/src/common/react-transition" as *;
+@use "@blueprintjs/core/src/components/icon/icon-mixins" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
 
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "$=") {

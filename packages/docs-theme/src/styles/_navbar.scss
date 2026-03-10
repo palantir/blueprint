@@ -1,8 +1,9 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "variables";
-@import "../../../core/src/components/button/common";
+@use "@blueprintjs/core/src/common" as *;
+@use "variables" as *;
+@use "../../../core/src/components/button/common" as *;
 
 $nav-divider-offset: $pt-spacing * 12.5;
 

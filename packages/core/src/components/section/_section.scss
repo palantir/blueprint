@@ -1,5 +1,5 @@
 @use "sass:math";
-@import "../../common/variables";
+@use "../../common" as *;
 
 $section-min-height: $pt-spacing * 12.5 !default;
 $section-padding-vertical: $pt-spacing * 2 !default;
