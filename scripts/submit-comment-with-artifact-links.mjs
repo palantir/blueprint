@@ -49,7 +49,7 @@ if (process.env.GITHUB_APP_ID && process.env.GITHUB_APP_PRIVATE_KEY && process.e
     // See https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app#using-the-octokitjs-sdk-to-authenticate-as-a-github-app
     const app = new App({
         appId: process.env.GITHUB_APP_ID,
-        privateKey: process.env.GITHUB_APP_PRIVATE_KEY,
+        privateKey: process.env.GITHUB_APP_PRIVATE_KEY.replace(/\\n/g, "\n"),
     });
     const octokit = await app.getInstallationOctokit(Number(process.env.GITHUB_APP_INSTALLATION_ID));
 
