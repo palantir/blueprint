@@ -19,12 +19,6 @@ import BreadcrumbsIconCode from "./breadcrumbs/BreadcrumbsIcon.tsx?raw";
 import BreadcrumbsOverflow from "./breadcrumbs/BreadcrumbsOverflow";
 import BreadcrumbsOverflowPreview from "./breadcrumbs/BreadcrumbsOverflow.tsx.preview?raw";
 import BreadcrumbsOverflowCode from "./breadcrumbs/BreadcrumbsOverflow.tsx?raw";
-import BreadcrumbsOverflowButton from "./breadcrumbs/BreadcrumbsOverflowButton";
-import BreadcrumbsOverflowButtonPreview from "./breadcrumbs/BreadcrumbsOverflowButton.tsx.preview?raw";
-import BreadcrumbsOverflowButtonCode from "./breadcrumbs/BreadcrumbsOverflowButton.tsx?raw";
-import BreadcrumbsPopover from "./breadcrumbs/BreadcrumbsPopover";
-import BreadcrumbsPopoverPreview from "./breadcrumbs/BreadcrumbsPopover.tsx.preview?raw";
-import BreadcrumbsPopoverCode from "./breadcrumbs/BreadcrumbsPopover.tsx?raw";
 import BreadcrumbsRenderer from "./breadcrumbs/BreadcrumbsRenderer";
 import BreadcrumbsRendererPreview from "./breadcrumbs/BreadcrumbsRenderer.tsx.preview?raw";
 import BreadcrumbsRendererCode from "./breadcrumbs/BreadcrumbsRenderer.tsx?raw";
@@ -97,30 +91,6 @@ export const BreadcrumbsDisabledExample: React.FC<ExampleProps> = props => {
             {...props}
         >
             <BreadcrumbsDisabled />
-        </CodeExample>
-    );
-};
-
-export const BreadcrumbsPopoverExample: React.FC<ExampleProps> = props => {
-    return (
-        <CodeExample
-            previewCode={BreadcrumbsPopoverPreview}
-            sourceCode={BreadcrumbsPopoverCode}
-            {...props}
-        >
-            <BreadcrumbsPopover />
-        </CodeExample>
-    );
-};
-
-export const BreadcrumbsOverflowButtonExample: React.FC<ExampleProps> = props => {
-    return (
-        <CodeExample
-            previewCode={BreadcrumbsOverflowButtonPreview}
-            sourceCode={BreadcrumbsOverflowButtonCode}
-            {...props}
-        >
-            <BreadcrumbsOverflowButton />
         </CodeExample>
     );
 };

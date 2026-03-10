@@ -1,4 +1,0 @@
-<Breadcrumbs
-    items={ITEMS}
-    popoverProps={{ className: Classes.POPOVER_DISMISS, placement: "left" }}
-/>

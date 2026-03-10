@@ -2,16 +2,11 @@
 
 An ordered list that represents a navigation path, with built-in overflow handling for long trails.
 
-@## Import
+@## Usage
 
 ```ts
 import { Breadcrumbs } from "@blueprintjs/core";
 ```
-
-@## Usage
-
-The **Breadcrumbs** component accepts an `items` array of
-[breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them as an ordered list.
 
 ```tsx
 <Breadcrumbs items={[{ text: "Home" }, { text: "Account" }, { text: "Project" }]} />
@@ -19,7 +14,10 @@ The **Breadcrumbs** component accepts an `items` array of
 
 @## Examples
 
-@### Basic Usage
+@### Basic
+
+The **Breadcrumbs** component accepts an `items` array of
+[breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them as an ordered list.
 
 @reactCodeExample BreadcrumbsBasicExample
 
@@ -56,18 +54,6 @@ with `Boundary.END` to collapse from the end instead.
 Set `disabled: true` on individual breadcrumb items to render them as non-interactive.
 
 @reactCodeExample BreadcrumbsDisabledExample
-
-@### With Popover
-
-Use the `popoverProps` prop to customize the overflow menu popover. Below, left placement is specificed for the Popover that contains the hidden Breadcrumb items.
-
-@reactCodeExample BreadcrumbsPopoverExample
-
-@### Overflow button
-
-Use the `overflowButtonProps` prop to customize the overflow indicator element.
-
-@reactCodeExample BreadcrumbsOverflowButtonExample
 
 @## Interactive Playground
 
