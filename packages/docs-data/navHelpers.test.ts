@@ -66,7 +66,7 @@ describe("normalizeNavConfig", () => {
         ]);
     });
 
-    it("should convert section pages with bare strings and untagged groups", () => {
+    it("should convert section pages from bare strings to NavPageRef objects", () => {
         const raw: RawNavStructure = [
             {
                 package: "core",
@@ -74,7 +74,7 @@ describe("normalizeNavConfig", () => {
                 sections: [
                     {
                         section: "components",
-                        pages: ["buttons", { group: "Overlays", pages: ["dialog", "popover"] }],
+                        pages: ["buttons", "dialog", "popover"],
                     },
                 ],
             },
@@ -87,7 +87,8 @@ describe("normalizeNavConfig", () => {
                 section: "components",
                 pages: [
                     { type: "page", ref: "buttons" },
-                    { type: "group", group: "Overlays", pages: ["dialog", "popover"] },
+                    { type: "page", ref: "dialog" },
+                    { type: "page", ref: "popover" },
                 ],
             },
         ]);
@@ -121,7 +122,7 @@ describe("buildRouteMap", () => {
         expect(routeMap.get("reading-list")).toBe("core/reading-list");
     });
 
-    it("should compute nested routes through sections and heading groups", () => {
+    it("should compute nested routes through sections", () => {
         const navConfig: NavStructure = [
             {
                 package: "core",
@@ -131,7 +132,8 @@ describe("buildRouteMap", () => {
                         section: "components",
                         pages: [
                             { type: "page", ref: "buttons" },
-                            { type: "group", group: "Overlays", pages: ["dialog", "popover"] },
+                            { type: "page", ref: "dialog" },
+                            { type: "page", ref: "popover" },
                         ],
                     },
                 ],
@@ -141,7 +143,6 @@ describe("buildRouteMap", () => {
 
         expect(routeMap.get("components")).toBe("core/components");
         expect(routeMap.get("buttons")).toBe("core/components/buttons");
-        // Heading group pages share the section route
         expect(routeMap.get("dialog")).toBe("core/components/dialog");
         expect(routeMap.get("popover")).toBe("core/components/popover");
     });
@@ -265,29 +266,32 @@ describe("buildSectionNode", () => {
         expect((node.children[1] as NavTreePage).reference).toBe("dialog");
     });
 
-    it("should include heading group nodes when they match page headings", () => {
+    it("should handle sections without a backing documentalist page", () => {
         const pages: Record<string, DocPage> = {
-            components: makePage("Components", [
-                heading("Components", 1),
-                heading("Overlays", 2, "core/components.overlays"),
-            ]),
             dialog: makePage("Dialog"),
+            popover: makePage("Popover"),
         };
         const routeMap = new Map([
-            ["components", "core/components"],
-            ["dialog", "core/components/dialog"],
+            ["overlays", "core/overlays"],
+            ["dialog", "core/overlays/dialog"],
+            ["popover", "core/overlays/popover"],
         ]);
         const section: NavSection = {
-            section: "components",
-            pages: [{ type: "group", group: "Overlays", pages: ["dialog"] }],
+            section: "overlays",
+            pages: [
+                { type: "page", ref: "dialog" },
+                { type: "page", ref: "popover" },
+            ],
         };
 
         const node = buildSectionNode(section, 2, pages, routeMap);
 
-        // First child should be the matched heading node, second is the leaf page
+        expect(node.reference).toBe("overlays");
+        expect(node.title).toBe("overlays");
+        expect(node.route).toBe("core/overlays");
         expect(node.children).toHaveLength(2);
-        expect(node.children[0].title).toBe("Overlays");
-        expect((node.children[1] as NavTreePage).reference).toBe("dialog");
+        expect((node.children[0] as NavTreePage).reference).toBe("dialog");
+        expect((node.children[1] as NavTreePage).reference).toBe("popover");
     });
 });
 
