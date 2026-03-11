@@ -98,8 +98,7 @@ describe("<DatePicker>", () => {
             assertDatesEqual(new Date(firstDay.prop("date")), firstDayInView);
         });
 
-        // NOTE: Enzyme simulate doesn't work correctly under jsdom. Needs RTL migration.
-        it.skip("doesn't show outside days if enableOutsideDays=false", () => {
+        it("doesn't show outside days if enableOutsideDays=false", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
             const { root } = wrap(
                 <DatePicker
@@ -812,7 +811,7 @@ describe("<DatePicker>", () => {
     });
 
     describe("clearing a selection", () => {
-        const MOCK_TODAY = new Date(2024, 11, 24, 16, 30);
+        const MOCK_TODAY = new Date("2020-12-24T15:45:00Z");
         beforeEach(() => {
             vi.useFakeTimers();
             vi.setSystemTime(MOCK_TODAY);
@@ -872,11 +871,12 @@ describe("<DatePicker>", () => {
 
             const value = root.state("value")!;
             assert.isNotNull(value);
+            // Asia/Tokyo is UTC+9, so 2020-12-24T15:45:00Z becomes 2020-12-25T00:45:00 in Tokyo
             assert.equal(value.getDate(), MOCK_TODAY.getDate() + 1);
             assert.equal(value.getMonth(), MOCK_TODAY.getMonth());
             assert.equal(value.getFullYear(), MOCK_TODAY.getFullYear());
-            assert.equal(value.getHours(), 1);
-            assert.equal(value.getMinutes(), 30);
+            assert.equal(value.getHours(), 0);
+            assert.equal(value.getMinutes(), 45);
         });
 
         it("clears the value when Clear is clicked", () => {

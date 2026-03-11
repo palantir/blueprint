@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@2.1.0
+  browser-tools: circleci/browser-tools@2.4.0
 
 aliases:
   - &docker-node-image
@@ -134,10 +134,6 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # Use an explicit version of Chrome for better test reproducibility.
-      - run: sudo apt-get update
-      - browser-tools/install_chrome:
-          chrome_version: "143.0.7499.192"
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:

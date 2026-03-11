@@ -29,10 +29,10 @@ export function assertDayDisabled(day: HTMLElement, expectDisabled = true) {
 }
 
 export function assertDayHidden(day: HTMLElement, expectHidden = true) {
-    const inner = day.querySelector(`.${DATEPICKER3_DAY}`);
+    const hasDayClass = day.classList.contains(DATEPICKER3_DAY) || day.querySelector(`.${DATEPICKER3_DAY}`) != null;
     if (expectHidden) {
-        expect(inner).toBeNull();
+        expect(hasDayClass).toBe(false);
     } else {
-        expect(inner).not.toBeNull();
+        expect(hasDayClass).toBe(true);
     }
 }

@@ -767,8 +767,7 @@ describe("<DateInput>", () => {
             });
         });
 
-        // TODO: migrate to RTL - this describe block has bare assertions without it(), which Vitest does not support
-        describe.skip("allows changing defaultTimezone", () => {
+        it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
