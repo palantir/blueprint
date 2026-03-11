@@ -21,17 +21,7 @@ import { Day } from "react-day-picker";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { assertDatesEqual } from "@blueprintjs/test-commons";
-import {
-    afterAll,
-    afterEach,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    type MockInstance,
-    vi,
-} from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -292,9 +282,7 @@ describe("<DatePicker>", () => {
         const MAX_DATE = new Date(2015, Months.JANUARY, 12);
 
         describe("validation", () => {
-            let consoleError: MockInstance;
-
-            beforeAll(() => (consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn())));
+            const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
             afterEach(() => consoleError.mockClear());
             afterAll(() => consoleError.mockRestore());
 

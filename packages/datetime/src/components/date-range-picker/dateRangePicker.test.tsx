@@ -21,17 +21,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
 
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
-import {
-    afterAll,
-    afterEach,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    type MockInstance,
-    vi,
-} from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -652,9 +642,7 @@ describe("<DateRangePicker>", () => {
         const LAST_MONTH_START = new Date(2015, Months.JANUARY, 5);
         const TWO_WEEKS_AGO_START = new Date(2015, Months.JANUARY, 22);
 
-        let consoleError: MockInstance;
-
-        beforeAll(() => (consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn())));
+        const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
         afterEach(() => consoleError.mockClear());
         afterAll(() => consoleError.mockRestore());
 
@@ -1007,9 +995,7 @@ describe("<DateRangePicker>", () => {
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             expect(onShortcutChangeSpy).toHaveBeenCalledOnce();
-            assert.isTrue(
-                onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1].at(-1) === selectedShortcut,
-            );
+            expect(onShortcutChangeSpy.mock.lastCall?.at(-1)).toEqual(selectedShortcut);
         });
 
         it("custom shortcuts select the correct values", () => {
