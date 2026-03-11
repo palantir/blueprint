@@ -71,6 +71,7 @@
         "enzyme": "catalog:",
         "jsdom": "catalog:",
         "npm-run-all": "^4.1.5",
+        "sinon": "^17.0.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "typescript": "~5.3.3",
