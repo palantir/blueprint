@@ -21,6 +21,13 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
     padding: 0;
   }
 
+  // When not outlined, suppress the Card box-shadow and border-radius.
+  // Specificity (0,2,0) beats .bp5-card and .bp5-elevation-* (0,1,0 each).
+  &:not(.#{$ns}-section-outlined) {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
   &-header {
     align-items: center;
     display: flex;

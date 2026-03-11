@@ -260,6 +260,7 @@ export const SECTION_CARD = `${SECTION}-card`;
 export const SECTION_CARD_BORDERED = `${SECTION_CARD}-bordered`;
 export const SECTION_CARD_NOT_BORDERED = `${SECTION_CARD}-not-bordered`;
 export const SECTION_BORDERED = `${SECTION}-bordered`;
+export const SECTION_OUTLINED = `${SECTION}-outlined`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;

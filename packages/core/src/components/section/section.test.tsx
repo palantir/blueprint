@@ -48,6 +48,16 @@ describe("<Section>", () => {
         containerElement.remove();
     });
 
+    it("renders outlined class by default", () => {
+        const wrapper = mount(<Section />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(`.${Classes.SECTION_OUTLINED}`).hostNodes().exists());
+    });
+
+    it("omits outlined class when outlined={false}", () => {
+        const wrapper = mount(<Section outlined={false} />, { attachTo: containerElement });
+        assert.isFalse(wrapper.find(`.${Classes.SECTION_OUTLINED}`).hostNodes().exists());
+    });
+
     it("renders bordered class by default", () => {
         const wrapper = mount(<Section />, { attachTo: containerElement });
         assert.isTrue(wrapper.find(`.${Classes.SECTION_BORDERED}`).hostNodes().exists());

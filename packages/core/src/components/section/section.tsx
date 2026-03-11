@@ -69,6 +69,14 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     collapsible?: boolean;
 
     /**
+     * Whether to render the outer box-shadow and border-radius of this section.
+     * Set to `false` to render a flat section suitable for embedding inside another bordered container.
+     *
+     * @default true
+     */
+    outlined?: boolean;
+
+    /**
      * Subset of props to forward to the underlying {@link Collapse} component, with the addition of a
      * `defaultIsOpen` option which sets the default open state of the component when in uncontrolled mode.
      */
@@ -144,6 +152,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
         collapsible,
         compact = false,
         elevation = Elevation.ZERO,
+        outlined = true,
         icon,
         rightElement,
         subtitle,
@@ -176,6 +185,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
         <Card
             className={classNames(className, Classes.SECTION, {
                 [Classes.SECTION_BORDERED]: bordered,
+                [Classes.SECTION_OUTLINED]: outlined,
                 [Classes.COMPACT]: compact,
                 [Classes.SECTION_COLLAPSED]: (collapsible && isCollapsed) || Utils.isReactNodeEmpty(children),
             })}

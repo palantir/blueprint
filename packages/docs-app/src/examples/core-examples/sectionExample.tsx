@@ -64,6 +64,7 @@ export const SectionExample: React.FC<ExampleProps> = props => {
     const [hasMultipleCards, setHasMultipleCards] = useState(false);
     const [hasRightElement, setHasRightElement] = useState(true);
     const [isBordered, setIsBordered] = useState(true);
+    const [isOutlined, setIsOutlined] = useState(true);
     const [isSectionCardBordered, setIsSectionCardBordered] = useState<boolean | undefined>(
         undefined,
     );
@@ -87,6 +88,11 @@ export const SectionExample: React.FC<ExampleProps> = props => {
         <>
             <div>
                 <H5>Section Props</H5>
+                <Switch
+                    checked={isOutlined}
+                    label="Outlined"
+                    onChange={handleBooleanChange(setIsOutlined)}
+                />
                 <Switch
                     checked={isBordered}
                     label="Bordered"
@@ -180,6 +186,7 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                 // updated.
                 key={String(defaultIsOpen)}
                 bordered={isBordered}
+                outlined={isOutlined}
                 collapsible={collapsible}
                 collapseProps={collapseProps}
                 compact={isCompact}
