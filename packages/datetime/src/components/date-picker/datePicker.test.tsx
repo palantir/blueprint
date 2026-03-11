@@ -22,6 +22,7 @@ import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { assertDatesEqual } from "@blueprintjs/test-commons";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -99,12 +100,12 @@ describe("<DatePicker>", () => {
             );
             const days = root.find(Day);
 
-            assertDayHidden(days.at(0));
-            assertDayHidden(days.at(1));
-            assertDayHidden(days.at(2));
-            assertDayHidden(days.at(3));
-            assertDayHidden(days.at(4));
-            assertDayHidden(days.at(5), false);
+            assertDayHidden(days.at(0).getDOMNode<HTMLElement>());
+            assertDayHidden(days.at(1).getDOMNode<HTMLElement>());
+            assertDayHidden(days.at(2).getDOMNode<HTMLElement>());
+            assertDayHidden(days.at(3).getDOMNode<HTMLElement>());
+            assertDayHidden(days.at(4).getDOMNode<HTMLElement>());
+            assertDayHidden(days.at(5).getDOMNode<HTMLElement>(), false);
         });
 
         it("disables days according to custom modifiers in addition to default modifiers", () => {
@@ -118,9 +119,9 @@ describe("<DatePicker>", () => {
                     dayPickerProps={{ disabled: disableFridays }}
                 />,
             );
-            assertDayDisabled(getDay(15));
-            assertDayDisabled(getDay(21));
-            assertDayDisabled(getDay(10), false);
+            assertDayDisabled(getDay(15).getDOMNode<HTMLElement>());
+            assertDayDisabled(getDay(21).getDOMNode<HTMLElement>());
+            assertDayDisabled(getDay(10).getDOMNode<HTMLElement>(), false);
         });
 
         it("disables out-of-range max dates", () => {
@@ -132,8 +133,8 @@ describe("<DatePicker>", () => {
                     maxDate={new Date(2017, Months.SEPTEMBER, 20)}
                 />,
             );
-            assertDayDisabled(getDay(21));
-            assertDayDisabled(getDay(10), false);
+            assertDayDisabled(getDay(21).getDOMNode<HTMLElement>());
+            assertDayDisabled(getDay(10).getDOMNode<HTMLElement>(), false);
         });
 
         it("disables out-of-range min dates", () => {
@@ -146,8 +147,8 @@ describe("<DatePicker>", () => {
                 />,
             );
             clickPreviousMonth();
-            assertDayDisabled(getDay(10));
-            assertDayDisabled(getDay(21), false);
+            assertDayDisabled(getDay(10).getDOMNode<HTMLElement>());
+            assertDayDisabled(getDay(21).getDOMNode<HTMLElement>(), false);
         });
 
         describe("event handlers", () => {
@@ -284,9 +285,9 @@ describe("<DatePicker>", () => {
         describe("validation", () => {
             let consoleError: sinon.SinonStub;
 
-            before(() => (consoleError = sinon.stub(console, "error")));
+            beforeAll(() => (consoleError = sinon.stub(console, "error")));
             afterEach(() => consoleError.resetHistory());
-            after(() => consoleError.restore());
+            afterAll(() => consoleError.restore());
 
             it("maxDate must be later than minDate", () => {
                 wrap(<DatePicker {...LOCALE_LOADER} maxDate={MIN_DATE} minDate={MAX_DATE} />);
@@ -797,7 +798,7 @@ describe("<DatePicker>", () => {
     });
 
     describe("clearing a selection", () => {
-        const MOCK_TODAY = new Date(2024, 11, 24, 16, 30);
+        const MOCK_TODAY = new Date("2020-12-24T15:45:00Z");
         let clock: sinon.SinonFakeTimers;
         beforeEach(() => {
             clock = sinon.useFakeTimers(MOCK_TODAY);
@@ -857,11 +858,12 @@ describe("<DatePicker>", () => {
 
             const value = root.state("value")!;
             assert.isNotNull(value);
+            // Asia/Tokyo is UTC+9, so 2020-12-24T15:45:00Z becomes 2020-12-25T00:45:00 in Tokyo
             assert.equal(value.getDate(), MOCK_TODAY.getDate() + 1);
             assert.equal(value.getMonth(), MOCK_TODAY.getMonth());
             assert.equal(value.getFullYear(), MOCK_TODAY.getFullYear());
-            assert.equal(value.getHours(), 1);
-            assert.equal(value.getMinutes(), 30);
+            assert.equal(value.getHours(), 0);
+            assert.equal(value.getMinutes(), 45);
         });
 
         it("clears the value when Clear is clicked", () => {

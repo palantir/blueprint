@@ -22,6 +22,7 @@ import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-da
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -107,9 +108,9 @@ describe("<DateRangePicker>", () => {
                 />,
             );
 
-            assertDayDisabled(left.findDay(15));
-            assertDayDisabled(right.findDay(21));
-            assertDayDisabled(left.findDay(10), false);
+            assertDayDisabled(left.findDay(15).getDOMNode<HTMLElement>());
+            assertDayDisabled(right.findDay(21).getDOMNode<HTMLElement>());
+            assertDayDisabled(left.findDay(10).getDOMNode<HTMLElement>(), false);
         });
 
         it("disables out-of-range max dates", () => {
@@ -119,8 +120,8 @@ describe("<DateRangePicker>", () => {
                     maxDate={new Date(2017, Months.SEPTEMBER, 20)}
                 />,
             );
-            assertDayDisabled(right.findDay(21));
-            assertDayDisabled(right.findDay(10), false);
+            assertDayDisabled(right.findDay(21).getDOMNode<HTMLElement>());
+            assertDayDisabled(right.findDay(10).getDOMNode<HTMLElement>(), false);
         });
 
         it("disables out-of-range min dates", () => {
@@ -130,8 +131,8 @@ describe("<DateRangePicker>", () => {
                     minDate={new Date(2017, Months.AUGUST, 20)}
                 />,
             );
-            assertDayDisabled(left.findDay(10));
-            assertDayDisabled(left.findDay(21), false);
+            assertDayDisabled(left.findDay(10).getDOMNode<HTMLElement>());
+            assertDayDisabled(left.findDay(21).getDOMNode<HTMLElement>(), false);
         });
 
         describe("event handlers", () => {
@@ -644,9 +645,9 @@ describe("<DateRangePicker>", () => {
 
         let consoleError: sinon.SinonStub;
 
-        before(() => (consoleError = sinon.stub(console, "error")));
+        beforeAll(() => (consoleError = sinon.stub(console, "error")));
         afterEach(() => consoleError.resetHistory());
-        after(() => consoleError.restore());
+        afterAll(() => consoleError.restore());
 
         it("maxDate must be later than minDate", () => {
             wrap(

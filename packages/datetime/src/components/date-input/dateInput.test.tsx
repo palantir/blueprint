@@ -23,23 +23,23 @@ import { createRef } from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import {
-    Classes,
-    type DateFormatProps,
-    Months,
-    TimePrecision,
-    TimeUnit,
-    TimezoneNameUtils,
-    TimezoneSelect,
-    TimezoneUtils,
-} from "../..";
+import { Classes } from "../../common";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../common/dateFnsFormatUtils";
+import type { DateFormatProps } from "../../common/dateFormatProps";
 import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
+import { Months } from "../../common/months";
+import { TimePrecision } from "../../common/timePrecision";
+import { TimeUnit } from "../../common/timeUnit";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
-import { DateInput, type DateInputProps } from "../date-input/dateInput";
+import * as TimezoneNameUtils from "../../common/timezoneNameUtils";
+import * as TimezoneUtils from "../../common/timezoneUtils";
 import { DatePicker } from "../date-picker/datePicker";
 import { INVALID_DATE_MESSAGE, LOCALE } from "../dateConstants";
+import { TimezoneSelect } from "../timezone-select/timezoneSelect";
+
+import { DateInput, type DateInputProps } from "./dateInput";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
@@ -760,7 +760,7 @@ describe("<DateInput>", () => {
             });
         });
 
-        describe("allows changing defaultTimezone", () => {
+        it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
