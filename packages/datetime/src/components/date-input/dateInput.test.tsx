@@ -238,7 +238,6 @@ describe("<DateInput>", () => {
                 .simulate("click")
                 .update();
             // first non-outside day should be the November 1st
-            assert.strictEqual(onChange.mock.calls[0][0], "2021-11-01T10:30:00+00:00");
             expect(onChange).toHaveBeenCalledExactlyOnceWith("2021-11-01T10:30:00+00:00", expect.anything());
         });
 
