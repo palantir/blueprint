@@ -67,8 +67,8 @@ describe("<Toast>", () => {
     }
 
     describe("timeout", () => {
-        let handleDismiss: ReturnType<typeof vi.fn>;
-        beforeEach(() => (handleDismiss = vi.fn()));
+        const handleDismiss = vi.fn();
+        beforeEach(() => handleDismiss.mockReset());
 
         it("calls onDismiss automatically after timeout expires with `true`", async () => {
             // mounting for lifecycle methods to start timeout
