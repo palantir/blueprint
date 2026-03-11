@@ -18,10 +18,10 @@ The `text` prop defines the label displayed on the button. Alternatively, conten
 
 The `intent` prop is used to visually communicate the purpose or importance of the action associated with a button. Blueprint provides several intent options to convey meaning through color:
 
--   **Primary**: Indicates the main action and is usually styled more prominently.
--   **Success**: Represents a positive outcome or confirmation.
--   **Warning**: Used to alert users to potentially dangerous actions.
--   **Danger**: Signifies a destructive or critical action.
+- **Primary**: Indicates the main action and is usually styled more prominently.
+- **Success**: Represents a positive outcome or confirmation.
+- **Warning**: Used to alert users to potentially dangerous actions.
+- **Danger**: Signifies a destructive or critical action.
 
 @reactCodeExample ButtonIntentExample
 
@@ -29,9 +29,9 @@ The `intent` prop is used to visually communicate the purpose or importance of t
 
 Buttons come in three different variants that support different use cases:
 
--   `solid` (the default) is useful for the primary action in a set of buttons.
--   `minimal` is useful for subtle actions or secondary options that shouldn't draw too much attention.
--   `outlined` provides a button with an outline, creating a middle ground between a prominent solid button and a subtle minimal button.
+- `solid` (the default) is useful for the primary action in a set of buttons.
+- `minimal` is useful for subtle actions or secondary options that shouldn't draw too much attention.
+- `outlined` provides a button with an outline, creating a middle ground between a prominent solid button and a subtle minimal button.
 
 @reactCodeExample ButtonVariantExample
 
@@ -91,7 +91,7 @@ The `ellipsizeText` prop allows text within a button to be truncated with an ell
 
 @## Icons with text
 
-Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the before or after the  text/children with the `icon` and `endIcon` props respectively. These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded [`<Icon>` components](#core/components/icon), [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
+Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the before or after the text/children with the `icon` and `endIcon` props respectively. These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded [`<Icon>` components](#core/components/icon), [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
 
 @reactCodeExample ButtonIconWithTextExample
 
@@ -105,9 +105,9 @@ Icon buttons display only an icon without any accompanying text. Icon buttons ar
 
 Buttons have different states to show their interaction status. The `active`, `disabled`, and `loading` props provide visual feedback to help users understand available actions and when to wait.
 
--   **Active**: Indicates that the button is currently being pressed or interacted with.
--   **Disabled**: Shows that the button is non-interactive.
--   **Loading**: Displays a loading spinner to indicate that an action is in progress.
+- **Active**: Indicates that the button is currently being pressed or interacted with.
+- **Disabled**: Shows that the button is non-interactive.
+- **Loading**: Displays a loading spinner to indicate that an action is in progress.
 
 @reactCodeExample ButtonStatesExample
 

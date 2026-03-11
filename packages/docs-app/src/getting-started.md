@@ -64,18 +64,18 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
 Blueprint components use common ES2015+ language features which are implemented in all modern browsers (Chrome, Firefox,
 Edge, Safari). As of v5.0, Blueprint no longer supports IE11, so you do _not_ need to polyfill these features.
 
--   `Map`
--   `Set`
--   `Array.prototype.fill`
--   `Array.prototype.from`
--   `String.prototype.startsWith`
--   `Object.assign`
--   `Object.entries`
--   `Object.values`
+- `Map`
+- `Set`
+- `Array.prototype.fill`
+- `Array.prototype.from`
+- `String.prototype.startsWith`
+- `Object.assign`
+- `Object.entries`
+- `Object.values`
 
 Some of Blueprint's dependencies also have relevant guidance on browser support, see:
 
--   [Popper.js docs](https://popper.js.org/docs/v2/browser-support/)
+- [Popper.js docs](https://popper.js.org/docs/v2/browser-support/)
 
 @## TypeScript
 
