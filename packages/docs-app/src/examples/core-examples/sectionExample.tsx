@@ -64,7 +64,9 @@ export const SectionExample: React.FC<ExampleProps> = props => {
     const [hasMultipleCards, setHasMultipleCards] = useState(false);
     const [hasRightElement, setHasRightElement] = useState(true);
     const [isBordered, setIsBordered] = useState(true);
-    const [isSectionCardBordered, setIsSectionCardBordered] = useState<boolean | undefined>(undefined);
+    const [isSectionCardBordered, setIsSectionCardBordered] = useState<boolean | undefined>(
+        undefined,
+    );
     const [isCompact, setIsCompact] = useState(false);
     const [isControlled, setIsControlled] = useState(false);
     const [isOpen, setIsOpen] = useState(true);
