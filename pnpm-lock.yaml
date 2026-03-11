@@ -36,6 +36,9 @@ catalogs:
     tslib:
       specifier: ~2.6.2
       version: 2.6.3
+    tsx:
+      specifier: ^4.21.0
+      version: 4.21.0
     vitest:
       specifier: 4.0.7
       version: 4.0.7
@@ -97,7 +100,7 @@ importers:
         specifier: ^9.20.0
         version: 9.38.0(jiti@2.6.1)
       gh-pages:
-        specifier: ^6.1.1
+        specifier: ^6.3.0
         version: 6.3.0
       globals:
         specifier: ^15.14.0
@@ -218,21 +221,24 @@ importers:
       '@tokens-studio/sd-transforms':
         specifier: ^2.0.3
         version: 2.0.3(style-dictionary@5.1.3)
+      '@types/culori':
+        specifier: ^4.0.1
+        version: 4.0.1
       '@types/use-sync-external-store':
         specifier: 0.0.6
         version: 0.0.6
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))
+      culori:
+        specifier: ^4.0.2
+        version: 4.0.2
       enzyme:
         specifier: 'catalog:'
         version: 3.11.0
       jsdom:
         specifier: 'catalog:'
         version: 27.1.0
-      mocha:
-        specifier: ^10.2.0
-        version: 10.8.2
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
@@ -249,7 +255,7 @@ importers:
         specifier: ^5.0.3
         version: 5.1.3
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
         specifier: ~5.3.3
@@ -597,6 +603,13 @@ importers:
       semver:
         specifier: ^7.5.4
         version: 7.7.3
+    devDependencies:
+      '@blueprintjs/test-commons':
+        specifier: workspace:^
+        version: link:../test-commons
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
 
   packages/docs-theme:
     dependencies:
@@ -3325,6 +3338,9 @@ packages:
   '@types/cors@2.8.19':
     resolution: {integrity: sha512-mFNylyeyqN93lfe/9CSxOGREz8cpzAhH+E93xJ4xWQf62V8sQ/24reV2nyzUWM6H6Xji+GGHpkbLe7pVoUEskg==}
 
+  '@types/culori@4.0.1':
+    resolution: {integrity: sha512-43M51r/22CjhbOXyGT361GZ9vncSVQ39u62x5eJdBQFviI8zWp2X5jzqg7k4M6PVgDQAClpy2bUe2dtwEgEDVQ==}
+
   '@types/dedent@0.7.2':
     resolution: {integrity: sha512-kRiitIeUg1mPV9yH4VUJ/1uk2XjyANfeL8/7rH1tsjvHeO9PJLBHJIYsFWmAvmGj5u8rj+1TZx7PZzW2qLw3Lw==}
 
@@ -4671,6 +4687,10 @@ packages:
 
   cubic2quad@1.2.1:
     resolution: {integrity: sha512-wT5Y7mO8abrV16gnssKdmIhIbA9wSkeMzhh27jAguKrV82i24wER0vL5TGhUJ9dbJNDcigoRZ0IAHFEEEI4THQ==}
+
+  culori@4.0.2:
+    resolution: {integrity: sha512-1+BhOB8ahCn4O0cep0Sh2l9KCOfOdY+BXJnKMHFFzDEouSr/el18QwXEMRlOj9UY5nCeA8UN3a/82rUWRBeyBw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   custom-event@1.0.1:
     resolution: {integrity: sha512-GAj5FOq0Hd+RsCGVJxZuKaIDXDf3h6GQoNEjFgbLLI/trgtavwUbSnZ5pVfg27DVCaWjIohryS0JFwIJyT2cMg==}
@@ -11578,6 +11598,8 @@ snapshots:
     dependencies:
       '@types/node': 24.10.0
 
+  '@types/culori@4.0.1': {}
+
   '@types/dedent@0.7.2': {}
 
   '@types/deep-eql@4.0.2': {}
@@ -13214,6 +13236,8 @@ snapshots:
   csstype@3.1.3: {}
 
   cubic2quad@1.2.1: {}
+
+  culori@4.0.2: {}
 
   custom-event@1.0.1: {}
 

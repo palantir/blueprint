@@ -62,6 +62,19 @@ describe("<Box>", () => {
         expect(box).toHaveClass(`${NS}-margin-2`);
     });
 
+    test("should support flexGrow, flexShrink, and flexBasis props", () => {
+        render(
+            <Box flexGrow={1} flexShrink={0} flexBasis={0}>
+                Test
+            </Box>,
+        );
+        const box = screen.getByText<HTMLDivElement>(/test/i);
+
+        expect(box).toHaveClass(`${NS}-flex-grow-1`);
+        expect(box).toHaveClass(`${NS}-flex-shrink-0`);
+        expect(box).toHaveClass(`${NS}-flex-basis-0`);
+    });
+
     test("should attach ref", () => {
         const ref = createRef<HTMLDivElement>();
         render(<Box ref={ref}>Test</Box>);

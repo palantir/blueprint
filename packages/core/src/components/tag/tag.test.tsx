@@ -18,7 +18,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 
-import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Icon } from "../icon/icon";
@@ -28,25 +28,24 @@ import { Tag } from "./tag";
 
 describe("<Tag>", () => {
     it("renders its text", () => {
-        assert.strictEqual(
+        expect(
             shallow(<Tag>Hello</Tag>)
                 .find(Text)
                 .prop("children"),
-            "Hello",
-        );
+        ).toBe("Hello");
     });
 
     it("text is not rendered if omitted", () => {
-        assert.isFalse(
+        expect(
             shallow(<Tag icon="tick" />)
                 .find(Text)
                 .exists(),
-        );
+        ).toBe(false);
     });
 
     it("renders icons", () => {
         const wrapper = shallow(<Tag icon="tick" endIcon="airplane" />);
-        assert.lengthOf(wrapper.find(Icon), 2);
+        expect(wrapper.find(Icon)).toHaveLength(2);
     });
 
     it("prefers endIcon to rightIcon", () => {
@@ -62,7 +61,7 @@ describe("<Tag>", () => {
 
     it("renders close button when onRemove is a function", () => {
         const wrapper = mount(<Tag onRemove={vi.fn()}>Hello</Tag>);
-        assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
+        expect(wrapper.find(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
     });
 
     it("clicking close button triggers onRemove", () => {
@@ -75,7 +74,7 @@ describe("<Tag>", () => {
 
     it("should be interactive when onClick is provided", () => {
         const wrapper = mount(<Tag onClick={vi.fn()}>Hello</Tag>);
-        assert.lengthOf(wrapper.find(`.${Classes.INTERACTIVE}`), 1);
+        expect(wrapper.find(`.${Classes.INTERACTIVE}`)).toHaveLength(1);
     });
 
     it("should not be interactive when interactive={false}", () => {
@@ -84,12 +83,12 @@ describe("<Tag>", () => {
                 Hello
             </Tag>,
         );
-        assert.lengthOf(wrapper.find(`.${Classes.INTERACTIVE}`), 0);
+        expect(wrapper.find(`.${Classes.INTERACTIVE}`)).toHaveLength(0);
     });
 
     it(`passes other props onto .${Classes.TAG} element`, () => {
         const element = shallow(<Tag title="baz qux">Hello</Tag>).find("." + Classes.TAG);
-        assert.deepEqual(element.prop("title"), "baz qux");
+        expect(element.prop("title")).toEqual("baz qux");
     });
 
     it("passes all props to the onRemove handler", () => {
@@ -118,7 +117,7 @@ describe("<Tag>", () => {
 
         // wait for the whole lifecycle to run
         await waitFor(() => {
-            assert.equal(elementRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
+            expect(elementRef.current).toBe(wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
         });
     });
 });

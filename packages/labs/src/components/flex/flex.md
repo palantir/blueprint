@@ -23,7 +23,7 @@ Flex supports all Box props except `display`, with common flexbox patterns:
 -   **Direction & Wrap**: `flexDirection`, `flexWrap`
 -   **Alignment**: `alignItems`, `alignContent`, `justifyContent`
 -   **Gap**: `gap` for spacing between items
--   **Child control**: `flex` for flex grow/shrink behavior
+-   **Child control**: `flex` shorthand, or individual `flexGrow`, `flexShrink`, `flexBasis`
 
 Each prop accepts Blueprint token values for consistent spacing and sizing.
 
