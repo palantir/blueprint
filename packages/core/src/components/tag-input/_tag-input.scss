@@ -1,6 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+/* stylelint-disable alpha-value-notation */
+
 @import "../../common/variables";
 @import "../forms/common";
 @import "../tag/common";
@@ -16,26 +18,26 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   cursor: text;
   height: auto;
   line-height: inherit;
-  min-height: $pt-input-height;
-  padding-left: $pt-spacing * 1.5;
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  padding-left: calc(var(--bp-surface-spacing) * 1.5);
   padding-right: 0;
 
   .#{$ns}-tag-input-icon {
-    color: $pt-icon-color;
-    margin-left: $tag-input-icon-padding - $tag-input-padding;
-    margin-right: $tag-input-icon-padding;
+    color: var(--bp-typography-color-muted);
+    margin-left: calc(var(--bp-surface-spacing) * 0.75);
+    margin-right: calc(var(--bp-surface-spacing) * 1.75);
     // margins to center icon in one-line input
-    margin-top: $tag-input-icon-padding;
+    margin-top: calc(var(--bp-surface-spacing) * 1.75);
   }
 
   .#{$ns}-tag-input-values {
-    @include pt-flex-container(row, $tag-input-padding);
+    @include pt-flex-container(row, var(--bp-surface-spacing));
     align-items: center;
     // fill vertical height
     align-self: stretch;
     flex-wrap: wrap;
-    margin-right: $pt-spacing;
-    margin-top: $pt-spacing;
+    margin-right: var(--bp-surface-spacing);
+    margin-top: var(--bp-surface-spacing);
     // allow tags to ellipse and not overflow the container
     min-width: 0;
     position: relative;
@@ -49,12 +51,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
       .#{$ns}-input-ghost {
         // some padding-left is already applied on the root component, so we should subtract that
-        padding-left: $input-padding-horizontal - $tag-input-padding;
+        padding-left: var(--bp-surface-spacing);
       }
     }
 
     > * {
-      margin-bottom: $pt-spacing;
+      margin-bottom: var(--bp-surface-spacing);
     }
   }
 
@@ -71,9 +73,9 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   .#{$ns}-input-ghost {
     // input fills remaining line
     flex: 1 1 auto;
-    line-height: $tag-height;
+    line-height: calc(var(--bp-surface-spacing) * 5);
     // essentially a min-width, cuz flex allows it to grow or shrink:
-    width: $pt-spacing * 20;
+    width: calc(var(--bp-surface-spacing) * 20);
 
     &:disabled,
     &.#{$ns}-disabled {
@@ -83,7 +85,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
   .#{$ns}-button,
   .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-button-height-small) * 0.5;
+    margin: calc(var(--bp-surface-spacing) * 0.75);
     margin-left: 0;
   }
 
@@ -92,27 +94,27 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   }
 
   &.#{$ns}-large {
-    @include pt-flex-margin(row, $tag-input-icon-padding-large);
+    @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2.5));
     height: auto;
-    min-height: $pt-input-height-large;
+    min-height: calc(var(--bp-surface-spacing) * 10);
 
     .#{$ns}-tag-input-icon {
-      margin-left: $tag-input-icon-padding-large - $tag-input-padding;
-      margin-top: $tag-input-icon-padding-large;
+      margin-left: calc(var(--bp-surface-spacing) * 1.5);
+      margin-top: calc(var(--bp-surface-spacing) * 2.5);
     }
 
     .#{$ns}-input-ghost {
-      line-height: $tag-height-large;
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
     }
 
     .#{$ns}-button {
       @include pt-button-height-default;
-      margin: ($pt-input-height-large - $pt-button-height) * 0.5;
+      margin: calc(var(--bp-surface-spacing) * 1.25);
       margin-left: 0;
     }
 
     .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-button-height-small) * 0.5;
+      margin: calc(var(--bp-surface-spacing) * 2);
       margin-left: 0;
     }
   }
@@ -121,23 +123,45 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     background-color: $input-background-color;
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
 
-    @each $intent, $color in $pt-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
-      }
+    &.#{$ns}-intent-primary {
+      box-shadow:
+        inset 0 0 0 1px oklch(from var(--bp-intent-primary-rest) l c h / 0.752),
+        0 0 0 1px oklch(from var(--bp-intent-primary-rest) l c h / 0.752),
+        $input-box-shadow-focus;
+    }
+
+    &.#{$ns}-intent-success {
+      box-shadow:
+        inset 0 0 0 1px oklch(from var(--bp-intent-success-rest) l c h / 0.752),
+        0 0 0 1px oklch(from var(--bp-intent-success-rest) l c h / 0.752),
+        $input-box-shadow-focus;
+    }
+
+    &.#{$ns}-intent-warning {
+      box-shadow:
+        inset 0 0 0 1px oklch(from var(--bp-intent-warning-rest) l c h / 0.752),
+        0 0 0 1px oklch(from var(--bp-intent-warning-rest) l c h / 0.752),
+        $input-box-shadow-focus;
+    }
+
+    &.#{$ns}-intent-danger {
+      box-shadow:
+        inset 0 0 0 1px oklch(from var(--bp-intent-danger-rest) l c h / 0.752),
+        0 0 0 1px oklch(from var(--bp-intent-danger-rest) l c h / 0.752),
+        $input-box-shadow-focus;
     }
   }
 
   .#{$ns}-dark &,
   &.#{$ns}-dark {
     .#{$ns}-tag-input-icon {
-      color: $pt-dark-icon-color;
+      color: var(--bp-typography-color-muted);
     }
 
     .#{$ns}-input-ghost {
       @include pt-dark-input-placeholder;
 
-      color: $dark-input-color;
+      color: var(--bp-typography-color-default-rest);
     }
 
     &.#{$ns}-active {
@@ -146,10 +170,32 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
         dark-input-transition-shadow($dark-input-shadow-color-focus, true),
         $pt-dark-input-box-shadow;
 
-      @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
-        &.#{$ns}-intent-#{$intent} {
-          box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
-        }
+      &.#{$ns}-intent-primary {
+        box-shadow:
+          inset 0 0 0 1px oklch(from var(--bp-intent-primary-hover) l c h / 0.752),
+          0 0 0 1px oklch(from var(--bp-intent-primary-hover) l c h / 0.752),
+          $pt-dark-input-box-shadow;
+      }
+
+      &.#{$ns}-intent-success {
+        box-shadow:
+          inset 0 0 0 1px oklch(from var(--bp-intent-success-hover) l c h / 0.752),
+          0 0 0 1px oklch(from var(--bp-intent-success-hover) l c h / 0.752),
+          $pt-dark-input-box-shadow;
+      }
+
+      &.#{$ns}-intent-warning {
+        box-shadow:
+          inset 0 0 0 1px oklch(from var(--bp-intent-warning-hover) l c h / 0.752),
+          0 0 0 1px oklch(from var(--bp-intent-warning-hover) l c h / 0.752),
+          $pt-dark-input-box-shadow;
+      }
+
+      &.#{$ns}-intent-danger {
+        box-shadow:
+          inset 0 0 0 1px oklch(from var(--bp-intent-danger-hover) l c h / 0.752),
+          0 0 0 1px oklch(from var(--bp-intent-danger-hover) l c h / 0.752),
+          $pt-dark-input-box-shadow;
       }
     }
   }
