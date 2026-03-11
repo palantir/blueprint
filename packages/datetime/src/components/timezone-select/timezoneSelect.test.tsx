@@ -17,7 +17,6 @@
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
-import * as sinon from "sinon";
 
 import {
     Button,
@@ -29,7 +28,7 @@ import {
     type PopoverProps,
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
-import { afterEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { TimezoneSelect, type TimezoneSelectProps } from "../..";
 import { getCurrentTimezone } from "../../common/getTimezone";
@@ -45,7 +44,7 @@ if (CURRENT_TZ === "UTC") {
 }
 
 describe("<TimezoneSelect>", () => {
-    const onChange = sinon.spy();
+    const onChange = vi.fn();
     const DEFAULT_PROPS: TimezoneSelectProps = {
         onChange,
         popoverProps: {
@@ -55,7 +54,7 @@ describe("<TimezoneSelect>", () => {
         value: LOS_ANGELES_TZ,
     };
 
-    afterEach(() => onChange.resetHistory());
+    afterEach(() => onChange.mockClear());
 
     it("clicking on button target opens popover", () => {
         // remove isOpen from popoverProps
@@ -132,7 +131,7 @@ describe("<TimezoneSelect>", () => {
     it.skip("invokes onChange callback when a timezone is selected", () => {
         const timezoneSelect = mountTS();
         clickFirstMenuItem(timezoneSelect);
-        assert.isTrue(onChange.calledOnce);
+        expect(onChange).toHaveBeenCalledOnce();
     });
 
     it("if value is non-empty, the selected timezone will stay in sync with that value", () => {

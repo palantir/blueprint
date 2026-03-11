@@ -18,11 +18,10 @@ import { assert } from "chai";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import { Day } from "react-day-picker";
-import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { assertDatesEqual } from "@blueprintjs/test-commons";
-import { afterAll, afterEach, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -156,48 +155,48 @@ describe("<DatePicker>", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
 
             it("calls onMonthChange on button next click", () => {
-                const onMonthChange = sinon.spy();
+                const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 );
                 root.find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).first().simulate("click");
-                assert.isTrue(onMonthChange.called);
+                expect(onMonthChange).toHaveBeenCalled();
             });
 
             it("calls onMonthChange on button prev click", () => {
-                const onMonthChange = sinon.spy();
+                const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 );
                 root.find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).first().simulate("click");
-                assert.isTrue(onMonthChange.called);
+                expect(onMonthChange).toHaveBeenCalled();
             });
 
             it("calls onMonthChange on month select change", () => {
-                const onMonthChange = sinon.spy();
+                const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 );
                 root.find(`.${Classes.DATEPICKER_MONTH_SELECT}`).first().find("select").simulate("change");
-                assert.isTrue(onMonthChange.called);
+                expect(onMonthChange).toHaveBeenCalled();
             });
 
             it("calls onMonthChange on year select change", () => {
-                const onMonthChange = sinon.spy();
+                const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 );
                 root.find(`.${Classes.DATEPICKER_YEAR_SELECT}`).first().find("select").simulate("change");
-                assert.isTrue(onMonthChange.called);
+                expect(onMonthChange).toHaveBeenCalled();
             });
 
             it("calls onDayClick", () => {
-                const onDayClick = sinon.spy();
+                const onDayClick = vi.fn();
                 const { getDay } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onDayClick }} />,
                 );
                 getDay().simulate("click");
-                assert.isTrue(onDayClick.called);
+                expect(onDayClick).toHaveBeenCalled();
             });
         });
     });
@@ -283,15 +282,13 @@ describe("<DatePicker>", () => {
         const MAX_DATE = new Date(2015, Months.JANUARY, 12);
 
         describe("validation", () => {
-            let consoleError: sinon.SinonStub;
-
-            beforeAll(() => (consoleError = sinon.stub(console, "error")));
-            afterEach(() => consoleError.resetHistory());
-            afterAll(() => consoleError.restore());
+            const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
+            afterEach(() => consoleError.mockClear());
+            afterAll(() => consoleError.mockRestore());
 
             it("maxDate must be later than minDate", () => {
                 wrap(<DatePicker {...LOCALE_LOADER} maxDate={MIN_DATE} minDate={MAX_DATE} />);
-                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_MAX_DATE_INVALID));
+                expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_MAX_DATE_INVALID);
             });
 
             it("an error is logged if defaultValue is outside bounds", () => {
@@ -303,7 +300,7 @@ describe("<DatePicker>", () => {
                         minDate={MIN_DATE}
                     />,
                 );
-                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_DEFAULT_VALUE_INVALID));
+                expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
             });
 
             it("an error is logged if value is outside bounds", () => {
@@ -315,7 +312,7 @@ describe("<DatePicker>", () => {
                         minDate={MIN_DATE}
                     />,
                 );
-                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_VALUE_INVALID));
+                expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_VALUE_INVALID);
             });
 
             it("an error is logged if initialMonth is outside month bounds", () => {
@@ -327,7 +324,7 @@ describe("<DatePicker>", () => {
                         minDate={MIN_DATE}
                     />,
                 );
-                assert.isTrue(consoleError.calledWith(Errors.DATEPICKER_INITIAL_MONTH_INVALID));
+                expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
             });
 
             it("an error is not logged if initialMonth is outside day bounds but inside month bounds", () => {
@@ -339,7 +336,7 @@ describe("<DatePicker>", () => {
                         maxDate={MAX_DATE}
                     />,
                 );
-                assert.isTrue(consoleError.notCalled);
+                expect(consoleError).not.toHaveBeenCalled();
             });
         });
 
@@ -400,16 +397,16 @@ describe("<DatePicker>", () => {
         });
 
         it("onChange not fired when a day outside of bounds is clicked", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const { getDay } = wrap(
                 <DatePicker {...LOCALE_LOADER} maxDate={MAX_DATE} minDate={MIN_DATE} onChange={onChange} />,
             );
-            assert.isTrue(onChange.notCalled);
+            expect(onChange).not.toHaveBeenCalled();
             getDay(4).simulate("click");
             getDay(16).simulate("click");
-            assert.isTrue(onChange.notCalled);
+            expect(onChange).not.toHaveBeenCalled();
             getDay(8).simulate("click");
-            assert.isTrue(onChange.calledOnce);
+            expect(onChange).toHaveBeenCalledOnce();
         });
 
         it("constrains time picker when minDate is selected", () => {
@@ -474,27 +471,27 @@ describe("<DatePicker>", () => {
         });
 
         it("onChange fired when a day is clicked", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} value={null} />);
             getDay().simulate("click");
-            assert.isTrue(onChange.calledOnce);
-            assert.isTrue(onChange.args[0][1]);
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.isTrue(onChange.mock.calls[0][1]);
         });
 
         it("onChange fired when month is changed", () => {
             const value = new Date(2010, Months.JANUARY, 2);
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const { months, clickPreviousMonth } = wrap(
                 <DatePicker {...LOCALE_LOADER} onChange={onChange} value={value} />,
             );
 
             clickPreviousMonth();
-            assert.isTrue(onChange.calledOnce, "expected onChange called");
-            assert.isFalse(onChange.firstCall.args[1], "expected isUserChange to be false");
+            expect(onChange).toHaveBeenCalledOnce();
+            assert.isFalse(onChange.mock.calls[0][1], "expected isUserChange to be false");
 
             months.simulate("change", { target: { value: Months.JUNE } });
-            assert.isTrue(onChange.calledTwice, "expected onChange called again");
-            assert.isFalse(onChange.secondCall.args[1], "expected isUserChange to be false again");
+            expect(onChange).toHaveBeenCalledTimes(2);
+            assert.isFalse(onChange.mock.calls[1][1], "expected isUserChange to be false again");
         });
 
         it("can change displayed date with the dropdowns in the caption", () => {
@@ -514,14 +511,14 @@ describe("<DatePicker>", () => {
             const today = new Date();
             const aWeekAgo = DateUtils.clone(today);
             aWeekAgo.setDate(today.getDate() - 6);
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const { clickShortcut } = wrap(
                 <DatePicker {...LOCALE_LOADER} onChange={onChange} value={today} shortcuts={true} />,
             );
             clickShortcut(2);
 
-            assert.isTrue(onChange.calledOnce, "called");
-            const value = onChange.args[0][0];
+            expect(onChange).toHaveBeenCalledOnce();
+            const value = onChange.mock.calls[0][0];
             assert.isTrue(DateUtils.isSameDay(aWeekAgo, value));
         });
 
@@ -553,8 +550,8 @@ describe("<DatePicker>", () => {
 
         it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
             const selectedShortcut = 0;
-            const onShortcutChangeSpy = sinon.spy();
-            const onChangeSpy = sinon.spy();
+            const onShortcutChangeSpy = vi.fn();
+            const onChangeSpy = vi.fn();
             const { clickShortcut } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
@@ -566,15 +563,19 @@ describe("<DatePicker>", () => {
 
             clickShortcut(selectedShortcut);
 
-            assert.isTrue(onChangeSpy.calledOnce);
-            assert.isTrue(onShortcutChangeSpy.calledOnce);
-            assert.isTrue(onShortcutChangeSpy.lastCall.args[0].label === "Today");
-            assert.isTrue(onShortcutChangeSpy.lastCall.args[1] === selectedShortcut);
+            expect(onChangeSpy).toHaveBeenCalledOnce();
+            expect(onShortcutChangeSpy).toHaveBeenCalledOnce();
+            assert.isTrue(
+                onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1][0].label === "Today",
+            );
+            assert.isTrue(
+                onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1][1] === selectedShortcut,
+            );
         });
 
         it("custom shortcuts select the correct values", () => {
             const date = new Date(2015, Months.JANUARY, 1);
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = vi.fn();
             const { clickShortcut, assertSelectedDays } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
@@ -583,8 +584,8 @@ describe("<DatePicker>", () => {
                 />,
             );
             clickShortcut();
-            assert.isTrue(onChangeSpy.calledOnce);
-            const value = onChangeSpy.args[0][0];
+            expect(onChangeSpy).toHaveBeenCalledOnce();
+            const value = onChangeSpy.mock.calls[0][0];
             assert.isTrue(DateUtils.isSameDay(date, value));
             assertSelectedDays(date.getDate());
         });
@@ -598,24 +599,24 @@ describe("<DatePicker>", () => {
         });
 
         it("onChange fired when a day is clicked", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} />);
-            assert.isTrue(onChange.notCalled);
+            expect(onChange).not.toHaveBeenCalled();
             getDay().simulate("click");
-            assert.isTrue(onChange.calledOnce);
+            expect(onChange).toHaveBeenCalledOnce();
         });
 
         it("onChange fired when month is changed", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             // must use an initial month otherwise clicking next month in december will fail
             const { getDay, clickNextMonth } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={new Date(2015, Months.JANUARY, 12)} onChange={onChange} />,
             );
-            assert.isTrue(onChange.notCalled);
+            expect(onChange).not.toHaveBeenCalled();
             getDay().simulate("click");
-            assert.isTrue(onChange.calledOnce, "expected onChange called");
+            expect(onChange).toHaveBeenCalledOnce();
             clickNextMonth();
-            assert.isTrue(onChange.calledTwice, "expected onChange called again");
+            expect(onChange).toHaveBeenCalledTimes(2);
         });
 
         it("selected day updates are automatic", () => {
@@ -716,7 +717,7 @@ describe("<DatePicker>", () => {
         });
 
         it("onChange fired when the time is changed", () => {
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = vi.fn();
             const { root } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
@@ -725,15 +726,15 @@ describe("<DatePicker>", () => {
                     timePickerProps={{ showArrowButtons: true }}
                 />,
             );
-            assert.isTrue(onChangeSpy.notCalled);
+            expect(onChangeSpy).not.toHaveBeenCalled();
             root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
-            assert.isTrue(onChangeSpy.calledOnce);
-            const cbHour = onChangeSpy.firstCall.args[0].getHours();
+            expect(onChangeSpy).toHaveBeenCalledOnce();
+            const cbHour = onChangeSpy.mock.calls[0][0].getHours();
             assert.strictEqual(cbHour, defaultValue.getHours() + 1);
         });
 
         it("changing date does not change time", () => {
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = vi.fn();
             wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
@@ -744,11 +745,11 @@ describe("<DatePicker>", () => {
             )
                 .getDay(16)
                 .simulate("click");
-            assert.isTrue(DateUtils.isSameTime(onChangeSpy.firstCall.args[0] as Date, defaultValue));
+            assert.isTrue(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0] as Date, defaultValue));
         });
 
         it("changing time does not change date", () => {
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = vi.fn();
             const { setTimeInput } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
@@ -758,21 +759,21 @@ describe("<DatePicker>", () => {
                 />,
             );
             setTimeInput("minute", 45);
-            assert.isTrue(DateUtils.isSameDay(onChangeSpy.firstCall.args[0] as Date, defaultValue));
+            assert.isTrue(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0] as Date, defaultValue));
         });
 
         it("changing time without date uses today", () => {
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = vi.fn();
             // no date set via props
             const { setTimeInput } = wrap(
                 <DatePicker {...LOCALE_LOADER} onChange={onChangeSpy} timePrecision="minute" />,
             );
             setTimeInput("minute", 45);
-            assert.isTrue(DateUtils.isSameDay(onChangeSpy.firstCall.args[0] as Date, new Date()));
+            assert.isTrue(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0] as Date, new Date()));
         });
 
         it("clicking a shortcut with includeTime=true changes time", () => {
-            const onChangeSpy = sinon.spy();
+            const onChangeSpy = vi.fn();
             const date = DateUtils.clone(defaultValue);
             date.setHours(date.getHours() - 2);
 
@@ -793,37 +794,37 @@ describe("<DatePicker>", () => {
                 />,
             );
             clickShortcut();
-            assert.equal(onChangeSpy.firstCall.args[0] as Date, date);
+            assert.equal(onChangeSpy.mock.calls[0][0] as Date, date);
         });
     });
 
     describe("clearing a selection", () => {
         const MOCK_TODAY = new Date("2020-12-24T15:45:00Z");
-        let clock: sinon.SinonFakeTimers;
         beforeEach(() => {
-            clock = sinon.useFakeTimers(MOCK_TODAY);
+            vi.useFakeTimers();
+            vi.setSystemTime(MOCK_TODAY);
         });
 
         afterEach(() => {
-            clock.restore();
+            vi.useRealTimers();
         });
 
         it("onChange correctly passes a Date and never null when canClearSelection is false", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} canClearSelection={false} onChange={onChange} />);
             getDay().simulate("click");
-            assert.isNotNull(onChange.firstCall.args[0]);
+            assert.isNotNull(onChange.mock.calls[0][0]);
             getDay().simulate("click");
-            assert.isNotNull(onChange.secondCall.args[0]);
+            assert.isNotNull(onChange.mock.calls[1][0]);
         });
 
         it("onChange correctly passes a Date or null when canClearSelection is true", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} canClearSelection={true} onChange={onChange} />);
             getDay().simulate("click");
-            assert.isNotNull(onChange.firstCall.args[0]);
+            assert.isNotNull(onChange.mock.calls[0][0]);
             getDay().simulate("click");
-            assert.isNull(onChange.secondCall.args[0]);
+            assert.isNull(onChange.mock.calls[1][0]);
         });
 
         it("Clear button disabled when canClearSelection is false", () => {
@@ -876,10 +877,9 @@ describe("<DatePicker>", () => {
 
     describe("localization", () => {
         it("accept a statically-loaded date-fns locale and doesn't try to load it again", () => {
-            const stub = sinon.stub();
-            stub.callsFake(loadDateFnsLocaleFake);
+            const stub = vi.fn().mockImplementation(loadDateFnsLocaleFake);
             wrap(<DatePicker dateFnsLocaleLoader={stub} locale={enUSLocale} />);
-            assert.isTrue(stub.notCalled, "Expected locale loader not to be called");
+            expect(stub).not.toHaveBeenCalled();
         });
     });
 
