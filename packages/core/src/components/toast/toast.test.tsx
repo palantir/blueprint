@@ -14,87 +14,84 @@
  * limitations under the License.
  */
 
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import { assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
-
-import { sleep } from "../../common/test-utils";
-import { AnchorButton, Button } from "../button/buttons";
+import { beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Toast } from "./toast";
 
 describe("<Toast>", () => {
     it("renders only dismiss button by default", () => {
-        const { action, dismiss } = wrap(<Toast message="Hello World" />);
-        assert.lengthOf(action, 0);
-        assert.lengthOf(dismiss, 1);
+        render(<Toast message="Hello World" />);
+        const buttons = screen.getAllByRole("button");
+        expect(buttons).toHaveLength(1);
+        expect(buttons[0]).toHaveAttribute("aria-label", "Close");
     });
 
-    it("clicking dismiss button triggers onDismiss callback with `false`", () => {
+    it("clicking dismiss button triggers onDismiss callback with `false`", async () => {
+        const user = userEvent.setup();
         const handleDismiss = vi.fn();
-        wrap(<Toast message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
+        render(<Toast message="Hello" onDismiss={handleDismiss} />);
+        await user.click(screen.getByRole("button", { name: "Close" }));
         expect(handleDismiss).toHaveBeenCalledOnce();
         expect(handleDismiss).toHaveBeenCalledWith(false);
     });
 
     it("renders action button when action string prop provided", () => {
-        // pluralize cuz now there are two buttons
-        const { action } = wrap(<Toast action={{ text: "Undo" }} message="hello world" />);
-        assert.lengthOf(action, 1);
-        assert.equal(action.prop("text"), "Undo");
+        render(<Toast action={{ text: "Undo" }} message="hello world" />);
+        const actionButton = screen.getByRole("button", { name: "Undo" });
+        expect(actionButton).toBeInTheDocument();
+        expect(actionButton).toHaveTextContent("Undo");
     });
 
-    it("clicking action button triggers onClick callback", () => {
+    it("clicking action button triggers onClick callback", async () => {
+        const user = userEvent.setup();
         const onClick = vi.fn();
-        wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
+        render(<Toast action={{ onClick, text: "Undo" }} message="Hello" />);
+        await user.click(screen.getByRole("button", { name: "Undo" }));
         expect(onClick).toHaveBeenCalledOnce();
     });
 
-    it("clicking action button also triggers onDismiss callback with `false`", () => {
+    it("clicking action button also triggers onDismiss callback with `false`", async () => {
+        const user = userEvent.setup();
         const handleDismiss = vi.fn();
-        wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
+        render(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />);
+        await user.click(screen.getByRole("button", { name: "Undo" }));
         expect(handleDismiss).toHaveBeenCalledOnce();
         expect(handleDismiss).toHaveBeenCalledWith(false);
     });
 
-    function wrap(toast: React.JSX.Element) {
-        const root = shallow(toast);
-        return {
-            action: root.find(AnchorButton),
-            dismiss: root.find(Button),
-            root,
-        };
-    }
-
     describe("timeout", () => {
-        let handleDismiss: ReturnType<typeof vi.fn>;
-        beforeEach(() => (handleDismiss = vi.fn()));
+        let handleDismiss: ReturnType<typeof vi.fn<(didTimeoutExpire: boolean) => void>>;
+        beforeEach(() => (handleDismiss = vi.fn<(didTimeoutExpire: boolean) => void>()));
 
         it("calls onDismiss automatically after timeout expires with `true`", async () => {
-            // mounting for lifecycle methods to start timeout
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
-            await sleep(20);
-
+            vi.useFakeTimers();
+            render(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
+            await vi.advanceTimersByTimeAsync(20);
             expect(handleDismiss).toHaveBeenCalledOnce();
-            expect(handleDismiss.mock.calls[0][0]).toBe(true);
+            expect(handleDismiss).toHaveBeenCalledWith(true);
+            vi.useRealTimers();
         });
 
         it("updating with timeout={0} cancels timeout", async () => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />).setProps({
-                timeout: 0,
-            });
-            await sleep(20);
+            vi.useFakeTimers();
+            const { rerender } = render(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
+            rerender(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />);
+            await vi.advanceTimersByTimeAsync(20);
             expect(handleDismiss).not.toHaveBeenCalled();
+            vi.useRealTimers();
         });
 
         it("updating timeout={0} with timeout={X} starts timeout", async () => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />).setProps({
-                timeout: 20,
-            });
-            await sleep(20);
-
+            vi.useFakeTimers();
+            const { rerender } = render(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />);
+            rerender(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
+            await vi.advanceTimersByTimeAsync(20);
             expect(handleDismiss).toHaveBeenCalledOnce();
-            expect(handleDismiss.mock.calls[0][0]).toBe(true);
+            expect(handleDismiss).toHaveBeenCalledWith(true);
+            vi.useRealTimers();
         });
     });
 });
