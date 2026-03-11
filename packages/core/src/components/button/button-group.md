@@ -28,7 +28,8 @@ Wrap buttons in a **ButtonGroup** to arrange them together horizontally.
 
 @### Intent
 
-Use the `intent` prop on individual buttons to convey the purpose of each action.
+Use the `intent` prop on individual buttons to convey the purpose of each action. For a consistent
+visual style, it’s recommended to apply the same `intent` to all buttons within the same group. The example below displays Blueprint's breadth of options, rather than the most likely production usecase.
 
 @reactCodeExample ButtonGroupIntentExample
 
