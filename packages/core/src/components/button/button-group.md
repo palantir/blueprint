@@ -56,10 +56,10 @@ The `size` prop can be used to control the size of all child buttons within the 
 **ButtonGroup** renders a CSS flex row (or column if `vertical` is enabled) and
 includes modifier props for common flexbox patterns:
 
--   Use the `fill` prop to make all buttons expand equally to fill the available space.
-    -   Buttons will expand horizontally by default or vertically if `vertical` is enabled.
-    -   Add the `Classes.FIXED` class to specific buttons to maintain their initial sizes.
--   Alternatively, enable `fill` on specific buttons to selectively expand them while others retain their original size.
+- Use the `fill` prop to make all buttons expand equally to fill the available space.
+    - Buttons will expand horizontally by default or vertically if `vertical` is enabled.
+    - Add the `Classes.FIXED` class to specific buttons to maintain their initial sizes.
+- Alternatively, enable `fill` on specific buttons to selectively expand them while others retain their original size.
 
 For precise size adjustments, use the `flex-basis` or `width` CSS properties on individual buttons.
 

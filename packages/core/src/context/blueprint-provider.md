@@ -7,9 +7,9 @@ at the root of your application and may only be used once as a singleton provide
 Concretely, this provider renders the following provider components _in the correct nesting order_
 and allows customization of their options via props:
 
--   [**OverlaysProvider**](#core/context/overlays-provider)
--   [**HotkeysProvider**](#core/context/hotkeys-provider)
--   [**PortalProvider**](#core/context/portal-provider)
+- [**OverlaysProvider**](#core/context/overlays-provider)
+- [**HotkeysProvider**](#core/context/hotkeys-provider)
+- [**PortalProvider**](#core/context/portal-provider)
 
 ## Usage
 
