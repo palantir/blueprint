@@ -35,10 +35,10 @@ minimum number of items remain visible.
 
 @reactCodeExample BreadcrumbsOverflowExample
 
+@### Customizing breadcrumbs
+
 The **Breadcrumbs** component supports customization through the `breadcrumbRenderer`
 and `currentBreadcrumbRenderer` props, which allow custom rendering of individual breadcrumbs.
-
-@### Customizing breadcrumbs
 
 @reactCodeExample BreadcrumbsRendererExample
 
