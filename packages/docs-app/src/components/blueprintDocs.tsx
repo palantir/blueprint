@@ -45,8 +45,23 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
-const sectionPatterns = SECTIONS.map(name => new RegExp(`/${name}(\\.[\\w-]+)?$`));
-const isNavSection = ({ route }: HeadingNode) => sectionPatterns.some(pattern => pattern.test(route));
+// HACKHACK: this is brittle
+// detect Components page and subheadings
+const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
+const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
+const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
+const FORM_CONTROLS_PATTERN = /\/form-controls(\.[\w-]+)?$/;
+const FORM_INPUTS_PATTERN = /\/form-inputs(\.[\w-]+)?$/;
+const OVERLAYS_PATTERN = /\/overlays(\.[\w-]+)?$/;
+const isNavSection = ({ route }: HeadingNode) =>
+    COMPONENTS_PATTERN.test(route) ||
+    CONTEXT_PATTERN.test(route) ||
+    HOOKS_PATTERN.test(route) ||
+    LEGACY_PATTERN.test(route) ||
+    FORM_CONTROLS_PATTERN.test(route) ||
+    FORM_INPUTS_PATTERN.test(route) ||
+    OVERLAYS_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
