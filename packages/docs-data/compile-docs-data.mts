@@ -32,10 +32,16 @@ const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
+/** Last published version for each prior major release, used for the docs version dropdown. */
+const PRIOR_MAJOR_VERSIONS: Record<string, string[]> = {
+    "@blueprintjs/core": ["5.19.1", "4.20.2", "3.54.0", "2.3.1", "1.40.0"],
+};
+
 try {
     if (!existsSync(generatedSrcDir)) {
         mkdirSync(generatedSrcDir);
     }
+    generateNpmData();
     await generateDocumentalistData();
     await generateNpmVersions();
 } catch (err) {
@@ -120,6 +126,18 @@ function transformDocumentalistData(key: string, value: any): any {
 
 function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
+}
+
+function generateNpmData(): void {
+    const npmDataFilePath = join(generatedSrcDir, "npm-data.json");
+    const npmData: Record<string, { name: string; version: string; versions: string[] }> = {};
+    for (const pkg of LIBRARY_PACKAGES) {
+        const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
+        const { name, version } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
+        npmData[name] = { name, version, versions: [version, ...(PRIOR_MAJOR_VERSIONS[name] ?? [])] };
+    }
+    writeFileSync(npmDataFilePath, JSON.stringify(npmData, null, 2) + "\n");
+    console.info("[docs-data] successfully generated npm-data.json");
 }
 
 function applyNavConfig(docs: { pages: Record<string, any>; nav: any[] }, navConfig: NavStructure): void {
