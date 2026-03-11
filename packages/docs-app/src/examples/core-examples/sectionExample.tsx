@@ -41,6 +41,7 @@ export interface SectionExampleState {
     hasIcon: boolean;
     hasMultipleCards: boolean;
     hasRightElement: boolean;
+    isBordered: boolean;
     isCompact: boolean;
     isControlled: boolean;
     isOpen: boolean;
@@ -62,6 +63,8 @@ export const SectionExample: React.FC<ExampleProps> = props => {
     const [hasIcon, setHasIcon] = useState(false);
     const [hasMultipleCards, setHasMultipleCards] = useState(false);
     const [hasRightElement, setHasRightElement] = useState(true);
+    const [isBordered, setIsBordered] = useState(true);
+    const [isSectionCardBordered, setIsSectionCardBordered] = useState<boolean | undefined>(undefined);
     const [isCompact, setIsCompact] = useState(false);
     const [isControlled, setIsControlled] = useState(false);
     const [isOpen, setIsOpen] = useState(true);
@@ -82,6 +85,11 @@ export const SectionExample: React.FC<ExampleProps> = props => {
         <>
             <div>
                 <H5>Section Props</H5>
+                <Switch
+                    checked={isBordered}
+                    label="Bordered"
+                    onChange={handleBooleanChange(setIsBordered)}
+                />
                 <Switch
                     checked={isCompact}
                     label="Compact"
@@ -146,6 +154,11 @@ export const SectionExample: React.FC<ExampleProps> = props => {
 
                 <H5>SectionCard Props</H5>
                 <Switch
+                    checked={isSectionCardBordered ?? true}
+                    label="Bordered"
+                    onChange={handleBooleanChange(setIsSectionCardBordered)}
+                />
+                <Switch
                     checked={isPanelPadded}
                     label="Padded"
                     onChange={handleBooleanChange(setIsPanelPadded)}
@@ -164,6 +177,7 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                 // the local state in the `Collapse` component is not
                 // updated.
                 key={String(defaultIsOpen)}
+                bordered={isBordered}
                 collapsible={collapsible}
                 collapseProps={collapseProps}
                 compact={isCompact}
@@ -182,7 +196,7 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                 subtitle={hasDescription ? "Ocimum basilicum" : undefined}
                 title="Basil"
             >
-                <SectionCard padded={isPanelPadded}>
+                <SectionCard bordered={isSectionCardBordered} padded={isPanelPadded}>
                     <EditableText
                         defaultValue={BASIL_DESCRIPTION_TEXT}
                         disabled={!hasRightElement}
@@ -191,7 +205,7 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                     />
                 </SectionCard>
                 {hasMultipleCards && (
-                    <SectionCard padded={isPanelPadded}>
+                    <SectionCard bordered={isSectionCardBordered} padded={isPanelPadded}>
                         <div className="metadata-panel">
                             <div>
                                 <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae

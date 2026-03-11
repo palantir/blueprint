@@ -75,6 +75,14 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     collapseProps?: SectionCollapseProps;
 
     /**
+     * Whether to render border lines between the section header and its content,
+     * and between consecutive SectionCard children.
+     *
+     * @default true
+     */
+    bordered?: boolean;
+
+    /**
      * Whether this section should use compact styles.
      *
      * @default false
@@ -129,6 +137,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
  */
 export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     const {
+        bordered = true,
         children,
         className,
         collapseProps,
@@ -166,6 +175,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     return (
         <Card
             className={classNames(className, Classes.SECTION, {
+                [Classes.SECTION_BORDERED]: bordered,
                 [Classes.COMPACT]: compact,
                 [Classes.SECTION_COLLAPSED]: (collapsible && isCollapsed) || Utils.isReactNodeEmpty(children),
             })}

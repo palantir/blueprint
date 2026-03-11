@@ -28,4 +28,13 @@ Multiple **SectionCard** child components can be added under one **Section**, th
 </Section>
 ```
 
+The `bordered` prop on **SectionCard** can be used to override the parent Section's `bordered` setting for that individual card. This allows, for example, a borderless Section (with no header divider) to still show a dividing border between specific cards:
+
+```tsx
+<Section bordered={false}>
+    <SectionCard bordered={true}>{/* ... */}</SectionCard>
+    <SectionCard bordered={true}>{/* ... */}</SectionCard>
+</Section>
+```
+
 @interface SectionCardProps

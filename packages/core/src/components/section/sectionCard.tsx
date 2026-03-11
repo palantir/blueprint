@@ -22,6 +22,12 @@ import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/
 
 export interface SectionCardProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
+     * Whether to render a bottom border below this card, separating it from the next sibling SectionCard.
+     * When omitted, border visibility is inherited from the parent Section's `bordered` prop.
+     */
+    bordered?: boolean;
+
+    /**
      * Whether to apply visual padding inside the content container element.
      *
      * @default true
@@ -35,8 +41,16 @@ export interface SectionCardProps extends Props, HTMLDivProps, React.RefAttribut
  * @see https://blueprintjs.com/docs/#core/components/section.section-card
  */
 export const SectionCard: React.FC<SectionCardProps> = forwardRef((props, ref) => {
-    const { className, children, padded = true, ...htmlProps } = props;
-    const classes = classNames(Classes.SECTION_CARD, { [Classes.PADDED]: padded }, className);
+    const { bordered, className, children, padded = true, ...htmlProps } = props;
+    const classes = classNames(
+        Classes.SECTION_CARD,
+        {
+            [Classes.PADDED]: padded,
+            [Classes.SECTION_CARD_BORDERED]: bordered === true,
+            [Classes.SECTION_CARD_NOT_BORDERED]: bordered === false,
+        },
+        className,
+    );
     return (
         <div className={classes} ref={ref} {...htmlProps}>
             {children}
