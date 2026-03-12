@@ -38,16 +38,6 @@ import type {
     RawNavStructure,
 } from "./navTypes.ts";
 
-/** Minimal page object with a title and contents array. */
-function makePage(title: string, contents: DocContentItem[] = []): DocPage {
-    return { title, contents, route: "" };
-}
-
-/** Shorthand for a heading content item. */
-function heading(value: string, level: number, route = "") {
-    return { tag: "heading" as const, value, level, route };
-}
-
 describe("normalizeNavConfig", () => {
     it("should convert bare strings to NavPageRef objects", () => {
         const raw: RawNavStructure = [{ package: "core", pages: ["getting-started", "reading-list"] }];
@@ -146,12 +136,31 @@ describe("buildRouteMap", () => {
         expect(routeMap.get("dialog")).toBe("core/components/dialog");
         expect(routeMap.get("popover")).toBe("core/components/popover");
     });
+
+    it("should throw on duplicate refs", () => {
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [{ type: "page", ref: "buttons" }],
+                sections: [
+                    {
+                        section: "components",
+                        pages: [{ type: "page", ref: "buttons" }],
+                    },
+                ],
+            },
+        ];
+
+        expect(() => buildRouteMap(navConfig)).toThrow(
+            '[docs-data] duplicate nav ref "buttons"',
+        );
+    });
 });
 
 describe("fixPageRoutes", () => {
     it("should set page.route and heading routes from the route map", () => {
         const pages: Record<string, DocPage> = {
-            buttons: makePage("Buttons", [heading("Buttons", 1), heading("Usage", 2), "Some text content"]),
+            buttons: makePage("Buttons", [makeHeading("Buttons", 1), makeHeading("Usage", 2), "Some text content"]),
         };
         const routeMap = new Map([["buttons", "core/components/buttons"]]);
 
@@ -166,7 +175,7 @@ describe("fixPageRoutes", () => {
 
     it("should skip pages not present in the route map", () => {
         const pages: Record<string, DocPage> = {
-            _nav: makePage("Nav", [heading("Internal", 1)]),
+            _nav: makePage("Nav", [makeHeading("Internal", 1)]),
         };
         const routeMap = new Map<string, string>();
 
@@ -196,15 +205,16 @@ describe("buildNavTree", () => {
             overview: makePage("Overview"),
         };
         const navConfig: NavStructure = [{ package: "core", pages: [{ type: "page", ref: "overview" }] }];
-        const routeMap = buildRouteMap(navConfig);
 
-        const tree = buildNavTree(navConfig, pages, routeMap);
+        const tree = buildNavTree(navConfig, pages);
 
         expect(tree).toHaveLength(1);
         expect(tree[0].reference).toBe("core");
+        expect(tree[0].route).toBe("core");
         expect(tree[0].level).toBe(1);
         expect(tree[0].children).toHaveLength(1);
         expect((tree[0].children[0] as NavTreePage).reference).toBe("overview");
+        expect((tree[0].children[0] as NavTreePage).route).toBe("core/overview");
     });
 
     it("should include section children and leaf pages at correct levels", () => {
@@ -225,14 +235,15 @@ describe("buildNavTree", () => {
                 ],
             },
         ];
-        const routeMap = buildRouteMap(navConfig);
 
-        const tree = buildNavTree(navConfig, pages, routeMap);
+        const tree = buildNavTree(navConfig, pages);
 
         const sectionNode = tree[0].children[0] as NavTreePage;
         expect(sectionNode.reference).toBe("components");
+        expect(sectionNode.route).toBe("core/components");
         expect(sectionNode.level).toBe(2);
         expect((sectionNode.children[0] as NavTreePage).reference).toBe("buttons");
+        expect((sectionNode.children[0] as NavTreePage).route).toBe("core/components/buttons");
         expect(sectionNode.children[0].level).toBe(3);
     });
 });
@@ -244,11 +255,6 @@ describe("buildNavSection", () => {
             buttons: makePage("Buttons"),
             dialog: makePage("Dialog"),
         };
-        const routeMap = new Map([
-            ["components", "core/components"],
-            ["buttons", "core/components/buttons"],
-            ["dialog", "core/components/dialog"],
-        ]);
         const section: NavSection = {
             section: "components",
             pages: [
@@ -257,13 +263,16 @@ describe("buildNavSection", () => {
             ],
         };
 
-        const node = buildNavSection(section, 2, pages, routeMap);
+        const node = buildNavSection(section, 2, "core/components", pages);
 
         expect(node.reference).toBe("components");
+        expect(node.route).toBe("core/components");
         expect(node.level).toBe(2);
         expect(node.children).toHaveLength(2);
         expect((node.children[0] as NavTreePage).reference).toBe("buttons");
+        expect((node.children[0] as NavTreePage).route).toBe("core/components/buttons");
         expect((node.children[1] as NavTreePage).reference).toBe("dialog");
+        expect((node.children[1] as NavTreePage).route).toBe("core/components/dialog");
     });
 
     it("should handle sections without a backing documentalist page", () => {
@@ -271,11 +280,6 @@ describe("buildNavSection", () => {
             dialog: makePage("Dialog"),
             popover: makePage("Popover"),
         };
-        const routeMap = new Map([
-            ["overlays", "core/overlays"],
-            ["dialog", "core/overlays/dialog"],
-            ["popover", "core/overlays/popover"],
-        ]);
         const section: NavSection = {
             section: "overlays",
             pages: [
@@ -284,14 +288,16 @@ describe("buildNavSection", () => {
             ],
         };
 
-        const node = buildNavSection(section, 2, pages, routeMap);
+        const node = buildNavSection(section, 2, "core/overlays", pages);
 
         expect(node.reference).toBe("overlays");
         expect(node.title).toBe("overlays");
         expect(node.route).toBe("core/overlays");
         expect(node.children).toHaveLength(2);
         expect((node.children[0] as NavTreePage).reference).toBe("dialog");
+        expect((node.children[0] as NavTreePage).route).toBe("core/overlays/dialog");
         expect((node.children[1] as NavTreePage).reference).toBe("popover");
+        expect((node.children[1] as NavTreePage).route).toBe("core/overlays/popover");
     });
 });
 
@@ -299,16 +305,16 @@ describe("buildNavLeafPage", () => {
     it("should build a leaf node with heading children extracted from page contents", () => {
         const pages: Record<string, DocPage> = {
             buttons: makePage("Buttons", [
-                heading("Buttons", 1),
-                heading("Usage", 2, "core/components/buttons.usage"),
-                heading("Props", 2, "core/components/buttons.props"),
+                makeHeading("Buttons", 1),
+                makeHeading("Usage", 2, "core/components/buttons.usage"),
+                makeHeading("Props", 2, "core/components/buttons.props"),
             ]),
         };
-        const routeMap = new Map([["buttons", "core/components/buttons"]]);
 
-        const node = buildNavLeafPage("buttons", 3, pages, routeMap);
+        const node = buildNavLeafPage("buttons", 3, "core/components/buttons", pages);
 
         expect(node.reference).toBe("buttons");
+        expect(node.route).toBe("core/components/buttons");
         expect(node.level).toBe(3);
         // Should have 2 heading children (level 1 is skipped)
         expect(node.children).toHaveLength(2);
@@ -318,11 +324,10 @@ describe("buildNavLeafPage", () => {
 
     it("should produce an empty children array for a page with no level-2+ headings", () => {
         const pages: Record<string, DocPage> = {
-            overview: makePage("Overview", [heading("Overview", 1), "Some text"]),
+            overview: makePage("Overview", [makeHeading("Overview", 1), "Some text"]),
         };
-        const routeMap = new Map([["overview", "core/overview"]]);
 
-        const node = buildNavLeafPage("overview", 2, pages, routeMap);
+        const node = buildNavLeafPage("overview", 2, "core/overview", pages);
 
         expect(node.children).toHaveLength(0);
     });
@@ -333,10 +338,9 @@ describe("buildNavPage", () => {
         const pages: Record<string, DocPage> = {
             buttons: makePage("Buttons"),
         };
-        const routeMap = new Map([["buttons", "core/components/buttons"]]);
         const children = [{ title: "Usage", level: 4, route: "core/components/buttons.usage" }];
 
-        const node = buildNavPage("buttons", 3, pages, routeMap, children);
+        const node = buildNavPage("buttons", 3, "core/components/buttons", pages, children);
 
         expect(node).toEqual({
             children,
@@ -347,13 +351,12 @@ describe("buildNavPage", () => {
         });
     });
 
-    it("should use the route from routeMap for the node", () => {
+    it("should use the provided route for the node", () => {
         const pages: Record<string, DocPage> = {
             core: makePage("Core"),
         };
-        const routeMap = new Map([["core", "core"]]);
 
-        const node = buildNavPage("core", 1, pages, routeMap, []);
+        const node = buildNavPage("core", 1, "core", pages, []);
 
         expect(node.route).toBe("core");
     });
@@ -377,9 +380,9 @@ describe("requirePage", () => {
 describe("extractHeadingChildren", () => {
     it("should extract level-2+ headings with adjusted levels", () => {
         const page = makePage("Components", [
-            heading("Components", 1),
-            heading("Usage", 2, "components.usage"),
-            heading("Details", 3, "components.details"),
+            makeHeading("Components", 1),
+            makeHeading("Usage", 2, "components.usage"),
+            makeHeading("Details", 3, "components.details"),
         ]);
 
         // pageNavLevel=2 means levelOffset=1, so heading levels are shifted by +1
@@ -392,7 +395,7 @@ describe("extractHeadingChildren", () => {
 
     it("should skip level-1 headings and non-heading content items", () => {
         const page = makePage("Buttons", [
-            heading("Buttons", 1),
+            makeHeading("Buttons", 1),
             "Some plain text",
             { tag: "code", value: "example" },
             null,
@@ -403,3 +406,13 @@ describe("extractHeadingChildren", () => {
         expect(result).toHaveLength(0);
     });
 });
+
+/** Minimal page object with a title and contents array. */
+function makePage(title: string, contents: DocContentItem[] = []): DocPage {
+    return { title, contents, route: "" };
+}
+
+/** Shorthand for a heading content item. */
+function makeHeading(value: string, level: number, route = "") {
+    return { tag: "heading" as const, value, level, route };
+}

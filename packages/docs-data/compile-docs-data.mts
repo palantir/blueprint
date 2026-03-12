@@ -122,5 +122,5 @@ function interpolateClassNamespace(value: string): string {
 function applyNavConfig(docs: { pages: Record<string, any>; nav: any[] }, navConfig: NavStructure): void {
     const routeMap = buildRouteMap(navConfig);
     fixPageRoutes(docs.pages, routeMap);
-    docs.nav = buildNavTree(navConfig, docs.pages, routeMap);
+    docs.nav = buildNavTree(navConfig, docs.pages);
 }
