@@ -301,7 +301,7 @@ describe("buildNavSection", () => {
         const node = buildNavSection(section, 2, "core/overlays", pages);
 
         expect(node.reference).toBe("overlays");
-        expect(node.title).toBe("overlays");
+        expect(node.title).toBe("Overlays");
         expect(node.route).toBe("core/overlays");
         expect(node.children).toHaveLength(2);
         expect((node.children[0] as NavTreePage).reference).toBe("dialog");
@@ -361,6 +361,24 @@ describe("buildNavPage", () => {
             reference: "buttons",
             route: "core/components/buttons",
             title: "Buttons",
+        });
+    });
+
+    it("should preserve heading child routes like buttons.usage", () => {
+        const pages: Record<string, DocPage> = {
+            buttons: makePage("Buttons"),
+        };
+        const children = [
+            { type: "heading" as const, title: "Usage", level: 4, route: "core/components/buttons.usage" },
+        ];
+
+        const node = buildNavPage("buttons", 3, "core/components/buttons", pages, children);
+
+        expect(node.children[0]).toEqual({
+            type: "heading",
+            title: "Usage",
+            level: 4,
+            route: "core/components/buttons.usage",
         });
     });
 
