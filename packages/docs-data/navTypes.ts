@@ -51,11 +51,9 @@ export interface NavPageRef {
     ref: string;
 }
 
-export type NavSectionItem = NavPageRef;
-
 export interface NavSection {
     section: Section;
-    pages: NavSectionItem[];
+    pages: NavPageRef[];
 }
 
 export interface NavPackageEntry {
@@ -91,10 +89,13 @@ interface NavTreeNodeBase {
 }
 
 /** A content heading extracted from a page (no children, no reference). */
-export interface NavTreeHeading extends NavTreeNodeBase {}
+export interface NavTreeHeading extends NavTreeNodeBase {
+    type: "heading";
+}
 
 /** A page or section node in the nav tree. */
 export interface NavTreePage extends NavTreeNodeBase {
+    type: "page";
     reference: string;
     children: NavTreeNode[];
 }

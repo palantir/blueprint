@@ -107,26 +107,26 @@ function isHeading(item: DocContentItem): item is DocHeadingItem {
 
 /**
  * Convert a heading value to a URL-friendly slug.
- * Hand-rolled to match documentalist's slugification: lowercase, replace non-[a-z0-9-] with hyphens.
- * N.B. this does not collapse consecutive hyphens or trim edges — keep in sync if documentalist changes.
+ * Replaces "&" with "and", lowercases, replaces non-alphanumeric chars with hyphens,
+ * collapses consecutive hyphens, and trims leading/trailing hyphens.
  */
 export function slugify(value: string): string {
-    return value.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+    return value
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9-]/g, "-")
+        .replace(/-{2,}/g, "-")
+        .replace(/^-|-$/g, "");
 }
 
 /**
  * Build the full nav tree from nav.json and page data.
  */
-export function buildNavTree(
-    navConfig: NavStructure,
-    pages: Record<string, DocPage>,
-): NavTreePage[] {
+export function buildNavTree(navConfig: NavStructure, pages: Record<string, DocPage>): NavTreePage[] {
     return navConfig.map(entry => {
         const packageRoute = entry.package;
         const packageChildren = [
-            ...entry.pages.map(pageRef =>
-                buildNavLeafPage(pageRef.ref, 2, `${packageRoute}/${pageRef.ref}`, pages),
-            ),
+            ...entry.pages.map(pageRef => buildNavLeafPage(pageRef.ref, 2, `${packageRoute}/${pageRef.ref}`, pages)),
             ...(entry.sections ?? []).map(section => {
                 const sectionRoute = `${packageRoute}/${section.section}`;
                 return buildNavSection(section, 2, sectionRoute, pages);
@@ -157,6 +157,7 @@ export function buildNavSection(
 
     // Section has no backing page — use section name as title
     return {
+        type: "page",
         children,
         level,
         reference: section.section,
@@ -190,6 +191,7 @@ export function buildNavPage(
 ): NavTreePage {
     const page = requirePage(ref, pages);
     return {
+        type: "page",
         children,
         level,
         reference: ref,
@@ -221,6 +223,7 @@ export function extractHeadingChildren(page: DocPage, pageNavLevel: number): Nav
     for (const item of page.contents) {
         if (isHeading(item) && item.level >= 2) {
             result.push({
+                type: "heading",
                 title: item.value,
                 level: item.level + levelOffset,
                 route: item.route,

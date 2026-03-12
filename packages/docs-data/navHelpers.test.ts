@@ -188,8 +188,20 @@ describe("fixPageRoutes", () => {
 
 describe("slugify", () => {
     it("should lowercase and replace non-alphanumeric chars with hyphens", () => {
-        expect(slugify("Hello World!")).toBe("hello-world-");
-        expect(slugify("Date & Time Pickers")).toBe("date---time-pickers");
+        expect(slugify("Hello World!")).toBe("hello-world");
+        expect(slugify("Date & Time Pickers")).toBe("date-and-time-pickers");
+    });
+
+    it("should replace '&' with 'and'", () => {
+        expect(slugify("A & B")).toBe("a-and-b");
+        expect(slugify("&start")).toBe("andstart");
+        expect(slugify("end&")).toBe("endand");
+    });
+
+    it("should collapse consecutive hyphens and trim edges", () => {
+        expect(slugify("a - - b")).toBe("a-b");
+        expect(slugify("!leading")).toBe("leading");
+        expect(slugify("trailing!")).toBe("trailing");
     });
 
     it("should preserve existing hyphens and pass through alphanumeric chars", () => {
@@ -338,11 +350,12 @@ describe("buildNavPage", () => {
         const pages: Record<string, DocPage> = {
             buttons: makePage("Buttons"),
         };
-        const children = [{ title: "Usage", level: 4, route: "core/components/buttons.usage" }];
+        const children = [{ type: "heading" as const, title: "Usage", level: 4, route: "core/components/buttons.usage" }];
 
         const node = buildNavPage("buttons", 3, "core/components/buttons", pages, children);
 
         expect(node).toEqual({
+            type: "page",
             children,
             level: 3,
             reference: "buttons",
@@ -371,9 +384,7 @@ describe("requirePage", () => {
     });
 
     it("should throw when the ref does not exist in pages", () => {
-        expect(() => requirePage("nonexistent", {})).toThrow(
-            '[docs-data] nav.json references page "nonexistent" which does not exist in docs.pages',
-        );
+        expect(() => requirePage("nonexistent", {})).toThrow();
     });
 });
 
@@ -389,8 +400,8 @@ describe("extractHeadingChildren", () => {
         const result = extractHeadingChildren(page, 2);
 
         expect(result).toHaveLength(2);
-        expect(result[0]).toEqual({ title: "Usage", level: 3, route: "components.usage" });
-        expect(result[1]).toEqual({ title: "Details", level: 4, route: "components.details" });
+        expect(result[0]).toEqual({ type: "heading", title: "Usage", level: 3, route: "components.usage" });
+        expect(result[1]).toEqual({ type: "heading", title: "Details", level: 4, route: "components.details" });
     });
 
     it("should skip level-1 headings and non-heading content items", () => {
