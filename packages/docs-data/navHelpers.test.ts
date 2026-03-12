@@ -151,9 +151,7 @@ describe("buildRouteMap", () => {
             },
         ];
 
-        expect(() => buildRouteMap(navConfig)).toThrow(
-            '[docs-data] duplicate nav ref "buttons"',
-        );
+        expect(() => buildRouteMap(navConfig)).toThrow('[docs-data] duplicate nav ref "buttons"');
     });
 });
 
@@ -350,7 +348,9 @@ describe("buildNavPage", () => {
         const pages: Record<string, DocPage> = {
             buttons: makePage("Buttons"),
         };
-        const children = [{ type: "heading" as const, title: "Usage", level: 4, route: "core/components/buttons.usage" }];
+        const children = [
+            { type: "heading" as const, title: "Usage", level: 4, route: "core/components/buttons.usage" },
+        ];
 
         const node = buildNavPage("buttons", 3, "core/components/buttons", pages, children);
 
