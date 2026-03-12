@@ -87,8 +87,7 @@ describe("<DatePicker>", () => {
             assertDatesEqual(new Date(firstDay.prop("date")), firstDayInView);
         });
 
-        // NOTE: Enzyme simulate doesn't work correctly under jsdom. Needs RTL migration.
-        it.skip("doesn't show outside days if enableOutsideDays=false", () => {
+        it("doesn't show outside days if enableOutsideDays=false", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
             const { root } = wrap(
                 <DatePicker
