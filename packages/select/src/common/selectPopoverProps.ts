@@ -36,7 +36,12 @@ export interface SelectPopoverProps {
      * N.B. `disabled` is supported here, as this can be distinct from disabling the entire select button / input
      * control element. There are some cases where we only want to disable the popover interaction.
      */
-    popoverProps?: Partial<Omit<PopoverProps, "content" | "defaultIsOpen" | "fill" | "renderTarget">>;
+    popoverProps?: Partial<
+        Omit<
+            PopoverProps,
+            "content" | "defaultIsOpen" | "fill" | "popupKind" | "ref" | "renderTarget" | "shouldReturnFocusOnClose"
+        >
+    >;
 
     /**
      * Optional ref for the Popover component instance.
