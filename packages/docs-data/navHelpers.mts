@@ -6,6 +6,7 @@ import type {
     DocContentItem,
     DocHeadingItem,
     DocPage,
+    NavPageRef,
     NavSection,
     NavStructure,
     NavTreeHeading,
@@ -14,6 +15,10 @@ import type {
     RawNavStructure,
 } from "./navTypes.ts";
 
+function pageRef(ref: string): NavPageRef {
+    return { type: "page", ref };
+}
+
 /**
  * Convert raw nav.json data (bare strings) into a fully
  * typed {@link NavStructure} with union items.
@@ -21,10 +26,10 @@ import type {
 export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
     return raw.map(entry => ({
         package: entry.package,
-        pages: entry.pages.map(ref => ({ type: "page" as const, ref })),
+        pages: entry.pages.map(pageRef),
         sections: entry.sections?.map(section => ({
             section: section.section,
-            pages: section.pages.map(ref => ({ type: "page" as const, ref })),
+            pages: section.pages.map(pageRef),
         })),
     }));
 }
@@ -34,15 +39,6 @@ export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
  */
 export function buildRouteMap(navConfig: NavStructure): Map<string, string> {
     const routeMap = new Map<string, string>();
-
-    function addRoute(ref: string, parentRoute: string): string {
-        const route = parentRoute ? `${parentRoute}/${ref}` : ref;
-        if (routeMap.has(ref)) {
-            console.warn(`[docs-data] duplicate nav ref "${ref}" (route "${route}" overwrites "${routeMap.get(ref)}")`);
-        }
-        routeMap.set(ref, route);
-        return route;
-    }
 
     for (const entry of navConfig) {
         const packageRoute = addRoute(entry.package, "");
@@ -61,6 +57,15 @@ export function buildRouteMap(navConfig: NavStructure): Map<string, string> {
     }
 
     return routeMap;
+
+    function addRoute(ref: string, parentRoute: string): string {
+        const route = parentRoute ? `${parentRoute}/${ref}` : ref;
+        if (routeMap.has(ref)) {
+            console.warn(`[docs-data] duplicate nav ref "${ref}" (route "${route}" overwrites "${routeMap.get(ref)}")`);
+        }
+        routeMap.set(ref, route);
+        return route;
+    }
 }
 
 /**
@@ -117,17 +122,17 @@ export function buildNavTree(
 ): NavTreePage[] {
     return navConfig.map(entry => {
         const packageChildren = [
-            ...entry.pages.map(pageRef => buildLeafPageNode(pageRef.ref, 2, pages, routeMap)),
-            ...(entry.sections ?? []).map(section => buildSectionNode(section, 2, pages, routeMap)),
+            ...entry.pages.map(pageRef => buildNavLeafPage(pageRef.ref, 2, pages, routeMap)),
+            ...(entry.sections ?? []).map(section => buildNavSection(section, 2, pages, routeMap)),
         ];
-        return buildPageNodeFromChildren(entry.package, 1, pages, routeMap, packageChildren);
+        return buildNavPage(entry.package, 1, pages, routeMap, packageChildren);
     });
 }
 
 /**
  * Build a PageNode for a section containing child pages.
  */
-export function buildSectionNode(
+export function buildNavSection(
     section: NavSection,
     level: number,
     pages: Record<string, DocPage>,
@@ -135,12 +140,12 @@ export function buildSectionNode(
 ): NavTreePage {
     const childLevel = level + 1;
     const children: NavTreeNode[] = section.pages.map(child =>
-        buildLeafPageNode(child.ref, childLevel, pages, routeMap),
+        buildNavLeafPage(child.ref, childLevel, pages, routeMap),
     );
 
     const page = pages[section.section];
     if (page !== undefined) {
-        return buildPageNodeFromChildren(section.section, level, pages, routeMap, children);
+        return buildNavPage(section.section, level, pages, routeMap, children);
     }
 
     // Section has no backing page — use section name as title
@@ -156,20 +161,20 @@ export function buildSectionNode(
 /**
  * Build a PageNode for a leaf page (no nav children, only content headings).
  */
-export function buildLeafPageNode(
+export function buildNavLeafPage(
     ref: string,
     level: number,
     pages: Record<string, DocPage>,
     routeMap: Map<string, string>,
 ): NavTreePage {
     const headingChildren = extractHeadingChildren(requirePage(ref, pages), level);
-    return buildPageNodeFromChildren(ref, level, pages, routeMap, headingChildren);
+    return buildNavPage(ref, level, pages, routeMap, headingChildren);
 }
 
 /**
  * Assemble a PageNode from a ref and pre-built children array.
  */
-export function buildPageNodeFromChildren(
+export function buildNavPage(
     ref: string,
     level: number,
     pages: Record<string, DocPage>,
