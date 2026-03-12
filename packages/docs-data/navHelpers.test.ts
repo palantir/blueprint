@@ -17,11 +17,11 @@
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import {
-    buildLeafPageNode,
+    buildNavLeafPage,
     buildNavTree,
-    buildPageNodeFromChildren,
+    buildNavPage,
     buildRouteMap,
-    buildSectionNode,
+    buildNavSection,
     extractHeadingChildren,
     fixPageRoutes,
     normalizeNavConfig,
@@ -237,7 +237,7 @@ describe("buildNavTree", () => {
     });
 });
 
-describe("buildSectionNode", () => {
+describe("buildNavSection", () => {
     it("should build a section node with leaf page children", () => {
         const pages: Record<string, DocPage> = {
             components: makePage("Components"),
@@ -257,7 +257,7 @@ describe("buildSectionNode", () => {
             ],
         };
 
-        const node = buildSectionNode(section, 2, pages, routeMap);
+        const node = buildNavSection(section, 2, pages, routeMap);
 
         expect(node.reference).toBe("components");
         expect(node.level).toBe(2);
@@ -284,7 +284,7 @@ describe("buildSectionNode", () => {
             ],
         };
 
-        const node = buildSectionNode(section, 2, pages, routeMap);
+        const node = buildNavSection(section, 2, pages, routeMap);
 
         expect(node.reference).toBe("overlays");
         expect(node.title).toBe("overlays");
@@ -295,7 +295,7 @@ describe("buildSectionNode", () => {
     });
 });
 
-describe("buildLeafPageNode", () => {
+describe("buildNavLeafPage", () => {
     it("should build a leaf node with heading children extracted from page contents", () => {
         const pages: Record<string, DocPage> = {
             buttons: makePage("Buttons", [
@@ -306,7 +306,7 @@ describe("buildLeafPageNode", () => {
         };
         const routeMap = new Map([["buttons", "core/components/buttons"]]);
 
-        const node = buildLeafPageNode("buttons", 3, pages, routeMap);
+        const node = buildNavLeafPage("buttons", 3, pages, routeMap);
 
         expect(node.reference).toBe("buttons");
         expect(node.level).toBe(3);
@@ -322,13 +322,13 @@ describe("buildLeafPageNode", () => {
         };
         const routeMap = new Map([["overview", "core/overview"]]);
 
-        const node = buildLeafPageNode("overview", 2, pages, routeMap);
+        const node = buildNavLeafPage("overview", 2, pages, routeMap);
 
         expect(node.children).toHaveLength(0);
     });
 });
 
-describe("buildPageNodeFromChildren", () => {
+describe("buildNavPage", () => {
     it("should assemble a PageNode with the correct shape", () => {
         const pages: Record<string, DocPage> = {
             buttons: makePage("Buttons"),
@@ -336,7 +336,7 @@ describe("buildPageNodeFromChildren", () => {
         const routeMap = new Map([["buttons", "core/components/buttons"]]);
         const children = [{ title: "Usage", level: 4, route: "core/components/buttons.usage" }];
 
-        const node = buildPageNodeFromChildren("buttons", 3, pages, routeMap, children);
+        const node = buildNavPage("buttons", 3, pages, routeMap, children);
 
         expect(node).toEqual({
             children,
@@ -353,7 +353,7 @@ describe("buildPageNodeFromChildren", () => {
         };
         const routeMap = new Map([["core", "core"]]);
 
-        const node = buildPageNodeFromChildren("core", 1, pages, routeMap, []);
+        const node = buildNavPage("core", 1, pages, routeMap, []);
 
         expect(node.route).toBe("core");
     });

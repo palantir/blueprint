@@ -40,7 +40,7 @@ try {
 } catch (err) {
     // console.error messages get swallowed by lerna but console.log is emitted to terminal.
     console.error(`[docs-data] ERROR when generating JSON docs data:`);
-    throw new Error(err as string);
+    throw new Error(err);
 }
 
 console.info(`[docs-data] successfully generated docs.json`);
@@ -95,7 +95,7 @@ function transformDocumentalistData(key: string, value: any): any {
         const majors = new Map<number, string>();
         for (const version of value) {
             const major = semver.major(version);
-            if (!majors.has(major) || semver.gt(version, majors.get(major)!)) {
+            if (!majors.has(major) || semver.gt(version, majors.get(major))) {
                 majors.set(major, version);
             }
         }
@@ -110,6 +110,11 @@ function transformDocumentalistData(key: string, value: any): any {
     return value;
 }
 
+/**
+ * Replaces `#{$ns}` placeholder in string values  with the actual Blueprint class namespace.
+ *
+ * @param {string} value
+ */
 function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
 }
