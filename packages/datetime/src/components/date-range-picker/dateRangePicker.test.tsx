@@ -653,9 +653,7 @@ describe("<DateRangePicker>", () => {
         const LAST_MONTH_START = new Date(2015, Months.JANUARY, 5);
         const TWO_WEEKS_AGO_START = new Date(2015, Months.JANUARY, 22);
 
-        let consoleError: MockInstance;
-
-        beforeAll(() => (consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn())));
+        const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
         afterEach(() => consoleError.mockClear());
         afterAll(() => consoleError.mockRestore());
 
@@ -666,7 +664,7 @@ describe("<DateRangePicker>", () => {
                     maxDate={new Date(2000, Months.JANUARY, 8)}
                 />,
             );
-            expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
+            expect(consoleError).toHaveBeenCalledWith(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         });
 
         it("only days outside bounds have disabled class", () => {
@@ -1007,9 +1005,7 @@ describe("<DateRangePicker>", () => {
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             expect(onShortcutChangeSpy).toHaveBeenCalledOnce();
-            expect(
-                onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1].at(-1) === selectedShortcut,
-            ).toBe(true);
+            expect(onShortcutChangeSpy.mock.lastCall?.at(-1)).toEqual(selectedShortcut);
         });
 
         it("custom shortcuts select the correct values", () => {

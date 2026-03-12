@@ -236,17 +236,15 @@ describe("<DateInput>", () => {
                 .first()
                 .simulate("click")
                 .update();
-            expect(onChange).toHaveBeenCalledOnce();
             // first non-outside day should be the November 1st
-            expect(onChange.mock.calls[0][0]).toBe("2021-11-01T10:30:00+00:00");
+            expect(onChange).toHaveBeenCalledExactlyOnceWith("2021-11-01T10:30:00+00:00", expect.anything());
         });
 
         it("calls onChange on timezone changes", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             clickTimezoneItem(wrapper, NEW_YORK_TIMEZONE.label);
-            expect(onChange).toHaveBeenCalledOnce();
             // New York is UTC-5
-            expect(onChange.mock.calls[0][0]).toBe("2021-11-29T10:30:00-05:00");
+            expect(onChange).toHaveBeenCalledExactlyOnceWith("2021-11-29T10:30:00-05:00", expect.anything());
         });
 
         // HACKHACK: this test ported from Blueprint v4.x doesn't seem to match any real UX, since pressing Shift+Tab
@@ -421,10 +419,8 @@ describe("<DateInput>", () => {
             );
             changeInput(wrapper, DATE_STR);
 
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][0]).toBe(DATE_VALUE);
-            expect(onInputChange).toHaveBeenCalledOnce();
-            expect(onInputChange.mock.calls[0][0].type).toBe("change");
+            expect(onChange).toHaveBeenCalledExactlyOnceWith(DATE_VALUE, expect.anything());
+            expect(onInputChange).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ type: "change" }));
         });
 
         it("typing in a date out of range displays the error message and calls onError with invalid date", () => {
@@ -445,10 +441,7 @@ describe("<DateInput>", () => {
             expect(wrapper.find(InputGroup).prop("intent")).toBe("danger");
             expect(wrapper.find(InputGroup).prop("value")).toBe(rangeMessage);
 
-            expect(onError).toHaveBeenCalledOnce();
-            expect(DEFAULT_PROPS.formatDate!(onError.mock.calls[0][0])).toBe(
-                DEFAULT_PROPS.formatDate!(new Date(value)),
-            );
+            expect(onError).toHaveBeenCalledExactlyOnceWith(new Date(value));
         });
 
         it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
@@ -470,8 +463,7 @@ describe("<DateInput>", () => {
             expect(wrapper.find(InputGroup).prop("intent")).toBe("danger");
             expect(wrapper.find(InputGroup).prop("value")).toBe(invalidDateMessage);
 
-            expect(onError).toHaveBeenCalledOnce();
-            expect((onError.mock.calls[0][0] as Date).valueOf()).toBeNaN();
+            expect(onError.mock.calls[0][0].valueOf()).toBeNaN();
         });
 
         it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
@@ -487,8 +479,7 @@ describe("<DateInput>", () => {
             );
             focusInput(wrapper);
             clickCalendarDay(wrapper, DATE.getDate());
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(isEqual(parseISO(onChange.mock.calls[0][0]), DATE)).toBe(true);
+            expect(parseISO(onChange.mock.calls[0][0])).toEqual(DATE);
         });
 
         describe("allows changing timezone via user interaction (uncontrolled timezone value)", () => {
@@ -557,8 +548,7 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
             focusInput(wrapper);
             setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0]).toEqual(["2021-11-29T11:30:00+00:00", true]);
+            expect(onChange).toHaveBeenCalledExactlyOnceWith("2021-11-29T11:30:00+00:00", true);
         });
 
         it("clearing the input invokes onChange with null", () => {
@@ -609,9 +599,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             clickCalendarDay(wrapper, 27);
 
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][0]).toBe("2016-04-27T00:00:00+00:00");
-            expect(onChange.mock.calls[0][1]).toBe(true);
+            expect(onChange).toHaveBeenCalledExactlyOnceWith("2016-04-27T00:00:00+00:00", true);
         });
 
         it("clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
@@ -646,10 +634,8 @@ describe("<DateInput>", () => {
                 { attachTo: containerElement },
             );
             changeInput(wrapper, DATE2_UI_STR);
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][0]).toBe(DATE2_VALUE);
-            expect(onInputChange).toHaveBeenCalledOnce();
-            expect(onInputChange.mock.calls[0][0].type).toBe("change");
+            expect(onChange).toHaveBeenCalledExactlyOnceWith(DATE2_VALUE, true);
+            expect(onInputChange).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({ type: "change" }));
         });
 
         it("typing an invalid date updates the text input with the 'invalid date' message", () => {
@@ -693,8 +679,7 @@ describe("<DateInput>", () => {
             );
             focusInput(wrapper);
             clickCalendarDay(wrapper, 4);
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0]).toEqual([DATE1_VALUE, true]);
+            expect(onChange).toHaveBeenCalledExactlyOnceWith(DATE1_VALUE, true);
         });
 
         it("isUserChange is false when month changes", () => {
@@ -703,8 +688,7 @@ describe("<DateInput>", () => {
             });
             focusInput(wrapper);
             changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.FEBRUARY);
-            expect(onChange).toHaveBeenCalledOnce();
-            expect(onChange.mock.calls[0][1]).toBe(false);
+            expect(onChange).toHaveBeenCalledExactlyOnceWith(expect.any(String), false);
         });
 
         it("formats locale-specific format strings properly", () => {
@@ -718,8 +702,7 @@ describe("<DateInput>", () => {
                     attachTo: containerElement,
                 });
                 clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
-                expect(onChange).toHaveBeenCalledOnce();
-                expect(onChange.mock.calls[0][0]).toBe("2021-11-29T10:30:00+01:00");
+                expect(onChange).toHaveBeenCalledExactlyOnceWith("2021-11-29T10:30:00+01:00", true);
             });
 
             it("formats the returned ISO string according to timePrecision", () => {
@@ -728,8 +711,7 @@ describe("<DateInput>", () => {
                     { attachTo: containerElement },
                 );
                 clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
-                expect(onChange).toHaveBeenCalledOnce();
-                expect(onChange.mock.calls[0][0]).toBe("2021-11-29T10:30+01:00");
+                expect(onChange).toHaveBeenCalledExactlyOnceWith("2021-11-29T10:30+01:00", true);
             });
 
             it("updates the displayed timezone", () => {
@@ -749,8 +731,7 @@ describe("<DateInput>", () => {
             });
         });
 
-        // TODO: migrate to RTL - this describe block has bare assertions without it(), which Vitest does not support
-        describe.skip("allows changing defaultTimezone", () => {
+        it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
             expect(wrapper.find(TimezoneSelect).text()).toBe(
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),

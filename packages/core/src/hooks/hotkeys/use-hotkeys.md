@@ -85,6 +85,7 @@ if the keyboard is configured to a different layout than is physically on the ke
 configured as AZERTY).
 
 **Key detection behavior:**
+
 - **Letters (a-z)**: Uses the character produced by the key to respect keyboard layout (QWERTY vs AZERTY)
 - **Digits (0-9)**: Uses the physical key position to avoid shifted symbols (Shift+1 is detected as `shift+1`, not `!`)
 - **Symbols**: Uses the character produced, with special handling for shift combinations (Shift+[ is detected as `shift+[`, not `{`)
@@ -95,43 +96,43 @@ characters are case-insensitive, so `X` is equivalent to `x`.
 
 Examples of valid key combos:
 
--   `cmd+plus`
--   `shift+1` (note: `!` is not supported)
--   `return` or, equivalently `enter`
--   `alt + shift + x`
--   `ctrl + left`
+- `cmd+plus`
+- `shift+1` (note: `!` is not supported)
+- `return` or, equivalently `enter`
+- `alt + shift + x`
+- `ctrl + left`
 
 Note that spaces are ignored.
 
 ### Named keys
 
--   `plus`
--   `minus`
--   `backspace`
--   `tab`
--   `enter`
--   `capslock`
--   `esc`
--   `space`
--   `pageup`
--   `pagedown`
--   `end`
--   `home`
--   `left`
--   `up`
--   `right`
--   `down`
--   `ins`
--   `del`
+- `plus`
+- `minus`
+- `backspace`
+- `tab`
+- `enter`
+- `capslock`
+- `esc`
+- `space`
+- `pageup`
+- `pagedown`
+- `end`
+- `home`
+- `left`
+- `up`
+- `right`
+- `down`
+- `ins`
+- `del`
 
 ### Aliased keys
 
--   `option` &rarr; `alt`
--   `cmd` &rarr; `meta`
--   `command` &rarr; `meta`
--   `return` &rarr; `enter`
--   `escape` &rarr; `esc`
--   `win` &rarr; `meta`
+- `option` &rarr; `alt`
+- `cmd` &rarr; `meta`
+- `command` &rarr; `meta`
+- `return` &rarr; `enter`
+- `escape` &rarr; `esc`
+- `win` &rarr; `meta`
 
 The special modifier `mod` will choose the OS-preferred modifier key: `cmd` for macOS and iOS, or `ctrl` for Windows
 and Linux.

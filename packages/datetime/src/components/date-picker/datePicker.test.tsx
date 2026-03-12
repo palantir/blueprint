@@ -292,9 +292,7 @@ describe("<DatePicker>", () => {
         const MAX_DATE = new Date(2015, Months.JANUARY, 12);
 
         describe("validation", () => {
-            let consoleError: MockInstance;
-
-            beforeAll(() => (consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn())));
+            const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
             afterEach(() => consoleError.mockClear());
             afterAll(() => consoleError.mockRestore());
 
@@ -810,7 +808,7 @@ describe("<DatePicker>", () => {
     });
 
     describe("clearing a selection", () => {
-        const MOCK_TODAY = new Date(2024, 11, 24, 16, 30);
+        const MOCK_TODAY = new Date("2020-12-24T15:45:00Z");
         beforeEach(() => {
             vi.useFakeTimers();
             vi.setSystemTime(MOCK_TODAY);

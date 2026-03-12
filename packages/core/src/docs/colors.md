@@ -20,15 +20,15 @@ attention to specific elements, such as buttons, callouts, icons, etc.
 Each core color is mapped to what we call a **visual intent**. Intents
 are used to convey the status and tone of UI elements:
 
--   _Blue_ (intent: primary) elevates elements from the typical gray scale UI frame.
--   _Green_ (intent: success) indicates successful operations.
--   _Orange_ (intent: warning) indicates warnings and intermediate states.
--   _Red_ (intent: danger) indicates errors and potentially destructive operations.
+- _Blue_ (intent: primary) elevates elements from the typical gray scale UI frame.
+- _Green_ (intent: success) indicates successful operations.
+- _Orange_ (intent: warning) indicates warnings and intermediate states.
+- _Red_ (intent: danger) indicates errors and potentially destructive operations.
 
 Blueprint's core colors are designed to:
 
--   go well together and be used alongside each other in any application.
--   adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards, and therefore are highly accessible to visually impaired and color blind users.
+- go well together and be used alongside each other in any application.
+- adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards, and therefore are highly accessible to visually impaired and color blind users.
 
 Many Blueprint components support the `intent` prop, which may be set to a string
 literal constant such as `intent="primary"`.
