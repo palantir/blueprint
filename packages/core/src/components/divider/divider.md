@@ -16,6 +16,14 @@ Use **Divider** to separate blocks of content within a page or container. By def
 
 @reactCodeExample DividerBasicExample
 
+@## With text
+
+You can embed text or other content within a divider by passing children. This is useful for section headers or labels.
+
+The text alignment can be controlled with the `textAlignment` prop, which accepts `"left"`, `"center"` (default), or `"right"`.
+
+@reactCodeExample DividerWithTextExample
+
 @## Compact
 
 The `compact` prop removes the margin from the divider, making it flush with adjacent content.

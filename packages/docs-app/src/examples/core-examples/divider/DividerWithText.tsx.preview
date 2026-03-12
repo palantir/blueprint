@@ -1,0 +1,7 @@
+<p>Content above the divider</p>
+<Divider textAlignment="left">Left aligned</Divider>
+<p>Middle content</p>
+<Divider>Center aligned (default)</Divider>
+<p>More content</p>
+<Divider textAlignment="right">Right aligned</Divider>
+<p>Content below the divider</p>
