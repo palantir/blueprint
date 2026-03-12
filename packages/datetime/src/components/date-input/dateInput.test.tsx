@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { intlFormat, isEqual, parseISO } from "date-fns";
+import { intlFormat, parseISO } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
