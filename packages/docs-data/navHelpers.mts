@@ -61,7 +61,9 @@ export function buildRouteMap(navConfig: NavStructure): Map<string, string> {
     function addRoute(ref: string, parentRoute: string): string {
         const route = parentRoute ? `${parentRoute}/${ref}` : ref;
         if (routeMap.has(ref)) {
-            console.warn(`[docs-data] duplicate nav ref "${ref}" (route "${route}" overwrites "${routeMap.get(ref)}")`);
+            throw new Error(
+                `[docs-data] duplicate nav ref "${ref}" (route "${route}" conflicts with "${routeMap.get(ref)}")`,
+            );
         }
         routeMap.set(ref, route);
         return route;
@@ -118,14 +120,19 @@ export function slugify(value: string): string {
 export function buildNavTree(
     navConfig: NavStructure,
     pages: Record<string, DocPage>,
-    routeMap: Map<string, string>,
 ): NavTreePage[] {
     return navConfig.map(entry => {
+        const packageRoute = entry.package;
         const packageChildren = [
-            ...entry.pages.map(pageRef => buildNavLeafPage(pageRef.ref, 2, pages, routeMap)),
-            ...(entry.sections ?? []).map(section => buildNavSection(section, 2, pages, routeMap)),
+            ...entry.pages.map(pageRef =>
+                buildNavLeafPage(pageRef.ref, 2, `${packageRoute}/${pageRef.ref}`, pages),
+            ),
+            ...(entry.sections ?? []).map(section => {
+                const sectionRoute = `${packageRoute}/${section.section}`;
+                return buildNavSection(section, 2, sectionRoute, pages);
+            }),
         ];
-        return buildNavPage(entry.package, 1, pages, routeMap, packageChildren);
+        return buildNavPage(entry.package, 1, packageRoute, pages, packageChildren);
     });
 }
 
@@ -135,17 +142,17 @@ export function buildNavTree(
 export function buildNavSection(
     section: NavSection,
     level: number,
+    route: string,
     pages: Record<string, DocPage>,
-    routeMap: Map<string, string>,
 ): NavTreePage {
     const childLevel = level + 1;
     const children: NavTreeNode[] = section.pages.map(child =>
-        buildNavLeafPage(child.ref, childLevel, pages, routeMap),
+        buildNavLeafPage(child.ref, childLevel, `${route}/${child.ref}`, pages),
     );
 
     const page = pages[section.section];
     if (page !== undefined) {
-        return buildNavPage(section.section, level, pages, routeMap, children);
+        return buildNavPage(section.section, level, route, pages, children);
     }
 
     // Section has no backing page — use section name as title
@@ -153,7 +160,7 @@ export function buildNavSection(
         children,
         level,
         reference: section.section,
-        route: routeMap.get(section.section),
+        route,
         title: section.section,
     };
 }
@@ -164,11 +171,11 @@ export function buildNavSection(
 export function buildNavLeafPage(
     ref: string,
     level: number,
+    route: string,
     pages: Record<string, DocPage>,
-    routeMap: Map<string, string>,
 ): NavTreePage {
     const headingChildren = extractHeadingChildren(requirePage(ref, pages), level);
-    return buildNavPage(ref, level, pages, routeMap, headingChildren);
+    return buildNavPage(ref, level, route, pages, headingChildren);
 }
 
 /**
@@ -177,8 +184,8 @@ export function buildNavLeafPage(
 export function buildNavPage(
     ref: string,
     level: number,
+    route: string,
     pages: Record<string, DocPage>,
-    routeMap: Map<string, string>,
     children: NavTreeNode[],
 ): NavTreePage {
     const page = requirePage(ref, pages);
@@ -186,7 +193,7 @@ export function buildNavPage(
         children,
         level,
         reference: ref,
-        route: routeMap.get(ref),
+        route,
         title: page.title,
     };
 }
