@@ -858,11 +858,12 @@ describe("<DatePicker>", () => {
 
             const value = root.state("value")!;
             expect(value).not.toBeNull();
+            // Asia/Tokyo is UTC+9, so 2020-12-24T15:45:00Z becomes 2020-12-25T00:45:00 in Tokyo
             expect(value.getDate()).toBe(MOCK_TODAY.getDate() + 1);
             expect(value.getMonth()).toBe(MOCK_TODAY.getMonth());
             expect(value.getFullYear()).toBe(MOCK_TODAY.getFullYear());
-            expect(value.getHours()).toBe(1);
-            expect(value.getMinutes()).toBe(30);
+            expect(value.getHours()).toBe(0);
+            expect(value.getMinutes()).toBe(45);
         });
 
         it("clears the value when Clear is clicked", () => {
