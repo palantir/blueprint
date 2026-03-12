@@ -7,8 +7,8 @@ about: Need help with Blueprint?
 
 #### Environment
 
--   **Package version(s)**: <!-- fill this out -->
--   **Browser and OS versions**: <!-- fill this out -->
+- **Package version(s)**: <!-- fill this out -->
+- **Browser and OS versions**: <!-- fill this out -->
 
 #### Question
 
