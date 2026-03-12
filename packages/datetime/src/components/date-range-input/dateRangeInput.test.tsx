@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { expect } from "@blueprintjs/test-commons/vitest";
 import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
