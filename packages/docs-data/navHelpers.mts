@@ -100,6 +100,14 @@ export function fixPageRoutes(pages: Record<string, DocPage>, routeMap: Map<stri
     }
 }
 
+/** Convert a kebab-case string to title case (e.g. "form-controls" → "Form Controls"). */
+function kebabToTitleCase(str: string): string {
+    return str
+        .split("-")
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
 /** Type guard for heading content items. */
 function isHeading(item: DocContentItem): item is DocHeadingItem {
     return typeof item === "object" && item !== null && "tag" in item && item.tag === "heading";
@@ -162,7 +170,7 @@ export function buildNavSection(
         level,
         reference: section.section,
         route,
-        title: section.section,
+        title: kebabToTitleCase(section.section),
     };
 }
 
