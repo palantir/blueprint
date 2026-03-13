@@ -5,4 +5,6 @@
 
 module.exports = {
     docsData: require("./generated/docs.json"),
+    PACKAGES: ["blueprint", "core", "datetime", "icons", "select", "table", "labs"],
+    SECTIONS: ["components", "context", "hooks", "legacy", "form-controls", "form-inputs", "overlays"],
 };

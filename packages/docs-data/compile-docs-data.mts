@@ -14,7 +14,14 @@ import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 import { assignRoutes, buildNavTree, normalizeNavConfig } from "./navHelpers.mts";
-import type { DocPage, NavStructure, NavTreeNode, RawNavStructure } from "./navTypes.ts";
+import {
+    PACKAGES,
+    SECTIONS,
+    type DocPage,
+    type NavStructure,
+    type NavTreeNode,
+    type RawNavStructure,
+} from "./navTypes.ts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
@@ -83,6 +90,7 @@ async function generateDocumentalistData(): Promise<void> {
 
     // Post-process: replace documentalist's nav with one built from nav.json
     const rawConfig: RawNavStructure = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
+    validateNavConfig(rawConfig);
     const navConfig = normalizeNavConfig(rawConfig);
     applyNavConfig(docs, navConfig);
 
@@ -118,6 +126,23 @@ function transformDocumentalistData(key: string, value: any): any {
  */
 function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
+}
+
+function validateNavConfig(raw: RawNavStructure): void {
+    for (const entry of raw) {
+        if (!PACKAGES.some(p => p === entry.package)) {
+            throw new Error(
+                `[docs-data] nav.json contains unknown package "${entry.package}". Known packages: ${PACKAGES.join(", ")}`,
+            );
+        }
+        for (const section of entry.sections ?? []) {
+            if (!SECTIONS.some(s => s === section.section)) {
+                throw new Error(
+                    `[docs-data] nav.json contains unknown section "${section.section}" in package "${entry.package}". Known sections: ${SECTIONS.join(", ")}`,
+                );
+            }
+        }
+    }
 }
 
 function applyNavConfig(docs: { pages: Record<string, DocPage>; nav: NavTreeNode[] }, navConfig: NavStructure): void {

@@ -7,3 +7,6 @@ import { NpmPluginData, MarkdownPluginData, KssPluginData, TypescriptPluginData 
 export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginData & TypescriptPluginData;
 
 export const docsData: DocsCompleteData;
+
+export { PACKAGES, SECTIONS } from "../navTypes.ts";
+export type { Package, Section } from "../navTypes.ts";

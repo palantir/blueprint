@@ -18,14 +18,24 @@
  * Known Blueprint documentation packages.
  * Each maps to a top-level section in the sidebar.
  */
-export type Package = "blueprint" | "core" | "datetime" | "icons" | "select" | "table" | "labs";
+export const PACKAGES = ["blueprint", "core", "datetime", "icons", "select", "table", "labs"] as const;
+export type Package = (typeof PACKAGES)[number];
 
 /**
  * Known section identifiers within packages.
- * Sections are pages that also contain child pages and create a route segment
+ * Sections contain child pages and create a route segment
  * (e.g. "components" -> core/components/buttons).
  */
-export type Section = "components" | "context" | "hooks" | "form-controls" | "form-inputs" | "overlays";
+export const SECTIONS = [
+    "components",
+    "context",
+    "hooks",
+    "legacy",
+    "form-controls",
+    "form-inputs",
+    "overlays",
+] as const;
+export type Section = (typeof SECTIONS)[number];
 
 // "Raw" types come directly from nav.json
 
