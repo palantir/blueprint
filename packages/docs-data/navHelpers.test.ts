@@ -436,6 +436,37 @@ describe("extractHeadingChildren", () => {
     });
 });
 
+describe("nested sections", () => {
+    it("should not support sections nested within sections", () => {
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [],
+                sections: [
+                    {
+                        section: "overlays",
+                        pages: [{ type: "page", ref: "modals" }],
+                    },
+                ],
+            },
+        ];
+
+        const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
+            overlays: makePage("Overlays"),
+            dialog: makePage("Dialog"),
+            drawer: makePage("Drawer"),
+        };
+
+        // "modals" is intended as a nested section, but the system only supports pages
+        // as children of sections. buildNavTree calls requirePage("modals") which throws
+        // because there is no DocPage entry for it.
+        expect(() => buildNavTree(navConfig, pages)).toThrow(
+            '[docs-data] nav.json references page "modals" which does not exist in docs.pages',
+        );
+    });
+});
+
 /** Minimal page object with a title and contents array. */
 function makePage(title: string, contents: DocContentItem[] = []): DocPage {
     return { title, contents, route: "" };
