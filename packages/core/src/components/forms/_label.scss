@@ -5,7 +5,7 @@
 
 label.#{$ns}-label {
   display: block;
-  margin-bottom: $pt-spacing * 4;
+  margin-bottom: calc(var(--bp-surface-spacing) * 4);
   margin-top: 0;
 
   .#{$ns}-html-select,
@@ -14,12 +14,12 @@ label.#{$ns}-label {
   .#{$ns}-slider,
   .#{$ns}-popover-wrapper {
     display: block;
-    margin-top: $pt-spacing;
+    margin-top: var(--bp-surface-spacing);
     text-transform: none;
   }
 
   .#{$ns}-button-group {
-    margin-top: $pt-spacing;
+    margin-top: var(--bp-surface-spacing);
   }
 
   .#{$ns}-select select,
@@ -30,7 +30,7 @@ label.#{$ns}-label {
   }
 
   .#{$ns}-control-group {
-    margin-top: $pt-spacing;
+    margin-top: var(--bp-surface-spacing);
 
     > .#{$ns}-button-group,
     > .#{$ns}-html-select,
@@ -45,12 +45,12 @@ label.#{$ns}-label {
   &.#{$ns}-disabled {
     &,
     .#{$ns}-text-muted {
-      color: $pt-text-color-disabled;
+      color: var(--bp-typography-color-default-disabled);
     }
   }
 
   &.#{$ns}-inline {
-    line-height: $pt-input-height;
+    line-height: calc(var(--bp-surface-spacing) * 7.5);
 
     .#{$ns}-html-select,
     .#{$ns}-input,
@@ -58,12 +58,12 @@ label.#{$ns}-label {
     .#{$ns}-select,
     .#{$ns}-popover-wrapper {
       display: inline-block;
-      margin: 0 0 0 $pt-spacing;
+      margin: 0 0 0 var(--bp-surface-spacing);
       vertical-align: top;
     }
 
     .#{$ns}-button-group {
-      margin: 0 0 0 $pt-spacing;
+      margin: 0 0 0 var(--bp-surface-spacing);
     }
 
     .#{$ns}-input-group .#{$ns}-input {
@@ -71,11 +71,11 @@ label.#{$ns}-label {
     }
 
     &.#{$ns}-large {
-      line-height: $pt-input-height-large;
+      line-height: calc(var(--bp-surface-spacing) * 10);
     }
 
     .#{$ns}-control-group {
-      margin: 0 0 0 $pt-spacing;
+      margin: 0 0 0 var(--bp-surface-spacing);
 
       > .#{$ns}-button-group,
       > .#{$ns}-html-select,
@@ -93,12 +93,12 @@ label.#{$ns}-label {
   }
 
   .#{$ns}-dark & {
-    color: $pt-dark-heading-color;
+    color: var(--bp-typography-color-default-rest);
 
     &.#{$ns}-disabled {
       &,
       .#{$ns}-text-muted {
-        color: $pt-dark-text-color-disabled;
+        color: var(--bp-typography-color-default-disabled);
       }
     }
   }

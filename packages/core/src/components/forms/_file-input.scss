@@ -15,12 +15,12 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 .#{$ns}-file-input {
   cursor: pointer;
   display: inline-block;
-  height: $pt-input-height;
+  height: calc(var(--bp-surface-spacing) * 7.5);
   position: relative;
 
   input {
     margin: 0;
-    min-width: $pt-spacing * 50;
+    min-width: calc(var(--bp-surface-spacing) * 50);
     opacity: 0;
 
     // unlike other form controls that directly style native elements,
@@ -59,11 +59,11 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   &.#{$ns}-file-input-has-selection {
     .#{$ns}-file-upload-input {
-      color: $pt-text-color;
+      color: var(--bp-typography-color-default-rest);
     }
 
     .#{$ns}-dark & .#{$ns}-file-upload-input {
-      color: $pt-dark-text-color;
+      color: var(--bp-typography-color-default-rest);
     }
   }
 
@@ -73,12 +73,12 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   &.#{$ns}-large,
   .#{$ns}-large & {
-    height: $pt-input-height-large;
+    height: calc(var(--bp-surface-spacing) * 10);
   }
 
   &.#{$ns}-small,
   .#{$ns}-small & {
-    height: $pt-input-height-small;
+    height: calc(var(--bp-surface-spacing) * 6);
   }
 
   .#{$ns}-file-upload-input-custom-text::after {
@@ -89,9 +89,9 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 .#{$ns}-file-upload-input {
   @include pt-input;
   @include overflow-ellipsis;
-  color: $pt-text-color-disabled;
+  color: var(--bp-typography-color-default-disabled);
   left: 0;
-  padding-right: $file-input-button-width + $input-padding-horizontal;
+  padding-right: calc(var(--bp-surface-spacing) * 19.5);
   position: absolute;
   right: 0;
   top: 0;
@@ -101,15 +101,15 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     @include pt-button-default-colors;
     @include pt-button-height($pt-button-height-small);
     @include overflow-ellipsis;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     content: "Browse";
-    line-height: $pt-button-height-small;
-    margin: $file-input-button-padding;
+    line-height: calc(var(--bp-surface-spacing) * 6);
+    margin: calc(var(--bp-surface-spacing) * 0.75);
     position: absolute;
     right: 0;
     text-align: center;
     top: 0;
-    width: $file-input-button-width;
+    width: calc(var(--bp-surface-spacing) * 17.5);
   }
 
   &:hover::after {
@@ -124,31 +124,31 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   .#{$ns}-large & {
     @include pt-input-large;
-    padding-right: $file-input-button-width-large + $input-padding-horizontal;
+    padding-right: calc(var(--bp-surface-spacing) * 23.25);
 
     &::after {
       @include pt-button-height($pt-button-height);
-      line-height: $pt-button-height;
-      margin: $file-input-button-padding-large;
-      width: $file-input-button-width-large;
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+      margin: calc(var(--bp-surface-spacing) * 1.25);
+      width: calc(var(--bp-surface-spacing) * 21.25);
     }
   }
 
   .#{$ns}-small & {
     @include pt-input-small;
-    padding-right: $file-input-button-width-small + $input-padding-horizontal;
+    padding-right: calc(var(--bp-surface-spacing) * 15.75);
 
     &::after {
       @include pt-button-height($pt-button-height-smaller);
-      line-height: $pt-button-height-smaller;
-      margin: $file-input-button-padding-small;
-      width: $file-input-button-width-small;
+      line-height: calc(var(--bp-surface-spacing) * 5);
+      margin: calc(var(--bp-surface-spacing) * 0.5);
+      width: calc(var(--bp-surface-spacing) * 13.75);
     }
   }
 
   .#{$ns}-dark & {
     @include pt-dark-input;
-    color: $pt-dark-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
 
     &::after {
       @include pt-dark-button-default-colors;
