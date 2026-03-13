@@ -36,7 +36,7 @@ describe("<TimePicker>", () => {
 
     it("should propagate class names correctly", () => {
         const { container } = render(<TimePicker className="foo" />);
-        const timePicker = container.querySelector(`.${TIMEPICKER}`);
+        const timePicker = container.querySelector(`.${Classes.TIMEPICKER}`);
 
         expect(timePicker).toBeInTheDocument();
         expect(timePicker).toHaveClass("foo");
@@ -220,8 +220,7 @@ describe("<TimePicker>", () => {
         expect(screen.getByLabelText("Decrease minutes")).toBeInTheDocument();
     });
 
-    // SKIP: jsdom does not support input selection APIs (selectionStart/selectionEnd return null)
-    it.skip("should select text on focus when selectAllOnFocus is true", () => {
+    it("should select text on focus when selectAllOnFocus is true", () => {
         render(<TimePicker selectAllOnFocus={true} />);
 
         const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
