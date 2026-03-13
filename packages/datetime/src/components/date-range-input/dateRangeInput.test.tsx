@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
 import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
@@ -38,6 +37,7 @@ import {
     beforeAll,
     beforeEach,
     describe,
+    expect,
     it,
     vi,
     expect as vitestExpect,

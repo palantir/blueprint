@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { intlFormat, parseISO } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
@@ -106,8 +105,8 @@ describe("<DateInput>", () => {
             );
 
             const popoverTarget = wrapper.find(`.${Classes.DATE_INPUT}.${CoreClasses.POPOVER_TARGET}`).hostNodes();
-            assert.isTrue(popoverTarget.hasClass(CLASS_1));
-            assert.isTrue(popoverTarget.hasClass(CLASS_2));
+            expect(popoverTarget.hasClass(CLASS_1)).toBe(true);
+            expect(popoverTarget.hasClass(CLASS_2)).toBe(true);
         });
 
         it("supports custom input props", () => {
@@ -115,26 +114,26 @@ describe("<DateInput>", () => {
                 <DateInput {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
             );
             const inputElement = wrapper.find("input").getDOMNode<HTMLInputElement>();
-            assert.equal(inputElement.style.background, "yellow");
-            assert.equal(inputElement.tabIndex, 4);
+            expect(inputElement.style.background).toBe("yellow");
+            expect(inputElement.tabIndex).toBe(4);
         });
 
         it("supports inputProps.inputRef", () => {
             const inputRef = createRef<HTMLInputElement>();
             mount(<DateInput {...DEFAULT_PROPS} inputProps={{ inputRef }} />);
-            assert.instanceOf(inputRef.current, HTMLInputElement);
+            expect(inputRef.current).toBeInstanceOf(HTMLInputElement);
         });
 
         it("does not render a TimezoneSelect if timePrecision is undefined", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS} timePrecision={undefined} />);
-            assert.isFalse(wrapper.find(TimezoneSelect).exists());
+            expect(wrapper.find(TimezoneSelect).exists()).toBe(false);
         });
 
         it("correctly passes on defaultTimezone to TimezoneSelect", () => {
             const defaultTimezone = "Europe/Paris";
             const wrapper = mount(<DateInput {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
             const timezoneSelect = wrapper.find(TimezoneSelect);
-            assert.strictEqual(timezoneSelect.prop("value"), defaultTimezone);
+            expect(timezoneSelect.prop("value")).toBe(defaultTimezone);
         });
 
         it("passes datePickerProps to DatePicker correctly", () => {
@@ -145,8 +144,8 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS} {...datePickerProps} />);
             focusInput(wrapper);
             const datePicker = wrapper.find(DatePicker);
-            assert.equal(datePicker.prop("clearButtonText"), "clear");
-            assert.equal(datePicker.prop("todayButtonText"), "today");
+            expect(datePicker.prop("clearButtonText")).toBe("clear");
+            expect(datePicker.prop("todayButtonText")).toBe("today");
         });
 
         it("passes fill and inputProps to InputGroup", () => {
@@ -167,9 +166,9 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
 
             const input = wrapper.find(InputGroup);
-            assert.isTrue(input.prop("fill"));
-            assert.strictEqual(input.prop("leftIcon"), "star");
-            assert.isTrue(input.prop("required"));
+            expect(input.prop("fill")).toBe(true);
+            expect(input.prop("leftIcon")).toBe("star");
+            expect(input.prop("required")).toBe(true);
             expect(inputRef).toHaveBeenCalled();
             expect(onFocus).toHaveBeenCalled();
         });
@@ -189,8 +188,8 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
 
             const popover = wrapper.find(Popover).first();
-            assert.strictEqual(popover.prop("placement"), "top");
-            assert.isFalse(popover.prop("usePortal"));
+            expect(popover.prop("placement")).toBe("top");
+            expect(popover.prop("usePortal")).toBe(false);
             expect(onOpening).toHaveBeenCalledOnce();
         });
 
@@ -310,20 +309,19 @@ describe("<DateInput>", () => {
             input.simulate("change", { target: { value: IMPROPERLY_FORMATTED_DATE_STRING } });
             input.simulate("keydown", { key: "Enter" });
             assertPopoverIsOpen(wrapper, false);
-            assert.notStrictEqual(document.activeElement, input.getDOMNode(), "input should not be focused");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), PROPERLY_FORMATTED_DATE_STRING);
+            expect(document.activeElement).not.toBe(input.getDOMNode());
+            expect(wrapper.find(InputGroup).prop("value")).toBe(PROPERLY_FORMATTED_DATE_STRING);
             expect(onKeyDown).toHaveBeenCalledOnce();
         });
 
         it("clicking a date puts it in the input box and closes the popover", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: containerElement });
             focusInput(wrapper);
-            assert.equal(wrapper.find(InputGroup).prop("value"), "");
+            expect(wrapper.find(InputGroup).prop("value")).toBe("");
             const dayToClick = 12;
             clickCalendarDay(wrapper, dayToClick);
             const today = new Date();
-            assert.equal(
-                wrapper.find(InputGroup).prop("value"),
+            expect(wrapper.find(InputGroup).prop("value")).toBe(
                 `${today.getMonth() + 1}/${dayToClick}/${today.getFullYear()}`,
             );
             assertPopoverIsOpen(wrapper, false);
@@ -346,11 +344,11 @@ describe("<DateInput>", () => {
                 attachTo: containerElement,
             });
             focusInput(wrapper);
-            assert.equal(wrapper.find(InputGroup).prop("value"), "11/29/2021");
+            expect(wrapper.find(InputGroup).prop("value")).toBe("11/29/2021");
             // default value is 29th day of November
             clickCalendarDay(wrapper, 29);
             wrapper.update();
-            assert.equal(wrapper.find(InputGroup).prop("value"), "");
+            expect(wrapper.find(InputGroup).prop("value")).toBe("");
             expect(onChange).toHaveBeenCalledWith(null, expect.anything());
         });
 
@@ -361,7 +359,7 @@ describe("<DateInput>", () => {
                 .find("input")
                 .simulate("change", { target: { value: "" } });
 
-            assert.lengthOf(wrapper.find(`.${Classes.DATEPICKER3_DAY_SELECTED}`), 0);
+            expect(wrapper.find(`.${Classes.DATEPICKER3_DAY_SELECTED}`)).toHaveLength(0);
             expect(onChange).toHaveBeenCalledWith(null, expect.anything());
         });
 
@@ -399,7 +397,7 @@ describe("<DateInput>", () => {
                 attachTo: containerElement,
             });
             focusInput(wrapper);
-            assert.equal(wrapper.find(InputGroup).prop("value"), "4/3/2016");
+            expect(wrapper.find(InputGroup).prop("value")).toBe("4/3/2016");
 
             wrapper
                 .find(`.${Classes.DATEPICKER3_DAY}`)
@@ -408,7 +406,7 @@ describe("<DateInput>", () => {
                 .simulate("click");
 
             assertPopoverIsOpen(wrapper);
-            assert.equal(wrapper.find(InputGroup).prop("value"), "3/27/2016");
+            expect(wrapper.find(InputGroup).prop("value")).toBe("3/27/2016");
         });
 
         it("typing in a valid date invokes onChange and inputProps.onChange", () => {
@@ -440,8 +438,8 @@ describe("<DateInput>", () => {
             const value = "2/1/2030";
             wrapper.find("input").simulate("change", { target: { value } }).simulate("blur");
 
-            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
+            expect(wrapper.find(InputGroup).prop("intent")).toBe("danger");
+            expect(wrapper.find(InputGroup).prop("value")).toBe(rangeMessage);
 
             expect(onError).toHaveBeenCalledExactlyOnceWith(new Date(value));
         });
@@ -462,8 +460,8 @@ describe("<DateInput>", () => {
                 .simulate("change", { target: { value: "not a date" } })
                 .simulate("blur");
 
-            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), invalidDateMessage);
+            expect(wrapper.find(InputGroup).prop("intent")).toBe("danger");
+            expect(wrapper.find(InputGroup).prop("value")).toBe(invalidDateMessage);
 
             expect(onError.mock.calls[0][0].valueOf()).toBeNaN();
         });
@@ -525,13 +523,11 @@ describe("<DateInput>", () => {
 
         it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
-            assert.strictEqual(
-                wrapper.find(TimezoneSelect).text(),
+            expect(wrapper.find(TimezoneSelect).text()).toBe(
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
             );
             wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode }).update();
-            assert.strictEqual(
-                wrapper.find(TimezoneSelect).text(),
+            expect(wrapper.find(TimezoneSelect).text()).toBe(
                 TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
@@ -545,7 +541,7 @@ describe("<DateInput>", () => {
         };
 
         it("handles null inputs without crashing", () => {
-            assert.doesNotThrow(() => mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={null} />));
+            expect(() => mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={null} />)).not.toThrow();
         });
 
         it("changing the time calls onChange with the updated ISO string", () => {
@@ -588,16 +584,11 @@ describe("<DateInput>", () => {
 
             // onChange is called once on change, once on Enter
             expect(onChange).toHaveBeenCalledTimes(2);
-            assert.strictEqual(
-                onChange.mock.calls[1][0],
+            expect(onChange.mock.calls[1][0]).toBe(
                 formatInTimeZone(parseISO(DATE2_VALUE), TimezoneUtils.UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
             );
             expect(onKeyDown).toHaveBeenCalledOnce();
-            assert.strictEqual(
-                document.activeElement,
-                wrapper.find(InputGroup).find("input").getDOMNode(),
-                "input should remain focused",
-            );
+            expect(document.activeElement).toBe(wrapper.find(InputGroup).find("input").getDOMNode());
             assertPopoverIsOpen(wrapper, false);
         });
 
@@ -617,7 +608,7 @@ describe("<DateInput>", () => {
             });
             focusInput(wrapper);
             clickCalendarDay(wrapper, 4);
-            assert.equal(wrapper.find(InputGroup).prop("value"), "4/4/2016");
+            expect(wrapper.find(InputGroup).prop("value")).toBe("4/4/2016");
             expect(onChange).toHaveBeenCalledWith(null, true);
         });
 
@@ -625,10 +616,10 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
                 attachTo: containerElement,
             });
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE1_UI_STR);
+            expect(wrapper.find(InputGroup).prop("value")).toBe(DATE1_UI_STR);
             wrapper.setProps({ value: DATE2_VALUE });
             wrapper.update();
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR);
+            expect(wrapper.find(InputGroup).prop("value")).toBe(DATE2_UI_STR);
         });
 
         it("typing in a date invokes onChange and inputProps.onChange", () => {
@@ -654,7 +645,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), INVALID_DATE_MESSAGE);
+            expect(wrapper.find(InputGroup).prop("value")).toBe(INVALID_DATE_MESSAGE);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -663,9 +654,9 @@ describe("<DateInput>", () => {
             });
             focusInput(wrapper);
             changeInput(wrapper, "4/77/201");
-            assert.notEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            expect(wrapper.find(InputGroup).prop("intent")).not.toBe("danger");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("intent"), "danger");
+            expect(wrapper.find(InputGroup).prop("intent")).toBe("danger");
         });
 
         it("clearing the date in the input invokes onChange with null", () => {
@@ -702,7 +693,7 @@ describe("<DateInput>", () => {
 
         it("formats locale-specific format strings properly", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR_DE);
+            expect(wrapper.find(InputGroup).prop("value")).toBe(DATE2_UI_STR_DE);
         });
 
         describe("when changing timezone", () => {
@@ -742,13 +733,11 @@ describe("<DateInput>", () => {
 
         it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
-            assert.strictEqual(
-                wrapper.find(TimezoneSelect).text(),
+            expect(wrapper.find(TimezoneSelect).text()).toBe(
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
             );
             wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
-            assert.strictEqual(
-                wrapper.find(TimezoneSelect).text(),
+            expect(wrapper.find(TimezoneSelect).text()).toBe(
                 TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
@@ -783,7 +772,7 @@ describe("<DateInput>", () => {
                 const wrapper = mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, {
                     attachTo: containerElement,
                 });
-                assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
+                expect(wrapper.find("input").prop("value")).toBe("custom date");
             });
 
             it("parseDate called on change with locale prop", () => {
@@ -800,7 +789,7 @@ describe("<DateInput>", () => {
                 });
                 changeInput(wrapper, "invalid");
                 blurInput(wrapper);
-                assert.strictEqual(wrapper.find("input").prop("value"), INVALID_DATE_MESSAGE);
+                expect(wrapper.find("input").prop("value")).toBe(INVALID_DATE_MESSAGE);
             });
         });
 
@@ -815,7 +804,7 @@ describe("<DateInput>", () => {
                         },
                     );
                     const formatter = getDateFnsFormatter(format, enUSLocale);
-                    assert.strictEqual(wrapper.find("input").prop("value"), formatter(today));
+                    expect(wrapper.find("input").prop("value")).toBe(formatter(today));
                 });
             });
 
@@ -825,7 +814,7 @@ describe("<DateInput>", () => {
                         attachTo: containerElement,
                     });
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
-                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+                    expect(wrapper.find("input").prop("value")).toBe(defaultFormatter(today));
                 });
 
                 it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
@@ -836,7 +825,7 @@ describe("<DateInput>", () => {
                         },
                     );
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_MINUTES, enUSLocale);
-                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+                    expect(wrapper.find("input").prop("value")).toBe(defaultFormatter(today));
                 });
 
                 it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
@@ -847,7 +836,7 @@ describe("<DateInput>", () => {
                         },
                     );
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_SECONDS, enUSLocale);
-                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+                    expect(wrapper.find("input").prop("value")).toBe(defaultFormatter(today));
                 });
             });
         });
@@ -881,7 +870,7 @@ describe("<DateInput>", () => {
         if (tzItem.exists()) {
             tzItem.simulate("click");
         } else {
-            assert.fail(`Could not find timezone option with query '${searchQuery}'`);
+            expect.unreachable(`Could not find timezone option with query '${searchQuery}'`);
         }
     }
 
@@ -927,21 +916,15 @@ describe("<DateInput>", () => {
     function assertPopoverIsOpen(wrapper: ReactWrapper<DateInputProps>, expectedIsOpen: boolean = true) {
         const openPopoverTarget = wrapper.find(`.${CoreClasses.POPOVER_OPEN}`);
         if (expectedIsOpen) {
-            assert.isTrue(
-                openPopoverTarget.exists(),
-                `Expected .${CoreClasses.POPOVER_OPEN} to exist, indicating the popover is open`,
-            );
+            expect(openPopoverTarget.exists()).toBe(true);
         } else {
-            assert.isFalse(
-                openPopoverTarget.exists(),
-                `Expected .${CoreClasses.POPOVER_OPEN} NOT to exist, indicating the popover is closed`,
-            );
+            expect(openPopoverTarget.exists()).toBe(false);
         }
     }
 
     function assertTimezoneIsSelected(wrapper: ReactWrapper<DateInputProps>, tzCode: string) {
         const tzTag = wrapper.find(Tag);
-        assert.strictEqual(tzTag.text(), tzCode);
+        expect(tzTag.text()).toBe(tzCode);
     }
 });
 

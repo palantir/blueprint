@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 
@@ -61,19 +60,19 @@ describe("<TimezoneSelect>", () => {
         const timezoneSelect = mountTS({ popoverProps: { usePortal: false } });
         timezoneSelect.find(Button).simulate("click");
 
-        assert.isTrue(timezoneSelect.find(Popover).prop("isOpen"));
+        expect(timezoneSelect.find(Popover).prop("isOpen")).toBe(true);
     });
 
     it("if disabled=true, clicking on button target does not open popover", () => {
         const timezoneSelect = mountTS({ disabled: true, popoverProps: { usePortal: false } });
         timezoneSelect.find(Button).simulate("click");
-        assert.isFalse(timezoneSelect.find(Popover).prop("isOpen"));
+        expect(timezoneSelect.find(Popover).prop("isOpen")).toBe(false);
     });
 
     it("if query is empty, shows initial items", () => {
         const timezoneSelect = mountTS();
         const items = findSelect(timezoneSelect).prop("items");
-        assert.deepEqual(items, getInitialTimezoneItems(new Date(), false));
+        expect(items).toEqual(getInitialTimezoneItems(new Date(), false));
     });
 
     it("if query is not empty, shows all items", () => {
@@ -83,33 +82,33 @@ describe("<TimezoneSelect>", () => {
         });
         timezoneSelect.update();
         const items = timezoneSelect.find(Select).prop("items");
-        assert.lengthOf(items, TIMEZONE_ITEMS.length);
+        expect(items).toHaveLength(TIMEZONE_ITEMS.length);
     });
 
     it("if inputProps.value is non-empty, all items are shown", () => {
         const date = new Date();
         const query = "test query";
         const timezoneSelect = mountTS({ date, inputProps: { value: query } });
-        assert.strictEqual(timezoneSelect.state("query"), query);
+        expect(timezoneSelect.state("query")).toBe(query);
         const items = findSelect(timezoneSelect).prop("items");
-        assert.deepEqual(items, mapTimezonesWithNames(date, TIMEZONE_ITEMS));
+        expect(items).toEqual(mapTimezonesWithNames(date, TIMEZONE_ITEMS));
     });
 
     it("if showLocalTimezone=true, the local timezone is rendered at the top of the item list", () => {
         const timezoneSelect = mountTS({ showLocalTimezone: true });
         const items = findSelect(timezoneSelect).prop("items");
-        assert.isTrue(items.length > 0);
+        expect(items.length).toBeGreaterThan(0);
         const firstItem = items[0];
-        assert.strictEqual(firstItem.ianaCode, CURRENT_TZ);
+        expect(firstItem.ianaCode).toBe(CURRENT_TZ);
     });
 
     it("if showLocalTimezone=false, the local timezone is not rendered at the top of the item list", () => {
         const date = new Date();
         const timezoneSelect = mountTS({ date, showLocalTimezone: false });
         const items = findSelect(timezoneSelect).prop("items");
-        assert.isTrue(items.length > 0);
+        expect(items.length).toBeGreaterThan(0);
         const expectedFirstItem = getInitialTimezoneItems(date, false)[0];
-        assert.deepEqual(items[0], expectedFirstItem);
+        expect(items[0]).toEqual(expectedFirstItem);
     });
 
     it("if date is non-empty, the timezone offsets will correspond to that date", () => {
@@ -124,7 +123,7 @@ describe("<TimezoneSelect>", () => {
         const itemsDec = selectDec.prop("items");
         const timezoneItemJun = itemsJun.filter(item => item.ianaCode === timezone)[0];
         const timezoneItemDec = itemsDec.filter(item => item.ianaCode === timezone)[0];
-        assert.notDeepEqual(timezoneItemJun, timezoneItemDec);
+        expect(timezoneItemJun).not.toEqual(timezoneItemDec);
     });
 
     // HACKHACK: see https://github.com/palantir/blueprint/issues/5364
@@ -140,7 +139,7 @@ describe("<TimezoneSelect>", () => {
         const timezoneSelect = mountTS({ onChange, value });
         clickFirstMenuItem(timezoneSelect);
         const buttonText = timezoneSelect.find(Button).prop("text")?.toString();
-        assert.isTrue(buttonText?.includes(valueLabel!), `Expected '${buttonText}' to contain '${valueLabel}'`);
+        expect(buttonText).toContain(valueLabel!);
     });
 
     it("popover can be controlled with popover props", () => {
@@ -151,7 +150,7 @@ describe("<TimezoneSelect>", () => {
         const timezoneSelect = mountTS({ popoverProps });
         const popover = findPopover(timezoneSelect);
         for (const key of Object.keys(popoverProps)) {
-            assert.deepEqual(popover.prop(key), popoverProps[key as keyof PopoverProps]);
+            expect(popover.prop(key)).toEqual(popoverProps[key as keyof PopoverProps]);
         }
     });
 
@@ -164,7 +163,7 @@ describe("<TimezoneSelect>", () => {
         const timezoneSelect = mountTS({ inputProps });
         const inputGroup = findInputGroup(timezoneSelect);
         for (const key of Object.keys(inputProps)) {
-            assert.deepEqual(inputGroup.prop(key), inputProps[key as keyof InputGroupProps]);
+            expect(inputGroup.prop(key)).toEqual(inputProps[key as keyof InputGroupProps]);
         }
     });
 
@@ -176,7 +175,7 @@ describe("<TimezoneSelect>", () => {
         const timezoneSelect = mountTS({ buttonProps });
         const button = timezoneSelect.find(Button);
         for (const key of Object.keys(buttonProps)) {
-            assert.deepEqual(button.prop(key), buttonProps[key as keyof ButtonProps]);
+            expect(button.prop(key)).toEqual(buttonProps[key as keyof ButtonProps]);
         }
     });
 
