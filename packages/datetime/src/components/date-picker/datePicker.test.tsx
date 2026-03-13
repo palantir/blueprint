@@ -168,10 +168,10 @@ describe("<DatePicker>", () => {
 
             it("should call onDayClick", async () => {
                 const onDayClick = vi.fn();
-                const { getDay } = wrap(
+                const { getDay, user } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onDayClick }} />,
                 );
-                await userEvent.click(getDay());
+                await user.click(getDay());
                 expect(onDayClick).toHaveBeenCalled();
             });
         });
@@ -380,14 +380,14 @@ describe("<DatePicker>", () => {
 
         it("should not fire onChange when a day outside of bounds is clicked", async () => {
             const onChange = vi.fn();
-            const { getDay } = wrap(
+            const { getDay, user } = wrap(
                 <DatePicker {...LOCALE_LOADER} maxDate={MAX_DATE} minDate={MIN_DATE} onChange={onChange} />,
             );
             expect(onChange).not.toHaveBeenCalled();
-            await userEvent.click(getDay(4));
-            await userEvent.click(getDay(16));
+            await user.click(getDay(4));
+            await user.click(getDay(16));
             expect(onChange).not.toHaveBeenCalled();
-            await userEvent.click(getDay(8));
+            await user.click(getDay(8));
             expect(onChange).toHaveBeenCalledOnce();
         });
 
@@ -432,9 +432,9 @@ describe("<DatePicker>", () => {
         });
 
         it("should not update selection automatically", async () => {
-            const { getDay, assertSelectedDays } = wrap(<DatePicker {...LOCALE_LOADER} value={null} />);
+            const { getDay, assertSelectedDays, user } = wrap(<DatePicker {...LOCALE_LOADER} value={null} />);
             assertSelectedDays();
-            await userEvent.click(getDay());
+            await user.click(getDay());
             assertSelectedDays();
         });
 
@@ -456,8 +456,8 @@ describe("<DatePicker>", () => {
 
         it("should fire onChange when a day is clicked", async () => {
             const onChange = vi.fn();
-            const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} value={null} />);
-            await userEvent.click(getDay());
+            const { getDay, user } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} value={null} />);
+            await user.click(getDay());
             expect(onChange).toHaveBeenCalledOnce();
             expect(onChange.mock.calls[0][1]).toBe(true);
         });
@@ -543,12 +543,10 @@ describe("<DatePicker>", () => {
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             expect(onShortcutChangeSpy).toHaveBeenCalledOnce();
-            expect(onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1][0].label === "Today").toBe(
-                true,
+            expect(onShortcutChangeSpy).toHaveBeenLastCalledWith(
+                expect.objectContaining({ label: "Today" }),
+                selectedShortcut,
             );
-            expect(
-                onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1][1] === selectedShortcut,
-            ).toBe(true);
         });
 
         it("should select the correct values from custom shortcuts", async () => {
@@ -578,48 +576,48 @@ describe("<DatePicker>", () => {
 
         it("should fire onChange when a day is clicked", async () => {
             const onChange = vi.fn();
-            const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} />);
+            const { getDay, user } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} />);
             expect(onChange).not.toHaveBeenCalled();
-            await userEvent.click(getDay());
+            await user.click(getDay());
             expect(onChange).toHaveBeenCalledOnce();
         });
 
         it("should fire onChange when month is changed", async () => {
             const onChange = vi.fn();
             // must use an initial month otherwise clicking next month in december will fail
-            const { getDay, clickNextMonth } = wrap(
+            const { getDay, clickNextMonth, user } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={new Date(2015, Months.JANUARY, 12)} onChange={onChange} />,
             );
             expect(onChange).not.toHaveBeenCalled();
-            await userEvent.click(getDay());
+            await user.click(getDay());
             expect(onChange).toHaveBeenCalledOnce();
             await clickNextMonth();
             expect(onChange).toHaveBeenCalledTimes(2);
         });
 
         it("should automatically update selected day", async () => {
-            const { assertSelectedDays, getDay } = wrap(<DatePicker {...LOCALE_LOADER} />);
+            const { assertSelectedDays, getDay, user } = wrap(<DatePicker {...LOCALE_LOADER} />);
             assertSelectedDays();
-            await userEvent.click(getDay(3));
+            await user.click(getDay(3));
             assertSelectedDays(3);
         });
 
         it("should preserve selected day when selections are changed", async () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
-            const { assertSelectedDays, getDay, getMonthSelect } = wrap(
+            const { assertSelectedDays, getDay, getMonthSelect, user } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={initialMonth} />,
             );
-            await userEvent.click(getDay(31));
+            await user.click(getDay(31));
             fireEvent.change(getMonthSelect(), { target: { value: Months.AUGUST } });
             assertSelectedDays(31);
         });
 
         it("should change selected day if necessary when selections are changed", async () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
-            const { assertSelectedDays, getDay, clickPreviousMonth } = wrap(
+            const { assertSelectedDays, getDay, clickPreviousMonth, user } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={initialMonth} />,
             );
-            await userEvent.click(getDay(31));
+            await user.click(getDay(31));
             await clickPreviousMonth();
             assertSelectedDays(30);
             // remembers actual date that was clicked and restores if possible
@@ -631,15 +629,15 @@ describe("<DatePicker>", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
             const minDate = new Date(2015, Months.MARCH, 13);
             const maxDate = new Date(2015, Months.NOVEMBER, 21);
-            const { assertSelectedDays, getDay, getMonthSelect } = wrap(
+            const { assertSelectedDays, getDay, getMonthSelect, user } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={initialMonth} minDate={minDate} maxDate={maxDate} />,
             );
 
-            await userEvent.click(getDay(1));
+            await user.click(getDay(1));
             fireEvent.change(getMonthSelect(), { target: { value: Months.MARCH } });
             assertSelectedDays(minDate.getDate());
 
-            await userEvent.click(getDay(25));
+            await user.click(getDay(25));
             fireEvent.change(getMonthSelect(), { target: { value: Months.NOVEMBER } });
             assertSelectedDays(maxDate.getDate());
         });
@@ -697,7 +695,7 @@ describe("<DatePicker>", () => {
 
         it("should fire onChange when the time is changed", async () => {
             const onChangeSpy = vi.fn();
-            const { container } = wrap(
+            const { container, user } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
                     defaultValue={defaultValue}
@@ -709,7 +707,7 @@ describe("<DatePicker>", () => {
             const hourIncrementBtn = container.querySelector<HTMLElement>(
                 `.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`,
             )!;
-            await userEvent.click(hourIncrementBtn);
+            await user.click(hourIncrementBtn);
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const cbHour = onChangeSpy.mock.calls[0][0].getHours();
             expect(cbHour).toBe(defaultValue.getHours() + 1);
@@ -717,7 +715,7 @@ describe("<DatePicker>", () => {
 
         it("should not change time when changing date", async () => {
             const onChangeSpy = vi.fn();
-            const { getDay } = wrap(
+            const { getDay, user } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
                     defaultValue={defaultValue}
@@ -725,7 +723,7 @@ describe("<DatePicker>", () => {
                     timePrecision="minute"
                 />,
             );
-            await userEvent.click(getDay(16));
+            await user.click(getDay(16));
             expect(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0] as Date, defaultValue)).toBe(true);
         });
 
@@ -876,6 +874,7 @@ describe("<DatePicker>", () => {
 
     function wrap(datepicker: React.JSX.Element) {
         const { container, rerender } = render(datepicker);
+        const user = userEvent.setup();
 
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
@@ -887,16 +886,16 @@ describe("<DatePicker>", () => {
             },
             clickNextMonth: async () => {
                 const btn = container.querySelector<HTMLElement>(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`)!;
-                await userEvent.click(btn);
+                await user.click(btn);
             },
             clickPreviousMonth: async () => {
                 const btn = container.querySelector<HTMLElement>(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`)!;
-                await userEvent.click(btn);
+                await user.click(btn);
             },
             clickShortcut: async (index = 0) => {
                 const shortcuts = container.querySelector(`.${Classes.DATERANGEPICKER_SHORTCUTS}`)!;
                 const links = shortcuts.querySelectorAll("a");
-                await userEvent.click(links[index]);
+                await user.click(links[index]);
             },
             container,
             getClearButton: () => {
@@ -936,6 +935,7 @@ describe("<DatePicker>", () => {
                 const input = container.querySelector<HTMLInputElement>(`.${Classes.TIMEPICKER}-${precision}`)!;
                 fireEvent.blur(input, { target: { value } });
             },
+            user,
         };
     }
 });
