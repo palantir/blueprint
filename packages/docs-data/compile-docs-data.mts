@@ -13,7 +13,7 @@ import semver from "semver";
 import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-import { buildNavTree, buildRouteMap, fixPageRoutes, normalizeNavConfig } from "./navHelpers.mts";
+import { assignRoutes, buildNavTree, normalizeNavConfig } from "./navHelpers.mts";
 import type { DocPage, NavStructure, NavTreeNode, RawNavStructure } from "./navTypes.ts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
@@ -121,7 +121,6 @@ function interpolateClassNamespace(value: string): string {
 }
 
 function applyNavConfig(docs: { pages: Record<string, DocPage>; nav: NavTreeNode[] }, navConfig: NavStructure): void {
-    const routeMap = buildRouteMap(navConfig);
-    fixPageRoutes(docs.pages, routeMap);
+    assignRoutes(navConfig, docs.pages);
     docs.nav = buildNavTree(navConfig, docs.pages);
 }

@@ -17,13 +17,12 @@
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import {
+    assignRoutes,
     buildNavLeafPage,
     buildNavTree,
     buildNavPage,
-    buildRouteMap,
     buildNavSection,
     extractHeadingChildren,
-    fixPageRoutes,
     normalizeNavConfig,
     requirePage,
     slugify,
@@ -93,8 +92,13 @@ describe("normalizeNavConfig", () => {
     });
 });
 
-describe("buildRouteMap", () => {
-    it("should compute flat routes for a package with direct pages", () => {
+describe("assignRoutes", () => {
+    it("should assign flat routes for a package with direct pages", () => {
+        const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
+            "getting-started": makePage("Getting Started"),
+            "reading-list": makePage("Reading List"),
+        };
         const navConfig: NavStructure = [
             {
                 package: "core",
@@ -105,14 +109,22 @@ describe("buildRouteMap", () => {
                 sections: [],
             },
         ];
-        const routeMap = buildRouteMap(navConfig);
 
-        expect(routeMap.get("core")).toBe("core");
-        expect(routeMap.get("getting-started")).toBe("core/getting-started");
-        expect(routeMap.get("reading-list")).toBe("core/reading-list");
+        assignRoutes(navConfig, pages);
+
+        expect(pages.core.route).toBe("core");
+        expect(pages["getting-started"].route).toBe("core/getting-started");
+        expect(pages["reading-list"].route).toBe("core/reading-list");
     });
 
-    it("should compute nested routes through sections", () => {
+    it("should assign nested routes through sections", () => {
+        const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
+            components: makePage("Components"),
+            buttons: makePage("Buttons"),
+            dialog: makePage("Dialog"),
+            popover: makePage("Popover"),
+        };
         const navConfig: NavStructure = [
             {
                 package: "core",
@@ -129,15 +141,21 @@ describe("buildRouteMap", () => {
                 ],
             },
         ];
-        const routeMap = buildRouteMap(navConfig);
 
-        expect(routeMap.get("components")).toBe("core/components");
-        expect(routeMap.get("buttons")).toBe("core/components/buttons");
-        expect(routeMap.get("dialog")).toBe("core/components/dialog");
-        expect(routeMap.get("popover")).toBe("core/components/popover");
+        assignRoutes(navConfig, pages);
+
+        expect(pages.components.route).toBe("core/components");
+        expect(pages.buttons.route).toBe("core/components/buttons");
+        expect(pages.dialog.route).toBe("core/components/dialog");
+        expect(pages.popover.route).toBe("core/components/popover");
     });
 
     it("should throw on duplicate refs", () => {
+        const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
+            components: makePage("Components"),
+            buttons: makePage("Buttons"),
+        };
         const navConfig: NavStructure = [
             {
                 package: "core",
@@ -151,18 +169,29 @@ describe("buildRouteMap", () => {
             },
         ];
 
-        expect(() => buildRouteMap(navConfig)).toThrow('[docs-data] duplicate nav ref "buttons"');
+        expect(() => assignRoutes(navConfig, pages)).toThrow('[docs-data] duplicate nav ref "buttons"');
     });
-});
 
-describe("fixPageRoutes", () => {
-    it("should set page.route and heading routes from the route map", () => {
+    it("should set page.route and heading routes", () => {
         const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
+            components: makePage("Components"),
             buttons: makePage("Buttons", [makeHeading("Buttons", 1), makeHeading("Usage", 2), "Some text content"]),
         };
-        const routeMap = new Map([["buttons", "core/components/buttons"]]);
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [],
+                sections: [
+                    {
+                        section: "components",
+                        pages: [{ type: "page", ref: "buttons" }],
+                    },
+                ],
+            },
+        ];
 
-        fixPageRoutes(pages, routeMap);
+        assignRoutes(navConfig, pages);
 
         expect(pages.buttons.route).toBe("core/components/buttons");
         // Level 1 heading gets the page route
@@ -171,15 +200,16 @@ describe("fixPageRoutes", () => {
         expect((pages.buttons.contents[1] as DocHeadingItem).route).toBe("core/components/buttons.usage");
     });
 
-    it("should skip pages not present in the route map", () => {
+    it("should not modify pages that are not referenced in the nav config", () => {
         const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
             _nav: makePage("Nav", [makeHeading("Internal", 1)]),
         };
-        const routeMap = new Map<string, string>();
+        const navConfig: NavStructure = [{ package: "core", pages: [] }];
 
-        fixPageRoutes(pages, routeMap);
+        assignRoutes(navConfig, pages);
 
-        // route should remain unchanged (original empty string from makePage)
+        // _nav is not in the nav config, so its route remains unchanged
         expect(pages._nav.route).toBe("");
     });
 });
