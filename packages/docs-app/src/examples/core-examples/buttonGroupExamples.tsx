@@ -16,6 +16,9 @@ import buttonGroupFlexCode from "./button-group/ButtonGroupFlex.tsx?raw";
 import ButtonGroupIconsOnly from "./button-group/ButtonGroupIconsOnly";
 import buttonGroupIconsOnlyPreview from "./button-group/ButtonGroupIconsOnly.tsx.preview?raw";
 import buttonGroupIconsOnlyCode from "./button-group/ButtonGroupIconsOnly.tsx?raw";
+import ButtonGroupIconsWithTooltips from "./button-group/ButtonGroupIconsWithTooltips";
+import buttonGroupIconsWithTooltipsPreview from "./button-group/ButtonGroupIconsWithTooltips.tsx.preview?raw";
+import buttonGroupIconsWithTooltipsCode from "./button-group/ButtonGroupIconsWithTooltips.tsx?raw";
 import ButtonGroupIntent from "./button-group/ButtonGroupIntent";
 import buttonGroupIntentPreview from "./button-group/ButtonGroupIntent.tsx.preview?raw";
 import buttonGroupIntentCode from "./button-group/ButtonGroupIntent.tsx?raw";
@@ -124,6 +127,18 @@ export const ButtonGroupIconsOnlyExample: React.FC<ExampleProps> = props => {
             {...props}
         >
             <ButtonGroupIconsOnly />
+        </CodeExample>
+    );
+};
+
+export const ButtonGroupIconsWithTooltipsExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={buttonGroupIconsWithTooltipsPreview}
+            sourceCode={buttonGroupIconsWithTooltipsCode}
+            {...props}
+        >
+            <ButtonGroupIconsWithTooltips />
         </CodeExample>
     );
 };
