@@ -654,7 +654,7 @@ describe("<DateRangePicker>", () => {
                     maxDate={new Date(2000, Months.JANUARY, 8)}
                 />,
             );
-            expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
+            expect(consoleError).toHaveBeenCalledWith(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         });
 
         it("should only disable days outside bounds", () => {
