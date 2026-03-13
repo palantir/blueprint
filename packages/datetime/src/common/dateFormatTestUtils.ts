@@ -15,11 +15,9 @@
  */
 
 import { format, type Locale, parse } from "date-fns";
+import * as Locales from "date-fns/locale";
 
-import type { DateFormatProps } from ".";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const locales: { [localeCode: string]: Locale } = require("date-fns/locale");
+import type { DateFormatProps } from "./dateFormatProps";
 
 export const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
 export const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
@@ -33,8 +31,11 @@ function getDateFnsFormatter(formatStr: string): DateFormatProps {
 }
 
 function maybeGetLocaleOptions(localeCode: string | undefined): { locale: Locale } | undefined {
-    if (localeCode !== undefined && locales[localeCode] !== undefined) {
-        return { locale: locales[localeCode] };
+    if (localeCode !== undefined) {
+        const localeMap = Locales as unknown as Record<string, Locale>;
+        if (localeMap[localeCode] !== undefined) {
+            return { locale: localeMap[localeCode] };
+        }
     }
     return undefined;
 }

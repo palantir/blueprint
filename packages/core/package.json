@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "6.9.1",
+    "version": "6.10.0",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -41,8 +41,9 @@
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "prepack": "run-s compile dist",
-        "test": "run-s test:iso test:vitest:run",
+        "test": "run-s test:typeCheck test:iso test:vitest:run",
         "test:iso": "vitest run --config vitest.config.isotest.mts",
+        "test:typeCheck": "tsc -p ./src/tsconfig.test.json",
         "test:vitest": "vitest",
         "test:vitest:run": "vitest run",
         "verify": "npm-run-all compile -p dist test lint"

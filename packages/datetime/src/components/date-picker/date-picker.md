@@ -35,18 +35,18 @@ react-day-picker's behavior via `dayPickerProps` (the full list is
 The menu on the left of the calendars provides "shortcuts" which allow users to quickly select common dates.
 The items in this menu are controlled through the `shortcuts` prop:
 
--   `false` (default) will hide the shortcuts menu,
--   `true` will show the built-in shortcuts, and
--   custom shortcuts can be shown by defining an array of `DatePickerShortcut` objects.
+- `false` (default) will hide the shortcuts menu,
+- `true` will show the built-in shortcuts, and
+- custom shortcuts can be shown by defining an array of `DatePickerShortcut` objects.
 
 The built-in **preset shortcuts** can be seen in the example above. They are as follows:
 
--   Today
--   Yesterday
--   1 week ago
--   1 month ago
--   3 months ago
--   1 year ago
+- Today
+- Yesterday
+- 1 week ago
+- 1 month ago
+- 3 months ago
+- 1 year ago
 
 **Custom shortcuts** use the following interface:
 

@@ -30,8 +30,8 @@ const STEP_SIZE = 20;
 describe("<MultiSlider>", () => {
     let containerElement: HTMLElement;
 
-    let onChange: ReturnType<typeof vi.fn>;
-    let onRelease: ReturnType<typeof vi.fn>;
+    const onChange = vi.fn();
+    const onRelease = vi.fn();
 
     beforeEach(() => {
         // need an element in the document for tickSize to be a real number
@@ -40,8 +40,8 @@ describe("<MultiSlider>", () => {
         containerElement.style.width = `${STEP_SIZE * 10}px`;
         document.body.appendChild(containerElement);
 
-        onChange = vi.fn();
-        onRelease = vi.fn();
+        onChange.mockReset();
+        onRelease.mockReset();
     });
 
     afterEach(() => {

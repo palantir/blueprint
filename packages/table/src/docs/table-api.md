@@ -92,10 +92,10 @@ Regions are typically used to describe boundaries for selections (via the `selec
 
 There are four different types of regions:
 
--   **Cell region:** contains a finite, rectangular group of table cells
--   **Row region:** represents all cells within one or more consecutive rows
--   **Column region:** represents all cells within one or more consecutive columns
--   **Table region:** represents all cells in the table
+- **Cell region:** contains a finite, rectangular group of table cells
+- **Row region:** represents all cells within one or more consecutive rows
+- **Column region:** represents all cells within one or more consecutive columns
+- **Table region:** represents all cells in the table
 
 Regions are defined in code according to the `Region` interface:
 
@@ -120,10 +120,10 @@ const tableRegion = Regions.table(); // { rows: null, cols: null }
 
 The table package also exports a `RegionCardinality` enumeration to describe the various region types in code:
 
--   `RegionCardinality.CELLS`: describes a cell region
--   `RegionCardinality.FULL_ROWS`: describes a row region
--   `RegionCardinality.FULL_COLUMNS`: describes a column region
--   `RegionCardinality.FULL_TABLE`: describes a table region
+- `RegionCardinality.CELLS`: describes a cell region
+- `RegionCardinality.FULL_ROWS`: describes a row region
+- `RegionCardinality.FULL_COLUMNS`: describes a column region
+- `RegionCardinality.FULL_TABLE`: describes a table region
 
 This enumeration is primarily used with the `selectionModes` prop to inform the **Table** about which kinds of regions
 are selectable:

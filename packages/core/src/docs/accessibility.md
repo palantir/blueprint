@@ -33,9 +33,9 @@ utility because it is always useful to know where you're typing.
 This behavior is controlled by a singleton instance called `FocusStyleManager` that lives in the
 **@blueprintjs/core** package. It supports the following public methods:
 
--   `FocusStyleManager.isActive(): boolean`: Returns whether the `FocusStyleManager` is currently running.
--   `FocusStyleManager.onlyShowFocusOnTabs(): void`: Enable behavior which hides focus styles during mouse interaction.
--   `FocusStyleManager.alwaysShowFocus(): void`: Stop this behavior (focus styles are always visible).
+- `FocusStyleManager.isActive(): boolean`: Returns whether the `FocusStyleManager` is currently running.
+- `FocusStyleManager.onlyShowFocusOnTabs(): void`: Enable behavior which hides focus styles during mouse interaction.
+- `FocusStyleManager.alwaysShowFocus(): void`: Stop this behavior (focus styles are always visible).
 
 @### Ignoring focus style manager
 
