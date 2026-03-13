@@ -221,7 +221,9 @@ $control-group-stack: (
     $pt-input-box-shadow;
 
   &:focus {
-    box-shadow: input-transition-shadow($color, true, calc(var(--bp-surface-spacing) * 0.5)), $input-box-shadow-focus;
+    box-shadow:
+      input-transition-shadow($color, true, calc(var(--bp-surface-spacing) * 0.5)),
+      $input-box-shadow-focus;
   }
 
   &[readonly] {
@@ -242,7 +244,8 @@ $control-group-stack: (
 
   &:focus {
     box-shadow:
-      dark-input-transition-shadow($color, true, calc(var(--bp-surface-spacing) * 0.5)), $pt-dark-input-box-shadow;
+      dark-input-transition-shadow($color, true, calc(var(--bp-surface-spacing) * 0.5)),
+      $pt-dark-input-box-shadow;
   }
 
   &[readonly] {
