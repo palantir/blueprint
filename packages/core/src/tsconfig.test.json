@@ -6,5 +6,5 @@
         "skipLibCheck": true
     },
     "include": ["**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.test.tsx", "vitest-env.d.ts"],
-    "exclude": ["design-tokens/build.ts", "design-tokens/sd.config.ts"]
+    "exclude": ["design-tokens/build.ts", "design-tokens/sd.config.ts", "**/*.stories.tsx"]
 }

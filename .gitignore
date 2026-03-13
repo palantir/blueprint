@@ -33,6 +33,9 @@ coverage/
 /docs
 docs-static/**/*.d.ts
 
+# Storybook
+storybook-static
+
 # exclude site except for site/docs/versions
 site/*
 site/docs/*
