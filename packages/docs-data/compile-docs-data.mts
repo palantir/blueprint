@@ -61,6 +61,7 @@ async function generateDocumentalistData(): Promise<void> {
                 // see https://github.com/palantir/documentalist/issues/98
                 process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
         })
+        // TODO: once documentalist is fully removed, stop generating nav via documentalist
         .use(".md", new MarkdownPlugin({ navPage: "_nav" }))
         .use(
             /\.tsx?$/,
