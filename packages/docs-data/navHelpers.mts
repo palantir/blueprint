@@ -15,10 +15,6 @@ import type {
     RawNavStructure,
 } from "./navTypes.ts";
 
-function pageRef(ref: string): NavPageRef {
-    return { type: "page", ref };
-}
-
 /**
  * Convert raw nav.json data (bare strings) into a fully
  * typed {@link NavStructure} with union items.
@@ -35,66 +31,47 @@ export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
 }
 
 /**
- * Walk the hierarchical nav config to compute the full route for every page reference.
+ * Walk the nav config and assign the correct route to every page
+ * and its content headings.
  */
-export function buildRouteMap(navConfig: NavStructure): Map<string, string> {
-    const routeMap = new Map<string, string>();
+export function assignRoutes(navConfig: NavStructure, pages: Record<string, DocPage>): void {
+    const seen = new Set<string>();
 
     for (const entry of navConfig) {
-        const packageRoute = addRoute(entry.package, "");
+        const packageRoute = entry.package;
+        applyRoute(entry.package, packageRoute);
 
         for (const pageRef of entry.pages) {
-            addRoute(pageRef.ref, packageRoute);
+            applyRoute(pageRef.ref, `${packageRoute}/${pageRef.ref}`);
         }
 
         for (const section of entry.sections ?? []) {
-            const sectionRoute = addRoute(section.section, packageRoute);
+            const sectionRoute = `${packageRoute}/${section.section}`;
+            applyRoute(section.section, sectionRoute);
 
             for (const child of section.pages) {
-                addRoute(child.ref, sectionRoute);
+                applyRoute(child.ref, `${sectionRoute}/${child.ref}`);
             }
         }
     }
 
-    return routeMap;
-
-    function addRoute(ref: string, parentRoute: string): string {
-        const route = parentRoute ? `${parentRoute}/${ref}` : ref;
-        if (routeMap.has(ref)) {
-            throw new Error(
-                `[docs-data] duplicate nav ref "${ref}" (route "${route}" conflicts with "${routeMap.get(ref)}")`,
-            );
-        }
-        routeMap.set(ref, route);
-        return route;
+    function createSubheadingRoute(pageRoute: string, headingValue: string): string {
+        return pageRoute + "." + slugify(headingValue);
     }
-}
 
-/**
- * Fix routes in every page and its content heading objects.
- * Without @page tags, documentalist produces empty heading routes,
- * so we reconstruct them from the page route and heading value.
- */
-export function fixPageRoutes(pages: Record<string, DocPage>, routeMap: Map<string, string>): void {
-    for (const [ref, page] of Object.entries(pages)) {
-        const correctRoute = routeMap.get(ref);
-        if (correctRoute === undefined) {
-            // Page not in nav config (e.g. _nav) — leave as-is
-            continue;
+    function applyRoute(ref: string, route: string): void {
+        if (seen.has(ref)) {
+            throw new Error(`[docs-data] duplicate nav ref "${ref}" (route "${route}" conflicts)`);
         }
+        seen.add(ref);
 
-        page.route = correctRoute;
+        const page = pages[ref];
+        if (page === undefined) return;
 
-        // Reconstruct heading routes in page.contents
+        page.route = route;
         for (const item of page.contents) {
             if (isHeading(item)) {
-                if (item.level === 1) {
-                    // Level 1 heading = page title, route is the page route
-                    item.route = correctRoute;
-                } else {
-                    // Level 2+ headings: pageRoute.slugified-heading-value
-                    item.route = correctRoute + "." + slugify(item.value);
-                }
+                item.route = item.level === 1 ? route : createSubheadingRoute(route, item.value);
             }
         }
     }
@@ -142,6 +119,10 @@ export function buildNavTree(navConfig: NavStructure, pages: Record<string, DocP
         ];
         return buildNavPage(entry.package, 1, packageRoute, pages, packageChildren);
     });
+}
+
+function pageRef(ref: string): NavPageRef {
+    return { type: "page", ref };
 }
 
 /**
