@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime2",
-    "version": "3.0.15",
+    "version": "3.0.17",
     "description": "Re-exports of @blueprintjs/datetime APIs",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",

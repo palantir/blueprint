@@ -292,9 +292,7 @@ describe("<DatePicker>", () => {
         const MAX_DATE = new Date(2015, Months.JANUARY, 12);
 
         describe("validation", () => {
-            let consoleError: MockInstance;
-
-            beforeAll(() => (consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn())));
+            const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
             afterEach(() => consoleError.mockClear());
             afterAll(() => consoleError.mockRestore());
 
@@ -810,7 +808,7 @@ describe("<DatePicker>", () => {
     });
 
     describe("clearing a selection", () => {
-        const MOCK_TODAY = new Date(2024, 11, 24, 16, 30);
+        const MOCK_TODAY = new Date("2020-12-24T15:45:00Z");
         beforeEach(() => {
             vi.useFakeTimers();
             vi.setSystemTime(MOCK_TODAY);
@@ -870,11 +868,12 @@ describe("<DatePicker>", () => {
 
             const value = root.state("value")!;
             expect(value).not.toBeNull();
+            // Asia/Tokyo is UTC+9, so 2020-12-24T15:45:00Z becomes 2020-12-25T00:45:00 in Tokyo
             expect(value.getDate()).toBe(MOCK_TODAY.getDate() + 1);
             expect(value.getMonth()).toBe(MOCK_TODAY.getMonth());
             expect(value.getFullYear()).toBe(MOCK_TODAY.getFullYear());
-            expect(value.getHours()).toBe(1);
-            expect(value.getMinutes()).toBe(30);
+            expect(value.getHours()).toBe(0);
+            expect(value.getMinutes()).toBe(45);
         });
 
         it("should clear the value when Clear is clicked", () => {

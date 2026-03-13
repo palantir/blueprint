@@ -8,7 +8,7 @@ This package contains the [stylelint](https://stylelint.io/) plugin for Blueprin
 
 **Key features:**
 
--   [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
+- [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 
@@ -60,8 +60,8 @@ Enforce usage of the color variables instead of color literals.
 
 Optional secondary options:
 
--   `disableFix: boolean` - if true, autofix will be disabled
--   `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
+- `disableFix: boolean` - if true, autofix will be disabled
+- `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
 
 ### `@blueprintjs/no-prefix-literal` (autofixable)
 
@@ -91,8 +91,8 @@ Using the variable instead of hardcoding the prefix means that your code will st
 
 Optional secondary options:
 
--   `disableFix: boolean` - if true, autofix will be disabled
--   `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
+- `disableFix: boolean` - if true, autofix will be disabled
+- `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
 
 ### `@blueprintjs/prefer-spacing-variable` (autofixable)
 
@@ -125,17 +125,17 @@ The rule automatically converts mathematical expressions by applying the 2.5x co
 
 **Conversion examples:**
 
--   `$pt-grid-size` → `$pt-spacing * 2.5`
--   `$pt-grid-size * 2` → `$pt-spacing * 5`
--   `2 * $pt-grid-size` → `5 * $pt-spacing`
--   `$pt-grid-size / 2` → `$pt-spacing / 0.8`
--   `bp.$pt-grid-size * 1.5` → `bp.$pt-spacing * 3.75`
--   `calc($pt-grid-size * 1.5)` → `calc($pt-spacing * 3.75)`
+- `$pt-grid-size` → `$pt-spacing * 2.5`
+- `$pt-grid-size * 2` → `$pt-spacing * 5`
+- `2 * $pt-grid-size` → `5 * $pt-spacing`
+- `$pt-grid-size / 2` → `$pt-spacing / 0.8`
+- `bp.$pt-grid-size * 1.5` → `bp.$pt-spacing * 3.75`
+- `calc($pt-grid-size * 1.5)` → `calc($pt-spacing * 3.75)`
 
 Optional secondary options:
 
--   `disableFix: boolean` - if true, autofix will be disabled
--   `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
+- `disableFix: boolean` - if true, autofix will be disabled
+- `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
 
 **See also:** [Spacing System Migration Guide](https://github.com/palantir/blueprint/wiki/Spacing-System-Migration:-10px-to-4px)
 

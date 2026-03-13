@@ -602,7 +602,7 @@ describe("<DateRangeInput>", () => {
 
         // HACKHACK: https://github.com/palantir/blueprint/issues/6109
         // N.B. this test passes locally
-        it.skip("should save the inputted date and close the popover when pressing Enter", () => {
+        it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
             const startInputProps = { onKeyDown: vi.fn() };
             const endInputProps = { onKeyDown: vi.fn() };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ endInputProps, startInputProps }} />);
@@ -2641,7 +2641,7 @@ describe("<DateRangeInput>", () => {
 
         // HACKHACK: https://github.com/palantir/blueprint/issues/6109
         // N.B. this test passes locally
-        it.skip("should save the inputted date and close the popover when pressing Enter", () => {
+        it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
             const onChange = vi.fn();
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[null, null]} />);
             act(() => {
@@ -3060,7 +3060,7 @@ describe("<DateRangeInput>", () => {
                 });
 
                 // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
-                it.skip("should format date strings with async-loaded locale corresponding to provided locale code", () =>
+                it.skip("formats date strings with async-loaded locale corresponding to provided locale code", () =>
                     new Promise<void>(resolve => {
                         const { root } = wrap(
                             <DateRangeInput dateFnsFormat="PPP" locale="es" value={DATE_RANGE_2} />,

@@ -58,10 +58,10 @@ The `intent` prop controls the visual appearance of **EditableText**, similar to
 [**InputGroup**](#core/components/input-group) and [**TextArea**](#core/components/text-area).
 This prop is useful for highlighting states like success, warnings, or errors.
 
--   **Primary** – Indicates primary action or highlight.
--   **Success** – Represents a positive outcome or confirmation.
--   **Warning** – Warns about potential issues.
--   **Danger** – Highlights an error or critical issue.
+- **Primary** – Indicates primary action or highlight.
+- **Success** – Represents a positive outcome or confirmation.
+- **Warning** – Warns about potential issues.
+- **Danger** – Highlights an error or critical issue.
 
 @reactCodeExample EditableTextIntentExample
 

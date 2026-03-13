@@ -653,9 +653,7 @@ describe("<DateRangePicker>", () => {
         const LAST_MONTH_START = new Date(2015, Months.JANUARY, 5);
         const TWO_WEEKS_AGO_START = new Date(2015, Months.JANUARY, 22);
 
-        let consoleError: MockInstance;
-
-        beforeAll(() => (consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn())));
+        const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
         afterEach(() => consoleError.mockClear());
         afterAll(() => consoleError.mockRestore());
 
@@ -1007,9 +1005,7 @@ describe("<DateRangePicker>", () => {
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             expect(onShortcutChangeSpy).toHaveBeenCalledOnce();
-            expect(
-                onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1].at(-1) === selectedShortcut,
-            ).toBe(true);
+            expect(onShortcutChangeSpy.mock.lastCall?.at(-1)).toEqual(selectedShortcut);
         });
 
         it("should select the correct values from custom shortcuts", () => {

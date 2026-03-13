@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime",
-    "version": "6.0.17",
+    "version": "6.0.19",
     "description": "Components for interacting with dates and times",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -33,7 +33,7 @@
         "test:typeCheck": "tsc -p ./src/tsconfig.test.json",
         "test:iso": "vitest run --config vitest.config.isotest.mts",
         "test:vitest": "vitest",
-        "test:vitest:run": "TZ=Etc/UTC vitest run",
+        "test:vitest:run": "vitest run",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
@@ -62,17 +62,19 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
-        "enzyme": "catalog:",
         "@testing-library/dom": "catalog:",
         "@testing-library/jest-dom": "catalog:",
         "@testing-library/react": "catalog:",
         "@testing-library/user-event": "catalog:",
         "@vitejs/plugin-react": "catalog:",
+        "@vitest/coverage-v8": "catalog:",
+        "enzyme": "catalog:",
         "jsdom": "catalog:",
         "npm-run-all": "^4.1.5",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "typescript": "~5.3.3",
+        "webpack-cli": "^5.1.4",
         "vitest": "catalog:"
     },
     "repository": {

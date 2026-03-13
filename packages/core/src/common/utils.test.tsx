@@ -16,7 +16,7 @@
 
 import { Fragment } from "react/jsx-runtime";
 
-import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import * as Utils from "./utils";
 
@@ -136,22 +136,19 @@ describe("Utils", () => {
     });
 
     describe("throttleReactEventCallback", () => {
-        let callback: MockInstance;
-        let fakeEvent: any; // cast as `any` to avoid having to set every required property on the event
-        let throttledCallback: (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => void;
+        const callback = vi.fn();
+        const fakeEvent = { persist: vi.fn(), preventDefault: vi.fn() };
+        let throttledCallback: (event: React.SyntheticEvent) => void;
 
         beforeEach(() => {
-            callback = vi.fn();
-            fakeEvent = { persist: vi.fn(), preventDefault: vi.fn() };
-        });
-
-        afterEach(() => {
-            fakeEvent = undefined;
+            callback.mockReset();
+            fakeEvent.persist.mockReset();
+            fakeEvent.preventDefault.mockReset();
         });
 
         it("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback);
-            throttledCallback(fakeEvent as any);
+            throttledCallback(fakeEvent as unknown as React.SyntheticEvent);
             expect(fakeEvent.persist).toHaveBeenCalledOnce();
         });
 
@@ -159,7 +156,7 @@ describe("Utils", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback, {
                 preventDefault: true,
             });
-            throttledCallback(fakeEvent as any);
+            throttledCallback(fakeEvent as unknown as React.SyntheticEvent);
             expect(fakeEvent.preventDefault).toHaveBeenCalledOnce();
         });
 

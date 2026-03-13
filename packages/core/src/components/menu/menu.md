@@ -14,9 +14,9 @@ import { Menu } from "@blueprintjs/core";
 
 Blueprint's **Menu** API includes three React components:
 
--   [**Menu**](#core/components/menu)
--   [**MenuItem**](#core/components/menu.menu-item)
--   [**MenuDivider**](#core/components/menu.menu-divider)
+- [**Menu**](#core/components/menu)
+- [**MenuItem**](#core/components/menu.menu-item)
+- [**MenuDivider**](#core/components/menu.menu-divider)
 
 ```tsx
 <Menu>
@@ -70,13 +70,13 @@ prop to define **MenuItem** content.
 
 Some tips for designing dropdown menus:
 
--   **Appearance**: it's often useful to style the target Button with `fill={true}`, `alignText="start"`, and
-    `endIcon="caret-down"`. This makes it appear more like an [HTML `<select>`](#core/components/html-select) dropdown.
+- **Appearance**: it's often useful to style the target Button with `fill={true}`, `alignText="start"`, and
+  `endIcon="caret-down"`. This makes it appear more like an [HTML `<select>`](#core/components/html-select) dropdown.
 
--   **Interactions**: by default, the popover is automatically dismissed when the user clicks a menu
-    item ([Popover docs](#core/components/popover.closing-on-click) have more details). If you want to opt out of this
-    behavior, set `shouldDismissPopover={false}` on a **MenuItem**. For example, clicking the "Table" item in this
-    dropdown menu will not dismiss the `Popover`:
+- **Interactions**: by default, the popover is automatically dismissed when the user clicks a menu
+  item ([Popover docs](#core/components/popover.closing-on-click) have more details). If you want to opt out of this
+  behavior, set `shouldDismissPopover={false}` on a **MenuItem**. For example, clicking the "Table" item in this
+  dropdown menu will not dismiss the `Popover`:
 
 @reactExample DropdownMenuExample
 

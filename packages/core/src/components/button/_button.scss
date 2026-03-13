@@ -42,7 +42,7 @@
   }
 
   // intents
-  @each $intent, $colors in $button-intents {
+  @each $intent, $colors in $button-intent-states {
     &.#{$ns}-intent-#{$intent} {
       @include pt-button-intent($colors...);
     }

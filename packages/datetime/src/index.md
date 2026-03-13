@@ -7,17 +7,17 @@ reference: datetime
 The [**@blueprintjs/datetime** package](https://www.npmjs.com/package/@blueprintjs/datetime)
 provides React components for interacting with dates and times:
 
--   [**DatePicker**](#datetime/date-picker) for selecting a single date (day, month, year).
+- [**DatePicker**](#datetime/date-picker) for selecting a single date (day, month, year).
 
--   [**DateRangePicker**](#datetime/date-range-picker) for selecting date ranges.
+- [**DateRangePicker**](#datetime/date-range-picker) for selecting date ranges.
 
--   [**DateInput**](#datetime/date-input), which composes a text input with a DatePicker in
-    a Popover, for use in forms.
+- [**DateInput**](#datetime/date-input), which composes a text input with a DatePicker in
+  a Popover, for use in forms.
 
--   [**DateRangeInput**](#datetime/date-range-input), which composes two text inputs with a
-    DateRangePicker in a Popover, for use in forms.
+- [**DateRangeInput**](#datetime/date-range-input), which composes two text inputs with a
+  DateRangePicker in a Popover, for use in forms.
 
--   [**TimePicker**](#datetime/timepicker) for selecting a time (hour, minute, second, millisecond).
+- [**TimePicker**](#datetime/timepicker) for selecting a time (hour, minute, second, millisecond).
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
