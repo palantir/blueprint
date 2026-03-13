@@ -14,7 +14,7 @@ import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 import { buildNavTree, buildRouteMap, fixPageRoutes, normalizeNavConfig } from "./navHelpers.mts";
-import type { NavStructure, RawNavStructure } from "./navTypes.ts";
+import type { DocPage, NavStructure, NavTreeNode, RawNavStructure } from "./navTypes.ts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
@@ -119,7 +119,7 @@ function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
 }
 
-function applyNavConfig(docs: { pages: Record<string, any>; nav: any[] }, navConfig: NavStructure): void {
+function applyNavConfig(docs: { pages: Record<string, DocPage>; nav: NavTreeNode[] }, navConfig: NavStructure): void {
     const routeMap = buildRouteMap(navConfig);
     fixPageRoutes(docs.pages, routeMap);
     docs.nav = buildNavTree(navConfig, docs.pages);
