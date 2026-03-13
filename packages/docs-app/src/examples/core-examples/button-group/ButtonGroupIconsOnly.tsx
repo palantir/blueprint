@@ -15,8 +15,20 @@ export default function ButtonGroupIconsOnly() {
 
     return (
         <ButtonGroup role="group" aria-label="Text style">
-            <Button icon="bold" aria-label="Bold" aria-pressed={bold} active={bold} onClick={handleBold} />
-            <Button icon="italic" aria-label="Italic" aria-pressed={italic} active={italic} onClick={handleItalic} />
+            <Button
+                icon="bold"
+                aria-label="Bold"
+                aria-pressed={bold}
+                active={bold}
+                onClick={handleBold}
+            />
+            <Button
+                icon="italic"
+                aria-label="Italic"
+                aria-pressed={italic}
+                active={italic}
+                onClick={handleItalic}
+            />
             <Button
                 icon="underline"
                 aria-label="Underline"
