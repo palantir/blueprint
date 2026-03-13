@@ -10,7 +10,7 @@ import { Callout } from "@blueprintjs/core";
 ```
 
 ```tsx
-<Callout title="Upcoming events">Community discussion about LLMs</Callout>
+<Callout title="Our generic title">This is an example callout, with simple content</Callout>
 ```
 
 @## Examples
