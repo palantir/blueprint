@@ -9,25 +9,5 @@ export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginDat
 
 export const docsData: DocsCompleteData;
 
-export interface NpmPackageInfo {
-    name: string;
-    version: string;
-    versions: string[];
-}
-
-export type NpmData = Record<string, NpmPackageInfo>;
-
-export const npmData: NpmData;
-
-// Minimal types replacing "@documentalist/client"
-
-export interface HeadingNode {
-    route: string;
-    level: number;
-    title: string;
-}
-
-export interface PageNode extends HeadingNode {
-    children: Array<PageNode | HeadingNode>;
-    reference: string;
-}
+export { PACKAGES, SECTIONS } from "../navTypes.ts";
+export type { Package, Section } from "../navTypes.ts";

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { readFileSync } from "node:fs";
+
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import {
@@ -27,6 +29,7 @@ import {
     requirePage,
     slugify,
 } from "./navHelpers.mts";
+import { PACKAGES, SECTIONS } from "./navTypes.ts";
 import type {
     DocContentItem,
     DocHeadingItem,
@@ -494,6 +497,36 @@ describe("nested sections", () => {
         expect(() => buildNavTree(navConfig, pages)).toThrow(
             '[docs-data] nav.json references page "modals" which does not exist in docs.pages',
         );
+    });
+});
+
+describe("canonical PACKAGES and SECTIONS arrays", () => {
+    const navJson: RawNavStructure = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
+
+    it("PACKAGES includes every package in nav.json", () => {
+        const navPackages = navJson.map(entry => entry.package);
+        for (const pkg of navPackages) {
+            expect(PACKAGES.some(p => p === pkg)).toBe(true);
+        }
+    });
+
+    it("SECTIONS includes every section in nav.json", () => {
+        const navSections = navJson.flatMap(entry => (entry.sections ?? []).map(s => s.section));
+        for (const section of navSections) {
+            expect(SECTIONS.some(s => s === section)).toBe(true);
+        }
+    });
+
+    it("public API PACKAGES matches navTypes", () => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const publicApi = require("./src/index.js");
+        expect([...publicApi.PACKAGES]).toEqual([...PACKAGES]);
+    });
+
+    it("public API SECTIONS matches navTypes", () => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports
+        const publicApi = require("./src/index.js");
+        expect([...publicApi.SECTIONS]).toEqual([...SECTIONS]);
     });
 });
 
