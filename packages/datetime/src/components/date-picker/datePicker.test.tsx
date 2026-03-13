@@ -21,14 +21,7 @@ import enUSLocale from "date-fns/locale/en-US";
 import { Classes as CoreClasses } from "@blueprintjs/core";
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import {
-    Classes,
-    type DatePickerShortcut,
-    DateUtils,
-    Errors,
-    Months,
-    TimePrecision,
-} from "../..";
+import { Classes, type DatePickerShortcut, DateUtils, Errors, Months, TimePrecision } from "../..";
 import { assertDayDisabled, assertDayHidden } from "../../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../../common/loadDateFnsLocaleFake";
 
@@ -248,9 +241,9 @@ describe("<DatePicker>", () => {
             const { getDisplayYear, getDisplayMonth } = wrap(
                 <DatePicker {...LOCALE_LOADER} maxDate={maxDate} minDate={minDate} />,
             );
-            expect(
-                DateUtils.isDayInRange(new Date(getDisplayYear(), getDisplayMonth()), [minDate, maxDate]),
-            ).toBe(true);
+            expect(DateUtils.isDayInRange(new Date(getDisplayYear(), getDisplayMonth()), [minDate, maxDate])).toBe(
+                true,
+            );
         });
 
         it("should set selectedDay to the day of the value", () => {
@@ -666,9 +659,7 @@ describe("<DatePicker>", () => {
 
         it("should select values from shortcuts", async () => {
             const onChange = vi.fn();
-            const { clickShortcut } = wrap(
-                <DatePicker {...LOCALE_LOADER} shortcuts={true} onChange={onChange} />,
-            );
+            const { clickShortcut } = wrap(<DatePicker {...LOCALE_LOADER} shortcuts={true} onChange={onChange} />);
             await clickShortcut(2);
 
             const today = new Date();
@@ -889,9 +880,9 @@ describe("<DatePicker>", () => {
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
             assertSelectedDays: (...days: number[]) => {
-                const selectedDays = Array.from(
-                    container.querySelectorAll(`.${Classes.DATEPICKER3_DAY_SELECTED}`),
-                ).map(d => +d.textContent!);
+                const selectedDays = Array.from(container.querySelectorAll(`.${Classes.DATEPICKER3_DAY_SELECTED}`)).map(
+                    d => +d.textContent!,
+                );
                 expect(selectedDays.sort()).toEqual([...days].sort());
             },
             clickNextMonth: async () => {
@@ -917,8 +908,7 @@ describe("<DatePicker>", () => {
                 const allDays = container.querySelectorAll<HTMLElement>(`.${Classes.DATEPICKER3_DAY}`);
                 return Array.from(allDays).find(
                     day =>
-                        day.textContent === "" + dayNumber &&
-                        !day.classList.contains(Classes.DATEPICKER3_DAY_OUTSIDE),
+                        day.textContent === "" + dayNumber && !day.classList.contains(Classes.DATEPICKER3_DAY_OUTSIDE),
                 )!;
             },
             getDisplayMonth: () => {
