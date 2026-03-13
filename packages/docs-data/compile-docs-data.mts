@@ -14,7 +14,7 @@ import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 import { buildNavTree, buildRouteMap, fixPageRoutes, normalizeNavConfig } from "./navHelpers.mts";
-import type { NavStructure, RawNavStructure } from "./navTypes.ts";
+import type { DocPage, NavStructure, NavTreeNode, RawNavStructure } from "./navTypes.ts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
@@ -133,19 +133,7 @@ function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
 }
 
-function generateNpmData(): void {
-    const npmDataFilePath = join(generatedSrcDir, "npm-data.json");
-    const npmData: Record<string, { name: string; version: string; versions: string[] }> = {};
-    for (const pkg of LIBRARY_PACKAGES) {
-        const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
-        const { name, version } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
-        npmData[name] = { name, version, versions: [version, ...(PRIOR_MAJOR_VERSIONS[name] ?? [])] };
-    }
-    writeFileSync(npmDataFilePath, JSON.stringify(npmData, null, 2) + "\n");
-    console.info("[docs-data] successfully generated npm-data.json");
-}
-
-function applyNavConfig(docs: { pages: Record<string, any>; nav: any[] }, navConfig: NavStructure): void {
+function applyNavConfig(docs: { pages: Record<string, DocPage>; nav: NavTreeNode[] }, navConfig: NavStructure): void {
     const routeMap = buildRouteMap(navConfig);
     fixPageRoutes(docs.pages, routeMap);
     docs.nav = buildNavTree(navConfig, docs.pages);

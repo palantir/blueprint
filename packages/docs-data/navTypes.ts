@@ -73,7 +73,7 @@ export interface DocHeadingItem {
     route: string;
 }
 
-export type DocContentItem = DocHeadingItem | string | null | { tag: string; [key: string]: unknown };
+export type DocContentItem = DocHeadingItem | string | null | { tag: string; value: string };
 
 export interface DocPage {
     title: string;
