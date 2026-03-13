@@ -20,17 +20,7 @@ import { Day } from "react-day-picker";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { assertDatesEqual } from "@blueprintjs/test-commons";
-import {
-    afterAll,
-    afterEach,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    type MockInstance,
-    vi,
-} from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
