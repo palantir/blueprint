@@ -60,6 +60,7 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
     }
     return (
         <a
+            aria-disabled={props.disabled}
             className={classes}
             href={props.href}
             onClick={props.disabled ? undefined : props.onClick}

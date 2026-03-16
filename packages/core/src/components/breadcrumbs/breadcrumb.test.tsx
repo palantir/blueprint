@@ -52,6 +52,11 @@ describe("<Breadcrumb>", () => {
         expect(onClick).not.toHaveBeenCalled();
     });
 
+    it("should set aria-disabled when disabled", () => {
+        render(<Breadcrumb disabled={true} href="test" text="Test" />);
+        expect(screen.getByText("Test").closest("a")).toHaveAttribute("aria-disabled", "true");
+    });
+
     it("should render an a tag when clickable", () => {
         const { container: container1 } = render(<Breadcrumb href="test" />);
         expect(container1.querySelector("a")).to.exist;
