@@ -1,0 +1,70 @@
+/*
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { useCallback, useRef, useState } from "react";
+import { createRoot, type Root } from "react-dom/client";
+
+import { Button, Tooltip } from "@blueprintjs/core";
+
+function CopyImportButton({ text }: { text: string }) {
+    const [justCopied, setJustCopied] = useState(false);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+    const handleClick = useCallback(() => {
+        void navigator.clipboard.writeText(text);
+        setJustCopied(true);
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => setJustCopied(false), 1500);
+    }, [text]);
+
+    return (
+        <Tooltip content={justCopied ? "Copied!" : "Copy"} hoverOpenDelay={300} position="top">
+            <Button aria-label="Copy import" icon="duplicate" variant="minimal" onClick={handleClick} />
+        </Tooltip>
+    );
+}
+
+const roots: Root[] = [];
+
+/**
+ * Find all `.docs-copyable-import` containers in the DOM and mount a copy button into each one.
+ * Follows the same post-render enhancement pattern as {@link highlightCodeBlocks}.
+ */
+export function addCopyButtonsToImportBlocks() {
+    // Clean up any previously mounted roots
+    for (const root of roots) {
+        root.unmount();
+    }
+    roots.length = 0;
+
+    const containers = document.querySelectorAll<HTMLElement>(".docs-copyable-import");
+    for (const container of Array.from(containers)) {
+        const pre = container.querySelector("pre");
+        if (pre == null) {
+            continue;
+        }
+
+        const text = pre.textContent ?? "";
+        const wrapper = document.createElement("span");
+        wrapper.className = "docs-copy-import-btn";
+        container.style.position = "relative";
+        container.insertBefore(wrapper, container.firstChild);
+
+        const root = createRoot(wrapper);
+        root.render(<CopyImportButton text={text} />);
+        roots.push(root);
+    }
+}

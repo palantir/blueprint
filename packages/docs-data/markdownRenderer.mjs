@@ -36,7 +36,14 @@ renderer.code = (textContent, language, isEscaped) => {
             break;
     }
 
-    return `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
+    const pre = `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
+
+    // Wrap import statement code blocks in a container so the docs app can mount a copy button
+    if (textContent.trimStart().startsWith("import ")) {
+        return `<div class="docs-copyable-import">${pre}</div>`;
+    }
+
+    return pre;
 };
 
 /**
