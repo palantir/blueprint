@@ -223,7 +223,8 @@ $minimal-dark-tag-intent-colors: (
       }
     }
 
-    .#{$ns}-dark & {
+    .#{$ns}-dark &,
+    [data-bp-color-scheme="dark"] & {
       @include pt-tag-minimal-interactive(
         oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
         var(--bp-palette-white)

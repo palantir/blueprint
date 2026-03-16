@@ -184,7 +184,8 @@ $compound-tag-left-intent-colors: (
     }
   }
 
-  .#{$ns}-dark & {
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
     // Variants: dark default & interactive
     // colors are identical to light theme, so we don't need any styles here
 
