@@ -5,6 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
+
 import { Button } from "./buttons";
 
 // These props are deprecated on Button — hide them from the Storybook controls panel.
