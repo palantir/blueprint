@@ -13,7 +13,7 @@ import type {
     NavTreeNode,
     NavTreePage,
     RawNavStructure,
-} from "./navTypes.ts";
+} from "./navTypes.mts";
 
 /**
  * Convert raw nav.json data (bare strings) into a fully

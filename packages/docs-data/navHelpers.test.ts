@@ -29,7 +29,7 @@ import {
     requirePage,
     slugify,
 } from "./navHelpers.mts";
-import { PACKAGES, SECTIONS } from "./navTypes.ts";
+import { PACKAGES, SECTIONS } from "./navTypes.mts";
 import type {
     DocContentItem,
     DocHeadingItem,
@@ -38,7 +38,7 @@ import type {
     NavStructure,
     NavTreePage,
     RawNavStructure,
-} from "./navTypes.ts";
+} from "./navTypes.mts";
 
 describe("normalizeNavConfig", () => {
     it("should convert bare strings to NavPageRef objects", () => {
