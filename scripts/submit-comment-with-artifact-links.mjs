@@ -37,6 +37,7 @@ const ARTIFACTS = {
     landing: "packages/landing-app/dist/index.html",
     table: "packages/table-dev-app/dist/index.html",
     demo: "packages/demo-app/dist/index.html",
+    storybook: "storybook-static/index.html",
 };
 
 function getArtifactAnchorLink(pkg) {

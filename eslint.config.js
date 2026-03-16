@@ -85,6 +85,19 @@ module.exports = tseslint.config([
         },
     },
     {
+        files: ["**/*.stories.{ts,tsx}"],
+        languageOptions: {
+            parserOptions: {
+                projectService: false,
+                project: `${__dirname}/.storybook/tsconfig.json`,
+            },
+        },
+        rules: {
+            "import/no-default-export": "off",
+            "sort-keys": "off",
+        },
+    },
+    {
         ignores: [
             "**/node_modules",
             "**/dist",
