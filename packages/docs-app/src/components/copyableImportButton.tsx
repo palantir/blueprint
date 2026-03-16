@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
 
 import { Button, Tooltip } from "@blueprintjs/core";
@@ -22,6 +22,10 @@ import { Button, Tooltip } from "@blueprintjs/core";
 function CopyImportButton({ text }: { text: string }) {
     const [justCopied, setJustCopied] = useState(false);
     const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+    useEffect(() => {
+        return () => clearTimeout(timeoutRef.current);
+    }, []);
 
     const handleClick = useCallback(() => {
         void navigator.clipboard.writeText(text);
@@ -60,8 +64,7 @@ export function addCopyButtonsToImportBlocks() {
         const text = pre.textContent ?? "";
         const wrapper = document.createElement("span");
         wrapper.className = "docs-copy-import-btn";
-        container.style.position = "relative";
-        container.insertBefore(wrapper, container.firstChild);
+        container.appendChild(wrapper);
 
         const root = createRoot(wrapper);
         root.render(<CopyImportButton text={text} />);

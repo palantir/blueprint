@@ -38,7 +38,9 @@ renderer.code = (textContent, language, isEscaped) => {
 
     const pre = `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
 
-    // Wrap import statement code blocks in a container so the docs app can mount a copy button
+    // Wrap import statement code blocks in a container so the docs app can mount a copy button.
+    // N.B. `textContent` here is HTML-escaped, but "import " contains no special characters,
+    // so this check works identically on both the escaped and raw forms.
     if (textContent.trimStart().startsWith("import ")) {
         return `<div class="docs-copyable-import">${pre}</div>`;
     }

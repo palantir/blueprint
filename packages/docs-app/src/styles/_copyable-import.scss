@@ -2,11 +2,9 @@
 // Licensed under the Apache License, Version 2.0.
 
 .docs-copyable-import {
-  display: flex;
-  align-items: center;
+  position: relative;
 
   > pre {
-    flex: 1;
     margin: 0;
   }
 }
