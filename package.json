@@ -32,7 +32,9 @@
         "site": "npm-run-all site:clean -p 'copy:*' -s serve",
         "site:clean": "git clean -xdfq site/",
         "test": "nx run-many -t test",
-        "verify": "npm-run-all -s compile dist -p test lint format-check"
+        "verify": "npm-run-all -s compile dist -p test lint format-check",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
     },
     "dependencies": {
         "@lerna-lite/cli": "^3.11.0",
@@ -82,5 +84,14 @@
         "url": "git@github.com:palantir/blueprint.git"
     },
     "author": "Palantir Technologies",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@storybook/icons": "^2.0.1",
+        "@storybook/react-dom-shim": "^10.2.14",
+        "@storybook/react-vite": "^10.2.14",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "storybook": "^10.2.14",
+        "vite": "^7.1.12"
+    }
 }
