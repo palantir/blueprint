@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { addDays, format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
@@ -63,38 +62,40 @@ describe("<DateRangePicker>", () => {
         testsContainerElement.remove();
     });
 
-    it("renders its template", () => {
+    it("should render its template", () => {
         const { wrapper } = render();
-        assert.isTrue(wrapper.find(`.${Classes.DATERANGEPICKER}`).exists());
+        expect(wrapper.find(`.${Classes.DATERANGEPICKER}`).exists()).toBe(true);
     });
 
-    it("no days are selected by default", () => {
+    it("should not select any days by default", () => {
         const { wrapper, assertSelectedDays } = render();
-        assert.deepEqual(wrapper.state("value"), [null, null]);
+        expect(wrapper.state("value")).toEqual([null, null]);
         assertSelectedDays();
     });
 
-    it("user-provided modifiers are applied", () => {
+    it("should apply user-provided modifiers", () => {
         const modifiers: DayModifiers = { odd: (d: Date) => d.getDate() % 2 === 1 };
         const modifiersClassNames: ModifiersClassNames = {
             odd: "test-odd",
         };
         const { left } = render({ dayPickerProps: { modifiers, modifiersClassNames } });
-        assert.isFalse(left.findDay(4).hasClass(modifiersClassNames.odd));
-        assert.isTrue(left.findDay(5).hasClass(modifiersClassNames.odd));
+        expect(left.findDay(4).hasClass(modifiersClassNames.odd)).toBe(false);
+        expect(left.findDay(5).hasClass(modifiersClassNames.odd)).toBe(true);
     });
 
     describe("reconciliates dayPickerProps", () => {
-        it("hides unnecessary nav buttons in contiguous months mode", () => {
+        it("should hide unnecessary nav buttons in contiguous months mode", () => {
             const defaultValue: DateRange = [new Date(2017, Months.SEPTEMBER, 1), null];
             const { wrapper } = wrap(<DateRangePicker defaultValue={defaultValue} />);
-            assert.isFalse(wrapper.find(".rdp-month").at(0).find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).exists());
-            assert.isFalse(
-                wrapper.find(".rdp-month").at(1).find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).exists(),
+            expect(wrapper.find(".rdp-month").at(0).find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).exists()).toBe(
+                false,
+            );
+            expect(wrapper.find(".rdp-month").at(1).find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).exists()).toBe(
+                false,
             );
         });
 
-        it("disables days according to custom modifiers in addition to default modifiers", () => {
+        it("should disable days according to custom modifiers in addition to default modifiers", () => {
             const disableFridays = { dayOfWeek: [5] };
             const defaultValue: DateRange = [new Date(2017, Months.SEPTEMBER, 1), null];
             const maxDate = new Date(2017, Months.OCTOBER, 20);
@@ -112,7 +113,7 @@ describe("<DateRangePicker>", () => {
             assertDayDisabled(left.findDay(10).getDOMNode<HTMLElement>(), false);
         });
 
-        it("disables out-of-range max dates", () => {
+        it("should disable out-of-range max dates", () => {
             const { right } = wrap(
                 <DateRangePicker
                     initialMonth={new Date(2017, Months.AUGUST, 1)}
@@ -123,7 +124,7 @@ describe("<DateRangePicker>", () => {
             assertDayDisabled(right.findDay(10).getDOMNode<HTMLElement>(), false);
         });
 
-        it("disables out-of-range min dates", () => {
+        it("should disable out-of-range min dates", () => {
             const { left } = wrap(
                 <DateRangePicker
                     initialMonth={new Date(2017, Months.AUGUST, 1)}
@@ -138,7 +139,7 @@ describe("<DateRangePicker>", () => {
             // use a date that lets us navigate forward and backward in the same year
             const defaultValue = [new Date(2017, Months.SEPTEMBER, 1), null] as DateRange;
 
-            it("calls onMonthChange on button next click", () => {
+            it("should call onMonthChange on button next click", () => {
                 const onMonthChange = vi.fn();
                 wrap(<DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />).clickNavButton(
                     "next",
@@ -147,7 +148,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on button prev click", () => {
+            it("should call onMonthChange on button prev click", () => {
                 const onMonthChange = vi.fn();
                 wrap(<DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />).clickNavButton(
                     "previous",
@@ -155,7 +156,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on button next click of left calendar", () => {
+            it("should call onMonthChange on button next click of left calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker
@@ -167,7 +168,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on button prev click of left calendar", () => {
+            it("should call onMonthChange on button prev click of left calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker
@@ -179,7 +180,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on button next click of right calendar", () => {
+            it("should call onMonthChange on button next click of right calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker
@@ -191,7 +192,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on button prev click of right calendar", () => {
+            it("should call onMonthChange on button prev click of right calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker
@@ -203,7 +204,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on month select change in left calendar", () => {
+            it("should call onMonthChange on month select change in left calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -211,7 +212,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on month select change in right calendar", () => {
+            it("should call onMonthChange on month select change in right calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -219,7 +220,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on year select change in left calendar", () => {
+            it("should call onMonthChange on year select change in left calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -227,7 +228,7 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on year select change in right calendar", () => {
+            it("should call onMonthChange on year select change in right calendar", () => {
                 const onMonthChange = vi.fn();
                 wrap(
                     <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -235,13 +236,13 @@ describe("<DateRangePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onDayMouseEnter", () => {
+            it("should call onDayMouseEnter", () => {
                 const onDayMouseEnter = vi.fn();
                 render({ dayPickerProps: { onDayMouseEnter }, defaultValue }).left.mouseEnterDay(14);
                 expect(onDayMouseEnter).toHaveBeenCalled();
             });
 
-            it("calls onDayMouseLeave", () => {
+            it("should call onDayMouseLeave", () => {
                 const onDayMouseLeave = vi.fn();
                 render({ dayPickerProps: { onDayMouseLeave }, defaultValue })
                     .left.mouseEnterDay(14)
@@ -250,7 +251,7 @@ describe("<DateRangePicker>", () => {
                 expect(onDayMouseLeave).toHaveBeenCalled();
             });
 
-            it("calls onDayClick", () => {
+            it("should call onDayClick", () => {
                 const onDayClick = vi.fn();
                 render({ dayPickerProps: { onDayClick }, defaultValue }).left.clickDay(14);
                 expect(onDayClick).toHaveBeenCalled();
@@ -259,7 +260,7 @@ describe("<DateRangePicker>", () => {
 
         describe("for i18n", () => {
             // regression test for https://github.com/palantir/blueprint/issues/6489
-            it("DatePicker3Caption accepts custom month name formatters (contiguousCalendarMonths={false})", () => {
+            it("should accept custom month name formatters in DatePicker3Caption (contiguousCalendarMonths={false})", () => {
                 const CUSTOM_MONTH_NAMES = [
                     "First",
                     "Second",
@@ -289,16 +290,16 @@ describe("<DateRangePicker>", () => {
                     />,
                 );
                 const leftMonth = left.monthSelect.getDOMNode<HTMLSelectElement>();
-                assert.strictEqual(leftMonth.selectedIndex, initialMonthIndex);
+                expect(leftMonth.selectedIndex).toBe(initialMonthIndex);
                 for (const option of Array.from(leftMonth.options)) {
-                    assert.strictEqual(option.text, CUSTOM_MONTH_NAMES[option.index]);
+                    expect(option.text).toBe(CUSTOM_MONTH_NAMES[option.index]);
                 }
             });
         });
     });
 
     describe("initially displayed month", () => {
-        it("is initialMonth if set", () => {
+        it("should be initialMonth if set", () => {
             const defaultValue = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             const initialMonth = new Date(2002, Months.MARCH, 1);
             const maxDate = new Date(2030, Months.JANUARY);
@@ -307,7 +308,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.MARCH, 2002);
         });
 
-        it("is defaultValue if set and initialMonth not set", () => {
+        it("should be defaultValue if set and initialMonth not set", () => {
             const defaultValue = [new Date(2007, Months.APRIL, 4), null] as DateRange;
             const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
@@ -315,7 +316,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.APRIL, 2007);
         });
 
-        it("is value if set and initialMonth not set", () => {
+        it("should be value if set and initialMonth not set", () => {
             const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const value = [new Date(2007, Months.APRIL, 4), null] as DateRange;
@@ -323,7 +324,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.APRIL, 2007);
         });
 
-        it("has correct initial month on singleMonthOnly and maxDate == initialMonth", () => {
+        it("should have correct initial month on singleMonthOnly and maxDate == initialMonth", () => {
             const maxDate = new Date(2019, Months.MAY, 6);
             const minDate = new Date(2019, Months.MARCH, 3);
             const initialMonth = maxDate;
@@ -331,20 +332,20 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.MAY, 2019);
         });
 
-        it("is (endDate - 1 month) if only endDate is set", () => {
+        it("should be (endDate - 1 month) if only endDate is set", () => {
             const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
             const { left } = render({ value });
             left.assertDisplayMonth(Months.MARCH, 2007);
         });
 
-        it("is endDate if only endDate is set and endDate === minDate month", () => {
+        it("should be endDate if only endDate is set and endDate === minDate month", () => {
             const minDate = new Date(2007, Months.APRIL);
             const value = [null, new Date(2007, Months.APRIL, 4)] as DateRange;
             const { left } = render({ minDate, value });
             left.assertDisplayMonth(Months.APRIL, 2007);
         });
 
-        it("is today if only maxDate/minDate set and today is in date range", () => {
+        it("should be today if only maxDate/minDate set and today is in date range", () => {
             const maxDate = new Date(2030, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const today = new Date();
@@ -352,14 +353,14 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(today.getMonth(), today.getFullYear());
         });
 
-        it("is a day between minDate and maxDate if only maxDate/minDate set and today is not in range", () => {
+        it("should be a day between minDate and maxDate if only maxDate/minDate set and today is not in range", () => {
             const maxDate = new Date(2005, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const { left } = render({ maxDate, minDate });
-            assert.isTrue(DateUtils.isDayInRange(left.displayMonthAndYear.getFullDate(), [minDate, maxDate]));
+            expect(DateUtils.isDayInRange(left.displayMonthAndYear.getFullDate(), [minDate, maxDate])).toBe(true);
         });
 
-        it("is initialMonth - 1 if initialMonth === maxDate month", () => {
+        it("should be initialMonth - 1 if initialMonth === maxDate month", () => {
             const MAX_YEAR = 2016;
 
             const initialMonth = new Date(MAX_YEAR, Months.DECEMBER, 1);
@@ -370,7 +371,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.NOVEMBER, MAX_YEAR);
         });
 
-        it("is value - 1 if set and initialMonth not set and value month === maxDate month", () => {
+        it("should be value - 1 if set and initialMonth not set and value month === maxDate month", () => {
             const value = [new Date(2017, Months.OCTOBER, 4), null] as DateRange;
             const maxDate = new Date(2017, Months.OCTOBER, 15);
 
@@ -378,7 +379,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.SEPTEMBER, 2017);
         });
 
-        it("is initialMonth if initialMonth === minDate month and initialMonth === maxDate month", () => {
+        it("should be initialMonth if initialMonth === minDate month and initialMonth === maxDate month", () => {
             const YEAR = 2016;
 
             const initialMonth = new Date(YEAR, Months.DECEMBER, 11);
@@ -389,7 +390,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.DECEMBER, YEAR);
         });
 
-        it("right calendar shows the month immediately after the left view by default", () => {
+        it("should show the month immediately after the left view by default in right calendar", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.JULY, 5);
             const { right } = render({ value: [startDate, endDate] });
@@ -402,11 +403,11 @@ describe("<DateRangePicker>", () => {
             const options = monthSelect.find("option");
             const expectedFirstOption = renderMonthName(first);
             const expectedLastOption = renderMonthName(last);
-            assert.equal(options.first().text(), expectedFirstOption, "First option in dropdown");
-            assert.equal(options.last().text(), expectedLastOption, "Last option in dropdown");
+            expect(options.first().text()).toBe(expectedFirstOption);
+            expect(options.last().text()).toBe(expectedLastOption);
         }
 
-        it("only shows one calendar when minDate and maxDate are in the same month", () => {
+        it("should only show one calendar when minDate and maxDate are in the same month", () => {
             const minDate = new Date(2015, Months.DECEMBER, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
             const { wrapper, right } = render({
@@ -414,17 +415,17 @@ describe("<DateRangePicker>", () => {
                 maxDate,
                 minDate,
             });
-            assert.isFalse(right.wrapper.exists());
+            expect(right.wrapper.exists()).toBe(false);
             // nav buttons are disabled
-            assert.isTrue(wrapper.find(Button).every({ disabled: true }));
+            expect(wrapper.find(Button).every({ disabled: true })).toBe(true);
         });
 
-        it("only shows one calendar when singleMonthOnly is set", () => {
+        it("should only show one calendar when singleMonthOnly is set", () => {
             const { right } = render({ singleMonthOnly: true });
-            assert.isFalse(right.wrapper.exists());
+            expect(right.wrapper.exists()).toBe(false);
         });
 
-        it("left calendar is bound between minDate and (maxDate - 1 month)", () => {
+        it("should bound left calendar between minDate and (maxDate - 1 month)", () => {
             const minDate = new Date(2015, Months.JANUARY, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
             const { monthSelect } = render({
@@ -435,7 +436,7 @@ describe("<DateRangePicker>", () => {
             assertSelectOptionBounds(monthSelect, Months.JANUARY, Months.NOVEMBER);
         });
 
-        it("right calendar is bound between (minDate + 1 month) and maxDate", () => {
+        it("should bound right calendar between (minDate + 1 month) and maxDate", () => {
             const minDate = new Date(2015, Months.JANUARY, 1);
             const maxDate = new Date(2015, Months.DECEMBER, 15);
             const { monthSelect } = render({
@@ -446,7 +447,7 @@ describe("<DateRangePicker>", () => {
             assertSelectOptionBounds(monthSelect, Months.FEBRUARY, Months.DECEMBER);
         });
 
-        it("right calendar shows the month containing the selected end date", () => {
+        it("should show the month containing the selected end date in right calendar", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.JULY, 5);
             const { right } = render({
@@ -456,7 +457,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JULY);
         });
 
-        it("right calendar shows the month immediately after the left view if startDate === endDate month", () => {
+        it("should show the month immediately after the left view in right calendar if startDate === endDate month", () => {
             const startDate = new Date(2017, Months.MAY, 5);
             const endDate = new Date(2017, Months.MAY, 15);
             const { right } = render({
@@ -468,7 +469,7 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("left/right calendar when contiguous", () => {
-        it("changing left calendar with month dropdown shifts left to the selected month", () => {
+        it("should shift left calendar to the selected month when changing month dropdown", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ initialMonth });
@@ -479,7 +480,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.SEPTEMBER);
         });
 
-        it("changing right calendar with month dropdown shifts right to the selected month", () => {
+        it("should shift right calendar to the selected month when changing month dropdown", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ initialMonth });
@@ -490,7 +491,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.AUGUST);
         });
 
-        it("changing left calendar with year dropdown shifts left to the selected year", () => {
+        it("should shift left calendar to the selected year when changing year dropdown", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
             const NEW_YEAR = 2012;
 
@@ -502,7 +503,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
-        it("changing right calendar with year dropdown shifts right to the selected year", () => {
+        it("should shift right calendar to the selected year when changing year dropdown", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
             const NEW_YEAR = 2012;
 
@@ -514,7 +515,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
-        it("when calendar is between December and January, changing left calendar with year dropdown shifts left to the selected year", () => {
+        it("should shift left calendar to the selected year when changing year dropdown between December and January", () => {
             const INITIAL_YEAR = 2015;
             const initialMonth = new Date(INITIAL_YEAR, Months.DECEMBER, 5);
             const NEW_YEAR = 2012;
@@ -527,7 +528,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JANUARY, NEW_YEAR + 1);
         });
 
-        it("when calendar is between December and January, changing right calendar with year dropdown shifts right to the selected year", () => {
+        it("should shift right calendar to the selected year when changing year dropdown between December and January", () => {
             const INITIAL_YEAR = 2015;
             const initialMonth = new Date(INITIAL_YEAR, Months.DECEMBER, 5);
             const NEW_YEAR = 2012;
@@ -542,7 +543,7 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("left/right calendar when not contiguous", () => {
-        it("left calendar can be altered independently of right calendar", () => {
+        it("should allow left calendar to be altered independently of right calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
             const { left, clickNavButton } = render({
                 contiguousCalendarMonths: false,
@@ -555,7 +556,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.MAY);
         });
 
-        it("right calendar can be altered independently of left calendar", () => {
+        it("should allow right calendar to be altered independently of left calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { right, clickNavButton } = render({
@@ -569,7 +570,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JUNE);
         });
 
-        it("changing left calendar with month dropdown to be equal or after right calendar, shifts the right", () => {
+        it("should shift right calendar when left calendar month dropdown is changed to equal or after right", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ contiguousCalendarMonths: false, initialMonth });
@@ -580,7 +581,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.SEPTEMBER);
         });
 
-        it("changing right calendar with month dropdown to be equal or before left calendar, shifts the left", () => {
+        it("should shift left calendar when right calendar month dropdown is changed to equal or before left", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right } = render({ contiguousCalendarMonths: false, initialMonth });
@@ -591,7 +592,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.APRIL);
         });
 
-        it("changing left calendar with year dropdown to be equal or after right calendar, shifts the right", () => {
+        it("should shift right calendar when left calendar year dropdown is changed to equal or after right", () => {
             const initialMonth = new Date(2013, Months.MAY, 5);
             const NEW_YEAR = 2014;
 
@@ -601,7 +602,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
-        it("changing right calendar with year dropdown to be equal or before left calendar, shifts the left", () => {
+        it("should shift left calendar when right calendar year dropdown is changed to equal or before left", () => {
             const initialMonth = new Date(2013, Months.MAY, 5);
             const NEW_YEAR = 2012;
 
@@ -611,7 +612,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JUNE, NEW_YEAR);
         });
 
-        it("changing left calendar with navButton to equal right calendar, shifts the right", () => {
+        it("should shift right calendar when left calendar navButton reaches right calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right, clickNavButton } = render({
@@ -623,7 +624,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.JULY);
         });
 
-        it("changing right calendar with navButton to equal left calendar, shifts the left", () => {
+        it("should shift left calendar when right calendar navButton reaches left calendar", () => {
             const initialMonth = new Date(2015, Months.MAY, 5);
 
             const { left, right, clickNavButton } = render({
@@ -646,7 +647,7 @@ describe("<DateRangePicker>", () => {
         afterEach(() => consoleError.mockClear());
         afterAll(() => consoleError.mockRestore());
 
-        it("maxDate must be later than minDate", () => {
+        it("should require maxDate to be later than minDate", () => {
             wrap(
                 <DateRangePicker
                     minDate={new Date(2000, Months.JANUARY, 10)}
@@ -656,15 +657,15 @@ describe("<DateRangePicker>", () => {
             expect(consoleError).toHaveBeenCalledWith(Errors.DATERANGEPICKER_MAX_DATE_INVALID);
         });
 
-        it("only days outside bounds have disabled class", () => {
+        it("should only disable days outside bounds", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const initialMonth = minDate;
             const { left } = render({ initialMonth, minDate });
-            assert.isTrue(left.findDay(8).hasClass(Classes.DATEPICKER3_DAY_DISABLED));
-            assert.isFalse(left.findDay(10).hasClass(Classes.DATEPICKER3_DAY_DISABLED));
+            expect(left.findDay(8).hasClass(Classes.DATEPICKER3_DAY_DISABLED)).toBe(true);
+            expect(left.findDay(10).hasClass(Classes.DATEPICKER3_DAY_DISABLED)).toBe(false);
         });
 
-        it("an error is logged if defaultValue is outside bounds", () => {
+        it("should log an error if defaultValue is outside bounds", () => {
             wrap(
                 <DateRangePicker
                     defaultValue={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
@@ -675,7 +676,7 @@ describe("<DateRangePicker>", () => {
             expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_DEFAULT_VALUE_INVALID);
         });
 
-        it("an error is logged if initialMonth is outside month bounds", () => {
+        it("should log an error if initialMonth is outside month bounds", () => {
             wrap(
                 <DateRangePicker
                     initialMonth={new Date(2015, Months.FEBRUARY, 12)}
@@ -686,7 +687,7 @@ describe("<DateRangePicker>", () => {
             expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_INITIAL_MONTH_INVALID);
         });
 
-        it("no error if initialMonth is outside day bounds but inside month bounds", () => {
+        it("should not log an error if initialMonth is outside day bounds but inside month bounds", () => {
             wrap(
                 <DateRangePicker
                     initialMonth={new Date(2015, Months.JANUARY, 12)}
@@ -697,7 +698,7 @@ describe("<DateRangePicker>", () => {
             expect(consoleError).not.toHaveBeenCalled();
         });
 
-        it("an error is logged if value is outside bounds", () => {
+        it("should log an error if value is outside bounds", () => {
             wrap(
                 <DateRangePicker
                     value={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
@@ -708,7 +709,7 @@ describe("<DateRangePicker>", () => {
             expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_VALUE_INVALID);
         });
 
-        it("onChange not fired when a day outside of bounds is clicked", () => {
+        it("should not fire onChange when a day outside of bounds is clicked", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const { left } = render({ maxDate, minDate });
@@ -717,17 +718,17 @@ describe("<DateRangePicker>", () => {
             expect(onChangeSpy).not.toHaveBeenCalled();
         });
 
-        it("caption options are only displayed for possible months and years", () => {
+        it("should only display caption options for possible months and years", () => {
             const minDate = new Date(2015, Months.JANUARY, 5);
             const maxDate = new Date(2015, Months.JANUARY, 7);
             const { left } = render({ maxDate, minDate });
             const monthOptions = left.monthSelect.find("option").map(o => o.text());
             const yearOptions = left.yearSelect.find("option").map(o => o.text());
-            assert.sameMembers(monthOptions, ["January"]);
-            assert.sameMembers(yearOptions, ["2015"]);
+            expect(monthOptions.sort()).toEqual(["January"]);
+            expect(yearOptions.sort()).toEqual(["2015"]);
         });
 
-        it("disables shortcuts that begin earlier than minDate", () => {
+        it("should disable shortcuts that begin earlier than minDate", () => {
             const { shortcuts } = render({
                 initialMonth: TODAY,
                 minDate: TWO_WEEKS_AGO_START,
@@ -736,11 +737,11 @@ describe("<DateRangePicker>", () => {
                     { dateRange: [LAST_MONTH_START, TODAY], label: "last month" },
                 ],
             });
-            assert.isFalse(shortcuts.find(MenuItem).at(0).prop("disabled"));
-            assert.isTrue(shortcuts.find(MenuItem).at(1).prop("disabled"));
+            expect(shortcuts.find(MenuItem).at(0).prop("disabled")).toBe(false);
+            expect(shortcuts.find(MenuItem).at(1).prop("disabled")).toBe(true);
         });
 
-        it("disables shortcuts that end later than maxDate", () => {
+        it("should disable shortcuts that end later than maxDate", () => {
             const { shortcuts } = render({
                 initialMonth: TWO_WEEKS_AGO_START,
                 maxDate: TWO_WEEKS_AGO_START,
@@ -749,8 +750,8 @@ describe("<DateRangePicker>", () => {
                     { dateRange: [LAST_MONTH_START, TODAY], label: "last month" },
                 ],
             });
-            assert.isTrue(shortcuts.find(MenuItem).at(0).prop("disabled"));
-            assert.isTrue(shortcuts.find(MenuItem).at(1).prop("disabled"));
+            expect(shortcuts.find(MenuItem).at(0).prop("disabled")).toBe(true);
+            expect(shortcuts.find(MenuItem).at(1).prop("disabled")).toBe(true);
         });
     });
 
@@ -871,7 +872,7 @@ describe("<DateRangePicker>", () => {
         });
 
         // verifies the fix for https://github.com/palantir/blueprint/issues/1048
-        it("hovering when contiguousCalendarMonths=false shows a hovered range", () => {
+        it("should show a hovered range when hovering with contiguousCalendarMonths=false", () => {
             const { left, right, assertHoveredDays } = render({ contiguousCalendarMonths: false });
             left.clickDay(14);
             right.mouseEnterDay(18);
@@ -880,41 +881,41 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("when controlled", () => {
-        it("value initially selects a day", () => {
+        it("should initially select a day from value", () => {
             const defaultValue: DateRange = [new Date(2010, Months.FEBRUARY, 2), null];
             const value: DateRange = [new Date(2010, Months.JANUARY, 1), null];
             render({ defaultValue, value }).assertSelectedDays(value[0]!.getDate());
         });
 
-        it("onChange fired when a day is clicked", () => {
+        it("should fire onChange when a day is clicked", () => {
             const { left } = render({ value: [null, null] });
             expect(onChangeSpy).not.toHaveBeenCalled();
             left.clickDay();
             expect(onChangeSpy).toHaveBeenCalledOnce();
         });
 
-        it("onHoverChange fired on mouseenter within a day", () => {
+        it("should fire onHoverChange on mouseenter within a day", () => {
             const { left } = render({ value: [null, null] });
             expect(onHoverChangeSpy).not.toHaveBeenCalled();
             left.mouseEnterDay();
             expect(onHoverChangeSpy).toHaveBeenCalledOnce();
         });
 
-        it("onHoverChange fired on mouseleave within a day", () => {
+        it("should fire onHoverChange on mouseleave within a day", () => {
             const { left } = render({ value: [null, null] });
             expect(onHoverChangeSpy).not.toHaveBeenCalled();
             left.findDay().simulate("mouseleave");
             expect(onHoverChangeSpy).toHaveBeenCalledOnce();
         });
 
-        it("selected day updates are not automatic", () => {
+        it("should not automatically update selected day", () => {
             const { left, assertSelectedDays } = render({ value: [null, null] });
             assertSelectedDays();
             left.clickDay();
             assertSelectedDays();
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("should change displayed date with the dropdowns in the caption", () => {
             const { left } = render({
                 initialMonth: new Date(2015, Months.MARCH, 2),
                 value: [null, null],
@@ -925,7 +926,7 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.JANUARY, 2014);
         });
 
-        it("shortcuts fire onChange with correct values", () => {
+        it("should fire onChange with correct values from shortcuts", () => {
             render().clickShortcut();
 
             const today = new Date();
@@ -934,22 +935,22 @@ describe("<DateRangePicker>", () => {
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const value = onChangeSpy.mock.calls[0][0];
-            assert.isTrue(DateUtils.isSameDay(aWeekAgo, value[0]!));
-            assert.isTrue(DateUtils.isSameDay(today, value[1]!));
+            expect(DateUtils.isSameDay(aWeekAgo, value[0]!)).toBe(true);
+            expect(DateUtils.isSameDay(today, value[1]!)).toBe(true);
         });
 
-        it("shortcuts fire onChange with correct values when single day range enabled", () => {
+        it("should fire onChange with correct values from shortcuts when single day range enabled", () => {
             render({ allowSingleDayRange: true }).clickShortcut();
 
             const today = new Date();
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const value = onChangeSpy.mock.calls[0][0];
-            assert.isTrue(DateUtils.isSameDay(today, value[0]!));
-            assert.isTrue(DateUtils.isSameDay(today, value[1]!));
+            expect(DateUtils.isSameDay(today, value[0]!)).toBe(true);
+            expect(DateUtils.isSameDay(today, value[1]!)).toBe(true);
         });
 
-        it("shortcuts fire onChange with correct values when single day range and allowSingleDayRange enabled", () => {
+        it("should fire onChange with correct values from shortcuts when single day range and allowSingleDayRange enabled", () => {
             render({ allowSingleDayRange: true, timePrecision: "minute" }).clickShortcut();
 
             const today = new Date();
@@ -958,32 +959,31 @@ describe("<DateRangePicker>", () => {
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const value = onChangeSpy.mock.calls[0][0];
-            assert.isTrue(DateUtils.isSameDay(today, value[0]!));
-            assert.isTrue(DateUtils.isSameDay(tomorrow, value[1]!));
+            expect(DateUtils.isSameDay(today, value[0]!)).toBe(true);
+            expect(DateUtils.isSameDay(tomorrow, value[1]!)).toBe(true);
         });
 
-        it("all shortcuts are displayed as inactive when none are selected", () => {
+        it("should display all shortcuts as inactive when none are selected", () => {
             const { wrapper } = render();
 
-            assert.isFalse(
+            expect(
                 wrapper.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
-            );
+            ).toBe(false);
         });
 
-        it("corresponding shortcut is displayed as active when selected", () => {
+        it("should display corresponding shortcut as active when selected", () => {
             const selectedShortcut = 0;
             const { wrapper } = render({ selectedShortcutIndex: selectedShortcut });
 
-            assert.isTrue(
+            expect(
                 wrapper.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
-            );
+            ).toBe(true);
 
-            assert.lengthOf(
+            expect(
                 wrapper.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`),
-                1,
-            );
+            ).toHaveLength(1);
 
-            assert.isTrue(wrapper.state("selectedShortcutIndex") === selectedShortcut);
+            expect(wrapper.state("selectedShortcutIndex") === selectedShortcut).toBe(true);
         });
 
         it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
@@ -998,7 +998,7 @@ describe("<DateRangePicker>", () => {
             expect(onShortcutChangeSpy.mock.lastCall?.at(-1)).toEqual(selectedShortcut);
         });
 
-        it("custom shortcuts select the correct values", () => {
+        it("should select the correct values from custom shortcuts", () => {
             const dateRange: NonNullDateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)];
             render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
@@ -1006,11 +1006,11 @@ describe("<DateRangePicker>", () => {
             }).clickShortcut();
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const value = onChangeSpy.mock.calls[0][0];
-            assert.isTrue(DateUtils.isSameDay(dateRange[0], value[0]!));
-            assert.isTrue(DateUtils.isSameDay(dateRange[1], value[1]!));
+            expect(DateUtils.isSameDay(dateRange[0], value[0]!)).toBe(true);
+            expect(DateUtils.isSameDay(dateRange[1], value[1]!)).toBe(true);
         });
 
-        it("custom shortcuts set the displayed months correctly when start month changes", () => {
+        it("should set the displayed months correctly from custom shortcuts when start month changes", () => {
             const dateRange: NonNullDateRange = [
                 new Date(2016, Months.JANUARY, 1),
                 new Date(2016, Months.DECEMBER, 31),
@@ -1025,7 +1025,7 @@ describe("<DateRangePicker>", () => {
         });
 
         it(
-            "custom shortcuts set the displayed months correctly when start month changes " +
+            "should set the displayed months correctly from custom shortcuts when start month changes " +
                 "and contiguousCalendarMonths is false",
             () => {
                 const dateRange: NonNullDateRange = [
@@ -1043,7 +1043,7 @@ describe("<DateRangePicker>", () => {
             },
         );
 
-        it("custom shortcuts set the displayed months correctly when start month stays the same", () => {
+        it("should set the displayed months correctly from custom shortcuts when start month stays the same", () => {
             const dateRange: NonNullDateRange = [
                 new Date(2016, Months.JANUARY, 1),
                 new Date(2016, Months.DECEMBER, 31),
@@ -1063,7 +1063,7 @@ describe("<DateRangePicker>", () => {
             right.assertDisplayMonth(Months.FEBRUARY, 2016);
         });
 
-        it("custom shortcuts set the displayed dates correctly when month stays the same but not years and contiguousCalendarMonths is false", () => {
+        it("should set the displayed dates correctly from custom shortcuts when month stays the same but not years and contiguousCalendarMonths is false", () => {
             const dateRange: NonNullDateRange = [new Date(2014, Months.JUNE, 1), new Date(2015, Months.JUNE, 1)];
             const { clickShortcut, left, right } = render({
                 contiguousCalendarMonths: false,
@@ -1083,54 +1083,54 @@ describe("<DateRangePicker>", () => {
     });
 
     describe("when uncontrolled", () => {
-        it("defaultValue initially selects a day", () => {
+        it("should initially select a day from defaultValue", () => {
             const today = new Date();
             render({ defaultValue: [today, null] }).assertSelectedDays(today.getDate());
         });
 
-        it("onChange fired when a day is clicked", () => {
+        it("should fire onChange when a day is clicked", () => {
             const { left } = render();
             expect(onChangeSpy).not.toHaveBeenCalled();
             left.clickDay();
             expect(onChangeSpy).toHaveBeenCalledOnce();
         });
 
-        it("onHoverChange fired with correct values when a day is clicked", () => {
+        it("should fire onHoverChange with correct values when a day is clicked", () => {
             const dateRange: NonNullDateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)];
             const { left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
             expect(onHoverChangeSpy).not.toHaveBeenCalled();
             left.clickDay(1);
             expect(onHoverChangeSpy).toHaveBeenCalledOnce();
-            assert.isTrue(DateUtils.isSameDay(dateRange[0], onHoverChangeSpy.mock.calls[0]![0]![0]!));
-            assert.isNull(onHoverChangeSpy.mock.calls[0]![0]![1]);
+            expect(DateUtils.isSameDay(dateRange[0], onHoverChangeSpy.mock.calls[0]![0]![0]!)).toBe(true);
+            expect(onHoverChangeSpy.mock.calls[0]![0]![1]).toBeNull();
         });
 
-        it("onHoverChange fired with correct values on mouseenter within a day", () => {
+        it("should fire onHoverChange with correct values on mouseenter within a day", () => {
             const dateRange: NonNullDateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)];
             const { left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
             expect(onHoverChangeSpy).not.toHaveBeenCalled();
             left.clickDay(1).mouseEnterDay(5);
             expect(onHoverChangeSpy).toHaveBeenCalledTimes(2);
-            assert.isTrue(DateUtils.isSameDay(dateRange[0], onHoverChangeSpy.mock.calls[1]![0]![0]!));
-            assert.isTrue(DateUtils.isSameDay(dateRange[1], onHoverChangeSpy.mock.calls[1]![0]![1]!));
+            expect(DateUtils.isSameDay(dateRange[0], onHoverChangeSpy.mock.calls[1]![0]![0]!)).toBe(true);
+            expect(DateUtils.isSameDay(dateRange[1], onHoverChangeSpy.mock.calls[1]![0]![1]!)).toBe(true);
         });
 
-        it("onHoverChange fired with `undefined` on mouseleave within a day", () => {
+        it("should fire onHoverChange with `undefined` on mouseleave within a day", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.JANUARY, 1) });
             expect(onHoverChangeSpy).not.toHaveBeenCalled();
             left.clickDay(1).findDay(5).simulate("mouseleave");
             expect(onHoverChangeSpy).toHaveBeenCalledTimes(2);
-            assert.isUndefined(onHoverChangeSpy.mock.calls[1][0]);
+            expect(onHoverChangeSpy.mock.calls[1][0]).toBeUndefined();
         });
 
-        it("selected day updates are automatic", () => {
+        it("should automatically update selected day", () => {
             const { assertSelectedDays, left } = render();
             assertSelectedDays();
             left.clickDay(3);
             assertSelectedDays(3);
         });
 
-        it("selects a range of dates when two days are clicked", () => {
+        it("should select a range of dates when two days are clicked", () => {
             const { assertSelectedDays, left } = render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
             });
@@ -1139,7 +1139,7 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays(10, 14);
         });
 
-        it("selects a range of dates when days are clicked in reverse", () => {
+        it("should select a range of dates when days are clicked in reverse", () => {
             const { assertSelectedDays, left } = render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
             });
@@ -1148,7 +1148,7 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays(10, 14);
         });
 
-        it("deselects everything when only selected day is clicked", () => {
+        it("should deselect everything when only selected day is clicked", () => {
             const { assertSelectedDays, left } = render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
             });
@@ -1156,7 +1156,7 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays();
         });
 
-        it("starts a new selection when a non-endpoint is clicked in the current selection", () => {
+        it("should start a new selection when a non-endpoint is clicked in the current selection", () => {
             const { assertSelectedDays, left, right } = render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
             });
@@ -1165,7 +1165,7 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays(11);
         });
 
-        it("deselects endpoint when an endpoint of the current selection is clicked", () => {
+        it("should deselect endpoint when an endpoint of the current selection is clicked", () => {
             const { assertSelectedDays, left } = render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
             });
@@ -1176,7 +1176,7 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays(10);
         });
 
-        it("allowSingleDayRange={true} allows start and end to be the same day", () => {
+        it("should allow start and end to be the same day when allowSingleDayRange={true}", () => {
             const { assertSelectedDays, left } = render({
                 allowSingleDayRange: true,
                 initialMonth: new Date(2015, Months.JANUARY, 1),
@@ -1185,7 +1185,7 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays(10);
         });
 
-        it("shortcuts select values", () => {
+        it("should select values from shortcuts", () => {
             const { wrapper } = render().clickShortcut();
 
             const today = new Date();
@@ -1193,11 +1193,11 @@ describe("<DateRangePicker>", () => {
             aWeekAgo.setDate(today.getDate() - 6);
 
             const [start, end] = wrapper.state("value");
-            assert.isTrue(DateUtils.isSameDay(aWeekAgo, start!));
-            assert.isTrue(DateUtils.isSameDay(today, end!));
+            expect(DateUtils.isSameDay(aWeekAgo, start!)).toBe(true);
+            expect(DateUtils.isSameDay(today, end!)).toBe(true);
         });
 
-        it("custom shortcuts select the correct values", () => {
+        it("should select the correct values from custom shortcuts", () => {
             const dateRange: NonNullDateRange = [new Date(2015, Months.JANUARY, 1), new Date(2015, Months.JANUARY, 5)];
             render({
                 initialMonth: new Date(2015, Months.JANUARY, 1),
@@ -1207,7 +1207,7 @@ describe("<DateRangePicker>", () => {
                 .assertSelectedDays(1, 5);
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("should change displayed date with the dropdowns in the caption", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
             left.assertDisplayMonth(Months.MARCH, 2015);
             left.monthSelect.simulate("change", { target: { value: Months.JANUARY } });
@@ -1215,23 +1215,23 @@ describe("<DateRangePicker>", () => {
             left.assertDisplayMonth(Months.JANUARY, 2014);
         });
 
-        it("does not change display month when selecting dates from left month", () => {
+        it("should not change display month when selecting dates from left month", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
             left.clickDay(2).clickDay(15).assertDisplayMonth(Months.MARCH, 2015);
         });
 
-        it("does not change display month when selecting dates from right month", () => {
+        it("should not change display month when selecting dates from right month", () => {
             const { right } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
             right.clickDay(2).clickDay(15).assertDisplayMonth(Months.APRIL, 2015);
         });
 
-        it("does not change display month when selecting dates from left and right month", () => {
+        it("should not change display month when selecting dates from left and right month", () => {
             const { left, right } = render({ initialMonth: new Date(2015, Months.MARCH, 2) });
             right.clickDay(15);
             left.clickDay(2).assertDisplayMonth(Months.MARCH, 2015);
         });
 
-        it("does not change display month when selecting dates across December (left) and January (right)", () => {
+        it("should not change display month when selecting dates across December (left) and January (right)", () => {
             const { left, right } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2) });
             left.clickDay(15);
             right.clickDay(2);
@@ -1242,19 +1242,19 @@ describe("<DateRangePicker>", () => {
     describe("time selection", () => {
         const defaultRange: NonNullDateRange = [new Date(2012, 2, 5, 6, 5, 40), new Date(2012, 4, 5, 7, 8, 20)];
 
-        it("setting timePrecision shows a TimePicker", () => {
+        it("should show a TimePicker when timePrecision is set", () => {
             const { wrapper } = render();
-            assert.isFalse(wrapper.find(TimePicker).exists());
+            expect(wrapper.find(TimePicker).exists()).toBe(false);
             wrapper.setProps({ timePrecision: "minute" });
-            assert.isTrue(wrapper.find(TimePicker).exists());
+            expect(wrapper.find(TimePicker).exists()).toBe(true);
         });
 
-        it("setting timePickerProps shows a TimePicker", () => {
+        it("should show a TimePicker when timePickerProps is set", () => {
             const { wrapper } = render({ timePickerProps: {} });
-            assert.isTrue(wrapper.find(TimePicker).exists());
+            expect(wrapper.find(TimePicker).exists()).toBe(true);
         });
 
-        it("onChange fired when the time is changed", () => {
+        it("should fire onChange when the time is changed", () => {
             const { wrapper } = render({
                 defaultValue: defaultRange,
                 timePickerProps: { showArrowButtons: true },
@@ -1263,20 +1263,20 @@ describe("<DateRangePicker>", () => {
             wrapper.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const cbHour = onChangeSpy.mock.calls[0][0][0]!.getHours();
-            assert.strictEqual(cbHour, defaultRange[0].getHours() + 1);
+            expect(cbHour).toBe(defaultRange[0].getHours() + 1);
         });
 
-        it("changing date does not change time", () => {
+        it("should not change time when changing date", () => {
             render({ defaultValue: defaultRange, timePrecision: "minute" }).left.clickDay(16);
-            assert.isTrue(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0][0] as Date, defaultRange[0]));
+            expect(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0][0] as Date, defaultRange[0])).toBe(true);
         });
 
-        it("changing time does not change date", () => {
+        it("should not change date when changing time", () => {
             render({ defaultValue: defaultRange, timePrecision: "minute" }).setTimeInput("minute", "left", 10);
-            assert.isTrue(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0][0] as Date, defaultRange[0]));
+            expect(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0][0] as Date, defaultRange[0])).toBe(true);
         });
 
-        it("hovering over date does not change entered time", () => {
+        it("should not change entered time when hovering over date", () => {
             const harness = render({ defaultValue: defaultRange, timePrecision: "minute" });
             const newLeftMinute = 10;
             harness.setTimeInput("minute", "left", newLeftMinute);
@@ -1285,44 +1285,44 @@ describe("<DateRangePicker>", () => {
             left.mouseEnterDay(5);
             expect(onChangeSpy).not.toHaveBeenCalled();
             const minuteInputText = harness.getTimeInput("minute", "left");
-            assert.equal(parseInt(minuteInputText, 10), newLeftMinute);
+            expect(parseInt(minuteInputText, 10)).toBe(newLeftMinute);
         });
 
-        it("changing time without date uses today, when other date not selected", () => {
+        it("should use today when changing time without date and other date not selected", () => {
             render({ timePrecision: "minute" }).setTimeInput("minute", "left", 45);
-            assert.isTrue(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0][0] as Date, new Date()));
+            expect(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0][0] as Date, new Date())).toBe(true);
         });
 
-        it("changing time without date uses other date if selected and `allowSingleDayRange` is true", () => {
+        it("should use other date when changing time without date if selected and `allowSingleDayRange` is true", () => {
             const dateRange = render({ allowSingleDayRange: true, timePrecision: "minute" });
 
             dateRange.left.clickDay(10);
             dateRange.setTimeInput("minute", "right", 45);
             const [start, end] = dateRange.wrapper.state("value");
 
-            assert.isNotNull(start);
-            assert.isNotNull(end);
-            assert.isTrue(DateUtils.isSameDay(start!, end!));
+            expect(start).not.toBeNull();
+            expect(end).not.toBeNull();
+            expect(DateUtils.isSameDay(start!, end!)).toBe(true);
         });
 
-        it("changing time without date uses 1 day offset from other date if selected and `allowSingleDayRange` is false", () => {
+        it("should use 1 day offset from other date when changing time without date if selected and `allowSingleDayRange` is false", () => {
             const dateRange = render({ allowSingleDayRange: false, timePrecision: "minute" });
 
             dateRange.left.clickDay(10);
             dateRange.setTimeInput("minute", "right", 45);
             const [start, end] = dateRange.wrapper.state("value");
 
-            assert.isNotNull(start);
-            assert.isNotNull(end);
-            assert.isTrue(DateUtils.isSameDay(end!, addDays(start!, 1)));
+            expect(start).not.toBeNull();
+            expect(end).not.toBeNull();
+            expect(DateUtils.isSameDay(end!, addDays(start!, 1))).toBe(true);
         });
 
-        it("clicking a shortcut with includeTime=false doesn't change time", () => {
+        it("should not change time when clicking a shortcut with includeTime=false", () => {
             render({ defaultValue: defaultRange, timePrecision: "minute" }).clickShortcut();
-            assert.isTrue(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0][0] as Date, defaultRange[0]));
+            expect(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0][0] as Date, defaultRange[0])).toBe(true);
         });
 
-        it("clicking a shortcut with includeTime=true changes time", () => {
+        it("should change time when clicking a shortcut with includeTime=true", () => {
             const endTime = defaultRange[1];
             const startTime = new Date(defaultRange[1].getTime());
             startTime.setHours(startTime.getHours() - 2);
@@ -1340,14 +1340,14 @@ describe("<DateRangePicker>", () => {
                 shortcuts,
                 timePrecision: "minute",
             }).clickShortcut();
-            assert.isTrue(DateUtils.isEqual(onChangeSpy.mock.calls[0][0][0] as Date, startTime));
+            expect(DateUtils.isEqual(onChangeSpy.mock.calls[0][0][0] as Date, startTime)).toBe(true);
         });
 
-        it("selecting and unselecting a day doesn't change time", () => {
+        it("should not change time when selecting and unselecting a day", () => {
             const leftDatePicker = render({ defaultValue: defaultRange, timePrecision: "minute" }).left;
             leftDatePicker.clickDay(5);
             leftDatePicker.clickDay(5);
-            assert.isTrue(DateUtils.isSameTime(onChangeSpy.mock.calls[1][0][0] as Date, defaultRange[0]));
+            expect(DateUtils.isSameTime(onChangeSpy.mock.calls[1][0][0] as Date, defaultRange[0])).toBe(true);
         });
     });
 
@@ -1383,15 +1383,15 @@ describe("<DateRangePicker>", () => {
                 const [from, to] = wrapper.state("hoverValue")!;
 
                 if (fromDate == null) {
-                    assert.isNull(from);
+                    expect(from).toBeNull();
                 } else {
-                    assert.equal(from!.getDate(), fromDate);
+                    expect(from!.getDate()).toBe(fromDate);
                 }
 
                 if (toDate == null) {
-                    assert.isNull(to);
+                    expect(to).toBeNull();
                 } else {
-                    assert.equal(to!.getDate(), toDate);
+                    expect(to!.getDate()).toBe(toDate);
                 }
 
                 return harness;
@@ -1400,16 +1400,15 @@ describe("<DateRangePicker>", () => {
                 const rangeStart = wrapper.find(`.${Classes.DATERANGEPICKER3_SELECTED_RANGE_START}`).first();
                 const rangeEnd = wrapper.find(`.${Classes.DATERANGEPICKER3_SELECTED_RANGE_END}`).first();
                 if (from !== undefined) {
-                    assert.isTrue(rangeStart.exists());
-                    assert.equal(parseInt(rangeStart.text(), 10), from);
+                    expect(rangeStart.exists()).toBe(true);
+                    expect(parseInt(rangeStart.text(), 10)).toBe(from);
                 }
                 if (to !== undefined) {
-                    assert.isTrue(rangeEnd.exists());
-                    assert.equal(parseInt(rangeEnd.text(), 10), to);
+                    expect(rangeEnd.exists()).toBe(true);
+                    expect(parseInt(rangeEnd.text(), 10)).toBe(to);
                 }
                 if (from !== undefined && to !== undefined) {
-                    assert.lengthOf(
-                        harness.getDays(Classes.DATERANGEPICKER3_SELECTED_RANGE_MIDDLE),
+                    expect(harness.getDays(Classes.DATERANGEPICKER3_SELECTED_RANGE_MIDDLE)).toHaveLength(
                         Math.max(0, to - from - 1),
                     );
                 }
@@ -1452,7 +1451,7 @@ describe("<DateRangePicker>", () => {
             },
             get displayMonthAndYear(): MonthAndYear {
                 const captionLabel = harness.wrapper.find(`.${ReactDayPickerClasses.RDP_CAPTION_LABEL}`);
-                assert.exists(captionLabel, "Expected caption label which labels the current display month to exist");
+                expect(captionLabel.exists()).toBe(true);
                 const [monthText, yearText] = captionLabel.text().split(" ");
                 const month = getMonthIndex(monthText);
                 const year = parseInt(yearText, 10);
@@ -1467,9 +1466,9 @@ describe("<DateRangePicker>", () => {
 
             assertDisplayMonth: (expectedMonth: number, expectedYear?: number) => {
                 const displayMonthAndYear = harness.displayMonthAndYear;
-                assert.equal(displayMonthAndYear.getMonth(), expectedMonth);
+                expect(displayMonthAndYear.getMonth()).toBe(expectedMonth);
                 if (expectedYear !== undefined) {
-                    assert.equal(displayMonthAndYear.getYear(), expectedYear);
+                    expect(displayMonthAndYear.getYear()).toBe(expectedYear);
                 }
             },
             clickDay: (dayNumber = 1) => {

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import { Day } from "react-day-picker";
@@ -58,28 +57,28 @@ describe("<DatePicker>", () => {
         testsContainerElement.remove();
     });
 
-    it(`renders .${Classes.DATEPICKER}`, () => {
-        assert.lengthOf(wrap(<DatePicker {...LOCALE_LOADER} />).root.find(`.${Classes.DATEPICKER}`), 1);
+    it(`should render .${Classes.DATEPICKER}`, () => {
+        expect(wrap(<DatePicker {...LOCALE_LOADER} />).root.find(`.${Classes.DATEPICKER}`)).toHaveLength(1);
     });
 
-    it("no day is selected by default", () => {
+    it("should not select any day by default", () => {
         const { assertSelectedDays, root } = wrap(<DatePicker {...LOCALE_LOADER} />);
         assertSelectedDays();
-        assert.isNull(root.state("selectedDay"));
+        expect(root.state("selectedDay")).toBeNull();
     });
 
-    it("current day is not highlighted by default", () => {
+    it("should not highlight the current day by default", () => {
         const { root } = wrap(<DatePicker {...LOCALE_LOADER} />);
-        assert.lengthOf(root.find(`.${Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY}`), 0);
+        expect(root.find(`.${Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY}`)).toHaveLength(0);
     });
 
     it("current day should be highlighted when highlightCurrentDay={true}", () => {
         const { root } = wrap(<DatePicker {...LOCALE_LOADER} highlightCurrentDay={true} />);
-        assert.lengthOf(root.find(`.${Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY}`), 1);
+        expect(root.find(`.${Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY}`)).toHaveLength(1);
     });
 
     describe("reconciliates dayPickerProps", () => {
-        it("shows outside days by default", () => {
+        it("should show outside days by default", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const firstDayInView = new Date(2017, Months.AUGUST, 27, 12, 0);
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} />);
@@ -88,7 +87,7 @@ describe("<DatePicker>", () => {
             assertDatesEqual(new Date(firstDay.prop("date")), firstDayInView);
         });
 
-        it("doesn't show outside days if enableOutsideDays=false", () => {
+        it("should not show outside days if enableOutsideDays=false", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1, 12);
             const { root } = wrap(
                 <DatePicker
@@ -107,7 +106,7 @@ describe("<DatePicker>", () => {
             assertDayHidden(days.at(5).getDOMNode<HTMLElement>(), false);
         });
 
-        it("disables days according to custom modifiers in addition to default modifiers", () => {
+        it("should disable days according to custom modifiers in addition to default modifiers", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const disableFridays = { dayOfWeek: [5] };
             const { getDay } = wrap(
@@ -123,7 +122,7 @@ describe("<DatePicker>", () => {
             assertDayDisabled(getDay(10).getDOMNode<HTMLElement>(), false);
         });
 
-        it("disables out-of-range max dates", () => {
+        it("should disable out-of-range max dates", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const { getDay } = wrap(
                 <DatePicker
@@ -136,7 +135,7 @@ describe("<DatePicker>", () => {
             assertDayDisabled(getDay(10).getDOMNode<HTMLElement>(), false);
         });
 
-        it("disables out-of-range min dates", () => {
+        it("should disable out-of-range min dates", () => {
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
             const { getDay, clickPreviousMonth } = wrap(
                 <DatePicker
@@ -154,7 +153,7 @@ describe("<DatePicker>", () => {
             // use a date that lets us navigate forward and backward in the same year
             const defaultValue = new Date(2017, Months.SEPTEMBER, 1);
 
-            it("calls onMonthChange on button next click", () => {
+            it("should call onMonthChange on button next click", () => {
                 const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -163,7 +162,7 @@ describe("<DatePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on button prev click", () => {
+            it("should call onMonthChange on button prev click", () => {
                 const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -172,7 +171,7 @@ describe("<DatePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on month select change", () => {
+            it("should call onMonthChange on month select change", () => {
                 const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -181,7 +180,7 @@ describe("<DatePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onMonthChange on year select change", () => {
+            it("should call onMonthChange on year select change", () => {
                 const onMonthChange = vi.fn();
                 const { root } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
@@ -190,7 +189,7 @@ describe("<DatePicker>", () => {
                 expect(onMonthChange).toHaveBeenCalled();
             });
 
-            it("calls onDayClick", () => {
+            it("should call onDayClick", () => {
                 const onDayClick = vi.fn();
                 const { getDay } = wrap(
                     <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} dayPickerProps={{ onDayClick }} />,
@@ -201,7 +200,7 @@ describe("<DatePicker>", () => {
         });
     });
 
-    it("user-provided modifiers are applied", () => {
+    it("should apply user-provided modifiers", () => {
         const ODD_CLASS = "test-odd";
         const oddifier = (d: Date) => d.getDate() % 2 === 1;
         const { getDay } = wrap(
@@ -211,69 +210,69 @@ describe("<DatePicker>", () => {
             />,
         );
 
-        assert.isFalse(getDay(4).hasClass(ODD_CLASS));
-        assert.isTrue(getDay(5).hasClass(ODD_CLASS));
+        expect(getDay(4).hasClass(ODD_CLASS)).toBe(false);
+        expect(getDay(5).hasClass(ODD_CLASS)).toBe(true);
     });
 
-    it("renders the actions bar when showActionsBar=true", () => {
+    it("should render the actions bar when showActionsBar=true", () => {
         const { root } = wrap(<DatePicker {...LOCALE_LOADER} showActionsBar={true} />);
-        assert.lengthOf(root.find({ className: Classes.DATEPICKER_FOOTER }), 1);
+        expect(root.find({ className: Classes.DATEPICKER_FOOTER })).toHaveLength(1);
     });
 
     describe("initially displayed month", () => {
-        it("is defaultValue", () => {
+        it("should be defaultValue", () => {
             const defaultValue = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} />);
-            assert.equal(root.state("displayYear"), 2007);
-            assert.equal(root.state("displayMonth"), Months.APRIL);
+            expect(root.state("displayYear")).toBe(2007);
+            expect(root.state("displayMonth")).toBe(Months.APRIL);
         });
 
-        it("is initialMonth if set (overrides defaultValue)", () => {
+        it("should be initialMonth if set (overrides defaultValue)", () => {
             const defaultValue = new Date(2007, Months.APRIL, 4);
             const initialMonth = new Date(2002, Months.MARCH, 1);
             const { root } = wrap(
                 <DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} initialMonth={initialMonth} />,
             );
-            assert.equal(root.state("displayYear"), 2002);
-            assert.equal(root.state("displayMonth"), Months.MARCH);
+            expect(root.state("displayYear")).toBe(2002);
+            expect(root.state("displayMonth")).toBe(Months.MARCH);
         });
 
-        it("is value if set and initialMonth not set", () => {
+        it("should be value if set and initialMonth not set", () => {
             const value = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} value={value} />);
-            assert.equal(root.state("displayYear"), 2007);
-            assert.equal(root.state("displayMonth"), Months.APRIL);
+            expect(root.state("displayYear")).toBe(2007);
+            expect(root.state("displayMonth")).toBe(Months.APRIL);
         });
 
-        it("is today if today is within date range", () => {
+        it("should be today if today is within date range", () => {
             const today = new Date();
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} />);
-            assert.equal(root.state("displayYear"), today.getFullYear());
-            assert.equal(root.state("displayMonth"), today.getMonth());
+            expect(root.state("displayYear")).toBe(today.getFullYear());
+            expect(root.state("displayMonth")).toBe(today.getMonth());
         });
 
-        it("is a day between minDate and maxDate if today is not in range", () => {
+        it("should be a day between minDate and maxDate if today is not in range", () => {
             const maxDate = new Date(2005, Months.JANUARY);
             const minDate = new Date(2000, Months.JANUARY);
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} maxDate={maxDate} minDate={minDate} />);
-            assert.isTrue(
+            expect(
                 DateUtils.isDayInRange(new Date(root.state("displayYear"), root.state("displayMonth")), [
                     minDate,
                     maxDate,
                 ]),
-            );
+            ).toBe(true);
         });
 
-        it("selectedDay is set to the day of the value", () => {
+        it("should set selectedDay to the day of the value", () => {
             const value = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} value={value} />);
-            assert.strictEqual(root.state("selectedDay"), value.getDate());
+            expect(root.state("selectedDay")).toBe(value.getDate());
         });
 
-        it("selectedDay is set to the day of the defaultValue", () => {
+        it("should set selectedDay to the day of the defaultValue", () => {
             const defaultValue = new Date(2007, Months.APRIL, 4);
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} defaultValue={defaultValue} />);
-            assert.strictEqual(root.state("selectedDay"), defaultValue.getDate());
+            expect(root.state("selectedDay")).toBe(defaultValue.getDate());
         });
     });
 
@@ -286,12 +285,12 @@ describe("<DatePicker>", () => {
             afterEach(() => consoleError.mockClear());
             afterAll(() => consoleError.mockRestore());
 
-            it("maxDate must be later than minDate", () => {
+            it("should require maxDate to be later than minDate", () => {
                 wrap(<DatePicker {...LOCALE_LOADER} maxDate={MIN_DATE} minDate={MAX_DATE} />);
                 expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_MAX_DATE_INVALID);
             });
 
-            it("an error is logged if defaultValue is outside bounds", () => {
+            it("should log an error if defaultValue is outside bounds", () => {
                 wrap(
                     <DatePicker
                         {...LOCALE_LOADER}
@@ -303,7 +302,7 @@ describe("<DatePicker>", () => {
                 expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
             });
 
-            it("an error is logged if value is outside bounds", () => {
+            it("should log an error if value is outside bounds", () => {
                 wrap(
                     <DatePicker
                         {...LOCALE_LOADER}
@@ -315,7 +314,7 @@ describe("<DatePicker>", () => {
                 expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_VALUE_INVALID);
             });
 
-            it("an error is logged if initialMonth is outside month bounds", () => {
+            it("should log an error if initialMonth is outside month bounds", () => {
                 wrap(
                     <DatePicker
                         {...LOCALE_LOADER}
@@ -327,7 +326,7 @@ describe("<DatePicker>", () => {
                 expect(consoleError).toHaveBeenCalledWith(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
             });
 
-            it("an error is not logged if initialMonth is outside day bounds but inside month bounds", () => {
+            it("should not log an error if initialMonth is outside day bounds but inside month bounds", () => {
                 wrap(
                     <DatePicker
                         {...LOCALE_LOADER}
@@ -348,7 +347,7 @@ describe("<DatePicker>", () => {
             const MIN_DATE_AFTER_TODAY = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
             const MAX_DATE_AFTER_TODAY = new Date(today.getFullYear() + 2, today.getMonth(), today.getDate());
 
-            it("min/max before today has disabled button", () => {
+            it("should have disabled button when min/max are before today", () => {
                 const { getTodayButton } = wrap(
                     <DatePicker
                         {...LOCALE_LOADER}
@@ -358,10 +357,10 @@ describe("<DatePicker>", () => {
                     />,
                 );
 
-                assert.isTrue(getTodayButton().props().disabled);
+                expect(getTodayButton().props().disabled).toBe(true);
             });
 
-            it("min/max after today has disabled button", () => {
+            it("should have disabled button when min/max are after today", () => {
                 const { getTodayButton } = wrap(
                     <DatePicker
                         {...LOCALE_LOADER}
@@ -371,10 +370,10 @@ describe("<DatePicker>", () => {
                     />,
                 );
 
-                assert.isTrue(getTodayButton().props().disabled);
+                expect(getTodayButton().props().disabled).toBe(true);
             });
 
-            it("valid min/max today has enabled button", () => {
+            it("should have enabled button when today is within valid min/max", () => {
                 const { getTodayButton } = wrap(
                     <DatePicker
                         {...LOCALE_LOADER}
@@ -384,19 +383,19 @@ describe("<DatePicker>", () => {
                     />,
                 );
 
-                assert.isFalse(getTodayButton().props().disabled);
+                expect(getTodayButton().props().disabled).toBe(false);
             });
         });
 
-        it("only days outside bounds have disabled class", () => {
+        it("should only disable days outside bounds", () => {
             const minDate = new Date(2000, Months.JANUARY, 10);
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} initialMonth={minDate} minDate={minDate} />);
             // 8 is before min date, 12 is after
-            assert.isTrue(getDay(8).hasClass(Classes.DATEPICKER3_DAY_DISABLED));
-            assert.isFalse(getDay(12).hasClass(Classes.DATEPICKER3_DAY_DISABLED));
+            expect(getDay(8).hasClass(Classes.DATEPICKER3_DAY_DISABLED)).toBe(true);
+            expect(getDay(12).hasClass(Classes.DATEPICKER3_DAY_DISABLED)).toBe(false);
         });
 
-        it("onChange not fired when a day outside of bounds is clicked", () => {
+        it("should not fire onChange when a day outside of bounds is clicked", () => {
             const onChange = vi.fn();
             const { getDay } = wrap(
                 <DatePicker {...LOCALE_LOADER} maxDate={MAX_DATE} minDate={MIN_DATE} onChange={onChange} />,
@@ -409,7 +408,7 @@ describe("<DatePicker>", () => {
             expect(onChange).toHaveBeenCalledOnce();
         });
 
-        it("constrains time picker when minDate is selected", () => {
+        it("should constrain time picker when minDate is selected", () => {
             const { root } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
@@ -420,10 +419,10 @@ describe("<DatePicker>", () => {
                 />,
             );
             const timePicker = root.find(TimePicker).first();
-            assert.strictEqual(timePicker.props().minTime, MIN_DATE);
+            expect(timePicker.props().minTime).toBe(MIN_DATE);
         });
 
-        it("constrains time picker when max date is selected", () => {
+        it("should constrain time picker when max date is selected", () => {
             const { root } = wrap(
                 <DatePicker
                     {...LOCALE_LOADER}
@@ -434,12 +433,12 @@ describe("<DatePicker>", () => {
                 />,
             );
             const timePicker = root.find(TimePicker).first();
-            assert.strictEqual(timePicker.props().maxTime, MAX_DATE);
+            expect(timePicker.props().maxTime).toBe(MAX_DATE);
         });
     });
 
     describe("when controlled", () => {
-        it("value initially selects a day", () => {
+        it("should initially select a day from value", () => {
             const value = new Date(2010, Months.JANUARY, 1);
             const { assertSelectedDays } = wrap(
                 <DatePicker {...LOCALE_LOADER} defaultValue={new Date(2010, Months.FEBRUARY, 2)} value={value} />,
@@ -447,14 +446,14 @@ describe("<DatePicker>", () => {
             assertSelectedDays(value.getDate());
         });
 
-        it("selection does not update automatically", () => {
+        it("should not update selection automatically", () => {
             const { getDay, assertSelectedDays } = wrap(<DatePicker {...LOCALE_LOADER} value={null} />);
             assertSelectedDays();
             getDay().simulate("click");
             assertSelectedDays();
         });
 
-        it("selected day doesn't update on current month view change", () => {
+        it("should not update selected day on current month view change", () => {
             const value = new Date(2010, Months.JANUARY, 2);
             const { assertSelectedDays, clickPreviousMonth, months, years } = wrap(
                 <DatePicker {...LOCALE_LOADER} value={value} />,
@@ -470,15 +469,15 @@ describe("<DatePicker>", () => {
             assertSelectedDays();
         });
 
-        it("onChange fired when a day is clicked", () => {
+        it("should fire onChange when a day is clicked", () => {
             const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} value={null} />);
             getDay().simulate("click");
             expect(onChange).toHaveBeenCalledOnce();
-            assert.isTrue(onChange.mock.calls[0][1]);
+            expect(onChange.mock.calls[0][1]).toBe(true);
         });
 
-        it("onChange fired when month is changed", () => {
+        it("should fire onChange when month is changed", () => {
             const value = new Date(2010, Months.JANUARY, 2);
             const onChange = vi.fn();
             const { months, clickPreviousMonth } = wrap(
@@ -487,27 +486,27 @@ describe("<DatePicker>", () => {
 
             clickPreviousMonth();
             expect(onChange).toHaveBeenCalledOnce();
-            assert.isFalse(onChange.mock.calls[0][1], "expected isUserChange to be false");
+            expect(onChange.mock.calls[0][1]).toBe(false);
 
             months.simulate("change", { target: { value: Months.JUNE } });
             expect(onChange).toHaveBeenCalledTimes(2);
-            assert.isFalse(onChange.mock.calls[1][1], "expected isUserChange to be false again");
+            expect(onChange.mock.calls[1][1]).toBe(false);
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("should change displayed date with the dropdowns in the caption", () => {
             const { months, root, years } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={new Date(2015, Months.MARCH, 2)} value={null} />,
             );
-            assert.equal(root.state("displayMonth"), Months.MARCH);
-            assert.equal(root.state("displayYear"), 2015);
+            expect(root.state("displayMonth")).toBe(Months.MARCH);
+            expect(root.state("displayYear")).toBe(2015);
 
             months.simulate("change", { target: { value: Months.JANUARY } });
             years.simulate("change", { target: { value: 2014 } });
-            assert.equal(root.state("displayMonth"), Months.JANUARY);
-            assert.equal(root.state("displayYear"), 2014);
+            expect(root.state("displayMonth")).toBe(Months.JANUARY);
+            expect(root.state("displayYear")).toBe(2014);
         });
 
-        it("shortcuts fire onChange with correct values", () => {
+        it("should fire onChange with correct values from shortcuts", () => {
             const today = new Date();
             const aWeekAgo = DateUtils.clone(today);
             aWeekAgo.setDate(today.getDate() - 6);
@@ -519,33 +518,32 @@ describe("<DatePicker>", () => {
 
             expect(onChange).toHaveBeenCalledOnce();
             const value = onChange.mock.calls[0][0];
-            assert.isTrue(DateUtils.isSameDay(aWeekAgo, value));
+            expect(DateUtils.isSameDay(aWeekAgo, value)).toBe(true);
         });
 
-        it("all shortcuts are displayed as inactive when none are selected", () => {
+        it("should display all shortcuts as inactive when none are selected", () => {
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} shortcuts={true} />);
 
-            assert.isFalse(
+            expect(
                 root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
-            );
+            ).toBe(false);
         });
 
-        it("corresponding shortcut is displayed as active when selected", () => {
+        it("should display corresponding shortcut as active when selected", () => {
             const selectedShortcut = 0;
             const { root } = wrap(
                 <DatePicker {...LOCALE_LOADER} shortcuts={true} selectedShortcutIndex={selectedShortcut} />,
             );
 
-            assert.isTrue(
+            expect(
                 root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`).exists(),
-            );
+            ).toBe(true);
 
-            assert.lengthOf(
+            expect(
                 root.find(DatePickerShortcutMenu).find(Menu).find(MenuItem).find(`.${CoreClasses.ACTIVE}`),
-                1,
-            );
+            ).toHaveLength(1);
 
-            assert.isTrue(root.state("selectedShortcutIndex") === selectedShortcut);
+            expect(root.state("selectedShortcutIndex") === selectedShortcut).toBe(true);
         });
 
         it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
@@ -565,15 +563,15 @@ describe("<DatePicker>", () => {
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
             expect(onShortcutChangeSpy).toHaveBeenCalledOnce();
-            assert.isTrue(
-                onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1][0].label === "Today",
+            expect(onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1][0].label === "Today").toBe(
+                true,
             );
-            assert.isTrue(
+            expect(
                 onShortcutChangeSpy.mock.calls[onShortcutChangeSpy.mock.calls.length - 1][1] === selectedShortcut,
-            );
+            ).toBe(true);
         });
 
-        it("custom shortcuts select the correct values", () => {
+        it("should select the correct values from custom shortcuts", () => {
             const date = new Date(2015, Months.JANUARY, 1);
             const onChangeSpy = vi.fn();
             const { clickShortcut, assertSelectedDays } = wrap(
@@ -586,19 +584,19 @@ describe("<DatePicker>", () => {
             clickShortcut();
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const value = onChangeSpy.mock.calls[0][0];
-            assert.isTrue(DateUtils.isSameDay(date, value));
+            expect(DateUtils.isSameDay(date, value)).toBe(true);
             assertSelectedDays(date.getDate());
         });
     });
 
     describe("when uncontrolled", () => {
-        it("defaultValue initially selects a day", () => {
+        it("should initially select a day from defaultValue", () => {
             const today = new Date();
             const { assertSelectedDays } = wrap(<DatePicker {...LOCALE_LOADER} defaultValue={today} />);
             assertSelectedDays(today.getDate());
         });
 
-        it("onChange fired when a day is clicked", () => {
+        it("should fire onChange when a day is clicked", () => {
             const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} onChange={onChange} />);
             expect(onChange).not.toHaveBeenCalled();
@@ -606,7 +604,7 @@ describe("<DatePicker>", () => {
             expect(onChange).toHaveBeenCalledOnce();
         });
 
-        it("onChange fired when month is changed", () => {
+        it("should fire onChange when month is changed", () => {
             const onChange = vi.fn();
             // must use an initial month otherwise clicking next month in december will fail
             const { getDay, clickNextMonth } = wrap(
@@ -619,14 +617,14 @@ describe("<DatePicker>", () => {
             expect(onChange).toHaveBeenCalledTimes(2);
         });
 
-        it("selected day updates are automatic", () => {
+        it("should automatically update selected day", () => {
             const { assertSelectedDays, getDay } = wrap(<DatePicker {...LOCALE_LOADER} />);
             assertSelectedDays();
             getDay(3).simulate("click");
             assertSelectedDays(3);
         });
 
-        it("selected day is preserved when selections are changed", () => {
+        it("should preserve selected day when selections are changed", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
             const { assertSelectedDays, getDay, months } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={initialMonth} />,
@@ -636,7 +634,7 @@ describe("<DatePicker>", () => {
             assertSelectedDays(31);
         });
 
-        it("selected day is changed if necessary when selections are changed", () => {
+        it("should change selected day if necessary when selections are changed", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
             const { assertSelectedDays, getDay, clickPreviousMonth } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={initialMonth} />,
@@ -649,7 +647,7 @@ describe("<DatePicker>", () => {
             assertSelectedDays(31);
         });
 
-        it("selected day is changed to minDate or maxDate if selections are changed outside bounds", () => {
+        it("should change selected day to minDate or maxDate if selections are changed outside bounds", () => {
             const initialMonth = new Date(2015, Months.JULY, 1);
             const minDate = new Date(2015, Months.MARCH, 13);
             const maxDate = new Date(2015, Months.NOVEMBER, 21);
@@ -666,20 +664,20 @@ describe("<DatePicker>", () => {
             assertSelectedDays(maxDate.getDate());
         });
 
-        it("can change displayed date with the dropdowns in the caption", () => {
+        it("should change displayed date with the dropdowns in the caption", () => {
             const { months, root, years } = wrap(
                 <DatePicker {...LOCALE_LOADER} initialMonth={new Date(2015, Months.MARCH, 2)} />,
             );
-            assert.equal(root.state("displayMonth"), Months.MARCH);
-            assert.equal(root.state("displayYear"), 2015);
+            expect(root.state("displayMonth")).toBe(Months.MARCH);
+            expect(root.state("displayYear")).toBe(2015);
 
             months.simulate("change", { target: { value: Months.JANUARY } });
             years.simulate("change", { target: { value: 2014 } });
-            assert.equal(root.state("displayMonth"), Months.JANUARY);
-            assert.equal(root.state("displayYear"), 2014);
+            expect(root.state("displayMonth")).toBe(Months.JANUARY);
+            expect(root.state("displayYear")).toBe(2014);
         });
 
-        it("shortcuts select values", () => {
+        it("should select values from shortcuts", () => {
             const { root, clickShortcut } = wrap(<DatePicker {...LOCALE_LOADER} shortcuts={true} />);
             clickShortcut(2);
 
@@ -688,10 +686,10 @@ describe("<DatePicker>", () => {
             aWeekAgo.setDate(today.getDate() - 6);
 
             const value = root.state("value");
-            assert.isTrue(DateUtils.isSameDay(aWeekAgo, value!));
+            expect(DateUtils.isSameDay(aWeekAgo, value!)).toBe(true);
         });
 
-        it("custom shortcuts select the correct values", () => {
+        it("should select the correct values from custom shortcuts", () => {
             const date = new Date(2010, Months.JANUARY, 10);
             const { clickShortcut, assertSelectedDays } = wrap(
                 <DatePicker {...LOCALE_LOADER} shortcuts={[{ date, label: "custom shortcut" }]} />,
@@ -704,19 +702,19 @@ describe("<DatePicker>", () => {
     describe("time selection", () => {
         const defaultValue = new Date(2012, 2, 5, 6, 5, 40);
 
-        it("setting timePrecision shows a TimePicker", () => {
+        it("should show a TimePicker when timePrecision is set", () => {
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} />);
-            assert.isFalse(root.find(TimePicker).exists());
+            expect(root.find(TimePicker).exists()).toBe(false);
             root.setProps({ timePrecision: "minute" });
-            assert.isTrue(root.find(TimePicker).exists());
+            expect(root.find(TimePicker).exists()).toBe(true);
         });
 
-        it("setting timePickerProps shows a TimePicker", () => {
+        it("should show a TimePicker when timePickerProps is set", () => {
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} timePickerProps={{}} />);
-            assert.isTrue(root.find(TimePicker).exists());
+            expect(root.find(TimePicker).exists()).toBe(true);
         });
 
-        it("onChange fired when the time is changed", () => {
+        it("should fire onChange when the time is changed", () => {
             const onChangeSpy = vi.fn();
             const { root } = wrap(
                 <DatePicker
@@ -730,10 +728,10 @@ describe("<DatePicker>", () => {
             root.find(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${Classes.TIMEPICKER_HOUR}`).first().simulate("click");
             expect(onChangeSpy).toHaveBeenCalledOnce();
             const cbHour = onChangeSpy.mock.calls[0][0].getHours();
-            assert.strictEqual(cbHour, defaultValue.getHours() + 1);
+            expect(cbHour).toBe(defaultValue.getHours() + 1);
         });
 
-        it("changing date does not change time", () => {
+        it("should not change time when changing date", () => {
             const onChangeSpy = vi.fn();
             wrap(
                 <DatePicker
@@ -745,10 +743,10 @@ describe("<DatePicker>", () => {
             )
                 .getDay(16)
                 .simulate("click");
-            assert.isTrue(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0] as Date, defaultValue));
+            expect(DateUtils.isSameTime(onChangeSpy.mock.calls[0][0] as Date, defaultValue)).toBe(true);
         });
 
-        it("changing time does not change date", () => {
+        it("should not change date when changing time", () => {
             const onChangeSpy = vi.fn();
             const { setTimeInput } = wrap(
                 <DatePicker
@@ -759,20 +757,20 @@ describe("<DatePicker>", () => {
                 />,
             );
             setTimeInput("minute", 45);
-            assert.isTrue(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0] as Date, defaultValue));
+            expect(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0] as Date, defaultValue)).toBe(true);
         });
 
-        it("changing time without date uses today", () => {
+        it("should use today when changing time without date", () => {
             const onChangeSpy = vi.fn();
             // no date set via props
             const { setTimeInput } = wrap(
                 <DatePicker {...LOCALE_LOADER} onChange={onChangeSpy} timePrecision="minute" />,
             );
             setTimeInput("minute", 45);
-            assert.isTrue(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0] as Date, new Date()));
+            expect(DateUtils.isSameDay(onChangeSpy.mock.calls[0][0] as Date, new Date())).toBe(true);
         });
 
-        it("clicking a shortcut with includeTime=true changes time", () => {
+        it("should change time when clicking a shortcut with includeTime=true", () => {
             const onChangeSpy = vi.fn();
             const date = DateUtils.clone(defaultValue);
             date.setHours(date.getHours() - 2);
@@ -794,7 +792,7 @@ describe("<DatePicker>", () => {
                 />,
             );
             clickShortcut();
-            assert.equal(onChangeSpy.mock.calls[0][0] as Date, date);
+            expect(onChangeSpy.mock.calls[0][0] as Date).toBe(date);
         });
     });
 
@@ -809,74 +807,74 @@ describe("<DatePicker>", () => {
             vi.useRealTimers();
         });
 
-        it("onChange correctly passes a Date and never null when canClearSelection is false", () => {
+        it("should correctly pass a Date and never null in onChange when canClearSelection is false", () => {
             const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} canClearSelection={false} onChange={onChange} />);
             getDay().simulate("click");
-            assert.isNotNull(onChange.mock.calls[0][0]);
+            expect(onChange.mock.calls[0][0]).not.toBeNull();
             getDay().simulate("click");
-            assert.isNotNull(onChange.mock.calls[1][0]);
+            expect(onChange.mock.calls[1][0]).not.toBeNull();
         });
 
-        it("onChange correctly passes a Date or null when canClearSelection is true", () => {
+        it("should correctly pass a Date or null in onChange when canClearSelection is true", () => {
             const onChange = vi.fn();
             const { getDay } = wrap(<DatePicker {...LOCALE_LOADER} canClearSelection={true} onChange={onChange} />);
             getDay().simulate("click");
-            assert.isNotNull(onChange.mock.calls[0][0]);
+            expect(onChange.mock.calls[0][0]).not.toBeNull();
             getDay().simulate("click");
-            assert.isNull(onChange.mock.calls[1][0]);
+            expect(onChange.mock.calls[1][0]).toBeNull();
         });
 
-        it("Clear button disabled when canClearSelection is false", () => {
+        it("should disable Clear button when canClearSelection is false", () => {
             const { getClearButton } = wrap(
                 <DatePicker {...LOCALE_LOADER} canClearSelection={false} showActionsBar={true} />,
             );
-            assert.isTrue(getClearButton().props().disabled);
+            expect(getClearButton().props().disabled).toBe(true);
         });
 
-        it("Clear button enabled when canClearSelection is true", () => {
+        it("should enable Clear button when canClearSelection is true", () => {
             const { getClearButton } = wrap(
                 <DatePicker {...LOCALE_LOADER} canClearSelection={true} showActionsBar={true} />,
             );
-            assert.isFalse(getClearButton().props().disabled);
+            expect(getClearButton().props().disabled).toBe(false);
         });
 
-        it("selects the current day when Today is clicked", () => {
+        it("should select the current day when Today is clicked", () => {
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} showActionsBar={true} />);
             root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
 
             const today = new Date();
             const value = root.state("value");
-            assert.isNotNull(value);
-            assert.equal(value!.getDate(), today.getDate());
-            assert.equal(value!.getMonth(), today.getMonth());
-            assert.equal(value!.getFullYear(), today.getFullYear());
+            expect(value).not.toBeNull();
+            expect(value!.getDate()).toBe(today.getDate());
+            expect(value!.getMonth()).toBe(today.getMonth());
+            expect(value!.getFullYear()).toBe(today.getFullYear());
         });
 
-        it("selects the current day in the given timezone when Today is clicked", () => {
+        it("should select the current day in the given timezone when Today is clicked", () => {
             const { root } = wrap(<DatePicker {...LOCALE_LOADER} showActionsBar={true} timezone="Asia/Tokyo" />);
             root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
 
             const value = root.state("value")!;
-            assert.isNotNull(value);
+            expect(value).not.toBeNull();
             // Asia/Tokyo is UTC+9, so 2020-12-24T15:45:00Z becomes 2020-12-25T00:45:00 in Tokyo
-            assert.equal(value.getDate(), MOCK_TODAY.getDate() + 1);
-            assert.equal(value.getMonth(), MOCK_TODAY.getMonth());
-            assert.equal(value.getFullYear(), MOCK_TODAY.getFullYear());
-            assert.equal(value.getHours(), 0);
-            assert.equal(value.getMinutes(), 45);
+            expect(value.getDate()).toBe(MOCK_TODAY.getDate() + 1);
+            expect(value.getMonth()).toBe(MOCK_TODAY.getMonth());
+            expect(value.getFullYear()).toBe(MOCK_TODAY.getFullYear());
+            expect(value.getHours()).toBe(0);
+            expect(value.getMinutes()).toBe(45);
         });
 
-        it("clears the value when Clear is clicked", () => {
+        it("should clear the value when Clear is clicked", () => {
             const { getDay, root } = wrap(<DatePicker {...LOCALE_LOADER} showActionsBar={true} />);
             getDay().simulate("click");
             root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).last().simulate("click");
-            assert.isNull(root.state("value"));
+            expect(root.state("value")).toBeNull();
         });
     });
 
     describe("localization", () => {
-        it("accept a statically-loaded date-fns locale and doesn't try to load it again", () => {
+        it("should accept a statically-loaded date-fns locale and not try to load it again", () => {
             const stub = vi.fn().mockImplementation(loadDateFnsLocaleFake);
             wrap(<DatePicker dateFnsLocaleLoader={stub} locale={enUSLocale} />);
             expect(stub).not.toHaveBeenCalled();
@@ -888,14 +886,13 @@ describe("<DatePicker>", () => {
         datePickerWrapper = wrapper;
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */
-            assertSelectedDays: (...days: number[]) =>
-                assert.sameMembers(
-                    wrapper
-                        .find(`.${Classes.DATEPICKER3_DAY_SELECTED}`)
-                        .hostNodes()
-                        .map(d => +d.text()),
-                    days,
-                ),
+            assertSelectedDays: (...days: number[]) => {
+                const selectedDays = wrapper
+                    .find(`.${Classes.DATEPICKER3_DAY_SELECTED}`)
+                    .hostNodes()
+                    .map(d => +d.text());
+                expect(selectedDays.sort()).toEqual([...days].sort());
+            },
             clickNextMonth: () => wrapper.find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).hostNodes().simulate("click"),
             clickPreviousMonth: () =>
                 wrapper.find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).hostNodes().simulate("click"),
