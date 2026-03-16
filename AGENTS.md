@@ -13,7 +13,7 @@
 ## Architecture
 
 - **Monorepo** using pnpm workspaces + Nx task runner
-- **Package manager**: pnpm v10.18.3 (strict dependency resolution)
+- **Package manager**: pnpm v10.29.3 (strict dependency resolution)
 - **Packages**: Core UI components in `packages/` - core, datetime, select, table, icons, colors
 - **Apps**: docs-app (blueprintjs.com), demo-app, table-dev-app for development
 - **Build tools**: karma-build-scripts, node-build-scripts, webpack-build-scripts

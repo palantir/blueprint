@@ -77,7 +77,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 Builds are orchestrated via [Nx's task runner](https://nx.dev/getting-started/intro) and NPM scripts.
 [Lerna-Lite](https://github.com/lerna-lite/lerna-lite) is used to prepare releases.
 
-**Prerequisites**: Node.js v20.11+ (see version specified in `.nvmrc`), pnpm v10.x (see version specified in `package.json`)
+**Prerequisites**: Node.js v24.11+ (see version specified in `.nvmrc`), pnpm v10.x (see version specified in `package.json`)
 
 ### One-time setup
 
