@@ -26,15 +26,7 @@ export type Package = (typeof PACKAGES)[number];
  * Sections contain child pages and create a route segment
  * (e.g. "components" -> core/components/buttons).
  */
-export const SECTIONS = [
-    "components",
-    "context",
-    "hooks",
-    "legacy",
-    "form-controls",
-    "form-inputs",
-    "overlays",
-] as const;
+export const SECTIONS = ["components", "context", "hooks", "form-controls", "form-inputs", "overlays"] as const;
 export type Section = (typeof SECTIONS)[number];
 
 // "Raw" types come directly from nav.json
