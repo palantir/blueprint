@@ -6,5 +6,5 @@
         "skipLibCheck": true
     },
     "include": ["**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.test.tsx", "vitest-env.d.ts"],
-    "exclude": []
+    "exclude": ["**/*.stories.tsx"]
 }
