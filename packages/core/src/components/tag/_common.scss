@@ -238,7 +238,7 @@ $minimal-dark-tag-intent-colors: (
 
         &:hover,
         &:active {
-          color: var(--bp-palette-light-gray-1);
+          color: oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h);
         }
       }
     }
@@ -326,12 +326,12 @@ $minimal-dark-tag-intent-colors: (
   color: oklch(from var(--bp-intent-default-foreground) l c h / 0.7);
   cursor: pointer;
   display: flex;
-  margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
+  margin-bottom: calc(-1 * calc(var(--bp-surface-spacing) * 0.5));
   /* stylelint-disable-next-line declaration-no-important */
-  margin-right: calc(var(--bp-surface-spacing) * -1.5) !important;
+  margin-right: calc(-1 * calc(var(--bp-surface-spacing) * 1.5)) !important;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
-  margin-top: calc(var(--bp-surface-spacing) * -0.5);
+  margin-top: calc(-1 * calc(var(--bp-surface-spacing) * 0.5));
   padding: calc(var(--bp-surface-spacing) * 0.5);
   padding-left: 0;
 
@@ -358,7 +358,7 @@ $minimal-dark-tag-intent-colors: (
 
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
-    margin-right: calc(var(--bp-surface-spacing) * -2) !important;
+    margin-right: calc(-1 * calc(var(--bp-surface-spacing) * 2)) !important;
     padding: 0 var(--bp-surface-spacing) 0 0;
 
     &:empty::before {
