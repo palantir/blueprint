@@ -50,6 +50,6 @@ const storybookConfig: StorybookConfig = {
 // eslint-disable-next-line import/no-default-export
 export default storybookConfig;
 
-function getAbsolutePath(value: string): any {
+function getAbsolutePath(value: string): string {
     return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
 }
