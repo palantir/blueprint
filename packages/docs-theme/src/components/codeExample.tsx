@@ -149,7 +149,7 @@ export function CopyToClipboardButton({ text }: { text: string }) {
     }, [text]);
 
     return (
-        <Tooltip content={justCopied ? "Copied!" : "Copy"} hoverOpenDelay={300} position="top">
+        <Tooltip content={justCopied ? "Copied!" : "Copy to clipboard"} hoverOpenDelay={300} position="top">
             <Button
                 aria-label="Copy import"
                 icon={justCopied ? "tick" : "duplicate"}
