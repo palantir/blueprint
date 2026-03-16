@@ -15,6 +15,7 @@
  */
 
 import { createRoot, type Root } from "react-dom/client";
+
 import { CopyToClipboardButton } from "@blueprintjs/docs-theme";
 
 const roots: Root[] = [];
