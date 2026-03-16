@@ -21,7 +21,7 @@ import {
     type NavStructure,
     type NavTreeNode,
     type RawNavStructure,
-} from "./navTypes.ts";
+} from "./navTypes.mts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
