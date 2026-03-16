@@ -14,7 +14,7 @@
         "copy:ci-config": "mkdir -p site/.circleci && cp .circleci/config-gh-pages.yml site/.circleci/config.yml",
         "copy:docs-app": "cp -rf packages/docs-app/dist/ site/docs",
         "copy:landing-app": "cp -rf packages/landing-app/dist/ site",
-        "deploy:site": "gh-pages -d site -b gh-pages",
+        "deploy:site": "gh-pages -d site -b gh-pages --add",
         "dev": "nx run-many -t dev --exclude @blueprintjs/landing-app @blueprintjs/table-dev-app",
         "dev:core": "nx run-many -t dev -p @blueprintjs/core @blueprintjs/icons @blueprintjs/docs-app",
         "dev:docs": "nx run-many -t dev -p @blueprintjs/docs-app @blueprintjs/docs-theme",
