@@ -14,25 +14,94 @@ Users may click anywhere inside the card to toggle the control state.
 By default, a "checked" control card will be displayed with the same appearance as a "selected" card.
 This behavior may be toggled with the `showAsSelectedWhenChecked` prop.
 
-@## Switch card
+@## Usage
+
+```tsx
+import { CheckboxCard, RadioCard, SwitchCard } from "@blueprintjs/core";
+```
+
+```tsx
+<SwitchCard>Option 1</SwitchCard>
+<SwitchCard>Option 2</SwitchCard>
+```
+
+@## SwitchCard examples
 
 Card with an embedded [**Switch**](#core/components/switch) control (end-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**SwitchProps**](#core/components/switch.props-interface) are available on the root component.
 
+@### Basic
+
+A simple switch card toggles a boolean state when clicked.
+
+@reactCodeExample SwitchCardBasicExample
+
+@### Compact
+
+The `compact` prop renders a smaller card with reduced padding.
+
+@reactCodeExample SwitchCardCompactExample
+
+@### Disabled
+
+The `disabled` prop prevents user interaction.
+
+@reactCodeExample SwitchCardDisabledExample
+
+@### Align indicator
+
+The `alignIndicator` prop controls which side of the card the switch control appears on.
+
+@reactCodeExample SwitchCardAlignIndicatorExample
+
+@## Combining with CardList
+
+Control cards work just like regular cards inside a [**CardList**](#core/components/card-list).
+
+@reactExample ControlCardListExample
+
+@## Interactive Playground
+
 @reactExample SwitchCardExample
 
-@## Checkbox card
+@## CheckboxCard examples
 
 Card with an embedded [**Checkbox**](#core/components/checkbox) control (start-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**CheckboxProps**](#core/components/checkbox.props-interface) are available on the root component.
 
+@### Basic
+
+A simple checkbox card toggles a boolean state when clicked.
+
+@reactCodeExample CheckboxCardBasicExample
+
+@### Compact
+
+The `compact` prop renders a smaller card with reduced padding.
+
+@reactCodeExample CheckboxCardCompactExample
+
+@### Disabled
+
+The `disabled` prop prevents user interaction.
+
+@reactCodeExample CheckboxCardDisabledExample
+
+@### Align indicator
+
+The `alignIndicator` prop controls which side of the card the checkbox control appears on.
+
+@reactCodeExample CheckboxCardAlignIndicatorExample
+
+@## Interactive Playground
+
 @reactExample CheckboxCardExample
 
-@## Radio card
+@## RadioCard examples
 
 Card with an embedded [**Radio**](#core/components/radio) control (start-aligned by default).
 
@@ -42,34 +111,34 @@ Most of the properties in [**CardProps**](#core/components/card.props-interface)
 Just like the **Radio** component, a **RadioCard** is usually contained in a
 [**RadioCardGroup**](#core/components/radio.radiogroup) which manages its selection state.
 
-```tsx
-import { RadioGroup, RadioCard } from "@blueprintjs/core";
-import React from "react";
+@### Basic
 
-function RadioCardGroupExample() {
-    const [selectedValue, setSelectedValue] = React.useState<string | undefined>();
-    const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-        setSelectedValue(event.currentTarget.value);
-    }, []);
+Radio cards are typically used inside a **RadioGroup** which manages the selection state.
 
-    return (
-        <RadioGroup selectedValue={selectedValue} onChange={handleChange} label="Lunch Special">
-            <RadioCard label="Soup" value="soup" />
-            <RadioCard label="Salad" value="salad" />
-            <RadioCard label="Sandwich" value="sandwich" />
-        </RadioGroup>
-    );
-}
-```
+@reactCodeExample RadioCardBasicExample
+
+@### Compact
+
+The `compact` prop renders a smaller card with reduced padding.
+
+@reactCodeExample RadioCardCompactExample
+
+@### Disabled
+
+The `disabled` prop prevents user interaction.
+
+@reactCodeExample RadioCardDisabledExample
+
+@### Align indicator
+
+The `alignIndicator` prop controls which side of the card the radio control appears on.
+
+@reactCodeExample RadioCardAlignIndicatorExample
+
+@## Interactive Playground
 
 @reactExample RadioCardGroupExample
 
 @## Props interface
 
 @interface ControlCardProps
-
-@## Combining with CardList
-
-Control cards work just like regular cards inside a [**CardList**](#core/components/card-list).
-
-@reactExample ControlCardListExample
