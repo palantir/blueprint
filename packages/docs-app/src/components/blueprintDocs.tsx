@@ -32,7 +32,6 @@ import {
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
-
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
