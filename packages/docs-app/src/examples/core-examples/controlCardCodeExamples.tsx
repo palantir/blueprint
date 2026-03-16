@@ -1,5 +1,5 @@
 /* !
- * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -49,7 +49,11 @@ import radioCardAlignIndicatorCode from "./radioCard/RadioCardAlignIndicator.tsx
 // SwitchCard
 export const SwitchCardBasicExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={switchCardBasicPreview} sourceCode={switchCardBasicCode} {...props}>
+        <CodeExample
+            previewCode={switchCardBasicPreview}
+            sourceCode={switchCardBasicCode}
+            {...props}
+        >
             <SwitchCardBasic />
         </CodeExample>
     );
@@ -57,7 +61,11 @@ export const SwitchCardBasicExample: React.FC<ExampleProps> = props => {
 
 export const SwitchCardCompactExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={switchCardCompactPreview} sourceCode={switchCardCompactCode} {...props}>
+        <CodeExample
+            previewCode={switchCardCompactPreview}
+            sourceCode={switchCardCompactCode}
+            {...props}
+        >
             <SwitchCardCompact />
         </CodeExample>
     );
@@ -65,7 +73,11 @@ export const SwitchCardCompactExample: React.FC<ExampleProps> = props => {
 
 export const SwitchCardDisabledExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={switchCardDisabledPreview} sourceCode={switchCardDisabledCode} {...props}>
+        <CodeExample
+            previewCode={switchCardDisabledPreview}
+            sourceCode={switchCardDisabledCode}
+            {...props}
+        >
             <SwitchCardDisabled />
         </CodeExample>
     );
@@ -86,7 +98,11 @@ export const SwitchCardAlignIndicatorExample: React.FC<ExampleProps> = props => 
 // CheckboxCard
 export const CheckboxCardBasicExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={checkboxCardBasicPreview} sourceCode={checkboxCardBasicCode} {...props}>
+        <CodeExample
+            previewCode={checkboxCardBasicPreview}
+            sourceCode={checkboxCardBasicCode}
+            {...props}
+        >
             <CheckboxCardBasic />
         </CodeExample>
     );
@@ -94,7 +110,11 @@ export const CheckboxCardBasicExample: React.FC<ExampleProps> = props => {
 
 export const CheckboxCardCompactExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={checkboxCardCompactPreview} sourceCode={checkboxCardCompactCode} {...props}>
+        <CodeExample
+            previewCode={checkboxCardCompactPreview}
+            sourceCode={checkboxCardCompactCode}
+            {...props}
+        >
             <CheckboxCardCompact />
         </CodeExample>
     );
@@ -102,7 +122,11 @@ export const CheckboxCardCompactExample: React.FC<ExampleProps> = props => {
 
 export const CheckboxCardDisabledExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={checkboxCardDisabledPreview} sourceCode={checkboxCardDisabledCode} {...props}>
+        <CodeExample
+            previewCode={checkboxCardDisabledPreview}
+            sourceCode={checkboxCardDisabledCode}
+            {...props}
+        >
             <CheckboxCardDisabled />
         </CodeExample>
     );
@@ -131,7 +155,11 @@ export const RadioCardBasicExample: React.FC<ExampleProps> = props => {
 
 export const RadioCardCompactExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={radioCardCompactPreview} sourceCode={radioCardCompactCode} {...props}>
+        <CodeExample
+            previewCode={radioCardCompactPreview}
+            sourceCode={radioCardCompactCode}
+            {...props}
+        >
             <RadioCardCompact />
         </CodeExample>
     );
@@ -139,7 +167,11 @@ export const RadioCardCompactExample: React.FC<ExampleProps> = props => {
 
 export const RadioCardDisabledExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={radioCardDisabledPreview} sourceCode={radioCardDisabledCode} {...props}>
+        <CodeExample
+            previewCode={radioCardDisabledPreview}
+            sourceCode={radioCardDisabledCode}
+            {...props}
+        >
             <RadioCardDisabled />
         </CodeExample>
     );
