@@ -4,9 +4,8 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import { Intent } from "../../common/intent";
+import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 import { Button } from "./buttons";
-import { Alignment, ButtonVariant, Size } from "../../common";
 
 const disabledArgs = ["large", "minimal", "outlined", "rightIcon", "small", "type"] as const satisfies ReadonlyArray<
     keyof React.ComponentProps<typeof Button>
@@ -28,10 +27,10 @@ const meta: Meta<typeof Button> = {
     tags: ["autodocs"],
     args: {
         text: "Button",
-        intent: Intent.NONE,
-        variant: ButtonVariant.SOLID,
-        size: Size.MEDIUM,
-        alignText: Alignment.CENTER,
+        intent: "none",
+        variant: "solid",
+        size: "medium",
+        alignText: "center",
         icon: undefined,
         endIcon: undefined,
         fill: false,
@@ -108,28 +107,28 @@ export const Default: Story = {
 export const Primary: Story = {
     args: {
         text: "Primary Button",
-        intent: Intent.PRIMARY,
+        intent: "primary",
     },
 };
 
 export const Success: Story = {
     args: {
         text: "Success Button",
-        intent: Intent.SUCCESS,
+        intent: "success",
     },
 };
 
 export const Warning: Story = {
     args: {
         text: "Warning Button",
-        intent: Intent.WARNING,
+        intent: "warning",
     },
 };
 
 export const Danger: Story = {
     args: {
         text: "Danger Button",
-        intent: Intent.DANGER,
+        intent: "danger",
     },
 };
 
@@ -137,21 +136,21 @@ export const Danger: Story = {
 export const Small: Story = {
     args: {
         text: "Small Button",
-        size: Size.SMALL,
+        size: "small",
     },
 };
 
 export const Medium: Story = {
     args: {
         text: "Medium Button",
-        size: Size.MEDIUM,
+        size: "medium",
     },
 };
 
 export const Large: Story = {
     args: {
         text: "Large Button",
-        size: Size.LARGE,
+        size: "large",
     },
 };
 
@@ -159,16 +158,16 @@ export const Large: Story = {
 export const Solid: Story = {
     args: {
         text: "Solid Button",
-        variant: ButtonVariant.SOLID,
-        intent: Intent.PRIMARY,
+        variant: "solid",
+        intent: "primary",
     },
 };
 
 export const Minimal: Story = {
     args: {
         text: "Minimal Button",
-        variant: ButtonVariant.MINIMAL,
-        intent: Intent.PRIMARY,
+        variant: "minimal",
+        intent: "primary",
     },
 };
 
@@ -176,7 +175,7 @@ export const Outlined: Story = {
     args: {
         text: "Outlined Button",
         variant: "outlined",
-        intent: Intent.PRIMARY,
+        intent: "primary",
     },
 };
 
@@ -185,7 +184,7 @@ export const Active: Story = {
     args: {
         text: "Active Button",
         active: true,
-        intent: Intent.PRIMARY,
+        intent: "primary",
     },
 };
 
@@ -200,7 +199,7 @@ export const Loading: Story = {
     args: {
         text: "Loading Button",
         loading: true,
-        intent: Intent.PRIMARY,
+        intent: "primary",
     },
 };
 
@@ -231,7 +230,7 @@ export const IconOnly: Story = {
 export const AlignStart: Story = {
     args: {
         text: "Start",
-        alignText: Alignment.START,
+        alignText: "start",
         icon: "align-left",
         endIcon: "caret-down",
         fill: true,
@@ -241,7 +240,7 @@ export const AlignStart: Story = {
 export const AlignCenter: Story = {
     args: {
         text: "Center",
-        alignText: Alignment.CENTER,
+        alignText: "center",
         icon: "align-center",
         endIcon: "caret-down",
         fill: true,
@@ -251,7 +250,7 @@ export const AlignCenter: Story = {
 export const AlignEnd: Story = {
     args: {
         text: "End",
-        alignText: Alignment.END,
+        alignText: "end",
         icon: "align-right",
         endIcon: "caret-down",
         fill: true,
