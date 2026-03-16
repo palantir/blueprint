@@ -14,32 +14,8 @@
  * limitations under the License.
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
 import { createRoot, type Root } from "react-dom/client";
-
-import { Button, Tooltip } from "@blueprintjs/core";
-
-function CopyImportButton({ text }: { text: string }) {
-    const [justCopied, setJustCopied] = useState(false);
-    const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
-
-    useEffect(() => {
-        return () => clearTimeout(timeoutRef.current);
-    }, []);
-
-    const handleClick = useCallback(() => {
-        void navigator.clipboard.writeText(text);
-        setJustCopied(true);
-        clearTimeout(timeoutRef.current);
-        timeoutRef.current = setTimeout(() => setJustCopied(false), 1500);
-    }, [text]);
-
-    return (
-        <Tooltip content={justCopied ? "Copied!" : "Copy"} hoverOpenDelay={300} position="top">
-            <Button aria-label="Copy import" icon="duplicate" variant="minimal" onClick={handleClick} />
-        </Tooltip>
-    );
-}
+import { CopyToClipboardButton } from "@blueprintjs/docs-theme";
 
 const roots: Root[] = [];
 
@@ -67,7 +43,7 @@ export function addCopyButtonsToImportBlocks() {
         container.appendChild(wrapper);
 
         const root = createRoot(wrapper);
-        root.render(<CopyImportButton text={text} />);
+        root.render(<CopyToClipboardButton text={text} />);
         roots.push(root);
     }
 }
