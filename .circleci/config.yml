@@ -100,10 +100,13 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: pnpm dist --parallel=7
+      - persist_to_workspace:
+          root: "."
+          paths: [packages/*/lib, packages/*/dist]
       - run: pnpm build-storybook
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/lib, packages/*/dist, storybook-static]
+          paths: [storybook-static]
 
   test-node-libs:
     docker: *docker-node-image
