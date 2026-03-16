@@ -3,9 +3,9 @@
 A control card is an interactive [**Card**](#core/components/card) with an embedded form control.
 There are a few supported form controls, each has a corresponding component API:
 
--   [**SwitchCard**](#core/components/control-card.switch-card)
--   [**CheckboxCard**](#core/components/control-card.checkbox-card)
--   [**RadioCard**](#core/components/control-card.radio-card)
+- [**SwitchCard**](#core/components/control-card.switch-card)
+- [**CheckboxCard**](#core/components/control-card.checkbox-card)
+- [**RadioCard**](#core/components/control-card.radio-card)
 
 The label may be specified as either `children` (`React.ReactNode`) or the `label` prop (`string`).
 
@@ -48,7 +48,7 @@ import React from "react";
 
 function RadioCardGroupExample() {
     const [selectedValue, setSelectedValue] = React.useState<string | undefined>();
-    const handleChange = React.useCallback((event: React.FormEvent<HTMLInputElement>) => {
+    const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedValue(event.currentTarget.value);
     }, []);
 
