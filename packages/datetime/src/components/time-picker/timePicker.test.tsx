@@ -16,28 +16,30 @@
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { assert, expect } from "chai";
-import { spy } from "sinon";
 
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 import { createTimeObject } from "@blueprintjs/test-commons";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, TimePicker, TimePrecision } from "../..";
+import { Classes } from "../..";
+import { TimePrecision } from "../../common/timePrecision";
+
+import { TimePicker } from "./timePicker";
 
 describe("<TimePicker>", () => {
     it("should render its contents", () => {
         render(<TimePicker />);
 
-        expect(screen.getByLabelText("hours (24hr clock)")).to.exist;
-        expect(screen.getByLabelText("minutes")).to.exist;
+        expect(screen.getByLabelText("hours (24hr clock)")).toBeInTheDocument();
+        expect(screen.getByLabelText("minutes")).toBeInTheDocument();
     });
 
     it("should propagate class names correctly", () => {
         const { container } = render(<TimePicker className="foo" />);
         const timePicker = container.querySelector(`.${Classes.TIMEPICKER}`);
 
-        expect(timePicker).to.exist;
-        expect(timePicker?.classList.contains("foo")).to.be.true;
+        expect(timePicker).toBeInTheDocument();
+        expect(timePicker).toHaveClass("foo");
     });
 
     it("should allow arrow buttons to loop time values", async () => {
@@ -159,63 +161,63 @@ describe("<TimePicker>", () => {
         render(<TimePicker />);
 
         const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
-        expect(hourInput.value).to.equal("0");
+        expect(hourInput.value).toBe("0");
 
         fireEvent.change(hourInput, { target: { value: "2" } });
 
-        expect(hourInput.value).to.equal("2");
-        expect(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER))).to.be.false;
+        expect(hourInput.value).toBe("2");
+        expect(hourInput).not.toHaveClass(CoreClasses.intentClass(Intent.DANGER));
     });
 
     it("should disallow non-number text entry", () => {
         render(<TimePicker />);
 
         const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
-        expect(hourInput.value).to.equal("0");
+        expect(hourInput.value).toBe("0");
 
         fireEvent.change(hourInput, { target: { value: "ab" } });
 
-        expect(hourInput.value).to.equal("");
+        expect(hourInput.value).toBe("");
     });
 
     it("should allow invalid number entry but show visual indicator", () => {
         render(<TimePicker />);
 
         const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-        expect(hourInput.value).to.equal("0");
+        expect(hourInput.value).toBe("0");
 
         fireEvent.change(hourInput, { target: { value: "300" } });
 
-        expect(hourInput.value).to.equal("300");
-        expect(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER))).to.be.true;
+        expect(hourInput.value).toBe("300");
+        expect(hourInput).toHaveClass(CoreClasses.intentClass(Intent.DANGER));
     });
 
     it("should revert to saved value after invalid text entry is blurred", () => {
         render(<TimePicker />);
 
         const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-        expect(hourInput.value).to.equal("0");
+        expect(hourInput.value).toBe("0");
 
         fireEvent.change(hourInput, { target: { value: "ab" } });
         fireEvent.blur(hourInput);
 
-        expect(hourInput.value).to.equal("0");
+        expect(hourInput.value).toBe("0");
     });
 
     it("should not render arrow buttons by default", () => {
         render(<TimePicker />);
 
-        expect(screen.queryByLabelText("Increase hours (24hr clock)")).to.not.exist;
-        expect(screen.queryByLabelText("Decrease hours (24hr clock)")).to.not.exist;
+        expect(screen.queryByLabelText("Increase hours (24hr clock)")).not.toBeInTheDocument();
+        expect(screen.queryByLabelText("Decrease hours (24hr clock)")).not.toBeInTheDocument();
     });
 
     it("should render arrow buttons when showArrowButtons is true", () => {
         render(<TimePicker showArrowButtons={true} />);
 
-        expect(screen.getByLabelText("Increase hours (24hr clock)")).to.exist;
-        expect(screen.getByLabelText("Decrease hours (24hr clock)")).to.exist;
-        expect(screen.getByLabelText("Increase minutes")).to.exist;
-        expect(screen.getByLabelText("Decrease minutes")).to.exist;
+        expect(screen.getByLabelText("Increase hours (24hr clock)")).toBeInTheDocument();
+        expect(screen.getByLabelText("Decrease hours (24hr clock)")).toBeInTheDocument();
+        expect(screen.getByLabelText("Increase minutes")).toBeInTheDocument();
+        expect(screen.getByLabelText("Decrease minutes")).toBeInTheDocument();
     });
 
     it("should select text on focus when selectAllOnFocus is true", () => {
@@ -224,13 +226,14 @@ describe("<TimePicker>", () => {
         const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
         const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
 
-        fireEvent.focus(hourInput);
+        const hourSelect = vi.spyOn(hourInput, "select");
+        const minuteSelect = vi.spyOn(minuteInput, "select");
 
-        expect(window.getSelection()?.toString()).to.equal("0");
+        fireEvent.focus(hourInput);
+        expect(hourSelect).toHaveBeenCalledOnce();
 
         fireEvent.focus(minuteInput);
-
-        expect(window.getSelection()?.toString()).to.equal("00");
+        expect(minuteSelect).toHaveBeenCalledOnce();
     });
 
     it("should not change value when disabled", async () => {
@@ -239,20 +242,20 @@ describe("<TimePicker>", () => {
         const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
         const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
 
-        expect(hourInput.disabled).to.be.true;
-        expect(minuteInput.disabled).to.be.true;
+        expect(hourInput.disabled).toBe(true);
+        expect(minuteInput.disabled).toBe(true);
 
         // All inputs should start at 0 and remain unchanged
-        expect(hourInput.value).to.equal("0");
-        expect(minuteInput.value).to.equal("00");
+        expect(hourInput.value).toBe("0");
+        expect(minuteInput.value).toBe("00");
 
         // Try arrow buttons
         await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
-        expect(hourInput.value).to.equal("0");
+        expect(hourInput.value).toBe("0");
 
         // Try keyboard events
         fireEvent.keyDown(hourInput, { key: "ArrowUp" });
-        expect(hourInput.value).to.equal("0");
+        expect(hourInput.value).toBe("0");
     });
 
     describe("Time range - minTime and maxTime props", () => {
@@ -265,8 +268,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            expect(screen.getByDisplayValue("15")).to.exist; // hour
-            expect(screen.getByDisplayValue("30")).to.exist; // minute
+            expect(screen.getByDisplayValue("15")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("30")).toBeInTheDocument(); // minute
         });
 
         it("should use maxTime as initial time if defaultValue is greater than maxTime", () => {
@@ -279,8 +282,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            expect(screen.getByDisplayValue("18")).to.exist; // hour
-            expect(screen.getByDisplayValue("30")).to.exist; // minute
+            expect(screen.getByDisplayValue("18")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("30")).toBeInTheDocument(); // minute
         });
 
         it("should allow any time to be selected by default", () => {
@@ -294,15 +297,15 @@ describe("<TimePicker>", () => {
             // Test default minTime (0:00:00.000)
             fireEvent.change(hourInput, { target: { value: "0" } });
             fireEvent.blur(hourInput);
-            expect(hourInput.value).to.equal("0");
+            expect(hourInput.value).toBe("0");
 
             // Test time between default minTime and maxTime
             fireEvent.change(hourInput, { target: { value: "12" } });
             fireEvent.blur(hourInput);
             fireEvent.change(minuteInput, { target: { value: "30" } });
             fireEvent.blur(minuteInput);
-            expect(hourInput.value).to.equal("12");
-            expect(minuteInput.value).to.equal("30");
+            expect(hourInput.value).toBe("12");
+            expect(minuteInput.value).toBe("30");
 
             // Test default maxTime (23:59:59.999)
             fireEvent.change(hourInput, { target: { value: "23" } });
@@ -313,10 +316,10 @@ describe("<TimePicker>", () => {
             fireEvent.blur(secondInput);
             fireEvent.change(millisecondInput, { target: { value: "999" } });
             fireEvent.blur(millisecondInput);
-            expect(hourInput.value).to.equal("23");
-            expect(minuteInput.value).to.equal("59");
-            expect(secondInput.value).to.equal("59");
-            expect(millisecondInput.value).to.equal("999");
+            expect(hourInput.value).toBe("23");
+            expect(minuteInput.value).toBe("59");
+            expect(secondInput.value).toBe("59");
+            expect(millisecondInput.value).toBe("999");
         });
 
         it("should allow overlapping time ranges", () => {
@@ -332,7 +335,7 @@ describe("<TimePicker>", () => {
             fireEvent.change(hourInput, { target: { value: "2" } });
             fireEvent.blur(hourInput);
 
-            expect(hourInput.value).to.equal("2");
+            expect(hourInput.value).toBe("2");
         });
 
         it("should not allow typing time greater than maxTime", () => {
@@ -353,7 +356,7 @@ describe("<TimePicker>", () => {
             fireEvent.change(hourInput, { target: { value: "22" } });
             fireEvent.blur(hourInput);
 
-            expect(hourInput.value).to.equal("18");
+            expect(hourInput.value).toBe("18");
         });
 
         it("should not allow typing time smaller than minTime", () => {
@@ -374,7 +377,7 @@ describe("<TimePicker>", () => {
             fireEvent.change(hourInput, { target: { value: "16" } });
             fireEvent.blur(hourInput);
 
-            expect(hourInput.value).to.equal("18");
+            expect(hourInput.value).toBe("18");
         });
 
         it("should not allow time smaller than minTime while decrementing", () => {
@@ -383,7 +386,7 @@ describe("<TimePicker>", () => {
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.keyDown(hourInput, { key: "ArrowDown" });
 
-            expect(hourInput.value).to.equal("15");
+            expect(hourInput.value).toBe("15");
         });
 
         it("should not allow time greater than maxTime while incrementing", () => {
@@ -398,7 +401,7 @@ describe("<TimePicker>", () => {
             const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(hourInput.value).to.equal("14");
+            expect(hourInput.value).toBe("14");
         });
 
         it("should reset to last good state when time smaller than minTime is blurred", () => {
@@ -414,7 +417,7 @@ describe("<TimePicker>", () => {
             fireEvent.change(hourInput, { target: { value: "14" } });
             fireEvent.blur(hourInput);
 
-            expect(hourInput.value).to.equal("15");
+            expect(hourInput.value).toBe("15");
         });
 
         it("should reset to last good state when time greater than maxTime is blurred", () => {
@@ -430,7 +433,7 @@ describe("<TimePicker>", () => {
             fireEvent.change(hourInput, { target: { value: "16" } });
             fireEvent.blur(hourInput);
 
-            expect(hourInput.value).to.equal("15");
+            expect(hourInput.value).toBe("15");
         });
 
         it("should immediately adjust selected time when minTime prop changes", () => {
@@ -446,8 +449,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            expect(screen.getByDisplayValue("15")).to.exist; // hour
-            expect(screen.getByDisplayValue("32")).to.exist; // minute
+            expect(screen.getByDisplayValue("15")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("32")).toBeInTheDocument(); // minute
         });
 
         it("should immediately adjust selected time when maxTime prop changes", () => {
@@ -463,8 +466,8 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            expect(screen.getByDisplayValue("10")).to.exist; // hour
-            expect(screen.getByDisplayValue("30")).to.exist; // minute
+            expect(screen.getByDisplayValue("10")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("30")).toBeInTheDocument(); // minute
         });
 
         it("should keep time at boundary value when minTime equals maxTime", () => {
@@ -473,10 +476,10 @@ describe("<TimePicker>", () => {
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(hourInput.value).to.equal("14");
+            expect(hourInput.value).toBe("14");
 
             fireEvent.keyDown(hourInput, { key: "ArrowDown" });
-            expect(hourInput.value).to.equal("14");
+            expect(hourInput.value).toBe("14");
         });
 
         it("should not loop when minTime > maxTime and selected time exceeds minTime", () => {
@@ -486,7 +489,7 @@ describe("<TimePicker>", () => {
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.keyDown(hourInput, { key: "ArrowDown" });
 
-            expect(hourInput.value).to.equal("17");
+            expect(hourInput.value).toBe("17");
         });
 
         it("should not loop when minTime > maxTime and selected time exceeds maxTime", () => {
@@ -496,7 +499,7 @@ describe("<TimePicker>", () => {
             const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(hourInput.value).to.equal("12");
+            expect(hourInput.value).toBe("12");
         });
 
         it("should not loop when minTime < maxTime and selected time exceeds maxTime", () => {
@@ -506,7 +509,7 @@ describe("<TimePicker>", () => {
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(hourInput.value).to.equal("17");
+            expect(hourInput.value).toBe("17");
         });
 
         it("should not loop when minTime < maxTime and selected time exceeds minTime", () => {
@@ -516,7 +519,7 @@ describe("<TimePicker>", () => {
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.keyDown(hourInput, { key: "ArrowDown" });
 
-            expect(hourInput.value).to.equal("12");
+            expect(hourInput.value).toBe("12");
         });
     });
 
@@ -529,83 +532,83 @@ describe("<TimePicker>", () => {
                 />,
             );
 
-            expect(screen.getByDisplayValue("10")).to.exist; // hour
-            expect(screen.getByDisplayValue("11")).to.exist; // minute
-            expect(screen.getByDisplayValue("12")).to.exist; // second
-            expect(screen.getByDisplayValue("013")).to.exist; // millisecond
+            expect(screen.getByDisplayValue("10")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("11")).toBeInTheDocument(); // minute
+            expect(screen.getByDisplayValue("12")).toBeInTheDocument(); // second
+            expect(screen.getByDisplayValue("013")).toBeInTheDocument(); // millisecond
         });
 
         it("should fire onChange events on arrow key press", () => {
-            const onChange = spy();
+            const onChange = vi.fn();
             render(<TimePicker onChange={onChange} />);
 
-            expect(onChange.notCalled).to.be.true;
+            expect(onChange).not.toHaveBeenCalled();
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect((onChange.mock.calls[0][0] as Date).getHours()).toBe(1);
         });
 
         it("should change input text and internal state on arrow key press", () => {
             render(<TimePicker />);
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
+            expect(hourInput.value).toBe("0");
 
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(hourInput.value).to.equal("1");
+            expect(hourInput.value).toBe("1");
         });
 
         it("should fire onChange events when new value is typed", () => {
-            const onChange = spy();
+            const onChange = vi.fn();
             render(<TimePicker onChange={onChange} />);
 
-            expect(onChange.notCalled).to.be.true;
+            expect(onChange).not.toHaveBeenCalled();
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.change(hourInput, { target: { value: "8" } });
             fireEvent.blur(hourInput);
 
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(8);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect((onChange.mock.calls[0][0] as Date).getHours()).toBe(8);
         });
 
         it("should format input and change state when new value is typed", () => {
             render(<TimePicker />);
 
             const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-            expect(minuteInput.value).to.equal("00");
+            expect(minuteInput.value).toBe("00");
 
             fireEvent.change(minuteInput, { target: { value: "8" } });
             fireEvent.blur(minuteInput);
 
-            expect(minuteInput.value).to.equal("08");
+            expect(minuteInput.value).toBe("08");
         });
 
         it("should fire onChange events when arrow button is pressed", async () => {
-            const onChange = spy();
+            const onChange = vi.fn();
             render(<TimePicker onChange={onChange} showArrowButtons={true} />);
 
-            expect(onChange.notCalled).to.be.true;
+            expect(onChange).not.toHaveBeenCalled();
 
             await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
 
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect((onChange.mock.calls[0][0] as Date).getHours()).toBe(1);
         });
 
         it("should change input and state when arrow button is pressed", async () => {
             render(<TimePicker showArrowButtons={true} />);
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
+            expect(hourInput.value).toBe("0");
 
             await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
 
-            expect(hourInput.value).to.equal("1");
+            expect(hourInput.value).toBe("1");
         });
     });
 
@@ -614,46 +617,46 @@ describe("<TimePicker>", () => {
             const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
             const { rerender } = render(<TimePicker value={zeroDate} />);
 
-            expect(screen.getByDisplayValue("0")).to.exist; // hour
-            expect(screen.getByDisplayValue("00")).to.exist; // minute
+            expect(screen.getByDisplayValue("0")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("00")).toBeInTheDocument(); // minute
 
             rerender(<TimePicker value={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
 
-            expect(screen.getByDisplayValue("1")).to.exist; // hour
-            expect(screen.getByDisplayValue("02")).to.exist; // minute
+            expect(screen.getByDisplayValue("1")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("02")).toBeInTheDocument(); // minute
         });
 
         it("should reset state when value changes to null", () => {
             const { rerender } = render(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
 
-            expect(screen.getByDisplayValue("1")).to.exist; // hour
-            expect(screen.getByDisplayValue("02")).to.exist; // minute
+            expect(screen.getByDisplayValue("1")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("02")).toBeInTheDocument(); // minute
 
             rerender(
                 <TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} value={new Date(2015, 1, 1, 5, 6, 7, 8)} />,
             );
 
-            expect(screen.getByDisplayValue("5")).to.exist; // hour
-            expect(screen.getByDisplayValue("06")).to.exist; // minute
+            expect(screen.getByDisplayValue("5")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("06")).toBeInTheDocument(); // minute
 
             rerender(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} value={null} />);
 
-            expect(screen.getByDisplayValue("1")).to.exist; // hour
-            expect(screen.getByDisplayValue("02")).to.exist; // minute
+            expect(screen.getByDisplayValue("1")).toBeInTheDocument(); // hour
+            expect(screen.getByDisplayValue("02")).toBeInTheDocument(); // minute
         });
 
         it("should fire onChange events on arrow key press", () => {
-            const onChange = spy();
+            const onChange = vi.fn();
             const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
             render(<TimePicker value={zeroDate} onChange={onChange} />);
 
-            expect(onChange.notCalled).to.be.true;
+            expect(onChange).not.toHaveBeenCalled();
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect((onChange.mock.calls[0][0] as Date).getHours()).toBe(1);
         });
 
         it("should not change input text or state on arrow key press", () => {
@@ -661,26 +664,26 @@ describe("<TimePicker>", () => {
             render(<TimePicker value={zeroDate} />);
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
+            expect(hourInput.value).toBe("0");
 
             fireEvent.keyDown(hourInput, { key: "ArrowUp" });
 
-            expect(hourInput.value).to.equal("0");
+            expect(hourInput.value).toBe("0");
         });
 
         it("should fire onChange events when new value is typed", () => {
-            const onChange = spy();
+            const onChange = vi.fn();
             const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
             render(<TimePicker value={zeroDate} onChange={onChange} />);
 
-            expect(onChange.notCalled).to.be.true;
+            expect(onChange).not.toHaveBeenCalled();
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
             fireEvent.change(hourInput, { target: { value: "8" } });
             fireEvent.blur(hourInput);
 
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(8);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect((onChange.mock.calls[0][0] as Date).getHours()).toBe(8);
         });
 
         it("should not format input and change state when new value is typed", () => {
@@ -688,25 +691,25 @@ describe("<TimePicker>", () => {
             render(<TimePicker value={zeroDate} />);
 
             const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-            expect(minuteInput.value).to.equal("00");
+            expect(minuteInput.value).toBe("00");
 
             fireEvent.change(minuteInput, { target: { value: "8" } });
             fireEvent.blur(minuteInput);
 
-            expect(minuteInput.value).to.equal("00");
+            expect(minuteInput.value).toBe("00");
         });
 
         it("should fire onChange events when arrow button is pressed", async () => {
-            const onChange = spy();
+            const onChange = vi.fn();
             const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
             render(<TimePicker showArrowButtons={true} value={zeroDate} onChange={onChange} />);
 
-            expect(onChange.notCalled).to.be.true;
+            expect(onChange).not.toHaveBeenCalled();
 
             await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
 
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect((onChange.mock.calls[0][0] as Date).getHours()).toBe(1);
         });
 
         it("should not change input and state when arrow button is pressed", async () => {
@@ -714,11 +717,11 @@ describe("<TimePicker>", () => {
             render(<TimePicker showArrowButtons={true} value={zeroDate} />);
 
             const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
+            expect(hourInput.value).toBe("0");
 
             await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
 
-            expect(hourInput.value).to.equal("0");
+            expect(hourInput.value).toBe("0");
         });
     });
 });
@@ -729,8 +732,8 @@ function assertTimeIs(hours: string, minutes: string, seconds: string, milliseco
     const secondInput = screen.getByLabelText<HTMLInputElement>("seconds");
     const millisecondInput = screen.getByLabelText<HTMLInputElement>("milliseconds");
 
-    assert.strictEqual(hourInput.value, hours, "hours input value");
-    assert.strictEqual(minuteInput.value, minutes, "minutes input value");
-    assert.strictEqual(secondInput.value, seconds, "seconds input value");
-    assert.strictEqual(millisecondInput.value, milliseconds, "milliseconds input value");
+    expect(hourInput.value).toBe(hours);
+    expect(minuteInput.value).toBe(minutes);
+    expect(secondInput.value).toBe(seconds);
+    expect(millisecondInput.value).toBe(milliseconds);
 }

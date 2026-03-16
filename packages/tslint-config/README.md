@@ -12,9 +12,9 @@ This package contains configuration for [TSLint](https://palantir.github.io/tsli
 
 **Key features:**
 
--   React & JSX rules from [tslint-react](https://github.com/palantir/tslint-react).
--   [Prettier](https://github.com/prettier/prettier) integration for consistent code style and automatic fixes.
--   [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
+- React & JSX rules from [tslint-react](https://github.com/palantir/tslint-react).
+- [Prettier](https://github.com/prettier/prettier) integration for consistent code style and automatic fixes.
+- [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 

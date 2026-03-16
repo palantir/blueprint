@@ -7,12 +7,12 @@ parent: components
 Non-ideal UI states inform the user that some content is unavailable. There are several types of non-ideal states,
 including:
 
--   **Empty state:** a container has just been created and has no data in it yet, or a container's contents have been
-    intentionally removed.
--   **Loading state:** a container is awaiting data. A good practice is to show a spinner for this state with optional
-    explanatory text below the spinner.
--   **Error state:** something went wrong (for instance, 404 and 500 HTTP errors). In this case, a good practice is to
-    add a call to action directing the user what to do next.
+- **Empty state:** a container has just been created and has no data in it yet, or a container's contents have been
+  intentionally removed.
+- **Loading state:** a container is awaiting data. A good practice is to show a spinner for this state with optional
+  explanatory text below the spinner.
+- **Error state:** something went wrong (for instance, 404 and 500 HTTP errors). In this case, a good practice is to
+  add a call to action directing the user what to do next.
 
 @## Import
 
