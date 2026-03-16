@@ -22,9 +22,6 @@ import "@blueprintjs/labs/lib/css/blueprint-labs.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 import "@blueprintjs/table/lib/css/table.css";
 
-// Note: Icons CSS is not imported globally to avoid dependency optimization issues.
-// Stories that need icon styling can import "@blueprintjs/icons/lib/css/blueprint-icons.css".
-
 const preview: Preview = {
     parameters: {
         backgrounds: {
