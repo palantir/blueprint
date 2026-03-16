@@ -16,6 +16,9 @@ import calloutIconCode from "./callout/CalloutIcon.tsx?raw";
 import CalloutIntent from "./callout/CalloutIntent";
 import calloutIntentPreview from "./callout/CalloutIntent.tsx.preview?raw";
 import calloutIntentCode from "./callout/CalloutIntent.tsx?raw";
+import CalloutMinimal from "./callout/CalloutMinimal";
+import calloutMinimalPreview from "./callout/CalloutMinimal.tsx.preview?raw";
+import calloutMinimalCode from "./callout/CalloutMinimal.tsx?raw";
 
 export const CalloutBasicExample: React.FC<ExampleProps> = props => {
     return (
@@ -45,6 +48,14 @@ export const CalloutCompactExample: React.FC<ExampleProps> = props => {
     return (
         <CodeExample previewCode={calloutCompactPreview} sourceCode={calloutCompactCode} {...props}>
             <CalloutCompact />
+        </CodeExample>
+    );
+};
+
+export const CalloutMinimalExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample previewCode={calloutMinimalPreview} sourceCode={calloutMinimalCode} {...props}>
+            <CalloutMinimal />
         </CodeExample>
     );
 };

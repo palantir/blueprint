@@ -62,8 +62,8 @@
         "stylelint": "~16.25.0",
         "stylelint-config-palantir": "^7.6.0",
         "stylelint-scss": "^6.12.1",
-        "typescript": "~5.3.3",
-        "typescript-eslint": "^8.23.0",
+        "typescript": "~5.9.3",
+        "typescript-eslint": "^8.56.1",
         "vitest": "catalog:",
         "yargs": "^17.7.2"
     },
