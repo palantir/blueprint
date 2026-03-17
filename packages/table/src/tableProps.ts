@@ -63,6 +63,13 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
     bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
+     * This dependency list may be used to trigger a re-render of the body context menu when one of its elements changes
+     * (compared using shallow equality checks). This is done by updating the context menu content rendering function reference,
+     * which forces ContextMenu to re-render.
+     */
+    bodyContextMenuRendererDependencies?: React.DependencyList;
+
+    /**
      * Whether the body context menu is enabled.
      *
      * @default true if bodyContextMenuRenderer is defined

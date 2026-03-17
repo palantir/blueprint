@@ -21,7 +21,7 @@ import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
-import { Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, Menu } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableProps } from "../src";
@@ -33,6 +33,7 @@ import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
 import { type Region, Regions } from "../src/regions";
+import { TableBody } from "../src/tableBody";
 import type { TableState } from "../src/tableState";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -2037,7 +2038,7 @@ describe("<Table>", function (this) {
             );
             expect(getFirstCellText()).to.equal(dependencies[0]);
 
-            // replace the single dependency with a shallow-equal value
+            // change the dependency
             dependencies[0] = "new data from external store";
             table.setProps({ cellRendererDependencies: dependencies.slice() });
             expect(getFirstCellText()).to.equal(
@@ -2051,6 +2052,82 @@ describe("<Table>", function (this) {
                     .hostNodes()
                     .text();
             }
+        });
+    });
+
+    describe("EXPERIMENTAL: bodyContextMenuRendererDependencies", () => {
+        it("Does not re-create context menu wrapper when dependencies don't change", () => {
+            const dependencies: any[] = ["stable"];
+            const bodyContextMenuRenderer = sinon.stub().returns(<Menu>Menu</Menu>);
+            const table = mount(
+                <Table
+                    numRows={1}
+                    bodyContextMenuRenderer={bodyContextMenuRenderer}
+                    bodyContextMenuRendererDependencies={dependencies}
+                >
+                    <Column name="Column0" cellRenderer={renderDummyCell} />
+                </Table>,
+            );
+
+            const tableBody = table.find(TableBody).first();
+            const originalWrapper = (tableBody.instance() as any).renderContextMenuContentWrapper;
+
+            // replace the single dependency with a shallow-equal value
+            dependencies[0] = "stable";
+            table.setProps({ bodyContextMenuRendererDependencies: dependencies });
+
+            const tableBodyAfter = table.find(TableBody).first();
+            const newWrapper = (tableBodyAfter.instance() as any).renderContextMenuContentWrapper;
+
+            expect(newWrapper).to.equal(
+                originalWrapper,
+                "renderContextMenuContentWrapper should not have been recreated when bodyContextMenuRendererDependencies are the same",
+            );
+        });
+
+        it("Does re-create context menu wrapper when dependencies change", () => {
+            const dependencies: string[] = ["some data from external store"];
+            const bodyContextMenuRenderer = sinon.stub().returns(<Menu>Menu</Menu>);
+            const table = mount(
+                <Table
+                    numRows={1}
+                    bodyContextMenuRenderer={bodyContextMenuRenderer}
+                    bodyContextMenuRendererDependencies={dependencies.slice()}
+                >
+                    <Column name="Column0" cellRenderer={renderDummyCell} />
+                </Table>,
+            );
+
+            const tableBody = table.find(TableBody).first();
+            const originalWrapper = (tableBody.instance() as any).renderContextMenuContentWrapper;
+
+            // change the dependency
+            dependencies[0] = "new data from external store";
+            table.setProps({ bodyContextMenuRendererDependencies: dependencies.slice() });
+
+            const tableBodyAfter = table.find(TableBody).first();
+            const newWrapper = (tableBodyAfter.instance() as any).renderContextMenuContentWrapper;
+
+            expect(newWrapper).to.not.equal(
+                originalWrapper,
+                "renderContextMenuContentWrapper should have been recreated when bodyContextMenuRendererDependencies changed",
+            );
+        });
+
+        it("Logs an error when bodyContextMenuRendererDependencies is enabled after mount", () => {
+            const consoleErrorSpy = sinon.stub(console, "error");
+            const bodyContextMenuRenderer = sinon.stub().returns(<Menu>Menu</Menu>);
+            const table = mount(
+                <Table numRows={1} bodyContextMenuRenderer={bodyContextMenuRenderer}>
+                    <Column name="Column0" cellRenderer={renderDummyCell} />
+                </Table>,
+            );
+
+            // Enable bodyContextMenuRendererDependencies after mount
+            table.setProps({ bodyContextMenuRendererDependencies: ["some data"] });
+
+            expect(consoleErrorSpy.calledWith(Errors.TABLE_INVALID_BODY_CONTEXT_MENU_RENDERER_DEPS)).to.be.true;
+            consoleErrorSpy.restore();
         });
     });
 

@@ -226,6 +226,7 @@ export interface MutableTableState {
     cellContent?: CellContent;
     cellTruncatedPopoverMode?: TruncatedPopoverMode;
     cellTruncationLength?: number;
+    currentTime?: string;
     enableCellEditing?: boolean;
     enableCellSelection?: boolean;
     enableCellTruncation?: boolean;
@@ -275,6 +276,7 @@ const DEFAULT_STATE: MutableTableState = {
     cellContent: CellContent.LONG_TEXT,
     cellTruncatedPopoverMode: TruncatedPopoverMode.WHEN_TRUNCATED,
     cellTruncationLength: TRUNCATION_LENGTHS[TRUNCATION_LENGTH_DEFAULT_INDEX],
+    currentTime: new Date().toLocaleTimeString(),
     enableCellEditing: false,
     enableCellSelection: true,
     enableCellTruncation: false,
@@ -335,6 +337,8 @@ export class MutableTable extends Component<{}, MutableTableState> {
 
     private previousTime: number;
 
+    private timeUpdateInterval: number;
+
     private refHandlers = {
         table: (ref: Table) => (this.tableInstance = ref),
         tableWrapperRef: (ref: HTMLDivElement) => (this.tableWrapperRef = ref),
@@ -377,6 +381,9 @@ export class MutableTable extends Component<{}, MutableTableState> {
 
     public componentDidMount() {
         this.syncFocusStyle();
+        this.timeUpdateInterval = window.setInterval(() => {
+            this.setState({ currentTime: new Date().toLocaleTimeString() });
+        }, 1000);
     }
 
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -394,6 +401,12 @@ export class MutableTable extends Component<{}, MutableTableState> {
         this.syncFocusStyle();
         this.syncDependentBooleanStates();
         this.stateStore.set(this.state);
+    }
+
+    public componentWillUnmount() {
+        if (this.timeUpdateInterval != null) {
+            window.clearInterval(this.timeUpdateInterval);
+        }
     }
 
     // Generators
@@ -458,6 +471,7 @@ export class MutableTable extends Component<{}, MutableTableState> {
         return (
             <Table
                 bodyContextMenuRenderer={this.renderBodyContextMenu}
+                bodyContextMenuRendererDependencies={[this.state.currentTime]}
                 enableColumnHeader={this.state.enableColumnHeader}
                 enableColumnInteractionBar={this.state.showTableInteractionBar}
                 enableColumnReordering={this.state.enableColumnReordering}
@@ -1127,7 +1141,7 @@ export class MutableTable extends Component<{}, MutableTableState> {
                 <MenuItem icon="graph-remove" text="Item 3" />
                 <MenuItem icon="group-objects" text="Item 4" />
                 <MenuDivider />
-                <MenuItem disabled={true} text="Disabled item" />
+                <MenuItem disabled={true} text={`Current time: ${this.state.currentTime}`} />
             </Menu>
         );
         return this.state.enableContextMenu ? menu : undefined;
