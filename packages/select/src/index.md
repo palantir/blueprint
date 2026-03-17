@@ -30,9 +30,3 @@ Import the package stylesheet in Sass:
 ```html
 <link href="path/to/node_modules/@blueprintjs/select/lib/css/blueprint-select.css" rel="stylesheet" />
 ```
-
-@page select-component
-@page suggest
-@page multi-select
-@page omnibar
-@page query-list
