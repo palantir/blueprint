@@ -4,7 +4,7 @@
 It works best in flex layouts where they will adapt to orientation without
 additional styles. Otherwise, a **Divider** will appear as a full-width 1px-high block element.
 
-@## Import
+@## Usage
 
 ```tsx
 import { Divider } from "@blueprintjs/core";
