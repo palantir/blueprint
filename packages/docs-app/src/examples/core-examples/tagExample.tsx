@@ -23,7 +23,7 @@ import { IntentSelect } from "./common/intentSelect";
 
 const INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
 
-export const TagExample: React.FC<ExampleProps> = props => {
+export const TagPlaygroundExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = useState(false);
     const [fill, setFill] = useState(false);
     const [icon, setIcon] = useState(false);
