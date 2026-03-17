@@ -297,13 +297,14 @@ export class NumericInput extends AbstractPureComponent<
         max: number | undefined,
         delta = 0,
         locale: string | undefined,
+        round = delta !== 0,
     ) {
         if (!isValueNumeric(value, locale)) {
             return NumericInput.VALUE_EMPTY;
         }
         const currentValue = parseStringToStringNumber(value, locale);
         const numericValue = Number(currentValue) + delta;
-        const nextValue = delta !== 0 ? Number(toMaxPrecision(numericValue, stepMaxPrecision)) : numericValue;
+        const nextValue = round ? Number(toMaxPrecision(numericValue, stepMaxPrecision)) : numericValue;
         const clampedValue = clampValue(nextValue, min, max);
         return toLocaleString(clampedValue, locale);
     }

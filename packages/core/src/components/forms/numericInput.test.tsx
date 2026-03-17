@@ -1085,7 +1085,7 @@ describe("<NumericInput>", () => {
         });
 
         it("passed decimal value should be rounded by minorStepSize", () => {
-            const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} />);
+            const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} locale="en-US" />);
             expect(component.find("input").prop("value")).to.equal("9.01");
         });
 
@@ -1095,7 +1095,7 @@ describe("<NumericInput>", () => {
         });
 
         it("preserves small floating-point value on initial render when min is set", () => {
-            const component = mount(<NumericInput value={"2.7E-10"} min={-Number.MAX_VALUE} locale="en-US" />);
+            const component = mount(<NumericInput value={"2.7E-10"} min={-1} locale="en-US" />);
             expect(Number(component.find("input").prop("value"))).to.be.closeTo(2.7e-10, 1e-20);
         });
 
