@@ -18,16 +18,17 @@ import { createRoot, type Root } from "react-dom/client";
 
 import { CopyToClipboardButton } from "@blueprintjs/docs-theme";
 
-const roots: Root[] = [];
+const roots: Array<{ root: Root; wrapper: HTMLSpanElement }> = [];
 
 /**
  * Find all `.docs-copyable-import` containers in the DOM and mount a copy button into each one.
  * Follows the same post-render enhancement pattern as {@link highlightCodeBlocks}.
  */
 export function addCopyButtonsToImportBlocks() {
-    // Clean up any previously mounted roots
-    for (const root of roots) {
+    // Clean up any previously mounted roots and their DOM wrapper elements
+    for (const { root, wrapper } of roots) {
         root.unmount();
+        wrapper.remove();
     }
     roots.length = 0;
 
@@ -45,6 +46,6 @@ export function addCopyButtonsToImportBlocks() {
 
         const root = createRoot(wrapper);
         root.render(<CopyToClipboardButton text={text} variant="outlined" />);
-        roots.push(root);
+        roots.push({ root, wrapper });
     }
 }
