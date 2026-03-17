@@ -49,7 +49,7 @@ const storybookConfig: StorybookConfig = {
         });
     },
 
-    addons: ["@storybook/addon-a11y"]
+    addons: ["@storybook/addon-a11y"],
 };
 
 // eslint-disable-next-line import/no-default-export
