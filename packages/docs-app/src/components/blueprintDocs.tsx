@@ -19,7 +19,7 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import type { DocsCompleteData } from "@blueprintjs/docs-data";
+import { type DocsCompleteData, SECTIONS } from "@blueprintjs/docs-data";
 import {
     Banner,
     Documentation,
@@ -42,17 +42,8 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
-// HACKHACK: this is brittle
-// detect Components page and subheadings
-const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
-const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
-const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
-const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
-const isNavSection = ({ route }: HeadingNode) =>
-    COMPONENTS_PATTERN.test(route) ||
-    CONTEXT_PATTERN.test(route) ||
-    HOOKS_PATTERN.test(route) ||
-    LEGACY_PATTERN.test(route);
+const sectionPatterns = SECTIONS.map(name => new RegExp(`/${name}(\\.[\\w-]+)?$`));
+const isNavSection = ({ route }: HeadingNode) => sectionPatterns.some(pattern => pattern.test(route));
 
 /** Return the current theme className. */
 export function getTheme(): string {

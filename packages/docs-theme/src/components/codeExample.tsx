@@ -5,7 +5,7 @@
 import classNames from "classnames";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Button, ButtonVariant, Classes, Pre, Tooltip } from "@blueprintjs/core";
+import { Button, type ButtonVariant, Classes, Pre, Tooltip } from "@blueprintjs/core";
 
 import { useTheme } from "../common";
 import { DOCS_CODE_BLOCK } from "../common/classes";
