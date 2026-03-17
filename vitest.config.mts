@@ -13,6 +13,7 @@ export default defineConfig({
         projects: [
             "packages/labs/vitest.config.mts",
             "packages/core/vitest.config.mts",
+            "packages/docs-data/vitest.config.mts",
             // TODO: Add core, datetime, datetime2, select, table as they migrate from Karma
         ],
     },

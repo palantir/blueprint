@@ -13,6 +13,7 @@ catalog:
   "@vitest/coverage-v8": 4.0.7
   enzyme: ^3.11.0
   jsdom: ^27.1.0
+  tsx: ^4.21.0
   vitest: 4.0.7
 
 publishBranch: develop
