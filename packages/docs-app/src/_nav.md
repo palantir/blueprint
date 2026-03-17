@@ -1,11 +1,4 @@
 <!--
-This file enumerates the exact order of root pages in the left sidebar.
+This file must exist because MarkdownPlugin({ navPage: "_nav" }) requires it.
+Page hierarchy is now defined in packages/docs-data/nav.json.
 -->
-
-@page blueprint
-@page core
-@page datetime
-@page icons
-@page select
-@page table
-@page labs
