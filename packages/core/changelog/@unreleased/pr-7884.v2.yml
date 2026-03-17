@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: 'fix(OverlayToaster): treat empty array children the same as null when determining isOpen state'
+  links:
+  - https://github.com/palantir/blueprint/pull/7884
