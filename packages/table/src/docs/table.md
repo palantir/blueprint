@@ -12,7 +12,7 @@ If you are looking for the simpler Blueprint-styled HTML `<table>` instead, see
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
-```sh
+```sh copy
 npm install --save @blueprintjs/table
 ```
 

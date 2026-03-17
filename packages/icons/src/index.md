@@ -13,7 +13,7 @@ See the [**`Icon` component documentation**](#core/components/icon) (in the `@bl
 
 </div>
 
-```sh
+```sh copy
 npm install --save @blueprintjs/icons
 ```
 

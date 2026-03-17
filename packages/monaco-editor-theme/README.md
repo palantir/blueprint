@@ -8,7 +8,7 @@ This package provides a theme for [monaco-editor](https://microsoft.github.io/mo
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/monaco-editor-theme
 ```
 
