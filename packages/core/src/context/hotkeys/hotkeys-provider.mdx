@@ -36,7 +36,7 @@ root.render(
 );
 ```
 
-@## Usage with other providers
+## Usage with other providers
 
 If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest
 **HotkeysProvider** underneath them:
@@ -58,7 +58,7 @@ function App() {
 }
 ```
 
-@## Advanced usage
+## Advanced usage
 
 **HotkeysProvider** should not be nested, except in special cases. If you have a rendering boundary within your application
 through which React context is not preserved (for example, a plugin system which uses `render()`) and you wish
