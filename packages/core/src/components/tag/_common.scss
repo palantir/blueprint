@@ -117,7 +117,12 @@ $minimal-dark-tag-intent-colors: (
   min-width: $tag-height;
   padding: $tag-padding-top $tag-padding;
   position: relative;
-  text-align: center;
+
+  // Center text for short content (e.g. single characters) only when the text
+  // element is the sole child (no icons/remove button) and the tag is not fill.
+  &:not(.#{$ns}-fill) > .#{$ns}-fill:only-child {
+    text-align: center;
+  }
 
   &:focus {
     @include focus-outline(0);

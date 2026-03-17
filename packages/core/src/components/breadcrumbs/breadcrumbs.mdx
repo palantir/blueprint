@@ -1,35 +1,61 @@
 # Breadcrumbs
 
-**Breadcrumbs** represent the path to the current resource within an application's hierarchical structure.
+An ordered list that represents a navigation path, with built-in overflow handling for long trails.
 
-## Import
+@## Usage
 
 ```ts
 import { Breadcrumbs } from "@blueprintjs/core";
 ```
 
-## Usage
+```tsx
+<Breadcrumbs items={[{ text: "Home" }, { text: "Account" }, { text: "Project" }]} />
+```
+
+@## Examples
+
+@### Basic
 
 The **Breadcrumbs** component accepts an `items` array of
 [breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them as an ordered list.
 
 @reactCodeExample BreadcrumbsBasicExample
 
-## Overflow
+@### Icon
 
-**Breadcrumbs** uses an [**OverflowList**](#core/components/overflow-list)
-to collapse breadcrumbs that exceed the available space.
+Use the `icon` prop on individual breadcrumb items to display an icon before the text.
+
+@reactCodeExample BreadcrumbsIconExample
+
+@### Overflow
+
+**Breadcrumbs** uses [**OverflowList**](#core/components/overflow-list) to collapse items
+that exceed the available space. Use the `minVisibleItems` prop to guarantee a
+minimum number of items remain visible.
 
 @reactCodeExample BreadcrumbsOverflowExample
 
-## Customizing breadcrumbs
+@### Customizing breadcrumbs
 
 The **Breadcrumbs** component supports customization through the `breadcrumbRenderer`
 and `currentBreadcrumbRenderer` props, which allow custom rendering of individual breadcrumbs.
 
 @reactCodeExample BreadcrumbsRendererExample
 
-## Interactive Playground
+@### Collapse direction
+
+By default, **Breadcrumbs** collapses items from the start. Use the `collapseFrom` prop
+with `Boundary.END` to collapse from the end instead.
+
+@reactCodeExample BreadcrumbsCollapseFromExample
+
+@### Disabled
+
+Set `disabled: true` on individual breadcrumb items to render them as non-interactive.
+
+@reactCodeExample BreadcrumbsDisabledExample
+
+@## Interactive Playground
 
 @reactExample BreadcrumbsPlaygroundExample
 
@@ -39,9 +65,9 @@ and `currentBreadcrumbRenderer` props, which allow custom rendering of individua
 
 ## Breadcrumb
 
-The **Breadcrumb** component renders an `a.@ns-breadcrumb` if an `href` or `onClick`
-is provided; otherwise, it renders a `span.@ns-breadcrumb`. Typically, breadcrumbs
-are supplied as an array of `BreadcrumbProps` to the `items` prop of **Breadcrumbs**,
-but the component can also be used directly when implementing a custom `breadcrumbRenderer`.
+An individual breadcrumb item. Renders as an anchor if `href` or `onClick` is
+provided, otherwise as a span. Typically, breadcrumbs are supplied as an array
+of `BreadcrumbProps` to the `items` prop of **Breadcrumbs**, but the component can
+also be used directly when implementing a custom `breadcrumbRenderer`.
 
 @interface BreadcrumbProps

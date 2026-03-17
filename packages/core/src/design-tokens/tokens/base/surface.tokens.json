@@ -1,0 +1,278 @@
+{
+    "surface": {
+        "border-color": {
+            "$type": "color",
+            "default": {
+                "$value": "{intent.default.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.12
+                    }
+                }
+            },
+            "strong": {
+                "$value": "{intent.default.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.25
+                    }
+                }
+            }
+        },
+        "border-width": {
+            "$type": "dimension",
+            "$value": {
+                "value": 1,
+                "unit": "px"
+            }
+        },
+        "border-radius": {
+            "$type": "dimension",
+            "$value": {
+                "value": 4,
+                "unit": "px"
+            }
+        },
+        "shadow": {
+            "$type": "shadow",
+            "$description": "BP6 light mode elevation shadows (0-4)",
+            "0": {
+                "$description": "Level 0 - border only, 0 0 0 1px rgba(black, 15%), 0 0 5px 0 rgba(0,0,0, 2%)",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.15 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 5, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.02 }
+                    }
+                ]
+            },
+            "1": {
+                "$description": "Level 1 - subtle elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 3, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 2, "unit": "px" },
+                        "spread": { "value": -1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    }
+                ]
+            },
+            "2": {
+                "$description": "Level 2 - standard elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 4, "unit": "px" },
+                        "blur": { "value": 6, "unit": "px" },
+                        "spread": { "value": -4, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 15, "unit": "px" },
+                        "spread": { "value": -3, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    }
+                ]
+            },
+            "3": {
+                "$description": "Level 3 - popover/dialog elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 20, "unit": "px" },
+                        "blur": { "value": 25, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 15, "unit": "px" },
+                        "spread": { "value": -3, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    }
+                ]
+            },
+            "4": {
+                "$description": "Level 4 - maximum elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 25, "unit": "px" },
+                        "blur": { "value": 50, "unit": "px" },
+                        "spread": { "value": -12, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
+                    }
+                ]
+            }
+        },
+        "spacing": {
+            "$type": "dimension",
+            "$value": { "value": 4, "unit": "px" },
+            "$description": "Base spacing unit — components multiply this"
+        },
+        "z-index": {
+            "$type": "number",
+            "0": { "$value": 0 },
+            "1": { "$value": 10 },
+            "2": { "$value": 20 },
+            "3": { "$value": 30 },
+            "4": { "$value": 40 }
+        },
+        "color-code": {
+            "$type": "color",
+            "$value": "{palette.white}",
+            "$extensions": { "com.blueprint.derive": { "alpha": 0.7 } }
+        },
+        "layer-opacity": {
+            "$type": "number",
+            "$value": 0.05,
+            "$description": "Shared opacity for surface layers"
+        },
+        "layer-color": {
+            "$type": "color",
+            "$description": "Composed color with opacity applied, usable as color anywhere",
+            "default": {
+                "$value": "{intent.default.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
+            },
+            "primary": {
+                "$value": "{intent.primary.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
+            },
+            "success": {
+                "$value": "{intent.success.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
+            },
+            "warning": {
+                "$value": "{intent.warning.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
+            },
+            "danger": {
+                "$value": "{intent.danger.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
+            }
+        },
+        "layer": {
+            "$type": "color",
+            "$description": "Wraps layer-color in linear-gradient() for background stacking",
+            "default": {
+                "$value": "{surface.layer-color.default}",
+                "$extensions": { "com.blueprint.role": "stackable-layer" }
+            },
+            "primary": {
+                "$value": "{surface.layer-color.primary}",
+                "$extensions": { "com.blueprint.role": "stackable-layer" }
+            },
+            "success": {
+                "$value": "{surface.layer-color.success}",
+                "$extensions": { "com.blueprint.role": "stackable-layer" }
+            },
+            "warning": {
+                "$value": "{surface.layer-color.warning}",
+                "$extensions": { "com.blueprint.role": "stackable-layer" }
+            },
+            "danger": {
+                "$value": "{surface.layer-color.danger}",
+                "$extensions": { "com.blueprint.role": "stackable-layer" }
+            }
+        },
+        "background-color": {
+            "$type": "color",
+            "$description": "Light mode app backgrounds: white → light-gray on interaction",
+            "default": {
+                "rest": {
+                    "$value": "{intent.default.rest}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 1.909, "chromaScale": 0 } }
+                },
+                "hover": {
+                    "$value": "{intent.default.hover}",
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": 0.577, "chromaOffset": -0.02, "hueOffset": 6.2 }
+                    }
+                },
+                "active": {
+                    "$value": "{intent.default.active}",
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": 0.59, "chromaOffset": -0.013, "hueOffset": 0 }
+                    }
+                },
+                "disabled": {
+                    "$value": "{intent.default.disabled}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 1.471, "chromaScale": 0 } }
+                }
+            },
+            "primary": {
+                "rest": { "$value": "{intent.primary.rest}" },
+                "hover": { "$value": "{intent.primary.hover}" },
+                "active": { "$value": "{intent.primary.active}" },
+                "disabled": { "$value": "{intent.primary.disabled}" }
+            },
+            "success": {
+                "rest": { "$value": "{intent.success.rest}" },
+                "hover": { "$value": "{intent.success.hover}" },
+                "active": { "$value": "{intent.success.active}" },
+                "disabled": { "$value": "{intent.success.disabled}" }
+            },
+            "warning": {
+                "rest": { "$value": "{intent.warning.rest}" },
+                "hover": { "$value": "{intent.warning.hover}" },
+                "active": { "$value": "{intent.warning.active}" },
+                "disabled": { "$value": "{intent.warning.disabled}" }
+            },
+            "danger": {
+                "rest": { "$value": "{intent.danger.rest}" },
+                "hover": { "$value": "{intent.danger.hover}" },
+                "active": { "$value": "{intent.danger.active}" },
+                "disabled": { "$value": "{intent.danger.disabled}" }
+            }
+        }
+    }
+}

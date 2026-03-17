@@ -22,7 +22,7 @@ import {
 } from "enzyme";
 import { act, PureComponent } from "react";
 
-import { afterAll, afterEach, assert, beforeAll, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { type HTMLInputProps, Position } from "../../common";
@@ -782,9 +782,8 @@ describe("<NumericInput>", () => {
     // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
     // in component constructors
     describe("Validation", () => {
-        let consoleError: ReturnType<typeof vi.spyOn>;
+        const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
 
-        beforeAll(() => (consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn())));
         afterEach(() => consoleError.mockClear());
         afterAll(() => consoleError.mockRestore());
 

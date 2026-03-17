@@ -16,37 +16,28 @@
 
 import { Fragment } from "react/jsx-runtime";
 
-import {
-    afterEach,
-    assert,
-    beforeEach,
-    describe,
-    expect,
-    it,
-    type MockInstance,
-    vi,
-} from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import * as Utils from "./utils";
 
 describe("Utils", () => {
     it("isFunction", () => {
-        assert.isTrue(Utils.isFunction(() => 3));
-        assert.isFalse(Utils.isFunction(undefined));
+        expect(Utils.isFunction(() => 3)).toBe(true);
+        expect(Utils.isFunction(undefined)).toBe(false);
     });
 
     it("isReactNodeEmpty", () => {
         // empty nodes
-        assert.isTrue(Utils.isReactNodeEmpty(undefined), "undefined");
-        assert.isTrue(Utils.isReactNodeEmpty(null), "null");
-        assert.isTrue(Utils.isReactNodeEmpty(""), '""');
-        assert.isTrue(Utils.isReactNodeEmpty([]), "[]");
-        assert.isTrue(Utils.isReactNodeEmpty([undefined, null, false, ""]), "array");
+        expect(Utils.isReactNodeEmpty(undefined), "undefined").toBe(true);
+        expect(Utils.isReactNodeEmpty(null), "null").toBe(true);
+        expect(Utils.isReactNodeEmpty(""), '""').toBe(true);
+        expect(Utils.isReactNodeEmpty([]), "[]").toBe(true);
+        expect(Utils.isReactNodeEmpty([undefined, null, false, ""]), "array").toBe(true);
         // not empty nodes
-        assert.isFalse(Utils.isReactNodeEmpty(0), "0");
-        assert.isFalse(Utils.isReactNodeEmpty("text"), "text");
-        assert.isFalse(Utils.isReactNodeEmpty(<div />), "<div />");
-        assert.isFalse(Utils.isReactNodeEmpty([null, <div key="div" />]), "array");
+        expect(Utils.isReactNodeEmpty(0), "0").toBe(false);
+        expect(Utils.isReactNodeEmpty("text"), "text").toBe(false);
+        expect(Utils.isReactNodeEmpty(<div />), "<div />").toBe(false);
+        expect(Utils.isReactNodeEmpty([null, <div key="div" />]), "array").toBe(false);
     });
 
     it("elementIsOrContains", () => {
@@ -57,55 +48,55 @@ describe("Utils", () => {
         parent.appendChild(child);
         grandparent.appendChild(parent);
 
-        assert.isTrue(Utils.elementIsOrContains(child, child));
-        assert.isTrue(Utils.elementIsOrContains(parent, child));
-        assert.isTrue(Utils.elementIsOrContains(grandparent, parent));
-        assert.isTrue(Utils.elementIsOrContains(grandparent, child));
+        expect(Utils.elementIsOrContains(child, child)).toBe(true);
+        expect(Utils.elementIsOrContains(parent, child)).toBe(true);
+        expect(Utils.elementIsOrContains(grandparent, parent)).toBe(true);
+        expect(Utils.elementIsOrContains(grandparent, child)).toBe(true);
 
-        assert.isFalse(Utils.elementIsOrContains(child, parent));
-        assert.isFalse(Utils.elementIsOrContains(parent, grandparent));
+        expect(Utils.elementIsOrContains(child, parent)).toBe(false);
+        expect(Utils.elementIsOrContains(parent, grandparent)).toBe(false);
     });
 
     it("arrayLengthCompare", () => {
-        assert.isAbove(Utils.arrayLengthCompare([1, 2], []), 0);
-        assert.strictEqual(Utils.arrayLengthCompare([1, 2], [1, 2]), 0);
-        assert.isBelow(Utils.arrayLengthCompare([], [1, 2]), 0);
+        expect(Utils.arrayLengthCompare([1, 2], [])).toBeGreaterThan(0);
+        expect(Utils.arrayLengthCompare([1, 2], [1, 2])).toBe(0);
+        expect(Utils.arrayLengthCompare([], [1, 2])).toBeLessThan(0);
 
-        assert.isAbove(Utils.arrayLengthCompare([1]), 0);
-        assert.strictEqual(Utils.arrayLengthCompare(), 0);
-        assert.isBelow(Utils.arrayLengthCompare(undefined, [1]), 0);
+        expect(Utils.arrayLengthCompare([1])).toBeGreaterThan(0);
+        expect(Utils.arrayLengthCompare()).toBe(0);
+        expect(Utils.arrayLengthCompare(undefined, [1])).toBeLessThan(0);
     });
 
     it("approxEqual", () => {
         const DEFAULT_EPSILON = 0.00001;
-        assert.isTrue(Utils.approxEqual(0, DEFAULT_EPSILON));
-        assert.isTrue(Utils.approxEqual(-1 * DEFAULT_EPSILON, -2 * DEFAULT_EPSILON));
-        assert.isFalse(Utils.approxEqual(10, 10 + DEFAULT_EPSILON + DEFAULT_EPSILON / 10));
-        assert.isFalse(Utils.approxEqual(10, 10 - DEFAULT_EPSILON - DEFAULT_EPSILON / 10));
+        expect(Utils.approxEqual(0, DEFAULT_EPSILON)).toBe(true);
+        expect(Utils.approxEqual(-1 * DEFAULT_EPSILON, -2 * DEFAULT_EPSILON)).toBe(true);
+        expect(Utils.approxEqual(10, 10 + DEFAULT_EPSILON + DEFAULT_EPSILON / 10)).toBe(false);
+        expect(Utils.approxEqual(10, 10 - DEFAULT_EPSILON - DEFAULT_EPSILON / 10)).toBe(false);
     });
 
     it("clamp", () => {
-        assert.strictEqual(Utils.clamp(10, 0, 20), 10, "value between min/max");
-        assert.strictEqual(Utils.clamp(0, 10, 20), 10, "value below min");
-        assert.strictEqual(Utils.clamp(40, 0, 20), 20, "value above max");
-        assert.throws(() => Utils.clamp(0, 20, 10), /less than/);
+        expect(Utils.clamp(10, 0, 20), "value between min/max").toBe(10);
+        expect(Utils.clamp(0, 10, 20), "value below min").toBe(10);
+        expect(Utils.clamp(40, 0, 20), "value above max").toBe(20);
+        expect(() => Utils.clamp(0, 20, 10)).toThrow(/less than/);
     });
 
     it("countDecimalPlaces", () => {
-        assert.equal(Utils.countDecimalPlaces(1), 0);
-        assert.equal(Utils.countDecimalPlaces(0.11), 2);
-        assert.equal(Utils.countDecimalPlaces(-1.1111111111), 10);
-        assert.equal(Utils.countDecimalPlaces(1e-10), 10);
-        assert.equal(Utils.countDecimalPlaces(NaN), 0);
+        expect(Utils.countDecimalPlaces(1)).toBe(0);
+        expect(Utils.countDecimalPlaces(0.11)).toBe(2);
+        expect(Utils.countDecimalPlaces(-1.1111111111)).toBe(10);
+        expect(Utils.countDecimalPlaces(1e-10)).toBe(10);
+        expect(Utils.countDecimalPlaces(NaN)).toBe(0);
     });
 
     it("uniqueId", () => {
         const ns = "testNamespace";
         const otherNs = "otherNamespace";
-        assert.equal(Utils.uniqueId(ns), `${ns}-0`);
-        assert.equal(Utils.uniqueId(ns), `${ns}-1`);
-        assert.equal(Utils.uniqueId(ns), `${ns}-2`);
-        assert.equal(Utils.uniqueId(otherNs), `${otherNs}-0`);
+        expect(Utils.uniqueId(ns)).toBe(`${ns}-0`);
+        expect(Utils.uniqueId(ns)).toBe(`${ns}-1`);
+        expect(Utils.uniqueId(ns)).toBe(`${ns}-2`);
+        expect(Utils.uniqueId(otherNs)).toBe(`${otherNs}-0`);
     });
 
     // TODO: not sure how to test this. perhaps with the help of https://github.com/alexreardon/raf-stub?
@@ -113,22 +104,22 @@ describe("Utils", () => {
 
     describe("ensureElement", () => {
         it("handles undefined/null", () => {
-            assert.isUndefined(Utils.ensureElement(undefined));
-            assert.isUndefined(Utils.ensureElement(null));
+            expect(Utils.ensureElement(undefined)).toBeUndefined();
+            expect(Utils.ensureElement(null)).toBeUndefined();
         });
 
         it("wraps strings & numbers", () => {
-            assert.strictEqual(Utils.ensureElement("foo")?.type, "span");
-            assert.strictEqual(Utils.ensureElement(1234)?.type, "span");
+            expect(Utils.ensureElement("foo")?.type).toBe("span");
+            expect(Utils.ensureElement(1234)?.type).toBe("span");
         });
 
         it("returns undefined for whitespace strings", () => {
-            assert.isUndefined(Utils.ensureElement("   "));
+            expect(Utils.ensureElement("   ")).toBeUndefined();
         });
 
         it("passes through JSX elements", () => {
             const el = <div>my element</div>;
-            assert.strictEqual(Utils.ensureElement(el), el);
+            expect(Utils.ensureElement(el)).toBe(el);
         });
 
         // React 16 only
@@ -139,28 +130,25 @@ describe("Utils", () => {
                         one <em>two</em> three
                     </>,
                 );
-                assert.strictEqual(el?.type, "span");
+                expect(el?.type).toBe("span");
             });
         }
     });
 
     describe("throttleReactEventCallback", () => {
-        let callback: MockInstance;
-        let fakeEvent: any; // cast as `any` to avoid having to set every required property on the event
-        let throttledCallback: (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => void;
+        const callback = vi.fn();
+        const fakeEvent = { persist: vi.fn(), preventDefault: vi.fn() };
+        let throttledCallback: (event: React.SyntheticEvent) => void;
 
         beforeEach(() => {
-            callback = vi.fn();
-            fakeEvent = { persist: vi.fn(), preventDefault: vi.fn() };
-        });
-
-        afterEach(() => {
-            fakeEvent = undefined;
+            callback.mockReset();
+            fakeEvent.persist.mockReset();
+            fakeEvent.preventDefault.mockReset();
         });
 
         it("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback);
-            throttledCallback(fakeEvent as any);
+            throttledCallback(fakeEvent as unknown as React.SyntheticEvent);
             expect(fakeEvent.persist).toHaveBeenCalledOnce();
         });
 
@@ -168,7 +156,7 @@ describe("Utils", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback, {
                 preventDefault: true,
             });
-            throttledCallback(fakeEvent as any);
+            throttledCallback(fakeEvent as unknown as React.SyntheticEvent);
             expect(fakeEvent.preventDefault).toHaveBeenCalledOnce();
         });
 

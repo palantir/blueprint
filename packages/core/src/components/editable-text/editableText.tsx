@@ -351,7 +351,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         }
     };
 
-    private handleTextChange = (event: React.FormEvent<HTMLElement>) => {
+    private handleTextChange = (event: React.ChangeEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         const value = (event.target as HTMLInputElement).value;
         // state value should be updated only when uncontrolled
         if (this.props.value == null) {

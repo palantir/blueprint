@@ -48,7 +48,7 @@ import React from "react";
 
 function RadioCardGroupExample() {
     const [selectedValue, setSelectedValue] = React.useState<string | undefined>();
-    const handleChange = React.useCallback((event: React.FormEvent<HTMLInputElement>) => {
+    const handleChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedValue(event.currentTarget.value);
     }, []);
 
