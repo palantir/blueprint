@@ -16,7 +16,7 @@
 
 import { mount } from "enzyme";
 
-import { selectComponentSuite } from "../select/selectComponentSuite";
+import { selectComponentSuite } from "../select/selectComponentTestUtils";
 
 import { Omnibar } from "./omnibar";
 

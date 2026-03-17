@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import sinon from "sinon";
 
-import { type ItemListRendererProps, renderFilteredItems } from "../common/itemListRenderer";
+import { type ItemListRendererProps, renderFilteredItems } from "./itemListRenderer";
 
 describe("renderFilteredItems()", () => {
     const PROPS: ItemListRendererProps<string> = {

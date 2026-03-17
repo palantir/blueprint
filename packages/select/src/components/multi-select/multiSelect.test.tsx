@@ -24,10 +24,9 @@ import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
-import { selectComponentSuite } from "../select/selectComponentSuite";
+import { selectComponentSuite } from "../select/selectComponentTestUtils";
 
-import { MultiSelect, type MultiSelectProps } from "./multiSelect";
-import type { MultiSelectState } from "./multiSelect";
+import { MultiSelect, type MultiSelectProps, type MultiSelectState } from "./multiSelect";
 
 describe("<MultiSelect>", () => {
     const defaultProps = {

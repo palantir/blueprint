@@ -25,8 +25,7 @@ import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemListRenderer } from "../../common/itemListRenderer";
 import type { ItemListPredicate, ItemPredicate } from "../../common/predicate";
 
-import { QueryList, type QueryListProps, type QueryListRendererProps } from "./queryList";
-import type { QueryListState } from "./queryList";
+import { QueryList, type QueryListProps, type QueryListRendererProps, type QueryListState } from "./queryList";
 
 type FilmQueryListWrapper = ReactWrapper<QueryListProps<Film>, QueryListState<Film>>;
 

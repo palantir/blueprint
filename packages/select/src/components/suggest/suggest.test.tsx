@@ -24,8 +24,8 @@ import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/c
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
 import { QueryList } from "../query-list/queryList";
-import { selectComponentSuite } from "../select/selectComponentSuite";
-import { selectPopoverTestSuite } from "../select/selectPopoverTestSuite";
+import { selectComponentSuite } from "../select/selectComponentTestUtils";
+import { selectPopoverTestSuite } from "../select/selectPopoverTestUtils";
 
 import { Suggest, type SuggestProps, type SuggestState } from "./suggest";
 
