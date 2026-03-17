@@ -13,12 +13,3 @@ Make sure to review the [getting started docs for installation info](#blueprint/
 
 Note that the core package depends on **@blueprintjs/icons** which provides 500+ UI icons.
 You must include the icons CSS file in your app alongside the core CSS file.
-
-@page accessibility
-@page classes
-@page colors
-@page typography
-@page variables
-@page components
-@page context
-@page hooks

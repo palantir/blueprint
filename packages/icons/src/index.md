@@ -31,6 +31,3 @@ For icon font support, import CSS with a bundler like webpack:
 
 Be sure to check out the [docs for loading icons](#icons/loading-icons) and the
 [full list of available icons](#icons/icons-list).
-
-@page loading-icons
-@page icons-list
