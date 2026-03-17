@@ -22,11 +22,12 @@ import sinon from "sinon";
 import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
-import { type ItemRendererProps, MultiSelect, type MultiSelectProps } from "../../index";
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
-import type { MultiSelectState } from "./multiSelect";
-
+import type { ItemRendererProps } from "../../common/itemRenderer";
 import { selectComponentSuite } from "../select/selectComponentSuite";
+
+import { MultiSelect, type MultiSelectProps } from "./multiSelect";
+import type { MultiSelectState } from "./multiSelect";
 
 describe("<MultiSelect>", () => {
     const defaultProps = {

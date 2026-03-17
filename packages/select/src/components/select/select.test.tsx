@@ -21,10 +21,11 @@ import * as sinon from "sinon";
 
 import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
 
-import { type ItemRendererProps, Select, type SelectProps } from "../../index";
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
-import type { SelectState } from "./select";
+import type { ItemRendererProps } from "../../common/itemRenderer";
 
+import { Select, type SelectProps } from "./select";
+import type { SelectState } from "./select";
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 

@@ -16,9 +16,9 @@
 
 import { mount } from "enzyme";
 
-import { Omnibar } from "../../index";
-
 import { selectComponentSuite } from "../select/selectComponentSuite";
+
+import { Omnibar } from "./omnibar";
 
 describe("<Omnibar>", () => {
     // must have query to show any items
