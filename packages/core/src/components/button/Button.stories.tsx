@@ -3,10 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
-import { Button } from "./buttons";
+import { AnchorButton, Button } from "./buttons";
 
 // These props are deprecated on Button — hide them from the Storybook controls panel.
 const disabledArgs = ["large", "minimal", "outlined", "rightIcon", "small", "type"] as const satisfies ReadonlyArray<
@@ -39,6 +40,7 @@ const meta: Meta<typeof Button> = {
         active: false,
         loading: false,
         disabled: false,
+        ellipsizeText: false,
     },
     argTypes: {
         text: {
@@ -70,6 +72,9 @@ const meta: Meta<typeof Button> = {
             control: "boolean",
         },
         disabled: {
+            control: "boolean",
+        },
+        ellipsizeText: {
             control: "boolean",
         },
         fill: {
@@ -105,221 +110,261 @@ export const Default: Story = {
     },
 };
 
-// Intent variants
-export const Primary: Story = {
-    args: {
-        text: "Primary Button",
-        intent: "primary",
-    },
-};
-
-export const Success: Story = {
-    args: {
-        text: "Success Button",
-        intent: "success",
-    },
-};
-
-export const Warning: Story = {
-    args: {
-        text: "Warning Button",
-        intent: "warning",
-    },
-};
-
-export const Danger: Story = {
-    args: {
-        text: "Danger Button",
-        intent: "danger",
-    },
-};
-
-// Size variants
-export const Small: Story = {
-    args: {
-        text: "Small Button",
-        size: "small",
-    },
-};
-
-export const Medium: Story = {
-    args: {
-        text: "Medium Button",
-        size: "medium",
-    },
-};
-
-export const Large: Story = {
-    args: {
-        text: "Large Button",
-        size: "large",
-    },
-};
-
-// Visual style variants
-export const Solid: Story = {
-    args: {
-        text: "Solid Button",
-        variant: "solid",
-        intent: "primary",
-    },
-};
-
-export const Minimal: Story = {
-    args: {
-        text: "Minimal Button",
-        variant: "minimal",
-        intent: "primary",
-    },
-};
-
-export const Outlined: Story = {
-    args: {
-        text: "Outlined Button",
-        variant: "outlined",
-        intent: "primary",
-    },
-};
-
-// States
-export const Active: Story = {
-    args: {
-        text: "Active Button",
-        active: true,
-        intent: "primary",
-    },
-};
-
-export const Disabled: Story = {
-    args: {
-        text: "Disabled Button",
-        disabled: true,
-    },
-};
-
-export const Loading: Story = {
-    args: {
-        text: "Loading Button",
-        loading: true,
-        intent: "primary",
-    },
-};
-
-export const WithStartIcon: Story = {
-    args: {
-        text: "Upload",
-        icon: "upload",
-    },
-};
-
-export const WithEndIcon: Story = {
-    args: {
-        text: "Next",
-        endIcon: "arrow-right",
-        intent: "primary",
-    },
-};
-
-export const IconOnly: Story = {
-    args: {
-        icon: "search",
-        text: undefined,
-        "aria-label": "Search",
-    },
-};
-
-// Text alignment
-export const AlignStart: Story = {
-    args: {
-        text: "Start",
-        alignText: "start",
-        icon: "align-left",
-        endIcon: "caret-down",
-        fill: true,
-    },
-};
-
-export const AlignCenter: Story = {
-    args: {
-        text: "Center",
-        alignText: "center",
-        icon: "align-center",
-        endIcon: "caret-down",
-        fill: true,
-    },
-};
-
-export const AlignEnd: Story = {
-    args: {
-        text: "End",
-        alignText: "end",
-        icon: "align-right",
-        endIcon: "caret-down",
-        fill: true,
-    },
-};
-
-// Fill
-export const Fill: Story = {
-    args: {
-        text: "Fill Container",
-        fill: true,
-        intent: "primary",
-    },
-};
-
-// All intents
-export const AllIntents: Story = {
+/**
+ * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the button.
+ *
+ * Matches the docs ButtonIntentExample.
+ */
+export const IntentExample: Story = {
+    name: "Intent",
     render: () => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ display: "flex", gap: 8 }}>
-                <Button>None</Button>
-                <Button intent="primary">Primary</Button>
-                <Button intent="success">Success</Button>
-                <Button intent="warning">Warning</Button>
-                <Button intent="danger">Danger</Button>
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-                <Button variant="minimal">None</Button>
-                <Button variant="minimal" intent="primary">
-                    Primary
-                </Button>
-                <Button variant="minimal" intent="success">
-                    Success
-                </Button>
-                <Button variant="minimal" intent="warning">
-                    Warning
-                </Button>
-                <Button variant="minimal" intent="danger">
-                    Danger
-                </Button>
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-                <Button variant="outlined">None</Button>
-                <Button variant="outlined" intent="primary">
-                    Primary
-                </Button>
-                <Button variant="outlined" intent="success">
-                    Success
-                </Button>
-                <Button variant="outlined" intent="warning">
-                    Warning
-                </Button>
-                <Button variant="outlined" intent="danger">
-                    Danger
-                </Button>
-            </div>
+        <div style={{ display: "flex", gap: 8 }}>
+            <Button intent="primary">Primary</Button>
+            <Button intent="success">Success</Button>
+            <Button intent="warning">Warning</Button>
+            <Button intent="danger">Danger</Button>
         </div>
     ),
 };
 
-// All sizes
-export const AllSizes: Story = {
+/**
+ * Use the `variant` prop to change the visual style. "solid" (default) renders a filled button,
+ * "minimal" renders without a background, and "outlined" adds a border without fill.
+ *
+ * Matches the docs ButtonVariantExample.
+ */
+export const VariantExample: Story = {
+    name: "Variant",
     render: () => (
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 8 }}>
+            <Button>Default</Button>
+            <Button variant="minimal">Minimal</Button>
+            <Button variant="outlined">Outlined</Button>
+        </div>
+    ),
+};
+
+/**
+ * Use the `size` prop to adjust the button dimensions.
+ *
+ * Matches the docs ButtonSizeExample.
+ */
+export const SizeExample: Story = {
+    name: "Size",
+    render: () => (
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Button size="small">Small</Button>
             <Button size="medium">Medium</Button>
             <Button size="large">Large</Button>
         </div>
     ),
+};
+
+/**
+ * Buttons support `active`, `disabled`, and `loading` states.
+ *
+ * Matches the docs ButtonStatesExample.
+ */
+export const States: Story = {
+    render: () => (
+        <div style={{ display: "flex", gap: 8 }}>
+            <Button>Default</Button>
+            <Button active={true}>Active</Button>
+            <Button disabled={true}>Disabled</Button>
+            <Button loading={true}>Loading...</Button>
+        </div>
+    ),
+};
+
+/**
+ * Use `icon` and `endIcon` props to render icons alongside text, or use `icon` alone for icon-only buttons.
+ *
+ * Matches the docs ButtonIconWithTextExample.
+ */
+export const IconsWithText: Story = {
+    render: () => (
+        <div style={{ display: "flex", gap: 8 }}>
+            <Button icon="refresh" intent="danger" text="Reset" />
+            <Button icon="user" endIcon="caret-down" text="Profile settings" />
+            <Button endIcon="arrow-right" intent="success" text="Next step" />
+        </div>
+    ),
+};
+
+/**
+ * Icon-only buttons omit the `text` prop. Always provide an `aria-label` for accessibility.
+ *
+ * Matches the docs ButtonIconExample.
+ */
+export const IconOnly: Story = {
+    render: () => (
+        <div style={{ display: "flex", gap: 8 }}>
+            <Button icon="edit" aria-label="edit" />
+            <Button icon="share" variant="outlined" aria-label="share" />
+            <Button icon="filter" intent="primary" variant="minimal" aria-label="filter" />
+            <Button icon="add" intent="success" aria-label="add" />
+            <Button icon="trash" disabled={true} intent="danger" aria-label="delete" />
+        </div>
+    ),
+};
+
+/**
+ * Use the `fill` prop to make the button expand to the full width of its container.
+ *
+ * Matches the docs ButtonFillExample.
+ */
+export const Fill: Story = {
+    render: () => (
+        <div style={{ width: "100%" }}>
+            <Button fill={true}>Full Width Button</Button>
+        </div>
+    ),
+    decorators: [
+        Story => (
+            <div style={{ width: "400px" }}>
+                <Story />
+            </div>
+        ),
+    ],
+};
+
+/**
+ * Use the `alignText` prop to control text alignment within the button.
+ * Best combined with `fill` or `icon`/`endIcon` to visualize the effect.
+ *
+ * Matches the docs ButtonAlignTextExample.
+ */
+export const AlignText: Story = {
+    render: () => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <Button alignText="start" icon="align-left" endIcon="caret-down">
+                Start
+            </Button>
+            <Button alignText="center" icon="align-center" endIcon="caret-down">
+                Center
+            </Button>
+            <Button alignText="end" icon="align-right" endIcon="caret-down">
+                End
+            </Button>
+        </div>
+    ),
+};
+
+/**
+ * Use the `ellipsizeText` prop to truncate overflowing text with an ellipsis.
+ *
+ * Matches the docs ButtonEllipsizeTextExample.
+ */
+export const EllipsizeText: Story = {
+    render: () => (
+        <div style={{ display: "flex", maxWidth: 300 }}>
+            <Button ellipsizeText={true}>This is a very long button label that will be truncated</Button>
+        </div>
+    ),
+};
+
+/**
+ * All intents across all variants — solid, minimal, and outlined.
+ *
+ * Matches the docs overview of button intents × variants.
+ */
+export const AllIntentsAllVariants: Story = {
+    render: () => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", gap: 8 }}>
+                {Object.values(Intent).map(intent => (
+                    <Button key={intent} intent={intent}>
+                        {intent || "None"}
+                    </Button>
+                ))}
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+                {Object.values(Intent).map(intent => (
+                    <Button key={intent} variant="minimal" intent={intent}>
+                        {intent || "None"}
+                    </Button>
+                ))}
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+                {Object.values(Intent).map(intent => (
+                    <Button key={intent} variant="outlined" intent={intent}>
+                        {intent || "None"}
+                    </Button>
+                ))}
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Interactive playground matching the docs-app ButtonPlaygroundExample.
+ *
+ * Shows both a `Button` and an `AnchorButton` with all props togglable via Storybook controls.
+ */
+export const Playground: Story = {
+    render: function Render(args) {
+        const [wiggling, setWiggling] = useState(false);
+        const wiggleTimeoutId = useRef<number>();
+
+        useEffect(() => {
+            return () => window.clearTimeout(wiggleTimeoutId.current);
+        }, []);
+
+        const beginWiggling = useCallback(() => {
+            window.clearTimeout(wiggleTimeoutId.current);
+            setWiggling(true);
+            wiggleTimeoutId.current = window.setTimeout(() => setWiggling(false), 300);
+        }, []);
+
+        return (
+            <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>Button</span>
+                    <Button
+                        active={args.active}
+                        alignText={args.alignText}
+                        className={wiggling ? "docs-wiggle" : undefined}
+                        disabled={args.disabled}
+                        ellipsizeText={args.ellipsizeText}
+                        endIcon={args.endIcon}
+                        fill={args.fill}
+                        icon={args.icon}
+                        intent={args.intent}
+                        loading={args.loading}
+                        onClick={beginWiggling}
+                        size={args.size}
+                        text={args.text}
+                        variant={args.variant}
+                    />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>AnchorButton</span>
+                    <AnchorButton
+                        active={args.active}
+                        alignText={args.alignText}
+                        disabled={args.disabled}
+                        ellipsizeText={args.ellipsizeText}
+                        endIcon="share"
+                        fill={args.fill}
+                        href="#"
+                        icon="duplicate"
+                        intent={args.intent}
+                        loading={args.loading}
+                        size={args.size}
+                        target="_blank"
+                        text={args.text ?? "Duplicate"}
+                        variant={args.variant}
+                    />
+                </div>
+            </div>
+        );
+    },
+    args: {
+        text: "Click to wiggle",
+        icon: "refresh",
+        endIcon: undefined,
+        intent: "none",
+        variant: "solid",
+        size: "medium",
+    },
 };
