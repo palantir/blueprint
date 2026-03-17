@@ -2,12 +2,13 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import { expect } from "chai";
 import { format } from "date-fns";
 
-import { getFormattedDateString } from "../common/dateFormatProps";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
 import { OUT_OF_RANGE_MESSAGE } from "../components/dateConstants";
 
+import { getFormattedDateString } from "./dateFormatProps";
 import { Months } from "./months";
 
 const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
@@ -17,16 +18,14 @@ describe("DateFormatProps", () => {
         it("should return an empty string for null date", () => {
             const testDate: Date | null = null;
 
-            expect(getFormattedDateString(testDate, { formatDate })).to.equal("");
+            expect(getFormattedDateString(testDate, { formatDate })).toBe("");
         });
 
         it("should return an invalid date message for invalid date", () => {
             const invalidDate = new Date("invalid-date");
             const invalidDateMessage = "INVALID";
 
-            expect(getFormattedDateString(invalidDate, { formatDate, invalidDateMessage })).to.equal(
-                invalidDateMessage,
-            );
+            expect(getFormattedDateString(invalidDate, { formatDate, invalidDateMessage })).toBe(invalidDateMessage);
         });
 
         it("should format an in range date with default format", () => {
@@ -34,7 +33,7 @@ describe("DateFormatProps", () => {
             const minDate = new Date(2025, Months.DECEMBER, 1);
             const maxDate = new Date(2025, Months.DECEMBER, 31);
 
-            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate })).to.equal("2025-12-15");
+            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate })).toBe("2025-12-15");
         });
 
         it("should return out of range message for out of range date", () => {
@@ -43,7 +42,7 @@ describe("DateFormatProps", () => {
             const maxDate = new Date(2025, Months.DECEMBER, 30);
             const outOfRangeMessage = OUT_OF_RANGE_MESSAGE;
 
-            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate, outOfRangeMessage })).to.equal(
+            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate, outOfRangeMessage })).toBe(
                 outOfRangeMessage,
             );
         });
@@ -54,9 +53,7 @@ describe("DateFormatProps", () => {
             const maxDate = new Date(2025, Months.DECEMBER, 30);
             const ignoreRange = true;
 
-            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate }, ignoreRange)).to.equal(
-                "2025-12-31",
-            );
+            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate }, ignoreRange)).toBe("2025-12-31");
         });
     });
 });

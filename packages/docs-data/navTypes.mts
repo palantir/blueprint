@@ -18,14 +18,16 @@
  * Known Blueprint documentation packages.
  * Each maps to a top-level section in the sidebar.
  */
-export type Package = "blueprint" | "core" | "datetime" | "icons" | "select" | "table" | "labs";
+export const PACKAGES = ["blueprint", "core", "datetime", "icons", "select", "table", "labs"] as const;
+export type Package = (typeof PACKAGES)[number];
 
 /**
  * Known section identifiers within packages.
- * Sections are pages that also contain child pages and create a route segment
+ * Sections contain child pages and create a route segment
  * (e.g. "components" -> core/components/buttons).
  */
-export type Section = "components" | "context" | "hooks" | "form-controls" | "form-inputs" | "overlays";
+export const SECTIONS = ["components", "context", "hooks", "form-controls", "form-inputs", "overlays"] as const;
+export type Section = (typeof SECTIONS)[number];
 
 // "Raw" types come directly from nav.json
 
@@ -51,11 +53,9 @@ export interface NavPageRef {
     ref: string;
 }
 
-export type NavSectionItem = NavPageRef;
-
 export interface NavSection {
     section: Section;
-    pages: NavSectionItem[];
+    pages: NavPageRef[];
 }
 
 export interface NavPackageEntry {
@@ -75,7 +75,7 @@ export interface DocHeadingItem {
     route: string;
 }
 
-export type DocContentItem = DocHeadingItem | string | null | { tag: string; [key: string]: unknown };
+export type DocContentItem = DocHeadingItem | string | null | { tag: string; value: string };
 
 export interface DocPage {
     title: string;
@@ -91,10 +91,13 @@ interface NavTreeNodeBase {
 }
 
 /** A content heading extracted from a page (no children, no reference). */
-export interface NavTreeHeading extends NavTreeNodeBase {}
+export interface NavTreeHeading extends NavTreeNodeBase {
+    type: "heading";
+}
 
 /** A page or section node in the nav tree. */
 export interface NavTreePage extends NavTreeNodeBase {
+    type: "page";
     reference: string;
     children: NavTreeNode[];
 }

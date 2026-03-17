@@ -24,13 +24,13 @@ Do not forget to include `table.css` on your page:
 
 ### Features
 
--   High-scale, data-agnostic
--   Customizable cell and header rendering
--   Virtualized viewport rendering
--   Selectable rows, columns and cells
--   Resizable rows and columns
--   Editable headers and cells
--   Integrated header and context menus
+- High-scale, data-agnostic
+- Customizable cell and header rendering
+- Virtualized viewport rendering
+- Selectable rows, columns and cells
+- Resizable rows and columns
+- Editable headers and cells
+- Integrated header and context menus
 
 @## Basic usage
 

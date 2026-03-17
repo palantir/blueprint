@@ -14,10 +14,10 @@ import { Navbar } from "@blueprintjs/core";
 
 The **Navbar** API includes four stateless React components:
 
--   **Navbar**
--   **NavbarGroup** (aliased as `Navbar.Group`)
--   **NavbarHeading** (aliased as `Navbar.Heading`)
--   **NavbarDivider** (aliased as `Navbar.Divider`)
+- **Navbar**
+- **NavbarGroup** (aliased as `Navbar.Group`)
+- **NavbarHeading** (aliased as `Navbar.Heading`)
+- **NavbarDivider** (aliased as `Navbar.Divider`)
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">

@@ -55,10 +55,13 @@ There are three ways to use **OverlayToaster**:
     ```
 3. Use a ref callback or object to access toaster instance methods.
     - Example with ref callback:
+
     ```ts
     render(<OverlayToaster ref={(ref: Toaster | null) => ref?.show({ ...toastOptions })} />, targetElement);
     ```
+
     - Example with ref object (note that React type constraints require us to use the more specific `OverlayToaster` type):
+
     ```ts
     const myToaster = React.createRef<OverlayToaster>();
     render(<OverlayToaster ref={myToaster} />, targetElement);
@@ -129,8 +132,8 @@ new `Toaster` every time a toast needs to be shown. To minimize leaking:
 
 1. Call `OverlayToaster.create` once in an application and [share the instance](#core/components/toast.example).
 2. Consider one of the alternative APIs that mount the `<OverlayToaster>` somewhere in the application's React component
-tree. This provides component lifecycle management out of the box. See
-[_React component usage_](#core/components/toast.react-component-usage) for an example.
+   tree. This provides component lifecycle management out of the box. See
+   [_React component usage_](#core/components/toast.react-component-usage) for an example.
 
 </div>
 
@@ -169,7 +172,7 @@ export const App: React.FC = () => {
     }, []);
 
     return <Button onClick={handleClick} text="Toast please" />;
-}
+};
 ```
 
 The example below uses the `OverlayToaster.create()` static method. Clicking the button will create a new toaster mounted to `<body>`, show a message, and unmount the toaster from the DOM once the message is dismissed.

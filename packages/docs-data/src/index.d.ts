@@ -9,6 +9,9 @@ export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginDat
 
 export const docsData: DocsCompleteData;
 
+export { PACKAGES, SECTIONS } from "../navTypes.mts";
+export type { Package, Section } from "../navTypes.mts";
+
 export interface NpmPackageInfo {
     name: string;
     version: string;
