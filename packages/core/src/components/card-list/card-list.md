@@ -4,7 +4,7 @@
 It groups cards visually into a list without adding extra visual weight or spacing between them.
 Long lists can be styled with CSS for vertical scrolling.
 
-@## Import
+@## Usage
 
 ```tsx
 import { CardList } from "@blueprintjs/core";
