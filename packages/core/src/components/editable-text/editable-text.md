@@ -10,13 +10,22 @@ for inline renaming, editable descriptions, or simple text updates. You should
 not use **EditableText** when a more static, always-editable [**InputGroup**](#core/components/input-group)
 or [**TextArea**](#core/components/text-area) component would suffice.
 
-@## Import
+@## Usage
 
 ```tsx
 import { EditableText } from "@blueprintjs/core";
 ```
 
-@## Usage
+````tsx
+<EditableText
+    placeholder="Click to change username"
+    onConfirm={handleConfirm}
+    onCancel={handleCancel}
+/>```
+
+@## Examples
+
+@### Basic
 
 **EditableText** can be used in both controlled and uncontrolled modes, similar
 to a standard React [`<input>` element](https://react.dev/reference/react-dom/components/input).
@@ -40,7 +49,14 @@ you should center the component via flexbox or with `position` and `transform: t
 
 </div>
 
-@## Multiline mode
+@### Disabled
+
+Set `disabled` to `true` to prevent the user from interacting with the component.
+A disabled **EditableText** displays its text but does not respond to hover or click.
+
+@reactCodeExample EditableTextDisabledExample
+
+@### Multiline mode
 
 By default, **EditableText** supports a single line of text and resizes horizontally as needed.
 Enabling the `multiline` prop transforms it into a `<textarea>`, which grows and shrinks vertically
@@ -52,7 +68,7 @@ can be inverted with the `confirmOnEnterKey` prop.
 
 @reactCodeExample EditableTextMultilineExample
 
-@## Intent
+@### Intent
 
 The `intent` prop controls the visual appearance of **EditableText**, similar to
 [**InputGroup**](#core/components/input-group) and [**TextArea**](#core/components/text-area).
@@ -65,7 +81,7 @@ This prop is useful for highlighting states like success, warnings, or errors.
 
 @reactCodeExample EditableTextIntentExample
 
-@## Select text on focus
+@### Select text on focus
 
 Enable `selectAllOnFocus` to automatically select all text when the input is focused.
 
@@ -78,3 +94,4 @@ Enable `selectAllOnFocus` to automatically select all text when the input is foc
 @## Props interface
 
 @interface EditableTextProps
+````
