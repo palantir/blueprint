@@ -303,7 +303,7 @@ export class NumericInput extends AbstractPureComponent<
         }
         const currentValue = parseStringToStringNumber(value, locale);
         const numericValue = Number(currentValue) + delta;
-        const nextValue = delta !== 0 ? toMaxPrecision(numericValue, stepMaxPrecision) : numericValue;
+        const nextValue = delta !== 0 ? Number(toMaxPrecision(numericValue, stepMaxPrecision)) : numericValue;
         const clampedValue = clampValue(nextValue, min, max);
         return toLocaleString(clampedValue, locale);
     }
