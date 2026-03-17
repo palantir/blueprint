@@ -1,0 +1,13 @@
+import { Tag } from "@blueprintjs/core";
+
+export default function TagMinimal() {
+    return (
+        <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
+            <Tag minimal>None</Tag>
+            <Tag minimal intent="primary">Primary</Tag>
+            <Tag minimal intent="success">Success</Tag>
+            <Tag minimal intent="warning">Warning</Tag>
+            <Tag minimal intent="danger">Danger</Tag>
+        </div>
+    );
+}
