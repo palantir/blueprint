@@ -4,7 +4,7 @@ An ordered list that represents a navigation path, with built-in overflow handli
 
 @## Usage
 
-```ts
+```ts copy
 import { Breadcrumbs } from "@blueprintjs/core";
 ```
 
