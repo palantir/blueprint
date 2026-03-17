@@ -44,7 +44,7 @@ export function addCopyButtonsToImportBlocks() {
         container.appendChild(wrapper);
 
         const root = createRoot(wrapper);
-        root.render(<CopyToClipboardButton text={text} />);
+        root.render(<CopyToClipboardButton text={text} variant="outlined" />);
         roots.push(root);
     }
 }
