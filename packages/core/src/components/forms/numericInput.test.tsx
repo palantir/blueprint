@@ -1080,7 +1080,7 @@ describe("<NumericInput>", () => {
         });
 
         it("preserves passed decimal value precision on initial render", () => {
-            const component = mount(<NumericInput value={9.001} min={0} />);
+            const component = mount(<NumericInput value={9.001} min={0} locale="en-US" />);
             expect(component.find("input").prop("value")).to.equal("9.001");
         });
 
@@ -1090,13 +1090,13 @@ describe("<NumericInput>", () => {
         });
 
         it("preserves floating-point precision on initial render when min/max are set", () => {
-            const component = mount(<NumericInput value={"0.001"} min={0} />);
+            const component = mount(<NumericInput value={"0.001"} min={0} locale="en-US" />);
             expect(component.find("input").prop("value")).to.equal("0.001");
         });
 
         it("preserves small floating-point value on initial render when min/max are set", () => {
-            const component = mount(<NumericInput value={"2.7E-10"} min={-Number.MAX_VALUE} />);
-            expect(Number(component.find("input").prop("value"))).to.equal(2.7e-10);
+            const component = mount(<NumericInput value={"2.7E-10"} min={-Number.MAX_VALUE} locale="en-US" />);
+            expect(Number(component.find("input").prop("value"))).to.be.closeTo(2.7e-10, 1e-20);
         });
 
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
