@@ -16,12 +16,9 @@ or [**TextArea**](#core/components/text-area) component would suffice.
 import { EditableText } from "@blueprintjs/core";
 ```
 
-````tsx
-<EditableText
-    placeholder="Click to change username"
-    onConfirm={handleConfirm}
-    onCancel={handleCancel}
-/>```
+```tsx
+<EditableText placeholder="Click to edit" onConfirm={handleConfirmUsername} onCancel={handleCancel} />
+```
 
 @## Examples
 
@@ -94,4 +91,7 @@ Enable `selectAllOnFocus` to automatically select all text when the input is foc
 @## Props interface
 
 @interface EditableTextProps
-````
+
+```
+
+```
