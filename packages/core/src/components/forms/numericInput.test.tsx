@@ -34,6 +34,7 @@ import { Icon } from "../icon/icon";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 import { NumericInput, type NumericInputProps } from "./numericInput";
+import { parseStringToStringNumber } from "./numericInputUtils";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
@@ -1084,7 +1085,7 @@ describe("<NumericInput>", () => {
             expect(component.find("input").prop("value")).to.equal("9.001");
         });
 
-        it("passed decimal value should be rounded by minorStepSize", () => {
+        it("retains decimal value precision matching minorStepSize on initial render", () => {
             const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} locale="en-US" />);
             expect(component.find("input").prop("value")).to.equal("9.01");
         });
@@ -1096,7 +1097,8 @@ describe("<NumericInput>", () => {
 
         it("preserves small floating-point value on initial render when min is set", () => {
             const component = mount(<NumericInput value={"2.7E-10"} min={-1} locale="en-US" />);
-            expect(Number(component.find("input").prop("value"))).to.be.closeTo(2.7e-10, 1e-20);
+            const inputValue = component.find("input").prop("value") as string;
+            expect(Number(parseStringToStringNumber(inputValue, "en-US"))).to.be.closeTo(2.7e-10, 1e-20);
         });
 
         it("changes max precision of displayed value to that of the smallest step size defined", () => {
