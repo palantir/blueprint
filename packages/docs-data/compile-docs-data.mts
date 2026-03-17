@@ -39,7 +39,8 @@ const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
-/** Last published version for each prior major release, used for the docs version dropdown. */
+// Last published version for each prior major release, used for the docs version dropdown
+// Must be manually updated on future major releases
 const PRIOR_MAJOR_VERSIONS: Record<string, string[]> = {
     "@blueprintjs/core": ["5.19.1", "4.20.2", "3.54.0", "2.3.1", "1.40.0"],
 };
