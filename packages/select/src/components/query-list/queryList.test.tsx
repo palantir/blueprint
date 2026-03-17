@@ -28,9 +28,9 @@ import {
     QueryList,
     type QueryListProps,
     type QueryListRendererProps,
-} from "../src";
-import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
-import type { QueryListState } from "../src/components/query-list/queryList";
+} from "../../index";
+import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
+import type { QueryListState } from "./queryList";
 
 type FilmQueryListWrapper = ReactWrapper<QueryListProps<Film>, QueryListState<Film>>;
 
