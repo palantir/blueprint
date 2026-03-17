@@ -6,7 +6,7 @@ Long lists can be styled with CSS for vertical scrolling.
 
 @## Import
 
-```tsx
+```ts copy
 import { CardList } from "@blueprintjs/core";
 ```
 

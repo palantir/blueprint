@@ -39,7 +39,7 @@ and change the `numRows` prop on the `Table` to set the number of rows.
 
 For example, this code creates an empty table with three columns and five rows:
 
-```tsx
+```ts copy
 import { Column, Table } from "@blueprintjs/table";
 
 <Table numRows={5}>

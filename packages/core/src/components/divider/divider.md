@@ -6,7 +6,7 @@ additional styles. Otherwise, a **Divider** will appear as a full-width 1px-high
 
 @## Import
 
-```tsx
+```ts copy
 import { Divider } from "@blueprintjs/core";
 ```
 

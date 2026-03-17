@@ -12,7 +12,7 @@ element in the ControlGroup, allowing the user to change the timezone of the sel
 
 @## Import
 
-```tsx
+```ts copy
 import { DateRangeInput } from "@blueprintjs/datetime";
 ```
 

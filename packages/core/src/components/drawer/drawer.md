@@ -5,7 +5,7 @@ It is built using the lower-level [**Overlay2**](#core/components/overlay2) comp
 
 @## Import
 
-```tsx
+```ts copy
 import { Drawer } from "@blueprintjs/core";
 ```
 

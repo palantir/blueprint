@@ -8,7 +8,7 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 
 @## Import
 
-```tsx
+```ts copy
 import { Icon } from "@blueprintjs/core";
 ```
 
