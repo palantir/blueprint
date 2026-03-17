@@ -153,7 +153,6 @@ export function CopyToClipboardButton({ text }: { text: string }) {
             <Button
                 aria-label="Copy code snippet to clipboard"
                 icon={justCopied ? "tick" : "duplicate"}
-                variant="minimal"
                 onClick={handleClick}
             />
         </Tooltip>
