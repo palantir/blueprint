@@ -10,7 +10,9 @@ import { Intent } from "../../common";
 import { Tag } from "./tag";
 
 // These props are deprecated on Tag — hide them from the Storybook controls panel.
-const disabledArgs = ["large", "rightIcon"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Tag>>;
+const disabledArgs = ["large", "rightIcon", "children"] as const satisfies ReadonlyArray<
+    keyof React.ComponentProps<typeof Tag>
+>;
 
 const meta: Meta<typeof Tag> = {
     title: "Core/Tag/Tag",
@@ -100,73 +102,205 @@ export const Default: Story = {
 };
 
 /**
- * Default tags across all intents, with and without remove buttons.
- *
- * Matches the demo-app TagExample "Default" card.
+ * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the tag.
  */
-export const DefaultAllIntents: Story = {
-    render: function Render() {
+export const IntentExample: Story = {
+    name: "Intent",
+    argTypes: {
+        intent: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 8 }}>
+            {Object.values(Intent)
+                .filter(i => i !== "none")
+                .map(intent => (
+                    <Tag key={intent} {...args} intent={intent}>
+                        {intent.charAt(0).toUpperCase() + intent.slice(1)}
+                    </Tag>
+                ))}
+        </div>
+    ),
+};
+
+/**
+ * Use the `minimal` prop to render a tag with reduced visual weight, without a filled background.
+ */
+export const VariantExample: Story = {
+    name: "Variant",
+    argTypes: {
+        minimal: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <Tag {...args} minimal={false}>
+                    Tag
+                </Tag>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Minimal</span>
+                <Tag {...args} minimal={true}>
+                    Tag
+                </Tag>
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Use the `size` prop to adjust the tag dimensions. Tag supports `"medium"` (default) and `"large"`.
+ */
+export const SizeExample: Story = {
+    name: "Size",
+    argTypes: {
+        size: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <Tag {...args} size="medium">
+                Medium
+            </Tag>
+            <Tag {...args} size="large">
+                Large
+            </Tag>
+        </div>
+    ),
+};
+
+/**
+ * Tags support `active` and `interactive` states, and can be made removable with the `onRemove` prop.
+ */
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        active: { table: { disable: true } },
+        interactive: { table: { disable: true } },
+    },
+    render: function Render(args) {
         const handleRemove = useCallback(() => {
             return;
         }, []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ display: "flex", gap: 8 }}>
-                    {Object.values(Intent).map(intent => (
-                        <Tag key={intent} intent={intent} interactive={true} onRemove={handleRemove}>
-                            Tag
-                        </Tag>
-                    ))}
-                </div>
-                <div style={{ display: "flex", gap: 8 }}>
-                    {Object.values(Intent).map(intent => (
-                        <Tag key={intent} intent={intent} interactive={false}>
-                            Tag
-                        </Tag>
-                    ))}
-                </div>
+            <div style={{ display: "flex", gap: 8 }}>
+                <Tag {...args}>Default</Tag>
+                <Tag {...args} active={true}>
+                    Active
+                </Tag>
+                <Tag {...args} interactive={true}>
+                    Interactive
+                </Tag>
+                <Tag {...args} onRemove={handleRemove}>
+                    Removable
+                </Tag>
             </div>
         );
     },
 };
 
 /**
- * Minimal tags across all intents, with and without remove buttons.
- *
- * Matches the demo-app TagExample "Minimal" card.
+ * Use `icon` and `endIcon` props to render icons alongside the tag content.
  */
-export const MinimalAllIntents: Story = {
-    render: function Render() {
+export const IconExample: Story = {
+    name: "Icons",
+    argTypes: {
+        icon: { table: { disable: true } },
+        endIcon: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 8 }}>
+            <Tag {...args} icon="home">
+                Start icon
+            </Tag>
+            <Tag {...args} endIcon="map">
+                End icon
+            </Tag>
+            <Tag {...args} icon="home" endIcon="map">
+                Both
+            </Tag>
+        </div>
+    ),
+};
+
+/**
+ * Use the `fill` prop to make the tag expand to the full width of its container.
+ */
+export const FillExample: Story = {
+    name: "Fill",
+    argTypes: {
+        fill: { table: { disable: true } },
+    },
+    decorators: [
+        Story => (
+            <div style={{ width: "400px" }}>
+                <Story />
+            </div>
+        ),
+    ],
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <Tag {...args} fill={true}>
+                Full Width
+            </Tag>
+            <Tag {...args} fill={false}>
+                Auto Width
+            </Tag>
+        </div>
+    ),
+};
+
+/**
+ * All intents across default and minimal variants, with all states (default, active, interactive, removable).
+ */
+export const AllIntentsAllVariants: Story = {
+    render: function Render(args) {
         const handleRemove = useCallback(() => {
             return;
         }, []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ display: "flex", gap: 8 }}>
-                    {Object.values(Intent).map(intent => (
-                        <Tag key={intent} minimal={true} intent={intent} interactive={true} onRemove={handleRemove}>
-                            Tag
-                        </Tag>
-                    ))}
-                </div>
-                <div style={{ display: "flex", gap: 8 }}>
-                    {Object.values(Intent).map(intent => (
-                        <Tag key={intent} minimal={true} intent={intent} interactive={false}>
-                            Tag
-                        </Tag>
-                    ))}
-                </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {[false, true].map(minimal => (
+                    <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        <div style={{ fontSize: 12, opacity: 0.6 }}>{minimal ? "Minimal" : "Default"}</div>
+                        <div style={{ display: "flex", gap: 8 }}>
+                            {Object.values(Intent).map(intent => (
+                                <Tag key={intent} {...args} minimal={minimal} intent={intent}>
+                                    {intent || "None"}
+                                </Tag>
+                            ))}
+                        </div>
+                        <div style={{ display: "flex", gap: 8 }}>
+                            {Object.values(Intent).map(intent => (
+                                <Tag key={intent} {...args} minimal={minimal} intent={intent} active={true}>
+                                    {intent || "None"}
+                                </Tag>
+                            ))}
+                        </div>
+                        <div style={{ display: "flex", gap: 8 }}>
+                            {Object.values(Intent).map(intent => (
+                                <Tag key={intent} {...args} minimal={minimal} intent={intent} interactive={true}>
+                                    {intent || "None"}
+                                </Tag>
+                            ))}
+                        </div>
+                        <div style={{ display: "flex", gap: 8 }}>
+                            {Object.values(Intent).map(intent => (
+                                <Tag key={intent} {...args} minimal={minimal} intent={intent} onRemove={handleRemove}>
+                                    {intent || "None"}
+                                </Tag>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     },
 };
 
 /**
- * Interactive playground matching the docs-app TagExample.
- *
- * Shows a list of removable city tags with all tag props togglable via Storybook controls.
+ * Interactive playground with removable city tags and all props togglable via Storybook controls.
  */
 const PLAYGROUND_INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
 

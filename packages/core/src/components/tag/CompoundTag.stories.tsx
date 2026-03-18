@@ -11,7 +11,7 @@ import { Button } from "../button/buttons";
 import { CompoundTag } from "./compoundTag";
 
 // These props are deprecated on CompoundTag — hide them from the Storybook controls panel.
-const disabledArgs = ["large", "rightIcon"] as const satisfies ReadonlyArray<
+const disabledArgs = ["large", "rightIcon", "children"] as const satisfies ReadonlyArray<
     keyof React.ComponentProps<typeof CompoundTag>
 >;
 
@@ -93,8 +93,6 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * A basic compound tag displaying a key-value pair.
- *
- * Matches the docs CompoundTagBasicExample.
  */
 export const Basic: Story = {
     args: {
@@ -105,57 +103,65 @@ export const Basic: Story = {
 
 /**
  * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the tag.
- *
- * Matches the docs CompoundTagIntentExample.
  */
 export const IntentExample: Story = {
     name: "Intent",
-    render: () => (
+    argTypes: {
+        intent: { table: { disable: true } },
+    },
+    render: args => (
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <CompoundTag leftContent="Status" intent="primary">
-                Active
-            </CompoundTag>
-            <CompoundTag leftContent="Status" intent="success">
-                Healthy
-            </CompoundTag>
-            <CompoundTag leftContent="Status" intent="warning">
-                Degraded
-            </CompoundTag>
-            <CompoundTag leftContent="Status" intent="danger">
-                Down
-            </CompoundTag>
+            {Object.values(Intent)
+                .filter(i => i !== "none")
+                .map(intent => (
+                    <CompoundTag key={intent} {...args} leftContent="Status" intent={intent}>
+                        {intent.charAt(0).toUpperCase() + intent.slice(1)}
+                    </CompoundTag>
+                ))}
         </div>
     ),
 };
 
 /**
  * Use the `minimal` prop to render a tag with reduced visual weight, without a filled background.
- *
- * Matches the docs CompoundTagMinimalExample.
  */
-export const Minimal: Story = {
-    render: () => (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <CompoundTag leftContent="Env" minimal={true}>
-                Production
-            </CompoundTag>
-            <CompoundTag leftContent="Env" minimal={true} intent="primary">
-                Staging
-            </CompoundTag>
+export const VariantExample: Story = {
+    name: "Variant",
+    argTypes: {
+        minimal: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <CompoundTag {...args} leftContent="Key" minimal={false}>
+                    Value
+                </CompoundTag>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Minimal</span>
+                <CompoundTag {...args} leftContent="Key" minimal={true}>
+                    Value
+                </CompoundTag>
+            </div>
         </div>
     ),
 };
 
 /**
  * Use the `size` prop to adjust the tag dimensions. CompoundTag supports `"medium"` (default) and `"large"`.
- *
- * Matches the docs CompoundTagSizeExample.
  */
-export const Size: Story = {
-    render: () => (
+export const SizeExample: Story = {
+    name: "Size",
+    argTypes: {
+        size: { table: { disable: true } },
+    },
+    render: args => (
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <CompoundTag leftContent="Size">Medium</CompoundTag>
-            <CompoundTag leftContent="Size" size="large">
+            <CompoundTag {...args} leftContent="Size" size="medium">
+                Medium
+            </CompoundTag>
+            <CompoundTag {...args} leftContent="Size" size="large">
                 Large
             </CompoundTag>
         </div>
@@ -163,18 +169,70 @@ export const Size: Story = {
 };
 
 /**
- * Use the `fill` prop to make the tag expand to the full width of its container.
- *
- * Matches the docs CompoundTagFillExample.
+ * CompoundTags support `active` and `interactive` states, and can be made removable with the `onRemove` prop.
  */
-export const Fill: Story = {
-    render: () => (
-        <div style={{ width: "100%" }}>
-            <CompoundTag leftContent="Region" fill={true}>
-                US East (N. Virginia)
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        active: { table: { disable: true } },
+        interactive: { table: { disable: true } },
+    },
+    render: function Render(args) {
+        const handleRemove = useCallback(() => {
+            return;
+        }, []);
+
+        return (
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <CompoundTag {...args} leftContent="Key">
+                    Default
+                </CompoundTag>
+                <CompoundTag {...args} leftContent="Key" active={true}>
+                    Active
+                </CompoundTag>
+                <CompoundTag {...args} leftContent="Key" interactive={true}>
+                    Interactive
+                </CompoundTag>
+                <CompoundTag {...args} leftContent="Key" onRemove={handleRemove}>
+                    Removable
+                </CompoundTag>
+            </div>
+        );
+    },
+};
+
+/**
+ * Use `icon` and `endIcon` props to render icons before the left content or after the right content.
+ */
+export const IconExample: Story = {
+    name: "Icons",
+    argTypes: {
+        icon: { table: { disable: true } },
+        endIcon: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <CompoundTag {...args} leftContent="City" icon="globe">
+                London
+            </CompoundTag>
+            <CompoundTag {...args} leftContent="City" endIcon="map-marker">
+                Seattle
+            </CompoundTag>
+            <CompoundTag {...args} leftContent="City" icon="globe" endIcon="map-marker">
+                New York
             </CompoundTag>
         </div>
     ),
+};
+
+/**
+ * Use the `fill` prop to make the tag expand to the full width of its container.
+ */
+export const FillExample: Story = {
+    name: "Fill",
+    argTypes: {
+        fill: { table: { disable: true } },
+    },
     decorators: [
         Story => (
             <div style={{ width: "400px" }}>
@@ -182,104 +240,90 @@ export const Fill: Story = {
             </div>
         ),
     ],
-};
-
-/**
- * Use the `round` prop to render the tag with rounded ends.
- *
- * Matches the docs CompoundTagRoundExample.
- */
-export const Round: Story = {
-    render: () => (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <CompoundTag leftContent="City" round={true}>
-                London
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <CompoundTag {...args} leftContent="Region" fill={true}>
+                Full Width
             </CompoundTag>
-            <CompoundTag leftContent="City" round={true} intent="success">
-                New York
+            <CompoundTag {...args} leftContent="Region" fill={false}>
+                Auto Width
             </CompoundTag>
         </div>
     ),
 };
 
 /**
- * Use the `icon` prop to render an icon before the left content
- * and the `endIcon` prop to render an icon after the right content.
- *
- * Matches the docs CompoundTagIconExample.
+ * All intents across default and minimal variants, with all states (default, active, interactive, removable).
  */
-export const Icons: Story = {
-    render: () => (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <CompoundTag leftContent="City" icon="globe">
-                London
-            </CompoundTag>
-            <CompoundTag leftContent="City" endIcon="map-marker">
-                Seattle
-            </CompoundTag>
-            <CompoundTag leftContent="City" icon="globe" endIcon="map-marker">
-                New York
-            </CompoundTag>
-        </div>
-    ),
-};
-
-/**
- * Define the `onRemove` prop to render a remove button on the right side of the tag.
- * The remove button will only appear when this handler is provided.
- *
- * Matches the docs CompoundTagRemovableExample.
- */
-const REMOVABLE_INITIAL_TAGS = ["London", "New York", "Seattle"];
-
-export const Removable: Story = {
-    render: function Render() {
-        const [tags, setTags] = useState(REMOVABLE_INITIAL_TAGS);
-
-        const handleRemove = useCallback((tag: string) => () => setTags(prev => prev.filter(t => t !== tag)), []);
-
-        const handleReset = useCallback(() => setTags(REMOVABLE_INITIAL_TAGS), []);
+export const AllIntentsAllVariants: Story = {
+    render: function Render(args) {
+        const handleRemove = useCallback(() => {
+            return;
+        }, []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    {tags.map(tag => (
-                        <CompoundTag key={tag} leftContent="City" onRemove={handleRemove(tag)}>
-                            {tag}
-                        </CompoundTag>
-                    ))}
-                </div>
-                {tags.length === 0 && (
-                    <Button icon="refresh" variant="outlined" size="small" text="Reset tags" onClick={handleReset} />
-                )}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                {[false, true].map(minimal => (
+                    <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        <div style={{ fontSize: 12, opacity: 0.6 }}>{minimal ? "Minimal" : "Default"}</div>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            {Object.values(Intent).map(intent => (
+                                <CompoundTag key={intent} {...args} leftContent="Key" minimal={minimal} intent={intent}>
+                                    {intent || "None"}
+                                </CompoundTag>
+                            ))}
+                        </div>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            {Object.values(Intent).map(intent => (
+                                <CompoundTag
+                                    key={intent}
+                                    {...args}
+                                    leftContent="Key"
+                                    minimal={minimal}
+                                    intent={intent}
+                                    active={true}
+                                >
+                                    {intent || "None"}
+                                </CompoundTag>
+                            ))}
+                        </div>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            {Object.values(Intent).map(intent => (
+                                <CompoundTag
+                                    key={intent}
+                                    {...args}
+                                    leftContent="Key"
+                                    minimal={minimal}
+                                    intent={intent}
+                                    interactive={true}
+                                >
+                                    {intent || "None"}
+                                </CompoundTag>
+                            ))}
+                        </div>
+                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                            {Object.values(Intent).map(intent => (
+                                <CompoundTag
+                                    key={intent}
+                                    {...args}
+                                    leftContent="Key"
+                                    minimal={minimal}
+                                    intent={intent}
+                                    onRemove={handleRemove}
+                                >
+                                    {intent || "None"}
+                                </CompoundTag>
+                            ))}
+                        </div>
+                    </div>
+                ))}
             </div>
         );
     },
 };
 
 /**
- * Use the `interactive` prop to enable hover and cursor styling.
- * This is recommended when pairing with an `onClick` handler.
- *
- * Matches the docs CompoundTagInteractiveExample.
- */
-export const Interactive: Story = {
-    render: () => (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-            <CompoundTag leftContent="Filter" interactive={true}>
-                Region
-            </CompoundTag>
-            <CompoundTag leftContent="Filter" interactive={true} intent="primary">
-                Status
-            </CompoundTag>
-        </div>
-    ),
-};
-
-/**
- * Interactive playground matching the docs-app CompoundTagPlaygroundExample.
- *
- * Shows a list of removable city tags with all CompoundTag props togglable via Storybook controls.
+ * Interactive playground with removable city tags and all props togglable via Storybook controls.
  */
 const PLAYGROUND_INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
 

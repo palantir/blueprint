@@ -3,26 +3,24 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
-import { Button } from "./buttons";
+import { AnchorButton } from "./buttons";
 
-// These props are deprecated on Button — hide them from the Storybook controls panel.
+// These props are deprecated on AnchorButton — hide them from the Storybook controls panel.
 const disabledArgs = [
     "large",
     "minimal",
     "outlined",
     "rightIcon",
     "small",
-    "type",
     "children",
-] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Button>>;
+] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof AnchorButton>>;
 
-const meta: Meta<typeof Button> = {
-    title: "Core/Button/Button",
-    component: Button,
+const meta: Meta<typeof AnchorButton> = {
+    title: "Core/Button/AnchorButton",
+    component: AnchorButton,
     decorators: [
         Story => (
             <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
@@ -35,7 +33,9 @@ const meta: Meta<typeof Button> = {
     },
     tags: ["autodocs"],
     args: {
-        text: "Button",
+        text: "Link",
+        href: "#",
+        target: undefined,
         intent: "none",
         variant: "solid",
         size: "medium",
@@ -51,6 +51,13 @@ const meta: Meta<typeof Button> = {
     argTypes: {
         text: {
             control: "text",
+        },
+        href: {
+            control: "text",
+        },
+        target: {
+            control: "select",
+            options: ["_self", "_blank", "_parent", "_top"],
         },
         intent: {
             control: "select",
@@ -102,17 +109,18 @@ const meta: Meta<typeof Button> = {
             {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
         ),
     },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof AnchorButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * A basic button with default styling.
+ * A basic anchor button with default styling. Renders an `<a>` element styled as a button.
  */
 export const Default: Story = {
     args: {
-        text: "Button",
+        text: "Link",
+        href: "#",
     },
 };
 
@@ -129,7 +137,7 @@ export const IntentExample: Story = {
             {Object.values(Intent)
                 .filter(i => i !== "none")
                 .map(intent => (
-                    <Button
+                    <AnchorButton
                         key={intent}
                         {...args}
                         intent={intent}
@@ -152,7 +160,7 @@ export const VariantExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 8 }}>
             {Object.values(ButtonVariant).map(variant => (
-                <Button
+                <AnchorButton
                     key={variant}
                     {...args}
                     variant={variant}
@@ -174,14 +182,15 @@ export const SizeExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             {Object.values(Size).map(size => (
-                <Button key={size} {...args} size={size} text={size.charAt(0).toUpperCase() + size.slice(1)} />
+                <AnchorButton key={size} {...args} size={size} text={size.charAt(0).toUpperCase() + size.slice(1)} />
             ))}
         </div>
     ),
 };
 
 /**
- * Buttons support `active`, `disabled`, and `loading` states.
+ * AnchorButtons support `active`, `disabled`, and `loading` states.
+ * When disabled, the `href` is removed so the link is not navigable.
  */
 export const StateExample: Story = {
     name: "State",
@@ -192,10 +201,10 @@ export const StateExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 8 }}>
-            <Button {...args} text="Default" />
-            <Button {...args} active={true} text="Active" />
-            <Button {...args} disabled={true} text="Disabled" />
-            <Button {...args} loading={true} text="Loading" />
+            <AnchorButton {...args} text="Default" />
+            <AnchorButton {...args} active={true} text="Active" />
+            <AnchorButton {...args} disabled={true} text="Disabled" />
+            <AnchorButton {...args} loading={true} text="Loading" />
         </div>
     ),
 };
@@ -211,10 +220,10 @@ export const IconExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 8 }}>
-            <Button {...args} icon="refresh" text="Reset" />
-            <Button {...args} icon="user" endIcon="caret-down" text="Profile" />
-            <Button {...args} endIcon="arrow-right" text="Next" />
-            <Button {...args} icon="edit" text={undefined} aria-label="edit" />
+            <AnchorButton {...args} icon="share" text="Share" />
+            <AnchorButton {...args} icon="duplicate" endIcon="share" text="Copy link" />
+            <AnchorButton {...args} endIcon="arrow-right" text="Next" />
+            <AnchorButton {...args} icon="link" text={undefined} aria-label="link" />
         </div>
     ),
 };
@@ -230,7 +239,7 @@ export const AlignmentExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
             {Object.values(Alignment).map(alignment => (
-                <Button
+                <AnchorButton
                     key={alignment}
                     {...args}
                     alignText={alignment}
@@ -260,8 +269,8 @@ export const FillExample: Story = {
     ],
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <Button {...args} fill={true} text="Full Width" />
-            <Button {...args} fill={false} text="Auto Width" />
+            <AnchorButton {...args} fill={true} text="Full Width" />
+            <AnchorButton {...args} fill={false} text="Auto Width" />
         </div>
     ),
 };
@@ -277,30 +286,30 @@ export const AllIntentsAllVariants: Story = {
                     <div style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{variant}</div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent}>
+                            <AnchorButton key={intent} {...args} variant={variant} intent={intent}>
                                 {intent || "None"}
-                            </Button>
+                            </AnchorButton>
                         ))}
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent} active={true}>
+                            <AnchorButton key={intent} {...args} variant={variant} intent={intent} active={true}>
                                 {intent || "None"}
-                            </Button>
+                            </AnchorButton>
                         ))}
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent} disabled={true}>
+                            <AnchorButton key={intent} {...args} variant={variant} intent={intent} disabled={true}>
                                 {intent || "None"}
-                            </Button>
+                            </AnchorButton>
                         ))}
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent} loading={true}>
+                            <AnchorButton key={intent} {...args} variant={variant} intent={intent} loading={true}>
                                 {intent || "None"}
-                            </Button>
+                            </AnchorButton>
                         ))}
                     </div>
                 </div>
@@ -313,29 +322,13 @@ export const AllIntentsAllVariants: Story = {
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
-    render: function Render(args) {
-        return (
-            <Button
-                active={args.active}
-                alignText={args.alignText}
-                disabled={args.disabled}
-                ellipsizeText={args.ellipsizeText}
-                endIcon={args.endIcon}
-                fill={args.fill}
-                icon={args.icon}
-                intent={args.intent}
-                loading={args.loading}
-                size={args.size}
-                text={args.text}
-                variant={args.variant}
-            />
-        );
-    },
     args: {
-        text: "Click",
-        icon: "refresh",
+        text: "Open link",
+        href: "#",
+        target: "_blank",
+        icon: "share",
         endIcon: undefined,
-        intent: "none",
+        intent: "primary",
         variant: "solid",
         size: "medium",
     },
