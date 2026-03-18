@@ -91,7 +91,7 @@ describe("<MultiSelect>", () => {
         });
 
         const firstTagRemoveButton = wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(0).getDOMNode();
-        firstTagRemoveButton.dispatchEvent(new KeyboardEvent("keyup", { key: "Enter", bubbles: true }));
+        firstTagRemoveButton.dispatchEvent(new KeyboardEvent("keyup", { bubbles: true, key: "Enter" }));
 
         // checks for the bug in https://github.com/palantir/blueprint/issues/3674
         // where the first item in the dropdown list would get selected upon hitting Enter inside

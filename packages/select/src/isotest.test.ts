@@ -27,6 +27,9 @@ const config: Record<string, IsomorphicTestConfig> = {
     MultiSelect2: {
         skip: true,
     },
+    Omnibar: {
+        props: { isOpen: true, items: [], overlayProps: { usePortal: false } },
+    },
     QueryList: {
         // needs at least one handler or it returns undefined
         props: { renderer: () => null },
@@ -43,9 +46,6 @@ const config: Record<string, IsomorphicTestConfig> = {
     },
     Suggest2: {
         skip: true,
-    },
-    Omnibar: {
-        props: { items: [], isOpen: true, overlayProps: { usePortal: false } },
     },
 };
 
