@@ -1,0 +1,179 @@
+{
+    "surface": {
+        "border-color": {
+            "$type": "color",
+            "default": {
+                "$value": "{palette.white}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            },
+            "strong": {
+                "$value": "{palette.white}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.3
+                    }
+                }
+            }
+        },
+        "shadow": {
+            "$type": "shadow",
+            "$description": "BP6 dark mode elevation shadows - white inset borders, deeper black shadows",
+            "0": {
+                "$description": "Level 0 - border only, inset 0 0 0 1px rgba(white, 20%), 0 0 10px 0 rgba(0,0,0, 20%)",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 10, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.2 }
+                    }
+                ]
+            },
+            "1": {
+                "$description": "Level 1 - subtle elevation with inner highlights",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 10, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 10, "unit": "px" },
+                        "spread": { "value": -1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.2 }
+                    }
+                ]
+            },
+            "2": {
+                "$description": "Level 2 - standard elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 4, "unit": "px" },
+                        "blur": { "value": 6, "unit": "px" },
+                        "spread": { "value": -4, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.5 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 30, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.5 }
+                    }
+                ]
+            },
+            "3": {
+                "$description": "Level 3 - popover/dialog elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 20, "unit": "px" },
+                        "blur": { "value": 25, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 30, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
+                    }
+                ]
+            },
+            "4": {
+                "$description": "Level 4 - maximum elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 25, "unit": "px" },
+                        "blur": { "value": 60, "unit": "px" },
+                        "spread": { "value": -12, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.85 }
+                    }
+                ]
+            }
+        },
+        "color-code": {
+            "$type": "color",
+            "$value": "{palette.black}",
+            "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+        },
+        "background-color": {
+            "$type": "color",
+            "$description": "Dark mode app backgrounds: black → dark-gray on interaction",
+            "default": {
+                "rest": {
+                    "$value": "{intent.default.rest}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 0.248, "chromaScale": 0.487 } }
+                },
+                "hover": {
+                    "$value": "{intent.default.hover}",
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessScale": 0.279, "chromaScale": 1.379, "hueOffset": 0.3 }
+                    }
+                },
+                "active": {
+                    "$value": "{intent.default.active}",
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessScale": 0.313, "chromaScale": 1.825, "hueOffset": 2.9 }
+                    }
+                },
+                "disabled": {
+                    "$value": "{intent.default.disabled}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 0.319, "chromaScale": 0.312 } }
+                }
+            }
+        }
+    }
+}

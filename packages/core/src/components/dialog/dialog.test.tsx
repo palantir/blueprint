@@ -134,6 +134,26 @@ describe("<Dialog>", () => {
             expect(header.closest(`.${Classes.DIALOG_HEADER}`)).toBeInTheDocument();
         });
 
+        it("should render header when title is an empty string", () => {
+            render(
+                <Dialog {...COMMON_PROPS} title="">
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            const dialog = screen.getByRole("dialog");
+            expect(dialog.querySelector(`.${Classes.DIALOG_HEADER}`)).toBeInTheDocument();
+        });
+
+        it("should not render header when title is null", () => {
+            render(
+                <Dialog {...COMMON_PROPS} title={null}>
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            const dialog = screen.getByRole("dialog");
+            expect(dialog.querySelector(`.${Classes.DIALOG_HEADER}`)).not.toBeInTheDocument();
+        });
+
         it("should render and remove close button based on isCloseButtonShown", async () => {
             const user = userEvent.setup();
             const onClose = vi.fn();

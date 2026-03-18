@@ -6,7 +6,7 @@ Clicking anywhere on the container will focus the text input.
 
 @## Import
 
-```tsx
+```ts copy
 import { TagInput } from "@blueprintjs/core";
 ```
 

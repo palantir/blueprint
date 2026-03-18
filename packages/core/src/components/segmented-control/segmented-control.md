@@ -8,7 +8,7 @@ to signify a selection UI and a reduced visual weight which is appropriate for f
 
 @## Import
 
-```tsx
+```ts copy
 import { SegmentedControl } from "@blueprintjs/core";
 ```
 
