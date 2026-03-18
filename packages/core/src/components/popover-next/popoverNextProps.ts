@@ -2,8 +2,6 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import type { AutoUpdateOptions } from "@floating-ui/react";
-
 import type { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -29,7 +27,54 @@ export type {
     PopoverNextPositioningStrategy,
     PopoverNextRootBoundary,
 } from "./middlewareTypes";
-export type { AutoUpdateOptions } from "@floating-ui/react";
+
+/**
+ * Options to configure how the popover position is automatically updated.
+ * Blueprint-owned interface mapping to floating-ui's `AutoUpdateOptions`.
+ *
+ * @see https://floating-ui.com/docs/autoUpdate
+ */
+export interface PopoverNextAutoUpdateOptions {
+    /**
+     * Whether to update the position when an overflow ancestor is scrolled.
+     *
+     * @default true
+     */
+    ancestorScroll?: boolean;
+
+    /**
+     * Whether to update the position when an overflow ancestor is resized.
+     * This uses the native `resize` event.
+     *
+     * @default true
+     */
+    ancestorResize?: boolean;
+
+    /**
+     * Whether to update the position when either the reference or floating
+     * elements resized. This uses a `ResizeObserver`.
+     *
+     * @default true
+     */
+    elementResize?: boolean;
+
+    /**
+     * Whether to update the position when the reference relocated on the
+     * screen due to layout shift.
+     *
+     * @default true
+     */
+    layoutShift?: boolean;
+
+    /**
+     * Whether to update on every animation frame if necessary. Only use if
+     * you need to update the position in response to an animation using
+     * transforms.
+     *
+     * @default false
+     */
+    animationFrame?: boolean;
+}
 
 /**
  * Props interface for PopoverNext component.
@@ -61,7 +106,7 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      *
      * @see https://floating-ui.com/docs/autoUpdate
      */
-    autoUpdateOptions?: AutoUpdateOptions;
+    autoUpdateOptions?: PopoverNextAutoUpdateOptions;
 
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.

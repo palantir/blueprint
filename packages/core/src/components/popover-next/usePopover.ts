@@ -4,7 +4,6 @@
 
 import {
     autoUpdate,
-    type AutoUpdateOptions,
     type Middleware,
     type Placement,
     useClick,
@@ -19,9 +18,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { PopoverInteractionKind } from "../popover/popoverProps";
 
 import type { PopoverNextPositioningStrategy } from "./middlewareTypes";
+import type { PopoverNextAutoUpdateOptions } from "./popoverNextProps";
 
 interface PopoverOptions {
-    autoUpdateOptions?: AutoUpdateOptions;
+    autoUpdateOptions?: PopoverNextAutoUpdateOptions;
     canEscapeKeyClose?: boolean;
     disabled?: boolean;
     hasBackdrop?: boolean;
