@@ -22,7 +22,7 @@ Popper.js is a small library that offers a powerful, customizable, and performan
 
 @## Import
 
-```tsx
+```ts copy
 import { Popover } from "@blueprintjs/core";
 ```
 
@@ -69,22 +69,21 @@ as the trigger for the popover; user interaction will show the popover based on 
 In Popper.js terms, this is the popper "reference". There are two ways to render a Popover target, resulting
 in different DOM layout depending on your application's needs:
 
--   The simplest way to specify a target is via `children`. Provide a single React child to
-    `<Popover>` and the component will render that child wrapped in a `@ns-popover-target` HTML element.
-    This wrapper is configured with event handling logic necessary for the Popover to function. Its tag name
-    (e.g. `div`, `span`) and props can be customized with the `targetTagName` and `targetProps` props, respectively.
+- The simplest way to specify a target is via `children`. Provide a single React child to
+  `<Popover>` and the component will render that child wrapped in a `@ns-popover-target` HTML element.
+  This wrapper is configured with event handling logic necessary for the Popover to function. Its tag name
+  (e.g. `div`, `span`) and props can be customized with the `targetTagName` and `targetProps` props, respectively.
 
--   A more advanced API is available through the `renderTarget` prop. Here, Popover provides you with all the
-    information necessary to render a functional popover with a [render prop](https://reactjs.org/docs/render-props.html).
-    You are responsible for then propogating that information with an
-    [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
-    to the `React.JSX.Element` returned from `renderTarget`.
+- A more advanced API is available through the `renderTarget` prop. Here, Popover provides you with all the
+  information necessary to render a functional popover with a [render prop](https://reactjs.org/docs/render-props.html).
+  You are responsible for then propogating that information with an
+  [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
+  to the `React.JSX.Element` returned from `renderTarget`.
+    - If the rendered element is _not_ a native HTML element, you must ensure that it supports the
+      `className`, `ref`, and `tabIndex` props (i.e. renders them out to the DOM).
 
-    -   If the rendered element is _not_ a native HTML element, you must ensure that it supports the
-        `className`, `ref`, and `tabIndex` props (i.e. renders them out to the DOM).
-
-    -   The benefit to this approach is a simplified DOM structure without an extra wrapper element around
-        your popover target.
+    - The benefit to this approach is a simplified DOM structure without an extra wrapper element around
+      your popover target.
 
 The **content** will be shown inside the popover itself. When opened, the popover will always be
 positioned on the page next to the target; the `placement` prop determines its relative placement (on
@@ -138,8 +137,8 @@ to Popper.js; it uses the same semantics and supported values
 There are straightforward base placements (`"top"`, `"bottom"`, `"left"`, `"right"`) and their variations, which
 each consist of two attributes:
 
--   Which <span class="docs-popover-placement-label-side">**side**</span> of the target the popover should render on.
--   The popover's <span class="docs-popover-placement-label-alignment">**alignment**</span> relative to the target.
+- Which <span class="docs-popover-placement-label-side">**side**</span> of the target the popover should render on.
+- The popover's <span class="docs-popover-placement-label-alignment">**alignment**</span> relative to the target.
 
 These two attributes can be expressed with a single value having the following structure:
 
@@ -163,9 +162,9 @@ All of these options choose and continually update the <span class="docs-popover
 for you to avoid overflowing the boundary element (when scrolling within it, for instance).
 The options differ in how they handle <span class="docs-popover-placement-label-alignment">**alignment**</span>:
 
--   In `"auto"` mode (the default value for the `placement` prop), the Popover will align itself to the center of the target as it flips sides.
--   In `"auto-start"` mode, the Popover will align itself to the `start` of the target (i.e., the top edge when the popover is on the left or right, or the left edge when the popover is on the top or bottom).
--   In `"auto-end"` mode, the Popover will align itself to the `end` of the target (i.e., the bottom edge when the popover is on the left or right, or the right edge when the popover is on the top or bottom).
+- In `"auto"` mode (the default value for the `placement` prop), the Popover will align itself to the center of the target as it flips sides.
+- In `"auto-start"` mode, the Popover will align itself to the `start` of the target (i.e., the top edge when the popover is on the left or right, or the left edge when the popover is on the top or bottom).
+- In `"auto-end"` mode, the Popover will align itself to the `end` of the target (i.e., the bottom edge when the popover is on the left or right, or the right edge when the popover is on the top or bottom).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
@@ -257,18 +256,18 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
 The `interactionKind` prop governs how the popover should open and close in response to user interactions.
 The supported values are:
 
--   `HOVER`
-    -   **Opens when:** the target is hovered
-    -   **Closes when:** the cursor is no longer inside the target _or_ the popover
--   `HOVER_TARGET_ONLY`:
-    -   **Opens when:** the target is hovered
-    -   **Closes when:** the cursor is no longer inside the target
--   `CLICK`:
-    -   **Opens when:** the target is clicked, or when Enter or Shift key are pressed while target is focused
-    -   **Closes when:** the user clicks anywhere outside of the popover (including the target)
--   `CLICK_TARGET_ONLY`:
-    -   **Opens when:** the target is clicked, or when Enter or Shift key are pressed while target is focused
-    -   **Closes when:** the target is clicked
+- `HOVER`
+    - **Opens when:** the target is hovered
+    - **Closes when:** the cursor is no longer inside the target _or_ the popover
+- `HOVER_TARGET_ONLY`:
+    - **Opens when:** the target is hovered
+    - **Closes when:** the cursor is no longer inside the target
+- `CLICK`:
+    - **Opens when:** the target is clicked, or when Enter or Shift key are pressed while target is focused
+    - **Closes when:** the user clicks anywhere outside of the popover (including the target)
+- `CLICK_TARGET_ONLY`:
+    - **Opens when:** the target is clicked, or when Enter or Shift key are pressed while target is focused
+    - **Closes when:** the target is clicked
 
 The following example demonstrates the various interaction kinds (note: these Popovers contain
 [MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
@@ -325,16 +324,16 @@ interact with the popover content itself: the popover is dismissed the moment th
 
 The `hasBackdrop` prop governs whether a backdrop appears while the popover is open. When `true`:
 
--   **A transparent backdrop will render beneath the popover**. This backdrop
-    covers the entire viewport and prevents interaction with the document until
-    the popover is closed. This is useful for preventing stray clicks or hovers in
-    your app when the user tries to close a popover.
--   **The popover will receive focus when opened**, allowing for better keyboard accessibility.
+- **A transparent backdrop will render beneath the popover**. This backdrop
+  covers the entire viewport and prevents interaction with the document until
+  the popover is closed. This is useful for preventing stray clicks or hovers in
+  your app when the user tries to close a popover.
+- **The popover will receive focus when opened**, allowing for better keyboard accessibility.
 
 Clicking the backdrop will:
 
--   _in uncontrolled mode_, close the popover.
--   _in controlled mode_, invoke the `onInteraction` callback with an argument of `false`.
+- _in uncontrolled mode_, close the popover.
+- _in controlled mode_, invoke the `onInteraction` callback with an argument of `false`.
 
 This backdrop behavior is only available for popovers with `interactionKind="click"`.
 An error is thrown if used otherwise.
