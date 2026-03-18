@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { useCallback, useMemo, useState } from "react";
+import { createRef, useCallback, useMemo, useRef, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
@@ -82,6 +82,11 @@ interface PanelStackComponent {
     displayName: string;
 }
 
+interface PanelNodeEntry {
+    ref: React.RefObject<HTMLDivElement>;
+    onExited: () => void;
+}
+
 /**
  * Panel stack component.
  *
@@ -106,6 +111,21 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
     );
     const prevStackLength = usePrevious(stack.length) ?? stack.length;
     const direction = stack.length - prevStackLength < 0 ? "pop" : "push";
+
+    // Map of CSSTransition key -> PanelNodeEntry for each PanelView root DOM node.
+    // Each CSSTransition needs its own nodeRef to avoid ReactDOM.findDOMNode() usage.
+    const panelNodes = useRef<Map<number, PanelNodeEntry>>(new Map());
+    const getOrCreatePanelNode = useCallback((key: number): PanelNodeEntry => {
+        let entry = panelNodes.current.get(key);
+        if (entry == null) {
+            entry = {
+                onExited: () => panelNodes.current.delete(key),
+                ref: createRef<HTMLDivElement>(),
+            };
+            panelNodes.current.set(key, entry);
+        }
+        return entry;
+    }, []);
 
     const handlePanelOpen = useCallback(
         (panel: T) => {
@@ -142,13 +162,21 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
             // second one, active changes only when the panel becomes or stops being active.
             const layer = stack.length - index;
             const key = renderActivePanelOnly ? stack.length : layer;
+            const { onExited, ref: panelRef } = getOrCreatePanelNode(key);
 
             return (
-                <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
+                <CSSTransition
+                    classNames={Classes.PANEL_STACK}
+                    key={key}
+                    nodeRef={panelRef}
+                    onExited={onExited}
+                    timeout={400}
+                >
                     <PanelView<T>
                         onClose={handlePanelClose}
                         onOpen={handlePanelOpen}
                         panel={panel}
+                        panelNodeRef={panelRef}
                         previousPanel={stack[index + 1]}
                         showHeader={showPanelHeader}
                     />

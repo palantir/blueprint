@@ -35,7 +35,7 @@ export interface PrecisionSelectProps {
     /**
      * The callback to fire when the selected value changes.
      */
-    onChange: (event: React.FormEvent<HTMLElement>) => void;
+    onChange: (event: React.ChangeEvent<HTMLElement>) => void;
 
     /**
      * Whether or not to allow a `"none"` option.

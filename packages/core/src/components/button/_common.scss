@@ -7,6 +7,10 @@
 @import "../../common/variables-extended";
 @import "../progress-bar/common";
 
+// N.B. Keeping existing SCSS variables for backward-compatibility.
+// These are **not used** in button, and should be removed in
+// the major version change.
+
 $button-border-width: 1px !default;
 $button-padding: $pt-spacing ($pt-spacing * 2) !default;
 $button-padding-small: 0 ($pt-spacing * 2) !default;
@@ -64,7 +68,21 @@ $button-outlined-width: 1px !default;
 $button-outlined-border-intent-opacity: 0.6 !default;
 $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
-// "intent": (default, hover, active colors)
+// Temporary: warning button rest color needs a pre-computed fallback
+// for browsers that don't support relative color syntax.
+:root {
+  --bp6-button-warning-rest: var(--bp-palette-orange-5); //#fbb360;
+}
+
+@supports (color: oklch(from var(--any-color) l c h)) {
+  :root {
+    --bp6-button-warning-rest: oklch(
+      from var(--bp-intent-warning-rest) calc(l + 0.177) calc(c - 0.01) calc(h + 6.26)
+    );
+  }
+}
+
+// TODO(bp7): Replace with $button-intent-states
 $button-intents: (
   "primary": (
     $blue3,
@@ -88,16 +106,134 @@ $button-intents: (
   ),
 ) !default;
 
-@mixin pt-button-layout() {
-  @include pt-flex-container(row, $button-icon-spacing, $inline: inline);
-  align-items: center;
+// Intent at each state
+$button-intent-states: (
+  "primary": (
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
+    var(--bp-intent-primary-foreground),
+  ),
+  "success": (
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
+    var(--bp-intent-success-foreground),
+  ),
+  "warning": (
+    var(--bp6-button-warning-rest),
+    var(--bp-intent-warning-hover),
+    var(--bp-intent-warning-active),
+    var(--bp-intent-warning-foreground),
+  ),
+  "danger": (
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
+    var(--bp-intent-danger-foreground),
+  ),
+  "default": (
+    var(--bp-intent-default-rest),
+    var(--bp-intent-default-hover),
+    var(--bp-intent-default-active),
+    var(--bp-intent-default-foreground),
+  ),
+) !default;
 
+$button-intent-states: (
+  "primary": (
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
+    var(--bp-intent-primary-foreground),
+  ),
+  "success": (
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
+    var(--bp-intent-success-foreground),
+  ),
+  "warning": (
+    var(--bp6-button-warning-rest),
+    var(--bp-intent-warning-hover),
+    var(--bp-intent-warning-active),
+    var(--bp-intent-warning-foreground),
+  ),
+  "danger": (
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
+    var(--bp-intent-danger-foreground),
+  ),
+  "default": (
+    var(--bp-intent-default-rest),
+    var(--bp-intent-default-hover),
+    var(--bp-intent-default-active),
+    var(--bp-intent-default-foreground),
+  ),
+) !default;
+
+// Based off of `$pt-` variables in common/_mixins.scss
+$button-intent-colors: (
+  "primary": var(--bp-intent-primary-rest),
+  "success": var(--bp-intent-success-rest),
+  "warning": var(--bp6-button-warning-rest),
+  "danger": var(--bp-intent-danger-rest),
+  "default": var(--bp-intent-default-rest),
+) !default;
+
+$button-minimal-intent-text-colors: (
+  "primary": var(--bp-intent-primary-hover),
+  "success": var(--bp-intent-success-hover),
+  "warning": var(--bp-intent-warning-hover),
+  "danger": var(--bp-intent-danger-hover),
+  "default": var(--bp-intent-default-hover),
+) !default;
+
+$button-intent-active-text-colors: (
+  "primary": var(--bp-intent-primary-active),
+  "success": var(--bp-intent-success-active),
+  "warning": var(--bp-intent-warning-active),
+  "danger": var(--bp-intent-danger-active),
+  "default": var(--bp-intent-default-active),
+) !default;
+
+$button-dark-intent-text-colors: (
+  "primary": color-mix(in oklch, var(--bp-intent-primary-rest) 51%, var(--bp-palette-white)),
+  "success": color-mix(in oklch, var(--bp-intent-success-rest) 54%, var(--bp-palette-white)),
+  "warning": color-mix(in oklch, var(--bp-intent-warning-rest) 53%, var(--bp-palette-white)),
+  "danger": color-mix(in oklch, var(--bp-intent-danger-rest) 53%, var(--bp-palette-white)),
+  // Use srgb for default intent to avoid hue shift with near-neutral gray
+  "default": color-mix(in srgb, var(--bp-intent-default-rest) 46%, var(--bp-palette-white)),
+) !default;
+
+$button-dark-minimal-hover-text-colors: (
+  "primary": color-mix(in oklch, var(--bp-intent-primary-hover) 51%, var(--bp-palette-white)),
+  "success": color-mix(in oklch, var(--bp-intent-success-hover) 54%, var(--bp-palette-white)),
+  "warning": color-mix(in oklch, var(--bp-intent-warning-hover) 53%, var(--bp-palette-white)),
+  "danger": color-mix(in oklch, var(--bp-intent-danger-hover) 53%, var(--bp-palette-white)),
+  // Use srgb for default intent to avoid hue shift with near-neutral gray
+  "default": color-mix(in srgb, var(--bp-intent-default-hover) 46%, var(--bp-palette-white)),
+) !default;
+
+$button-dark-minimal-active-text-colors: (
+  "primary": color-mix(in oklch, var(--bp-intent-primary-active) 51%, var(--bp-palette-white)),
+  "success": color-mix(in oklch, var(--bp-intent-success-active) 54%, var(--bp-palette-white)),
+  "warning": color-mix(in oklch, var(--bp-intent-warning-active) 53%, var(--bp-palette-white)),
+  "danger": color-mix(in oklch, var(--bp-intent-danger-active) 53%, var(--bp-palette-white)),
+  // Use srgb for default intent to avoid hue shift with near-neutral gray
+  "default": color-mix(in srgb, var(--bp-intent-default-active) 46%, var(--bp-palette-white)),
+) !default;
+
+@mixin pt-button-layout() {
+  @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2), $inline: inline);
+  align-items: center;
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   cursor: pointer;
-  font-size: $pt-font-size;
+  font-size: var(--bp-typography-size-body-medium);
   justify-content: center;
-  padding: $button-padding;
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
   text-align: left;
   vertical-align: middle;
 }
@@ -107,21 +243,16 @@ $button-intents: (
   min-width: $height;
 }
 
-@mixin pt-button-height-large() {
-  @include pt-button-height($pt-button-height-large);
-  @include pt-flex-margin(row, $button-icon-spacing-large);
-  font-size: $pt-font-size-large;
-  padding: $button-padding-large;
-}
-
 @mixin pt-button-height-default() {
-  @include pt-button-height($pt-button-height);
-  padding: $button-padding;
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
 }
 
 @mixin pt-button-height-small() {
-  @include pt-button-height($pt-button-height-small);
-  padding: $button-padding-small;
+  min-height: calc(var(--bp-surface-spacing) * 6);
+  min-width: calc(var(--bp-surface-spacing) * 6);
+  padding: 0 calc(var(--bp-surface-spacing) * 2);
 }
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
@@ -143,90 +274,118 @@ $button-intents: (
 
     &.#{$ns}-active,
     &.#{$ns}-active:hover {
-      background: $button-background-color-active-disabled;
+      // Use srgb for consistency (avoids hue shift with near-neutral gray)
+      background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 28%, transparent);
     }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
   }
 }
 
 @mixin pt-button-default-colors() {
-  background-color: $button-background-color;
-  box-shadow: $button-box-shadow;
-  color: $pt-text-color;
+  // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
+  background-color: color-mix(in srgb, var(--bp-intent-default-rest) 5%, var(--bp-palette-white));
+  box-shadow:
+    inset 0 0 0 var(--bp-surface-border-width)
+      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+  color: var(--bp-typography-color-default-rest);
 }
 
 @mixin pt-button-hover() {
   background-clip: padding-box;
-  background-color: $button-background-color-hover;
-  box-shadow: $button-box-shadow-active;
+  // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
+  background-color: color-mix(in srgb, var(--bp-intent-default-hover) 9%, var(--bp-palette-white));
+  box-shadow:
+    inset 0 0 0 var(--bp-surface-border-width)
+      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
 }
 
 @mixin pt-button-active() {
-  background-color: $button-background-color-active;
-  box-shadow: $button-box-shadow-active;
+  // Use srgb to avoid hue shift with near-neutral gray
+  background-color: color-mix(
+    in srgb,
+    var(--bp-intent-default-active) 16%,
+    var(--bp-palette-white)
+  );
+  box-shadow:
+    inset 0 0 0 var(--bp-surface-border-width)
+      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    background: $pt-high-contrast-mode-active-background-color;
+    background: highlight;
   }
 }
 
 @mixin pt-button-disabled() {
-  background-color: $button-background-color-disabled;
+  // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
+  background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 20%, transparent);
   box-shadow: none;
-  color: $button-color-disabled;
+  color: var(--bp-typography-color-default-disabled);
   cursor: not-allowed;
   outline: none;
 }
 
-@mixin pt-button-intent($default-color, $hover-color, $active-color) {
+@mixin pt-button-intent(
+  $default-color,
+  $hover-color,
+  $active-color,
+  $text-color: var(--bp-palette-white)
+) {
   background-color: $default-color;
-  box-shadow: $button-box-shadow;
-  color: $white;
+  box-shadow:
+    inset 0 0 0 var(--bp-surface-border-width)
+      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+  color: $text-color;
 
   &:hover,
   &:active,
   &.#{$ns}-active {
-    color: $white;
+    color: $text-color;
   }
 
   &:hover {
     background-color: $hover-color;
-    box-shadow: $button-box-shadow-active;
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
   }
 
   &:active,
   &.#{$ns}-active {
     background-color: $active-color;
-    box-shadow: $button-box-shadow-active;
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
   }
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-button-intent-disabled($default-color);
-  }
-
-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    // Windows High Contrast dark theme
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    background-color: color-mix(in oklch, $default-color 50%, transparent);
+    border-color: transparent;
     box-shadow: none;
-  }
-}
+    color: color-mix(in oklch, $text-color 60%, transparent);
 
-@mixin pt-button-intent-disabled($default-color) {
-  background-color: rgba($default-color, 0.5);
-  border-color: transparent;
-  box-shadow: none;
-  color: $button-intent-color-disabled;
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border-color: graytext;
+      color: graytext;
+    }
+  }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border-color: $pt-high-contrast-mode-disabled-border-color;
-    color: $pt-high-contrast-mode-disabled-border-color;
+    border: 1px solid buttonborder;
+    box-shadow: none;
   }
 }
 
@@ -237,7 +396,8 @@ $button-intents: (
   &:hover,
   &:active,
   &.#{$ns}-active {
-    color: $pt-dark-text-color;
+    // Use srgb to avoid hue shift with near-neutral gray
+    color: color-mix(in srgb, var(--bp-intent-default-hover) 4%, var(--bp-palette-white));
   }
 
   &:hover {
@@ -254,77 +414,83 @@ $button-intents: (
     @include pt-dark-button-disabled;
 
     &.#{$ns}-active {
-      background: $dark-button-background-color-active-disabled;
+      // Use srgb to avoid hue shift with near-neutral gray
+      background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 7%, transparent);
     }
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    background: $dark-progress-track-color;
-    stroke: $dark-progress-head-color;
+    // Use srgb to avoid hue shift with near-neutral gray
+    background: color-mix(
+      in srgb,
+      var(--bp-intent-default-rest) 20%,
+      var(--bp-palette-black)
+    ); //$dark-progress-track-color;
+    stroke: color-mix(
+      in srgb,
+      var(--bp-intent-default-rest) 68%,
+      var(--bp-palette-white)
+    ); //$dark-progress-head-color;
   }
 }
 
 @mixin pt-dark-button-default-colors() {
-  background-color: $dark-button-background-color;
-  box-shadow: $dark-button-box-shadow;
-  color: $pt-dark-text-color;
+  // Use srgb to avoid hue shift with near-neutral gray
+  background-color: color-mix(in srgb, var(--bp-intent-default-rest) 40%, var(--bp-palette-black));
+  box-shadow:
+    inset 0 0 0 var(--bp-surface-border-width)
+      color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+  color: var(--bp-intent-default-foreground);
 }
 
 @mixin pt-dark-button-hover() {
-  background-color: $dark-button-background-color-hover;
-  box-shadow: $dark-button-box-shadow-active;
+  // Use srgb instead of oklch to avoid hue shift with near-neutral dark colors
+  background-color: color-mix(in srgb, var(--bp-intent-default-hover) 42%, var(--bp-palette-black));
+  box-shadow:
+    inset 0 0 0 var(--bp-surface-border-width)
+      color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
 }
 
 @mixin pt-dark-button-active() {
-  background-color: $dark-button-background-color-active;
-  box-shadow: $dark-button-box-shadow-active;
+  // Use srgb instead of oklch to avoid hue shift with near-neutral dark colors
+  background-color: color-mix(
+    in srgb,
+    var(--bp-intent-default-active) 30%,
+    var(--bp-palette-black)
+  );
+  box-shadow:
+    inset 0 0 0 var(--bp-surface-border-width)
+      color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
 }
 
 @mixin pt-dark-button-disabled() {
-  background-color: $dark-button-background-color-disabled;
+  // Use srgb to avoid hue shift with near-neutral gray
+  background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 4%, transparent);
   box-shadow: none;
-  color: $dark-button-color-disabled;
-}
-
-@mixin pt-dark-button-intent() {
-  box-shadow: $dark-button-box-shadow;
-
-  &:hover {
-    box-shadow: $dark-button-box-shadow;
-  }
-
-  &:active,
-  &.#{$ns}-active {
-    box-shadow: $dark-button-box-shadow-active;
-  }
-
-  &:disabled,
-  &.#{$ns}-disabled {
-    @include pt-dark-button-intent-disabled;
-  }
-}
-
-@mixin pt-dark-button-intent-disabled() {
-  box-shadow: none;
-  color: $dark-button-intent-color-disabled;
+  color: var(--bp-typography-color-default-disabled);
 }
 
 @mixin pt-button-minimal() {
-  background: $minimal-button-background-color;
+  background: none;
   box-shadow: none;
 
   &:hover {
-    background: $minimal-button-background-color-hover;
+    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+    background-color: color-mix(in srgb, var(--bp-intent-default-hover) 8%, transparent);
     box-shadow: none;
-    color: $pt-text-color;
+    color: var(--bp-typography-color-default-rest);
     text-decoration: none;
   }
 
   &:active,
   &.#{$ns}-active {
-    background: $minimal-button-background-color-active;
+    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+    background-color: color-mix(in srgb, var(--bp-intent-default-active) 16%, transparent);
     box-shadow: none;
-    color: $pt-text-color;
+    color: var(--bp-typography-color-default-rest);
   }
 
   &:disabled,
@@ -332,82 +498,69 @@ $button-intents: (
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
     background: none;
-    color: $pt-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
     cursor: not-allowed;
 
     &.#{$ns}-active {
-      background: $minimal-button-background-color-active;
+      background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 30%, transparent);
     }
   }
 
-  .#{$ns}-dark & {
-    @include pt-dark-button-minimal;
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    background: none;
+    box-shadow: none;
+    color: var(--bp-intent-default-foreground);
+
+    &:hover,
+    &:active,
+    &.#{$ns}-active {
+      background: none;
+      box-shadow: none;
+      color: var(--bp-intent-default-foreground);
+    }
+
+    &:hover {
+      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+      // TODO(BP7): Update this semantic token to use `--bp-intent-default-hover`
+      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent);
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+      // TODO(BP7): Update this semantic token to use `--bp-intent-default-active`
+      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent);
+    }
+
+    &:disabled,
+    &:disabled:hover,
+    &.#{$ns}-disabled,
+    &.#{$ns}-disabled:hover {
+      background: none;
+      color: var(--bp-typography-color-default-disabled);
+      cursor: not-allowed;
+
+      &.#{$ns}-active {
+        background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 30%, transparent);
+      }
+    }
   }
 
-  @each $intent, $colors in $button-intents {
+  @each $intent, $colors in $button-intent-states {
     &.#{$ns}-intent-#{$intent} {
       @include pt-button-minimal-intent($intent);
     }
   }
 }
 
-@mixin pt-dark-button-minimal() {
-  background: $dark-minimal-button-background-color;
-  box-shadow: none;
-  color: $white;
-
-  &:hover,
-  &:active,
-  &.#{$ns}-active {
-    background: none;
-    box-shadow: none;
-    color: $white;
-  }
-
-  &:hover {
-    background: $dark-minimal-button-background-color-hover;
-  }
-
-  &:active,
-  &.#{$ns}-active {
-    background: $dark-minimal-button-background-color-active;
-  }
-
-  &:disabled,
-  &:disabled:hover,
-  &.#{$ns}-disabled,
-  &.#{$ns}-disabled:hover {
-    background: none;
-    color: $pt-dark-text-color-disabled;
-    cursor: not-allowed;
-
-    &.#{$ns}-active {
-      background: $dark-minimal-button-background-color-active;
-    }
-  }
-}
-
-$dark-minimal-hover-text-colors: (
-  "primary": $blue5,
-  "success": $green5,
-  "warning": $orange5,
-  "danger": $red5,
-);
-
-$dark-minimal-active-text-colors: (
-  "primary": $blue6,
-  "success": $green6,
-  "warning": $orange6,
-  "danger": $red6,
-);
-
 @mixin pt-button-minimal-intent($intent) {
-  $intent-color: map.get($pt-intent-colors, $intent);
-  $text-color: map.get($pt-intent-text-colors, $intent);
-  $active-text-color: map.get($pt-intent-active-text-colors, $intent);
-  $dark-text-color: map.get($pt-dark-intent-text-colors, $intent);
-  $dark-active-text-color: map.get($dark-minimal-active-text-colors, $intent);
-  $dark-hover-text-color: map.get($dark-minimal-hover-text-colors, $intent);
+  $intent-color: map.get($button-intent-colors, $intent);
+  $text-color: map.get($button-minimal-intent-text-colors, $intent);
+  $active-text-color: map.get($button-intent-active-text-colors, $intent);
+  $dark-text-color: map.get($button-dark-intent-text-colors, $intent);
+  $dark-hover-text-color: map.get($button-dark-minimal-hover-text-colors, $intent);
+  $dark-active-text-color: map.get($button-dark-minimal-active-text-colors, $intent);
 
   color: $text-color;
 
@@ -420,23 +573,23 @@ $dark-minimal-active-text-colors: (
   }
 
   &:hover {
-    background: rgba($intent-color, 0.15);
+    background-color: color-mix(in oklch, $intent-color 15%, transparent);
     color: $text-color;
   }
 
   &:active,
   &.#{$ns}-active {
-    background: rgba($intent-color, 0.3);
+    background-color: color-mix(in oklch, $intent-color 30%, transparent);
     color: $active-text-color;
   }
 
   &:disabled,
   &.#{$ns}-disabled {
     background: none;
-    color: rgba($text-color, 0.5);
+    color: color-mix(in oklch, $text-color 50%, transparent);
 
     &.#{$ns}-active {
-      background: rgba($intent-color, 0.3);
+      background-color: color-mix(in oklch, $intent-color 30%, transparent);
     }
   }
 
@@ -444,94 +597,81 @@ $dark-minimal-active-text-colors: (
     stroke: $text-color;
   }
 
-  .#{$ns}-dark & {
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
     color: $dark-text-color;
 
     &:hover {
-      background: rgba($intent-color, 0.2);
+      background-color: color-mix(in oklch, $intent-color 20%, transparent);
       color: $dark-hover-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      background: rgba($intent-color, 0.3);
+      background-color: color-mix(in oklch, $intent-color 30%, transparent);
       color: $dark-active-text-color;
     }
 
     &:disabled,
     &.#{$ns}-disabled {
       background: none;
-      color: rgba($dark-text-color, 0.5);
+      color: color-mix(in oklch, $dark-text-color 50%, transparent);
 
       &.#{$ns}-active {
-        background: rgba($intent-color, 0.3);
+        background-color: color-mix(in oklch, $intent-color 30%, transparent);
       }
     }
   }
 }
 
-@mixin pt-button-minimal-divider() {
-  $divider-height: $pt-spacing * 5;
-  background: $pt-divider-black;
-
-  margin: ($pt-button-height - $divider-height) * 0.5;
-  width: $minimal-button-divider-width;
-
-  .#{$ns}-dark & {
-    background: $pt-dark-divider-white;
-  }
-}
-
 @mixin pt-button-outlined() {
-  border: $button-outlined-width solid rgba($pt-text-color, 0.2);
+  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-strong);
   box-sizing: border-box;
 
   &:disabled,
-  &.#{$ns}-disabled,
   &:disabled:hover,
+  &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
-    border-color: rgba($pt-text-color-disabled, 0.1);
+    border-color: var(--bp-surface-border-color-default);
   }
 
-  .#{$ns}-dark & {
-    @include pt-dark-button-outlined;
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    border-color: var(--bp-surface-border-color-strong);
+
+    &:disabled,
+    &:disabled:hover,
+    &.#{$ns}-disabled,
+    &.#{$ns}-disabled:hover {
+      border-color: var(--bp-surface-border-color-default);
+    }
   }
 
-  @each $intent, $colors in $button-intents {
+  @each $intent, $colors in $button-intent-states {
+    $text-color: map.get($button-minimal-intent-text-colors, $intent);
+    $dark-text-color: map.get($button-dark-intent-text-colors, $intent);
+
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-outlined-intent(
-        map.get($pt-intent-text-colors, $intent),
-        map.get($pt-dark-intent-text-colors, $intent)
-      );
+      @include pt-button-outlined-intent($text-color, $dark-text-color);
     }
   }
 }
 
-@mixin pt-dark-button-outlined() {
-  border-color: rgba($white, 0.4);
-
-  &:disabled,
-  &:disabled:hover,
-  &.#{$ns}-disabled,
-  &.#{$ns}-disabled:hover {
-    border-color: rgba($white, 0.2);
-  }
-}
-
 @mixin pt-button-outlined-intent($text-color, $dark-text-color) {
-  border-color: rgba($text-color, $button-outlined-border-intent-opacity);
+  border-color: color-mix(in oklch, $text-color 60%, transparent);
 
   &:disabled,
   &.#{$ns}-disabled {
-    border-color: rgba($text-color, $button-outlined-border-disabled-intent-opacity);
+    border-color: color-mix(in oklch, $text-color 20%, transparent);
   }
 
-  .#{$ns}-dark & {
-    border-color: rgba($dark-text-color, $button-outlined-border-intent-opacity);
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    border-color: color-mix(in oklch, $dark-text-color 60%, transparent);
 
     &:disabled,
     &.#{$ns}-disabled {
-      border-color: rgba($dark-text-color, $button-outlined-border-disabled-intent-opacity);
+      border-color: color-mix(in oklch, $dark-text-color 20%, transparent);
     }
   }
 }

@@ -8,11 +8,11 @@ This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It
 
 **Key features:**
 
--   [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
+- [Blueprint-specific rules](#Rules) for use with `@blueprintjs` components.
 
 ## Installation
 
-```
+```sh copy
 pnpm add --save-dev @blueprintjs/eslint-plugin
 ```
 
@@ -79,11 +79,11 @@ version bumps of Blueprint where the class namespace (e.g. `bp6-`) changes.
 
 Enforce usage of Blueprint components over regular HTML JSX tags:
 
--   h1-6 -> H1-6
--   code -> Code
--   pre -> Pre
--   blockquote -> Blockquote
--   table -> HTMLTable
+- h1-6 -> H1-6
+- code -> Code
+- pre -> Pre
+- blockquote -> Blockquote
+- table -> HTMLTable
 
 **Rationale**: This is uesful to ensure consistent styling of common typographic elements and other basic markup.
 
@@ -139,25 +139,25 @@ This rule is disabled in the `blueprint-rules` config as it is most useful to en
 
 Ban usage of deprecated components in the current major version of all Blueprint packages, including:
 
--   Breadcrumbs2
--   ColumnHeaderCell2
--   ContextMenu2
--   DateInput
--   DateInput2
--   DatePicker
--   DateRangeInput
--   DateRangeInput2
--   DateRangePicker
--   JSONFormat2
--   MenuItem2
--   MultiSelect2
--   Popover2
--   ResizeSensor2
--   RowHeaderCell2
--   Select2
--   Suggest2
--   Tooltip2
--   TruncatedFormat2
+- Breadcrumbs2
+- ColumnHeaderCell2
+- ContextMenu2
+- DateInput
+- DateInput2
+- DatePicker
+- DateRangeInput
+- DateRangeInput2
+- DateRangePicker
+- JSONFormat2
+- MenuItem2
+- MultiSelect2
+- Popover2
+- ResizeSensor2
+- RowHeaderCell2
+- Select2
+- Suggest2
+- Tooltip2
+- TruncatedFormat2
 
 **Rationale**: There are two reasons why a particular component may be deprecated:
 

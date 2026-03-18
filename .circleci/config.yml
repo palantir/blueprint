@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@2.1.0
+  browser-tools: circleci/browser-tools@2.4.0
 
 aliases:
   - &docker-node-image
@@ -103,6 +103,10 @@ jobs:
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
+      - run: pnpm build-storybook
+      - persist_to_workspace:
+          root: "."
+          paths: [storybook-static]
 
   test-node-libs:
     docker: *docker-node-image
@@ -134,10 +138,6 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # Use an explicit version of Chrome for better test reproducibility.
-      - run: sudo apt-get update
-      - browser-tools/install_chrome:
-          chrome_version: "143.0.7499.192"
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:
@@ -154,7 +154,7 @@ jobs:
             case $CIRCLE_NODE_INDEX in \
             0) pnpm nx run-many -t test:typeCheck ;; \
             1) pnpm nx test:vitest:run @blueprintjs/core ;; \
-            2) pnpm nx test:karma @blueprintjs/datetime ;; \
+            2) pnpm nx test:vitest:run @blueprintjs/datetime ;; \
             4) pnpm nx test:karma @blueprintjs/select ;; \
             5) pnpm nx test:karma @blueprintjs/table
             esac
@@ -184,6 +184,7 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
+      - store_artifacts: { path: storybook-static }
       - run: ./scripts/submit-preview-comment.sh
 
   store-packages:

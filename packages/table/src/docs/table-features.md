@@ -14,8 +14,8 @@ rikishi (wrestler). For each column type, we define a different set of sort oper
 
 In the table below, try:
 
--   Sorting with the menu in each column header
--   Selecting cells and copying with the right-click context menu or with <kbd>Cmd/Ctrl</kbd> + <kbd>C</kbd> hotkeys
+- Sorting with the menu in each column header
+- Selecting cells and copying with the right-click context menu or with <kbd>Cmd/Ctrl</kbd> + <kbd>C</kbd> hotkeys
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
@@ -81,8 +81,8 @@ This will work whether or not column selection is enabled.
 
 To allow reordering of multiple contiguous columns at once, first set the following additional props:
 
--   `enableMultipleSelection={true}`
--   `selectionModes={[RegionCardinality.FULL_COLUMNS, ...]}`
+- `enableMultipleSelection={true}`
+- `selectionModes={[RegionCardinality.FULL_COLUMNS, ...]}`
 
 Then drag-select the desired columns into a single selection, and grab any selected column's drag handle to reorder the
 entire selected block.
@@ -100,10 +100,10 @@ Rows do not have a drag handle, so they must be selected before reordering. To r
 click and drag anywhere in a selected row header, then release. Note that the following props must be set for row
 reordering to work:
 
--   `enableRowHeader={true}`
--   `enableRowReordering={true}`
--   `selectionModes={[RegionCardinality.FULL_ROWS, ...]}`
--   `enableMultipleSelection={true}` (to optionally enable multi-row reordering)
+- `enableRowHeader={true}`
+- `enableRowReordering={true}`
+- `selectionModes={[RegionCardinality.FULL_ROWS, ...]}`
+- `enableMultipleSelection={true}` (to optionally enable multi-row reordering)
 
 ### Example
 

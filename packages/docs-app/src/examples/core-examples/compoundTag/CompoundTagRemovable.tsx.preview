@@ -1,0 +1,3 @@
+<CompoundTag leftContent="City" onRemove={handleRemove}>London</CompoundTag>
+<CompoundTag leftContent="City" onRemove={handleRemove}>New York</CompoundTag>
+<CompoundTag leftContent="City" onRemove={handleRemove}>Seattle</CompoundTag>
