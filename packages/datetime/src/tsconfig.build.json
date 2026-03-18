@@ -5,10 +5,13 @@
         "outDir": "../lib/esm"
     },
     "exclude": [
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
         "**/*.test.ts",
         "**/*.test.tsx",
-        "**/dateFormatTestUtils.ts",
-        "**/dayPickerTestUtils.ts",
-        "**/loadDateFnsLocaleFake.ts"
+        "common/dateFormatTestUtils.ts",
+        "common/dayPickerTestUtils.ts",
+        "common/loadDateFnsLocaleFake.ts",
+        "vitest-env.d.ts"
     ]
 }

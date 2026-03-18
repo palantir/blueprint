@@ -9,7 +9,8 @@
             "request": "launch",
             "name": "compile-docs-data",
             "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}/packages/docs-data/compile-docs-data.mjs",
+            "program": "${workspaceFolder}/packages/docs-data/compile-docs-data.mts",
+            "runtimeArgs": ["--import", "tsx"],
             "outFiles": ["${workspaceFolder}/packages/docs-data/src/generated/*.json"],
             "cwd": "${workspaceFolder}/packages/docs-data"
         }

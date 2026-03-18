@@ -24,15 +24,17 @@
         "dev:demo": "nx run @blueprintjs/demo-app:dev",
         "dist": "nx run-many -t dist",
         "docs-data": "nx compile @blueprintjs/docs-data",
-        "format": "prettier --write \"./**/*.{ts,tsx,json,yaml,yml,scss}\"",
-        "format-check": "prettier --check \"./**/*.{ts,tsx,json,yaml,yml,scss}\"",
+        "format": "prettier --write \"./**/*.{ts,tsx,mts,mjs,js,json,yaml,yml,scss,md}\"",
+        "format-check": "prettier --check \"./**/*.{ts,tsx,mts,mjs,js,json,yaml,yml,scss,md}\"",
         "lint": "nx run-many -t lint",
         "lint-fix": "nx run-many -t lint-fix",
         "serve": "http-server site",
         "site": "npm-run-all site:clean -p 'copy:*' -s serve",
         "site:clean": "git clean -xdfq site/",
         "test": "nx run-many -t test",
-        "verify": "npm-run-all -s compile dist -p test lint format-check"
+        "verify": "npm-run-all -s compile dist -p test lint format-check",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build"
     },
     "dependencies": {
         "@lerna-lite/cli": "^3.11.0",
@@ -56,14 +58,14 @@
         "http-server": "^14.1.1",
         "npm-run-all": "^4.1.5",
         "nx": "^22.3.1",
-        "octokit": "^3.1.2",
+        "octokit": "^5.0.5",
         "prettier": "^3.6.2",
         "sinon": "^17.0.1",
         "stylelint": "~16.25.0",
         "stylelint-config-palantir": "^7.6.0",
         "stylelint-scss": "^6.12.1",
-        "typescript": "~5.3.3",
-        "typescript-eslint": "^8.23.0",
+        "typescript": "~5.9.3",
+        "typescript-eslint": "^8.56.1",
         "vitest": "catalog:",
         "yargs": "^17.7.2"
     },
@@ -82,5 +84,14 @@
         "url": "git@github.com:palantir/blueprint.git"
     },
     "author": "Palantir Technologies",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@storybook/icons": "^2.0.1",
+        "@storybook/react-dom-shim": "^10.2.14",
+        "@storybook/react-vite": "^10.2.14",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "storybook": "^10.2.14",
+        "vite": "^7.1.12"
+    }
 }

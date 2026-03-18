@@ -102,8 +102,8 @@ export const DatePickerCaption = (props: CaptionProps) => {
     }
 
     const handleMonthSelectChange = useCallback(
-        (e: React.FormEvent<HTMLSelectElement>) => {
-            const newMonth = parseInt((e.target as HTMLSelectElement).value, 10);
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            const newMonth = parseInt(e.target.value, 10);
             // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
             if (isNaN(newMonth)) {
                 return;
@@ -150,7 +150,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
     );
 
     const handleYearSelectChange = useCallback(
-        (e: React.FormEvent<HTMLSelectElement>) => {
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
             const newYear = parseInt((e.target as HTMLSelectElement).value, 10);
             // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
             if (isNaN(newYear)) {

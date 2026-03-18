@@ -187,7 +187,7 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
 };
 
 interface SelectPanelProps {
-    onChange: (event: React.FormEvent<HTMLInputElement>) => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     selectedValue: string;
 }
 
