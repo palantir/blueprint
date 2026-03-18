@@ -44,10 +44,11 @@ describe("<PopoverNext> autoUpdateOptions", () => {
         });
 
         // autoUpdate is called when elements are mounted; verify no options arg
-        expect(autoUpdateSpy).toHaveBeenCalled();
-        const lastCall = autoUpdateSpy.mock.calls[autoUpdateSpy.mock.calls.length - 1];
-        // When no autoUpdateOptions, autoUpdate is passed directly (3 args: reference, floating, update)
-        expect(lastCall).toHaveLength(3);
+        expect(autoUpdateSpy).toHaveBeenLastCalledWith(
+            expect.anything(), // reference
+            expect.anything(), // floating
+            expect.any(Function), // update
+        );
     });
 
     it("forwards autoUpdateOptions to autoUpdate", async () => {
@@ -65,11 +66,13 @@ describe("<PopoverNext> autoUpdateOptions", () => {
             expect(screen.getByText("content")).toBeInTheDocument();
         });
 
-        expect(autoUpdateSpy).toHaveBeenCalled();
-        const lastCall = autoUpdateSpy.mock.calls[autoUpdateSpy.mock.calls.length - 1];
-        // When autoUpdateOptions is provided, autoUpdate is called with 4 args: reference, floating, update, options
-        expect(lastCall).toHaveLength(4);
-        expect(lastCall[3]).toEqual(options);
+        // When autoUpdateOptions is provided, autoUpdate is called with 4 args
+        expect(autoUpdateSpy).toHaveBeenLastCalledWith(
+            expect.anything(), // reference
+            expect.anything(), // floating
+            expect.any(Function), // update
+            options,
+        );
     });
 
     it("forwards autoUpdateOptions with all behaviors disabled", async () => {
@@ -92,10 +95,12 @@ describe("<PopoverNext> autoUpdateOptions", () => {
             expect(screen.getByText("content")).toBeInTheDocument();
         });
 
-        expect(autoUpdateSpy).toHaveBeenCalled();
-        const lastCall = autoUpdateSpy.mock.calls[autoUpdateSpy.mock.calls.length - 1];
-        expect(lastCall).toHaveLength(4);
-        expect(lastCall[3]).toEqual(options);
+        expect(autoUpdateSpy).toHaveBeenLastCalledWith(
+            expect.anything(), // reference
+            expect.anything(), // floating
+            expect.any(Function), // update
+            options,
+        );
     });
 
     it("uses autoUpdate directly when autoUpdateOptions is undefined", async () => {
@@ -109,9 +114,11 @@ describe("<PopoverNext> autoUpdateOptions", () => {
             expect(screen.getByText("content")).toBeInTheDocument();
         });
 
-        expect(autoUpdateSpy).toHaveBeenCalled();
-        const lastCall = autoUpdateSpy.mock.calls[autoUpdateSpy.mock.calls.length - 1];
-        // undefined autoUpdateOptions should behave like default (3 args)
-        expect(lastCall).toHaveLength(3);
+        // undefined autoUpdateOptions should behave like default (no options arg)
+        expect(autoUpdateSpy).toHaveBeenLastCalledWith(
+            expect.anything(), // reference
+            expect.anything(), // floating
+            expect.any(Function), // update
+        );
     });
 });
