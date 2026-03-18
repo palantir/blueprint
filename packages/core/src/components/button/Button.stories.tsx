@@ -269,6 +269,13 @@ export const FillExample: Story = {
  * All intents across all variants and states.
  */
 export const AllIntentsAllVariants: Story = {
+    argTypes: {
+        intent: { table: { disable: true } },
+        variant: { table: { disable: true } },
+        active: { table: { disable: true } },
+        disabled: { table: { disable: true } },
+        loading: { table: { disable: true } },
+    },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {Object.values(ButtonVariant).map(variant => (
@@ -276,30 +283,43 @@ export const AllIntentsAllVariants: Story = {
                     <div style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{variant}</div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent}>
-                                {intent || "None"}
-                            </Button>
+                            <Button key={intent} {...args} variant={variant} intent={intent} text={intent} />
                         ))}
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent} active={true}>
-                                {intent || "None"}
-                            </Button>
+                            <Button
+                                key={intent}
+                                {...args}
+                                variant={variant}
+                                intent={intent}
+                                active={true}
+                                text={intent}
+                            />
                         ))}
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent} disabled={true}>
-                                {intent || "None"}
-                            </Button>
+                            <Button
+                                key={intent}
+                                {...args}
+                                variant={variant}
+                                intent={intent}
+                                disabled={true}
+                                text={intent}
+                            />
                         ))}
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
-                            <Button key={intent} {...args} variant={variant} intent={intent} loading={true}>
-                                {intent || "None"}
-                            </Button>
+                            <Button
+                                key={intent}
+                                {...args}
+                                variant={variant}
+                                intent={intent}
+                                loading={true}
+                                text={intent}
+                            />
                         ))}
                     </div>
                 </div>
