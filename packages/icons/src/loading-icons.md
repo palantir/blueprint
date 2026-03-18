@@ -28,16 +28,16 @@ root.render(<Button text="Download" icon={<Download size={16} />} />);
 
 This approach has benefits and tradeoffs:
 
--   Bundling only the icons you need is trivial with a properly-configured bundler which supports tree-shaking.
--   You do have to explicitly import each icon you use as an ES import.
--   You do have to take care to specify the correct icon size (if it is not the default 16px size) depending on the usage context.
+- Bundling only the icons you need is trivial with a properly-configured bundler which supports tree-shaking.
+- You do have to explicitly import each icon you use as an ES import.
+- You do have to take care to specify the correct icon size (if it is not the default 16px size) depending on the usage context.
 
 @## Using dynamic imports
 
 Blueprint's icon props APIs _also_ accept a type-safe icon name string literal. This approach has some benefits:
 
--   You _do not_ have to explicitly import each icon you use as an ES import
--   The icon will usually be automatically sized for you depending on its usage context
+- You _do not_ have to explicitly import each icon you use as an ES import
+- The icon will usually be automatically sized for you depending on its usage context
 
 It looks like this in your render code path:
 

@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { useCallback, useMemo } from "react";
 
-import { DateInput as DateInput2, DateInputMigrationUtils, TimePrecision } from "../src";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
+import { TimePrecision } from "./common/timePrecision";
+import { DateInput as DateInput2 } from "./components/date-input/dateInput";
+import * as DateInputMigrationUtils from "./dateInputMigrationUtils";
 
 const dateFormattingProps = {
     formatDate: (date: Date | null | undefined) =>
@@ -41,8 +44,8 @@ const uncontrolledDateInputProps = {
 };
 
 describe("DateInput2MigrationUtils", () => {
-    it("Applying onChange + value adapters renders DateInput without error", () => {
-        mount(
+    it("should render DateInput without error when applying onChange + value adapters", () => {
+        render(
             <DateInput2
                 {...dateFormattingProps}
                 onChange={DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
@@ -51,9 +54,9 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("Value adapter accepts time precision", () => {
+    it("should accept time precision in value adapter", () => {
         const precision = TimePrecision.MINUTE;
-        mount(
+        render(
             <DateInput2
                 {...dateFormattingProps}
                 timePrecision={precision}
@@ -63,7 +66,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("Value adapter infers time precision from Date object", () => {
+    it("should infer time precision from Date object in value adapter", () => {
         const date = new Date();
 
         // TimePrecision.SECOND forces the string to exclude the date's milliseconds value
@@ -71,15 +74,15 @@ describe("DateInput2MigrationUtils", () => {
         const valueWithExplicitPrecision = DateInputMigrationUtils.valueAdapter(date, TimePrecision.SECOND);
 
         date.setHours(0, 0, 10, 0);
-        assert.strictEqual(DateInputMigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+        expect(DateInputMigrationUtils.valueAdapter(date)).toBe(valueWithExplicitPrecision);
 
         date.setHours(0, 0, 10, 100);
-        assert.notStrictEqual(DateInputMigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+        expect(DateInputMigrationUtils.valueAdapter(date)).not.toBe(valueWithExplicitPrecision);
     });
 
-    it("Default value adapter works as expected", () => {
+    it("should work as expected with default value adapter", () => {
         const precision = TimePrecision.MINUTE;
-        mount(
+        render(
             <DateInput2
                 {...dateFormattingProps}
                 timePrecision={precision}
@@ -92,7 +95,7 @@ describe("DateInput2MigrationUtils", () => {
         );
     });
 
-    it("Adapters work in common usage pattern with React.useCallback + React.useMemo", () => {
+    it("should work in common usage pattern with React.useCallback + React.useMemo", () => {
         function TestComponent() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             const handleChange = useCallback(
@@ -104,6 +107,6 @@ describe("DateInput2MigrationUtils", () => {
             return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;
         }
 
-        mount(<TestComponent />);
+        render(<TestComponent />);
     });
 });
