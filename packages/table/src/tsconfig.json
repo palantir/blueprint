@@ -3,5 +3,6 @@
     "compilerOptions": {
         "lib": ["dom", "es5", "es6"],
         "outDir": "../lib/esm"
-    }
+    },
+    "exclude": ["**/*.stories.ts", "**/*.stories.tsx"]
 }

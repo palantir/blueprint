@@ -16,9 +16,8 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { RadioGroup } from "../forms/radioGroup";
@@ -55,13 +54,13 @@ describe("ControlCard", () => {
 
         it("should toggle switch state when clicked", async () => {
             const user = userEvent.setup();
-            const handleChange = spy();
+            const handleChange = vi.fn();
             render(<SwitchCard onChange={handleChange} label="Test Switch" data-testid="test-switch" />);
             const switchInput = screen.getByRole("checkbox", { name: "Test Switch" });
 
             await user.click(switchInput);
 
-            expect(handleChange.calledOnce).to.be.true;
+            expect(handleChange).toHaveBeenCalledOnce();
         });
 
         it("should show as selected when checked", () => {
@@ -154,7 +153,7 @@ describe("ControlCard", () => {
         });
 
         it("should show as selected when checked", () => {
-            const onChange = spy();
+            const onChange = vi.fn();
             render(
                 <RadioGroup selectedValue="one" onChange={onChange}>
                     <RadioCard value="one" label="One" />
@@ -179,7 +178,7 @@ describe("ControlCard", () => {
 
         it("should work within a RadioGroup", async () => {
             const user = userEvent.setup();
-            const changeSpy = spy();
+            const changeSpy = vi.fn();
             render(
                 <RadioGroup onChange={changeSpy}>
                     <RadioCard value="one" label="One" />
@@ -193,7 +192,7 @@ describe("ControlCard", () => {
             await user.click(radioOne);
             await user.click(radioTwo);
 
-            expect(changeSpy.callCount).to.equal(2);
+            expect(changeSpy).toHaveBeenCalledTimes(2);
         });
     });
 });

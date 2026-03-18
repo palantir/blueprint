@@ -15,9 +15,8 @@
  */
 
 import { mount, type ReactWrapper } from "enzyme";
-import { spy } from "sinon";
 
-import { afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Position } from "../../common";
 import { Button } from "../button/buttons";
@@ -56,7 +55,7 @@ describe("<Drawer>", () => {
             </Drawer>,
         );
         [Classes.DRAWER, Classes.DRAWER_BODY, Classes.DRAWER_FOOTER, Classes.OVERLAY_BACKDROP].forEach(className => {
-            assert.lengthOf(drawer.find(`.${className}`), 1, `missing ${className}`);
+            expect(drawer.find(`.${className}`), `missing ${className}`).toHaveLength(1);
         });
     });
 
@@ -68,7 +67,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
+                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width).toBe(100);
             });
 
             it("position right, adds appropriate classes (default behavior)", () => {
@@ -77,7 +76,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isTrue(drawer.find(`.${Classes.POSITION_RIGHT}`).exists());
+                expect(drawer.find(`.${Classes.POSITION_RIGHT}`).exists()).toBe(true);
             });
         });
 
@@ -88,7 +87,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
+                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height).toBe(100);
             });
 
             it("position top, adds appropriate classes (vertical, reverse)", () => {
@@ -97,7 +96,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isTrue(drawer.find(`.${Classes.POSITION_TOP}`).exists());
+                expect(drawer.find(`.${Classes.POSITION_TOP}`).exists()).toBe(true);
             });
         });
 
@@ -108,7 +107,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
+                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height).toBe(100);
             });
 
             it("position bottom, adds appropriate classes (vertical)", () => {
@@ -117,7 +116,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isTrue(drawer.find(`.${Classes.POSITION_BOTTOM}`).exists());
+                expect(drawer.find(`.${Classes.POSITION_BOTTOM}`).exists()).toBe(true);
             });
         });
 
@@ -128,7 +127,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
+                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width).toBe(100);
             });
 
             it("position left, adds appropriate classes (reverse)", () => {
@@ -137,7 +136,7 @@ describe("<Drawer>", () => {
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                assert.isTrue(drawer.find(`.${Classes.POSITION_LEFT}`).exists());
+                expect(drawer.find(`.${Classes.POSITION_LEFT}`).exists()).toBe(true);
             });
         });
     });
@@ -148,7 +147,7 @@ describe("<Drawer>", () => {
                 {createDrawerContents()}
             </Drawer>,
         );
-        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
+        expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width).toBe(100);
     });
 
     it("portalClassName appears on Portal", () => {
@@ -158,7 +157,7 @@ describe("<Drawer>", () => {
                 {createDrawerContents()}
             </Drawer>,
         );
-        assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`));
+        expect(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`)).toBeDefined();
     });
 
     it("renders contents to specified container correctly", () => {
@@ -171,46 +170,46 @@ describe("<Drawer>", () => {
         );
         drawer.unmount();
         document.body.removeChild(container);
-        const onClose = spy();
+        const onClose = vi.fn();
         mountDrawer(
             <Drawer isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
         drawer.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
-        assert.isTrue(onClose.calledOnce);
+        expect(onClose).toHaveBeenCalledOnce();
     });
 
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
-        const onClose = spy();
+        const onClose = vi.fn();
         mountDrawer(
             <Drawer canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
         drawer.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
-        assert.isTrue(onClose.notCalled);
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
-        const onClose = spy();
+        const onClose = vi.fn();
         mountDrawer(
             <Drawer canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
         drawer.simulate("keydown", { key: "Escape" });
-        assert.isTrue(onClose.notCalled);
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it("supports overlay lifecycle props", () => {
-        const onOpening = spy();
+        const onOpening = vi.fn();
         mountDrawer(
             <Drawer isOpen={true} onOpening={onOpening}>
                 body
             </Drawer>,
         );
-        assert.isTrue(onOpening.calledOnce);
+        expect(onOpening).toHaveBeenCalledOnce();
     });
 
     describe("header", () => {
@@ -220,7 +219,7 @@ describe("<Drawer>", () => {
                     drawer body
                 </Drawer>,
             );
-            assert.isFalse(drawer.find(`.${Classes.DRAWER_HEADER}`).exists());
+            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).exists()).toBe(false);
         });
 
         it(`renders .${Classes.DRAWER_HEADER} if title prop is given`, () => {
@@ -229,7 +228,7 @@ describe("<Drawer>", () => {
                     drawer body
                 </Drawer>,
             );
-            assert.match(drawer.find(`.${Classes.DRAWER_HEADER}`).text(), /^Hello!/);
+            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).text()).toMatch(/^Hello!/);
         });
 
         it(`renders close button if isCloseButtonShown={true}`, () => {
@@ -238,27 +237,27 @@ describe("<Drawer>", () => {
                     drawer body
                 </Drawer>,
             );
-            assert.lengthOf(drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button), 1);
+            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button)).toHaveLength(1);
 
             drawer.setProps({ isCloseButtonShown: false });
-            assert.lengthOf(drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button), 0);
+            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button)).toHaveLength(0);
         });
 
         it("clicking close button triggers onClose", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             mountDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
             );
             drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button).simulate("click");
-            assert.isTrue(onClose.calledOnce, "onClose not called");
+            expect(onClose).toHaveBeenCalledOnce();
         });
     });
 
     it("only adds its className in one location", () => {
         mountDrawer(<Drawer className="foo" isOpen={true} title="title" usePortal={false} />);
-        assert.lengthOf(drawer.find(".foo").hostNodes(), 1);
+        expect(drawer.find(".foo").hostNodes()).toHaveLength(1);
     });
 
     // everything else about Drawer is tested by Overlay

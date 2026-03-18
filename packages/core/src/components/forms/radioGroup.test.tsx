@@ -16,9 +16,8 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { spy, stub } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps } from "../../common";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../common/errors";
@@ -62,7 +61,7 @@ describe("<RadioGroup>", () => {
 
     it("invokes onChange handler when a radio is clicked", async () => {
         const user = userEvent.setup();
-        const onChange = spy();
+        const onChange = vi.fn();
         render(
             <RadioGroup onChange={onChange}>
                 <Radio value="one" label="One" />
@@ -73,8 +72,8 @@ describe("<RadioGroup>", () => {
 
         await user.click(radio1);
 
-        expect(onChange.calledOnce).to.be.true;
-        expect(onChange.getCall(0).args[0].target.value).to.equal("one");
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange.mock.calls[0][0].target.value).to.equal("one");
     });
 
     it("renders options as radio buttons", () => {
@@ -107,7 +106,7 @@ describe("<RadioGroup>", () => {
     });
 
     it("uses options if given both options and children (with conosle warning)", () => {
-        const warnSpy = stub(console, "warn");
+        const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
         render(
             <RadioGroup onChange={emptyHandler} options={[]}>
                 <Radio value="one" />
@@ -115,8 +114,8 @@ describe("<RadioGroup>", () => {
         );
 
         expect(screen.queryByRole("radio")).not.toBeInTheDocument();
-        expect(warnSpy.calledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX)).to.be.true;
-        warnSpy.restore();
+        expect(warnSpy).toHaveBeenCalledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX);
+        warnSpy.mockRestore();
     });
 
     it("renders non-Radio children too", () => {

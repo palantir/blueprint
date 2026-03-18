@@ -5,32 +5,41 @@ vertical stack, providing alignment and consistent spacing for a layout of relat
 
 Most of **ButtonGroup**'s props are also supported by [**Button**](#core/components/buttons) directly. Setting these props on **ButtonGroup** will apply the same value to all buttons in the group. Note that most modifiers, once enabled on the group, cannot be overridden on child buttons (due to the cascading nature of CSS).
 
-@## Import
+@## Usage
 
-```ts
+```ts copy
 import { ButtonGroup } from "@blueprintjs/core";
 ```
 
-@## Usage
+```tsx
+<ButtonGroup>
+    <Button>Edit</Button>
+    <Button>Delete</Button>
+</ButtonGroup>
+```
+
+@## Examples
+
+@### Basic
 
 Wrap buttons in a **ButtonGroup** to arrange them together horizontally.
 
 @reactCodeExample ButtonGroupBasicExample
 
-@## Intent
+@### Intent
 
-Use the `intent` prop on individual buttons to convey purpose. For a consistent
+Use the `intent` prop on individual buttons to convey the purpose of each action. For a consistent
 visual style, it’s recommended to apply the same `intent` to all buttons within the same group.
 
 @reactCodeExample ButtonGroupIntentExample
 
-@## Variant
+@### Variant
 
 Use the `variant` prop to change the visual style of button child elements within the group.
 
 @reactCodeExample ButtonGroupVariantExample
 
-@## Outlined and minimal
+@### Outlined and minimal
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
     <h5 class="@ns-heading">
@@ -45,27 +54,45 @@ Use the `outlined` and `minimal` props to change the visual style of button chil
 
 @reactCodeExample ButtonGroupOutlinedMinimalExample
 
-@## Size
+@### Size
 
 The `size` prop can be used to control the size of all child buttons within the button group.
 
 @reactCodeExample ButtonGroupSizeExample
 
-@## Flex layout
+@### Fill
+
+The `fill` prop makes all buttons expand equally to fill the available space.
+
+@reactCodeExample ButtonGroupFillExample
+
+@### Icons only
+
+**ButtonGroup** can arrange icon-only buttons into a compact toolbar. Use the `icon` prop on each button without text content, and provide an `aria-label` for accessibility.
+
+@reactCodeExample ButtonGroupIconsOnlyExample
+
+@### Icons with tooltips
+
+Wrap icon-only buttons with [**Tooltip**](#core/components/tooltip) to provide additional context on hover.
+
+@reactCodeExample ButtonGroupIconsWithTooltipsExample
+
+@### Flex layout
 
 **ButtonGroup** renders a CSS flex row (or column if `vertical` is enabled) and
 includes modifier props for common flexbox patterns:
 
--   Use the `fill` prop to make all buttons expand equally to fill the available space.
-    -   Buttons will expand horizontally by default or vertically if `vertical` is enabled.
-    -   Add the `Classes.FIXED` class to specific buttons to maintain their initial sizes.
--   Alternatively, enable `fill` on specific buttons to selectively expand them while others retain their original size.
+- Use the `fill` prop to make all buttons expand equally to fill the available space.
+    - Buttons will expand horizontally by default or vertically if `vertical` is enabled.
+    - Add the `Classes.FIXED` class to specific buttons to maintain their initial sizes.
+- Alternatively, enable `fill` on specific buttons to selectively expand them while others retain their original size.
 
 For precise size adjustments, use the `flex-basis` or `width` CSS properties on individual buttons.
 
 @reactCodeExample ButtonGroupFlexExample
 
-@## Vertical layout
+@### Vertical layout
 
 Enable the `vertical` prop to stack buttons vertically. Buttons in a vertical
 group automatically adjust to the width of the widest button in the group.
@@ -75,7 +102,7 @@ Set it at the group level for uniform alignment or on individual buttons for spe
 
 @reactCodeExample ButtonGroupVerticalExample
 
-@## Usage with popovers
+@### Usage with popovers
 
 **Button** elements inside a **ButtonGroup** can be wrapped with a
 [**Popover**](#core/components/popover) to create complex toolbars.

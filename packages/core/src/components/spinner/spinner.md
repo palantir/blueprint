@@ -5,7 +5,7 @@ can also represent known progress.
 
 @## Import
 
-```tsx
+```ts copy
 import { Spinner } from "@blueprintjs/core";
 ```
 

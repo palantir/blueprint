@@ -17,9 +17,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
-import sinon from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { H4 } from "../html/html";
@@ -53,17 +52,17 @@ describe("<Card>", () => {
 
     it("should call onClick when card is clicked", async () => {
         const user = userEvent.setup();
-        const onClick = sinon.spy();
+        const onClick = vi.fn();
         render(<Card onClick={onClick}>Test</Card>);
         const card = screen.getByText("Test");
 
         await user.click(card);
 
-        expect(onClick.calledOnce).to.be.true;
+        expect(onClick).toHaveBeenCalledOnce();
     });
 
     it("should support HTML props", () => {
-        const onChange = sinon.spy();
+        const onChange = vi.fn();
         render(
             <Card onChange={onChange} title="foo" tabIndex={4000}>
                 Test

@@ -8,7 +8,7 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 
 @## Import
 
-```tsx
+```ts copy
 import { Icon } from "@blueprintjs/core";
 ```
 
@@ -88,8 +88,8 @@ The `<Icon>` component forwards extra HTML attributes to its root DOM element. B
 the root element is a `<span>` wrapper around the icon `<svg>`. The tag name of this element
 may be customized via the `tagName` prop as either:
 
--   a custom HTML tag name (for example `<div>` instead of the default `<span>` wrapper), or
--   `null`, which makes the component omit the wrapper element and only render the `<svg>` as its root element
+- a custom HTML tag name (for example `<div>` instead of the default `<span>` wrapper), or
+- `null`, which makes the component omit the wrapper element and only render the `<svg>` as its root element
 
 By default, `<Icon>` supports a limited set of DOM attributes which are assignable to _all_ HTML and SVG
 elements. In some cases, you may want to use more specific attributes which are only available on HTML elements
@@ -144,8 +144,8 @@ preferred over icon SVGs.
 
 To use Blueprint UI icons via CSS, you must apply two classes to a `<span>` element:
 
--   a **sizing class**, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)
--   an **icon name class**, such as `@ns-icon-projects`
+- a **sizing class**, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)
+- an **icon name class**, such as `@ns-icon-projects`
 
 Icon classes also support the four `.@ns-intent-*` modifiers to color the image.
 

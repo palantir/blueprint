@@ -17,9 +17,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
-import { spy } from "sinon";
 
-import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Icon } from "../icon/icon";
@@ -28,12 +27,11 @@ import { CompoundTag } from "./compoundTag";
 
 describe("<CompoundTag>", () => {
     it("renders its text", () => {
-        assert.strictEqual(
+        expect(
             shallow(<CompoundTag leftContent="Hello">World</CompoundTag>)
                 .find(`.${Classes.COMPOUND_TAG_RIGHT_CONTENT}`)
                 .prop("children"),
-            "World",
-        );
+        ).toBe("World");
     });
 
     it("renders icons", () => {
@@ -42,7 +40,7 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        assert.lengthOf(wrapper.find(Icon), 2);
+        expect(wrapper.find(Icon)).toHaveLength(2);
     });
 
     it("prefers endIcon to rightIcon", () => {
@@ -60,15 +58,15 @@ describe("<CompoundTag>", () => {
 
     it("renders close button when onRemove is a function", () => {
         const wrapper = mount(
-            <CompoundTag onRemove={spy()} leftContent="Hello">
+            <CompoundTag onRemove={vi.fn()} leftContent="Hello">
                 World
             </CompoundTag>,
         );
-        assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
+        expect(wrapper.find(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
     });
 
     it("clicking close button triggers onRemove", () => {
-        const handleRemove = spy();
+        const handleRemove = vi.fn();
         mount(
             <CompoundTag onRemove={handleRemove} leftContent="Hello">
                 World
@@ -76,7 +74,7 @@ describe("<CompoundTag>", () => {
         )
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
-        assert.isTrue(handleRemove.calledOnce);
+        expect(handleRemove).toHaveBeenCalledOnce();
     });
 
     it(`passes other props onto .${Classes.COMPOUND_TAG} element`, () => {
@@ -85,11 +83,11 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         ).find(`.${Classes.COMPOUND_TAG}`);
-        assert.deepEqual(element.prop("title"), "baz qux");
+        expect(element.prop("title")).toEqual("baz qux");
     });
 
     it("passes all props to the onRemove handler", () => {
-        const handleRemove = spy();
+        const handleRemove = vi.fn();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
             [DATA_ATTR_FOO]: {
@@ -105,9 +103,11 @@ describe("<CompoundTag>", () => {
         )
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
-        assert.isTrue(handleRemove.args.length > 0 && handleRemove.args[0].length === 2);
-        assert.isTrue(handleRemove.args[0][1][DATA_ATTR_FOO] !== undefined);
-        assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
+        expect(handleRemove).toHaveBeenCalledOnce();
+        expect(handleRemove).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.objectContaining({ [DATA_ATTR_FOO]: tagProps[DATA_ATTR_FOO] }),
+        );
     });
 
     it("supports ref objects", async () => {
@@ -120,7 +120,7 @@ describe("<CompoundTag>", () => {
 
         // wait for the whole lifecycle to run
         await waitFor(() => {
-            assert.equal(elementRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
+            expect(elementRef.current).toBe(wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
         });
     });
 });

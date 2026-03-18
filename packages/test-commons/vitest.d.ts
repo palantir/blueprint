@@ -6,3 +6,4 @@
 /// <reference types="@testing-library/jest-dom/vitest" />
 
 export { test, it, beforeAll, afterAll, describe, beforeEach, afterEach, expect, assert, vi } from "vitest";
+export type { MockInstance } from "vitest";

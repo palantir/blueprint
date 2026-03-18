@@ -4863,5 +4863,12 @@
         "tags": "merge, join",
         "group": "action",
         "codepoint": 62391
+    },
+    {
+        "displayName": "Add application",
+        "iconName": "add-application",
+        "tags": "application, browser, windows, platforms, pages, page, website",
+        "group": "action",
+        "codepoint": 62392
     }
 ]

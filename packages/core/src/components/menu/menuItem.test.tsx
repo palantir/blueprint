@@ -17,9 +17,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
-import { spy } from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
@@ -97,42 +96,42 @@ describe("MenuItem", () => {
     });
 
     it("disabled MenuItem blocks mouse listeners", () => {
-        const mouseSpy = spy();
+        const mouseSpy = vi.fn();
         mount(<MenuItem disabled={true} text="disabled" onClick={mouseSpy} onMouseEnter={mouseSpy} />)
             .simulate("click")
             .simulate("mouseenter")
             .simulate("click");
-        assert.strictEqual(mouseSpy.callCount, 0);
+        expect(mouseSpy).not.toHaveBeenCalled();
     });
 
     it("clicking MenuItem triggers onClick prop", () => {
-        const onClick = spy();
+        const onClick = vi.fn();
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
-        assert.isTrue(onClick.calledOnce);
+        expect(onClick).toHaveBeenCalledOnce();
     });
 
     it("pressing enter on MenuItem triggers onClick prop", async () => {
         const user = userEvent.setup();
-        const onClick = spy();
+        const onClick = vi.fn();
         render(<MenuItem text="Graph" onClick={onClick} />);
         const menuItem = screen.getByRole("menuitem");
         menuItem.focus();
         await user.keyboard("{Enter}");
-        assert.isTrue(onClick.calledOnce);
+        expect(onClick).toHaveBeenCalledOnce();
     });
 
     it("clicking disabled MenuItem does not trigger onClick prop", () => {
-        const onClick = spy();
+        const onClick = vi.fn();
         shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
-        assert.isTrue(onClick.notCalled);
+        expect(onClick).not.toHaveBeenCalled();
     });
 
     it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
-        const handleClose = spy();
+        const handleClose = vi.fn();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
             <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
@@ -140,7 +139,7 @@ describe("MenuItem", () => {
             </Popover>,
         );
         wrapper.find(MenuItem).find("a").simulate("click");
-        assert.isTrue(handleClose.notCalled);
+        expect(handleClose).not.toHaveBeenCalled();
     });
 
     it("submenuProps are forwarded to the Menu", () => {

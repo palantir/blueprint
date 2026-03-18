@@ -17,9 +17,8 @@
 import { waitFor } from "@testing-library/dom";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import { act } from "react";
-import sinon from "sinon";
 
-import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Intent } from "../../common";
 import { Button } from "../button/buttons";
@@ -37,13 +36,13 @@ const VALUES = ["one", "two", "three"];
 
 describe("<TagInput>", () => {
     it("passes inputProps to input element", () => {
-        const onBlur = sinon.spy();
+        const onBlur = vi.fn();
         const input = mount(<TagInput values={VALUES} inputProps={{ autoFocus: true, onBlur }} />).find("input");
         assert.isTrue(input.prop("autoFocus"));
         // check that event handler is proxied
         const fakeEvent = { flag: "yes" };
         input.prop("onBlur")?.(fakeEvent as any);
-        assert.strictEqual(onBlur.args[0][0], fakeEvent);
+        expect(onBlur.mock.calls[0][0]).toBe(fakeEvent);
     });
 
     it("renders a Tag for each value", () => {
@@ -98,48 +97,48 @@ describe("<TagInput>", () => {
     });
 
     it("tagProps function is invoked for each Tag", () => {
-        const tagProps = sinon.spy();
+        const tagProps = vi.fn();
         mount(<TagInput tagProps={tagProps} values={VALUES} />);
-        assert.isTrue(tagProps.calledThrice);
+        expect(tagProps).toHaveBeenCalledTimes(3);
     });
 
     it("clicking Tag remove button invokes onRemove with that value", () => {
-        const onRemove = sinon.spy();
+        const onRemove = vi.fn();
         // requires full mount to support data attributes and parentElement
         const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
         wrapper.find("button").at(1).simulate("click");
-        assert.isTrue(onRemove.calledOnce);
-        assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+        expect(onRemove).toHaveBeenCalledOnce();
+        expect(onRemove.mock.calls[0]).toEqual([VALUES[1], 1]);
     });
 
     describe("onAdd", () => {
         const NEW_VALUE = "new item";
 
         it("is not invoked on enter when input is empty", () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mountTagInput(onAdd);
             pressEnterInInput(wrapper, "");
-            assert.isTrue(onAdd.notCalled);
+            expect(onAdd).not.toHaveBeenCalled();
         });
 
         it("is not invoked on enter when input is composing", () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mountTagInput(onAdd);
             pressEnterInInputWhenComposing(wrapper, "构成");
-            assert.isTrue(onAdd.notCalled);
+            expect(onAdd).not.toHaveBeenCalled();
         });
 
         it("is invoked on enter", () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mountTagInput(onAdd);
             pressEnterInInput(wrapper, NEW_VALUE);
-            assert.isTrue(onAdd.calledOnce);
-            assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
-            assert.deepEqual(onAdd.args[0][1], "default");
+            expect(onAdd).toHaveBeenCalledOnce();
+            expect(onAdd.mock.calls[0][0]).toEqual([NEW_VALUE]);
+            expect(onAdd.mock.calls[0][1]).toEqual("default");
         });
 
         it("is invoked on blur when addOnBlur=true", async () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
             // simulate typing input text
             wrapper.setProps({ inputProps: { value: NEW_VALUE } });
@@ -148,71 +147,71 @@ describe("<TagInput>", () => {
 
             // Wait for focus to change after blur event
             await waitFor(() => {
-                assert.isTrue(onAdd.calledOnce);
-                assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
-                assert.equal(onAdd.args[0][1], "blur");
+                expect(onAdd).toHaveBeenCalledOnce();
+                expect(onAdd.mock.calls[0][0]).toEqual([NEW_VALUE]);
+                expect(onAdd.mock.calls[0][1]).toBe("blur");
             });
         });
 
         it("is not invoked on blur when addOnBlur=true but inputValue is empty", async () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
             wrapper.simulate("blur");
             // Wait for focus to change after blur event
             await waitFor(() => {
-                assert.isTrue(onAdd.notCalled);
+                expect(onAdd).not.toHaveBeenCalled();
             });
         });
 
         it("is not invoked on blur when addOnBlur=false", async () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mount(<TagInput values={VALUES} inputProps={{ value: NEW_VALUE }} onAdd={onAdd} />);
             wrapper.simulate("blur");
             // Wait for focus to change after blur event
             await waitFor(() => {
-                assert.isTrue(onAdd.notCalled);
+                expect(onAdd).not.toHaveBeenCalled();
             });
         });
 
         describe("when addOnPaste=true", () => {
             it("is invoked on paste if the text contains a delimiter between values", () => {
                 const text = "pasted\ntext";
-                const onAdd = sinon.stub();
+                const onAdd = vi.fn();
                 const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
                 wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
-                assert.isTrue(onAdd.calledOnce);
-                assert.deepEqual(onAdd.args[0][0], ["pasted", "text"]);
+                expect(onAdd).toHaveBeenCalledOnce();
+                expect(onAdd.mock.calls[0][0]).toEqual(["pasted", "text"]);
             });
 
             it("is invoked on paste if the text contains a trailing delimiter", () => {
                 const text = "pasted\n";
-                const onAdd = sinon.stub();
+                const onAdd = vi.fn();
                 const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
                 wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
-                assert.isTrue(onAdd.calledOnce);
-                assert.deepEqual(onAdd.args[0][0], ["pasted"]);
-                assert.equal(onAdd.args[0][1], "paste");
+                expect(onAdd).toHaveBeenCalledOnce();
+                expect(onAdd.mock.calls[0][0]).toEqual(["pasted"]);
+                expect(onAdd.mock.calls[0][1]).toBe("paste");
             });
 
             it("is not invoked on paste if the text does not include a delimiter", () => {
                 const text = "pasted";
-                const onAdd = sinon.stub();
+                const onAdd = vi.fn();
                 const wrapper = mount(<TagInput values={VALUES} addOnPaste={true} onAdd={onAdd} />);
                 wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
-                assert.isTrue(onAdd.notCalled);
+                expect(onAdd).not.toHaveBeenCalled();
             });
         });
 
         it("is not invoked on paste when addOnPaste=false", () => {
             const text = "pasted\ntext";
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mount(<TagInput values={VALUES} addOnPaste={false} onAdd={onAdd} />);
             wrapper.find("input").simulate("paste", { clipboardData: { getData: () => text } });
-            assert.isTrue(onAdd.notCalled);
+            expect(onAdd).not.toHaveBeenCalled();
         });
 
         it("does not clear the input if onAdd returns false", () => {
-            const onAdd = sinon.stub().returns(false);
+            const onAdd = vi.fn().mockReturnValue(false);
             const wrapper = mountTagInput(onAdd);
             act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
@@ -222,7 +221,7 @@ describe("<TagInput>", () => {
         });
 
         it("clears the input if onAdd returns true", () => {
-            const onAdd = sinon.stub().returns(true);
+            const onAdd = vi.fn().mockReturnValue(true);
             const wrapper = mountTagInput(onAdd);
             act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
@@ -232,7 +231,7 @@ describe("<TagInput>", () => {
         });
 
         it("clears the input if onAdd returns nothing", () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mountTagInput(onAdd);
             act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
@@ -242,63 +241,63 @@ describe("<TagInput>", () => {
         });
 
         it("does not clear the input if the input is controlled", () => {
-            const wrapper = mountTagInput(sinon.stub(), { inputValue: NEW_VALUE });
+            const wrapper = mountTagInput(vi.fn(), { inputValue: NEW_VALUE });
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
 
         it("splits input value on separator RegExp", () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             // this is actually the defaultProps value, but reproducing here for explicitness
             const wrapper = mountTagInput(onAdd, { separator: /,\s*/g });
             // various forms of whitespace properly ignored
             pressEnterInInput(wrapper, [NEW_VALUE, NEW_VALUE, "    ", NEW_VALUE].join(",   "));
-            assert.deepEqual(onAdd.args[0][0], [NEW_VALUE, NEW_VALUE, NEW_VALUE]);
+            expect(onAdd.mock.calls[0][0]).toEqual([NEW_VALUE, NEW_VALUE, NEW_VALUE]);
         });
 
         it("splits input value on separator string", () => {
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mountTagInput(onAdd, { separator: "  |  " });
             pressEnterInInput(wrapper, "1 |  2  |   3   |    4    |  \t  |   ");
-            assert.deepEqual(onAdd.args[0][0], ["1 |  2", "3", "4"]);
+            expect(onAdd.mock.calls[0][0]).toEqual(["1 |  2", "3", "4"]);
         });
 
         it("separator=false emits one-element values array", () => {
             const value = "one, two, three";
-            const onAdd = sinon.stub();
+            const onAdd = vi.fn();
             const wrapper = mountTagInput(onAdd, { separator: false });
             pressEnterInInput(wrapper, value);
-            assert.deepEqual(onAdd.args[0][0], [value]);
+            expect(onAdd.mock.calls[0][0]).toEqual([value]);
         });
 
-        function mountTagInput(onAdd: sinon.SinonStub, props?: Partial<TagInputProps>) {
+        function mountTagInput(onAdd: TagInputProps["onAdd"], props?: Partial<TagInputProps>) {
             return mount(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
         }
     });
 
     describe("onRemove", () => {
         it("pressing backspace focuses last item", () => {
-            const onRemove = sinon.spy();
+            const onRemove = vi.fn();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
             wrapper.find("input").simulate("keydown", { key: "Backspace" });
 
             assert.equal(wrapper.state("activeIndex"), VALUES.length - 1);
-            assert.isTrue(onRemove.notCalled);
+            expect(onRemove).not.toHaveBeenCalled();
         });
 
         it("pressing backspace again removes last item", () => {
-            const onRemove = sinon.spy();
+            const onRemove = vi.fn();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
             wrapper.find("input").simulate("keydown", { key: "Backspace" }).simulate("keydown", { key: "Backspace" });
 
             assert.equal(wrapper.state("activeIndex"), VALUES.length - 2);
-            assert.isTrue(onRemove.calledOnce);
+            expect(onRemove).toHaveBeenCalledOnce();
             const lastIndex = VALUES.length - 1;
-            assert.sameMembers(onRemove.args[0], [VALUES[lastIndex], lastIndex]);
+            expect(onRemove.mock.calls[0]).toEqual([VALUES[lastIndex], lastIndex]);
         });
 
         it("pressing left arrow key navigates active item and backspace removes it", () => {
-            const onRemove = sinon.spy();
+            const onRemove = vi.fn();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
             // select and remove middle item
             wrapper
@@ -308,12 +307,12 @@ describe("<TagInput>", () => {
                 .simulate("keydown", { key: "Backspace" });
 
             assert.equal(wrapper.state("activeIndex"), 0);
-            assert.isTrue(onRemove.calledOnce);
-            assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+            expect(onRemove).toHaveBeenCalledOnce();
+            expect(onRemove.mock.calls[0]).toEqual([VALUES[1], 1]);
         });
 
         it("pressing left arrow key navigates active item and delete removes it", () => {
-            const onRemove = sinon.spy();
+            const onRemove = vi.fn();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
             // select and remove middle item
             wrapper
@@ -325,18 +324,18 @@ describe("<TagInput>", () => {
             // in this case we're not moving into the previous item but
             // we rather "take the place" of the item we just removed
             assert.equal(wrapper.state("activeIndex"), 1);
-            assert.isTrue(onRemove.calledOnce);
-            assert.sameMembers(onRemove.args[0], [VALUES[1], 1]);
+            expect(onRemove).toHaveBeenCalledOnce();
+            expect(onRemove.mock.calls[0]).toEqual([VALUES[1], 1]);
         });
 
         it("pressing delete with no selection does nothing", () => {
-            const onRemove = sinon.spy();
+            const onRemove = vi.fn();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
 
             wrapper.find("input").simulate("keydown", { key: "Delete" });
 
             assert.equal(wrapper.state("activeIndex"), -1);
-            assert.isTrue(onRemove.notCalled);
+            expect(onRemove).not.toHaveBeenCalled();
         });
 
         it("pressing right arrow key in initial state does nothing", () => {
@@ -350,46 +349,46 @@ describe("<TagInput>", () => {
         const NEW_VALUE = "new item";
 
         it("is not invoked on enter when input is empty", () => {
-            const onChange = sinon.stub();
+            const onChange = vi.fn();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             pressEnterInInput(wrapper, "");
-            assert.isTrue(onChange.notCalled);
+            expect(onChange).not.toHaveBeenCalled();
         });
 
         it("is invoked on enter with non-empty input", () => {
-            const onChange = sinon.stub();
+            const onChange = vi.fn();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             pressEnterInInput(wrapper, NEW_VALUE);
-            assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.args[0][0], [...VALUES, NEW_VALUE]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([...VALUES, NEW_VALUE]);
         });
 
         it("can add multiple tags at once with separator", () => {
-            const onChange = sinon.stub();
+            const onChange = vi.fn();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             pressEnterInInput(wrapper, [NEW_VALUE, NEW_VALUE, NEW_VALUE].join(", "));
-            assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.args[0][0], [...VALUES, NEW_VALUE, NEW_VALUE, NEW_VALUE]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([...VALUES, NEW_VALUE, NEW_VALUE, NEW_VALUE]);
         });
 
         it("is invoked when a tag is removed by clicking", () => {
-            const onChange = sinon.stub();
+            const onChange = vi.fn();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             wrapper.find("button").at(1).simulate("click");
-            assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.args[0][0], [VALUES[0], VALUES[2]]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([VALUES[0], VALUES[2]]);
         });
 
         it("is invoked when a tag is removed by backspace", () => {
-            const onChange = sinon.stub();
+            const onChange = vi.fn();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             wrapper.find("input").simulate("keydown", { key: "Backspace" }).simulate("keydown", { key: "Backspace" });
-            assert.isTrue(onChange.calledOnce);
-            assert.deepEqual(onChange.args[0][0], [VALUES[0], VALUES[1]]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([VALUES[0], VALUES[1]]);
         });
 
         it("does not clear the input if onChange returns false", () => {
-            const onChange = sinon.stub().returns(false);
+            const onChange = vi.fn().mockReturnValue(false);
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
@@ -399,7 +398,7 @@ describe("<TagInput>", () => {
         });
 
         it("clears the input if onChange returns true", () => {
-            const onChange = sinon.stub().returns(true);
+            const onChange = vi.fn().mockReturnValue(true);
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
@@ -409,7 +408,7 @@ describe("<TagInput>", () => {
         });
 
         it("clears the input if onChange returns nothing", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
             act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
@@ -419,7 +418,7 @@ describe("<TagInput>", () => {
         });
 
         it("does not clear the input if the input is controlled", () => {
-            const onChange = sinon.stub();
+            const onChange = vi.fn();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} inputValue={NEW_VALUE} />);
             pressEnterInInput(wrapper, NEW_VALUE);
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
@@ -475,10 +474,10 @@ describe("<TagInput>", () => {
 
     describe("when input is not empty", () => {
         it("pressing backspace does not remove item", () => {
-            const onRemove = sinon.spy();
+            const onRemove = vi.fn();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
             wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata("text", "Backspace", false));
-            assert.isTrue(onRemove.notCalled);
+            expect(onRemove).not.toHaveBeenCalled();
         });
     });
 
@@ -493,7 +492,7 @@ describe("<TagInput>", () => {
             undefined,
         ];
 
-        const onChange = sinon.spy();
+        const onChange = vi.fn();
         const wrapper = mount(<TagInput onChange={onChange} values={MIXED_VALUES} />);
         assert.lengthOf(wrapper.find(Tag), 3, "should render only real values");
         const input = wrapper.find("input");
@@ -508,12 +507,8 @@ describe("<TagInput>", () => {
         keydownAndAssertIndex("ArrowLeft", 3);
         keydownAndAssertIndex("Backspace", 1);
 
-        assert.isTrue(onChange.calledOnce);
-        assert.lengthOf(
-            onChange.args[0][0],
-            MIXED_VALUES.length - 1,
-            "should remove one item and preserve other falsy values",
-        );
+        expect(onChange).toHaveBeenCalledOnce();
+        expect(onChange.mock.calls[0][0]).toHaveLength(MIXED_VALUES.length - 1);
     });
 
     it("is non-interactive when disabled", () => {
@@ -532,18 +527,18 @@ describe("<TagInput>", () => {
 
     describe("onInputChange", () => {
         it("is not invoked on enter when input is empty", () => {
-            const onInputChange = sinon.stub();
+            const onInputChange = vi.fn();
             const wrapper = mount(<TagInput onInputChange={onInputChange} values={VALUES} />);
             pressEnterInInput(wrapper, "");
-            assert.isTrue(onInputChange.notCalled);
+            expect(onInputChange).not.toHaveBeenCalled();
         });
 
         it("is invoked when input text changes", () => {
-            const changeSpy: any = sinon.spy();
+            const changeSpy = vi.fn();
             const wrapper = mount(<TagInput onInputChange={changeSpy} values={VALUES} />);
             wrapper.find("input").prop("onChange")?.({ currentTarget: { value: "hello" } } as any);
-            assert.isTrue(changeSpy.calledOnce, "onChange called");
-            assert.equal("hello", changeSpy.args[0][0].currentTarget.value);
+            expect(changeSpy).toHaveBeenCalledOnce();
+            expect(changeSpy.mock.calls[0][0].currentTarget.value).toBe("hello");
         });
     });
 
@@ -580,7 +575,7 @@ describe("<TagInput>", () => {
 
     describe("when autoResize={true}", () => {
         it("passes inputProps to input element", () => {
-            const onBlur = sinon.spy();
+            const onBlur = vi.fn();
             const input = mount(
                 <TagInput autoResize={true} values={VALUES} inputProps={{ autoFocus: true, onBlur }} />,
             ).find("input");
@@ -588,7 +583,7 @@ describe("<TagInput>", () => {
             // check that event handler is proxied
             const fakeEvent = { flag: "yes" };
             input.prop("onBlur")?.(fakeEvent as any);
-            assert.strictEqual(onBlur.args[0][0], fakeEvent);
+            expect(onBlur.mock.calls[0][0]).toBe(fakeEvent);
         });
 
         it("renders a Tag for each value", () => {
@@ -621,8 +616,8 @@ describe("<TagInput>", () => {
 });
 
 function runKeyPressTest(callbackName: "onKeyDown" | "onKeyUp", startIndex: number, expectedIndex: number | undefined) {
-    const callbackSpy = sinon.spy();
-    const inputProps = { [callbackName]: sinon.spy() };
+    const callbackSpy = vi.fn();
+    const inputProps = { [callbackName]: vi.fn() };
     const wrapper = mount(<TagInput values={VALUES} inputProps={inputProps} {...{ [callbackName]: callbackSpy }} />);
 
     act(() => {
@@ -632,9 +627,9 @@ function runKeyPressTest(callbackName: "onKeyDown" | "onKeyUp", startIndex: numb
     const eventName = callbackName === "onKeyDown" ? "keydown" : "keyup";
     wrapper.find("input").simulate("focus").simulate(eventName, { key: "Enter" });
 
-    assert.strictEqual(callbackSpy.callCount, 1, "container callback call count");
-    assert.strictEqual(callbackSpy.firstCall.args[0].key, "Enter", "first arg (event)");
-    assert.strictEqual(callbackSpy.firstCall.args[1], expectedIndex, "second arg (active index)");
+    expect(callbackSpy).toHaveBeenCalledOnce();
+    expect(callbackSpy.mock.calls[0][0].key).toBe("Enter");
+    expect(callbackSpy.mock.calls[0][1]).toBe(expectedIndex);
     // invokes inputProps.callbackSpy as well
-    assert.strictEqual(inputProps[callbackName].callCount, 1, "inputProps.onKeyDown call count");
+    expect(inputProps[callbackName]).toHaveBeenCalledOnce();
 }

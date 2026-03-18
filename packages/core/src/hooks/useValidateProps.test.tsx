@@ -3,17 +3,16 @@
  */
 
 import { render } from "@testing-library/react";
-import * as sinon from "sinon";
 
-import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { useValidateProps } from "./useValidateProps";
 
 describe("useValidateProps", () => {
-    const validatorSpy = sinon.spy();
+    const validatorSpy = vi.fn();
 
     beforeEach(() => {
-        validatorSpy.resetHistory();
+        validatorSpy.mockClear();
     });
 
     const TestComponent: React.FC<{ value?: number }> = ({ value }) => {
@@ -23,7 +22,7 @@ describe("useValidateProps", () => {
 
     it("calls validator in development environment", () => {
         render(<TestComponent />);
-        expect(validatorSpy.called).to.be.true;
+        expect(validatorSpy).toHaveBeenCalled();
     });
 
     it.skip("does not call validator in production environment", () => {
@@ -32,16 +31,16 @@ describe("useValidateProps", () => {
 
     it("calls validator when dependencies change", () => {
         const { rerender } = render(<TestComponent value={1} />);
-        expect(validatorSpy.callCount).to.equal(1);
+        expect(validatorSpy).toHaveBeenCalledOnce();
 
         rerender(<TestComponent value={2} />);
-        expect(validatorSpy.callCount).to.equal(2);
+        expect(validatorSpy).toHaveBeenCalledTimes(2);
     });
 
     it("does not call validator when dependencies haven't changed", () => {
         const { rerender } = render(<TestComponent value={1} />);
 
         rerender(<TestComponent value={1} />);
-        expect(validatorSpy.callCount).to.equal(1);
+        expect(validatorSpy).toHaveBeenCalledOnce();
     });
 });

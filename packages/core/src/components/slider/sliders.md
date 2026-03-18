@@ -12,7 +12,7 @@ and `MultiSlider` for more advanced use cases.
 
 @## Import
 
-```tsx
+```ts copy
 import { Slider } from "@blueprintjs/core";
 ```
 

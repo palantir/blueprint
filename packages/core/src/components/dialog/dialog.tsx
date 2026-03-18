@@ -54,13 +54,13 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * dialog's header. Note that the header will only be rendered if `title` is
-     * provided.
+     * not null or undefined.
      */
     icon?: IconName | MaybeElement;
 
     /**
      * Whether to show the close button in the dialog's header.
-     * Note that the header will only be rendered if `title` is provided.
+     * Note that the header will only be rendered if `title` is not null or undefined.
      *
      * @default true
      */
@@ -79,8 +79,10 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     style?: React.CSSProperties;
 
     /**
-     * Title of the dialog. If provided, an element with `Classes.DIALOG_HEADER`
+     * Title of the dialog. If not null or undefined, an element with `Classes.DIALOG_HEADER`
      * will be rendered inside the dialog before any children elements.
+     * An empty string `""` will render the header without a visible title (useful for
+     * showing the close button without a title).
      */
     title?: React.ReactNode;
 
@@ -159,13 +161,13 @@ export const Dialog: React.FC<DialogProps> & { displayName?: string } = props =>
             <div className={Classes.DIALOG_CONTAINER} ref={mergeRefs(containerRef, childRef)}>
                 <div
                     aria-describedby={overlayProps["aria-describedby"]}
-                    aria-labelledby={overlayProps["aria-labelledby"] || (title ? titleId : undefined)}
+                    aria-labelledby={overlayProps["aria-labelledby"] || (title != null ? titleId : undefined)}
                     aria-modal={overlayProps.enforceFocus ?? true}
                     className={classNames(Classes.DIALOG, className)}
                     role={role}
                     style={style}
                 >
-                    {title && (
+                    {title != null && (
                         <div className={Classes.DIALOG_HEADER}>
                             <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
                             <TitleTagName id={titleId}>{title}</TitleTagName>

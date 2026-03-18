@@ -15,10 +15,9 @@
  */
 
 import { mount } from "enzyme";
-import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -42,15 +41,15 @@ describe("<RangeSlider>", () => {
 
     it("renders two interactive <Handle>s", () => {
         const handles = renderSlider(<RangeSlider />).find(Handle);
-        assert.lengthOf(handles, 2);
+        expect(handles).toHaveLength(2);
     });
 
     it.skip("renders primary track segment between two values", () => {
         const track = renderSlider(<RangeSlider value={[2, 5]} />).find(
             `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
         );
-        assert.lengthOf(track, 1);
-        assert.equal(track.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
+        expect(track).toHaveLength(1);
+        expect(track.getDOMNode().getBoundingClientRect().width).toBe(STEP_SIZE * 3);
     });
 
     it("throws error if range value contains null", () => {
@@ -65,11 +64,11 @@ describe("<RangeSlider>", () => {
     });
 
     it("disabled slider does not respond to key presses", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = vi.fn();
         const handles = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />).find(Handle);
         handles.first().simulate("keydown", { key: "ArrowDown" });
         handles.last().simulate("keydown", { key: "ArrowDown" });
-        assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
+        expect(changeSpy).not.toHaveBeenCalled();
     });
 
     function renderSlider(slider: React.JSX.Element) {

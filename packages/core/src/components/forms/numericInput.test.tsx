@@ -21,9 +21,8 @@ import {
     shallow as untypedShallow,
 } from "enzyme";
 import { act, PureComponent } from "react";
-import { type SinonStub, spy, stub } from "sinon";
 
-import { afterAll, afterEach, assert, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { type HTMLInputProps, Position } from "../../common";
@@ -144,25 +143,25 @@ describe("<NumericInput>", () => {
         });
 
         it("provides numeric value to onValueChange as a number and a string", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const nextValue = "1";
 
             component.find("input").simulate("change", { target: { value: nextValue } });
 
-            expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.calledWith(+nextValue, nextValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledOnce();
+            expect(onValueChangeSpy).toHaveBeenCalledWith(+nextValue, nextValue, expect.anything());
         });
 
         it("provides non-numeric value to onValueChange as NaN and a string", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const invalidValue = "non-numeric-value";
 
             component.find("input").simulate("change", { target: { value: invalidValue } });
 
-            expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.calledWith(NaN, invalidValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledOnce();
+            expect(onValueChangeSpy).toHaveBeenCalledWith(NaN, invalidValue, expect.anything());
         });
 
         it("accepts a numeric value", () => {
@@ -178,7 +177,7 @@ describe("<NumericInput>", () => {
         });
 
         it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
             const incrementButton = component.find(Button).first();
@@ -186,11 +185,11 @@ describe("<NumericInput>", () => {
             dispatchMouseEvent(document, "mouseup");
 
             const inputElement = component.find("input").first().getDOMNode();
-            expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(1, "1", inputElement);
         });
 
         it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
-            const onButtonClickSpy = spy();
+            const onButtonClickSpy = vi.fn();
             const component = mount(<NumericInput onButtonClick={onButtonClickSpy} />);
 
             const incrementButton = component.find(Button).first();
@@ -200,14 +199,14 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
-            expect(onButtonClickSpy.calledOnce).to.be.true;
-            expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
-            onButtonClickSpy.resetHistory();
+            expect(onButtonClickSpy).toHaveBeenCalledOnce();
+            expect(onButtonClickSpy.mock.calls[0]).toEqual([1, "1"]);
+            onButtonClickSpy.mockClear();
 
             // decrementing from 1 now
             decrementButton.simulate("mousedown");
-            expect(onButtonClickSpy.calledOnce).to.be.true;
-            expect(onButtonClickSpy.firstCall.args).to.deep.equal([0, "0"]);
+            expect(onButtonClickSpy).toHaveBeenCalledOnce();
+            expect(onButtonClickSpy.mock.calls[0]).toEqual([0, "0"]);
         });
     });
 
@@ -608,7 +607,7 @@ describe("<NumericInput>", () => {
             });
 
             it("fires onValueChange with clamped value if nextProps.min > value ", () => {
-                const onValueChangeSpy = spy();
+                const onValueChangeSpy = vi.fn();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ min: 0 });
@@ -617,18 +616,18 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("0");
 
                 const inputElement = component.find("input").first().getDOMNode();
-                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
+                expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0, "0", inputElement);
             });
 
             it("does not fire onValueChange if nextProps.min < value", () => {
-                const onValueChangeSpy = spy();
+                const onValueChangeSpy = vi.fn();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ min: -20 });
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("-10");
-                expect(onValueChangeSpy.called).to.be.false;
+                expect(onValueChangeSpy).not.toHaveBeenCalled();
             });
         });
 
@@ -682,7 +681,7 @@ describe("<NumericInput>", () => {
             });
 
             it("fires onValueChange with clamped value if nextProps.max < value ", () => {
-                const onValueChangeSpy = spy();
+                const onValueChangeSpy = vi.fn();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ max: 0 });
@@ -691,24 +690,24 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("0");
 
                 const inputElement = component.find("input").first().getDOMNode();
-                expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
+                expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0, "0", inputElement);
             });
 
             it("does not fire onValueChange if nextProps.max > value", () => {
-                const onValueChangeSpy = spy();
+                const onValueChangeSpy = vi.fn();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
                 component.setProps({ max: 20 });
 
                 const newValue = component.state().value;
                 expect(newValue).to.equal("10");
-                expect(onValueChangeSpy.called).to.be.false;
+                expect(onValueChangeSpy).not.toHaveBeenCalled();
             });
         });
 
         describe("if min === max", () => {
             it("never changes value", () => {
-                const onValueChangeSpy = spy();
+                const onValueChangeSpy = vi.fn();
                 const component = mount(<NumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
                 // repeated interactions, no change in state
                 component
@@ -722,7 +721,7 @@ describe("<NumericInput>", () => {
                 expect(component.state().value).to.equal("2");
 
                 const inputElement = component.find("input").first().getDOMNode();
-                expect(onValueChangeSpy.calledOnceWithExactly(2, "2", inputElement)).to.be.true;
+                expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(2, "2", inputElement);
             });
         });
 
@@ -730,7 +729,7 @@ describe("<NumericInput>", () => {
             it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
                 // should be false by default
                 const VALUE = "-5";
-                const onValueChange = spy();
+                const onValueChange = vi.fn();
                 const component = mount(<NumericInput clampValueOnBlur={false} onValueChange={onValueChange} />);
                 const inputField = component.find("input");
 
@@ -738,7 +737,7 @@ describe("<NumericInput>", () => {
                 inputField.simulate("blur");
 
                 expect(component.state().value).to.equal(VALUE);
-                expect(onValueChange.calledOnce).to.be.true;
+                expect(onValueChange).toHaveBeenCalledOnce();
             });
 
             it("clamps an out-of-bounds value to min", () => {
@@ -762,7 +761,7 @@ describe("<NumericInput>", () => {
             });
 
             it("invokes onValueChange when out-of-bounds value clamped on blur", () => {
-                const onValueChange = spy();
+                const onValueChange = vi.fn();
                 const MIN = 0;
                 const component = mount(
                     <NumericInput clampValueOnBlur={true} min={MIN} onValueChange={onValueChange} />,
@@ -772,8 +771,8 @@ describe("<NumericInput>", () => {
                 inputField.simulate("change", { target: { value: "-5" } });
                 inputField.simulate("blur", { target: { value: "-5" } });
 
-                const args = onValueChange.getCall(1).args;
-                expect(onValueChange.calledTwice).to.be.true;
+                const args = onValueChange.mock.calls[1];
+                expect(onValueChange).toHaveBeenCalledTimes(2);
                 expect(args[0]).to.equal(MIN);
                 expect(args[1]).to.equal(MIN.toString());
             });
@@ -783,40 +782,39 @@ describe("<NumericInput>", () => {
     // Note: we don't call mount() here since React 16 throws before we can even validate the errors thrown
     // in component constructors
     describe("Validation", () => {
-        let consoleError: SinonStub;
+        const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
 
-        beforeAll(() => (consoleError = stub(console, "error")));
-        afterEach(() => consoleError.resetHistory());
-        afterAll(() => consoleError.restore());
+        afterEach(() => consoleError.mockClear());
+        afterAll(() => consoleError.mockRestore());
 
         it("logs an error if min >= max", () => {
             mount(<NumericInput min={2} max={1} />);
-            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MIN_MAX)).to.be.true;
+            expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MIN_MAX);
         });
 
         it("logs an error if stepSize <= 0", () => {
             mount(<NumericInput stepSize={-1} />);
-            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE)).to.be.true;
+            expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE);
         });
 
         it("logs an error if minorStepSize <= 0", () => {
             mount(<NumericInput minorStepSize={-0.1} />);
-            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
+            expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("logs an error if majorStepSize <= 0", () => {
             mount(<NumericInput majorStepSize={-0.1} />);
-            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
+            expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE);
         });
 
         it("logs an error if majorStepSize <= stepSize", () => {
             mount(<NumericInput majorStepSize={0.5} />);
-            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND)).to.be.true;
+            expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         });
 
         it("logs an error if stepSize <= minorStepSize", () => {
             mount(<NumericInput minorStepSize={2} />);
-            expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND)).to.be.true;
+            expect(consoleError).toHaveBeenCalledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND);
         });
 
         it("clears the field if the value is invalid when incrementing", () => {
@@ -848,15 +846,15 @@ describe("<NumericInput>", () => {
 
     describe("Controlled mode", () => {
         it("value prop updates do not trigger onValueChange", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
             component.setProps({ value: 1 });
-            expect(onValueChangeSpy.notCalled).to.be.true;
+            expect(onValueChangeSpy).not.toHaveBeenCalled();
         });
 
         it("state.value only changes with prop change", () => {
             const initialValue = 10;
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput value={initialValue} onValueChange={onValueChangeSpy} />);
 
             const incrementButton = component.find(Button).first();
@@ -865,7 +863,7 @@ describe("<NumericInput>", () => {
 
             let inputElement = component.find("input");
             expect(inputElement.props().value).to.equal("10");
-            expect(onValueChangeSpy.calledOnceWithExactly(11, "11", inputElement.getDOMNode()));
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(11, "11", inputElement.getDOMNode());
 
             component.setProps({ value: 11 }).update();
             inputElement = component.find("input");
@@ -873,7 +871,7 @@ describe("<NumericInput>", () => {
         });
 
         it("accepts successive value changes containing non-numeric characters", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             component.setProps({ value: "1" });
             expect(component.state().value).to.equal("1");
@@ -886,70 +884,70 @@ describe("<NumericInput>", () => {
 
     describe("Localization", () => {
         it("accepts the number in a different locale", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
             const nextValue = "99,99";
             const nextValueNumber = 99.99;
 
             component.find("input").simulate("change", { target: { value: nextValue } });
 
-            expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledOnce();
+            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
         });
 
         it("accepts the number in a different locale [Arabic - Bahrain (ar-BH)]", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"ar-BH"} />);
             const nextValue = "٩٫٩٩";
             const nextValueNumber = 9.99;
 
             component.find("input").simulate("change", { target: { value: nextValue } });
 
-            expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledOnce();
+            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
         });
 
         it("changing the locale it changes the value (en-US to it-IT)", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const nextValue = "99.99";
             const formattedValue = "99,99";
 
             component.find("input").simulate("change", { target: { value: nextValue } });
-            expect(onValueChangeSpy.lastCall.calledWith(+nextValue, nextValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(+nextValue, nextValue, expect.anything());
 
             component.setProps({ locale: "it-IT" });
 
-            expect(onValueChangeSpy.lastCall.calledWith(+nextValue, formattedValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(+nextValue, formattedValue, expect.anything());
         });
 
         it("changing the locale it changes the value (it-IT to undefined)", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"it-IT"} />);
             const nextValue = "99,99";
             const usValue = "99.99";
 
             component.find("input").simulate("change", { target: { value: nextValue } });
-            expect(onValueChangeSpy.lastCall.calledWith(+usValue, nextValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(+usValue, nextValue, expect.anything());
 
             component.setProps({ locale: undefined });
 
-            expect(onValueChangeSpy.lastCall.calledWith(+usValue, usValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(+usValue, usValue, expect.anything());
         });
 
         it("doesn't accept the number in a different format", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const invalidValue = "77,99";
 
             component.find("input").simulate("change", { target: { value: invalidValue } });
 
-            expect(onValueChangeSpy.calledOnce).to.be.true;
-            expect(onValueChangeSpy.calledWith(NaN, invalidValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledOnce();
+            expect(onValueChangeSpy).toHaveBeenCalledWith(NaN, invalidValue, expect.anything());
         });
 
         it("increments the number with the specified locale", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
             const nextValue = "7,9";
             const nextValueNumber = 7.9;
@@ -958,17 +956,21 @@ describe("<NumericInput>", () => {
 
             component.find("input").simulate("change", { target: { value: nextValue } });
 
-            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
 
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
-            expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledWith(
+                valueNumberAfterDecrement,
+                valueAfterDecrement,
+                expect.anything(),
+            );
         });
 
         it("decrements the number with the specified locale", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
             const nextValue = "7,9";
             const nextValueNumber = 7.9;
@@ -980,13 +982,17 @@ describe("<NumericInput>", () => {
                 .first()
                 .simulate("change", { target: { value: nextValue } });
 
-            expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledWith(nextValueNumber, nextValue, expect.anything());
 
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("mousedown");
             dispatchMouseEvent(document, "mouseup");
 
-            expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
+            expect(onValueChangeSpy).toHaveBeenCalledWith(
+                valueNumberAfterDecrement,
+                valueAfterDecrement,
+                expect.anything(),
+            );
         });
     });
 
@@ -1106,7 +1112,7 @@ describe("<NumericInput>", () => {
         });
 
         it("handle big decimal numbers", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(
                 <NumericInput
                     onValueChange={onValueChangeSpy}
@@ -1117,11 +1123,11 @@ describe("<NumericInput>", () => {
             );
             const input = component.find("input");
             input.simulate("keydown", { key: "ArrowUp" });
-            assert.isTrue(onValueChangeSpy.calledWith(0.000000000000000001));
+            expect(onValueChangeSpy).toHaveBeenCalledWith(0.000000000000000001, expect.anything(), expect.anything());
         });
 
         it("changes max precision appropriately when the min/max stepSize props change", () => {
-            const onValueChangeSpy = spy();
+            const onValueChangeSpy = vi.fn();
             const component = mount(
                 <NumericInput
                     majorStepSize={1}
@@ -1135,22 +1141,22 @@ describe("<NumericInput>", () => {
             // excess digits should truncate to max precision
             let incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", { altKey: true });
-            expect(onValueChangeSpy.calledOnceWith(0.001, "0.001"));
-            onValueChangeSpy.resetHistory();
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.001, "0.001", expect.anything());
+            onValueChangeSpy.mockClear();
 
             // now try a smaller step size, and expect no truncation
             component.setProps({ minorStepSize: 0.0001 });
             incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", { altKey: true });
-            expect(onValueChangeSpy.calledOnceWith(0.0002, "0.0002"));
-            onValueChangeSpy.resetHistory();
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.0002, "0.0002", expect.anything());
+            onValueChangeSpy.mockClear();
 
             // now try a larger step size, and expect more truncation than before
             component.setProps({ minorStepSize: 0.1 });
             incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", { altKey: true });
-            expect(onValueChangeSpy.calledOnceWith(0.01, "0.01"));
-            onValueChangeSpy.resetHistory();
+            expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.1, "0.1", expect.anything());
+            onValueChangeSpy.mockClear();
         });
 
         it("must not call handleButtonClick if component is disabled", () => {
@@ -1159,7 +1165,7 @@ describe("<NumericInput>", () => {
             const component = mount(<NumericInput disabled={true} />);
 
             const incrementButton = component.find(Button).first();
-            const handleButtonClickSpy = spy(component.instance(), "handleButtonClick" as any);
+            const handleButtonClickSpy = vi.spyOn(component.instance(), "handleButtonClick" as any);
 
             incrementButton.simulate("mousedown");
             incrementButton.simulate("mousedown", { altKey: true });
@@ -1172,7 +1178,7 @@ describe("<NumericInput>", () => {
             decrementButton.simulate("keyDown", SPACE_KEYSTROKE);
             decrementButton.simulate("keyDown", { ...SPACE_KEYSTROKE, altKey: true });
 
-            expect(handleButtonClickSpy.notCalled).to.be.true;
+            expect(handleButtonClickSpy).not.toHaveBeenCalled();
         });
     });
 
@@ -1384,7 +1390,7 @@ describe("<NumericInput>", () => {
         eventOptions?: Partial<KeyboardEvent>,
         allowNumericCharactersOnly?: boolean,
     ) {
-        const onKeyPressSpy = spy();
+        const onKeyPressSpy = vi.fn();
         const component = mount(
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             <NumericInput allowNumericCharactersOnly={allowNumericCharactersOnly} onKeyPress={onKeyPressSpy} />,
@@ -1393,7 +1399,7 @@ describe("<NumericInput>", () => {
 
         invalidKeyNames.forEach((keyName, i) => {
             inputField.simulate("keypress", { key: keyName, ...eventOptions });
-            const event = onKeyPressSpy.getCall(i).args[0] as KeyboardEvent;
+            const event = onKeyPressSpy.mock.calls[i][0] as KeyboardEvent;
             const valueToCheck = expectDefaultPrevented === true ? event.defaultPrevented : !event.defaultPrevented; // can be undefined, so just check that it's falsey.
             expect(valueToCheck).to.be.true;
         });

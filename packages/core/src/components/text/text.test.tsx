@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -24,101 +24,69 @@ import { Text } from "./text";
 
 describe("<Text>", () => {
     it("adds the className prop", () => {
-        const textContent = "textContent";
-        const className = "bp-test-class";
-        const wrapper = mount(<Text className={className}>{textContent}</Text>);
-        const element = wrapper.find(`.${className}`).hostNodes();
-        assert.lengthOf(element, 1, `expected to find 1 .${className}`);
-        assert.strictEqual(element.text(), textContent, "content incorrect value");
+        const CLASS_NAME = "test-class";
+        render(<Text className={CLASS_NAME}>Foo</Text>);
+        const element = screen.getByText("Foo");
+        expect(element).toHaveClass(CLASS_NAME);
     });
 
     it("uses given title", () => {
-        const textContent = "textContent";
-        const title = "Test title";
-        const wrapper = mount(<Text title={title}>{textContent}</Text>);
-        const element = wrapper.find("div").first();
-        const actualTitle = element.prop("title");
-        assert.strictEqual(actualTitle, title, "component title should equal title prop");
+        render(<Text title="Bar">Foo</Text>);
+        expect(screen.getByTitle("Bar")).toHaveTextContent("Foo");
     });
 
     describe("if ellipsize true", () => {
         it("truncates string children", () => {
-            const textContent = "textContent";
-            const wrapper = mount(<Text ellipsize={true}>{textContent}</Text>);
-            const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
-            assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
-            assert.strictEqual(element.text(), textContent, "content incorrect value");
+            render(<Text ellipsize={true}>Foo</Text>);
+            expect(screen.getByText("Foo")).toHaveClass(Classes.TEXT_OVERFLOW_ELLIPSIS);
         });
 
         it("truncates jsx children", () => {
-            const children = (
-                <span>
-                    {"computed text "}
-                    <span>text in a span</span>
-                </span>
+            const { container } = render(
+                <Text ellipsize={true}>
+                    <span>
+                        {"computed text "}
+                        <span>text in a span</span>
+                    </span>
+                </Text>,
             );
-            const textContent = "computed text text in a span";
-            const wrapper = mount(<Text ellipsize={true}>{children}</Text>);
-            const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
-            assert.lengthOf(element, 1, `missing ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
-            assert.strictEqual(element.text(), textContent, "content incorrect value");
+            const element = container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            expect(element).toBeInTheDocument();
+            expect(element!).toHaveTextContent("computed text text in a span");
         });
 
         describe("title behavior", () => {
-            let containerElement: HTMLElement;
-
-            beforeEach(() => {
-                containerElement = document.createElement("div");
-                document.documentElement.appendChild(containerElement);
-            });
-
-            afterEach(() => {
-                containerElement.remove();
-            });
-
             // Skip: jsdom doesn't compute real overflow measurements
             it.skip("adds the title attribute when text overflows", () => {
                 const textContent = new Array(100).join("this will overflow ");
-                const wrapper = mount(<Text ellipsize={true}>{textContent}</Text>, {
-                    attachTo: containerElement,
-                });
-                const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
-                assert.strictEqual(actualTitle, textContent, "title should equal full text content");
+                const { container } = render(<Text ellipsize={true}>{textContent}</Text>);
+                const element = container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+                expect(element).not.toBeNull();
+                expect(element!).toHaveAttribute("title", textContent);
             });
 
             it("does not add the title attribute when text does not overflow", () => {
-                const textContent = "no overflow";
-                let wrapper = mount(<Text ellipsize={true}>{textContent}</Text>, {
-                    attachTo: containerElement,
-                });
-                wrapper = wrapper.update();
-                const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
-                assert.isUndefined(actualTitle, "title should be undefined");
+                render(<Text ellipsize={true}>Foo</Text>);
+                expect(screen.getByText("Foo")).not.toHaveAttribute("title");
             });
 
             it("uses given title even if text overflows", () => {
                 const textContent = new Array(100).join("this will overflow ");
-                const title = "Test title";
-                const wrapper = mount(
-                    <Text ellipsize={true} title={title}>
+                render(
+                    <Text ellipsize={true} title="Test title">
                         {textContent}
                     </Text>,
-                    {
-                        attachTo: containerElement,
-                    },
                 );
-                const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
-                assert.strictEqual(actualTitle, title, "component title should equal title prop");
+
+                expect(screen.getByTitle("Test title")).toBeInTheDocument();
             });
         });
     });
 
     describe("if ellipsize false", () => {
         it("doesn't truncate string children", () => {
-            const textContent = "textContent";
-            const wrapper = mount(<Text>{textContent}</Text>);
-            const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
-            assert.lengthOf(element, 0, `unexpected ${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
+            render(<Text>Foo</Text>);
+            expect(screen.getByText("Foo")).not.toHaveClass(Classes.TEXT_OVERFLOW_ELLIPSIS);
         });
     });
 });

@@ -15,9 +15,8 @@
  */
 
 import { mount, type ReactWrapper } from "enzyme";
-import { spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { OverflowList, type OverflowListProps, type OverflowListState } from "./overflowList";
 
@@ -35,7 +34,7 @@ const TestOverflow: React.FC<{ items: TestItemProps[] }> = () => <div />;
 
 describe.skip("<OverflowList>", { retry: 3 }, () => {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
-    const onOverflowSpy = spy();
+    const onOverflowSpy = vi.fn();
     let containerElement: HTMLElement;
     let wrapper: OverflowListWrapper;
 
@@ -49,7 +48,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
         wrapper?.unmount();
         wrapper?.detach();
         containerElement.remove();
-        onOverflowSpy.resetHistory();
+        onOverflowSpy.mockClear();
     });
 
     it("adds className to itself", () => {
@@ -126,7 +125,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
 
         it("not invoked on initial render if all visible", async () => {
             await overflowList(200).waitForResize();
-            assert.isTrue(onOverflowSpy.notCalled, "not called");
+            expect(onOverflowSpy).not.toHaveBeenCalled();
         });
 
         it("invoked once per resize", async () => {
@@ -143,7 +142,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
                 (await wrapper.setWidth(width).waitForResize()).assertLastOnOverflowArgs(overflowIds);
             }
             // ensure onOverflow is not called additional times.
-            assert.equal(onOverflowSpy.callCount, tests.length, "should invoke once per resize");
+            expect(onOverflowSpy).toHaveBeenCalledTimes(tests.length);
         });
 
         it("not invoked if resize doesn't change overflow", async () => {
@@ -151,22 +150,22 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
             await overflowList(22).waitForResize();
             // small adjustments don't change overflow state, but it is recomputed internally.
             // assert that the callback was not invoked because the appearance hasn't changed.
-            onOverflowSpy.resetHistory();
+            onOverflowSpy.mockClear();
             await wrapper.setWidth(25).waitForResize();
             await wrapper.setWidth(28).waitForResize();
             await wrapper.setWidth(29).waitForResize();
             await wrapper.setWidth(26).waitForResize();
             await wrapper.setWidth(22).waitForResize();
-            assert.isTrue(onOverflowSpy.notCalled, "should not invoke");
+            expect(onOverflowSpy).not.toHaveBeenCalled();
         });
 
         it("invoked when items change", async () => {
             await overflowList(22).waitForResize();
             // copy of same items so overflow state should end up the same.
             await wrapper.setProps({ items: [...ITEMS] }).waitForResize();
-            assert.isTrue(onOverflowSpy.calledTwice, "should be called twice");
-            const [one, two] = onOverflowSpy.args;
-            assert.sameDeepMembers(one, two, "items should be the same");
+            expect(onOverflowSpy).toHaveBeenCalledTimes(2);
+            expect(onOverflowSpy.mock.calls[0][0]).toEqual(expect.arrayContaining(onOverflowSpy.mock.calls[1][0]));
+            expect(onOverflowSpy.mock.calls[1][0]).toEqual(expect.arrayContaining(onOverflowSpy.mock.calls[0][0]));
         });
     });
 
@@ -212,10 +211,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
 
         /** Asserts that the last call to `onOverflow` received the given item IDs. */
         wrapper.assertLastOnOverflowArgs = (ids: number[]) => {
-            assert.sameMembers(
-                onOverflowSpy.lastCall.args[0].map((i: TestItemProps) => i.id),
-                ids,
-            );
+            expect(onOverflowSpy.mock.calls.at(-1)![0].map((i: TestItemProps) => i.id)).toEqual(ids);
             return wrapper;
         };
 

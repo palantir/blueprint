@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { type OptionProps } from "../../common";
 
 import { HTMLSelect } from "./htmlSelect";
 
 describe("<HtmlSelect>", () => {
-    const emptyHandler = () => true;
-
     it("renders options strings", () => {
-        const options = mount(<HTMLSelect onChange={emptyHandler} options={["a", "b"]} />).find("option");
-        assert.equal(options.at(0).text(), "a");
-        assert.equal(options.at(1).text(), "b");
+        render(<HTMLSelect onChange={vi.fn()} options={["a", "b"]} />);
+        expect(screen.getByRole("option", { name: "a" })).toHaveValue("a");
+        expect(screen.getByRole("option", { name: "b" })).toHaveValue("b");
     });
 
     it("renders options props", () => {
@@ -38,10 +36,12 @@ describe("<HtmlSelect>", () => {
             { disabled: true, value: "c" },
             { label: "Dog", value: "d" },
         ];
-        const options = mount(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />).find("option");
-        assert.equal(options.at(0).text(), "a", "value");
-        assert.isTrue(options.at(1).hasClass("foo"), "className");
-        assert.isTrue(options.at(2).prop("disabled"), "disabled");
-        assert.equal(options.at(3).text(), "Dog", "label");
+        render(<HTMLSelect onChange={vi.fn()} options={OPTIONS} />);
+        expect(screen.getByRole("option", { name: "a" })).toHaveValue("a");
+        expect(screen.getByRole("option", { name: "b" })).toHaveValue("b");
+        expect(screen.getByRole("option", { name: "b" })).toHaveClass("foo");
+        expect(screen.getByRole("option", { name: "c" })).toHaveValue("c");
+        expect(screen.getByRole("option", { name: "c" })).toBeDisabled();
+        expect(screen.getByRole("option", { name: "Dog" })).toHaveValue("d");
     });
 });

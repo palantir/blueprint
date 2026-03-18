@@ -16,10 +16,9 @@
 
 import { waitFor } from "@testing-library/dom";
 import { createRoot, type Root } from "react-dom/client";
-import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { afterAll, afterEach, assert, beforeAll, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, beforeAll, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../common/errors";
@@ -168,7 +167,7 @@ describe("OverlayToaster", () => {
         });
 
         it("action onClick callback invoked when action clicked", async () => {
-            const onClick = spy();
+            const onClick = vi.fn();
             toaster.show({
                 action: { onClick, text: "action" },
                 message: "message",
@@ -180,11 +179,11 @@ describe("OverlayToaster", () => {
             // action is first descendant button
             const action = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
             action?.click();
-            assert.isTrue(onClick.calledOnce, "expected onClick to be called once");
+            expect(onClick).toHaveBeenCalledOnce();
         });
 
         it("onDismiss callback invoked when close button clicked", async () => {
-            const handleDismiss = spy();
+            const handleDismiss = vi.fn();
             toaster.show({
                 message: "dismiss",
                 onDismiss: handleDismiss,
@@ -196,28 +195,28 @@ describe("OverlayToaster", () => {
             // without action, dismiss is first descendant button
             const dismiss = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
             dismiss?.click();
-            await waitFor(() => assert.isTrue(handleDismiss.calledOnce));
+            await waitFor(() => expect(handleDismiss).toHaveBeenCalledOnce());
         });
 
         it("onDismiss callback invoked on toaster.dismiss()", async () => {
-            const onDismiss = spy();
+            const onDismiss = vi.fn();
             const key = toaster.show({ message: "dismiss me", onDismiss });
             toaster.dismiss(key);
-            await waitFor(() => assert.isTrue(onDismiss.calledOnce, "onDismiss not called"));
+            await waitFor(() => expect(onDismiss).toHaveBeenCalledOnce());
         });
 
         it("onDismiss callback invoked on toaster.clear()", async () => {
-            const onDismiss = spy();
+            const onDismiss = vi.fn();
             toaster.show({ message: "dismiss me", onDismiss });
             await waitFor(() => {
                 /* noop */
             });
             toaster.clear();
-            await waitFor(() => assert.isTrue(onDismiss.calledOnce, "onDismiss not called"));
+            await waitFor(() => expect(onDismiss).toHaveBeenCalledOnce());
         });
 
         it("reusing props object does not produce React errors", () => {
-            const errorSpy = spy(console, "error");
+            const errorSpy = vi.spyOn(console, "error").mockImplementation(vi.fn());
             try {
                 // if Toaster doesn't clone the props object beforeAll injecting key then there will be a
                 // React error that both toasts have the same key, because both instances refer to the
@@ -225,12 +224,12 @@ describe("OverlayToaster", () => {
                 const toast = { message: "repeat" };
                 toaster.show(toast);
                 toaster.show(toast);
-                assert.isFalse(errorSpy.calledWithMatch("two children with the same key"), "mutation side effect!");
+                expect(errorSpy).not.toHaveBeenCalledWith(expect.stringContaining("two children with the same key"));
             } finally {
                 // Restore console.error. Otherwise other tests will fail
                 // with "TypeError: Attempted to wrap error which is already
                 // wrapped" when attempting to spy on console.error again.
-                sinon.restore();
+                vi.restoreAllMocks();
             }
         });
     });
@@ -289,6 +288,24 @@ describe("OverlayToaster", () => {
             await waitFor(() => {
                 const toastElement = containerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
                 assert.isTrue(toastElement?.contains(document.activeElement));
+            });
+        });
+    });
+
+    describe("with empty array children", () => {
+        beforeAll(async () => {
+            containerElement = document.createElement("div");
+            document.documentElement.appendChild(containerElement);
+            toaster = await OverlayToaster.create({ children: [] }, { container: containerElement, domRenderer });
+        });
+
+        afterAll(() => {
+            document.documentElement.removeChild(containerElement);
+        });
+
+        it("does not treat empty array children as open overlay", async () => {
+            await waitFor(() => {
+                assert.isNull(containerElement.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
             });
         });
     });

@@ -10,7 +10,7 @@ Labs have started again at version 6.0.0 to signal resurrection of the package a
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/labs
 ```
 
