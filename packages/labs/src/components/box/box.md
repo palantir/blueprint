@@ -8,7 +8,7 @@ tag: new
 
 @## Import
 
-```tsx
+```ts copy
 import { Box } from "@blueprintjs/labs";
 ```
 
@@ -29,12 +29,12 @@ This is useful for applying layout to existing components without adding an extr
 
 Box supports a wide range of layout props that map to CSS properties:
 
--   **Spacing**: `margin`, `padding` and their logical variants
--   **Positioning**: `position`, `inset` and their logical variants
--   **Sizing**: `width`, `height`
--   **Flexbox**: `display`, `flex`, `flexDirection`, `flexWrap`, `gap`
--   **Alignment**: `alignItems`, `alignContent`, `alignSelf`, `justifyContent`, `justifyItems`, `justifySelf`
--   **Overflow**: `overflow`, `overflowX`, `overflowY`
+- **Spacing**: `margin`, `padding` and their logical variants
+- **Positioning**: `position`, `inset` and their logical variants
+- **Sizing**: `width`, `height`
+- **Flexbox**: `display`, `flex`, `flexGrow`, `flexShrink`, `flexBasis`, `flexDirection`, `flexWrap`, `gap`
+- **Alignment**: `alignItems`, `alignContent`, `alignSelf`, `justifyContent`, `justifyItems`, `justifySelf`
+- **Overflow**: `overflow`, `overflowX`, `overflowY`
 
 Each prop accepts Blueprint token values to enforce consistent spacing and sizing.
 

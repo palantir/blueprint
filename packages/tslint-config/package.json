@@ -11,7 +11,7 @@
         "tslib": "catalog:",
         "tslint-react": "^5.0.0",
         "tsutils": "^3.21.0",
-        "typescript": "~5.3.3"
+        "typescript": "~5.9.3"
     },
     "peerDependencies": {
         "tslint": "^6.0.0"

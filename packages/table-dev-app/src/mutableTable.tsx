@@ -81,7 +81,9 @@ export enum SelectedRegionTransformPreset {
     COLUMN = "column",
 }
 
-type MutableStateUpdateCallback = (stateKey: keyof MutableTableState) => (event: React.FormEvent<HTMLElement>) => void;
+type MutableStateUpdateCallback = (
+    stateKey: keyof MutableTableState,
+) => (event: React.ChangeEvent<HTMLElement>) => void;
 
 const COLUMN_COUNTS = [0, 1, 5, 20, 100, 1000];
 const ROW_COUNTS = [0, 1, 5, 20, 100, 1000, 100000];
@@ -155,12 +157,12 @@ const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => str
 
 /** Event handler that exposes the target element's value as a boolean. */
 function handleBooleanChange(handler: (checked: boolean) => void) {
-    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).checked);
+    return (event: React.ChangeEvent<HTMLElement>) => handler((event.target as HTMLInputElement).checked);
 }
 
 /** Event handler that exposes the target element's value as a string. */
 function handleStringChange(handler: (value: string) => void) {
-    return (event: React.FormEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
+    return (event: React.ChangeEvent<HTMLElement>) => handler((event.target as HTMLInputElement).value);
 }
 
 /** Event handler that exposes the target element's value as a number. */

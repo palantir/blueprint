@@ -35,7 +35,7 @@
         "style-loader": "^3.3.4",
         "swc-loader": "^0.2.3",
         "terser-webpack-plugin": "^5.3.10",
-        "typescript": "^5.3.3",
+        "typescript": "^5.9.3",
         "webpack": "^5.90.0",
         "webpack-bundle-analyzer": "^4.10.1",
         "webpack-dev-server": "^4.15.1",

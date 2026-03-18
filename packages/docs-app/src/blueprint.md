@@ -21,16 +21,16 @@ Check out the [migration guides to upgrade from v5.x &rarr;](https://github.com/
 home to over 40 UI components.
 Install it with your Node.js package manager of choice:
 
-```sh
+```sh copy
 pnpm add @blueprintjs/core react react-dom
 ```
 
 Additional UI components and APIs are available in:
 
--   [**@blueprintjs/icons**](https://www.npmjs.com/package/@blueprintjs/icons)
--   [**@blueprintjs/datetime**](https://www.npmjs.com/package/@blueprintjs/datetime)
--   [**@blueprintjs/select**](https://www.npmjs.com/package/@blueprintjs/select)
--   [**@blueprintjs/table**](https://www.npmjs.com/package/@blueprintjs/table)
+- [**@blueprintjs/icons**](https://www.npmjs.com/package/@blueprintjs/icons)
+- [**@blueprintjs/datetime**](https://www.npmjs.com/package/@blueprintjs/datetime)
+- [**@blueprintjs/select**](https://www.npmjs.com/package/@blueprintjs/select)
+- [**@blueprintjs/table**](https://www.npmjs.com/package/@blueprintjs/table)
 
 The navigation sidebar lists all the available packages, separated by use case and significant dependencies.
 All have peer dependencies on **react** and **react-dom**.
@@ -56,7 +56,3 @@ The following example shows an `index.html` file; the same stylesheets should be
 <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
 <!-- add other blueprint-*.css files here -->
 ```
-
-@page getting-started
-@page reading-the-docs
-@page principles
