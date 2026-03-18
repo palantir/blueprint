@@ -23,7 +23,7 @@ While we make no guarantees with respect to API breaks, we will be communicating
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
-```sh
+```sh copy
 npm install --save @blueprintjs/labs
 ```
 
@@ -38,6 +38,3 @@ Import the package stylesheet in Sass:
 ```html
 <link href="path/to/node_modules/@blueprintjs/labs/lib/css/blueprint-labs.css" rel="stylesheet" />
 ```
-
-@page box
-@page flex

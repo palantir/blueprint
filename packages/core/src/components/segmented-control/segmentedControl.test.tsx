@@ -17,12 +17,13 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
-import sinon from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, type OptionProps, SegmentedControl, type SegmentedControlProps } from "../..";
+import { Classes, type OptionProps } from "../../common";
+
+import { SegmentedControl, type SegmentedControlProps } from "./segmentedControl";
 
 const OPTIONS: Array<OptionProps<string>> = [
     {
@@ -112,38 +113,41 @@ describe("<SegmentedControl>", () => {
     });
 
     it("should select the correct option when clicked", async () => {
-        const onValueChange = sinon.spy();
+        const user = userEvent.setup();
+        const onValueChange = vi.fn();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
 
-        await userEvent.click(listButton);
+        await user.click(listButton);
 
-        expect(onValueChange.called).to.be.true;
-        expect(onValueChange.args[0][0]).to.equal("list");
+        expect(onValueChange).toHaveBeenCalled();
+        expect(onValueChange.mock.calls[0][0]).to.equal("list");
         expect(listButton.getAttribute("aria-checked")).to.equal("true");
     });
 
     it("should not allow disabled options to be selected", async () => {
-        const onValueChange = sinon.spy();
+        const user = userEvent.setup();
+        const onValueChange = vi.fn();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const gridButton = screen.getByRole("radio", { name: /grid/i });
 
-        await userEvent.click(gridButton);
+        await user.click(gridButton);
 
-        expect(onValueChange.called).to.be.false;
+        expect(onValueChange).not.toHaveBeenCalled();
         expect(gridButton.getAttribute("aria-checked")).to.equal("false");
     });
 
     it("should not allow any options to be selected when disabled", async () => {
-        const onValueChange = sinon.spy();
+        const user = userEvent.setup();
+        const onValueChange = vi.fn();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} disabled={true} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
         const gridButton = screen.getByRole("radio", { name: /grid/i });
 
-        await userEvent.click(listButton);
-        await userEvent.click(gridButton);
+        await user.click(listButton);
+        await user.click(gridButton);
 
-        expect(onValueChange.called).to.be.false;
+        expect(onValueChange).not.toHaveBeenCalled();
         expect(listButton.getAttribute("aria-checked")).to.equal("false");
         expect(gridButton.getAttribute("aria-checked")).to.equal("false");
     });

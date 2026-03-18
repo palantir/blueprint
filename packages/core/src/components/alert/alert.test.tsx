@@ -16,13 +16,13 @@
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type SinonStub, spy, stub } from "sinon";
 
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Alert, Classes } from "../..";
+import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { hasClass } from "../../common/test-utils";
+
+import { Alert } from "./alert";
 
 describe("<Alert>", () => {
     it("should render contents", () => {
@@ -32,15 +32,15 @@ describe("<Alert>", () => {
                 isOpen={true}
                 confirmButtonText="Delete"
                 cancelButtonText="Cancel"
-                onClose={spy}
-                onCancel={spy}
+                onClose={vi.fn()}
+                onCancel={vi.fn()}
             >
                 <p>Are you sure you want to delete this file?</p>
             </Alert>,
         );
         const alert = screen.getByRole("alertdialog");
 
-        expect(hasClass(alert, "test-class")).to.be.true;
+        expect(alert).toHaveClass("test-class");
         screen.getByText("Are you sure you want to delete this file?");
         screen.getByRole("button", { name: "Cancel" });
         screen.getByRole("button", { name: "Delete" });
@@ -71,10 +71,10 @@ describe("<Alert>", () => {
     });
 
     it("should support overlay lifecycle props", async () => {
-        const onOpening = spy();
+        const onOpening = vi.fn();
         render(<Alert isOpen={true} onOpening={onOpening} />);
 
-        await waitFor(() => expect(onOpening.calledOnce).to.be.true);
+        await waitFor(() => expect(onOpening).toHaveBeenCalledOnce());
     });
 
     describe("confirm button", () => {
@@ -82,34 +82,36 @@ describe("<Alert>", () => {
             render(<Alert intent="primary" isOpen={true} confirmButtonText="Confirm" />);
             const confirmButton = screen.getByRole("button", { name: "Confirm" });
 
-            expect(hasClass(confirmButton, Classes.INTENT_PRIMARY)).to.be.true;
+            expect(confirmButton).toHaveClass(Classes.INTENT_PRIMARY);
         });
 
         it("should trigger onConfirm and onClose when clicked", async () => {
-            const onConfirm = spy();
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onConfirm = vi.fn();
+            const onClose = vi.fn();
             render(<Alert isOpen={true} confirmButtonText="Confirm" onConfirm={onConfirm} onClose={onClose} />);
             const confirmButton = screen.getByRole("button", { name: "Confirm" });
 
-            await userEvent.click(confirmButton);
+            await user.click(confirmButton);
 
-            expect(onConfirm.calledOnce).to.be.true;
-            expect(onClose.calledOnce).to.be.true;
-            expect(onClose.args[0][0]).to.be.true;
+            expect(onConfirm).toHaveBeenCalledOnce();
+            expect(onClose).toHaveBeenCalledOnce();
+            expect(onClose.mock.calls[0][0]).toBe(true);
         });
     });
 
     describe("cancel button", () => {
         it("should have correct text and no intent", () => {
-            render(<Alert intent="primary" isOpen={true} cancelButtonText="Cancel" onCancel={spy} />);
+            render(<Alert intent="primary" isOpen={true} cancelButtonText="Cancel" onCancel={vi.fn()} />);
             const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-            expect(hasClass(cancelButton, Classes.INTENT_PRIMARY)).to.be.false;
+            expect(cancelButton).not.toHaveClass(Classes.INTENT_PRIMARY);
         });
 
         it("should trigger 'onCancel' and 'onClose' when clicked", async () => {
-            const onCancel = spy();
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onCancel = vi.fn();
+            const onClose = vi.fn();
             render(
                 <Alert
                     intent="primary"
@@ -121,35 +123,36 @@ describe("<Alert>", () => {
             );
             const cancelButton = screen.getByText("Cancel");
 
-            await userEvent.click(cancelButton);
+            await user.click(cancelButton);
 
-            expect(onCancel.calledOnce).to.be.true;
-            expect(onClose.calledOnce).to.be.true;
-            expect(onClose.args[0][0]).to.be.false;
+            expect(onCancel).toHaveBeenCalledOnce();
+            expect(onClose).toHaveBeenCalledOnce();
+            expect(onClose.mock.calls[0][0]).toBe(false);
         });
 
         it("should not be escape key cancelable by default", () => {
-            const onCancel = spy();
-            render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={spy} />);
+            const onCancel = vi.fn();
+            render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={vi.fn()} />);
             const dialog = screen.getByRole("alertdialog");
 
             fireEvent.keyDown(dialog, { key: "Escape" });
 
-            expect(onCancel.notCalled).to.be.true;
+            expect(onCancel).not.toHaveBeenCalled();
         });
 
         it("should be escape key cancelable when canEscapeKeyCancel is true", async () => {
-            const onCancel = spy();
+            const onCancel = vi.fn();
             render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} canEscapeKeyCancel={true} />);
             const dialog = screen.getByRole("alertdialog");
 
             fireEvent.keyDown(dialog, { key: "Escape" });
 
-            expect(onCancel.calledOnce).to.be.true;
+            expect(onCancel).toHaveBeenCalledOnce();
         });
 
         it("should not allow outside click by default", async () => {
-            const onCancel = spy();
+            const user = userEvent.setup();
+            const onCancel = vi.fn();
             const { baseElement } = render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} />);
 
             // using baseElement since overlay is rendered in a portal
@@ -157,13 +160,14 @@ describe("<Alert>", () => {
 
             expect(backdrop).to.exist;
 
-            await userEvent.click(backdrop!);
+            await user.click(backdrop!);
 
-            expect(onCancel.notCalled).to.be.true;
+            expect(onCancel).not.toHaveBeenCalled();
         });
 
         it("should allow outside click when canOutsideClickCancel is true", async () => {
-            const onCancel = spy();
+            const user = userEvent.setup();
+            const onCancel = vi.fn();
             const { baseElement } = render(
                 <Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} canOutsideClickCancel={true} />,
             );
@@ -172,16 +176,17 @@ describe("<Alert>", () => {
 
             expect(backdrop).to.exist;
 
-            await userEvent.click(backdrop!);
+            await user.click(backdrop!);
 
-            expect(onCancel.calledOnce).to.be.true;
+            expect(onCancel).toHaveBeenCalledOnce();
         });
     });
 
     describe("loading", () => {
         it("should display loading state on buttons", async () => {
-            const onCancel = spy();
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onCancel = vi.fn();
+            const onClose = vi.fn();
 
             render(
                 <Alert
@@ -196,37 +201,36 @@ describe("<Alert>", () => {
             const cancelButton = screen.getByRole("button", { name: "Cancel" });
             const confirmButton = screen.getByRole("progressbar", { name: "loading" }).closest("button");
 
-            await userEvent.click(cancelButton);
-            await userEvent.click(confirmButton!);
+            await user.click(cancelButton);
+            await user.click(confirmButton!);
 
             // Confirm that the buttons are disabled
-            expect(onCancel.called).to.be.false;
-            expect(onClose.called).to.be.false;
+            expect(onCancel).not.toHaveBeenCalled();
+            expect(onClose).not.toHaveBeenCalled();
         });
     });
 
     describe("warnings", () => {
-        let warnSpy: SinonStub;
-        beforeAll(() => (warnSpy = stub(console, "warn")));
-        afterEach(() => warnSpy.resetHistory());
-        afterAll(() => warnSpy.restore());
+        const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+        afterEach(() => warnSpy.mockClear());
+        afterAll(() => warnSpy.mockRestore());
 
         it("cancelButtonText without cancel handler", () => {
             render(<Alert cancelButtonText="cancel" isOpen={false} />);
 
-            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_PROPS)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledExactlyOnceWith(Errors.ALERT_WARN_CANCEL_PROPS);
         });
 
         it("canEscapeKeyCancel without cancel handler", () => {
             render(<Alert canEscapeKeyCancel={true} isOpen={false} />);
 
-            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_ESCAPE_KEY)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledExactlyOnceWith(Errors.ALERT_WARN_CANCEL_ESCAPE_KEY);
         });
 
         it("canOutsideClickCancel without cancel handler", () => {
             render(<Alert canOutsideClickCancel={true} isOpen={false} />);
 
-            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledExactlyOnceWith(Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK);
         });
     });
 });

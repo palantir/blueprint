@@ -4,7 +4,7 @@ A checkbox allows the user to toggle between checked, unchecked, and (sometimes)
 
 @## Import
 
-```tsx
+```ts copy
 import { Checkbox } from "@blueprintjs/core";
 ```
 

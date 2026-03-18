@@ -4,7 +4,7 @@
 
 @## Import
 
-```tsx
+```ts copy
 import { FileInput } from "@blueprintjs/core";
 ```
 

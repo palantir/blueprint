@@ -14,21 +14,22 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Label } from "../..";
+import { Label } from "./html";
 
 describe("HTML components", () => {
     describe("<Label>", () => {
         it("supports htmlFor prop", () => {
-            mount(
+            render(
                 <div>
-                    <Label htmlFor="foo" />
-                    <input id="foo" />
+                    <Label htmlFor="foo">Name</Label>
+                    <input id="foo" defaultValue="bar" />
                 </div>,
             );
+            expect(screen.getByLabelText("Name")).toHaveValue("bar");
         });
     });
 });

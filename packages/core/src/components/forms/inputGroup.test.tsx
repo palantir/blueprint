@@ -17,11 +17,12 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
-import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, InputGroup } from "../..";
+import { Classes } from "../../common";
+
+import { InputGroup } from "./inputGroup";
 
 describe("<InputGroup>", () => {
     it("should render left icon before input", () => {
@@ -53,30 +54,32 @@ describe("<InputGroup>", () => {
     });
 
     it("should support onChange callback", async () => {
-        const onChange = spy();
+        const user = userEvent.setup();
+        const onChange = vi.fn();
         render(<InputGroup onChange={onChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        await userEvent.type(input, "x");
+        await user.type(input, "x");
 
         expect(input.value).to.equal("x");
-        expect(onChange.calledOnce).to.be.true;
+        expect(onChange).toHaveBeenCalledOnce();
 
-        const event = onChange.getCall(0).args[0] as React.ChangeEvent<HTMLInputElement>;
+        const event = onChange.mock.calls[0][0] as React.ChangeEvent<HTMLInputElement>;
         expect(event.target.value).to.equal("x");
     });
 
     it("should support the onValueChange callback", async () => {
-        const onValueChange = spy();
+        const user = userEvent.setup();
+        const onValueChange = vi.fn();
         render(<InputGroup onValueChange={onValueChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        await userEvent.type(input, "x");
+        await user.type(input, "x");
 
         expect(input.value).to.equal("x");
-        expect(onValueChange.calledOnce).to.be.true;
-        expect(onValueChange.getCall(0).args[0]).to.equal("x");
-        expect(onValueChange.getCall(0).args[1].value).to.equal("x");
+        expect(onValueChange).toHaveBeenCalledOnce();
+        expect(onValueChange.mock.calls[0][0]).to.equal("x");
+        expect(onValueChange.mock.calls[0][1].value).to.equal("x");
     });
 
     it("should support custom type attribute", () => {
@@ -107,12 +110,13 @@ describe("<InputGroup>", () => {
             return <InputGroup type="text" value={value} onChange={handleChange} />;
         }
 
+        const user = userEvent.setup();
         render(<TestComponent initialValue="abc" transformInput={(value: string) => value.substring(0, 3)} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
         expect(input.value).to.equal("abc");
 
-        await userEvent.type(input, "d");
+        await user.type(input, "d");
 
         expect(input.value).to.equal("abc");
     });

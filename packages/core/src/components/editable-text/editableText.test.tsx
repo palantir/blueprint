@@ -16,58 +16,57 @@
 
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { act } from "react";
-import { spy } from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { EditableText } from "../..";
+import { EditableText } from "./editableText";
 
 describe("<EditableText>", () => {
     it("renders value", () => {
-        assert.equal(shallow(<EditableText value="alphabet" />).text(), "alphabet");
+        expect(shallow(<EditableText value="alphabet" />).text()).toBe("alphabet");
     });
 
     it("renders defaultValue", () => {
-        assert.equal(shallow(<EditableText defaultValue="default" />).text(), "default");
+        expect(shallow(<EditableText defaultValue="default" />).text()).toBe("default");
     });
 
     it("renders placeholder", () => {
-        assert.equal(shallow(<EditableText placeholder="Edit..." />).text(), "Edit...");
+        expect(shallow(<EditableText placeholder="Edit..." />).text()).toBe("Edit...");
     });
 
     it("cannot be edited when disabled", () => {
         const editable = shallow(<EditableText disabled={true} isEditing={true} />);
-        assert.isFalse(editable.state("isEditing"));
+        expect(editable.state("isEditing")).toBe(false);
     });
 
     it("allows resetting controlled value to undefined or null", () => {
         const editable = shallow(<EditableText isEditing={false} placeholder="placeholder" value="alphabet" />);
-        assert.strictEqual(editable.text(), "alphabet");
+        expect(editable.text()).toBe("alphabet");
         editable.setProps({ value: null });
-        assert.strictEqual(editable.text(), "placeholder");
+        expect(editable.text()).toBe("placeholder");
     });
 
     it("passes an ID to the underlying span", () => {
         const editable = shallow(<EditableText disabled={true} isEditing={true} contentId="my-id" />).find("span");
-        assert.strictEqual(editable.prop("id"), "my-id");
+        expect(editable.prop("id")).toBe("my-id");
     });
 
     describe("when editing", () => {
         it('renders <input type="text"> when editing', () => {
             const input = shallow(<EditableText isEditing={true} />).find("input");
-            assert.lengthOf(input, 1);
-            assert.strictEqual(input.prop("type"), "text");
+            expect(input).toHaveLength(1);
+            expect(input.prop("type")).toBe("text");
         });
 
         it("unrenders input when done editing", () => {
             const wrapper = shallow(<EditableText isEditing={true} placeholder="Edit..." value="alphabet" />);
-            assert.lengthOf(wrapper.find("input"), 1);
+            expect(wrapper.find("input")).toHaveLength(1);
             wrapper.setProps({ isEditing: false });
-            assert.lengthOf(wrapper.find("input"), 0);
+            expect(wrapper.find("input")).toHaveLength(0);
         });
 
         it("calls onChange when input is changed", () => {
-            const changeSpy = spy();
+            const changeSpy = vi.fn();
             const wrapper = mount(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />,
             );
@@ -76,23 +75,23 @@ describe("<EditableText>", () => {
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("change", { target: { value: " " } })
                 .simulate("change", { target: { value: "world" } });
-            assert.isTrue(changeSpy.calledThrice, "onChange not called thrice");
-            assert.deepEqual(changeSpy.args, [["hello"], [" "], ["world"]]);
+            expect(changeSpy).toHaveBeenCalledTimes(3);
+            expect(changeSpy.mock.calls).toEqual([["hello"], [" "], ["world"]]);
         });
 
         it("calls onChange when escape key pressed and value is unconfirmed", () => {
-            const changeSpy = spy();
+            const changeSpy = vi.fn();
             mount(<EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />)
                 .find("input")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { key: "Escape" });
-            assert.equal(changeSpy.callCount, 2, "onChange not called twice"); // change & escape
-            assert.deepEqual(changeSpy.args[1], ["alphabet"], `unexpected argument "${changeSpy.args[1][0]}"`);
+            expect(changeSpy).toHaveBeenCalledTimes(2); // change & escape
+            expect(changeSpy.mock.calls[1]).toEqual(["alphabet"]);
         });
 
         it("calls onCancel, does not call onConfirm, and reverts value when escape key pressed", () => {
-            const cancelSpy = spy();
-            const confirmSpy = spy();
+            const cancelSpy = vi.fn();
+            const confirmSpy = vi.fn();
 
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
@@ -105,15 +104,15 @@ describe("<EditableText>", () => {
                 .simulate("change", { target: { value: NEW_VALUE } })
                 .simulate("keydown", { key: "Escape" });
 
-            assert.isTrue(confirmSpy.notCalled, "onConfirm called");
-            assert.isTrue(cancelSpy.calledOnce, "onCancel not called once");
-            assert.isTrue(cancelSpy.calledWith(OLD_VALUE), `unexpected argument "${cancelSpy.args[0][0]}"`);
-            assert.strictEqual(component.state().value, OLD_VALUE, "did not revert to original value");
+            expect(confirmSpy).not.toHaveBeenCalled();
+            expect(cancelSpy).toHaveBeenCalledOnce();
+            expect(cancelSpy.mock.calls[0][0]).toBe(OLD_VALUE);
+            expect(component.state().value, "did not revert to original value").toBe(OLD_VALUE);
         });
 
         it("calls onConfirm, does not call onCancel, and saves value when enter key pressed", () => {
-            const cancelSpy = spy();
-            const confirmSpy = spy();
+            const cancelSpy = vi.fn();
+            const confirmSpy = vi.fn();
 
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
@@ -126,15 +125,15 @@ describe("<EditableText>", () => {
                 .simulate("change", { target: { value: NEW_VALUE } })
                 .simulate("keydown", { key: "Enter" });
 
-            assert.isTrue(cancelSpy.notCalled, "onCancel called");
-            assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
-            assert.isTrue(confirmSpy.calledWith(NEW_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
-            assert.strictEqual(component.state().value, NEW_VALUE, "did not save new value");
+            expect(cancelSpy).not.toHaveBeenCalled();
+            expect(confirmSpy).toHaveBeenCalledOnce();
+            expect(confirmSpy.mock.calls[0][0]).toBe(NEW_VALUE);
+            expect(component.state().value, "did not save new value").toBe(NEW_VALUE);
         });
 
         it("calls onConfirm when enter key pressed even if value didn't change", () => {
-            const cancelSpy = spy();
-            const confirmSpy = spy();
+            const cancelSpy = vi.fn();
+            const confirmSpy = vi.fn();
 
             const OLD_VALUE = "alphabet";
             const NEW_VALUE = "hello";
@@ -148,24 +147,24 @@ describe("<EditableText>", () => {
                 .simulate("change", { target: { value: OLD_VALUE } }) // revert
                 .simulate("keydown", { key: "Enter" });
 
-            assert.isTrue(cancelSpy.notCalled, "onCancel called");
-            assert.isTrue(confirmSpy.calledOnce, "onConfirm not called once");
-            assert.isTrue(confirmSpy.calledWith(OLD_VALUE), `unexpected argument "${confirmSpy.args[0][0]}"`);
+            expect(cancelSpy).not.toHaveBeenCalled();
+            expect(confirmSpy).toHaveBeenCalledOnce();
+            expect(confirmSpy.mock.calls[0][0]).toBe(OLD_VALUE);
         });
 
         it("calls onEdit when entering edit mode and passes the initial value to the callback", () => {
-            const editSpy = spy();
+            const editSpy = vi.fn();
             const INIT_VALUE = "hello";
             mount(<EditableText onEdit={editSpy} defaultValue={INIT_VALUE} />)
                 .find("div")
                 .simulate("focus");
-            assert.isTrue(editSpy.calledOnce, "onEdit called once");
-            assert.isTrue(editSpy.calledWith(INIT_VALUE), `unexpected argument "${editSpy.args[0][0]}"`);
+            expect(editSpy).toHaveBeenCalledOnce();
+            expect(editSpy.mock.calls[0][0]).toBe(INIT_VALUE);
         });
 
         it("stops editing when disabled", () => {
             const wrapper = mount(<EditableText isEditing={true} disabled={true} />);
-            assert.isFalse(wrapper.state("isEditing"));
+            expect(wrapper.state("isEditing")).toBe(false);
         });
 
         it("caret is placed at the end of the input box", () => {
@@ -173,8 +172,8 @@ describe("<EditableText>", () => {
             const containerElement = document.createElement("div");
             mount(<EditableText isEditing={true} value="alphabet" />, { attachTo: containerElement });
             const input = containerElement.querySelector<HTMLInputElement>("input")!;
-            assert.strictEqual(input.selectionStart, 8);
-            assert.strictEqual(input.selectionEnd, 8);
+            expect(input.selectionStart).toBe(8);
+            expect(input.selectionEnd).toBe(8);
         });
 
         it("controlled mode can only change value via props", () => {
@@ -184,20 +183,20 @@ describe("<EditableText>", () => {
 
             const input = wrapper.find("input");
             input.simulate("change", { target: { value: "hello" } });
-            assert.strictEqual(inputElement.value, expected, "controlled mode can only change via props");
+            expect(inputElement.value, "controlled mode can only change via props").toBe(expected);
 
             expected = "hello world";
             wrapper.setProps({ value: expected });
-            assert.strictEqual(inputElement.value, expected, "controlled mode should be changeable via props");
+            expect(inputElement.value, "controlled mode should be changeable via props").toBe(expected);
         });
 
         it("applies defaultValue only on initial render", () => {
             const wrapper = mount(<EditableText isEditing={true} defaultValue="default" placeholder="placeholder" />);
-            assert.strictEqual(wrapper.state("value"), "default");
+            expect(wrapper.state("value")).toBe("default");
             // type new value, then change a prop to cause re-render
             wrapper.find("input").simulate("change", { target: { value: "hello" } });
             wrapper.setProps({ placeholder: "new placeholder" });
-            assert.strictEqual(wrapper.state("value"), "hello");
+            expect(wrapper.state("value")).toBe("hello");
         });
 
         it("the full input box is highlighted when selectAllOnFocus is true", () => {
@@ -206,27 +205,27 @@ describe("<EditableText>", () => {
                 attachTo: containerElement,
             });
             const input = containerElement.querySelector<HTMLInputElement>("input")!;
-            assert.strictEqual(input.selectionStart, 0);
-            assert.strictEqual(input.selectionEnd, 8);
+            expect(input.selectionStart).toBe(0);
+            expect(input.selectionEnd).toBe(8);
         });
     });
 
     describe("multiline", () => {
         it("renders a <textarea> when editing", () => {
-            assert.lengthOf(mount(<EditableText isEditing={true} multiline={true} />).find("textarea"), 1);
+            expect(mount(<EditableText isEditing={true} multiline={true} />).find("textarea")).toHaveLength(1);
         });
 
         it("does not call onConfirm when enter key is pressed", () => {
-            const confirmSpy = spy();
+            const confirmSpy = vi.fn();
             mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />)
                 .find("textarea")
                 .simulate("change", { target: { value: "hello" } })
                 .simulate("keydown", { key: "Enter" });
-            assert.isTrue(confirmSpy.notCalled, "onConfirm called");
+            expect(confirmSpy).not.toHaveBeenCalled();
         });
 
         it("calls onConfirm when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
-            const confirmSpy = spy();
+            const confirmSpy = vi.fn();
             const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
             simulateHelper(wrapper, "control", { ctrlKey: true, key: "Enter" });
             act(() => {
@@ -249,51 +248,51 @@ describe("<EditableText>", () => {
                 key: "Enter",
                 preventDefault: (): void => undefined,
             });
-            assert.isFalse(wrapper.state("isEditing"));
-            assert.strictEqual(confirmSpy.callCount, 4, "onConfirm not called four times");
-            assert.strictEqual(confirmSpy.firstCall.args[0], "control");
-            assert.strictEqual(confirmSpy.secondCall.args[0], "meta");
-            assert.strictEqual(confirmSpy.thirdCall.args[0], "shift");
-            assert.strictEqual(confirmSpy.lastCall.args[0], "alt");
+            expect(wrapper.state("isEditing")).toBe(false);
+            expect(confirmSpy).toHaveBeenCalledTimes(4);
+            expect(confirmSpy.mock.calls[0][0]).toBe("control");
+            expect(confirmSpy.mock.calls[1][0]).toBe("meta");
+            expect(confirmSpy.mock.calls[2][0]).toBe("shift");
+            expect(confirmSpy.mock.calls[3][0]).toBe("alt");
         });
 
         it("confirmOnEnterKey={true} calls onConfirm when enter is pressed", () => {
-            const confirmSpy = spy();
+            const confirmSpy = vi.fn();
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             simulateHelper(wrapper, "control", { key: "Enter" });
-            assert.isFalse(wrapper.state("isEditing"));
-            assert.isTrue(confirmSpy.calledOnce, "onConfirm not called");
-            assert.strictEqual(confirmSpy.firstCall.args[0], "control");
+            expect(wrapper.state("isEditing")).toBe(false);
+            expect(confirmSpy).toHaveBeenCalledOnce();
+            expect(confirmSpy.mock.calls[0][0]).toBe("control");
         });
 
         it("confirmOnEnterKey={true} adds newline when cmd+, ctrl+, shift+, or alt+ enter is pressed", () => {
-            const confirmSpy = spy();
+            const confirmSpy = vi.fn();
             const wrapper = mount(
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             const textarea = wrapper.getDOMNode().querySelector<HTMLTextAreaElement>("textarea")!;
             simulateHelper(wrapper, "", { ctrlKey: true, key: "Enter", target: textarea });
-            assert.strictEqual(textarea.value, "\n");
+            expect(textarea.value).toBe("\n");
             simulateHelper(wrapper, "", { key: "Enter", metaKey: true, target: textarea });
-            assert.strictEqual(textarea.value, "\n");
+            expect(textarea.value).toBe("\n");
             simulateHelper(wrapper, "", {
                 key: "Enter",
                 preventDefault: (): void => undefined,
                 shiftKey: true,
                 target: textarea,
             });
-            assert.strictEqual(textarea.value, "\n");
+            expect(textarea.value).toBe("\n");
             simulateHelper(wrapper, "", {
                 altKey: true,
                 key: "Enter",
                 preventDefault: (): void => undefined,
                 target: textarea,
             });
-            assert.strictEqual(textarea.value, "\n");
-            assert.isTrue(wrapper.state("isEditing"));
-            assert.isTrue(confirmSpy.notCalled, "onConfirm called");
+            expect(textarea.value).toBe("\n");
+            expect(wrapper.state("isEditing")).toBe(true);
+            expect(confirmSpy).not.toHaveBeenCalled();
         });
 
         // fake interface because React's KeyboardEvent properties are not optional
@@ -323,18 +322,18 @@ describe("<EditableText>", () => {
             const wrapper = mount(
                 <EditableText isEditing={true} multiline={true} customInputAttributes={customProps} />,
             ).find("textarea");
-            assert.strictEqual(wrapper.prop("data-gramm"), "false");
-            assert.strictEqual(wrapper.prop("spellcheck"), "false");
-            assert.strictEqual(wrapper.prop("aria-label"), "Edit description");
+            expect(wrapper.prop("data-gramm")).toBe("false");
+            expect(wrapper.prop("spellcheck")).toBe("false");
+            expect(wrapper.prop("aria-label")).toBe("Edit description");
         });
 
         it("passes custom attributes to input when multiline is false", () => {
             const wrapper = mount(
                 <EditableText isEditing={true} multiline={false} customInputAttributes={customProps} />,
             ).find("input");
-            assert.strictEqual(wrapper.prop("data-gramm"), "false");
-            assert.strictEqual(wrapper.prop("spellcheck"), "false");
-            assert.strictEqual(wrapper.prop("aria-label"), "Edit description");
+            expect(wrapper.prop("data-gramm")).toBe("false");
+            expect(wrapper.prop("spellcheck")).toBe("false");
+            expect(wrapper.prop("aria-label")).toBe("Edit description");
         });
     });
 });

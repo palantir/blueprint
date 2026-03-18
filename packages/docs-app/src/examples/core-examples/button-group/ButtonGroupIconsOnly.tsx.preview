@@ -1,0 +1,6 @@
+<ButtonGroup role="group" aria-label="Text style">
+    <Button icon="bold" aria-label="Bold" />
+    <Button icon="italic" aria-label="Italic" />
+    <Button icon="underline" aria-label="Underline" />
+    <Button icon="strikethrough" aria-label="Strikethrough" />
+</ButtonGroup>

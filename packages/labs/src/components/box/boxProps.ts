@@ -130,6 +130,32 @@ export type Display =
 export type Flex = 1 | "1" | "auto" | "initial" | "none";
 
 /**
+ * The range of values shared by `flex-grow` and `flex-shrink`.
+ */
+type FlexGrowShrinkRange = 0 | 1;
+
+/**
+ * The range of values for `flex-grow`.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/flex-grow
+ */
+export type FlexGrow = FlexGrowShrinkRange | `${FlexGrowShrinkRange}`;
+
+/**
+ * The range of values for `flex-shrink`.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/flex-shrink
+ */
+export type FlexShrink = FlexGrowShrinkRange | `${FlexGrowShrinkRange}`;
+
+/**
+ * The range of values for `flex-basis`.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/CSS/flex-basis
+ */
+export type FlexBasis = "auto" | 0 | "0" | SizeRange | `${SizeRange}`;
+
+/**
  * The range of values for `flex-direction`.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/flex-direction
@@ -306,6 +332,12 @@ export interface BoxProps extends React.ComponentPropsWithoutRef<"div"> {
     display?: Display;
     /** CSS `flex` (shorthand for `flex-grow`, `flex-shrink`, `flex-basis`) */
     flex?: Flex;
+    /** CSS `flex-grow` */
+    flexGrow?: FlexGrow;
+    /** CSS `flex-shrink` */
+    flexShrink?: FlexShrink;
+    /** CSS `flex-basis` */
+    flexBasis?: FlexBasis;
     /** CSS `flex-direction` */
     flexDirection?: FlexDirection;
     /** CSS `flex-wrap` */

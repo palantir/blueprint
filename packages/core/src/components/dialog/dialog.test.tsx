@@ -21,7 +21,12 @@ import { createRef } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../..";
+import { Classes } from "../../common";
+import { Button } from "../button/buttons";
+
+import { Dialog, type DialogProps } from "./dialog";
+import { DialogBody } from "./dialogBody";
+import { DialogFooter } from "./dialogFooter";
 
 const COMMON_PROPS: DialogProps = {
     backdropProps: { role: "presentation" },
@@ -127,6 +132,26 @@ describe("<Dialog>", () => {
             const header = screen.getByText("Hello!");
             expect(header).toBeInTheDocument();
             expect(header.closest(`.${Classes.DIALOG_HEADER}`)).toBeInTheDocument();
+        });
+
+        it("should render header when title is an empty string", () => {
+            render(
+                <Dialog {...COMMON_PROPS} title="">
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            const dialog = screen.getByRole("dialog");
+            expect(dialog.querySelector(`.${Classes.DIALOG_HEADER}`)).toBeInTheDocument();
+        });
+
+        it("should not render header when title is null", () => {
+            render(
+                <Dialog {...COMMON_PROPS} title={null}>
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            const dialog = screen.getByRole("dialog");
+            expect(dialog.querySelector(`.${Classes.DIALOG_HEADER}`)).not.toBeInTheDocument();
         });
 
         it("should render and remove close button based on isCloseButtonShown", async () => {

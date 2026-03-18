@@ -5,7 +5,7 @@ The **Dialog** component presents content overlaid over other parts of the UI vi
 
 @## Import
 
-```tsx
+```ts copy
 import { Dialog } from "@blueprintjs/core";
 ```
 

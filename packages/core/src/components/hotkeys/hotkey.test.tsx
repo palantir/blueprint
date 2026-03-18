@@ -15,9 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { type SinonStub, stub } from "sinon";
 
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Hotkey } from "./";
 
@@ -28,15 +27,13 @@ describe("Hotkey", () => {
     });
 
     describe("validation", () => {
-        let consoleError: SinonStub;
-
-        beforeAll(() => (consoleError = stub(console, "error")));
-        afterEach(() => consoleError.resetHistory());
-        afterAll(() => consoleError.restore());
+        const consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
+        afterEach(() => consoleError.mockClear());
+        afterAll(() => consoleError.mockRestore());
 
         it("logs an error for non-global hotkey without a group", () => {
             render(<Hotkey combo="cmd+C" label="test copy me" />);
-            expect(consoleError.callCount).to.equal(1);
+            expect(consoleError.mock.calls.length).to.equal(1);
         });
     });
 });

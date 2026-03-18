@@ -36,6 +36,28 @@ root.render(
 );
 ```
 
+@## Usage with other providers
+
+If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest
+**HotkeysProvider** underneath them:
+
+```tsx
+import { HotkeysProvider } from "@blueprintjs/core";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([...]);
+
+function App() {
+    return (
+        <RouterProvider router={router}>
+            <HotkeysProvider>
+                <div>My app has hotkeys 😎</div>
+            </HotkeysProvider>
+        </RouterProvider>
+    );
+}
+```
+
 @## Advanced usage
 
 **HotkeysProvider** should not be nested, except in special cases. If you have a rendering boundary within your application

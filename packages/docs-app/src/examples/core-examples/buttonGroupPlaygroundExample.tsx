@@ -43,7 +43,6 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
     const [fill, setFill] = useState(false);
     const [iconOnly, setIconOnly] = useState(false);
     const [intent, setIntent] = useState<Intent>(Intent.NONE);
-    const [large, setLarge] = useState(false);
     const [size, setSize] = useState<Size>("medium");
     const [variant, setVariant] = useState<ButtonVariant>("solid");
     const [vertical, setVertical] = useState(false);
@@ -52,7 +51,6 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Props</H5>
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
-            <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
             <Switch
                 checked={vertical}
                 label="Vertical"

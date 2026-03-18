@@ -14,24 +14,21 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
-import { spy } from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-utils";
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import {
-    Button,
-    Classes,
-    Icon,
-    MenuItem,
-    type MenuItemProps,
-    type MenuProps,
-    Popover,
-    PopoverInteractionKind,
-    Text,
-} from "../..";
+import { Classes } from "../../common";
+import { Button } from "../button/buttons";
+import { Icon } from "../icon/icon";
+import { Popover } from "../popover/popover";
+import { PopoverInteractionKind } from "../popover/popoverProps";
+import { Text } from "../text/text";
+
+import { type MenuProps } from "./menu";
+import { MenuItem, type MenuItemProps } from "./menuItem";
 
 describe("MenuItem", () => {
     it("basic rendering", () => {
@@ -99,41 +96,42 @@ describe("MenuItem", () => {
     });
 
     it("disabled MenuItem blocks mouse listeners", () => {
-        const mouseSpy = spy();
+        const mouseSpy = vi.fn();
         mount(<MenuItem disabled={true} text="disabled" onClick={mouseSpy} onMouseEnter={mouseSpy} />)
             .simulate("click")
             .simulate("mouseenter")
             .simulate("click");
-        assert.strictEqual(mouseSpy.callCount, 0);
+        expect(mouseSpy).not.toHaveBeenCalled();
     });
 
     it("clicking MenuItem triggers onClick prop", () => {
-        const onClick = spy();
+        const onClick = vi.fn();
         shallow(<MenuItem text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
-        assert.isTrue(onClick.calledOnce);
+        expect(onClick).toHaveBeenCalledOnce();
     });
 
-    it("pressing enter on MenuItem triggers onClick prop", () => {
-        const containerElement = document.createElement("div");
-        document.documentElement.appendChild(containerElement);
-        const onClick = spy();
-        const wrapper = mount(<MenuItem text="Graph" onClick={onClick} />, { attachTo: containerElement });
-        dispatchTestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
-        assert.isTrue(onClick.calledOnce);
+    it("pressing enter on MenuItem triggers onClick prop", async () => {
+        const user = userEvent.setup();
+        const onClick = vi.fn();
+        render(<MenuItem text="Graph" onClick={onClick} />);
+        const menuItem = screen.getByRole("menuitem");
+        menuItem.focus();
+        await user.keyboard("{Enter}");
+        expect(onClick).toHaveBeenCalledOnce();
     });
 
     it("clicking disabled MenuItem does not trigger onClick prop", () => {
-        const onClick = spy();
+        const onClick = vi.fn();
         shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
             .find("a")
             .simulate("click");
-        assert.isTrue(onClick.notCalled);
+        expect(onClick).not.toHaveBeenCalled();
     });
 
     it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
-        const handleClose = spy();
+        const handleClose = vi.fn();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
             <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
@@ -141,7 +139,7 @@ describe("MenuItem", () => {
             </Popover>,
         );
         wrapper.find(MenuItem).find("a").simulate("click");
-        assert.isTrue(handleClose.notCalled);
+        expect(handleClose).not.toHaveBeenCalled();
     });
 
     it("submenuProps are forwarded to the Menu", () => {

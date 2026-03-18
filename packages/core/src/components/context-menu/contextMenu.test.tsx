@@ -17,24 +17,18 @@
 import classNames from "classnames";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef, useCallback } from "react";
-import { spy } from "sinon";
 
-import { afterAll, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import {
-    Classes,
-    ContextMenu,
-    type ContextMenuContentProps,
-    type ContextMenuProps,
-    Drawer,
-    Menu,
-    MenuItem,
-    Popover,
-    PopoverInteractionKind,
-    Tooltip,
-    type TooltipProps,
-    Utils,
-} from "../..";
+import { Classes, Utils } from "../../common";
+import { Drawer } from "../drawer/drawer";
+import { Menu } from "../menu/menu";
+import { MenuItem } from "../menu/menuItem";
+import { Popover } from "../popover/popover";
+import { PopoverInteractionKind } from "../popover/popoverProps";
+import { Tooltip, type TooltipProps } from "../tooltip/tooltip";
+
+import { ContextMenu, type ContextMenuContentProps, type ContextMenuProps } from "./contextMenu";
 
 // use a unique ID to avoid collisons with other tests
 const MENU_CLASSNAME = Utils.uniqueId("test-menu");
@@ -93,26 +87,26 @@ describe("ContextMenu", () => {
     describe("basic usage", () => {
         it("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
-            assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
-            assert.isTrue(ctxMenu.find(Popover).exists());
+            expect(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists()).toBe(true);
+            expect(ctxMenu.find(Popover).exists()).toBe(true);
         });
 
         it("opens popover on right click", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
-            assert.isTrue(ctxMenu.find(Popover).prop("isOpen"));
+            expect(ctxMenu.find(Popover).prop("isOpen")).toBe(true);
         });
 
         it("renders custom HTML tag if specified", () => {
             const ctxMenu = mountTestMenu({ tagName: "span" });
-            assert.isTrue(ctxMenu.find(`span.${Classes.CONTEXT_MENU}`).exists());
+            expect(ctxMenu.find(`span.${Classes.CONTEXT_MENU}`).exists()).toBe(true);
         });
 
         it("supports custom refs", () => {
             const ref = createRef<HTMLElement>();
             mountTestMenu({ className: "test-container", ref });
-            assert.isDefined(ref.current);
-            assert.isTrue(ref.current?.classList.contains("test-container"));
+            expect(ref.current).toBeDefined();
+            expect(ref.current?.classList.contains("test-container")).toBe(true);
         });
 
         it("closes popover on ESC key press", () => {
@@ -125,12 +119,12 @@ describe("ContextMenu", () => {
                     key: "Escape",
                     nativeEvent: new KeyboardEvent("keydown"),
                 });
-            assert.isFalse(ctxMenu.find(Popover).prop("isOpen"));
+            expect(ctxMenu.find(Popover).prop("isOpen")).toBe(false);
         });
 
         it("clicks inside popover don't propagate to context menu wrapper", () => {
-            const itemClickSpy = spy();
-            const wrapperClickSpy = spy();
+            const itemClickSpy = vi.fn();
+            const wrapperClickSpy = vi.fn();
             const ctxMenu = mountTestMenu({
                 content: (
                     <Menu>
@@ -141,8 +135,8 @@ describe("ContextMenu", () => {
             });
             openCtxMenu(ctxMenu);
             ctxMenu.find("[data-testid='item']").hostNodes().simulate("click");
-            assert.isTrue(itemClickSpy.calledOnce, "menu item click handler should be called once");
-            assert.isFalse(wrapperClickSpy.called, "ctx menu wrapper click handler should not be called");
+            expect(itemClickSpy).toHaveBeenCalledOnce();
+            expect(wrapperClickSpy).not.toHaveBeenCalled();
         });
 
         it("allows overrding some Popover props", () => {
@@ -153,10 +147,7 @@ describe("ContextMenu", () => {
             const popoverWithTopPlacement = document.querySelector(
                 `.${popoverClassName}.${Classes.POPOVER_CONTENT_PLACEMENT}-${placement}`,
             );
-            assert.exists(
-                popoverWithTopPlacement,
-                `popover element with custom class '${popoverClassName}' and '${placement}' placement should exist`,
-            );
+            expect(popoverWithTopPlacement).toBeDefined();
         });
 
         function mountTestMenu(props: Partial<ContextMenuProps> = {}) {
@@ -174,32 +165,32 @@ describe("ContextMenu", () => {
     describe("advanced usage (child render function API)", () => {
         it("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
-            assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
-            assert.isTrue(ctxMenu.find(Popover).exists());
+            expect(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists()).toBe(true);
+            expect(ctxMenu.find(Popover).exists()).toBe(true);
         });
 
         it("opens popover on right click", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
-            assert.isTrue(ctxMenu.find(Popover).prop("isOpen"));
+            expect(ctxMenu.find(Popover).prop("isOpen")).toBe(true);
         });
 
         it("handles context menu event, even if content is undefined", () => {
             const ctxMenu = mountTestMenu({ content: undefined });
             let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
-            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+            expect(clickedInfo.text().trim()).toBe(renderClickedInfo(undefined));
             openCtxMenu(ctxMenu);
             clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
-            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo({ left: 10, top: 10 }));
+            expect(clickedInfo.text().trim()).toBe(renderClickedInfo({ left: 10, top: 10 }));
         });
 
         it("does not handle context menu event when disabled={true}", () => {
             const ctxMenu = mountTestMenu({ disabled: true });
             let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
-            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+            expect(clickedInfo.text().trim()).toBe(renderClickedInfo(undefined));
             openCtxMenu(ctxMenu);
             clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
-            assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
+            expect(clickedInfo.text().trim()).toBe(renderClickedInfo(undefined));
         });
 
         function mountTestMenu(props?: Partial<ContextMenuProps>) {
@@ -230,20 +221,20 @@ describe("ContextMenu", () => {
         it("renders children and menu content, prevents default context menu handler", () =>
             new Promise<void>(done => {
                 const onContextMenu = (e: React.MouseEvent) => {
-                    assert.isTrue(e.defaultPrevented);
+                    expect(e.defaultPrevented).toBe(true);
                     done();
                 };
                 const wrapper = mountTestMenu({ onContextMenu });
-                assert.isTrue(wrapper.find(`.${TARGET_CLASSNAME}`).exists());
+                expect(wrapper.find(`.${TARGET_CLASSNAME}`).exists()).toBe(true);
                 openCtxMenu(wrapper);
-                assert.isTrue(wrapper.find(`.${MENU_CLASSNAME}`).exists());
+                expect(wrapper.find(`.${MENU_CLASSNAME}`).exists()).toBe(true);
                 closeCtxMenu(wrapper);
             }));
 
         it("triggers native context menu if content function returns undefined", () =>
             new Promise<void>(done => {
                 const onContextMenu = (e: React.MouseEvent) => {
-                    assert.isFalse(e.defaultPrevented);
+                    expect(e.defaultPrevented).toBe(false);
                     done();
                 };
                 const wrapper = mountTestMenu({
@@ -257,10 +248,10 @@ describe("ContextMenu", () => {
         it("updates menu if content prop value changes", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
-            assert.isTrue(ctxMenu.find(`.${MENU_CLASSNAME}`).exists());
-            assert.isFalse(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            expect(ctxMenu.find(`.${MENU_CLASSNAME}`).exists()).toBe(true);
+            expect(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists()).toBe(false);
             ctxMenu.setProps({ content: renderAlternativeContent });
-            assert.isTrue(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            expect(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists()).toBe(true);
         });
 
         it("updates menu if content render function return value changes", () => {
@@ -269,10 +260,10 @@ describe("ContextMenu", () => {
             });
             mountedWrappers.push(testMenu);
             openCtxMenu(testMenu);
-            assert.isTrue(testMenu.find(`.${MENU_CLASSNAME}`).exists());
-            assert.isFalse(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            expect(testMenu.find(`.${MENU_CLASSNAME}`).exists()).toBe(true);
+            expect(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists()).toBe(false);
             testMenu.setProps({ useAltContent: true });
-            assert.isTrue(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
+            expect(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists()).toBe(true);
         });
 
         function renderContent({ mouseEvent, targetOffset }: ContextMenuContentProps) {
@@ -324,10 +315,7 @@ describe("ContextMenu", () => {
 
             openCtxMenu(wrapper);
             const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
-            assert.isTrue(
-                ctxMenuPopover.hasClass(Classes.DARK),
-                "ContextMenu popover should be open WITH dark theme applied",
-            );
+            expect(ctxMenuPopover.hasClass(Classes.DARK)).toBe(true);
             closeCtxMenu(wrapper);
         });
 
@@ -344,10 +332,7 @@ describe("ContextMenu", () => {
             wrapper.setProps({ className: undefined });
             openCtxMenu(wrapper);
             const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
-            assert.isFalse(
-                ctxMenuPopover.hasClass(Classes.DARK),
-                "ContextMenu popover should be open WITHOUT dark theme applied",
-            );
+            expect(ctxMenuPopover.hasClass(Classes.DARK)).toBe(false);
             closeCtxMenu(wrapper);
         });
     });
@@ -366,10 +351,10 @@ describe("ContextMenu", () => {
 
                 openTooltip(wrapper);
                 openCtxMenu(wrapper);
-                assert.isTrue(
+                expect(
                     wrapper.find(ContextMenu).find(Popover).prop("isOpen"),
                     "ContextMenu popover should be open",
-                );
+                ).toBe(true);
                 assertTooltipClosed(wrapper);
                 closeCtxMenu(wrapper);
             });
@@ -386,10 +371,10 @@ describe("ContextMenu", () => {
 
                 openTooltip(wrapper);
                 openCtxMenu(wrapper);
-                assert.isTrue(
+                expect(
                     wrapper.find(ContextMenu).find(Popover).first().prop("isOpen"),
                     "ContextMenu popover should be open",
-                );
+                ).toBe(true);
                 // this assertion is difficult to unit test, but we know that the tooltip closes in manual testing,
                 // see https://github.com/palantir/blueprint/pull/4744
                 // assertTooltipClosed(wrapper);
@@ -397,13 +382,13 @@ describe("ContextMenu", () => {
             });
 
             function assertTooltipClosed(wrapper: ReactWrapper) {
-                assert.isFalse(
+                expect(
                     wrapper
                         .find(Popover)
                         .find({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
                         .state("isOpen"),
                     "Tooltip should be closed",
-                );
+                ).toBe(false);
             }
         });
 
@@ -414,25 +399,25 @@ describe("ContextMenu", () => {
                 it("closes tooltip when inner menu opens", () => {
                     const wrapper = mountTestCase();
                     openTooltip(wrapper);
-                    assert.lengthOf(wrapper.find(TOOLTIP_SELECTOR), 1, "tooltip should be open");
+                    expect(wrapper.find(TOOLTIP_SELECTOR), "tooltip should be open").toHaveLength(1);
                     openCtxMenu(wrapper);
                     assertTooltipClosed(wrapper);
                     const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
-                    assert.isTrue(ctxMenuPopover.exists(), "ContextMenu popover should be open");
-                    assert.isTrue(ctxMenuPopover.text().includes("first"), "inner ContextMenu should be open");
+                    expect(ctxMenuPopover.exists(), "ContextMenu popover should be open").toBe(true);
+                    expect(ctxMenuPopover.text().includes("first"), "inner ContextMenu should be open").toBe(true);
                     closeCtxMenu(wrapper);
                 });
 
                 it("closes tooltip when outer menu opens", () => {
                     const wrapper = mountTestCase();
                     openTooltip(wrapper, OUTER_TARGET_CLASSNAME);
-                    assert.lengthOf(wrapper.find(TOOLTIP_SELECTOR), 1, "tooltip should be open");
+                    expect(wrapper.find(TOOLTIP_SELECTOR), "tooltip should be open").toHaveLength(1);
                     openCtxMenu(wrapper, OUTER_TARGET_CLASSNAME);
                     // this assertion is difficult to test, but we know that the tooltip eventually does close in manual testing
                     // assertTooltipClosed(wrapper);
                     const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
-                    assert.isTrue(ctxMenuPopover.exists(), "ContextMenu popover should be open");
-                    assert.isTrue(ctxMenuPopover.text().includes("Align"), "outer ContextMenu should be open");
+                    expect(ctxMenuPopover.exists(), "ContextMenu popover should be open").toBe(true);
+                    expect(ctxMenuPopover.text().includes("Align"), "outer ContextMenu should be open").toBe(true);
                     closeCtxMenu(wrapper);
                 });
 
@@ -486,13 +471,13 @@ describe("ContextMenu", () => {
                 }
 
                 function assertTooltipClosed(wrapper: ReactWrapper) {
-                    assert.isFalse(
+                    expect(
                         wrapper
                             .find(Popover)
                             .find({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
                             .state("isOpen"),
                         "Tooltip should be closed",
-                    );
+                    ).toBe(false);
                 }
             });
 
@@ -505,19 +490,19 @@ describe("ContextMenu", () => {
                     const wrapper = mountTestCase();
                     wrapper.find(`.${OUTER_TARGET_CLASSNAME}`).simulate("mouseenter");
                     openTooltip(wrapper);
-                    assert.lengthOf(wrapper.find(`.${Classes.TOOLTIP}`), 1, "tooltip should be open");
+                    expect(wrapper.find(`.${Classes.TOOLTIP}`), "tooltip should be open").toHaveLength(1);
                     openCtxMenu(wrapper);
                     // this assertion is difficult to test, but we know that the tooltip eventually does close in manual testing
-                    assert.isFalse(
+                    expect(
                         wrapper
                             .find(Popover)
                             .find({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
                             .first()
                             .state("isOpen"),
                         "Tooltip should be closed",
-                    );
+                    ).toBe(false);
                     const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
-                    assert.isTrue(ctxMenuPopover.exists(), "ContextMenu popover should be open");
+                    expect(ctxMenuPopover.exists(), "ContextMenu popover should be open").toBe(true);
                     closeCtxMenu(wrapper);
                     wrapper.find(`.${OUTER_TARGET_CLASSNAME}`).simulate("mouseleave");
                 });
@@ -525,7 +510,7 @@ describe("ContextMenu", () => {
                 it("closes outer tooltip when menu opens (after hovering ctx menu target)", () => {
                     const wrapper = mountTestCase();
                     openTooltip(wrapper, CTX_MENU_CLASSNAME);
-                    assert.lengthOf(wrapper.find(`.${Classes.TOOLTIP}`), 1, "tooltip should be open");
+                    expect(wrapper.find(`.${Classes.TOOLTIP}`), "tooltip should be open").toHaveLength(1);
                     openCtxMenu(wrapper, CTX_MENU_CLASSNAME);
                     // this assertion is difficult to test, but we know that the tooltip eventually does close in manual testing
                     // assert.isFalse(
@@ -537,8 +522,8 @@ describe("ContextMenu", () => {
                     //     "Tooltip should be closed",
                     // );
                     const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
-                    assert.isTrue(ctxMenuPopover.exists(), "ContextMenu popover should be open");
-                    assert.isTrue(ctxMenuPopover.text().includes("Align"), "outer ContextMenu should be open");
+                    expect(ctxMenuPopover.exists(), "ContextMenu popover should be open").toBe(true);
+                    expect(ctxMenuPopover.text().includes("Align"), "outer ContextMenu should be open").toBe(true);
                     closeCtxMenu(wrapper);
                     wrapper.find(`.${OUTER_TARGET_CLASSNAME}`).simulate("mouseleave");
                 });
@@ -607,12 +592,12 @@ describe("ContextMenu", () => {
                 );
                 mountedWrappers.push(wrapper);
                 const target = wrapper.find(`.${TARGET_CLASSNAME}`).hostNodes();
-                assert.isTrue(target.exists(), "target should exist");
+                expect(target.exists(), "target should exist").toBe(true);
                 const nonExistentPopover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
-                assert.isFalse(
+                expect(
                     nonExistentPopover.exists(),
                     "ContextMenu popover should not be open before triggering contextmenu event",
-                );
+                ).toBe(false);
 
                 const targetRect = target.getDOMNode().getBoundingClientRect();
                 // right click on the target
@@ -624,7 +609,7 @@ describe("ContextMenu", () => {
                 };
                 target.simulate("contextmenu", simulateArgs);
                 const popover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
-                assert.isTrue(popover.exists(), "ContextMenu popover should be open");
+                expect(popover.exists(), "ContextMenu popover should be open").toBe(true);
             });
         });
 

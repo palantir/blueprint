@@ -4,7 +4,7 @@ The **Tabs** component allows you to switch between displaying multiple panels o
 
 @## Import
 
-```tsx
+```ts copy
 import { Tab, TabPanel, Tabs } from "@blueprintjs/core";
 ```
 

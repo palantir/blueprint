@@ -27,5 +27,5 @@ module.exports = {
 
     jsRules: {
         "blueprint-classes-constants": true,
-    }
+    },
 };

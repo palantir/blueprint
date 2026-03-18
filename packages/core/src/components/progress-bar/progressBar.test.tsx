@@ -14,24 +14,34 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, ProgressBar } from "../..";
+import { Classes } from "../../common";
+
+import { ProgressBar } from "./progressBar";
 
 describe("ProgressBar", () => {
     it("renders a PROGRESS_BAR", () => {
-        assert.lengthOf(mount(<ProgressBar />).find("." + Classes.PROGRESS_BAR), 1);
+        render(<ProgressBar />);
+        const progressBar = screen.getByRole("progressbar");
+        expect(progressBar).toHaveClass(Classes.PROGRESS_BAR);
     });
 
     it("does not set width by default", () => {
-        const root = mount(<ProgressBar />);
-        assert.isUndefined(root.find("." + Classes.PROGRESS_METER).prop("style")!.width);
+        render(<ProgressBar />);
+        const progressBar = screen.getByRole("progressbar");
+        const meter = progressBar.querySelector(`.${Classes.PROGRESS_METER}`);
+        expect(meter).toBeInTheDocument();
+        expect(meter).not.toHaveAttribute("style");
     });
 
     it("value sets width percentage", () => {
-        const root = mount(<ProgressBar value={0.35} />);
-        assert.strictEqual(root.find("." + Classes.PROGRESS_METER).prop("style")!.width, "35%");
+        render(<ProgressBar value={0.35} />);
+        const progressBar = screen.getByRole("progressbar");
+        const meter = progressBar.querySelector(`.${Classes.PROGRESS_METER}`);
+        expect(meter).toBeInTheDocument();
+        expect(meter).toHaveStyle({ width: "35%" });
     });
 });

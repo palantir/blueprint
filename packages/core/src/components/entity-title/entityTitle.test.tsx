@@ -14,96 +14,82 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, EntityTitle, H5 } from "../..";
+import { Classes } from "../../common";
 import { Tag } from "../../index";
+import { H5 } from "../html/html";
+
+import { EntityTitle } from "./entityTitle";
 
 describe("<EntityTitle>", () => {
-    let containerElement: HTMLElement;
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-
-    afterEach(() => {
-        containerElement.remove();
-    });
-
     it("supports className", () => {
-        const wrapper = mount(<EntityTitle className="foo" title="title" />, { attachTo: containerElement });
-        assert.isFalse(wrapper.find(H5).exists(), "expected no H5");
-        assert.isTrue(wrapper.find(`.foo`).exists());
+        const { container } = render(<EntityTitle className="foo" title="title" />);
+        expect(container.querySelector("h5")).not.toBeInTheDocument();
+        expect(container.querySelector(".foo")).toBeInTheDocument();
     });
 
     it("renders title", () => {
-        const wrapper = mount(<EntityTitle title="title" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_TITLE}`).exists());
+        render(<EntityTitle title="title" />);
+        const title = screen.getByText<HTMLDivElement>("title");
+        expect(title).toHaveClass(Classes.ENTITY_TITLE_TITLE);
     });
 
     it("renders title in heading", () => {
-        const wrapper = mount(<EntityTitle heading={H5} title="title" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(H5).exists());
-        assert.strictEqual(wrapper.find(H5).text(), "title");
+        render(<EntityTitle heading={H5} title="title" />);
+        const title = screen.getByText<HTMLHeadingElement>("title");
+        expect(title.tagName.toLowerCase()).toBe("h5");
     });
 
     it("supports icon", () => {
-        const wrapper = mount(<EntityTitle icon={IconNames.GRAPH} title="title" />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
+        const { container } = render(<EntityTitle icon="graph" title="title" />);
+        expect(container.querySelector(`[data-icon="graph"]`)).toBeInTheDocument();
     });
 
     it("omitting icon prop removes icon from DOM", () => {
-        const wrapper = mount(<EntityTitle title="title" />, { attachTo: containerElement });
-        assert.isFalse(wrapper.find(`[data-icon]`).exists());
+        const { container } = render(<EntityTitle title="title" />);
+        expect(container.querySelector("[data-icon]")).not.toBeInTheDocument();
     });
 
     it("supports tag", () => {
-        const wrapper = mount(<EntityTitle title="title" tags={<Tag>Tag</Tag>} />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_TAGS_CONTAINER}`).exists());
+        render(<EntityTitle title="title" tags={<Tag>tag</Tag>} />);
+        expect(screen.getByText("tag")).toBeInTheDocument();
     });
 
     it("renders optional subtitle element", () => {
-        const wrapper = mount(<EntityTitle title="title" subtitle="subtitle" />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_SUBTITLE}`).exists());
+        render(<EntityTitle title="title" subtitle="subtitle" />);
+        expect(screen.getByText("subtitle")).toBeInTheDocument();
     });
 
-    it("renders titleURL in an anchor", () => {
-        const wrapper = mount(<EntityTitle title="title" titleURL="https://blueprintjs.com/" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`a[href="https://blueprintjs.com/"]`).exists());
-        assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_TITLE}`).exists());
+    it("renders title in an anchor", () => {
+        render(<EntityTitle title="title" titleURL="https://blueprintjs.com/" />);
+        const title = screen.getByText<HTMLAnchorElement>("title");
+        expect(title.tagName.toLowerCase()).toBe("a");
+        expect(title).toHaveAttribute("href", "https://blueprintjs.com/");
     });
 
     it("supports ellipsize on Text", () => {
-        const wrapper = mount(<EntityTitle title="title" ellipsize={true} />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).exists());
+        render(<EntityTitle title="title" ellipsize={true} />);
+        const title = screen.getByText<HTMLDivElement>("title");
+        expect(title).toHaveClass(Classes.TEXT_OVERFLOW_ELLIPSIS);
     });
 
     it("supports ellipsize on heading", () => {
-        const wrapper = mount(<EntityTitle title="title" ellipsize={true} heading={H5} />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(H5).hasClass(Classes.TEXT_OVERFLOW_ELLIPSIS));
+        render(<EntityTitle title="title" ellipsize={true} heading={H5} />);
+        const title = screen.getByText<HTMLHeadingElement>("title");
+        expect(title).toHaveClass(Classes.TEXT_OVERFLOW_ELLIPSIS);
     });
 
     it("supports fill", () => {
-        const wrapper = mount(<EntityTitle title="title" fill={true} />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`.${Classes.FILL}`).exists());
+        const { container } = render(<EntityTitle title="title" fill={true} />);
+        expect(container.querySelector(`.${Classes.FILL}`)).toBeInTheDocument();
     });
 
     it("supports loading", () => {
-        const wrapper = mount(<EntityTitle title="title" loading={true} />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`.${Classes.SKELETON}`).exists());
+        render(<EntityTitle title="title" loading={true} />);
+        const title = screen.getByText<HTMLDivElement>("title");
+        expect(title).toHaveClass(Classes.SKELETON);
     });
 });

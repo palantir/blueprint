@@ -16,38 +16,40 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Breadcrumb, Classes } from "../..";
-import { hasClass } from "../../common/test-utils";
+import { Classes } from "../../common";
+
+import { Breadcrumb } from "./breadcrumb";
 
 describe("<Breadcrumb>", () => {
     it("should render its contents", () => {
         render(<Breadcrumb className="foo" text="Test" />);
         const breadcrumb = screen.getByText("Test");
 
-        expect(hasClass(breadcrumb, Classes.BREADCRUMB)).to.be.true;
-        expect(hasClass(breadcrumb, "foo")).to.be.true;
+        expect(breadcrumb).toHaveClass(Classes.BREADCRUMB);
+        expect(breadcrumb).toHaveClass("foo");
     });
 
     it("should trigger onClick when clicked", async () => {
-        const onClick = spy();
+        const user = userEvent.setup();
+        const onClick = vi.fn();
         render(<Breadcrumb onClick={onClick} text="Test" />);
 
-        await userEvent.click(screen.getByText("Test"));
+        await user.click(screen.getByText("Test"));
 
-        expect(onClick.calledOnce).to.be.true;
+        expect(onClick).toHaveBeenCalledOnce();
     });
 
     it("should not trigger onClick when disabled and clicked", async () => {
-        const onClick = spy();
+        const user = userEvent.setup();
+        const onClick = vi.fn();
         render(<Breadcrumb disabled={true} onClick={onClick} text="Test" />);
 
-        await userEvent.click(screen.getByText("Test"));
+        await user.click(screen.getByText("Test"));
 
-        expect(onClick.notCalled).to.be.true;
+        expect(onClick).not.toHaveBeenCalled();
     });
 
     it("should render an a tag when clickable", () => {

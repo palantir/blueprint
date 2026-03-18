@@ -15,36 +15,45 @@
  */
 
 import { mount } from "enzyme";
-import { type SinonStub, stub } from "sinon";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
-import { afterEach, assert, beforeAll, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeAll, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Icon, type IconProps, Intent } from "../..";
+import { Classes, Intent } from "../../common";
+
+import { Icon, type IconProps } from "./icon";
 
 describe("<Icon>", () => {
-    let iconLoader: SinonStub;
+    let iconLoader: MockInstance;
 
     beforeAll(() => {
-        stub(Icons, "load").resolves(undefined);
+        vi.spyOn(Icons, "load").mockResolvedValue(undefined);
         // stub the dynamic icon loader with a synchronous, static one
-        iconLoader = stub(Icons, "getPaths");
-        iconLoader.returns(undefined);
-        iconLoader.withArgs("add").returns(Add);
-        iconLoader.withArgs("airplane").returns(Airplane);
-        iconLoader.withArgs("calendar").returns(Calendar);
-        iconLoader.withArgs("graph").returns(Graph);
+        iconLoader = vi.spyOn(Icons, "getPaths").mockImplementation((name: string) => {
+            switch (name) {
+                case "add":
+                    return Add;
+                case "airplane":
+                    return Airplane;
+                case "calendar":
+                    return Calendar;
+                case "graph":
+                    return Graph;
+                default:
+                    return undefined;
+            }
+        });
     });
 
     afterEach(() => {
-        iconLoader?.resetHistory();
+        iconLoader?.mockClear();
     });
 
     it("tagName dictates HTML tag", async () => {
         const wrapper = mount(<Icon icon="calendar" tagName="i" />);
         wrapper.update();
-        assert.isTrue(wrapper.find("i").exists());
+        expect(wrapper.find("i").exists()).toBe(true);
     });
 
     it("size=16 renders standard size", async () =>
@@ -55,7 +64,7 @@ describe("<Icon>", () => {
 
     it("renders intent class", async () => {
         const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);
-        assert.isTrue(wrapper.find(`.${Classes.INTENT_DANGER}`).exists());
+        expect(wrapper.find(`.${Classes.INTENT_DANGER}`).exists()).toBe(true);
     });
 
     it.skip("renders icon name", async () => {
@@ -73,13 +82,13 @@ describe("<Icon>", () => {
     it("unknown icon name renders blank icon", async () => {
         const wrapper = mount(<Icon icon={"unknown" as any} />);
         wrapper.update();
-        assert.lengthOf(wrapper.find("path"), 0);
+        expect(wrapper.find("path")).toHaveLength(0);
     });
 
     it("prefixed icon renders blank icon", async () => {
         const wrapper = mount(<Icon icon={Classes.iconClass("airplane") as any} />);
         wrapper.update();
-        assert.lengthOf(wrapper.find("path"), 0);
+        expect(wrapper.find("path")).toHaveLength(0);
     });
 
     it("icon element passes through unchanged", async () => {
@@ -88,30 +97,30 @@ describe("<Icon>", () => {
         const onClick = () => true;
         const wrapper = mount(<Icon icon={<article onClick={onClick} />} />);
         wrapper.update();
-        assert.isTrue(wrapper.childAt(0).is("article"));
-        assert.strictEqual(wrapper.find("article").prop("onClick"), onClick);
+        expect(wrapper.childAt(0).is("article")).toBe(true);
+        expect(wrapper.find("article").prop("onClick")).toBe(onClick);
     });
 
     it("icon=undefined renders nothing", async () => {
         const wrapper = mount(<Icon icon={undefined} />);
         wrapper.update();
-        assert.isTrue(wrapper.isEmptyRender());
+        expect(wrapper.isEmptyRender()).toBe(true);
     });
 
     it("title sets content of <title> element", async () => {
         const wrapper = mount(<Icon icon="airplane" title="bird" />);
         wrapper.update();
-        assert.equal(wrapper.find("title").text(), "bird");
+        expect(wrapper.find("title").text()).toBe("bird");
     });
 
     it("does not add desc if title is not provided", () => {
         const icon = mount(<Icon icon="airplane" />);
-        assert.isEmpty(icon.find("desc"));
+        expect(icon.find("desc")).toHaveLength(0);
     });
 
     it("applies aria-hidden=true if title is not defined", () => {
         const icon = mount(<Icon icon="airplane" />);
-        assert.isTrue(icon.find(`.${Classes.ICON}`).hostNodes().prop("aria-hidden"));
+        expect(icon.find(`.${Classes.ICON}`).hostNodes().prop("aria-hidden")).toBe(true);
     });
 
     it("supports mouse event handlers of type React.MouseEventHandler", () => {
@@ -131,15 +140,15 @@ describe("<Icon>", () => {
     it("allows specifying the root element as <svg> when tagName={null}", () => {
         const handleClick: React.MouseEventHandler<SVGSVGElement> = () => undefined;
         const wrapper = mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
-        assert.isFalse(wrapper.find("span").exists());
+        expect(wrapper.find("span").exists()).toBe(false);
     });
 
     /** Asserts that rendered icon has an SVG path. */
     async function assertIconHasPath(icon: React.ReactElement<IconProps>, iconName: IconName) {
         const wrapper = mount(icon);
         wrapper.update();
-        assert.strictEqual(wrapper.text(), iconName);
-        assert.isAbove(wrapper.find("path").length, 0, "should find at least one path element");
+        expect(wrapper.text()).toBe(iconName);
+        expect(wrapper.find("path").length, "should find at least one path element").toBeGreaterThan(0);
     }
 
     /** Asserts that rendered icon has width/height equal to size. */
@@ -147,8 +156,8 @@ describe("<Icon>", () => {
         const wrapper = mount(icon);
         wrapper.update();
         const svg = wrapper.find("svg");
-        assert.strictEqual(svg.prop("width"), size);
-        assert.strictEqual(svg.prop("height"), size);
+        expect(svg.prop("width")).toBe(size);
+        expect(svg.prop("height")).toBe(size);
     }
 
     /** Asserts that rendered icon has color equal to color. */
@@ -156,6 +165,6 @@ describe("<Icon>", () => {
         const wrapper = mount(icon);
         wrapper.update();
         const svg = wrapper.find("svg");
-        assert.deepEqual(svg.prop("fill"), color);
+        expect(svg.prop("fill")).toEqual(color);
     }
 });
