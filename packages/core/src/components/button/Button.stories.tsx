@@ -3,7 +3,6 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
