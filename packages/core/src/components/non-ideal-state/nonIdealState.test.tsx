@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { H4 } from "../html/html";
 
 import { NonIdealState } from "./nonIdealState";
 
 describe("<NonIdealState>", () => {
     it("renders its contents", () => {
-        const wrapper = shallow(
+        const { container } = render(
             <NonIdealState
                 action={<p>More text!</p>}
                 description="An error occurred."
@@ -33,21 +32,22 @@ describe("<NonIdealState>", () => {
                 icon="folder-close"
             />,
         );
-        assert.exists(wrapper.find(H4), "missing H4");
-        [Classes.NON_IDEAL_STATE_VISUAL, Classes.ICON_MUTED, Classes.NON_IDEAL_STATE].forEach(className => {
-            assert.exists(wrapper.find(`.${className}`), `missing ${className}`);
-        });
+        expect(container.querySelector("h4")).toBeInTheDocument();
+        for (const className of [Classes.NON_IDEAL_STATE_VISUAL, Classes.ICON_MUTED, Classes.NON_IDEAL_STATE]) {
+            expect(container.querySelector(`.${className}`)).toBeInTheDocument();
+        }
     });
 
     it("does not apply icon muted style", () => {
-        const wrapper = shallow(<NonIdealState title="ERROR" icon="folder-close" iconMuted={false} />);
-        assert.isFalse(wrapper.find(`.${Classes.ICON_MUTED}`).exists(), `unexpected ${Classes.ICON_MUTED}`);
+        const { container } = render(<NonIdealState title="ERROR" icon="folder-close" iconMuted={false} />);
+        expect(container.querySelector(`.${Classes.ICON_MUTED}`)).not.toBeInTheDocument();
     });
 
     it("ensures description is wrapped in an element", () => {
-        const wrapper = shallow(<NonIdealState action={<strong />} description="foo" />);
-        const div = wrapper.find(`.${Classes.NON_IDEAL_STATE_TEXT}`).children().find("div");
-        assert.lengthOf(div, 1);
-        assert.strictEqual(div.text(), "foo");
+        const { container } = render(<NonIdealState action={<strong />} description="foo" />);
+        const textContainer = container.querySelector(`.${Classes.NON_IDEAL_STATE_TEXT}`)!;
+        const divs = textContainer.querySelectorAll("div");
+        expect(divs).toHaveLength(1);
+        expect(divs[0].textContent).toBe("foo");
     });
 });

@@ -14,127 +14,101 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { H5, H6 } from "../html/html";
 
 import { Section } from "./section";
 import { SectionCard } from "./sectionCard";
 
 describe("<Section>", () => {
-    let containerElement: HTMLElement;
-
     const isOpenSelector = `[data-icon="${IconNames.CHEVRON_UP}"]`;
     const isClosedSelector = `[data-icon="${IconNames.CHEVRON_DOWN}"]`;
 
-    const assertIsOpen = (wrapper: ReactWrapper) => {
-        assert.isTrue(wrapper.find(isOpenSelector).exists());
+    const assertIsOpen = (container: HTMLElement) => {
+        expect(container.querySelector(isOpenSelector)).toBeInTheDocument();
     };
 
-    const assertIsClosed = (wrapper: ReactWrapper) => {
-        assert.isTrue(wrapper.find(isClosedSelector).exists());
+    const assertIsClosed = (container: HTMLElement) => {
+        expect(container.querySelector(isClosedSelector)).toBeInTheDocument();
     };
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-
-    afterEach(() => {
-        containerElement.remove();
-    });
 
     it("supports className", () => {
-        const wrapper = mount(<Section className="foo" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`.${Classes.SECTION}`).hostNodes().exists());
-        assert.isTrue(wrapper.find(`.foo`).hostNodes().exists());
+        const { container } = render(<Section className="foo" />);
+        const section = container.querySelector(`.${Classes.SECTION}`)!;
+        expect(section).toBeInTheDocument();
+        expect(section).toHaveClass("foo");
     });
 
     it("supports icon", () => {
-        const wrapper = mount(<Section icon={IconNames.GRAPH} title="title" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
+        const { container } = render(<Section icon={IconNames.GRAPH} title="title" />);
+        expect(container.querySelector(`[data-icon="${IconNames.GRAPH}"]`)).toBeInTheDocument();
     });
 
     it("renders optional title element", () => {
-        const wrapper = mount(<Section title="title" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(H6).exists());
+        const { container } = render(<Section title="title" />);
+        expect(container.querySelector("h6")).toBeInTheDocument();
     });
 
     it("renders optional sub-title element", () => {
-        const wrapper = mount(<Section title="title" subtitle="subtitle" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`.${Classes.SECTION_HEADER_SUB_TITLE}`).hostNodes().exists());
+        const { container } = render(<Section title="title" subtitle="subtitle" />);
+        expect(container.querySelector(`.${Classes.SECTION_HEADER_SUB_TITLE}`)).toBeInTheDocument();
     });
 
     it("renders custom title element with titleRenderer", () => {
-        const wrapper = mount(<Section title="title" titleRenderer={H5} />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(H5).exists());
+        const { container } = render(<Section title="title" titleRenderer="h5" />);
+        expect(container.querySelector("h5")).toBeInTheDocument();
     });
 
     describe("uncontrolled collapse mode", () => {
         it("collapsible is open when defaultIsOpen={undefined}", () => {
-            const wrapper = mount(
+            const { container } = render(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }} title="Test">
                     <SectionCard>is open</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsOpen(wrapper);
+            assertIsOpen(container);
         });
 
         it("collapsible is open when defaultIsOpen={true}", () => {
-            const wrapper = mount(
+            const { container } = render(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: true }} title="Test">
                     <SectionCard>is open</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsOpen(wrapper);
+            assertIsOpen(container);
         });
 
         it("collapsible is closed when defaultIsOpen={false}", () => {
-            const wrapper = mount(
+            const { container } = render(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: false }} title="Test">
                     <SectionCard>is closed</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsClosed(wrapper);
+            assertIsClosed(container);
         });
     });
 
     describe("controlled collapse mode", () => {
         it("collapsible is open when isOpen={true}", () => {
-            const wrapper = mount(
+            const { container } = render(
                 <Section collapsible={true} collapseProps={{ isOpen: true }} title="Test">
                     <SectionCard>is open</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsOpen(wrapper);
+            assertIsOpen(container);
         });
 
         it("collapsible is closed when isOpen={false}", () => {
-            const wrapper = mount(
+            const { container } = render(
                 <Section collapsible={true} collapseProps={{ isOpen: false }} title="Test">
                     <SectionCard>is closed</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsClosed(wrapper);
+            assertIsClosed(container);
         });
     });
 });

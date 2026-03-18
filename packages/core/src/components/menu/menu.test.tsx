@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { shallow } from "enzyme";
+import { render, within } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { H6 } from "../html/html";
 
 import { Menu } from "./menu";
 import { MenuDivider } from "./menuDivider";
@@ -27,28 +26,31 @@ import { MenuItem } from "./menuItem";
 
 describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {
-        const divider = shallow(<MenuDivider />);
-        assert.isTrue(divider.hasClass(Classes.MENU_DIVIDER));
-        assert.isFalse(divider.hasClass(Classes.MENU_HEADER));
-        assert.isFalse(divider.find(H6).exists());
+        const { container } = render(<MenuDivider />);
+        const divider = container.querySelector("li")!;
+        expect(divider).toHaveClass(Classes.MENU_DIVIDER);
+        expect(divider).not.toHaveClass(Classes.MENU_HEADER);
+        expect(divider.querySelector("h6")).not.toBeInTheDocument();
     });
 
     it("React renders MenuDivider with title", () => {
-        const divider = shallow(<MenuDivider title="Subject" />);
-        assert.isFalse(divider.hasClass(Classes.MENU_DIVIDER));
-        assert.isTrue(divider.hasClass(Classes.MENU_HEADER));
-        assert.isTrue(divider.find(H6).exists());
+        const { container } = render(<MenuDivider title="Subject" />);
+        const divider = container.querySelector("li")!;
+        expect(divider).not.toHaveClass(Classes.MENU_DIVIDER);
+        expect(divider).toHaveClass(Classes.MENU_HEADER);
+        expect(divider.querySelector("h6")).toBeInTheDocument();
     });
 });
 
 describe("<Menu>", () => {
     it("React renders Menu with children", () => {
-        const menu = shallow(
+        const { container } = render(
             <Menu>
                 <MenuItem icon="graph" text="Graph" />
             </Menu>,
         );
-        assert.isTrue(menu.hasClass(Classes.MENU));
-        assert.lengthOf(menu.find(MenuItem), 1);
+        const menu = container.querySelector(`.${Classes.MENU}`)!;
+        expect(menu).toBeInTheDocument();
+        expect(within(menu as HTMLElement).getAllByRole("menuitem")).toHaveLength(1);
     });
 });
