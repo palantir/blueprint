@@ -3,7 +3,7 @@
  */
 
 import classNames from "classnames";
-import { Children, cloneElement, createElement, forwardRef, useCallback, useMemo } from "react";
+import { Children, cloneElement, createElement, forwardRef, useCallback, useMemo, useRef } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
 import { PopoverInteractionKind } from "../popover/popoverProps";
@@ -37,12 +37,15 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     const tagName = fill ? "div" : targetTagName;
     const { isOpen } = floatingData;
 
-    // Wrap setReference to skip null calls, preventing floating-ui state updates during
-    // React's ref cleanup cycle that would otherwise cause infinite re-renders. See #7857.
+    // Deduplicate setReference calls so that React's ref cleanup cycle (null → node)
+    // does not trigger floating-ui state updates when the node hasn't actually changed,
+    // which would otherwise cause infinite re-renders. See #7857.
     const { setReference } = floatingData.refs;
+    const lastNodeRef = useRef<HTMLElement | null>(null);
     const safeSetReference = useCallback(
         (node: HTMLElement | null) => {
-            if (node !== null) {
+            if (node !== lastNodeRef.current) {
+                lastNodeRef.current = node;
                 setReference(node);
             }
         },
