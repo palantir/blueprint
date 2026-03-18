@@ -86,6 +86,7 @@
     "author": "Palantir Technologies",
     "license": "Apache-2.0",
     "devDependencies": {
+        "@storybook/addon-a11y": "^10.3.0",
         "@storybook/icons": "^2.0.1",
         "@storybook/react-dom-shim": "^10.2.14",
         "@storybook/react-vite": "^10.2.14",
