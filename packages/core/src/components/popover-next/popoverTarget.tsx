@@ -39,13 +39,14 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
 
     // Wrap setReference to skip null calls, preventing floating-ui state updates during
     // React's ref cleanup cycle that would otherwise cause infinite re-renders. See #7857.
+    const { setReference } = floatingData.refs;
     const safeSetReference = useCallback(
         (node: HTMLElement | null) => {
             if (node !== null) {
-                floatingData.refs.setReference(node);
+                setReference(node);
             }
         },
-        [floatingData.refs],
+        [setReference],
     );
     const ref = useMemo(() => mergeRefs(safeSetReference, targetRef), [safeSetReference, targetRef]);
 
