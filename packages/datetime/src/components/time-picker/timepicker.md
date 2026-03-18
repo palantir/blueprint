@@ -6,7 +6,7 @@ This component has no direct localization support. You should handle localizatio
 
 @## Import
 
-```tsx
+```ts copy
 import { TimePicker } from "@blueprintjs/datetime";
 ```
 

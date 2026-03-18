@@ -1,0 +1,3 @@
+<CompoundTag leftContent="City" icon="globe">London</CompoundTag>
+<CompoundTag leftContent="City" endIcon="map-marker">Seattle</CompoundTag>
+<CompoundTag leftContent="City" icon="globe" endIcon="map-marker">New York</CompoundTag>

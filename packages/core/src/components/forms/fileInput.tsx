@@ -64,7 +64,7 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
      * __Note:__ The top-level `onChange` prop is passed to the `<label>` element rather than the `<input>`,
      * which may not be what you expect.
      */
-    onInputChange?: React.FormEventHandler<HTMLInputElement>;
+    onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
 
     /**
      * Whether the file input should appear with small styling.
@@ -139,7 +139,7 @@ export const FileInput = (props: FileInputProps) => {
         }),
     } satisfies React.HTMLProps<HTMLElement>;
 
-    const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onInputChange?.(e);
         inputProps?.onChange?.(e);
     };

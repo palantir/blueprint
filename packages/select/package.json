@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/select",
-    "version": "6.1.0",
+    "version": "6.1.4",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -17,9 +17,9 @@
     "scripts": {
         "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
-        "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
-        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "compile:esm": "tsc -p ./src/tsconfig.build.json",
+        "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src/tsconfig.build.json -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
@@ -31,7 +31,7 @@
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "run-s test:typeCheck test:iso test:karma",
         "test:typeCheck": "tsc -p ./test",
-        "test:iso": "mocha test/isotest.mjs",
+        "test:iso": "mocha src/isotest.mjs",
         "test:karma": "karma start",
         "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
         "verify": "npm-run-all compile -p dist test lint"
@@ -66,7 +66,7 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
-        "typescript": "~5.3.3",
+        "typescript": "~5.9.3",
         "webpack-cli": "^5.1.4"
     },
     "repository": {

@@ -3,9 +3,9 @@
  */
 
 import classNames from "classnames";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { Button, Classes, Pre, Tooltip } from "@blueprintjs/core";
+import { Button, type ButtonVariant, Classes, Pre, Tooltip } from "@blueprintjs/core";
 
 import { useTheme } from "../common";
 import { DOCS_CODE_BLOCK } from "../common/classes";
@@ -133,14 +133,29 @@ function CodeMinimizeButton({ isMinimized, onClick }: { isMinimized: boolean; on
     );
 }
 
-function CopyToClipboardButton({ text }: { text: string }) {
-    const onClick = useCallback(() => {
-        navigator.clipboard.writeText(text);
+export function CopyToClipboardButton({ text, variant }: { text: string; variant?: ButtonVariant }) {
+    const [copied, setCopied] = useState(false);
+    const timeoutRef = useRef<ReturnType<typeof setTimeout>>();
+
+    useEffect(() => {
+        return () => clearTimeout(timeoutRef.current);
+    }, []);
+
+    const handleClick = useCallback(() => {
+        void navigator.clipboard.writeText(text);
+        setCopied(true);
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = setTimeout(() => setCopied(false), 1500);
     }, [text]);
 
     return (
-        <Tooltip content="Copy to clipboard" hoverOpenDelay={300} position="top">
-            <Button aria-label="Copy to clipboard" icon="duplicate" onClick={onClick} />
+        <Tooltip content={copied ? "Copied!" : "Copy to clipboard"} hoverOpenDelay={300} position="top">
+            <Button
+                aria-label="Copy code snippet to clipboard"
+                icon={copied ? "tick" : "duplicate"}
+                onClick={handleClick}
+                variant={variant}
+            />
         </Tooltip>
     );
 }

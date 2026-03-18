@@ -7,9 +7,18 @@ import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 import ButtonGroupBasic from "./button-group/ButtonGroupBasic";
 import buttonGroupBasicPreview from "./button-group/ButtonGroupBasic.tsx.preview?raw";
 import buttonGroupBasicCode from "./button-group/ButtonGroupBasic.tsx?raw";
+import ButtonGroupFill from "./button-group/ButtonGroupFill";
+import buttonGroupFillPreview from "./button-group/ButtonGroupFill.tsx.preview?raw";
+import buttonGroupFillCode from "./button-group/ButtonGroupFill.tsx?raw";
 import ButtonGroupFlex from "./button-group/ButtonGroupFlex";
 import buttonGroupFlexPreview from "./button-group/ButtonGroupFlex.tsx.preview?raw";
 import buttonGroupFlexCode from "./button-group/ButtonGroupFlex.tsx?raw";
+import ButtonGroupIconsOnly from "./button-group/ButtonGroupIconsOnly";
+import buttonGroupIconsOnlyPreview from "./button-group/ButtonGroupIconsOnly.tsx.preview?raw";
+import buttonGroupIconsOnlyCode from "./button-group/ButtonGroupIconsOnly.tsx?raw";
+import ButtonGroupIconsWithTooltips from "./button-group/ButtonGroupIconsWithTooltips";
+import buttonGroupIconsWithTooltipsPreview from "./button-group/ButtonGroupIconsWithTooltips.tsx.preview?raw";
+import buttonGroupIconsWithTooltipsCode from "./button-group/ButtonGroupIconsWithTooltips.tsx?raw";
 import ButtonGroupIntent from "./button-group/ButtonGroupIntent";
 import buttonGroupIntentPreview from "./button-group/ButtonGroupIntent.tsx.preview?raw";
 import buttonGroupIntentCode from "./button-group/ButtonGroupIntent.tsx?raw";
@@ -86,6 +95,18 @@ export const ButtonGroupSizeExample: React.FC<ExampleProps> = props => {
     );
 };
 
+export const ButtonGroupFillExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={buttonGroupFillPreview}
+            sourceCode={buttonGroupFillCode}
+            {...props}
+        >
+            <ButtonGroupFill />
+        </CodeExample>
+    );
+};
+
 export const ButtonGroupFlexExample: React.FC<ExampleProps> = props => {
     return (
         <CodeExample
@@ -94,6 +115,30 @@ export const ButtonGroupFlexExample: React.FC<ExampleProps> = props => {
             {...props}
         >
             <ButtonGroupFlex />
+        </CodeExample>
+    );
+};
+
+export const ButtonGroupIconsOnlyExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={buttonGroupIconsOnlyPreview}
+            sourceCode={buttonGroupIconsOnlyCode}
+            {...props}
+        >
+            <ButtonGroupIconsOnly />
+        </CodeExample>
+    );
+};
+
+export const ButtonGroupIconsWithTooltipsExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={buttonGroupIconsWithTooltipsPreview}
+            sourceCode={buttonGroupIconsWithTooltipsCode}
+            {...props}
+        >
+            <ButtonGroupIconsWithTooltips />
         </CodeExample>
     );
 };

@@ -10,7 +10,7 @@ data from markdown files and documented source code.
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/docs-theme
 ```
 
