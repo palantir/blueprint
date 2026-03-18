@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { expect } from "vitest";
+
 /**
  * Test utilities for Vitest + jsdom/happy-dom environments.
  *
@@ -66,4 +68,14 @@ export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY 
 
 export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart", clientX = 0, clientY = 0) {
     target.dispatchEvent(createTouchEvent(eventType, clientX, clientY));
+}
+
+/**
+ * Query a DOM element by CSS selector and assert it exists.
+ * Returns the element as HTMLElement, avoiding bare `!` non-null assertions.
+ */
+export function assertElement(container: HTMLElement, selector: string): HTMLElement {
+    const el = container.querySelector(selector);
+    expect(el).toBeInTheDocument();
+    return el as HTMLElement;
 }

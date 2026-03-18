@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import type { ReactWrapper } from "enzyme";
+import { act } from "@testing-library/react";
 
 import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons/vitest-utils";
 
-import { Handle, type InternalHandleProps } from "./handle";
+import { Classes } from "../../common";
 
 interface MoveOptions {
     /** Size in pixels of one drag event. Direction of drag is determined by `vertical` option. */
@@ -43,21 +43,28 @@ export const DRAG_SIZE = 20;
  * Simulates a full move of a slider handle: engage, move, release.
  * Supports touch and vertical events. Use options to configure exact movement.
  */
-export function simulateMovement(wrapper: ReactWrapper<InternalHandleProps>, options: MoveOptions) {
+export function simulateMovement(container: HTMLElement, options: MoveOptions) {
     const { from = 0, handleIndex = 0, touch = false } = options;
-    const handle = wrapper.find(Handle).at(handleIndex);
-    const eventData =
-        options.vertical !== undefined && options.verticalHeight !== undefined
-            ? { clientY: options.verticalHeight - from }
-            : { clientX: from };
-    if (touch) {
-        handle.simulate("touchstart", { changedTouches: [eventData] });
-    } else {
-        handle.simulate("mousedown", eventData);
+    const handles = container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_HANDLE}`);
+    if (handles.length <= handleIndex) {
+        throw new Error(`Expected at least ${handleIndex + 1} slider handle(s), found ${handles.length}`);
     }
+    const handle = handles[handleIndex];
+    const isVertical = options.vertical !== undefined && options.verticalHeight !== undefined;
+    const clientX = isVertical ? undefined : from;
+    const clientY = isVertical ? options.verticalHeight! - from : undefined;
+    // Wrap in act() so React flushes the setState({ isMoving: true }) from the
+    // mousedown/touchstart handler before subsequent document-level events fire.
+    act(() => {
+        if (touch) {
+            dispatchTouchEvent(handle, "touchstart", clientX, clientY);
+        } else {
+            dispatchMouseEvent(handle, "mousedown", clientX, clientY);
+        }
+    });
     genericMove(options);
     genericRelease(options);
-    return wrapper;
+    return container;
 }
 
 /** Release the mouse at the given clientX pixel. Useful for ending a drag interaction. */

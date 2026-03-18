@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
+import { fireEvent, render } from "@testing-library/react";
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
-import { Handle, type HandleState, type InternalHandleProps } from "./handle";
+import { Classes } from "../../common";
+
+import { Handle, type InternalHandleProps } from "./handle";
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
 const HANDLE_PROPS: InternalHandleProps = {
@@ -46,30 +49,36 @@ describe("<Handle>", () => {
 
     it("disabled handle never invokes event handlers", () => {
         const eventSpy = vi.fn();
-        const handle = mountHandle(0, { disabled: true, onChange: eventSpy, onRelease: eventSpy });
-        simulateMovement(handle, { dragTimes: 3 });
-        handle.simulate("keydown", { key: "ArrowUp" });
+        const container = mountHandle(0, { disabled: true, onChange: eventSpy, onRelease: eventSpy });
+        simulateMovement(container, { dragTimes: 3 });
+        const handle = assertElement(container, `.${Classes.SLIDER_HANDLE}`);
+        fireEvent.keyDown(handle, { key: "ArrowUp" });
         expect(eventSpy).not.toHaveBeenCalled();
     });
 
     describe("keyboard events", () => {
         it("pressing arrow key down reduces value by stepSize", () => {
             const onChange = vi.fn();
-            mountHandle(3, { onChange, stepSize: 2 }).simulate("keydown", { key: "ArrowDown" });
+            const container = mountHandle(3, { onChange, stepSize: 2 });
+            const handle = assertElement(container, `.${Classes.SLIDER_HANDLE}`);
+            fireEvent.keyDown(handle, { key: "ArrowDown" });
             expect(onChange).toHaveBeenCalledWith(1);
         });
 
         it("pressing arrow key up increases value by stepSize", () => {
             const onChange = vi.fn();
-            mountHandle(3, { onChange, stepSize: 4 }).simulate("keydown", { key: "ArrowUp" });
+            const container = mountHandle(3, { onChange, stepSize: 4 });
+            const handle = assertElement(container, `.${Classes.SLIDER_HANDLE}`);
+            fireEvent.keyDown(handle, { key: "ArrowUp" });
             expect(onChange).toHaveBeenCalledWith(7);
         });
 
         it("releasing arrow key calls onRelease with value", () => {
             const onRelease = vi.fn();
-            mountHandle(3, { onRelease, stepSize: 4 })
-                .simulate("keydown", { key: "ArrowUp" })
-                .simulate("keyup", { key: "ArrowUp" });
+            const container = mountHandle(3, { onRelease, stepSize: 4 });
+            const handle = assertElement(container, `.${Classes.SLIDER_HANDLE}`);
+            fireEvent.keyDown(handle, { key: "ArrowUp" });
+            fireEvent.keyUp(handle, { key: "ArrowUp" });
             expect(onRelease).toHaveBeenCalledWith(3);
         });
     });
@@ -120,12 +129,9 @@ describe("<Handle>", () => {
         });
     });
 
-    function mountHandle(
-        value: number,
-        props: Partial<InternalHandleProps> = {},
-    ): ReactWrapper<InternalHandleProps, HandleState> {
-        return mount(<Handle {...HANDLE_PROPS} label={value.toString()} value={value} {...props} />, {
-            attachTo: containerElement,
-        });
+    function mountHandle(value: number, props: Partial<InternalHandleProps> = {}): HTMLElement {
+        return render(<Handle {...HANDLE_PROPS} label={value.toString()} value={value} {...props} />, {
+            container: containerElement,
+        }).container;
     }
 });

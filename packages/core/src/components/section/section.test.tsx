@@ -18,6 +18,7 @@ import { render, screen } from "@testing-library/react";
 
 import { IconNames } from "@blueprintjs/icons";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes } from "../../common";
 
@@ -38,8 +39,7 @@ describe("<Section>", () => {
 
     it("supports className", () => {
         const { container } = render(<Section className="foo" />);
-        const section = container.querySelector(`.${Classes.SECTION}`)!;
-        expect(section).toBeInTheDocument();
+        const section = assertElement(container, `.${Classes.SECTION}`);
         expect(section).toHaveClass("foo");
     });
 

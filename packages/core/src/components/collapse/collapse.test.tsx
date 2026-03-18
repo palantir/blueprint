@@ -14,60 +14,71 @@
  * limitations under the License.
  */
 
-import { mount, shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes } from "../../common";
-import { MenuItem } from "../menu/menuItem";
 
-import { AnimationStates, Collapse } from "./collapse";
+import { Collapse } from "./collapse";
 
 describe("<Collapse>", () => {
     it("has the correct className", () => {
-        const collapse = shallow(<Collapse />);
-        assert.isTrue(collapse.hasClass(Classes.COLLAPSE));
+        const { container } = render(<Collapse />);
+        expect(container.querySelector(`.${Classes.COLLAPSE}`)).toBeInTheDocument();
     });
 
     it("is closed", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "0px");
+        const { container } = render(<Collapse isOpen={false}>Body</Collapse>);
+        const collapseBody = assertElement(container, `.${Classes.COLLAPSE_BODY}`);
+        expect(collapseBody).toHaveAttribute("aria-hidden", "true");
+        // children are not rendered when closed
+        expect(container.textContent).not.toContain("Body");
     });
 
     it("is open", () => {
-        const collapse = mount(<Collapse isOpen={true}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "auto");
+        const { container } = render(<Collapse isOpen={true}>Body</Collapse>);
+        const collapse = assertElement(container, `.${Classes.COLLAPSE}`);
+        expect(collapse).toHaveStyle({ height: "auto" });
     });
 
     it("is opening", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        collapse.setProps({ isOpen: true });
-        assert.strictEqual(collapse.state("animationState"), AnimationStates.OPENING);
+        const { container, rerender } = render(<Collapse isOpen={false}>Body</Collapse>);
+        rerender(<Collapse isOpen={true}>Body</Collapse>);
+        const collapseBody = assertElement(container, `.${Classes.COLLAPSE_BODY}`);
+        // When transitioning to open, children become visible and aria-hidden is removed
+        expect(container.textContent).toContain("Body");
+        expect(collapseBody).toHaveAttribute("aria-hidden", "false");
     });
 
     it("supports custom intrinsic element", () => {
-        assert.isTrue(shallow(<Collapse component="article" />).is("article"));
+        const { container } = render(<Collapse component="article" />);
+        expect(container.querySelector("article")).toHaveClass(Classes.COLLAPSE);
     });
 
     it("supports custom Component", () => {
-        assert.isTrue(shallow(<Collapse component={MenuItem} />).is(MenuItem));
+        // Use a simple custom component to verify the component prop is respected
+        const CustomWrapper = (props: React.HTMLAttributes<HTMLElement>) => <section {...props} />;
+        const { container } = render(<Collapse component={CustomWrapper} />);
+        expect(container.querySelector("section")).toHaveClass(Classes.COLLAPSE);
     });
 
     it("unmounts children by default", () => {
-        const collapse = mount(
+        const { container } = render(
             <Collapse isOpen={false}>
                 <div className="removed-child" />
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".removed-child"), 0);
+        expect(container.querySelector(".removed-child")).not.toBeInTheDocument();
     });
 
     it("keepChildrenMounted keeps child mounted", () => {
-        const collapse = mount(
+        const { container } = render(
             <Collapse isOpen={false} keepChildrenMounted={true}>
                 <div className="hidden-child" />
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".hidden-child"), 1);
+        expect(container.querySelector(".hidden-child")).toBeInTheDocument();
     });
 });

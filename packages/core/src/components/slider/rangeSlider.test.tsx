@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { fireEvent, render } from "@testing-library/react";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
-import { Handle } from "./handle";
 import { RangeSlider } from "./rangeSlider";
 
 const STEP_SIZE = 20;
@@ -40,16 +39,15 @@ describe("<RangeSlider>", () => {
     afterEach(() => containerElement.remove());
 
     it("renders two interactive <Handle>s", () => {
-        const handles = renderSlider(<RangeSlider />).find(Handle);
-        expect(handles).toHaveLength(2);
+        const container = renderSlider(<RangeSlider />);
+        expect(container.querySelectorAll(`.${Classes.SLIDER_HANDLE}`)).toHaveLength(2);
     });
 
     it.skip("renders primary track segment between two values", () => {
-        const track = renderSlider(<RangeSlider value={[2, 5]} />).find(
-            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
-        );
-        expect(track).toHaveLength(1);
-        expect(track.getDOMNode().getBoundingClientRect().width).toBe(STEP_SIZE * 3);
+        const container = renderSlider(<RangeSlider value={[2, 5]} />);
+        const tracks = container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`);
+        expect(tracks).toHaveLength(1);
+        expect(tracks[0].getBoundingClientRect().width).toBe(STEP_SIZE * 3);
     });
 
     it("throws error if range value contains null", () => {
@@ -65,13 +63,14 @@ describe("<RangeSlider>", () => {
 
     it("disabled slider does not respond to key presses", () => {
         const changeSpy = vi.fn();
-        const handles = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />).find(Handle);
-        handles.first().simulate("keydown", { key: "ArrowDown" });
-        handles.last().simulate("keydown", { key: "ArrowDown" });
+        const container = renderSlider(<RangeSlider disabled={true} onChange={changeSpy} />);
+        const handles = container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_HANDLE}`);
+        fireEvent.keyDown(handles[0], { key: "ArrowDown" });
+        fireEvent.keyDown(handles[handles.length - 1], { key: "ArrowDown" });
         expect(changeSpy).not.toHaveBeenCalled();
     });
 
     function renderSlider(slider: React.JSX.Element) {
-        return mount(slider, { attachTo: containerElement });
+        return render(slider, { container: containerElement }).container;
     }
 });

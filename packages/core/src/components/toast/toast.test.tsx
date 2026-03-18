@@ -14,55 +14,60 @@
  * limitations under the License.
  */
 
-import { mount, shallow } from "enzyme";
+import { fireEvent, render } from "@testing-library/react";
 
-import { assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
+import { Classes } from "../../common";
 import { sleep } from "../../common/test-utils";
-import { AnchorButton, Button } from "../button/buttons";
 
 import { Toast } from "./toast";
 
 describe("<Toast>", () => {
     it("renders only dismiss button by default", () => {
-        const { action, dismiss } = wrap(<Toast message="Hello World" />);
-        assert.lengthOf(action, 0);
-        assert.lengthOf(dismiss, 1);
+        const { actionButtons, dismissButtons } = wrap(<Toast message="Hello World" />);
+        expect(actionButtons).toHaveLength(0);
+        expect(dismissButtons).toHaveLength(1);
     });
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {
         const handleDismiss = vi.fn();
-        wrap(<Toast message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
+        const { dismissButtons } = wrap(<Toast message="Hello" onDismiss={handleDismiss} />);
+        fireEvent.click(dismissButtons[0]);
         expect(handleDismiss).toHaveBeenCalledOnce();
         expect(handleDismiss).toHaveBeenCalledWith(false);
     });
 
     it("renders action button when action string prop provided", () => {
         // pluralize cuz now there are two buttons
-        const { action } = wrap(<Toast action={{ text: "Undo" }} message="hello world" />);
-        assert.lengthOf(action, 1);
-        assert.equal(action.prop("text"), "Undo");
+        const { actionButtons } = wrap(<Toast action={{ text: "Undo" }} message="hello world" />);
+        expect(actionButtons).toHaveLength(1);
+        expect(actionButtons[0]).toHaveTextContent("Undo");
     });
 
     it("clicking action button triggers onClick callback", () => {
         const onClick = vi.fn();
-        wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
+        const { actionButtons } = wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />);
+        fireEvent.click(actionButtons[0]);
         expect(onClick).toHaveBeenCalledOnce();
     });
 
     it("clicking action button also triggers onDismiss callback with `false`", () => {
         const handleDismiss = vi.fn();
-        wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
+        const { actionButtons } = wrap(
+            <Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />,
+        );
+        fireEvent.click(actionButtons[0]);
         expect(handleDismiss).toHaveBeenCalledOnce();
         expect(handleDismiss).toHaveBeenCalledWith(false);
     });
 
     function wrap(toast: React.JSX.Element) {
-        const root = shallow(toast);
+        const { container } = render(toast);
         return {
-            action: root.find(AnchorButton),
-            dismiss: root.find(Button),
-            root,
+            actionButtons: container.querySelectorAll(`a.${Classes.BUTTON}`),
+            dismissButtons: container.querySelectorAll(`button.${Classes.BUTTON}`),
+            container,
         };
     }
 
@@ -71,8 +76,7 @@ describe("<Toast>", () => {
         beforeEach(() => handleDismiss.mockReset());
 
         it("calls onDismiss automatically after timeout expires with `true`", async () => {
-            // mounting for lifecycle methods to start timeout
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
+            render(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
             await sleep(20);
 
             expect(handleDismiss).toHaveBeenCalledOnce();
@@ -80,17 +84,15 @@ describe("<Toast>", () => {
         });
 
         it("updating with timeout={0} cancels timeout", async () => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />).setProps({
-                timeout: 0,
-            });
+            const { rerender } = render(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
+            rerender(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />);
             await sleep(20);
             expect(handleDismiss).not.toHaveBeenCalled();
         });
 
         it("updating timeout={0} with timeout={X} starts timeout", async () => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />).setProps({
-                timeout: 20,
-            });
+            const { rerender } = render(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />);
+            rerender(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
             await sleep(20);
 
             expect(handleDismiss).toHaveBeenCalledOnce();

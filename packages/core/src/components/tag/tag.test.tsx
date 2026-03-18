@@ -14,81 +14,75 @@
  * limitations under the License.
  */
 
-import { render, screen, waitFor } from "@testing-library/react";
-import { mount, shallow } from "enzyme";
+import { fireEvent, render } from "@testing-library/react";
 import { createRef } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes } from "../../common";
 import { Icon } from "../icon/icon";
-import { Text } from "../text/text";
 
 import { Tag } from "./tag";
 
 describe("<Tag>", () => {
     it("renders its text", () => {
-        expect(
-            shallow(<Tag>Hello</Tag>)
-                .find(Text)
-                .prop("children"),
-        ).toBe("Hello");
+        const { container } = render(<Tag>Hello</Tag>);
+        expect(container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`)).toHaveTextContent("Hello");
     });
 
     it("text is not rendered if omitted", () => {
-        expect(
-            shallow(<Tag icon="tick" />)
-                .find(Text)
-                .exists(),
-        ).toBe(false);
+        const { container } = render(<Tag icon="tick" />);
+        expect(container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`)).not.toBeInTheDocument();
     });
 
     it("renders icons", () => {
-        const wrapper = shallow(<Tag icon="tick" endIcon="airplane" />);
-        expect(wrapper.find(Icon)).toHaveLength(2);
+        const { container } = render(<Tag icon="tick" endIcon="airplane" />);
+        expect(container.querySelectorAll(`.${Classes.ICON}`)).toHaveLength(2);
     });
 
     it("prefers endIcon to rightIcon", () => {
         const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
         const rightIcon = <Icon icon="tick" data-testid="rightIcon" />;
-        render(
+        const { container } = render(
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             <Tag endIcon={endIcon} rightIcon={rightIcon} />,
         );
-        expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument();
+        expect(container.querySelector('[data-testid="endIcon"]')).toBeInTheDocument();
+        expect(container.querySelector('[data-testid="rightIcon"]')).not.toBeInTheDocument();
     });
 
     it("renders close button when onRemove is a function", () => {
-        const wrapper = mount(<Tag onRemove={vi.fn()}>Hello</Tag>);
-        expect(wrapper.find(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
+        const { container } = render(<Tag onRemove={vi.fn()}>Hello</Tag>);
+        expect(container.querySelectorAll(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
     });
 
     it("clicking close button triggers onRemove", () => {
         const handleRemove = vi.fn();
-        mount(<Tag onRemove={handleRemove}>Hello</Tag>)
-            .find(`.${Classes.TAG_REMOVE}`)
-            .simulate("click");
+        const { container } = render(<Tag onRemove={handleRemove}>Hello</Tag>);
+        const removeButton = assertElement(container, `.${Classes.TAG_REMOVE}`);
+        fireEvent.click(removeButton);
         expect(handleRemove).toHaveBeenCalledOnce();
     });
 
     it("should be interactive when onClick is provided", () => {
-        const wrapper = mount(<Tag onClick={vi.fn()}>Hello</Tag>);
-        expect(wrapper.find(`.${Classes.INTERACTIVE}`)).toHaveLength(1);
+        const { container } = render(<Tag onClick={vi.fn()}>Hello</Tag>);
+        expect(container.querySelectorAll(`.${Classes.INTERACTIVE}`)).toHaveLength(1);
     });
 
     it("should not be interactive when interactive={false}", () => {
-        const wrapper = mount(
+        const { container } = render(
             <Tag onClick={vi.fn()} interactive={false}>
                 Hello
             </Tag>,
         );
-        expect(wrapper.find(`.${Classes.INTERACTIVE}`)).toHaveLength(0);
+        expect(container.querySelectorAll(`.${Classes.INTERACTIVE}`)).toHaveLength(0);
     });
 
     it(`passes other props onto .${Classes.TAG} element`, () => {
-        const element = shallow(<Tag title="baz qux">Hello</Tag>).find("." + Classes.TAG);
-        expect(element.prop("title")).toEqual("baz qux");
+        const { container } = render(<Tag title="baz qux">Hello</Tag>);
+        const element = assertElement(container, `.${Classes.TAG}`);
+        expect(element).toHaveAttribute("title", "baz qux");
     });
 
     it("passes all props to the onRemove handler", () => {
@@ -101,9 +95,9 @@ describe("<Tag>", () => {
             },
             onRemove: handleRemove,
         };
-        mount(<Tag {...tagProps}>Hello</Tag>)
-            .find(`.${Classes.TAG_REMOVE}`)
-            .simulate("click");
+        const { container } = render(<Tag {...tagProps}>Hello</Tag>);
+        const removeButton = assertElement(container, `.${Classes.TAG_REMOVE}`);
+        fireEvent.click(removeButton);
         expect(handleRemove).toHaveBeenCalledOnce();
         expect(handleRemove).toHaveBeenCalledWith(
             expect.anything(),
@@ -111,13 +105,9 @@ describe("<Tag>", () => {
         );
     });
 
-    it("supports ref objects", async () => {
+    it("supports ref objects", () => {
         const elementRef = createRef<HTMLSpanElement>();
-        const wrapper = mount(<Tag ref={elementRef}>Hello</Tag>);
-
-        // wait for the whole lifecycle to run
-        await waitFor(() => {
-            expect(elementRef.current).toBe(wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
-        });
+        const { container } = render(<Tag ref={elementRef}>Hello</Tag>);
+        expect(elementRef.current).toBe(container.querySelector(`.${Classes.TAG}`));
     });
 });

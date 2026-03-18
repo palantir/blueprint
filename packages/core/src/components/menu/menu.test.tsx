@@ -17,6 +17,7 @@
 import { render, within } from "@testing-library/react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes } from "../../common";
 
@@ -27,7 +28,7 @@ import { MenuItem } from "./menuItem";
 describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {
         const { container } = render(<MenuDivider />);
-        const divider = container.querySelector("li")!;
+        const divider = assertElement(container, "li");
         expect(divider).toHaveClass(Classes.MENU_DIVIDER);
         expect(divider).not.toHaveClass(Classes.MENU_HEADER);
         expect(divider.querySelector("h6")).not.toBeInTheDocument();
@@ -35,7 +36,7 @@ describe("<MenuDivider>", () => {
 
     it("React renders MenuDivider with title", () => {
         const { container } = render(<MenuDivider title="Subject" />);
-        const divider = container.querySelector("li")!;
+        const divider = assertElement(container, "li");
         expect(divider).not.toHaveClass(Classes.MENU_DIVIDER);
         expect(divider).toHaveClass(Classes.MENU_HEADER);
         expect(divider.querySelector("h6")).toBeInTheDocument();
@@ -49,8 +50,7 @@ describe("<Menu>", () => {
                 <MenuItem icon="graph" text="Graph" />
             </Menu>,
         );
-        const menu = container.querySelector(`.${Classes.MENU}`)!;
-        expect(menu).toBeInTheDocument();
-        expect(within(menu as HTMLElement).getAllByRole("menuitem")).toHaveLength(1);
+        const menu = assertElement(container, `.${Classes.MENU}`);
+        expect(within(menu).getAllByRole("menuitem")).toHaveLength(1);
     });
 });

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { render, screen, waitFor } from "@testing-library/react";
-import { mount, shallow } from "enzyme";
+import { fireEvent, render } from "@testing-library/react";
 import { createRef } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes } from "../../common";
 import { Icon } from "../icon/icon";
@@ -27,63 +27,61 @@ import { CompoundTag } from "./compoundTag";
 
 describe("<CompoundTag>", () => {
     it("renders its text", () => {
-        expect(
-            shallow(<CompoundTag leftContent="Hello">World</CompoundTag>)
-                .find(`.${Classes.COMPOUND_TAG_RIGHT_CONTENT}`)
-                .prop("children"),
-        ).toBe("World");
+        const { container } = render(<CompoundTag leftContent="Hello">World</CompoundTag>);
+        expect(container.querySelector(`.${Classes.COMPOUND_TAG_RIGHT_CONTENT}`)).toHaveTextContent("World");
     });
 
     it("renders icons", () => {
-        const wrapper = shallow(
+        const { container } = render(
             <CompoundTag icon="tick" endIcon="airplane" leftContent="Hello">
                 World
             </CompoundTag>,
         );
-        expect(wrapper.find(Icon)).toHaveLength(2);
+        expect(container.querySelectorAll(`.${Classes.ICON}`)).toHaveLength(2);
     });
 
     it("prefers endIcon to rightIcon", () => {
         const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
         const rightIcon = <Icon icon="add" data-testid="rightIcon" />;
-        render(
+        const { container } = render(
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             <CompoundTag endIcon={endIcon} rightIcon={rightIcon} leftContent="Hello">
                 World
             </CompoundTag>,
         );
-        expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument();
+        expect(container.querySelector('[data-testid="endIcon"]')).toBeInTheDocument();
+        expect(container.querySelector('[data-testid="rightIcon"]')).not.toBeInTheDocument();
     });
 
     it("renders close button when onRemove is a function", () => {
-        const wrapper = mount(
+        const { container } = render(
             <CompoundTag onRemove={vi.fn()} leftContent="Hello">
                 World
             </CompoundTag>,
         );
-        expect(wrapper.find(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
+        expect(container.querySelectorAll(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
     });
 
     it("clicking close button triggers onRemove", () => {
         const handleRemove = vi.fn();
-        mount(
+        const { container } = render(
             <CompoundTag onRemove={handleRemove} leftContent="Hello">
                 World
             </CompoundTag>,
-        )
-            .find(`.${Classes.TAG_REMOVE}`)
-            .simulate("click");
+        );
+        const removeButton = assertElement(container, `.${Classes.TAG_REMOVE}`);
+        fireEvent.click(removeButton);
         expect(handleRemove).toHaveBeenCalledOnce();
     });
 
     it(`passes other props onto .${Classes.COMPOUND_TAG} element`, () => {
-        const element = mount(
+        const { container } = render(
             <CompoundTag title="baz qux" leftContent="Hello">
                 World
             </CompoundTag>,
-        ).find(`.${Classes.COMPOUND_TAG}`);
-        expect(element.prop("title")).toEqual("baz qux");
+        );
+        const element = assertElement(container, `.${Classes.COMPOUND_TAG}`);
+        expect(element).toHaveAttribute("title", "baz qux");
     });
 
     it("passes all props to the onRemove handler", () => {
@@ -96,13 +94,13 @@ describe("<CompoundTag>", () => {
             },
             onRemove: handleRemove,
         };
-        mount(
+        const { container } = render(
             <CompoundTag {...tagProps} leftContent="Hello">
                 World
             </CompoundTag>,
-        )
-            .find(`.${Classes.TAG_REMOVE}`)
-            .simulate("click");
+        );
+        const removeButton = assertElement(container, `.${Classes.TAG_REMOVE}`);
+        fireEvent.click(removeButton);
         expect(handleRemove).toHaveBeenCalledOnce();
         expect(handleRemove).toHaveBeenCalledWith(
             expect.anything(),
@@ -110,17 +108,13 @@ describe("<CompoundTag>", () => {
         );
     });
 
-    it("supports ref objects", async () => {
+    it("supports ref objects", () => {
         const elementRef = createRef<HTMLSpanElement>();
-        const wrapper = mount(
+        const { container } = render(
             <CompoundTag ref={elementRef} leftContent="Hello">
                 World
             </CompoundTag>,
         );
-
-        // wait for the whole lifecycle to run
-        await waitFor(() => {
-            expect(elementRef.current).toBe(wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
-        });
+        expect(elementRef.current).toBe(container.querySelector(`.${Classes.TAG}`));
     });
 });

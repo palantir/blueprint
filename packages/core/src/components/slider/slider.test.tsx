@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { fireEvent, render } from "@testing-library/react";
 
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes } from "../../common";
 
-import { Handle } from "./handle";
 import { Slider } from "./slider";
 import { simulateMovement } from "./sliderTestUtils";
 
@@ -41,41 +41,43 @@ describe("<Slider>", () => {
     afterEach(() => containerElement.remove());
 
     it("renders one interactive <Handle>", () => {
-        const handles = renderSlider(<Slider />).find(Handle);
-        assert.lengthOf(handles, 1);
+        const container = renderSlider(<Slider />);
+        expect(container.querySelectorAll(`.${Classes.SLIDER_HANDLE}`)).toHaveLength(1);
     });
 
     it.skip("renders primary track segment between initialValue and value", () => {
-        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={2} value={5} />).find(
-            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
-        );
-        assert.lengthOf(tracks, 1);
-        assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
+        const container = renderSlider(<Slider showTrackFill={true} initialValue={2} value={5} />);
+        const tracks = container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`);
+        expect(tracks).toHaveLength(1);
+        expect(tracks[0].getBoundingClientRect().width).toBe(STEP_SIZE * 3);
     });
 
     it.skip("renders primary track segment between initialValue and value when value is less than initial value", () => {
-        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={5} value={2} />).find(
-            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
-        );
-        assert.lengthOf(tracks, 1);
-        assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
+        const container = renderSlider(<Slider showTrackFill={true} initialValue={5} value={2} />);
+        const tracks = container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`);
+        expect(tracks).toHaveLength(1);
+        expect(tracks[0].getBoundingClientRect().width).toBe(STEP_SIZE * 3);
     });
 
     it("renders no primary track segment when value equals initial value", () => {
-        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={2} value={2} min={0} max={5} />).find(
-            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
+        const container = renderSlider(
+            <Slider showTrackFill={true} initialValue={2} value={2} min={0} max={5} />,
         );
-        assert.lengthOf(tracks, 0);
+        const tracks = container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`);
+        expect(tracks).toHaveLength(0);
     });
 
     it("renders result of labelRenderer() in each label and differently in handle", () => {
         const labelRenderer = (val: number, opts?: { isHandleTooltip: boolean }) =>
             val + (opts?.isHandleTooltip ? "!" : "#");
-        const wrapper = renderSlider(
+        const container = renderSlider(
             <Slider min={0} max={50} value={10} labelStepSize={10} labelRenderer={labelRenderer} />,
         );
-        assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
-        assert.strictEqual(wrapper.find(`.${Classes.SLIDER_HANDLE}`).find(`.${Classes.SLIDER_LABEL}`).text(), "10!");
+        const axis = assertElement(container, `.${Classes.SLIDER}-axis`);
+        expect(axis.textContent).toBe("0#10#20#30#40#50#");
+        const sliderHandle = assertElement(container, `.${Classes.SLIDER_HANDLE}`);
+        const sliderLabel = assertElement(sliderHandle, `.${Classes.SLIDER_LABEL}`);
+        expect(sliderLabel.textContent).toBe("10!");
     });
 
     it.skip("moving mouse calls onChange with nearest value", () => {
@@ -101,16 +103,18 @@ describe("<Slider>", () => {
 
     it.skip("disabled slider never invokes event handlers", () => {
         const eventSpy = vi.fn();
-        const slider = renderSlider(<Slider disabled={true} onChange={eventSpy} onRelease={eventSpy} />);
+        const container = renderSlider(<Slider disabled={true} onChange={eventSpy} onRelease={eventSpy} />);
         // handle drag and keys
-        simulateMovement(slider, { dragTimes: 3 });
-        slider.simulate("keydown", { key: "ArrowUp" });
+        simulateMovement(container, { dragTimes: 3 });
+        const handle = assertElement(container, `.${Classes.SLIDER_HANDLE}`);
+        fireEvent.keyDown(handle, { key: "ArrowUp" });
         // track click
-        slider.find(TRACK_SELECTOR).simulate("mousedown", { target: containerElement.querySelector(TRACK_SELECTOR) });
+        const track = assertElement(container, TRACK_SELECTOR);
+        fireEvent.mouseDown(track);
         expect(eventSpy).not.toHaveBeenCalled();
     });
 
     function renderSlider(slider: React.JSX.Element) {
-        return mount(slider, { attachTo: containerElement });
+        return render(slider, { container: containerElement }).container;
     }
 });

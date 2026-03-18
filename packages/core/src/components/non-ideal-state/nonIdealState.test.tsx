@@ -17,6 +17,7 @@
 import { render } from "@testing-library/react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { assertElement } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes } from "../../common";
 
@@ -45,7 +46,7 @@ describe("<NonIdealState>", () => {
 
     it("ensures description is wrapped in an element", () => {
         const { container } = render(<NonIdealState action={<strong />} description="foo" />);
-        const textContainer = container.querySelector(`.${Classes.NON_IDEAL_STATE_TEXT}`)!;
+        const textContainer = assertElement(container, `.${Classes.NON_IDEAL_STATE_TEXT}`);
         const divs = textContainer.querySelectorAll("div");
         expect(divs).toHaveLength(1);
         expect(divs[0].textContent).toBe("foo");
