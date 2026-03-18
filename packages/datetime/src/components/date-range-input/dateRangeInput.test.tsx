@@ -79,9 +79,18 @@ describe("<DateRangeInput>", () => {
         // Unmount all Enzyme wrappers before removing the container to prevent
         // React from trying to commit updates to removed DOM nodes, which causes
         // "window is not defined" and "Should not already be working" errors.
-        mountedWrappers.forEach(wrapper => wrapper.unmount());
-        mountedWrappers = [];
-        containerElement.remove();
+        try {
+            for (const wrapper of mountedWrappers) {
+                try {
+                    wrapper.unmount();
+                } catch {
+                    // best-effort: continue unmounting remaining wrappers
+                }
+            }
+        } finally {
+            mountedWrappers = [];
+            containerElement.remove();
+        }
     });
 
     const YEAR = 2022;
