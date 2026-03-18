@@ -53,7 +53,8 @@ export function selectPopoverTestSuite<P extends ListItemsProps<Film>, S>(
     };
 
     describe("popoverProps functionality", () => {
-        it("matchTargetWidth: true makes popover same width as target", () => {
+        // jsdom does not support layout, so clientWidth is always 0
+        it.skip("matchTargetWidth: true makes popover same width as target", () => {
             const wrapper = render({
                 ...defaultProps,
                 popoverProps: { ...defaultPopoverProps, matchTargetWidth: true },

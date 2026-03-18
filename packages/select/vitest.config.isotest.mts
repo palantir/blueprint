@@ -7,7 +7,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     test: {
-        name: "datetime-iso",
+        name: "select-iso",
         environment: "node",
         include: ["src/isotest.test.ts"],
     },

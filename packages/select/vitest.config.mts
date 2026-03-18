@@ -9,7 +9,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     plugins: [react()],
     test: {
-        name: "core",
+        name: "select",
         environment: "jsdom",
         include: ["src/**/*.test.{ts,tsx}"],
         exclude: ["lib/**", "node_modules/**", "src/isotest.test.ts"],
