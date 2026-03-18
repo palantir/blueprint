@@ -20,7 +20,6 @@ import sinon from "sinon";
 
 import { Classes, type HTMLInputProps } from "@blueprintjs/core";
 
-import type { ListItemsProps } from "../src";
 import {
     areFilmsEqual,
     createFilm,
@@ -29,7 +28,8 @@ import {
     filterFilm,
     renderFilm,
     TOP_100_FILMS,
-} from "../src/__examples__";
+} from "../../__examples__";
+import type { ListItemsProps } from "../../common/listItemsProps";
 
 export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
     render: (props: ListItemsProps<Film>) => ReactWrapper<P, S>,

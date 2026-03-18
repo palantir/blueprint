@@ -21,12 +21,13 @@ import * as sinon from "sinon";
 
 import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/core";
 
-import { type ItemRendererProps, QueryList } from "../src";
-import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
-import { Suggest, type SuggestProps, type SuggestState } from "../src/components/suggest/suggest";
+import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
+import type { ItemRendererProps } from "../../common/itemRenderer";
+import { QueryList } from "../query-list/queryList";
+import { selectComponentSuite } from "../select/selectComponentTestUtils";
+import { selectPopoverTestSuite } from "../select/selectPopoverTestUtils";
 
-import { selectComponentSuite } from "./selectComponentSuite";
-import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
+import { Suggest, type SuggestProps, type SuggestState } from "./suggest";
 
 describe("Suggest", () => {
     const defaultProps = {

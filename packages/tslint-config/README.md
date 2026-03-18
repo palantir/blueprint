@@ -18,7 +18,7 @@ This package contains configuration for [TSLint](https://palantir.github.io/tsli
 
 ## Installation
 
-```
+```sh copy
 pnpm add --save-dev @blueprintjs/tslint-config tslint
 ```
 

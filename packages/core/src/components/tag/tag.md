@@ -6,7 +6,7 @@ different situations; its colors are designed to be accessible in almost any con
 
 @## Import
 
-```tsx
+```ts copy
 import { Tag } from "@blueprintjs/core";
 ```
 

@@ -4,7 +4,7 @@ A **Button** is a clickable element used to trigger actions or events. Buttons a
 
 @## Usage
 
-```tsx
+```ts copy
 import { Button } from "@blueprintjs/core";
 ```
 

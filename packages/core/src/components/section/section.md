@@ -7,7 +7,7 @@ The **Section** component can be used to contain, structure, and create hierarch
 
 @## Import
 
-```tsx
+```ts copy
 import { Section } from "@blueprintjs/core";
 ```
 

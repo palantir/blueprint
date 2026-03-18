@@ -6,7 +6,7 @@ Time selection is enabled by the [TimePicker](#datetime/timepicker) component.
 
 @## Import
 
-```tsx
+```ts copy
 import { DatePicker } from "@blueprintjs/datetime";
 ```
 
@@ -77,7 +77,7 @@ of these components accepts two types of values, either a `Locale` object or a l
 Use the `locale: string` type to interpret the prop as a locale code (ISO 639-1 + optional country code).
 The component will attempt to dynamically import the corresponding date-fns locale module.
 
-```ts
+```tsx
 import { DatePicker } from "@blueprintjs/datetime";
 
 function Example() {

@@ -15,7 +15,7 @@ the `observeParents` prop to watch for resizing further up in the DOM tree.
 
 @## Import
 
-```tsx
+```ts copy
 import { OverflowList } from "@blueprintjs/core";
 ```
 
