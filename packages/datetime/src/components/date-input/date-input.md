@@ -7,7 +7,7 @@ on the right side of the InputGroup which allows users to change the timezone of
 
 @## Import
 
-```tsx
+```ts copy
 import { DateInput } from "@blueprintjs/datetime";
 ```
 
@@ -45,10 +45,10 @@ specified by the `timePrecision` and `timePickerProps` props.
 
 Finally, you have the option to specify a custom formatter & parser with the `formatDate` and `parseDate` props:
 
--   `formatDate(date: Date, localeCode?: string)` receives the current `Date` and returns a string representation of it.
-    The result of this function becomes the input value when it is not being edited.
--   `parseDate(str: string, localeCode?: string)` receives text inputted by the user and converts it to a `Date` object.
-    The returned `Date` becomes the next value of the component.
+- `formatDate(date: Date, localeCode?: string)` receives the current `Date` and returns a string representation of it.
+  The result of this function becomes the input value when it is not being edited.
+- `parseDate(str: string, localeCode?: string)` receives text inputted by the user and converts it to a `Date` object.
+  The returned `Date` becomes the next value of the component.
 
 The optional `localeCode` argument to these functions is the value of the `locale` prop set on the component.
 

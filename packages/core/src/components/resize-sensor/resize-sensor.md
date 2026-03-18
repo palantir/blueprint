@@ -17,7 +17,7 @@ injected ref to the underlying DOM element.
 
 @## Import
 
-```tsx
+```ts copy
 import { ResizeSensor } from "@blueprintjs/core";
 ```
 

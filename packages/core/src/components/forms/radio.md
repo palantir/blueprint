@@ -5,7 +5,7 @@ selected at a time). Blueprint provides **Radio** and **RadioGroup** components 
 
 @## Import
 
-```tsx
+```ts copy
 import { Radio, RadioGroup } from "@blueprintjs/core";
 ```
 

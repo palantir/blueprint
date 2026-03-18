@@ -6,7 +6,7 @@ your items and a predicate to customize the filtering algorithm.
 
 @## Import
 
-```tsx
+```ts copy
 import { Omnibar } from "@blueprintjs/select";
 ```
 

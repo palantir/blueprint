@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
@@ -25,78 +25,88 @@ import { Spinner, SpinnerSize } from "./spinner";
 
 describe("Spinner", () => {
     it("renders a spinner and two paths", () => {
-        const root = mount(<Spinner />);
-        assert.lengthOf(root.find(`.${Classes.SPINNER}`), 1);
-        assert.lengthOf(root.find("path"), 2);
+        render(<Spinner />);
+        const spinner = screen.getByRole("progressbar");
+        expect(spinner).toHaveClass(Classes.SPINNER);
+        expect(spinner.querySelectorAll("path")).toHaveLength(2);
     });
 
     describe("accessibility", () => {
         it("sets 'aria-valuenow' attribute", () => {
             const VALUE = 0.4;
-            const spinner = shallow(<Spinner value={VALUE} />);
-            assert.strictEqual(spinner.prop("aria-valuenow"), VALUE * 100);
+            render(<Spinner value={VALUE} />);
+            const spinner = screen.getByRole("progressbar");
+            expect(spinner).toHaveAttribute("aria-valuenow", String(VALUE * 100));
         });
 
         it("supports arbitrary ARIA HTML attributes", () => {
             const LABEL = "widget loading";
-            const spinner = shallow(<Spinner aria-label={LABEL} />);
-            assert.strictEqual(spinner.prop("aria-label"), LABEL);
+            render(<Spinner aria-label={LABEL} />);
+            const spinner = screen.getByRole("progressbar");
+            expect(spinner).toHaveAttribute("aria-label", LABEL);
         });
     });
 
     it("tagName determines both container elements", () => {
-        const tagName = "article";
-        const root = mount(<Spinner tagName={tagName} />);
-        assert.isTrue(root.is({ tagName }));
-        assert.lengthOf(root.find(tagName), 2);
+        render(<Spinner tagName="article" />);
+        const spinner = screen.getByRole("progressbar");
+        expect(spinner.tagName.toLowerCase()).toBe("article");
+        expect(spinner.firstElementChild).toBeInTheDocument();
+        expect(spinner.firstElementChild!.tagName.toLowerCase()).toBe("article");
     });
 
-    it("Classes.LARGE/SMALL determine default size", () => {
-        const root = mount(<Spinner className={Classes.SMALL} />);
-        assert.equal(root.find("svg").prop("height"), SpinnerSize.SMALL, "small");
-
-        root.setProps({ className: Classes.LARGE });
-        assert.equal(root.find("svg").prop("height"), SpinnerSize.LARGE, "large");
+    it("Classes.SMALL determines default size", () => {
+        const { container } = render(<Spinner className={Classes.SMALL} />);
+        expect(container.querySelector("svg")).toHaveAttribute("height", String(SpinnerSize.SMALL));
     });
 
-    it("size overrides Classes.LARGE/SMALL", () => {
+    it("Classes.LARGE determines default size", () => {
+        const { container } = render(<Spinner className={Classes.LARGE} />);
+        expect(container.querySelector("svg")).toHaveAttribute("height", String(SpinnerSize.LARGE));
+    });
+
+    it("size overrides Classes.LARGE/SMALL uses size prop and warns", () => {
         const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
-        const root = mount(<Spinner className={Classes.SMALL} size={32} />);
-        assert.equal(root.find("svg").prop("height"), 32, "size prop");
-        expect(warnSpy.mock.calls[0][0]).toBe(SPINNER_WARN_CLASSES_SIZE);
+        const { container } = render(<Spinner className={Classes.SMALL} size={32} />);
+        expect(container.querySelector("svg")).toHaveAttribute("height", "32");
+        expect(warnSpy).toHaveBeenCalledWith(SPINNER_WARN_CLASSES_SIZE);
         warnSpy.mockRestore();
     });
 
     it("defaults to spinning quarter circle", () => {
-        const root = mount(<Spinner />);
-        assert.isFalse(root.find(`.${Classes.SPINNER}`).hasClass(Classes.SPINNER_NO_SPIN));
-        assertStrokePercent(root, 0.25);
+        render(<Spinner />);
+        const spinner = screen.getByRole("progressbar");
+        expect(spinner).not.toHaveClass(Classes.SPINNER_NO_SPIN);
+        expectStrokePercent(spinner, 0.25);
     });
 
     it("value sets stroke-dashoffset", () => {
-        // dash offset = X * (1 - value)
-        const root = mount(<Spinner value={0.35} />);
-        assert.isTrue(
-            root.find(`.${Classes.SPINNER}`).hasClass(Classes.SPINNER_NO_SPIN),
-            `missing class ${Classes.SPINNER_NO_SPIN}`,
-        );
-        assertStrokePercent(root, 0.35);
+        render(<Spinner value={0.35} />);
+        const spinner = screen.getByRole("progressbar");
+        expect(spinner).toHaveClass(Classes.SPINNER_NO_SPIN);
+        expectStrokePercent(spinner, 0.35);
     });
 
-    it("viewBox adjusts based on size", () => {
-        function viewBox(size: number) {
-            return mount(<Spinner size={size} />)
-                .find("svg")
-                .prop("viewBox");
-        }
-        assert.notEqual(viewBox(SpinnerSize.SMALL), viewBox(SpinnerSize.LARGE), "expected different viewBoxes");
-    });
+    describe("viewBox adjusts based on size", () => {
+        it("adjusts viewBox for small size", () => {
+            render(<Spinner size={SpinnerSize.SMALL} />);
+            const spinner = screen.getByRole("progressbar");
+            expect(spinner.querySelector("svg")!.getAttribute("viewBox")).toBe("-3.00 -3.00 106.00 106.00");
+        });
 
-    function assertStrokePercent(wrapper: ReactWrapper<any>, percent: number) {
-        const head = wrapper.find(`.${Classes.SPINNER_HEAD}`);
-        // NOTE: strokeDasharray is string "X X", but parseInt terminates at non-numeric character
-        const pathLength = parseInt(head.prop("strokeDasharray")!.toString(), 10);
-        const offset = head.prop("strokeDashoffset");
-        assert.strictEqual(offset, pathLength * (1 - percent));
-    }
+        it("adjusts viewBox for large size", () => {
+            render(<Spinner size={SpinnerSize.LARGE} />);
+            const spinner = screen.getByRole("progressbar");
+            expect(spinner.querySelector("svg")!.getAttribute("viewBox")).toBe("3.00 3.00 94.00 94.00");
+        });
+    });
 });
+
+function expectStrokePercent(container: HTMLElement, percent: number) {
+    const head = container.querySelector<SVGPathElement>(`.${Classes.SPINNER_HEAD}`);
+    expect(head).not.toBeNull();
+    // strokeDasharray is "X X", parseInt terminates at non-numeric character
+    const pathLength = parseInt(head!.getAttribute("stroke-dasharray")!, 10);
+    const offset = Number(head!.getAttribute("stroke-dashoffset"));
+    expect(offset).toBe(pathLength * (1 - percent));
+}

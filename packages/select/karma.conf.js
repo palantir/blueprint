@@ -12,6 +12,9 @@ module.exports = async function (config) {
                 "src/**/index.ts",
                 "src/__examples__/*",
                 "src/components/deprecatedAliases.ts",
+                // colocated test files should not be coverage-checked
+                "src/**/*.test.ts",
+                "src/**/*.test.tsx",
             ],
             coverageOverrides: {
                 "src/components/multi-select/multiSelect.tsx": {

@@ -144,7 +144,7 @@ export interface TagInputProps extends IntentProps, Props {
      * Callback invoked when the value of `<input>` element is changed.
      * This is shorthand for `inputProps={{ onChange }}`.
      */
-    onInputChange?: React.FormEventHandler<HTMLInputElement>;
+    onInputChange?: React.ChangeEventHandler<HTMLInputElement>;
 
     /**
      * Callback invoked when the user depresses a keyboard key.

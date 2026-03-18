@@ -4,7 +4,7 @@
 
 @## Import
 
-```tsx
+```ts copy
 import { Tree } from "@blueprintjs/core";
 ```
 
@@ -24,10 +24,10 @@ child (`0`) of the third top-level node (`2`).
 
 @### Instance methods
 
--   `Tree.getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
-    Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
-    This element does not contain the children of the node, only its label and controls.
-    If the node is not currently mounted, `undefined` is returned.
+- `Tree.getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;
+  Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
+  This element does not contain the children of the node, only its label and controls.
+  If the node is not currently mounted, `undefined` is returned.
 
 @### Tree node
 

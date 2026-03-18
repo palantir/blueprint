@@ -13,7 +13,7 @@ numeric counter is reset. To render all panels to the DOM and keep their React t
 
 @## Import
 
-```tsx
+```ts copy
 import { PanelStack } from "@blueprintjs/core";
 ```
 
