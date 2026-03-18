@@ -82,25 +82,3 @@ export interface DocPage {
     route: string;
     contents: DocContentItem[];
 }
-
-/** Fields common to all nav tree nodes. */
-interface NavTreeNodeBase {
-    title: string;
-    level: number;
-    route: string | undefined;
-}
-
-/** A content heading extracted from a page (no children, no reference). */
-export interface NavTreeHeading extends NavTreeNodeBase {
-    type: "heading";
-}
-
-/** A page or section node in the nav tree. */
-export interface NavTreePage extends NavTreeNodeBase {
-    type: "page";
-    reference: string;
-    children: NavTreeNode[];
-}
-
-/** Any node in the assembled nav tree. */
-export type NavTreeNode = NavTreePage | NavTreeHeading;

@@ -20,5 +20,6 @@ export { Classes };
 export * from "./constants";
 export * from "./documentalistUtils";
 export * from "./eventHandlerUtils";
+export type * as PageTree from "./pageTreeTypes";
 export * from "./stringUtils";
 export * from "./themeContext";

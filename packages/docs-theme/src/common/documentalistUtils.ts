@@ -14,21 +14,23 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
+import type * as PageTree from "./pageTreeTypes";
 
 /**
- * Performs an in-order traversal of the layout tree, invoking the callback for each node.
- * Callback receives an array of ancestors with direct parent first in the list.
+ * Performs an in-order traversal of the PageTree, invoking the callback for each
+ * Item or Folder node (separators are skipped).
+ * Callback receives an array of ancestor Folders with direct parent first in the list.
  */
 export function eachLayoutNode(
-    layout: Array<HeadingNode | PageNode>,
-    callback: (node: HeadingNode | PageNode, parents: PageNode[]) => void,
-    parents: PageNode[] = [],
+    nodes: PageTree.Node[],
+    callback: (node: PageTree.Item | PageTree.Folder, parents: PageTree.Folder[]) => void,
+    parents: PageTree.Folder[] = [],
 ) {
-    layout.forEach(node => {
+    for (const node of nodes) {
+        if (node.type === "separator") continue;
         callback(node, parents);
-        if (isPageNode(node)) {
+        if (node.type === "folder") {
             eachLayoutNode(node.children, callback, [node, ...parents]);
         }
-    });
+    }
 }

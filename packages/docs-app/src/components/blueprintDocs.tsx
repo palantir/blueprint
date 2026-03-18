@@ -18,13 +18,14 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type DocsCompleteData, type HeadingNode, npmData, type PageNode, SECTIONS } from "@blueprintjs/docs-data";
+import { type DocsCompleteData, npmData, SECTIONS } from "@blueprintjs/docs-data";
 import {
     Banner,
     Documentation,
     type DocumentationProps,
     NavMenuItem,
     type NavMenuItemProps,
+    type PageTree,
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
@@ -33,10 +34,6 @@ import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
-function isPageNode(node: HeadingNode | PageNode): node is PageNode {
-    return "children" in node && "reference" in node;
-}
-
 const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
 const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
@@ -44,8 +41,9 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
-const sectionPatterns = SECTIONS.map(name => new RegExp(`/${name}(\\.[\\w-]+)?$`));
-const isNavSection = ({ route }: HeadingNode) => sectionPatterns.some(pattern => pattern.test(route));
+const sectionNames = new Set<string>(SECTIONS);
+const isNavSection = (node: PageTree.Item | PageTree.Folder): boolean =>
+    node.type === "folder" && sectionNames.has(String(node.name).toLowerCase().replace(/\s+/g, "-"));
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -115,28 +113,28 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
     }
 
     private renderNavMenuItem = (props: NavMenuItemProps) => {
-        const { route, title } = props.section;
-        if (isNavSection(props.section)) {
+        const { section } = props;
+        const route = section.type === "page" ? section.url : ((section.$id as string) ?? "");
+        const title = String(section.name);
+
+        if (isNavSection(section)) {
             // non-interactive header that expands its menu
             return <div className="docs-nav-section docs-nav-expanded">{title}</div>;
         }
-        if (isPageNode(props.section)) {
-            if (props.section.level === 1) {
-                return (
-                    <div className={classNames("docs-nav-package", props.className)} data-route={route}>
-                        <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
-                            <NavIcon route={route} />
-                            <span>{title}</span>
-                        </a>
-                        {this.maybeRenderPackageLink(`@blueprintjs/${route}`)}
-                    </div>
-                );
-            } else {
-                // pages can define `tag: message` in metadata to appear next to nav item.
-                return <NavMenuItem {...props}>{this.maybeRenderPageTag(props.section.reference)}</NavMenuItem>;
-            }
+        if (section.type === "folder") {
+            // top-level package folder
+            return (
+                <div className={classNames("docs-nav-package", props.className)} data-route={route}>
+                    <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
+                        <NavIcon route={route} />
+                        <span>{title}</span>
+                    </a>
+                    {this.maybeRenderPackageLink(`@blueprintjs/${route}`)}
+                </div>
+            );
         }
-        return <NavMenuItem {...props} />;
+        // leaf page item
+        return <NavMenuItem {...props}>{this.maybeRenderPageTag(section.$id as string)}</NavMenuItem>;
     };
 
     private renderPageActions = (page: { sourcePath: string }) => {

@@ -16,29 +16,12 @@
 
 import { readFileSync } from "node:fs";
 
+import type * as PageTree from "fumadocs-core/page-tree";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import {
-    assignRoutes,
-    buildNavLeafPage,
-    buildNavTree,
-    buildNavPage,
-    buildNavSection,
-    extractHeadingChildren,
-    normalizeNavConfig,
-    requirePage,
-    slugify,
-} from "./navHelpers.mts";
+import { assignRoutes, buildPageTree, normalizeNavConfig, requirePage, slugify } from "./navHelpers.mts";
 import { PACKAGES, SECTIONS } from "./navTypes.mts";
-import type {
-    DocContentItem,
-    DocHeadingItem,
-    DocPage,
-    NavSection,
-    NavStructure,
-    NavTreePage,
-    RawNavStructure,
-} from "./navTypes.mts";
+import type { DocContentItem, DocHeadingItem, DocPage, NavStructure, RawNavStructure } from "./navTypes.mts";
 
 describe("normalizeNavConfig", () => {
     it("should convert bare strings to NavPageRef objects", () => {
@@ -241,26 +224,35 @@ describe("slugify", () => {
     });
 });
 
-describe("buildNavTree", () => {
-    it("should produce a tree of PageNodes matching the nav config shape", () => {
+describe("buildPageTree", () => {
+    it("should produce a Root with Folder children matching nav config shape", () => {
         const pages: Record<string, DocPage> = {
             core: makePage("Core"),
             overview: makePage("Overview"),
         };
         const navConfig: NavStructure = [{ package: "core", pages: [{ type: "page", ref: "overview" }] }];
 
-        const tree = buildNavTree(navConfig, pages);
+        const tree = buildPageTree(navConfig, pages);
 
-        expect(tree).toHaveLength(1);
-        expect(tree[0].reference).toBe("core");
-        expect(tree[0].route).toBe("core");
-        expect(tree[0].level).toBe(1);
-        expect(tree[0].children).toHaveLength(1);
-        expect((tree[0].children[0] as NavTreePage).reference).toBe("overview");
-        expect((tree[0].children[0] as NavTreePage).route).toBe("core/overview");
+        expect(tree.name).toBe("Blueprint");
+        expect(tree.children).toHaveLength(1);
+
+        const folder = tree.children[0] as PageTree.Folder;
+        expect(folder.type).toBe("folder");
+        expect(folder.name).toBe("Core");
+        expect(folder.$id).toBe("core");
+        expect(folder.index).toBeDefined();
+        expect(folder.index!.url).toBe("core");
+
+        expect(folder.children).toHaveLength(1);
+        const item = folder.children[0] as PageTree.Item;
+        expect(item.type).toBe("page");
+        expect(item.name).toBe("Overview");
+        expect(item.url).toBe("core/overview");
+        expect(item.$id).toBe("overview");
     });
 
-    it("should include section children and leaf pages at correct levels", () => {
+    it("should include section folders with child items at correct structure", () => {
         const pages: Record<string, DocPage> = {
             core: makePage("Core"),
             components: makePage("Components"),
@@ -279,150 +271,67 @@ describe("buildNavTree", () => {
             },
         ];
 
-        const tree = buildNavTree(navConfig, pages);
+        const tree = buildPageTree(navConfig, pages);
 
-        const sectionNode = tree[0].children[0] as NavTreePage;
-        expect(sectionNode.reference).toBe("components");
-        expect(sectionNode.route).toBe("core/components");
-        expect(sectionNode.level).toBe(2);
-        expect((sectionNode.children[0] as NavTreePage).reference).toBe("buttons");
-        expect((sectionNode.children[0] as NavTreePage).route).toBe("core/components/buttons");
-        expect(sectionNode.children[0].level).toBe(3);
-    });
-});
+        const packageFolder = tree.children[0] as PageTree.Folder;
+        expect(packageFolder.children).toHaveLength(1);
 
-describe("buildNavSection", () => {
-    it("should build a section node with leaf page children", () => {
-        const pages: Record<string, DocPage> = {
-            components: makePage("Components"),
-            buttons: makePage("Buttons"),
-            dialog: makePage("Dialog"),
-        };
-        const section: NavSection = {
-            section: "components",
-            pages: [
-                { type: "page", ref: "buttons" },
-                { type: "page", ref: "dialog" },
-            ],
-        };
+        const sectionFolder = packageFolder.children[0] as PageTree.Folder;
+        expect(sectionFolder.type).toBe("folder");
+        expect(sectionFolder.name).toBe("Components");
+        expect(sectionFolder.$id).toBe("core/components");
+        expect(sectionFolder.index).toBeDefined();
+        expect(sectionFolder.index!.url).toBe("core/components");
 
-        const node = buildNavSection(section, 2, "core/components", pages);
-
-        expect(node.reference).toBe("components");
-        expect(node.route).toBe("core/components");
-        expect(node.level).toBe(2);
-        expect(node.children).toHaveLength(2);
-        expect((node.children[0] as NavTreePage).reference).toBe("buttons");
-        expect((node.children[0] as NavTreePage).route).toBe("core/components/buttons");
-        expect((node.children[1] as NavTreePage).reference).toBe("dialog");
-        expect((node.children[1] as NavTreePage).route).toBe("core/components/dialog");
+        expect(sectionFolder.children).toHaveLength(1);
+        const item = sectionFolder.children[0] as PageTree.Item;
+        expect(item.type).toBe("page");
+        expect(item.$id).toBe("buttons");
+        expect(item.url).toBe("core/components/buttons");
     });
 
-    it("should handle sections without a backing documentalist page", () => {
+    it("should handle sections without a backing page by using title-cased name", () => {
         const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
             dialog: makePage("Dialog"),
             popover: makePage("Popover"),
         };
-        const section: NavSection = {
-            section: "overlays",
-            pages: [
-                { type: "page", ref: "dialog" },
-                { type: "page", ref: "popover" },
-            ],
-        };
-
-        const node = buildNavSection(section, 2, "core/overlays", pages);
-
-        expect(node.reference).toBe("overlays");
-        expect(node.title).toBe("Overlays");
-        expect(node.route).toBe("core/overlays");
-        expect(node.children).toHaveLength(2);
-        expect((node.children[0] as NavTreePage).reference).toBe("dialog");
-        expect((node.children[0] as NavTreePage).route).toBe("core/overlays/dialog");
-        expect((node.children[1] as NavTreePage).reference).toBe("popover");
-        expect((node.children[1] as NavTreePage).route).toBe("core/overlays/popover");
-    });
-});
-
-describe("buildNavLeafPage", () => {
-    it("should build a leaf node with heading children extracted from page contents", () => {
-        const pages: Record<string, DocPage> = {
-            buttons: makePage("Buttons", [
-                makeHeading("Buttons", 1),
-                makeHeading("Usage", 2, "core/components/buttons.usage"),
-                makeHeading("Props", 2, "core/components/buttons.props"),
-            ]),
-        };
-
-        const node = buildNavLeafPage("buttons", 3, "core/components/buttons", pages);
-
-        expect(node.reference).toBe("buttons");
-        expect(node.route).toBe("core/components/buttons");
-        expect(node.level).toBe(3);
-        // Should have 2 heading children (level 1 is skipped)
-        expect(node.children).toHaveLength(2);
-        expect(node.children[0].title).toBe("Usage");
-        expect(node.children[1].title).toBe("Props");
-    });
-
-    it("should produce an empty children array for a page with no level-2+ headings", () => {
-        const pages: Record<string, DocPage> = {
-            overview: makePage("Overview", [makeHeading("Overview", 1), "Some text"]),
-        };
-
-        const node = buildNavLeafPage("overview", 2, "core/overview", pages);
-
-        expect(node.children).toHaveLength(0);
-    });
-});
-
-describe("buildNavPage", () => {
-    it("should assemble a PageNode with the correct shape", () => {
-        const pages: Record<string, DocPage> = {
-            buttons: makePage("Buttons"),
-        };
-        const children = [
-            { type: "heading" as const, title: "Usage", level: 4, route: "core/components/buttons.usage" },
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [],
+                sections: [
+                    {
+                        section: "overlays",
+                        pages: [
+                            { type: "page", ref: "dialog" },
+                            { type: "page", ref: "popover" },
+                        ],
+                    },
+                ],
+            },
         ];
 
-        const node = buildNavPage("buttons", 3, "core/components/buttons", pages, children);
+        const tree = buildPageTree(navConfig, pages);
 
-        expect(node).toEqual({
-            type: "page",
-            children,
-            level: 3,
-            reference: "buttons",
-            route: "core/components/buttons",
-            title: "Buttons",
-        });
+        const packageFolder = tree.children[0] as PageTree.Folder;
+        const sectionFolder = packageFolder.children[0] as PageTree.Folder;
+        expect(sectionFolder.name).toBe("Overlays");
+        expect(sectionFolder.index).toBeUndefined();
+        expect(sectionFolder.children).toHaveLength(2);
     });
 
-    it("should preserve heading child routes like buttons.usage", () => {
+    it("should handle packages without a backing page by using title-cased name", () => {
         const pages: Record<string, DocPage> = {
-            buttons: makePage("Buttons"),
+            overview: makePage("Overview"),
         };
-        const children = [
-            { type: "heading" as const, title: "Usage", level: 4, route: "core/components/buttons.usage" },
-        ];
+        const navConfig: NavStructure = [{ package: "core", pages: [{ type: "page", ref: "overview" }] }];
 
-        const node = buildNavPage("buttons", 3, "core/components/buttons", pages, children);
+        const tree = buildPageTree(navConfig, pages);
 
-        expect(node.children[0]).toEqual({
-            type: "heading",
-            title: "Usage",
-            level: 4,
-            route: "core/components/buttons.usage",
-        });
-    });
-
-    it("should use the provided route for the node", () => {
-        const pages: Record<string, DocPage> = {
-            core: makePage("Core"),
-        };
-
-        const node = buildNavPage("core", 1, "core", pages, []);
-
-        expect(node.route).toBe("core");
+        const folder = tree.children[0] as PageTree.Folder;
+        expect(folder.name).toBe("Core");
+        expect(folder.index).toBeUndefined();
     });
 });
 
@@ -436,36 +345,6 @@ describe("requirePage", () => {
 
     it("should throw when the ref does not exist in pages", () => {
         expect(() => requirePage("nonexistent", {})).toThrow();
-    });
-});
-
-describe("extractHeadingChildren", () => {
-    it("should extract level-2+ headings with adjusted levels", () => {
-        const page = makePage("Components", [
-            makeHeading("Components", 1),
-            makeHeading("Usage", 2, "components.usage"),
-            makeHeading("Details", 3, "components.details"),
-        ]);
-
-        // pageNavLevel=2 means levelOffset=1, so heading levels are shifted by +1
-        const result = extractHeadingChildren(page, 2);
-
-        expect(result).toHaveLength(2);
-        expect(result[0]).toEqual({ type: "heading", title: "Usage", level: 3, route: "components.usage" });
-        expect(result[1]).toEqual({ type: "heading", title: "Details", level: 4, route: "components.details" });
-    });
-
-    it("should skip level-1 headings and non-heading content items", () => {
-        const page = makePage("Buttons", [
-            makeHeading("Buttons", 1),
-            "Some plain text",
-            { tag: "code", value: "example" },
-            null,
-        ]);
-
-        const result = extractHeadingChildren(page, 1);
-
-        expect(result).toHaveLength(0);
     });
 });
 
@@ -492,9 +371,9 @@ describe("nested sections", () => {
         };
 
         // "modals" is intended as a nested section, but the system only supports pages
-        // as children of sections. buildNavTree calls requirePage("modals") which throws
+        // as children of sections. buildPageTree calls requirePage("modals") which throws
         // because there is no DocPage entry for it.
-        expect(() => buildNavTree(navConfig, pages)).toThrow(
+        expect(() => buildPageTree(navConfig, pages)).toThrow(
             '[docs-data] nav.json references page "modals" which does not exist in docs.pages',
         );
     });

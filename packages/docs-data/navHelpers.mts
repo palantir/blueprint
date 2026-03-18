@@ -2,6 +2,8 @@
  * @license Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  */
 
+import type * as PageTree from "fumadocs-core/page-tree";
+
 import type {
     DocContentItem,
     DocHeadingItem,
@@ -9,9 +11,6 @@ import type {
     NavPageRef,
     NavSection,
     NavStructure,
-    NavTreeHeading,
-    NavTreeNode,
-    NavTreePage,
     RawNavStructure,
 } from "./navTypes.mts";
 
@@ -105,88 +104,62 @@ export function slugify(value: string): string {
 }
 
 /**
- * Build the full nav tree from nav.json and page data.
+ * Build a fumadocs-core PageTree from the nav config and page data.
  */
-export function buildNavTree(navConfig: NavStructure, pages: Record<string, DocPage>): NavTreePage[] {
-    return navConfig.map(entry => {
+export function buildPageTree(navConfig: NavStructure, pages: Record<string, DocPage>): PageTree.Root {
+    const children: PageTree.Node[] = navConfig.map(entry => {
         const packageRoute = entry.package;
-        const packageChildren = [
-            ...entry.pages.map(pageRef => buildNavLeafPage(pageRef.ref, 2, `${packageRoute}/${pageRef.ref}`, pages)),
+        const packagePage = pages[entry.package];
+
+        const folderChildren: PageTree.Node[] = [
+            ...entry.pages.map(ref => buildItem(ref.ref, `${packageRoute}/${ref.ref}`, pages)),
             ...(entry.sections ?? []).map(section => {
                 const sectionRoute = `${packageRoute}/${section.section}`;
-                return buildNavSection(section, 2, sectionRoute, pages);
+                return buildSectionFolder(section, sectionRoute, pages);
             }),
         ];
-        return buildNavPage(entry.package, 1, packageRoute, pages, packageChildren);
+
+        return {
+            type: "folder",
+            name: packagePage?.title ?? kebabToTitleCase(entry.package),
+            $id: packageRoute,
+            index: packagePage
+                ? { type: "page", name: packagePage.title, url: packageRoute, $id: packageRoute }
+                : undefined,
+            defaultOpen: false,
+            children: folderChildren,
+        } satisfies PageTree.Folder;
     });
+
+    return { name: "Blueprint", children };
+}
+
+function buildSectionFolder(section: NavSection, route: string, pages: Record<string, DocPage>): PageTree.Folder {
+    const sectionPage = pages[section.section];
+    const children: PageTree.Node[] = section.pages.map(child => buildItem(child.ref, `${route}/${child.ref}`, pages));
+
+    return {
+        type: "folder",
+        name: sectionPage?.title ?? kebabToTitleCase(section.section),
+        $id: route,
+        index: sectionPage ? { type: "page", name: sectionPage.title, url: route, $id: route } : undefined,
+        defaultOpen: false,
+        children,
+    };
+}
+
+function buildItem(ref: string, route: string, pages: Record<string, DocPage>): PageTree.Item {
+    const page = requirePage(ref, pages);
+    return {
+        type: "page",
+        name: page.title,
+        url: route,
+        $id: ref,
+    };
 }
 
 function pageRef(ref: string): NavPageRef {
     return { type: "page", ref };
-}
-
-/**
- * Build a PageNode for a section containing child pages.
- */
-export function buildNavSection(
-    section: NavSection,
-    level: number,
-    route: string,
-    pages: Record<string, DocPage>,
-): NavTreePage {
-    const childLevel = level + 1;
-    const children: NavTreeNode[] = section.pages.map(child =>
-        buildNavLeafPage(child.ref, childLevel, `${route}/${child.ref}`, pages),
-    );
-
-    const page = pages[section.section];
-    if (page !== undefined) {
-        return buildNavPage(section.section, level, route, pages, children);
-    }
-
-    // Section has no backing page — use section name as title
-    return {
-        type: "page",
-        children,
-        level,
-        reference: section.section,
-        route,
-        title: kebabToTitleCase(section.section),
-    };
-}
-
-/**
- * Build a PageNode for a leaf page (no nav children, only content headings).
- */
-export function buildNavLeafPage(
-    ref: string,
-    level: number,
-    route: string,
-    pages: Record<string, DocPage>,
-): NavTreePage {
-    const headingChildren = extractHeadingChildren(requirePage(ref, pages), level);
-    return buildNavPage(ref, level, route, pages, headingChildren);
-}
-
-/**
- * Assemble a PageNode from a ref and pre-built children array.
- */
-export function buildNavPage(
-    ref: string,
-    level: number,
-    route: string,
-    pages: Record<string, DocPage>,
-    children: NavTreeNode[],
-): NavTreePage {
-    const page = requirePage(ref, pages);
-    return {
-        type: "page",
-        children,
-        level,
-        reference: ref,
-        route,
-        title: page.title,
-    };
 }
 
 /**
@@ -198,27 +171,4 @@ export function requirePage(ref: string, pages: Record<string, DocPage>): DocPag
         throw new Error(`[docs-data] nav.json references page "${ref}" which does not exist in docs.pages`);
     }
     return page;
-}
-
-/**
- * Extract heading nodes from page contents for the nav tree.
- * Skips level-1 headings (the page title). Adjusts heading levels
- * relative to the page's position in the nav tree.
- */
-export function extractHeadingChildren(page: DocPage, pageNavLevel: number): NavTreeHeading[] {
-    const levelOffset = pageNavLevel - 1;
-    const result: NavTreeHeading[] = [];
-
-    for (const item of page.contents) {
-        if (isHeading(item) && item.level >= 2) {
-            result.push({
-                type: "heading",
-                title: item.value,
-                level: item.level + levelOffset,
-                route: item.route,
-            });
-        }
-    }
-
-    return result;
 }

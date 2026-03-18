@@ -13,15 +13,10 @@ import semver from "semver";
 import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-import { assignRoutes, buildNavTree, normalizeNavConfig } from "./navHelpers.mts";
-import {
-    PACKAGES,
-    SECTIONS,
-    type DocPage,
-    type NavStructure,
-    type NavTreeNode,
-    type RawNavStructure,
-} from "./navTypes.mts";
+import type * as PageTree from "fumadocs-core/page-tree";
+
+import { assignRoutes, buildPageTree, normalizeNavConfig } from "./navHelpers.mts";
+import { PACKAGES, SECTIONS, type DocPage, type NavStructure, type RawNavStructure } from "./navTypes.mts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
@@ -173,7 +168,7 @@ function validateNavConfig(raw: RawNavStructure): void {
     }
 }
 
-function applyNavConfig(docs: { pages: Record<string, DocPage>; nav: NavTreeNode[] }, navConfig: NavStructure): void {
+function applyNavConfig(docs: { pages: Record<string, DocPage>; nav: PageTree.Node[] }, navConfig: NavStructure): void {
     assignRoutes(navConfig, docs.pages);
-    docs.nav = buildNavTree(navConfig, docs.pages);
+    docs.nav = buildPageTree(navConfig, docs.pages).children;
 }

@@ -14,14 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    type HeadingNode,
-    isPageNode,
-    linkify,
-    type PageData,
-    type PageNode,
-    type TsDocBase,
-} from "@documentalist/client";
+import { linkify, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import { PureComponent } from "react";
 
@@ -35,6 +28,7 @@ import {
     hasTypescriptData,
 } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
+import type * as PageTree from "../common/pageTreeTypes";
 import { type TagRendererMap, TypescriptExample } from "../tags";
 
 import { renderBlock } from "./block";
@@ -82,7 +76,7 @@ export interface DocumentationProps extends Props {
      * searchable in the navigator. Returning `true` will exclude the item from
      * the navigator search results.
      */
-    navigatorExclude?: (node: PageNode | HeadingNode) => boolean;
+    navigatorExclude?: (node: PageTree.Item | PageTree.Folder) => boolean;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -155,16 +149,16 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
 
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
-        eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            if (isPageNode(node)) {
-                if (this.props.navigatorExclude?.(node)) {
-                    // if node is excluded from navigation, don't store it in the route to page map
-                    // to ensure the user cannnot navigate to it with hotkeys or through the URL
-                    return;
+        eachLayoutNode(this.props.docs.nav, node => {
+            if (this.props.navigatorExclude?.(node)) {
+                return;
+            }
+            if (node.type === "page") {
+                this.routeToPage[node.url] = node.$id as string;
+            } else if (node.type === "folder") {
+                if (node.index) {
+                    this.routeToPage[node.index.url] = node.index.$id as string;
                 }
-                this.routeToPage[node.route] = node.reference;
-            } else if (parents[0] != null) {
-                this.routeToPage[node.route] = parents[0].reference;
             }
         });
     }
@@ -226,7 +220,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                         activePageId={activePageId}
                                         activeSectionId={activeSectionId}
                                         items={nav}
-                                        level={0}
+                                        depth={0}
                                         onItemClick={this.handleNavigation}
                                         renderNavMenuItem={this.props.renderNavMenuItem}
                                     />

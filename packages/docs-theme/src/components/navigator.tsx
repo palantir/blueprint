@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
 import { PureComponent } from "react";
@@ -24,16 +23,17 @@ import { CaretRight } from "@blueprintjs/icons";
 import { type ItemListPredicate, type ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/documentalistUtils";
+import type * as PageTree from "../common/pageTreeTypes";
 
 export interface NavigatorProps {
     /** Whether navigator is open. */
     isOpen: boolean;
 
     /** All potentially navigable items. */
-    items: Array<PageNode | HeadingNode>;
+    items: PageTree.Node[];
 
     /** Callback to determine if a given item should be excluded. */
-    itemExclude?: (node: PageNode | HeadingNode) => boolean;
+    itemExclude?: (node: PageTree.Item | PageTree.Folder) => boolean;
 
     /**
      * Callback invoked when the navigator is closed. Navigation is performed by
@@ -60,11 +60,11 @@ export class Navigator extends PureComponent<NavigatorProps> {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
             if (this.props.itemExclude?.(node) === true) {
-                // ignore excluded item
                 return;
             }
-            const { route, title } = node;
-            const path = parents.map(p => p.title).reverse();
+            const route = node.type === "page" ? node.url : ((node.$id as string) ?? "");
+            const title = String(node.name);
+            const path = parents.map(p => String(p.name)).reverse();
             this.sections!.push({ path, route, title });
         });
     }

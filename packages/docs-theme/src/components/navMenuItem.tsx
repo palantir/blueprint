@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
 
 import { Classes } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import type * as PageTree from "../common/pageTreeTypes";
 
 export interface NavMenuItemProps {
     children?: React.ReactNode;
@@ -39,15 +39,15 @@ export interface NavMenuItemProps {
     /** Click handler for item, to navigate to URL. */
     onClick: () => void;
 
-    /** The section for this menu item, either a page or a heading node. */
-    section: PageNode | HeadingNode;
+    /** The section for this menu item, either a page Item or a Folder. */
+    section: PageTree.Item | PageTree.Folder;
 }
 
 export const NavMenuItem: React.FC<NavMenuItemProps> = props => {
     const { className, isActive, isExpanded, section, ...htmlProps } = props;
     return (
         <a className={classNames(Classes.MENU_ITEM, className)} {...htmlProps}>
-            <span>{section.title}</span>
+            <span>{section.name}</span>
             {props.children}
         </a>
     );

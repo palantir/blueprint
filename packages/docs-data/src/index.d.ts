@@ -3,8 +3,14 @@
  */
 
 import { NpmPluginData, MarkdownPluginData, KssPluginData, TypescriptPluginData } from "@documentalist/client";
+import type * as PageTree from "fumadocs-core/page-tree";
 
-export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginData & TypescriptPluginData;
+export type DocsCompleteData = MarkdownPluginData &
+    NpmPluginData &
+    KssPluginData &
+    TypescriptPluginData & {
+        nav: PageTree.Node[];
+    };
 
 export const docsData: DocsCompleteData;
 
@@ -20,14 +26,3 @@ export interface NpmPackageInfo {
 export type NpmData = Record<string, NpmPackageInfo>;
 
 export const npmData: NpmData;
-
-export interface HeadingNode {
-    route: string;
-    level: number;
-    title: string;
-}
-
-export interface PageNode extends HeadingNode {
-    children: Array<PageNode | HeadingNode>;
-    reference: string;
-}
