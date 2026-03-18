@@ -1,10 +1,24 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:list";
+@use "sass:map";
 @import "../../common/variables";
 @import "../forms/common";
 @import "./common";
+
+// z-index values for button stacking order (derived from $control-group-stack in forms/_common.scss)
+$button-group-z-index: (
+  "button-disabled": 3,
+  "button-default": 4,
+  "button-focus": 5,
+  "button-hover": 6,
+  "button-active": 7,
+  "intent-button-disabled": 8,
+  "intent-button-default": 9,
+  "intent-button-focus": 10,
+  "intent-button-hover": 11,
+  "intent-button-active": 12,
+);
 
 .#{$ns}-button-group {
   display: inline-flex;
@@ -13,7 +27,7 @@
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: list.index($control-group-stack, "button-default");
+    z-index: map.get($button-group-z-index, "button-default");
 
     // the ordering of these z-index CSS rules is particular because of CSS
     // selector specificity. specifically, disabled styles should have
@@ -21,42 +35,42 @@
     // disabled buttons from reordering elements in the stack.
 
     &:focus {
-      z-index: list.index($control-group-stack, "button-focus");
+      z-index: map.get($button-group-z-index, "button-focus");
     }
 
     &:hover {
-      z-index: list.index($control-group-stack, "button-hover");
+      z-index: map.get($button-group-z-index, "button-hover");
     }
 
     &:active,
     &.#{$ns}-active {
-      z-index: list.index($control-group-stack, "button-active");
+      z-index: map.get($button-group-z-index, "button-active");
     }
 
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: list.index($control-group-stack, "button-disabled");
+      z-index: map.get($button-group-z-index, "button-disabled");
     }
 
     &[class*="#{$ns}-intent-"] {
-      z-index: list.index($control-group-stack, "intent-button-default");
+      z-index: map.get($button-group-z-index, "intent-button-default");
 
       &:focus {
-        z-index: list.index($control-group-stack, "intent-button-focus");
+        z-index: map.get($button-group-z-index, "intent-button-focus");
       }
 
       &:hover {
-        z-index: list.index($control-group-stack, "intent-button-hover");
+        z-index: map.get($button-group-z-index, "intent-button-hover");
       }
 
       &:active,
       &.#{$ns}-active {
-        z-index: list.index($control-group-stack, "intent-button-active");
+        z-index: map.get($button-group-z-index, "intent-button-active");
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        z-index: list.index($control-group-stack, "intent-button-disabled");
+        z-index: map.get($button-group-z-index, "intent-button-disabled");
       }
     }
   }
@@ -80,7 +94,7 @@
   &:not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
     > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
-      margin-right: -$button-border-width;
+      margin-right: calc(-1 * var(--bp-surface-border-width));
     }
   }
 
@@ -103,7 +117,7 @@
       &:not(:last-child) {
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
-        margin-right: -$button-border-width;
+        margin-right: calc(-1 * var(--bp-surface-border-width));
       }
     }
   }
@@ -157,19 +171,19 @@
     &.#{$ns}-outlined {
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-button:first-child {
-        border-radius: $pt-border-radius $pt-border-radius 0 0;
+        border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
       }
 
       > .#{$ns}-popover-wrapper:last-child .#{$ns}-button,
       > .#{$ns}-button:last-child {
-        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+        border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
       }
     }
 
     &:not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
       > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
-        margin-bottom: -$button-border-width;
+        margin-bottom: calc(-1 * var(--bp-surface-border-width));
       }
     }
 

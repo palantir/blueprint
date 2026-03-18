@@ -2,7 +2,7 @@
 
 @## Import
 
-```tsx
+```ts copy
 import { QueryList } from "@blueprintjs/select";
 ```
 

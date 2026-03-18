@@ -116,6 +116,17 @@ describe("<PopoverNext>", () => {
     });
 
     describe("rendering", () => {
+        it("applies className to the target wrapper element", () => {
+            const { container } = render(
+                <PopoverNext className="my-custom-class" content="content">
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).toHaveClass("my-custom-class");
+        });
+
         it("adds POPOVER_OPEN class to target when the popover is open", async () => {
             const user = userEvent.setup();
             const { container } = render(

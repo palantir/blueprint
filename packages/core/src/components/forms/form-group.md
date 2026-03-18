@@ -6,7 +6,7 @@ They also support additional helper text to aid with user navigation.
 
 @## Import
 
-```tsx
+```ts copy
 import { FormGroup } from "@blueprintjs/core";
 ```
 

@@ -4,19 +4,27 @@
 It works best in flex layouts where they will adapt to orientation without
 additional styles. Otherwise, a **Divider** will appear as a full-width 1px-high block element.
 
-@## Import
+@## Usage
 
-```tsx
+```ts copy
 import { Divider } from "@blueprintjs/core";
 ```
 
-@## Usage
+```tsx
+Option 1
+<Divider />
+Option 2
+```
+
+@## Examples
+
+@### Basic
 
 Use **Divider** to separate blocks of content within a page or container. By default, it spans the full width of its container.
 
 @reactCodeExample DividerBasicExample
 
-@## Compact
+@### Compact
 
 The `compact` prop removes the margin from the divider, making it flush with adjacent content.
 
@@ -24,7 +32,7 @@ The `compact` prop removes the margin from the divider, making it flush with adj
 <Divider compact />
 ```
 
-@## Vertical
+@### Vertical
 
 When used inside a flex container, **Divider** adapts to the layout's direction. It becomes a vertical divider when placed between flex items.
 

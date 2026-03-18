@@ -4,7 +4,7 @@
 
 @## Import
 
-```tsx
+```ts copy
 import { NumericInput } from "@blueprintjs/core";
 ```
 
@@ -14,15 +14,15 @@ The value in a numeric input can be incremented or decremented using both keyboa
 
 ##### Keyboard interactions
 
--   `↑/↓` - change the value by one step (default: `±1`)
--   `Shift + ↑/↓` - change the value by one major step (default: `±10`)
--   `Alt + ↑/↓` - change the value by one minor step (default: `±0.1`)
+- `↑/↓` - change the value by one step (default: `±1`)
+- `Shift + ↑/↓` - change the value by one major step (default: `±10`)
+- `Alt + ↑/↓` - change the value by one minor step (default: `±0.1`)
 
 ##### Mouse interactions
 
--   `Click ⌃/⌄` - change the value by one step (default: `±1`)
--   `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
--   `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
+- `Click ⌃/⌄` - change the value by one step (default: `±1`)
+- `Shift + Click ⌃/⌄` - change the value by one major step (default: `±10`)
+- `Alt + Click ⌃/⌄` - change the value by one minor step (default: `±0.1`)
 
 @## Basic example
 
@@ -36,9 +36,9 @@ listed above, as well as basic keyboard entry.
 This example shows how **NumericInput** can be extended beyond its core functionality. It supports the basic
 interactions above as well as each of the following types of input:
 
--   **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
--   **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
--   **Addition and subtraction expressions** (e.g. `3+2`, `0.1m - 5k + 1`)
+- **Number abbreviations** (e.g. `2.1k`, `-0.3m`)
+- **Scientific notation** (e.g. `2.1e3`, `-0.3e6`)
+- **Addition and subtraction expressions** (e.g. `3+2`, `0.1m - 5k + 1`)
 
 These special-case inputs are evaluated when `Enter` is pressed (via a custom `onKeyDown` callback) and when the field
 loses focus (via a custom `onBlur` callback). If the input is invalid when either of these callbacks is trigged, the

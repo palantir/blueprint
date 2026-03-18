@@ -66,7 +66,7 @@ export interface RadioGroupProps extends Props, HTMLDivProps {
      * Use `event.currentTarget.value` to read the currently selected value.
      * This prop is required because this component only supports controlled usage.
      */
-    onChange: (event: React.FormEvent<HTMLInputElement>) => void;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 
     /**
      * Array of options to render in the group. This prop is mutually exclusive
