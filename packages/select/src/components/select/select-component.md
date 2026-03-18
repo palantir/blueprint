@@ -8,7 +8,7 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 
 @## Import
 
-```tsx
+```ts copy
 import { Select } from "@blueprintjs/select";
 ```
 
@@ -214,11 +214,11 @@ section below.
 If you wish, you can allow users to select a brand new item that doesn't appear in the list, based on the current query
 string. Use `createNewItemFromQuery` and `createNewItemRenderer` to enable this:
 
--   `createNewItemFromQuery`: Specifies how to convert a user-entered query string into an item of type `<T>` that
-    **Select** understands.
--   `createNewItemRenderer`: Renders a custom "Create Item" element that will be shown at the bottom of the list. When
-    selected via click or `Enter`, this element will invoke `onItemSelect` with the item returned from
-    `createNewItemFromQuery`.
+- `createNewItemFromQuery`: Specifies how to convert a user-entered query string into an item of type `<T>` that
+  **Select** understands.
+- `createNewItemRenderer`: Renders a custom "Create Item" element that will be shown at the bottom of the list. When
+  selected via click or `Enter`, this element will invoke `onItemSelect` with the item returned from
+  `createNewItemFromQuery`.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
     <h5 class="@ns-heading">Avoiding type conflicts</h5>
@@ -323,11 +323,11 @@ data specific to rendering this item in this frame.
 
 A few things to keep in mind:
 
--   The renderer is called for all items, so don't forget to respect `modifiers.matchesPredicate` to hide items which
-    do not match the predicate.
--   Make sure to forward the provided `ref` to the rendered element (usually via `<MenuItem ref={ref} />`) to ensure
-    that scrolling to active items works correctly.
--   Also, don't forget to define a `key` for each item, or face React's console wrath!
+- The renderer is called for all items, so don't forget to respect `modifiers.matchesPredicate` to hide items which
+  do not match the predicate.
+- Make sure to forward the provided `ref` to the rendered element (usually via `<MenuItem ref={ref} />`) to ensure
+  that scrolling to active items works correctly.
+- Also, don't forget to define a `key` for each item, or face React's console wrath!
 
 ```tsx
 import { Classes, MenuItem } from "@blueprintjs/core";
@@ -448,9 +448,9 @@ function renderFilteredItems(
 ): React.ReactNode;
 ```
 
--   `props`: the props object passed to your `itemListRenderer` callback.
--   `noResults`: (optional) content to render when `filteredItems` is empty.
--   `initialContent`: (optional) content to render when `query` is empty. Pass `null` to render nothing;
-    pass `undefined` (or omit) to render items normally.
+- `props`: the props object passed to your `itemListRenderer` callback.
+- `noResults`: (optional) content to render when `filteredItems` is empty.
+- `initialContent`: (optional) content to render when `query` is empty. Pass `null` to render nothing;
+  pass `undefined` (or omit) to render items normally.
 
 @interface ItemListRendererProps

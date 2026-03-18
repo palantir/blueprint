@@ -53,7 +53,7 @@ export const EntityTitleExample: React.FC<ExampleProps> = props => {
     const [withSubtitle, setWithSubtitle] = useState<boolean>(false);
     const [withTag, setWithTag] = useState<boolean>(false);
 
-    const handleHeadingChange = (event: React.FormEvent<HTMLSelectElement>) => {
+    const handleHeadingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setHeading(event.currentTarget.value);
     };
 

@@ -12,7 +12,7 @@ If you are looking for the simpler Blueprint-styled HTML `<table>` instead, see
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
-```sh
+```sh copy
 npm install --save @blueprintjs/table
 ```
 
@@ -24,13 +24,13 @@ Do not forget to include `table.css` on your page:
 
 ### Features
 
--   High-scale, data-agnostic
--   Customizable cell and header rendering
--   Virtualized viewport rendering
--   Selectable rows, columns and cells
--   Resizable rows and columns
--   Editable headers and cells
--   Integrated header and context menus
+- High-scale, data-agnostic
+- Customizable cell and header rendering
+- Virtualized viewport rendering
+- Selectable rows, columns and cells
+- Resizable rows and columns
+- Editable headers and cells
+- Integrated header and context menus
 
 @## Basic usage
 
@@ -39,7 +39,7 @@ and change the `numRows` prop on the `Table` to set the number of rows.
 
 For example, this code creates an empty table with three columns and five rows:
 
-```tsx
+```ts copy
 import { Column, Table } from "@blueprintjs/table";
 
 <Table numRows={5}>
@@ -69,6 +69,3 @@ const euroCellRenderer = (rowIndex: number) => <Cell>{`€${(rowIndex * 10 * 0.8
 ```
 
 @reactExample TableDollarExample
-
-@page features
-@page api

@@ -7,7 +7,7 @@ Its whole label is interactive and it supports a few visual modifiers for differ
 
 @## Import
 
-```tsx
+```ts copy
 import { Switch } from "@blueprintjs/core";
 ```
 

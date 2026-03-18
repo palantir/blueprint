@@ -5,7 +5,7 @@
 
 @## Import
 
-```tsx
+```ts copy
 import { TextArea } from "@blueprintjs/core";
 ```
 

@@ -7,7 +7,7 @@ need to use a Portal directly; this documentation is provided only for reference
 
 @## Import
 
-```tsx
+```ts copy
 import { Portal } from "@blueprintjs/core";
 ```
 
