@@ -120,37 +120,38 @@ describe("Suggest", () => {
         });
 
         // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
-        it.skip("sets active item to the selected item when the popover is closed", done => {
-            // transition duration shorter than timeout below to ensure it's done
-            const wrapper = suggest({
-                popoverProps: { transitionDuration: 5 },
-                selectedItem: TOP_100_FILMS[10],
-            });
-            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
+        it.skip("sets active item to the selected item when the popover is closed", () =>
+            new Promise<void>(done => {
+                // transition duration shorter than timeout below to ensure it's done
+                const wrapper = suggest({
+                    popoverProps: { transitionDuration: 5 },
+                    selectedItem: TOP_100_FILMS[10],
+                });
+                const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
 
-            assert.deepEqual(
-                queryList.state.activeItem,
-                wrapper.state().selectedItem,
-                "QueryList activeItem should be set to the controlled selectedItem if prop is provided",
-            );
+                assert.deepEqual(
+                    queryList.state.activeItem,
+                    wrapper.state().selectedItem,
+                    "QueryList activeItem should be set to the controlled selectedItem if prop is provided",
+                );
 
-            simulateFocus(wrapper);
-            assert.isTrue(wrapper.state().isOpen);
+                simulateFocus(wrapper);
+                assert.isTrue(wrapper.state().isOpen);
 
-            const newActiveItem = TOP_100_FILMS[11];
-            queryList.setActiveItem(newActiveItem);
-            assert.deepEqual(queryList.state.activeItem, newActiveItem);
+                const newActiveItem = TOP_100_FILMS[11];
+                queryList.setActiveItem(newActiveItem);
+                assert.deepEqual(queryList.state.activeItem, newActiveItem);
 
-            simulateKeyDown(wrapper, "Escape");
-            assert.isFalse(wrapper.state().isOpen);
+                simulateKeyDown(wrapper, "Escape");
+                assert.isFalse(wrapper.state().isOpen);
 
-            wrapper.update();
-            wrapper.find(QueryList).update();
-            setTimeout(() => {
-                assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
-                done();
-            }, 10);
-        });
+                wrapper.update();
+                wrapper.find(QueryList).update();
+                setTimeout(() => {
+                    assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
+                    done();
+                }, 10);
+            }));
 
         function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, key: string) {
             simulateKeyDown(wrapper, key);
