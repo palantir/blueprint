@@ -40,16 +40,15 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     // Deduplicate setReference calls so that React's ref cleanup cycle (null → node)
     // does not trigger floating-ui state updates when the node hasn't actually changed,
     // which would otherwise cause infinite re-renders. See #7857.
-    const { setReference } = floatingData.refs;
     const lastNodeRef = useRef<HTMLElement | null>(null);
     const safeSetReference = useCallback(
         (node: HTMLElement | null) => {
             if (node !== lastNodeRef.current) {
                 lastNodeRef.current = node;
-                setReference(node);
+                floatingData.refs.setReference(node);
             }
         },
-        [setReference],
+        [floatingData.refs],
     );
     const ref = useMemo(() => mergeRefs(safeSetReference, targetRef), [safeSetReference, targetRef]);
 
