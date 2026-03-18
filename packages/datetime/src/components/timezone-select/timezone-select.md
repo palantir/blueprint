@@ -6,7 +6,7 @@ does not depend on any external packages for the list of timezones. It uses
 
 @## Import
 
-```tsx
+```ts copy
 import { TimezoneSelect } from "@blueprintjs/datetime";
 ```
 

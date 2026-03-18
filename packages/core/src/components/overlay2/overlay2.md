@@ -31,7 +31,7 @@ existing component meets your needs.
 
 @## Import
 
-```tsx
+```ts copy
 import { Overlay2 } from "@blueprintjs/core";
 ```
 

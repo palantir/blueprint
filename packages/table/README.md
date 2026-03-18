@@ -19,7 +19,7 @@ or spreadsheet.
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/table
 ```
 

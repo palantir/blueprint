@@ -8,7 +8,7 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 
 @## Import
 
-```tsx
+```ts copy
 import { Select } from "@blueprintjs/select";
 ```
 
