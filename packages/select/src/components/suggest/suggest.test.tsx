@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import * as sinon from "sinon";
 
 import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/core";
+import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -77,9 +77,9 @@ describe("Suggest", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
             const popover = wrapper.find(Popover);
-            assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-            assert.lengthOf(popover, 1, "should render Popover");
-            assert.lengthOf(popover.find(MenuItem), 100, "should render 100 items in popover");
+            expect(wrapper.find(InputGroup)).toHaveLength(1);
+            expect(popover).toHaveLength(1);
+            expect(popover.find(MenuItem)).toHaveLength(100);
         });
 
         describe("when ESCAPE key pressed", () => {
@@ -101,7 +101,7 @@ describe("Suggest", () => {
         it("opens popover if any other key pressed", () => {
             const wrapper = suggest({ openOnKeyDown: true });
             simulateKeyDown(wrapper, " ");
-            assert.isTrue(wrapper.state().isOpen, "should open popover");
+            expect(wrapper.state().isOpen).toBe(true);
         });
 
         it("scrolls active item into view when popover opens", () => {
@@ -111,49 +111,46 @@ describe("Suggest", () => {
             act(() => {
                 wrapper.setState({ isOpen: false });
             });
-            assert.isFalse(scrollActiveItemIntoViewSpy.called);
+            expect(scrollActiveItemIntoViewSpy.called).toBe(false);
             act(() => {
                 wrapper.setState({ isOpen: true });
             });
-            assert.strictEqual(scrollActiveItemIntoViewSpy.callCount, 1, "should call scrollActiveItemIntoView");
+            expect(scrollActiveItemIntoViewSpy.callCount).toBe(1);
         });
 
         // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
-        it.skip("sets active item to the selected item when the popover is closed", done => {
-            // transition duration shorter than timeout below to ensure it's done
-            const wrapper = suggest({
-                popoverProps: { transitionDuration: 5 },
-                selectedItem: TOP_100_FILMS[10],
-            });
-            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
+        it.skip("sets active item to the selected item when the popover is closed", () =>
+            new Promise<void>(done => {
+                // transition duration shorter than timeout below to ensure it's done
+                const wrapper = suggest({
+                    popoverProps: { transitionDuration: 5 },
+                    selectedItem: TOP_100_FILMS[10],
+                });
+                const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
 
-            assert.deepEqual(
-                queryList.state.activeItem,
-                wrapper.state().selectedItem,
-                "QueryList activeItem should be set to the controlled selectedItem if prop is provided",
-            );
+                expect(queryList.state.activeItem).toEqual(wrapper.state().selectedItem);
 
-            simulateFocus(wrapper);
-            assert.isTrue(wrapper.state().isOpen);
+                simulateFocus(wrapper);
+                expect(wrapper.state().isOpen).toBe(true);
 
-            const newActiveItem = TOP_100_FILMS[11];
-            queryList.setActiveItem(newActiveItem);
-            assert.deepEqual(queryList.state.activeItem, newActiveItem);
+                const newActiveItem = TOP_100_FILMS[11];
+                queryList.setActiveItem(newActiveItem);
+                expect(queryList.state.activeItem).toEqual(newActiveItem);
 
-            simulateKeyDown(wrapper, "Escape");
-            assert.isFalse(wrapper.state().isOpen);
+                simulateKeyDown(wrapper, "Escape");
+                expect(wrapper.state().isOpen).toBe(false);
 
-            wrapper.update();
-            wrapper.find(QueryList).update();
-            setTimeout(() => {
-                assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
-                done();
-            }, 10);
-        });
+                wrapper.update();
+                wrapper.find(QueryList).update();
+                setTimeout(() => {
+                    expect(queryList.state.activeItem).toEqual(wrapper.state().selectedItem);
+                    done();
+                }, 10);
+            }));
 
         function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, key: string) {
             simulateKeyDown(wrapper, key);
-            assert.isFalse(wrapper.state().isOpen, "should not open popover");
+            expect(wrapper.state().isOpen).toBe(false);
         }
 
         function runEscTabKeyDownTests(key: string) {
@@ -161,7 +158,7 @@ describe("Suggest", () => {
                 const wrapper = suggest();
                 simulateFocus(wrapper);
                 simulateKeyDown(wrapper, key);
-                assert.isFalse(wrapper.state().isOpen, "should close popover");
+                expect(wrapper.state().isOpen).toBe(false);
             });
 
             it("preserves currently selected item", () => {
@@ -171,10 +168,10 @@ describe("Suggest", () => {
                 simulateFocus(wrapper);
                 selectItem(wrapper, ITEM_INDEX);
                 simulateKeyDown(wrapper, key);
-                assert.strictEqual(wrapper.state().selectedItem, expectedItem, "before typing");
+                expect(wrapper.state().selectedItem).toBe(expectedItem);
                 simulateChange(wrapper, "new query"); // type something
                 simulateKeyDown(wrapper, key);
-                assert.strictEqual(wrapper.state().selectedItem, expectedItem, "after typing");
+                expect(wrapper.state().selectedItem).toBe(expectedItem);
             });
         }
     });
@@ -184,14 +181,14 @@ describe("Suggest", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest(); // closeOnSelect=true by default
             selectItem(wrapper, ITEM_INDEX);
-            assert.isFalse(wrapper.state().isOpen);
+            expect(wrapper.state().isOpen).toBe(false);
         });
 
         it("clicking an item does not close the popover if closeOnSelect=false", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest({ closeOnSelect: false });
             selectItem(wrapper, ITEM_INDEX);
-            assert.isTrue(wrapper.state().isOpen);
+            expect(wrapper.state().isOpen).toBe(true);
         });
     });
 
@@ -202,8 +199,8 @@ describe("Suggest", () => {
 
             // @ts-expect-error - value and onChange are now omitted from the props type
             const input = suggest({ inputProps: { onChange, value } }).find("input");
-            assert.notStrictEqual(input.prop("onChange"), onChange);
-            assert.notStrictEqual(input.prop("value"), value);
+            expect(input.prop("onChange")).not.toBe(onChange);
+            expect(input.prop("value")).not.toBe(value);
         });
 
         it("invokes inputProps key handlers", () => {
@@ -211,7 +208,7 @@ describe("Suggest", () => {
             const wrapper = suggest({ inputProps: { onKeyDown: spy, onKeyUp: spy } });
             simulateKeyDown(wrapper);
             simulateKeyUp(wrapper);
-            assert.strictEqual(spy.callCount, 2);
+            expect(spy.callCount).toBe(2);
         });
     });
 
@@ -220,13 +217,13 @@ describe("Suggest", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
 
-            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
+            expect(handlers.inputValueRenderer.called).toBe(false);
             selectItem(wrapper, ITEM_INDEX);
             const selectedItem = TOP_100_FILMS[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
-            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), expectedValue);
+            expect(handlers.inputValueRenderer.called).toBe(true);
+            expect(wrapper.find(InputGroup).prop("value")).toBe(expectedValue);
         });
     });
 
@@ -235,17 +232,17 @@ describe("Suggest", () => {
             const wrapper = suggest({ openOnKeyDown: true });
             // TODO fix later
             // simulateFocus(wrapper);
-            // assert.isFalse(wrapper.state().isOpen, "popover should not open on focus");
+            // expect(wrapper.state().isOpen).toBe(false);
             simulateKeyDown(wrapper);
-            assert.isTrue(wrapper.state().isOpen, "popover should open on key down");
+            expect(wrapper.state().isOpen).toBe(true);
         });
 
         it("opens the popover on focus if openOnKeyDown=false", () => {
             const wrapper = suggest(); // openOnKeyDown=false by default
             simulateFocus(wrapper);
-            assert.isTrue(wrapper.state().isOpen, "popover should open on focus");
+            expect(wrapper.state().isOpen).toBe(true);
             simulateKeyDown(wrapper);
-            assert.isTrue(wrapper.state().isOpen, "popover should stay open on key down");
+            expect(wrapper.state().isOpen).toBe(true);
         });
     });
 
@@ -260,8 +257,8 @@ describe("Suggest", () => {
             const modifiers = {}; // our own instance
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
-            assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
-            assert.isTrue(onOpening.calledOnce);
+            expect(wrapper.find(Popover).prop("modifiers")).toBe(modifiers);
+            expect(onOpening.calledOnce).toBe(true);
         });
 
         function getPopoverProps(isOpen: boolean, modifiers: any): Partial<PopoverProps> {
@@ -278,11 +275,7 @@ describe("Suggest", () => {
         it("initialize the selectedItem with the defaultSelectedItem", () => {
             const defaultSelectedItem = TOP_100_FILMS[0];
             const wrapper = suggest({ defaultSelectedItem });
-            assert.strictEqual(
-                wrapper.state().selectedItem,
-                defaultSelectedItem,
-                "The selected item should be initialized",
-            );
+            expect(wrapper.state().selectedItem).toBe(defaultSelectedItem);
         });
 
         it("when a new item is selected, it changes the selectedItem", () => {
@@ -290,57 +283,53 @@ describe("Suggest", () => {
             const defaultSelectedItem = TOP_100_FILMS[0];
             const nextSelectedItem = TOP_100_FILMS[ITEM_INDEX];
             const wrapper = suggest({ defaultSelectedItem });
-            assert.strictEqual(
-                wrapper.state().selectedItem,
-                defaultSelectedItem,
-                "The selected item should be initialized",
-            );
+            expect(wrapper.state().selectedItem).toBe(defaultSelectedItem);
             simulateFocus(wrapper);
             selectItem(wrapper, ITEM_INDEX);
-            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
-            assert.strictEqual(wrapper.state().selectedItem, nextSelectedItem, "the selectedItem should be updated");
+            expect(handlers.onItemSelect.called).toBe(true);
+            expect(wrapper.state().selectedItem).toBe(nextSelectedItem);
         });
     });
 
     describe("Controlled Mode", () => {
         it("initialize the selectedItem with the given value", () => {
             const selectedItem = TOP_100_FILMS[0];
-            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            expect(selectedItem).not.toBeNull();
             const wrapper = suggest({ selectedItem });
-            assert.strictEqual(wrapper.state().selectedItem, selectedItem);
+            expect(wrapper.state().selectedItem).toBe(selectedItem);
         });
         it("propagates the selectedItem with new values", () => {
             const selectedItem = TOP_100_FILMS[0];
-            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            expect(selectedItem).not.toBeNull();
             const wrapper = suggest();
-            assert.isNull(wrapper.state().selectedItem);
+            expect(wrapper.state().selectedItem).toBeNull();
             wrapper.setProps({ selectedItem });
-            assert.strictEqual(wrapper.state().selectedItem, selectedItem);
+            expect(wrapper.state().selectedItem).toBe(selectedItem);
         });
         it("when new item selected, it should respect the selectedItem prop", () => {
             const selectedItem = TOP_100_FILMS[0];
             const ITEM_INDEX = 4;
-            assert.isNotNull(selectedItem, "The selected item we test must not be null");
+            expect(selectedItem).not.toBeNull();
             const wrapper = suggest({ selectedItem });
             simulateFocus(wrapper);
             selectItem(wrapper, ITEM_INDEX);
-            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
-            assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the underlying state should not change");
+            expect(handlers.onItemSelect.called).toBe(true);
+            expect(wrapper.state().selectedItem).toBe(selectedItem);
             const newSelectedItem = TOP_100_FILMS[ITEM_INDEX];
             wrapper.setProps({ selectedItem: newSelectedItem });
-            assert.strictEqual(wrapper.state().selectedItem, newSelectedItem, "the selectedItem should be updated");
+            expect(wrapper.state().selectedItem).toBe(newSelectedItem);
         });
         it("preserves the empty selection", () => {
             const ITEM_INDEX = 4;
             const selectedItem = TOP_100_FILMS[0];
             const wrapper = suggest({ selectedItem: null });
-            assert.isNull(wrapper.state().selectedItem);
+            expect(wrapper.state().selectedItem).toBeNull();
             simulateFocus(wrapper);
             selectItem(wrapper, ITEM_INDEX);
-            assert.isTrue(handlers.onItemSelect.called, "onItemSelect should be called after selection");
-            assert.isNull(wrapper.state().selectedItem, "the underlying state should not change");
+            expect(handlers.onItemSelect.called).toBe(true);
+            expect(wrapper.state().selectedItem).toBeNull();
             wrapper.setProps({ selectedItem });
-            assert.strictEqual(wrapper.state().selectedItem, selectedItem, "the selectedItem should be updated");
+            expect(wrapper.state().selectedItem).toBe(selectedItem);
         });
     });
 

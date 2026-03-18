@@ -16,6 +16,8 @@
 
 import { mount } from "enzyme";
 
+import { describe } from "@blueprintjs/test-commons/vitest";
+
 import { selectComponentSuite } from "../select/selectComponentTestUtils";
 
 import { Omnibar } from "./omnibar";
