@@ -14,7 +14,7 @@ This package provides React components related to selecting items from a list:
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/select
 ```
 

@@ -4,7 +4,7 @@
 
 @## Import
 
-```tsx
+```ts copy
 import { NumericInput } from "@blueprintjs/core";
 ```
 
