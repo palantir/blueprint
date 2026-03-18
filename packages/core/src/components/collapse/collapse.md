@@ -3,13 +3,21 @@
 The **Collapse** component reveals and hides content with a smooth sliding animation.
 It is commonly used to create expandable sections, like settings panels, sub-sections, or FAQs.
 
-@## Import
+@## Usage
 
 ```ts copy
 import { Collapse } from "@blueprintjs/core";
 ```
 
-@## Usage
+```tsx
+<Collapse isOpen={isOpen}>
+    <p>This is an example of collapsible content.</p>
+</Collapse>
+```
+
+@## Examples
+
+@### Basic
 
 The **Collapse** component wraps its children and toggles their visibility with a sliding animation.
 The `isOpen` prop controls whether the content is visible. Content must be in the normal document
@@ -17,7 +25,7 @@ flow (i.e., avoid `position: absolute;`), as **Collapse** calculates height to a
 
 @reactCodeExample CollapseBasicExample
 
-@## Keeping children mounted
+@### Keeping children mounted
 
 By default, **Collapse** removes its children from the DOM when the collapse is closed.
 This improves performance, especially when there are many collapsible elements on a page.
