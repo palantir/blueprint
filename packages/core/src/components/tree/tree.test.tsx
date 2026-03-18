@@ -16,11 +16,13 @@
 
 import { waitFor } from "@testing-library/dom";
 import { mount, type ReactWrapper } from "enzyme";
-import { spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Tree, type TreeNodeInfo, type TreeProps } from "../..";
+import { Classes } from "../../common";
+
+import { Tree, type TreeProps } from "./tree";
+import { type TreeNodeInfo } from "./treeTypes";
 
 describe("<Tree>", () => {
     let containerElement: HTMLElement;
@@ -100,13 +102,13 @@ describe("<Tree>", () => {
     });
 
     it("event callbacks are fired correctly", () => {
-        const onNodeClick = spy();
-        const onNodeCollapse = spy();
-        const onNodeContextMenu = spy();
-        const onNodeDoubleClick = spy();
-        const onNodeExpand = spy();
-        const onNodeMouseEnter = spy();
-        const onNodeMouseLeave = spy();
+        const onNodeClick = vi.fn();
+        const onNodeCollapse = vi.fn();
+        const onNodeContextMenu = vi.fn();
+        const onNodeDoubleClick = vi.fn();
+        const onNodeExpand = vi.fn();
+        const onNodeMouseEnter = vi.fn();
+        const onNodeMouseLeave = vi.fn();
 
         const contents = createDefaultContents();
         contents[3].isExpanded = true;
@@ -123,44 +125,44 @@ describe("<Tree>", () => {
         });
 
         tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT}`).simulate("click");
-        assert.isTrue(onNodeClick.calledOnce);
-        assert.deepEqual(onNodeClick.args[0][1], [0]);
+        expect(onNodeClick).toHaveBeenCalledOnce();
+        expect(onNodeClick.mock.calls[0][1]).toEqual([0]);
 
         findNodeClass(tree, "c1", Classes.TREE_NODE_CARET).simulate("click");
-        assert.isTrue(onNodeExpand.calledOnce);
-        assert.deepEqual(onNodeExpand.args[0][1], [1]);
+        expect(onNodeExpand).toHaveBeenCalledOnce();
+        expect(onNodeExpand.mock.calls[0][1]).toEqual([1]);
         // make sure that onNodeClick isn't fired again, only onNodeExpand should be
-        assert.isTrue(onNodeClick.calledOnce);
+        expect(onNodeClick).toHaveBeenCalledOnce();
 
         tree.find(`.c6 > .${Classes.TREE_NODE_CONTENT}`).simulate("dblclick");
-        assert.isTrue(onNodeDoubleClick.calledOnce);
-        assert.deepEqual(onNodeDoubleClick.args[0][1], [3, 0]);
+        expect(onNodeDoubleClick).toHaveBeenCalledOnce();
+        expect(onNodeDoubleClick.mock.calls[0][1]).toEqual([3, 0]);
 
         findNodeClass(tree, "c3", Classes.TREE_NODE_CARET).simulate("click");
-        assert.isTrue(onNodeCollapse.calledOnce);
-        assert.deepEqual(onNodeCollapse.args[0][1], [3]);
+        expect(onNodeCollapse).toHaveBeenCalledOnce();
+        expect(onNodeCollapse.mock.calls[0][1]).toEqual([3]);
 
         tree.find(`.c0 > .${Classes.TREE_NODE_CONTENT}`).simulate("contextmenu");
-        assert.isTrue(onNodeContextMenu.calledOnce);
-        assert.deepEqual(onNodeContextMenu.args[0][1], [0]);
+        expect(onNodeContextMenu).toHaveBeenCalledOnce();
+        expect(onNodeContextMenu.mock.calls[0][1]).toEqual([0]);
 
         tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT}`).simulate("mouseenter");
-        assert.isTrue(onNodeMouseEnter.calledOnce);
-        assert.deepEqual(onNodeMouseEnter.args[0][1], [2]);
+        expect(onNodeMouseEnter).toHaveBeenCalledOnce();
+        expect(onNodeMouseEnter.mock.calls[0][1]).toEqual([2]);
 
         tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT}`).simulate("mouseleave");
-        assert.isTrue(onNodeMouseLeave.calledOnce);
-        assert.deepEqual(onNodeMouseLeave.args[0][1], [2]);
+        expect(onNodeMouseLeave).toHaveBeenCalledOnce();
+        expect(onNodeMouseLeave.mock.calls[0][1]).toEqual([2]);
     });
 
     it("if disabled, event callbacks are not fired", () => {
-        const onNodeClick = spy();
-        const onNodeCollapse = spy();
-        const onNodeContextMenu = spy();
-        const onNodeDoubleClick = spy();
-        const onNodeExpand = spy();
-        const onNodeMouseEnter = spy();
-        const onNodeMouseLeave = spy();
+        const onNodeClick = vi.fn();
+        const onNodeCollapse = vi.fn();
+        const onNodeContextMenu = vi.fn();
+        const onNodeDoubleClick = vi.fn();
+        const onNodeExpand = vi.fn();
+        const onNodeMouseEnter = vi.fn();
+        const onNodeMouseLeave = vi.fn();
 
         const contents = createDefaultContents();
         contents[0].disabled = true;
@@ -183,25 +185,25 @@ describe("<Tree>", () => {
         const treeNodeCaret = treeNodeContent.find(`.${Classes.TREE_NODE_CARET}`).first();
 
         treeNodeContent.simulate("click");
-        assert.isTrue(onNodeClick.notCalled);
+        expect(onNodeClick).not.toHaveBeenCalled();
 
         treeNodeContent.simulate("dblclick");
-        assert.isTrue(onNodeDoubleClick.notCalled);
+        expect(onNodeDoubleClick).not.toHaveBeenCalled();
 
         treeNodeContent.simulate("contextmenu");
-        assert.isTrue(onNodeContextMenu.notCalled);
+        expect(onNodeContextMenu).not.toHaveBeenCalled();
 
         treeNodeContent.simulate("mouseenter");
-        assert.isTrue(onNodeMouseEnter.notCalled);
+        expect(onNodeMouseEnter).not.toHaveBeenCalled();
 
         treeNodeContent.simulate("mouseleave");
-        assert.isTrue(onNodeMouseLeave.notCalled);
+        expect(onNodeMouseLeave).not.toHaveBeenCalled();
 
         treeNodeCaret.simulate("click");
-        assert.isTrue(onNodeExpand.notCalled);
+        expect(onNodeExpand).not.toHaveBeenCalled();
 
         treeNodeCaret.simulate("click");
-        assert.isTrue(onNodeCollapse.notCalled);
+        expect(onNodeCollapse).not.toHaveBeenCalled();
     });
 
     it("disabled nodes are rendered correctly", () => {

@@ -15,13 +15,13 @@
  */
 
 import { mount } from "enzyme";
-import sinon from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Slider } from "../..";
+import { Classes } from "../../common";
 
 import { Handle } from "./handle";
+import { Slider } from "./slider";
 import { simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;
@@ -79,35 +79,35 @@ describe("<Slider>", () => {
     });
 
     it.skip("moving mouse calls onChange with nearest value", () => {
-        const changeSpy = sinon.spy();
+        const changeSpy = vi.fn();
         simulateMovement(renderSlider(<Slider onChange={changeSpy} />), {
             dragSize: STEP_SIZE,
             dragTimes: 4,
         });
         // called 4 times, for the move to 1, 2, 3, and 4
-        assert.equal(changeSpy.callCount, 4, "call count");
-        assert.deepEqual(changeSpy.args, [[1], [2], [3], [4]]);
+        expect(changeSpy).toHaveBeenCalledTimes(4);
+        expect(changeSpy.mock.calls).toEqual([[1], [2], [3], [4]]);
     });
 
     it.skip("releasing mouse calls onRelease with nearest value", () => {
-        const releaseSpy = sinon.spy();
+        const releaseSpy = vi.fn();
         simulateMovement(renderSlider(<Slider onRelease={releaseSpy} />), {
             dragSize: STEP_SIZE,
             dragTimes: 1,
         });
-        assert.isTrue(releaseSpy.calledOnce, "onRelease not called exactly once");
-        assert.equal(releaseSpy.args[0][0], 1);
+        expect(releaseSpy).toHaveBeenCalledOnce();
+        expect(releaseSpy.mock.calls[0][0]).toBe(1);
     });
 
     it.skip("disabled slider never invokes event handlers", () => {
-        const eventSpy = sinon.spy();
+        const eventSpy = vi.fn();
         const slider = renderSlider(<Slider disabled={true} onChange={eventSpy} onRelease={eventSpy} />);
         // handle drag and keys
         simulateMovement(slider, { dragTimes: 3 });
         slider.simulate("keydown", { key: "ArrowUp" });
         // track click
         slider.find(TRACK_SELECTOR).simulate("mousedown", { target: containerElement.querySelector(TRACK_SELECTOR) });
-        assert.isTrue(eventSpy.notCalled);
+        expect(eventSpy).not.toHaveBeenCalled();
     });
 
     function renderSlider(slider: React.JSX.Element) {

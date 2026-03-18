@@ -16,9 +16,8 @@
 
 import { render } from "@testing-library/react";
 import { createRef, useEffect, useId, useMemo } from "react";
-import { spy } from "sinon";
 
-import { afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeAll, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import type { OverlayProps } from "../components/overlay/overlayProps";
 import type { OverlayInstance } from "../components/overlay2/overlayInstance";
@@ -103,7 +102,7 @@ const TestComponentWithProvider: React.FC<TestComponentProps> = props => {
 };
 
 describe("useOverlayStack()", () => {
-    const handleLastOpenedChange = spy();
+    const handleLastOpenedChange = vi.fn();
     const containerRef = createRef<HTMLDivElement>();
     const TEST_PROPS_CLOSED: TestComponentProps = {
         autoFocus: true,
@@ -120,7 +119,7 @@ describe("useOverlayStack()", () => {
     };
 
     afterEach(() => {
-        handleLastOpenedChange.resetHistory();
+        handleLastOpenedChange.mockClear();
     });
 
     describe("with <OverlaysProvider>", () => {
@@ -134,11 +133,8 @@ describe("useOverlayStack()", () => {
             // so it wont' trigger a change in getLastOpened() until the second re-render.
             rerender(<TestComponentWithProvider {...TEST_PROPS_OPEN} />);
             rerender(<TestComponentWithProvider {...TEST_PROPS_OPEN} />);
-            expect(
-                handleLastOpenedChange.calledOnce,
-                `expected getLastOpened() result to change after re-rendering with isOpen={true}`,
-            ).to.be.true;
-            const lastOpenedInstance = handleLastOpenedChange.getCall(0).args[0] as OverlayInstance;
+            expect(handleLastOpenedChange).toHaveBeenCalledOnce();
+            const lastOpenedInstance = handleLastOpenedChange.mock.calls[0][0] as OverlayInstance;
             expect(lastOpenedInstance).to.exist;
             expect(containerRef.current).to.exist;
             expect(lastOpenedInstance.containerElement.current).to.equal(containerRef.current);
@@ -161,11 +157,8 @@ describe("useOverlayStack()", () => {
             // so it wont' trigger a change in getLastOpened() until the second re-render.
             rerender(<TestComponentWithoutProvider {...TEST_PROPS_OPEN} />);
             rerender(<TestComponentWithoutProvider {...TEST_PROPS_OPEN} />);
-            expect(
-                handleLastOpenedChange.callCount > 0,
-                `expected getLastOpened() result to change after re-rendering with isOpen={true}`,
-            ).to.be.true;
-            const lastOpenedInstance = handleLastOpenedChange.getCall(0).args[0] as OverlayInstance;
+            expect(handleLastOpenedChange).toHaveBeenCalled();
+            const lastOpenedInstance = handleLastOpenedChange.mock.calls[0][0] as OverlayInstance;
             expect(lastOpenedInstance).to.exist;
             expect(containerRef.current).to.exist;
             expect(

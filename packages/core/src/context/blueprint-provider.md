@@ -7,9 +7,9 @@ at the root of your application and may only be used once as a singleton provide
 Concretely, this provider renders the following provider components _in the correct nesting order_
 and allows customization of their options via props:
 
--   [**OverlaysProvider**](#core/context/overlays-provider)
--   [**HotkeysProvider**](#core/context/hotkeys-provider)
--   [**PortalProvider**](#core/context/portal-provider)
+- [**OverlaysProvider**](#core/context/overlays-provider)
+- [**HotkeysProvider**](#core/context/hotkeys-provider)
+- [**PortalProvider**](#core/context/portal-provider)
 
 ## Usage
 
@@ -27,6 +27,28 @@ root.render(
         <div>My app has overlays, hotkeys, and portal customization 😎</div>
     </BlueprintProvider>,
 );
+```
+
+## Usage with other providers
+
+If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest
+**BlueprintProvider** underneath them:
+
+```tsx
+import { BlueprintProvider } from "@blueprintjs/core";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([...]);
+
+function App() {
+    return (
+        <RouterProvider router={router}>
+            <BlueprintProvider>
+                <div>My app has overlays, hotkeys, and portal customization 😎</div>
+            </BlueprintProvider>
+        </RouterProvider>
+    );
+}
 ```
 
 ## Props interface

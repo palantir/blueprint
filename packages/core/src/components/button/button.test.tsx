@@ -17,12 +17,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
-import { spy } from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { AnchorButton, Button, Classes, Icon } from "../..";
+import { Classes } from "../../common";
+import { Icon } from "../icon/icon";
+
+import { AnchorButton, Button } from "./buttons";
 
 describe("<Button>", () => {
     commonTests(Button);
@@ -118,55 +120,60 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
     });
 
     it("should disable button while loading", async () => {
-        const onClick = spy();
+        const user = userEvent.setup();
+        const onClick = vi.fn();
         render(<Component loading={true} onClick={onClick} />);
         const button = screen.getByRole("button");
 
-        await userEvent.click(button);
+        await user.click(button);
 
-        expect(onClick.called).to.be.false;
+        expect(onClick).not.toHaveBeenCalled();
     });
 
     // This tests some subtle (potentialy unexpected) behavior, but it was an API decision we
     // made a long time ago which we rely on and should not break.
     // See https://github.com/palantir/blueprint/issues/3819#issuecomment-1189478596
     it("should disable button while loading, even when disabled prop is explicity set to false", async () => {
-        const onClick = spy();
+        const user = userEvent.setup();
+        const onClick = vi.fn();
         render(<Component loading={true} disabled={false} onClick={onClick} />);
         const button = screen.getByRole("button");
 
-        await userEvent.click(button);
+        await user.click(button);
 
-        expect(onClick.called).to.be.false;
+        expect(onClick).not.toHaveBeenCalled();
     });
 
     it("should trigger onClick when clicked", async () => {
-        const onClick = spy();
+        const user = userEvent.setup();
+        const onClick = vi.fn();
         render(<Component onClick={onClick} />);
         const button = screen.getByRole("button");
 
-        await userEvent.click(button);
+        await user.click(button);
 
-        expect(onClick.called).to.be.true;
+        expect(onClick).toHaveBeenCalled();
     });
 
     it("should call onClick when enter key is pressed", async () => {
-        const onClick = spy();
+        const user = userEvent.setup();
+        const onClick = vi.fn();
         render(<Component onClick={onClick} />);
         const button = screen.getByRole("button");
 
-        await userEvent.type(button, "{enter}");
+        await user.type(button, "{enter}");
 
-        expect(onClick.called).to.be.true;
+        expect(onClick).toHaveBeenCalled();
     });
 
     it("should call onClick when space key is pressed", async () => {
-        const onClick = spy();
+        const user = userEvent.setup();
+        const onClick = vi.fn();
         render(<Component onClick={onClick} />);
         const button = screen.getByRole("button");
 
-        await userEvent.type(button, "{space}");
+        await user.type(button, "{space}");
 
-        expect(onClick.called).to.be.true;
+        expect(onClick).toHaveBeenCalled();
     });
 }

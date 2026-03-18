@@ -11,8 +11,8 @@ export default defineConfig({
     test: {
         name: "core",
         environment: "jsdom",
-        exclude: ["lib/**", "node_modules/**"],
         include: ["src/**/*.test.{ts,tsx}"],
+        exclude: ["lib/**", "node_modules/**", "src/isotest.test.ts"],
         setupFiles: "@blueprintjs/test-commons/vitest.setup",
     },
 });

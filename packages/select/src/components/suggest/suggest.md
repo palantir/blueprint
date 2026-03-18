@@ -6,7 +6,7 @@ be customized using `inputProps`.
 
 @## Import
 
-```tsx
+```ts copy
 import { Suggest } from "@blueprintjs/select";
 ```
 

@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
+import userEvent from "@testing-library/user-event";
 import { mount, type ReactWrapper } from "enzyme";
-import { act } from "react";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-utils";
 
-import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../..";
+import { Classes } from "../../common";
+import { AnchorButton } from "../button/buttons";
+
+import { DialogStep } from "./dialogStep";
+import { MultistepDialog } from "./multistepDialog";
 
 // TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
 // need to reference AnchorButton directly
@@ -163,7 +166,8 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    it("pressing enter on older step takes effect", () => {
+    it("pressing enter on older step takes effect", async () => {
+        const user = userEvent.setup();
         const containerElement = document.createElement("div");
         document.documentElement.appendChild(containerElement);
         const dialog = mount(
@@ -177,10 +181,8 @@ describe("<MultistepDialog>", () => {
         findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        step.at(0).simulate("focus");
-        act(() => {
-            dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
-        });
+        (step.at(0).getDOMNode() as HTMLElement).focus();
+        await user.keyboard("{Enter}");
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.unmount();
         containerElement.remove();

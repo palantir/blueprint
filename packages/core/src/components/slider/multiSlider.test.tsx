@@ -15,15 +15,14 @@
  */
 
 import { mount, type ReactWrapper } from "enzyme";
-import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, MultiSlider, type MultiSliderProps } from "../..";
+import { Classes } from "../../common";
 
 import { Handle } from "./handle";
-import { MultiSliderHandle } from "./multiSlider";
+import { MultiSlider, MultiSliderHandle, type MultiSliderProps } from "./multiSlider";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;
@@ -31,8 +30,8 @@ const STEP_SIZE = 20;
 describe("<MultiSlider>", () => {
     let containerElement: HTMLElement;
 
-    let onChange: sinon.SinonSpy;
-    let onRelease: sinon.SinonSpy;
+    const onChange = vi.fn();
+    const onRelease = vi.fn();
 
     beforeEach(() => {
         // need an element in the document for tickSize to be a real number
@@ -41,8 +40,8 @@ describe("<MultiSlider>", () => {
         containerElement.style.width = `${STEP_SIZE * 10}px`;
         document.body.appendChild(containerElement);
 
-        onChange = sinon.spy();
-        onRelease = sinon.spy();
+        onChange.mockReset();
+        onRelease.mockReset();
     });
 
     afterEach(() => {
@@ -54,8 +53,8 @@ describe("<MultiSlider>", () => {
             const slider = renderSlider({ onRelease, values: [5, 10, 0] });
             slider.find(Handle).first().simulate("mousedown", { clientX: 0 });
             mouseUpHorizontal(0);
-            assert.equal(onRelease.callCount, 1);
-            assert.deepEqual(onRelease.firstCall.args[0], [0, 5, 10]);
+            expect(onRelease).toHaveBeenCalledOnce();
+            expect(onRelease.mock.calls[0][0]).toEqual([0, 5, 10]);
         });
 
         it("propagates className to the handles", () => {
@@ -73,16 +72,13 @@ describe("<MultiSlider>", () => {
             const slider = renderSlider({ onChange });
             simulateMovement(slider, { dragSize: STEP_SIZE, dragTimes: 4, handleIndex: 0 });
             // called 3 times for the move to 1, 2, 3, and 4
-            assert.equal(onChange.callCount, 4);
-            assert.deepEqual(
-                onChange.args.map(arg => arg[0]),
-                [
-                    [1, 5, 10],
-                    [2, 5, 10],
-                    [3, 5, 10],
-                    [4, 5, 10],
-                ],
-            );
+            expect(onChange).toHaveBeenCalledTimes(4);
+            expect(onChange.mock.calls.map(arg => arg[0])).toEqual([
+                [1, 5, 10],
+                [2, 5, 10],
+                [3, 5, 10],
+                [4, 5, 10],
+            ]);
         });
 
         it.skip("moving mouse on the middle handle updates the middle value", () => {
@@ -94,16 +90,13 @@ describe("<MultiSlider>", () => {
                 handleIndex: 1,
             });
             // called 3 times for the move to 6, 7, 8, and 9
-            assert.equal(onChange.callCount, 4);
-            assert.deepEqual(
-                onChange.args.map(arg => arg[0]),
-                [
-                    [0, 6, 10],
-                    [0, 7, 10],
-                    [0, 8, 10],
-                    [0, 9, 10],
-                ],
-            );
+            expect(onChange).toHaveBeenCalledTimes(4);
+            expect(onChange.mock.calls.map(arg => arg[0])).toEqual([
+                [0, 6, 10],
+                [0, 7, 10],
+                [0, 8, 10],
+                [0, 9, 10],
+            ]);
         });
 
         it.skip("moving mouse on the last handle updates the last value", () => {
@@ -115,57 +108,54 @@ describe("<MultiSlider>", () => {
                 handleIndex: 2,
             });
             // called 3 times for the move to 9, 8, 7, and 6
-            assert.equal(onChange.callCount, 4);
-            assert.deepEqual(
-                onChange.args.map(arg => arg[0]),
-                [
-                    [0, 5, 9],
-                    [0, 5, 8],
-                    [0, 5, 7],
-                    [0, 5, 6],
-                ],
-            );
+            expect(onChange).toHaveBeenCalledTimes(4);
+            expect(onChange.mock.calls.map(arg => arg[0])).toEqual([
+                [0, 5, 9],
+                [0, 5, 8],
+                [0, 5, 7],
+                [0, 5, 6],
+            ]);
         });
 
         it.skip("releasing mouse on a track value closer to the first handle moves the first handle", () => {
             const slider = renderSlider({ onChange });
             slider.simulate("mousedown", { clientX: STEP_SIZE });
-            assert.equal(onChange.callCount, 1);
-            assert.deepEqual(onChange.firstCall.args[0], [1, 5, 10]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([1, 5, 10]);
         });
 
         it.skip("releasing mouse on a track value slightly below the middle handle moves the middle handle", () => {
             const slider = renderSlider({ onChange });
             slider.simulate("mousedown", { clientX: STEP_SIZE * 4 });
-            assert.equal(onChange.callCount, 1);
-            assert.deepEqual(onChange.firstCall.args[0], [0, 4, 10]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([0, 4, 10]);
         });
 
         it.skip("releasing mouse on a track value slightly above the middle handle moves the middle handle", () => {
             const slider = renderSlider({ onChange });
             slider.simulate("mousedown", { clientX: STEP_SIZE * 6 });
-            assert.equal(onChange.callCount, 1);
-            assert.deepEqual(onChange.firstCall.args[0], [0, 6, 10]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([0, 6, 10]);
         });
 
         it.skip("releasing mouse on a track value closer to the last handle moves the last handle", () => {
             const slider = renderSlider({ onChange });
             slider.simulate("mousedown", { clientX: STEP_SIZE * 9 });
-            assert.equal(onChange.callCount, 1);
-            assert.deepEqual(onChange.firstCall.args[0], [0, 5, 9]);
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([0, 5, 9]);
         });
 
         it.skip("when values are equal, releasing mouse on a track still moves the nearest handle", () => {
             const slider = renderSlider({ onChange, values: [5, 5, 7] });
 
             slider.simulate("mousedown", { clientX: STEP_SIZE * 1 });
-            assert.equal(onChange.callCount, 1, "one lower handle invokes onChange");
-            assert.deepEqual(onChange.firstCall.args[0], [1, 5, 7], "one lower handle moves");
-            onChange.resetHistory();
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([1, 5, 7]);
+            onChange.mockClear();
 
             slider.simulate("mousedown", { clientX: STEP_SIZE * 9 });
-            assert.equal(onChange.callCount, 1, "higher handle invokes onChange");
-            assert.deepEqual(onChange.firstCall.args[0], [5, 5, 9], "higher handle moves");
+            expect(onChange).toHaveBeenCalledOnce();
+            expect(onChange.mock.calls[0][0]).toEqual([5, 5, 9]);
         });
 
         it("values outside of bounds are clamped", () => {

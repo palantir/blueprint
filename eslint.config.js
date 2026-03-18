@@ -24,8 +24,8 @@ module.exports = tseslint.config([
         rules: {
             // we have these across the codebase, it's not useful for this repo
             "@blueprintjs/no-deprecated-type-references": "off",
-            // Run import/no-cycle only in CI because it is slow.
-            "import/no-cycle": process.env.CI ? "error" : "off",
+            // TODO: Update to other option such as oxlint or upcoming capabilities, as this is too slow
+            "import/no-cycle": "off",
             "no-console": "error",
             // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
             "no-restricted-imports": [
@@ -48,6 +48,7 @@ module.exports = tseslint.config([
             "**/test/isotest.mjs",
             "**/vitest.setup.{ts,js,mts,mjs}",
             "**/*.test.{ts,tsx}",
+            "**/*TestUtils*.{ts,tsx}",
         ],
         languageOptions: {
             globals: {
@@ -63,7 +64,12 @@ module.exports = tseslint.config([
         },
     },
     {
-        files: ["**/webpack.config.{js,mjs}", "**/vitest.config.{ts,js,mts,mjs}", "**/scripts/*.{js,mjs}"],
+        files: [
+            "**/webpack.config.{js,mjs}",
+            "**/vitest.config.{ts,js,mts,mjs}",
+            "**/scripts/*.{js,mjs}",
+            "**/src/design-tokens/*.ts",
+        ],
         languageOptions: {
             globals: { ...globals.node },
         },
@@ -76,6 +82,19 @@ module.exports = tseslint.config([
                 },
             ],
             "prefer-object-spread": "off",
+        },
+    },
+    {
+        files: ["**/*.stories.{ts,tsx}"],
+        languageOptions: {
+            parserOptions: {
+                projectService: false,
+                project: `${__dirname}/.storybook/tsconfig.json`,
+            },
+        },
+        rules: {
+            "import/no-default-export": "off",
+            "sort-keys": "off",
         },
     },
     {

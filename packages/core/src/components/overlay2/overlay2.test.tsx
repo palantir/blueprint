@@ -17,11 +17,14 @@
 import { fireEvent, render, type RenderOptions, type RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
-import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Overlay2, type Overlay2Props, type OverlayInstance, OverlaysProvider } from "../..";
+import { Classes } from "../../common";
+import { OverlaysProvider } from "../../context/overlays/overlaysProvider";
+
+import { Overlay2, type Overlay2Props } from "./overlay2";
+import { type OverlayInstance } from "./overlayInstance";
 
 import "../../../test/overlay2/overlay2-test-debugging.scss";
 
@@ -129,7 +132,8 @@ describe("<Overlay2>", () => {
 
     describe("onClose", () => {
         it("should invoke on backdrop mousedown when canOutsideClickClose=true", async () => {
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onClose = vi.fn();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
                     transitionDuration={0}
@@ -143,13 +147,14 @@ describe("<Overlay2>", () => {
 
             expect(backdropElement).to.exist;
 
-            await userEvent.click(backdropElement!);
+            await user.click(backdropElement!);
 
-            expect(onClose.calledOnce).to.be.true;
+            expect(onClose).toHaveBeenCalledOnce();
         });
 
         it("should not invoke on backdrop mousedown when canOutsideClickClose=false", async () => {
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onClose = vi.fn();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
                     transitionDuration={0}
@@ -163,13 +168,14 @@ describe("<Overlay2>", () => {
 
             expect(backdropElement).to.exist;
 
-            await userEvent.click(backdropElement!);
+            await user.click(backdropElement!);
 
-            expect(onClose.notCalled).to.be.true;
+            expect(onClose).not.toHaveBeenCalled();
         });
 
         it("should invoke on document mousedown when hasBackdrop=false", async () => {
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onClose = vi.fn();
             renderWithOverlaysProvider(
                 <Overlay2
                     transitionDuration={0}
@@ -180,13 +186,14 @@ describe("<Overlay2>", () => {
                 />,
             );
 
-            await userEvent.click(document.documentElement);
+            await user.click(document.documentElement);
 
-            expect(onClose.calledOnce).to.be.true;
+            expect(onClose).toHaveBeenCalledOnce();
         });
 
         it("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", async () => {
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onClose = vi.fn();
             renderWithOverlaysProvider(
                 <Overlay2
                     transitionDuration={0}
@@ -198,13 +205,14 @@ describe("<Overlay2>", () => {
                 />,
             );
 
-            await userEvent.click(document.documentElement);
+            await user.click(document.documentElement);
 
-            expect(onClose.notCalled).to.be.true;
+            expect(onClose).not.toHaveBeenCalled();
         });
 
         it("should not invoke on click of a nested overlay", async () => {
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onClose = vi.fn();
             renderWithOverlaysProvider(
                 <Overlay2 transitionDuration={0} isOpen={true} onClose={onClose}>
                     <>
@@ -217,13 +225,13 @@ describe("<Overlay2>", () => {
             );
             const innerElement = screen.getByText("inner content");
 
-            await userEvent.click(innerElement);
+            await user.click(innerElement);
 
-            expect(onClose.notCalled).to.be.true;
+            expect(onClose).not.toHaveBeenCalled();
         });
 
         it("should invoke on escape key", async () => {
-            const onClose = spy();
+            const onClose = vi.fn();
 
             function TestOverlay() {
                 const [isOpen, setIsOpen] = useState(true);
@@ -251,13 +259,13 @@ describe("<Overlay2>", () => {
 
             fireEvent.keyDown(overlayElement!, { key: "Escape" });
 
-            expect(onClose.calledOnce).to.be.true;
+            expect(onClose).toHaveBeenCalledOnce();
 
             await waitFor(() => expect(screen.queryByText("test content")).not.toBeInTheDocument());
         });
 
         it("should not invoke on escape key when canEscapeKeyClose is false", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
 
             function TestOverlay() {
                 const [isOpen, setIsOpen] = useState(true);
@@ -286,14 +294,14 @@ describe("<Overlay2>", () => {
 
             fireEvent.keyDown(overlayElement!, { key: "Escape" });
 
-            expect(onClose.notCalled).to.be.true;
+            expect(onClose).not.toHaveBeenCalled();
 
             expect(screen.queryByText("test content")).to.exist;
         });
 
         it("should close second overlay with escape key and return focus to first overlay", async () => {
-            const firstOnClose = spy();
-            const secondOnClose = spy();
+            const firstOnClose = vi.fn();
+            const secondOnClose = vi.fn();
 
             function TestOverlays() {
                 const [isFirstOpen, setIsFirstOpen] = useState(true);
@@ -344,8 +352,8 @@ describe("<Overlay2>", () => {
             fireEvent.keyDown(secondOverlayContainer!, { key: "Escape" });
 
             // Verify only the second overlay's onClose was called
-            expect(firstOnClose.notCalled).to.be.true;
-            expect(secondOnClose.calledOnce).to.be.true;
+            expect(firstOnClose).not.toHaveBeenCalled();
+            expect(secondOnClose).toHaveBeenCalledOnce();
 
             // Wait for the second overlay to close
             await waitFor(() => expect(screen.queryByTestId("second-overlay-input")).not.toBeInTheDocument());
@@ -445,6 +453,7 @@ describe("<Overlay2>", () => {
         });
 
         it("should return focus to overlay after clicking the backdrop if enforceFocus=true", async () => {
+            const user = userEvent.setup();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
                     transitionDuration={0}
@@ -459,7 +468,7 @@ describe("<Overlay2>", () => {
 
             expect(backdropElement).to.exist;
 
-            await userEvent.click(backdropElement!);
+            await user.click(backdropElement!);
 
             await waitFor(
                 () =>
@@ -471,6 +480,7 @@ describe("<Overlay2>", () => {
         // requestAnimationFrame to delay focus manipulation (Overlay2), and RAF
         // timing in jsdom is inconsistent with userEvent clicks.
         it.skip("should return focus to overlay after clicking an outside element if enforceFocus=true", async () => {
+            const user = userEvent.setup();
             renderWithOverlaysProvider(
                 <div>
                     <Overlay2
@@ -489,7 +499,7 @@ describe("<Overlay2>", () => {
             );
             const buttonElement = screen.getByRole("button", { name: /button outside overlay/i });
 
-            await userEvent.click(buttonElement);
+            await user.click(buttonElement);
 
             await waitFor(
                 () =>
@@ -498,6 +508,7 @@ describe("<Overlay2>", () => {
         });
 
         it("should not result in maximum call stack if two overlays open with enforceFocus=true", async () => {
+            const user = userEvent.setup();
             const firstOverlayInstance = createRef<OverlayInstance>();
             const secondOverlayInputID = "inputId";
 
@@ -537,7 +548,7 @@ describe("<Overlay2>", () => {
             const secondOverlayInputElement = screen.getByTestId(secondOverlayInputID);
 
             // this click potentially triggers infinite recursion if both overlays try to bring focus back to themselves
-            await userEvent.click(secondOverlayInputElement!);
+            await user.click(secondOverlayInputElement!);
             // previous test suites for Overlay spied on bringFocusInsideOverlay and asserted it was called once here,
             // but that is more difficult to test with function components and breaches the abstraction of Overlay2.
         });
@@ -799,10 +810,10 @@ describe("<Overlay2>", () => {
         it("should call lifecycle methods as expected", async () => {
             // these lifecycles are passed directly to CSSTransition from react-transition-group
             // so we do not need to test these extensively. one integration test should do.
-            const onClosed = spy();
-            const onClosing = spy();
-            const onOpened = spy();
-            const onOpening = spy();
+            const onClosed = vi.fn();
+            const onClosing = vi.fn();
+            const onOpened = vi.fn();
+            const onOpening = vi.fn();
 
             const { rerender } = renderWithOverlaysProvider(
                 <Overlay2
@@ -820,14 +831,14 @@ describe("<Overlay2>", () => {
             );
 
             // Wait for onOpening to be called
-            await waitFor(() => expect(onOpening.calledOnce, "onOpening").to.be.true);
-            expect(onOpened.calledOnce, "onOpened not called yet").to.be.false;
+            await waitFor(() => expect(onOpening).toHaveBeenCalledOnce());
+            expect(onOpened).not.toHaveBeenCalled();
 
             // Wait for transition to complete and onOpened to be called
-            await waitFor(() => expect(onOpened.calledOnce, "onOpened").to.be.true, { timeout: 100 });
+            await waitFor(() => expect(onOpened).toHaveBeenCalledOnce(), { timeout: 100 });
 
             // on*ed called after transition completes
-            expect(onOpened.calledOnce, "onOpened").to.be.true;
+            expect(onOpened).toHaveBeenCalledOnce();
 
             rerender(
                 <Overlay2
@@ -844,10 +855,10 @@ describe("<Overlay2>", () => {
             );
 
             // Wait for onClosing to be called when prop changes
-            await waitFor(() => expect(onClosing.calledOnce, "onClosing").to.be.true, { timeout: 200 });
+            await waitFor(() => expect(onClosing).toHaveBeenCalledOnce(), { timeout: 200 });
 
             // Wait for transition to complete and onClosed to be called
-            await waitFor(() => expect(onClosed.calledOnce, "onClosed").to.be.true, { timeout: 200 });
+            await waitFor(() => expect(onClosed).toHaveBeenCalledOnce(), { timeout: 200 });
         });
     });
 });

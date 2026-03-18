@@ -19,15 +19,16 @@ import { render, screen } from "@testing-library/react";
 import { IconNames } from "@blueprintjs/icons";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Callout, Classes, Intent } from "../..";
-import { hasClass } from "../../common/test-utils";
+import { Classes, Intent } from "../../common";
+
+import { Callout } from "./callout";
 
 describe("<Callout>", () => {
     it("should support className", () => {
         render(<Callout className="foo">Test</Callout>);
         const callout = screen.getByText("Test");
 
-        expect(hasClass(callout, "foo")).to.be.true;
+        expect(callout).toHaveClass("foo");
     });
 
     it("should not render icon by default", () => {
@@ -46,7 +47,7 @@ describe("<Callout>", () => {
         render(<Callout intent={Intent.DANGER}>Test</Callout>);
         const callout = screen.getByText("Test");
 
-        expect(hasClass(callout, Classes.INTENT_DANGER)).to.be.true;
+        expect(callout).toHaveClass(Classes.INTENT_DANGER);
     });
 
     it(`should render the associated default icon when intent="primary"`, () => {
@@ -71,6 +72,6 @@ describe("<Callout>", () => {
         render(<Callout title="title" />);
         const heading = screen.getByText("title");
 
-        expect(hasClass(heading, Classes.HEADING)).to.be.true;
+        expect(heading).toHaveClass(Classes.HEADING);
     });
 });

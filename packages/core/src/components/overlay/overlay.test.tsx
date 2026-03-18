@@ -24,13 +24,16 @@
 import { waitFor } from "@testing-library/dom";
 import { mount, ReactWrapper, shallow } from "enzyme";
 import { createRef } from "react";
-import { spy } from "sinon";
 
-import { afterAll, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
-import { Classes, Overlay, type OverlayProps, Portal, type PortalProps, Utils } from "../..";
+import { Classes, Utils } from "../../common";
 import { sleep } from "../../common/test-utils";
+import { Portal, type PortalProps } from "../portal/portal";
+
+import { Overlay } from "./overlay";
+import { type OverlayProps } from "./overlayProps";
 
 function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
     // React 16: createPortal preserves React tree so simple find works.
@@ -169,31 +172,31 @@ describe("<Overlay>", () => {
 
     describe("onClose", () => {
         it("invoked on backdrop mousedown when canOutsideClickClose=true", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             const overlay = shallow(
                 <Overlay canOutsideClickClose={true} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </Overlay>,
             );
             overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assert.isTrue(onClose.calledOnce);
+            expect(onClose).toHaveBeenCalledOnce();
             overlay.unmount();
         });
 
         it("not invoked on backdrop mousedown when canOutsideClickClose=false", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             const overlay = shallow(
                 <Overlay canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </Overlay>,
             );
             overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assert.isTrue(onClose.notCalled);
+            expect(onClose).not.toHaveBeenCalled();
             overlay.unmount();
         });
 
         it("invoked on document mousedown when hasBackdrop=false", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             // mounting cuz we need document events + lifecycle
             mountWrapper(
                 <Overlay hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false}>
@@ -202,11 +205,11 @@ describe("<Overlay>", () => {
             );
 
             dispatchMouseEvent(document.documentElement, "mousedown");
-            assert.isTrue(onClose.calledOnce);
+            expect(onClose).toHaveBeenCalledOnce();
         });
 
         it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             mountWrapper(
                 <Overlay
                     canOutsideClickClose={false}
@@ -220,11 +223,11 @@ describe("<Overlay>", () => {
             );
 
             dispatchMouseEvent(document.documentElement, "mousedown");
-            assert.isTrue(onClose.notCalled);
+            expect(onClose).not.toHaveBeenCalled();
         });
 
         it("not invoked on click of a nested overlay", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             mountWrapper(
                 <Overlay isOpen={true} onClose={onClose}>
                     <div id="outer-element">
@@ -237,29 +240,29 @@ describe("<Overlay>", () => {
             );
             // this hackery is necessary for React 15 support, where Portals break trees.
             findInPortal(findInPortal(wrapper, "#outer-element"), "#inner-element").simulate("mousedown");
-            assert.isTrue(onClose.notCalled);
+            expect(onClose).not.toHaveBeenCalled();
         });
 
         it("invoked on escape key", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             mountWrapper(
                 <Overlay isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </Overlay>,
             );
             wrapper.simulate("keydown", { key: "Escape" });
-            assert.isTrue(onClose.calledOnce);
+            expect(onClose).toHaveBeenCalledOnce();
         });
 
         it("not invoked on escape key when canEscapeKeyClose=false", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             const overlay = shallow(
                 <Overlay canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </Overlay>,
             );
             overlay.simulate("keydown", { key: "Escape" });
-            assert.isTrue(onClose.notCalled);
+            expect(onClose).not.toHaveBeenCalled();
             overlay.unmount();
         });
 
@@ -385,12 +388,12 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
             // ES6 class property vs prototype, see: https://github.com/airbnb/enzyme/issues/365
-            const bringFocusSpy = spy(wrapper.instance() as Overlay, "bringFocusInsideOverlay");
+            const bringFocusSpy = vi.spyOn(wrapper.instance() as Overlay, "bringFocusInsideOverlay");
             wrapper.setProps({ isOpen: true });
 
             // triggers the infinite recursion
             wrapper.find("#inputId").simulate("click");
-            assert.isTrue(bringFocusSpy.calledOnce);
+            expect(bringFocusSpy).toHaveBeenCalledOnce();
 
             // don't need spy.restore() since the wrapper will be destroyed after test anyways
             temporaryWrapper.unmount();
@@ -554,10 +557,10 @@ describe("<Overlay>", () => {
     it.skip("lifecycle methods called as expected", async () => {
         // these lifecycles are passed directly to CSSTransition from react-transition-group
         // so we do not need to test these extensively. one integration test should do.
-        const onClosed = spy();
-        const onClosing = spy();
-        const onOpened = spy();
-        const onOpening = spy();
+        const onClosed = vi.fn();
+        const onClosing = vi.fn();
+        const onOpened = vi.fn();
+        const onOpening = vi.fn();
         wrapper = mountWrapper(
             <Overlay
                 {...{ onClosed, onClosing, onOpened, onOpening }}
@@ -569,22 +572,22 @@ describe("<Overlay>", () => {
                 {createOverlayContents()}
             </Overlay>,
         );
-        assert.isTrue(onOpening.calledOnce, "onOpening");
-        assert.isFalse(onOpened.calledOnce, "onOpened not called yet");
+        expect(onOpening).toHaveBeenCalledOnce();
+        expect(onOpened).not.toHaveBeenCalled();
 
         await sleep(10);
 
         // on*ed called after transition completes
-        assert.isTrue(onOpened.calledOnce, "onOpened");
+        expect(onOpened).toHaveBeenCalledOnce();
 
         wrapper.setProps({ isOpen: false });
         // on*ing called immediately when prop changes
-        assert.isTrue(onClosing.calledOnce, "onClosing");
-        assert.isFalse(onClosed.calledOnce, "onClosed not called yet");
+        expect(onClosing).toHaveBeenCalledOnce();
+        expect(onClosed).not.toHaveBeenCalled();
 
         await sleep(10);
 
-        assert.isTrue(onClosed.calledOnce, "onOpened");
+        expect(onClosed).toHaveBeenCalledOnce();
     });
 
     let index = 0;

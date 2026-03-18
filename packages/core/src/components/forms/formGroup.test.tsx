@@ -14,53 +14,63 @@
  * limitations under the License.
  */
 
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, FormGroup, Intent } from "../..";
+import { Classes, Intent } from "../../common";
+
+import { FormGroup } from "./formGroup";
 
 describe("<FormGroup>", () => {
     it("supports className & intent", () => {
-        const wrapper = shallow(<FormGroup className="foo" intent={Intent.SUCCESS} />);
-        assert.isTrue(wrapper.hasClass(Classes.FORM_GROUP));
-        assert.isTrue(wrapper.hasClass(Classes.INTENT_SUCCESS));
-        assert.isTrue(wrapper.hasClass("foo"));
+        const { container } = render(<FormGroup className="foo" intent={Intent.SUCCESS} />);
+        const root = container.querySelector<HTMLElement>(`.${Classes.FORM_GROUP}`);
+        expect(root).toBeInTheDocument();
+        expect(root).toHaveClass(Classes.FORM_GROUP);
+        expect(root).toHaveClass(Classes.INTENT_SUCCESS);
+        expect(root).toHaveClass("foo");
     });
 
     it("renders children in form content", () => {
-        const wrapper = shallow(
+        render(
             <FormGroup>
-                <input id="yes" />
+                <input id="foo" defaultValue="test" />
             </FormGroup>,
         );
-        const content = wrapper.find(`.${Classes.FORM_CONTENT}`);
-        assert.strictEqual(content.find("input").prop("id"), "yes");
+        const input = screen.getByDisplayValue("test");
+        expect(input.parentElement).toHaveClass(Classes.FORM_CONTENT);
     });
 
     it("renders label & labelFor", () => {
-        const labelText = "This is the label.";
-        const label = shallow(<FormGroup label={labelText} labelFor="foo" />).find("label");
-        // remove space to separate from labelInfo (does not appear in DOM)
-        assert.strictEqual(label.text().trim(), labelText);
-        assert.strictEqual(label.prop("htmlFor"), "foo");
+        render(
+            <FormGroup label="This is the label." labelFor="foo">
+                <input id="foo" defaultValue="test" />
+            </FormGroup>,
+        );
+        const input = screen.getByLabelText("This is the label.");
+        expect(input).toHaveDisplayValue("test");
     });
 
     it("hides label when falsy", () => {
-        const label = shallow(<FormGroup />).find("label");
-        assert.lengthOf(label, 0);
+        const { container } = render(<FormGroup />);
+        expect(container.querySelector("label")).toBeNull();
     });
 
     it("labelInfo=JSX renders JSX content in label", () => {
-        const info = <em>fill me out</em>;
-        const label = shallow(<FormGroup label="label" labelInfo={info} />).find("label");
-        assert.isTrue(label.containsMatchingElement(info));
+        render(<FormGroup label="label" labelInfo={<em>fill me out</em>} />);
+
+        const labelInfo = screen.getByText("fill me out");
+        expect(labelInfo).toBeInTheDocument();
+        expect(labelInfo.tagName).toBe("EM");
+
+        const label = screen.getByText("label");
+        expect(label).toContainElement(labelInfo);
     });
 
     it("renders helperText", () => {
-        const helperText = "Help me out";
-        const wrapper = shallow(<FormGroup helperText={helperText} />);
-        const helper = wrapper.find(`.${Classes.FORM_HELPER_TEXT}`);
-        assert.strictEqual(helper.text(), helperText);
+        render(<FormGroup helperText="Help me out" />);
+        const helper = screen.getByText("Help me out");
+        expect(helper).toHaveClass(Classes.FORM_HELPER_TEXT);
     });
 });

@@ -5,7 +5,7 @@ It is built using the lower-level [**Overlay2**](#core/components/overlay2) comp
 
 @## Import
 
-```tsx
+```ts copy
 import { Drawer } from "@blueprintjs/core";
 ```
 
@@ -32,9 +32,9 @@ to be optional, but it will be required in a future major version. See the full
 Use the `size` prop to set the size of a **Drawer**. This prop sets CSS `width` if `vertical={false}` (default)
 and `height` otherwise. Constants are available for common sizes:
 
--   `DrawerSize.SMALL = 360px`
--   `DrawerSize.STANDARD = 50%` (default)
--   `DrawerSize.LARGE = 90%`
+- `DrawerSize.SMALL = 360px`
+- `DrawerSize.STANDARD = 50%` (default)
+- `DrawerSize.LARGE = 90%`
 
 @## Props interface
 

@@ -17,7 +17,11 @@
 import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
-import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../..";
+import { Classes, Utils } from "../../common";
+import { Menu } from "../menu/menu";
+import { MenuItem } from "../menu/menuItem";
+
+import { hideContextMenu, showContextMenu } from "./contextMenuSingleton";
 
 // use a unique ID to avoid collisons with other tests
 const MENU_CLASSNAME = Utils.uniqueId("test-menu");

@@ -1,0 +1,2 @@
+<CompoundTag leftContent="Filter" interactive={true}>Region</CompoundTag>
+<CompoundTag leftContent="Filter" interactive={true} intent="primary">Status</CompoundTag>
