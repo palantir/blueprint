@@ -18,7 +18,7 @@ const { autoUpdateSpy } = vi.hoisted(() => ({
 }));
 
 vi.mock("@floating-ui/react", async importOriginal => {
-    const actual = await importOriginal();
+    const actual = await importOriginal<typeof import("@floating-ui/react")>();
     return {
         ...actual,
         autoUpdate: autoUpdateSpy,
