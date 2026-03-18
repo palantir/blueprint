@@ -1,5 +1,5 @@
 {
-    "version": "5.2.2",
+    "version": "5.9.3",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "declaration": true,

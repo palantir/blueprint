@@ -6,7 +6,7 @@ Just like with [**Select**](#select/select), you can pass in a predicate to cust
 
 @## Import
 
-```tsx
+```ts copy
 import { MultiSelect } from "@blueprintjs/select";
 ```
 

@@ -4,7 +4,7 @@
 
 @## Import
 
-```tsx
+```ts copy
 import { DateRangePicker } from "@blueprintjs/datetime";
 ```
 
@@ -22,29 +22,29 @@ Use the `onChange` prop to listen for changes to the selected range.
 
 Semantically:
 
--   `[null, null]` represents an empty selection.
--   `[someDate, null]` represents a date range where a single endpoint is known.
--   `[someDate, someOtherDate]` represents a full date range where both endpoints are known.
+- `[null, null]` represents an empty selection.
+- `[someDate, null]` represents a date range where a single endpoint is known.
+- `[someDate, someOtherDate]` represents a full date range where both endpoints are known.
 
 @## Shortcuts
 
 The menu on the left of the calendars provides "shortcuts" which allow users to quickly select common date ranges. The
 items in this menu are controlled through the `shortcuts` prop:
 
--   `true` (default) will show the built-in shortcuts,
--   `false` will hide the shortcuts menu, and
--   custom shortcuts can be shown by defining an array of `DateRangeShortcut` objects.
+- `true` (default) will show the built-in shortcuts,
+- `false` will hide the shortcuts menu, and
+- custom shortcuts can be shown by defining an array of `DateRangeShortcut` objects.
 
 The **preset shortcuts** can be seen in the example above. They are as follows:
 
--   Today (only appears if `allowSingleDayRange={true}`)
--   Yesterday (only appears if `allowSingleDayRange={true}`)
--   Past week
--   Past month
--   Past 3 months
--   Past 6 months
--   Past year
--   Past 2 years
+- Today (only appears if `allowSingleDayRange={true}`)
+- Yesterday (only appears if `allowSingleDayRange={true}`)
+- Past week
+- Past month
+- Past 3 months
+- Past 6 months
+- Past year
+- Past 2 years
 
 **Custom shortcuts** use the following interface:
 

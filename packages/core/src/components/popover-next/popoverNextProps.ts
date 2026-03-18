@@ -74,6 +74,11 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
     /** Whether the popover can be closed by pressing the Escape key. */
     canEscapeKeyClose?: boolean;
 
+    /**
+     * A space-delimited string of class names applied to the popover's target wrapper element.
+     */
+    className?: string;
+
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
 

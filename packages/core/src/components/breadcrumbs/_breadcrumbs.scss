@@ -94,7 +94,7 @@
     background: svg-icon(
         "16px/more.svg",
         (
-          circle: (
+          path: (
             fill: $pt-icon-color,
           ),
         )
@@ -146,7 +146,7 @@
       background: svg-icon(
           "16px/more.svg",
           (
-            circle: (
+            path: (
               fill: $pt-dark-icon-color,
             ),
           )

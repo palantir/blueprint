@@ -32,7 +32,7 @@ directly should be rare in your application; it should only be necessary if no e
 
 @## Import
 
-```tsx
+```ts copy
 import { Overlay } from "@blueprintjs/core";
 ```
 

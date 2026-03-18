@@ -18,7 +18,7 @@ promoted to live in a control group.
 
 @## Import
 
-```tsx
+```ts copy
 import { ControlGroup } from "@blueprintjs/core";
 ```
 
@@ -29,10 +29,10 @@ import { ControlGroup } from "@blueprintjs/core";
 **ControlGroup** is a CSS inline flex row (or column if vertical) and provides some modifer props for common flexbox
 patterns:
 
--   Enable the `fill` prop on a control group to make all controls expand equally to fill the available space.
-    -   Controls will expand horizontally by default, or vertically if the `vertical` prop is enabled.
-    -   Add the class `Classes.FIXED` to individual controls to revert them to their initial sizes.
--   In addition, you may enable the `fill` prop on specific controls inside the group to expand them fill more space while other controls retain their original sizes.
+- Enable the `fill` prop on a control group to make all controls expand equally to fill the available space.
+    - Controls will expand horizontally by default, or vertically if the `vertical` prop is enabled.
+    - Add the class `Classes.FIXED` to individual controls to revert them to their initial sizes.
+- In addition, you may enable the `fill` prop on specific controls inside the group to expand them fill more space while other controls retain their original sizes.
 
 You can adjust the specific size of a control with the `flex-basis` or `width` CSS properties.
 

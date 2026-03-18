@@ -1,0 +1,41 @@
+/*
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { format, type Locale, parse } from "date-fns";
+import * as Locales from "date-fns/locale";
+
+import type { DateFormatProps } from "./dateFormatProps";
+
+export const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
+export const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
+
+function getDateFnsFormatter(formatStr: string): DateFormatProps {
+    return {
+        formatDate: (date, localeCode) => format(date, formatStr, maybeGetLocaleOptions(localeCode)),
+        parseDate: (str, localeCode) => parse(str, formatStr, new Date(), maybeGetLocaleOptions(localeCode)),
+        placeholder: `${formatStr}`,
+    };
+}
+
+function maybeGetLocaleOptions(localeCode: string | undefined): { locale: Locale } | undefined {
+    if (localeCode !== undefined) {
+        const localeMap = Locales as unknown as Record<string, Locale>;
+        if (localeMap[localeCode] !== undefined) {
+            return { locale: localeMap[localeCode] };
+        }
+    }
+    return undefined;
+}

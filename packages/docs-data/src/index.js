@@ -3,6 +3,10 @@
  * @fileoverview Exports JSON data for packages/docs-app
  */
 
+// TODO: migrate this file to ESM in a future major version so we can import
+// PACKAGES and SECTIONS directly from navTypes.mts instead of requiring
+// a generated CJS bridge file.
 module.exports = {
     docsData: require("./generated/docs.json"),
+    ...require("./generated/nav-constants.js"),
 };
