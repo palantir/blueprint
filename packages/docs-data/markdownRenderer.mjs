@@ -44,10 +44,13 @@ renderer.code = (textContent, infostring, isEscaped) => {
 
     const pre = `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
 
-    // Wrap code blocks in a container so the docs app can mount a copy button.
-    // Triggered by either an explicit `copy` tag in the info string, or code starting with "import ".
+    // Wrap code blocks in a container so the docs app can mount interactive components.
+    // Shell install commands for @blueprintjs/ packages get a package-manager switcher;
+    // all other `copy`-tagged blocks get a simple copy button.
     if (hasCopyTag) {
-        return `<div class="docs-copyable-import">${pre}</div>`;
+        const isPackageInstall = language === "sh" && /@blueprintjs\//.test(textContent);
+        const wrapperClass = isPackageInstall ? "docs-package-install" : "docs-copyable-import";
+        return `<div class="${wrapperClass}">${pre}</div>`;
     }
 
     return pre;

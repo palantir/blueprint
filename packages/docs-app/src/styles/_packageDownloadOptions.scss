@@ -1,0 +1,32 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+.docs-package-download-options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 $pt-grid-size;
+
+    &.#{$ns}-card {
+        padding: ($pt-grid-size * 0.5) ($pt-grid-size * 0.5) ($pt-grid-size * 0.5) $pt-grid-size;
+    }
+
+    .#{$ns}-button-group {
+        flex: 0 0 auto;
+    }
+
+    > .#{$ns}-popover-target {
+        flex: 0 0 auto;
+        margin-left: auto;
+    }
+
+    .docs-package-download-command {
+        flex: 1 0 100%;
+        background: none;
+        box-shadow: none;
+        font-size: $pt-font-size;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
