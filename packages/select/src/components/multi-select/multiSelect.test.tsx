@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
+import { assert } from "chai";
 import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
-import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -65,14 +66,14 @@ describe("<MultiSelect>", () => {
         const placeholder = "look here";
 
         const input = multiselect({ placeholder }).find("input");
-        expect(input.getDOMNode<HTMLInputElement>().placeholder).toBe(placeholder);
+        assert.equal(input.getDOMNode<HTMLInputElement>().placeholder, placeholder);
     });
 
     it("placeholder can be controlled with TagInput's inputProps", () => {
         const placeholder = "look here";
 
         const input = multiselect({ tagInputProps: { placeholder } }).find("input");
-        expect(input.getDOMNode<HTMLInputElement>().placeholder).toBe(placeholder);
+        assert.equal(input.getDOMNode<HTMLInputElement>().placeholder, placeholder);
     });
 
     it("tagRenderer can return JSX", () => {
@@ -80,7 +81,7 @@ describe("<MultiSelect>", () => {
             selectedItems: [TOP_100_FILMS[0]],
             tagRenderer: film => <strong>{film.title}</strong>,
         });
-        expect(wrapper.find(Tag).find("strong")).toHaveLength(1);
+        assert.lengthOf(wrapper.find(Tag).find("strong"), 1);
     });
 
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
@@ -96,7 +97,7 @@ describe("<MultiSelect>", () => {
         // checks for the bug in https://github.com/palantir/blueprint/issues/3674
         // where the first item in the dropdown list would get selected upon hitting Enter inside
         // a TAG_REMOVE button
-        expect(itemSelectSpy.calledWith(TOP_100_FILMS[0])).toBe(false);
+        assert.isFalse(itemSelectSpy.calledWith(TOP_100_FILMS[0]));
     });
 
     it("triggers onRemove", () => {
@@ -106,7 +107,7 @@ describe("<MultiSelect>", () => {
             selectedItems: [TOP_100_FILMS[2], TOP_100_FILMS[3], TOP_100_FILMS[4]],
         });
         wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(1).simulate("click");
-        expect(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1)).toBe(true);
+        assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
     it("opens popover with custom target", async () => {
@@ -116,10 +117,10 @@ describe("<MultiSelect>", () => {
             popoverProps: { usePortal: false },
         });
 
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
         findTargetButton(wrapper).simulate("click");
 
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("allows searching within popover content when custom target provided", async () => {
@@ -146,22 +147,22 @@ describe("<MultiSelect>", () => {
         wrapper.update();
 
         let input = wrapper.find("input");
-        expect(input.prop("value")).toBe("");
-        expect(handleQueryChange.notCalled).toBe(true);
+        assert.strictEqual(input.prop("value"), "");
+        assert.isTrue(handleQueryChange.notCalled);
 
         // Want to check if activeElement changed from default state before doing strictEqual check,
         // otherwise this test will take really long in the failure case due to strictEqual having to check
         // the entire document.body
         if (document.activeElement !== document.body) {
-            expect(document.activeElement).toBe(input.getDOMNode());
+            assert.strictEqual(document.activeElement, input.getDOMNode());
         } else {
-            expect.fail("activeElement is still on document.body, input is not in focus");
+            assert.fail("activeElement is still on document.body, input is not in focus");
         }
 
         input.simulate("change", { target: { value: "Hello World" } });
 
         input = wrapper.find("input");
-        expect(input.prop("value")).toBe("Hello World");
+        assert.strictEqual(input.prop("value"), "Hello World");
 
         // Remove containerElement from document
         containerElement.remove();

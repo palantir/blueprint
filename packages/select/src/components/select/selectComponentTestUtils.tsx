@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+import { assert } from "chai";
 import type { ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
 import { Classes, type HTMLInputProps } from "@blueprintjs/core";
-import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     areFilmsEqual,
@@ -59,15 +60,15 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
-            expect(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes()).toHaveLength(15);
+            assert.lengthOf(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes(), 15, "re-render");
             wrapper.setProps({ query: "1999" });
             wrapper.update();
-            expect(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes()).toHaveLength(2);
+            assert.lengthOf(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes(), 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {
             const wrapper = render({ ...testProps, items: [], noResults: <address /> });
-            expect(wrapper.find("address")).toHaveLength(1);
+            assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
         });
 
         it("renders noResults when filtering returns empty list", () => {
@@ -76,14 +77,14 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 noResults: <address />,
                 query: "non-existent film name",
             });
-            expect(wrapper.find("address")).toHaveLength(1);
+            assert.lengthOf(wrapper.find("address"), 1, "should find noResults");
         });
 
         it("clicking item invokes onItemSelect and changes active item", () => {
             const wrapper = render(testProps);
             findItems(wrapper).at(4).simulate("click");
-            expect(testProps.onItemSelect.args[0][0].rank).toBe(6);
-            expect(testProps.onActiveItemChange.args[0][0].rank).toBe(6);
+            assert.strictEqual(testProps.onItemSelect.args[0][0].rank, 6, "onItemSelect");
+            assert.strictEqual(testProps.onActiveItemChange.args[0][0].rank, 6, "onActiveItemChange");
         });
 
         it("clicking item resets state when resetOnSelect=true", () => {
@@ -96,29 +97,29 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             findItems(wrapper).at(3).simulate("click");
             const ranks = testProps.onActiveItemChange.args.map(args => (args[0] as Film).rank);
             // clicking changes to 5, then resets to 1
-            expect(ranks).toEqual([5, 1]);
-            expect(testProps.onQueryChange.lastCall.args[0]).toBe("");
+            assert.deepEqual(ranks, [5, 1]);
+            assert.strictEqual(testProps.onQueryChange.lastCall.args[0], "");
         });
 
         it("querying does not reset active item when resetOnQuery=false", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
             // more specific query does not change active item.
             wrapper.setProps({ query: "199" });
-            expect(testProps.onActiveItemChange.lastCall).toBeNull();
+            assert.strictEqual(testProps.onActiveItemChange.lastCall, null);
         });
 
         it("querying resets active item when resetOnQuery=true", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: true });
             // more specific query picks the first item.
             wrapper.setProps({ query: "199" });
-            expect(testProps.onActiveItemChange.lastCall.args[0].rank).toBe(1);
+            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].rank, 1);
         });
 
         it("querying resets active item if it does not match", () => {
             const wrapper = render({ ...testProps, query: "19", resetOnQuery: false });
             // a different query altogether invalidates the previous active item, so QL chooses the first.
             wrapper.setProps({ query: "Forrest" });
-            expect(testProps.onActiveItemChange.lastCall.args[0].title).toBe("Forrest Gump");
+            assert.strictEqual(testProps.onActiveItemChange.lastCall.args[0].title, "Forrest Gump");
         });
     });
 
@@ -126,21 +127,21 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
         it("arrow down invokes onActiveItemChange with next filtered item", () => {
             const wrapper = render(testProps);
             findInput(wrapper).simulate("keydown", { key: "ArrowDown" }).simulate("keydown", { key: "ArrowDown" });
-            expect((testProps.onActiveItemChange.lastCall.args[0] as Film).rank).toBe(3);
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, 3);
         });
 
         it("arrow up invokes onActiveItemChange with previous filtered item", () => {
             const wrapper = render(testProps);
             findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
-            expect((testProps.onActiveItemChange.lastCall.args[0] as Film).rank).toBe(20);
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, 20);
         });
 
         it("arrow up/down does not invokes onActiveItemChange, when all items are disabled", () => {
             const wrapper = render({ ...testProps, itemDisabled: () => true });
             findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
-            expect(testProps.onActiveItemChange.lastCall).toBeNull();
+            assert.isNull(testProps.onActiveItemChange.lastCall);
             findInput(wrapper).simulate("keyup", { key: "ArrowUp" });
-            expect(testProps.onActiveItemChange.lastCall).toBeNull();
+            assert.isNull(testProps.onActiveItemChange.lastCall);
         });
 
         it("enter invokes onItemSelect with active item", () => {
@@ -148,7 +149,7 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             findInput(wrapper).simulate("keydown", { key: "Enter" });
             findInput(wrapper).simulate("keyup", { key: "Enter" });
             const activeItem = testProps.onActiveItemChange.lastCall.args[0];
-            expect(testProps.onItemSelect.lastCall.args[0]).toBe(activeItem);
+            assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);
         });
     });
 
@@ -169,7 +170,7 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 ...testCreateProps,
                 query: "",
             });
-            expect(findCreateItem(wrapper)).toHaveLength(0);
+            assert.lengthOf(findCreateItem(wrapper), 0, "should not find createItem");
         });
 
         it("doesn't render create item if query is non-empty and matches one of the items", () => {
@@ -181,8 +182,8 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 createNewItemFromQuery: createFilm,
                 query: EXISTING_FILM_TITLE,
             });
-            expect(wrapper.find("address")).toHaveLength(0);
-            expect(findCreateItem(wrapper)).toHaveLength(0);
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(findCreateItem(wrapper), 0, "should not find createItem");
         });
 
         it("renders create item if query is not empty and doesn't match any items exactly", () => {
@@ -190,8 +191,8 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title + " a few extra chars",
             });
-            expect(wrapper.find("address")).toHaveLength(0);
-            expect(findCreateItem(wrapper)).toHaveLength(1);
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
         });
 
         it("renders create item if filtering returns empty list", () => {
@@ -199,8 +200,8 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 ...testCreateProps,
                 query: "non-existent film name",
             });
-            expect(wrapper.find("address")).toHaveLength(0);
-            expect(findCreateItem(wrapper)).toHaveLength(1);
+            assert.lengthOf(wrapper.find("address"), 0, "should not find noResults");
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
         });
 
         it("enter invokes createNewItemFromQuery", () => {
@@ -209,7 +210,7 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 query: "non-existent film name",
             });
             findInput(wrapper).simulate("keyup", { key: "Enter" });
-            expect(testCreateProps.createNewItemFromQuery.args[0][0]).toBe("non-existent film name");
+            assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
         });
 
         it("when createNewItemFromQuery returns an array, it should invoke onItemSelect once per each item in the array", () => {
@@ -218,12 +219,20 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 createNewItemFromQuery: createFilms,
                 query: "non-existent film name, second film name",
             });
-            expect(findCreateItem(wrapper)).toHaveLength(1);
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
             findInput(wrapper).simulate("keydown", { key: "Enter" });
             findInput(wrapper).simulate("keyup", { key: "Enter" });
-            expect(testCreateProps.onItemSelect.calledTwice).toBe(true);
-            expect((testCreateProps.onItemSelect.args[0][0] as Film).title).toBe("non-existent film name");
-            expect((testCreateProps.onItemSelect.args[1][0] as Film).title).toBe("second film name");
+            assert.isTrue(testCreateProps.onItemSelect.calledTwice, "should invoke onItemSelect twice");
+            assert.equal(
+                (testCreateProps.onItemSelect.args[0][0] as Film).title,
+                "non-existent film name",
+                "should create and select first item",
+            );
+            assert.equal(
+                (testCreateProps.onItemSelect.args[1][0] as Film).title,
+                "second film name",
+                "should create and select second item",
+            );
         });
 
         it("when create item is rendered, arrow down invokes onActiveItemChange with activeItem=null and isCreateNewItem=true", () => {
@@ -232,11 +241,14 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
-            expect(testProps.onActiveItemChange.lastCall.args[0]).toBeNull();
-            expect(testProps.onActiveItemChange.lastCall.args[1]).toBe(true);
+            assert.isNull(testProps.onActiveItemChange.lastCall.args[0]);
+            assert.isTrue(testProps.onActiveItemChange.lastCall.args[1]);
             findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
-            expect((testProps.onActiveItemChange.lastCall.args[0] as unknown as Film).rank).toBe(TOP_100_FILMS[0].rank);
-            expect(testProps.onActiveItemChange.lastCall.args[1]).toBe(false);
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as unknown as Film).rank,
+                TOP_100_FILMS[0].rank,
+            );
+            assert.isFalse(testProps.onActiveItemChange.lastCall.args[1]);
         });
 
         it("when create item is rendered, arrow up invokes onActiveItemChange with an `CreateNewItem`", () => {
@@ -245,11 +257,14 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
-            expect(testProps.onActiveItemChange.lastCall.args[0]).toBeNull();
-            expect(testProps.onActiveItemChange.lastCall.args[1]).toBe(true);
+            assert.isNull(testProps.onActiveItemChange.lastCall.args[0]);
+            assert.isTrue(testProps.onActiveItemChange.lastCall.args[1]);
             findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
-            expect((testProps.onActiveItemChange.lastCall.args[0] as unknown as Film).rank).toBe(TOP_100_FILMS[0].rank);
-            expect(testProps.onActiveItemChange.lastCall.args[1]).toBe(false);
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as unknown as Film).rank,
+                TOP_100_FILMS[0].rank,
+            );
+            assert.isFalse(testProps.onActiveItemChange.lastCall.args[1]);
         });
 
         it("when create item is rendered, updating the query to exactly match one of the items hides the create item", () => {
@@ -260,12 +275,12 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 query: "non-empty, non-matching initial value",
             });
 
-            expect(findCreateItem(wrapper)).toHaveLength(1);
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
 
             const EXISTING_FILM_TITLE = TOP_100_FILMS[0].title;
             findInput(wrapper).simulate("change", { target: { value: EXISTING_FILM_TITLE } });
 
-            expect(findCreateItem(wrapper)).toHaveLength(0);
+            assert.lengthOf(findCreateItem(wrapper), 0, "should not find createItem");
         });
     });
 
