@@ -7,7 +7,7 @@ on the right side of the InputGroup which allows users to change the timezone of
 
 @## Import
 
-```tsx
+```ts copy
 import { DateInput } from "@blueprintjs/datetime";
 ```
 

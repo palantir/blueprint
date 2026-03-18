@@ -11,7 +11,7 @@ Floating UI is a modern library that offers powerful, customizable, and performa
 
 @## Import
 
-```tsx
+```ts copy
 import { PopoverNext } from "@blueprintjs/core";
 ```
 

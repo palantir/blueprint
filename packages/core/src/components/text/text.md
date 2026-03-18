@@ -5,7 +5,7 @@ and truncating with an ellipsis when content overflows its container.
 
 @## Import
 
-```tsx
+```ts copy
 import { Text } from "@blueprintjs/core";
 ```
 

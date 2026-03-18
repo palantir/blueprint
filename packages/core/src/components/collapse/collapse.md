@@ -5,7 +5,7 @@ It is commonly used to create expandable sections, like settings panels, sub-sec
 
 @## Import
 
-```tsx
+```ts copy
 import { Collapse } from "@blueprintjs/core";
 ```
 

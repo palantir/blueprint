@@ -5,7 +5,7 @@ background color. It offers customizable padding, interactivity, and elevation.
 
 @## Usage
 
-```tsx
+```ts copy
 import { Card } from "@blueprintjs/core";
 ```
 

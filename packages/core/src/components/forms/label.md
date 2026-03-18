@@ -16,7 +16,7 @@ recommend using it exclusively when constructing forms.
 
 @## Import
 
-```tsx
+```ts copy
 import { Label } from "@blueprintjs/core";
 ```
 
