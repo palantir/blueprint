@@ -2,6 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import type * as FloatingUIReact from "@floating-ui/react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -18,7 +19,7 @@ const { autoUpdateSpy } = vi.hoisted(() => ({
 }));
 
 vi.mock("@floating-ui/react", async importOriginal => {
-    const actual: typeof import("@floating-ui/react") = await importOriginal();
+    const actual = await importOriginal<typeof FloatingUIReact>();
     return {
         ...actual,
         autoUpdate: autoUpdateSpy,
