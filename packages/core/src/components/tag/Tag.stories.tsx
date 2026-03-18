@@ -178,10 +178,6 @@ export const StateExample: Story = {
         interactive: { table: { disable: true } },
     },
     render: function Render(args) {
-        const handleRemove = useCallback(() => {
-            return;
-        }, []);
-
         return (
             <div style={{ display: "flex", gap: 8 }}>
                 <Tag {...args}>Default</Tag>
@@ -191,7 +187,7 @@ export const StateExample: Story = {
                 <Tag {...args} interactive={true}>
                     Interactive
                 </Tag>
-                <Tag {...args} onRemove={handleRemove}>
+                <Tag {...args} onRemove={args.onRemove}>
                     Removable
                 </Tag>
             </div>
@@ -255,10 +251,6 @@ export const FillExample: Story = {
  */
 export const AllIntentsAllVariants: Story = {
     render: function Render(args) {
-        const handleRemove = useCallback(() => {
-            return;
-        }, []);
-
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[false, true].map(minimal => (
@@ -267,28 +259,28 @@ export const AllIntentsAllVariants: Story = {
                         <div style={{ display: "flex", gap: 8 }}>
                             {Object.values(Intent).map(intent => (
                                 <Tag key={intent} {...args} minimal={minimal} intent={intent}>
-                                    {intent || "None"}
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </Tag>
                             ))}
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
                             {Object.values(Intent).map(intent => (
                                 <Tag key={intent} {...args} minimal={minimal} intent={intent} active={true}>
-                                    {intent || "None"}
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </Tag>
                             ))}
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
                             {Object.values(Intent).map(intent => (
                                 <Tag key={intent} {...args} minimal={minimal} intent={intent} interactive={true}>
-                                    {intent || "None"}
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </Tag>
                             ))}
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
                             {Object.values(Intent).map(intent => (
-                                <Tag key={intent} {...args} minimal={minimal} intent={intent} onRemove={handleRemove}>
-                                    {intent || "None"}
+                                <Tag key={intent} {...args} minimal={minimal} intent={intent} onRemove={args.onRemove}>
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </Tag>
                             ))}
                         </div>

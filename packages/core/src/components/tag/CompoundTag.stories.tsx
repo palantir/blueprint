@@ -178,10 +178,6 @@ export const StateExample: Story = {
         interactive: { table: { disable: true } },
     },
     render: function Render(args) {
-        const handleRemove = useCallback(() => {
-            return;
-        }, []);
-
         return (
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 <CompoundTag {...args} leftContent="Key">
@@ -193,7 +189,7 @@ export const StateExample: Story = {
                 <CompoundTag {...args} leftContent="Key" interactive={true}>
                     Interactive
                 </CompoundTag>
-                <CompoundTag {...args} leftContent="Key" onRemove={handleRemove}>
+                <CompoundTag {...args} leftContent="Key" onRemove={args.onRemove}>
                     Removable
                 </CompoundTag>
             </div>
@@ -257,10 +253,6 @@ export const FillExample: Story = {
  */
 export const AllIntentsAllVariants: Story = {
     render: function Render(args) {
-        const handleRemove = useCallback(() => {
-            return;
-        }, []);
-
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[false, true].map(minimal => (
@@ -269,7 +261,7 @@ export const AllIntentsAllVariants: Story = {
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                             {Object.values(Intent).map(intent => (
                                 <CompoundTag key={intent} {...args} leftContent="Key" minimal={minimal} intent={intent}>
-                                    {intent || "None"}
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </CompoundTag>
                             ))}
                         </div>
@@ -283,7 +275,7 @@ export const AllIntentsAllVariants: Story = {
                                     intent={intent}
                                     active={true}
                                 >
-                                    {intent || "None"}
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </CompoundTag>
                             ))}
                         </div>
@@ -297,7 +289,7 @@ export const AllIntentsAllVariants: Story = {
                                     intent={intent}
                                     interactive={true}
                                 >
-                                    {intent || "None"}
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </CompoundTag>
                             ))}
                         </div>
@@ -309,9 +301,9 @@ export const AllIntentsAllVariants: Story = {
                                     leftContent="Key"
                                     minimal={minimal}
                                     intent={intent}
-                                    onRemove={handleRemove}
+                                    onRemove={args.onRemove}
                                 >
-                                    {intent || "None"}
+                                    {intent === Intent.NONE ? "none" : intent}
                                 </CompoundTag>
                             ))}
                         </div>
