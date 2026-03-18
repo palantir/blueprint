@@ -146,7 +146,7 @@ importers:
         version: 17.7.2
     devDependencies:
       '@storybook/addon-a11y':
-        specifier: ^10.3.0
+        specifier: ^10.2.14
         version: 10.3.0(storybook@10.2.14(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@storybook/icons':
         specifier: ^2.0.1
