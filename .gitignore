@@ -53,3 +53,33 @@ site/docs/*
 !site/docs/
 !site/docs/versions/
 site/docs/versions/**/*.d.ts
+
+# Icon comparison development artifacts
+BP7_*.md
+FIGMA_*.md
+ICON_*.md
+RFC-001-*.md
+icons-export/
+icons-export-optimized/
+icon-analysis-reports/
+examples/
+svgo.config.js
+
+# Script development tools
+scripts/*-icon-analysis.*
+scripts/analyze-icon.*
+scripts/download-all-new-icons.*
+scripts/export-shrimp-icon.*
+scripts/extract-current-icons.*
+scripts/figma-export/
+scripts/icon-analysis-config.json
+
+# BP7 typography experiments (unrelated to icon comparison)
+packages/core/src/_typography-bp7.scss
+packages/core/src/common/_mixins-bp7.scss
+packages/core/src/common/_typography-bp7.scss
+packages/core/src/fonts/
+
+# Demo app experiments
+packages/demo-app/src/components/
+packages/demo-app/src/types/
