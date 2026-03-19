@@ -250,6 +250,12 @@ export const FillExample: Story = {
  * All intents across default and minimal variants, with all states (default, active, interactive, removable).
  */
 export const AllIntentsAllVariants: Story = {
+    argTypes: {
+        intent: { table: { disable: true } },
+        minimal: { table: { disable: true } },
+        interactive: { table: { disable: true } },
+        active: { table: { disable: true } },
+    },
     render: function Render(args) {
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
