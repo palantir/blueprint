@@ -16,7 +16,7 @@
 
 import { useCallback, useState } from "react";
 
-import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
+import { Button, H5, Intent, Switch, Tag, Tooltip } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -25,6 +25,7 @@ const INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
 
 export const TagExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = useState(false);
+    const [activeTags, setActiveTags] = useState<string[]>([]);
     const [fill, setFill] = useState(false);
     const [icon, setIcon] = useState(false);
     const [intent, setIntent] = useState<Intent>(Intent.NONE);
@@ -41,12 +42,21 @@ export const TagExample: React.FC<ExampleProps> = props => {
         [tags],
     );
 
-    const handleReset = useCallback(() => setTags(INITIAL_TAGS), []);
+    const handleTagClick = useCallback(
+        (tag: string) => () => {
+            setActiveTags([...activeTags, tag]);
+        },
+        [activeTags],
+    );
+
+    const handleReset = useCallback(() => {
+        setTags(INITIAL_TAGS);
+        setActiveTags([]);
+    }, []);
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <Switch label="Minimal" checked={minimal} onChange={handleBooleanChange(setMinimal)} />
@@ -55,6 +65,18 @@ export const TagExample: React.FC<ExampleProps> = props => {
                 checked={interactive}
                 onChange={handleBooleanChange(setInteractive)}
             />
+            <Tooltip
+                content="Enable interactivity to use active"
+                disabled={interactive}
+                placement="left"
+            >
+                <Switch
+                    label="Active"
+                    disabled={!interactive}
+                    checked={active}
+                    onChange={handleBooleanChange(setActive)}
+                />
+            </Tooltip>
             <Switch
                 label="Removable"
                 checked={removable}
@@ -74,7 +96,7 @@ export const TagExample: React.FC<ExampleProps> = props => {
             {tags.map(tag => (
                 <Tag
                     key={tag}
-                    active={active}
+                    active={activeTags.includes(tag)}
                     endIcon={endIcon ? "map" : undefined}
                     fill={fill}
                     icon={icon ? "home" : undefined}
@@ -84,10 +106,12 @@ export const TagExample: React.FC<ExampleProps> = props => {
                     onRemove={removable ? handleRemove(tag) : undefined}
                     round={round}
                     size={large ? "large" : undefined}
+                    onClick={handleTagClick(tag)}
                 >
                     {tag}
                 </Tag>
             ))}
+            {active && <p>click a tag to show in an active state</p>}
         </Example>
     );
 };
