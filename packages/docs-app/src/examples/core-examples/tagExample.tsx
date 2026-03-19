@@ -44,9 +44,11 @@ export const TagExample: React.FC<ExampleProps> = props => {
 
     const handleTagClick = useCallback(
         (tag: string) => () => {
-            setActiveTags([...activeTags, tag]);
+            setActiveTags(prev =>
+                prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag],
+            );
         },
-        [activeTags],
+        [],
     );
 
     const handleReset = useCallback(() => {
