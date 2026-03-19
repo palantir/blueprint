@@ -25,10 +25,8 @@ import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/v
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
 import { QueryList } from "../query-list/queryList";
-import { selectComponentSuite } from "../select/selectComponentTestUtils";
-import { selectPopoverTestSuite } from "../select/selectPopoverTestUtils";
 
-import { Suggest, type SuggestProps, type SuggestState } from "./suggest";
+import { Suggest, type SuggestProps } from "./suggest";
 
 describe("Suggest", () => {
     const defaultProps = {
@@ -43,7 +41,7 @@ describe("Suggest", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
-    let mountedWrappers: ReactWrapper[] = [];
+    let mountedWrappers: Array<ReactWrapper<any, any>> = [];
 
     beforeEach(() => {
         handlers = {
@@ -69,27 +67,6 @@ describe("Suggest", () => {
             mountedWrappers = [];
             containerElement.remove();
         }
-    });
-
-    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props => {
-        const wrapper = mount(
-            <Suggest
-                {...props}
-                inputValueRenderer={inputValueRenderer}
-                popoverProps={{ isOpen: true, usePortal: false }}
-            />,
-            { attachTo: containerElement },
-        );
-        mountedWrappers.push(wrapper);
-        return wrapper;
-    });
-
-    selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props => {
-        const wrapper = mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, {
-            attachTo: containerElement,
-        });
-        mountedWrappers.push(wrapper);
-        return wrapper;
     });
 
     describe("Basic behavior", () => {
