@@ -41,6 +41,7 @@ describe("<Select>", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
+    let mountedWrappers: ReactWrapper[] = [];
 
     beforeEach(() => {
         handlers = {
@@ -53,19 +54,32 @@ describe("<Select>", () => {
     });
 
     afterEach(() => {
-        for (const spy of Object.values(handlers)) {
-            spy.resetHistory();
+        try {
+            for (const wrapper of mountedWrappers) {
+                try {
+                    wrapper.unmount();
+                } catch {
+                    // best-effort
+                }
+            }
+        } finally {
+            mountedWrappers = [];
+            for (const spy of Object.values(handlers)) {
+                spy.resetHistory();
+            }
+            containerElement.remove();
         }
-        containerElement.remove();
     });
 
     selectComponentSuite<SelectProps<Film>, SelectState>(props =>
         mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
     );
 
-    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props =>
-        mount(<Select {...props} />, { attachTo: containerElement }),
-    );
+    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props => {
+        const wrapper = mount(<Select {...props} />, { attachTo: containerElement });
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    });
 
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
@@ -187,6 +201,7 @@ describe("<Select>", () => {
             </Select>,
             { attachTo: containerElement },
         );
+        mountedWrappers.push(wrapper);
         if (query !== undefined) {
             act(() => {
                 wrapper.setState({ query });

@@ -43,6 +43,7 @@ describe("Suggest", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
+    let mountedWrappers: ReactWrapper[] = [];
 
     beforeEach(() => {
         handlers = {
@@ -56,23 +57,40 @@ describe("Suggest", () => {
     });
 
     afterEach(() => {
-        containerElement.remove();
+        try {
+            for (const wrapper of mountedWrappers) {
+                try {
+                    wrapper.unmount();
+                } catch {
+                    // best-effort
+                }
+            }
+        } finally {
+            mountedWrappers = [];
+            containerElement.remove();
+        }
     });
 
-    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
-        mount(
+    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props => {
+        const wrapper = mount(
             <Suggest
                 {...props}
                 inputValueRenderer={inputValueRenderer}
                 popoverProps={{ isOpen: true, usePortal: false }}
             />,
             { attachTo: containerElement },
-        ),
-    );
+        );
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    });
 
-    selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
-        mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, { attachTo: containerElement }),
-    );
+    selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props => {
+        const wrapper = mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, {
+            attachTo: containerElement,
+        });
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    });
 
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
@@ -347,9 +365,11 @@ describe("Suggest", () => {
     });
 
     function suggest(props: Partial<SuggestProps<Film>> = {}) {
-        return mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />, {
+        const wrapper = mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />, {
             attachTo: containerElement,
         });
+        mountedWrappers.push(wrapper);
+        return wrapper;
     }
 });
 

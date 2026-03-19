@@ -163,7 +163,8 @@ describe("<MultiSelect>", () => {
         input = wrapper.find("input");
         assert.strictEqual(input.prop("value"), "Hello World");
 
-        // Remove containerElement from document
+        // Unmount React tree before removing container from DOM
+        wrapper.unmount();
         containerElement.remove();
     });
 
