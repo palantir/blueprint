@@ -12,6 +12,13 @@
     transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default),
     box-shadow calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
 
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    // stylelint-disable-next-line function-no-unknown
+    background-color: #{oklch(from var(--bp-intent-default-rest) calc(l * 0.617) calc(c * 0.517) h)};
+    box-shadow: var(--bp-surface-shadow-0);
+  }
+
   // High contrast mode hides box-shadows, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid buttonborder;
@@ -30,6 +37,15 @@
 .#{$ns}-elevation-1 {
   box-shadow: var(--bp-surface-shadow-1);
 
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-1),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
+
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid buttonborder;
   }
@@ -37,6 +53,15 @@
 
 .#{$ns}-elevation-2 {
   box-shadow: var(--bp-surface-shadow-2);
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-2),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid buttonborder;
@@ -46,6 +71,15 @@
 .#{$ns}-elevation-3 {
   box-shadow: var(--bp-surface-shadow-3);
 
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-3),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
+
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid buttonborder;
   }
@@ -53,6 +87,15 @@
 
 .#{$ns}-elevation-4 {
   box-shadow: var(--bp-surface-shadow-4);
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-4),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid buttonborder;
@@ -67,6 +110,15 @@
   &:hover {
     box-shadow: var(--bp-surface-shadow-3);
     cursor: pointer;
+
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
+      box-shadow:
+        var(--bp-surface-shadow-3),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+    }
   }
 
   &.#{$ns}-selected {
@@ -87,5 +139,14 @@
   &:active {
     box-shadow: var(--bp-surface-shadow-1);
     transition-duration: 0;
+
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
+      box-shadow:
+        var(--bp-surface-shadow-1),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+    }
   }
 }
