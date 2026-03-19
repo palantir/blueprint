@@ -39,8 +39,6 @@ const meta: Meta<typeof TagInput> = {
         leftIcon: undefined,
         fill: false,
         disabled: false,
-        addOnBlur: false,
-        addOnPaste: true,
         autoResize: false,
     },
     argTypes: {
@@ -58,12 +56,6 @@ const meta: Meta<typeof TagInput> = {
         placeholder: {
             control: "text",
         },
-        addOnBlur: {
-            control: "boolean",
-        },
-        addOnPaste: {
-            control: "boolean",
-        },
         autoResize: {
             control: "boolean",
         },
@@ -76,6 +68,7 @@ const meta: Meta<typeof TagInput> = {
         onAdd: { action: "added" },
         onChange: { action: "changed" },
         onRemove: { action: "removed" },
+        onInputChange: { action: "changed" },
         ...disabledArgs.reduce(
             (acc, argName) => {
                 acc[argName] = {
@@ -109,6 +102,9 @@ export const IntentExample: Story = {
     name: "Intent",
     argTypes: {
         intent: { table: { disable: true } },
+        placeholder: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+        separator: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -134,6 +130,9 @@ export const SizeExample: Story = {
     name: "Size",
     argTypes: {
         size: { table: { disable: true } },
+        placeholder: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+        separator: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -150,6 +149,9 @@ export const StateExample: Story = {
     name: "State",
     argTypes: {
         disabled: { table: { disable: true } },
+        placeholder: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+        separator: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -166,6 +168,9 @@ export const IconExample: Story = {
     name: "Icons",
     argTypes: {
         leftIcon: { table: { disable: true } },
+        placeholder: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+        separator: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -182,6 +187,9 @@ export const FillExample: Story = {
     name: "Fill",
     argTypes: {
         fill: { table: { disable: true } },
+        placeholder: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+        separator: { table: { disable: true } },
     },
     decorators: [
         Story => (
@@ -206,6 +214,9 @@ export const AutoResizeExample: Story = {
     name: "Auto Resize",
     argTypes: {
         autoResize: { table: { disable: true } },
+        placeholder: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+        separator: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -219,8 +230,15 @@ export const AutoResizeExample: Story = {
  * All intents shown together for visual comparison.
  */
 export const AllIntents: Story = {
+    argTypes: {
+        intent: { table: { disable: true } },
+        values: { table: { disable: true } },
+        placeholder: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+        separator: { table: { disable: true } },
+    },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {Object.values(Intent).map(intent => (
                 <TagInput
                     key={intent}
