@@ -42,7 +42,7 @@ $tag-intent-colors: (
   "warning": (
     #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h)"},
     #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h)"},
-    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.21) c h)"},
+    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.20) calc(c + 0.05) h)"},
     #{"oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h)"},
   ),
   "danger": (
