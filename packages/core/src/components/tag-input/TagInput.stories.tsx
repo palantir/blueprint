@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -256,6 +256,11 @@ export const AllIntents: Story = {
  * Interactive playground with fully functional add/remove and all props togglable via Storybook controls.
  */
 export const Playground: Story = {
+    argTypes: {
+        values: {
+            table: { disable: true },
+        },
+    },
     render: function Render(args) {
         const [values, setValues] = useState<string[]>([...INITIAL_VALUES]);
 
