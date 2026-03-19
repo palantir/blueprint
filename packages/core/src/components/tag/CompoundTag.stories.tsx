@@ -274,34 +274,7 @@ export const AllIntentsAllVariants: Story = {
                                     minimal={minimal}
                                     intent={intent}
                                     active={true}
-                                >
-                                    {intent === Intent.NONE ? "none" : intent}
-                                </CompoundTag>
-                            ))}
-                        </div>
-                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                            {Object.values(Intent).map(intent => (
-                                <CompoundTag
-                                    key={intent}
-                                    {...args}
-                                    leftContent="Key"
-                                    minimal={minimal}
-                                    intent={intent}
                                     interactive={true}
-                                >
-                                    {intent === Intent.NONE ? "none" : intent}
-                                </CompoundTag>
-                            ))}
-                        </div>
-                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                            {Object.values(Intent).map(intent => (
-                                <CompoundTag
-                                    key={intent}
-                                    {...args}
-                                    leftContent="Key"
-                                    minimal={minimal}
-                                    intent={intent}
-                                    onRemove={args.onRemove}
                                 >
                                     {intent === Intent.NONE ? "none" : intent}
                                 </CompoundTag>

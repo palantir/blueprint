@@ -265,21 +265,14 @@ export const AllIntentsAllVariants: Story = {
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
                             {Object.values(Intent).map(intent => (
-                                <Tag key={intent} {...args} minimal={minimal} intent={intent} active={true}>
-                                    {intent === Intent.NONE ? "none" : intent}
-                                </Tag>
-                            ))}
-                        </div>
-                        <div style={{ display: "flex", gap: 8 }}>
-                            {Object.values(Intent).map(intent => (
-                                <Tag key={intent} {...args} minimal={minimal} intent={intent} interactive={true}>
-                                    {intent === Intent.NONE ? "none" : intent}
-                                </Tag>
-                            ))}
-                        </div>
-                        <div style={{ display: "flex", gap: 8 }}>
-                            {Object.values(Intent).map(intent => (
-                                <Tag key={intent} {...args} minimal={minimal} intent={intent} onRemove={args.onRemove}>
+                                <Tag
+                                    key={intent}
+                                    {...args}
+                                    minimal={minimal}
+                                    intent={intent}
+                                    active={true}
+                                    interactive={true}
+                                >
                                     {intent === Intent.NONE ? "none" : intent}
                                 </Tag>
                             ))}
