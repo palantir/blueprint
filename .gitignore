@@ -36,6 +36,17 @@ docs-static/**/*.d.ts
 # Storybook
 storybook-static
 
+# Claude AI config (contains secrets)
+.claude/
+
+# Auto-generated TypeScript declarations from CSS Modules
+*.module.scss.d.ts
+*.module.css.d.ts
+
+# Environment variables (may contain secrets)
+.env
+.env.local
+
 # exclude site except for site/docs/versions
 site/*
 site/docs/*

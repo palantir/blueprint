@@ -1,0 +1,69 @@
+// Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/src/colors";
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 32px;
+  min-height: 400px;
+}
+
+.shrimpWrapper {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.shrimpIcon {
+  color: $blue3;
+  animation: shrimpSwim 2s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+.loadingText {
+  font-size: 15px;
+  color: $dark-gray2;
+  margin: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+// Shrimp swimming animation - combination of bounce, sway, and rotation
+@keyframes shrimpSwim {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  15% {
+    transform: translateY(-8px) translateX(4px) rotate(2deg);
+  }
+  30% {
+    transform: translateY(-12px) translateX(8px) rotate(3deg);
+  }
+  45% {
+    transform: translateY(-8px) translateX(4px) rotate(1deg);
+  }
+  60% {
+    transform: translateY(0) translateX(0) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(4px) translateX(-4px) rotate(-2deg);
+  }
+  90% {
+    transform: translateY(2px) translateX(-2px) rotate(-1deg);
+  }
+  100% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+}
+
+// Subtle pulse animation for the text
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}

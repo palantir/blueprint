@@ -1,0 +1,572 @@
+// Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+// =================================================
+// BLUEPRINT 7 DESIGN SYSTEM - ICONOGRAPHY SYNC
+// =================================================
+
+@import "@blueprintjs/core/src/common/typography-bp7";
+@import "@blueprintjs/colors/src/colors";
+
+// =================================================
+// CSS CUSTOM PROPERTIES (Blueprint Token Mappings)
+// =================================================
+
+:root {
+  // Color tokens mapped from Blueprint
+  --color-blue: #{$blue3}; // Primary actions
+  --color-violet: #{$indigo4}; // Design changes
+  --color-amber: #{$gold3}; // Outline changes
+  --color-bg-app: #{$light-gray5}; // App background
+  --color-bg-card: #{$white}; // Card background
+  --color-border: #{$light-gray2}; // Border color
+  --color-text-primary: #{$dark-gray2}; // Primary text
+  --color-text-muted: #{$gray1}; // Secondary text
+
+  // Spacing (Blueprint 4px grid system)
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-2xl: 24px;
+  --spacing-3xl: 32px;
+
+  // Border radius (Blueprint system)
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  // Typography from BP7
+  --font-family: #{$pt-font-family};
+  --font-size-body: #{$pt-font-size-body};
+  --line-height-body: #{$pt-line-height-body};
+  --letter-spacing-body: #{$pt-letter-spacing-body};
+
+  // Transitions
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// =================================================
+// GLOBAL STYLES WITH BP7 TYPOGRAPHY
+// =================================================
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: var(--letter-spacing-body);
+  font-weight: $pt-font-weight-regular;
+  background-color: var(--color-bg-app);
+  color: var(--color-text-primary);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// =================================================
+// APP LAYOUT
+// =================================================
+
+.appContainer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+// =================================================
+// HEADER (NAVBAR)
+// =================================================
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-bg-card);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--spacing-lg) var(--spacing-3xl);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.appLogo {
+  color: var(--color-blue);
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  font-size: $pt-font-size-heading-small;
+  font-weight: $pt-font-weight-medium;
+  letter-spacing: $pt-letter-spacing-heading-small;
+  color: var(--color-text-primary);
+}
+
+.headerActions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+// =================================================
+// FILTER BAR
+// =================================================
+
+.filterBar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  padding: var(--spacing-lg) var(--spacing-3xl);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid $light-gray2;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filterChips {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.filterChip {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-pill);
+  font-size: $pt-font-size-body;
+  font-weight: $pt-font-weight-medium;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all var(--transition-medium);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background: transparent;
+  color: var(--color-text-primary);
+
+  &:hover {
+    background: rgba($light-gray1, 0.3);
+  }
+
+  &.chipAll {
+    background: rgba($blue3, 0.1);
+    border-color: rgba($blue3, 0.2);
+  }
+
+  &.chipAmber {
+    background: rgba($gold3, 0.1);
+    border-color: rgba($gold3, 0.2);
+  }
+
+  &.chipViolet {
+    background: rgba($indigo4, 0.1);
+    border-color: rgba($indigo4, 0.2);
+  }
+}
+
+.countBadge {
+  font-size: $pt-font-size-body;
+  font-weight: $pt-font-weight-regular;
+  color: currentColor;
+  opacity: 0.6;
+}
+
+.filterDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+
+  &.dotAmber {
+    background: var(--color-amber);
+  }
+
+  &.dotViolet {
+    background: var(--color-violet);
+  }
+}
+
+// =================================================
+// MAIN CONTENT
+// =================================================
+
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-3xl);
+  padding-top: 180px; // Account for fixed header + filter bar + spacing
+  scroll-snap-type: y proximity;
+}
+
+// =================================================
+// GRID CONTAINER
+// =================================================
+
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-xl);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// =================================================
+// COMPARISON CARD
+// =================================================
+
+.card {
+  background-color: var(--color-bg-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  border: 1px solid var(--color-border);
+  scroll-snap-align: start;
+  scroll-margin-top: 80px;
+  transition: all var(--transition-fast);
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 24px;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-pill);
+  font-size: $pt-font-size-body-small;
+  font-weight: $pt-font-weight-medium;
+  color: var(--color-text-primary);
+  transition: all var(--transition-fast);
+  position: relative;
+
+  // Active state (tag is selected)
+  &.tagActive {
+    &.tagOutline {
+      background-color: rgba($gold3, 0.2);
+      border: 1px solid rgba($gold3, 0.3);
+    }
+
+    &.tagDesign {
+      background-color: rgba($indigo4, 0.2);
+      border: 1px solid rgba($indigo4, 0.3);
+    }
+
+    .tagRemove {
+      display: none;
+    }
+
+    &:hover .tagRemove {
+      display: inline-block;
+    }
+  }
+
+  // Inactive state (tag is clickable to add)
+  &.tagInactive {
+    background-color: transparent;
+    border: 1px dashed transparent;
+    opacity: 0.5;
+    cursor: pointer;
+
+    &.tagOutline {
+      border-color: rgba($gold3, 0.4);
+
+      .filterDot {
+        opacity: 0.6;
+      }
+    }
+
+    &.tagDesign {
+      border-color: rgba($indigo4, 0.4);
+
+      .filterDot {
+        opacity: 0.6;
+      }
+    }
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba($light-gray3, 0.3);
+
+      &.tagOutline {
+        background-color: rgba($gold3, 0.1);
+        border-color: rgba($gold3, 0.6);
+      }
+
+      &.tagDesign {
+        background-color: rgba($indigo4, 0.1);
+        border-color: rgba($indigo4, 0.6);
+      }
+    }
+  }
+}
+
+.tagRemove {
+  background: transparent;
+  border: none;
+  color: var(--color-text-primary);
+  opacity: 0.5;
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// =================================================
+// ICON COMPARISON AREA
+// =================================================
+
+.comparisonArea {
+  display: flex;
+  align-items: stretch;
+  gap: var(--spacing-sm);
+  position: relative;
+}
+
+.vsBadge {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-text-primary);
+  color: $white;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: $pt-font-weight-medium;
+  font-style: italic;
+  z-index: 10;
+  border: 2px solid var(--color-bg-card);
+}
+
+.iconColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  min-width: 0;
+}
+
+.iconBox {
+  background-color: var(--color-bg-app);
+  border-radius: var(--radius-md);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-lg);
+
+  svg {
+    width: 32px;
+    height: 32px;
+    fill: var(--color-text-primary);
+  }
+}
+
+.labelGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.versionLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: $pt-font-weight-medium;
+  color: var(--color-text-primary);
+  opacity: 0.4;
+}
+
+.iconName {
+  font-size: #{$pt-font-size-body};
+  font-weight: $pt-font-weight-regular;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.iconNameInput {
+  width: 100%;
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 4px 0;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-size: #{$pt-font-size-body};
+  font-weight: $pt-font-weight-regular;
+  color: var(--color-text-primary);
+
+  &:hover {
+    background: rgba($light-gray1, 0.3);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-blue);
+    background: $white;
+  }
+}
+
+// =================================================
+// RESPONSIVE DESIGN
+// =================================================
+
+@media (max-width: 1200px) {
+  .gridContainer {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .gridContainer {
+    grid-template-columns: 1fr;
+  }
+
+  .header,
+  .filterBar,
+  .mainContent {
+    padding-left: var(--spacing-lg);
+    padding-right: var(--spacing-lg);
+  }
+}
+
+// =================================================
+// SCROLLBAR STYLING
+// =================================================
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gray2;
+  border-radius: 3px;
+
+  &:hover {
+    background: $gray1;
+  }
+}
+
+// =================================================
+// EXPORT DIALOG
+// =================================================
+
+.exportDialog {
+  width: 600px;
+  max-width: 90vw;
+}
+
+.dialogSection {
+  margin-bottom: var(--spacing-2xl);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.dialogSectionTitle {
+  font-size: 15px;
+  font-weight: $pt-font-weight-medium;
+  color: var(--color-text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.dialogDescription {
+  font-size: $pt-font-size-body;
+  font-weight: $pt-font-weight-regular;
+  color: var(--color-text-muted);
+  margin: 0 0 var(--spacing-md) 0;
+  line-height: 1.5;
+}
+
+.shareUrlContainer {
+  margin-bottom: var(--spacing-md);
+}
+
+.exportButtons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+// =================================================
+// BACK TO TOP BUTTON
+// =================================================
+
+:global(.back-to-top-button) {
+  position: fixed;
+  bottom: var(--spacing-3xl);
+  right: var(--spacing-3xl);
+  z-index: 200;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transition: all var(--transition-medium);
+  animation: fadeIn var(--transition-medium) ease-in-out;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

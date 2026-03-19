@@ -28,3 +28,24 @@
 - **Types**: Strict TypeScript, React 18 peer deps
 - **Components**: Follow existing patterns in packages/core/src/components/
 - **Styling**: SCSS in src/, compiled to lib/css/
+
+## Common Build Issues
+
+### CSS Modules with css-loader 7.x
+
+**Issue**: Runtime error "Cannot read properties of undefined (reading 'className')" when importing CSS Modules.
+
+**Cause**: css-loader 7.x changed from CommonJS to ES Module exports. With ES Modules, class names are exported as named exports instead of on the default export, breaking `import styles from './styles.module.scss'`.
+
+**Solution**: Add `esModule: false` to css-loader options in webpack config:
+```javascript
+{
+  loader: 'css-loader',
+  options: {
+    esModule: false,  // Use CommonJS exports
+    modules: { localIdentName: '[name]__[local]--[hash:base64:5]' }
+  }
+}
+```
+
+**Reference**: See `packages/demo-icon-comparison/webpack.config.js` for implementation example.

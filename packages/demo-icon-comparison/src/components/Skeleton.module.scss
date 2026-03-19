@@ -1,0 +1,26 @@
+// Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/src/colors";
+
+.skeleton {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    rgba($light-gray1, 0.3) 0%,
+    rgba($light-gray1, 0.5) 50%,
+    rgba($light-gray1, 0.3) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: 3px;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}

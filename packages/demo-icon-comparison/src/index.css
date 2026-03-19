@@ -1,0 +1,582 @@
+/* ============================================
+   BLUEPRINT ICON COMPARISON TOOL - REDESIGNED
+   Professional design system implementation
+   ============================================ */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES & THEMING
+   ============================================ */
+:root {
+  /* Spacing system based on 4px grid */
+  --spacing-unit: 4px;
+  --spacing-xs: calc(var(--spacing-unit) * 1);   /* 4px */
+  --spacing-sm: calc(var(--spacing-unit) * 2);   /* 8px */
+  --spacing-md: calc(var(--spacing-unit) * 3);   /* 12px */
+  --spacing-lg: calc(var(--spacing-unit) * 4);   /* 16px */
+  --spacing-xl: calc(var(--spacing-unit) * 5);   /* 20px */
+  --spacing-2xl: calc(var(--spacing-unit) * 6);  /* 24px */
+  --spacing-3xl: calc(var(--spacing-unit) * 8);  /* 32px */
+
+  /* Card dimensions optimized for density */
+  --card-min-width: 160px;
+  --card-max-width: 200px;
+  --card-padding: var(--spacing-md);
+  --icon-display-size: 20px;
+
+  /* Z-index layers */
+  --z-card-hover: 10;
+  --z-sticky-toolbar: 100;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-medium: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   GLOBAL STYLES
+   ============================================ */
+body {
+  margin: 0;
+  background: var(--bp6-app-background-color, #f6f7f9);
+}
+
+/* ============================================
+   APP STRUCTURE
+   ============================================ */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   NAVBAR IMPROVEMENTS
+   ============================================ */
+.bp6-navbar {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky-toolbar);
+  box-shadow: 0 1px 0 rgba(16, 22, 26, 0.15);
+  padding: 0 var(--spacing-lg);
+}
+
+.bp6-navbar .bp6-navbar-group {
+  gap: var(--spacing-sm);
+}
+
+.bp6-navbar .bp6-tag {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Stat tags in navbar - more prominent */
+.bp6-navbar .bp6-tag[data-intent="primary"] {
+  background: rgba(43, 105, 223, 0.15);
+  color: #2b69df;
+  font-weight: 600;
+}
+
+.bp6-navbar .bp6-tag[data-intent="warning"] {
+  background: rgba(217, 130, 43, 0.2);
+  color: #bf7326;
+  font-weight: 600;
+}
+
+.bp6-navbar .bp6-tag[data-intent="danger"] {
+  background: rgba(219, 55, 55, 0.2);
+  color: #c23030;
+  font-weight: 600;
+}
+
+.bp6-navbar .bp6-tag[data-intent="success"] {
+  background: rgba(15, 153, 96, 0.2);
+  color: #0d8050;
+  font-weight: 600;
+}
+
+/* ============================================
+   TOOLBAR REDESIGN
+   ============================================ */
+.app-toolbar {
+  background: white;
+  border-bottom: 1px solid var(--bp6-divider-black, rgba(16, 22, 26, 0.15));
+  padding: var(--spacing-md) var(--spacing-lg);
+  position: sticky;
+  top: 50px; /* Below navbar */
+  z-index: calc(var(--z-sticky-toolbar) - 1);
+  box-shadow: 0 2px 4px rgba(16, 22, 26, 0.08);
+}
+
+.app-toolbar-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.app-toolbar-search {
+  flex: 1;
+  max-width: 360px;
+}
+
+.app-toolbar-search input {
+  font-size: 14px;
+}
+
+.app-toolbar-results {
+  margin-left: auto;
+  color: var(--bp6-text-color-muted, #6e7781);
+  font-size: 13px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Filter button state */
+.bp6-button[data-active="true"] {
+  background: rgba(43, 105, 223, 0.1);
+}
+
+/* ============================================
+   ICON GRID - OPTIMIZED FOR DENSITY
+   ============================================ */
+.app-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--card-min-width), 1fr));
+  gap: var(--spacing-xs);
+  padding: var(--spacing-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .app-icon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-max-width), 1fr));
+    gap: var(--spacing-sm);
+    padding: var(--spacing-xl);
+  }
+}
+
+@media (min-width: 1200px) {
+  .app-icon-grid {
+    gap: var(--spacing-md);
+  }
+}
+
+/* ============================================
+   ICON COMPARISON CARD - COMPLETE REDESIGN
+   ============================================ */
+.icon-comparison-card {
+  background: white;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: var(--card-padding);
+  transition: all var(--transition-fast);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 140px;
+}
+
+/* Hover state for better interaction */
+.icon-comparison-card:hover {
+  border-color: var(--bp6-divider-black, rgba(16, 22, 26, 0.15));
+  box-shadow: 0 2px 8px rgba(16, 22, 26, 0.08);
+  z-index: var(--z-card-hover);
+  transform: translateY(-1px);
+}
+
+/* Tagged state - colored left border */
+.icon-comparison-card[data-tagged="true"] {
+  border-left: 3px solid;
+  padding-left: calc(var(--card-padding) - 3px);
+}
+
+.icon-comparison-card[data-unfilled="true"] {
+  border-left-color: #d9822b;
+  background: rgba(217, 130, 43, 0.03);
+}
+
+.icon-comparison-card[data-major-change="true"] {
+  border-left-color: #db3737;
+  background: rgba(219, 55, 55, 0.03);
+}
+
+.icon-comparison-card[data-unfilled="true"][data-major-change="true"] {
+  border-left-color: #9e2b0e;
+  background: linear-gradient(135deg, rgba(217, 130, 43, 0.03), rgba(219, 55, 55, 0.03));
+}
+
+.icon-comparison-card[data-renamed="true"] {
+  background: rgba(15, 153, 96, 0.02);
+}
+
+/* ============================================
+   ICON DISPLAY SECTION
+   ============================================ */
+.icon-comparison-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm) 0;
+  min-height: 36px;
+}
+
+.icon-side {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.icon-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--bp6-text-color-muted, #6e7781);
+  opacity: 0.7;
+}
+
+.icon-display {
+  width: var(--icon-display-size);
+  height: var(--icon-display-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 2px;
+}
+
+/* Current (old) icon styling */
+.icon-side:first-child .icon-display {
+  background: rgba(16, 22, 26, 0.04);
+}
+
+.icon-side:first-child .icon-display svg {
+  width: 16px;
+  height: 16px;
+  color: var(--bp6-icon-color, #6e7781);
+}
+
+/* New icon styling with stroke treatment */
+.icon-side:last-child .icon-display {
+  background: rgba(43, 105, 223, 0.05);
+  position: relative;
+}
+
+.new-icon-container svg {
+  width: 16px;
+  height: 16px;
+  color: var(--bp6-icon-color, #5c7080);
+}
+
+.new-icon-container svg path,
+.new-icon-container svg circle,
+.new-icon-container svg rect,
+.new-icon-container svg line,
+.new-icon-container svg polyline,
+.new-icon-container svg polygon {
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* Arrow indicator */
+.icon-arrow {
+  font-size: 12px;
+  color: var(--bp6-text-color-disabled, #a7b6c2);
+  padding: 0 var(--spacing-xs);
+}
+
+/* Missing icon state */
+.icon-missing {
+  width: var(--icon-display-size);
+  height: var(--icon-display-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bp6-text-color-disabled, #a7b6c2);
+  font-size: 14px;
+  border: 1px dashed currentColor;
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+/* ============================================
+   ICON METADATA
+   ============================================ */
+.icon-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bp6-text-color, #182026);
+  text-align: center;
+  margin-bottom: 2px;
+  line-height: 1.2;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.icon-code {
+  font-size: 11px;
+  font-family: var(--bp6-font-family-monospace, "SF Mono", Monaco, Consolas, monospace);
+  color: var(--bp6-text-color-muted, #6e7781);
+  text-align: center;
+  margin-bottom: var(--spacing-sm);
+  opacity: 0.8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon-name-renamed {
+  color: var(--bp6-intent-success, #0f9960);
+  font-weight: 600;
+}
+
+/* ============================================
+   TAGS - IMPROVED VISIBILITY
+   ============================================ */
+.icon-comparison-tags {
+  position: absolute;
+  top: var(--spacing-xs);
+  right: var(--spacing-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  z-index: 1;
+}
+
+.icon-comparison-tags .bp6-tag {
+  font-size: 9px;
+  padding: 1px 4px;
+  height: 14px;
+  line-height: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+/* Stronger tag colors */
+.icon-comparison-tags .bp6-tag[data-intent="warning"] {
+  background: #d9822b;
+  color: white;
+}
+
+.icon-comparison-tags .bp6-tag[data-intent="danger"] {
+  background: #db3737;
+  color: white;
+}
+
+/* ============================================
+   RENAME INPUT - CLEANER DESIGN
+   ============================================ */
+.icon-rename-input {
+  margin-top: auto;
+  margin-bottom: var(--spacing-xs);
+}
+
+.icon-rename-input .bp6-input-group {
+  min-height: 24px;
+}
+
+.icon-rename-input input {
+  font-size: 11px;
+  padding: 2px 6px;
+  min-height: 24px;
+  background: rgba(16, 22, 26, 0.02);
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+
+.icon-rename-input input:focus {
+  background: white;
+  border-color: var(--bp6-intent-primary, #2b69df);
+  box-shadow: 0 0 0 1px rgba(43, 105, 223, 0.2);
+}
+
+.icon-rename-input input::placeholder {
+  color: var(--bp6-text-color-disabled, #a7b6c2);
+  font-size: 10px;
+}
+
+.icon-rename-input .bp6-icon {
+  opacity: 0.4;
+  width: 12px;
+  height: 12px;
+}
+
+/* ============================================
+   ACTION BUTTONS - COMPACT & CLEAR
+   ============================================ */
+.icon-toggle-buttons {
+  display: flex;
+  gap: var(--spacing-xs);
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+/* Show on card hover/focus */
+.icon-comparison-card:hover .icon-toggle-buttons,
+.icon-comparison-card:focus-within .icon-toggle-buttons {
+  opacity: 1;
+}
+
+.icon-toggle-buttons .bp6-button {
+  font-size: 10px;
+  padding: 2px 6px;
+  min-height: 20px;
+  flex: 1;
+  justify-content: center;
+}
+
+.icon-toggle-buttons .bp6-button .bp6-icon {
+  margin-right: 2px;
+}
+
+/* Active state styling */
+.icon-toggle-buttons .bp6-button[data-intent="warning"] {
+  background: rgba(217, 130, 43, 0.15);
+  color: #bf7326;
+  font-weight: 600;
+}
+
+.icon-toggle-buttons .bp6-button[data-intent="danger"] {
+  background: rgba(219, 55, 55, 0.15);
+  color: #c23030;
+  font-weight: 600;
+}
+
+/* ============================================
+   LOADING & EMPTY STATES
+   ============================================ */
+.app-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-3xl) var(--spacing-xl);
+  min-height: 300px;
+  color: var(--bp6-text-color-muted, #6e7781);
+}
+
+.app-loading::before {
+  content: "";
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(43, 105, 223, 0.2);
+  border-top-color: #2b69df;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--spacing-lg);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.app-empty-state {
+  max-width: 400px;
+  margin: var(--spacing-3xl) auto;
+  padding: var(--spacing-3xl);
+  text-align: center;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(16, 22, 26, 0.08);
+}
+
+.app-empty-state h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--bp6-heading-color, #182026);
+  margin: 0 0 var(--spacing-md);
+}
+
+.app-empty-state p {
+  font-size: 14px;
+  color: var(--bp6-text-color-muted, #6e7781);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ============================================
+   DARK THEME SUPPORT
+   ============================================ */
+.bp6-dark .app-toolbar {
+  background: var(--bp6-dark-app-secondary-background-color, #252a31);
+  border-bottom-color: var(--bp6-dark-divider-black, rgba(0, 0, 0, 0.4));
+}
+
+.bp6-dark .icon-comparison-card {
+  background: var(--bp6-dark-app-elevated-background-color, #30404d);
+  border-color: transparent;
+}
+
+.bp6-dark .icon-comparison-card:hover {
+  border-color: var(--bp6-dark-divider-white, rgba(255, 255, 255, 0.2));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.bp6-dark .icon-comparison-card[data-unfilled="true"] {
+  background: rgba(217, 130, 43, 0.08);
+}
+
+.bp6-dark .icon-comparison-card[data-major-change="true"] {
+  background: rgba(219, 55, 55, 0.08);
+}
+
+.bp6-dark .app-empty-state {
+  background: var(--bp6-dark-app-elevated-background-color, #30404d);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles */
+.icon-comparison-card:focus-within {
+  outline: 2px solid var(--bp6-focus-indicator-color, rgba(43, 105, 223, 0.752));
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .icon-comparison-card {
+    border: 1px solid var(--bp6-divider-black, rgba(16, 22, 26, 0.15));
+  }
+
+  .icon-comparison-card[data-tagged="true"] {
+    border-width: 2px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .app-toolbar,
+  .bp6-navbar .bp6-button-group {
+    display: none;
+  }
+
+  .app-icon-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .icon-toggle-buttons {
+    display: none;
+  }
+}
