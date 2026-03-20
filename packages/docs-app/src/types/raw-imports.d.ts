@@ -11,6 +11,7 @@ declare module "*?raw" {
 }
 
 declare module "monaco-themes/themes/*.json" {
-    const theme: import("monaco-editor").editor.IStandaloneThemeData;
+    import type { editor } from "monaco-editor";
+    const theme: editor.IStandaloneThemeData;
     export default theme;
 }
