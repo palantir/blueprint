@@ -8,6 +8,7 @@ import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin }
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
+import packageJson from "package-json";
 import semver from "semver";
 
 import { Classes } from "@blueprintjs/core";
@@ -39,17 +40,11 @@ const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
-// Last published version for each prior major release, used for the docs version dropdown
-// Must be manually updated on future major releases
-const PRIOR_MAJOR_VERSIONS: Record<string, string[]> = {
-    "@blueprintjs/core": ["5.19.1", "4.20.2", "3.54.0", "2.3.1", "1.40.0"],
-};
-
 try {
     if (!existsSync(generatedSrcDir)) {
         mkdirSync(generatedSrcDir);
     }
-    generateNpmData();
+    await generateNpmData();
     await generateDocumentalistData();
 } catch (err) {
     // console.error messages get swallowed by lerna but console.log is emitted to terminal.
@@ -144,14 +139,46 @@ function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
 }
 
-function generateNpmData(): void {
+async function fetchNpmPackageInfo(
+    packageName: string,
+): Promise<{ name: string; version: string; versions: string[] }> {
+    // Get latest version (abbreviated metadata by default)
+    const { version } = await packageJson(packageName);
+
+    // Get all versions
+    const fullData = await packageJson(packageName, { allVersions: true });
+    const allVersions = Object.keys(fullData.versions ?? {});
+
+    // Keep the highest stable version per major
+    const majors = new Map<number, string>();
+    for (const v of allVersions) {
+        const maj = semver.major(v);
+        if (!majors.has(maj) || semver.gt(v, majors.get(maj)!)) {
+            majors.set(maj, v);
+        }
+    }
+
+    const versions = Array.from(majors.values()).sort(semver.rcompare);
+
+    return { name: packageName, version: version!, versions };
+}
+
+async function generateNpmData(): Promise<void> {
     const npmDataFilePath = join(generatedSrcDir, "npm-data.json");
     const npmData: Record<string, { name: string; version: string; versions: string[] }> = {};
+
     for (const pkg of LIBRARY_PACKAGES) {
         const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
-        const { name, version } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
-        npmData[name] = { name, version, versions: [version, ...(PRIOR_MAJOR_VERSIONS[name] ?? [])] };
+        const { name, version: localVersion } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
+        try {
+            npmData[name] = await fetchNpmPackageInfo(name);
+        } catch (err) {
+            console.warn(`[docs-data] WARNING: failed to fetch npm data for ${name}, falling back to local version`);
+            console.warn(`  ${err}`);
+            npmData[name] = { name, version: localVersion, versions: [localVersion] };
+        }
     }
+
     writeFileSync(npmDataFilePath, JSON.stringify(npmData, null, 2) + "\n");
     console.info("[docs-data] successfully generated npm-data.json");
 }
