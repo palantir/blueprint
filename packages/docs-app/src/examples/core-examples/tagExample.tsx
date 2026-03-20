@@ -16,7 +16,7 @@
 
 import { useCallback, useState } from "react";
 
-import { Button, H5, Intent, Switch, Tag, Tooltip } from "@blueprintjs/core";
+import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -67,18 +67,7 @@ export const TagExample: React.FC<ExampleProps> = props => {
                 checked={interactive}
                 onChange={handleBooleanChange(setInteractive)}
             />
-            <Tooltip
-                content="Enable interactivity to use active"
-                disabled={interactive}
-                placement="left"
-            >
-                <Switch
-                    label="Active"
-                    disabled={!interactive}
-                    checked={active}
-                    onChange={handleBooleanChange(setActive)}
-                />
-            </Tooltip>
+            <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch
                 label="Removable"
                 checked={removable}
@@ -98,7 +87,7 @@ export const TagExample: React.FC<ExampleProps> = props => {
             {tags.map(tag => (
                 <Tag
                     key={tag}
-                    active={activeTags.includes(tag)}
+                    active={active || (interactive && activeTags.includes(tag))}
                     endIcon={endIcon ? "map" : undefined}
                     fill={fill}
                     icon={icon ? "home" : undefined}
@@ -113,7 +102,6 @@ export const TagExample: React.FC<ExampleProps> = props => {
                     {tag}
                 </Tag>
             ))}
-            {active && <p>click a tag to show in an active state</p>}
         </Example>
     );
 };
