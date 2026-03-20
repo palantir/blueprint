@@ -495,6 +495,9 @@ importers:
 
   packages/docs-app:
     dependencies:
+      '@blueprintjs/colors':
+        specifier: workspace:^
+        version: link:../colors
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
@@ -513,9 +516,6 @@ importers:
       '@blueprintjs/labs':
         specifier: workspace:^
         version: link:../labs
-      '@blueprintjs/monaco-editor-theme':
-        specifier: workspace:^
-        version: link:../monaco-editor-theme
       '@blueprintjs/select':
         specifier: workspace:^
         version: link:../select
@@ -989,25 +989,6 @@ importers:
       webpack-dev-server:
         specifier: ^4.15.1
         version: 4.15.2(webpack-cli@5.1.4)(webpack@5.102.1)
-
-  packages/monaco-editor-theme:
-    dependencies:
-      '@blueprintjs/colors':
-        specifier: workspace:^
-        version: link:../colors
-      monaco-editor:
-        specifier: ^0.45.0
-        version: 0.45.0
-    devDependencies:
-      '@blueprintjs/node-build-scripts':
-        specifier: workspace:^
-        version: link:../node-build-scripts
-      npm-run-all:
-        specifier: ^4.1.5
-        version: 4.1.5
-      typescript:
-        specifier: ~5.9.3
-        version: 5.9.3
 
   packages/node-build-scripts:
     dependencies:
