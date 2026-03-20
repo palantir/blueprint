@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { createRef } from "react";
+import { Children, createRef } from "react";
 import { createRoot } from "react-dom/client";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
@@ -267,7 +267,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 childRefs={this.toastRefs}
                 enforceFocus={false}
                 hasBackdrop={false}
-                isOpen={this.state.toasts.length > 0 || this.props.children != null}
+                isOpen={this.state.toasts.length > 0 || Children.count(this.props.children) > 0}
                 onClose={this.handleClose}
                 shouldReturnFocusOnClose={false}
                 // $pt-transition-duration * 3 + $pt-transition-duration / 2

@@ -21,7 +21,7 @@ Check out the [migration guides to upgrade from v5.x &rarr;](https://github.com/
 home to over 40 UI components.
 Install it with your Node.js package manager of choice:
 
-```sh
+```sh copy
 pnpm add @blueprintjs/core react react-dom
 ```
 

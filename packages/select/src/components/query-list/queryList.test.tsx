@@ -21,16 +21,11 @@ import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
 
-import {
-    type ItemListPredicate,
-    type ItemListRenderer,
-    type ItemPredicate,
-    QueryList,
-    type QueryListProps,
-    type QueryListRendererProps,
-} from "../src";
-import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
-import type { QueryListState } from "../src/components/query-list/queryList";
+import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
+import type { ItemListRenderer } from "../../common/itemListRenderer";
+import type { ItemListPredicate, ItemPredicate } from "../../common/predicate";
+
+import { QueryList, type QueryListProps, type QueryListRendererProps, type QueryListState } from "./queryList";
 
 type FilmQueryListWrapper = ReactWrapper<QueryListProps<Film>, QueryListState<Film>>;
 

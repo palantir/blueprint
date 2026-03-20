@@ -13,13 +13,15 @@ import {
     useInteractions,
     type UseInteractionsReturn,
 } from "@floating-ui/react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { PopoverInteractionKind } from "../popover/popoverProps";
 
 import type { PopoverNextPositioningStrategy } from "./middlewareTypes";
+import type { PopoverNextAutoUpdateOptions } from "./popoverNextProps";
 
 interface PopoverOptions {
+    autoUpdateOptions?: PopoverNextAutoUpdateOptions;
     canEscapeKeyClose?: boolean;
     disabled?: boolean;
     hasBackdrop?: boolean;
@@ -38,6 +40,7 @@ interface UsePopoverReturn extends UseFloatingReturn, UseInteractionsReturn {
 }
 
 export function usePopover({
+    autoUpdateOptions,
     canEscapeKeyClose,
     disabled = false,
     hasBackdrop = false,
@@ -70,13 +73,30 @@ export function usePopover({
         [onOpenChange, isControlled],
     );
 
+    // Store options in a ref so the memoized callback always reads the latest
+    // values without changing its identity on every render.
+    const autoUpdateOptionsRef = useRef(autoUpdateOptions);
+    autoUpdateOptionsRef.current = autoUpdateOptions;
+
+    const whileElementsMounted = useMemo(
+        () =>
+            autoUpdateOptions != null
+                ? (reference: Parameters<typeof autoUpdate>[0], floating: HTMLElement, update: () => void) =>
+                      autoUpdate(reference, floating, update, autoUpdateOptionsRef.current)
+                : autoUpdate,
+        // Only change identity when toggling between with/without options;
+        // actual option values are read from the ref at call time.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [autoUpdateOptions != null],
+    );
+
     const data = useFloating({
         middleware,
         onOpenChange: handleOpenChange,
         open: isOpenState,
         placement,
         strategy: positioningStrategy,
-        whileElementsMounted: autoUpdate,
+        whileElementsMounted,
     });
 
     const { context } = data;

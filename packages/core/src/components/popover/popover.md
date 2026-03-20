@@ -22,7 +22,7 @@ Popper.js is a small library that offers a powerful, customizable, and performan
 
 @## Import
 
-```tsx
+```ts copy
 import { Popover } from "@blueprintjs/core";
 ```
 

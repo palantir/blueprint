@@ -6,7 +6,7 @@ functionality. For example, you might use an input group to build a visibility t
 
 @## Import
 
-```tsx
+```ts copy
 import { InputGroup } from "@blueprintjs/core";
 ```
 

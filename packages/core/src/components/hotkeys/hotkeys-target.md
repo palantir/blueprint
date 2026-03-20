@@ -6,7 +6,7 @@ new hotkeys API without refactoring your class components into functional compon
 
 @## Import
 
-```tsx
+```ts copy
 import { HotkeysTarget } from "@blueprintjs/core";
 ```
 

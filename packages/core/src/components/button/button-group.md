@@ -7,7 +7,7 @@ Most of **ButtonGroup**'s props are also supported by [**Button**](#core/compone
 
 @## Usage
 
-```ts
+```ts copy
 import { ButtonGroup } from "@blueprintjs/core";
 ```
 

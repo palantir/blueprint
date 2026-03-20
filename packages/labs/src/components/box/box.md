@@ -8,7 +8,7 @@ tag: new
 
 @## Import
 
-```tsx
+```ts copy
 import { Box } from "@blueprintjs/labs";
 ```
 

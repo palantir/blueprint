@@ -11,7 +11,7 @@ to render calendars.
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/datetime
 ```
 

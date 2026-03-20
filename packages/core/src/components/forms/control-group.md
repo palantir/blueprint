@@ -18,7 +18,7 @@ promoted to live in a control group.
 
 @## Import
 
-```tsx
+```ts copy
 import { ControlGroup } from "@blueprintjs/core";
 ```
 

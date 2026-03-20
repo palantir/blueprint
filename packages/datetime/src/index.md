@@ -21,7 +21,7 @@ provides React components for interacting with dates and times:
 
 Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
 
-```sh
+```sh copy
 npm install --save @blueprintjs/datetime
 ```
 
