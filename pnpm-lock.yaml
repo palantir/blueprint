@@ -552,9 +552,6 @@ importers:
       monaco-editor:
         specifier: ^0.55.1
         version: 0.55.1
-      monaco-themes:
-        specifier: ^0.4.8
-        version: 0.4.8
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
@@ -5509,9 +5506,6 @@ packages:
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
 
-  fast-plist@0.1.3:
-    resolution: {integrity: sha512-d9cEfo/WcOezgPLAC/8t8wGb6YOD6JTCPMw2QcG2nAdFmyY+9rTUizCTaGjIZAloWENTEUMAPpkUAIJJJ0i96A==}
-
   fast-uri@3.1.0:
     resolution: {integrity: sha512-iPeeDKJSWf4IEOasVVrknXpaBV0IApz/gp7S2bb7Z4Lljbl2MGJRqInZiUrQwV16cpzw/D3S5j5Julj/gT52AA==}
 
@@ -7213,10 +7207,6 @@ packages:
 
   monaco-editor@0.55.1:
     resolution: {integrity: sha512-jz4x+TJNFHwHtwuV9vA9rMujcZRb0CEilTEwG2rRSpe/A7Jdkuj8xPKttCgOh+v/lkHy7HsZ64oj+q3xoAFl9A==}
-
-  monaco-themes@0.4.8:
-    resolution: {integrity: sha512-QEDCwl5XUMPPpsg8TVNfi1VKIDtMsMTJAhUfxHSZ6hzkEfZgfTK2hicwyzkDKhAhrpMkHkwMtG13ynvdztJesw==}
-    engines: {node: '>=22.0.0'}
 
   moo@0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
@@ -14429,8 +14419,6 @@ snapshots:
 
   fast-levenshtein@2.0.6: {}
 
-  fast-plist@0.1.3: {}
-
   fast-uri@3.1.0: {}
 
   fastest-levenshtein@1.0.16: {}
@@ -16431,10 +16419,6 @@ snapshots:
     dependencies:
       dompurify: 3.2.7
       marked: 14.0.0
-
-  monaco-themes@0.4.8:
-    dependencies:
-      fast-plist: 0.1.3
 
   moo@0.5.2: {}
 

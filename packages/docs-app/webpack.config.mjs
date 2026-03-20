@@ -17,14 +17,10 @@
 
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 import { cwd } from "node:process";
-import { fileURLToPath } from "node:url";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const monacoThemesDir = resolve(__dirname, "node_modules/monaco-themes/themes");
 
 export default {
     ...baseConfig,
@@ -63,17 +59,6 @@ export default {
         filename: "[name].js",
         path: resolve(cwd(), "./dist"),
         publicPath: "",
-    },
-
-    resolve: {
-        ...baseConfig.resolve,
-        alias: {
-            ...baseConfig.resolve?.alias,
-            // monaco-themes package.json "exports" doesn't expose theme JSON files directly,
-            // so we alias the imports to their actual file paths on disk.
-            "monaco-themes/themes/GitHub Light.json": resolve(monacoThemesDir, "GitHub Light.json"),
-            "monaco-themes/themes/GitHub Dark.json": resolve(monacoThemesDir, "GitHub Dark.json"),
-        },
     },
 
     plugins: [

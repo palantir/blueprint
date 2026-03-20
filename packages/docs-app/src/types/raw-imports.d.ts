@@ -9,9 +9,3 @@ declare module "*?raw" {
     const content: string;
     export default content;
 }
-
-declare module "monaco-themes/themes/*.json" {
-    import type { editor } from "monaco-editor";
-    const theme: editor.IStandaloneThemeData;
-    export default theme;
-}
