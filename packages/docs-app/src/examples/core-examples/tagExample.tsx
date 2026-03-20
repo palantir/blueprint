@@ -25,7 +25,6 @@ const INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
 
 export const TagExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = useState(false);
-    const [activeTags, setActiveTags] = useState<string[]>([]);
     const [fill, setFill] = useState(false);
     const [icon, setIcon] = useState(false);
     const [intent, setIntent] = useState<Intent>(Intent.NONE);
@@ -42,19 +41,7 @@ export const TagExample: React.FC<ExampleProps> = props => {
         [tags],
     );
 
-    const handleTagClick = useCallback(
-        (tag: string) => () => {
-            setActiveTags(prev =>
-                prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag],
-            );
-        },
-        [],
-    );
-
-    const handleReset = useCallback(() => {
-        setTags(INITIAL_TAGS);
-        setActiveTags([]);
-    }, []);
+    const handleReset = useCallback(() => setTags(INITIAL_TAGS), []);
 
     const options = (
         <>
@@ -67,7 +54,12 @@ export const TagExample: React.FC<ExampleProps> = props => {
                 checked={interactive}
                 onChange={handleBooleanChange(setInteractive)}
             />
-            <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
+            <Switch
+                label="Active"
+                checked={active}
+                disabled={!interactive}
+                onChange={handleBooleanChange(setActive)}
+            />
             <Switch
                 label="Removable"
                 checked={removable}
@@ -87,7 +79,7 @@ export const TagExample: React.FC<ExampleProps> = props => {
             {tags.map(tag => (
                 <Tag
                     key={tag}
-                    active={active || (interactive && activeTags.includes(tag))}
+                    active={active}
                     endIcon={endIcon ? "map" : undefined}
                     fill={fill}
                     icon={icon ? "home" : undefined}
@@ -97,7 +89,6 @@ export const TagExample: React.FC<ExampleProps> = props => {
                     onRemove={removable ? handleRemove(tag) : undefined}
                     round={round}
                     size={large ? "large" : undefined}
-                    onClick={handleTagClick(tag)}
                 >
                     {tag}
                 </Tag>
