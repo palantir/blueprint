@@ -178,7 +178,7 @@ async function generateNpmData(): Promise<void> {
         }
     }
 
-    writeFileSync(npmDataFilePath, JSON.stringify(npmData, null, 2) + "\n");
+    writeFileSync(npmDataFilePath, JSON.stringify(npmData) + "\n");
     console.info("[docs-data] successfully generated npm-data.json");
 }
 
