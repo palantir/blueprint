@@ -60,8 +60,7 @@
   gap: $pt-spacing * 2;
 
   &.#{$ns}-inline {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
 
     > .#{$ns}-control-card {
       flex: 1 1 0;
