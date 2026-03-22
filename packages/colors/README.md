@@ -10,7 +10,7 @@ There are currently two color palettes available: modern 4.x colors and "legacy"
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/colors
 ```
 

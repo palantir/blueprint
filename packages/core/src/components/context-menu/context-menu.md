@@ -6,7 +6,7 @@ with the appropriate interaction handlers.
 
 @## Import
 
-```tsx
+```ts copy
 import { ContextMenu } from "@blueprintjs/core";
 ```
 

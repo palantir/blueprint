@@ -12,7 +12,7 @@ This package contains the [ESLint](https://eslint.org/) plugin for Blueprint. It
 
 ## Installation
 
-```
+```sh copy
 pnpm add --save-dev @blueprintjs/eslint-plugin
 ```
 

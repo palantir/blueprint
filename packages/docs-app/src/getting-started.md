@@ -12,7 +12,7 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
 1.  Install the core package and its peer dependencies with an NPM client like `npm` or `pnpm`,
     pulling in all relevant dependencies:
 
-    ```sh
+    ```sh copy
     pnpm add @blueprintjs/core react react-dom
     ```
 

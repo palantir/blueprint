@@ -12,7 +12,7 @@ or [**TextArea**](#core/components/text-area) component would suffice.
 
 @## Import
 
-```tsx
+```ts copy
 import { EditableText } from "@blueprintjs/core";
 ```
 

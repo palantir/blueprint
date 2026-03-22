@@ -16,7 +16,7 @@ including:
 
 @## Import
 
-```tsx
+```ts copy
 import { NonIdealState } from "@blueprintjs/core";
 ```
 

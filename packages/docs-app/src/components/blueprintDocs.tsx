@@ -31,6 +31,7 @@ import {
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
+import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
@@ -207,6 +208,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         );
 
         await highlightCodeBlocks();
+        addCopyButtonsToImportBlocks();
     };
 
     private handleToggleDark = async (useDark: boolean) => {
@@ -215,5 +217,6 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         this.setState({ themeName: nextThemeName });
 
         await highlightCodeBlocks();
+        addCopyButtonsToImportBlocks();
     };
 }

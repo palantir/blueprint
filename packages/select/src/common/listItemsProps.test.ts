@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import sinon from "sinon";
 
-import { executeItemsEqual } from "../src/common/listItemsProps";
+import { executeItemsEqual } from "./listItemsProps";
 
 describe("ListItemsProps Utils", () => {
     describe("executeItemsEqual", () => {

@@ -4,7 +4,7 @@ CompoundTag is a variant of [**Tag**](#core/components/tag) that displays conten
 
 @## Usage
 
-```tsx
+```ts copy
 import { CompoundTag } from "@blueprintjs/core";
 ```
 
