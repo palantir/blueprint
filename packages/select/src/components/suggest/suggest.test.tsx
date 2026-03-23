@@ -43,7 +43,7 @@ describe("Suggest", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
-    let mountedWrappers: ReactWrapper<any, any>[] = [];
+    let mountedWrappers: Array<ReactWrapper<any, any>> = [];
 
     beforeEach(() => {
         handlers = {
