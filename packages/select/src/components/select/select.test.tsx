@@ -25,7 +25,9 @@ import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/v
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
 
-import { Select, type SelectProps } from "./select";
+import { Select, type SelectProps, type SelectState } from "./select";
+import { selectComponentSuite } from "./selectComponentTestUtils";
+import { selectPopoverTestSuite } from "./selectPopoverTestUtils";
 
 describe("<Select>", () => {
     const defaultProps = {
@@ -67,6 +69,16 @@ describe("<Select>", () => {
             }
             containerElement.remove();
         }
+    });
+
+    selectComponentSuite<SelectProps<Film>, SelectState>(props =>
+        mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+    );
+
+    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props => {
+        const wrapper = mount(<Select {...props} />, { attachTo: containerElement });
+        mountedWrappers.push(wrapper);
+        return wrapper;
     });
 
     it("renders a Popover around children that contains InputGroup and items", () => {
