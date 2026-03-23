@@ -41,7 +41,7 @@ describe("<Select>", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
-    let mountedWrappers: ReactWrapper[] = [];
+    let mountedWrappers: ReactWrapper<any, any>[] = [];
 
     beforeEach(() => {
         handlers = {
@@ -72,11 +72,11 @@ describe("<Select>", () => {
     });
 
     selectComponentSuite<SelectProps<Film>, SelectState>(props =>
-        mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+        mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />) as ReactWrapper<SelectProps<Film>, SelectState>,
     );
 
     selectPopoverTestSuite<SelectProps<Film>, SelectState>(props => {
-        const wrapper = mount(<Select {...props} />, { attachTo: containerElement });
+        const wrapper = mount(<Select {...props} />, { attachTo: containerElement }) as ReactWrapper<SelectProps<Film>, SelectState>;
         mountedWrappers.push(wrapper);
         return wrapper;
     });

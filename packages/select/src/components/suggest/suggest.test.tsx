@@ -43,7 +43,7 @@ describe("Suggest", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
-    let mountedWrappers: ReactWrapper[] = [];
+    let mountedWrappers: ReactWrapper<any, any>[] = [];
 
     beforeEach(() => {
         handlers = {
@@ -79,7 +79,7 @@ describe("Suggest", () => {
                 popoverProps={{ isOpen: true, usePortal: false }}
             />,
             { attachTo: containerElement },
-        );
+        ) as ReactWrapper<SuggestProps<Film>, SuggestState<Film>>;
         mountedWrappers.push(wrapper);
         return wrapper;
     });
@@ -87,7 +87,7 @@ describe("Suggest", () => {
     selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props => {
         const wrapper = mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, {
             attachTo: containerElement,
-        });
+        }) as ReactWrapper<SuggestProps<Film>, SuggestState<Film>>;
         mountedWrappers.push(wrapper);
         return wrapper;
     });
