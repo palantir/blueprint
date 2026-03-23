@@ -23,7 +23,7 @@ import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 import { assignRoutes, normalizeNavConfig } from "./navHelpers.mts";
-import type { RawNavStructure } from "./navTypes.mts";
+import type { RawNavStructure, Section } from "./navTypes.mts";
 
 const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
 const DOCS_PACKAGE = "docs-app";
@@ -108,7 +108,7 @@ function getPageRefs(): string[] {
 }
 
 /** Extract section names from nav.json. */
-function getSectionRefs(): string[] {
+function getSectionRefs(): Section[] {
     return rawNav.flatMap(entry => (entry.sections ?? []).map(s => s.section));
 }
 
