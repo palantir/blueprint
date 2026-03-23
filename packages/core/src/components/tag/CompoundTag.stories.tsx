@@ -237,7 +237,7 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
             <CompoundTag {...args} leftContent="Region" fill={true}>
                 Full Width
             </CompoundTag>
