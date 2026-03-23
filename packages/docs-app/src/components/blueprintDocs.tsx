@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import { Component } from "react";
 
@@ -33,10 +34,6 @@ import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
-
-function isPageNode(node: HeadingNode | PageNode): node is PageNode {
-    return "children" in node && "reference" in node;
-}
 
 const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
@@ -61,6 +58,8 @@ export interface BlueprintDocsProps {
     docs: DocsCompleteData;
     defaultPageId: DocumentationProps["defaultPageId"];
     tagRenderers: DocumentationProps["tagRenderers"];
+    /** Whether to use `next` versions for packages (as opposed to `latest`). */
+    useNextVersion: boolean;
 }
 
 export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
@@ -87,6 +86,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
             <NavHeader
                 onToggleDark={this.handleToggleDark}
                 useDarkTheme={this.state.themeName === DARK_THEME}
+                useNextVersion={this.props.useNextVersion}
                 packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />
         );
@@ -140,7 +140,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions = (page: { sourcePath: string }) => {
+    private renderPageActions = (page: PageData) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -178,8 +178,8 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         );
     }
 
-    private renderViewSourceLinkText = (entry: { fileName?: string }) => {
-        return `@blueprintjs/${entry.fileName?.split("/", 2)[1]}`;
+    private renderViewSourceLinkText = (entry: TsDocBase) => {
+        return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     };
 
     private maybeRenderPackageLink(packageName: string) {
@@ -187,15 +187,16 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         if (pkg == null) {
             return null;
         }
+        const version = this.props.useNextVersion && pkg.nextVersion ? pkg.nextVersion : pkg.version;
         return (
             <a className={Classes.TEXT_MUTED} href={`${NPM_URL}/${pkg.name}`} target="_blank">
-                <small>{pkg.version}</small>
+                <small>{version}</small>
             </a>
         );
     }
 
     private getNpmPackage(packageName: string) {
-        return npmData[packageName];
+        return this.props.docs.npm[packageName];
     }
 
     // This function is called whenever the documentation page changes and should be used to

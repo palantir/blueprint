@@ -8,7 +8,6 @@ import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin }
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
-import packageJson from "package-json";
 import semver from "semver";
 
 import { Classes } from "@blueprintjs/core";
@@ -44,16 +43,14 @@ try {
     if (!existsSync(generatedSrcDir)) {
         mkdirSync(generatedSrcDir);
     }
-    await generateNpmData();
     await generateDocumentalistData();
-    await generateNpmVersions();
 } catch (err) {
     // console.error messages get swallowed by lerna but console.log is emitted to terminal.
     console.error(`[docs-data] ERROR when generating JSON docs data:`);
     throw new Error(err);
 }
 
-console.info(`[docs-data] successfully generated docs.json and npm-data.json`);
+console.info(`[docs-data] successfully generated docs.json`);
 
 async function generateDocumentalistData(): Promise<void> {
     const documentalist = new Documentalist({
@@ -65,14 +62,14 @@ async function generateDocumentalistData(): Promise<void> {
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
         sourceBaseDir: monorepoRootDir,
     })
-        .use(".mdx", {
+        .use(".md", {
             compile: files =>
                 // HACKHACK: special case for Windows environment
                 // see https://github.com/palantir/documentalist/issues/98
                 process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
         })
         // TODO: once documentalist is fully removed, stop generating nav via documentalist
-        .use(".mdx", new MarkdownPlugin({ navPage: "_nav" }))
+        .use(".md", new MarkdownPlugin({ navPage: "_nav" }))
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
@@ -81,12 +78,14 @@ async function generateDocumentalistData(): Promise<void> {
                 verbose: true,
             }),
         )
-        .use(".scss", new KssPlugin());
+        .use(".scss", new KssPlugin())
+        .use("package.json", new NpmPlugin());
 
     const docs = await documentalist.documentGlobs(
-        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.mdx`,
+        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
+        `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
     // Post-process: replace documentalist's nav with one built from nav.json
@@ -136,50 +135,6 @@ function transformDocumentalistData(key: string, value: any): any {
  */
 function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
-}
-
-async function fetchNpmPackageInfo(
-    packageName: string,
-): Promise<{ name: string; version: string; versions: string[] }> {
-    // Get latest version (abbreviated metadata by default)
-    const { version } = await packageJson(packageName);
-
-    // Get all versions
-    const fullData = await packageJson(packageName, { allVersions: true });
-    const allVersions = Object.keys(fullData.versions ?? {});
-
-    // Keep the highest stable version per major
-    const majors = new Map<number, string>();
-    for (const v of allVersions) {
-        const maj = semver.major(v);
-        if (!majors.has(maj) || semver.gt(v, majors.get(maj)!)) {
-            majors.set(maj, v);
-        }
-    }
-
-    const versions = Array.from(majors.values()).sort(semver.rcompare);
-
-    return { name: packageName, version: version!, versions };
-}
-
-async function generateNpmData(): Promise<void> {
-    const npmDataFilePath = join(generatedSrcDir, "npm-data.json");
-    const npmData: Record<string, { name: string; version: string; versions: string[] }> = {};
-
-    for (const pkg of LIBRARY_PACKAGES) {
-        const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
-        const { name, version: localVersion } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
-        try {
-            npmData[name] = await fetchNpmPackageInfo(name);
-        } catch (err) {
-            console.warn(`[docs-data] WARNING: failed to fetch npm data for ${name}, falling back to local version`);
-            console.warn(`  ${err}`);
-            npmData[name] = { name, version: localVersion, versions: [localVersion] };
-        }
-    }
-
-    writeFileSync(npmDataFilePath, JSON.stringify(npmData) + "\n");
-    console.info("[docs-data] successfully generated npm-data.json");
 }
 
 function validateNavConfig(raw: RawNavStructure): void {
