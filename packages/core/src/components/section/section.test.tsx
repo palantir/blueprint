@@ -48,6 +48,20 @@ describe("<Section>", () => {
         containerElement.remove();
     });
 
+    it("renders with bordered class by default", () => {
+        const wrapper = mount(<Section />, {
+            attachTo: containerElement,
+        });
+        assert.isTrue(wrapper.find(`.${Classes.SECTION_BORDERED}`).hostNodes().exists());
+    });
+
+    it("does not render bordered class when bordered={false}", () => {
+        const wrapper = mount(<Section bordered={false} />, {
+            attachTo: containerElement,
+        });
+        assert.isFalse(wrapper.find(`.${Classes.SECTION_BORDERED}`).hostNodes().exists());
+    });
+
     it("supports className", () => {
         const wrapper = mount(<Section className="foo" />, {
             attachTo: containerElement,

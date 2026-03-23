@@ -62,6 +62,16 @@ export interface SectionCollapseProps
 
 export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.RefAttributes<HTMLDivElement> {
     /**
+     * Whether this section should have a visible border.
+     *
+     * Setting this to `false` removes the border, elevation, and border radius, and reduces the gap
+     * between the title and the body of the section.
+     *
+     * @default true
+     */
+    bordered?: boolean;
+
+    /**
      * Whether this section's contents should be collapsible.
      *
      * @default false
@@ -129,6 +139,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
  */
 export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     const {
+        bordered = true,
         children,
         className,
         collapseProps,
@@ -166,6 +177,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     return (
         <Card
             className={classNames(className, Classes.SECTION, {
+                [Classes.SECTION_BORDERED]: bordered,
                 [Classes.COMPACT]: compact,
                 [Classes.SECTION_COLLAPSED]: (collapsible && isCollapsed) || Utils.isReactNodeEmpty(children),
             })}

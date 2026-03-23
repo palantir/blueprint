@@ -247,6 +247,7 @@ export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
 export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
 
 export const SECTION = `${NS}-section`;
+export const SECTION_BORDERED = `${SECTION}-bordered`;
 export const SECTION_COLLAPSED = `${SECTION}-collapsed`;
 export const SECTION_HEADER = `${SECTION}-header`;
 export const SECTION_HEADER_LEFT = `${SECTION_HEADER}-left`;
