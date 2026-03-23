@@ -71,12 +71,19 @@ describe("<Select>", () => {
         }
     });
 
-    selectComponentSuite<SelectProps<Film>, SelectState>(props =>
-        mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />) as ReactWrapper<SelectProps<Film>, SelectState>,
+    selectComponentSuite<SelectProps<Film>, SelectState>(
+        props =>
+            mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />) as ReactWrapper<
+                SelectProps<Film>,
+                SelectState
+            >,
     );
 
     selectPopoverTestSuite<SelectProps<Film>, SelectState>(props => {
-        const wrapper = mount(<Select {...props} />, { attachTo: containerElement }) as ReactWrapper<SelectProps<Film>, SelectState>;
+        const wrapper = mount(<Select {...props} />, { attachTo: containerElement }) as ReactWrapper<
+            SelectProps<Film>,
+            SelectState
+        >;
         mountedWrappers.push(wrapper);
         return wrapper;
     });
