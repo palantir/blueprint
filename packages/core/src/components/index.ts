@@ -85,6 +85,7 @@ export { PopoverAnimation, PopoverInteractionKind, type PopoverProps } from "./p
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
     MiddlewareConfig,
+    PopoverNextAutoUpdateOptions,
     PopoverNextBoundary,
     PopoverNextPlacement,
     PopoverNextPositioningStrategy,
