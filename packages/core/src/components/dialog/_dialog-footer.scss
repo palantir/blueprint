@@ -6,23 +6,23 @@
   // We'd like to use padding instead of margin here to be consistent with the -dialog-footer-fixed class,
   // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
   // TODO(adahiya): migrate from margin to padding style (CSS breaking change)
-  margin: $dialog-padding;
+  margin: calc(var(--bp-surface-spacing) * 4);
 }
 
 .#{$ns}-dialog-footer-fixed {
   align-items: center;
-  background-color: $white;
-  border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
-  border-top: 1px solid $pt-divider-black;
+  background-color: var(--bp-palette-white);
+  border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
+  border-top: 1px solid var(--bp-surface-border-color-default);
   display: flex;
-  gap: $dialog-padding;
+  gap: calc(var(--bp-surface-spacing) * 4);
   justify-content: space-between;
   margin: 0;
-  padding: ($pt-spacing * 2) ($pt-spacing * 2) ($pt-spacing * 2) $dialog-padding;
+  padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 4);
 
   .#{$ns}-dark & {
-    background: $dark-gray4;
-    border-top: 1px solid $pt-dark-divider-white;
+    background: var(--bp-palette-dark-gray-4);
+    border-top: 1px solid var(--bp-surface-border-color-default);
   }
 }
 
@@ -35,6 +35,6 @@
   justify-content: flex-end;
 
   .#{$ns}-button {
-    margin-left: $pt-spacing * 2;
+    margin-left: calc(var(--bp-surface-spacing) * 2);
   }
 }

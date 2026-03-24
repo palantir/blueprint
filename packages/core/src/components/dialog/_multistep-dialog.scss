@@ -16,11 +16,11 @@ $step-radius: $pt-border-radius !default;
   // borders needs to be rounded.
   &:first-child {
     .#{$ns}-dialog-step-container:first-child {
-      border-radius: $dialog-border-radius 0 0 0;
+      border-radius: var(--bp-surface-border-radius) 0 0 0;
     }
 
     .#{$ns}-multistep-dialog-right-panel {
-      border-top-right-radius: $dialog-border-radius;
+      border-top-right-radius: var(--bp-surface-border-radius);
     }
   }
 
@@ -30,11 +30,11 @@ $step-radius: $pt-border-radius !default;
     // Handle case where title it not rendered.
     &:first-child {
       .#{$ns}-dialog-step-container:first-child {
-        border-radius: $dialog-border-radius 0 0 0;
+        border-radius: var(--bp-surface-border-radius) 0 0 0;
       }
 
       .#{$ns}-dialog-step-container:last-child {
-        border-radius: 0 $dialog-border-radius 0 0;
+        border-radius: 0 var(--bp-surface-border-radius) 0 0;
       }
     }
 
@@ -46,11 +46,7 @@ $step-radius: $pt-border-radius !default;
       flex-grow: 1;
 
       &:not(:first-child) {
-        border-left: 1px solid $pt-divider-black;
-      }
-
-      .#{$ns}-dark & {
-        border-color: $pt-dark-divider-black;
+        border-left: 1px solid var(--bp-surface-border-color-default);
       }
     }
 
@@ -60,7 +56,7 @@ $step-radius: $pt-border-radius !default;
 
     .#{$ns}-multistep-dialog-right-panel,
     .#{$ns}-multistep-dialog-footer {
-      border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
+      border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
     }
   }
 
@@ -70,25 +66,25 @@ $step-radius: $pt-border-radius !default;
     // Handle case where title it not rendered.
     &:first-child {
       .#{$ns}-multistep-dialog-right-panel {
-        border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+        border-radius: var(--bp-surface-border-radius) 0 0 var(--bp-surface-border-radius);
       }
 
       .#{$ns}-dialog-step-container:first-child {
-        border-radius: 0 $dialog-border-radius 0 0;
+        border-radius: 0 var(--bp-surface-border-radius) 0 0;
       }
     }
 
     .#{$ns}-multistep-dialog-left-panel {
-      border-radius: 0 0 $dialog-border-radius;
+      border-radius: 0 0 var(--bp-surface-border-radius);
     }
 
     .#{$ns}-multistep-dialog-right-panel {
       border-left: none;
-      border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
-      border-right: 1px solid $pt-divider-black;
+      border-radius: var(--bp-surface-border-radius) 0 0 var(--bp-surface-border-radius);
+      border-right: 1px solid var(--bp-surface-border-color-default);
 
       .#{$ns}-dark & {
-        border-color: $pt-dark-divider-black;
+        border-color: var(--bp-surface-border-color-default);
       }
     }
 
@@ -104,26 +100,26 @@ $step-radius: $pt-border-radius !default;
   flex-direction: column;
 
   .#{$ns}-dark & {
-    background: $dark-gray2;
-    border-bottom: 1px solid $pt-dark-divider-white;
-    border-bottom-left-radius: $dialog-border-radius;
-    border-left: 1px solid $pt-dark-divider-white;
+    background: var(--bp-palette-dark-gray-2);
+    border-bottom: 1px solid var(--bp-surface-border-color-default);
+    border-bottom-left-radius: var(--bp-surface-border-radius);
+    border-left: 1px solid var(--bp-surface-border-color-default);
   }
 }
 
 .#{$ns}-multistep-dialog-right-panel {
-  background-color: $light-gray5;
-  border-left: 1px solid $pt-divider-black;
-  border-radius: 0 0 $dialog-border-radius;
+  background-color: var(--bp-surface-background-color-default-rest);
+  border-left: 1px solid var(--bp-surface-border-color-default);
+  border-radius: 0 0 var(--bp-surface-border-radius);
   flex: 3;
   min-width: 0;
 
   .#{$ns}-dark & {
-    background-color: $dark-gray3;
-    border-bottom: 1px solid $pt-dark-divider-white;
-    border-bottom-right-radius: $dialog-border-radius;
-    border-left: 1px solid $pt-dark-divider-white;
-    border-right: 1px solid $pt-dark-divider-white;
+    background-color: var(--bp-palette-dark-gray-3);
+    border-bottom: 1px solid var(--bp-surface-border-color-default);
+    border-bottom-right-radius: var(--bp-surface-border-radius);
+    border-left: 1px solid var(--bp-surface-border-color-default);
+    border-right: 1px solid var(--bp-surface-border-color-default);
   }
 }
 
@@ -132,99 +128,87 @@ $step-radius: $pt-border-radius !default;
 }
 
 .#{$ns}-dialog-step-container {
-  background-color: $light-gray5;
-  border-bottom: 1px solid $pt-divider-black;
+  background-color: var(--bp-surface-background-color-default-rest);
+  border-bottom: 1px solid var(--bp-surface-border-color-default);
 
   .#{$ns}-dark & {
-    background: $dark-gray3;
-    border-bottom: 1px solid $pt-dark-divider-white;
+    background: var(--bp-palette-dark-gray-3);
+    border-bottom: 1px solid var(--bp-surface-border-color-default);
   }
 
   &.#{$ns}-dialog-step-viewed {
-    background-color: $white;
+    background-color: var(--bp-palette-white);
     .#{$ns}-dark & {
-      background: $dark-gray4;
+      background: var(--bp-palette-dark-gray-4);
     }
   }
 }
 
 .#{$ns}-dialog-step {
   align-items: center;
-  border-radius: $step-radius;
+  border-radius: var(--bp-surface-border-radius);
   cursor: not-allowed;
   display: flex;
-  margin: $pt-spacing;
-  padding: ($pt-spacing * 1.5) ($pt-spacing * 3.5);
+  margin: var(--bp-surface-spacing);
+  padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 3.5);
 
   .#{$ns}-dark & {
-    background: $dark-gray3;
+    background: var(--bp-palette-dark-gray-3);
   }
 
   // by default, steps are inactive until they are visited
   .#{$ns}-dialog-step-viewed & {
-    background-color: $white;
+    background-color: var(--bp-palette-white);
     cursor: pointer;
 
     .#{$ns}-dark & {
-      background: $dark-gray4;
+      background: var(--bp-palette-dark-gray-4);
     }
   }
 
   &:hover {
-    background-color: $light-gray5;
+    background-color: var(--bp-surface-background-color-default-rest);
 
     .#{$ns}-dark & {
-      background: $dark-gray3;
+      background: var(--bp-palette-dark-gray-3);
     }
   }
 }
 
 .#{$ns}-dialog-step-icon {
   align-items: center;
-  background-color: $pt-text-color-disabled;
+  background-color: var(--bp-typography-color-default-disabled);
   border-radius: 50%;
-  color: $white;
+  color: var(--bp-palette-white);
   display: flex;
-  height: $pt-spacing * 6;
+  height: calc(var(--bp-surface-spacing) * 6);
   justify-content: center;
-  width: $pt-spacing * 6;
-
-  .#{$ns}-dark & {
-    background-color: $pt-dark-icon-color-disabled;
-  }
+  width: calc(var(--bp-surface-spacing) * 6);
 
   .#{$ns}-active.#{$ns}-dialog-step-viewed & {
-    background-color: $blue3;
+    background-color: var(--bp-intent-primary-rest);
   }
 
   .#{$ns}-dialog-step-viewed & {
-    background-color: $gray3;
+    background-color: var(--bp-intent-default-disabled);
   }
 }
 
 .#{$ns}-dialog-step-title {
-  color: $pt-text-color-disabled;
+  color: var(--bp-typography-color-default-disabled);
   flex: 1;
-  padding-left: $pt-spacing * 2;
-
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color-disabled;
-  }
+  padding-left: calc(var(--bp-surface-spacing) * 2);
 
   // step title is active only when the step is selected
   .#{$ns}-active.#{$ns}-dialog-step-viewed & {
-    color: $blue3;
+    color: var(--bp-intent-primary-rest);
 
     .#{$ns}-dark & {
-      color: $blue5;
+      color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
     }
   }
 
   .#{$ns}-dialog-step-viewed:not(.#{$ns}-active) & {
-    color: $pt-text-color;
-
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color;
-    }
+    color: var(--bp-typography-color-default-rest);
   }
 }
