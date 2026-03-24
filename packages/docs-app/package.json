@@ -17,13 +17,13 @@
         "verify": "run-p dist lint"
     },
     "dependencies": {
+        "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/datetime": "workspace:^",
         "@blueprintjs/docs-data": "workspace:^",
         "@blueprintjs/docs-theme": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "@blueprintjs/labs": "workspace:^",
-        "@blueprintjs/monaco-editor-theme": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
@@ -34,7 +34,7 @@
         "downloadjs": "^1.4.7",
         "lodash": "^4.17.21",
         "moment": "^2.30.1",
-        "monaco-editor": "^0.45.0",
+        "monaco-editor": "^0.55.1",
         "normalize.css": "^8.0.1",
         "popper.js": "^1.16.1",
         "react": "^18.3.1",
