@@ -141,7 +141,7 @@ function interpolateClassNamespace(value: string): string {
 
 async function fetchNpmPackageInfo(
     packageName: string,
-): Promise<{ name: string; version: string; versions: string[] }> {
+): Promise<{ name: string; version: string; versions: string[]; nextVersion?: string }> {
     // Get latest version (abbreviated metadata by default)
     const { version } = await packageJson(packageName);
 
@@ -159,13 +159,14 @@ async function fetchNpmPackageInfo(
     }
 
     const versions = Array.from(majors.values()).sort(semver.rcompare);
+    const nextVersion = fullData["dist-tags"].next;
 
-    return { name: packageName, version: version!, versions };
+    return { name: packageName, version: version!, versions, nextVersion };
 }
 
 async function generateNpmData(): Promise<void> {
     const npmDataFilePath = join(generatedSrcDir, "npm-data.json");
-    const npmData: Record<string, { name: string; version: string; versions: string[] }> = {};
+    const npmData: Record<string, { name: string; version: string; versions: string[]; nextVersion?: string }> = {};
 
     for (const pkg of LIBRARY_PACKAGES) {
         const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");

@@ -16,7 +16,7 @@
 
 import { PureComponent } from "react";
 
-import { Classes, HotkeysTarget, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget, Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
 import type { NpmPackageInfo } from "@blueprintjs/docs-data";
 import { NavButton } from "@blueprintjs/docs-theme";
 
@@ -25,6 +25,7 @@ import { Logo } from "./logo";
 export interface NavHeaderProps {
     onToggleDark: (useDark: boolean) => void;
     useDarkTheme: boolean;
+    useNextVersion: boolean;
     packageInfo: NpmPackageInfo;
 }
 
@@ -74,7 +75,8 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
 
     private renderVersionsMenu() {
         const VERSION_MENU_ID = "version-menu";
-        const { version, versions } = this.props.packageInfo;
+        const { useNextVersion } = this.props;
+        const { version, nextVersion, versions } = this.props.packageInfo;
         if (versions.length === 1) {
             return (
                 <Tag
@@ -90,12 +92,24 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
         }
 
         const versionFromUrl = getVersionFromUrl();
-        const currentVersion = versionFromUrl ?? version;
+        // default to latest release if we can't find a major version in the URL
+        const currentVersion = versionFromUrl ?? (useNextVersion ? nextVersion : version);
         const releaseItems = versions
             .filter(v => +major(v) > 0)
             .map(v => {
-                const href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
-                return <MenuItem href={href} key={v} text={v} />;
+                let href;
+                let intent: Intent | undefined;
+                // pre-release versions are not served as the default docs, they are inside the /versions/ folder
+                if (useNextVersion) {
+                    const isLatestStableMajor = +major(v) === +major(currentVersion) - 1;
+                    href = isLatestStableMajor ? "/docs" : `/docs/versions/${major(v)}`;
+                    if (isLatestStableMajor) {
+                        intent = "primary";
+                    }
+                } else {
+                    href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
+                }
+                return <MenuItem href={href} intent={intent} key={v} text={v} />;
             });
         return (
             <Popover

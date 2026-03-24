@@ -15,6 +15,7 @@ export interface NpmPackageInfo {
     name: string;
     version: string;
     versions: string[];
+    nextVersion?: string;
 }
 
 export type NpmData = Record<string, NpmPackageInfo>;

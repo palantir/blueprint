@@ -61,6 +61,8 @@ export interface BlueprintDocsProps {
     docs: DocsCompleteData;
     defaultPageId: DocumentationProps["defaultPageId"];
     tagRenderers: DocumentationProps["tagRenderers"];
+    /** Whether to use `next` versions for packages (as opposed to `latest`). */
+    useNextVersion: boolean;
 }
 
 export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
@@ -87,6 +89,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
             <NavHeader
                 onToggleDark={this.handleToggleDark}
                 useDarkTheme={this.state.themeName === DARK_THEME}
+                useNextVersion={this.props.useNextVersion}
                 packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />
         );
@@ -187,9 +190,10 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         if (pkg == null) {
             return null;
         }
+        const version = this.props.useNextVersion && pkg.nextVersion ? pkg.nextVersion : pkg.version;
         return (
             <a className={Classes.TEXT_MUTED} href={`${NPM_URL}/${pkg.name}`} target="_blank">
-                <small>{pkg.version}</small>
+                <small>{version}</small>
             </a>
         );
     }
