@@ -20,6 +20,7 @@ import { act } from "react";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemListRenderer } from "../../common/itemListRenderer";

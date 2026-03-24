@@ -20,6 +20,7 @@ import { act } from "react";
 import * as sinon from "sinon";
 
 import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -40,6 +41,7 @@ describe("<Select>", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
+    let mountedWrappers: Array<ReactWrapper<any, any>> = [];
 
     beforeEach(() => {
         handlers = {
@@ -52,19 +54,39 @@ describe("<Select>", () => {
     });
 
     afterEach(() => {
-        for (const spy of Object.values(handlers)) {
-            spy.resetHistory();
+        try {
+            for (const wrapper of mountedWrappers) {
+                try {
+                    wrapper.unmount();
+                } catch {
+                    // best-effort
+                }
+            }
+        } finally {
+            mountedWrappers = [];
+            for (const spy of Object.values(handlers)) {
+                spy.resetHistory();
+            }
+            containerElement.remove();
         }
-        containerElement.remove();
     });
 
-    selectComponentSuite<SelectProps<Film>, SelectState>(props =>
-        mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+    selectComponentSuite<SelectProps<Film>, SelectState>(
+        props =>
+            mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />) as ReactWrapper<
+                SelectProps<Film>,
+                SelectState
+            >,
     );
 
-    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props =>
-        mount(<Select {...props} />, { attachTo: containerElement }),
-    );
+    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props => {
+        const wrapper = mount(<Select {...props} />, { attachTo: containerElement }) as ReactWrapper<
+            SelectProps<Film>,
+            SelectState
+        >;
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    });
 
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
@@ -186,6 +208,7 @@ describe("<Select>", () => {
             </Select>,
             { attachTo: containerElement },
         );
+        mountedWrappers.push(wrapper);
         if (query !== undefined) {
             act(() => {
                 wrapper.setState({ query });
