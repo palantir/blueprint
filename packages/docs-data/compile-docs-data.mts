@@ -170,6 +170,10 @@ async function generateNpmData(): Promise<void> {
         const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
         const { name, version: localVersion } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
         try {
+            // Fetch from the npm registry rather than using localVersion above,
+            // since the local package.json may reference an unpublished or
+            // pre-release version. localVersion is only used as a fallback
+            // if the registry request fails.
             npmData[name] = await fetchNpmPackageInfo(name);
         } catch (err) {
             console.warn(`[docs-data] WARNING: failed to fetch npm data for ${name}, falling back to local version`);
