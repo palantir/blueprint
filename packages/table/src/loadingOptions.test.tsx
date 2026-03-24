@@ -17,11 +17,11 @@
 import { render } from "@testing-library/react";
 import { Component } from "react";
 
-import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table, TableLoadingOption } from ".";
-import * as Classes from "./common/classes";
-
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
+import * as Classes from "./common/classes";
 import { ElementHarness } from "./harness";
+
+import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table, TableLoadingOption } from ".";
 
 interface TableLoadingOptionsTesterProps {
     columnLoadingOptions: ColumnLoadingOption[];

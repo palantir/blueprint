@@ -24,20 +24,20 @@ import sinon from "sinon";
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableProps } from ".";
+import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import { type CellCoordinates, type FocusedCellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import * as Errors from "./common/errors";
 import type { ColumnIndices, RowIndices } from "./common/grid";
 import { RenderMode } from "./common/renderMode";
+import { ElementHarness } from "./harness";
+import { createTableOfSize } from "./mocks/table";
 import { TableQuadrant } from "./quadrants/tableQuadrant";
 import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
 import { type Region, Regions } from "./regions";
 import type { TableState } from "./tableState";
 
-import { CellType, expectCellLoading } from "./cell/cellTestUtils";
-import { ElementHarness } from "./harness";
-import { createTableOfSize } from "./mocks/table";
+import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableProps } from ".";
 
 /* eslint-disable @typescript-eslint/no-deprecated */
 

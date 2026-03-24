@@ -24,7 +24,6 @@ import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ColumnHeaderCell, type ColumnHeaderCellProps } from "..";
 import * as Classes from "../common/classes";
-
 import { ElementHarness } from "../harness";
 import { createTableOfSize } from "../mocks/table";
 

@@ -4,9 +4,8 @@
 
 import { expect } from "chai";
 
-import { resizeRowsByApproximateHeight } from "./resizeRows";
-
 import { createStringOfLength } from "./mocks/table";
+import { resizeRowsByApproximateHeight } from "./resizeRows";
 
 const numRows = 4;
 const columnWidths = [150, 150];

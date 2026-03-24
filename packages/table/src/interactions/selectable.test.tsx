@@ -20,10 +20,10 @@ import sinon from "sinon";
 
 import { type FocusedCellCoordinates, FocusMode } from "../common/cellTypes";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
-import { DragSelectable, type DragSelectableProps } from "./selectable";
+import { ElementHarness } from "../harness";
 import { type Region, Regions } from "../regions";
 
-import { ElementHarness } from "../harness";
+import { DragSelectable, type DragSelectableProps } from "./selectable";
 
 const REGION = Regions.cell(0, 0);
 const REGION_2 = Regions.cell(1, 1);

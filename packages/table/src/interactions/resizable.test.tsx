@@ -21,10 +21,10 @@ import { Component } from "react";
 import sinon from "sinon";
 
 import * as Classes from "../common/classes";
+import { ElementHarness } from "../harness";
+
 import { Resizable, type ResizableProps, type ResizeableState } from "./resizable";
 import { Orientation } from "./resizeHandle";
-
-import { ElementHarness } from "../harness";
 
 interface ResizableDivProps {
     resizeHandle?: React.JSX.Element;

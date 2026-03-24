@@ -17,6 +17,7 @@
 import { expect } from "chai";
 
 import { Direction } from "../direction";
+
 import * as DirectionUtils from "./directionUtils";
 
 describe("DirectionUtils", () => {

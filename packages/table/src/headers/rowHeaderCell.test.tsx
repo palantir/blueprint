@@ -23,7 +23,6 @@ import { H4 } from "@blueprintjs/core";
 
 import { RowHeaderCell } from "..";
 import * as Classes from "../common/classes";
-
 import { ElementHarness } from "../harness";
 import { createTableOfSize } from "../mocks/table";
 

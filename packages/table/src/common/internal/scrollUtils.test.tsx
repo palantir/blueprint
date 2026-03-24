@@ -17,8 +17,9 @@
 import { expect } from "chai";
 import { mount } from "enzyme";
 
-import * as ScrollUtils from "./scrollUtils";
 import { type Region, Regions } from "../../regions";
+
+import * as ScrollUtils from "./scrollUtils";
 
 describe("scrollUtils", () => {
     describe("getScrollPositionForRegion", () => {

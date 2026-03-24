@@ -24,6 +24,7 @@ import sinon from "sinon";
 import * as Classes from "../common/classes";
 import { Grid } from "../common/grid";
 import * as ScrollUtils from "../common/internal/scrollUtils";
+
 import { QuadrantType } from "./tableQuadrant";
 import { TableQuadrantStack } from "./tableQuadrantStack";
 

@@ -18,9 +18,9 @@ import { render } from "@testing-library/react";
 import { expect } from "chai";
 
 import * as Classes from "../common/classes";
-import { GuideLayer } from "./guides";
-
 import { ElementHarness } from "../harness";
+
+import { GuideLayer } from "./guides";
 
 describe("Guides", () => {
     it("defaults to no guides", () => {

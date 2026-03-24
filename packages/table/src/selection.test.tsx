@@ -18,13 +18,13 @@ import { render } from "@testing-library/react";
 import { expect } from "chai";
 import sinon from "sinon";
 
-import { RegionCardinality, Regions, SelectionModes } from ".";
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";
 import { Utils } from "./common/utils";
-
 import { ElementHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
+
+import { RegionCardinality, Regions, SelectionModes } from ".";
 
 describe("Selection", () => {
     const COLUMN_TH_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;

@@ -20,9 +20,9 @@ import sinon from "sinon";
 
 import { Regions } from "../";
 import { FocusMode } from "../common/cellTypes";
-import { DragReorderable } from "./reorderable";
-
 import { ElementHarness } from "../harness";
+
+import { DragReorderable } from "./reorderable";
 
 const ELEMENT_CLASS = "element";
 const ELEMENT_SELECTOR = `.${ELEMENT_CLASS}`;

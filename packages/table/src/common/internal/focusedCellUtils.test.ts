@@ -18,14 +18,10 @@
 
 import { expect } from "chai";
 
-import {
-    type CellCoordinates,
-    type FocusedCell,
-    type FocusedCellCoordinates,
-    FocusMode,
-} from "../cellTypes";
-import * as FocusedCellUtils from "./focusedCellUtils";
 import { type Region, Regions } from "../../regions";
+import { type CellCoordinates, type FocusedCell, type FocusedCellCoordinates, FocusMode } from "../cellTypes";
+
+import * as FocusedCellUtils from "./focusedCellUtils";
 
 describe("FocusedCellUtils", () => {
     describe("expandFocusedRegion", () => {

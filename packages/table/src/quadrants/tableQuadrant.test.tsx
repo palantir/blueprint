@@ -21,6 +21,7 @@ import sinon from "sinon";
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";
 import { Grid } from "../common/grid";
+
 import { QuadrantType, TableQuadrant, type TableQuadrantProps } from "./tableQuadrant";
 
 /**

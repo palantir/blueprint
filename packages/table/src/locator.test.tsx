@@ -17,9 +17,10 @@
 import { render } from "@testing-library/react";
 import { expect } from "chai";
 
-import { Utils } from ".";
 import { Grid } from "./common/grid";
 import { type Locator, LocatorImpl } from "./locator";
+
+import { Utils } from ".";
 
 const N_ROWS = 10;
 const N_COLS = 10;

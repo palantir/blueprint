@@ -19,11 +19,11 @@ import { expect } from "chai";
 
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 
-import { Cell } from "./cell";
 import * as Classes from "../common/classes";
-
-import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness } from "../harness";
+
+import { Cell } from "./cell";
+import { CellType, expectCellLoading } from "./cellTestUtils";
 
 describe("Cell", () => {
     it("displays regular content", () => {

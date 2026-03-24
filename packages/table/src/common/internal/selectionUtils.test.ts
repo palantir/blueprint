@@ -16,10 +16,11 @@
 
 import { expect } from "chai";
 
+import { Regions } from "../../regions";
 import { type FocusedCell, FocusMode } from "../cellTypes";
 import { Direction } from "../direction";
+
 import * as SelectionUtils from "./selectionUtils";
-import { Regions } from "../../regions";
 
 describe("SelectionUtils", () => {
     describe("resizeRegion", () => {

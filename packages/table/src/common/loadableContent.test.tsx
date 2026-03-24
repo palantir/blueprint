@@ -19,9 +19,9 @@ import { expect } from "chai";
 
 import { Classes } from "@blueprintjs/core";
 
-import { LoadableContent } from "./loadableContent";
-
 import { ElementHarness } from "../harness";
+
+import { LoadableContent } from "./loadableContent";
 
 describe("LoadableContent", () => {
     it("can render single child", () => {

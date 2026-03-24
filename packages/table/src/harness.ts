@@ -16,6 +16,7 @@
 
 /* eslint-disable  max-classes-per-file */
 
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { mount, type ReactWrapper } from "enzyme";
 import { act, createElement, type ReactElement } from "react";
 

@@ -17,11 +17,11 @@
 import { render } from "@testing-library/react";
 import { expect } from "chai";
 
-import { Cell, Column, ColumnLoadingOption, Table } from ".";
-import * as Classes from "./common/classes";
-
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
+import * as Classes from "./common/classes";
 import { ElementHarness } from "./harness";
+
+import { Cell, Column, ColumnLoadingOption, Table } from ".";
 
 describe("Column", () => {
     it("displays a table with columns", () => {
