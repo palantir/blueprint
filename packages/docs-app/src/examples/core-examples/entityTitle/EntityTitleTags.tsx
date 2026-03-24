@@ -5,7 +5,11 @@ export default function EntityTitleTags() {
         <EntityTitle
             icon="shop"
             title="Buy groceries"
-            tags={<Tag intent={Intent.DANGER} minimal={true}>Due today</Tag>}
+            tags={
+                <Tag intent={Intent.DANGER} minimal={true}>
+                    Due today
+                </Tag>
+            }
         />
     );
 }
