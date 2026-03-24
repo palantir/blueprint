@@ -3,5 +3,7 @@
 @import "../../common/variables";
 
 $skeleton-animation: ($pt-transition-duration * 10) linear infinite alternate skeleton-glow !default;
-$skeleton-color-start: rgba($light-gray1, 0.2) !default;
-$skeleton-color-end: rgba($gray1, 0.2) !default;
+/* stylelint-disable alpha-value-notation */
+$skeleton-color-start: #{"oklch(from var(--bp-palette-light-gray-1) l c h / 0.2)"} !default;
+$skeleton-color-end: #{"oklch(from var(--bp-palette-gray-1) l c h / 0.2)"} !default;
+/* stylelint-enable alpha-value-notation */
