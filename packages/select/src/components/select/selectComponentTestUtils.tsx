@@ -19,6 +19,7 @@ import type { ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
 import { Classes, type HTMLInputProps } from "@blueprintjs/core";
+import { beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     areFilmsEqual,
