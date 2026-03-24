@@ -63,7 +63,9 @@ describe("<Section>", () => {
                     <SectionCard>is open</SectionCard>
                 </Section>,
             );
-            expect(screen.getByRole("button", { name: "collapse section" })).toBeInTheDocument();
+            const button = screen.getByRole("button", { name: "collapse section" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(screen.getByText("is open")).toBeVisible();
         });
 
         it("collapsible is open when defaultIsOpen={true}", () => {
@@ -72,7 +74,9 @@ describe("<Section>", () => {
                     <SectionCard>is open</SectionCard>
                 </Section>,
             );
-            expect(screen.getByRole("button", { name: "collapse section" })).toBeInTheDocument();
+            const button = screen.getByRole("button", { name: "collapse section" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(screen.getByText("is open")).toBeVisible();
         });
 
         it("collapsible is closed when defaultIsOpen={false}", () => {
@@ -81,7 +85,9 @@ describe("<Section>", () => {
                     <SectionCard>is closed</SectionCard>
                 </Section>,
             );
-            expect(screen.getByRole("button", { name: "expand section" })).toBeInTheDocument();
+            const button = screen.getByRole("button", { name: "expand section" });
+            expect(button).toHaveAttribute("aria-expanded", "true");
+            expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
 
@@ -92,7 +98,9 @@ describe("<Section>", () => {
                     <SectionCard>is open</SectionCard>
                 </Section>,
             );
-            expect(screen.getByRole("button", { name: "collapse section" })).toBeInTheDocument();
+            const button = screen.getByRole("button", { name: "collapse section" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(screen.getByText("is open")).toBeVisible();
         });
 
         it("collapsible is closed when isOpen={false}", () => {
@@ -101,7 +109,9 @@ describe("<Section>", () => {
                     <SectionCard>is closed</SectionCard>
                 </Section>,
             );
-            expect(screen.getByRole("button", { name: "expand section" })).toBeInTheDocument();
+            const button = screen.getByRole("button", { name: "expand section" });
+            expect(button).toHaveAttribute("aria-expanded", "true");
+            expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
 });
