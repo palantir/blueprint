@@ -18,6 +18,17 @@ $dark-popover-arrow-box-shadow:
   0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
   1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
+// Token-based arrow box shadows
+// $pt-drop-shadow-opacity (0.2) → oklch alpha
+/* stylelint-disable alpha-value-notation */
+$popover-arrow-box-shadow-token: 1px 1px 6px oklch(from var(--bp-palette-black) l c h / 0.2);
+// color.adjust($pt-dark-popover-border-color, $lightness: 10%) ≈ hsl(215deg, 3%, 48%)
+// $pt-dark-drop-shadow-opacity (0.4) → oklch alpha
+$dark-popover-arrow-box-shadow-token:
+  0 0 0 1px hsl(215deg, 3%, 48%),
+  1px 1px 6px oklch(from var(--bp-palette-black) l c h / 0.4);
+/* stylelint-enable alpha-value-notation */
+
 .#{$ns}-popover {
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 7.5,
@@ -25,33 +36,33 @@ $dark-popover-arrow-box-shadow:
     $arrow-target-offset: -$pt-spacing
   );
   @include popover-appearance(
-    $pt-popover-background-color,
+    var(--bp-palette-white),
     inherit,
-    $pt-popover-box-shadow,
-    $popover-arrow-box-shadow,
+    var(--bp-surface-shadow-3),
+    $popover-arrow-box-shadow-token,
     $pt-border-shadow-opacity
   );
   @include scale-transition;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   display: inline-block;
-  z-index: $pt-z-index-overlay;
+  z-index: var(--bp-surface-z-index-2);
 
   .#{$ns}-popover-content {
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     position: relative;
   }
 
   &.#{$ns}-popover-content-sizing {
     .#{$ns}-popover-content {
-      max-width: $popover-width;
-      padding: $pt-spacing * 5;
+      max-width: calc(var(--bp-surface-spacing) * 87.5);
+      padding: calc(var(--bp-surface-spacing) * 5);
     }
 
     // only inline popovers get a width if this class is applied.
     // note that an inline overlay will be an immediate next sibling
     // of the popover target as of Blueprint 2.0.
     .#{$ns}-popover-target + .#{$ns}-overlay & {
-      width: $popover-width;
+      width: calc(var(--bp-surface-spacing) * 87.5);
     }
   }
 
@@ -73,7 +84,7 @@ $dark-popover-arrow-box-shadow:
         (
           transform: scale(1) scale(1),
         ),
-        $duration: $pt-transition-duration,
+        $duration: var(--bp-emphasis-transition-duration),
         $after: "> &"
       );
     }
@@ -88,16 +99,16 @@ $dark-popover-arrow-box-shadow:
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover-appearance(
-      $pt-dark-popover-background-color,
+      var(--bp-palette-dark-gray-3),
       inherit,
       $pt-dark-popover-box-shadow,
-      $dark-popover-arrow-box-shadow,
+      $dark-popover-arrow-box-shadow-token,
       $pt-dark-border-shadow-opacity
     );
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
     // Windows High Contrast dark theme
     box-shadow: none;
   }
@@ -113,7 +124,8 @@ $dark-popover-arrow-box-shadow:
 }
 
 .#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
-  background: rgba($white, 0);
+  /* stylelint-disable-next-line alpha-value-notation */
+  background: oklch(from var(--bp-palette-white) l c h / 0);
 }
 
 .#{$ns}-popover-transition-container {
@@ -122,7 +134,7 @@ $dark-popover-arrow-box-shadow:
   // ensure element size exactly equals its children, no edge-case 4px spacing!
   // (try removing this property with Slider content in example)
   display: flex;
-  z-index: $pt-z-index-overlay;
+  z-index: var(--bp-surface-z-index-2);
 
   &:focus {
     outline: none;

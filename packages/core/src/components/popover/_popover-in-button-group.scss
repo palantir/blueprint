@@ -27,11 +27,11 @@
   &.#{$ns}-vertical {
     &:not(.#{$ns}-minimal) {
       > .#{$ns}-popover-target:first-child .#{$ns}-button {
-        border-radius: $pt-border-radius $pt-border-radius 0 0;
+        border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
       }
 
       > .#{$ns}-popover-target:last-child .#{$ns}-button {
-        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+        border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
       }
 
       > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {

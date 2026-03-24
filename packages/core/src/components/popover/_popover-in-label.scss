@@ -6,7 +6,7 @@
 label.#{$ns}-label {
   .#{$ns}-popover-target {
     display: block;
-    margin-top: $pt-spacing;
+    margin-top: var(--bp-surface-spacing);
     text-transform: none;
   }
 }

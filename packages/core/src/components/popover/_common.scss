@@ -68,7 +68,7 @@ $pt-dark-popover-background-color: $dark-gray3 !default;
   }
 
   .#{$ns}-popover-arrow-border {
-    fill: $black;
+    fill: var(--bp-palette-black);
     fill-opacity: $arrow-border-fill-opacity;
   }
 
@@ -77,13 +77,13 @@ $pt-dark-popover-background-color: $dark-gray3 !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      fill: $pt-high-contrast-mode-border-color;
+      fill: buttonborder;
     }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
   }
 }
 
@@ -103,8 +103,8 @@ $pt-dark-popover-background-color: $dark-gray3 !default;
     (
       transform: scale(0.3) scale(1),
     ),
-    $duration: $pt-transition-duration * 3,
-    $easing: $pt-transition-ease-bounce,
+    $duration: calc(var(--bp-emphasis-transition-duration) * 3),
+    $easing: var(--bp-emphasis-ease-bounce),
     $after: "> &"
   );
 }
