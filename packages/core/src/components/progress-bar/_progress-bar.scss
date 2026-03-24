@@ -10,15 +10,17 @@ $progress-bar-height: $pt-spacing * 2 !default;
 $progress-bar-stripes-size: $pt-spacing * 7.5 !default;
 $progress-bar-border-radius: $pt-spacing * 10 !default;
 
+/* stylelint-disable alpha-value-notation */
 $progress-bar-gradient: linear-gradient(
   -45deg,
-  $progress-bar-stripes-color 25%,
+  #{"oklch(from var(--bp-palette-white) l c h / 0.2)"} 25%,
   transparent 25%,
   transparent 50%,
-  $progress-bar-stripes-color 50%,
-  $progress-bar-stripes-color 75%,
+  #{"oklch(from var(--bp-palette-white) l c h / 0.2)"} 50%,
+  #{"oklch(from var(--bp-palette-white) l c h / 0.2)"} 75%,
   transparent 75%
 ) !default;
+/* stylelint-enable alpha-value-notation */
 
 @keyframes linear-progress-bar-stripes {
   from {
@@ -26,33 +28,35 @@ $progress-bar-gradient: linear-gradient(
   }
 
   to {
-    background-position: $progress-bar-stripes-size 0;
+    background-position: calc(var(--bp-surface-spacing) * 7.5) 0;
   }
 }
 
 .#{$ns}-progress-bar {
-  background: $progress-track-color;
-  border-radius: $progress-bar-border-radius;
+  /* stylelint-disable-next-line alpha-value-notation */
+  background: oklch(from var(--bp-intent-default-rest) l c h / 0.2);
+  border-radius: calc(var(--bp-surface-spacing) * 10);
   display: block;
-  height: $progress-bar-height;
+  height: calc(var(--bp-surface-spacing) * 2);
   overflow: hidden;
   position: relative;
   width: 100%;
 
   .#{$ns}-progress-meter {
     background: $progress-bar-gradient;
-    background-color: $progress-head-color;
-    background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
-    border-radius: $progress-bar-border-radius;
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: oklch(from var(--bp-intent-default-rest) l c h / 0.8);
+    background-size: calc(var(--bp-surface-spacing) * 7.5) calc(var(--bp-surface-spacing) * 7.5);
+    border-radius: calc(var(--bp-surface-spacing) * 10);
     height: 100%;
     position: absolute;
-    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
+    transition: width calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
     // initial state is a full bar, a la "indeterminate"
     width: 100%;
   }
 
   &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {
-    animation: linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse;
+    animation: linear-progress-bar-stripes calc(var(--bp-emphasis-transition-duration) * 3) linear infinite reverse;
   }
 
   &.#{$ns}-no-stripes .#{$ns}-progress-meter {
@@ -61,15 +65,26 @@ $progress-bar-gradient: linear-gradient(
 }
 
 .#{$ns}-dark .#{$ns}-progress-bar {
-  background: $dark-progress-track-color;
+  /* stylelint-disable-next-line alpha-value-notation */
+  background: oklch(from var(--bp-palette-black) l c h / 0.5);
 
   .#{$ns}-progress-meter {
-    background-color: $dark-progress-head-color;
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h);
   }
 }
 
-@each $intent, $color in $pt-intent-colors {
-  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
-    background-color: $color;
-  }
+.#{$ns}-progress-bar.#{$ns}-intent-primary .#{$ns}-progress-meter {
+  background-color: var(--bp-intent-primary-rest);
+}
+
+.#{$ns}-progress-bar.#{$ns}-intent-success .#{$ns}-progress-meter {
+  background-color: var(--bp-intent-success-rest);
+}
+
+.#{$ns}-progress-bar.#{$ns}-intent-warning .#{$ns}-progress-meter {
+  background-color: var(--bp-intent-warning-rest);
+}
+
+.#{$ns}-progress-bar.#{$ns}-intent-danger .#{$ns}-progress-meter {
+  background-color: var(--bp-intent-danger-rest);
 }

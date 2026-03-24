@@ -33,20 +33,22 @@
   }
 
   .#{$ns}-spinner-head {
-    stroke: $progress-head-color;
+    /* stylelint-disable-next-line alpha-value-notation */
+    stroke: oklch(from var(--bp-intent-default-rest) l c h / 0.8);
     stroke-linecap: round;
     transform-origin: center;
-    transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
+    transition: stroke-dashoffset calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
   }
 
   .#{$ns}-spinner-track {
-    stroke: $progress-track-color;
+    /* stylelint-disable-next-line alpha-value-notation */
+    stroke: oklch(from var(--bp-intent-default-rest) l c h / 0.2);
   }
 }
 
 // put the animation on a child HTML element to isolate it from display of parent
 .#{$ns}-spinner-animation {
-  animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
+  animation: pt-spinner-animation calc(var(--bp-emphasis-transition-duration) * 5) linear infinite;
 
   .#{$ns}-no-spin > & {
     animation: none;
@@ -55,16 +57,27 @@
 
 .#{$ns}-dark .#{$ns}-spinner {
   .#{$ns}-spinner-head {
-    stroke: $dark-progress-head-color;
+    stroke: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h);
   }
 
   .#{$ns}-spinner-track {
-    stroke: $dark-progress-track-color;
+    /* stylelint-disable-next-line alpha-value-notation */
+    stroke: oklch(from var(--bp-palette-black) l c h / 0.5);
   }
 }
 
-@each $intent, $color in $pt-intent-colors {
-  .#{$ns}-spinner.#{$ns}-intent-#{$intent} .#{$ns}-spinner-head {
-    stroke: $color;
-  }
+.#{$ns}-spinner.#{$ns}-intent-primary .#{$ns}-spinner-head {
+  stroke: var(--bp-intent-primary-rest);
+}
+
+.#{$ns}-spinner.#{$ns}-intent-success .#{$ns}-spinner-head {
+  stroke: var(--bp-intent-success-rest);
+}
+
+.#{$ns}-spinner.#{$ns}-intent-warning .#{$ns}-spinner-head {
+  stroke: var(--bp-intent-warning-rest);
+}
+
+.#{$ns}-spinner.#{$ns}-intent-danger .#{$ns}-spinner-head {
+  stroke: var(--bp-intent-danger-rest);
 }
