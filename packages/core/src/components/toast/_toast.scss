@@ -157,7 +157,7 @@ $toast-intent-colors: (
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: oklch(from var(--bp-intent-default-rest) calc(l - 0.14) c h);
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l - 0.14) c h)"};
     box-shadow: var(--bp-surface-shadow-3);
 
     > .#{$ns}-icon {
@@ -167,14 +167,14 @@ $toast-intent-colors: (
     // increase contrast for default intent in dark mode
     .#{$ns}-button .#{$ns}-icon {
       /* stylelint-disable-next-line alpha-value-notation */
-      color: oklch(from var(--bp-palette-white) l c h / 0.7);
+      color: #{"oklch(from var(--bp-palette-white) l c h / 0.7)"};
     }
   }
 
   &[class*="#{$ns}-intent-"] {
     a {
       /* stylelint-disable-next-line alpha-value-notation */
-      color: oklch(from var(--bp-palette-white) l c h / 0.7);
+      color: #{"oklch(from var(--bp-palette-white) l c h / 0.7)"};
 
       &:hover {
         color: var(--bp-palette-white);
