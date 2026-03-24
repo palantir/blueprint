@@ -3,7 +3,7 @@
 Styling HTML `<select>` tags requires a wrapper element to customize the dropdown caret, so Blueprint provides
 a **HTMLSelect** component to streamline this process.
 
-<div class="@ns-callout @ns-icon-info-sign @ns-callout-has-body-content">
+<div class="@ns-callout @ns-icon-info-sign @ns-callout-has-body-content @ns-no-link-color">
 
 The [**Select**](#select/select-component) component in the [**@blueprintjs/select**](#select)
 package provides a more full-features alternative to the native HTML `<select>` tag. Notably, it

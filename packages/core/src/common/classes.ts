@@ -51,6 +51,7 @@ export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
 export const PADDED = `${NS}-padded`;
 export const MULTILINE = `${NS}-multiline`;
+export const NO_LINK_COLOR = `${NS}-no-link-color`;
 export const READ_ONLY = `${NS}-read-only`;
 export const ROUND = `${NS}-round`;
 export const SELECTED = `${NS}-selected`;

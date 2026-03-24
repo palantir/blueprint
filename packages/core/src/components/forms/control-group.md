@@ -3,7 +3,7 @@
 A **ControlGroup** renders multiple distinct form controls as one unit, with a small margin between elements. It
 supports any number of buttons, text inputs, input groups, numeric inputs, and HTML selects as direct children.
 
-<div class="@ns-callout @ns-icon-comparison @ns-callout-has-body-content">
+<div class="@ns-callout @ns-icon-comparison @ns-callout-has-body-content @ns-no-link-color">
     <h5 class="@ns-heading">Control group vs. input group</h5>
 
 Both components group multiple elements into a single unit, but their usage patterns are quite different.
