@@ -106,8 +106,15 @@ export function usePopover({
     });
     const dismiss = useDismiss(context, {
         escapeKey: canEscapeKeyClose,
-        // Disable outside press when hasBackdrop=true since Overlay2 handles backdrop clicks
-        outsidePress: interactionKind !== PopoverInteractionKind.CLICK_TARGET_ONLY && !hasBackdrop,
+        // For CLICK interactions, delegate outside-click detection to Overlay2's stack-aware
+        // handler (getThisOverlayAndDescendants) so that clicks inside child overlays like
+        // Dialog don't incorrectly close the popover. Floating UI's useDismiss is not aware
+        // of Blueprint's overlay stack and treats clicks in portaled child overlays as
+        // "outside" clicks.
+        outsidePress:
+            interactionKind !== PopoverInteractionKind.CLICK_TARGET_ONLY &&
+            interactionKind !== PopoverInteractionKind.CLICK &&
+            !hasBackdrop,
     });
 
     const interactions = useInteractions([click, dismiss]);

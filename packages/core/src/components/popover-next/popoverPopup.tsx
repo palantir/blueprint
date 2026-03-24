@@ -115,7 +115,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
             backdropClassName={Classes.POPOVER_BACKDROP}
             backdropProps={backdropProps}
             canEscapeKeyClose={canEscapeKeyClose}
-            canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK && hasBackdrop}
+            canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
             childRef={transitionContainerElement}
             enforceFocus={enforceFocus}
             hasBackdrop={hasBackdrop}
