@@ -182,7 +182,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
     }
 
     private renderViewSourceLinkText = (entry: { fileName?: string }) => {
-        return `@blueprintjs/${entry.fileName?.split("/", 2)[1]}`;
+        return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     };
 
     private maybeRenderPackageLink(packageName: string) {

@@ -151,6 +151,7 @@ async function fetchNpmPackageInfo(
     for (const v of allVersions) {
         const maj = semver.major(v);
         if (!majors.has(maj) || semver.gt(v, majors.get(maj)!)) {
+            if (semver.prerelease(v)) continue;
             majors.set(maj, v);
         }
     }
