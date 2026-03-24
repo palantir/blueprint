@@ -18,6 +18,7 @@ import { shallow } from "enzyme";
 import { createRef } from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, TOP_100_FILMS } from "../__examples__";
 

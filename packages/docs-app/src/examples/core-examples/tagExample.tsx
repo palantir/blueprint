@@ -46,7 +46,6 @@ export const TagExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <Switch label="Minimal" checked={minimal} onChange={handleBooleanChange(setMinimal)} />
@@ -54,6 +53,12 @@ export const TagExample: React.FC<ExampleProps> = props => {
                 label="Interactive"
                 checked={interactive}
                 onChange={handleBooleanChange(setInteractive)}
+            />
+            <Switch
+                label="Active"
+                checked={active}
+                disabled={!interactive}
+                onChange={handleBooleanChange(setActive)}
             />
             <Switch
                 label="Removable"

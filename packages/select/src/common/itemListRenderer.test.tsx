@@ -17,6 +17,8 @@
 import { assert } from "chai";
 import sinon from "sinon";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { type ItemListRendererProps, renderFilteredItems } from "./itemListRenderer";
 
 describe("renderFilteredItems()", () => {
