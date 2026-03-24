@@ -64,8 +64,10 @@ describe("<SegmentedControl>", () => {
     it("when no default value passed, first button gets tabIndex=0, none have aria-checked initially", () => {
         render(<SegmentedControl options={OPTIONS} />);
         const radios = screen.getAllByRole("radio");
-        expect(radios[0]).toHaveAttribute("tabIndex", "0");
-        expect(radios[0]).not.toBeChecked();
+        const listRadio = screen.getByRole("radio", { name: /list/i });
+        expect(radios[0]).toBe(listRadio);
+        expect(listRadio).toHaveAttribute("tabIndex", "0");
+        expect(listRadio).not.toBeChecked();
         expect(radios.filter(r => r.getAttribute("tabIndex") === "0")).toHaveLength(1);
         expect(radios.filter(r => r.getAttribute("aria-checked") === "true")).toHaveLength(0);
     });
@@ -73,8 +75,10 @@ describe("<SegmentedControl>", () => {
     it("when defaultValue passed, tabIndex=0 and aria-checked applied to correct option, no others", () => {
         render(<SegmentedControl defaultValue={OPTIONS[2].value} options={OPTIONS} />);
         const radios = screen.getAllByRole("radio");
-        expect(radios[2]).toHaveAttribute("tabIndex", "0");
-        expect(radios[2]).toBeChecked();
+        const galleryRadio = screen.getByRole("radio", { name: /gallery/i });
+        expect(radios[2]).toBe(galleryRadio);
+        expect(galleryRadio).toHaveAttribute("tabIndex", "0");
+        expect(galleryRadio).toBeChecked();
         expect(radios.filter(r => r.getAttribute("tabIndex") === "0")).toHaveLength(1);
         expect(radios.filter(r => r.getAttribute("aria-checked") === "true")).toHaveLength(1);
     });
@@ -83,21 +87,25 @@ describe("<SegmentedControl>", () => {
         const user = userEvent.setup();
         render(<SegmentedControl options={OPTIONS} />);
         const radios = screen.getAllByRole("radio");
+        const listRadio = screen.getByRole("radio", { name: /list/i });
+        const galleryRadio = screen.getByRole("radio", { name: /gallery/i });
 
         // tab here moves focus to the first radio
         await user.tab();
 
         await user.keyboard("{ArrowRight}");
-        expect(radios[2]).toHaveFocus(); // skips disabled Grid
+        expect(radios[2]).toBe(galleryRadio);
+        expect(galleryRadio).toHaveFocus(); // skips disabled Grid
 
         await user.keyboard("{ArrowRight}");
-        expect(radios[0]).toHaveFocus(); // wraps around to first
+        expect(radios[0]).toBe(listRadio);
+        expect(listRadio).toHaveFocus(); // wraps around to first
 
         await user.keyboard("{ArrowLeft}");
-        expect(radios[2]).toHaveFocus(); // wraps around to last
+        expect(galleryRadio).toHaveFocus(); // wraps around to last
 
         await user.keyboard("{ArrowLeft}");
-        expect(radios[0]).toHaveFocus(); // moves left and skips disabled
+        expect(listRadio).toHaveFocus(); // moves left and skips disabled
     });
 
     it("should select the correct option when clicked", async () => {
