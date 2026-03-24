@@ -19,6 +19,7 @@ import type { ReactWrapper } from "enzyme";
 import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { areFilmsEqual, type Film, filterFilm, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ListItemsProps } from "../../common/listItemsProps";
@@ -52,7 +53,8 @@ export function selectPopoverTestSuite<P extends ListItemsProps<Film>, S>(
     };
 
     describe("popoverProps functionality", () => {
-        it("matchTargetWidth: true makes popover same width as target", () => {
+        // jsdom does not support layout, so clientWidth is always 0
+        it.skip("matchTargetWidth: true makes popover same width as target", () => {
             const wrapper = render({
                 ...defaultProps,
                 popoverProps: { ...defaultPopoverProps, matchTargetWidth: true },
