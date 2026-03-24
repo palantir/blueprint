@@ -36,7 +36,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
       &[aria-selected="true"] {
         /* stylelint-disable-next-line alpha-value-notation */
-        background-color: oklch(from var(--bp-intent-primary-rest) l c h / 0.2);
+        background-color: #{"oklch(from var(--bp-intent-primary-rest) l c h / 0.2)"};
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -48,7 +48,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-primary-rest) l c h / 0.2);
+      background-color: #{"oklch(from var(--bp-intent-primary-rest) l c h / 0.2)"};
       border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
@@ -200,17 +200,17 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 .#{$ns}-dark {
   .#{$ns}-tab {
     &[aria-selected="true"] {
-      box-shadow: inset 0 calc(var(--bp-surface-spacing) * -0.75) 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
+      box-shadow: inset 0 calc(var(--bp-surface-spacing) * -0.75) 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
     }
 
     &[aria-selected="true"],
     &:not([aria-disabled="true"]):hover {
-      color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
+      color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
     }
   }
 
   .#{$ns}-tab-indicator {
-    background-color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
+    background-color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
   }
 }
 
