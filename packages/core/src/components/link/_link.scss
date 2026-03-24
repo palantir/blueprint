@@ -7,7 +7,7 @@
 .#{$ns}-link {
   cursor: pointer;
   display: inline-flex;
-  gap: $pt-spacing;
+  gap: var(--bp-surface-spacing);
   text-underline-offset: 17.5%;
   text-underline-position: from-font;
 
@@ -35,22 +35,44 @@
     color: inherit;
   }
 
-  @each $intent, $color in $pt-intent-text-colors {
-    &.#{$ns}-intent-#{$intent} {
-      color: $color;
-    }
+  &.#{$ns}-intent-primary {
+    color: var(--bp-intent-primary-hover);
+  }
+
+  &.#{$ns}-intent-success {
+    color: var(--bp-intent-success-hover);
+  }
+
+  &.#{$ns}-intent-warning {
+    color: var(--bp-intent-warning-hover);
+  }
+
+  &.#{$ns}-intent-danger {
+    color: var(--bp-intent-danger-hover);
   }
 
   // Dark theme
+  /* stylelint-disable alpha-value-notation */
   .#{$ns}-dark & {
     &.#{$ns}-link-color-inherit {
       color: inherit;
     }
 
-    @each $intent, $color in $pt-dark-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        color: $color;
-      }
+    &.#{$ns}-intent-primary {
+      color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
+    }
+
+    &.#{$ns}-intent-success {
+      color: oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h);
+    }
+
+    &.#{$ns}-intent-warning {
+      color: oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h);
+    }
+
+    &.#{$ns}-intent-danger {
+      color: oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h);
     }
   }
+  /* stylelint-enable alpha-value-notation */
 }
