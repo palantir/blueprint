@@ -17,7 +17,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
   &:not(.#{$ns}-minimal) {
     /* stylelint-disable-next-line alpha-value-notation */
-    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
   }
 
   // CSS API support
@@ -80,7 +80,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
     &:not(.#{$ns}-minimal) {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-primary-rest) l c h / 0.1);
+      background-color: #{"oklch(from var(--bp-intent-primary-rest) l c h / 0.1)"};
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -109,7 +109,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
     &:not(.#{$ns}-minimal) {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-success-rest) l c h / 0.1);
+      background-color: #{"oklch(from var(--bp-intent-success-rest) l c h / 0.1)"};
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -128,7 +128,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
     &:not(.#{$ns}-minimal) {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-warning-rest) l c h / 0.1);
+      background-color: #{"oklch(from var(--bp-intent-warning-rest) l c h / 0.1)"};
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -147,7 +147,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
     &:not(.#{$ns}-minimal) {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-danger-rest) l c h / 0.1);
+      background-color: #{"oklch(from var(--bp-intent-danger-rest) l c h / 0.1)"};
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
