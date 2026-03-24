@@ -29,25 +29,27 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
     .#{$ns}-tab {
       align-items: center;
-      border-radius: $pt-border-radius;
+      border-radius: var(--bp-surface-border-radius);
       display: flex;
-      padding: 0 ($pt-spacing * 2);
+      padding: 0 calc(var(--bp-surface-spacing) * 2);
       width: 100%;
 
       &[aria-selected="true"] {
-        background-color: rgba($pt-intent-primary, 0.2);
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: oklch(from var(--bp-intent-primary-rest) l c h / 0.2);
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
-          background-color: $pt-high-contrast-mode-active-background-color;
-          color: $black;
+          background-color: highlight;
+          color: black;
         }
       }
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: rgba($pt-intent-primary, 0.2);
-      border-radius: $pt-border-radius;
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: oklch(from var(--bp-intent-primary-rest) l c h / 0.2);
+      border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
     }
@@ -58,14 +60,14 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   // vertical tab component
   > .#{$ns}-tab-panel {
     margin-top: 0;
-    padding-left: $pt-spacing * 5;
+    padding-left: calc(var(--bp-surface-spacing) * 5);
   }
 }
 
 .#{$ns}-tab-list {
   align-items: flex-end;
   border: none;
-  column-gap: $pt-spacing * 5;
+  column-gap: calc(var(--bp-surface-spacing) * 5);
   display: flex;
   flex: 0 0 auto;
   list-style: none;
@@ -77,7 +79,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
     // offset column-gap from parent component above
     // since flex-expander is taking up _available_ space, we don't want to add a double gap
     // between the elements before and after the expander
-    margin-right: $pt-spacing * -5;
+    margin-right: calc(var(--bp-surface-spacing) * -5);
   }
 }
 
@@ -85,12 +87,12 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   @include overflow-ellipsis;
   align-items: center;
   align-self: stretch;
-  color: $pt-text-color;
+  color: var(--bp-typography-color-default-rest);
   cursor: pointer;
   display: flex;
   flex: 0 0 auto;
-  font-size: $pt-font-size;
-  line-height: $pt-button-height;
+  font-size: var(--bp-typography-size-body-medium);
+  line-height: calc(var(--bp-surface-spacing) * 7.5);
   max-width: 100%;
   position: relative;
   vertical-align: top;
@@ -112,27 +114,27 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   }
 
   &[aria-disabled="true"] {
-    color: $pt-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
     cursor: not-allowed;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      color: $pt-high-contrast-mode-disabled-text-color;
+      color: graytext;
     }
   }
 
   &[aria-selected="true"] {
     border-radius: 0;
-    box-shadow: inset 0 (-$tab-indicator-width) 0 $tab-color-selected;
+    box-shadow: inset 0 calc(var(--bp-surface-spacing) * -0.75) 0 var(--bp-intent-primary-hover);
   }
 
   &[aria-selected="true"],
   &:not([aria-disabled="true"]):hover {
-    color: $tab-color-selected;
+    color: var(--bp-intent-primary-hover);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      color: $pt-high-contrast-mode-active-text-color;
+      color: highlight;
     }
   }
 
@@ -141,13 +143,13 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   }
 
   .#{$ns}-large > & {
-    font-size: $pt-font-size-large;
-    line-height: $pt-button-height-large;
+    font-size: var(--bp-typography-size-body-large);
+    line-height: calc(var(--bp-surface-spacing) * 10);
   }
 }
 
 .#{$ns}-tab-panel {
-  margin-top: $pt-spacing * 5;
+  margin-top: calc(var(--bp-surface-spacing) * 5);
 
   &[aria-hidden="true"] {
     display: none;
@@ -155,11 +157,11 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 }
 
 .#{$ns}-tab-icon {
-  margin-right: $pt-spacing * 2;
+  margin-right: calc(var(--bp-surface-spacing) * 2);
 }
 
 .#{$ns}-tab-tag {
-  margin-left: $pt-spacing * 2;
+  margin-left: calc(var(--bp-surface-spacing) * 2);
 }
 
 .#{$ns}-tab-indicator-wrapper {
@@ -169,20 +171,20 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   top: 0;
   transform: translateX(0), translateY(0);
   transition: height, transform, width;
-  transition-duration: $pt-transition-duration * 2;
-  transition-timing-function: $pt-transition-ease;
+  transition-duration: calc(var(--bp-emphasis-transition-duration) * 2);
+  transition-timing-function: var(--bp-emphasis-ease-default);
 
   .#{$ns}-tab-indicator {
-    background-color: $tab-color-selected;
+    background-color: var(--bp-intent-primary-hover);
     bottom: 0;
-    height: $tab-indicator-width;
+    height: calc(var(--bp-surface-spacing) * 0.75);
     left: 0;
     position: absolute;
     right: 0;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
+      background-color: highlight;
     }
   }
 
@@ -197,39 +199,18 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
 .#{$ns}-dark {
   .#{$ns}-tab {
-    color: $pt-dark-text-color;
-
-    &[aria-disabled="true"] {
-      color: $pt-dark-text-color-disabled;
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-disabled-text-color;
-      }
-    }
-
     &[aria-selected="true"] {
-      box-shadow: inset 0 (-$tab-indicator-width) 0 $dark-tab-color-selected;
+      box-shadow: inset 0 calc(var(--bp-surface-spacing) * -0.75) 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
     }
 
     &[aria-selected="true"],
     &:not([aria-disabled="true"]):hover {
-      color: $dark-tab-color-selected;
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-active-text-color;
-      }
+      color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
     }
   }
 
   .#{$ns}-tab-indicator {
-    background-color: $dark-tab-color-selected;
-
-    @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
-    }
+    background-color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
   }
 }
 
