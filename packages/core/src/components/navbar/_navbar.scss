@@ -10,27 +10,22 @@ $navbar-background-color: $card-background-color !default;
 $dark-navbar-background-color: $dark-card-background-color !default;
 
 .#{$ns}-navbar {
-  background-color: $navbar-background-color;
-  box-shadow: $pt-elevation-shadow-1;
-  height: $pt-navbar-height;
-  padding: 0 $navbar-padding;
+  background-color: var(--bp-surface-background-color-default-rest);
+  box-shadow: var(--bp-surface-shadow-1);
+  height: calc(var(--bp-surface-spacing) * 12.5);
+  padding: 0 calc(var(--bp-surface-spacing) * 4);
   position: relative;
   width: 100%;
-  z-index: $pt-z-index-content;
-
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    background-color: $dark-navbar-background-color;
-  }
+  z-index: var(--bp-surface-z-index-1);
 
   // shadow for dark navbar in light theme apps
   &.#{$ns}-dark {
-    box-shadow: inset $pt-dark-elevation-shadow-1;
+    box-shadow: inset var(--bp-surface-shadow-1);
   }
 
   // shadow for dark navbar in dark theme apps
   .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-1;
+    box-shadow: var(--bp-surface-shadow-1);
   }
 
   &.#{$ns}-fixed-top {
@@ -41,19 +36,19 @@ $dark-navbar-background-color: $dark-card-background-color !default;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
   }
 }
 
 .#{$ns}-navbar-heading {
-  font-size: $pt-font-size-large;
-  margin-right: $navbar-padding;
+  font-size: var(--bp-typography-size-body-large);
+  margin-right: calc(var(--bp-surface-spacing) * 4);
 }
 
 .#{$ns}-navbar-group {
   align-items: center;
   display: flex;
-  height: $pt-navbar-height;
+  height: calc(var(--bp-surface-spacing) * 12.5);
 
   &.#{$ns}-align-left {
     float: left;
@@ -65,11 +60,7 @@ $dark-navbar-background-color: $dark-card-background-color !default;
 }
 
 .#{$ns}-navbar-divider {
-  border-left: 1px solid $pt-divider-black;
-  height: $pt-navbar-height - $pt-spacing * 7.5;
-  margin: 0 ($pt-spacing * 2);
-
-  .#{$ns}-dark & {
-    border-left-color: $pt-dark-divider-white;
-  }
+  border-left: 1px solid var(--bp-surface-border-color-default);
+  height: calc(var(--bp-surface-spacing) * 5);
+  margin: 0 calc(var(--bp-surface-spacing) * 2);
 }
