@@ -167,21 +167,25 @@ async function generateNpmData(): Promise<void> {
     const npmDataFilePath = join(generatedSrcDir, "npm-data.json");
     const npmData: Record<string, { name: string; version: string; versions: string[]; nextVersion?: string }> = {};
 
-    for (const pkg of LIBRARY_PACKAGES) {
-        const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
-        const { name, version: localVersion } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
-        try {
-            // Fetch from the npm registry rather than using localVersion above,
-            // since the local package.json may reference an unpublished or
-            // pre-release version. localVersion is only used as a fallback
-            // if the registry request fails.
-            npmData[name] = await fetchNpmPackageInfo(name);
-        } catch (err) {
-            console.warn(`[docs-data] WARNING: failed to fetch npm data for ${name}, falling back to local version`);
-            console.warn(`  ${err}`);
-            npmData[name] = { name, version: localVersion, versions: [localVersion] };
-        }
-    }
+    await Promise.all(
+        LIBRARY_PACKAGES.map(async pkg => {
+            const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
+            const { name, version: localVersion } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
+            try {
+                // Fetch from the npm registry rather than using localVersion above,
+                // since the local package.json may reference an unpublished or
+                // pre-release version. localVersion is only used as a fallback
+                // if the registry request fails.
+                npmData[name] = await fetchNpmPackageInfo(name);
+            } catch (err) {
+                console.warn(
+                    `[docs-data] WARNING: failed to fetch npm data for ${name}, falling back to local version`,
+                );
+                console.warn(`  ${err}`);
+                npmData[name] = { name, version: localVersion, versions: [localVersion] };
+            }
+        }),
+    );
 
     writeFileSync(npmDataFilePath, JSON.stringify(npmData) + "\n");
     console.info("[docs-data] successfully generated npm-data.json");
