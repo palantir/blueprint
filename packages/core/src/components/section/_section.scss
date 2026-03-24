@@ -23,25 +23,20 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
   &-header {
     align-items: center;
-    border-bottom: 1px solid $pt-divider-black;
+    border-bottom: 1px solid var(--bp-surface-border-color-default);
     display: flex;
-    gap: $pt-spacing * 5;
+    gap: calc(var(--bp-surface-spacing) * 5);
     justify-content: space-between;
-    min-height: $section-min-height;
-    padding: 0 $section-padding-horizontal;
+    min-height: calc(var(--bp-surface-spacing) * 12.5);
+    padding: 0 calc(var(--bp-surface-spacing) * 5);
     position: relative;
     width: 100%;
-
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      border-color: $pt-dark-divider-white;
-    }
 
     &-left {
       align-items: center;
       display: flex;
-      gap: $pt-spacing * 2;
-      padding: $section-padding-vertical 0;
+      gap: calc(var(--bp-surface-spacing) * 2);
+      padding: calc(var(--bp-surface-spacing) * 2) 0;
     }
 
     &-title {
@@ -49,13 +44,13 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
     }
 
     &-sub-title {
-      margin-top: $pt-spacing * 0.5;
+      margin-top: calc(var(--bp-surface-spacing) * 0.5);
     }
 
     &-right {
       align-items: center;
       display: flex;
-      gap: $pt-spacing * 2;
+      gap: calc(var(--bp-surface-spacing) * 2);
       margin-left: auto;
     }
 
@@ -67,7 +62,7 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
     &-divider {
       align-self: stretch;
-      margin: $pt-spacing * 4 0;
+      margin: calc(var(--bp-surface-spacing) * 4) 0;
     }
 
     &.#{$ns}-interactive {
@@ -75,28 +70,18 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
       &:hover,
       &:active {
-        background: $light-gray5;
-
-        &.#{$ns}-dark,
-        .#{$ns}-dark & {
-          background: $dark-gray4;
-        }
+        background: var(--bp-surface-background-color-default-hover);
       }
     }
   }
 
   &-card {
     &.#{$ns}-padded {
-      padding: $section-card-padding;
+      padding: calc(var(--bp-surface-spacing) * 5);
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid $pt-divider-black;
-
-      &.#{$ns}-dark,
-      .#{$ns}-dark & {
-        border-color: $pt-dark-divider-white;
-      }
+      border-bottom: 1px solid var(--bp-surface-border-color-default);
     }
   }
 
@@ -108,16 +93,16 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
   &.#{$ns}-compact {
     .#{$ns}-section-header {
-      min-height: $section-min-height-compact;
-      padding: 0 $section-padding-compact-horizontal;
+      min-height: calc(var(--bp-surface-spacing) * 10);
+      padding: 0 calc(var(--bp-surface-spacing) * 4);
 
       &-left {
-        padding: $section-padding-compact-vertical 0;
+        padding: calc(var(--bp-surface-spacing) * 2) 0;
       }
     }
 
     .#{$ns}-section-card.#{$ns}-padded {
-      padding: $section-card-padding-compact;
+      padding: calc(var(--bp-surface-spacing) * 4);
     }
   }
 }
