@@ -745,6 +745,9 @@ importers:
       eslint:
         specifier: ^8.57 || ^9.0.0
         version: 9.38.0(jiti@2.6.1)
+      tslib:
+        specifier: 'catalog:'
+        version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
@@ -767,9 +770,6 @@ importers:
       mocha:
         specifier: ^10.2.0
         version: 10.8.2
-      tslib:
-        specifier: 'catalog:'
-        version: 2.6.3
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
