@@ -34,7 +34,7 @@ $progress-bar-gradient: linear-gradient(
 
 .#{$ns}-progress-bar {
   /* stylelint-disable-next-line alpha-value-notation */
-  background: oklch(from var(--bp-intent-default-rest) l c h / 0.2);
+  background: #{"oklch(from var(--bp-intent-default-rest) l c h / 0.2)"};
   border-radius: calc(var(--bp-surface-spacing) * 10);
   display: block;
   height: calc(var(--bp-surface-spacing) * 2);
@@ -45,7 +45,7 @@ $progress-bar-gradient: linear-gradient(
   .#{$ns}-progress-meter {
     background: $progress-bar-gradient;
     /* stylelint-disable-next-line alpha-value-notation */
-    background-color: oklch(from var(--bp-intent-default-rest) l c h / 0.8);
+    background-color: #{"oklch(from var(--bp-intent-default-rest) l c h / 0.8)"};
     background-size: calc(var(--bp-surface-spacing) * 7.5) calc(var(--bp-surface-spacing) * 7.5);
     border-radius: calc(var(--bp-surface-spacing) * 10);
     height: 100%;
@@ -66,10 +66,10 @@ $progress-bar-gradient: linear-gradient(
 
 .#{$ns}-dark .#{$ns}-progress-bar {
   /* stylelint-disable-next-line alpha-value-notation */
-  background: oklch(from var(--bp-palette-black) l c h / 0.5);
+  background: #{"oklch(from var(--bp-palette-black) l c h / 0.5)"};
 
   .#{$ns}-progress-meter {
-    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h);
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"};
   }
 }
 

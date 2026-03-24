@@ -34,7 +34,7 @@
 
   .#{$ns}-spinner-head {
     /* stylelint-disable-next-line alpha-value-notation */
-    stroke: oklch(from var(--bp-intent-default-rest) l c h / 0.8);
+    stroke: #{"oklch(from var(--bp-intent-default-rest) l c h / 0.8)"};
     stroke-linecap: round;
     transform-origin: center;
     transition: stroke-dashoffset calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
@@ -42,7 +42,7 @@
 
   .#{$ns}-spinner-track {
     /* stylelint-disable-next-line alpha-value-notation */
-    stroke: oklch(from var(--bp-intent-default-rest) l c h / 0.2);
+    stroke: #{"oklch(from var(--bp-intent-default-rest) l c h / 0.2)"};
   }
 }
 
@@ -57,12 +57,12 @@
 
 .#{$ns}-dark .#{$ns}-spinner {
   .#{$ns}-spinner-head {
-    stroke: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h);
+    stroke: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"};
   }
 
   .#{$ns}-spinner-track {
     /* stylelint-disable-next-line alpha-value-notation */
-    stroke: oklch(from var(--bp-palette-black) l c h / 0.5);
+    stroke: #{"oklch(from var(--bp-palette-black) l c h / 0.5)"};
   }
 }
 
