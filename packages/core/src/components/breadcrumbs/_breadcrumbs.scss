@@ -83,7 +83,7 @@
 
 .#{$ns}-breadcrumbs-collapsed {
   /* stylelint-disable-next-line alpha-value-notation */
-  background: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
+  background: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
   border: none;
   border-radius: var(--bp-surface-border-radius);
   cursor: pointer;
@@ -109,7 +109,7 @@
 
   &:hover {
     /* stylelint-disable-next-line alpha-value-notation */
-    background: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3);
+    background: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3)"};
     color: var(--bp-typography-color-default-rest);
     text-decoration: none;
   }
