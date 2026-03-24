@@ -9,17 +9,18 @@ $track-size: $handle-size - ($pt-spacing * 2.5) !default;
 $label-offset: $handle-size + $pt-spacing !default;
 
 /* stylelint-disable alpha-value-notation */
-$handle-border-shadow: 0 0 0 $button-border-width oklch(from var(--bp-palette-black) l c h / 0.5);
+$handle-border-shadow: 0 0 0 $button-border-width
+  #{"oklch(from var(--bp-palette-black) l c h / 0.5)"};
 $handle-box-shadow:
   $handle-border-shadow,
-  0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.5) !default;
+  0 1px 1px #{"oklch(from var(--bp-palette-black) l c h / 0.5)"} !default;
 $handle-box-shadow-hover:
   $handle-border-shadow,
-  0 1px 2px oklch(from var(--bp-palette-black) l c h / 0.6) !default;
+  0 1px 2px #{"oklch(from var(--bp-palette-black) l c h / 0.6)"} !default;
 $handle-box-shadow-active:
-  inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.1),
+  inset 0 1px 1px #{"oklch(from var(--bp-palette-black) l c h / 0.1)"},
   $handle-border-shadow,
-  0 1px 2px oklch(from var(--bp-palette-black) l c h / 0.2) !default;
+  0 1px 2px #{"oklch(from var(--bp-palette-black) l c h / 0.2)"} !default;
 /* stylelint-enable alpha-value-notation */
 
 // retain legacy variable aliases so as to not break consumers
@@ -64,11 +65,11 @@ $track-height: $track-size !default;
 
 .#{$ns}-slider-progress {
   /* stylelint-disable-next-line alpha-value-notation */
-  background: oklch(from var(--bp-typography-color-muted) l c h / 0.2);
+  background: #{"oklch(from var(--bp-typography-color-muted) l c h / 0.2)"};
 
   .#{$ns}-dark & {
     /* stylelint-disable-next-line alpha-value-notation */
-    background: oklch(from var(--bp-palette-black) l c h / 0.5);
+    background: #{"oklch(from var(--bp-palette-black) l c h / 0.5)"};
   }
 
   &.#{$ns}-intent-primary {
@@ -142,7 +143,7 @@ $track-height: $track-size !default;
       background-color: var(--bp-palette-gray-2);
       box-shadow:
         /* stylelint-disable-next-line alpha-value-notation */
-        inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.1),
+        inset 0 1px 1px #{"oklch(from var(--bp-palette-black) l c h / 0.1)"},
         $dark-button-box-shadow-active;
     }
   }
