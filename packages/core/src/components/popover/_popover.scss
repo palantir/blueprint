@@ -21,12 +21,12 @@ $dark-popover-arrow-box-shadow:
 // Token-based arrow box shadows
 // $pt-drop-shadow-opacity (0.2) → oklch alpha
 /* stylelint-disable alpha-value-notation */
-$popover-arrow-box-shadow-token: 1px 1px 6px oklch(from var(--bp-palette-black) l c h / 0.2);
+$popover-arrow-box-shadow-token: 1px 1px 6px #{"oklch(from var(--bp-palette-black) l c h / 0.2)"};
 // color.adjust($pt-dark-popover-border-color, $lightness: 10%) ≈ hsl(215deg, 3%, 48%)
 // $pt-dark-drop-shadow-opacity (0.4) → oklch alpha
 $dark-popover-arrow-box-shadow-token:
   0 0 0 1px hsl(215deg, 3%, 48%),
-  1px 1px 6px oklch(from var(--bp-palette-black) l c h / 0.4);
+  1px 1px 6px #{"oklch(from var(--bp-palette-black) l c h / 0.4)"};
 /* stylelint-enable alpha-value-notation */
 
 .#{$ns}-popover {
@@ -125,7 +125,7 @@ $dark-popover-arrow-box-shadow-token:
 
 .#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
   /* stylelint-disable-next-line alpha-value-notation */
-  background: oklch(from var(--bp-palette-white) l c h / 0);
+  background: #{"oklch(from var(--bp-palette-white) l c h / 0)"};
 }
 
 .#{$ns}-popover-transition-container {
