@@ -55,7 +55,7 @@ table.#{$ns}-html-table {
   &.#{$ns}-html-table-striped {
     tbody tr:nth-child(odd) td {
       /* stylelint-disable-next-line alpha-value-notation */
-      background: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
+      background: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
     }
   }
 
@@ -102,7 +102,7 @@ table.#{$ns}-html-table {
     tbody tr {
       &:hover td {
         /* stylelint-disable-next-line alpha-value-notation */
-        background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3);
+        background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3)"};
         cursor: pointer;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -112,7 +112,7 @@ table.#{$ns}-html-table {
 
       &:active td {
         /* stylelint-disable-next-line alpha-value-notation */
-        background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.35);
+        background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.35)"};
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           background-color: highlight;
