@@ -15,8 +15,6 @@
  */
 
 import type { editor } from "monaco-editor";
-import GitHubDark from "monaco-themes/themes/GitHub Dark.json";
-import GitHubLight from "monaco-themes/themes/GitHub Light.json";
 
 import { Colors } from "@blueprintjs/colors";
 import { Classes, Utils } from "@blueprintjs/core";
