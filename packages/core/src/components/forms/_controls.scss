@@ -35,7 +35,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: var(--bp-intent-primary-rest);
     /* stylelint-disable-next-line alpha-value-notation */
-    box-shadow: inset 0 0 0 var(--bp-surface-border-width) oklch(from var(--bp-palette-black) l c h / 0.2);
+    box-shadow: inset 0 0 0 var(--bp-surface-border-width) #{"oklch(from var(--bp-palette-black) l c h / 0.2)"};
     color: var(--bp-intent-primary-foreground);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -62,7 +62,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     background: color-mix(in oklch, var(--bp-intent-primary-rest) 50%, transparent);
     box-shadow: none;
     /* stylelint-disable-next-line alpha-value-notation */
-    color: oklch(from var(--bp-palette-white) l c h / 0.6);
+    color: #{"oklch(from var(--bp-palette-white) l c h / 0.6)"};
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       background-color: graytext;
@@ -73,7 +73,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   .#{$ns}-dark & {
     input#{$selector} ~ .#{$ns}-control-indicator {
       /* stylelint-disable-next-line alpha-value-notation */
-      box-shadow: inset 0 0 0 var(--bp-surface-border-width) oklch(from var(--bp-palette-white) l c h / 0.1);
+      box-shadow: inset 0 0 0 var(--bp-surface-border-width) #{"oklch(from var(--bp-palette-white) l c h / 0.1)"};
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
@@ -84,20 +84,20 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     &:hover input#{$selector} ~ .#{$ns}-control-indicator {
       background-color: var(--bp-intent-primary-hover);
       /* stylelint-disable-next-line alpha-value-notation */
-      box-shadow: inset 0 0 0 var(--bp-surface-border-width) oklch(from var(--bp-palette-white) l c h / 0.1);
+      box-shadow: inset 0 0 0 var(--bp-surface-border-width) #{"oklch(from var(--bp-palette-white) l c h / 0.1)"};
     }
 
     input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
       background-color: var(--bp-intent-primary-active);
       /* stylelint-disable-next-line alpha-value-notation */
-      box-shadow: inset 0 0 0 var(--bp-surface-border-width) oklch(from var(--bp-palette-white) l c h / 0.1);
+      box-shadow: inset 0 0 0 var(--bp-surface-border-width) #{"oklch(from var(--bp-palette-white) l c h / 0.1)"};
     }
 
     input:disabled#{$selector} ~ .#{$ns}-control-indicator {
       background: color-mix(in oklch, var(--bp-intent-primary-rest) 50%, transparent);
       box-shadow: none;
       /* stylelint-disable-next-line alpha-value-notation */
-      color: oklch(from var(--bp-palette-white) l c h / 0.6);
+      color: #{"oklch(from var(--bp-palette-white) l c h / 0.6)"};
     }
   }
 }
@@ -408,6 +408,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
       }
     }
 
+    /* stylelint-disable alpha-value-notation */
     @include indicator-colors(
       "",
       var(--bp-typography-color-default-rest),
@@ -416,7 +417,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
       color-mix(in srgb, var(--bp-intent-default-disabled) 50%, transparent),
       var(--bp-typography-color-default-disabled),
       color-mix(in srgb, var(--bp-intent-default-disabled) 15%, transparent),
-      oklch(from var(--bp-palette-white) calc(l - 0.03) c h / 0.8)
+      #{"oklch(from var(--bp-palette-white) calc(l - 0.03) c h / 0.8)"}
     );
     @include indicator-colors(
       ":checked",
@@ -424,10 +425,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
       var(--bp-intent-primary-rest),
       var(--bp-intent-primary-hover),
       var(--bp-intent-primary-active),
-      oklch(from var(--bp-palette-white) l c h / 0.6),
+      #{"oklch(from var(--bp-palette-white) l c h / 0.6)"},
       color-mix(in oklch, var(--bp-intent-primary-rest) 50%, transparent),
-      oklch(from var(--bp-palette-white) l c h / 0.5)
+      #{"oklch(from var(--bp-palette-white) l c h / 0.5)"}
     );
+    /* stylelint-enable alpha-value-notation */
     // convert em variable to px value
     @include indicator-position(math.div($switch-width, 1em) * $control-indicator-size);
 
@@ -469,7 +471,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
         background: var(--bp-palette-white);
         border-radius: 50%;
         /* stylelint-disable-next-line alpha-value-notation */
-        box-shadow: 0 0 0 var(--bp-surface-border-width) oklch(from var(--bp-palette-black) l c h / 0.5);
+        box-shadow: 0 0 0 var(--bp-surface-border-width) #{"oklch(from var(--bp-palette-black) l c h / 0.5)"};
         height: $switch-indicator-size;
         left: calc(var(--bp-surface-spacing) * 0.5);
         position: absolute;
@@ -501,6 +503,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     .#{$ns}-dark & {
+      /* stylelint-disable alpha-value-notation */
       @include indicator-colors(
         "",
         var(--bp-typography-color-default-rest),
@@ -509,7 +512,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
         color-mix(in srgb, var(--bp-intent-default-disabled) 50%, transparent),
         var(--bp-typography-color-default-disabled),
         color-mix(in srgb, var(--bp-intent-default-disabled) 15%, transparent),
-        oklch(from var(--bp-palette-white) calc(l - 0.03) c h / 0.8)
+        #{"oklch(from var(--bp-palette-white) calc(l - 0.03) c h / 0.8)"}
       );
       @include indicator-colors(
         ":checked",
@@ -519,8 +522,9 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
         var(--bp-intent-primary-active),
         var(--bp-typography-color-default-disabled),
         color-mix(in oklch, var(--bp-intent-primary-rest) 50%, transparent),
-        oklch(from var(--bp-palette-white) l c h / 0.5)
+        #{"oklch(from var(--bp-palette-white) l c h / 0.5)"}
       );
+      /* stylelint-enable alpha-value-notation */
 
       // Add Windows high contrast mode styles
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
