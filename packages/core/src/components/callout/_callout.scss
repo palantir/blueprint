@@ -136,17 +136,6 @@ $callout-padding-compact: $pt-spacing * 2;
     }
   }
 
-  &.#{$ns}-no-link-color {
-    a {
-      color: inherit;
-      text-decoration: underline;
-
-      &:hover {
-        color: inherit;
-      }
-    }
-  }
-
   .#{$ns}-running-text & {
     margin: ($pt-spacing * 5) 0;
   }

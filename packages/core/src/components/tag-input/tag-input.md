@@ -12,10 +12,10 @@ import { TagInput } from "@blueprintjs/core";
 
 @reactExample TagInputExample
 
-<div class="@ns-callout @ns-icon-info-sign @ns-callout-has-body-content @ns-no-link-color">
+<div class="@ns-callout @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Looking for a dropdown menu?</h5>
 
-[The **MultiSelect** component in the **@blueprintjs/select** package](#select/multi-select)
+<Link color="inherit" href="#select/multi-select">The **MultiSelect** component in the **@blueprintjs/select** package</Link>
 composes this component with a dropdown menu.
 
 </div>

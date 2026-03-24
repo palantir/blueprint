@@ -3,14 +3,14 @@
 A **ControlGroup** renders multiple distinct form controls as one unit, with a small margin between elements. It
 supports any number of buttons, text inputs, input groups, numeric inputs, and HTML selects as direct children.
 
-<div class="@ns-callout @ns-icon-comparison @ns-callout-has-body-content @ns-no-link-color">
+<div class="@ns-callout @ns-icon-comparison @ns-callout-has-body-content">
     <h5 class="@ns-heading">Control group vs. input group</h5>
 
 Both components group multiple elements into a single unit, but their usage patterns are quite different.
 
 Think of **ControlGroup** as a parent with multiple children, with each one a separate control.
 
-Conversely, an [**InputGroup**](#core/components/input-group) is a single control, and should behave like
+Conversely, an <Link color="inherit" href="#core/components/input-group">**InputGroup**</Link> is a single control, and should behave like
 so. A button inside of an input group should only affect that input; if its reach is further, then it should be
 promoted to live in a control group.
 
