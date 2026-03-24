@@ -22,12 +22,22 @@ $tree-intent-icon-colors: (
 
 .#{$ns}-tree {
   #{$icon-classes} {
-    color: $pt-icon-color;
+    color: var(--bp-typography-color-muted);
 
-    @each $intent, $colors in $pt-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        @include intent-color($intent);
-      }
+    &.#{$ns}-intent-primary {
+      color: var(--bp-intent-primary-rest);
+    }
+
+    &.#{$ns}-intent-success {
+      color: var(--bp-intent-success-rest);
+    }
+
+    &.#{$ns}-intent-warning {
+      color: var(--bp-intent-warning-rest);
+    }
+
+    &.#{$ns}-intent-danger {
+      color: var(--bp-intent-danger-rest);
     }
   }
 }
@@ -48,7 +58,7 @@ $tree-intent-icon-colors: (
 
 @for $i from 0 through 20 {
   .#{$ns}-tree-node-content-#{$i} {
-    padding-left: ($tree-row-height - $tree-icon-spacing) * $i;
+    padding-left: calc(var(--bp-surface-spacing) * #{5.5 * $i});
   }
 }
 
@@ -56,33 +66,35 @@ $tree-intent-icon-colors: (
   align-items: center;
   background: none;
   display: flex;
-  height: $tree-row-height;
-  padding-right: $pt-spacing;
+  height: calc(var(--bp-surface-spacing) * 7.5);
+  padding-right: var(--bp-surface-spacing);
   width: 100%;
 
   &:hover {
-    background-color: rgba($gray3, 0.15);
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
   }
 
   &:active {
-    background-color: rgba($gray3, 0.3);
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3);
   }
 }
 
 .#{$ns}-tree-node-caret,
 .#{$ns}-tree-node-caret-none {
-  min-width: $tree-row-height;
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
 }
 
 .#{$ns}-tree-node-caret {
   @include pt-icon-colors;
   cursor: pointer;
-  padding: $tree-icon-spacing;
+  padding: calc(var(--bp-surface-spacing) * 2);
   transform: rotate(0deg);
-  transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
+  transition: transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
 
   &:hover {
-    color: $pt-text-color;
+    color: var(--bp-typography-color-default-rest);
   }
 
   &.#{$ns}-tree-node-caret-open {
@@ -96,7 +108,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-icon {
-  margin-right: $tree-icon-spacing;
+  margin-right: calc(var(--bp-surface-spacing) * 2);
   position: relative;
 }
 
@@ -113,7 +125,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-secondary-label {
-  padding: 0 $pt-spacing;
+  padding: 0 var(--bp-surface-spacing);
   user-select: none;
 
   .#{$ns}-popover-wrapper,
@@ -126,32 +138,33 @@ $tree-intent-icon-colors: (
 .#{$ns}-tree-node.#{$ns}-disabled {
   .#{$ns}-tree-node-content {
     background-color: inherit;
-    color: $pt-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
     cursor: not-allowed;
   }
 
   .#{$ns}-tree-node-caret,
   .#{$ns}-tree-node-icon {
-    color: $pt-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
     cursor: not-allowed;
   }
 }
 
 .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
-  background-color: $pt-intent-primary;
+  background-color: var(--bp-intent-primary-rest);
 
   &,
   #{$icon-classes} {
-    color: $white;
+    color: var(--bp-intent-primary-foreground);
   }
 
   .#{$ns}-tree-node-caret {
     &::before {
-      color: rgba($white, 0.7);
+      /* stylelint-disable-next-line alpha-value-notation */
+      color: oklch(from var(--bp-intent-primary-foreground) l c h / 0.7);
     }
 
     &:hover::before {
-      color: $white;
+      color: var(--bp-intent-primary-foreground);
     }
   }
 }
@@ -159,13 +172,13 @@ $tree-intent-icon-colors: (
 // Variant: compact
 .#{$ns}-tree.#{$ns}-compact {
   .#{$ns}-tree-node-content {
-    height: $tree-row-height-compact;
+    height: calc(var(--bp-surface-spacing) * 6);
   }
 
   .#{$ns}-tree-node-caret {
-    margin-right: $pt-spacing * 0.75;
-    min-width: $tree-row-height-compact;
-    padding: $tree-icon-spacing-compact;
+    margin-right: calc(var(--bp-surface-spacing) * 0.75);
+    min-width: calc(var(--bp-surface-spacing) * 6);
+    padding: calc(var(--bp-surface-spacing) * 1);
   }
 }
 
@@ -173,18 +186,29 @@ $tree-intent-icon-colors: (
 .#{$ns}-dark {
   .#{$ns}-tree-node-content {
     &:hover {
-      background-color: rgba($gray1, 0.3);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: oklch(from var(--bp-intent-default-rest) calc(l - 0.2) c h / 0.3);
     }
   }
 
   .#{$ns}-tree {
     #{$icon-classes} {
-      color: $pt-dark-icon-color;
+      color: var(--bp-typography-color-muted);
 
-      @each $intent, $color in $tree-intent-icon-colors {
-        &.#{$ns}-intent-#{$intent} {
-          color: $color;
-        }
+      &.#{$ns}-intent-primary {
+        color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
+      }
+
+      &.#{$ns}-intent-success {
+        color: oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h);
+      }
+
+      &.#{$ns}-intent-warning {
+        color: oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h);
+      }
+
+      &.#{$ns}-intent-danger {
+        color: oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h);
       }
     }
   }
@@ -192,15 +216,15 @@ $tree-intent-icon-colors: (
   .#{$ns}-tree-node {
     &:not(.#{$ns}-disabled) {
       .#{$ns}-tree-node-caret:hover {
-        color: $pt-dark-text-color;
+        color: var(--bp-typography-color-default-rest);
       }
     }
 
     &.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
-      background-color: $pt-intent-primary;
+      background-color: var(--bp-intent-primary-rest);
 
       #{$icon-classes} {
-        color: $white;
+        color: var(--bp-intent-primary-foreground);
       }
     }
   }
