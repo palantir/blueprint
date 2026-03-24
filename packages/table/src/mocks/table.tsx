@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Cell, Column, type ColumnProps, RenderMode, Table, type TableProps, Utils } from "../../src";
+import { Cell, Column, type ColumnProps, RenderMode, Table, type TableProps, Utils } from "..";
 
 export function createStringOfLength(length: number) {
     return new Array(length).fill("a").join("");
