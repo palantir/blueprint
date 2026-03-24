@@ -36,7 +36,7 @@
 
     &::after, // CSS support
     .#{$ns}-icon {
-      right: $pt-spacing * 3;
+      right: calc(var(--bp-surface-spacing) * 3);
       top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
     }
   }
@@ -55,15 +55,15 @@
 
     option {
       background-color: $pt-dark-popover-background-color;
-      color: $pt-dark-text-color;
+      color: var(--bp-typography-color-default-rest);
     }
 
     option:disabled {
-      color: $pt-dark-text-color-disabled;
+      color: var(--bp-typography-color-default-disabled);
     }
 
     &::after {
-      color: $pt-dark-icon-color;
+      color: var(--bp-typography-color-muted);
     }
   }
 }
