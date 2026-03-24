@@ -10,133 +10,158 @@ $callout-padding-compact: $pt-spacing * 2;
 
 .#{$ns}-callout {
   @include running-typography;
-  border-radius: $pt-border-radius;
-  padding: $callout-padding;
+  border-radius: var(--bp-surface-border-radius);
+  padding: calc(var(--bp-surface-spacing) * 4);
   position: relative;
   width: 100%;
 
   &:not(.#{$ns}-minimal) {
-    background-color: rgba($gray3, 0.15);
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
   }
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
+    padding-left: calc(var(--bp-surface-spacing) * 10);
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
-      color: $pt-icon-color;
-      left: $callout-padding;
+      color: var(--bp-typography-color-muted);
+      left: calc(var(--bp-surface-spacing) * 4);
       position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
+      top: calc(var(--bp-surface-spacing) * 4.5);
     }
   }
 
   // High contrast mode hides backgrounds, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
+    padding-left: calc(var(--bp-surface-spacing) * 10);
 
     > .#{$ns}-icon:first-child {
-      color: $pt-icon-color;
-      left: $callout-padding;
+      color: var(--bp-typography-color-muted);
+      left: calc(var(--bp-surface-spacing) * 4);
       position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
+      top: calc(var(--bp-surface-spacing) * 4.5);
     }
   }
 
   .#{$ns}-heading {
-    line-height: $pt-icon-size-standard;
+    line-height: calc(var(--bp-surface-spacing) * 4);
     margin-bottom: 0;
-    margin-top: $callout-header-margin-top;
+    margin-top: calc(var(--bp-surface-spacing) * 0.5);
   }
 
   &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
-      margin-bottom: $pt-spacing;
+      margin-bottom: var(--bp-surface-spacing);
     }
   }
 
   &.#{$ns}-compact {
-    padding: $callout-padding-compact;
+    padding: calc(var(--bp-surface-spacing) * 2);
 
     &.#{$ns}-callout-icon {
-      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-spacing * 2);
+      padding-left: calc(var(--bp-surface-spacing) * 8);
 
       > .#{$ns}-icon:first-child {
-        left: $callout-padding-compact;
-        top: $callout-padding-compact + $callout-header-margin-top;
+        left: calc(var(--bp-surface-spacing) * 2);
+        top: calc(var(--bp-surface-spacing) * 2.5);
       }
     }
   }
 
-  .#{$ns}-dark & {
+  // Intent styles — expanded from @each over $pt-intent-colors
+  &.#{$ns}-intent-primary {
+    color: var(--bp-intent-primary-rest);
+
     &:not(.#{$ns}-minimal) {
-      background-color: rgba($gray3, 0.2);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: oklch(from var(--bp-intent-primary-rest) l c h / 0.1);
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid buttonborder;
     }
 
     &[class*="#{$ns}-icon-"]::before,
-    &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
-      color: $pt-dark-icon-color;
+    > .#{$ns}-icon:first-child,
+    .#{$ns}-heading {
+      color: var(--bp-intent-primary-rest);
     }
-  }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      color: map.get($pt-intent-text-colors, $intent);
-
-      &:not(.#{$ns}-minimal) {
-        background-color: rgba($color, 0.1);
-      }
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        border: 1px solid $pt-high-contrast-mode-border-color;
-      }
-
-      &[class*="#{$ns}-icon-"]::before,
-      > .#{$ns}-icon:first-child,
-      .#{$ns}-heading {
-        color: map.get($pt-intent-text-colors, $intent);
-      }
-
-      .#{$ns}-dark & {
-        color: map.get($pt-dark-intent-text-colors, $intent);
-
-        &:not(.#{$ns}-minimal) {
-          background-color: rgba($color, 0.2);
-        }
-
-        &[class*="#{$ns}-icon-"]::before,
-        > .#{$ns}-icon:first-child,
-        .#{$ns}-heading {
-          color: map.get($pt-dark-intent-text-colors, $intent);
-        }
-      }
-    }
-  }
-
-  &.#{$ns}-intent-primary {
     // special case for links inside primary intent callouts, which would otherwise not have any indication
     // that they are clickable links; see https://github.com/palantir/blueprint/issues/5853
     a {
       text-decoration: underline;
 
       &:hover {
-        color: $blue1;
-      }
-    }
-
-    .#{$ns}-dark & {
-      a:hover {
-        color: $blue6;
+        color: var(--bp-intent-primary-hover);
       }
     }
   }
 
+  &.#{$ns}-intent-success {
+    color: var(--bp-intent-success-rest);
+
+    &:not(.#{$ns}-minimal) {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: oklch(from var(--bp-intent-success-rest) l c h / 0.1);
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid buttonborder;
+    }
+
+    &[class*="#{$ns}-icon-"]::before,
+    > .#{$ns}-icon:first-child,
+    .#{$ns}-heading {
+      color: var(--bp-intent-success-rest);
+    }
+  }
+
+  &.#{$ns}-intent-warning {
+    color: var(--bp-intent-warning-rest);
+
+    &:not(.#{$ns}-minimal) {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: oklch(from var(--bp-intent-warning-rest) l c h / 0.1);
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid buttonborder;
+    }
+
+    &[class*="#{$ns}-icon-"]::before,
+    > .#{$ns}-icon:first-child,
+    .#{$ns}-heading {
+      color: var(--bp-intent-warning-rest);
+    }
+  }
+
+  &.#{$ns}-intent-danger {
+    color: var(--bp-intent-danger-rest);
+
+    &:not(.#{$ns}-minimal) {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: oklch(from var(--bp-intent-danger-rest) l c h / 0.1);
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid buttonborder;
+    }
+
+    &[class*="#{$ns}-icon-"]::before,
+    > .#{$ns}-icon:first-child,
+    .#{$ns}-heading {
+      color: var(--bp-intent-danger-rest);
+    }
+  }
+
   .#{$ns}-running-text & {
-    margin: ($pt-spacing * 5) 0;
+    margin: calc(var(--bp-surface-spacing) * 5) 0;
   }
 }
