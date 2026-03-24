@@ -3,7 +3,8 @@
 
 @import "../../common/variables";
 
-$overlay-background-color: rgba($black, 0.7) !default;
+// stylelint-disable-next-line alpha-value-notation
+$overlay-background-color: oklch(from var(--bp-palette-black) l c h / 0.7) !default;
 
 // restricts scrolling of underlying content while the overlay is open
 body.#{$ns}-overlay-open {
