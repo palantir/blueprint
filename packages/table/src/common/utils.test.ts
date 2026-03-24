@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import { Utils } from "../src/common/utils";
+import { Utils } from "./utils";
 
 describe("Utils", () => {
     describe("toBase26Alpha", () => {

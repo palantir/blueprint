@@ -18,12 +18,12 @@ import { render } from "@testing-library/react";
 import { expect } from "chai";
 import sinon from "sinon";
 
-import { type FocusedCellCoordinates, FocusMode } from "../src/common/cellTypes";
-import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
-import { DragSelectable, type DragSelectableProps } from "../src/interactions/selectable";
-import { type Region, Regions } from "../src/regions";
+import { type FocusedCellCoordinates, FocusMode } from "../common/cellTypes";
+import * as FocusedCellUtils from "../common/internal/focusedCellUtils";
+import { DragSelectable, type DragSelectableProps } from "./selectable";
+import { type Region, Regions } from "../regions";
 
-import { ElementHarness } from "./harness";
+import { ElementHarness } from "../harness";
 
 const REGION = Regions.cell(0, 0);
 const REGION_2 = Regions.cell(1, 1);

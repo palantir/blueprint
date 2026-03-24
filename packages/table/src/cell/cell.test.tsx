@@ -19,8 +19,8 @@ import { expect } from "chai";
 
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 
-import { Cell } from "../src/cell/cell";
-import * as Classes from "../src/common/classes";
+import { Cell } from "./cell";
+import * as Classes from "../common/classes";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ElementHarness } from "./harness";

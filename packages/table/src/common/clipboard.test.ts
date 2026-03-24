@@ -16,7 +16,7 @@
 
 // import { expect } from "chai";
 
-import { Clipboard } from "../src/common/clipboard";
+import { Clipboard } from "./clipboard";
 
 // HACKHACK: see https://github.com/palantir/blueprint/issues/5175
 describe.skip("Clipboard", () => {

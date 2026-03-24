@@ -18,17 +18,17 @@ import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
-import { Cell } from "../src/cell/cell";
-import { Batcher } from "../src/common/batcher";
-import { FocusMode } from "../src/common/cellTypes";
-import * as Classes from "../src/common/classes";
-import { Grid } from "../src/common/grid";
-import { Rect } from "../src/common/rect";
-import { RenderMode } from "../src/common/renderMode";
-import type { MenuContext } from "../src/interactions/menus/menuContext";
-import { type Region, Regions } from "../src/regions";
-import { TableBody, type TableBodyProps } from "../src/tableBody";
-import { cellClassNames } from "../src/tableBodyCells";
+import { Cell } from "./cell/cell";
+import { Batcher } from "./common/batcher";
+import { FocusMode } from "./common/cellTypes";
+import * as Classes from "./common/classes";
+import { Grid } from "./common/grid";
+import { Rect } from "./common/rect";
+import { RenderMode } from "./common/renderMode";
+import type { MenuContext } from "./interactions/menus/menuContext";
+import { type Region, Regions } from "./regions";
+import { TableBody, type TableBodyProps } from "./tableBody";
+import { cellClassNames } from "./tableBodyCells";
 
 describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.

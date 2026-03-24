@@ -21,9 +21,9 @@ import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
 
-import { Clipboard } from "../src/common/clipboard";
-import { CopyCellsMenuItem, MenuContextImpl } from "../src/interactions/menus";
-import { Regions } from "../src/regions";
+import { Clipboard } from "../../common/clipboard";
+import { CopyCellsMenuItem, MenuContextImpl } from ".";
+import { Regions } from "../../regions";
 
 describe("Menus", () => {
     describe("MenuContextImpl", () => {

@@ -20,7 +20,7 @@ import sinon from "sinon";
 
 import { EditableText } from "@blueprintjs/core";
 
-import { EditableName } from "../src";
+import { EditableName } from "..";
 
 describe("<EditableName>", () => {
     it("renders", () => {

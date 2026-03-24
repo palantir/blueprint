@@ -17,10 +17,10 @@
 import { render } from "@testing-library/react";
 import { expect } from "chai";
 
-import { Cell, Column, ColumnLoadingOption, Table } from "../src";
-import * as Classes from "../src/common/classes";
+import { Cell, Column, ColumnLoadingOption, Table } from ".";
+import * as Classes from "./common/classes";
 
-import { CellType, expectCellLoading } from "./cellTestUtils";
+import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import { ElementHarness } from "./harness";
 
 describe("Column", () => {

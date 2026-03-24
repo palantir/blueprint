@@ -20,9 +20,9 @@ import { mount } from "enzyme";
 import { Component } from "react";
 import sinon from "sinon";
 
-import * as Classes from "../src/common/classes";
-import { Resizable, type ResizableProps, type ResizeableState } from "../src/interactions/resizable";
-import { Orientation } from "../src/interactions/resizeHandle";
+import * as Classes from "../common/classes";
+import { Resizable, type ResizableProps, type ResizeableState } from "./resizable";
+import { Orientation } from "./resizeHandle";
 
 import { ElementHarness } from "./harness";
 

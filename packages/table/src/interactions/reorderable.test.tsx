@@ -18,11 +18,11 @@ import { render } from "@testing-library/react";
 import { expect } from "chai";
 import sinon from "sinon";
 
-import { Regions } from "../src/";
-import { FocusMode } from "../src/common/cellTypes";
-import { DragReorderable } from "../src/interactions/reorderable";
+import { Regions } from "../";
+import { FocusMode } from "../common/cellTypes";
+import { DragReorderable } from "./reorderable";
 
-import { ElementHarness } from "./harness";
+import { ElementHarness } from "../harness";
 
 const ELEMENT_CLASS = "element";
 const ELEMENT_SELECTOR = `.${ELEMENT_CLASS}`;

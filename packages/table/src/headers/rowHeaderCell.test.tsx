@@ -21,11 +21,11 @@ import sinon from "sinon";
 
 import { H4 } from "@blueprintjs/core";
 
-import { RowHeaderCell } from "../src";
-import * as Classes from "../src/common/classes";
+import { RowHeaderCell } from "..";
+import * as Classes from "../common/classes";
 
-import { ElementHarness } from "./harness";
-import { createTableOfSize } from "./mocks/table";
+import { ElementHarness } from "../harness";
+import { createTableOfSize } from "../mocks/table";
 
 describe("<RowHeaderCell>", () => {
     it("Default renderer", () => {

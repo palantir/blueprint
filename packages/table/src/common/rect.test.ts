@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import { Rect } from "../src/common/rect";
+import { Rect } from "./rect";
 
 describe("Rect", () => {
     it("wraps AnyRects", () => {

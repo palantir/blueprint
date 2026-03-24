@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import { Batcher } from "../src/common/batcher";
+import { Batcher } from "./batcher";
 
 describe("Batcher", () => {
     it("creates objects from batch args", () => {

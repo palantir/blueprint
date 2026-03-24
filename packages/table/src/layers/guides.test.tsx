@@ -17,10 +17,10 @@
 import { render } from "@testing-library/react";
 import { expect } from "chai";
 
-import * as Classes from "../src/common/classes";
-import { GuideLayer } from "../src/layers/guides";
+import * as Classes from "../common/classes";
+import { GuideLayer } from "./guides";
 
-import { ElementHarness } from "./harness";
+import { ElementHarness } from "../harness";
 
 describe("Guides", () => {
     it("defaults to no guides", () => {

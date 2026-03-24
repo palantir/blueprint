@@ -18,10 +18,10 @@ import { render } from "@testing-library/react";
 import { expect } from "chai";
 import sinon from "sinon";
 
-import { RegionCardinality, Regions, SelectionModes } from "../src";
-import * as Classes from "../src/common/classes";
-import { Clipboard } from "../src/common/clipboard";
-import { Utils } from "../src/common/utils";
+import { RegionCardinality, Regions, SelectionModes } from ".";
+import * as Classes from "./common/classes";
+import { Clipboard } from "./common/clipboard";
+import { Utils } from "./common/utils";
 
 import { ElementHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";

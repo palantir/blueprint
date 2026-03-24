@@ -24,18 +24,18 @@ import sinon from "sinon";
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableProps } from "../src";
-import { type CellCoordinates, type FocusedCellCoordinates } from "../src/common/cellTypes";
-import * as Classes from "../src/common/classes";
-import * as Errors from "../src/common/errors";
-import type { ColumnIndices, RowIndices } from "../src/common/grid";
-import { RenderMode } from "../src/common/renderMode";
-import { TableQuadrant } from "../src/quadrants/tableQuadrant";
-import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
-import { type Region, Regions } from "../src/regions";
-import type { TableState } from "../src/tableState";
+import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableProps } from ".";
+import { type CellCoordinates, type FocusedCellCoordinates } from "./common/cellTypes";
+import * as Classes from "./common/classes";
+import * as Errors from "./common/errors";
+import type { ColumnIndices, RowIndices } from "./common/grid";
+import { RenderMode } from "./common/renderMode";
+import { TableQuadrant } from "./quadrants/tableQuadrant";
+import { TableQuadrantStack } from "./quadrants/tableQuadrantStack";
+import { type Region, Regions } from "./regions";
+import type { TableState } from "./tableState";
 
-import { CellType, expectCellLoading } from "./cellTestUtils";
+import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import { ElementHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 

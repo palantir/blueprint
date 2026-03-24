@@ -16,10 +16,10 @@
 
 import { expect } from "chai";
 
-import { Grid } from "../src/common/grid";
-import { Rect } from "../src/common/rect";
-import { Utils } from "../src/common/utils";
-import { Regions } from "../src/regions";
+import { Grid } from "./grid";
+import { Rect } from "./rect";
+import { Utils } from "./utils";
+import { Regions } from "../regions";
 
 const test7s = Utils.times(10, () => 7);
 const test13s = Utils.times(10, () => 13);

@@ -4,7 +4,7 @@
 
 import { expect } from "chai";
 
-import { resizeRowsByApproximateHeight } from "../src/resizeRows";
+import { resizeRowsByApproximateHeight } from "./resizeRows";
 
 import { createStringOfLength } from "./mocks/table";
 
