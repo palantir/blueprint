@@ -35,7 +35,7 @@ describe("<Section>", () => {
 
     it("supports icon", () => {
         const { container } = render(<Section icon={IconNames.GRAPH} title="title" />);
-        expect(container.querySelector(`.${Classes.ICON}`)).toBeInTheDocument();
+        expect(container.querySelector(`[data-icon="${IconNames.GRAPH}"]`)).toBeInTheDocument();
     });
 
     it("renders optional title element", () => {
