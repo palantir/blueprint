@@ -52,8 +52,8 @@ describe("<SegmentedControl>", () => {
         render(<SegmentedControl options={[{ icon: IconNames.GRID, value: "grid" }]} />);
         const button = screen.getByRole("radio");
         const icon = button.querySelector(`.${Classes.ICON}`);
-        expect(icon).toBeInTheDocument();
-        expect(icon).toHaveAttribute("data-icon", IconNames.GRID);
+        expect(icon).not.toBeNull();
+        expect(icon!).toHaveAttribute("data-icon", IconNames.GRID);
     });
 
     it("button text defaults to value when no label is passed", () => {
