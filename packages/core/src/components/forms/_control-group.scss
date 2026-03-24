@@ -131,7 +131,7 @@
 
   &:not(.#{$ns}-vertical) {
     > :not(:last-child) {
-      margin-right: $pt-spacing * 0.5;
+      margin-right: calc(var(--bp-surface-spacing) * 0.5);
     }
   }
 
@@ -157,7 +157,7 @@
     flex-direction: column;
 
     > :not(:last-child) {
-      margin-bottom: $pt-spacing * 0.5;
+      margin-bottom: calc(var(--bp-surface-spacing) * 0.5);
     }
   }
 }
