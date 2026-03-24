@@ -9,32 +9,34 @@ $toast-min-width: $pt-spacing * 75 !default;
 $toast-max-width: $pt-spacing * 125 !default;
 $toast-margin: $pt-spacing * 5 !default;
 
+/* stylelint-disable alpha-value-notation */
 $toast-intent-colors: (
   "primary": (
-    $pt-intent-primary,
-    $white,
-    $blue2,
-    $blue1,
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-foreground),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
   ),
   "success": (
-    $pt-intent-success,
-    $white,
-    $green2,
-    $green1,
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-foreground),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
   ),
   "warning": (
-    $orange5,
-    $dark-gray1,
-    $orange4,
-    $orange3,
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h)"},
+    var(--bp-intent-warning-foreground),
+    #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.16) c h)"},
+    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.12) c h)"},
   ),
   "danger": (
-    $pt-intent-danger,
-    $white,
-    $red2,
-    $red1,
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-foreground),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
   ),
 ) !default;
+/* stylelint-enable alpha-value-notation */
 
 @mixin pt-toast-intent(
   $background-color,
@@ -46,7 +48,8 @@ $toast-intent-colors: (
   color: $text-and-focus-color;
 
   .#{$ns}-icon:first-child {
-    color: rgba($text-and-focus-color, 0.7);
+    /* stylelint-disable-next-line alpha-value-notation */
+    color: #{"oklch(from "}#{$text-and-focus-color}#{" l c h / 0.7)"};
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
@@ -67,11 +70,13 @@ $toast-intent-colors: (
 
     &:focus {
       // blue outline color shows poorly on colored bg
-      outline-color: rgba($text-and-focus-color, 0.75);
+      /* stylelint-disable-next-line alpha-value-notation */
+      outline-color: #{"oklch(from "}#{$text-and-focus-color}#{" l c h / 0.75)"};
     }
 
     &:last-child > .#{$ns}-icon-cross {
-      color: rgba($text-and-focus-color, 0.7) !important;
+      /* stylelint-disable-next-line alpha-value-notation */
+      color: #{"oklch(from "}#{$text-and-focus-color}#{" l c h / 0.7)"} !important;
     }
   }
   /* stylelint-enable declaration-no-important */
@@ -84,7 +89,7 @@ $toast-intent-colors: (
   );
   $leave-blur: (
     opacity: 0 1,
-    filter: blur($pt-spacing * 2) blur(0),
+    filter: blur(calc(var(--bp-surface-spacing) * 2)) blur(0),
   );
 
   // new toasts slide in from the top
@@ -92,16 +97,16 @@ $toast-intent-colors: (
     "#{$ns}-toast",
     "enter",
     $enter-translate,
-    $duration: $pt-transition-duration * 3,
-    $easing: $pt-transition-ease-bounce,
+    $duration: calc(var(--bp-emphasis-transition-duration) * 3),
+    $easing: var(--bp-emphasis-ease-bounce),
     $before: "&"
   );
   @include react-transition-phase(
     "#{$ns}-toast",
     "enter",
     $enter-translate,
-    $duration: $pt-transition-duration * 3,
-    $easing: $pt-transition-ease-bounce,
+    $duration: calc(var(--bp-emphasis-transition-duration) * 3),
+    $easing: var(--bp-emphasis-ease-bounce),
     $before: "&",
     $after: "~ &"
   );
@@ -110,7 +115,7 @@ $toast-intent-colors: (
     "#{$ns}-toast",
     "exit",
     $leave-blur,
-    $duration: $pt-transition-duration * 3,
+    $duration: calc(var(--bp-emphasis-transition-duration) * 3),
     $before: "&"
   );
   // younger siblings of leaving toasts wait a moment before moving to fill gap
@@ -118,18 +123,18 @@ $toast-intent-colors: (
     "#{$ns}-toast",
     "exit",
     $enter-translate,
-    $delay: $pt-transition-duration * 0.5,
+    $delay: calc(var(--bp-emphasis-transition-duration) * 0.5),
     $before: "&",
     $after: "~ &"
   );
   align-items: flex-start;
-  background-color: $white;
-  border-radius: $pt-border-radius;
-  box-shadow: $pt-toast-box-shadow;
+  background-color: var(--bp-palette-white);
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: var(--bp-surface-shadow-3);
   display: flex;
-  margin: $toast-margin 0 0;
-  max-width: min($toast-max-width, 100%);
-  min-width: min($toast-min-width, 100%);
+  margin: calc(var(--bp-surface-spacing) * 5) 0 0;
+  max-width: min(calc(var(--bp-surface-spacing) * 125), 100%);
+  min-width: min(calc(var(--bp-surface-spacing) * 75), 100%);
 
   // toast is interactive even though container isn't
   pointer-events: all;
@@ -140,42 +145,44 @@ $toast-intent-colors: (
 
   .#{$ns}-button-group {
     flex: 0 0 auto;
-    padding: ($toast-height - $pt-button-height) * 0.5;
+    padding: calc((var(--bp-surface-spacing) * 10 - var(--bp-surface-spacing) * 7.5) * 0.5);
     padding-left: 0;
   }
 
   > .#{$ns}-icon {
-    color: $pt-icon-color;
-    margin: ($toast-height - $pt-icon-size-standard) * 0.5;
+    color: var(--bp-typography-color-muted);
+    margin: calc((var(--bp-surface-spacing) * 10 - var(--bp-surface-spacing) * 4) * 0.5);
     margin-right: 0;
   }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: $dark-gray4;
-    box-shadow: $pt-dark-toast-box-shadow;
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l - 0.14) c h);
+    box-shadow: var(--bp-surface-shadow-3);
 
     > .#{$ns}-icon {
-      color: $pt-dark-icon-color;
+      color: var(--bp-typography-color-muted);
     }
 
     // increase contrast for default intent in dark mode
     .#{$ns}-button .#{$ns}-icon {
-      color: rgba($white, 0.7);
+      /* stylelint-disable-next-line alpha-value-notation */
+      color: oklch(from var(--bp-palette-white) l c h / 0.7);
     }
   }
 
   &[class*="#{$ns}-intent-"] {
     a {
-      color: rgba($white, 0.7);
+      /* stylelint-disable-next-line alpha-value-notation */
+      color: oklch(from var(--bp-palette-white) l c h / 0.7);
 
       &:hover {
-        color: $white;
+        color: var(--bp-palette-white);
       }
     }
 
     > .#{$ns}-icon {
-      color: $white;
+      color: var(--bp-palette-white);
     }
   }
 
@@ -205,7 +212,7 @@ $toast-intent-colors: (
   overflow: hidden;
 
   // ensure there's enough space for full box-shadow
-  padding: 0 $toast-margin $toast-margin;
+  padding: 0 calc(var(--bp-surface-spacing) * 5) calc(var(--bp-surface-spacing) * 5);
 
   // container will not block clicks on elements behind it
   pointer-events: none;
@@ -213,7 +220,7 @@ $toast-intent-colors: (
   right: 0;
 
   // #975 ensure toasts are on top of everything (esp dialogs)
-  z-index: $pt-z-index-overlay * 2;
+  z-index: var(--bp-surface-z-index-4);
 
   &.#{$ns}-toast-container-in-portal {
     position: fixed;
