@@ -9,13 +9,13 @@
 @import "./submenu";
 
 .#{$ns}-menu {
-  background: $menu-background-color;
-  border-radius: $pt-border-radius;
-  color: $pt-text-color;
+  background: var(--bp-palette-white);
+  border-radius: var(--bp-surface-border-radius);
+  color: var(--bp-typography-color-default-rest);
   list-style: none;
   margin: 0;
-  min-width: $menu-min-width;
-  padding: $pt-spacing;
+  min-width: calc(var(--bp-surface-spacing) * 45);
+  padding: var(--bp-surface-spacing);
   text-align: left;
 }
 
@@ -33,7 +33,7 @@
   &::before {
     // support pt-icon-* classes directly on this element
     @include pt-icon;
-    margin-right: $menu-item-padding;
+    margin-right: calc(var(--bp-surface-spacing) * 2);
   }
 
   .#{$ns}-large & {
@@ -41,7 +41,7 @@
 
     &::before {
       @include pt-icon($pt-icon-size-large);
-      margin-right: $menu-item-padding-large;
+      margin-right: calc(var(--bp-surface-spacing) * 2);
     }
   }
 
@@ -68,8 +68,8 @@ button.#{$ns}-menu-item {
 // dark theme
 .#{$ns}-dark {
   .#{$ns}-menu {
-    background: $dark-menu-background-color;
-    color: $pt-dark-text-color;
+    background: oklch(from var(--bp-intent-default-rest) calc(l - 0.2) c h);
+    color: var(--bp-typography-color-default-rest);
   }
 
   .#{$ns}-menu-item {
@@ -82,15 +82,15 @@ button.#{$ns}-menu-item {
 
   .#{$ns}-menu-divider,
   .#{$ns}-menu-header {
-    border-color: $pt-dark-divider-white;
+    border-color: var(--bp-surface-border-color-default);
   }
 
   .#{$ns}-menu-header > h6 {
-    color: $pt-dark-heading-color;
+    color: var(--bp-typography-color-default-rest);
   }
 }
 
 // #402 support menu inside label
 .#{$ns}-label .#{$ns}-menu {
-  margin-top: $pt-spacing;
+  margin-top: var(--bp-surface-spacing);
 }

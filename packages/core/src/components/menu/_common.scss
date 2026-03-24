@@ -35,59 +35,61 @@ $dark-menu-background-color: $dark-gray3 !default;
 $menu-item-color-hover: rgba($gray3, 0.15) !default;
 $menu-item-color-active: rgba($gray3, 0.3) !default;
 
+/* stylelint-disable alpha-value-notation */
 $menu-item-intent-colors: (
   "primary": (
-    /* bg */ $blue3,
-    /* fg */ $blue2,
-    /* fg active */ $blue1,
+    /* bg */ var(--bp-intent-primary-rest),
+    /* fg */ var(--bp-intent-primary-hover),
+    /* fg active */ var(--bp-intent-primary-active),
   ),
   "success": (
-    /* bg */ $green3,
-    /* fg */ $green2,
-    /* fg active */ $green1,
+    /* bg */ var(--bp-intent-success-rest),
+    /* fg */ var(--bp-intent-success-hover),
+    /* fg active */ var(--bp-intent-success-active),
   ),
   "warning": (
-    /* bg */ $orange3,
-    /* fg */ $orange2,
-    /* fg active */ $orange1,
+    /* bg */ var(--bp-intent-warning-rest),
+    /* fg */ var(--bp-intent-warning-hover),
+    /* fg active */ var(--bp-intent-warning-active),
   ),
   "danger": (
-    /* bg */ $red3,
-    /* fg */ $red2,
-    /* fg active */ $red1,
+    /* bg */ var(--bp-intent-danger-rest),
+    /* fg */ var(--bp-intent-danger-hover),
+    /* fg active */ var(--bp-intent-danger-active),
   ),
 ) !default;
 
 $dark-menu-item-intent-colors: (
   "primary": (
-    /* bg */ $blue3,
-    /* fg */ $blue5,
-    /* fg active */ $blue6,
+    /* bg */ var(--bp-intent-primary-rest),
+    /* fg */ #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h)"},
   ),
   "success": (
-    /* bg */ $green3,
-    /* fg */ $green5,
-    /* fg active */ $green6,
+    /* bg */ var(--bp-intent-success-rest),
+    /* fg */ #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h)"},
   ),
   "warning": (
-    /* bg */ $orange3,
-    /* fg */ $orange5,
-    /* fg active */ $orange6,
+    /* bg */ var(--bp-intent-warning-rest),
+    /* fg */ #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h)"},
   ),
   "danger": (
-    /* bg */ $red3,
-    /* fg */ $red5,
-    /* fg active */ $red6,
+    /* bg */ var(--bp-intent-danger-rest),
+    /* fg */ #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h)"},
   ),
 ) !default;
+/* stylelint-enable alpha-value-notation */
 
 @mixin menu-item() {
-  @include pt-flex-container(row, $menu-item-padding);
+  @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2));
   align-items: flex-start;
-  border-radius: $menu-item-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   color: inherit;
   line-height: $menu-item-line-height;
-  padding: $menu-item-padding-vertical $menu-item-padding;
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
   text-decoration: none;
   user-select: none;
 
@@ -103,14 +105,14 @@ $dark-menu-item-intent-colors: (
   }
 
   .#{$ns}-menu-item-label {
-    color: $pt-text-color-muted;
+    color: var(--bp-typography-color-muted);
   }
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-icon-color;
+    color: var(--bp-typography-color-muted);
   }
 
   &::before,
@@ -126,10 +128,11 @@ $dark-menu-item-intent-colors: (
   // The latter is often used to indicate keyboard navigation, and it's helpful to distinguish between keyboard
   // and mouse interactions.
   &:active {
-    background-color: $menu-item-color-active;
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3);
 
     .#{$ns}-menu-item-label {
-      color: $pt-text-color;
+      color: var(--bp-typography-color-default-rest);
     }
   }
 
@@ -146,7 +149,7 @@ $dark-menu-item-intent-colors: (
 
     .#{$ns}-menu-item-selected-icon {
       align-self: center;
-      margin: 0 $menu-item-selected-icon-spacing;
+      margin: 0 calc(var(--bp-surface-spacing) * 0.5);
     }
   }
 
@@ -154,7 +157,7 @@ $dark-menu-item-intent-colors: (
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
     background-color: inherit !important;
-    color: $pt-text-color-disabled !important;
+    color: var(--bp-typography-color-default-disabled) !important;
     cursor: not-allowed !important;
     // override global a:focus styles
     outline: none !important;
@@ -162,11 +165,11 @@ $dark-menu-item-intent-colors: (
     &::before,
     .#{$ns}-menu-item-icon,
     .#{$ns}-submenu-icon {
-      color: $pt-icon-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
     }
 
     .#{$ns}-menu-item-label {
-      color: $pt-text-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
@@ -176,14 +179,14 @@ $dark-menu-item-intent-colors: (
   color: inherit;
 
   .#{$ns}-menu-item-label {
-    color: $pt-dark-text-color-muted;
+    color: var(--bp-typography-color-muted);
   }
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-dark-icon-color;
+    color: var(--bp-typography-color-muted);
   }
 
   &:hover {
@@ -193,10 +196,11 @@ $dark-menu-item-intent-colors: (
   // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
   &:active {
     // we can use the same color as light theme due to transparency
-    background-color: $menu-item-color-active;
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3);
 
     .#{$ns}-menu-item-label {
-      color: $pt-dark-text-color;
+      color: var(--bp-typography-color-default-rest);
     }
   }
 
@@ -207,23 +211,24 @@ $dark-menu-item-intent-colors: (
   // pt-disable always overrides over styles
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
-    color: $pt-dark-text-color-disabled !important;
+    color: var(--bp-typography-color-default-disabled) !important;
 
     &::before,
     .#{$ns}-menu-item-icon,
     .#{$ns}-submenu-icon {
-      color: $pt-dark-icon-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
     }
 
     .#{$ns}-menu-item-label {
-      color: $pt-dark-text-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
 }
 
 @mixin menu-item-hover() {
-  background-color: $menu-item-color-hover;
+  /* stylelint-disable-next-line alpha-value-notation */
+  background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
   color: inherit;
   cursor: pointer;
   text-decoration: none;
@@ -235,7 +240,7 @@ $dark-menu-item-intent-colors: (
   // need to override typography styles here
   .#{$ns}-menu-item-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-dark-icon-color;
+    color: var(--bp-typography-color-muted);
   }
 }
 
@@ -252,7 +257,8 @@ $dark-menu-item-intent-colors: (
     }
   }
 
-  background-color: rgba(list.nth(map.get($intent-colors, "primary"), 1), $background-alpha);
+  /* stylelint-disable alpha-value-notation */
+  background-color: #{"oklch(from "}#{list.nth(map.get($intent-colors, "primary"), 1)}#{" l c h / "}#{$background-alpha}#{")"};
   color: list.nth(map.get($intent-colors, "primary"), 2);
 
   &::before,
@@ -264,7 +270,7 @@ $dark-menu-item-intent-colors: (
 
   @each $intent in ("success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba(list.nth(map.get($intent-colors, $intent), 1), $background-alpha);
+      background-color: #{"oklch(from "}#{list.nth(map.get($intent-colors, $intent), 1)}#{" l c h / "}#{$background-alpha}#{")"};
       color: list.nth(map.get($intent-colors, $intent), 2);
 
       &::before,
@@ -274,10 +280,11 @@ $dark-menu-item-intent-colors: (
       }
     }
   }
+  /* stylelint-enable alpha-value-notation */
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    background-color: $pt-high-contrast-mode-active-background-color;
+    background-color: highlight;
   }
 }
 
@@ -293,30 +300,32 @@ $dark-menu-item-intent-colors: (
       color: inherit;
     }
 
+    /* stylelint-disable alpha-value-notation */
     &:hover {
       @if $is-dark {
-        background-color: rgba($bg-color, 0.2);
+        background-color: #{"oklch(from "}#{$bg-color}#{" l c h / 0.2)"};
       } @else {
-        background-color: rgba($bg-color, 0.1);
+        background-color: #{"oklch(from "}#{$bg-color}#{" l c h / 0.1)"};
       }
     }
 
     &:active,
     &.#{$ns}-active {
       @if $is-dark {
-        background-color: rgba($bg-color, 0.3);
+        background-color: #{"oklch(from "}#{$bg-color}#{" l c h / 0.3)"};
       } @else {
-        background-color: rgba($bg-color, 0.2);
+        background-color: #{"oklch(from "}#{$bg-color}#{" l c h / 0.2)"};
       }
       color: $fg-color-active;
     }
+    /* stylelint-enable alpha-value-notation */
   }
 }
 
 @mixin menu-item-large() {
-  font-size: $pt-font-size-large;
-  padding-bottom: $menu-item-padding-vertical-large;
-  padding-top: $menu-item-padding-vertical-large;
+  font-size: var(--bp-typography-size-body-large);
+  padding-bottom: calc(var(--bp-surface-spacing) * 2.25);
+  padding-top: calc(var(--bp-surface-spacing) * 2.25);
 
   .#{$ns}-menu-item-icon {
     height: $menu-item-line-height;
@@ -331,8 +340,8 @@ $dark-menu-item-intent-colors: (
 
 @mixin menu-item-small() {
   line-height: $menu-item-line-height-small;
-  padding-bottom: $menu-item-padding-vertical-small;
-  padding-top: $menu-item-padding-vertical-small;
+  padding-bottom: calc(var(--bp-surface-spacing) * 0.5);
+  padding-top: calc(var(--bp-surface-spacing) * 0.5);
 
   .#{$ns}-menu-item-icon {
     height: $menu-item-line-height-small;
@@ -340,20 +349,21 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-divider() {
-  border-top: 1px solid $pt-divider-black;
+  border-top: 1px solid var(--bp-surface-border-color-default);
   display: block;
   // use negative margin to make dividers take up full menu width
-  margin: $pt-spacing (-$pt-spacing);
+  margin: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * -1);
 
   .#{$ns}-dark & {
-    border-top-color: $pt-dark-divider-white;
+    border-top-color: var(--bp-surface-border-color-default);
   }
 }
 
 @mixin menu-header($heading-selector: null) {
   @include menu-divider;
   cursor: default;
-  padding-left: $menu-item-padding - $pt-spacing;
+  // $menu-item-padding (8px) - $pt-spacing (4px) = 4px = 1 spacing unit
+  padding-left: var(--bp-surface-spacing);
 
   @if $heading-selector != null {
     &:first-of-type {
@@ -374,16 +384,16 @@ $dark-menu-item-intent-colors: (
   @include heading-typography;
   @include overflow-ellipsis;
   // a little extra space to avoid clipping descenders (because overflow hidden)
-  line-height: $pt-icon-size-standard + 1px;
+  line-height: calc(var(--bp-surface-spacing) * 4 + 1px);
   margin: 0;
-  padding: ($pt-spacing * 2) $menu-item-padding 0 ($pt-spacing * 2);
+  padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 2) 0;
 }
 
 @mixin menu-header-large($heading-selector) {
   #{$heading-selector} {
-    font-size: $pt-spacing * 4.5;
-    padding-bottom: $pt-spacing;
-    padding-top: $pt-spacing * 4;
+    font-size: calc(var(--bp-surface-spacing) * 4.5);
+    padding-bottom: var(--bp-surface-spacing);
+    padding-top: calc(var(--bp-surface-spacing) * 4);
   }
 
   &:first-of-type #{$heading-selector} {
