@@ -79,13 +79,7 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
         const { version, nextVersion, versions } = this.props.packageInfo;
         if (versions.length === 1) {
             return (
-                <Tag
-                    interactive={false}
-                    minimal={true}
-                    round={true}
-                    role="button"
-                    aria-label={`Version ${major(versions[0])}`}
-                >
+                <Tag interactive={false} minimal={true} round={true} aria-label={`Version ${major(versions[0])}`}>
                     v{major(versions[0])}
                 </Tag>
             );

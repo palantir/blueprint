@@ -142,9 +142,6 @@ function interpolateClassNamespace(value: string): string {
 async function fetchNpmPackageInfo(
     packageName: string,
 ): Promise<{ name: string; version: string; versions: string[]; nextVersion?: string }> {
-    // Get latest version (abbreviated metadata by default)
-    const { version } = await packageJson(packageName);
-
     // Get all versions
     const fullData = await packageJson(packageName, { allVersions: true });
     const allVersions = Object.keys(fullData.versions ?? {});
@@ -159,6 +156,7 @@ async function fetchNpmPackageInfo(
     }
 
     const versions = Array.from(majors.values()).sort(semver.rcompare);
+    const version = fullData["dist-tags"].latest;
     const nextVersion = fullData["dist-tags"].next;
 
     return { name: packageName, version: version!, versions, nextVersion };
