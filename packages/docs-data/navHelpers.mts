@@ -69,10 +69,6 @@ export function assignRoutes(navConfig: NavStructure, pages: Record<string, DocP
         if (page === undefined) return;
 
         page.route = route;
-
-        // Parse <h1>–<h6> from HTML strings into DocHeadingItem objects.
-        // Standard markdown headings (# / ##) are rendered to HTML by marked;
-        // Documentalist's @# syntax (now removed) would have produced these objects directly.
         page.contents = extractHtmlHeadingsFromContents(page.contents);
 
         for (const item of page.contents) {
@@ -191,7 +187,7 @@ export function buildNavPage(
         level,
         reference: ref,
         route,
-        title: page.title === "(untitled)" ? kebabToTitleCase(ref) : page.title,
+        title: kebabToTitleCase(ref),
     };
 }
 
@@ -229,6 +225,9 @@ export function extractHeadingChildren(page: DocPage, pageNavLevel: number): Nav
     return result;
 }
 
+/**
+ * Regex match #, ##, and ### as headings/subheadings that are shown in nav
+ */
 const HTML_HEADING_RE = /<h([1-3])[^>]*>(.*?)<\/h\1>/gi;
 
 /**
