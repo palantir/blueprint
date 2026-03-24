@@ -16,8 +16,8 @@
 
 import { expect } from "chai";
 
-import { Direction } from "../../../src/common/direction";
-import * as DirectionUtils from "../../../src/common/internal/directionUtils";
+import { Direction } from "../direction";
+import * as DirectionUtils from "./directionUtils";
 
 describe("DirectionUtils", () => {
     describe("directionToDelta", () => {

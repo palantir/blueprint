@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import * as PlatformUtils from "../../../src/common/internal/platformUtils";
+import * as PlatformUtils from "./platformUtils";
 
 describe("platformUtils", () => {
     describe("isMac", () => {

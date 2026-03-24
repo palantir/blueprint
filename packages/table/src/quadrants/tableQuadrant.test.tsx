@@ -18,10 +18,10 @@ import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
-import * as Classes from "../../src/common/classes";
-import * as Errors from "../../src/common/errors";
-import { Grid } from "../../src/common/grid";
-import { QuadrantType, TableQuadrant, type TableQuadrantProps } from "../../src/quadrants/tableQuadrant";
+import * as Classes from "../common/classes";
+import * as Errors from "../common/errors";
+import { Grid } from "../common/grid";
+import { QuadrantType, TableQuadrant, type TableQuadrantProps } from "./tableQuadrant";
 
 /**
  * <TableQuadrant> is responsible for showing a single table "instance" of both

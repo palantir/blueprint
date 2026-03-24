@@ -1,7 +1,3 @@
 {
-    "extends": "../src/tsconfig",
-    "compilerOptions": {
-        "declaration": false,
-        "noEmit": true
-    }
+    "extends": "../src/tsconfig.test.json"
 }

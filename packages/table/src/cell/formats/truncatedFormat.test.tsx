@@ -17,10 +17,10 @@
 import { render } from "@testing-library/react";
 import { expect } from "chai";
 
-import { TruncatedFormat, TruncatedPopoverMode } from "../../src/cell/formats/truncatedFormat";
-import * as Classes from "../../src/common/classes";
-import { ElementHarness } from "../harness";
-import { createStringOfLength } from "../mocks/table";
+import { TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
+import * as Classes from "../../common/classes";
+import { ElementHarness } from "../../harness";
+import { createStringOfLength } from "../../mocks/table";
 
 describe("<TruncatedFormat>", () => {
     it("can automatically truncate and show popover when truncated", () => {

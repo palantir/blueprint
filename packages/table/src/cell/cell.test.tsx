@@ -23,7 +23,7 @@ import { Cell } from "./cell";
 import * as Classes from "../common/classes";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
-import { ElementHarness } from "./harness";
+import { ElementHarness } from "../harness";
 
 describe("Cell", () => {
     it("displays regular content", () => {

@@ -23,9 +23,9 @@ import {
     type FocusedCell,
     type FocusedCellCoordinates,
     FocusMode,
-} from "../../../src/common/cellTypes";
-import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
-import { type Region, Regions } from "../../../src/regions";
+} from "../cellTypes";
+import * as FocusedCellUtils from "./focusedCellUtils";
+import { type Region, Regions } from "../../regions";
 
 describe("FocusedCellUtils", () => {
     describe("expandFocusedRegion", () => {

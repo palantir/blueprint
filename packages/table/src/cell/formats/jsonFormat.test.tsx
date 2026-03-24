@@ -17,10 +17,10 @@
 import { render } from "@testing-library/react";
 import { expect } from "chai";
 
-import { JSONFormat } from "../../src/cell/formats/jsonFormat";
-import { TruncatedPopoverMode } from "../../src/cell/formats/truncatedFormat";
-import * as Classes from "../../src/common/classes";
-import { ElementHarness } from "../harness";
+import { JSONFormat } from "./jsonFormat";
+import { TruncatedPopoverMode } from "./truncatedFormat";
+import * as Classes from "../../common/classes";
+import { ElementHarness } from "../../harness";
 
 describe("<JSONFormat>", () => {
     it("stringifies JSON", () => {

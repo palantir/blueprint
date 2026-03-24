@@ -21,11 +21,11 @@ import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
-import * as Classes from "../../src/common/classes";
-import { Grid } from "../../src/common/grid";
-import * as ScrollUtils from "../../src/common/internal/scrollUtils";
-import { QuadrantType } from "../../src/quadrants/tableQuadrant";
-import { TableQuadrantStack } from "../../src/quadrants/tableQuadrantStack";
+import * as Classes from "../common/classes";
+import { Grid } from "../common/grid";
+import * as ScrollUtils from "../common/internal/scrollUtils";
+import { QuadrantType } from "./tableQuadrant";
+import { TableQuadrantStack } from "./tableQuadrantStack";
 
 /**
  * <TableQuadrantStack> is responsible for sync'ing sizes and scroll positions

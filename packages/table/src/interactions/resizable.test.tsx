@@ -24,7 +24,7 @@ import * as Classes from "../common/classes";
 import { Resizable, type ResizableProps, type ResizeableState } from "./resizable";
 import { Orientation } from "./resizeHandle";
 
-import { ElementHarness } from "./harness";
+import { ElementHarness } from "../harness";
 
 interface ResizableDivProps {
     resizeHandle?: React.JSX.Element;
