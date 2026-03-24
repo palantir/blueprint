@@ -49,15 +49,15 @@
 
     &:hover::before {
       box-shadow:
-        0 0 0 0 oklch(from var(--bp-intent-primary-rest) l c h / 0),
-        0 0 0 0 oklch(from var(--bp-intent-primary-rest) l c h / 0),
-        inset 0 0 0 1px oklch(from var(--bp-intent-primary-rest) l c h / 0.4);
+        0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) l c h / 0)"},
+        0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) l c h / 0)"},
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) l c h / 0.4)"};
     }
 
     &.#{$ns}-editable-text-editing::before {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-primary-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-primary-rest) l c h / 0.752),
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) l c h / 0.752)"},
+        0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) l c h / 0.752)"},
         $input-box-shadow-focus;
     }
   }
@@ -71,15 +71,15 @@
 
     &:hover::before {
       box-shadow:
-        0 0 0 0 oklch(from var(--bp-intent-success-rest) l c h / 0),
-        0 0 0 0 oklch(from var(--bp-intent-success-rest) l c h / 0),
-        inset 0 0 0 1px oklch(from var(--bp-intent-success-rest) l c h / 0.4);
+        0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) l c h / 0)"},
+        0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) l c h / 0)"},
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) l c h / 0.4)"};
     }
 
     &.#{$ns}-editable-text-editing::before {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-success-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-success-rest) l c h / 0.752),
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) l c h / 0.752)"},
+        0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) l c h / 0.752)"},
         $input-box-shadow-focus;
     }
   }
@@ -93,15 +93,15 @@
 
     &:hover::before {
       box-shadow:
-        0 0 0 0 oklch(from var(--bp-intent-warning-rest) l c h / 0),
-        0 0 0 0 oklch(from var(--bp-intent-warning-rest) l c h / 0),
-        inset 0 0 0 1px oklch(from var(--bp-intent-warning-rest) l c h / 0.4);
+        0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) l c h / 0)"},
+        0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) l c h / 0)"},
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) l c h / 0.4)"};
     }
 
     &.#{$ns}-editable-text-editing::before {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-warning-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-warning-rest) l c h / 0.752),
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) l c h / 0.752)"},
+        0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) l c h / 0.752)"},
         $input-box-shadow-focus;
     }
   }
@@ -115,15 +115,15 @@
 
     &:hover::before {
       box-shadow:
-        0 0 0 0 oklch(from var(--bp-intent-danger-rest) l c h / 0),
-        0 0 0 0 oklch(from var(--bp-intent-danger-rest) l c h / 0),
-        inset 0 0 0 1px oklch(from var(--bp-intent-danger-rest) l c h / 0.4);
+        0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) l c h / 0)"},
+        0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) l c h / 0)"},
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) l c h / 0.4)"};
     }
 
     &.#{$ns}-editable-text-editing::before {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-danger-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-danger-rest) l c h / 0.752),
+        inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) l c h / 0.752)"},
+        0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) l c h / 0.752)"},
         $input-box-shadow-focus;
     }
   }
@@ -151,20 +151,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
+        color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0),
-          0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0),
-          inset 0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.4);
+          0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.752),
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
@@ -173,20 +173,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h);
+        color: #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0),
-          0 0 0 0 oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0),
-          inset 0 0 0 1px oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.4);
+          0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.752),
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
@@ -195,20 +195,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h);
+        color: #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0),
-          0 0 0 0 oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0),
-          inset 0 0 0 1px oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.4);
+          0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.752),
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
@@ -217,20 +217,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h);
+        color: #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0),
-          0 0 0 0 oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0),
-          inset 0 0 0 1px oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.4);
+          0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.752),
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
