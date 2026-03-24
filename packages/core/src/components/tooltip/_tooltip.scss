@@ -19,9 +19,9 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
     $arrow-target-offset: -$pt-spacing
   );
   @include popover-appearance(
-    $tooltip-background-color,
-    $tooltip-text-color,
-    $pt-tooltip-box-shadow,
+    var(--bp-palette-dark-gray-5),
+    var(--bp-palette-light-gray-5),
+    var(--bp-surface-shadow-3),
     $tooltip-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
@@ -38,13 +38,13 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
   @include pt-dark-typography-colors;
 
   .#{$ns}-popover-content {
-    padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+    padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 3);
   }
 
   &.#{$ns}-compact {
     .#{$ns}-popover-content {
       line-height: 1rem; // ensure a consistent line height
-      padding: $tooltip-padding-compact-vertical $tooltip-padding-compact-horizontal;
+      padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
     }
 
     // Compact tooltip content is usually just a single line with default line-height, where the slight vertical
@@ -58,24 +58,24 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
   // need to adjust arrow placement a little bit for tooltips
   &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
-    transform: translateY($pt-spacing * -0.75);
+    transform: translateY(calc(var(--bp-surface-spacing) * -0.75));
   }
   &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
-    transform: translateX($pt-spacing * -0.75);
+    transform: translateX(calc(var(--bp-surface-spacing) * -0.75));
   }
   &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
-    transform: translateY($pt-spacing * 0.75);
+    transform: translateY(calc(var(--bp-surface-spacing) * 0.75));
   }
   &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
-    transform: translateX($pt-spacing * 0.75);
+    transform: translateX(calc(var(--bp-surface-spacing) * 0.75));
   }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover-appearance(
-      $dark-tooltip-background-color,
-      $dark-tooltip-text-color,
-      $pt-dark-tooltip-box-shadow,
+      var(--bp-palette-light-gray-3),
+      var(--bp-palette-dark-gray-5),
+      var(--bp-surface-shadow-3),
       $dark-tooltip-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
@@ -83,20 +83,63 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
     @include pt-typography-colors;
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-popover-content {
-        background: $color;
-        color: $white;
+  &.#{$ns}-intent-primary {
+    .#{$ns}-popover-content {
+      background: var(--bp-intent-primary-rest);
+      color: var(--bp-intent-primary-foreground);
+    }
+
+    .#{$ns}-popover-arrow-fill {
+      fill: var(--bp-intent-primary-rest);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // In Windows high contrast mode, just force the color to be the same as the border.
+        fill: buttonborder;
       }
+    }
+  }
 
-      .#{$ns}-popover-arrow-fill {
-        fill: $color;
+  &.#{$ns}-intent-success {
+    .#{$ns}-popover-content {
+      background: var(--bp-intent-success-rest);
+      color: var(--bp-intent-success-foreground);
+    }
 
-        @media (forced-colors: active) and (prefers-color-scheme: dark) {
-          // In Windows high contrast mode, just force the color to be the same as the border.
-          fill: $pt-high-contrast-mode-border-color;
-        }
+    .#{$ns}-popover-arrow-fill {
+      fill: var(--bp-intent-success-rest);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        fill: buttonborder;
+      }
+    }
+  }
+
+  &.#{$ns}-intent-warning {
+    .#{$ns}-popover-content {
+      background: var(--bp-intent-warning-rest);
+      color: var(--bp-intent-warning-foreground);
+    }
+
+    .#{$ns}-popover-arrow-fill {
+      fill: var(--bp-intent-warning-rest);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        fill: buttonborder;
+      }
+    }
+  }
+
+  &.#{$ns}-intent-danger {
+    .#{$ns}-popover-content {
+      background: var(--bp-intent-danger-rest);
+      color: var(--bp-intent-danger-foreground);
+    }
+
+    .#{$ns}-popover-arrow-fill {
+      fill: var(--bp-intent-danger-rest);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        fill: buttonborder;
       }
     }
   }

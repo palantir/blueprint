@@ -8,17 +8,19 @@ $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - ($pt-spacing * 2.5) !default;
 $label-offset: $handle-size + $pt-spacing !default;
 
-$handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
+/* stylelint-disable alpha-value-notation */
+$handle-border-shadow: 0 0 0 $button-border-width oklch(from var(--bp-palette-black) l c h / 0.5);
 $handle-box-shadow:
   $handle-border-shadow,
-  0 1px 1px rgba($black, 0.5) !default;
+  0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.5) !default;
 $handle-box-shadow-hover:
   $handle-border-shadow,
-  0 1px 2px rgba($black, 0.6) !default;
+  0 1px 2px oklch(from var(--bp-palette-black) l c h / 0.6) !default;
 $handle-box-shadow-active:
-  inset 0 1px 1px rgba($black, 0.1),
+  inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.1),
   $handle-border-shadow,
-  0 1px 2px rgba($black, 0.2) !default;
+  0 1px 2px oklch(from var(--bp-palette-black) l c h / 0.2) !default;
+/* stylelint-enable alpha-value-notation */
 
 // retain legacy variable aliases so as to not break consumers
 $handle-height: $handle-size !default;
@@ -45,7 +47,7 @@ $track-height: $track-size !default;
   }
 
   &.#{$ns}-slider-unlabeled {
-    height: $handle-size;
+    height: calc(var(--bp-surface-spacing) * 4);
   }
 }
 
@@ -56,21 +58,33 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-track {
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   overflow: hidden;
 }
 
 .#{$ns}-slider-progress {
-  background: rgba($gray1, 0.2);
+  /* stylelint-disable-next-line alpha-value-notation */
+  background: oklch(from var(--bp-typography-color-muted) l c h / 0.2);
 
   .#{$ns}-dark & {
-    background: rgba($black, 0.5);
+    /* stylelint-disable-next-line alpha-value-notation */
+    background: oklch(from var(--bp-palette-black) l c h / 0.5);
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      background-color: $color;
-    }
+  &.#{$ns}-intent-primary {
+    background-color: var(--bp-intent-primary-rest);
+  }
+
+  &.#{$ns}-intent-success {
+    background-color: var(--bp-intent-success-rest);
+  }
+
+  &.#{$ns}-intent-warning {
+    background-color: var(--bp-intent-warning-rest);
+  }
+
+  &.#{$ns}-intent-danger {
+    background-color: var(--bp-intent-danger-rest);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -80,14 +94,14 @@ $track-height: $track-size !default;
 
 .#{$ns}-slider-handle {
   @include pt-button;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   box-shadow: $handle-box-shadow;
   cursor: pointer;
-  height: $handle-size;
+  height: calc(var(--bp-surface-spacing) * 4);
   left: 0;
   position: absolute;
   top: 0;
-  width: $handle-size;
+  width: calc(var(--bp-surface-spacing) * 4);
 
   // ensure target handle's label always covers neighbors
   &:focus {
@@ -108,7 +122,7 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-disabled & {
-    background: $gray5;
+    background: var(--bp-palette-gray-5);
     box-shadow: none;
     // easy way to avoid lots of special cases to ignore mouse states when disabled:
     pointer-events: none;
@@ -116,39 +130,40 @@ $track-height: $track-size !default;
 
   .#{$ns}-dark & {
     // don't use pt-dark-button() here, since we want to appear more like a light theme button
-    background-color: $gray4;
+    background-color: var(--bp-palette-gray-4);
     box-shadow: $dark-button-box-shadow;
 
     &:hover {
-      background-color: $gray3;
+      background-color: var(--bp-palette-gray-3);
       box-shadow: $dark-button-box-shadow-active;
     }
 
     &.#{$ns}-active {
-      background-color: $gray2;
+      background-color: var(--bp-palette-gray-2);
       box-shadow:
-        inset 0 1px 1px rgba($black, 0.1),
+        /* stylelint-disable-next-line alpha-value-notation */
+        inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.1),
         $dark-button-box-shadow-active;
     }
   }
 
   .#{$ns}-dark .#{$ns}-disabled & {
-    background: $gray1;
-    border-color: $gray1;
+    background: var(--bp-palette-gray-1);
+    border-color: var(--bp-palette-gray-1);
     box-shadow: none;
   }
 
   .#{$ns}-slider-label {
-    background: $tooltip-background-color;
-    border-radius: $pt-border-radius;
-    box-shadow: $pt-tooltip-box-shadow;
-    color: $tooltip-text-color;
+    background: var(--bp-palette-dark-gray-5);
+    border-radius: var(--bp-surface-border-radius);
+    box-shadow: var(--bp-surface-shadow-3);
+    color: var(--bp-palette-light-gray-5);
     margin-left: $handle-size * 0.5;
 
     .#{$ns}-dark & {
-      background: $dark-tooltip-background-color;
-      box-shadow: $pt-dark-tooltip-box-shadow;
-      color: $dark-tooltip-text-color;
+      background: var(--bp-palette-light-gray-3);
+      box-shadow: var(--bp-surface-shadow-3);
+      color: var(--bp-palette-dark-gray-5);
     }
 
     .#{$ns}-disabled & {
@@ -180,9 +195,9 @@ $track-height: $track-size !default;
 .#{$ns}-slider-label {
   @include slider-label-orientation($label-offset);
   display: inline-block;
-  font-size: $pt-font-size-small;
+  font-size: var(--bp-typography-size-body-small);
   line-height: 1;
-  padding: ($pt-spacing * 0.5) $pt-spacing;
+  padding: calc(var(--bp-surface-spacing) * 0.5) var(--bp-surface-spacing);
   position: absolute;
   vertical-align: top;
 }
@@ -219,7 +234,7 @@ $track-height: $track-size !default;
     }
 
     &.#{$ns}-start {
-      border-bottom-right-radius: $pt-border-radius;
+      border-bottom-right-radius: var(--bp-surface-border-radius);
       border-top-left-radius: 0;
 
       .#{$ns}-slider-label {
@@ -230,7 +245,7 @@ $track-height: $track-size !default;
     &.#{$ns}-end {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      border-top-left-radius: $pt-border-radius;
+      border-top-left-radius: var(--bp-surface-border-radius);
       margin-bottom: $handle-size * 0.5;
     }
   }
