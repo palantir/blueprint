@@ -8,7 +8,7 @@
 .#{$ns}-entity-title {
   align-items: center;
   display: flex;
-  gap: $pt-spacing * 2;
+  gap: calc(var(--bp-surface-spacing) * 2);
   min-width: 0;
 
   &.#{$ns}-fill {
@@ -39,13 +39,13 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: $pt-spacing;
+    gap: var(--bp-surface-spacing);
   }
 
   &-tags-container {
     display: flex;
-    gap: $pt-spacing * 0.5;
-    margin-left: $pt-spacing;
+    gap: calc(var(--bp-surface-spacing) * 0.5);
+    margin-left: var(--bp-surface-spacing);
   }
 
   &-title {
@@ -59,8 +59,8 @@
   }
 
   &-subtitle {
-    font-size: $pt-font-size-small;
-    margin-top: $pt-spacing * 0.5;
+    font-size: var(--bp-typography-size-body-small);
+    margin-top: calc(var(--bp-surface-spacing) * 0.5);
   }
 
   &-ellipsize,
@@ -80,20 +80,20 @@
   &-heading-h1,
   &-heading-h2,
   &-heading-h3 {
-    gap: $pt-spacing * 4;
+    gap: calc(var(--bp-surface-spacing) * 4);
 
     .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size;
+      font-size: var(--bp-typography-size-body-medium);
     }
   }
 
   &-heading-h4,
   &-heading-h5,
   &-heading-h6 {
-    gap: $pt-spacing * 2;
+    gap: calc(var(--bp-surface-spacing) * 2);
 
     .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size-small;
+      font-size: var(--bp-typography-size-body-small);
     }
   }
 }
