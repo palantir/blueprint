@@ -13,28 +13,24 @@
  * limitations under the License.
  */
 
-// @ts-check
+import { describe } from "vitest";
 
-import "@blueprintjs/test-commons/bootstrap";
+import { generateIsomorphicTestsVitest, type IsomorphicTestConfig } from "@blueprintjs/test-commons";
 
-import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+import * as Table from "./index";
 
-import Table from "../lib/cjs/index.js";
+const config: Record<string, IsomorphicTestConfig> = {
+    // Pass-through renders
+    Column: { skip: true },
+    DragSelectable: { skip: true },
+    Draggable: { skip: true },
+    HorizontalCellDivider: { className: false },
+    // needs at least one handler or it returns undefined
+    ResizeHandle: { props: { onDoubleClick: () => undefined } },
+};
 
-describe("Table isomorphic rendering", () => {
-    generateIsomorphicTests(
-        Table,
-        {
-            // Pass-through renders
-            Column: { skip: true },
-            DragSelectable: { skip: true },
-            Draggable: { skip: true },
-            HorizontalCellDivider: { className: false },
-            // needs at least one handler or it returns undefined
-            ResizeHandle: { props: { onDoubleClick: () => undefined } },
-        },
-        {
-            excludedSymbols: ["Grid", "Rect", "Regions"],
-        },
-    );
+describe("@blueprintjs/table isomorphic rendering", () => {
+    generateIsomorphicTestsVitest(Table, config, {
+        excludedSymbols: ["Grid", "Rect", "Regions"],
+    });
 });
