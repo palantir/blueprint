@@ -256,18 +256,18 @@ describe("<Tree>", () => {
             { childNodes: [{ id: 6, label: "Item 6" }], id: 3, isExpanded: false, label: "Item 3" },
             { childNodes: [{ id: 7, label: "Item 7" }], id: 4, isExpanded: true, label: "Item 4" },
         ];
-        const { container } = render(<Tree contents={contents} />);
-        const nodes = container.querySelectorAll("li");
+        render(<Tree contents={contents} />);
 
-        // 5 nodes should be visible: 0,1,2,3,4 and only 7 as child of 4
-        expect(nodes).toHaveLength(6);
-
-        expect(nodes[0]).not.toHaveClass(Classes.TREE_NODE_EXPANDED);
-        expect(nodes[1]).not.toHaveClass(Classes.TREE_NODE_EXPANDED);
-        expect(nodes[2]).not.toHaveClass(Classes.TREE_NODE_EXPANDED);
-        expect(nodes[3]).not.toHaveClass(Classes.TREE_NODE_EXPANDED);
-        expect(nodes[4]).toHaveClass(Classes.TREE_NODE_EXPANDED);
-        expect(nodes[5].querySelector(`.${Classes.TREE_NODE_LABEL}`)).toHaveTextContent("Item 7");
+        expectIsExpanded(screen.getByText("Item 0"), false);
+        expectIsExpanded(screen.getByText("Item 1"), false);
+        expectIsExpanded(screen.getByText("Item 2"), false);
+        expectIsExpanded(screen.getByText("Item 3"), false);
+        expectIsExpanded(screen.getByText("Item 4"), true);
+        // Item 7 is visible as a child of expanded Item 4
+        expect(screen.getByText("Item 7")).toBeInTheDocument();
+        // Item 5 and Item 6 are not visible (parents not expanded)
+        expect(screen.queryByText("Item 5")).not.toBeInTheDocument();
+        expect(screen.queryByText("Item 6")).not.toBeInTheDocument();
     });
 
     it("isSelected selects nodes", () => {
@@ -276,12 +276,10 @@ describe("<Tree>", () => {
             { id: 1, isSelected: true, label: "Item 1" },
         ];
 
-        const { container } = render(<Tree contents={contents} />);
-        const nodes = container.querySelectorAll("li");
+        render(<Tree contents={contents} />);
 
-        expect(nodes).toHaveLength(2);
-        expect(nodes[0]).not.toHaveClass(Classes.TREE_NODE_SELECTED);
-        expect(nodes[1]).toHaveClass(Classes.TREE_NODE_SELECTED);
+        expect(screen.getByText("Item 0").closest(`.${Classes.TREE_NODE}`)).not.toHaveClass(Classes.TREE_NODE_SELECTED);
+        expect(screen.getByText("Item 1").closest(`.${Classes.TREE_NODE}`)).toHaveClass(Classes.TREE_NODE_SELECTED);
     });
 
     it("secondaryLabel renders correctly", () => {
