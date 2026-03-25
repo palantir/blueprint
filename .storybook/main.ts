@@ -15,11 +15,14 @@ const storybookConfig: StorybookConfig = {
     core: {
         disableTelemetry: true,
     },
+
     framework: {
         name: getAbsolutePath("@storybook/react-vite"),
         options: {},
     },
+
     stories: ["../packages/{core,datetime,labs,select,table}/src/**/*.stories.@(ts|tsx)"],
+
     async viteFinal(config) {
         return mergeConfig(config, {
             optimizeDeps: {
@@ -45,6 +48,8 @@ const storybookConfig: StorybookConfig = {
             },
         });
     },
+
+    addons: [getAbsolutePath("@storybook/addon-a11y")],
 };
 
 // eslint-disable-next-line import/no-default-export

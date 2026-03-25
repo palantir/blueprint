@@ -4,5 +4,12 @@
         "composite": true,
         "outDir": "../lib/esm"
     },
-    "exclude": ["**/*.stories.ts", "**/*.stories.tsx", "**/*.test.ts", "**/*.test.tsx"]
+    "exclude": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.stories.ts",
+        "**/*.stories.tsx",
+        "components/select/selectComponentTestUtils.tsx",
+        "components/select/selectPopoverTestUtils.tsx"
+    ]
 }

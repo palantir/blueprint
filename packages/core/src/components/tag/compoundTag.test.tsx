@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { render, screen, waitFor } from "@testing-library/react";
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -27,20 +27,21 @@ import { CompoundTag } from "./compoundTag";
 
 describe("<CompoundTag>", () => {
     it("renders its text", () => {
-        expect(
-            shallow(<CompoundTag leftContent="Hello">World</CompoundTag>)
-                .find(`.${Classes.COMPOUND_TAG_RIGHT_CONTENT}`)
-                .prop("children"),
-        ).toBe("World");
+        render(<CompoundTag leftContent="Hello">World</CompoundTag>);
+        expect(screen.getByText("Hello")).toBeInTheDocument();
+        expect(screen.getByText("World")).toBeInTheDocument();
     });
 
     it("renders icons", () => {
-        const wrapper = shallow(
+        const { container } = render(
             <CompoundTag icon="tick" endIcon="airplane" leftContent="Hello">
                 World
             </CompoundTag>,
         );
-        expect(wrapper.find(Icon)).toHaveLength(2);
+        const icons = container.querySelectorAll(`.${Classes.ICON}`);
+        expect(icons).toHaveLength(2);
+        expect(icons[0]).toHaveAttribute("data-icon", "tick");
+        expect(icons[1]).toHaveAttribute("data-icon", "airplane");
     });
 
     it("prefers endIcon to rightIcon", () => {
@@ -52,41 +53,45 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        expect(screen.getByTestId("endIcon")).to.exist;
+        expect(screen.getByTestId("endIcon")).toBeInTheDocument();
         expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument();
     });
 
     it("renders close button when onRemove is a function", () => {
-        const wrapper = mount(
+        render(
             <CompoundTag onRemove={vi.fn()} leftContent="Hello">
                 World
             </CompoundTag>,
         );
-        expect(wrapper.find(`.${Classes.TAG_REMOVE}`)).toHaveLength(1);
+        const closeButton = screen.getByRole("button", { name: "Remove tag" });
+        expect(closeButton).toHaveClass(Classes.TAG_REMOVE);
     });
 
-    it("clicking close button triggers onRemove", () => {
+    it("clicking close button triggers onRemove", async () => {
+        const user = userEvent.setup();
         const handleRemove = vi.fn();
-        mount(
+        render(
             <CompoundTag onRemove={handleRemove} leftContent="Hello">
                 World
             </CompoundTag>,
-        )
-            .find(`.${Classes.TAG_REMOVE}`)
-            .simulate("click");
+        );
+        await user.click(screen.getByRole("button", { name: "Remove tag" }));
         expect(handleRemove).toHaveBeenCalledOnce();
     });
 
     it(`passes other props onto .${Classes.COMPOUND_TAG} element`, () => {
-        const element = mount(
+        render(
             <CompoundTag title="baz qux" leftContent="Hello">
                 World
             </CompoundTag>,
-        ).find(`.${Classes.COMPOUND_TAG}`);
-        expect(element.prop("title")).toEqual("baz qux");
+        );
+        const element = screen.getByTitle("baz qux");
+        expect(element).toHaveClass(Classes.COMPOUND_TAG);
+        expect(element).toHaveTextContent("World");
     });
 
-    it("passes all props to the onRemove handler", () => {
+    it("passes all props to the onRemove handler", async () => {
+        const user = userEvent.setup();
         const handleRemove = vi.fn();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
@@ -96,13 +101,12 @@ describe("<CompoundTag>", () => {
             },
             onRemove: handleRemove,
         };
-        mount(
+        render(
             <CompoundTag {...tagProps} leftContent="Hello">
                 World
             </CompoundTag>,
-        )
-            .find(`.${Classes.TAG_REMOVE}`)
-            .simulate("click");
+        );
+        await user.click(screen.getByRole("button", { name: "Remove tag" }));
         expect(handleRemove).toHaveBeenCalledOnce();
         expect(handleRemove).toHaveBeenCalledWith(
             expect.anything(),
@@ -110,17 +114,13 @@ describe("<CompoundTag>", () => {
         );
     });
 
-    it("supports ref objects", async () => {
+    it("supports ref objects", () => {
         const elementRef = createRef<HTMLSpanElement>();
-        const wrapper = mount(
+        render(
             <CompoundTag ref={elementRef} leftContent="Hello">
                 World
             </CompoundTag>,
         );
-
-        // wait for the whole lifecycle to run
-        await waitFor(() => {
-            expect(elementRef.current).toBe(wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
-        });
+        expect(elementRef.current).toHaveClass(Classes.TAG);
     });
 });

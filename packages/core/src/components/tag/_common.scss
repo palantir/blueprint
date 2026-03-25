@@ -28,74 +28,74 @@ $tag-round-adjustment: $pt-spacing * 0.5 !default;
 
 $tag-intent-colors: (
   "primary": (
-    $pt-intent-primary,
-    $blue2,
-    $blue1,
-    $white,
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
+    var(--bp-intent-primary-foreground),
   ),
   "success": (
-    $pt-intent-success,
-    $green2,
-    $green1,
-    $white,
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
+    var(--bp-intent-success-foreground),
   ),
   "warning": (
-    $orange5,
-    $orange4,
-    $orange3,
-    $pt-text-color,
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h)"},
+    #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h)"},
+    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.20) calc(c + 0.05) h)"},
+    #{"oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h)"},
   ),
   "danger": (
-    $pt-intent-danger,
-    $red2,
-    $red1,
-    $white,
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
+    var(--bp-intent-danger-foreground),
   ),
 ) !default;
 
 $minimal-tag-intent-colors: (
   "primary": (
-    $pt-intent-primary,
-    $blue2,
-    $blue1,
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
   ),
   "success": (
-    $pt-intent-success,
-    $green2,
-    $green1,
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
   ),
   "warning": (
-    $pt-intent-warning,
-    $orange2,
-    $orange1,
+    var(--bp-intent-warning-rest),
+    var(--bp-intent-warning-hover),
+    var(--bp-intent-warning-active),
   ),
   "danger": (
-    $pt-intent-danger,
-    $red2,
-    $red1,
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
   ),
 ) !default;
 
 $minimal-dark-tag-intent-colors: (
   "primary": (
-    $pt-intent-primary,
-    $blue5,
-    $blue6,
+    var(--bp-intent-primary-rest),
+    #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"},
+    #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h)"},
   ),
   "success": (
-    $pt-intent-success,
-    $green5,
-    $green6,
+    var(--bp-intent-success-rest),
+    #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"},
+    #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h)"},
   ),
   "warning": (
-    $pt-intent-warning,
-    $orange5,
-    $orange6,
+    var(--bp-intent-warning-rest),
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"},
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h)"},
   ),
   "danger": (
-    $pt-intent-danger,
-    $red5,
-    $red6,
+    var(--bp-intent-danger-rest),
+    #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"},
+    #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h)"},
   ),
 ) !default;
 
@@ -103,19 +103,19 @@ $minimal-dark-tag-intent-colors: (
 // ---------------------------------------------------------------------------------------------------------------------
 
 @mixin pt-tag() {
-  @include pt-flex-container(row, $tag-icon-spacing, inline);
+  @include pt-flex-container(row, var(--bp-surface-spacing), inline);
   align-items: center;
-  background-color: $tag-default-color;
+  background-color: var(--bp-intent-default-rest);
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   box-shadow: none;
-  color: $white;
-  font-size: $pt-font-size-small;
-  line-height: $tag-line-height;
+  color: var(--bp-intent-default-foreground);
+  font-size: var(--bp-typography-size-body-small);
+  line-height: calc(var(--bp-surface-spacing) * 4);
   max-width: 100%;
-  min-height: $tag-height;
-  min-width: $tag-height;
-  padding: $tag-padding-top $tag-padding;
+  min-height: calc(var(--bp-surface-spacing) * 5);
+  min-width: calc(var(--bp-surface-spacing) * 5);
+  padding: calc(var(--bp-surface-spacing) * 0.5) calc(var(--bp-surface-spacing) * 1.5);
   position: relative;
 
   // Center text for short content (e.g. single characters) only when the text
@@ -132,24 +132,24 @@ $minimal-dark-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      background: $dark-gray5;
+      background: var(--bp-intent-default-hover);
     }
 
     &:active,
     &.#{$ns}-active {
-      background: $dark-gray4;
+      background: var(--bp-intent-default-active);
     }
   }
 
   &.#{$ns}-round {
-    border-radius: $tag-height-large;
-    padding-left: $tag-padding + $tag-round-adjustment;
+    border-radius: calc(var(--bp-surface-spacing) * 7.5);
+    padding-left: calc(var(--bp-surface-spacing) * 2);
     // optical adjustment for rounded tags
-    padding-right: $tag-padding + $tag-round-adjustment;
+    padding-right: calc(var(--bp-surface-spacing) * 2);
   }
 
   > #{$icon-classes} {
-    fill: $white;
+    fill: var(--bp-intent-default-foreground);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -159,17 +159,17 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin pt-tag-large() {
-  @include pt-flex-margin(row, $tag-icon-spacing-large);
-  font-size: $pt-font-size;
-  line-height: $tag-line-height-large;
-  min-height: $tag-height-large;
-  min-width: $tag-height-large;
-  padding: ($tag-padding-large * 0.75) $tag-padding-large;
+  @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+  font-size: var(--bp-typography-size-body-medium);
+  line-height: calc(var(--bp-surface-spacing) * 4.5);
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
+  padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 2);
 
   &.#{$ns}-round {
-    padding-left: $tag-padding-large + $tag-round-adjustment;
+    padding-left: calc(var(--bp-surface-spacing) * 2.5);
     // optical adjustment for rounded tags
-    padding-right: $tag-padding-large + $tag-round-adjustment;
+    padding-right: calc(var(--bp-surface-spacing) * 2.5);
   }
 }
 
@@ -189,7 +189,8 @@ $minimal-dark-tag-intent-colors: (
   }
 
   .#{$ns}-tag-remove {
-    color: rgba($text-color, 0.7);
+    /* stylelint-disable-next-line alpha-value-notation */
+    color: #{"oklch(from "}#{$text-color}#{" l c h / 0.7)"};
 
     &:hover,
     &:active {
@@ -200,36 +201,45 @@ $minimal-dark-tag-intent-colors: (
 
 @mixin pt-tag-minimal() {
   > #{$icon-classes} {
-    fill: $pt-icon-color;
+    fill: var(--bp-typography-color-muted);
   }
 
   &:not([class*="#{$ns}-intent-"]) {
-    @include pt-tag-minimal-interactive($gray3, $black);
+    @include pt-tag-minimal-interactive(
+      #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+      var(--bp-palette-black)
+    );
 
-    background-color: rgba($gray3, 0.15);
-    color: $pt-text-color;
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+    color: var(--bp-typography-color-default-rest);
 
     .#{$ns}-tag-remove {
-      color: $gray1;
+      color: var(--bp-typography-color-muted);
 
       &:hover,
       &:active {
-        color: $dark-gray5;
+        color: var(--bp-intent-default-hover);
       }
     }
 
-    .#{$ns}-dark & {
-      @include pt-tag-minimal-interactive($gray3, $white);
+    .#{$ns}-dark &,
+    [data-bp-color-scheme="dark"] & {
+      @include pt-tag-minimal-interactive(
+        #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+        var(--bp-palette-white)
+      );
 
-      background-color: rgba($gray3, 0.15);
-      color: $pt-dark-text-color;
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+      color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h)"};
 
       .#{$ns}-tag-remove {
-        color: $pt-dark-icon-color;
+        color: var(--bp-typography-color-muted);
 
         &:hover,
         &:active {
-          color: $light-gray1;
+          color: #{"oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h)"};
         }
       }
     }
@@ -241,20 +251,23 @@ $minimal-dark-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      background-color: rgba($background-color, 0.3);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
       color: $text-color;
     }
 
     &.#{$ns}-active,
     &:active {
-      background-color: rgba($background-color, 0.35);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
       color: $text-color;
     }
   }
 }
 
 @mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
-  background-color: rgba($background-color, 0.1);
+  /* stylelint-disable-next-line alpha-value-notation */
+  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.1)"};
   color: $text-color;
 
   > #{$icon-classes} {
@@ -263,13 +276,15 @@ $minimal-dark-tag-intent-colors: (
 
   &.#{$ns}-interactive {
     &:hover {
-      background-color: rgba($background-color, 0.2);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      background-color: rgba($background-color, 0.3);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
       color: $hover-active-text-color;
     }
   }
@@ -285,18 +300,21 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
-  background-color: rgba($background-color, 0.2);
+  /* stylelint-disable-next-line alpha-value-notation */
+  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
   color: $text-color;
 
   &.#{$ns}-interactive {
     &:hover {
-      background-color: rgba($background-color, 0.3);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      background-color: rgba($background-color, 0.35);
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
       color: $hover-active-text-color;
     }
   }
@@ -314,16 +332,17 @@ $minimal-dark-tag-intent-colors: (
 @mixin pt-tag-remove() {
   background: none;
   border: none;
-  color: rgba($white, 0.7);
+  /* stylelint-disable-next-line alpha-value-notation */
+  color: #{"oklch(from var(--bp-intent-default-foreground) l c h / 0.7)"};
   cursor: pointer;
   display: flex;
-  margin-bottom: -$tag-padding-top;
+  margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
   /* stylelint-disable-next-line declaration-no-important */
-  margin-right: -$tag-padding !important;
+  margin-right: calc(var(--bp-surface-spacing) * -1.5) !important;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
-  margin-top: -$tag-padding-top;
-  padding: $tag-padding-top;
+  margin-top: calc(var(--bp-surface-spacing) * -0.5);
+  padding: calc(var(--bp-surface-spacing) * 0.5);
   padding-left: 0;
 
   &:hover {
@@ -338,7 +357,7 @@ $minimal-dark-tag-intent-colors: (
 
   &:hover,
   &:active {
-    color: $white;
+    color: var(--bp-intent-default-foreground);
   }
 
   // CSS API support
@@ -349,11 +368,12 @@ $minimal-dark-tag-intent-colors: (
 
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
-    margin-right: -$tag-padding-large !important;
-    padding: 0 ($tag-padding-large * 0.5) 0 0;
+    margin-right: calc(var(--bp-surface-spacing) * -2) !important;
+    padding: 0 var(--bp-surface-spacing) 0 0;
 
     &:empty::before {
-      @include pt-icon-sized($pt-icon-size-large);
+      // font-family name "blueprint-icons-20" requires a compile-time value for Sass string interpolation
+      @include pt-icon-sized(calc(var(--bp-surface-spacing) * 5), 20);
     }
   }
 }
@@ -402,15 +422,35 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin minimal-compound-tag-colors($base-color) {
-  $left-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.4));
-  $right-colors: (rgba($base-color, 0.1), rgba($base-color, 0.2), rgba($base-color, 0.3));
+  /* stylelint-disable alpha-value-notation */
+  $left-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.4)"}
+  );
+  $right-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.1)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"}
+  );
+  /* stylelint-enable alpha-value-notation */
 
   @include compound-tag-colors($left-colors, $right-colors);
 }
 
 @mixin dark-minimal-compound-tag-colors($base-color) {
-  $left-colors: (rgba($base-color, 0.4), rgba($base-color, 0.5), rgba($base-color, 0.55));
-  $right-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.35));
+  /* stylelint-disable alpha-value-notation */
+  $left-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.4)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.5)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.55)"}
+  );
+  $right-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.35)"}
+  );
+  /* stylelint-enable alpha-value-notation */
 
   @include compound-tag-colors($left-colors, $right-colors);
 }
