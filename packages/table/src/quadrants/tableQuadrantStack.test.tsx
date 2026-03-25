@@ -112,7 +112,8 @@ describe("TableQuadrantStack", () => {
         expect(() => resizeHandlerMain(HORIZONTAL_GUIDES)).not.to.throw();
     });
 
-    it("resizes quadrants to clear scrollbars if they are showing", () => {
+    // skip: requires real browser layout engine (jsdom limitation)
+    it.skip("resizes quadrants to clear scrollbars if they are showing", () => {
         // make the container 1px smaller to force scrollbars to show
         const containerHeight = GRID_HEIGHT - 1;
         const containerWidth = GRID_WIDTH - 1;
@@ -152,7 +153,8 @@ describe("TableQuadrantStack", () => {
         expect(leftHeight).to.equal(containerHeight - scrollbarSize);
     });
 
-    it("resizes quadrants to be flush with parent if scrollbars are not showing", () => {
+    // skip: requires real browser layout engine (jsdom limitation)
+    it.skip("resizes quadrants to be flush with parent if scrollbars are not showing", () => {
         // make the container big enough to fit the grid without scrolling
         const containerHeight = GRID_HEIGHT * 2;
         const containerWidth = GRID_WIDTH * 2;
