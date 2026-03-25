@@ -160,9 +160,7 @@ export const StateExample: Story = {
  */
 export const IconExample: Story = {
     name: "Icons",
-    render: args => (
-        <SegmentedControl {...args} options={ICON_OPTIONS} />
-    ),
+    render: args => <SegmentedControl {...args} options={ICON_OPTIONS} />,
 };
 
 /**
@@ -234,12 +232,7 @@ export const Playground: Story = {
 
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
-                <SegmentedControl
-                    {...args}
-                    options={ICON_OPTIONS}
-                    value={value}
-                    onValueChange={handleValueChange}
-                />
+                <SegmentedControl {...args} options={ICON_OPTIONS} value={value} onValueChange={handleValueChange} />
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Selected: {value}</span>
             </div>
         );
