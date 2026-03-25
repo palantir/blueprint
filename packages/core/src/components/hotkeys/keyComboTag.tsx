@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { Fragment, useCallback } from "react";
+import { Fragment, memo, useCallback } from "react";
 
 import {
     ArrowDown,
@@ -76,7 +76,7 @@ interface KeyComboTagInternalProps extends KeyComboTagProps {
     platformOverride?: string;
 }
 
-export const KeyComboTagInternal: React.FC<KeyComboTagInternalProps> = props => {
+export const KeyComboTagInternal: React.FC<KeyComboTagInternalProps> = memo(props => {
     const { className, combo, minimal, platformOverride } = props;
 
     const getKeyIcon = useCallback(
@@ -123,7 +123,7 @@ export const KeyComboTagInternal: React.FC<KeyComboTagInternalProps> = props => 
             minimal ? renderMinimalKey(key, index, index === normalizedKeys.length - 1) : renderKey(key, index),
         );
     return <span className={classNames(Classes.KEY_COMBO, className, { [Classes.MINIMAL]: minimal })}>{keys}</span>;
-};
+});
 
 KeyComboTagInternal.displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
 
