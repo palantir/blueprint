@@ -109,7 +109,7 @@ async function generateDocumentalistData(): Promise<void> {
     writeFileSync(join(generatedSrcDir, "nav-constants.js"), navConstants);
 }
 
-function transformDocumentalistData(key: string, value: any): any {
+export function transformDocumentalistData(key: string, value: any): any {
     if (key === "versions" && Array.isArray(value)) {
         // one major version per release
         const majors = new Map<number, string>();
@@ -135,7 +135,7 @@ function transformDocumentalistData(key: string, value: any): any {
  *
  * @param {string} value
  */
-function interpolateClassNamespace(value: string): string {
+export function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
 }
 
@@ -150,8 +150,8 @@ async function fetchNpmPackageInfo(
     const majors = new Map<number, string>();
     for (const v of allVersions) {
         const maj = semver.major(v);
+        if (semver.prerelease(v)) continue;
         if (!majors.has(maj) || semver.gt(v, majors.get(maj)!)) {
-            if (semver.prerelease(v)) continue;
             majors.set(maj, v);
         }
     }
