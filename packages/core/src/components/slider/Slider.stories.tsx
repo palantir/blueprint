@@ -239,10 +239,13 @@ export const Playground: Story = {
     render: function Render(args) {
         const [value, setValue] = useState(5);
 
-        const handleChange = useCallback((newValue: number) => {
-            setValue(newValue);
-            args.onChange?.(newValue);
-        }, [args]);
+        const handleChange = useCallback(
+            (newValue: number) => {
+                setValue(newValue);
+                args.onChange?.(newValue);
+            },
+            [args],
+        );
 
         return <Slider {...args} value={value} onChange={handleChange} />;
     },
