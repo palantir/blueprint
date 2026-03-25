@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
+import { render } from "vitest-browser-react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
@@ -25,26 +25,26 @@ import { createStringOfLength } from "../../mocks/table";
 import { TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
 describe("<TruncatedFormat>", () => {
-    // skip: requires real browser layout engine (jsdom limitation)
-    it.skip("can automatically truncate and show popover when truncated", () => {
+    it("can automatically truncate and show popover when truncated", async () => {
         const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
 
-        const { container } = render(
+        const { container } = await render(
             <div className={Classes.TABLE_NO_WRAP_TEXT}>
                 <TruncatedFormat>{str}</TruncatedFormat>
             </div>,
         );
+        await new Promise(r => requestAnimationFrame(r));
         const comp = new ElementHarness(container);
         const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
-        expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+        expect(textElement.scrollWidth).toBeGreaterThan(textElement.clientWidth);
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).toBeTruthy();
     });
 
     // This test was super flaky. It started failing without clear cause when the Table Frozen
     // Columns/Rows changes merged, even though nothing about the TruncatedFormat component
     // changed. Adding the position: relative rule fixes it, but more investigation is needed.
     // skip: requires real browser layout engine (jsdom limitation)
-    it.skip("can automatically truncate and show popover when truncated and word wrapped", () => {
+    it.skip("can automatically truncate and show popover when truncated and word wrapped", async () => {
         const str = `
             We are going to die, and that makes us the lucky ones. Most
             people are never going to die because they are never going to
@@ -69,19 +69,19 @@ describe("<TruncatedFormat>", () => {
             width: "300px",
         };
 
-        const { container } = render(
+        const { container } = await render(
             <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
                 <TruncatedFormat detectTruncation={true}>{str}</TruncatedFormat>
             </div>,
         );
         const comp = new ElementHarness(container);
         const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
-        expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
+        expect(textElement.scrollHeight).toBeGreaterThan(textElement.clientHeight);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
     // skip: requires real browser layout engine (jsdom limitation)
-    it.skip("can automatically truncate and show popover when truncated and word wrapped in approx mode", () => {
+    it.skip("can automatically truncate and show popover when truncated and word wrapped in approx mode", async () => {
         const str = `
             We are going to die, and that makes us the lucky ones. Most
             people are never going to die because they are never going to
@@ -106,7 +106,7 @@ describe("<TruncatedFormat>", () => {
             width: "300px",
         };
 
-        const { container } = render(
+        const { container } = await render(
             <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
                 <TruncatedFormat
                     detectTruncation={true}
@@ -120,13 +120,13 @@ describe("<TruncatedFormat>", () => {
         );
         const comp = new ElementHarness(container);
         const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
-        expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
+        expect(textElement.scrollHeight).toBeGreaterThan(textElement.clientHeight);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
-    it("can manually truncate and show popover when truncated", () => {
+    it("can manually truncate and show popover when truncated", async () => {
         const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
-        const { container } = render(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
+        const { container } = await render(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
         const comp = new ElementHarness(container);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.length(
             TruncatedFormat.defaultProps.truncateLength! + 3,
@@ -134,21 +134,21 @@ describe("<TruncatedFormat>", () => {
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
-    it("can always show popover", () => {
-        const { container } = render(<TruncatedFormat showPopover={TruncatedPopoverMode.ALWAYS} />);
+    it("can always show popover", async () => {
+        const { container } = await render(<TruncatedFormat showPopover={TruncatedPopoverMode.ALWAYS} />);
         const comp = new ElementHarness(container);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
-    it("does not show popover if text is not truncated by default", () => {
+    it("does not show popover if text is not truncated by default", async () => {
         const str = `Richard Dawkins`;
-        const { container } = render(<TruncatedFormat>{str}</TruncatedFormat>);
+        const { container } = await render(<TruncatedFormat>{str}</TruncatedFormat>);
         const comp = new ElementHarness(container);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
     });
 
     // skip: requires real browser layout engine (jsdom limitation)
-    it.skip("doesn't truncate if truncation length is 0", () => {
+    it.skip("doesn't truncate if truncation length is 0", async () => {
         const str = `
             To be, or not to be--that is the question:
             Whether 'tis nobler in the mind to suffer
@@ -186,7 +186,7 @@ describe("<TruncatedFormat>", () => {
             The fair Ophelia! -- Nymph, in thy orisons
             Be all my sins remembered.
         `;
-        const { container } = render(
+        const { container } = await render(
             <div className={Classes.TABLE_NO_WRAP_TEXT}>
                 <TruncatedFormat detectTruncation={true} truncateLength={0}>
                     {str}
