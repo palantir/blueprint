@@ -15,7 +15,7 @@
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     // stylelint-disable-next-line function-no-unknown
-    background-color: #{oklch(from var(--bp-intent-default-rest) calc(l * 0.617) calc(c * 0.517) h)};
+    background-color: #{oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h)};
     box-shadow: var(--bp-surface-shadow-0);
   }
 
