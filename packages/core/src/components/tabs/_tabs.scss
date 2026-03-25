@@ -200,17 +200,17 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 .#{$ns}-dark {
   .#{$ns}-tab {
     &[aria-selected="true"] {
-      box-shadow: inset 0 calc(var(--bp-surface-spacing) * -0.75) 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+      box-shadow: inset 0 calc(var(--bp-surface-spacing) * -0.75) 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h)"};
     }
 
     &[aria-selected="true"],
     &:not([aria-disabled="true"]):hover {
-      color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+      color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h)"};
     }
   }
 
   .#{$ns}-tab-indicator {
-    background-color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+    background-color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h)"};
   }
 }
 
