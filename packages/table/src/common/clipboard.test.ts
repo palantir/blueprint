@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-//
-
-import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Clipboard } from "./clipboard";
 

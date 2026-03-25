@@ -17,7 +17,7 @@
 import { render } from "@testing-library/react";
 import { Component } from "react";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import * as Classes from "./common/classes";
