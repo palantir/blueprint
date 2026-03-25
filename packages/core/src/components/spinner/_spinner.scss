@@ -57,7 +57,7 @@
 
 .#{$ns}-dark .#{$ns}-spinner {
   .#{$ns}-spinner-head {
-    stroke: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"};
+    stroke: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.24) calc(c - 0.011) h)"};
   }
 
   .#{$ns}-spinner-track {

@@ -69,7 +69,7 @@ $progress-bar-gradient: linear-gradient(
   background: #{"oklch(from var(--bp-palette-black) l c h / 0.5)"};
 
   .#{$ns}-progress-meter {
-    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"};
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.24) calc(c - 0.011) h)"};
   }
 }
 
