@@ -20,6 +20,8 @@ import { mount } from "enzyme";
 import { Component } from "react";
 import sinon from "sinon";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import * as Classes from "../common/classes";
 import { ElementHarness } from "../harness";
 

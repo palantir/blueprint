@@ -20,6 +20,7 @@ import { expect } from "chai";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Clipboard } from "../../common/clipboard";
 import { Regions } from "../../regions";

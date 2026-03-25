@@ -16,6 +16,8 @@
 
 import { expect } from "chai";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Direction } from "../direction";
 
 import * as DirectionUtils from "./directionUtils";

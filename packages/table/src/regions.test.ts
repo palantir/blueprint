@@ -16,6 +16,8 @@
 
 import { expect } from "chai";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { type CellCoordinate, type Region, RegionCardinality, Regions } from "./regions";
 
 describe("Regions", () => {

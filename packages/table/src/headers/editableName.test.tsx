@@ -19,6 +19,7 @@ import { mount } from "enzyme";
 import sinon from "sinon";
 
 import { EditableText } from "@blueprintjs/core";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { EditableName } from "..";
 

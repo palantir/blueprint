@@ -23,6 +23,7 @@ import sinon from "sinon";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import { type CellCoordinates, type FocusedCellCoordinates } from "./common/cellTypes";

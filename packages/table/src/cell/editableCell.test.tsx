@@ -20,6 +20,7 @@ import { act } from "react";
 import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Cell, EditableCell } from "..";
 import * as TableClasses from "../common/classes";

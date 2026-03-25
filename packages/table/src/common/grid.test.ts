@@ -16,6 +16,8 @@
 
 import { expect } from "chai";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Regions } from "../regions";
 
 import { Grid } from "./grid";

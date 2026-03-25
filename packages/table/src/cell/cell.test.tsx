@@ -18,6 +18,7 @@ import { render } from "@testing-library/react";
 import { expect } from "chai";
 
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import * as Classes from "../common/classes";
 import { ElementHarness } from "../harness";

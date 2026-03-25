@@ -16,6 +16,8 @@
 
 import { expect } from "chai";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import * as PlatformUtils from "./platformUtils";
 
 describe("platformUtils", () => {

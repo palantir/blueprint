@@ -4,6 +4,8 @@
 
 import { expect } from "chai";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { createStringOfLength } from "./mocks/table";
 import { resizeRowsByApproximateHeight } from "./resizeRows";
 

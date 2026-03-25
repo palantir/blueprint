@@ -156,7 +156,7 @@ jobs:
             1) pnpm nx test:vitest:run @blueprintjs/core ;; \
             2) pnpm nx test:vitest:run @blueprintjs/datetime ;; \
             4) pnpm nx test:vitest:run @blueprintjs/select ;; \
-            5) pnpm nx test:karma @blueprintjs/table
+            5) pnpm nx test:vitest:run @blueprintjs/table
             esac
           when: always
       - store_test_results: { path: ./reports }

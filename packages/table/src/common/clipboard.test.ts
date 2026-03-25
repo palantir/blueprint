@@ -16,6 +16,8 @@
 
 // import { expect } from "chai";
 
+import { describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Clipboard } from "./clipboard";
 
 // HACKHACK: see https://github.com/palantir/blueprint/issues/5175
