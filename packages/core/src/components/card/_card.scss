@@ -131,7 +131,8 @@
     .#{$ns}-dark & {
       box-shadow:
         // stylelint-disable-next-line alpha-value-notation
-        0 0 0 3px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4)},
+        0 0 0 3px
+          #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4)},
         0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h)};
     }
   }
