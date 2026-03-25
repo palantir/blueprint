@@ -204,9 +204,7 @@ export const Playground: Story = {
                     subtitle="Click the header to toggle"
                     collapsible={true}
                     collapseProps={{ isOpen, onToggle: handleToggle }}
-                    rightElement={
-                        <Button text="Edit" icon="edit" size="small" variant="outlined" />
-                    }
+                    rightElement={<Button text="Edit" icon="edit" size="small" variant="outlined" />}
                 >
                     <SectionCard>First section of content.</SectionCard>
                     <SectionCard>Second section of content.</SectionCard>
