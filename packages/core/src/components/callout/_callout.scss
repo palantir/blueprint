@@ -17,7 +17,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
   &:not(.#{$ns}-minimal) {
     /* stylelint-disable-next-line alpha-value-notation */
-    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.24) calc(c - 0.011) h / 0.15)"};
   }
 
   // CSS API support
