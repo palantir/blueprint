@@ -21,7 +21,7 @@ import { mount } from "enzyme";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { ColumnHeaderCell, type ColumnHeaderCellProps } from "..";
 import * as Classes from "../common/classes";

@@ -18,7 +18,7 @@ import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import * as Classes from "../common/classes";
 import * as Errors from "../common/errors";

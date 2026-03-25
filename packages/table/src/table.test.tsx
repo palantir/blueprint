@@ -23,7 +23,7 @@ import sinon from "sinon";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import { type CellCoordinates, type FocusedCellCoordinates } from "./common/cellTypes";
@@ -47,9 +47,7 @@ import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableP
  */
 const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
-describe("<Table>", function (this: any) {
-    // allow retrying failed tests here to reduce flakes.
-    this.retries(2);
+describe("<Table>", () => {
 
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
 

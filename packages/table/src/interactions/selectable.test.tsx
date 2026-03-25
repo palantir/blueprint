@@ -18,7 +18,7 @@ import { render } from "@testing-library/react";
 import { expect } from "chai";
 import sinon from "sinon";
 
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { type FocusedCellCoordinates, FocusMode } from "../common/cellTypes";
 import * as FocusedCellUtils from "../common/internal/focusedCellUtils";

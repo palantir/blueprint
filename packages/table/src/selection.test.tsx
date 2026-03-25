@@ -210,7 +210,7 @@ describe("Selection", () => {
     // the actual CircleCI node in both chrome and firefox, and everything
     // looks/works fine. So, for now, I just disable the tests and note the
     // issue in #126.
-    xit("Meta key is additive selection", () => {
+    it.skip("Meta key is additive selection", () => {
         const onSelection = sinon.spy();
         const { container } = render(createTableOfSize(3, 7, {}, { onSelection }));
         const table = new ElementHarness(container);
@@ -230,7 +230,7 @@ describe("Selection", () => {
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0), Regions.column(1)]]);
     });
 
-    xit("Drag select creates multiple selections", () => {
+    it.skip("Drag select creates multiple selections", () => {
         const onSelection = sinon.spy();
         const { container } = render(createTableOfSize(3, 7, {}, { onSelection }));
         const table = new ElementHarness(container);
