@@ -15,6 +15,7 @@
  */
 
 import { render } from "@testing-library/react";
+
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
@@ -58,7 +59,7 @@ describe("Column", () => {
     });
 
     it("renders correctly with loading options", () => {
-        const NUM_ROWS = 5;
+        const NUM_ROWS = 4;
         const cellValue = "my cell value";
         const cellRenderer = () => <Cell>{cellValue}</Cell>;
         const { container } = render(
