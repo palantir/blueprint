@@ -176,11 +176,7 @@ export const IntentExample: Story = {
                                     actions={
                                         <>
                                             <Button text="Cancel" onClick={handleClose} />
-                                            <Button
-                                                text="Confirm"
-                                                intent={intent}
-                                                onClick={handleClose}
-                                            />
+                                            <Button text="Confirm" intent={intent} onClick={handleClose} />
                                         </>
                                     }
                                 />
@@ -232,8 +228,8 @@ export const Playground: Story = {
                 <Dialog {...args} isOpen={isOpen} onClose={handleClose}>
                     <DialogBody>
                         <p>
-                            Use the Storybook controls panel to adjust the dialog properties. The dialog supports
-                            icons, close buttons, and custom titles.
+                            Use the Storybook controls panel to adjust the dialog properties. The dialog supports icons,
+                            close buttons, and custom titles.
                         </p>
                     </DialogBody>
                     <DialogFooter

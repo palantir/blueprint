@@ -42,21 +42,9 @@ function MultistepDialogDemo(props: React.ComponentProps<typeof MultistepDialog>
             <MultistepDialog {...dialogProps} isOpen={isOpen} onClose={handleClose}>
                 {dialogProps.children ?? (
                     <>
-                        <DialogStep
-                            id="select"
-                            title="Select items"
-                            panel={<StepPanel stepNumber={1} />}
-                        />
-                        <DialogStep
-                            id="confirm"
-                            title="Confirm selection"
-                            panel={<StepPanel stepNumber={2} />}
-                        />
-                        <DialogStep
-                            id="complete"
-                            title="Complete"
-                            panel={<StepPanel stepNumber={3} />}
-                        />
+                        <DialogStep id="select" title="Select items" panel={<StepPanel stepNumber={1} />} />
+                        <DialogStep id="confirm" title="Confirm selection" panel={<StepPanel stepNumber={2} />} />
+                        <DialogStep id="complete" title="Complete" panel={<StepPanel stepNumber={3} />} />
                     </>
                 )}
             </MultistepDialog>
@@ -150,28 +138,10 @@ export const DarkTheme: Story = {
         return (
             <div className="bp6-dark" style={{ padding: 20, background: "#1c2127", borderRadius: 4 }}>
                 <Button text="Open Dark Multistep Dialog" onClick={handleOpen} />
-                <MultistepDialog
-                    {...args}
-                    title="Dark Theme Wizard"
-                    icon="moon"
-                    isOpen={isOpen}
-                    onClose={handleClose}
-                >
-                    <DialogStep
-                        id="step1"
-                        title="First Step"
-                        panel={<StepPanel stepNumber={1} />}
-                    />
-                    <DialogStep
-                        id="step2"
-                        title="Second Step"
-                        panel={<StepPanel stepNumber={2} />}
-                    />
-                    <DialogStep
-                        id="step3"
-                        title="Third Step"
-                        panel={<StepPanel stepNumber={3} />}
-                    />
+                <MultistepDialog {...args} title="Dark Theme Wizard" icon="moon" isOpen={isOpen} onClose={handleClose}>
+                    <DialogStep id="step1" title="First Step" panel={<StepPanel stepNumber={1} />} />
+                    <DialogStep id="step2" title="Second Step" panel={<StepPanel stepNumber={2} />} />
+                    <DialogStep id="step3" title="Third Step" panel={<StepPanel stepNumber={3} />} />
                 </MultistepDialog>
             </div>
         );
@@ -188,21 +158,9 @@ export const Playground: Story = {
             <>
                 <Button text="Open Multistep Dialog" onClick={handleOpen} />
                 <MultistepDialog {...args} isOpen={isOpen} onClose={handleClose}>
-                    <DialogStep
-                        id="step1"
-                        title="Select items"
-                        panel={<StepPanel stepNumber={1} />}
-                    />
-                    <DialogStep
-                        id="step2"
-                        title="Confirm selection"
-                        panel={<StepPanel stepNumber={2} />}
-                    />
-                    <DialogStep
-                        id="step3"
-                        title="Complete"
-                        panel={<StepPanel stepNumber={3} />}
-                    />
+                    <DialogStep id="step1" title="Select items" panel={<StepPanel stepNumber={1} />} />
+                    <DialogStep id="step2" title="Confirm selection" panel={<StepPanel stepNumber={2} />} />
+                    <DialogStep id="step3" title="Complete" panel={<StepPanel stepNumber={3} />} />
                 </MultistepDialog>
             </>
         );
