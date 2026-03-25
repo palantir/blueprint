@@ -48,7 +48,6 @@ import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableP
 const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
 describe("<Table>", () => {
-
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
 
     let containerElement: HTMLElement;
