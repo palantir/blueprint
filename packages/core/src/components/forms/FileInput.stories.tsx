@@ -9,11 +9,8 @@ import { Size } from "../../common";
 
 import { FileInput } from "./fileInput";
 
-// These props are deprecated on FileInput — hide them from the Storybook controls panel.
-const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof FileInput>>;
-
 const meta: Meta<typeof FileInput> = {
-    title: "Core/Form/FileInput",
+    title: "Core/Form/Inputs/FileInput",
     component: FileInput,
     decorators: [
         Story => (
@@ -63,17 +60,9 @@ const meta: Meta<typeof FileInput> = {
             control: "boolean",
         },
         onInputChange: { action: "inputChanged" },
-        ...disabledArgs.reduce(
-            (acc, argName) => {
-                acc[argName] = {
-                    table: {
-                        disable: true,
-                    },
-                };
-                return acc;
-            },
-            {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
-        ),
+        // deprecated props
+        large: { table: { disable: true } },
+        small: { table: { disable: true } },
     },
 } satisfies Meta<typeof FileInput>;
 
@@ -83,11 +72,7 @@ type Story = StoryObj<typeof meta>;
 /**
  * A basic file input with default styling.
  */
-export const Default: Story = {
-    args: {
-        text: "Choose file...",
-    },
-};
+export const Default: Story = {};
 
 /**
  * Use the `size` prop to adjust the file input dimensions.

@@ -18,7 +18,7 @@ const disabledArgs = ["large", "children"] as const satisfies ReadonlyArray<
 const INITIAL_VALUES = ["London", "New York", "San Francisco"];
 
 const meta: Meta<typeof TagInput> = {
-    title: "Core/TagInput",
+    title: "Core/Form/Inputs/TagInput",
     component: TagInput,
     decorators: [
         Story => (

@@ -49,15 +49,14 @@ export const Default: Story = {
  */
 export const WithInput: Story = {
     name: "With Input",
-    render: () => (
+    args: {
+        children: "Label text",
+    },
+    render: ({ children, ...args }) => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
             <Label>
-                Username
-                <InputGroup placeholder="Enter username..." />
-            </Label>
-            <Label>
-                Email
-                <InputGroup placeholder="Enter email..." type="email" />
+                {children}
+                <InputGroup placeholder="Placeholder..." />
             </Label>
         </div>
     ),
@@ -86,8 +85,9 @@ export const StateExample: Story = {
  * Interactive playground.
  */
 export const Playground: Story = {
-    render: args => (
+    render: ({ children, ...args }) => (
         <Label {...args}>
+            {children}
             <InputGroup placeholder="Enter value..." />
         </Label>
     ),

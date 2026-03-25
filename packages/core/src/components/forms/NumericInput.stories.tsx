@@ -9,13 +9,8 @@ import { Intent, Position, Size } from "../../common";
 
 import { NumericInput } from "./numericInput";
 
-// These props are deprecated on NumericInput — hide them from the Storybook controls panel.
-const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<
-    keyof React.ComponentProps<typeof NumericInput>
->;
-
 const meta: Meta<typeof NumericInput> = {
-    title: "Core/Form/NumericInput",
+    title: "Core/Form/Inputs/NumericInput",
     component: NumericInput,
     decorators: [
         Story => (
@@ -85,17 +80,9 @@ const meta: Meta<typeof NumericInput> = {
             control: "text",
         },
         onValueChange: { action: "valueChanged" },
-        ...disabledArgs.reduce(
-            (acc, argName) => {
-                acc[argName] = {
-                    table: {
-                        disable: true,
-                    },
-                };
-                return acc;
-            },
-            {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
-        ),
+        // deprecated props
+        large: { table: { disable: true } },
+        small: { table: { disable: true } },
     },
 } satisfies Meta<typeof NumericInput>;
 
@@ -105,11 +92,7 @@ type Story = StoryObj<typeof meta>;
 /**
  * A basic numeric input with default styling and increment/decrement buttons.
  */
-export const Default: Story = {
-    args: {
-        placeholder: "Enter a number...",
-    },
-};
+export const Default: Story = {};
 
 /**
  * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the input.
@@ -118,7 +101,6 @@ export const IntentExample: Story = {
     name: "Intent",
     argTypes: {
         intent: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -143,7 +125,6 @@ export const SizeExample: Story = {
     name: "Size",
     argTypes: {
         size: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -167,7 +148,6 @@ export const StateExample: Story = {
     argTypes: {
         disabled: { table: { disable: true } },
         readOnly: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -185,7 +165,6 @@ export const ButtonPositionExample: Story = {
     name: "Button Position",
     argTypes: {
         buttonPosition: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -206,7 +185,6 @@ export const IconExample: Story = {
     name: "Icons",
     argTypes: {
         leftIcon: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
@@ -223,7 +201,6 @@ export const FillExample: Story = {
     name: "Fill",
     argTypes: {
         fill: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
     },
     decorators: [
         Story => (
@@ -246,7 +223,6 @@ export const FillExample: Story = {
 export const AllIntents: Story = {
     argTypes: {
         intent: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
