@@ -70,8 +70,8 @@
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
         "typescript": "~5.9.3",
-        "vitest": "catalog:",
-        "webpack": "^5.90.0"
+        "webpack": "^5.90.0",
+        "vitest": "catalog:"
     },
     "repository": {
         "type": "git",
