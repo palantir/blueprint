@@ -69,8 +69,7 @@ describe("Resizable", () => {
         expect(wrapper.state().size).to.eq(120);
     });
 
-    // Skip: jsdom doesn't compute real element dimensions (getBoundingClientRect)
-    it.skip("renders at the specified size", () => {
+    it("renders at the specified size", () => {
         const onSizeChanged = sinon.spy();
         const onResizeEnd = sinon.spy();
         const onLayoutLock = sinon.spy();
@@ -96,8 +95,7 @@ describe("Resizable", () => {
         expect(onResizeEnd.called).to.be.false;
     });
 
-    // Skip: jsdom doesn't compute real element dimensions (getBoundingClientRect)
-    it.skip("renders a draggable resize handle", () => {
+    it("renders a draggable resize handle", () => {
         const onDoubleClick = sinon.spy();
         const onLayoutLock = sinon.spy();
         const onResizeEnd = sinon.spy();
