@@ -20,6 +20,7 @@ import { act } from "react";
 import * as sinon from "sinon";
 
 import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/core";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -42,6 +43,7 @@ describe("Suggest", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
+    let mountedWrappers: Array<ReactWrapper<any, any>> = [];
 
     beforeEach(() => {
         handlers = {
@@ -55,23 +57,40 @@ describe("Suggest", () => {
     });
 
     afterEach(() => {
-        containerElement.remove();
+        try {
+            for (const wrapper of mountedWrappers) {
+                try {
+                    wrapper.unmount();
+                } catch {
+                    // best-effort
+                }
+            }
+        } finally {
+            mountedWrappers = [];
+            containerElement.remove();
+        }
     });
 
-    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
-        mount(
+    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props => {
+        const wrapper = mount(
             <Suggest
                 {...props}
                 inputValueRenderer={inputValueRenderer}
                 popoverProps={{ isOpen: true, usePortal: false }}
             />,
             { attachTo: containerElement },
-        ),
-    );
+        ) as ReactWrapper<SuggestProps<Film>, SuggestState<Film>>;
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    });
 
-    selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
-        mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, { attachTo: containerElement }),
-    );
+    selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props => {
+        const wrapper = mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, {
+            attachTo: containerElement,
+        }) as ReactWrapper<SuggestProps<Film>, SuggestState<Film>>;
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    });
 
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
@@ -119,37 +138,38 @@ describe("Suggest", () => {
         });
 
         // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
-        it.skip("sets active item to the selected item when the popover is closed", done => {
-            // transition duration shorter than timeout below to ensure it's done
-            const wrapper = suggest({
-                popoverProps: { transitionDuration: 5 },
-                selectedItem: TOP_100_FILMS[10],
-            });
-            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
+        it.skip("sets active item to the selected item when the popover is closed", () =>
+            new Promise<void>(done => {
+                // transition duration shorter than timeout below to ensure it's done
+                const wrapper = suggest({
+                    popoverProps: { transitionDuration: 5 },
+                    selectedItem: TOP_100_FILMS[10],
+                });
+                const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
 
-            assert.deepEqual(
-                queryList.state.activeItem,
-                wrapper.state().selectedItem,
-                "QueryList activeItem should be set to the controlled selectedItem if prop is provided",
-            );
+                assert.deepEqual(
+                    queryList.state.activeItem,
+                    wrapper.state().selectedItem,
+                    "QueryList activeItem should be set to the controlled selectedItem if prop is provided",
+                );
 
-            simulateFocus(wrapper);
-            assert.isTrue(wrapper.state().isOpen);
+                simulateFocus(wrapper);
+                assert.isTrue(wrapper.state().isOpen);
 
-            const newActiveItem = TOP_100_FILMS[11];
-            queryList.setActiveItem(newActiveItem);
-            assert.deepEqual(queryList.state.activeItem, newActiveItem);
+                const newActiveItem = TOP_100_FILMS[11];
+                queryList.setActiveItem(newActiveItem);
+                assert.deepEqual(queryList.state.activeItem, newActiveItem);
 
-            simulateKeyDown(wrapper, "Escape");
-            assert.isFalse(wrapper.state().isOpen);
+                simulateKeyDown(wrapper, "Escape");
+                assert.isFalse(wrapper.state().isOpen);
 
-            wrapper.update();
-            wrapper.find(QueryList).update();
-            setTimeout(() => {
-                assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
-                done();
-            }, 10);
-        });
+                wrapper.update();
+                wrapper.find(QueryList).update();
+                setTimeout(() => {
+                    assert.deepEqual(queryList.state.activeItem, wrapper.state().selectedItem);
+                    done();
+                }, 10);
+            }));
 
         function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, key: string) {
             simulateKeyDown(wrapper, key);
@@ -345,9 +365,11 @@ describe("Suggest", () => {
     });
 
     function suggest(props: Partial<SuggestProps<Film>> = {}) {
-        return mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />, {
+        const wrapper = mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />, {
             attachTo: containerElement,
         });
+        mountedWrappers.push(wrapper);
+        return wrapper;
     }
 });
 

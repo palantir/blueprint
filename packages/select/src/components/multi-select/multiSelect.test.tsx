@@ -20,7 +20,7 @@ import { act } from "react";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+import { beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -91,7 +91,7 @@ describe("<MultiSelect>", () => {
         });
 
         const firstTagRemoveButton = wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(0).getDOMNode();
-        dispatchTestKeyboardEvent(firstTagRemoveButton, "keyup", "Enter");
+        firstTagRemoveButton.dispatchEvent(new KeyboardEvent("keyup", { bubbles: true, key: "Enter" }));
 
         // checks for the bug in https://github.com/palantir/blueprint/issues/3674
         // where the first item in the dropdown list would get selected upon hitting Enter inside
@@ -163,7 +163,8 @@ describe("<MultiSelect>", () => {
         input = wrapper.find("input");
         assert.strictEqual(input.prop("value"), "Hello World");
 
-        // Remove containerElement from document
+        // Unmount React tree before removing container from DOM
+        wrapper.unmount();
         containerElement.remove();
     });
 

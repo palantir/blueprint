@@ -17,6 +17,8 @@
 import { assert } from "chai";
 import sinon from "sinon";
 
+import { beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { executeItemsEqual } from "./listItemsProps";
 
 describe("ListItemsProps Utils", () => {
