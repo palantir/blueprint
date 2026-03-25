@@ -15,12 +15,11 @@
  */
 
 import { render } from "@testing-library/react";
-import { expect } from "chai";
 import { shallow } from "enzyme";
 import sinon from "sinon";
 
 import { H4 } from "@blueprintjs/core";
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { RowHeaderCell } from "..";
 import * as Classes from "../common/classes";

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
 import { mount } from "enzyme";
 
-import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Region, Regions } from "../../regions";
 

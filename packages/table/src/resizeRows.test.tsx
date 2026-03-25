@@ -2,9 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { expect } from "chai";
-
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { createStringOfLength } from "./mocks/table";
 import { resizeRowsByApproximateHeight } from "./resizeRows";

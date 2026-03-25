@@ -15,7 +15,6 @@
  */
 
 import { fireEvent, render } from "@testing-library/react";
-import { expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
@@ -23,7 +22,7 @@ import sinon from "sinon";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
-import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import { type CellCoordinates, type FocusedCellCoordinates } from "./common/cellTypes";
@@ -664,9 +663,9 @@ describe("<Table>", () => {
     describe("Freezing", () => {
         let consoleWarn: sinon.SinonStub | undefined;
 
-        before(() => (consoleWarn = sinon.stub(console, "warn")));
+        beforeAll(() => (consoleWarn = sinon.stub(console, "warn")));
         afterEach(() => consoleWarn?.resetHistory());
-        after(() => consoleWarn?.restore());
+        afterAll(() => consoleWarn?.restore());
 
         describe("columns validation", () => {
             it("doesn't print a warning with default (0) frozen", () => {
@@ -1720,9 +1719,9 @@ describe("<Table>", () => {
 
             describe("warnings", () => {
                 let consoleWarn: sinon.SinonStub;
-                before(() => (consoleWarn = sinon.stub(console, "warn")));
+                beforeAll(() => (consoleWarn = sinon.stub(console, "warn")));
                 afterEach(() => consoleWarn.resetHistory());
-                after(() => consoleWarn.restore());
+                afterAll(() => consoleWarn.restore());
 
                 it("should print a warning when numFrozenRows > numRows", () => {
                     mount(<Table numRows={1} numFrozenRows={2} />);

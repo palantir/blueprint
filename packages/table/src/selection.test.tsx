@@ -15,10 +15,9 @@
  */
 
 import { render } from "@testing-library/react";
-import { expect } from "chai";
 import sinon from "sinon";
 
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import * as Classes from "./common/classes";
 import { Clipboard } from "./common/clipboard";

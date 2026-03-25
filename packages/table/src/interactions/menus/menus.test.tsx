@@ -16,11 +16,10 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Clipboard } from "../../common/clipboard";
 import { Regions } from "../../regions";
@@ -51,7 +50,7 @@ describe("Menus", () => {
     describe("CopyCellsMenuItem", () => {
         const clipboardSpy = sinon.spy(Clipboard, "copyCells");
 
-        after(() => {
+        afterAll(() => {
             (Clipboard.copyCells as any).restore(); // a little sinon hackery
         });
 

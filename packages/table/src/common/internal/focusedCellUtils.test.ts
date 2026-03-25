@@ -16,9 +16,7 @@
 
 /* eslint-disable sort-keys */
 
-import { expect } from "chai";
-
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Region, Regions } from "../../regions";
 import { type CellCoordinates, type FocusedCell, type FocusedCellCoordinates, FocusMode } from "../cellTypes";
