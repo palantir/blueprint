@@ -185,6 +185,7 @@ export const Collapse: React.FC<CollapseProps> = ({
             setHeight(`${clientHeight}px`);
             setHeightWhenOpen(clientHeight);
 
+            clearTimeout(delayedTimerRef.current);
             delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
         } else if (animationState === AnimationStates.CLOSING_START) {
             const clientHeight = contents.current.clientHeight;
@@ -195,6 +196,7 @@ export const Collapse: React.FC<CollapseProps> = ({
                 setHeightWhenOpen(clientHeight);
             });
 
+            clearTimeout(delayedTimerRef.current);
             delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
 
             return () => clearTimeout(immediateTimer);
