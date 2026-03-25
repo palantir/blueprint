@@ -565,6 +565,7 @@ describe("ContextMenu", () => {
                 expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).not.toBeInTheDocument();
                 await user.pointer({ keys: "[MouseRight>]", target });
                 expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).toBeInTheDocument();
+                expect(baseElement.querySelector(`.${popoverClassName}`)).toBeInTheDocument();
             });
         });
     });
