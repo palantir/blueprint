@@ -109,7 +109,11 @@ export const ColorInherit: Story = {
     },
     render: args => (
         <p style={{ color: "#5f6b7c" }}>
-            This paragraph contains a <Link {...args} color="inherit">link that inherits</Link> the text color.
+            This paragraph contains a{" "}
+            <Link {...args} color="inherit">
+                link that inherits
+            </Link>{" "}
+            the text color.
         </p>
     ),
 };
