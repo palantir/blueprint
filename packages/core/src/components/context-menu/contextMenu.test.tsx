@@ -137,9 +137,13 @@ describe("ContextMenu", () => {
 
         it("allows overriding some Popover props", async () => {
             const user = userEvent.setup();
+            const placement = "top";
             const popoverClassName = "test-popover-class";
             const { baseElement } = render(
-                <ContextMenu content={MENU} popoverProps={{ popoverClassName, transitionDuration: 0 }}>
+                <ContextMenu
+                    content={MENU}
+                    popoverProps={{ placement, popoverClassName, transitionDuration: 0 }}
+                >
                     <div data-testid="target" />
                 </ContextMenu>,
             );
@@ -148,7 +152,9 @@ describe("ContextMenu", () => {
             await user.pointer({ keys: "[MouseRight>]", target });
             expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).toBeInTheDocument();
 
-            const popoverWithClassName = baseElement.querySelector(`.${Classes.POPOVER}.${popoverClassName}`);
+            const popoverWithClassName = baseElement.querySelector(
+                `.${Classes.POPOVER}.${popoverClassName}.${Classes.POPOVER_CONTENT_PLACEMENT}-${placement}`,
+            );
             expect(popoverWithClassName).toBeInTheDocument();
         });
     });
