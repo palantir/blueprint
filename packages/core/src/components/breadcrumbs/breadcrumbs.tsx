@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 
 import { Boundary, Classes, DISPLAYNAME_PREFIX, type Props, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
@@ -92,7 +92,7 @@ export interface BreadcrumbsProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
  */
-export const Breadcrumbs: React.FC<BreadcrumbsProps> = props => {
+export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
     const {
         breadcrumbRenderer,
         className,
@@ -180,6 +180,6 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = props => {
             visibleItemRenderer={renderBreadcrumbWrapper}
         />
     );
-};
+});
 
 Breadcrumbs.displayName = `${DISPLAYNAME_PREFIX}.Breadcrumbs`;
