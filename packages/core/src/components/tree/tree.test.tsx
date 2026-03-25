@@ -132,6 +132,7 @@ describe("<Tree>", () => {
         await user.click(item1Caret!);
         expect(onNodeExpand).toHaveBeenCalledOnce();
         // make sure that onNodeClick isn't fired again, only onNodeExpand should be
+        expect(onNodeClick).toHaveBeenCalledTimes(1);
         expect(onNodeExpand.mock.calls[0][1]).toEqual([1]);
 
         const item6Content = screen.getByText("Item 6").closest(`.${Classes.TREE_NODE_CONTENT}`);
