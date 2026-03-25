@@ -201,18 +201,18 @@ export const FillExample: Story = {
     },
     decorators: [
         Story => (
-            <div style={{ width: "500px" }}>
+            <div style={{ width: "400px" }}>
                 <Story />
             </div>
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <FormGroup {...args} fill={true} label="Full width">
-                <InputGroup fill={true} placeholder="Full width input..." />
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+            <FormGroup {...args} fill={true} label="Full Width">
+                <InputGroup fill={true} placeholder="Full Width" />
             </FormGroup>
-            <FormGroup {...args} fill={false} label="Auto width">
-                <InputGroup placeholder="Auto width input..." />
+            <FormGroup {...args} fill={false} label="Auto Width">
+                <InputGroup placeholder="Auto Width" />
             </FormGroup>
         </div>
     ),

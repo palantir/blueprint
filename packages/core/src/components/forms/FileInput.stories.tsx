@@ -139,15 +139,15 @@ export const FillExample: Story = {
     },
     decorators: [
         Story => (
-            <div style={{ width: "500px" }}>
+            <div style={{ width: "400px" }}>
                 <Story />
             </div>
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <FileInput {...args} fill={true} text="Full width..." />
-            <FileInput {...args} fill={false} text="Auto width..." />
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+            <FileInput {...args} fill={true} text="Full Width" />
+            <FileInput {...args} fill={false} text="Auto Width" />
         </div>
     ),
 };

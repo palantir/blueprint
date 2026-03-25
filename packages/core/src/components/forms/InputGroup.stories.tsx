@@ -224,15 +224,15 @@ export const FillExample: Story = {
     },
     decorators: [
         Story => (
-            <div style={{ width: "500px" }}>
+            <div style={{ width: "400px" }}>
                 <Story />
             </div>
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <InputGroup {...args} fill={true} placeholder="Full width..." />
-            <InputGroup {...args} fill={false} placeholder="Auto width..." />
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+            <InputGroup {...args} fill={true} placeholder="Full Width" />
+            <InputGroup {...args} fill={false} placeholder="Auto Width" />
         </div>
     ),
 };
