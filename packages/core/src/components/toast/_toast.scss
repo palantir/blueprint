@@ -24,10 +24,10 @@ $toast-intent-colors: (
     var(--bp-intent-success-active),
   ),
   "warning": (
-    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h)"},
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.179) calc(c - 0.01) h)"},
     var(--bp-intent-warning-foreground),
-    #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.16) c h)"},
-    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.12) c h)"},
+    #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.19) calc(c + 0.031) h)"},
+    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.201) calc(c + 0.045) h)"},
   ),
   "danger": (
     var(--bp-intent-danger-rest),
@@ -157,7 +157,7 @@ $toast-intent-colors: (
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l - 0.14) c h)"};
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l - 0.201) calc(c - 0.015) h)"};
     box-shadow: var(--bp-surface-shadow-3);
 
     > .#{$ns}-icon {
