@@ -29,7 +29,7 @@ describe("<Section>", () => {
     it("supports className", () => {
         const { container } = render(<Section className="foo" />);
         const section = container.querySelector(`.${Classes.SECTION}`);
-        expect(section).toBeInTheDocument();
+        expect(section).not.toBeNull();
         expect(section!).toHaveClass("foo");
     });
 
