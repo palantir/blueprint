@@ -204,7 +204,7 @@ $step-radius: $pt-border-radius !default;
     color: var(--bp-intent-primary-rest);
 
     .#{$ns}-dark & {
-      color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+      color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h)"};
     }
   }
 
