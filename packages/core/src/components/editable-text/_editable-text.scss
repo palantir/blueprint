@@ -151,20 +151,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+        color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0)"},
-          0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0)"},
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.4)"};
+          0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.752)"},
-          0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h / 0.752)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
@@ -173,20 +173,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"};
+        color: #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0)"},
-          0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0)"},
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.4)"};
+          0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.752)"},
-          0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h / 0.752)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
@@ -195,20 +195,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"};
+        color: #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.112) calc(c + 0.006) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0)"},
-          0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0)"},
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.4)"};
+          0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.112) calc(c + 0.006) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.112) calc(c + 0.006) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.112) calc(c + 0.006) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.752)"},
-          0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h / 0.752)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.112) calc(c + 0.006) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.112) calc(c + 0.006) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
@@ -217,20 +217,20 @@
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"};
+        color: #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.097) calc(c - 0.023) h)"};
       }
 
       &:hover::before {
         box-shadow:
-          0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0)"},
-          0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0)"},
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.4)"};
+          0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.097) calc(c - 0.023) h / 0)"},
+          0 0 0 0 #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.097) calc(c - 0.023) h / 0)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.097) calc(c - 0.023) h / 0.4)"};
       }
 
       &.#{$ns}-editable-text-editing::before {
         box-shadow:
-          inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.752)"},
-          0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h / 0.752)"},
+          inset 0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.097) calc(c - 0.023) h / 0.752)"},
+          0 0 0 1px #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.097) calc(c - 0.023) h / 0.752)"},
           $pt-dark-input-box-shadow;
       }
     }
