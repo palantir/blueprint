@@ -68,7 +68,7 @@ button.#{$ns}-menu-item {
 // dark theme
 .#{$ns}-dark {
   .#{$ns}-menu {
-    background: #{"oklch(from var(--bp-intent-default-rest) calc(l - 0.2) c h)"};
+    background: #{"oklch(from var(--bp-intent-default-rest) calc(l - 0.241) calc(c - 0.016) h)"};
     color: var(--bp-typography-color-default-rest);
   }
 

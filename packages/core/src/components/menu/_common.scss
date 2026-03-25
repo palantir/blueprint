@@ -62,23 +62,23 @@ $menu-item-intent-colors: (
 $dark-menu-item-intent-colors: (
   "primary": (
     /* bg */ var(--bp-intent-primary-rest),
-    /* fg */ #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"},
-    /* fg active */ #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h)"},
+    /* fg */ #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.003) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.05) h)"},
   ),
   "success": (
     /* bg */ var(--bp-intent-success-rest),
-    /* fg */ #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"},
-    /* fg active */ #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h)"},
+    /* fg */ #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.223) calc(c - 0.012) h)"},
   ),
   "warning": (
     /* bg */ var(--bp-intent-warning-rest),
-    /* fg */ #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"},
-    /* fg active */ #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h)"},
+    /* fg */ #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.112) calc(c + 0.006) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.179) calc(c - 0.01) h)"},
   ),
   "danger": (
     /* bg */ var(--bp-intent-danger-rest),
-    /* fg */ #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"},
-    /* fg active */ #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h)"},
+    /* fg */ #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.097) calc(c - 0.023) h)"},
+    /* fg active */ #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.204) calc(c - 0.062) h)"},
   ),
 ) !default;
 /* stylelint-enable alpha-value-notation */
@@ -129,7 +129,7 @@ $dark-menu-item-intent-colors: (
   // and mouse interactions.
   &:active {
     /* stylelint-disable-next-line alpha-value-notation */
-    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3)"};
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.24) calc(c - 0.011) h / 0.3)"};
 
     .#{$ns}-menu-item-label {
       color: var(--bp-typography-color-default-rest);
@@ -197,7 +197,7 @@ $dark-menu-item-intent-colors: (
   &:active {
     // we can use the same color as light theme due to transparency
     /* stylelint-disable-next-line alpha-value-notation */
-    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.3)"};
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.24) calc(c - 0.011) h / 0.3)"};
 
     .#{$ns}-menu-item-label {
       color: var(--bp-typography-color-default-rest);
@@ -228,7 +228,7 @@ $dark-menu-item-intent-colors: (
 
 @mixin menu-item-hover() {
   /* stylelint-disable-next-line alpha-value-notation */
-  background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+  background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.24) calc(c - 0.011) h / 0.15)"};
   color: inherit;
   cursor: pointer;
   text-decoration: none;
