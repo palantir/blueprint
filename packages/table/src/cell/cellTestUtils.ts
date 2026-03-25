@@ -15,7 +15,6 @@
  */
 
 import { Classes as CoreClasses } from "@blueprintjs/core";
-
 import { expect } from "@blueprintjs/test-commons/vitest";
 
 import { TableLoadingOption } from "..";
