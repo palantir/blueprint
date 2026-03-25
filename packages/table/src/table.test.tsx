@@ -1550,58 +1550,62 @@ describe("<Table>", function (this) {
             onVisibleCellsChange = sinon.spy();
         });
 
-        it("when column count decreases", done => {
-            const table = mountTable(NUM_COLS, 1);
-            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
-                const newColumns = renderColumns(UPDATED_NUM_COLS);
-                table.setProps({ children: newColumns, columnWidths: Array(UPDATED_NUM_COLS).fill(COL_WIDTH) });
+        it("when column count decreases", () =>
+            new Promise<void>(done => {
+                const table = mountTable(NUM_COLS, 1);
+                scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
+                    const newColumns = renderColumns(UPDATED_NUM_COLS);
+                    table.setProps({ children: newColumns, columnWidths: Array(UPDATED_NUM_COLS).fill(COL_WIDTH) });
 
-                // the viewport should have auto-scrolled to fit the last column in view
-                const viewportRect = table.state("viewportRect")!;
-                expect(viewportRect.left).to.equal(UPDATED_NUM_COLS * COL_WIDTH - viewportRect.width);
+                    // the viewport should have auto-scrolled to fit the last column in view
+                    const viewportRect = table.state("viewportRect")!;
+                    expect(viewportRect.left).to.equal(UPDATED_NUM_COLS * COL_WIDTH - viewportRect.width);
 
-                // this callback is invoked more than necessary in response to a single change.
-                // feel free to tighten the screws and reduce this expected count.
-                expect(onVisibleCellsChange.callCount).to.equal(5);
-                done();
-            });
-        });
+                    // this callback is invoked more than necessary in response to a single change.
+                    // feel free to tighten the screws and reduce this expected count.
+                    expect(onVisibleCellsChange.callCount).to.equal(5);
+                    done();
+                });
+            }));
 
-        it("when row count decreases", done => {
-            const table = mountTable(1, NUM_ROWS);
-            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
-                table.setProps({ numRows: UPDATED_NUM_ROWS, rowHeights: Array(UPDATED_NUM_ROWS).fill(ROW_HEIGHT) });
+        it("when row count decreases", () =>
+            new Promise<void>(done => {
+                const table = mountTable(1, NUM_ROWS);
+                scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
+                    table.setProps({ numRows: UPDATED_NUM_ROWS, rowHeights: Array(UPDATED_NUM_ROWS).fill(ROW_HEIGHT) });
 
-                const viewportRect = table.state("viewportRect")!;
-                expect(viewportRect.top).to.equal(UPDATED_NUM_ROWS * ROW_HEIGHT - viewportRect.height);
-                expect(onVisibleCellsChange.callCount).to.equal(5);
-                done();
-            });
-        });
+                    const viewportRect = table.state("viewportRect")!;
+                    expect(viewportRect.top).to.equal(UPDATED_NUM_ROWS * ROW_HEIGHT - viewportRect.height);
+                    expect(onVisibleCellsChange.callCount).to.equal(5);
+                    done();
+                });
+            }));
 
-        it("when column widths decrease", done => {
-            const table = mountTable(NUM_COLS, 1);
-            scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
-                table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
+        it("when column widths decrease", () =>
+            new Promise<void>(done => {
+                const table = mountTable(NUM_COLS, 1);
+                scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
+                    table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
 
-                const viewportRect = table.state("viewportRect")!;
-                expect(viewportRect.left).to.equal(NUM_COLS * UPDATED_COL_WIDTH - viewportRect.width);
-                expect(onVisibleCellsChange.callCount).to.equal(5);
-                done();
-            });
-        });
+                    const viewportRect = table.state("viewportRect")!;
+                    expect(viewportRect.left).to.equal(NUM_COLS * UPDATED_COL_WIDTH - viewportRect.width);
+                    expect(onVisibleCellsChange.callCount).to.equal(5);
+                    done();
+                });
+            }));
 
-        it("when row heights decrease", done => {
-            const table = mountTable(1, NUM_ROWS);
-            scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
-                table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
+        it("when row heights decrease", () =>
+            new Promise<void>(done => {
+                const table = mountTable(1, NUM_ROWS);
+                scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
+                    table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
 
-                const viewportRect = table.state("viewportRect")!;
-                expect(viewportRect.top).to.equal(NUM_ROWS * UPDATED_ROW_HEIGHT - viewportRect.height);
-                expect(onVisibleCellsChange.callCount).to.equal(5);
-                done();
-            });
-        });
+                    const viewportRect = table.state("viewportRect")!;
+                    expect(viewportRect.top).to.equal(NUM_ROWS * UPDATED_ROW_HEIGHT - viewportRect.height);
+                    expect(onVisibleCellsChange.callCount).to.equal(5);
+                    done();
+                });
+            }));
 
         function mountTable(numCols: number, numRows: number) {
             return mount(
