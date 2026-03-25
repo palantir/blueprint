@@ -144,9 +144,7 @@ export const CustomRenderer: Story = {
     name: "Custom Breadcrumb Renderer",
     args: {
         items: SAMPLE_ITEMS,
-        breadcrumbRenderer: (props: BreadcrumbProps) => (
-            <Breadcrumb {...props} icon={props.icon ?? "folder-close"} />
-        ),
+        breadcrumbRenderer: (props: BreadcrumbProps) => <Breadcrumb {...props} icon={props.icon ?? "folder-close"} />,
     },
 };
 
