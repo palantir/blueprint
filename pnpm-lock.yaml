@@ -1215,9 +1215,6 @@ importers:
       '@blueprintjs/colors':
         specifier: workspace:^
         version: link:../colors
-      '@blueprintjs/karma-build-scripts':
-        specifier: workspace:^
-        version: link:../karma-build-scripts
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
         version: link:../node-build-scripts
@@ -1239,9 +1236,6 @@ importers:
       enzyme:
         specifier: ^3.11.0
         version: 3.11.0
-      karma:
-        specifier: ^6.4.2
-        version: 6.4.4
       mocha:
         specifier: ^10.2.0
         version: 10.8.2
@@ -1260,6 +1254,9 @@ importers:
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.7(@types/node@24.10.0)(jiti@2.6.1)(jsdom@27.1.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1)
       webpack:
         specifier: ^5.90.0
         version: 5.102.1(@swc/core@1.13.20)(esbuild@0.27.2)

@@ -47,7 +47,7 @@ import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableP
  */
 const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
-describe("<Table>", function (this) {
+describe("<Table>", function (this: any) {
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
