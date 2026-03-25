@@ -145,6 +145,9 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
     devDependencies:
+      '@storybook/addon-a11y':
+        specifier: ^10.2.14
+        version: 10.3.0(storybook@10.2.14(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))
       '@storybook/icons':
         specifier: ^2.0.1
         version: 2.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -495,6 +498,9 @@ importers:
 
   packages/docs-app:
     dependencies:
+      '@blueprintjs/colors':
+        specifier: workspace:^
+        version: link:../colors
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
@@ -513,9 +519,6 @@ importers:
       '@blueprintjs/labs':
         specifier: workspace:^
         version: link:../labs
-      '@blueprintjs/monaco-editor-theme':
-        specifier: workspace:^
-        version: link:../monaco-editor-theme
       '@blueprintjs/select':
         specifier: workspace:^
         version: link:../select
@@ -550,8 +553,8 @@ importers:
         specifier: ^2.30.1
         version: 2.30.1
       monaco-editor:
-        specifier: ^0.45.0
-        version: 0.45.0
+        specifier: ^0.55.1
+        version: 0.55.1
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
@@ -594,7 +597,7 @@ importers:
         version: 12.0.2(webpack@5.102.1)
       monaco-editor-webpack-plugin:
         specifier: ^7.1.0
-        version: 7.1.1(monaco-editor@0.45.0)(webpack@5.102.1)
+        version: 7.1.1(monaco-editor@0.55.1)(webpack@5.102.1)
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
@@ -742,6 +745,9 @@ importers:
       eslint:
         specifier: ^8.57 || ^9.0.0
         version: 9.38.0(jiti@2.6.1)
+      tslib:
+        specifier: 'catalog:'
+        version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
@@ -764,9 +770,6 @@ importers:
       mocha:
         specifier: ^10.2.0
         version: 10.8.2
-      tslib:
-        specifier: 'catalog:'
-        version: 2.6.3
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -990,25 +993,6 @@ importers:
         specifier: ^4.15.1
         version: 4.15.2(webpack-cli@5.1.4)(webpack@5.102.1)
 
-  packages/monaco-editor-theme:
-    dependencies:
-      '@blueprintjs/colors':
-        specifier: workspace:^
-        version: link:../colors
-      monaco-editor:
-        specifier: ^0.45.0
-        version: 0.45.0
-    devDependencies:
-      '@blueprintjs/node-build-scripts':
-        specifier: workspace:^
-        version: link:../node-build-scripts
-      npm-run-all:
-        specifier: ^4.1.5
-        version: 4.1.5
-      typescript:
-        specifier: ~5.9.3
-        version: 5.9.3
-
   packages/node-build-scripts:
     dependencies:
       autoprefixer:
@@ -1136,9 +1120,6 @@ importers:
         specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
-      '@blueprintjs/karma-build-scripts':
-        specifier: workspace:^
-        version: link:../karma-build-scripts
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
         version: link:../node-build-scripts
@@ -1149,14 +1130,8 @@ importers:
         specifier: workspace:^
         version: link:../test-commons
       enzyme:
-        specifier: ^3.11.0
+        specifier: 'catalog:'
         version: 3.11.0
-      karma:
-        specifier: ^6.4.2
-        version: 6.4.4
-      mocha:
-        specifier: ^10.2.0
-        version: 10.8.2
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
@@ -1169,12 +1144,12 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
-      react-test-renderer:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.7(@types/node@24.10.0)(jiti@2.6.1)(jsdom@27.1.0)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1)
       webpack-cli:
         specifier: ^5.1.4
         version: 5.1.4(webpack@5.102.1)
@@ -3170,6 +3145,11 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
+  '@storybook/addon-a11y@10.3.0':
+    resolution: {integrity: sha512-GOQP8kp0Pos3weW00U5FC2azt1zZQOcyihP+tINQO6/MDA3hts0rKMbS5+MyVULX7A5JE5uk7SzcZQj+EZ8Yrg==}
+    peerDependencies:
+      storybook: ^10.3.0
+
   '@storybook/builder-vite@10.2.14':
     resolution: {integrity: sha512-4b/opKbbTg+npeFXzj4GwZ7SDJdqsJbcJYxFpAznpl9FqMhP+ktH/7QSDs1DtOXpCanKcrmj6UQQgKR8OGypUQ==}
     peerDependencies:
@@ -3590,6 +3570,9 @@ packages:
 
   '@types/svgo@1.3.6':
     resolution: {integrity: sha512-AZU7vQcy/4WFEuwnwsNsJnFwupIpbllH1++LXScN6uxT1Z4zPzdrWG97w4/I7eFKFTvfy/bHFStWjdBAg2Vjug==}
+
+  '@types/trusted-types@2.0.7':
+    resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
 
   '@types/use-sync-external-store@0.0.6':
     resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
@@ -5057,6 +5040,9 @@ packages:
   domhandler@5.0.3:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
+
+  dompurify@3.2.7:
+    resolution: {integrity: sha512-WhL/YuveyGXJaerVlMYGWhvQswa7myDG17P7Vu65EWC05o8vfeNbvNf4d/BOvH99+ZW+LlQsc1GDKMa1vNK6dw==}
 
   domutils@1.5.1:
     resolution: {integrity: sha512-gSu5Oi/I+3wDENBsOWBiRK1eoGxcywYSqg3rR960/+EfY0CF4EX1VPkgHOZ3WiS/Jg2DtliF6BhWcHlfpYUcGw==}
@@ -6988,6 +6974,11 @@ packages:
     resolution: {integrity: sha512-TchMembfxfNVpHkbtriWltGWc+m3xszaRD0CZup7GFFhzIgQqxIfn3eGj1yZpfuflzPvfkt611B2Q/Bsk1YnGg==}
     hasBin: true
 
+  marked@14.0.0:
+    resolution: {integrity: sha512-uIj4+faQ+MgHgwUW1l2PsPglZLOLOT1uErt06dAPtx2kjteLAkbsd/0FiYg/MGS+i7ZKLb7w2WClxHkzOOuryQ==}
+    engines: {node: '>= 18'}
+    hasBin: true
+
   marked@4.3.0:
     resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
     engines: {node: '>= 12'}
@@ -7213,8 +7204,8 @@ packages:
       monaco-editor: '>= 0.31.0'
       webpack: ^4.5.0 || 5.x
 
-  monaco-editor@0.45.0:
-    resolution: {integrity: sha512-mjv1G1ZzfEE3k9HZN0dQ2olMdwIfaeAAjFiwNprLfYNRSz7ctv9XuCT7gPtBGrMUeV1/iZzYKj17Khu1hxoHOA==}
+  monaco-editor@0.55.1:
+    resolution: {integrity: sha512-jz4x+TJNFHwHtwuV9vA9rMujcZRb0CEilTEwG2rRSpe/A7Jdkuj8xPKttCgOh+v/lkHy7HsZ64oj+q3xoAFl9A==}
 
   moo@0.5.2:
     resolution: {integrity: sha512-iSAJLHYKnX41mKcJKjqvnAN9sf0LMDTXDEvFv+ffuRR9a1MIuXLjMNL6EsnDHSkKLTWNqQQ5uo61P4EbU4NU+Q==}
@@ -11554,6 +11545,12 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
+  '@storybook/addon-a11y@10.3.0(storybook@10.2.14(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      axe-core: 4.11.1
+      storybook: 10.2.14(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+
   '@storybook/builder-vite@10.2.14(esbuild@0.27.2)(rollup@4.52.5)(storybook@10.2.14(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))(webpack@5.102.1(@swc/core@1.13.20)(esbuild@0.27.2))':
     dependencies:
       '@storybook/csf-plugin': 10.2.14(esbuild@0.27.2)(rollup@4.52.5)(storybook@10.2.14(@testing-library/dom@10.4.1)(prettier@3.6.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))(webpack@5.102.1(@swc/core@1.13.20)(esbuild@0.27.2))
@@ -12014,6 +12011,9 @@ snapshots:
   '@types/stack-utils@2.0.3': {}
 
   '@types/svgo@1.3.6': {}
+
+  '@types/trusted-types@2.0.7':
+    optional: true
 
   '@types/use-sync-external-store@0.0.6': {}
 
@@ -13713,6 +13713,10 @@ snapshots:
   domhandler@5.0.3:
     dependencies:
       domelementtype: 2.3.0
+
+  dompurify@3.2.7:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
 
   domutils@1.5.1:
     dependencies:
@@ -16205,6 +16209,8 @@ snapshots:
       mdurl: 1.0.1
       uc.micro: 1.0.6
 
+  marked@14.0.0: {}
+
   marked@4.3.0: {}
 
   marked@9.1.6: {}
@@ -16408,13 +16414,16 @@ snapshots:
 
   moment@2.30.1: {}
 
-  monaco-editor-webpack-plugin@7.1.1(monaco-editor@0.45.0)(webpack@5.102.1):
+  monaco-editor-webpack-plugin@7.1.1(monaco-editor@0.55.1)(webpack@5.102.1):
     dependencies:
       loader-utils: 2.0.4
-      monaco-editor: 0.45.0
+      monaco-editor: 0.55.1
       webpack: 5.102.1(@swc/core@1.13.20)(esbuild@0.27.2)(webpack-cli@5.1.4)
 
-  monaco-editor@0.45.0: {}
+  monaco-editor@0.55.1:
+    dependencies:
+      dompurify: 3.2.7
+      marked: 14.0.0
 
   moo@0.5.2: {}
 

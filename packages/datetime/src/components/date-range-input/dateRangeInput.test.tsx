@@ -68,6 +68,7 @@ const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
 
 describe("<DateRangeInput>", () => {
     let containerElement: HTMLElement;
+    let mountedWrappers: ReactWrapper[] = [];
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -75,7 +76,21 @@ describe("<DateRangeInput>", () => {
     });
 
     afterEach(() => {
-        containerElement.remove();
+        // Unmount all Enzyme wrappers before removing the container to prevent
+        // React from trying to commit updates to removed DOM nodes, which causes
+        // "window is not defined" and "Should not already be working" errors.
+        try {
+            for (const wrapper of mountedWrappers) {
+                try {
+                    wrapper.unmount();
+                } catch {
+                    // best-effort: continue unmounting remaining wrappers
+                }
+            }
+        } finally {
+            mountedWrappers = [];
+            containerElement.remove();
+        }
     });
 
     const YEAR = 2022;
@@ -3150,6 +3165,7 @@ describe("<DateRangeInput>", () => {
     function wrap(dateRangeInput: React.JSX.Element, attachToDOM = false) {
         const mountOptions = attachToDOM ? { attachTo: containerElement } : undefined;
         const wrapper = mount(dateRangeInput, mountOptions);
+        mountedWrappers.push(wrapper);
         return {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(`.${ReactDayPickerClasses.RDP_MONTH}`).at(fromLeftMonth ? 0 : 1);
