@@ -15,7 +15,7 @@ import { TagInput } from "@blueprintjs/core";
 <div class="@ns-callout @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Looking for a dropdown menu?</h5>
 
-<Link color="inherit" href="#select/multi-select">The **MultiSelect** component in the **@blueprintjs/select** package</Link>
+<Link color="inherit" href="#select/multi-select">The <b>MultiSelect</b> component in the <b>@blueprintjs/select</b> package</Link>
 composes this component with a dropdown menu.
 
 </div>

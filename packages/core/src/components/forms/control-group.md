@@ -8,9 +8,9 @@ supports any number of buttons, text inputs, input groups, numeric inputs, and H
 
 Both components group multiple elements into a single unit, but their usage patterns are quite different.
 
-Think of **ControlGroup** as a parent with multiple children, with each one a separate control.
+Think of <b>IControlGroup</b> as a parent with multiple children, with each one a separate control.
 
-Conversely, an <Link color="inherit" href="#core/components/input-group">**InputGroup**</Link> is a single control, and should behave like
+Conversely, an <Link color="inherit" href="#core/components/input-group"><b>InputGroup</b></Link> is a single control, and should behave like
 so. A button inside of an input group should only affect that input; if its reach is further, then it should be
 promoted to live in a control group.
 
