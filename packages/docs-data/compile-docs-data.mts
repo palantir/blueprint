@@ -142,7 +142,7 @@ function interpolateClassNamespace(value: string): string {
 async function fetchNpmPackageInfo(
     packageName: string,
 ): Promise<{ name: string; version: string; versions: string[]; nextVersion?: string }> {
-    // Get all versions
+    // Get all package versions
     const fullData = await packageJson(packageName, { allVersions: true });
     const allVersions = Object.keys(fullData.versions ?? {});
 
