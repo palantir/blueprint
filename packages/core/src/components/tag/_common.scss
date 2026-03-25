@@ -232,7 +232,7 @@ $minimal-dark-tag-intent-colors: (
 
       /* stylelint-disable-next-line alpha-value-notation */
       background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
-      color: var(--bp-typography-color-default-rest);
+      color: var(--bp-palette-light-gray-5);
 
       .#{$ns}-tag-remove {
         color: var(--bp-typography-color-muted);
