@@ -11,9 +11,7 @@ import { MenuDivider } from "./menuDivider";
 import { MenuItem } from "./menuItem";
 
 // These props are deprecated on Menu — hide them from the Storybook controls panel.
-const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<
-    keyof React.ComponentProps<typeof Menu>
->;
+const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Menu>>;
 
 const meta: Meta<typeof Menu> = {
     title: "Core/Menu/Menu",
@@ -78,12 +76,7 @@ export const IntentExample: Story = {
                             text={intent.charAt(0).toUpperCase() + intent.slice(1)}
                             intent={intent}
                         />
-                        <MenuItem
-                            icon="notifications"
-                            text="Active"
-                            intent={intent}
-                            active={true}
-                        />
+                        <MenuItem icon="notifications" text="Active" intent={intent} active={true} />
                     </Menu>
                 ))}
         </div>
