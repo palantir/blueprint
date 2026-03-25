@@ -205,7 +205,12 @@ export const Playground: Story = {
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 <Tabs {...args} selectedTabId={selectedTabId} onChange={handleChange}>
-                    <Tab id="tab1" title="React" icon="code" panel={<p>React is a JavaScript library for building user interfaces.</p>} />
+                    <Tab
+                        id="tab1"
+                        title="React"
+                        icon="code"
+                        panel={<p>React is a JavaScript library for building user interfaces.</p>}
+                    />
                     <Tab
                         id="tab2"
                         title="Angular"
