@@ -237,6 +237,12 @@ describe("<Tree>", () => {
         ];
         render(<Tree contents={contents} />);
 
+        expect(
+            screen
+                .getByText("Item 0")
+                .closest(`.${Classes.TREE_NODE_CONTENT}`)!
+                .querySelector(`.${Classes.TREE_NODE_ICON}`),
+        ).toBeNull();
         expect(screen.getByText("Item 1").closest(`.${Classes.TREE_NODE}`)).toContainElement(
             screen.getByTestId("custom-icon-1"),
         );
