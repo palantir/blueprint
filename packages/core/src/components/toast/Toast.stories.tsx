@@ -1,0 +1,182 @@
+/* !
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
+ */
+
+import type { Meta, StoryObj } from "@storybook/react-vite";
+
+import { Intent } from "../../common";
+
+import { Toast } from "./toast";
+
+const meta: Meta<typeof Toast> = {
+    title: "Core/Toast/Toast",
+    component: Toast,
+    decorators: [
+        Story => (
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
+                <Story />
+            </div>
+        ),
+    ],
+    parameters: {
+        layout: "centered",
+    },
+    tags: ["autodocs"],
+    args: {
+        message: "This is a toast message",
+        intent: "none",
+        icon: undefined,
+        isCloseButtonShown: true,
+        timeout: 0,
+    },
+    argTypes: {
+        intent: {
+            control: "select",
+            options: Object.values(Intent),
+        },
+        icon: {
+            control: "text",
+        },
+        isCloseButtonShown: {
+            control: "boolean",
+        },
+        timeout: {
+            control: "number",
+        },
+        onDismiss: { action: "dismissed" },
+    },
+} satisfies Meta<typeof Toast>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+/**
+ * A basic toast with default styling and a close button.
+ */
+export const Default: Story = {
+    args: {
+        message: "This is a toast message",
+    },
+};
+
+/**
+ * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the toast.
+ */
+export const IntentExample: Story = {
+    name: "Intent",
+    argTypes: {
+        intent: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {Object.values(Intent)
+                .filter(i => i !== "none")
+                .map(intent => (
+                    <Toast
+                        key={intent}
+                        {...args}
+                        intent={intent}
+                        message={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent toast`}
+                    />
+                ))}
+        </div>
+    ),
+};
+
+/**
+ * Use the `icon` prop to render a Blueprint icon before the message.
+ */
+export const IconExample: Story = {
+    name: "Icons",
+    argTypes: {
+        icon: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <Toast {...args} icon="tick-circle" intent="success" message="File saved successfully" />
+            <Toast {...args} icon="warning-sign" intent="warning" message="Connection is unstable" />
+            <Toast {...args} icon="error" intent="danger" message="Failed to save changes" />
+            <Toast {...args} icon="info-sign" intent="primary" message="New update available" />
+        </div>
+    ),
+};
+
+/**
+ * Toasts can include an action button via the `action` prop.
+ */
+export const WithAction: Story = {
+    name: "With Action",
+    args: {
+        message: "File moved to trash",
+        icon: "trash",
+        action: {
+            text: "Undo",
+        },
+    },
+};
+
+/**
+ * The close button can be hidden with `isCloseButtonShown={false}`.
+ */
+export const CloseButtonHidden: Story = {
+    name: "Close Button Hidden",
+    argTypes: {
+        isCloseButtonShown: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <Toast {...args} isCloseButtonShown={true} message="With close button (default)" />
+            <Toast {...args} isCloseButtonShown={false} message="Without close button" />
+        </div>
+    ),
+};
+
+/**
+ * All intents with icons and action buttons for visual regression testing.
+ */
+export const AllIntents: Story = {
+    name: "All Intents",
+    argTypes: {
+        intent: { table: { disable: true } },
+        icon: { table: { disable: true } },
+    },
+    render: args => {
+        const intents: Array<{ intent: (typeof Intent)[keyof typeof Intent]; icon: string; message: string }> = [
+            { intent: Intent.NONE, icon: "notifications", message: "You have 3 new notifications" },
+            { intent: Intent.PRIMARY, icon: "info-sign", message: "A new software update is available" },
+            { intent: Intent.SUCCESS, icon: "tick-circle", message: "Changes saved successfully" },
+            { intent: Intent.WARNING, icon: "warning-sign", message: "Your session expires in 5 minutes" },
+            { intent: Intent.DANGER, icon: "error", message: "Network request failed" },
+        ];
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {intents.map(({ intent, icon, message }) => (
+                    <Toast
+                        key={intent}
+                        {...args}
+                        intent={intent}
+                        icon={icon}
+                        message={message}
+                        action={{ text: "Action" }}
+                    />
+                ))}
+            </div>
+        );
+    },
+};
+
+/**
+ * Interactive playground for experimenting with toast props.
+ */
+export const Playground: Story = {
+    args: {
+        message: "Playground toast message",
+        icon: "info-sign",
+        intent: "primary",
+        isCloseButtonShown: true,
+        action: {
+            text: "Undo",
+        },
+    },
+};
