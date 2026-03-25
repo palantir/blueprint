@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -196,10 +196,10 @@ export const Playground: Story = {
         children: "Customize this card using the controls below.",
         interactive: true,
     },
-    render: args => (
+    render: ({ children, ...args }) => (
         <Card {...args}>
             <H3>Card Title</H3>
-            <p>{args.children}</p>
+            <p>{children}</p>
         </Card>
     ),
 };
