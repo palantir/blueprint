@@ -113,12 +113,7 @@ export const InnerLabel: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
             <Switch {...args} label="With inner labels" innerLabel="Off" innerLabelChecked="On" />
-            <Switch
-                {...args}
-                label="Same label both states"
-                innerLabel="Enabled"
-                defaultChecked={true}
-            />
+            <Switch {...args} label="Same label both states" innerLabel="Enabled" defaultChecked={true} />
         </div>
     ),
 };

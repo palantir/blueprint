@@ -159,7 +159,13 @@ export const AllStates: Story = {
                         <Checkbox {...args} size={size} label="Checked" defaultChecked={true} />
                         <Checkbox {...args} size={size} label="Indeterminate" indeterminate={true} />
                         <Checkbox {...args} size={size} label="Disabled" disabled={true} />
-                        <Checkbox {...args} size={size} label="Checked Disabled" defaultChecked={true} disabled={true} />
+                        <Checkbox
+                            {...args}
+                            size={size}
+                            label="Checked Disabled"
+                            defaultChecked={true}
+                            disabled={true}
+                        />
                         <Checkbox
                             {...args}
                             size={size}

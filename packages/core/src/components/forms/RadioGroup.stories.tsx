@@ -50,10 +50,13 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     render: function Render(args) {
         const [selectedValue, setSelectedValue] = useState<string>("a");
-        const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-            setSelectedValue(e.currentTarget.value);
-            args.onChange?.(e);
-        }, [args]);
+        const handleChange = useCallback(
+            (e: React.ChangeEvent<HTMLInputElement>) => {
+                setSelectedValue(e.currentTarget.value);
+                args.onChange?.(e);
+            },
+            [args],
+        );
         return <RadioGroup {...args} selectedValue={selectedValue} onChange={handleChange} />;
     },
 };
@@ -74,12 +77,7 @@ export const State: Story = {
         }, []);
         return (
             <div style={{ display: "flex", gap: 32 }}>
-                <RadioGroup
-                    {...args}
-                    label="Enabled"
-                    selectedValue={value1}
-                    onChange={handleChange1}
-                />
+                <RadioGroup {...args} label="Enabled" selectedValue={value1} onChange={handleChange1} />
                 <RadioGroup
                     {...args}
                     label="Disabled"
@@ -102,14 +100,7 @@ export const Inline: Story = {
         const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
             setSelectedValue(e.currentTarget.value);
         }, []);
-        return (
-            <RadioGroup
-                {...args}
-                inline={true}
-                selectedValue={selectedValue}
-                onChange={handleChange}
-            />
-        );
+        return <RadioGroup {...args} inline={true} selectedValue={selectedValue} onChange={handleChange} />;
     },
 };
 
@@ -160,10 +151,13 @@ export const ManyOptions: Story = {
 export const Playground: Story = {
     render: function Render(args) {
         const [selectedValue, setSelectedValue] = useState<string>("a");
-        const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-            setSelectedValue(e.currentTarget.value);
-            args.onChange?.(e);
-        }, [args]);
+        const handleChange = useCallback(
+            (e: React.ChangeEvent<HTMLInputElement>) => {
+                setSelectedValue(e.currentTarget.value);
+                args.onChange?.(e);
+            },
+            [args],
+        );
         return <RadioGroup {...args} selectedValue={selectedValue} onChange={handleChange} />;
     },
 };
