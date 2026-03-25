@@ -16,7 +16,7 @@
 
 import { render } from "@testing-library/react";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
 import * as Classes from "./common/classes";
@@ -58,35 +58,59 @@ describe("Column", () => {
         expect(table.find(selector, 2)?.text()).to.equal("C"); // default
     });
 
-    // Skip: jsdom doesn't compute real element dimensions, so Table virtualization renders 0 rows
-    it.skip("renders correctly with loading options", () => {
-        const NUM_ROWS = 5;
-        const cellValue = "my cell value";
-        const cellRenderer = () => <Cell>{cellValue}</Cell>;
-        const { container } = render(
-            <Table numRows={NUM_ROWS}>
-                <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} cellRenderer={cellRenderer} />
-                <Column
-                    name="One"
-                    loadingOptions={[ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER]}
-                    cellRenderer={cellRenderer}
-                />
-                <Column name="Two" cellRenderer={cellRenderer} />
-            </Table>,
-        );
-        const table = new ElementHarness(container);
+    describe("loading options", () => {
+        let originalClientWidth: PropertyDescriptor | undefined;
+        let originalClientHeight: PropertyDescriptor | undefined;
 
-        const columnHeaders = table.element!.querySelectorAll(
-            `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
-        );
+        beforeEach(() => {
+            originalClientWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
+            originalClientHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientHeight");
+            Object.defineProperty(HTMLElement.prototype, "clientWidth", { configurable: true, value: 1000 });
+            Object.defineProperty(HTMLElement.prototype, "clientHeight", { configurable: true, value: 1000 });
+        });
 
-        expectCellLoading(columnHeaders[0], CellType.COLUMN_HEADER, false);
-        expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
-        expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
+        afterEach(() => {
+            if (originalClientWidth) {
+                Object.defineProperty(HTMLElement.prototype, "clientWidth", originalClientWidth);
+            } else {
+                delete (HTMLElement.prototype as any).clientWidth;
+            }
+            if (originalClientHeight) {
+                Object.defineProperty(HTMLElement.prototype, "clientHeight", originalClientHeight);
+            } else {
+                delete (HTMLElement.prototype as any).clientHeight;
+            }
+        });
 
-        expectColumnCells(table, 0, true, NUM_ROWS);
-        expectColumnCells(table, 1, true, NUM_ROWS);
-        expectColumnCells(table, 2, false, NUM_ROWS);
+        it("renders correctly with loading options", () => {
+            const NUM_ROWS = 5;
+            const cellValue = "my cell value";
+            const cellRenderer = () => <Cell>{cellValue}</Cell>;
+            const { container } = render(
+                <Table numRows={NUM_ROWS}>
+                    <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} cellRenderer={cellRenderer} />
+                    <Column
+                        name="One"
+                        loadingOptions={[ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER]}
+                        cellRenderer={cellRenderer}
+                    />
+                    <Column name="Two" cellRenderer={cellRenderer} />
+                </Table>,
+            );
+            const table = new ElementHarness(container);
+
+            const columnHeaders = table.element!.querySelectorAll(
+                `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
+            );
+
+            expectCellLoading(columnHeaders[0], CellType.COLUMN_HEADER, false);
+            expectCellLoading(columnHeaders[1], CellType.COLUMN_HEADER);
+            expectCellLoading(columnHeaders[2], CellType.COLUMN_HEADER, false);
+
+            expectColumnCells(table, 0, true, NUM_ROWS);
+            expectColumnCells(table, 1, true, NUM_ROWS);
+            expectColumnCells(table, 2, false, NUM_ROWS);
+        });
     });
 
     it("passes custom class name to renderer", () => {
