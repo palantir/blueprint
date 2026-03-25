@@ -18,7 +18,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useCallback, useState } from "react";
 
-import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY } from "../../hooks/useAsyncControllableValue";
 
@@ -72,6 +72,14 @@ describe("asyncControllable tests", () => {
             });
 
             describe("controlled mode", () => {
+                beforeEach(() => {
+                    vi.useFakeTimers();
+                });
+
+                afterEach(() => {
+                    vi.useRealTimers();
+                });
+
                 it(`renders a ${element}`, () => {
                     render(<Component value="hi" type={type} />);
                     expect(screen.getByRole(role).tagName.toLowerCase()).toBe(element);
@@ -116,7 +124,6 @@ describe("asyncControllable tests", () => {
                 });
 
                 it("external updates DO NOT flush with immediately ongoing compositions", () => {
-                    vi.useFakeTimers();
                     const { rerender } = render(<Component value="hi" type={type} />);
                     const input = screen.getByRole(role);
 
@@ -133,11 +140,9 @@ describe("asyncControllable tests", () => {
                     vi.advanceTimersByTime(COMPOSITION_END_DELAY);
 
                     expect(input).toHaveValue("hi ");
-                    vi.useRealTimers();
                 });
 
                 it("external updates flush after composition ends", () => {
-                    vi.useFakeTimers();
                     const { rerender } = render(<Component value="hi" type={type} />);
                     const input = screen.getByRole(role);
 
@@ -153,12 +158,9 @@ describe("asyncControllable tests", () => {
                     rerender(<Component value="bye" type={type} />);
 
                     expect(input).toHaveValue("bye");
-                    vi.useRealTimers();
                 });
 
                 it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
-                    vi.useFakeTimers();
-
                     function TestWrapper() {
                         const [value, setValue] = useState("hi");
 
@@ -186,7 +188,6 @@ describe("asyncControllable tests", () => {
                     // advance past the async delay and confirm the update
                     await vi.advanceTimersByTimeAsync(10);
                     expect(input).toHaveValue("hi ");
-                    vi.useRealTimers();
                 });
             });
         }),
