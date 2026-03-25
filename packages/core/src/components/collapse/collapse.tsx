@@ -119,10 +119,10 @@ export const Collapse: React.FC<CollapseProps> = ({
     const [animationState, setAnimationState] = useState<AnimationStates>(
         isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
     );
-    const [height, setHeight] = useState<string | undefined>(undefined);
+    const [height, setHeight] = useState<string | undefined>(isOpen ? "auto" : "0px");
     const [heightWhenOpen, setHeightWhenOpen] = useState<number | undefined>(undefined);
 
-    const isInitialMount = useRef(true);
+    const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
     const isOpenRef = useRef(isOpen);
     isOpenRef.current = isOpen;
     const contents = useRef<HTMLElement | null>(null);
@@ -144,8 +144,9 @@ export const Collapse: React.FC<CollapseProps> = ({
         }
     }, []);
 
-    // Handle isOpen prop changes
-    useEffect(() => {
+    // Synchronize animationState with the isOpen prop during render.
+    if (isOpen !== prevIsOpen) {
+        setPrevIsOpen(isOpen);
         if (isOpen) {
             switch (animationState) {
                 case AnimationStates.OPEN:
@@ -164,7 +165,7 @@ export const Collapse: React.FC<CollapseProps> = ({
                     setHeight(`${heightWhenOpen}px`);
             }
         }
-    }, [isOpen, animationState, heightWhenOpen]);
+    }
 
     // Clean up delayed timer on unmount only (mirrors AbstractPureComponent.setTimeout behavior)
     useEffect(() => {
@@ -204,20 +205,6 @@ export const Collapse: React.FC<CollapseProps> = ({
 
         return undefined;
     }, [animationState, transitionDuration, onDelayedStateChange]);
-
-    // Initial mount effect
-    useEffect(() => {
-        if (isInitialMount.current) {
-            isInitialMount.current = false;
-            if (isOpen) {
-                setAnimationState(AnimationStates.OPEN);
-                setHeight("auto");
-            } else {
-                setAnimationState(AnimationStates.CLOSED);
-                setHeight("0px");
-            }
-        }
-    }, [isOpen]);
 
     const contentsRefHandler = useCallback((element: HTMLElement | null) => {
         contents.current = element;
