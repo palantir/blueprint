@@ -165,6 +165,7 @@ export class ElementHarness {
                 detail: 0,
                 metaKey: isMetaKeyDown,
                 shiftKey: isShiftKeyDown,
+                // view omitted due to jsdom strict type checking
             });
             act(() => {
                 this.element!.dispatchEvent(event);
