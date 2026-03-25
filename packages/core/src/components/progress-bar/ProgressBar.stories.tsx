@@ -13,7 +13,15 @@ const meta: Meta<typeof ProgressBar> = {
     component: ProgressBar,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px", width: "100%" }}>
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    minWidth: "400px",
+                    width: "100%",
+                }}
+            >
                 <Story />
             </div>
         ),
