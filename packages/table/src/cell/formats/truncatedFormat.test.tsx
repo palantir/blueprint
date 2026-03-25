@@ -15,8 +15,7 @@
  */
 
 import { render } from "@testing-library/react";
-
-import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import * as Classes from "../../common/classes";
 import { ElementHarness } from "../../harness";
@@ -25,8 +24,7 @@ import { createStringOfLength } from "../../mocks/table";
 import { TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
 describe("<TruncatedFormat>", () => {
-    // Skip: jsdom doesn't compute real scroll dimensions (scrollWidth/scrollHeight)
-    it.skip("can automatically truncate and show popover when truncated", () => {
+    it("can automatically truncate and show popover when truncated", () => {
         const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
 
         const { container } = render(
@@ -40,108 +38,86 @@ describe("<TruncatedFormat>", () => {
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
-    describe("word wrapped truncation", () => {
-        let savedDescriptors: Record<string, PropertyDescriptor | undefined>;
+    // This test was super flaky. It started failing without clear cause when the Table Frozen
+    // Columns/Rows changes merged, even though nothing about the TruncatedFormat component
+    // changed. Adding the position: relative rule fixes it, but more investigation is needed.
+    it("can automatically truncate and show popover when truncated and word wrapped", () => {
+        const str = `
+            We are going to die, and that makes us the lucky ones. Most
+            people are never going to die because they are never going to
+            be born. The potential people who could have been here in my
+            place but who will in fact never see the light of day
+            outnumber the sand grains of Arabia. Certainly those unborn
+            ghosts include greater poets than Keats, scientists greater
+            than Newton. We know this because the set of possible people
+            allowed by our DNA so massively outnumbers the set of actual
+            people. In the teeth of these stupefying odds it is you and I,
+            in our ordinariness, that are here. We privileged few, who won
+            the lottery of birth against all odds, how dare we whine at
+            our inevitable return to that prior state from which the vast
+            majority have never stirred?
+        `;
 
-        beforeEach(() => {
-            savedDescriptors = {};
-            for (const prop of ["scrollWidth", "scrollHeight", "clientWidth", "clientHeight"] as const) {
-                savedDescriptors[prop] = Object.getOwnPropertyDescriptor(HTMLElement.prototype, prop);
-            }
-            Object.defineProperty(HTMLElement.prototype, "scrollWidth", { configurable: true, value: 500 });
-            Object.defineProperty(HTMLElement.prototype, "scrollHeight", { configurable: true, value: 500 });
-            Object.defineProperty(HTMLElement.prototype, "clientWidth", { configurable: true, value: 300 });
-            Object.defineProperty(HTMLElement.prototype, "clientHeight", { configurable: true, value: 300 });
-        });
+        // fix the container's width and height to ensure this test passes
+        // regardless of the page's dimensions.
+        const style: React.CSSProperties = {
+            height: "300px",
+            position: "relative",
+            width: "300px",
+        };
 
-        afterEach(() => {
-            for (const [prop, desc] of Object.entries(savedDescriptors)) {
-                if (desc) {
-                    Object.defineProperty(HTMLElement.prototype, prop, desc);
-                } else {
-                    delete (HTMLElement.prototype as any)[prop];
-                }
-            }
-        });
+        const { container } = render(
+            <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
+                <TruncatedFormat detectTruncation={true}>{str}</TruncatedFormat>
+            </div>,
+        );
+        const comp = new ElementHarness(container);
+        const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
+        expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
+    });
 
-        it("can automatically truncate and show popover when truncated and word wrapped", () => {
-            const str = `
-                We are going to die, and that makes us the lucky ones. Most
-                people are never going to die because they are never going to
-                be born. The potential people who could have been here in my
-                place but who will in fact never see the light of day
-                outnumber the sand grains of Arabia. Certainly those unborn
-                ghosts include greater poets than Keats, scientists greater
-                than Newton. We know this because the set of possible people
-                allowed by our DNA so massively outnumbers the set of actual
-                people. In the teeth of these stupefying odds it is you and I,
-                in our ordinariness, that are here. We privileged few, who won
-                the lottery of birth against all odds, how dare we whine at
-                our inevitable return to that prior state from which the vast
-                majority have never stirred?
-            `;
+    it("can automatically truncate and show popover when truncated and word wrapped in approx mode", () => {
+        const str = `
+            We are going to die, and that makes us the lucky ones. Most
+            people are never going to die because they are never going to
+            be born. The potential people who could have been here in my
+            place but who will in fact never see the light of day
+            outnumber the sand grains of Arabia. Certainly those unborn
+            ghosts include greater poets than Keats, scientists greater
+            than Newton. We know this because the set of possible people
+            allowed by our DNA so massively outnumbers the set of actual
+            people. In the teeth of these stupefying odds it is you and I,
+            in our ordinariness, that are here. We privileged few, who won
+            the lottery of birth against all odds, how dare we whine at
+            our inevitable return to that prior state from which the vast
+            majority have never stirred?
+        `;
 
-            // fix the container's width and height to ensure this test passes
-            // regardless of the page's dimensions.
-            const style: React.CSSProperties = {
-                height: "300px",
-                position: "relative",
-                width: "300px",
-            };
+        // fix the container's width and height to ensure this test passes
+        // regardless of the page's dimensions.
+        const style: React.CSSProperties = {
+            height: "300px",
+            position: "relative",
+            width: "300px",
+        };
 
-            const { container } = render(
-                <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
-                    <TruncatedFormat detectTruncation={true}>{str}</TruncatedFormat>
-                </div>,
-            );
-            const comp = new ElementHarness(container);
-            const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
-            expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
-        });
-
-        it("can automatically truncate and show popover when truncated and word wrapped in approx mode", () => {
-            const str = `
-                We are going to die, and that makes us the lucky ones. Most
-                people are never going to die because they are never going to
-                be born. The potential people who could have been here in my
-                place but who will in fact never see the light of day
-                outnumber the sand grains of Arabia. Certainly those unborn
-                ghosts include greater poets than Keats, scientists greater
-                than Newton. We know this because the set of possible people
-                allowed by our DNA so massively outnumbers the set of actual
-                people. In the teeth of these stupefying odds it is you and I,
-                in our ordinariness, that are here. We privileged few, who won
-                the lottery of birth against all odds, how dare we whine at
-                our inevitable return to that prior state from which the vast
-                majority have never stirred?
-            `;
-
-            // fix the container's width and height to ensure this test passes
-            // regardless of the page's dimensions.
-            const style: React.CSSProperties = {
-                height: "300px",
-                position: "relative",
-                width: "300px",
-            };
-
-            const { container } = render(
-                <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
-                    <TruncatedFormat
-                        detectTruncation={true}
-                        showPopover={TruncatedPopoverMode.WHEN_TRUNCATED_APPROX}
-                        parentCellHeight={300}
-                        parentCellWidth={300}
-                    >
-                        {str}
-                    </TruncatedFormat>
-                </div>,
-            );
-            const comp = new ElementHarness(container);
-            const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
-            expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
-            expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
-        });
+        const { container } = render(
+            <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
+                <TruncatedFormat
+                    detectTruncation={true}
+                    showPopover={TruncatedPopoverMode.WHEN_TRUNCATED_APPROX}
+                    parentCellHeight={300}
+                    parentCellWidth={300}
+                >
+                    {str}
+                </TruncatedFormat>
+            </div>,
+        );
+        const comp = new ElementHarness(container);
+        const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
+        expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
     it("can manually truncate and show popover when truncated", () => {
@@ -167,8 +143,7 @@ describe("<TruncatedFormat>", () => {
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
     });
 
-    // Skip: jsdom doesn't compute real scroll dimensions, so TruncatedFormat renders differently
-    it.skip("doesn't truncate if truncation length is 0", () => {
+    it("doesn't truncate if truncation length is 0", () => {
         const str = `
             To be, or not to be--that is the question:
             Whether 'tis nobler in the mind to suffer
