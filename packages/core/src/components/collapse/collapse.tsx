@@ -180,27 +180,33 @@ export const Collapse: React.FC<CollapseProps> = ({
     useEffect(() => {
         if (!contents.current) return undefined;
 
-        if (animationState === AnimationStates.OPEN_START) {
-            const clientHeight = contents.current.clientHeight;
-            setAnimationState(AnimationStates.OPENING);
-            setHeight(`${clientHeight}px`);
-            setHeightWhenOpen(clientHeight);
-
-            clearTimeout(delayedTimerRef.current);
-            delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
-        } else if (animationState === AnimationStates.CLOSING_START) {
-            const clientHeight = contents.current.clientHeight;
-
-            const immediateTimer = setTimeout(() => {
-                setAnimationState(AnimationStates.CLOSING);
-                setHeight("0px");
+        switch (animationState) {
+            case AnimationStates.OPEN_START: {
+                const clientHeight = contents.current.clientHeight;
+                setAnimationState(AnimationStates.OPENING);
+                setHeight(`${clientHeight}px`);
                 setHeightWhenOpen(clientHeight);
-            });
 
-            clearTimeout(delayedTimerRef.current);
-            delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
+                clearTimeout(delayedTimerRef.current);
+                delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
+                break;
+            }
+            case AnimationStates.CLOSING_START: {
+                const clientHeight = contents.current.clientHeight;
 
-            return () => clearTimeout(immediateTimer);
+                const immediateTimer = setTimeout(() => {
+                    setAnimationState(AnimationStates.CLOSING);
+                    setHeight("0px");
+                    setHeightWhenOpen(clientHeight);
+                });
+
+                clearTimeout(delayedTimerRef.current);
+                delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
+
+                return () => clearTimeout(immediateTimer);
+            }
+            default:
+                break;
         }
 
         return undefined;
