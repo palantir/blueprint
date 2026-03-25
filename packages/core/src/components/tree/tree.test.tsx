@@ -203,7 +203,7 @@ describe("<Tree>", () => {
         await user.dblClick(item0Content!);
         expect(onNodeDoubleClick).not.toHaveBeenCalled();
 
-        await user.pointer([{ keys: "[MouseRight]", target: item0Content! }]);
+        fireEvent.contextMenu(item0Content!);
         expect(onNodeContextMenu).not.toHaveBeenCalled();
 
         await user.hover(item0Content!);
