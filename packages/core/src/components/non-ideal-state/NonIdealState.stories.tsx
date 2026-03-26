@@ -8,7 +8,7 @@ import { Button } from "../button/buttons";
 import { NonIdealState, NonIdealStateIconSize } from "./nonIdealState";
 
 const meta: Meta<typeof NonIdealState> = {
-    title: "Core/NonIdealState/NonIdealState",
+    title: "Core/NonIdealState",
     component: NonIdealState,
     decorators: [
         Story => (
@@ -64,22 +64,31 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
- * NonIdealState with an action button.
+ * Horizontal vs vertical layout.
  */
-export const WithAction: Story = {
-    name: "With Action",
-    args: {
-        icon: "folder-open",
-        title: "This folder is empty",
-        description: "Create a new file to get started.",
-        action: <Button icon="plus" text="Create new file" intent="primary" />,
+export const LayoutExample: Story = {
+    name: "Layout",
+    argTypes: {
+        layout: { table: { disable: true } },
     },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 40, width: "100%" }}>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Vertical (default)</div>
+                <NonIdealState {...args} layout="vertical" />
+            </div>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Horizontal</div>
+                <NonIdealState {...args} layout="horizontal" />
+            </div>
+        </div>
+    ),
 };
 
 /**
  * Icon size options available for the visual element.
  */
-export const IconSizes: Story = {
+export const IconSizeExample: Story = {
     name: "Icon Size",
     argTypes: {
         iconSize: { table: { disable: true } },
@@ -100,61 +109,6 @@ export const IconSizes: Story = {
             ))}
         </div>
     ),
-};
-
-/**
- * Horizontal vs vertical layout.
- */
-export const Layout: Story = {
-    argTypes: {
-        layout: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 40, width: "100%" }}>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Vertical (default)</div>
-                <NonIdealState {...args} layout="vertical" />
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Horizontal</div>
-                <NonIdealState {...args} layout="horizontal" />
-            </div>
-        </div>
-    ),
-};
-
-/**
- * Muted vs non-muted icon styling.
- */
-export const IconMuted: Story = {
-    name: "Icon Muted",
-    argTypes: {
-        iconMuted: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
-            <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Muted (default)</div>
-                <NonIdealState {...args} iconMuted={true} />
-            </div>
-            <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Not muted</div>
-                <NonIdealState {...args} iconMuted={false} />
-            </div>
-        </div>
-    ),
-};
-
-/**
- * NonIdealState with only a title and no icon.
- */
-export const TitleOnly: Story = {
-    name: "Title Only",
-    args: {
-        icon: undefined,
-        title: "Nothing here yet",
-        description: undefined,
-    },
 };
 
 /**
