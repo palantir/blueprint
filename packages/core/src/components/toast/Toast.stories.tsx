@@ -69,16 +69,14 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Toast
-                        key={intent}
-                        {...args}
-                        intent={intent}
-                        message={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent toast`}
-                    />
-                ))}
+            {Object.values(Intent).map(intent => (
+                <Toast
+                    key={intent}
+                    {...args}
+                    intent={intent}
+                    message={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent toast`}
+                />
+            ))}
         </div>
     ),
 };
