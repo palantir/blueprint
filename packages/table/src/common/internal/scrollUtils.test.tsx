@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render } from "vitest-browser-react";
 
-import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Region, Regions } from "../../regions";
 
@@ -50,29 +50,29 @@ describe("scrollUtils", () => {
             it("scrolling to cell", () => {
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT);
             });
 
             it("scrolling to row", () => {
                 const region = Regions.row(TARGET_ROW);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(INITIAL_SCROLL_LEFT);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(INITIAL_SCROLL_LEFT);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT);
             });
 
             it("scrolling to column", () => {
                 const region = Regions.column(TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH);
-                expect(scrollTop).to.equal(INITIAL_SCROLL_TOP);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(INITIAL_SCROLL_TOP);
             });
 
             it("scrolling to full table", () => {
                 const region = Regions.table();
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(0);
             });
         });
 
@@ -93,8 +93,8 @@ describe("scrollUtils", () => {
                 const TARGET_COLUMN = 3;
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(0);
             });
 
             it("scrolling to a non-frozen cell", () => {
@@ -102,39 +102,39 @@ describe("scrollUtils", () => {
                 const TARGET_COLUMN = 3;
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
             });
 
             it("scrolling to a column", () => {
                 const TARGET_COLUMN = 3;
                 const region = Regions.column(TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH);
-                expect(scrollTop).to.equal(INITIAL_SCROLL_TOP);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(INITIAL_SCROLL_TOP);
             });
 
             it("scrolling to a frozen row", () => {
                 const TARGET_ROW = NUM_FROZEN_ROWS - 1;
                 const region = Regions.row(TARGET_ROW);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(INITIAL_SCROLL_LEFT);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(INITIAL_SCROLL_LEFT);
+                expect(scrollTop).toEqual(0);
             });
 
             it("scrolling to a non-frozen row", () => {
                 const TARGET_ROW = NUM_FROZEN_ROWS; // 1 row beyond the frozen region
                 const region = Regions.row(TARGET_ROW);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(INITIAL_SCROLL_LEFT);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(INITIAL_SCROLL_LEFT);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
             });
 
             it("scrolling to full table", () => {
                 const region = Regions.table();
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(0);
             });
         });
 
@@ -156,8 +156,8 @@ describe("scrollUtils", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS - 1;
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT);
             });
 
             it("scrolling to a non-frozen cell", () => {
@@ -165,39 +165,39 @@ describe("scrollUtils", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS;
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
             });
 
             it("scrolling to a frozen column", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS - 1;
                 const region = Regions.column(TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(INITIAL_SCROLL_TOP);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(INITIAL_SCROLL_TOP);
             });
 
             it("scrolling to a non-frozen column", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS; // 1 row beyond the frozen region
                 const region = Regions.column(TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
-                expect(scrollTop).to.equal(INITIAL_SCROLL_TOP);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(INITIAL_SCROLL_TOP);
             });
 
             it("scrolling to a row", () => {
                 const TARGET_ROW = 3;
                 const region = Regions.row(TARGET_ROW);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(INITIAL_SCROLL_LEFT);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(INITIAL_SCROLL_LEFT);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT);
             });
 
             it("scrolling to full table", () => {
                 const region = Regions.table();
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(0);
             });
         });
 
@@ -219,8 +219,8 @@ describe("scrollUtils", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS - 1;
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(0);
             });
 
             it("scrolling to a non-frozen cell", () => {
@@ -228,47 +228,47 @@ describe("scrollUtils", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS;
                 const region = Regions.cell(TARGET_ROW, TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
             });
 
             it("scrolling to a frozen column", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS - 1;
                 const region = Regions.column(TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(INITIAL_SCROLL_TOP);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(INITIAL_SCROLL_TOP);
             });
 
             it("scrolling to a non-frozen column", () => {
                 const TARGET_COLUMN = NUM_FROZEN_COLUMNS; // 1 row beyond the frozen region
                 const region = Regions.column(TARGET_COLUMN);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
-                expect(scrollTop).to.equal(INITIAL_SCROLL_TOP);
+                expect(scrollLeft).toEqual(TARGET_COLUMN * COLUMN_WIDTH - NUM_FROZEN_COLUMNS * COLUMN_WIDTH);
+                expect(scrollTop).toEqual(INITIAL_SCROLL_TOP);
             });
 
             it("scrolling to a frozen row", () => {
                 const TARGET_ROW = NUM_FROZEN_ROWS - 1;
                 const region = Regions.row(TARGET_ROW);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(INITIAL_SCROLL_LEFT);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(INITIAL_SCROLL_LEFT);
+                expect(scrollTop).toEqual(0);
             });
 
             it("scrolling to a non-frozen row", () => {
                 const TARGET_ROW = NUM_FROZEN_ROWS; // 1 row beyond the frozen region
                 const region = Regions.row(TARGET_ROW);
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(INITIAL_SCROLL_LEFT);
-                expect(scrollTop).to.equal(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
+                expect(scrollLeft).toEqual(INITIAL_SCROLL_LEFT);
+                expect(scrollTop).toEqual(TARGET_ROW * ROW_HEIGHT - NUM_FROZEN_ROWS * ROW_HEIGHT);
             });
 
             it("scrolling to full table", () => {
                 const region = Regions.table();
                 const { scrollLeft, scrollTop } = fn(region);
-                expect(scrollLeft).to.equal(0);
-                expect(scrollTop).to.equal(0);
+                expect(scrollLeft).toEqual(0);
+                expect(scrollTop).toEqual(0);
             });
         });
 
@@ -285,8 +285,6 @@ describe("scrollUtils", () => {
         const PARENT_WIDTH = 100;
         const PARENT_HEIGHT = 100;
 
-        let containerElement: HTMLElement;
-
         const baseStyles = { display: "block" };
         const parentStyle: React.CSSProperties = {
             ...baseStyles,
@@ -301,53 +299,40 @@ describe("scrollUtils", () => {
         const VERTICAL_ERROR = "measures vertical scrollbar correctly";
         const HORIZONTAL_ERROR = "measures horizontal scrollbar correctly";
 
-        beforeEach(() => {
-            containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
+        // NOTE: these tests will report 0 scrollbar thickness in environments with overlay scrollbars
+        // (e.g., headless Chromium, or macOS with "When scrolling" scrollbar setting).
+
+        it("measures correctly when neither scrollbar is showing", async () => {
+            const element = await mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT / 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).toEqual(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).toEqual(0);
         });
 
-        afterEach(() => {
-            document.body.removeChild(containerElement);
+        it("measures correctly when only vertical scrollbar is showing", async () => {
+            const element = await mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT * 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).toBeGreaterThanOrEqual(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).toEqual(0);
         });
 
-        // NOTE: these tests will fail locally on OS X if you have your scrollbars set to "When scrolling"
-        // in System Preferences > General
-
-        it("measures correctly when neither scrollbar is showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT / 2);
-            expect(fn(element, "vertical"), VERTICAL_ERROR).to.equal(0);
-            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.equal(0);
+        it("measures correctly when only horizontal scrollbar is showing", async () => {
+            const element = await mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT / 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).toEqual(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).toBeGreaterThanOrEqual(0);
         });
 
-        // skip: requires real browser layout engine (jsdom limitation)
-        it.skip("measures correctly when only vertical scrollbar is showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH / 2, PARENT_HEIGHT * 2);
-            expect(fn(element, "vertical"), VERTICAL_ERROR).to.be.greaterThan(0);
-            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.equal(0);
+        it("measures correctly when both scrollbars are showing", async () => {
+            const element = await mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT * 2);
+            expect(fn(element, "vertical"), VERTICAL_ERROR).toBeGreaterThanOrEqual(0);
+            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).toBeGreaterThanOrEqual(0);
         });
 
-        // skip: requires real browser layout engine (jsdom limitation)
-        it.skip("measures correctly when only horizontal scrollbar is showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT / 2);
-            expect(fn(element, "vertical"), VERTICAL_ERROR).to.equal(0);
-            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.be.greaterThan(0);
-        });
-
-        // skip: requires real browser layout engine (jsdom limitation)
-        it.skip("measures correctly when both scrollbars are showing", () => {
-            const element = mountElementsWithContentSize(PARENT_WIDTH * 2, PARENT_HEIGHT * 2);
-            expect(fn(element, "vertical"), VERTICAL_ERROR).to.be.greaterThan(0);
-            expect(fn(element, "horizontal"), HORIZONTAL_ERROR).to.be.greaterThan(0);
-        });
-
-        function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
-            const wrapper = mount(
+        async function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
+            const { container } = await render(
                 <div style={parentStyle}>
                     <div style={{ ...baseStyles, height: contentHeight, width: contentWidth }} />
                 </div>,
-                { attachTo: containerElement },
             );
-            return wrapper.getDOMNode<HTMLDivElement>();
+            return container.firstElementChild as HTMLDivElement;
         }
     });
 });
