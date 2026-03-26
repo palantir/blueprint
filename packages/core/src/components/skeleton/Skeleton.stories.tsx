@@ -84,48 +84,10 @@ export const ComparisonExample: Story = {
 };
 
 /**
- * The skeleton class can be applied to various HTML elements, inheriting their dimensions.
+ * Interactive playground with all props togglable via Storybook controls.
  */
-export const VariousElementsExample: Story = {
-    name: "Various Elements",
-    render: () => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: 300 }}>
-            <h3 className={Classes.SKELETON}>Heading element</h3>
-            <p className={Classes.SKELETON}>Paragraph element with some placeholder text content.</p>
-            <span className={Classes.SKELETON} style={{ display: "inline-block", width: 200, height: 20 }}>
-                Inline block element
-            </span>
-            <Button className={Classes.SKELETON} text="Button element" tabIndex={-1} />
-            <input className={Classes.SKELETON} type="text" placeholder="Input element" tabIndex={-1} />
-        </div>
-    ),
-};
-
-/**
- * Multiple skeleton rows simulating a list loading state.
- */
-export const ListExample: Story = {
-    name: "List",
-    render: () => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 400 }}>
-            {Array.from({ length: 5 }, (_, i) => (
-                <div key={i} style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    <div
-                        className={Classes.SKELETON}
-                        style={{ width: 32, height: 32, borderRadius: "50%", flexShrink: 0 }}
-                    >
-                        &nbsp;
-                    </div>
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
-                        <div className={Classes.SKELETON} style={{ height: 16, width: `${70 + ((i * 13) % 30)}%` }}>
-                            &nbsp;
-                        </div>
-                        <div className={Classes.SKELETON} style={{ height: 12, width: `${50 + ((i * 17) % 40)}%` }}>
-                            &nbsp;
-                        </div>
-                    </div>
-                </div>
-            ))}
-        </div>
-    ),
+export const Playground: Story = {
+    args: {
+        skeleton: false,
+    },
 };
