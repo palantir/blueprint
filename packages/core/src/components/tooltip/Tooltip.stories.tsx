@@ -73,13 +73,11 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 24 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
-                        <span>{intent.charAt(0).toUpperCase() + intent.slice(1)}</span>
-                    </Tooltip>
-                ))}
+            {Object.values(Intent).map(intent => (
+                <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
+                    <span>{intent.charAt(0).toUpperCase() + intent.slice(1)}</span>
+                </Tooltip>
+            ))}
         </div>
     ),
 };
