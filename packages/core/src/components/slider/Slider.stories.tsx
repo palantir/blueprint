@@ -10,7 +10,7 @@ import { Intent } from "../../common";
 import { Slider } from "./slider";
 
 const meta: Meta<typeof Slider> = {
-    title: "Core/Slider/Slider",
+    title: "Core/Slider",
     component: Slider,
     decorators: [
         Story => (
@@ -110,12 +110,13 @@ export const IntentExample: Story = {
 };
 
 /**
- * Use the `disabled` prop to render a non-interactive slider.
+ * Use the `disabled` and `vertical` props to control slider state and orientation.
  */
 export const StateExample: Story = {
     name: "State",
     argTypes: {
         disabled: { table: { disable: true } },
+        vertical: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
@@ -127,79 +128,11 @@ export const StateExample: Story = {
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
                 <Slider {...args} disabled={true} value={5} />
             </div>
-        </div>
-    ),
-};
-
-/**
- * Use the `vertical` prop to render the slider vertically.
- */
-export const VerticalExample: Story = {
-    name: "Vertical",
-    argTypes: {
-        vertical: { table: { disable: true } },
-    },
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "flex-start", height: "200px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    render: args => (
-        <div style={{ display: "flex", gap: 40 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Slider key={intent} {...args} vertical={true} intent={intent} value={7} />
-                ))}
-        </div>
-    ),
-};
-
-/**
- * Use the `showTrackFill` prop to control whether the filled portion of the track is visible.
- */
-export const TrackFillExample: Story = {
-    name: "Track Fill",
-    argTypes: {
-        showTrackFill: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>With track fill</span>
-                <Slider {...args} showTrackFill={true} value={5} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Without track fill</span>
-                <Slider {...args} showTrackFill={false} value={5} />
-            </div>
-        </div>
-    ),
-};
-
-/**
- * Use the `labelRenderer` prop to customize or hide labels.
- */
-export const LabelsExample: Story = {
-    name: "Labels",
-    argTypes: {
-        labelRenderer: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>With labels</span>
-                <Slider {...args} labelRenderer={true} value={5} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Without labels</span>
-                <Slider {...args} labelRenderer={false} value={5} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Custom label renderer (percentage)</span>
-                <Slider {...args} labelRenderer={v => `${v * 10}%`} value={5} />
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Vertical</span>
+                <div style={{ height: "200px" }}>
+                    <Slider {...args} vertical={true} value={7} />
+                </div>
             </div>
         </div>
     ),
