@@ -9,7 +9,7 @@ import { Card } from "../card/card";
 import { CardList } from "./cardList";
 
 const meta: Meta<typeof CardList> = {
-    title: "Core/Card/CardList",
+    title: "Core/CardList",
     component: CardList,
     decorators: [
         Story => (
@@ -51,95 +51,41 @@ export const Default: Story = {
 };
 
 /**
- * Use the `bordered` prop to control the visual border and elevation around the list.
- * Set `bordered={false}` when embedding the CardList inside another bordered container.
+ * CardList supports `bordered`, `compact`, `interactive`, and `selected` states across its Card children.
  */
-export const BorderedExample: Story = {
-    name: "Bordered",
+export const StateExample: Story = {
+    name: "State",
     argTypes: {
         bordered: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 24 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Bordered</span>
-                <CardList {...args} bordered={true} style={{ maxWidth: 200 }}>
-                    <Card>Bread</Card>
-                    <Card>Cheese</Card>
-                    <Card>Butter</Card>
-                </CardList>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Not bordered</span>
-                <CardList {...args} bordered={false} style={{ maxWidth: 200 }}>
-                    <Card>Honey</Card>
-                    <Card>Jam</Card>
-                    <Card>Peanut Butter</Card>
-                </CardList>
-            </div>
-        </div>
-    ),
-};
-
-/**
- * Use the `compact` prop to render a denser list with reduced padding.
- */
-export const CompactExample: Story = {
-    name: "Compact",
-    argTypes: {
         compact: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", gap: 24 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
-                <CardList {...args} compact={false} style={{ maxWidth: 200 }}>
-                    <Card>Apples</Card>
-                    <Card>Oranges</Card>
-                    <Card>Bananas</Card>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Bordered</span>
+                <CardList {...args} bordered={true} compact={false} style={{ maxWidth: 200 }}>
+                    <Card>Plain</Card>
+                    <Card interactive={true}>Interactive</Card>
+                    <Card selected={true}>Selected</Card>
                 </CardList>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Compact</span>
-                <CardList {...args} compact={true} style={{ maxWidth: 200 }}>
-                    <Card>Apples</Card>
-                    <Card>Oranges</Card>
-                    <Card>Bananas</Card>
+                <CardList {...args} bordered={true} compact={true} style={{ maxWidth: 200 }}>
+                    <Card>Plain</Card>
+                    <Card interactive={true}>Interactive</Card>
+                    <Card selected={true}>Selected</Card>
+                </CardList>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Not bordered</span>
+                <CardList {...args} bordered={false} compact={false} style={{ maxWidth: 200 }}>
+                    <Card>Plain</Card>
+                    <Card interactive={true}>Interactive</Card>
+                    <Card selected={true}>Selected</Card>
                 </CardList>
             </div>
         </div>
-    ),
-};
-
-/**
- * Card children can be made interactive with hover and active states.
- */
-export const InteractiveCards: Story = {
-    name: "Interactive Cards",
-    render: args => (
-        <CardList {...args} style={{ maxWidth: 300 }}>
-            {FRUITS.map(fruit => (
-                <Card key={fruit} interactive={true}>
-                    {fruit}
-                </Card>
-            ))}
-        </CardList>
-    ),
-};
-
-/**
- * Card children can use the `selected` prop to display a selected visual state.
- */
-export const SelectedCards: Story = {
-    name: "Selected Cards",
-    render: args => (
-        <CardList {...args} style={{ maxWidth: 300 }}>
-            <Card>Apples</Card>
-            <Card selected={true}>Oranges (selected)</Card>
-            <Card>Bananas</Card>
-            <Card selected={true}>Grapes (selected)</Card>
-            <Card>Mangoes</Card>
-        </CardList>
     ),
 };
 
