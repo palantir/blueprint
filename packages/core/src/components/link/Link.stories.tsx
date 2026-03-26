@@ -1,4 +1,4 @@
-/* !
+/*!
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -9,7 +9,7 @@ import { Intent } from "../../common";
 import { Link } from "./link";
 
 const meta: Meta<typeof Link> = {
-    title: "Core/Link/Link",
+    title: "Core/Link",
     component: Link,
     decorators: [
         Story => (
@@ -100,28 +100,10 @@ export const UnderlineExample: Story = {
 };
 
 /**
- * Use `color="inherit"` to make the link inherit the surrounding text color.
- */
-export const ColorInherit: Story = {
-    name: "Color Inherit",
-    argTypes: {
-        color: { table: { disable: true } },
-    },
-    render: args => (
-        <p style={{ color: "#5f6b7c" }}>
-            This paragraph contains a{" "}
-            <Link {...args} color="inherit">
-                link that inherits
-            </Link>{" "}
-            the text color.
-        </p>
-    ),
-};
-
-/**
  * All intent colors across all underline styles.
  */
 export const AllIntentsAllUnderlines: Story = {
+    name: "All Intents / All Underlines",
     argTypes: {
         color: { table: { disable: true } },
         underline: { table: { disable: true } },
