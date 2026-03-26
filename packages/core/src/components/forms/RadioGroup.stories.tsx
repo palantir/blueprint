@@ -96,13 +96,7 @@ export const StateExample: Story = {
                     selectedValue={value2}
                     onChange={handleChange2}
                 />
-                <RadioGroup
-                    {...args}
-                    label="Inline"
-                    inline={true}
-                    selectedValue={value3}
-                    onChange={handleChange3}
-                />
+                <RadioGroup {...args} label="Inline" inline={true} selectedValue={value3} onChange={handleChange3} />
             </div>
         );
     },
