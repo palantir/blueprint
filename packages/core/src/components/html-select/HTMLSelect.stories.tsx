@@ -1,4 +1,4 @@
-/* !
+/*!
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -16,7 +16,7 @@ const SAMPLE_OPTIONS = [
 ];
 
 const meta: Meta<typeof HTMLSelect> = {
-    title: "Core/HTMLSelect",
+    title: "Core/Form/HTMLSelect",
     component: HTMLSelect,
     decorators: [
         Story => (
@@ -67,9 +67,42 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
+ * Use the `large` prop to render a larger select element.
+ */
+export const SizeExample: Story = {
+    name: "Size",
+    argTypes: {
+        large: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <HTMLSelect {...args} large={false} />
+            <HTMLSelect {...args} large={true} />
+        </div>
+    ),
+};
+
+/**
+ * Use the `disabled` prop to make the select non-interactive.
+ */
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        disabled: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+            <HTMLSelect {...args} disabled={false} />
+            <HTMLSelect {...args} disabled={true} />
+        </div>
+    ),
+};
+
+/**
  * Use the `fill` prop to make the select expand to the full width of its container.
  */
-export const Fill: Story = {
+export const FillExample: Story = {
+    name: "Fill",
     argTypes: {
         fill: { table: { disable: true } },
     },
@@ -89,76 +122,14 @@ export const Fill: Story = {
 };
 
 /**
- * Use the `disabled` prop to make the select non-interactive.
+ * Interactive playground with all props togglable via Storybook controls.
  */
-export const Disabled: Story = {
+export const Playground: Story = {
     args: {
-        disabled: true,
+        options: SAMPLE_OPTIONS,
+        fill: false,
+        large: false,
+        minimal: false,
+        disabled: false,
     },
-};
-
-/**
- * Use the `large` prop to render a larger select element.
- */
-export const Sizes: Story = {
-    argTypes: {
-        large: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <HTMLSelect {...args} large={false} />
-            <HTMLSelect {...args} large={true} />
-        </div>
-    ),
-};
-
-/**
- * Use the `iconName` prop to change the icon displayed on the right side of the select.
- */
-export const WithIcon: Story = {
-    argTypes: {
-        iconName: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <HTMLSelect {...args} iconName="double-caret-vertical" />
-            <HTMLSelect {...args} iconName="caret-down" />
-        </div>
-    ),
-};
-
-/**
- * All size and style combinations displayed together.
- */
-export const AllSizes: Story = {
-    argTypes: {
-        large: { table: { disable: true } },
-        minimal: { table: { disable: true } },
-        disabled: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Default</div>
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                    <HTMLSelect {...args} large={false} />
-                    <HTMLSelect {...args} large={true} />
-                </div>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Minimal</div>
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                    <HTMLSelect {...args} minimal={true} large={false} />
-                    <HTMLSelect {...args} minimal={true} large={true} />
-                </div>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Disabled</div>
-                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                    <HTMLSelect {...args} disabled={true} large={false} />
-                    <HTMLSelect {...args} disabled={true} large={true} />
-                </div>
-            </div>
-        </div>
-    ),
 };
