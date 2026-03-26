@@ -115,6 +115,7 @@ export const IntentExample: Story = {
                         <Button
                             text={intent.charAt(0).toUpperCase() + intent.slice(1)}
                             intent={intent}
+                            // eslint-disable-next-line react/jsx-no-bind
                             onClick={() => setOpenIntent(intent)}
                         />
                         <Dialog
