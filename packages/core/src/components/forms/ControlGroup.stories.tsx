@@ -5,9 +5,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Button } from "../button/buttons";
-import { InputGroup } from "./inputGroup";
 
 import { ControlGroup } from "./controlGroup";
+import { InputGroup } from "./inputGroup";
+
 
 const meta: Meta<typeof ControlGroup> = {
     title: "Core/Form/ControlGroup",
