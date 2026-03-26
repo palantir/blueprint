@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -31,6 +31,7 @@ const meta: Meta<typeof Alert> = {
         icon: "info-sign",
         confirmButtonText: "OK",
         cancelButtonText: undefined,
+        loading: false,
     },
     argTypes: {
         intent: {
@@ -77,82 +78,71 @@ export const Default: Story = {
 };
 
 /**
- * A primary intent alert for general informational confirmations.
+ * Use the `intent` prop to apply a semantic color to the confirm button and icon.
  */
-export const Primary: Story = {
-    args: {
-        intent: "primary",
-        icon: "info-sign",
-        confirmButtonText: "Got it",
-        children: "This is an informational alert.",
+export const IntentExample: Story = {
+    name: "Intent",
+    argTypes: {
+        intent: { table: { disable: true } },
     },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            {Object.values(Intent)
+                .filter(i => i !== "none")
+                .map(intent => (
+                    <Alert key={intent} {...args} isOpen={true} intent={intent} icon="info-sign" confirmButtonText="OK">
+                        This is a <strong>{intent}</strong> alert.
+                    </Alert>
+                ))}
+        </div>
+    ),
 };
 
 /**
- * A success intent alert for confirming successful actions.
+ * Alerts support `loading` state and can include a cancel button with `cancelButtonText`.
  */
-export const Success: Story = {
-    args: {
-        intent: "success",
-        icon: "tick-circle",
-        confirmButtonText: "Great",
-        children: "The operation completed successfully.",
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        loading: { table: { disable: true } },
+        cancelButtonText: { table: { disable: true } },
     },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <Alert {...args} isOpen={true} intent="danger" icon="trash" confirmButtonText="Delete">
+                Default alert with confirm only.
+            </Alert>
+            <Alert
+                {...args}
+                isOpen={true}
+                intent="danger"
+                icon="trash"
+                confirmButtonText="Delete"
+                cancelButtonText="Cancel"
+            >
+                Alert with cancel button.
+            </Alert>
+            <Alert {...args} isOpen={true} intent="primary" icon="info-sign" confirmButtonText="OK" loading={true}>
+                Loading alert.
+            </Alert>
+        </div>
+    ),
 };
 
 /**
- * A warning intent alert for cautionary messages.
- */
-export const Warning: Story = {
-    args: {
-        intent: "warning",
-        icon: "warning-sign",
-        confirmButtonText: "I understand",
-        children: "This action may have unintended consequences.",
-    },
-};
-
-/**
- * A danger intent alert for destructive or irreversible actions.
- */
-export const Danger: Story = {
-    args: {
-        intent: "danger",
-        icon: "trash",
-        confirmButtonText: "Delete",
-        children: "Are you sure you want to delete this item? This action cannot be undone.",
-    },
-};
-
-/**
- * An alert with a cancel button, allowing the user to dismiss the alert without confirming.
- */
-export const WithCancel: Story = {
-    args: {
-        intent: "danger",
-        icon: "trash",
-        confirmButtonText: "Delete",
-        cancelButtonText: "Cancel",
-        canEscapeKeyCancel: true,
-        canOutsideClickCancel: true,
-        children: "Are you sure you want to delete this item? This action cannot be undone.",
-    },
-};
-
-/**
- * All intents displayed side by side for visual comparison.
+ * All intents displayed for visual regression testing.
  */
 export const AllIntents: Story = {
     argTypes: {
         intent: { table: { disable: true } },
         icon: { table: { disable: true } },
     },
-    render: () => (
+    render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {Object.values(Intent)
                 .filter(i => i !== "none")
                 .map(intent => (
-                    <Alert key={intent} isOpen={true} intent={intent} icon="info-sign" confirmButtonText="OK">
+                    <Alert key={intent} {...args} isOpen={true} intent={intent} icon="info-sign" confirmButtonText="OK">
                         This is a <strong>{intent}</strong> alert.
                     </Alert>
                 ))}
