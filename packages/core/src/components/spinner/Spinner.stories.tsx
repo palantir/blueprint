@@ -134,36 +134,6 @@ export const StateExample: Story = {
 };
 
 /**
- * All intents across all sizes.
- */
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        intent: { table: { disable: true } },
-        size: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            {[SpinnerSize.SMALL, SpinnerSize.STANDARD, SpinnerSize.LARGE].map(size => (
-                <div key={size} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6 }}>
-                        {size === SpinnerSize.SMALL ? "Small" : size === SpinnerSize.STANDARD ? "Standard" : "Large"}
-                    </div>
-                    <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                        <Spinner {...args} size={size} intent="none" />
-                        {Object.values(Intent)
-                            .filter(i => i !== "none")
-                            .map(intent => (
-                                <Spinner key={intent} {...args} size={size} intent={intent} />
-                            ))}
-                    </div>
-                </div>
-            ))}
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
