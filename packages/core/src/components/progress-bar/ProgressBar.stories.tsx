@@ -9,7 +9,7 @@ import { Intent } from "../../common";
 import { ProgressBar } from "./progressBar";
 
 const meta: Meta<typeof ProgressBar> = {
-    title: "Core/Progress/ProgressBar",
+    title: "Core/ProgressBar",
     component: ProgressBar,
     decorators: [
         Story => (
@@ -85,6 +85,7 @@ export const IntentExample: Story = {
 
 /**
  * Use the `value` prop to show determinate progress. Omit it for an indeterminate bar that fills entirely.
+ * Toggle `animate` and `stripes` to control visual feedback.
  */
 export const StateExample: Story = {
     name: "State",
