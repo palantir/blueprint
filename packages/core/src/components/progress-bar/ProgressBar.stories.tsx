@@ -71,14 +71,12 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
-                        <ProgressBar {...args} intent={intent} value={0.6} />
-                    </div>
-                ))}
+            {Object.values(Intent).map(intent => (
+                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                    <ProgressBar {...args} intent={intent} value={0.6} />
+                </div>
+            ))}
         </div>
     ),
 };
