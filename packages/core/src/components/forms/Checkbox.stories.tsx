@@ -83,17 +83,15 @@ export const IntentExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
             <Checkbox {...args} label="Default (no intent)" defaultChecked={true} />
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Checkbox
-                        key={intent}
-                        {...args}
-                        intent={intent}
-                        label={intent.charAt(0).toUpperCase() + intent.slice(1)}
-                        defaultChecked={true}
-                    />
-                ))}
+            {Object.values(Intent).map(intent => (
+                <Checkbox
+                    key={intent}
+                    {...args}
+                    intent={intent}
+                    label={intent.charAt(0).toUpperCase() + intent.slice(1)}
+                    defaultChecked={true}
+                />
+            ))}
         </div>
     ),
 };
