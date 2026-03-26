@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -11,15 +11,23 @@ import { Button } from "../button/buttons";
 import { Drawer, DrawerSize } from "./drawer";
 
 const meta: Meta<typeof Drawer> = {
-    title: "Core/Overlays/Drawer",
+    title: "Core/Drawer",
     component: Drawer,
+    decorators: [
+        Story => (
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+                <Story />
+            </div>
+        ),
+    ],
     parameters: {
         layout: "centered",
     },
     tags: ["autodocs"],
     args: {
-        isOpen: true,
+        isOpen: false,
         title: "Drawer Title",
+        icon: "cog",
         position: "right",
         size: DrawerSize.SMALL,
         isCloseButtonShown: true,
@@ -43,6 +51,9 @@ const meta: Meta<typeof Drawer> = {
         hasBackdrop: {
             control: "boolean",
         },
+        icon: {
+            control: "text",
+        },
         onClose: { action: "closed" },
     },
 } satisfies Meta<typeof Drawer>;
@@ -51,16 +62,24 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * A basic drawer opening from the right side.
+ * A basic drawer opening from the right side with a title and icon.
  */
 export const Default: Story = {
-    args: {
-        title: "Drawer Title",
-        children: (
-            <div style={{ padding: 20 }}>
-                <p>Drawer content goes here.</p>
-            </div>
-        ),
+    render: function Render(args) {
+        const [isOpen, setIsOpen] = useState(false);
+        const handleOpen = useCallback(() => setIsOpen(true), []);
+        const handleClose = useCallback(() => setIsOpen(false), []);
+
+        return (
+            <>
+                <Button text="Open Drawer" onClick={handleOpen} />
+                <Drawer {...args} isOpen={isOpen} onClose={handleClose}>
+                    <div style={{ padding: 20 }}>
+                        <p>Drawer content goes here.</p>
+                    </div>
+                </Drawer>
+            </>
+        );
     },
 };
 
@@ -138,89 +157,6 @@ export const SizeExample: Story = {
                     </div>
                 </Drawer>
             </div>
-        );
-    },
-};
-
-/**
- * Drawers can display a header with a title, icon, and close button.
- */
-export const WithIcon: Story = {
-    name: "With Icon",
-    args: {
-        title: "Settings",
-        icon: "cog",
-        children: (
-            <div style={{ padding: 20 }}>
-                <p>Drawer with an icon in the header.</p>
-            </div>
-        ),
-    },
-};
-
-/**
- * The close button in the header can be hidden.
- */
-export const NoCloseButton: Story = {
-    name: "No Close Button",
-    args: {
-        title: "Persistent Drawer",
-        isCloseButtonShown: false,
-        children: (
-            <div style={{ padding: 20 }}>
-                <p>This drawer has no close button in the header.</p>
-            </div>
-        ),
-    },
-    argTypes: {
-        isCloseButtonShown: { table: { disable: true } },
-    },
-};
-
-/**
- * A drawer without a title will not render a header.
- */
-export const NoHeader: Story = {
-    name: "No Header",
-    args: {
-        title: undefined,
-        children: (
-            <div style={{ padding: 20 }}>
-                <p>This drawer has no header because no title was provided.</p>
-            </div>
-        ),
-    },
-};
-
-/**
- * Drawers support header, body, and footer sections for structured content.
- */
-export const WithFooter: Story = {
-    name: "With Footer",
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <>
-                <Button onClick={handleOpen}>Open Drawer</Button>
-                <Drawer {...args} isOpen={isOpen} onClose={handleClose} title="Confirm Action">
-                    <div className="bp6-drawer-body">
-                        <div style={{ padding: 20 }}>
-                            <p>Are you sure you want to proceed?</p>
-                        </div>
-                    </div>
-                    <div className="bp6-drawer-footer">
-                        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
-                            <Button onClick={handleClose}>Cancel</Button>
-                            <Button intent="primary" onClick={handleClose}>
-                                Confirm
-                            </Button>
-                        </div>
-                    </div>
-                </Drawer>
-            </>
         );
     },
 };
