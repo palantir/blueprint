@@ -2,13 +2,16 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
 
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Code } from "@blueprintjs/core";
+
 
 import { Button } from "../button/buttons";
-import { Collapse } from "./collapse";
 import { H4 } from "../html/html";
+
+import { Collapse } from "./collapse";
 
 const sampleContent = (
     <div style={{ padding: 12, background: "var(--pt-app-background-color)", border: "1px solid var(--gray3)" }}>
@@ -108,7 +111,7 @@ export const Playground: Story = {
                             the Storybook panel to adjust the component behavior.
                         </p>
                         <p style={{ marginBottom: 0 }}>
-                            Try adjusting <code>transitionDuration</code> and <code>keepChildrenMounted</code> to see
+                            Try adjusting <Code>transitionDuration</Code> and <Code>keepChildrenMounted</Code> to see
                             their effects.
                         </p>
                     </div>
