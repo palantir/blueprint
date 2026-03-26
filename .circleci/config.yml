@@ -138,9 +138,6 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run:
-          name: Install Playwright Chromium
-          command: pnpm exec playwright install chromium --with-deps
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:
@@ -159,7 +156,8 @@ jobs:
             1) pnpm nx test:vitest:run @blueprintjs/core ;; \
             2) pnpm nx test:vitest:run @blueprintjs/datetime ;; \
             4) pnpm nx test:vitest:run @blueprintjs/select ;; \
-            5) pnpm nx test:vitest:run @blueprintjs/table
+            5) pnpm exec playwright install chromium --with-deps && \
+               pnpm nx test:vitest:run @blueprintjs/table ;; \
             esac
           when: always
       - store_test_results: { path: ./reports }
