@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -55,7 +55,7 @@ function DialogDemo({
 }
 
 const meta: Meta<typeof Dialog> = {
-    title: "Core/Overlay/Dialog",
+    title: "Core/Dialog",
     component: Dialog,
     decorators: [
         Story => (
@@ -96,46 +96,11 @@ export const Default: Story = {
     render: args => <DialogDemo {...args} title="Dialog Title" />,
 };
 
-export const WithIcon: Story = {
-    name: "With Icon",
-    render: args => <DialogDemo {...args} title="Settings" icon="cog" />,
-};
-
-export const WithScrollableBody: Story = {
-    name: "Scrollable Body",
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <>
-                <Button text="Open Scrollable Dialog" onClick={handleOpen} />
-                <Dialog {...args} title="Scrollable Dialog" isOpen={isOpen} onClose={handleClose}>
-                    <DialogBody useOverflowScrollContainer={true}>
-                        {Array.from({ length: 20 }, (_, i) => (
-                            <p key={i}>
-                                This is paragraph {i + 1} of scrollable content. The dialog body will scroll
-                                independently of the page.
-                            </p>
-                        ))}
-                    </DialogBody>
-                    <DialogFooter
-                        actions={
-                            <>
-                                <Button text="Cancel" onClick={handleClose} />
-                                <Button text="Save" intent="primary" onClick={handleClose} />
-                            </>
-                        }
-                    />
-                </Dialog>
-            </>
-        );
-    },
-};
-
+/**
+ * Dialogs with intent-colored footer actions and corresponding icons.
+ */
 export const IntentExample: Story = {
-    name: "Intent Footer Actions",
+    name: "Intent",
     argTypes: {
         intent: { table: { disable: true } },
     },
@@ -188,34 +153,20 @@ export const IntentExample: Story = {
     },
 };
 
-export const DarkTheme: Story = {
-    name: "Dark Theme",
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <div className="bp6-dark" style={{ padding: 20, background: "#1c2127", borderRadius: 4 }}>
-                <Button text="Open Dark Dialog" onClick={handleOpen} />
-                <Dialog {...args} title="Dark Theme Dialog" icon="moon" isOpen={isOpen} onClose={handleClose}>
-                    <DialogBody>
-                        <p>This dialog is rendered in the dark theme.</p>
-                    </DialogBody>
-                    <DialogFooter
-                        actions={
-                            <>
-                                <Button text="Cancel" onClick={handleClose} />
-                                <Button text="Confirm" intent="primary" onClick={handleClose} />
-                            </>
-                        }
-                    />
-                </Dialog>
-            </div>
-        );
+/**
+ * Use the `icon` prop to display an icon in the dialog header.
+ */
+export const IconExample: Story = {
+    name: "Icon",
+    argTypes: {
+        icon: { table: { disable: true } },
     },
+    render: args => <DialogDemo {...args} title="Settings" icon="cog" />,
 };
 
+/**
+ * Interactive playground with all props togglable via Storybook controls.
+ */
 export const Playground: Story = {
     render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);

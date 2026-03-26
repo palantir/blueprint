@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -53,7 +53,7 @@ function MultistepDialogDemo(props: React.ComponentProps<typeof MultistepDialog>
 }
 
 const meta: Meta<typeof MultistepDialog> = {
-    title: "Core/Overlay/MultistepDialog",
+    title: "Core/MultistepDialog",
     component: MultistepDialog,
     decorators: [
         Story => (
@@ -99,7 +99,10 @@ export const Default: Story = {
     render: args => <MultistepDialogDemo {...args} />,
 };
 
-export const NavigationPosition: Story = {
+/**
+ * The `navigationPosition` prop controls where step navigation appears: left, top, or right.
+ */
+export const NavigationPositionExample: Story = {
     name: "Navigation Position",
     argTypes: {
         navigationPosition: { table: { disable: true } },
@@ -113,41 +116,9 @@ export const NavigationPosition: Story = {
     ),
 };
 
-export const WithIcon: Story = {
-    name: "With Icon",
-    render: args => <MultistepDialogDemo {...args} title="Setup Wizard" icon="build" />,
-};
-
-export const WithCloseInFooter: Story = {
-    name: "Close Button in Footer",
-    render: args => <MultistepDialogDemo {...args} showCloseButtonInFooter={true} />,
-};
-
-export const InitialStep: Story = {
-    name: "Initial Step Index",
-    render: args => <MultistepDialogDemo {...args} initialStepIndex={1} buttonText="Start at Step 2" />,
-};
-
-export const DarkTheme: Story = {
-    name: "Dark Theme",
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <div className="bp6-dark" style={{ padding: 20, background: "#1c2127", borderRadius: 4 }}>
-                <Button text="Open Dark Multistep Dialog" onClick={handleOpen} />
-                <MultistepDialog {...args} title="Dark Theme Wizard" icon="moon" isOpen={isOpen} onClose={handleClose}>
-                    <DialogStep id="step1" title="First Step" panel={<StepPanel stepNumber={1} />} />
-                    <DialogStep id="step2" title="Second Step" panel={<StepPanel stepNumber={2} />} />
-                    <DialogStep id="step3" title="Third Step" panel={<StepPanel stepNumber={3} />} />
-                </MultistepDialog>
-            </div>
-        );
-    },
-};
-
+/**
+ * Interactive playground with all props togglable via Storybook controls.
+ */
 export const Playground: Story = {
     render: function Render(args) {
         const [isOpen, setIsOpen] = useState(false);
