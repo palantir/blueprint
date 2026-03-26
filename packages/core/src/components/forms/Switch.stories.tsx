@@ -11,7 +11,7 @@ const disabledArgs = ["large", "tagName", "labelElement", "inputRef"] as const s
 >;
 
 const meta: Meta<typeof Switch> = {
-    title: "Core/Form/Switch",
+    title: "Core/Form/Controls/Switch",
     component: Switch,
     decorators: [
         Story => (
@@ -64,13 +64,19 @@ const meta: Meta<typeof Switch> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * A basic switch with default styling.
+ */
 export const Default: Story = {
     args: {
         label: "Enable dark mode",
     },
 };
 
-export const Size: Story = {
+/**
+ * Use the `size` prop to adjust the switch dimensions.
+ */
+export const SizeExample: Story = {
     name: "Size",
     argTypes: {
         size: { table: { disable: true } },
@@ -83,10 +89,15 @@ export const Size: Story = {
     ),
 };
 
-export const State: Story = {
+/**
+ * Switches support `disabled`, `checked`, and `inline` states.
+ */
+export const StateExample: Story = {
     name: "State",
     argTypes: {
         disabled: { table: { disable: true } },
+        inline: { table: { disable: true } },
+        defaultChecked: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
@@ -100,38 +111,19 @@ export const State: Story = {
                 <Switch {...args} label="Checked" defaultChecked={true} />
                 <Switch {...args} label="Checked Disabled" defaultChecked={true} disabled={true} />
             </div>
+            <div style={{ fontSize: 12, opacity: 0.6 }}>Inline</div>
+            <div>
+                <Switch {...args} inline={true} label="Wi-Fi" defaultChecked={true} />
+                <Switch {...args} inline={true} label="Bluetooth" />
+                <Switch {...args} inline={true} label="Airplane Mode" />
+            </div>
         </div>
     ),
 };
 
-export const InnerLabel: Story = {
-    name: "Inner Label",
-    argTypes: {
-        innerLabel: { table: { disable: true } },
-        innerLabelChecked: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
-            <Switch {...args} label="With inner labels" innerLabel="Off" innerLabelChecked="On" />
-            <Switch {...args} label="Same label both states" innerLabel="Enabled" defaultChecked={true} />
-        </div>
-    ),
-};
-
-export const Inline: Story = {
-    name: "Inline",
-    argTypes: {
-        inline: { table: { disable: true } },
-    },
-    render: args => (
-        <div>
-            <Switch {...args} inline={true} label="Wi-Fi" defaultChecked={true} />
-            <Switch {...args} inline={true} label="Bluetooth" />
-            <Switch {...args} inline={true} label="Airplane Mode" />
-        </div>
-    ),
-};
-
+/**
+ * All states across all sizes.
+ */
 export const AllStates: Story = {
     name: "All States",
     render: args => (
@@ -161,6 +153,9 @@ export const AllStates: Story = {
     ),
 };
 
+/**
+ * Interactive playground with all props togglable via Storybook controls.
+ */
 export const Playground: Story = {
     args: {
         label: "Enable feature",

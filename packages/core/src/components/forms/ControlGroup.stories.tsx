@@ -10,7 +10,7 @@ import { InputGroup } from "./inputGroup";
 import { ControlGroup } from "./controlGroup";
 
 const meta: Meta<typeof ControlGroup> = {
-    title: "Core/ControlGroup",
+    title: "Core/Form/ControlGroup",
     component: ControlGroup,
     decorators: [
         Story => (
@@ -53,27 +53,12 @@ export const Default: Story = {
 };
 
 /**
- * Use the `vertical` prop to stack controls vertically instead of horizontally.
- */
-export const Vertical: Story = {
-    args: {
-        vertical: true,
-    },
-    render: args => (
-        <ControlGroup {...args}>
-            <InputGroup placeholder="First input" />
-            <InputGroup placeholder="Second input" />
-            <Button text="Submit" />
-        </ControlGroup>
-    ),
-};
-
-/**
  * Use the `fill` prop to make the control group expand to the full width of its container.
  */
-export const Fill: Story = {
-    args: {
-        fill: true,
+export const FillExample: Story = {
+    name: "Fill",
+    argTypes: {
+        fill: { table: { disable: true } },
     },
     decorators: [
         Story => (
@@ -83,23 +68,27 @@ export const Fill: Story = {
         ),
     ],
     render: args => (
-        <ControlGroup {...args}>
-            <InputGroup placeholder="Full width input" />
-            <Button text="Submit" />
-        </ControlGroup>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <ControlGroup {...args} fill={true}>
+                <InputGroup placeholder="Full width input" />
+                <Button text="Submit" />
+            </ControlGroup>
+            <ControlGroup {...args} fill={false}>
+                <InputGroup placeholder="Auto width input" />
+                <Button text="Submit" />
+            </ControlGroup>
+        </div>
     ),
 };
 
 /**
- * A control group with multiple controls showing a combination of buttons and inputs.
+ * Interactive playground with all props togglable via Storybook controls.
  */
-export const WithMultipleControls: Story = {
+export const Playground: Story = {
     render: args => (
         <ControlGroup {...args}>
-            <Button text="Action" icon="search" />
-            <InputGroup placeholder="Search..." />
-            <Button text="Go" intent="primary" />
-            <Button icon="arrow-right" />
+            <InputGroup placeholder="Enter text..." />
+            <Button text="Submit" />
         </ControlGroup>
     ),
 };
