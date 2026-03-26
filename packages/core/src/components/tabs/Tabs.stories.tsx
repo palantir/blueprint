@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -6,13 +6,13 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
 
 import { Tab } from "./tab";
-import { Tabs, TabsExpander } from "./tabs";
+import { Tabs } from "./tabs";
 
 // These props are deprecated on Tabs — hide them from the Storybook controls panel.
 const disabledArgs = ["large"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Tabs>>;
 
 const meta: Meta<typeof Tabs> = {
-    title: "Core/Tabs/Tabs",
+    title: "Core/Tabs",
     component: Tabs,
     decorators: [
         Story => (
@@ -66,21 +66,9 @@ export const Default: Story = {
     ),
 };
 
-export const Vertical: Story = {
-    name: "Vertical",
-    argTypes: {
-        vertical: { table: { disable: true } },
-    },
-    render: args => (
-        <Tabs {...args} vertical={true}>
-            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
-            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
-            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
-            <Tab id="tab4" title="Disabled" disabled={true} panel={<p>Disabled panel</p>} />
-        </Tabs>
-    ),
-};
-
+/**
+ * Use the `size` prop to control the tab size. Tabs support `medium` (default) and `large`.
+ */
 export const SizeExample: Story = {
     name: "Size",
     argTypes: {
@@ -108,40 +96,40 @@ export const SizeExample: Story = {
     ),
 };
 
-export const DisabledTab: Story = {
-    name: "Disabled Tab",
+/**
+ * Tabs support vertical layout and individual tabs can be disabled.
+ */
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        vertical: { table: { disable: true } },
+    },
     render: args => (
-        <Tabs {...args}>
-            <Tab id="tab1" title="Enabled" panel={<p>Enabled panel content</p>} />
-            <Tab id="tab2" title="Disabled" disabled={true} panel={<p>Disabled panel content</p>} />
-            <Tab id="tab3" title="Also Enabled" panel={<p>Also enabled panel content</p>} />
-        </Tabs>
+        <div style={{ display: "flex", gap: 32 }}>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Vertical</div>
+                <Tabs {...args} id="state-vertical" vertical={true}>
+                    <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
+                    <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
+                    <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+                </Tabs>
+            </div>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>With Disabled Tab</div>
+                <Tabs {...args} id="state-disabled">
+                    <Tab id="tab1" title="Enabled" panel={<p>Enabled panel content</p>} />
+                    <Tab id="tab2" title="Disabled" disabled={true} panel={<p>Disabled panel content</p>} />
+                    <Tab id="tab3" title="Also Enabled" panel={<p>Also enabled panel content</p>} />
+                </Tabs>
+            </div>
+        </div>
     ),
 };
 
-export const WithIcons: Story = {
-    name: "With Icons",
-    render: args => (
-        <Tabs {...args}>
-            <Tab id="tab1" title="Home" icon="home" panel={<p>Home panel</p>} />
-            <Tab id="tab2" title="Settings" icon="cog" panel={<p>Settings panel</p>} />
-            <Tab id="tab3" title="Notifications" icon="notifications" panel={<p>Notifications panel</p>} />
-        </Tabs>
-    ),
-};
-
-export const WithTags: Story = {
-    name: "With Tags",
-    render: args => (
-        <Tabs {...args}>
-            <Tab id="tab1" title="Messages" tagContent={5} panel={<p>Messages panel</p>} />
-            <Tab id="tab2" title="Alerts" tagContent={12} panel={<p>Alerts panel</p>} />
-            <Tab id="tab3" title="Archive" panel={<p>Archive panel</p>} />
-        </Tabs>
-    ),
-};
-
-export const FillWidth: Story = {
+/**
+ * Use the `fill` prop to make tabs stretch to fill their container.
+ */
+export const FillExample: Story = {
     name: "Fill",
     argTypes: {
         fill: { table: { disable: true } },
@@ -162,39 +150,9 @@ export const FillWidth: Story = {
     ),
 };
 
-export const WithExpander: Story = {
-    name: "With Expander",
-    decorators: [
-        Story => (
-            <div style={{ width: "600px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    render: args => (
-        <Tabs {...args}>
-            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
-            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
-            <TabsExpander />
-            <Tab id="tab3" title="Right-aligned" panel={<p>Right-aligned panel content</p>} />
-        </Tabs>
-    ),
-};
-
-export const NoAnimation: Story = {
-    name: "No Animation",
-    argTypes: {
-        animate: { table: { disable: true } },
-    },
-    render: args => (
-        <Tabs {...args} animate={false}>
-            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
-            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
-            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
-        </Tabs>
-    ),
-};
-
+/**
+ * Interactive playground for experimenting with all Tabs props.
+ */
 export const Playground: Story = {
     render: function Render(args) {
         const [selectedTabId, setSelectedTabId] = useState<string | number>("tab1");
