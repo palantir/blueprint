@@ -1,11 +1,11 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Boundary } from "../../common";
-import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
+import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";
 
 const SAMPLE_ITEMS: BreadcrumbProps[] = [
@@ -17,7 +17,7 @@ const SAMPLE_ITEMS: BreadcrumbProps[] = [
 ];
 
 const meta: Meta<typeof Breadcrumbs> = {
-    title: "Core/Breadcrumbs/Breadcrumbs",
+    title: "Core/Breadcrumbs",
     component: Breadcrumbs,
     decorators: [
         Story => (
@@ -48,13 +48,19 @@ const meta: Meta<typeof Breadcrumbs> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * A basic breadcrumbs component with default styling.
+ */
 export const Default: Story = {
     args: {
         items: SAMPLE_ITEMS,
     },
 };
 
-export const CollapseFrom: Story = {
+/**
+ * Use the `collapseFrom` prop to control which end of the breadcrumb trail is collapsed when items overflow.
+ */
+export const CollapseFromExample: Story = {
     name: "Collapse From",
     argTypes: {
         collapseFrom: { table: { disable: true } },
@@ -77,31 +83,10 @@ export const CollapseFrom: Story = {
     ),
 };
 
-export const WithIcons: Story = {
-    name: "With Icons",
-    args: {
-        items: [
-            { text: "Home", href: "#", icon: "home" },
-            { text: "Settings", href: "#", icon: "cog" },
-            { text: "Profile", href: "#", icon: "person" },
-            { text: "Notifications" },
-        ],
-    },
-};
-
-export const DisabledItems: Story = {
-    name: "Disabled Items",
-    args: {
-        items: [
-            { text: "Home", href: "#" },
-            { text: "Archived", href: "#", disabled: true },
-            { text: "Projects", href: "#" },
-            { text: "Current Page" },
-        ],
-    },
-};
-
-export const Overflow: Story = {
+/**
+ * When the breadcrumb trail contains many items, overflow is handled by collapsing items into a dropdown.
+ */
+export const OverflowExample: Story = {
     name: "Overflow",
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -121,33 +106,9 @@ export const Overflow: Story = {
     ),
 };
 
-export const MinVisibleItems: Story = {
-    name: "Min Visible Items",
-    argTypes: {
-        minVisibleItems: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: 250 }}>
-            {[0, 1, 2, 3].map(minVisibleItems => (
-                <div key={minVisibleItems}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>
-                        minVisibleItems: {minVisibleItems}
-                    </div>
-                    <Breadcrumbs {...args} minVisibleItems={minVisibleItems} />
-                </div>
-            ))}
-        </div>
-    ),
-};
-
-export const CustomRenderer: Story = {
-    name: "Custom Breadcrumb Renderer",
-    args: {
-        items: SAMPLE_ITEMS,
-        breadcrumbRenderer: (props: BreadcrumbProps) => <Breadcrumb {...props} icon={props.icon ?? "folder-close"} />,
-    },
-};
-
+/**
+ * Interactive playground with all props toggleable via Storybook controls.
+ */
 export const Playground: Story = {
     args: {
         items: SAMPLE_ITEMS,
