@@ -139,33 +139,6 @@ export const StateExample: Story = {
 };
 
 /**
- * All intents shown together for visual comparison.
- */
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        intent: { table: { disable: true } },
-        disabled: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Default</div>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Slider key={intent} {...args} intent={intent} value={7} />
-                ))}
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Disabled</div>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Slider key={`disabled-${intent}`} {...args} intent={intent} value={7} disabled={true} />
-                ))}
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with full state management.
  */
 export const Playground: Story = {
