@@ -9,7 +9,7 @@ import { Intent } from "../../common";
 import { Spinner, SpinnerSize } from "./spinner";
 
 const meta: Meta<typeof Spinner> = {
-    title: "Core/Spinner/Spinner",
+    title: "Core/Spinner",
     component: Spinner,
     decorators: [
         Story => (
