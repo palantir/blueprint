@@ -3,16 +3,14 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
 
 import { Elevation } from "../../common";
 
-import { Button } from "../button/button";
 import { Section } from "./section";
 import { SectionCard } from "./sectionCard";
 
 const meta: Meta<typeof Section> = {
-    title: "Core/Section/Section",
+    title: "Core/Section",
     component: Section,
     decorators: [
         Story => (
@@ -121,7 +119,7 @@ export const CompactExample: Story = {
  * Use the `icon` prop to render an icon in the section header,
  * and `subtitle` to display additional context below the title.
  */
-export const IconAndSubtitle: Story = {
+export const IconExample: Story = {
     name: "Icon & Subtitle",
     argTypes: {
         icon: { table: { disable: true } },
@@ -143,73 +141,14 @@ export const IconAndSubtitle: Story = {
 };
 
 /**
- * Use the `rightElement` prop to render a custom element on the right side of the section header.
- */
-export const RightElement: Story = {
-    name: "Right Element",
-    render: args => (
-        <Section
-            {...args}
-            title="Users"
-            rightElement={<Button text="Add user" icon="plus" size="small" variant="outlined" />}
-        >
-            <SectionCard>Section with a right element in the header.</SectionCard>
-        </Section>
-    ),
-};
-
-/**
- * Use the `collapsible` prop to make the section content collapsible.
- */
-export const Collapsible: Story = {
-    name: "Collapsible",
-    argTypes: {
-        collapsible: { table: { disable: true } },
-    },
-    args: {
-        collapsible: true,
-        title: "Collapsible section",
-        children: <SectionCard>This content can be collapsed by clicking the section header.</SectionCard>,
-    },
-};
-
-/**
- * Multiple SectionCard children create visually divided content areas.
- */
-export const MultipleSectionCards: Story = {
-    name: "Multiple Section Cards",
-    render: args => (
-        <Section {...args} title="Details">
-            <SectionCard>First card content.</SectionCard>
-            <SectionCard>Second card content.</SectionCard>
-            <SectionCard>Third card content.</SectionCard>
-        </Section>
-    ),
-};
-
-/**
- * Controlled collapsible section with external state management.
+ * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(true);
-        const handleToggle = useCallback(() => setIsOpen(prev => !prev), []);
-
-        return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
-                <Section
-                    {...args}
-                    title="Controlled collapsible"
-                    icon="folder-open"
-                    subtitle="Click the header to toggle"
-                    collapsible={true}
-                    collapseProps={{ isOpen, onToggle: handleToggle }}
-                    rightElement={<Button text="Edit" icon="edit" size="small" variant="outlined" />}
-                >
-                    <SectionCard>First section of content.</SectionCard>
-                    <SectionCard>Second section of content.</SectionCard>
-                </Section>
-            </div>
-        );
+    args: {
+        title: "Playground section",
+        icon: "folder-open",
+        subtitle: "Explore section props",
+        elevation: Elevation.ONE,
+        children: <SectionCard>Section content goes here.</SectionCard>,
     },
 };
