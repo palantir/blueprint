@@ -62,17 +62,12 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <div
-                        key={intent}
-                        style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}
-                    >
-                        <Spinner {...args} intent={intent} size={SpinnerSize.STANDARD} />
-                        <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
-                    </div>
-                ))}
+            {Object.values(Intent).map(intent => (
+                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <Spinner {...args} intent={intent} size={SpinnerSize.STANDARD} />
+                    <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                </div>
+            ))}
         </div>
     ),
 };
