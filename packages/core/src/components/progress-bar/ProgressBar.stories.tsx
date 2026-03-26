@@ -125,33 +125,6 @@ export const StateExample: Story = {
 };
 
 /**
- * All intents showing determinate progress at various levels.
- */
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        intent: { table: { disable: true } },
-        value: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Default (no intent)</div>
-                <ProgressBar {...args} intent="none" value={0.4} />
-            </div>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                        <div style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</div>
-                        <ProgressBar {...args} intent={intent} value={0.6} />
-                    </div>
-                ))}
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
