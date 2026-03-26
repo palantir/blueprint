@@ -110,44 +110,42 @@ export const IntentExample: Story = {
 
         return (
             <div style={{ display: "flex", gap: 8 }}>
-                {Object.values(Intent)
-                    .filter(i => i !== "none")
-                    .map(intent => (
-                        <div key={intent}>
-                            <Button
-                                text={intent.charAt(0).toUpperCase() + intent.slice(1)}
-                                intent={intent}
-                                onClick={() => setOpenIntent(intent)}
-                            />
-                            <Dialog
-                                {...args}
-                                title={`${intent.charAt(0).toUpperCase() + intent.slice(1)} Dialog`}
-                                icon={
-                                    intent === "primary"
-                                        ? "info-sign"
-                                        : intent === "success"
-                                          ? "tick-circle"
-                                          : intent === "warning"
-                                            ? "warning-sign"
-                                            : "error"
+                {Object.values(Intent).map(intent => (
+                    <div key={intent}>
+                        <Button
+                            text={intent.charAt(0).toUpperCase() + intent.slice(1)}
+                            intent={intent}
+                            onClick={() => setOpenIntent(intent)}
+                        />
+                        <Dialog
+                            {...args}
+                            title={`${intent.charAt(0).toUpperCase() + intent.slice(1)} Dialog`}
+                            icon={
+                                intent === "primary"
+                                    ? "info-sign"
+                                    : intent === "success"
+                                      ? "tick-circle"
+                                      : intent === "warning"
+                                        ? "warning-sign"
+                                        : "error"
+                            }
+                            isOpen={openIntent === intent}
+                            onClose={handleClose}
+                        >
+                            <DialogBody>
+                                <p>This dialog demonstrates a {intent} intent action.</p>
+                            </DialogBody>
+                            <DialogFooter
+                                actions={
+                                    <>
+                                        <Button text="Cancel" onClick={handleClose} />
+                                        <Button text="Confirm" intent={intent} onClick={handleClose} />
+                                    </>
                                 }
-                                isOpen={openIntent === intent}
-                                onClose={handleClose}
-                            >
-                                <DialogBody>
-                                    <p>This dialog demonstrates a {intent} intent action.</p>
-                                </DialogBody>
-                                <DialogFooter
-                                    actions={
-                                        <>
-                                            <Button text="Cancel" onClick={handleClose} />
-                                            <Button text="Confirm" intent={intent} onClick={handleClose} />
-                                        </>
-                                    }
-                                />
-                            </Dialog>
-                        </div>
-                    ))}
+                            />
+                        </Dialog>
+                    </div>
+                ))}
             </div>
         );
     },
