@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Overlay2 } from "../overlay2/overlay2";
+import { H3 } from "../html/html";
 
 const meta: Meta<typeof Overlay2> = {
     title: "Core/Overlay",
@@ -95,7 +96,7 @@ export const Default: Story = {
                 <Button text="Open overlay" onClick={handleOpen} />
                 <Overlay2 {...args} isOpen={isOpen} onClose={handleClose}>
                     <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>Overlay content</h3>
+                        <H3>Overlay content</H3>
                         <p>
                             This is a simple overlay with a backdrop. You can close it by pressing Escape, clicking the
                             backdrop, or using the button below.
@@ -132,7 +133,7 @@ export const StateExample: Story = {
                     <Button text="Open" onClick={handleOpenBackdrop} />
                     <Overlay2 {...args} isOpen={backdropOpen} hasBackdrop={true} onClose={handleCloseBackdrop}>
                         <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                            <h3>With backdrop</h3>
+                            <H3>With backdrop</H3>
                             <p>
                                 The backdrop darkens the page behind the overlay and prevents interaction with
                                 underlying content.
@@ -146,7 +147,7 @@ export const StateExample: Story = {
                     <Button text="Open" onClick={handleOpenNoBackdrop} />
                     <Overlay2 {...args} isOpen={noBackdropOpen} hasBackdrop={false} onClose={handleCloseNoBackdrop}>
                         <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                            <h3>Without backdrop</h3>
+                            <H3>Without backdrop</H3>
                             <p>No backdrop is rendered. You can still interact with the page behind the overlay.</p>
                             <Button text="Close" intent="primary" onClick={handleCloseNoBackdrop} />
                         </div>
@@ -184,7 +185,7 @@ export const Playground: Story = {
                     usePortal={args.usePortal}
                 >
                     <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>Playground overlay</h3>
+                        <H3>Playground overlay</H3>
                         <p>Adjust the Storybook controls to experiment with different Overlay2 props.</p>
                         <div style={{ display: "flex", gap: 8 }}>
                             <Button text="Close" intent="primary" onClick={handleClose} />
