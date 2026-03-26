@@ -94,26 +94,6 @@ export const SizeExample: Story = {
 };
 
 /**
- * All intents displayed together for visual comparison.
- */
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        intent: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
-            {Object.values(Intent).map(intent => (
-                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                    <Icon {...args} intent={intent} />
-                    <span style={{ fontSize: 10, opacity: 0.6 }}>{intent === "none" ? "none" : intent}</span>
-                </div>
-            ))}
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
