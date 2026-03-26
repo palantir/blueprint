@@ -112,41 +112,6 @@ export const VariantExample: Story = {
 };
 
 /**
- * All intents displayed together for visual comparison, in both default and compact variants.
- */
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        intent: { table: { disable: true } },
-        compact: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Default</div>
-                <div style={{ display: "flex", gap: 24 }}>
-                    {Object.values(Intent).map(intent => (
-                        <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
-                            <span style={{ textTransform: "capitalize" }}>{intent === "none" ? "none" : intent}</span>
-                        </Tooltip>
-                    ))}
-                </div>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Compact</div>
-                <div style={{ display: "flex", gap: 24 }}>
-                    {Object.values(Intent).map(intent => (
-                        <Tooltip key={intent} {...args} intent={intent} compact={true} isOpen={true}>
-                            <span style={{ textTransform: "capitalize" }}>{intent === "none" ? "none" : intent}</span>
-                        </Tooltip>
-                    ))}
-                </div>
-            </div>
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
