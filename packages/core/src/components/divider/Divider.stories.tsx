@@ -7,7 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Divider } from "./divider";
 
 const meta: Meta<typeof Divider> = {
-    title: "Core/Components/Divider",
+    title: "Core/Divider",
     component: Divider,
     decorators: [
         Story => (
@@ -22,7 +22,6 @@ const meta: Meta<typeof Divider> = {
     tags: ["autodocs"],
     args: {
         compact: false,
-        tagName: "div",
     },
     argTypes: {
         compact: {
@@ -47,22 +46,6 @@ export const Default: Story = {
                 <span>Content above</span>
                 <Story />
                 <span>Content below</span>
-            </div>
-        ),
-    ],
-};
-
-/**
- * When placed inside a flex row container, the Divider renders as a vertical line.
- */
-export const Vertical: Story = {
-    name: "Vertical",
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "40px" }}>
-                <span>Left</span>
-                <Story />
-                <span>Right</span>
             </div>
         ),
     ],
@@ -106,72 +89,6 @@ export const CompactExample: Story = {
                 >
                     <span>Above</span>
                     <Divider {...args} compact={true} />
-                    <span>Below</span>
-                </div>
-            </div>
-        </div>
-    ),
-};
-
-/**
- * The Divider adapts its orientation based on the flex direction of its parent container.
- * In a row layout it renders as a vertical separator; in a column layout as a horizontal rule.
- */
-export const Orientation: Story = {
-    name: "Orientation",
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "300px" }}>
-            <div>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Horizontal (column container)</span>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <span>Above</span>
-                    <Divider {...args} />
-                    <span>Below</span>
-                </div>
-            </div>
-            <div>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Vertical (row container)</span>
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", height: "40px" }}>
-                    <span>Left</span>
-                    <Divider {...args} />
-                    <span>Right</span>
-                </div>
-            </div>
-        </div>
-    ),
-};
-
-/**
- * The `tagName` prop allows rendering the Divider as a different HTML element.
- */
-export const TagNameExample: Story = {
-    name: "Tag Name",
-    argTypes: {
-        tagName: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "300px" }}>
-            <div>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>div (default)</span>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <span>Above</span>
-                    <Divider {...args} tagName="div" />
-                    <span>Below</span>
-                </div>
-            </div>
-            <div>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>hr</span>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <span>Above</span>
-                    <Divider {...args} tagName="hr" />
-                    <span>Below</span>
-                </div>
-            </div>
-            <div>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>span</span>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                    <span>Above</span>
-                    <Divider {...args} tagName="span" />
                     <span>Below</span>
                 </div>
             </div>
