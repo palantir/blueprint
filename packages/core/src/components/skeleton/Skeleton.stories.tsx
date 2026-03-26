@@ -17,9 +17,7 @@ interface SkeletonStoryProps {
 const SkeletonDemo: React.FC<SkeletonStoryProps> = ({ skeleton }) => (
     <Card>
         <H5 className={`${Classes.HEADING} ${skeleton ? Classes.SKELETON : ""}`}>
-            <a href="#" tabIndex={-1}>
-                Card heading
-            </a>
+            <span tabIndex={-1}>Card heading</span>
         </H5>
         <p className={skeleton ? Classes.SKELETON : ""}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis. Fusce dapibus metus in
