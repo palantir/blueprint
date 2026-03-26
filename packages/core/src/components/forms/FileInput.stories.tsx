@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { type ChangeEvent, useCallback, useState } from "react";
 
 import { Size } from "../../common";
 
@@ -162,7 +162,7 @@ export const Playground: Story = {
         const [fileName, setFileName] = useState<string | null>(null);
 
         const handleInputChange = useCallback(
-            (e: React.ChangeEvent<HTMLInputElement>) => {
+            (e: ChangeEvent<HTMLInputElement>) => {
                 const file = e.target.files?.[0];
                 setFileName(file?.name ?? null);
                 args.onInputChange?.(e);

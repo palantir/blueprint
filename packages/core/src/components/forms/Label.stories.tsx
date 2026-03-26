@@ -54,7 +54,7 @@ export const WithInput: Story = {
     },
     render: ({ children, ...args }) => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
-            <Label>
+            <Label {...args}>
                 {children}
                 <InputGroup placeholder="Placeholder..." />
             </Label>
@@ -73,7 +73,7 @@ export const StateExample: Story = {
                 Enabled label
                 <InputGroup placeholder="Enabled..." />
             </Label>
-            <Label className="bp5-disabled">
+            <Label disabled={true}>
                 Disabled label
                 <InputGroup disabled={true} placeholder="Disabled..." />
             </Label>

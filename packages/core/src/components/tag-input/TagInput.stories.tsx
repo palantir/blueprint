@@ -108,17 +108,15 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <TagInput
-                        key={intent}
-                        {...args}
-                        intent={intent}
-                        values={[intent.charAt(0).toUpperCase() + intent.slice(1)]}
-                        placeholder={`${intent} intent...`}
-                    />
-                ))}
+            {Object.values(Intent).map(intent => (
+                <TagInput
+                    key={intent}
+                    {...args}
+                    intent={intent}
+                    values={[intent.charAt(0).toUpperCase() + intent.slice(1)]}
+                    placeholder={`${intent} intent...`}
+                />
+            ))}
         </div>
     ),
 };
@@ -222,32 +220,6 @@ export const AutoResizeExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <TagInput {...args} autoResize={true} values={["Auto Resize"]} placeholder="Type to resize..." />
             <TagInput {...args} autoResize={false} values={["Fixed Width"]} placeholder="Fixed input width..." />
-        </div>
-    ),
-};
-
-/**
- * All intents shown together for visual comparison.
- */
-export const AllIntents: Story = {
-    argTypes: {
-        intent: { table: { disable: true } },
-        values: { table: { disable: true } },
-        placeholder: { table: { disable: true } },
-        rightElement: { table: { disable: true } },
-        separator: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {Object.values(Intent).map(intent => (
-                <TagInput
-                    key={intent}
-                    {...args}
-                    intent={intent}
-                    values={[intent === "none" ? "None" : intent.charAt(0).toUpperCase() + intent.slice(1)]}
-                    placeholder={`${intent} intent...`}
-                />
-            ))}
         </div>
     ),
 };

@@ -3,11 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { type ChangeEvent, useCallback, useState } from "react";
 
 import { Intent, Size } from "../../common";
 import { Button } from "../button/buttons";
-import { Icon } from "../icon/icon";
+import { Tag } from "../tag/tag";
 
 import { InputGroup } from "./inputGroup";
 
@@ -94,16 +94,14 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <InputGroup
-                        key={intent}
-                        {...args}
-                        intent={intent}
-                        placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
-                    />
-                ))}
+            {Object.values(Intent).map(intent => (
+                <InputGroup
+                    key={intent}
+                    {...args}
+                    intent={intent}
+                    placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
+                />
+            ))}
         </div>
     ),
 };
@@ -167,9 +165,31 @@ export const IconExample: Story = {
                 placeholder="Password..."
                 type="password"
             />
+        </div>
+    ),
+};
+
+/**
+ * Use `leftElement`, and `rightElement` to add content around the input.
+ */
+export const LeftRightElementsExample: Story = {
+    name: "Left & Right Elements",
+    argTypes: {
+        leftElement: { table: { disable: true } },
+        rightElement: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+            <InputGroup {...args} leftElement={<Tag interactive={true}>Left</Tag>} placeholder="Search..." />
             <InputGroup
                 {...args}
-                rightElement={<Icon icon="key-tab" style={{ padding: "0 8px", opacity: 0.5 }} />}
+                leftElement={<Tag interactive={true}>Left</Tag>}
+                rightElement={<Tag interactive={true}>Right</Tag>}
+                placeholder="Search..."
+            />
+            <InputGroup
+                {...args}
+                rightElement={<Tag interactive={true}>Right</Tag>}
                 placeholder="With right element..."
             />
         </div>
@@ -217,27 +237,6 @@ export const FillExample: Story = {
 };
 
 /**
- * All intents shown together for visual comparison.
- */
-export const AllIntents: Story = {
-    argTypes: {
-        intent: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {Object.values(Intent).map(intent => (
-                <InputGroup
-                    key={intent}
-                    {...args}
-                    intent={intent}
-                    placeholder={`${intent === "none" ? "None" : intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
-                />
-            ))}
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
@@ -245,7 +244,7 @@ export const Playground: Story = {
         const [value, setValue] = useState("");
 
         const handleChange = useCallback(
-            (e: React.ChangeEvent<HTMLInputElement>) => {
+            (e: ChangeEvent<HTMLInputElement>) => {
                 setValue(e.target.value);
                 args.onChange?.(e);
             },

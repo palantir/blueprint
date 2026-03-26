@@ -17,8 +17,7 @@ import { NumericInput } from "./numericInput";
 import { RadioGroup } from "./radioGroup";
 import { TextArea } from "./textArea";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-const NOOP = () => {};
+const NOOP = () => undefined;
 
 const meta: Meta<typeof FormGroup> = {
     title: "Core/Form/FormGroup",
@@ -44,9 +43,9 @@ const meta: Meta<typeof FormGroup> = {
     tags: ["autodocs"],
     args: {
         label: "Label",
-        helperText: undefined,
-        labelInfo: undefined,
-        subLabel: undefined,
+        helperText: "",
+        labelInfo: "",
+        subLabel: "",
         intent: "none",
         disabled: false,
         fill: false,
@@ -135,8 +134,9 @@ export const WithNumericInput: Story = {
         helperText: "Enter a number between 1 and 100",
     },
     render: args => (
-        <FormGroup {...args}>
+        <FormGroup {...args} labelFor="numeric-input">
             <NumericInput
+                id="numeric-input"
                 intent={args.intent}
                 disabled={args.disabled}
                 fill={args.fill}
@@ -642,60 +642,6 @@ export const FillExample: Story = {
 // ---------------------------------------------------------------------------
 // Comprehensive comparisons
 // ---------------------------------------------------------------------------
-
-/**
- * All intents with helper text for visual comparison, shown with various form controls.
- */
-export const AllIntents: Story = {
-    args: {
-        label: "Label",
-        helperText: "Helper text with intent",
-    },
-    argTypes: {
-        intent: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <FormGroup {...args} intent="none" labelInfo="(none, text input)" labelFor="all-intents-none-input">
-                <InputGroup
-                    id="all-intents-none-input"
-                    disabled={args.disabled}
-                    fill={args.fill}
-                    placeholder="None intent..."
-                />
-            </FormGroup>
-            <FormGroup
-                {...args}
-                intent="primary"
-                labelInfo="(primary, text area)"
-                labelFor="all-intents-primary-textarea"
-            >
-                <TextArea
-                    id="all-intents-primary-textarea"
-                    intent="primary"
-                    disabled={args.disabled}
-                    fill={args.fill}
-                    placeholder="Primary intent..."
-                />
-            </FormGroup>
-            <FormGroup {...args} intent="success" labelInfo="(success, numeric input)">
-                <NumericInput
-                    intent="success"
-                    disabled={args.disabled}
-                    fill={args.fill}
-                    placeholder="Success intent..."
-                />
-            </FormGroup>
-            <FormGroup {...args} intent="warning" labelInfo="(warning, switch)">
-                <Switch label="Warning toggle" disabled={args.disabled} />
-            </FormGroup>
-            <FormGroup {...args} intent="danger" labelInfo="(danger, checkbox)">
-                <Checkbox label="Danger option A" disabled={args.disabled} />
-                <Checkbox label="Danger option B" disabled={args.disabled} />
-            </FormGroup>
-        </div>
-    ),
-};
 
 /**
  * All form controls in their enabled and disabled states within FormGroups.

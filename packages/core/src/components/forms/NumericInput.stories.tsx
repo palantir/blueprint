@@ -104,16 +104,14 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <NumericInput
-                        key={intent}
-                        {...args}
-                        intent={intent}
-                        placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
-                    />
-                ))}
+            {Object.values(Intent).map(intent => (
+                <NumericInput
+                    key={intent}
+                    {...args}
+                    intent={intent}
+                    placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
+                />
+            ))}
         </div>
     ),
 };
@@ -213,27 +211,6 @@ export const FillExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
             <NumericInput {...args} fill={true} placeholder="Full Width" />
             <NumericInput {...args} fill={false} placeholder="Auto Width" />
-        </div>
-    ),
-};
-
-/**
- * All intents shown together for visual comparison.
- */
-export const AllIntents: Story = {
-    argTypes: {
-        intent: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {Object.values(Intent).map(intent => (
-                <NumericInput
-                    key={intent}
-                    {...args}
-                    intent={intent}
-                    placeholder={`${intent === "none" ? "None" : intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
-                />
-            ))}
         </div>
     ),
 };
