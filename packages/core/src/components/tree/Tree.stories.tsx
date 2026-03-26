@@ -1,11 +1,9 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
-
-import { Classes } from "../../common";
 
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";
@@ -78,24 +76,8 @@ const DISABLED_CONTENTS: TreeNodeInfo[] = [
     { id: 3, icon: "document", label: "Item 2" },
 ];
 
-const SECONDARY_LABEL_CONTENTS: TreeNodeInfo[] = [
-    {
-        id: 0,
-        hasCaret: true,
-        icon: "folder-close",
-        label: "Folder 0",
-        secondaryLabel: "3 items",
-        isExpanded: true,
-        childNodes: [
-            { id: 1, icon: "document", label: "Item 0", secondaryLabel: "2 KB" },
-            { id: 2, icon: "document", label: "Item 1", secondaryLabel: "4 KB" },
-            { id: 3, icon: "document", label: "Item 2", secondaryLabel: "1 KB" },
-        ],
-    },
-];
-
 const meta: Meta<typeof Tree> = {
-    title: "Core/Tree/Tree",
+    title: "Core/Tree",
     component: Tree,
     decorators: [
         Story => (
@@ -129,21 +111,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const Selected: Story = {
-    name: "Selected",
-    args: {
-        contents: SELECTED_CONTENTS,
-    },
-};
-
-export const Disabled: Story = {
-    name: "Disabled",
-    args: {
-        contents: DISABLED_CONTENTS,
-    },
-};
-
-export const Compact: Story = {
+/**
+ * Use the `compact` prop for a denser tree layout.
+ */
+export const CompactExample: Story = {
     name: "Compact",
     argTypes: {
         compact: { table: { disable: true } },
@@ -153,24 +124,32 @@ export const Compact: Story = {
     },
 };
 
-export const SecondaryLabels: Story = {
-    name: "Secondary Labels",
-    args: {
-        contents: SECONDARY_LABEL_CONTENTS,
-    },
-};
-
-export const DarkTheme: Story = {
-    name: "Dark Theme",
-    decorators: [
-        Story => (
-            <div className={Classes.DARK} style={{ minWidth: "350px", padding: 16, background: "#30404d" }}>
-                <Story />
+/**
+ * Tree nodes support `isSelected`, `disabled`, and `isExpanded` states.
+ */
+export const StateExample: Story = {
+    name: "State",
+    render: args => (
+        <div style={{ display: "flex", gap: 32 }}>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Selected</div>
+                <div style={{ minWidth: "300px" }}>
+                    <Tree {...args} contents={SELECTED_CONTENTS} />
+                </div>
             </div>
-        ),
-    ],
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Disabled</div>
+                <div style={{ minWidth: "300px" }}>
+                    <Tree {...args} contents={DISABLED_CONTENTS} />
+                </div>
+            </div>
+        </div>
+    ),
 };
 
+/**
+ * All tree states displayed together for visual comparison.
+ */
 export const AllStates: Story = {
     name: "All States",
     render: args => (
@@ -203,6 +182,9 @@ export const AllStates: Story = {
     ),
 };
 
+/**
+ * Interactive playground with node click, expand, and collapse handlers.
+ */
 export const Playground: Story = {
     render: function Render(args) {
         const [nodes, setNodes] = useState<TreeNodeInfo[]>(SAMPLE_CONTENTS);
