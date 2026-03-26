@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -9,7 +9,7 @@ import { Intent } from "../../common";
 import { Tooltip } from "./tooltip";
 
 const meta: Meta<typeof Tooltip> = {
-    title: "Core/Tooltip/Tooltip",
+    title: "Core/Tooltip",
     component: Tooltip,
     decorators: [
         Story => (
@@ -85,67 +85,34 @@ export const IntentExample: Story = {
 };
 
 /**
- * Use the `compact` prop for a more condensed tooltip appearance.
+ * The `compact` prop renders a more condensed tooltip, and the `minimal` prop removes the arrow.
  */
-export const CompactExample: Story = {
-    name: "Compact",
+export const VariantExample: Story = {
+    name: "Variant",
     argTypes: {
         compact: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 24 }}>
-            <Tooltip {...args} compact={false} isOpen={true}>
-                <span>Default</span>
-            </Tooltip>
-            <Tooltip {...args} compact={true} isOpen={true}>
-                <span>Compact</span>
-            </Tooltip>
-        </div>
-    ),
-};
-
-/**
- * Use the `minimal` prop to render the tooltip without an arrow.
- */
-export const MinimalExample: Story = {
-    name: "Minimal",
-    argTypes: {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 24 }}>
-            <Tooltip {...args} minimal={false} isOpen={true}>
-                <span>With arrow</span>
+        <div style={{ display: "flex", gap: 32 }}>
+            <Tooltip {...args} compact={false} minimal={false} isOpen={true}>
+                <span>Default</span>
             </Tooltip>
-            <Tooltip {...args} minimal={true} isOpen={true}>
-                <span>No arrow</span>
+            <Tooltip {...args} compact={true} minimal={false} isOpen={true}>
+                <span>Compact</span>
             </Tooltip>
-        </div>
-    ),
-};
-
-/**
- * Use the `disabled` prop to prevent the tooltip from appearing.
- */
-export const DisabledExample: Story = {
-    name: "Disabled",
-    argTypes: {
-        disabled: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 24 }}>
-            <Tooltip {...args} disabled={false} isOpen={true}>
-                <span>Enabled</span>
+            <Tooltip {...args} compact={false} minimal={true} isOpen={true}>
+                <span>Minimal</span>
             </Tooltip>
-            <Tooltip {...args} disabled={true}>
-                <span>Disabled</span>
+            <Tooltip {...args} compact={true} minimal={true} isOpen={true}>
+                <span>Compact + Minimal</span>
             </Tooltip>
         </div>
     ),
 };
 
 /**
- * All intents displayed together for visual comparison.
+ * All intents displayed together for visual comparison, in both default and compact variants.
  */
 export const AllIntents: Story = {
     name: "All Intents",
