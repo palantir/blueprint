@@ -16,13 +16,30 @@
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { interpolateClassNamespace, transformDocumentalistData } from "./compile-docs-data.mts";
+import { interpolateClassNamespace, sortMajorVersions, transformDocumentalistData } from "./compile-docs-data.mts";
 
 describe("interpolateClassNamespace", () => {
     it("replaces #{$ns} and @ns with the default class namespace", () => {
         expect(interpolateClassNamespace("#{$ns}-button")).toBe("bp6-button");
         expect(interpolateClassNamespace("@ns-icon")).toBe("bp6-icon");
         expect(interpolateClassNamespace("#{$ns}-card @ns-elevation")).toBe("bp6-card bp6-elevation");
+    });
+});
+
+describe("sortMajorVersions", () => {
+    it("keeps only the highest version per major and sorts descending", () => {
+        const versions = ["1.0.0", "1.2.3", "2.0.0", "2.1.0", "3.0.0", "3.1.4"];
+        expect(sortMajorVersions(versions)).toEqual(["3.1.4", "2.1.0", "1.2.3"]);
+    });
+
+    it("skips pre-release versions", () => {
+        const versions = ["1.0.0", "2.0.0-alpha.1", "2.0.0-beta.3", "2.0.0"];
+        expect(sortMajorVersions(versions)).toEqual(["2.0.0", "1.0.0"]);
+    });
+
+    it("returns an empty array when given only pre-release versions", () => {
+        const versions = ["1.0.0-rc.1", "2.0.0-beta.1"];
+        expect(sortMajorVersions(versions)).toEqual([]);
     });
 });
 
