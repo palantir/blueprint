@@ -1,4 +1,4 @@
-/* !
+/*!
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -38,7 +38,7 @@ function renderTable(props: React.ComponentProps<typeof HTMLTable>) {
 }
 
 const meta: Meta<typeof HTMLTable> = {
-    title: "Core/HTMLTable/HTMLTable",
+    title: "Core/HTMLTable",
     component: HTMLTable,
     decorators: [
         Story => (
@@ -68,77 +68,37 @@ const meta: Meta<typeof HTMLTable> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * A basic HTML table with default styling.
+ */
 export const Default: Story = {
     render: args => renderTable(args),
 };
 
-export const Bordered: Story = {
-    name: "Bordered",
+/**
+ * Use the `bordered`, `compact`, `interactive`, and `striped` props to control table appearance.
+ */
+export const StateExample: Story = {
+    name: "State",
     argTypes: {
         bordered: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Default</div>
-                {renderTable({ ...args, bordered: false })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Bordered</div>
-                {renderTable({ ...args, bordered: true })}
-            </div>
-        </div>
-    ),
-};
-
-export const Compact: Story = {
-    name: "Compact",
-    argTypes: {
         compact: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Default</div>
-                {renderTable({ ...args, compact: false })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Compact</div>
-                {renderTable({ ...args, compact: true })}
-            </div>
-        </div>
-    ),
-};
-
-export const Striped: Story = {
-    name: "Striped",
-    argTypes: {
+        interactive: { table: { disable: true } },
         striped: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Default</div>
-                {renderTable({ ...args, striped: false })}
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Bordered</div>
+                {renderTable({ ...args, bordered: true })}
+            </div>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Compact</div>
+                {renderTable({ ...args, compact: true })}
             </div>
             <div>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Striped</div>
                 {renderTable({ ...args, striped: true })}
-            </div>
-        </div>
-    ),
-};
-
-export const Interactive: Story = {
-    name: "Interactive",
-    argTypes: {
-        interactive: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Default</div>
-                {renderTable({ ...args, interactive: false })}
             </div>
             <div>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Interactive (hover rows)</div>
@@ -148,6 +108,9 @@ export const Interactive: Story = {
     ),
 };
 
+/**
+ * All prop combinations displayed together for visual comparison.
+ */
 export const AllCombinations: Story = {
     name: "All Combinations",
     argTypes: {
@@ -184,6 +147,9 @@ export const AllCombinations: Story = {
     ),
 };
 
+/**
+ * Interactive playground with all props togglable via Storybook controls.
+ */
 export const Playground: Story = {
     args: {
         bordered: true,
