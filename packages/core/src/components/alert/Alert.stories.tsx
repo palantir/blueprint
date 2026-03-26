@@ -130,27 +130,6 @@ export const StateExample: Story = {
 };
 
 /**
- * All intents displayed for visual regression testing.
- */
-export const AllIntents: Story = {
-    argTypes: {
-        intent: { table: { disable: true } },
-        icon: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Alert key={intent} {...args} isOpen={true} intent={intent} icon="info-sign" confirmButtonText="OK">
-                        This is a <strong>{intent}</strong> alert.
-                    </Alert>
-                ))}
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
