@@ -33,7 +33,7 @@ const meta: Meta<typeof Callout> = {
     argTypes: {
         intent: {
             control: "select",
-            options: [undefined, ...Object.values(Intent).filter(i => i !== "none")],
+            options: [...Object.values(Intent)],
         },
         icon: {
             control: "text",
@@ -73,13 +73,11 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Callout key={intent} {...args} intent={intent}>
-                        {intent.charAt(0).toUpperCase() + intent.slice(1)} intent callout.
-                    </Callout>
-                ))}
+            {Object.values(Intent).map(intent => (
+                <Callout key={intent} {...args} intent={intent}>
+                    {intent.charAt(0).toUpperCase() + intent.slice(1)} intent callout.
+                </Callout>
+            ))}
         </div>
     ),
 };
@@ -176,13 +174,11 @@ export const AllIntentsAllVariants: Story = {
                     <Callout {...args} minimal={minimal}>
                         No intent callout.
                     </Callout>
-                    {Object.values(Intent)
-                        .filter(i => i !== "none")
-                        .map(intent => (
-                            <Callout key={intent} {...args} minimal={minimal} intent={intent} title={intent}>
-                                {intent.charAt(0).toUpperCase() + intent.slice(1)} intent callout content.
-                            </Callout>
-                        ))}
+                    {Object.values(Intent).map(intent => (
+                        <Callout key={intent} {...args} minimal={minimal} intent={intent} title={intent}>
+                            {intent.charAt(0).toUpperCase() + intent.slice(1)} intent callout content.
+                        </Callout>
+                    ))}
                 </div>
             ))}
         </div>
