@@ -4,8 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
-import type { HTMLSelectIconName } from "./htmlSelect";
-import { HTMLSelect } from "./htmlSelect";
+import { HTMLSelect, type HTMLSelectIconName } from "./htmlSelect";
 
 const SAMPLE_OPTIONS = [
     { label: "Option 1", value: "1" },
