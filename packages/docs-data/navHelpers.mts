@@ -13,6 +13,7 @@ import type {
     NavTreeNode,
     NavTreePage,
     RawNavStructure,
+    Section,
 } from "./navTypes.mts";
 
 /**
@@ -28,6 +29,28 @@ export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
             pages: section.pages.map(pageRef),
         })),
     }));
+}
+
+/** Extract every page ref from a raw nav config (package names + flat pages + section pages). */
+export function getPageRefs(raw: RawNavStructure): string[] {
+    const refs: string[] = [];
+    for (const entry of raw) {
+        refs.push(entry.package);
+        for (const page of entry.pages) {
+            refs.push(page);
+        }
+        for (const section of entry.sections ?? []) {
+            for (const page of section.pages) {
+                refs.push(page);
+            }
+        }
+    }
+    return refs;
+}
+
+/** Extract all section names from a raw nav config. */
+export function getSectionRefs(raw: RawNavStructure): Section[] {
+    return raw.flatMap(entry => (entry.sections ?? []).map(s => s.section));
 }
 
 /**

@@ -22,8 +22,8 @@ import { Documentalist, MarkdownPlugin } from "@documentalist/compiler";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-import { assignRoutes, normalizeNavConfig } from "./navHelpers.mts";
-import type { RawNavStructure, Section } from "./navTypes.mts";
+import { assignRoutes, getPageRefs, getSectionRefs, normalizeNavConfig } from "./navHelpers.mts";
+import type { RawNavStructure } from "./navTypes.mts";
 import { LIBRARY_PACKAGES } from "./compile-docs-data.mts";
 
 const DOCS_PACKAGE = "docs-app";
@@ -41,7 +41,7 @@ describe("nav.json route coverage", () => {
         const mdxRefs = new Set(mdxFiles.map(getReference));
 
         // Page refs (package names + leaf pages) must each have an MDX file
-        for (const ref of getPageRefs()) {
+        for (const ref of getPageRefs(rawNav)) {
             it(`ref "${ref}" has an MDX file`, () => {
                 expect(mdxRefs.has(ref)).toBe(true);
             });
@@ -50,7 +50,7 @@ describe("nav.json route coverage", () => {
         // Section refs may or may not have MDX files — buildNavSection supports
         // virtual sections. Verify that each section ref either has an MDX file
         // or is explicitly virtual (no MDX file).
-        for (const ref of getSectionRefs()) {
+        for (const ref of getSectionRefs(rawNav)) {
             if (mdxRefs.has(ref)) {
                 it(`section ref "${ref}" has an MDX file`, () => {
                     expect(mdxRefs.has(ref)).toBe(true);
@@ -83,34 +83,12 @@ describe("nav.json route coverage", () => {
             // assignRoutes should not throw — every ref must exist in docs.pages
             assignRoutes(navConfig, docs.pages);
 
-            const pageRefs = getPageRefs();
+            const pageRefs = getPageRefs(rawNav);
             const missingRefs = pageRefs.filter(ref => docs.pages[ref] === undefined);
             expect(missingRefs).toEqual([]);
         }, 30_000);
     });
 });
-
-/** Extract every page ref from nav.json (flat pages + section pages), excluding section names. */
-function getPageRefs(): string[] {
-    const refs: string[] = [];
-    for (const entry of rawNav) {
-        refs.push(entry.package);
-        for (const page of entry.pages) {
-            refs.push(page);
-        }
-        for (const section of entry.sections ?? []) {
-            for (const page of section.pages) {
-                refs.push(page);
-            }
-        }
-    }
-    return refs;
-}
-
-/** Extract section names from nav.json. */
-function getSectionRefs(): Section[] {
-    return rawNav.flatMap(entry => (entry.sections ?? []).map(s => s.section));
-}
 
 /**
  * Determine the Documentalist "reference" for an MDX file.
