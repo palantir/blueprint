@@ -10,6 +10,15 @@ import { playwright } from "@vitest/browser-playwright";
 // See https://vitest.dev/guide/browser/ for setup info
 export default defineConfig({
     plugins: [react()],
+    optimizeDeps: {
+        include: [
+            // without this first import, we hit reference errors
+            "@blueprintjs/icons",
+            "@cfaester/enzyme-adapter-react-18",
+            "@testing-library/jest-dom/vitest",
+            "enzyme",
+        ],
+    },
     test: {
         name: "select",
         environment: "jsdom",
@@ -19,6 +28,8 @@ export default defineConfig({
         browser: {
             provider: playwright(),
             enabled: true,
+            // headless={true} prevents a chrome browser from opening
+            headless: true,
             // at least one instance is required
             instances: [{ browser: "chromium" }],
         },

@@ -10,10 +10,10 @@ catalog:
   "@testing-library/react": ^16.1.0
   "@testing-library/user-event": ^14.6.1
   "@vitejs/plugin-react": ^5.1.0
-  "@vitest/coverage-v8": 4.0.7
+  "@vitest/coverage-v8": 4.1.1
   enzyme: ^3.11.0
   jsdom: ^27.1.0
   tsx: ^4.21.0
-  vitest: 4.0.7
+  vitest: 4.1.1
 
 publishBranch: develop

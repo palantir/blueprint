@@ -138,6 +138,9 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run:
+          name: Install Playwright Chromium
+          command: pnpm exec playwright install chromium --with-deps
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:

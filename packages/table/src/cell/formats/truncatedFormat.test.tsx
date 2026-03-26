@@ -19,6 +19,7 @@ import { render } from "vitest-browser-react";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import * as Classes from "../../common/classes";
+import { Utils } from "../../common/utils";
 import { ElementHarness } from "../../harness";
 import { createStringOfLength } from "../../mocks/table";
 
@@ -42,8 +43,6 @@ describe("<TruncatedFormat>", () => {
 
     // This test was super flaky. It started failing without clear cause when the Table Frozen
     // Columns/Rows changes merged, even though nothing about the TruncatedFormat component
-    // changed. Adding the position: relative rule fixes it, but more investigation is needed.
-    // skip: requires real browser layout engine (jsdom limitation)
     it.skip("can automatically truncate and show popover when truncated and word wrapped", async () => {
         const str = `
             We are going to die, and that makes us the lucky ones. Most
@@ -80,8 +79,7 @@ describe("<TruncatedFormat>", () => {
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
-    // skip: requires real browser layout engine (jsdom limitation)
-    it.skip("can automatically truncate and show popover when truncated and word wrapped in approx mode", async () => {
+    it("can automatically truncate and show popover when truncated and word wrapped in approx mode", async () => {
         const str = `
             We are going to die, and that makes us the lucky ones. Most
             people are never going to die because they are never going to
@@ -119,8 +117,15 @@ describe("<TruncatedFormat>", () => {
             </div>,
         );
         const comp = new ElementHarness(container);
-        const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
-        expect(textElement.scrollHeight).toBeGreaterThan(textElement.clientHeight);
+        const approxCellHeight = Utils.getApproxCellHeight(
+            str,
+            300, // parentCellWidth
+            TruncatedFormat.defaultProps.measureByApproxOptions!.approximateCharWidth,
+            TruncatedFormat.defaultProps.measureByApproxOptions!.approximateLineHeight,
+            TruncatedFormat.defaultProps.measureByApproxOptions!.cellHorizontalPadding,
+            TruncatedFormat.defaultProps.measureByApproxOptions!.numBufferLines,
+        );
+        expect(approxCellHeight).toBeGreaterThan(300); // parentCellHeight
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
@@ -147,8 +152,7 @@ describe("<TruncatedFormat>", () => {
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
     });
 
-    // skip: requires real browser layout engine (jsdom limitation)
-    it.skip("doesn't truncate if truncation length is 0", async () => {
+    it("doesn't truncate if truncation length is 0", async () => {
         const str = `
             To be, or not to be--that is the question:
             Whether 'tis nobler in the mind to suffer
@@ -194,6 +198,10 @@ describe("<TruncatedFormat>", () => {
             </div>,
         );
         const comp = new ElementHarness(container);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.lengthOf(str.length);
+        // When not DOM-truncated, the component renders TABLE_TRUNCATED_FORMAT_TEXT instead of TABLE_TRUNCATED_VALUE
+        const textContent =
+            comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text() ??
+            comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text();
+        expect(textContent).to.have.lengthOf(str.length);
     });
 });
