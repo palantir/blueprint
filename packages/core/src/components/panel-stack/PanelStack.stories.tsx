@@ -18,6 +18,7 @@ interface RootPanelInfo {
     label: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const RootPanel: React.FC<PanelProps<RootPanelInfo>> = ({ openPanel, label }) => {
     const handleOpen = useCallback(() => {
         openPanel({
@@ -39,6 +40,7 @@ interface DetailPanelInfo {
     itemName: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const DetailPanel: React.FC<PanelProps<DetailPanelInfo>> = ({ openPanel, closePanel, itemName }) => {
     const handleOpen = useCallback(() => {
         openPanel({
@@ -65,6 +67,7 @@ interface LeafPanelInfo {
     message: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/unbound-method
 const LeafPanel: React.FC<PanelProps<LeafPanelInfo>> = ({ closePanel, message }) => {
     return (
         <div style={{ padding: 16 }}>
