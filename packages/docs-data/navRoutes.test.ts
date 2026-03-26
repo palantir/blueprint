@@ -24,8 +24,8 @@ import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 import { assignRoutes, normalizeNavConfig } from "./navHelpers.mts";
 import type { RawNavStructure, Section } from "./navTypes.mts";
+import { LIBRARY_PACKAGES } from "./compile-docs-data.mts";
 
-const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
 const DOCS_PACKAGE = "docs-app";
 const ALL_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
 

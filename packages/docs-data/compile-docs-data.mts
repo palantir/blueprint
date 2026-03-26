@@ -24,7 +24,7 @@ import {
 } from "./navTypes.mts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
-const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
+export const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
 
 /** This package is expected to have the markdown "navPage" */
 const DOCS_PACKAGE = "docs-app";
