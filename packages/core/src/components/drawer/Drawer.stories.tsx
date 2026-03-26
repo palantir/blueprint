@@ -100,6 +100,7 @@ export const PositionExample: Story = {
         return (
             <div style={{ display: "flex", gap: 8 }}>
                 {positions.map(pos => (
+                    // eslint-disable-next-line react/jsx-no-bind
                     <Button key={pos} onClick={() => setOpenPosition(pos)}>
                         {pos.charAt(0).toUpperCase() + pos.slice(1)}
                     </Button>
@@ -141,6 +142,7 @@ export const SizeExample: Story = {
         return (
             <div style={{ display: "flex", gap: 8 }}>
                 {sizes.map(({ label, value }) => (
+                    // eslint-disable-next-line react/jsx-no-bind
                     <Button key={label} onClick={() => setOpenSize(value)}>
                         {label}
                     </Button>
