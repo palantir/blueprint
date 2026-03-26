@@ -14,7 +14,7 @@ import { MenuItem } from "./menuItem";
 const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Menu>>;
 
 const meta: Meta<typeof Menu> = {
-    title: "Core/Menu/Menu",
+    title: "Core/Menu",
     component: Menu,
     decorators: [
         Story => (
@@ -144,7 +144,7 @@ export const StateExample: Story = {
     ),
 };
 
-export const IconsExample: Story = {
+export const IconExample: Story = {
     name: "Icons",
     render: args => (
         <Menu {...args}>
@@ -152,21 +152,6 @@ export const IconsExample: Story = {
             <MenuItem text="Without icon" />
             <MenuItem icon="graph" text="With icon and label" label="⌘G" />
             <MenuItem icon="add" text="With label element" labelElement={<span>Ctrl+N</span>} />
-        </Menu>
-    ),
-};
-
-export const WithDividersAndHeaders: Story = {
-    name: "Dividers & Headers",
-    render: args => (
-        <Menu {...args}>
-            <MenuDivider title="Edit" />
-            <MenuItem icon="cut" text="Cut" label="⌘X" />
-            <MenuItem icon="clipboard" text="Copy" label="⌘C" />
-            <MenuItem icon="duplicate" text="Paste" label="⌘V" />
-            <MenuDivider title="View" />
-            <MenuItem icon="zoom-in" text="Zoom in" />
-            <MenuItem icon="zoom-out" text="Zoom out" />
         </Menu>
     ),
 };
@@ -190,26 +175,6 @@ export const AllIntents: Story = {
                         </Menu>
                     </div>
                 ))}
-        </div>
-    ),
-};
-
-export const DarkTheme: Story = {
-    name: "Dark Theme",
-    render: args => (
-        <div className="bp6-dark" style={{ padding: 16, borderRadius: 4 }}>
-            <Menu {...args}>
-                <MenuItem icon="new-text-box" text="New text box" />
-                <MenuItem icon="new-object" text="New object" />
-                <MenuItem icon="new-link" text="New link" />
-                <MenuDivider />
-                <MenuItem icon="cog" text="Settings" label="⌘," />
-                <MenuDivider title="Intent" />
-                <MenuItem icon="graph" text="Primary" intent="primary" />
-                <MenuItem icon="tick" text="Success" intent="success" />
-                <MenuItem icon="warning-sign" text="Warning" intent="warning" />
-                <MenuItem icon="error" text="Danger" intent="danger" />
-            </Menu>
         </div>
     ),
 };
