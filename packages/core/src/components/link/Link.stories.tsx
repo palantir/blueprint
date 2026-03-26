@@ -35,7 +35,7 @@ const meta: Meta<typeof Link> = {
         },
         color: {
             control: "select",
-            options: [...Object.values(Intent).filter(i => i !== "none"), "inherit"],
+            options: [...Object.values(Intent), "inherit"],
         },
         href: {
             control: "text",
@@ -66,13 +66,11 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 16 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Link key={intent} {...args} color={intent}>
-                        {intent.charAt(0).toUpperCase() + intent.slice(1)}
-                    </Link>
-                ))}
+            {Object.values(Intent).map(intent => (
+                <Link key={intent} {...args} color={intent}>
+                    {intent.charAt(0).toUpperCase() + intent.slice(1)}
+                </Link>
+            ))}
         </div>
     ),
 };
@@ -114,13 +112,11 @@ export const AllIntentsAllUnderlines: Story = {
                 <div key={underline} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                     <div style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{underline}</div>
                     <div style={{ display: "flex", gap: 16 }}>
-                        {Object.values(Intent)
-                            .filter(i => i !== "none")
-                            .map(intent => (
-                                <Link key={intent} {...args} color={intent} underline={underline}>
-                                    {intent.charAt(0).toUpperCase() + intent.slice(1)}
-                                </Link>
-                            ))}
+                        {Object.values(Intent).map(intent => (
+                            <Link key={intent} {...args} color={intent} underline={underline}>
+                                {intent.charAt(0).toUpperCase() + intent.slice(1)}
+                            </Link>
+                        ))}
                         <Link {...args} color="inherit" underline={underline}>
                             Inherit
                         </Link>
