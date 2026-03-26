@@ -64,33 +64,15 @@ export const CompactExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 0, width: "300px" }}>
             <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
                 <span style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Default (with margin)</span>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        border: "1px dashed rgba(0,0,0,0.2)",
-                        padding: 8,
-                    }}
-                >
-                    <span>Above</span>
-                    <Divider {...args} compact={false} />
-                    <span>Below</span>
-                </div>
+                <span>Above</span>
+                <Divider {...args} compact={false} />
+                <span>Below</span>
             </div>
             <div style={{ marginTop: 16, display: "flex", flexDirection: "column", width: "100%" }}>
                 <span style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Compact (no margin)</span>
-                <div
-                    style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        border: "1px dashed rgba(0,0,0,0.2)",
-                        padding: 8,
-                    }}
-                >
-                    <span>Above</span>
-                    <Divider {...args} compact={true} />
-                    <span>Below</span>
-                </div>
+                <span>Above</span>
+                <Divider {...args} compact={true} />
+                <span>Below</span>
             </div>
         </div>
     ),
