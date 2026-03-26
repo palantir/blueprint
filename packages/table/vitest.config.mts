@@ -27,6 +27,8 @@ export default defineConfig({
         setupFiles: ["@blueprintjs/test-commons/vitest.setup", "./src/testSetup.ts"],
         browser: {
             provider: playwright(),
+            // without screenshotFailures={false}, screenshots are automatically saved to disk
+            screenshotFailures: false,
             enabled: true,
             // headless={true} prevents a chrome browser from opening
             headless: true,
