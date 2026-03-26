@@ -129,48 +129,6 @@ export const StateExample: Story = {
 };
 
 /**
- * All intents with disabled state shown for visual comparison.
- */
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        intent: { table: { disable: true } },
-        disabled: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Default</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    {Object.values(Intent).map(intent => (
-                        <EditableText
-                            key={intent}
-                            {...args}
-                            intent={intent}
-                            placeholder={intent === "none" ? "None" : intent}
-                        />
-                    ))}
-                </div>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Disabled</div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    {Object.values(Intent).map(intent => (
-                        <EditableText
-                            key={intent}
-                            {...args}
-                            intent={intent}
-                            disabled={true}
-                            placeholder={intent === "none" ? "None" : intent}
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
-    ),
-};
-
-/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
