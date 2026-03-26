@@ -13,7 +13,7 @@ const disabledArgs = ["customInputAttributes", "elementRef", "contentId"] as con
 >;
 
 const meta: Meta<typeof EditableText> = {
-    title: "Core/EditableText/EditableText",
+    title: "Core/EditableText",
     component: EditableText,
     decorators: [
         Story => (
@@ -123,27 +123,6 @@ export const StateExample: Story = {
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
                 <EditableText {...args} disabled={true} placeholder="Disabled" />
-            </div>
-        </div>
-    ),
-};
-
-/**
- * Use the `multiline` prop to allow multi-line editing with a textarea.
- */
-export const Multiline: Story = {
-    argTypes: {
-        multiline: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%", minWidth: "400px" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Single line</span>
-                <EditableText {...args} multiline={false} placeholder="Single line" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Multiline</span>
-                <EditableText {...args} multiline={true} placeholder="Multiline text" minLines={3} maxLines={6} />
             </div>
         </div>
     ),
