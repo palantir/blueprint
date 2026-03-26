@@ -7,8 +7,8 @@ import { useCallback, useState } from "react";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
-import { Overlay2 } from "../overlay2/overlay2";
 import { H3 } from "../html/html";
+import { Overlay2 } from "../overlay2/overlay2";
 
 const meta: Meta<typeof Overlay2> = {
     title: "Core/Overlay",
