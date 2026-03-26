@@ -9,7 +9,7 @@ import { Intent } from "../../common";
 import { Callout } from "./callout";
 
 const meta: Meta<typeof Callout> = {
-    title: "Core/Callout/Callout",
+    title: "Core/Callout",
     component: Callout,
     decorators: [
         Story => (
@@ -155,27 +155,6 @@ export const IconExample: Story = {
             </Callout>
             <Callout {...args} intent="primary" icon={null}>
                 Intent with icon explicitly hidden.
-            </Callout>
-        </div>
-    ),
-};
-
-/**
- * Use the `title` prop to add a heading to the callout.
- */
-export const TitleExample: Story = {
-    name: "Title",
-    argTypes: {
-        title: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <Callout {...args} title="Callout title">
-                Callout with a title and body content.
-            </Callout>
-            <Callout {...args} title="Title only" children={undefined} />
-            <Callout {...args} intent="primary" title="Primary callout">
-                An intent callout with a title and body content.
             </Callout>
         </div>
     ),
