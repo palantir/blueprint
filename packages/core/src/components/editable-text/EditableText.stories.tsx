@@ -92,16 +92,14 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <EditableText
-                        key={intent}
-                        {...args}
-                        intent={intent}
-                        placeholder={intent.charAt(0).toUpperCase() + intent.slice(1)}
-                    />
-                ))}
+            {Object.values(Intent).map(intent => (
+                <EditableText
+                    key={intent}
+                    {...args}
+                    intent={intent}
+                    placeholder={intent.charAt(0).toUpperCase() + intent.slice(1)}
+                />
+            ))}
         </div>
     ),
 };
