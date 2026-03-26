@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -9,7 +9,7 @@ import { Intent } from "../../common";
 import { Toast } from "./toast";
 
 const meta: Meta<typeof Toast> = {
-    title: "Core/Toast/Toast",
+    title: "Core/Toast",
     component: Toast,
     decorators: [
         Story => (
@@ -97,36 +97,6 @@ export const IconExample: Story = {
             <Toast {...args} icon="warning-sign" intent="warning" message="Connection is unstable" />
             <Toast {...args} icon="error" intent="danger" message="Failed to save changes" />
             <Toast {...args} icon="info-sign" intent="primary" message="New update available" />
-        </div>
-    ),
-};
-
-/**
- * Toasts can include an action button via the `action` prop.
- */
-export const WithAction: Story = {
-    name: "With Action",
-    args: {
-        message: "File moved to trash",
-        icon: "trash",
-        action: {
-            text: "Undo",
-        },
-    },
-};
-
-/**
- * The close button can be hidden with `isCloseButtonShown={false}`.
- */
-export const CloseButtonHidden: Story = {
-    name: "Close Button Hidden",
-    argTypes: {
-        isCloseButtonShown: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <Toast {...args} isCloseButtonShown={true} message="With close button (default)" />
-            <Toast {...args} isCloseButtonShown={false} message="Without close button" />
         </div>
     ),
 };
