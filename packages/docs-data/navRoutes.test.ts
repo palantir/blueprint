@@ -22,7 +22,7 @@ import { Documentalist, MarkdownPlugin } from "@documentalist/compiler";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-import { assignRoutes, getPageRefs, getSectionRefs, normalizeNavConfig } from "./navHelpers.mts";
+import { assignRoutes, getPageRefs, normalizeNavConfig } from "./navHelpers.mts";
 import type { RawNavStructure } from "./navTypes.mts";
 import { LIBRARY_PACKAGES } from "./compile-docs-data.mts";
 
@@ -47,21 +47,9 @@ describe("nav.json route coverage", () => {
             });
         }
 
-        // Section refs may or may not have MDX files — buildNavSection supports
-        // virtual sections. Verify that each section ref either has an MDX file
-        // or is explicitly virtual (no MDX file).
-        for (const ref of getSectionRefs(rawNav)) {
-            if (mdxRefs.has(ref)) {
-                it(`section ref "${ref}" has an MDX file`, () => {
-                    expect(mdxRefs.has(ref)).toBe(true);
-                });
-            } else {
-                // This is specifically for "form-controls", "context", "hooks" that aren't really sections, but present as such
-                it(`section ref "${ref}" is a virtual section (no MDX file)`, () => {
-                    expect(mdxRefs.has(ref)).toBe(false);
-                });
-            }
-        }
+        // Note: section refs (from getSectionRefs) are NOT tested here because
+        // sections can be "virtual" — declared in nav.json purely for grouping,
+        // with no corresponding MDX file (e.g. "form-controls", "overlays").
     });
 
     describe("compile-docs-data pipeline produces a page for every nav.json ref", () => {
