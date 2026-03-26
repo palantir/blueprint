@@ -111,16 +111,7 @@ async function generateDocumentalistData(): Promise<void> {
 
 export function transformDocumentalistData(key: string, value: any): any {
     if (key === "versions" && Array.isArray(value)) {
-        // one major version per release
-        const majors = new Map<number, string>();
-        for (const version of value) {
-            const major = semver.major(version);
-            if (!majors.has(major) || semver.gt(version, majors.get(major))) {
-                majors.set(major, version);
-            }
-        }
-        // reverse the list so highest version is first (easier indexing)
-        return Array.from(majors.values()).reverse();
+        return sortMajorVersions(value);
     }
 
     if (typeof value === "string") {
@@ -146,9 +137,16 @@ async function fetchNpmPackageInfo(
     const fullData = await packageJson(packageName, { allVersions: true });
     const allVersions = Object.keys(fullData.versions ?? {});
 
-    // Keep the highest stable version per major
+    const versions = sortMajorVersions(allVersions);
+    const version = fullData["dist-tags"].latest;
+    const nextVersion = fullData["dist-tags"].next;
+
+    return { name: packageName, version: version!, versions, nextVersion };
+}
+
+export function sortMajorVersions(packageVersions: string[]): string[] {
     const majors = new Map<number, string>();
-    for (const v of allVersions) {
+    for (const v of packageVersions) {
         const maj = semver.major(v);
         if (semver.prerelease(v)) continue;
         if (!majors.has(maj) || semver.gt(v, majors.get(maj)!)) {
@@ -156,11 +154,7 @@ async function fetchNpmPackageInfo(
         }
     }
 
-    const versions = Array.from(majors.values()).sort(semver.rcompare);
-    const version = fullData["dist-tags"].latest;
-    const nextVersion = fullData["dist-tags"].next;
-
-    return { name: packageName, version: version!, versions, nextVersion };
+    return Array.from(majors.values()).sort(semver.rcompare);
 }
 
 async function generateNpmData(): Promise<void> {
