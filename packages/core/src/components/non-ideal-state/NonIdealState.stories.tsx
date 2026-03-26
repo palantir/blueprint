@@ -5,6 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Button } from "../button/buttons";
+
 import { NonIdealState, NonIdealStateIconSize } from "./nonIdealState";
 
 const meta: Meta<typeof NonIdealState> = {
