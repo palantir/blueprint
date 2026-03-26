@@ -31,7 +31,7 @@ const sampleMenu = (
 );
 
 const meta: Meta<typeof Popover> = {
-    title: "Core/Overlay/Popover",
+    title: "Core/Popover",
     component: Popover,
     decorators: [
         Story => (
@@ -108,29 +108,6 @@ export const Default: Story = {
 };
 
 /**
- * Popover interaction kinds determine how the popover opens and closes.
- */
-export const InteractionKindExample: Story = {
-    name: "Interaction Kind",
-    argTypes: {
-        interactionKind: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
-            <Popover {...args} interactionKind="click">
-                <Button text="Click" />
-            </Popover>
-            <Popover {...args} interactionKind="hover">
-                <Button text="Hover" />
-            </Popover>
-            <Popover {...args} interactionKind="hover-target">
-                <Button text="Hover target only" />
-            </Popover>
-        </div>
-    ),
-};
-
-/**
  * Use `minimal` to render the popover without an arrow and with a subtler animation.
  */
 export const VariantExample: Story = {
@@ -157,6 +134,34 @@ export const VariantExample: Story = {
 };
 
 /**
+ * Popover supports disabled, fill, and backdrop states.
+ */
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        disabled: { table: { disable: true } },
+        fill: { table: { disable: true } },
+        hasBackdrop: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 8 }}>
+            <Popover {...args}>
+                <Button text="Default" />
+            </Popover>
+            <Popover {...args} disabled={true}>
+                <Button text="Disabled" disabled={true} />
+            </Popover>
+            <Popover {...args} fill={true}>
+                <Button text="Fill" fill={true} />
+            </Popover>
+            <Popover {...args} hasBackdrop={true}>
+                <Button text="With backdrop" />
+            </Popover>
+        </div>
+    ),
+};
+
+/**
  * Use the `placement` prop to control where the popover appears relative to the target.
  */
 export const PlacementExample: Story = {
@@ -173,79 +178,6 @@ export const PlacementExample: Story = {
             ))}
         </div>
     ),
-};
-
-/**
- * Popover supports disabled and backdrop states.
- */
-export const StateExample: Story = {
-    name: "State",
-    argTypes: {
-        disabled: { table: { disable: true } },
-        hasBackdrop: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
-            <Popover {...args}>
-                <Button text="Default" />
-            </Popover>
-            <Popover {...args} disabled={true}>
-                <Button text="Disabled" disabled={true} />
-            </Popover>
-            <Popover {...args} hasBackdrop={true}>
-                <Button text="With backdrop" />
-            </Popover>
-        </div>
-    ),
-};
-
-/**
- * Use `fill` to make the popover target expand to the full width of its container.
- */
-export const FillExample: Story = {
-    name: "Fill",
-    argTypes: {
-        fill: { table: { disable: true } },
-    },
-    decorators: [
-        Story => (
-            <div style={{ width: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <Popover {...args} fill={true}>
-                <Button text="Full width" fill={true} />
-            </Popover>
-            <Popover {...args} fill={false}>
-                <Button text="Auto width" />
-            </Popover>
-        </div>
-    ),
-};
-
-/**
- * Use `matchTargetWidth` to make the popover content match the width of the target.
- */
-export const MatchTargetWidthExample: Story = {
-    name: "Match Target Width",
-    argTypes: {
-        matchTargetWidth: { table: { disable: true } },
-    },
-    render: args => (
-        <Popover {...args} matchTargetWidth={true} fill={true}>
-            <Button text="Popover matches this button's width" fill={true} />
-        </Popover>
-    ),
-    decorators: [
-        Story => (
-            <div style={{ width: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
 };
 
 /**
