@@ -102,41 +102,6 @@ export const IconExample: Story = {
 };
 
 /**
- * All intents with icons and action buttons for visual regression testing.
- */
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        intent: { table: { disable: true } },
-        icon: { table: { disable: true } },
-    },
-    render: args => {
-        const intents: Array<{ intent: (typeof Intent)[keyof typeof Intent]; icon: string; message: string }> = [
-            { intent: Intent.NONE, icon: "notifications", message: "You have 3 new notifications" },
-            { intent: Intent.PRIMARY, icon: "info-sign", message: "A new software update is available" },
-            { intent: Intent.SUCCESS, icon: "tick-circle", message: "Changes saved successfully" },
-            { intent: Intent.WARNING, icon: "warning-sign", message: "Your session expires in 5 minutes" },
-            { intent: Intent.DANGER, icon: "error", message: "Network request failed" },
-        ];
-
-        return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {intents.map(({ intent, icon, message }) => (
-                    <Toast
-                        key={intent}
-                        {...args}
-                        intent={intent}
-                        icon={icon}
-                        message={message}
-                        action={{ text: "Action" }}
-                    />
-                ))}
-            </div>
-        );
-    },
-};
-
-/**
  * Interactive playground for experimenting with toast props.
  */
 export const Playground: Story = {
