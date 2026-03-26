@@ -187,7 +187,7 @@ export function buildNavPage(
         level,
         reference: ref,
         route,
-        title: kebabToTitleCase(ref),
+        title: page.title,
     };
 }
 
