@@ -156,29 +156,6 @@ export const IconExample: Story = {
     ),
 };
 
-export const AllIntents: Story = {
-    name: "All Intents",
-    argTypes: {
-        size: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
-                        <Menu {...args}>
-                            <MenuItem icon="graph" text="Default" intent={intent} />
-                            <MenuItem icon="notifications" text="Active" intent={intent} active={true} />
-                            <MenuItem icon="lock" text="Disabled" intent={intent} disabled={true} />
-                        </Menu>
-                    </div>
-                ))}
-        </div>
-    ),
-};
-
 export const Playground: Story = {
     render: args => (
         <Menu {...args}>
