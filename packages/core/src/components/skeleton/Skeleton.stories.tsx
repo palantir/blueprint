@@ -7,6 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Card } from "../card/card";
+import { H5 } from "../html/html";
 
 interface SkeletonStoryProps {
     /** Whether the skeleton class is applied */
@@ -15,11 +16,11 @@ interface SkeletonStoryProps {
 
 const SkeletonDemo: React.FC<SkeletonStoryProps> = ({ skeleton }) => (
     <Card>
-        <h5 className={`${Classes.HEADING} ${skeleton ? Classes.SKELETON : ""}`}>
+        <H5 className={`${Classes.HEADING} ${skeleton ? Classes.SKELETON : ""}`}>
             <a href="#" tabIndex={-1}>
                 Card heading
             </a>
-        </h5>
+        </H5>
         <p className={skeleton ? Classes.SKELETON : ""}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis. Fusce dapibus metus in
             dapibus mollis. Quisque eget ex diam.
