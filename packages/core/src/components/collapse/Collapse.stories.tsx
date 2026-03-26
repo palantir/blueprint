@@ -8,6 +8,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Button } from "../button/buttons";
 import { Collapse } from "./collapse";
+import { H4 } from "../html/html";
 
 const sampleContent = (
     <div style={{ padding: 12, background: "var(--pt-app-background-color)", border: "1px solid var(--gray3)" }}>
@@ -101,7 +102,7 @@ export const Playground: Story = {
                             borderRadius: 4,
                         }}
                     >
-                        <h4 style={{ marginTop: 0 }}>Collapsible Content</h4>
+                        <H4 style={{ marginTop: 0 }}>Collapsible Content</H4>
                         <p>
                             This content is revealed and hidden with a smooth sliding animation. Toggle the controls in
                             the Storybook panel to adjust the component behavior.
