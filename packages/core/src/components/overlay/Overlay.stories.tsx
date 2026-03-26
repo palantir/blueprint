@@ -172,6 +172,7 @@ export const Playground: Story = {
             <>
                 <Button text="Toggle overlay" onClick={handleOpen} />
                 <Overlay2
+                    // eslint-disable-next-line jsx-a11y/no-autofocus
                     autoFocus={args.autoFocus}
                     canEscapeKeyClose={args.canEscapeKeyClose}
                     canOutsideClickClose={args.canOutsideClickClose}
