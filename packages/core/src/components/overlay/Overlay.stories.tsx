@@ -109,155 +109,50 @@ export const Default: Story = {
 };
 
 /**
- * Overlay rendered with `hasBackdrop={true}` (the default). A dark scrim covers the page behind the overlay content.
+ * Comparing overlay with and without a backdrop side by side.
  */
-export const WithBackdrop: Story = {
-    args: {
-        hasBackdrop: true,
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        hasBackdrop: { table: { disable: true } },
     },
     render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
+        const [backdropOpen, setBackdropOpen] = useState(false);
+        const [noBackdropOpen, setNoBackdropOpen] = useState(false);
 
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <>
-                <Button text="Open with backdrop" onClick={handleOpen} />
-                <Overlay2 {...args} isOpen={isOpen} onClose={handleClose}>
-                    <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>With backdrop</h3>
-                        <p>
-                            The backdrop darkens the page behind the overlay and prevents interaction with underlying
-                            content.
-                        </p>
-                        <Button text="Close" intent="primary" onClick={handleClose} />
-                    </div>
-                </Overlay2>
-            </>
-        );
-    },
-};
-
-/**
- * Overlay rendered with `hasBackdrop={false}`. Users can still interact with the rest of the page
- * while the overlay is open.
- */
-export const WithoutBackdrop: Story = {
-    args: {
-        hasBackdrop: false,
-    },
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
+        const handleOpenBackdrop = useCallback(() => setBackdropOpen(true), []);
+        const handleCloseBackdrop = useCallback(() => setBackdropOpen(false), []);
+        const handleOpenNoBackdrop = useCallback(() => setNoBackdropOpen(true), []);
+        const handleCloseNoBackdrop = useCallback(() => setNoBackdropOpen(false), []);
 
         return (
-            <>
-                <Button text="Open without backdrop" onClick={handleOpen} />
-                <Overlay2 {...args} isOpen={isOpen} onClose={handleClose}>
-                    <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>Without backdrop</h3>
-                        <p>No backdrop is rendered. You can still interact with the page behind the overlay.</p>
-                        <Button text="Close" intent="primary" onClick={handleClose} />
-                    </div>
-                </Overlay2>
-            </>
-        );
-    },
-};
-
-/**
- * Overlay rendered inline (without a Portal) using `usePortal={false}`. The overlay content is rendered
- * within the DOM hierarchy of its parent rather than being appended to `document.body`.
- */
-export const InlineOverlay: Story = {
-    args: {
-        usePortal: false,
-        hasBackdrop: false,
-    },
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <div style={{ position: "relative", minHeight: 200, width: 400 }}>
-                <Button text="Toggle inline overlay" onClick={handleOpen} />
-                <Overlay2 {...args} isOpen={isOpen} onClose={handleClose}>
-                    <div
-                        style={{
-                            background: "var(--pt-app-background-color, white)",
-                            borderRadius: 6,
-                            boxShadow: "0 2px 12px rgba(0, 0, 0, 0.2)",
-                            marginTop: 10,
-                            padding: 20,
-                        }}
-                    >
-                        <h3>Inline overlay</h3>
-                        <p>This overlay is rendered inline without a Portal.</p>
-                        <Button text="Close" intent="primary" onClick={handleClose} />
-                    </div>
-                </Overlay2>
+            <div style={{ display: "flex", gap: 16 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>With backdrop</span>
+                    <Button text="Open" onClick={handleOpenBackdrop} />
+                    <Overlay2 {...args} isOpen={backdropOpen} hasBackdrop={true} onClose={handleCloseBackdrop}>
+                        <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
+                            <h3>With backdrop</h3>
+                            <p>
+                                The backdrop darkens the page behind the overlay and prevents interaction with
+                                underlying content.
+                            </p>
+                            <Button text="Close" intent="primary" onClick={handleCloseBackdrop} />
+                        </div>
+                    </Overlay2>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>Without backdrop</span>
+                    <Button text="Open" onClick={handleOpenNoBackdrop} />
+                    <Overlay2 {...args} isOpen={noBackdropOpen} hasBackdrop={false} onClose={handleCloseNoBackdrop}>
+                        <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
+                            <h3>Without backdrop</h3>
+                            <p>No backdrop is rendered. You can still interact with the page behind the overlay.</p>
+                            <Button text="Close" intent="primary" onClick={handleCloseNoBackdrop} />
+                        </div>
+                    </Overlay2>
+                </div>
             </div>
-        );
-    },
-};
-
-/**
- * Overlay with `canEscapeKeyClose={false}`, so pressing Escape does not close the overlay.
- */
-export const NoEscapeKeyClose: Story = {
-    args: {
-        canEscapeKeyClose: false,
-    },
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <>
-                <Button text="Open (Escape disabled)" onClick={handleOpen} />
-                <Overlay2 {...args} isOpen={isOpen} onClose={handleClose}>
-                    <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>Escape key disabled</h3>
-                        <p>Pressing Escape will not close this overlay. Use the button below or click the backdrop.</p>
-                        <Button text="Close" intent="primary" onClick={handleClose} />
-                    </div>
-                </Overlay2>
-            </>
-        );
-    },
-};
-
-/**
- * Overlay with `canOutsideClickClose={false}`, so clicking the backdrop does not close the overlay.
- */
-export const NoOutsideClickClose: Story = {
-    args: {
-        canOutsideClickClose: false,
-    },
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <>
-                <Button text="Open (outside click disabled)" onClick={handleOpen} />
-                <Overlay2 {...args} isOpen={isOpen} onClose={handleClose}>
-                    <div className={Classes.CARD} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>Outside click disabled</h3>
-                        <p>Clicking the backdrop will not close this overlay. Use the button below or press Escape.</p>
-                        <Button text="Close" intent="primary" onClick={handleClose} />
-                    </div>
-                </Overlay2>
-            </>
         );
     },
 };
