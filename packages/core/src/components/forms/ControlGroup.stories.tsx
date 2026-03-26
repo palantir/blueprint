@@ -9,7 +9,6 @@ import { Button } from "../button/buttons";
 import { ControlGroup } from "./controlGroup";
 import { InputGroup } from "./inputGroup";
 
-
 const meta: Meta<typeof ControlGroup> = {
     title: "Core/Form/ControlGroup",
     component: ControlGroup,
