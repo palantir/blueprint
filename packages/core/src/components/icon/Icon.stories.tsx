@@ -1,4 +1,4 @@
-/* !
+/*!
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -61,8 +61,8 @@ export const Default: Story = {
 /**
  * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the icon.
  */
-export const WithIntent: Story = {
-    name: "With Intent",
+export const IntentExample: Story = {
+    name: "Intent",
     argTypes: {
         intent: { table: { disable: true } },
     },
@@ -80,8 +80,8 @@ export const WithIntent: Story = {
 /**
  * Use the `size` prop to adjust the icon dimensions. Icon supports `STANDARD` (16px) and `LARGE` (20px).
  */
-export const Sizes: Story = {
-    name: "Sizes",
+export const SizeExample: Story = {
+    name: "Size",
     argTypes: {
         size: { table: { disable: true } },
     },
@@ -89,24 +89,6 @@ export const Sizes: Story = {
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <Icon {...args} size={IconSize.STANDARD} />
             <Icon {...args} size={IconSize.LARGE} />
-        </div>
-    ),
-};
-
-/**
- * Use the `color` prop to apply a custom color to the icon.
- */
-export const CustomColor: Story = {
-    name: "Custom Color",
-    argTypes: {
-        color: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
-            <Icon {...args} color="#D63384" />
-            <Icon {...args} color="#0D6EFD" />
-            <Icon {...args} color="#198754" />
-            <Icon {...args} color="#FFC107" />
         </div>
     ),
 };
@@ -129,4 +111,16 @@ export const AllIntents: Story = {
             ))}
         </div>
     ),
+};
+
+/**
+ * Interactive playground with all props togglable via Storybook controls.
+ */
+export const Playground: Story = {
+    args: {
+        icon: "home",
+        size: IconSize.STANDARD,
+        intent: "none",
+        color: undefined,
+    },
 };
