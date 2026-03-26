@@ -68,11 +68,9 @@ export const IntentExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 8 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Icon key={intent} {...args} intent={intent} />
-                ))}
+            {Object.values(Intent).map(intent => (
+                <Icon key={intent} {...args} intent={intent} />
+            ))}
         </div>
     ),
 };
