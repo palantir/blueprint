@@ -3,7 +3,6 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
 
 import { Alignment, Elevation } from "../../common";
 
@@ -72,98 +71,39 @@ export const Default: Story = {
 };
 
 /**
- * A checked radio card.
+ * Use the `compact` prop to render a more condensed radio card.
  */
-export const Checked: Story = {
-    args: {
-        label: "Selected option",
-        checked: true,
+export const SizeExample: Story = {
+    name: "Size",
+    argTypes: {
+        compact: { table: { disable: true } },
     },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <RadioCard {...args} compact={false} label="Default" defaultChecked={true} />
+            <RadioCard {...args} compact={true} label="Compact" defaultChecked={true} />
+        </div>
+    ),
 };
 
 /**
- * A disabled radio card cannot be interacted with.
+ * Radio cards support `disabled`, `checked`, and `selected` states.
  */
-export const Disabled: Story = {
-    args: {
-        label: "Unavailable option",
-        disabled: true,
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        disabled: { table: { disable: true } },
+        checked: { table: { disable: true } },
     },
-};
-
-/**
- * A disabled radio card that is also checked.
- */
-export const DisabledChecked: Story = {
-    args: {
-        label: "Locked selection",
-        disabled: true,
-        checked: true,
-    },
-};
-
-/**
- * Use `showAsSelectedWhenChecked={false}` to prevent "selected" card styling when checked.
- */
-export const NoSelectedStyling: Story = {
-    name: "No selected styling",
-    args: {
-        label: "No highlight when checked",
-        checked: true,
-        showAsSelectedWhenChecked: false,
-    },
-};
-
-/**
- * Radio cards used in a group to select one option from several.
- */
-export const Group: Story = {
-    render: function Render(args) {
-        const [selected, setSelected] = useState("monthly");
-        return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-                {["monthly", "quarterly", "yearly"].map(value => (
-                    <RadioCard
-                        key={value}
-                        {...args}
-                        label={value.charAt(0).toUpperCase() + value.slice(1)}
-                        value={value}
-                        checked={selected === value}
-                        onChange={() => setSelected(value)}
-                    />
-                ))}
-            </div>
-        );
-    },
-};
-
-/**
- * A group with one disabled option.
- */
-export const GroupWithDisabled: Story = {
-    name: "Group with disabled option",
-    render: function Render(args) {
-        const [selected, setSelected] = useState("standard");
-        return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-                <RadioCard
-                    {...args}
-                    label="Standard"
-                    value="standard"
-                    checked={selected === "standard"}
-                    onChange={() => setSelected("standard")}
-                />
-                <RadioCard
-                    {...args}
-                    label="Premium"
-                    value="premium"
-                    checked={selected === "premium"}
-                    onChange={() => setSelected("premium")}
-                />
-                <RadioCard {...args} label="Enterprise (coming soon)" value="enterprise" disabled={true} />
-            </div>
-        );
-    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <RadioCard {...args} label="Default" />
+            <RadioCard {...args} label="Checked" checked={true} />
+            <RadioCard {...args} label="Disabled" disabled={true} />
+            <RadioCard {...args} label="Disabled Checked" disabled={true} checked={true} />
+            <RadioCard {...args} label="No selected styling" checked={true} showAsSelectedWhenChecked={false} />
+        </div>
+    ),
 };
 
 /**

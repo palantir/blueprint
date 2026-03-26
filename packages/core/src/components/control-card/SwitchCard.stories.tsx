@@ -71,71 +71,39 @@ export const Default: Story = {
 };
 
 /**
- * A checked switch card.
+ * Use the `compact` prop to render a more condensed switch card.
  */
-export const Checked: Story = {
-    args: {
-        label: "Enabled setting",
-        checked: true,
+export const SizeExample: Story = {
+    name: "Size",
+    argTypes: {
+        compact: { table: { disable: true } },
     },
-};
-
-/**
- * A disabled switch card cannot be interacted with.
- */
-export const Disabled: Story = {
-    args: {
-        label: "Unavailable setting",
-        disabled: true,
-    },
-};
-
-/**
- * A disabled switch card that is also checked.
- */
-export const DisabledChecked: Story = {
-    args: {
-        label: "Locked setting",
-        disabled: true,
-        checked: true,
-    },
-};
-
-/**
- * Use `showAsSelectedWhenChecked={false}` to prevent "selected" card styling when checked.
- */
-export const NoSelectedStyling: Story = {
-    name: "No selected styling",
-    args: {
-        label: "No highlight when checked",
-        checked: true,
-        showAsSelectedWhenChecked: false,
-    },
-};
-
-/**
- * Multiple switch cards for a settings panel layout.
- */
-export const SettingsPanel: Story = {
-    name: "Settings panel",
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <SwitchCard {...args} label="Dark mode" defaultChecked={true} />
-            <SwitchCard {...args} label="Notifications" defaultChecked={true} />
-            <SwitchCard {...args} label="Auto-save" defaultChecked={false} />
-            <SwitchCard {...args} label="Beta features" disabled={true} />
+            <SwitchCard {...args} compact={false} label="Default" defaultChecked={true} />
+            <SwitchCard {...args} compact={true} label="Compact" defaultChecked={true} />
         </div>
     ),
 };
 
 /**
- * Use the `compact` prop to render a more condensed card.
+ * Switch cards support `disabled`, `checked`, and `selected` states.
  */
-export const Compact: Story = {
-    args: {
-        label: "Compact switch card",
-        compact: true,
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        disabled: { table: { disable: true } },
+        checked: { table: { disable: true } },
     },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <SwitchCard {...args} label="Default" />
+            <SwitchCard {...args} label="Checked" checked={true} />
+            <SwitchCard {...args} label="Disabled" disabled={true} />
+            <SwitchCard {...args} label="Disabled Checked" disabled={true} checked={true} />
+            <SwitchCard {...args} label="No selected styling" checked={true} showAsSelectedWhenChecked={false} />
+        </div>
+    ),
 };
 
 /**

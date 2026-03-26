@@ -72,74 +72,37 @@ export const Default: Story = {
 };
 
 /**
- * A checked checkbox card.
+ * Use the `size` prop to render a medium or large checkbox card.
  */
-export const Checked: Story = {
-    args: {
-        label: "Enabled feature",
-        checked: true,
-    },
-};
-
-/**
- * A disabled checkbox card cannot be interacted with.
- */
-export const Disabled: Story = {
-    args: {
-        label: "Unavailable option",
-        disabled: true,
-    },
-};
-
-/**
- * A disabled checkbox card that is also checked.
- */
-export const DisabledChecked: Story = {
-    args: {
-        label: "Locked feature",
-        disabled: true,
-        checked: true,
-    },
-};
-
-/**
- * Use `showAsSelectedWhenChecked={false}` to prevent "selected" card styling when checked.
- */
-export const NoSelectedStyling: Story = {
-    name: "No selected styling",
-    args: {
-        label: "No highlight when checked",
-        checked: true,
-        showAsSelectedWhenChecked: false,
-    },
-};
-
-/**
- * Use the `alignIndicator` prop to control the position of the checkbox within the card.
- */
-export const AlignmentExample: Story = {
-    name: "Alignment",
+export const SizeExample: Story = {
+    name: "Size",
     argTypes: {
-        alignIndicator: { table: { disable: true } },
+        compact: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <CheckboxCard {...args} alignIndicator={Alignment.START} label="Start (default)" />
-            <CheckboxCard {...args} alignIndicator={Alignment.END} label="End" />
+            <CheckboxCard {...args} compact={false} label="Default" defaultChecked={true} />
+            <CheckboxCard {...args} compact={true} label="Compact" defaultChecked={true} />
         </div>
     ),
 };
 
 /**
- * Multiple checkbox cards in a group layout.
+ * Checkbox cards support `disabled`, `checked`, and `selected` states.
  */
-export const Group: Story = {
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        disabled: { table: { disable: true } },
+        checked: { table: { disable: true } },
+    },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <CheckboxCard {...args} label="Wi-Fi" defaultChecked={true} />
-            <CheckboxCard {...args} label="Bluetooth" defaultChecked={false} />
-            <CheckboxCard {...args} label="Location Services" defaultChecked={true} />
-            <CheckboxCard {...args} label="NFC" disabled={true} />
+            <CheckboxCard {...args} label="Default" />
+            <CheckboxCard {...args} label="Checked" checked={true} />
+            <CheckboxCard {...args} label="Disabled" disabled={true} />
+            <CheckboxCard {...args} label="Disabled Checked" disabled={true} checked={true} />
+            <CheckboxCard {...args} label="No selected styling" checked={true} showAsSelectedWhenChecked={false} />
         </div>
     ),
 };
