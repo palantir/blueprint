@@ -27,7 +27,7 @@ const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<
 >;
 
 const meta: Meta<typeof SegmentedControl> = {
-    title: "Core/Components/SegmentedControl",
+    title: "Core/SegmentedControl",
     component: SegmentedControl,
     decorators: [
         Story => (
@@ -153,14 +153,6 @@ export const StateExample: Story = {
             </div>
         </div>
     ),
-};
-
-/**
- * Options can include icons alongside labels.
- */
-export const IconExample: Story = {
-    name: "Icons",
-    render: args => <SegmentedControl {...args} options={ICON_OPTIONS} />,
 };
 
 /**
