@@ -1,5 +1,6 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,24 +14,22 @@
  * limitations under the License.
  */
 
-// @ts-check
-
-import "@blueprintjs/test-commons/bootstrap";
 import { createElement } from "react";
+import { describe } from "vitest";
 
-import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+import { generateIsomorphicTestsVitest } from "@blueprintjs/test-commons";
 
-import Icons from "../lib/cjs/generated/index.js";
+import * as Icons from "./generated/index";
 
 describe("@blueprintjs/icons isomorphic rendering", () => {
-    generateIsomorphicTests(
+    generateIsomorphicTestsVitest(
         Icons,
         {
             SVGIconContainer: {
+                children: createElement("path"),
                 props: {
                     iconName: "add",
                 },
-                children: createElement("path"),
             },
         },
         { excludedSymbols: ["Icons"] },

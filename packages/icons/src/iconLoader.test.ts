@@ -2,8 +2,10 @@
  * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  */
 
-import { getIconPaths } from "../src/allPaths";
-import { Icons } from "../src/iconLoader";
+import { describe, it } from "vitest";
+
+import { getIconPaths } from "./allPaths";
+import { Icons } from "./iconLoader";
 
 describe("IconLoader", () => {
     it("is compatible with getIconPaths", () => {
