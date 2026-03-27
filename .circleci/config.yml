@@ -147,8 +147,9 @@ jobs:
             chromedriver --version
       - run: mkdir -p ./reports
       - run:
-          # split karma tests into containers because they can take up a lot of memory
-          # running them in one container caused Karma to time out frequently
+          # split vitest tests into containers because they can take up a lot of memory
+          # Orginally did this while tests were still running on Karma because running
+          # them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
