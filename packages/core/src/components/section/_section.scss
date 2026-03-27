@@ -23,7 +23,6 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
   &-header {
     align-items: center;
-    border-bottom: 1px solid $pt-divider-black;
     display: flex;
     gap: $pt-spacing * 5;
     justify-content: space-between;
@@ -31,11 +30,6 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
     padding: 0 $section-padding-horizontal;
     position: relative;
     width: 100%;
-
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      border-color: $pt-dark-divider-white;
-    }
 
     &-left {
       align-items: center;
@@ -89,8 +83,17 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
     &.#{$ns}-padded {
       padding: $section-card-padding;
     }
+  }
 
-    &:not(:last-child) {
+  &.#{$ns}-section-collapsed {
+    .#{$ns}-section-header {
+      border: none;
+    }
+  }
+
+  // Bordered Section: apply header divider and inter-card dividers
+  &.#{$ns}-section-bordered {
+    .#{$ns}-section-header {
       border-bottom: 1px solid $pt-divider-black;
 
       &.#{$ns}-dark,
@@ -98,11 +101,14 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
         border-color: $pt-dark-divider-white;
       }
     }
-  }
 
-  &.#{$ns}-section-collapsed {
-    .#{$ns}-section-header {
-      border: none;
+    .#{$ns}-section-card:not(:last-child) {
+      border-bottom: 1px solid $pt-divider-black;
+
+      &.#{$ns}-dark,
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-white;
+      }
     }
   }
 
@@ -120,4 +126,18 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
       padding: $section-card-padding-compact;
     }
   }
+}
+
+// SectionCard explicit border overrides — prefixed with .bpx-section to match the Section-level
+// rule specificity of (0,4,0), so source order resolves ties in favor of the card-level override.
+.#{$ns}-section .#{$ns}-section-card.#{$ns}-section-card-bordered:not(:last-child) {
+  border-bottom: 1px solid $pt-divider-black;
+
+  .#{$ns}-dark & {
+    border-color: $pt-dark-divider-white;
+  }
+}
+
+.#{$ns}-section .#{$ns}-section-card.#{$ns}-section-card-not-bordered:not(:last-child) {
+  border-bottom: none;
 }

@@ -48,6 +48,16 @@ describe("<Section>", () => {
         containerElement.remove();
     });
 
+    it("renders bordered class by default", () => {
+        const wrapper = mount(<Section />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(`.${Classes.SECTION_BORDERED}`).hostNodes().exists());
+    });
+
+    it("omits bordered class when bordered={false}", () => {
+        const wrapper = mount(<Section bordered={false} />, { attachTo: containerElement });
+        assert.isFalse(wrapper.find(`.${Classes.SECTION_BORDERED}`).hostNodes().exists());
+    });
+
     it("supports className", () => {
         const wrapper = mount(<Section className="foo" />, {
             attachTo: containerElement,
@@ -113,6 +123,24 @@ describe("<Section>", () => {
                 { attachTo: containerElement },
             );
             assertIsClosed(wrapper);
+        });
+    });
+
+    describe("SectionCard bordered", () => {
+        it("does not apply bordered or not-bordered class when bordered is omitted", () => {
+            const wrapper = mount(<SectionCard />, { attachTo: containerElement });
+            assert.isFalse(wrapper.find(`.${Classes.SECTION_CARD_BORDERED}`).hostNodes().exists());
+            assert.isFalse(wrapper.find(`.${Classes.SECTION_CARD_NOT_BORDERED}`).hostNodes().exists());
+        });
+
+        it("applies section-card-bordered class when bordered={true}", () => {
+            const wrapper = mount(<SectionCard bordered={true} />, { attachTo: containerElement });
+            assert.isTrue(wrapper.find(`.${Classes.SECTION_CARD_BORDERED}`).hostNodes().exists());
+        });
+
+        it("applies section-card-not-bordered class when bordered={false}", () => {
+            const wrapper = mount(<SectionCard bordered={false} />, { attachTo: containerElement });
+            assert.isTrue(wrapper.find(`.${Classes.SECTION_CARD_NOT_BORDERED}`).hostNodes().exists());
         });
     });
 

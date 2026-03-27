@@ -257,6 +257,9 @@ export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
 export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
 export const SECTION_HEADER_COLLAPSE_CARET = `${SECTION_HEADER}-collapse-caret`;
 export const SECTION_CARD = `${SECTION}-card`;
+export const SECTION_CARD_BORDERED = `${SECTION_CARD}-bordered`;
+export const SECTION_CARD_NOT_BORDERED = `${SECTION_CARD}-not-bordered`;
+export const SECTION_BORDERED = `${SECTION}-bordered`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
