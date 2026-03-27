@@ -11,10 +11,12 @@ export default defineConfig({
         environment: "jsdom",
         exclude: ["lib/**", "node_modules/**"],
         projects: [
-            "packages/labs/vitest.config.mts",
             "packages/core/vitest.config.mts",
+            "packages/datetime/vitest.config.mts",
             "packages/docs-data/vitest.config.mts",
-            // TODO: Add core, datetime, datetime2, select, table as they migrate from Karma
+            "packages/labs/vitest.config.mts",
+            "packages/select/vitest.config.mts",
+            "packages/table/vitest.config.mts",
         ],
     },
 });
