@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
-
 import { Classes as CoreClasses } from "@blueprintjs/core";
+import { expect } from "@blueprintjs/test-commons/vitest";
 
 import { TableLoadingOption } from "..";
 import * as Classes from "../common/classes";
