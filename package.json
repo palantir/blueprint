@@ -42,7 +42,6 @@
         "@types/chai": "^5.0.0",
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",
-        "@types/mocha": "~10.0.6",
         "@types/node": "~24.10.0",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",

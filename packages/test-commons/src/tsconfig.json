@@ -2,6 +2,7 @@
     "extends": "../../../config/tsconfig.node",
     "compilerOptions": {
         "lib": ["dom", "es5", "es6", "es2016", "es2017", "es2018"],
+        "typeRoots": ["../../../node_modules/@types", "../node_modules/@types"],
         "outDir": "../lib"
     }
 }

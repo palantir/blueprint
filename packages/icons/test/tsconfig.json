@@ -2,6 +2,8 @@
     "extends": "../src/tsconfig",
     "compilerOptions": {
         "declaration": false,
-        "noEmit": true
+        "noEmit": true,
+        "typeRoots": ["../../../node_modules/@types", "../node_modules/@types"],
+        "types": ["mocha"]
     }
 }

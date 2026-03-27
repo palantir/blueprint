@@ -21,8 +21,6 @@
  * (no `view: window` property needed).
  */
 
-// see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
-// tl;dr PhantomJS sucks so we have to manually create click events
 export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
     // see https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
     let detailArg = 0;

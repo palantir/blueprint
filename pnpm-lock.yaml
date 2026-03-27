@@ -66,9 +66,6 @@ importers:
       '@types/enzyme-adapter-react-16':
         specifier: ~1.0.9
         version: 1.0.9
-      '@types/mocha':
-        specifier: ~10.0.6
-        version: 10.0.10
       '@types/node':
         specifier: ~24.10.0
         version: 24.10.0
@@ -179,9 +176,6 @@ importers:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
         version: link:../node-build-scripts
-      mocha:
-        specifier: ^10.2.0
-        version: 10.8.2
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -804,6 +798,9 @@ importers:
       '@types/handlebars':
         specifier: ^4.1.0
         version: 4.1.0
+      '@types/mocha':
+        specifier: ~10.0.6
+        version: 10.0.10
       enzyme:
         specifier: ^3.11.0
         version: 3.11.0
@@ -1319,6 +1316,9 @@ importers:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
         version: link:../node-build-scripts
+      '@types/mocha':
+        specifier: ~10.0.6
+        version: 10.0.10
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
