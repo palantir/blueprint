@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { describe, expect, it } from "vitest";
 import stylelint from "stylelint";
 
 const config = {
@@ -30,11 +30,11 @@ describe("no-color-literal", () => {
             files: "test/fixtures/no-color-literal/bp-hex-literal-1.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(2, "line number");
-        expect(warnings[0].column).to.be.eq(10, "col number");
+        expect(warnings).toHaveLength(1);
+        expect(warnings[0].line).toBe(2);
+        expect(warnings[0].column).toBe(10);
     });
 
     it("Warns when blueprint color literal is used (2)", async () => {
@@ -42,11 +42,11 @@ describe("no-color-literal", () => {
             files: "test/fixtures/no-color-literal/bp-hex-literal-2.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
-        expect(warnings[0].line).to.be.eq(5, "line number");
-        expect(warnings[0].column).to.be.eq(21, "col number");
+        expect(warnings).toHaveLength(1);
+        expect(warnings[0].line).toBe(5);
+        expect(warnings[0].column).toBe(21);
     });
 
     it("Doesn't warn when non-blueprint color literal is used", async () => {
@@ -54,8 +54,8 @@ describe("no-color-literal", () => {
             files: "test/fixtures/no-color-literal/non-bp-hex-literal.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        expect(warnings).toHaveLength(0);
     });
 });
