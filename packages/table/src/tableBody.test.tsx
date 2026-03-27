@@ -42,6 +42,7 @@ describe("TableBody", () => {
     const ROW_HEIGHT = 20;
 
     let containerElement: HTMLElement | undefined;
+    let mountedWrappers: ReactWrapper[] = [];
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -49,7 +50,18 @@ describe("TableBody", () => {
     });
 
     afterEach(() => {
-        containerElement?.remove();
+        try {
+            for (const wrapper of mountedWrappers) {
+                try {
+                    wrapper.unmount();
+                } catch {
+                    // best-effort cleanup
+                }
+            }
+        } finally {
+            mountedWrappers = [];
+            containerElement?.remove();
+        }
     });
 
     it("cellClassNames", () => {
@@ -250,7 +262,7 @@ describe("TableBody", () => {
         const grid = new Grid(rowHeights, columnWidths);
         const viewportRect = new Rect(0, 0, NUM_COLUMNS * COLUMN_WIDTH, LARGE_NUM_ROWS * ROW_HEIGHT);
 
-        return mount(
+        const wrapper = mount(
             <TableBody
                 cellRenderer={cellRenderer}
                 focusMode={FocusMode.CELL}
@@ -274,6 +286,8 @@ describe("TableBody", () => {
             />,
             { attachTo: containerElement },
         );
+        mountedWrappers.push(wrapper);
+        return wrapper;
     }
 
     function cellRenderer() {
