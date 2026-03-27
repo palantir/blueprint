@@ -40,7 +40,6 @@ intoto:
 # still have their versions bumped when their release group is released.
 #
 # Deprecated packages that are marked as private:
-# - @blueprintjs/karma-build-scripts
 # - @blueprintjs/test-commons
 # - @blueprintjs/tslint-config
 # - @blueprintjs/webpack-build-scripts

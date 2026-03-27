@@ -17,10 +17,8 @@
 /**
  * Test utilities for Vitest + jsdom/happy-dom environments.
  *
- * These utilities are similar to those in utils.ts but are compatible with
- * jsdom's stricter event validation (no `view: window` property needed).
- *
- * For Karma/Chrome tests, use the utilities from utils.ts instead.
+ * These utilities are compatible with jsdom's stricter event validation
+ * (no `view: window` property needed).
  */
 
 // see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
