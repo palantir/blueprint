@@ -38,8 +38,6 @@ updates:
           - "@types/enzyme-*"
           - "jest"
           - "@jest/*"
-          - "mocha"
-          - "@types/mocha"
           - "sinon"
           - "@sinonjs/*"
           - "@types/sinon"

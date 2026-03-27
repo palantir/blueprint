@@ -40,7 +40,7 @@
         },
         "test:typeCheck": {
             "dependsOn": ["compile"],
-            "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/test/**/*"]
+            "inputs": ["{projectRoot}/src/**/*"]
         },
         "bundle": {
             "dependsOn": ["^bundle"],

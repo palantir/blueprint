@@ -17,7 +17,7 @@
 - **Packages**: Core UI components in `packages/` - core, datetime, select, table, icons, colors
 - **Apps**: docs-app (blueprintjs.com), demo-app, table-dev-app for development
 - **Build tools**: node-build-scripts, webpack-build-scripts
-- **Testing**: Vitest (components), Jest (build scripts), Enzyme + Chai + Sinon
+- **Testing**: Vitest (components), Jest (build scripts), Enzyme (some legacy tests)
     - New tests should be written with React Testing Library (RTL)
 
 ## Code Style

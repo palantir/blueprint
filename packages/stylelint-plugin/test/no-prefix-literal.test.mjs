@@ -15,7 +15,7 @@
 
 // @ts-check
 
-import { expect } from "chai";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { copyFileSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import stylelint from "stylelint";
@@ -34,11 +34,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(1);
-        expect(warnings[0].line).to.be.eq(1);
-        expect(warnings[0].column).to.be.eq(2);
+        expect(warnings).toHaveLength(1);
+        expect(warnings[0].line).toBe(1);
+        expect(warnings[0].column).toBe(2);
     });
 
     it("Warns when .bp3 is present (CSS modules)", async () => {
@@ -46,11 +46,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(1);
-        expect(warnings[0].line).to.be.eq(1);
-        expect(warnings[0].column).to.be.eq(10);
+        expect(warnings).toHaveLength(1);
+        expect(warnings[0].line).toBe(1);
+        expect(warnings[0].column).toBe(10);
     });
 
     it("Warns when nested .bp3 is present even when not first selector", async () => {
@@ -58,11 +58,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-nested-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(1);
-        expect(warnings[0].line).to.be.eq(2);
-        expect(warnings[0].column).to.be.eq(21);
+        expect(warnings).toHaveLength(1);
+        expect(warnings[0].line).toBe(2);
+        expect(warnings[0].column).toBe(21);
     });
 
     it("Warns when nested .bp3 is present even when not first selector (CSS modules)", async () => {
@@ -70,11 +70,11 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-nested-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(1);
-        expect(warnings[0].line).to.be.eq(2);
-        expect(warnings[0].column).to.be.eq(29);
+        expect(warnings).toHaveLength(1);
+        expect(warnings[0].line).toBe(2);
+        expect(warnings[0].column).toBe(29);
     });
 
     it("Doesn't warn bp3 string is present but not as a prefix", async () => {
@@ -82,7 +82,7 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        expect(result.errored).toBe(false);
     });
 
     it("Doesn't warn bp3 string is present but not as a prefix (CSS modules)", async () => {
@@ -90,9 +90,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(0);
+        expect(warnings).toHaveLength(0);
     });
 
     it("Doesn't warn when .bp3 is not present", async () => {
@@ -100,9 +100,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(0);
+        expect(warnings).toHaveLength(0);
     });
 
     it("Doesn't warn when .bp3 is not present (CSS modules)", async () => {
@@ -110,9 +110,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.module.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(0);
+        expect(warnings).toHaveLength(0);
     });
 
     it("Doesn't warn when .bp3 is present but lint rule is disabled", async () => {
@@ -120,9 +120,9 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3-disabled.scss",
             config,
         });
-        expect(result.errored).to.be.false;
+        expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(0);
+        expect(warnings).toHaveLength(0);
     });
 
     it("Accepts a valid secondary config", async () => {
@@ -139,7 +139,7 @@ describe("no-prefix-literal", () => {
                 },
             },
         });
-        expect(result.results[0].invalidOptionWarnings).to.have.lengthOf(0);
+        expect(result.results[0].invalidOptionWarnings).toHaveLength(0);
     });
 
     it("Rejects an invalid secondary config", async () => {
@@ -159,7 +159,7 @@ describe("no-prefix-literal", () => {
                 },
             },
         });
-        expect(result.results[0].invalidOptionWarnings.length).to.be.eq(1);
+        expect(result.results[0].invalidOptionWarnings).toHaveLength(1);
     });
 
     it("Works for a double bp3 selector", async () => {
@@ -167,18 +167,18 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-double-bp3-selector.scss",
             config,
         });
-        expect(result.errored).to.be.true;
+        expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
-        expect(warnings).to.have.lengthOf(2);
+        expect(warnings).toHaveLength(2);
     });
 
     describe("auto-fixer", () => {
-        const tmpDir = join(import.meta.dirname, "tmp");
+        const tmpDir = join(import.meta.dirname, "tmp", "no-prefix-literal");
 
-        before(() => {
-            mkdirSync(tmpDir);
+        beforeAll(() => {
+            mkdirSync(tmpDir, { recursive: true });
         });
-        after(() => {
+        afterAll(() => {
             rmSync(tmpDir, { recursive: true, force: true });
         });
 
@@ -196,13 +196,13 @@ describe("no-prefix-literal", () => {
                 fix: true,
             });
             // there should be no warnings/errors since the fixer should succeed
-            expect(result.errored).to.be.false;
+            expect(result.errored).toBe(false);
             const warnings = result.results[0].warnings;
-            expect(warnings).to.have.lengthOf(0);
+            expect(warnings).toHaveLength(0);
 
             const fixedSourceContents = readFileSync(mutableFixturePath, { encoding: "utf-8" });
-            expect(fixedSourceContents).to.contain(`@use "@blueprintjs/core/lib/scss/variables.scss" as bp;`);
-            expect(fixedSourceContents).to.contain(".#{bp.$ns}-tag {");
+            expect(fixedSourceContents).toContain(`@use "@blueprintjs/core/lib/scss/variables.scss" as bp;`);
+            expect(fixedSourceContents).toContain(".#{bp.$ns}-tag {");
         });
     });
 });

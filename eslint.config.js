@@ -53,7 +53,7 @@ module.exports = tseslint.config([
         languageOptions: {
             globals: {
                 ...globals.browser,
-                ...globals.mocha,
+                ...globals.vitest,
             },
         },
         rules: {

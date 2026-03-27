@@ -14,37 +14,37 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { describe, expect, it } from "vitest";
 
 import { isHexColor, normalizeHexColor } from "../lib/utils/hexColor.js";
 
 describe("isHexColor", () => {
     it("Accepts valid colors", () => {
-        expect(isHexColor("#FFFFFF")).to.be.true;
-        expect(isHexColor("#abABab")).to.be.true;
-        expect(isHexColor("#abc")).to.be.true;
-        expect(isHexColor("#ABc")).to.be.true;
+        expect(isHexColor("#FFFFFF")).toBe(true);
+        expect(isHexColor("#abABab")).toBe(true);
+        expect(isHexColor("#abc")).toBe(true);
+        expect(isHexColor("#ABc")).toBe(true);
     });
 
     it("Rejects invalid colors", () => {
-        expect(isHexColor("FFFFFF")).to.be.false;
-        expect(isHexColor("#FFFFFX")).to.be.false;
-        expect(isHexColor("#")).to.be.false;
-        expect(isHexColor("#abcde")).to.be.false;
-        expect(isHexColor("#FFx")).to.be.false;
+        expect(isHexColor("FFFFFF")).toBe(false);
+        expect(isHexColor("#FFFFFX")).toBe(false);
+        expect(isHexColor("#")).toBe(false);
+        expect(isHexColor("#abcde")).toBe(false);
+        expect(isHexColor("#FFx")).toBe(false);
     });
 });
 
 describe("normalizeHexColor", () => {
     it("Uppercases hex colors", () => {
-        expect(normalizeHexColor("#ffaabb")).to.be.eq("#FFAABB");
+        expect(normalizeHexColor("#ffaabb")).toBe("#FFAABB");
     });
 
     it("Converts three letter hexes into six letter hexes", () => {
-        expect(normalizeHexColor("#ABC")).to.be.eq("#AABBCC");
+        expect(normalizeHexColor("#ABC")).toBe("#AABBCC");
     });
 
     it("Converts lowercase three letter hexes into uppercase six letter hexes", () => {
-        expect(normalizeHexColor("#abc")).to.be.eq("#AABBCC");
+        expect(normalizeHexColor("#abc")).toBe("#AABBCC");
     });
 });

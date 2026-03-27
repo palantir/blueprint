@@ -97,7 +97,7 @@ module.exports = tseslint.config(
         languageOptions: {
             globals: {
                 ...globals.env,
-                ...globals.mocha,
+                ...globals.vitest,
             },
         },
         rules: {
