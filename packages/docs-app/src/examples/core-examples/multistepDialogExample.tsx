@@ -44,7 +44,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
-const NAV_POSITIONS = ["left", "top", "right"];
+const NAV_POSITIONS = ["left", "top", "right"] as const;
 
 export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
     const [autoFocus, setAutoFocus] = useState(true);
@@ -59,11 +59,6 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
     const [showCloseButtonInFooter, setShowCloseButtonInFooter] = useState(true);
     const [usePortal, setUsePortal] = useState(true);
     const [value, setValue] = useState<string>();
-
-    const handleNavPositionChange = useCallback(
-        (newNavPosition: string) => setNavPosition(newNavPosition as MultistepDialogNavPosition),
-        [],
-    );
 
     const handleOpen = useCallback(() => {
         setIsOpen(true);
@@ -115,9 +110,9 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
             />
             <Divider />
             <FormGroup label="Navigation Position">
-                <SegmentedControl
+                <SegmentedControl<MultistepDialogNavPosition>
                     fill={true}
-                    onValueChange={handleNavPositionChange}
+                    onValueChange={setNavPosition}
                     options={NAV_POSITIONS.map(position => ({ value: position }))}
                     size="small"
                     value={navPosition}

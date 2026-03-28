@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { useCallback } from "react";
-
 import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 export type Size = "small" | "regular" | "large";
@@ -34,25 +32,21 @@ export const LegacySizeSelect: React.FC<LegacySizeSelectProps> = ({
     size,
     optionLabels = labels,
     onChange,
-}) => {
-    const handleChange = useCallback((value: string) => onChange(value as Size), [onChange]);
-
-    return (
-        <FormGroup label={label}>
-            <SegmentedControl
-                fill={true}
-                options={[
-                    { label: optionLabels[0], value: "small" },
-                    { label: optionLabels[1], value: "regular" },
-                    { label: optionLabels[2], value: "large" },
-                ]}
-                onValueChange={handleChange}
-                size="small"
-                value={size}
-            />
-        </FormGroup>
-    );
-};
+}) => (
+    <FormGroup label={label}>
+        <SegmentedControl<Size>
+            fill={true}
+            options={[
+                { label: optionLabels[0], value: "small" },
+                { label: optionLabels[1], value: "regular" },
+                { label: optionLabels[2], value: "large" },
+            ]}
+            onValueChange={onChange}
+            size="small"
+            value={size}
+        />
+    </FormGroup>
+);
 
 export function getSizeProp(size: Size) {
     switch (size) {

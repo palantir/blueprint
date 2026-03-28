@@ -2,8 +2,6 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import { useCallback } from "react";
-
 import { FormGroup, SegmentedControl, TextAlignment } from "@blueprintjs/core";
 
 const options = [
@@ -22,20 +20,14 @@ export const TextAlignmentSelect: React.FC<AlignmentSelectProps> = ({
     align,
     label = "Align text",
     onChange,
-}) => {
-    const handleChange = useCallback(
-        (value: string) => onChange(value as TextAlignment),
-        [onChange],
-    );
-    return (
-        <FormGroup label={label}>
-            <SegmentedControl
-                fill={true}
-                options={options}
-                onValueChange={handleChange}
-                size="small"
-                value={align}
-            />
-        </FormGroup>
-    );
-};
+}) => (
+    <FormGroup label={label}>
+        <SegmentedControl<TextAlignment>
+            fill={true}
+            options={options}
+            onValueChange={onChange}
+            size="small"
+            value={align}
+        />
+    </FormGroup>
+);

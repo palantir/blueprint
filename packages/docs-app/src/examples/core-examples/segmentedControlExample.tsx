@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import {
     Divider,
@@ -38,11 +38,6 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [size, setSize] = useState<Size>("medium");
     const [withIcons, setWithIcons] = useState(false);
 
-    const handleIntentChange = useCallback(
-        (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
-        [],
-    );
-
     const options = (
         <>
             <H5>Props</H5>
@@ -60,14 +55,14 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             />
             <Divider />
             <FormGroup label="Intent">
-                <SegmentedControl
+                <SegmentedControl<SegmentedControlIntent>
                     defaultValue="none"
                     inline={true}
                     options={[
                         { label: "None", value: "none" },
                         { label: "Primary", value: "primary" },
                     ]}
-                    onValueChange={handleIntentChange}
+                    onValueChange={setIntent}
                     size="small"
                 />
             </FormGroup>

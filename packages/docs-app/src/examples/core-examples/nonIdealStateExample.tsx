@@ -131,7 +131,7 @@ const NonIdealStateVisualSelect: React.FC<NonIdealStateVisualSelectProps> = ({
     );
     return (
         <FormGroup label="Visual">
-            <SegmentedControl
+            <SegmentedControl<NonIdealStateVisualKind>
                 fill={true}
                 onValueChange={handleChange}
                 options={[
