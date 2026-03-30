@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@
 import { MDXProvider } from "@mdx-js/react";
 
 import { Classes } from "@blueprintjs/core";
-
-import { mdxComponents } from "./mdxComponents";
+import { mdxHeadingComponents } from "@blueprintjs/docs-theme";
 
 export interface MdxPageProps {
     /** The compiled MDX component to render. */
@@ -32,7 +31,7 @@ export const MdxPage: React.FC<MdxPageProps> = ({ Content, pageId }) => {
         <div className="docs-page" data-page-id={pageId}>
             <div className="docs-section">
                 <div className={`${Classes.RUNNING_TEXT} ${Classes.TEXT_LARGE}`}>
-                    <MDXProvider components={mdxComponents}>
+                    <MDXProvider components={mdxHeadingComponents}>
                         <Content />
                     </MDXProvider>
                 </div>

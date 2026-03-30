@@ -23,6 +23,7 @@ export interface TagRendererMap {
 export * from "./css";
 export * from "./defaults";
 export * from "./heading";
+export * from "./mdxHeading";
 export * from "./method";
 export * from "./reactCodeExample";
 export * from "./reactDocs";

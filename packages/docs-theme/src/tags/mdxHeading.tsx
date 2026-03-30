@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,14 +19,7 @@ import { createElement } from "react";
 import { Classes } from "@blueprintjs/core";
 import { Link } from "@blueprintjs/icons";
 
-function slugify(value: string): string {
-    return value
-        .toLowerCase()
-        .replace(/&/g, "and")
-        .replace(/[^a-z0-9-]/g, "-")
-        .replace(/-{2,}/g, "-")
-        .replace(/^-|-$/g, "");
-}
+import { slugify } from "../common/stringUtils";
 
 function extractTextContent(children: React.ReactNode): string {
     if (typeof children === "string") {
@@ -42,10 +35,10 @@ function extractTextContent(children: React.ReactNode): string {
 }
 
 /**
- * Creates a heading component matching the DOM structure from docs-theme's heading.tsx.
+ * Creates a heading component matching the DOM structure from heading.tsx's `Heading`.
  * Produces `.docs-title` elements with `data-route` anchors for scroll spy compatibility.
  */
-function createHeadingComponent(level: 1 | 2 | 3) {
+function createMdxHeadingComponent(level: 1 | 2 | 3) {
     return function MdxHeading({ children }: { children?: React.ReactNode }) {
         const text = extractTextContent(children);
         const route = slugify(text);
@@ -61,8 +54,13 @@ function createHeadingComponent(level: 1 | 2 | 3) {
     };
 }
 
-export const mdxComponents: Record<string, React.ComponentType<any>> = {
-    h1: createHeadingComponent(1),
-    h2: createHeadingComponent(2),
-    h3: createHeadingComponent(3),
+/**
+ * MDX component overrides for heading elements. Pass to `MDXProvider` to render
+ * headings with anchor links and scroll spy attributes matching the Documentalist
+ * heading structure.
+ */
+export const mdxHeadingComponents: Record<string, React.ComponentType<any>> = {
+    h1: createMdxHeadingComponent(1),
+    h2: createMdxHeadingComponent(2),
+    h3: createMdxHeadingComponent(3),
 };

@@ -2,6 +2,8 @@
  * @license Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  */
 
+import { slugify } from "@blueprintjs/docs-theme";
+
 import type {
     DocContentItem,
     DocHeadingItem,
@@ -113,20 +115,6 @@ function kebabToTitleCase(str: string): string {
 /** Type guard for heading content items. */
 function isHeading(item: DocContentItem): item is DocHeadingItem {
     return typeof item === "object" && item !== null && "tag" in item && item.tag === "heading";
-}
-
-/**
- * Convert a heading value to a URL-friendly slug.
- * Replaces "&" with "and", lowercases, replaces non-alphanumeric chars with hyphens,
- * collapses consecutive hyphens, and trims leading/trailing hyphens.
- */
-export function slugify(value: string): string {
-    return value
-        .toLowerCase()
-        .replace(/&/g, "and")
-        .replace(/[^a-z0-9-]/g, "-")
-        .replace(/-{2,}/g, "-")
-        .replace(/^-|-$/g, "");
 }
 
 /**
