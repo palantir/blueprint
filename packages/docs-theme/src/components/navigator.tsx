@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
+import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
 import { PureComponent } from "react";
 
 import { Classes, MenuItem } from "@blueprintjs/core";
-import type { HeadingNode, PageNode } from "@blueprintjs/docs-data/src/types";
 import { CaretRight } from "@blueprintjs/icons";
 import { type ItemListPredicate, type ItemRenderer, Omnibar } from "@blueprintjs/select";
 
-import { eachLayoutNode } from "../common/documentationUtils";
+import { eachLayoutNode } from "../common/documentalistUtils";
 
 export interface NavigatorProps {
     /** Whether navigator is open. */
