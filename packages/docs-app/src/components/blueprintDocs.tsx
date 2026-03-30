@@ -23,14 +23,17 @@ import {
     Banner,
     Documentation,
     type DocumentationProps,
+    type MdxPageRendererProps,
     NavMenuItem,
     type NavMenuItemProps,
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
+import { mdxPages } from "../mdxPages";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
+import { MdxPage } from "./mdxPage";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
@@ -47,6 +50,8 @@ const NPM_URL = "https://www.npmjs.com/package";
 
 const sectionPatterns = SECTIONS.map(name => new RegExp(`/${name}(\\.[\\w-]+)?$`));
 const isNavSection = ({ route }: HeadingNode) => sectionPatterns.some(pattern => pattern.test(route));
+
+const renderMdxPage = (props: MdxPageRendererProps) => <MdxPage {...props} />;
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -107,6 +112,8 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                         banner={banner}
                         footer={footer}
                         header={header}
+                        mdxPages={mdxPages}
+                        renderMdxPage={renderMdxPage}
                         navigatorExclude={isNavSection}
                         onComponentUpdate={this.handleComponentUpdate}
                         renderNavMenuItem={this.renderNavMenuItem}

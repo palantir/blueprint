@@ -46,6 +46,13 @@ import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
 import { ApiLink } from "./typescript/apiLink";
 
+/** Props for the component that renders compiled MDX pages. */
+export interface MdxPageRendererProps {
+    Content: React.ComponentType;
+    pageId: string;
+}
+
+
 export interface DocumentationProps extends Props {
     /**
      * An element to place above the documentation, along the top of the viewport.
@@ -120,6 +127,19 @@ export interface DocumentationProps extends Props {
 
     /** Tag renderer functions. Unknown tags will log console errors. */
     tagRenderers: TagRendererMap;
+
+    /**
+     * Map of page route IDs to compiled MDX React components.
+     * Pages in this map will be rendered via `renderMdxPage` instead of the
+     * Documentalist-based `Page` component.
+     */
+    mdxPages?: Record<string, React.ComponentType>;
+
+    /**
+     * Callback to render an MDX page. Required when `mdxPages` is provided.
+     * This allows docs-theme to remain decoupled from `@mdx-js/react`.
+     */
+    renderMdxPage?: (props: MdxPageRendererProps) => React.JSX.Element;
 }
 
 export interface DocumentationState {
@@ -238,11 +258,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                 ref={this.refHandlers.content}
                                 role="main"
                             >
-                                <Page
-                                    page={pages[activePageId]!}
-                                    renderActions={this.props.renderPageActions}
-                                    tagRenderers={this.props.tagRenderers}
-                                />
+                                {this.renderPage(activePageId, pages)}
                             </main>
                             <Drawer
                                 className={apiClasses}
@@ -292,6 +308,21 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         }
 
         this.props.onComponentUpdate?.(activePageId);
+    }
+
+    private renderPage(activePageId: string, pages: Record<string, PageData>) {
+        const { mdxPages, renderMdxPage } = this.props;
+        const MdxContent = mdxPages?.[activePageId];
+        if (MdxContent != null && renderMdxPage != null) {
+            return renderMdxPage({ Content: MdxContent, pageId: activePageId });
+        }
+        return (
+            <Page
+                page={pages[activePageId]!}
+                renderActions={this.props.renderPageActions}
+                tagRenderers={this.props.tagRenderers}
+            />
+        );
     }
 
     private getDocumentationContextApi(): DocumentationContextApi {

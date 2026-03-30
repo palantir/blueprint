@@ -27,6 +27,8 @@
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
+        "@mdx-js/loader": "^3.1.1",
+        "@mdx-js/react": "^3.1.1",
         "chroma-js": "^2.4.2",
         "classnames": "catalog:",
         "date-fns": "^2.28.0",
@@ -40,6 +42,8 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-transition-group": "^4.4.5",
+        "remark-frontmatter": "^5.0.0",
+        "remark-mdx-frontmatter": "^5.2.0",
         "tslib": "catalog:"
     },
     "devDependencies": {
