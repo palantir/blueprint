@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { copyFileSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import stylelint from "stylelint";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 const config = {
     customSyntax: "postcss-scss",
@@ -174,7 +174,7 @@ describe("prefer-spacing-variable", () => {
             mkdirSync(tmpDir, { recursive: true });
         });
         afterAll(() => {
-            rmSync(tmpDir, { recursive: true, force: true });
+            rmSync(tmpDir, { force: true, recursive: true });
         });
 
         it("Replaces simple $pt-grid-size with $pt-spacing", async () => {

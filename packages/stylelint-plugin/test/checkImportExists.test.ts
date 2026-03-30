@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import { describe, expect, it } from "vitest";
 import postcss from "postcss";
+import { describe, expect, it } from "vitest";
 
 import { checkImportExists } from "../src/utils/checkImportExists";
 import { CssSyntax } from "../src/utils/cssSyntax";

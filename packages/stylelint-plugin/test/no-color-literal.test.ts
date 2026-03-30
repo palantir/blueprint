@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import { describe, expect, it } from "vitest";
 import stylelint from "stylelint";
+import { describe, expect, it } from "vitest";
 
 const config = {
     customSyntax: "postcss-scss",
@@ -27,8 +27,8 @@ const config = {
 describe("no-color-literal", () => {
     it("Warns when blueprint color literal is used (1)", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-color-literal/bp-hex-literal-1.scss",
             config,
+            files: "test/fixtures/no-color-literal/bp-hex-literal-1.scss",
         });
         expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
@@ -39,8 +39,8 @@ describe("no-color-literal", () => {
 
     it("Warns when blueprint color literal is used (2)", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-color-literal/bp-hex-literal-2.scss",
             config,
+            files: "test/fixtures/no-color-literal/bp-hex-literal-2.scss",
         });
         expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
@@ -51,8 +51,8 @@ describe("no-color-literal", () => {
 
     it("Doesn't warn when non-blueprint color literal is used", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-color-literal/non-bp-hex-literal.scss",
             config,
+            files: "test/fixtures/no-color-literal/non-bp-hex-literal.scss",
         });
         expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;

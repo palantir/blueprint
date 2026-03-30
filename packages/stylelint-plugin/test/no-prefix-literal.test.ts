@@ -15,10 +15,10 @@
 
 // @ts-check
 
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { copyFileSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import stylelint from "stylelint";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 const config = {
     customSyntax: "postcss-scss",
@@ -31,8 +31,8 @@ const config = {
 describe("no-prefix-literal", () => {
     it("Warns when .bp3 is present", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
         });
         expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
@@ -43,8 +43,8 @@ describe("no-prefix-literal", () => {
 
     it("Warns when .bp3 is present (CSS modules)", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-bp3.module.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-bp3.module.scss",
         });
         expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
@@ -55,8 +55,8 @@ describe("no-prefix-literal", () => {
 
     it("Warns when nested .bp3 is present even when not first selector", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-nested-bp3.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-nested-bp3.scss",
         });
         expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
@@ -67,8 +67,8 @@ describe("no-prefix-literal", () => {
 
     it("Warns when nested .bp3 is present even when not first selector (CSS modules)", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-nested-bp3.module.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-nested-bp3.module.scss",
         });
         expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
@@ -79,16 +79,16 @@ describe("no-prefix-literal", () => {
 
     it("Doesn't warn bp3 string is present but not as a prefix", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.scss",
         });
         expect(result.errored).toBe(false);
     });
 
     it("Doesn't warn bp3 string is present but not as a prefix (CSS modules)", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.module.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-non-prefix-bp3.module.scss",
         });
         expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
@@ -97,8 +97,8 @@ describe("no-prefix-literal", () => {
 
     it("Doesn't warn when .bp3 is not present", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.scss",
         });
         expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
@@ -107,8 +107,8 @@ describe("no-prefix-literal", () => {
 
     it("Doesn't warn when .bp3 is not present (CSS modules)", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.module.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/does-not-contain-bp3.module.scss",
         });
         expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
@@ -117,8 +117,8 @@ describe("no-prefix-literal", () => {
 
     it("Doesn't warn when .bp3 is present but lint rule is disabled", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-bp3-disabled.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-bp3-disabled.scss",
         });
         expect(result.errored).toBe(false);
         const warnings = result.results[0].warnings;
@@ -127,8 +127,6 @@ describe("no-prefix-literal", () => {
 
     it("Accepts a valid secondary config", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
-            customSyntax: "postcss-scss",
             config: {
                 plugins: ["@blueprintjs/stylelint-plugin"],
                 rules: {
@@ -138,14 +136,14 @@ describe("no-prefix-literal", () => {
                     ],
                 },
             },
+            customSyntax: "postcss-scss",
+            files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
         });
         expect(result.results[0].invalidOptionWarnings).toHaveLength(0);
     });
 
     it("Rejects an invalid secondary config", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
-            customSyntax: "postcss-scss",
             config: {
                 plugins: ["@blueprintjs/stylelint-plugin"],
                 rules: {
@@ -158,14 +156,16 @@ describe("no-prefix-literal", () => {
                     ],
                 },
             },
+            customSyntax: "postcss-scss",
+            files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
         });
         expect(result.results[0].invalidOptionWarnings).toHaveLength(1);
     });
 
     it("Works for a double bp3 selector", async () => {
         const result = await stylelint.lint({
-            files: "test/fixtures/no-prefix-literal/contains-double-bp3-selector.scss",
             config,
+            files: "test/fixtures/no-prefix-literal/contains-double-bp3-selector.scss",
         });
         expect(result.errored).toBe(true);
         const warnings = result.results[0].warnings;
@@ -179,7 +179,7 @@ describe("no-prefix-literal", () => {
             mkdirSync(tmpDir, { recursive: true });
         });
         afterAll(() => {
-            rmSync(tmpDir, { recursive: true, force: true });
+            rmSync(tmpDir, { force: true, recursive: true });
         });
 
         it("Replaces selector text properly", async () => {
@@ -191,8 +191,8 @@ describe("no-prefix-literal", () => {
             copyFileSync(fixturePath, mutableFixturePath);
 
             const result = await stylelint.lint({
-                files: mutableFixturePath,
                 config,
+                files: mutableFixturePath,
                 fix: true,
             });
             // there should be no warnings/errors since the fixer should succeed
