@@ -300,7 +300,7 @@ describe("<NumericInput>", () => {
         const NON_NUMERIC_LOWERCASE_LETTERS = stringToCharArray("abcdfghijklmnopqrstuvwxyz");
         const NON_NUMERIC_UPPERCASE_LETTERS = stringToCharArray("ABCDFGHIJKLMNOPQRSTUVWXYZ");
         const NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT = stringToCharArray("`=[]\\;',/");
-        const NON_NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray('~!@#$%^&*()_{}|:"<>?');
+        const NON_NUMERIC_SYMBOLS_WITH_SHIFT = stringToCharArray('~!#$%^&*()_{}|:"<>?');
 
         const NUMERIC_DIGITS = stringToCharArray("0123456789"); // could be typed from the keyboard or numpad
         const NUMERIC_LOWERCASE_LETTERS = stringToCharArray("e");

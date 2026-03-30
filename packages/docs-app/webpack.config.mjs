@@ -41,6 +41,18 @@ export default {
                 resourceQuery: /raw/,
                 type: "asset/source",
             },
+            // MDX compilation (must come before TS rules)
+            {
+                test: /\.mdx$/,
+                use: [
+                    {
+                        loader: "@mdx-js/loader",
+                        options: {
+                            providerImportSource: "@mdx-js/react",
+                        },
+                    },
+                ],
+            },
             ...(baseConfig.module?.rules
                 ?.map(rule => {
                     // prevent ?raw TS files from being processed by TypeScript loader
@@ -59,6 +71,13 @@ export default {
         filename: "[name].js",
         path: resolve(cwd(), "./dist"),
         publicPath: "",
+    },
+
+    resolve: {
+        ...baseConfig.resolve,
+        extensions: [...(baseConfig.resolve?.extensions || []), ".mdx"],
+        // Ensure @mdx-js/react can be resolved when compiling .mdx files from outside packages/docs-app
+        modules: ["node_modules", resolve(cwd(), "node_modules"), ...(baseConfig.resolve?.modules || [])],
     },
 
     plugins: [
