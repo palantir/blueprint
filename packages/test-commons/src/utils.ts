@@ -20,10 +20,8 @@ import { expect } from "chai";
  * Dispatch a native KeyBoardEvent on the target element with the given type
  * and event arguments. `type` can be one of "keydown|keyup|keypress".
  *
- * This method is for unit testing with Karma and Chrome ONLY! The hacks we
- * use aren't compatible with other browsers. Do not use this method for
- * anything other than simulating keyboard events for PhantomJS and karma
- * chrome tests.
+ * This method is for unit testing with Vitest and jsdom. Do not use this
+ * method for anything other than simulating keyboard events in tests.
  */
 export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, shift = false) {
     const event = new KeyboardEvent(eventType, {
