@@ -18,8 +18,7 @@ import * as Classes from "./classes";
 export { Classes };
 
 export * from "./constants";
-export * from "./context";
-export * from "./documentationUtils";
+export * from "./documentalistUtils";
 export * from "./eventHandlerUtils";
 export * from "./stringUtils";
 export * from "./themeContext";

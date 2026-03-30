@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageNode } from "@blueprintjs/docs-data/src/types";
+import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
 
 /**
  * Performs an in-order traversal of the layout tree, invoking the callback for each node.
