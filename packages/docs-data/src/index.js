@@ -7,16 +7,6 @@
 // PACKAGES and SECTIONS directly from navTypes.mts instead of requiring
 // a generated CJS bridge file.
 module.exports = {
-    npmData: require("./generated/npm-data.json"),
-    // Note: docsData, propsRegistry, and pageRegistry are loaded at runtime by webpack's TS compilation.
-    // The lazy getters here ensure they work when resolved through the CJS entry.
-    get docsData() {
-        return require("./generated/docsData").docsData;
-    },
-    get propsRegistry() {
-        return require("./generated/propsRegistry").propsRegistry;
-    },
-    get pageRegistry() {
-        return require("./generated/pageRegistry").pageRegistry;
-    },
+    docsData: require("./generated/docs.json"),
+    ...require("./generated/nav-constants.js"),
 };
