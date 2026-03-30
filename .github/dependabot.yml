@@ -30,8 +30,6 @@ updates:
           - "stylelint-*"
       test-infra:
         patterns:
-          - "chai"
-          - "@types/chai"
           - "enzyme"
           - "enzyme-*"
           - "@types/enzyme"
