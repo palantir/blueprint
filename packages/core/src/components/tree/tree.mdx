@@ -12,7 +12,8 @@ title: Tree
 import { Tree } from "@blueprintjs/core";
 ```
 
-<TreeExample />
+@reactExample TreeExample
+
 ## Props interface
 
 **Tree** is a stateless component. Its contents are dictated by the `contents` prop, which is an array of `<TreeNode>`
@@ -24,6 +25,7 @@ which is an array of numbers representing a node's position in the tree. For exa
 child (`0`) of the third top-level node (`2`).
 
 <InterfaceTable name="TreeProps" />
+
 ### Instance methods
 
 - `Tree.getNodeContentElement(nodeId: string | number): HTMLElement | undefined` &ndash;

@@ -39,7 +39,7 @@ Most icons should be displayed using the `<Icon>` component from `@blueprintjs/i
 of rendering SVGs directly onto the page.
 
 In some cases you may use the icon fonts instead with the CSS API targeting selectors of the kind
-`span.bp5-icon-*` (be sure to include `.bp5-icon-standard` or `.bp5-icon-large` as well).
+`span.@ns-icon-*` (be sure to include `.@ns-icon-standard` or `.@ns-icon-large` as well).
 
 In rare cases, you may need direct access to the code points the icon font. Blueprint provides these
 variables in Sass as a map and in TypeScript as an object (see the [Icons section](#icons) for the
@@ -162,7 +162,7 @@ These variables are semantic aliases of our [colors](#core/colors).
 They are used throughout Blueprint itself to ensure consistent color usage across components
 and are available in the Sass or Less variables files.
 
-<table className="bp5-html-table docs-color-aliases-table">
+<table class="@ns-html-table docs-color-aliases-table">
     <thead>
         <tr>
             <th></th>
@@ -173,7 +173,7 @@ and are available in the Sass or Less variables files.
     <tbody>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-intent-primary"></div>
+                <div class="docs-color-bubble alias-intent-primary"></div>
             </td>
             <td>
                 <code>$pt-intent-primary</code>
@@ -182,7 +182,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-intent-success"></div>
+                <div class="docs-color-bubble alias-intent-success"></div>
             </td>
             <td>
                 <code>$pt-intent-success</code>
@@ -191,7 +191,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-intent-warning"></div>
+                <div class="docs-color-bubble alias-intent-warning"></div>
             </td>
             <td>
                 <code>$pt-intent-warning</code>
@@ -200,7 +200,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-intent-danger"></div>
+                <div class="docs-color-bubble alias-intent-danger"></div>
             </td>
             <td>
                 <code>$pt-intent-danger</code>
@@ -209,7 +209,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-app-background-color"></div>
+                <div class="docs-color-bubble alias-app-background-color"></div>
             </td>
             <td>
                 <code>$pt-app-background-color</code>
@@ -218,7 +218,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-app-background-color"></div>
+                <div class="docs-color-bubble alias-dark-app-background-color"></div>
             </td>
             <td>
                 <code>$pt-dark-app-background-color</code>
@@ -227,7 +227,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-text-color"></div>
+                <div class="docs-color-bubble alias-text-color"></div>
             </td>
             <td>
                 <code>$pt-text-color</code>
@@ -236,7 +236,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-text-color-muted"></div>
+                <div class="docs-color-bubble alias-text-color-muted"></div>
             </td>
             <td>
                 <code>$pt-text-color-muted</code>
@@ -245,7 +245,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-text-color-disabled"></div>
+                <div class="docs-color-bubble alias-text-color-disabled"></div>
             </td>
             <td>
                 <code>$pt-text-color-disabled</code>
@@ -254,7 +254,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-heading-color"></div>
+                <div class="docs-color-bubble alias-heading-color"></div>
             </td>
             <td>
                 <code>$pt-heading-color</code>
@@ -263,7 +263,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-link-color"></div>
+                <div class="docs-color-bubble alias-link-color"></div>
             </td>
             <td>
                 <code>$pt-link-color</code>
@@ -272,7 +272,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-text-color"></div>
+                <div class="docs-color-bubble alias-dark-text-color"></div>
             </td>
             <td>
                 <code>$pt-dark-text-color</code>
@@ -281,7 +281,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-text-color-muted"></div>
+                <div class="docs-color-bubble alias-dark-text-color-muted"></div>
             </td>
             <td>
                 <code>$pt-dark-text-color-muted</code>
@@ -290,7 +290,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-text-color-disabled"></div>
+                <div class="docs-color-bubble alias-dark-text-color-disabled"></div>
             </td>
             <td>
                 <code>$pt-dark-text-color-disabled</code>
@@ -299,7 +299,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-heading-color"></div>
+                <div class="docs-color-bubble alias-dark-heading-color"></div>
             </td>
             <td>
                 <code>$pt-dark-heading-color</code>
@@ -308,7 +308,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-link-color"></div>
+                <div class="docs-color-bubble alias-dark-link-color"></div>
             </td>
             <td>
                 <code>$pt-dark-link-color</code>
@@ -317,7 +317,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-text-selection-color"></div>
+                <div class="docs-color-bubble alias-text-selection-color"></div>
             </td>
             <td>
                 <code>$pt-text-selection-color</code>
@@ -326,7 +326,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-icon-color"></div>
+                <div class="docs-color-bubble alias-icon-color"></div>
             </td>
             <td>
                 <code>$pt-icon-color</code>
@@ -335,7 +335,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-icon-color-hover"></div>
+                <div class="docs-color-bubble alias-icon-color-hover"></div>
             </td>
             <td>
                 <code>$pt-icon-color-hover</code>
@@ -344,7 +344,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-icon-color-disabled"></div>
+                <div class="docs-color-bubble alias-icon-color-disabled"></div>
             </td>
             <td>
                 <code>$pt-icon-color-disabled</code>
@@ -353,7 +353,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-icon-color-selected"></div>
+                <div class="docs-color-bubble alias-icon-color-selected"></div>
             </td>
             <td>
                 <code>$pt-icon-color-selected</code>
@@ -362,7 +362,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-icon-color"></div>
+                <div class="docs-color-bubble alias-dark-icon-color"></div>
             </td>
             <td>
                 <code>$pt-dark-icon-color</code>
@@ -371,7 +371,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-icon-color-hover"></div>
+                <div class="docs-color-bubble alias-dark-icon-color-hover"></div>
             </td>
             <td>
                 <code>$pt-dark-icon-color-hover</code>
@@ -380,7 +380,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-icon-color-disabled"></div>
+                <div class="docs-color-bubble alias-dark-icon-color-disabled"></div>
             </td>
             <td>
                 <code>$pt-dark-icon-color-disabled</code>
@@ -389,7 +389,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-icon-color-selected"></div>
+                <div class="docs-color-bubble alias-dark-icon-color-selected"></div>
             </td>
             <td>
                 <code>$pt-dark-icon-color-selected</code>
@@ -398,7 +398,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-divider-black"></div>
+                <div class="docs-color-bubble alias-divider-black"></div>
             </td>
             <td>
                 <code>$pt-divider-black</code>
@@ -407,7 +407,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-divider-black"></div>
+                <div class="docs-color-bubble alias-dark-divider-black"></div>
             </td>
             <td>
                 <code>$pt-dark-divider-black</code>
@@ -416,7 +416,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-divider-white"></div>
+                <div class="docs-color-bubble alias-dark-divider-white"></div>
             </td>
             <td>
                 <code>$pt-dark-divider-white</code>
@@ -425,7 +425,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-code-text-color"></div>
+                <div class="docs-color-bubble alias-code-text-color"></div>
             </td>
             <td>
                 <code>$pt-code-text-color</code>
@@ -434,7 +434,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-code-background-color"></div>
+                <div class="docs-color-bubble alias-code-background-color"></div>
             </td>
             <td>
                 <code>$pt-code-background-color</code>
@@ -443,7 +443,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-code-text-color"></div>
+                <div class="docs-color-bubble alias-dark-code-text-color"></div>
             </td>
             <td>
                 <code>$pt-dark-code-text-color</code>
@@ -452,7 +452,7 @@ and are available in the Sass or Less variables files.
         </tr>
         <tr>
             <td>
-                <div className="docs-color-bubble alias-dark-code-background-color"></div>
+                <div class="docs-color-bubble alias-dark-code-background-color"></div>
             </td>
             <td>
                 <code>$pt-dark-code-background-color</code>

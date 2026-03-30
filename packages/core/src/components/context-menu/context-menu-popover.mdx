@@ -4,8 +4,8 @@ title: Context Menu Popover
 
 # Context Menu Popover
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
 
 Consider [Context Menu](#core/components/context-menu) first
 
@@ -21,13 +21,15 @@ not hook up any interaction handlers for you and simply renders an opinionated
 [**Popover**](#core/components/popover) at a particular target offset on the page through a
 [**Portal**](#core/components/portal).
 
-<ContextMenuPopoverExample />
+@reactExample ContextMenuPopoverExample
+
 ## Declarative API
 
 Use the `<ContextMenuPopover>` component like any other React component in your tree. Note that this is a controlled
 component which requires its `isOpen` and `targetOffset` props to be defined.
 
 <InterfaceTable name="ContextMenuPopoverProps" />
+
 ## Imperative API
 
 Two functions are provided as an imperative API for showing and hiding a singleton **Context Menu Popover** on
@@ -39,6 +41,7 @@ export function hideContextMenu(): void;
 ```
 
 <InterfaceTable name="ShowContextMenuOptions" />
+
 These are useful in some cases when working with imperative code that does not follow typical React paradigms.
 Note that these functions come with come caveats, and thus they should be used with caution:
 

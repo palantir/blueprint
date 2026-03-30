@@ -1,25 +1,82 @@
+---
+title: Compound Tag
+---
+
 # Compound Tag
 
-**Compound Tag** is a variant of [**Tag**](#core/components/tag) which renders textual information in
-a pair (sometimes referred to as a "key-value pair"). The content on the left and right is visually
-segmented to signify the pairwise relationship. Just like **Tag**, this component supports a range
-of visual modifiers for many different situations and its colors are designed to be accessible in
-almost any context.
+CompoundTag is a variant of [**Tag**](#core/components/tag) that displays content as a visually segmented key-value pair.
 
-## Import
+## Usage
 
-```tsx
+```ts copy
 import { CompoundTag } from "@blueprintjs/core";
 ```
 
-<CompoundTagExample />
-## Usage
+```tsx
+<CompoundTag leftContent="City" id="city-tag">
+    Chicago
+</CompoundTag>
+```
 
-The `<CompoundTag>` component is a stateless wrapper around its content with support for an optional
-close button and icons on the left and/or right side. It supports all valid `<span>` DOM attributes.
+## Examples
 
-Content for the left side of the tag is specified with the `leftContent` prop, while the `children` node(s)
-are rendered on the right side.
+### Basic
+
+Content for the left side of the tag is specified with the `leftContent` prop, while `children` are rendered on the right side. CompoundTag supports all valid `<span>` DOM attributes.
+
+@reactCodeExample CompoundTagBasicExample
+
+### Intent
+
+Use the `intent` prop to apply a semantic color that conveys the purpose or status of the tag.
+
+@reactCodeExample CompoundTagIntentExample
+
+### Minimal
+
+Use the `minimal` prop to render a tag with reduced visual weight, without a filled background.
+
+@reactCodeExample CompoundTagMinimalExample
+
+### Size
+
+Use the `size` prop to adjust the tag dimensions. CompoundTag supports `"medium"` (default) and `"large"`.
+
+@reactCodeExample CompoundTagSizeExample
+
+### Fill
+
+Use the `fill` prop to make the tag expand to the full width of its container.
+
+@reactCodeExample CompoundTagFillExample
+
+### Round
+
+Use the `round` prop to render the tag with rounded ends.
+
+@reactCodeExample CompoundTagRoundExample
+
+### Icons
+
+Use the `icon` prop to render an icon before the left content and the `endIcon` prop to render an icon after the right content.
+
+@reactCodeExample CompoundTagIconExample
+
+### Removable
+
+Define the `onRemove` prop to render a remove button on the right side of the tag. The remove button will only appear when this handler is provided.
+
+@reactCodeExample CompoundTagRemovableExample
+
+### Interactive
+
+Use the `interactive` prop to enable hover and cursor styling. This is recommended when pairing with an `onClick` handler.
+
+@reactCodeExample CompoundTagInteractiveExample
+
+## Interactive Playground
+
+@reactExample CompoundTagPlaygroundExample
 
 ## Props interface
 

@@ -12,7 +12,8 @@ title: Menu
 import { Menu } from "@blueprintjs/core";
 ```
 
-<MenuExample />
+@reactExample MenuExample
+
 ## Usage
 
 Blueprint's **Menu** API includes three React components:
@@ -39,6 +40,7 @@ Blueprint's **Menu** API includes three React components:
 `<Menu>` renders a `<ul>` container element for menu items and dividers.
 
 <InterfaceTable name="MenuProps" />
+
 ## Menu item
 
 **MenuItem** is a single interactive item in a [**Menu**](#core/components/menu).
@@ -49,13 +51,16 @@ This component renders an `<li>` containing an `<a>`. You can make the **MenuIte
 Create submenus by nesting **MenuItem** elements inside each other as `children`. Remember to use the required `text`
 prop to define **MenuItem** content.
 
-<MenuItemExample />
+@reactExample MenuItemExample
+
 <InterfaceTable name="MenuItemProps" />
+
 ## Menu divider
 
 **MenuDivider** is a decorative component used to group sets of items into sections which may optionally have a title.
 
 <InterfaceTable name="MenuDividerProps" />
+
 ## Dropdowns
 
 **Menu** only renders a static list container element. To make an interactive dropdown menu, you may leverage
@@ -77,7 +82,8 @@ Some tips for designing dropdown menus:
   behavior, set `shouldDismissPopover={false}` on a **MenuItem**. For example, clicking the "Table" item in this
   dropdown menu will not dismiss the `Popover`:
 
-<DropdownMenuExample />
+@reactExample DropdownMenuExample
+
 ## Submenus
 
 To add a submenu to a **Menu**, you may nest one or more **MenuItem** elements within another **MenuItem**.

@@ -1,3 +1,7 @@
+---
+title: Colors
+---
+
 # Colors
 
 ## Gray scale
@@ -9,8 +13,9 @@ The gray scale should be used for the main UI frame: containers, headers, sectio
 If you need to call attention to a particular element (buttons, icons, tooltips, etc.),
 use one of the [core colors](#core/colors.core-colors) instead.
 
-<BlackWhitePalette />
-<GrayscalePalette />
+@reactDocs BlackWhitePalette
+@reactDocs GrayscalePalette
+
 ## Core colors
 
 Core colors are used to support user interface design by calling
@@ -32,7 +37,8 @@ Blueprint's core colors are designed to:
 Many Blueprint components support the `intent` prop, which may be set to a string
 literal constant such as `intent="primary"`.
 
-<CoreColorsPalette />
+@reactDocs CoreColorsPalette
+
 ## Extended colors
 
 Extended colors should typically be reserved for data visualizations: any time
@@ -41,7 +47,8 @@ These colors are less strict on [WCAG 2.0](https://www.w3.org/TR/WCAG20/)
 accessibility standards and should therefore not be used for typical user
 interface design — take a look at [core colors](#colors.core-colors) instead.
 
-<ExtendedColorsPalette />
+@reactDocs ExtendedColorsPalette
+
 ## Usage
 
 Blueprint provides variables for colors in Sass, Less, and JavaScript.
@@ -92,17 +99,18 @@ while remaining accessible to visually impaired and color blind users.
 Sequential color schemes imply order and are best suited for representing data that
 ranges from low-to-high values either on an ordinal or on a numerical scale.
 
-<SequentialSchemePalette />
+@reactDocs SequentialSchemePalette
+
 ### Diverging color schemes
 
 Diverging color schemes put equal emphasis on mid-range values and extremes
 at both ends of the data range.
 
-<DivergingSchemePalette />
+@reactDocs DivergingSchemePalette
 
 ### Qualitative color schemes
 
 Qualitative color schemes use a series of unrelated colors to create a
 scheme that does not imply order, merely difference in kind.
 
-<QualitativeSchemePalette />
+@reactDocs QualitativeSchemePalette

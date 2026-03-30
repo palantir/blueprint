@@ -12,8 +12,8 @@ by navigating around and triggering the dialog with the <kbd>?</kbd> key.
 
 ## Usage
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
 
 Consider [**BlueprintProvider**](#core/context/blueprint-provider)
 
@@ -38,6 +38,28 @@ root.render(
         <div>My app has hotkeys 😎</div>
     </HotkeysProvider>,
 );
+```
+
+## Usage with other providers
+
+If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest
+**HotkeysProvider** underneath them:
+
+```tsx
+import { HotkeysProvider } from "@blueprintjs/core";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
+const router = createBrowserRouter([...]);
+
+function App() {
+    return (
+        <RouterProvider router={router}>
+            <HotkeysProvider>
+                <div>My app has hotkeys 😎</div>
+            </HotkeysProvider>
+        </RouterProvider>
+    );
+}
 ```
 
 ## Advanced usage

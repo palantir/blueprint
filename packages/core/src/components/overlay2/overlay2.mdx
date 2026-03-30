@@ -4,8 +4,8 @@ title: Overlay2
 
 # Overlay2
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
 
 Migrating from [Overlay](#core/components/overlay)?
 
@@ -39,7 +39,8 @@ existing component meets your needs.
 import { Overlay2 } from "@blueprintjs/core";
 ```
 
-<Overlay2Example />
+@reactExample Overlay2Example
+
 ## Usage
 
 **Overlay2** is a controlled component that renders its children only when `isOpen={true}`.
@@ -76,8 +77,8 @@ function Example() {
 
 ## DOM layout
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">A note about overlay content positioning</h5>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">A note about overlay content positioning</h5>
 
 When rendered inline, content will automatically be set to `position: absolute` to respect
 document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
@@ -98,8 +99,8 @@ this modifier class automatically.
 
 ## Child refs
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">DOM ref(s) required</h5>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">DOM ref(s) required</h5>
 
 Overlay2 needs to be able to attach DOM refs to its child elements, so the children of this
 component _must be a native DOM element_ or utilize

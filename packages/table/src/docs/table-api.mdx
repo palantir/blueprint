@@ -14,18 +14,23 @@ The top-level component of the table is **Table**. You must at least define the 
 as well as a set of **Column** children.
 
 <InterfaceTable name="TableProps" />
+
 ### Instance methods
 
-<MethodTable name="Table.resizeRowsByTallestCell" />
-<MethodTable name="Table.resizeRowsByApproximateHeight" />
+@method Table.resizeRowsByTallestCell
+
+@method Table.resizeRowsByApproximateHeight
+
 `CellMapper` is a function that takes a cell-coordinate and returns a generic type:
 
 ```ts
 type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 ```
 
-<MethodTable name="Table.scrollToRegion" />
-<MethodTable name="Table.scrollByOffset" />
+@method Table.scrollToRegion
+
+@method Table.scrollByOffset
+
 ## Column
 
 **Column** contains props for defining how the header and cells of that column are rendered.
@@ -37,12 +42,14 @@ components.
 Use the `rowHeaderCellRenderer` prop of **Table** to define row headers.
 
 <InterfaceTable name="ColumnProps" />
+
 ## Cell
 
 The **Cell** component renders content in the table body. `<Cell>` elements should be returned from the
 `cellRenderer` method of each **Column**.
 
 <InterfaceTable name="CellProps" />
+
 ## ColumnHeaderCell
 
 Optionally customize how each column header is displayed.
@@ -52,18 +59,21 @@ The `columnHeaderCellRenderer` method on each **Column** should return a `<Colum
 name, you can supply a `nameRenderer` prop to the **ColumnHeaderCell**.
 
 <InterfaceTable name="ColumnHeaderCellProps" />
+
 ## EditableName
 
 Return a `<EditableName>` from the `nameRenderer` prop on a **ColumnHeaderCell** to enable click-to-edit functionality
 in the column header.
 
 <InterfaceTable name="EditableNameProps" />
+
 ## EditableCell
 
 Return an `<EditableCell>` component from the `cellRenderer` prop on a **Column** to enable double-click-to-edit
 functionality in the table body.
 
 <InterfaceTable name="EditableCellProps" />
+
 ## RowHeaderCell
 
 Optionally customize how each row header is displayed.
@@ -72,6 +82,7 @@ In order to use this API, supply a custom renderer function which returns a `<Ro
 `rowHeaderCellRenderer` prop on the overall **Table**.
 
 <InterfaceTable name="RowHeaderCellProps" />
+
 ## Region
 
 A region is a rectangular group of cells in the table.
@@ -90,6 +101,7 @@ There are four different types of regions:
 Regions are defined in code according to the `Region` interface:
 
 <InterfaceTable name="Region" />
+
 You can construct region objects manually according to this interface, but we recommend using our exported
 **factory methods** to help you construct the appropriate schema for your desired region type:
 
@@ -160,7 +172,8 @@ const cardinalities = [
 ];
 ```
 
-<MethodTable name="Regions.getRegionCardinality" />
+@method Regions.getRegionCardinality
+
 ## TruncatedFormat
 
 Wrap your cell contents with a **TruncatedFormat** component like so:
@@ -175,6 +188,7 @@ return (
 ```
 
 <InterfaceTable name="TruncatedFormatProps" />
+
 ## JSONFormat
 
 Wrap your JavaScript object cell contents with a **JSONFormat** component like so:

@@ -21,7 +21,8 @@ numeric counter is reset. To render all panels to the DOM and keep their React t
 import { PanelStack } from "@blueprintjs/core";
 ```
 
-<PanelStackExample />
+@reactExample PanelStackExample
+
 ## Panels
 
 Panels are supplied as `Panel<T>` objects, where `renderPanel` and `props` are
@@ -85,7 +86,9 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 ```
 
 <InterfaceTable name="Panel" />
+
 <InterfaceTable name="PanelActions" />
+
 ## Props interface
 
 **PanelStack** can be operated as a controlled or uncontrolled component.

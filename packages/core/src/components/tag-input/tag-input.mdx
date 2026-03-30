@@ -14,9 +14,10 @@ Clicking anywhere on the container will focus the text input.
 import { TagInput } from "@blueprintjs/core";
 ```
 
-<TagInputExample />
-<div className="bp5-callout bp5-intent-success bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Looking for a dropdown menu?</h5>
+@reactExample TagInputExample
+
+<div class="@ns-callout @ns-intent-success @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Looking for a dropdown menu?</h5>
 
 [The **MultiSelect** component in the **@blueprintjs/select** package](#select/multi-select)
 composes this component with a dropdown menu.
@@ -30,7 +31,7 @@ Typing in the input and pressing <kbd>Enter</kbd> will **add new items** by invo
 set to `true`, clicking outside of the component will also trigger the callback to add new items. A `separator` prop is
 supported to allow multiple items to be added at once; the default splits on commas and newlines.
 
-**Tags** may be removed by clicking their <span className="bp5-icon-standard bp5-icon-cross"></span> buttons or by pressing
+**Tags** may be removed by clicking their <span class="@ns-icon-standard @ns-icon-cross"></span> buttons or by pressing
 either <kbd>backspace</kbd> or <kbd>delete</kbd> repeatedly. Pressing <kbd>delete</kbd> mimics the behavior of deleting
 in a text editor, where trying to delete at the end of the line will do nothing. Arrow keys can also be used to focus
 on a particular tag before removing it. The cursor must be at the beginning of the text input for these interactions.
@@ -46,8 +47,8 @@ updated `values` array, with new items appended to the end and removed items fil
 The `<input>` element can be controlled directly via the `inputValue` and `onInputChange` props. Additional properties
 (such as custom event handlers) can be forwarded to the input via `inputProps`.
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Handling long words</h5>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Handling long words</h5>
 
 Set an explicit `width` on the container element to cause long tags to wrap onto multiple lines.
 Either supply a specific pixel value, or use `<TagInput className={Classes.FILL}>`
@@ -55,8 +56,8 @@ to fill its container's width (try this in the example above).
 
 </div>
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Disabling a tag input</h5>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Disabling a tag input</h5>
 
 Disabling this component requires setting the `disabled` prop to `true`
 and separately disabling the component's `rightElement` as appropriate

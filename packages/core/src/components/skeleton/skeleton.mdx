@@ -11,16 +11,17 @@ an element through `className`, will cover its content with a loading animation.
 The skeleton inherits the dimensions of whatever element the class is applied
 to, so you should supply a placeholder while awaiting real content.
 
-<CssExample name="skeleton" />
+@css skeleton
+
 ## CSS
 
-Apply the class `.bp5-skeleton` to elements that you would like to cover up with
+Apply the class `.@ns-skeleton` to elements that you would like to cover up with
 a loading animation.
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Manually disable focusable elements</h5>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Manually disable focusable elements</h5>
 
-When using the `.bp5-skeleton` class on focusable elements such as inputs and buttons, be sure to disable the element,
+When using the `.@ns-skeleton` class on focusable elements such as inputs and buttons, be sure to disable the element,
 via either the `disabled` or `tabindex="-1"` attributes. Failing to do so will allow these skeleton elements to be
 focused when they shouldn't be.
 

@@ -33,7 +33,8 @@ The value in a numeric input can be incremented or decremented using both keyboa
 This example shows how **NumericInput** works out of the box. It supports the basic keyboard and mouse interactions
 listed above, as well as basic keyboard entry.
 
-<NumericInputBasicExample />
+@reactExample NumericInputBasicExample
+
 ## Extended example
 
 This example shows how **NumericInput** can be extended beyond its core functionality. It supports the basic
@@ -47,14 +48,15 @@ These special-case inputs are evaluated when `Enter` is pressed (via a custom `o
 loses focus (via a custom `onBlur` callback). If the input is invalid when either of these callbacks is trigged, the
 field will be cleared.
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 This example contains non-core functionality that is meant to demonstrate the extensibility of the **NumericInput**
 component. The correctness of the custom evaluation code has not been tested robustly.
 
 </div>
 
-<NumericInputExtendedExample />
+@reactExample NumericInputExtendedExample
+
 ## Usage
 
 ### Uncontrolled mode
@@ -96,7 +98,7 @@ Exceptions to this rule may occur if your input only supports _positive integers
 have any non-numeric characters. See the [precision section](#core/components/numeric-input.numeric-precision)
 to learn how to enforce this kind of constraint.
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
 
 When handling changes in controlled mode, always use the _second_ parameter of the `onValueChange` callback, which
 provides the value as a string. This allows users to type non-numeric characters like decimal points (".") without the

@@ -13,8 +13,8 @@ The **Dialog** component presents content overlaid over other parts of the UI vi
 import { Dialog } from "@blueprintjs/core";
 ```
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Terminology note</h5>
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Terminology note</h5>
 
 The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
 _Modal_ is an adjective that describes parts of a UI. An element is considered to be "modal" if it
@@ -30,11 +30,12 @@ Blueprint provides two types of dialogs:
 
 ## Dialog
 
-<DialogExample />
+@reactExample DialogExample
+
 ## Usage
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
 
 [OverlaysProvider](#core/context/overlays-provider) recommended
 
@@ -66,21 +67,25 @@ The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG` element.
 
 <InterfaceTable name="DialogProps" />
+
 ### Dialog body props
 
 `<DialogBody>` renders a `Classes.DIALOG_BODY` element, optionally with a constrained container
 height which allows vertical scrolling of its content.
 
 <InterfaceTable name="DialogBodyProps" />
+
 ### Dialog footer props
 
 `<DialogFooter>` renders a `Classes.DIALOG_FOOTER` element. Footer "actions" are rendered
 towards the right side of the footer container element.
 
 <InterfaceTable name="DialogFooterProps" />
+
 ## Multistep dialog
 
-<MultistepDialogExample />
+@reactExample MultistepDialogExample
+
 ### Multistep dialog props
 
 **MultistepDialog** is a wrapper around **Dialog** that displays a dialog with multiple steps. Each step has a
@@ -90,6 +95,7 @@ This component expects `<DialogStep>` child elements: each "step" is rendered in
 dialog body content when the corresponding step is selected in the navigation panel.
 
 <InterfaceTable name="MultistepDialogProps" />
+
 ### DialogStep
 
 **DialogStep** is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its parent

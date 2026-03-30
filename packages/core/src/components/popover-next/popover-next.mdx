@@ -3,6 +3,7 @@ title: PopoverNext
 tag: new
 ---
 
+
 # PopoverNext
 
 PopoverNext displays floating content next to a target element.
@@ -16,11 +17,12 @@ Floating UI is a modern library that offers powerful, customizable, and performa
 import { PopoverNext } from "@blueprintjs/core";
 ```
 
-<PopoverNextExample />
+@reactExample PopoverNextExample
+
 ## Usage
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
 
 [OverlaysProvider](#core/context/overlays-provider) recommended
 
@@ -45,6 +47,7 @@ usage guides.
 ## Props interface
 
 <InterfaceTable name="PopoverNextProps" />
+
 ## Concepts
 
 ### Structure
@@ -58,7 +61,7 @@ In Floating UI terms, this is the "reference" element. There are two ways to ren
 in different DOM layout depending on your application's needs:
 
 - The simplest way to specify a target is via `children`. Provide a single React child to
-  `<PopoverNext>` and the component will render that child wrapped in a `bp5-popover-target` HTML element.
+  `<PopoverNext>` and the component will render that child wrapped in a `@ns-popover-target` HTML element.
   This wrapper is configured with event handling logic necessary for the PopoverNext to function. Its tag name
   (e.g. `div`, `span`) and props can be customized with the `targetTagName` and `targetProps` props, respectively.
 
@@ -76,8 +79,8 @@ The **content** will be shown inside the popover itself. When opened, the popove
 positioned on the page next to the target; the `placement` prop determines its relative placement (on
 which side of the target).
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Button targets</h5>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great popover targets, but the `disabled` attribute on a `<button>` blocks all
 events, which interferes with the popover functioning. If you need to disable a button which
@@ -90,7 +93,7 @@ See the [callout here](#core/components/button.props) for more details.
 import { Button, Classes, PopoverNext } from "@blueprintjs/core";
 
 export const PopoverNextExample: React.FC = () => {
-    // popover content gets no padding by default; add the "bp5-popover-content-sizing"
+    // popover content gets no padding by default; add the "@ns-popover-content-sizing"
     // class to the popover to set nice padding between its border and content.
     return (
         <PopoverNext
@@ -120,14 +123,14 @@ For more detailed information about placement behavior and edge cases, see the [
 
 There are straightforward base placements (`"top"`, `"bottom"`, `"left"`, `"right"`) and their variations, which each consist of two attributes:
 
-- Which <span className="docs-popover-placement-label-side">**side**</span> of the target the popover should render on.
-- The popover's <span className="docs-popover-placement-label-alignment">**alignment**</span> relative to the target.
+- Which <span class="docs-popover-placement-label-side">**side**</span> of the target the popover should render on.
+- The popover's <span class="docs-popover-placement-label-alignment">**alignment**</span> relative to the target.
 
 These two attributes can be expressed with a single value having the following structure:
 
-<pre className="docs-popover-placement-value-code-block">
-    <span className="docs-popover-placement-label-side">[SIDE]</span>-
-    <span className="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
+<pre class="docs-popover-placement-value-code-block">
+    <span class="docs-popover-placement-label-side">[SIDE]</span>-
+    <span class="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
 </pre>
 
 #### Supported placement values
@@ -150,12 +153,13 @@ When no alignment is specified (e.g., just `"top"`), the popover will be centere
 
 The following example shows how each placement value behaves in practice:
 
-<PopoverNextPlacementExample />
+@reactExample PopoverNextPlacementExample
+
 #### Automatic placement
 
 If a `placement` prop is not specified (default behavior), PopoverNext will use automatic placement to choose the side with the best available space and continually update the position to avoid overflowing the boundary element (when scrolling within it, for instance).
 
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign">
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 You can also specify a specific initial placement (e.g. `"left"`, `"bottom-start"`) and still allow PopoverNext to update its position automatically when there isn't enough space. [See below](#core/components/popover-next.middleware) for information about customizing positioning behavior.
 
@@ -167,8 +171,8 @@ Middleware allow us to customize Floating UI's positioning behavior. **PopoverNe
 
 You may override the default middleware with the `middleware` prop, which is an object with key-value pairs representing the middleware name and its options object, respectively. See the [Floating UI middleware docs page](https://floating-ui.com/docs/middleware) for more info.
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Auto placement requires autoPlacement or flip middleware</h5>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Auto placement requires autoPlacement or flip middleware</h5>
 
 Be careful when disabling the "autoPlacement" or "flip" middleware, since automatic placement relies on them. If you _do_ decide to disable these middleware, be sure to also specify a placement which is specific (not automatic).
 
@@ -215,8 +219,8 @@ It is important to pay attention to the value of the `nextOpenState` parameter a
 in your application logic whether you should care about a particular invocation (for instance,
 if the `nextOpenState` is not the same as the **PopoverNext**'s current state).
 
-<div className="bp5-callout bp5-intent-warning bp5-icon-warning-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Disabling controlled popovers</h5>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Disabling controlled popovers</h5>
 
 If `disabled={true}`, a controlled popover will remain closed even if `isOpen={true}`.
 The popover will re-open when `disabled` is set to `false`.
@@ -277,9 +281,10 @@ The supported values are:
 The following example demonstrates the various interaction kinds (note: these PopoverNext contain
 [MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
-<PopoverNextInteractionKindExample />
-<div className="bp5-callout bp5-intent-primary bp5-icon-info-sign bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Conditionally styling popover targets</h5>
+@reactExample PopoverNextInteractionKindExample
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Conditionally styling popover targets</h5>
 
 When a popover is open, `Classes.POPOVER_OPEN` is applied to the target.
 You can use this to style the target differently when the popover is open.
@@ -307,13 +312,13 @@ An error is thrown if used otherwise.
 #### Styling the backdrop
 
 By default, the popover backdrop is invisible, but you can easily add your own styles to
-`.bp5-popover-backdrop` to customize the appearance of the backdrop (for example, you could give it
+`.@ns-popover-backdrop` to customize the appearance of the backdrop (for example, you could give it
 a translucent background color, like the backdrop for the [`Dialog`](#core/components/dialog) component).
 
 The backdrop element has the same opacity-fade transition as the `Dialog` backdrop.
 
-<div className="bp5-callout bp5-intent-danger bp5-icon-error bp5-callout-has-body-content">
-    <h5 className="bp5-heading">Dangerous edge case</h5>
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Dangerous edge case</h5>
 
 Rendering a `<PopoverNext isOpen={true} hasBackdrop={true}>` outside the viewport bounds can easily break your application
 by covering the UI with an invisible non-interactive backdrop. This edge case must be handled by your application code
@@ -333,14 +338,15 @@ This behavior can be desirable to inherit CSS styles from surrounding elements, 
 when scrolling. Not using a **Portal** works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Floating UI will keep them nicely positioned.
 
-<PopoverNextPortalExample />
+@reactExample PopoverNextPortalExample
+
 ## Style
 
 ### Dark theme
 
-**PopoverNext** automatically detects whether its trigger is nested inside a `.bp5-dark` container and applies the
+**PopoverNext** automatically detects whether its trigger is nested inside a `.@ns-dark` container and applies the
 same class to itself. You can also explicitly apply the dark theme to the React component by providing the prop
-`popoverClassName="bp5-dark"`.
+`popoverClassName="@ns-dark"`.
 
 As a result, any component that you place inside a **PopoverNext** (such as a `Menu`) automatically inherits the dark theme
 styles. Note that [`Tooltip`](#core/components/tooltip) uses **PopoverNext** internally, so it also benefits from this
@@ -364,7 +370,8 @@ scrollable, add a custom class to your popover content element and attach styles
 }
 ```
 
-<PopoverNextSizingExample />
+@reactExample PopoverNextSizingExample
+
 ### Arrow control
 
 You can control whether the popover shows an arrow pointing to its target using the `arrow` prop:
@@ -388,7 +395,8 @@ The minimal animation is recommended for popovers that are not triggered by an o
 user clicking or hovering over something. For example, a minimal popover is useful for making
 typeahead menus where the menu appears almost instantly after the user starts typing.
 
-<PopoverNextMinimalExample />
+@reactExample PopoverNextMinimalExample
+
 Minimal popovers are also useful for context menus that require quick enter and leave animations to
 support fast workflows. You can see an example in the [context menus](#core/components/context-menu)
 documentation.

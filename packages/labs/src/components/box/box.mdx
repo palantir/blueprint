@@ -17,13 +17,15 @@ import { Box } from "@blueprintjs/labs";
 
 Use **Box** to compose layouts with spacing, alignment, and sizing props.
 
-<BoxBasicExample />
+@reactCodeExample BoxBasicExample
+
 ## Composition with asChild
 
 When `asChild` is set, `<Box>` will not render an extra wrapper element. Instead it clones and enhances its single child, merging class names and props.
 This is useful for applying layout to existing components without adding an extra DOM node.
 
-<BoxAsChildExample />
+@reactCodeExample BoxAsChildExample
+
 ## Layout props
 
 Box supports a wide range of layout props that map to CSS properties:
@@ -41,15 +43,18 @@ Each prop accepts Blueprint token values to enforce consistent spacing and sizin
 
 ### Padding
 
-<BoxPaddingExample />
+@reactExample BoxPaddingExample
+
 ### Margin
 
-<BoxMarginExample />
+@reactExample BoxMarginExample
+
 ### Object Card
 
 A practical example demonstrating how to compose a card layout using Box with multiple layout props working together.
 
-<BoxObjectCardExample />
+@reactExample BoxObjectCardExample
+
 ## Props interface
 
 <InterfaceTable name="BoxProps" />
