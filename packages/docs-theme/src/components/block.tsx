@@ -111,11 +111,7 @@ function StringWithInterfaceTables({ html, textClassName }: { html: string; text
     if (lastIndex < html.length) {
         const remaining = html.slice(lastIndex);
         segments.push(
-            <div
-                className={textClassName}
-                key={`html-${lastIndex}`}
-                dangerouslySetInnerHTML={{ __html: remaining }}
-            />,
+            <div className={textClassName} key={`html-${lastIndex}`} dangerouslySetInnerHTML={{ __html: remaining }} />,
         );
     }
 
