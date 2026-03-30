@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { expect } from "vitest";
 
 /**
  * Dispatch a native KeyBoardEvent on the target element with the given type
@@ -96,13 +96,9 @@ export function expectPropValidationError<P extends object>(
     Component: React.ComponentClass<P>,
     props: P & { children?: React.ReactNode },
     errorMessage?: string,
-    assertionMessage?: string,
 ) {
     const { defaultProps = {} } = Component;
     // HACKHACK: weird casts ahead
 
-    expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).to.throw(
-        errorMessage,
-        assertionMessage,
-    );
+    expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).toThrow(errorMessage);
 }
