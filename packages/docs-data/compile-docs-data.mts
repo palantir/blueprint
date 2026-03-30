@@ -8,6 +8,7 @@ import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin }
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
+import packageJson from "package-json";
 import semver from "semver";
 
 import { Classes } from "@blueprintjs/core";
@@ -43,6 +44,7 @@ try {
     if (!existsSync(generatedSrcDir)) {
         mkdirSync(generatedSrcDir);
     }
+    await generateNpmData();
     await generateDocumentalistData();
 } catch (err) {
     // console.error messages get swallowed by lerna but console.log is emitted to terminal.
@@ -107,18 +109,9 @@ async function generateDocumentalistData(): Promise<void> {
     writeFileSync(join(generatedSrcDir, "nav-constants.js"), navConstants);
 }
 
-function transformDocumentalistData(key: string, value: any): any {
+export function transformDocumentalistData(key: string, value: any): any {
     if (key === "versions" && Array.isArray(value)) {
-        // one major version per release
-        const majors = new Map<number, string>();
-        for (const version of value) {
-            const major = semver.major(version);
-            if (!majors.has(major) || semver.gt(version, majors.get(major))) {
-                majors.set(major, version);
-            }
-        }
-        // reverse the list so highest version is first (easier indexing)
-        return Array.from(majors.values()).reverse();
+        return sortMajorVersions(value);
     }
 
     if (typeof value === "string") {
@@ -133,8 +126,63 @@ function transformDocumentalistData(key: string, value: any): any {
  *
  * @param {string} value
  */
-function interpolateClassNamespace(value: string): string {
+export function interpolateClassNamespace(value: string): string {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
+}
+
+async function fetchNpmPackageInfo(
+    packageName: string,
+): Promise<{ name: string; version: string; versions: string[]; nextVersion?: string }> {
+    // Get all package versions
+    const fullData = await packageJson(packageName, { allVersions: true });
+    const allVersions = Object.keys(fullData.versions ?? {});
+
+    const versions = sortMajorVersions(allVersions);
+    const version = fullData["dist-tags"].latest;
+    const nextVersion = fullData["dist-tags"].next;
+
+    return { name: packageName, version: version!, versions, nextVersion };
+}
+
+export function sortMajorVersions(packageVersions: string[]): string[] {
+    const majors = new Map<number, string>();
+    for (const v of packageVersions) {
+        const maj = semver.major(v);
+        if (semver.prerelease(v)) continue;
+        if (!majors.has(maj) || semver.gt(v, majors.get(maj)!)) {
+            majors.set(maj, v);
+        }
+    }
+
+    return Array.from(majors.values()).sort(semver.rcompare);
+}
+
+async function generateNpmData(): Promise<void> {
+    const npmDataFilePath = join(generatedSrcDir, "npm-data.json");
+    const npmData: Record<string, { name: string; version: string; versions: string[]; nextVersion?: string }> = {};
+
+    await Promise.all(
+        LIBRARY_PACKAGES.map(async pkg => {
+            const pkgJsonPath = join(monorepoRootDir, "packages", pkg, "package.json");
+            const { name, version: localVersion } = JSON.parse(readFileSync(pkgJsonPath, "utf-8"));
+            try {
+                // Fetch from the npm registry rather than using localVersion above,
+                // since the local package.json may reference an unpublished or
+                // pre-release version. localVersion is only used as a fallback
+                // if the registry request fails.
+                npmData[name] = await fetchNpmPackageInfo(name);
+            } catch (err) {
+                console.warn(
+                    `[docs-data] WARNING: failed to fetch npm data for ${name}, falling back to local version`,
+                );
+                console.warn(`  ${err}`);
+                npmData[name] = { name, version: localVersion, versions: [localVersion] };
+            }
+        }),
+    );
+
+    writeFileSync(npmDataFilePath, JSON.stringify(npmData) + "\n");
+    console.info("[docs-data] successfully generated npm-data.json");
 }
 
 function validateNavConfig(raw: RawNavStructure): void {
