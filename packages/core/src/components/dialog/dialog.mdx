@@ -66,21 +66,21 @@ to structure its contents:
 The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG` element.
 
-<InterfaceTable name="DialogProps" />
+@interface DialogProps
 
 ### Dialog body props
 
 `<DialogBody>` renders a `Classes.DIALOG_BODY` element, optionally with a constrained container
 height which allows vertical scrolling of its content.
 
-<InterfaceTable name="DialogBodyProps" />
+@interface DialogBodyProps
 
 ### Dialog footer props
 
 `<DialogFooter>` renders a `Classes.DIALOG_FOOTER` element. Footer "actions" are rendered
 towards the right side of the footer container element.
 
-<InterfaceTable name="DialogFooterProps" />
+@interface DialogFooterProps
 
 ## Multistep dialog
 
@@ -94,7 +94,7 @@ corresponding panel.
 This component expects `<DialogStep>` child elements: each "step" is rendered in order and its panel is shown as the
 dialog body content when the corresponding step is selected in the navigation panel.
 
-<InterfaceTable name="MultistepDialogProps" />
+@interface MultistepDialogProps
 
 ### DialogStep
 
@@ -102,4 +102,4 @@ dialog body content when the corresponding step is selected in the navigation pa
 **MultistepDialog** container. Typically, you should render a `<DialogBody>` element as the `panel` element. A step's
 title text can be set via the `title` prop.
 
-<InterfaceTable name="DialogStepProps" />
+@interface DialogStepProps

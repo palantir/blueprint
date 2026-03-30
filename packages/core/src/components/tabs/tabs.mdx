@@ -49,7 +49,7 @@ Other child elements are rendered in order; interactions are your responsibility
 Insert a `<TabsExpander />` between any two children to right-align all subsequent children
 (or bottom-align when `vertical`).
 
-<InterfaceTable name="TabsProps" />
+@interface TabsProps
 
 ### Tab
 
@@ -60,7 +60,7 @@ parent **Tabs** component. Tab title text can be set either via `title` prop or 
 The associated tab `panel` will be visible when the _Tab_ is active. Omitting the `panel` prop is supported; this can
 be useful when you want the associated panel to appear elsewhere in the DOM (by rendering it yourself as needed&mdash;see _TabPanel_).
 
-<InterfaceTable name="TabProps" />
+@interface TabProps
 
 ### TabPanel
 
@@ -91,4 +91,4 @@ function TabsControlledExample() {
 }
 ```
 
-<InterfaceTable name="TabPanelProps" />
+@interface TabPanelProps

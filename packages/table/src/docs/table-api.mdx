@@ -13,7 +13,7 @@ components are available in the **@blueprintjs/table** package.
 The top-level component of the table is **Table**. You must at least define the number of rows (`numRows` prop)
 as well as a set of **Column** children.
 
-<InterfaceTable name="TableProps" />
+@interface TableProps
 
 ### Instance methods
 
@@ -41,14 +41,14 @@ components.
 
 Use the `rowHeaderCellRenderer` prop of **Table** to define row headers.
 
-<InterfaceTable name="ColumnProps" />
+@interface ColumnProps
 
 ## Cell
 
 The **Cell** component renders content in the table body. `<Cell>` elements should be returned from the
 `cellRenderer` method of each **Column**.
 
-<InterfaceTable name="CellProps" />
+@interface CellProps
 
 ## ColumnHeaderCell
 
@@ -58,21 +58,21 @@ The `columnHeaderCellRenderer` method on each **Column** should return a `<Colum
 **ColumnHeaderCell** are rendered below the name of the column. If you want to override the render behavior of the
 name, you can supply a `nameRenderer` prop to the **ColumnHeaderCell**.
 
-<InterfaceTable name="ColumnHeaderCellProps" />
+@interface ColumnHeaderCellProps
 
 ## EditableName
 
 Return a `<EditableName>` from the `nameRenderer` prop on a **ColumnHeaderCell** to enable click-to-edit functionality
 in the column header.
 
-<InterfaceTable name="EditableNameProps" />
+@interface EditableNameProps
 
 ## EditableCell
 
 Return an `<EditableCell>` component from the `cellRenderer` prop on a **Column** to enable double-click-to-edit
 functionality in the table body.
 
-<InterfaceTable name="EditableCellProps" />
+@interface EditableCellProps
 
 ## RowHeaderCell
 
@@ -81,7 +81,7 @@ Optionally customize how each row header is displayed.
 In order to use this API, supply a custom renderer function which returns a `<RowHeaderCell>` from the
 `rowHeaderCellRenderer` prop on the overall **Table**.
 
-<InterfaceTable name="RowHeaderCellProps" />
+@interface RowHeaderCellProps
 
 ## Region
 
@@ -100,7 +100,7 @@ There are four different types of regions:
 
 Regions are defined in code according to the `Region` interface:
 
-<InterfaceTable name="Region" />
+@interface Region
 
 You can construct region objects manually according to this interface, but we recommend using our exported
 **factory methods** to help you construct the appropriate schema for your desired region type:
@@ -187,7 +187,7 @@ return (
 );
 ```
 
-<InterfaceTable name="TruncatedFormatProps" />
+@interface TruncatedFormatProps
 
 ## JSONFormat
 
@@ -202,4 +202,4 @@ return (
 );
 ```
 
-<InterfaceTable name="JSONFormatProps" />
+@interface JSONFormatProps

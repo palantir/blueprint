@@ -92,7 +92,7 @@ root.render(<FilmSelect />);
 
 ## Props interface
 
-<InterfaceTable name="SelectProps" />
+@interface SelectProps
 
 ## Querying
 
@@ -368,7 +368,7 @@ const FilmSelect: React.FC = () => (
 );
 ```
 
-<InterfaceTable name="ItemRendererProps" />
+@interface ItemRendererProps
 
 ### Item list renderer
 
@@ -457,4 +457,4 @@ function renderFilteredItems(
 - `initialContent`: (optional) content to render when `query` is empty. Pass `null` to render nothing;
   pass `undefined` (or omit) to render items normally.
 
-<InterfaceTable name="ItemListRendererProps" />
+@interface ItemListRendererProps

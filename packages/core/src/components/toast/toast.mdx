@@ -26,7 +26,7 @@ for example.
 You may also apply the same visual intents to **Toasts** as other core components like
 [**Buttons**](#core/components/button.css).
 
-<InterfaceTable name="ToastProps" />
+@interface ToastProps
 
 ### OverlayToaster
 
@@ -90,7 +90,7 @@ enable `autoFocus` for an individual `OverlayToaster` via a prop, if desired.
 
 </div>
 
-<InterfaceTable name="OverlayToasterProps" />
+@interface OverlayToasterProps
 
 ## Static usage
 
@@ -102,7 +102,7 @@ hide toasts in its given container.
 OverlayToaster.create(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster>;
 ```
 
-<InterfaceTable name="OverlayToasterCreateOptions" />
+@interface OverlayToasterCreateOptions
 
 The toaster will be rendered into a new element appended to the given `container`.
 The `container` determines which element toasts are positioned relative to; the default value of
@@ -141,7 +141,7 @@ new `Toaster` every time a toast needs to be shown. To minimize leaking:
 
 </div>
 
-<InterfaceTable name="Toaster" />
+@interface Toaster
 
 ### Example
 

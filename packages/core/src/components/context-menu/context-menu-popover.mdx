@@ -28,7 +28,7 @@ not hook up any interaction handlers for you and simply renders an opinionated
 Use the `<ContextMenuPopover>` component like any other React component in your tree. Note that this is a controlled
 component which requires its `isOpen` and `targetOffset` props to be defined.
 
-<InterfaceTable name="ContextMenuPopoverProps" />
+@interface ContextMenuPopoverProps
 
 ## Imperative API
 
@@ -40,7 +40,7 @@ export function showContextMenu(props: ContextMenuPopoverProps, options?: ShowCo
 export function hideContextMenu(): void;
 ```
 
-<InterfaceTable name="ShowContextMenuOptions" />
+@interface ShowContextMenuOptions
 
 These are useful in some cases when working with imperative code that does not follow typical React paradigms.
 Note that these functions come with come caveats, and thus they should be used with caution:
