@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-import type { KssPluginData, Tag } from "@documentalist/client";
 import classNames from "classnames";
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
-import { DocumentationContext } from "../common/context";
 import { Example } from "../components/example";
+
+import { cssExampleData } from "./cssExampleData";
 
 const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
 const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;
 
-export const CssExample: React.FC<Tag> = ({ value }) => {
-    const { getDocsData } = useContext(DocumentationContext);
+export interface CssExampleProps {
+    value: string;
+}
+
+function escapeHtml(str: string): string {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+export const CssExample: React.FC<CssExampleProps> = ({ value }) => {
     const [activeModifiers, setActiveModifiers] = useState<Set<string>>(new Set());
 
     const getModifiers = useCallback(
@@ -53,12 +60,14 @@ export const CssExample: React.FC<Tag> = ({ value }) => {
         };
     };
 
-    const { css } = getDocsData() as KssPluginData;
-    if (css == null || css[value] == null) {
+    const data = cssExampleData[value];
+    if (data == null) {
         return null;
     }
 
-    const { markup, markupHtml, modifiers, reference } = css[value];
+    const { markup, modifiers, reference } = data;
+    const markupHtml = useMemo(() => `<pre><code>${escapeHtml(markup)}</code></pre>`, [markup]);
+
     const options = modifiers.map(modifier => (
         <Checkbox
             key={modifier.name}

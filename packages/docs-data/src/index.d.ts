@@ -2,9 +2,9 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-import { MarkdownPluginData, KssPluginData, TypescriptPluginData } from "@documentalist/client";
+import { MarkdownPluginData, TypescriptPluginData } from "@documentalist/client";
 
-export type DocsCompleteData = MarkdownPluginData & KssPluginData & TypescriptPluginData;
+export type DocsCompleteData = MarkdownPluginData & TypescriptPluginData;
 
 export const docsData: DocsCompleteData;
 

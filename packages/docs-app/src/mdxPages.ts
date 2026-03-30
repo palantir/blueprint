@@ -21,13 +21,11 @@
  * 1. Convert @tag lines in the .mdx file to JSX imports
  * 2. Import the .mdx file here
  * 3. Add an entry mapping the page's route ID to the default export
- *
- * Example:
- *   import ColorsContent from "@blueprintjs/core/src/docs/colors.mdx";
- *   export const mdxPages: Record<string, React.ComponentType> = {
- *       colors: ColorsContent,
- *   };
  */
+import SkeletonContent from "@blueprintjs/core/src/components/skeleton/skeleton.mdx";
+import TypographyContent from "@blueprintjs/core/src/docs/typography.mdx";
+
 export const mdxPages: Record<string, React.ComponentType> = {
-    // Add migrated MDX pages here as they are converted.
+    skeleton: SkeletonContent,
+    typography: TypographyContent,
 };

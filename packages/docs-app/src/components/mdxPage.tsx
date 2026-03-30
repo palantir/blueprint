@@ -17,7 +17,7 @@
 import { MDXProvider } from "@mdx-js/react";
 
 import { Classes } from "@blueprintjs/core";
-import { mdxHeadingComponents } from "@blueprintjs/docs-theme";
+import { CssExample, mdxHeadingComponents } from "@blueprintjs/docs-theme";
 
 export interface MdxPageProps {
     /** The compiled MDX component to render. */
@@ -31,7 +31,7 @@ export const MdxPage: React.FC<MdxPageProps> = ({ Content, pageId }) => {
         <div className="docs-page" data-page-id={pageId}>
             <div className="docs-section">
                 <div className={`${Classes.RUNNING_TEXT} ${Classes.TEXT_LARGE}`}>
-                    <MDXProvider components={mdxHeadingComponents}>
+                    <MDXProvider components={{ ...mdxHeadingComponents, CssExample }}>
                         <Content />
                     </MDXProvider>
                 </div>

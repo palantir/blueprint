@@ -15,6 +15,7 @@
  */
 
 declare module "*.mdx" {
-    export const MDXContent: React.ComponentType;
+    const MDXContent: React.ComponentType;
+    export default MDXContent;
     export const frontmatter: Record<string, unknown>;
 }

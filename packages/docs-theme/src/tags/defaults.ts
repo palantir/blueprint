@@ -16,7 +16,6 @@
 
 import type { Tag } from "@documentalist/client";
 
-import { CssExample } from "./css";
 import { Heading } from "./heading";
 import { Method } from "./method";
 import { SeeTag } from "./see";
@@ -24,7 +23,6 @@ import { TypescriptExample } from "./typescript";
 
 export function createDefaultRenderers(): Record<string, React.ComponentType<Tag>> {
     return {
-        css: CssExample,
         heading: Heading,
         interface: TypescriptExample,
         method: Method,

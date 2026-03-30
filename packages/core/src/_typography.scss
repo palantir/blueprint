@@ -9,23 +9,6 @@
 @import "components/icon/icon";
 @include pt-typography-colors;
 
-/*
-Headings
-
-Markup:
-<div>
-  <h1 class="@ns-heading {{.modifier}}">H1 heading</h1>
-  <h2 class="@ns-heading {{.modifier}}">H2 heading</h2>
-  <h3 class="@ns-heading {{.modifier}}">H3 heading</h3>
-  <h4 class="@ns-heading {{.modifier}}">H4 heading</h4>
-  <h5 class="@ns-heading {{.modifier}}">H5 heading</h5>
-  <h6 class="@ns-heading {{.modifier}}">H6 heading</h6>
-</div>
-
-.#{$ns}-text-muted - Change text color to a gentler gray.
-
-Styleguide headings
-*/
 
 .#{$ns}-heading {
   @include heading-typography;
@@ -72,28 +55,6 @@ $headings: (
   }
 }
 
-/*
-UI text
-
-Markup:
-<div class="{{.modifier}}">
-  More than a decade ago, we set out to create products that would transform
-  the way organizations use their data. Today, our products are deployed at
-  the most critical government, commercial, and non-profit institutions in
-  the world to solve problems we hadn’t even dreamed of back then.
-</div>
-
-.#{$ns}-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
-.#{$ns}-monospace-text - Use a monospace font (ideal for code).
-.#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
-.#{$ns}-text-large - Use a larger font size.
-.#{$ns}-text-small - Use a smaller font size.
-.#{$ns}-text-muted - Change text color to a gentler gray. This text color meets [minimum contrast standards of WCAG 2.1](https://www.w3.org/TR/WCAG21/#contrast-minimum) for $white through $light-gray4 in light theme, and $black through $dark-gray4 in dark theme.
-.#{$ns}-text-disabled - Change text color to a transparent, faded gray. This text color will not meet minimum contrast standards and should only be used on "incidental" text as defined by [WCAG 2.1 Contrast Minimum](https://www.w3.org/TR/WCAG21/#contrast-minimum), either purely decorative, or text of a disabled UI element.
-.#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
-
-Styleguide ui-text
-*/
 
 .#{$ns}-ui-text {
   @include base-typography;
@@ -109,33 +70,6 @@ Styleguide ui-text
   @include overflow-ellipsis;
 }
 
-/*
-Running text
-
-Markup:
-<div class="@ns-running-text {{.modifier}}">
-  <p>
-    We build products that make people better at their most important
-    work — the kind of work you read about on the front page of the
-    newspaper, not just the technology section.
-  </p>
-  <ul>
-    <li>Item the <code>first</code>.</li>
-    <li>Item the <strong>second</strong>.</li>
-    <li>Item the <a href="#core/typography.running-text">third</a>.</li>
-  </ul>
-  <h3>Scale, Speed, Agility</h3>
-  <p>
-    A successful data transformation requires the whole organization — users, the IT shop, and
-    leadership — to operate in lockstep. With Foundry, the enterprise comes together to
-    transform the organization and turn data into a competitive advantage.
-  </p>
-</div>
-
-.#{$ns}-text-large - Use larger font size.
-
-Styleguide running-text
-*/
 
 .#{$ns}-running-text {
   @include running-typography;
@@ -197,16 +131,6 @@ Styleguide running-text
   // line-height comes from .@ns-(ui|running)-text
 }
 
-/*
-Links
-
-Simply use an `<a href="">` tag as you normally would. No class is necessary for Blueprint styles.
-Links are underlined only when hovered.
-
-Putting an icon inside a link will cause it to inherit the link's text color.
-
-Styleguide typography.links
-*/
 
 a {
   text-decoration: none;
@@ -217,27 +141,6 @@ a {
   }
 }
 
-/*
-Preformatted text
-
-Markup:
-<div>
-  <p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
-  <pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
-  <pre class="@ns-code-block"><code>// code sample
-export function hasModifier(
-  modifiers: ts.ModifiersArray,
-  ...modifierKinds: ts.SyntaxKind[],
-) {
-  if (modifiers == null || modifierKinds == null) {
-    return false;
-  }
-  return modifiers.some(m => modifierKinds.some(k => m.kind === k));
-}</code></pre>
-</div>
-
-Styleguide preformatted
-*/
 
 %code {
   @include monospace-typography;
@@ -293,19 +196,6 @@ Styleguide preformatted
   @extend %keyboard;
 }
 
-/*
-Block quotes
-
-Markup:
-<blockquote class="@ns-blockquote">
-  Premium Aerotec is a key supplier for Airbus, producing 30 million parts per year,
-  which is huge complexity. Skywise helps us manage all the production steps.
-  It gives Airbus much better visibility into where the product is in the supply chain,
-  and it lets us immediately see our weak points so we can react on the spot.
-</blockquote>
-
-Styleguide blockquote
-*/
 
 %blockquote {
   border-left: solid $pt-spacing rgba($gray4, 0.5);
@@ -321,27 +211,6 @@ Styleguide blockquote
   @extend %blockquote;
 }
 
-/*
-Lists
-
-Markup:
-<ol class="{{.modifier}}">
-  <li>Item the first</li>
-  <li>Item the second</li>
-  <li>
-    Item the third
-    <ul class="{{.modifier}}">
-      <li>Item the fourth</li>
-      <li>Item the fifth</li>
-    </ul>
-  </li>
-</ol>
-
-.#{$ns}-list - Add a little spacing between items for readability.
-.#{$ns}-list-unstyled - Remove all list styling (including indicators) so you can add your own.
-
-Styleguide lists
-*/
 
 %list {
   margin: ($pt-spacing * 2) 0;
@@ -372,31 +241,11 @@ Styleguide lists
   }
 }
 
-/*
-Right-to-left text
-
-Markup:
-<h5 class="@ns-heading">Arabic:</h5>
-<p class="@ns-rtl">
-  لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
-  من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
-</p>
-<h5 class="@ns-heading">Hebrew:</h5>
-<p class="@ns-rtl">
-  כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
-  מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
-</p>
-
-Styleguide rtl
-*/
 
 .#{$ns}-rtl {
   text-align: right;
 }
 
-/*
-Dark theme
-*/
 
 .#{$ns}-dark {
   @include pt-dark-typography-colors;
