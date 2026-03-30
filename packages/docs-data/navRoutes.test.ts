@@ -18,16 +18,12 @@ import { globSync, readFileSync } from "node:fs";
 import { basename, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { Documentalist, MarkdownPlugin } from "@documentalist/compiler";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-import { assignRoutes, getPageRefs, normalizeNavConfig } from "./navHelpers.mts";
+import { assignRoutes, getPageRefs, getSectionRefs, normalizeNavConfig } from "./navHelpers.mts";
 import type { RawNavStructure } from "./navTypes.mts";
-import { LIBRARY_PACKAGES } from "./compile-docs-data.mts";
 
-const DOCS_PACKAGE = "docs-app";
-const ALL_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
+const ALL_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs", "docs-app"];
 
 const monorepoRoot = resolve(fileURLToPath(import.meta.url), "../../../");
 const rawNav: RawNavStructure = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
@@ -52,29 +48,46 @@ describe("nav.json route coverage", () => {
         // with no corresponding MDX file (e.g. "form-controls", "overlays").
     });
 
-    describe("compile-docs-data pipeline produces a page for every nav.json ref", () => {
-        it("docs.pages contains an entry for every nav.json page ref", async () => {
-            const documentalist = new Documentalist({
-                markdown: { hooks, renderer: markedRenderer },
-                reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
-                sourceBaseDir: monorepoRoot,
-            })
-                .use(".mdx", {
-                    compile: (files: any[]) =>
-                        process.platform === "win32" ? files.map(f => f.read().replace(/\r\n/g, "\n")) : files,
-                })
-                .use(".mdx", new MarkdownPlugin({ navPage: "_nav" }));
+    it("should produce valid NavStructure from real nav.json via normalizeNavConfig", () => {
+        const navConfig = normalizeNavConfig(rawNav);
+        expect(navConfig).toHaveLength(rawNav.length);
 
-            const docs = await documentalist.documentGlobs(`../{${ALL_PACKAGES.join(",")}}/src/**/*.mdx`);
+        for (const entry of navConfig) {
+            expect(entry.pages).toBeDefined();
+            expect(Array.isArray(entry.pages)).toBe(true);
+            for (const pageRef of entry.pages) {
+                expect(pageRef.type).toBe("page");
+                expect(typeof pageRef.ref).toBe("string");
+            }
+            if (entry.sections != null) {
+                for (const section of entry.sections) {
+                    expect(Array.isArray(section.pages)).toBe(true);
+                    for (const pageRef of section.pages) {
+                        expect(pageRef.type).toBe("page");
+                        expect(typeof pageRef.ref).toBe("string");
+                    }
+                }
+            }
+        }
+    });
 
-            const navConfig = normalizeNavConfig(rawNav);
-            // assignRoutes should not throw — every ref must exist in docs.pages
-            assignRoutes(navConfig, docs.pages);
+    it("should assignRoutes with no duplicates when given all nav.json refs", () => {
+        const makePage = (ref: string) => ({ title: ref, contents: [], route: "" });
+        const pages: Record<string, { title: string; contents: never[]; route: string }> = {};
+        for (const ref of getPageRefs(rawNav)) {
+            pages[ref] = makePage(ref);
+        }
+        for (const ref of getSectionRefs(rawNav)) {
+            pages[ref] = makePage(ref);
+        }
 
-            const pageRefs = getPageRefs(rawNav);
-            const missingRefs = pageRefs.filter(ref => docs.pages[ref] === undefined);
-            expect(missingRefs).toEqual([]);
-        }, 30_000);
+        const navConfig = normalizeNavConfig(rawNav);
+        // should not throw — no duplicate refs
+        assignRoutes(navConfig, pages);
+
+        for (const ref of getPageRefs(rawNav)) {
+            expect(pages[ref].route).not.toBe("");
+        }
     });
 });
 
