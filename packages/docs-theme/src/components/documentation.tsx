@@ -52,7 +52,6 @@ export interface MdxPageRendererProps {
     pageId: string;
 }
 
-
 export interface DocumentationProps extends Props {
     /**
      * An element to place above the documentation, along the top of the viewport.

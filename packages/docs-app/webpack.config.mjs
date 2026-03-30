@@ -26,9 +26,9 @@ import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
 // Extract the resolved swc-loader path from the base config's TypeScript rule,
 // since swc-loader is a dependency of webpack-build-scripts, not docs-app.
-const swcLoaderPath = baseConfig.module?.rules
-    ?.find(rule => rule && typeof rule === "object" && rule.test?.toString().includes("tsx?") && "loader" in rule)
-    ?.loader;
+const swcLoaderPath = baseConfig.module?.rules?.find(
+    rule => rule && typeof rule === "object" && rule.test?.toString().includes("tsx?") && "loader" in rule,
+)?.loader;
 
 export default {
     ...baseConfig,
