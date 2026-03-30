@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "6.5.2",
+    "version": "6.8.0",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/generated/index.js",
     "module": "lib/esm/generated/index.js",
@@ -67,7 +67,7 @@
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
         "svg-parser": "^2.0.4",
-        "typescript": "~5.3.3",
+        "typescript": "~5.9.3",
         "webpack-cli": "^5.1.4"
     },
     "repository": {

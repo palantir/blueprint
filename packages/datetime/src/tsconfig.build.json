@@ -1,0 +1,17 @@
+{
+    "extends": "../../../config/tsconfig.web",
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "../lib/esm"
+    },
+    "exclude": [
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "common/dateFormatTestUtils.ts",
+        "common/dayPickerTestUtils.ts",
+        "common/loadDateFnsLocaleFake.ts",
+        "vitest-env.d.ts"
+    ]
+}

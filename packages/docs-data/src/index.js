@@ -3,6 +3,9 @@
  * @fileoverview Exports JSON data for packages/docs-app
  */
 
+// TODO: migrate this file to ESM in a future major version so we can import
+// PACKAGES and SECTIONS directly from navTypes.mts instead of requiring
+// a generated CJS bridge file.
 module.exports = {
     npmData: require("./generated/npm-data.json"),
     // Note: docsData, propsRegistry, and pageRegistry are loaded at runtime by webpack's TS compilation.

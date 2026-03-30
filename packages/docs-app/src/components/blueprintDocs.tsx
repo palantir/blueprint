@@ -31,6 +31,7 @@ import {
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
+import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
@@ -44,17 +45,8 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 
-// HACKHACK: this is brittle
-// detect Components page and subheadings
-const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
-const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
-const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
-const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
-const isNavSection = ({ route }: HeadingNode) =>
-    COMPONENTS_PATTERN.test(route) ||
-    CONTEXT_PATTERN.test(route) ||
-    HOOKS_PATTERN.test(route) ||
-    LEGACY_PATTERN.test(route);
+const sectionPatterns = SECTIONS.map(name => new RegExp(`/${name}(\\.[\\w-]+)?$`));
+const isNavSection = ({ route }: HeadingNode) => sectionPatterns.some(pattern => pattern.test(route));
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -217,6 +209,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         );
 
         await highlightCodeBlocks();
+        addCopyButtonsToImportBlocks();
     };
 
     private handleToggleDark = async (useDark: boolean) => {
@@ -225,5 +218,6 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         this.setState({ themeName: nextThemeName });
 
         await highlightCodeBlocks();
+        addCopyButtonsToImportBlocks();
     };
 }

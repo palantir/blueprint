@@ -85,6 +85,7 @@ export { PopoverAnimation, PopoverInteractionKind, type PopoverProps } from "./p
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
     MiddlewareConfig,
+    PopoverNextAutoUpdateOptions,
     PopoverNextBoundary,
     PopoverNextPlacement,
     PopoverNextPositioningStrategy,
@@ -92,6 +93,10 @@ export type {
     PopoverNextRootBoundary,
 } from "./popover-next/popoverNextProps";
 export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
+export {
+    popoverPositionToNextPlacement,
+    popperModifiersToNextMiddleware,
+} from "./popover-next/popoverNextMigrationUtils";
 export type {
     DefaultPopoverTargetHTMLProps,
     PopoverSharedProps,

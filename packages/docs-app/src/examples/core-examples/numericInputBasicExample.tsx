@@ -198,7 +198,7 @@ const FilterMenu: React.FC = () => (
 
 interface SelectMenuProps {
     label: string;
-    onChange: React.FormEventHandler;
+    onChange: React.ChangeEventHandler;
     options: OptionProps[];
     value: number | string;
 }

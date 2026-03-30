@@ -71,3 +71,6 @@ export interface DocsCompleteData {
 }
 
 export const docsData: DocsCompleteData;
+
+export { PACKAGES, SECTIONS } from "../navTypes.mts";
+export type { Package, Section } from "../navTypes.mts";

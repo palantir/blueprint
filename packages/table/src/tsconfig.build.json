@@ -1,0 +1,17 @@
+{
+    "extends": "../../../config/tsconfig.web",
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "../lib/esm"
+    },
+    "exclude": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.stories.ts",
+        "**/*.stories.tsx",
+        "harness.ts",
+        "cell/cellTestUtils.ts",
+        "mocks/**",
+        "isotest.mjs"
+    ]
+}

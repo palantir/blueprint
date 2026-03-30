@@ -9,7 +9,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/tes
 
 import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { Button, PopupKind, Tooltip } from "../../components";
+import { Button, Dialog, DialogBody, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 
 import { PopoverNext } from "./popoverNext";
@@ -116,6 +116,17 @@ describe("<PopoverNext>", () => {
     });
 
     describe("rendering", () => {
+        it("applies className to the target wrapper element", () => {
+            const { container } = render(
+                <PopoverNext className="my-custom-class" content="content">
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).toHaveClass("my-custom-class");
+        });
+
         it("adds POPOVER_OPEN class to target when the popover is open", async () => {
             const user = userEvent.setup();
             const { container } = render(
@@ -860,6 +871,34 @@ describe("<PopoverNext>", () => {
 
                 expect(onInteraction).toHaveBeenCalledOnce();
                 expect(onInteraction).toHaveBeenCalledWith(false, expect.anything());
+            });
+
+            it("is not invoked when clicking inside a child Dialog rendered in popover content", async () => {
+                const user = userEvent.setup();
+                const onInteraction = vi.fn();
+                render(
+                    <PopoverNext
+                        content={
+                            <Dialog isOpen={true} title="Child dialog" usePortal={true}>
+                                <DialogBody>
+                                    <Button text="dialog button" />
+                                </DialogBody>
+                            </Dialog>
+                        }
+                        isOpen={true}
+                        onInteraction={onInteraction}
+                    >
+                        <Button text="target" />
+                    </PopoverNext>,
+                );
+
+                await waitFor(() => expect(screen.getByRole("button", { name: "dialog button" })).toBeInTheDocument());
+
+                onInteraction.mockClear();
+
+                await user.click(screen.getByRole("button", { name: "dialog button" }));
+
+                expect(onInteraction).not.toHaveBeenCalledWith(false, expect.anything());
             });
         });
 

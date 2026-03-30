@@ -29,6 +29,54 @@ export type {
 } from "./middlewareTypes";
 
 /**
+ * Options to configure how the popover position is automatically updated.
+ * Blueprint-owned interface mapping to floating-ui's `AutoUpdateOptions`.
+ *
+ * @see https://floating-ui.com/docs/autoUpdate
+ */
+export interface PopoverNextAutoUpdateOptions {
+    /**
+     * Whether to update the position when an overflow ancestor is scrolled.
+     *
+     * @default true
+     */
+    ancestorScroll?: boolean;
+
+    /**
+     * Whether to update the position when an overflow ancestor is resized.
+     * This uses the native `resize` event.
+     *
+     * @default true
+     */
+    ancestorResize?: boolean;
+
+    /**
+     * Whether to update the position when either the reference or floating
+     * elements resized. This uses a `ResizeObserver`.
+     *
+     * @default true
+     */
+    elementResize?: boolean;
+
+    /**
+     * Whether to update the position when the reference relocated on the
+     * screen due to layout shift.
+     *
+     * @default true
+     */
+    layoutShift?: boolean;
+
+    /**
+     * Whether to update on every animation frame if necessary. Only use if
+     * you need to update the position in response to an animation using
+     * transforms.
+     *
+     * @default false
+     */
+    animationFrame?: boolean;
+}
+
+/**
  * Props interface for PopoverNext component.
  */
 export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps> {
@@ -45,6 +93,20 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * @default true
      */
     arrow?: boolean;
+
+    /**
+     * Options forwarded to floating-ui's `autoUpdate` to configure how the popover
+     * position is automatically updated while it is open. By default, all `autoUpdate`
+     * behaviors are enabled (`ancestorScroll`, `ancestorResize`, `elementResize`, and
+     * `layoutShift`).
+     *
+     * Use this prop to disable specific behaviors when they cause issues — for example,
+     * disabling `layoutShift` to prevent a positioning feedback loop with adjacent
+     * `ResizeObserver`-driven elements.
+     *
+     * @see https://floating-ui.com/docs/autoUpdate
+     */
+    autoUpdateOptions?: PopoverNextAutoUpdateOptions;
 
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
@@ -73,6 +135,11 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
 
     /** Whether the popover can be closed by pressing the Escape key. */
     canEscapeKeyClose?: boolean;
+
+    /**
+     * A space-delimited string of class names applied to the popover's target wrapper element.
+     */
+    className?: string;
 
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
