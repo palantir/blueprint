@@ -13,17 +13,17 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
 import postcss from "postcss";
+import { describe, expect, it } from "vitest";
 
-import { CssSyntax } from "../lib/utils/cssSyntax.js";
-import { insertImport } from "../lib/utils/insertImport.js";
+import { CssSyntax } from "../src/utils/cssSyntax";
+import { insertImport } from "../src/utils/insertImport";
 
 describe("insertImport", () => {
     it("Inserts an import at the top of the file when no imports are present", () => {
         const root = postcss.parse(`.some-class { width: 10px }`);
         insertImport(CssSyntax.LESS, root, { newline: "\n" }, "some_path");
-        expect(root.toString()).to.be.eq(`@import "some_path";
+        expect(root.toString()).toBe(`@import "some_path";
 
 .some-class { width: 10px }`);
     });
@@ -33,7 +33,7 @@ describe("insertImport", () => {
 @import "some_path1";
 .some-class { width: 10px }`);
         insertImport(CssSyntax.LESS, root, { newline: "\n" }, "some_path2");
-        expect(root.toString()).to.be.eq(`
+        expect(root.toString()).toBe(`
 @import "some_path1";
 @import "some_path2";
 .some-class { width: 10px }`);
@@ -45,7 +45,7 @@ describe("insertImport", () => {
 
 .some-class { width: 10px }`);
         insertImport(CssSyntax.LESS, root, { newline: "\n" }, "some_path");
-        expect(root.toString()).to.be.eq(`
+        expect(root.toString()).toBe(`
 /* copyright 2021 */
 
 @import "some_path";
@@ -61,7 +61,7 @@ describe("insertImport", () => {
 
 .some-class { width: 10px }`);
         insertImport(CssSyntax.SASS, root, { newline: "\n" }, "some_path");
-        expect(root.toString()).to.be.eq(`
+        expect(root.toString()).toBe(`
 /* copyright 2021
  * and some additional licensing info here
  */
@@ -80,7 +80,7 @@ describe("insertImport", () => {
 
 .some-class { width: 10px }`);
         insertImport(CssSyntax.LESS, root, { newline: "\n" }, "some_path3");
-        expect(root.toString()).to.be.eq(`
+        expect(root.toString()).toBe(`
 /* copyright 2021 */
 
 @import "some_path1";
@@ -99,7 +99,7 @@ describe("insertImport", () => {
 
 .some-class { width: 10px }`);
         insertImport(CssSyntax.SASS, root, { newline: "\n" }, "some_path3", "foo");
-        expect(root.toString()).to.be.eq(`
+        expect(root.toString()).toBe(`
 /* copyright 2021 */
 
 @use "some_path1";
@@ -120,7 +120,7 @@ describe("insertImport", () => {
 .some-class { width: 10px }
     `);
         insertImport(CssSyntax.LESS, root, { newline: "\n" }, "some_path");
-        expect(root.toString()).to.be.eq(`@import "some_path";
+        expect(root.toString()).toBe(`@import "some_path";
 
 @media only screen and (max-width: 600px) {
     body {

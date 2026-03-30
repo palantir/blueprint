@@ -18,6 +18,7 @@ export default defineConfig({
             "packages/labs/vitest.config.mts",
             "packages/node-build-scripts/vitest.config.mts",
             "packages/select/vitest.config.mts",
+            "packages/stylelint-plugin/vitest.config.mts",
             "packages/table/vitest.config.mts",
         ],
     },

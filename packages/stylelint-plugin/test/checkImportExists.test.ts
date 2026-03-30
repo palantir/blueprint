@@ -13,16 +13,16 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
 import postcss from "postcss";
+import { describe, expect, it } from "vitest";
 
-import { checkImportExists } from "../lib/utils/checkImportExists.js";
-import { CssSyntax } from "../lib/utils/cssSyntax.js";
+import { checkImportExists } from "../src/utils/checkImportExists";
+import { CssSyntax } from "../src/utils/cssSyntax";
 
 describe("checkImportExists", () => {
     it("Returns false if no imports exist", () => {
         const root = postcss.parse(`.some-class { width: 10px }`);
-        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.false;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).toBe(false);
     });
 
     it("Returns false if imports exist but not the one we want", () => {
@@ -34,7 +34,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.false;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).toBe(false);
     });
 
     it("Returns true if our import exists", () => {
@@ -46,7 +46,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.true;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).toBe(true);
     });
 
     it("Returns true if our import exists, and works with single quotes", () => {
@@ -58,7 +58,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.true;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).toBe(true);
     });
 
     it("Returns true if our sass import exists, and works with single quotes", () => {
@@ -70,7 +70,7 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(CssSyntax.SASS, root, "some_path", "foo")).to.be.true;
+        expect(checkImportExists(CssSyntax.SASS, root, "some_path", "foo")).toBe(true);
     });
 
     it("Can match multiple paths", () => {
@@ -80,11 +80,11 @@ describe("checkImportExists", () => {
     width: 10px;
 }
     `);
-        expect(checkImportExists(CssSyntax.SASS, root, "some_path")).to.be.true;
+        expect(checkImportExists(CssSyntax.SASS, root, "some_path")).toBe(true);
     });
 
     it("Handles less references", () => {
         const root = postcss.parse(`@import (reference) "some_path";`);
-        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).to.be.true;
+        expect(checkImportExists(CssSyntax.LESS, root, "some_path")).toBe(true);
     });
 });
