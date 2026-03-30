@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Alignment, Elevation } from "../../common";
 
@@ -69,19 +70,24 @@ export const Default: Story = {
     args: {
         label: "Checkbox option",
     },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+        return <CheckboxCard {...args} onChange={handleChange} />;
+    },
 };
 
 /**
- * Use the `size` prop to render a medium or large checkbox card.
+ * Use the `compact` prop to render a medium or large checkbox card.
  */
-export const SizeExample: Story = {
-    name: "Size",
+export const CompactExample: Story = {
+    name: "Compact",
     argTypes: {
         compact: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <CheckboxCard {...args} compact={false} label="Default" defaultChecked={true} />
+            <CheckboxCard {...args} label="Default" defaultChecked={true} />
             <CheckboxCard {...args} compact={true} label="Compact" defaultChecked={true} />
         </div>
     ),
@@ -108,11 +114,31 @@ export const StateExample: Story = {
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Use the `alignIndicator` prop to render start or end-aligned.
+ */
+export const AlignIndicatorExample: Story = {
+    name: "Align Indicator",
+    argTypes: {
+        alignIndicator: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <CheckboxCard {...args} alignIndicator={Alignment.START} label="Align start" defaultChecked={true} />
+            <CheckboxCard {...args} alignIndicator={Alignment.END} label="Align end" defaultChecked={true} />
+        </div>
+    ),
+};
+
+/**
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
-    render: args => <CheckboxCard {...args} />,
     args: {
         label: "Playground checkbox card",
+    },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+        return <CheckboxCard {...args} onChange={handleChange} />;
     },
 };

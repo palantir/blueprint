@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Alignment, Elevation } from "../../common";
 
@@ -68,13 +69,18 @@ export const Default: Story = {
     args: {
         label: "Switch option",
     },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+        return <SwitchCard {...args} onChange={handleChange} />;
+    },
 };
 
 /**
  * Use the `compact` prop to render a more condensed switch card.
  */
-export const SizeExample: Story = {
-    name: "Size",
+export const CompactExample: Story = {
+    name: "Compact",
     argTypes: {
         compact: { table: { disable: true } },
     },
@@ -107,11 +113,31 @@ export const StateExample: Story = {
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Use the `alignIndicator` prop to render start or end-aligned.
+ */
+export const AlignIndicatorExample: Story = {
+    name: "Align Indicator",
+    argTypes: {
+        alignIndicator: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <SwitchCard {...args} alignIndicator={Alignment.START} label="Align start" defaultChecked={true} />
+            <SwitchCard {...args} alignIndicator={Alignment.END} label="Align end" defaultChecked={true} />
+        </div>
+    ),
+};
+
+/**
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
-    render: args => <SwitchCard {...args} />,
     args: {
         label: "Playground switch card",
+    },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+        return <SwitchCard {...args} onChange={handleChange} />;
     },
 };
