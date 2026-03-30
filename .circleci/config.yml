@@ -176,6 +176,14 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
+  chromatic:
+    docker: *docker-node-image
+    steps:
+      - checkout
+      - attach_workspace: { at: "." }
+      - run: sudo corepack enable
+      - run: npx chromatic --storybook-build-dir storybook-static --exit-zero-on-changes
+
   deploy-preview:
     docker: *docker-node-image
     steps:
@@ -226,6 +234,8 @@ workflows:
           requires: [compile]
       - test-iso-react-18:
           requires: [compile]
+      - chromatic:
+          requires: [dist]
       - deploy-preview:
           requires: [dist]
       - store-packages:
