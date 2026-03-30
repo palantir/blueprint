@@ -4,7 +4,7 @@
  * @fileoverview Generates data for packages/docs-app
  */
 
-import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin } from "@documentalist/compiler";
+import { Documentalist, KssPlugin, MarkdownPlugin, TypescriptPlugin } from "@documentalist/compiler";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
@@ -80,8 +80,7 @@ async function generateDocumentalistData(): Promise<void> {
                 verbose: true,
             }),
         )
-        .use(".scss", new KssPlugin())
-        .use("package.json", new NpmPlugin());
+        .use(".scss", new KssPlugin());
 
     const docs = await documentalist.documentGlobs(
         `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.mdx`,
