@@ -25,7 +25,7 @@ import {
 } from "./navTypes.mts";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
-const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
+export const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
 
 /** This package is expected to have the markdown "navPage" */
 const DOCS_PACKAGE = "docs-app";
@@ -64,14 +64,14 @@ async function generateDocumentalistData(): Promise<void> {
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
         sourceBaseDir: monorepoRootDir,
     })
-        .use(".md", {
+        .use(".mdx", {
             compile: files =>
                 // HACKHACK: special case for Windows environment
                 // see https://github.com/palantir/documentalist/issues/98
                 process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
         })
         // TODO: once documentalist is fully removed, stop generating nav via documentalist
-        .use(".md", new MarkdownPlugin({ navPage: "_nav" }))
+        .use(".mdx", new MarkdownPlugin({ navPage: "_nav" }))
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
@@ -84,7 +84,7 @@ async function generateDocumentalistData(): Promise<void> {
         .use("package.json", new NpmPlugin());
 
     const docs = await documentalist.documentGlobs(
-        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
+        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.mdx`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
         `../{${LIBRARY_PACKAGES}}/package.json`,
