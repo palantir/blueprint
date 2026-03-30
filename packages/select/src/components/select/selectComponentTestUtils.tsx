@@ -18,7 +18,7 @@ import type { ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
 import { Classes, type HTMLInputProps } from "@blueprintjs/core";
-import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     areFilmsEqual,
@@ -48,11 +48,30 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
         query: "19",
     };
 
+    let mountedWrappers: Array<ReactWrapper<P, S>> = [];
+    const originalRender = render;
+    render = (props: ListItemsProps<Film>) => {
+        const wrapper = originalRender(props);
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    };
+
     beforeEach(() => {
         testProps.itemRenderer.resetHistory();
         testProps.onActiveItemChange.resetHistory();
         testProps.onItemSelect.resetHistory();
         testProps.onQueryChange.resetHistory();
+    });
+
+    afterEach(() => {
+        for (const wrapper of mountedWrappers) {
+            try {
+                wrapper.unmount();
+            } catch {
+                // best-effort
+            }
+        }
+        mountedWrappers = [];
     });
 
     describe("common behavior", () => {
