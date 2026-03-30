@@ -14,6 +14,7 @@ export default defineConfig({
             "packages/core/vitest.config.mts",
             "packages/datetime/vitest.config.mts",
             "packages/docs-data/vitest.config.mts",
+            "packages/eslint-plugin/vitest.config.mts",
             "packages/icons/vitest.config.mts",
             "packages/labs/vitest.config.mts",
             "packages/node-build-scripts/vitest.config.mts",
