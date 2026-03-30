@@ -16,7 +16,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { docsData } from "@blueprintjs/docs-data";
+import { docsData, propsRegistry } from "@blueprintjs/docs-data";
 import {
     createDefaultRenderers,
     ReactCodeExampleTagRenderer,
@@ -47,6 +47,6 @@ const container = document.getElementById("blueprint-documentation");
 const root = createRoot(container);
 root.render(
     <StrictMode>
-        <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />
+        <BlueprintDocs defaultPageId="blueprint" docs={docsData} propsRegistry={propsRegistry} tagRenderers={tagRenderers} useNextVersion={false} />
     </StrictMode>,
 );

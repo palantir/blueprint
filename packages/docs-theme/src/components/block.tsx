@@ -16,11 +16,16 @@
 
 import type { Block } from "@documentalist/client";
 import classNames from "classnames";
-import { createElement } from "react";
+import { createElement, useContext } from "react";
 
 import { Classes, Code, H3 } from "@blueprintjs/core";
 
+import { DocumentationContext } from "../common/context";
 import type { TagRendererMap } from "../tags";
+
+import { PropsTable } from "./propsTable";
+
+const INTERFACE_TABLE_RE = /<InterfaceTable\s+name="([^"]+)"\s*\/>/g;
 
 export function renderBlock(
     /** the block to render */
@@ -36,6 +41,11 @@ export function renderBlock(
     const textClasses = classNames(Classes.RUNNING_TEXT, textClassName);
     const contents = block.contents.map((node, i) => {
         if (typeof node === "string") {
+            if (INTERFACE_TABLE_RE.test(node)) {
+                // Reset lastIndex after test()
+                INTERFACE_TABLE_RE.lastIndex = 0;
+                return <StringWithInterfaceTables key={i} html={node} textClassName={textClasses} />;
+            }
             return <div className={textClasses} key={i} dangerouslySetInnerHTML={{ __html: node }} />;
         }
         try {
@@ -54,4 +64,60 @@ export function renderBlock(
         }
     });
     return <div className="docs-section">{contents}</div>;
+}
+
+/**
+ * Renders a string node that contains one or more `<InterfaceTable name="..." />`
+ * elements by splitting the HTML into segments and replacing matches with
+ * React-rendered PropsTable components.
+ */
+function StringWithInterfaceTables({ html, textClassName }: { html: string; textClassName: string }) {
+    const { getPropsRegistry } = useContext(DocumentationContext);
+    const registry = getPropsRegistry?.();
+    const segments: React.ReactNode[] = [];
+    let lastIndex = 0;
+    let match: RegExpExecArray | null;
+
+    INTERFACE_TABLE_RE.lastIndex = 0;
+    while ((match = INTERFACE_TABLE_RE.exec(html)) !== null) {
+        // Add any HTML before this match
+        if (match.index > lastIndex) {
+            const preceding = html.slice(lastIndex, match.index);
+            segments.push(
+                <div
+                    className={textClassName}
+                    key={`html-${lastIndex}`}
+                    dangerouslySetInnerHTML={{ __html: preceding }}
+                />,
+            );
+        }
+
+        const name = match[1]!;
+        const info = registry?.[name];
+        if (info != null) {
+            segments.push(<PropsTable key={`props-${name}`} {...info} />);
+        } else {
+            segments.push(
+                <H3 key={`missing-${name}`}>
+                    <Code>InterfaceTable: &quot;{name}&quot; not found in propsRegistry</Code>
+                </H3>,
+            );
+        }
+
+        lastIndex = match.index + match[0].length;
+    }
+
+    // Add any remaining HTML after the last match
+    if (lastIndex < html.length) {
+        const remaining = html.slice(lastIndex);
+        segments.push(
+            <div
+                className={textClassName}
+                key={`html-${lastIndex}`}
+                dangerouslySetInnerHTML={{ __html: remaining }}
+            />,
+        );
+    }
+
+    return <>{segments}</>;
 }

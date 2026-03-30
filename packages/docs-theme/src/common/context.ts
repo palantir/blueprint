@@ -61,6 +61,9 @@ export interface DocumentationContextApi {
     /** Render the text of a "View source" link. */
     renderViewSourceLinkText: (entry: TsDocBase) => ReactNode;
 
+    /** Get the props registry data, if available. */
+    getPropsRegistry?: () => Record<string, any> | undefined;
+
     /** Open the API browser to the given member name. */
     showApiDocs: (name: string) => void;
 }

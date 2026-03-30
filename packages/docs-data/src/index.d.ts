@@ -8,5 +8,8 @@ export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginDat
 
 export const docsData: DocsCompleteData;
 
+export { type PropsRegistry } from "./types";
+export const propsRegistry: import("./types").PropsRegistry;
+
 export { PACKAGES, SECTIONS } from "../navTypes.mts";
 export type { Package, Section } from "../navTypes.mts";
