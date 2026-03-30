@@ -14,12 +14,12 @@ Headings
 
 Markup:
 <div>
-  <h1 class="@ns-heading {{.modifier}}">H1 heading</h1>
-  <h2 class="@ns-heading {{.modifier}}">H2 heading</h2>
-  <h3 class="@ns-heading {{.modifier}}">H3 heading</h3>
-  <h4 class="@ns-heading {{.modifier}}">H4 heading</h4>
-  <h5 class="@ns-heading {{.modifier}}">H5 heading</h5>
-  <h6 class="@ns-heading {{.modifier}}">H6 heading</h6>
+  <h1 class="bp6-heading {{.modifier}}">H1 heading</h1>
+  <h2 class="bp6-heading {{.modifier}}">H2 heading</h2>
+  <h3 class="bp6-heading {{.modifier}}">H3 heading</h3>
+  <h4 class="bp6-heading {{.modifier}}">H4 heading</h4>
+  <h5 class="bp6-heading {{.modifier}}">H5 heading</h5>
+  <h6 class="bp6-heading {{.modifier}}">H6 heading</h6>
 </div>
 
 .#{$ns}-text-muted - Change text color to a gentler gray.
@@ -113,7 +113,7 @@ Styleguide ui-text
 Running text
 
 Markup:
-<div class="@ns-running-text {{.modifier}}">
+<div class="bp6-running-text {{.modifier}}">
   <p>
     We build products that make people better at their most important
     work — the kind of work you read about on the front page of the
@@ -186,15 +186,15 @@ Styleguide running-text
   }
 }
 
-// NOTE: these must be defined after .@ns-running-text in order to override font-size.
+// NOTE: these must be defined after .bp6-running-text in order to override font-size.
 .#{$ns}-text-large {
   font-size: $pt-font-size-large;
-  // line-height comes from .@ns-(ui|running)-text
+  // line-height comes from .bp6-(ui|running)-text
 }
 
 .#{$ns}-text-small {
   font-size: $pt-font-size-small;
-  // line-height comes from .@ns-(ui|running)-text
+  // line-height comes from .bp6-(ui|running)-text
 }
 
 /*
@@ -222,9 +222,9 @@ Preformatted text
 
 Markup:
 <div>
-  <p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
-  <pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
-  <pre class="@ns-code-block"><code>// code sample
+  <p>Use the <code class="bp6-code">&lt;code></code> tag for snippets of code.</p>
+  <pre class="bp6-code-block">Use the &lt;pre> tag for blocks of code.</pre>
+  <pre class="bp6-code-block"><code>// code sample
 export function hasModifier(
   modifiers: ts.ModifiersArray,
   ...modifierKinds: ts.SyntaxKind[],
@@ -297,7 +297,7 @@ Styleguide preformatted
 Block quotes
 
 Markup:
-<blockquote class="@ns-blockquote">
+<blockquote class="bp6-blockquote">
   Premium Aerotec is a key supplier for Airbus, producing 30 million parts per year,
   which is huge complexity. Skywise helps us manage all the production steps.
   It gives Airbus much better visibility into where the product is in the supply chain,
@@ -376,13 +376,13 @@ Styleguide lists
 Right-to-left text
 
 Markup:
-<h5 class="@ns-heading">Arabic:</h5>
-<p class="@ns-rtl">
+<h5 class="bp6-heading">Arabic:</h5>
+<p class="bp6-rtl">
   لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
   من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
 </p>
-<h5 class="@ns-heading">Hebrew:</h5>
-<p class="@ns-rtl">
+<h5 class="bp6-heading">Hebrew:</h5>
+<p class="bp6-rtl">
   כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
   מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
 </p>

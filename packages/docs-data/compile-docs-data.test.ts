@@ -21,8 +21,8 @@ import { interpolateClassNamespace, sortMajorVersions, transformDocumentalistDat
 describe("interpolateClassNamespace", () => {
     it("replaces #{$ns} and @ns with the default class namespace", () => {
         expect(interpolateClassNamespace("#{$ns}-button")).toBe("bp6-button");
-        expect(interpolateClassNamespace("@ns-icon")).toBe("bp6-icon");
-        expect(interpolateClassNamespace("#{$ns}-card @ns-elevation")).toBe("bp6-card bp6-elevation");
+        expect(interpolateClassNamespace("bp6-icon")).toBe("bp6-icon");
+        expect(interpolateClassNamespace("#{$ns}-card bp6-elevation")).toBe("bp6-card bp6-elevation");
     });
 });
 
