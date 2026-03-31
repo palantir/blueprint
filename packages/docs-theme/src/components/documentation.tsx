@@ -15,7 +15,6 @@
  */
 
 import { linkify, type TsDocBase } from "@documentalist/client";
-import type { DocPage, NavTreeNode } from "../common/navTypes";
 import classNames from "classnames";
 import { PureComponent } from "react";
 
@@ -29,6 +28,7 @@ import {
     hasTypescriptData,
 } from "../common/context";
 import { eachLayoutNode, isPageNode } from "../common/documentalistUtils";
+import type { DocPage, NavTreeNode } from "../common/navTypes";
 import { type TagRendererMap, TypescriptExample } from "../tags";
 
 import { renderBlock } from "./block";
@@ -316,8 +316,8 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
             Content: MdxContent,
             pageId: activePageId,
             pageRoute,
-            tagRenderers,
             renderPageActions: pageActions,
+            tagRenderers,
         });
     }
 

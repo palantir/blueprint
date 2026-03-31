@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import type { DocPage } from "../common/navTypes";
-
 import { Classes } from "@blueprintjs/core";
 
+import type { DocPage } from "../common/navTypes";
 import type { TagRendererMap } from "../tags";
 
 import { renderBlock } from "./block";

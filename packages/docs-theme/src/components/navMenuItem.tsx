@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import type { NavTreeNode } from "../common/navTypes";
 import classNames from "classnames";
 
 import { Classes } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import type { NavTreeNode } from "../common/navTypes";
 
 export interface NavMenuItemProps {
     children?: React.ReactNode;

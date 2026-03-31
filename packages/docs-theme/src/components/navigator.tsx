@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { NavTreeNode } from "../common/navTypes";
 import classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
 import { PureComponent } from "react";
@@ -24,6 +23,7 @@ import { CaretRight } from "@blueprintjs/icons";
 import { type ItemListPredicate, type ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/documentalistUtils";
+import type { NavTreeNode } from "../common/navTypes";
 
 export interface NavigatorProps {
     /** Whether navigator is open. */

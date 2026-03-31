@@ -20,6 +20,6 @@ export { Classes };
 export * from "./constants";
 export * from "./documentalistUtils";
 export * from "./eventHandlerUtils";
-export * from "./navTypes";
+export type * from "./navTypes";
 export * from "./stringUtils";
 export * from "./themeContext";
