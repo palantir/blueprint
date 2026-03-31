@@ -3,7 +3,7 @@
  */
 
 import classNames from "classnames";
-import { Children, cloneElement, createElement, forwardRef } from "react";
+import { Children, cloneElement, createElement, forwardRef, useCallback } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
 import { PopoverInteractionKind } from "../popover/popoverProps";
@@ -38,6 +38,42 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     const { isOpen } = floatingData;
 
     const ref = mergeRefs(floatingData.refs.setReference, targetRef);
+
+    // Custom keyboard click handler for the reference element. Floating UI's useClick hook
+    // has its keyboardHandlers disabled because it calls `preventDefault()` on Space keydown,
+    // which prevents space characters from being typed in <input>/<textarea> target children.
+    // This handler replicates keyboard-to-click behavior while preserving typeable element input.
+    const handleReferenceKeyDown = useCallback((event: React.KeyboardEvent<HTMLElement>) => {
+        if (!Utils.isKeyboardClick(event) || event.repeat) {
+            return;
+        }
+
+        const eventTarget = event.target as HTMLElement;
+
+        // Don't intercept keyboard events on typeable elements — let them handle
+        // Space (character input) and Enter (form submission) normally
+        if (isTypeableElement(eventTarget)) {
+            return;
+        }
+
+        if (event.key === " ") {
+            // Buttons handle Space natively (fire click on keyup), skip to avoid double-toggle
+            if (eventTarget.closest("button") != null) {
+                return;
+            }
+            // Prevent page scroll for non-typeable, non-button targets
+            event.preventDefault();
+        } else if (event.key === "Enter") {
+            // Buttons and anchors fire native click on Enter, skip to avoid double-toggle
+            if (eventTarget.closest("button, a") != null) {
+                return;
+            }
+        }
+
+        // For non-typeable, non-natively-clickable targets (e.g. <span>, <div>),
+        // simulate a click so that useClick's onClick handler toggles the popover
+        event.currentTarget.click();
+    }, []);
 
     const targetEventHandlers: PopoverHoverTargetHandlers | PopoverClickTargetHandlers = isHoverInteractionKind
         ? {
@@ -81,7 +117,9 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     let target: React.JSX.Element | undefined;
 
     if (renderTarget !== undefined) {
-        const floatingProps = floatingData.getReferenceProps();
+        const floatingProps = floatingData.getReferenceProps({
+            onKeyDown: handleReferenceKeyDown,
+        });
 
         // When using renderTarget, if the consumer renders a tooltip target, it's their responsibility
         // to disable that tooltip when this popover is open
@@ -113,7 +151,9 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
                 ...ownTargetProps,
                 ...targetProps,
                 // Apply Floating UI's interaction props to the wrapper element (same element that has the ref)
-                ...floatingData.getReferenceProps(),
+                ...floatingData.getReferenceProps({
+                    onKeyDown: handleReferenceKeyDown,
+                }),
             },
             clonedTarget,
         );
@@ -137,4 +177,13 @@ function isTooltipElement(element: React.ReactElement): boolean {
         "displayName" in element.type &&
         element.type.displayName === `${DISPLAYNAME_PREFIX}.Tooltip`
     );
+}
+
+/**
+ * Check if an element accepts keyboard text input (i.e., Space should insert a character,
+ * not be interpreted as a click).
+ */
+function isTypeableElement(element: HTMLElement): boolean {
+    const tagName = element.tagName;
+    return tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT" || element.isContentEditable;
 }
