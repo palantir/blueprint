@@ -216,8 +216,16 @@ export const Collapse: React.FC<CollapseProps> = ({
         contents.current = element;
         if (contents.current != null) {
             const contentHeight = contents.current.clientHeight;
-            setAnimationState(isOpenRef.current ? AnimationStates.OPEN : AnimationStates.CLOSED);
-            setHeight(contentHeight === 0 ? undefined : `${contentHeight}px`);
+            if (isOpenRef.current) {
+                // When initially open, keep height as "auto" so overflow-y stays "visible"
+                // and content is never clipped. Only record the measured height for future
+                // close animations.
+                setAnimationState(AnimationStates.OPEN);
+                setHeight("auto");
+            } else {
+                setAnimationState(AnimationStates.CLOSED);
+                setHeight(contentHeight === 0 ? undefined : `${contentHeight}px`);
+            }
             setHeightWhenOpen(contentHeight === 0 ? undefined : contentHeight);
         }
     }, []);
