@@ -19,16 +19,8 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
-
-// Extract the resolved swc-loader path from the base config's TypeScript rule,
-// since swc-loader is a dependency of webpack-build-scripts, not docs-app.
-const swcLoaderPath = baseConfig.module?.rules?.find(
-    rule => rule && typeof rule === "object" && rule.test?.toString().includes("tsx?") && "loader" in rule,
-)?.loader;
 
 export default {
     ...baseConfig,
@@ -49,31 +41,14 @@ export default {
                 resourceQuery: /raw/,
                 type: "asset/source",
             },
-            // MDX files: compile MDX → JSX, then transform JSX → JS via swc
+            // MDX compilation (must come before TS rules)
             {
                 test: /\.mdx$/,
                 use: [
                     {
-                        loader: swcLoaderPath,
-                        options: {
-                            jsc: {
-                                parser: {
-                                    syntax: "ecmascript",
-                                    jsx: true,
-                                },
-                                transform: {
-                                    react: {
-                                        runtime: "automatic",
-                                        useBuiltins: true,
-                                    },
-                                },
-                            },
-                        },
-                    },
-                    {
                         loader: "@mdx-js/loader",
                         options: {
-                            remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+                            providerImportSource: "@mdx-js/react",
                         },
                     },
                 ],
