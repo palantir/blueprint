@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import { type DocsCompleteData, type HeadingNode, npmData, type PageNode, SECTIONS } from "@blueprintjs/docs-data";
+import { type DocsCompleteData, type NavTreeNode, type NavTreePage, npmData, SECTIONS } from "@blueprintjs/docs-data";
 import {
     Banner,
     Documentation,
@@ -37,8 +37,8 @@ import { MdxPage } from "./mdxPage";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
-function isPageNode(node: HeadingNode | PageNode): node is PageNode {
-    return "children" in node && "reference" in node;
+function isPageNode(node: NavTreeNode): node is NavTreePage {
+    return node.type === "page";
 }
 
 const DARK_THEME = Classes.DARK;
@@ -49,7 +49,7 @@ const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
 const sectionPatterns = SECTIONS.map(name => new RegExp(`/${name}(\\.[\\w-]+)?$`));
-const isNavSection = ({ route }: HeadingNode) => sectionPatterns.some(pattern => pattern.test(route));
+const isNavSection = ({ route }: NavTreeNode) => sectionPatterns.some(pattern => pattern.test(route));
 
 const renderMdxPage = (props: MdxPageRendererProps) => <MdxPage {...props} />;
 

@@ -89,7 +89,7 @@ export interface DocPage {
 interface NavTreeNodeBase {
     title: string;
     level: number;
-    route: string | undefined;
+    route: string;
 }
 
 /** A content heading extracted from a page (no children, no reference). */

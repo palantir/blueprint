@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode } from "@documentalist/client";
+import type { NavTreeNode } from "../common/navTypes";
 import classNames from "classnames";
 
 import { Classes } from "@blueprintjs/core";
@@ -40,7 +40,7 @@ export interface NavMenuItemProps {
     onClick: () => void;
 
     /** The section for this menu item, either a page or a heading node. */
-    section: PageNode | HeadingNode;
+    section: NavTreeNode;
 }
 
 export const NavMenuItem: React.FC<NavMenuItemProps> = props => {

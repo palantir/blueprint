@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { PageData } from "@documentalist/client";
+import type { DocPage } from "../common/navTypes";
 
 import { Classes } from "@blueprintjs/core";
 
@@ -23,14 +23,15 @@ import type { TagRendererMap } from "../tags";
 import { renderBlock } from "./block";
 
 export interface PageProps {
-    page: PageData;
-    renderActions?: (page: PageData) => React.ReactNode;
+    page: DocPage;
+    renderActions?: (page: DocPage) => React.ReactNode;
     tagRenderers: TagRendererMap;
 }
 
+/** @deprecated All pages now render via MDX. This component is retained for backwards compatibility. */
 export const Page: React.FC<PageProps> = ({ page, renderActions, tagRenderers }) => {
     // apply running text styles to blocks in pages (but not on blocks in examples)
-    const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
+    const pageContents = renderBlock(page as any, tagRenderers, Classes.TEXT_LARGE);
     return (
         <div className="docs-page" data-page-id={page.route}>
             {renderActions && <div className="docs-page-actions">{renderActions(page)}</div>}

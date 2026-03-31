@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
-import type { Block, KssPluginData, MarkdownPluginData, TsDocBase, TypescriptPluginData } from "@documentalist/client";
+import type { Block, KssPluginData, TsDocBase, TypescriptPluginData } from "@documentalist/client";
+import type { MdxPluginData } from "./navTypes";
 import { createContext, type ReactNode } from "react";
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-/** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
-export type DocsData = MarkdownPluginData & (TypescriptPluginData | {}) & (KssPluginData | {});
+/** This docs theme requires MDX page data and optionally supports Typescript and KSS data. */
+export type DocsData = MdxPluginData & (TypescriptPluginData | {}) & (KssPluginData | {});
 /* eslint-enable @typescript-eslint/no-empty-object-type */
 
-export function hasTypescriptData(docs: DocsData): docs is MarkdownPluginData & TypescriptPluginData {
+export function hasTypescriptData(docs: DocsData): docs is MdxPluginData & TypescriptPluginData {
     return docs != null && (docs as TypescriptPluginData).typescript != null;
 }
 
-export function hasKssData(docs: DocsData): docs is MarkdownPluginData & KssPluginData {
+export function hasKssData(docs: DocsData): docs is MdxPluginData & KssPluginData {
     return docs != null && (docs as KssPluginData).css != null;
 }
 
