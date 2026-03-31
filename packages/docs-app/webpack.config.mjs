@@ -22,6 +22,8 @@ import { cwd } from "node:process";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
+import remarkBlueprintTags from "./remark-blueprint-tags.mjs";
+
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
 export default {
@@ -51,7 +53,7 @@ export default {
                         loader: "@mdx-js/loader",
                         options: {
                             providerImportSource: "@mdx-js/react",
-                            remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+                            remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkBlueprintTags],
                         },
                     },
                 ],

@@ -29,7 +29,7 @@ import {
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
-import { mdxPages } from "../mdxPages";
+import { mdxPages } from "../generated/mdxPages";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { addCopyButtonsToImportBlocks } from "./copyableImportButton";

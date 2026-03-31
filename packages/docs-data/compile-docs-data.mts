@@ -4,20 +4,22 @@
  * @fileoverview Generates data for packages/docs-app
  */
 
-import { Documentalist, KssPlugin, MarkdownPlugin, TypescriptPlugin } from "@documentalist/compiler";
+import { Documentalist, KssPlugin, TypescriptPlugin } from "@documentalist/compiler";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { basename, join, relative, resolve } from "node:path";
 import { cwd } from "node:process";
+import { glob } from "glob";
+import grayMatter from "gray-matter";
 import packageJson from "package-json";
 import semver from "semver";
 
 import { Classes } from "@blueprintjs/core";
 
-import { hooks, markedRenderer } from "./markdownRenderer.mjs";
-import { assignRoutes, buildNavTree, normalizeNavConfig } from "./navHelpers.mts";
+import { assignRoutes, buildNavTree, getPageRefs, normalizeNavConfig } from "./navHelpers.mts";
 import {
     PACKAGES,
     SECTIONS,
+    type DocContentItem,
     type DocPage,
     type NavStructure,
     type NavTreeNode,
@@ -35,43 +37,158 @@ const LIBRARY_AND_DOCS_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
 
 console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
 
-// assume we are running from packages/docs-app
+// assume we are running from packages/docs-data
 const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
+// The docs-app generated dir lives next to us in the monorepo
+const docsAppGeneratedDir = resolve(monorepoRootDir, "packages/docs-app/src/generated");
+
+/** Regex for markdown headings (# through ###). */
+const HEADING_RE = /^(#{1,3})\s+(.+)$/gm;
+
 try {
     if (!existsSync(generatedSrcDir)) {
         mkdirSync(generatedSrcDir);
+    }
+    if (!existsSync(docsAppGeneratedDir)) {
+        mkdirSync(docsAppGeneratedDir, { recursive: true });
     }
     await generateNpmData();
     await generateDocumentalistData();
 } catch (err) {
     // console.error messages get swallowed by lerna but console.log is emitted to terminal.
     console.error(`[docs-data] ERROR when generating JSON docs data:`);
-    throw new Error(err);
+    throw err instanceof Error ? err : new Error(String(err));
 }
 
 console.info(`[docs-data] successfully generated docs.json`);
 
+// ---------------------------------------------------------------------------
+// Markdown / MDX page processing (replaces MarkdownPlugin)
+// ---------------------------------------------------------------------------
+
+/**
+ * Extract heading items from raw markdown content.
+ * Only extracts h1–h3 to match the previous Documentalist behavior.
+ */
+function extractHeadings(markdownContent: string): DocContentItem[] {
+    const items: DocContentItem[] = [];
+    let match: RegExpExecArray | null;
+    HEADING_RE.lastIndex = 0;
+    while ((match = HEADING_RE.exec(markdownContent)) !== null) {
+        const level = match[1].length;
+        // Strip inline code backticks and other simple markdown formatting
+        const value = match[2].replace(/`([^`]+)`/g, "$1").trim();
+        items.push({ tag: "heading", level, value, route: "" });
+    }
+    return items;
+}
+
+/**
+ * Scan all .mdx files in the library and docs packages, parse frontmatter
+ * and extract headings to build DocPage entries. Also builds a mapping from
+ * page reference to the .mdx file's import path for the MDX page registry.
+ */
+function buildMdxPages(): { pages: Record<string, DocPage>; importMap: Map<string, string> } {
+    const pages: Record<string, DocPage> = {};
+    const importMap = new Map<string, string>();
+
+    const mdxGlob = `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.mdx`;
+    const mdxFiles = glob.sync(mdxGlob, { cwd: cwd() });
+
+    for (const filePath of mdxFiles) {
+        const raw = readFileSync(filePath, "utf-8");
+        const { data: frontmatter, content } = grayMatter(raw);
+
+        // Derive reference: use frontmatter.reference if present, otherwise filename without extension
+        const filename = basename(filePath, ".mdx");
+        // Skip the _nav stub
+        if (filename === "_nav") continue;
+
+        const reference: string = (frontmatter.reference as string) ?? filename;
+        const title: string = (frontmatter.title as string) ?? reference;
+
+        // Source path relative to monorepo root (for "Edit this page" links)
+        // filePath is relative to cwd (packages/docs-data), so resolve then make relative to monorepo root
+        const absolutePath = resolve(cwd(), filePath);
+        const sourcePath = relative(monorepoRootDir, absolutePath).replace(/\\/g, "/");
+
+        // Import path for webpack: relative to monorepo packages dir, using the @blueprintjs scope alias
+        // e.g. "../core/src/components/alert/alert.mdx" → "@blueprintjs/core/src/components/alert/alert.mdx"
+        const importPath = sourcePath.replace(/^packages\//, "@blueprintjs/");
+
+        const headings = extractHeadings(content);
+
+        pages[reference] = {
+            title,
+            route: "", // will be assigned by assignRoutes()
+            contents: headings,
+            metadata: { ...frontmatter },
+            sourcePath,
+        };
+
+        importMap.set(reference, importPath);
+    }
+
+    return { pages, importMap };
+}
+
+/**
+ * Generate the mdxPages.ts registry file in the docs-app generated dir.
+ */
+function generateMdxPagesRegistry(importMap: Map<string, string>, pageRefs: string[]): void {
+    const lines: string[] = [
+        `// Auto-generated by compile-docs-data.mts — do not edit`,
+        `import type { ComponentType } from "react";`,
+        ``,
+    ];
+
+    // Only generate imports for pages that are in the nav config
+    const refsInNav = new Set(pageRefs);
+    const entries: Array<{ ref: string; varName: string; importPath: string }> = [];
+
+    for (const [ref, importPath] of importMap) {
+        if (!refsInNav.has(ref)) continue;
+        // Create a safe variable name from the reference
+        const varName = `mdx_${ref.replace(/[^a-zA-Z0-9]/g, "_")}`;
+        entries.push({ ref, varName, importPath });
+    }
+
+    // Sort for deterministic output
+    entries.sort((a, b) => a.ref.localeCompare(b.ref));
+
+    for (const { varName, importPath } of entries) {
+        lines.push(`import ${varName} from "${importPath}";`);
+    }
+
+    lines.push(``);
+    lines.push(`export const mdxPages: Record<string, ComponentType> = {`);
+    for (const { ref, varName } of entries) {
+        lines.push(`    "${ref}": ${varName},`);
+    }
+    lines.push(`};`);
+    lines.push(``);
+
+    writeFileSync(join(docsAppGeneratedDir, "mdxPages.ts"), lines.join("\n"));
+    console.info(`[docs-data] successfully generated mdxPages.ts (${entries.length} pages)`);
+}
+
+// ---------------------------------------------------------------------------
+// Main documentation generation
+// ---------------------------------------------------------------------------
+
 async function generateDocumentalistData(): Promise<void> {
+    // 1. Build MDX pages (replaces MarkdownPlugin)
+    const { pages, importMap } = buildMdxPages();
+
+    // 2. Run Documentalist for TypeScript and KSS data only
     const documentalist = new Documentalist({
-        markdown: {
-            hooks,
-            renderer: markedRenderer,
-        },
         // must mark our @Decorator APIs as reserved so we can use them in code samples
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
         sourceBaseDir: monorepoRootDir,
     })
-        .use(".mdx", {
-            compile: files =>
-                // HACKHACK: special case for Windows environment
-                // see https://github.com/palantir/documentalist/issues/98
-                process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
-        })
-        // TODO: once documentalist is fully removed, stop generating nav via documentalist
-        .use(".mdx", new MarkdownPlugin({ navPage: "_nav" }))
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
@@ -83,23 +200,29 @@ async function generateDocumentalistData(): Promise<void> {
         .use(".scss", new KssPlugin());
 
     const docs = await documentalist.documentGlobs(
-        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.mdx`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
         `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
-    // Post-process: replace documentalist's nav with one built from nav.json
+    // 3. Merge MDX pages into the documentalist output
+    (docs as any).pages = pages;
+
+    // 4. Apply nav config: assign routes and build nav tree
     const rawConfig: RawNavStructure = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
     validateNavConfig(rawConfig);
     const navConfig = normalizeNavConfig(rawConfig);
-    applyNavConfig(docs, navConfig);
+    applyNavConfig(docs as any, navConfig);
 
+    // 5. Write docs.json
     const content = JSON.stringify(docs, transformDocumentalistData, 2);
     writeFileSync(docsDataFilePath, content);
 
-    // Also generate a CJS module so src/index.js can re-export nav constants
-    // without manually duplicating the arrays from navTypes.mts
+    // 6. Generate mdxPages.ts registry for docs-app
+    const pageRefs = getPageRefs(rawConfig);
+    generateMdxPagesRegistry(importMap, pageRefs);
+
+    // 7. Generate CJS module so src/index.js can re-export nav constants
     const navConstants = [
         `// Auto-generated by compile-docs-data.mts — do not edit`,
         `module.exports.PACKAGES = ${JSON.stringify(PACKAGES)};`,

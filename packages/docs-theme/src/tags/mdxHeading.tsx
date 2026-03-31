@@ -14,12 +14,18 @@
  * limitations under the License.
  */
 
-import { createElement } from "react";
+import { createContext, createElement, useContext } from "react";
 
 import { Classes } from "@blueprintjs/core";
 import { Link } from "@blueprintjs/icons";
 
 import { slugify } from "../common/stringUtils";
+
+/**
+ * Context providing the current MDX page's assigned route.
+ * Used by heading components to construct routes matching `assignRoutes()` format.
+ */
+export const MdxPageRouteContext = createContext<string>("");
 
 function extractTextContent(children: React.ReactNode): string {
     if (typeof children === "string") {
@@ -40,8 +46,11 @@ function extractTextContent(children: React.ReactNode): string {
  */
 function createMdxHeadingComponent(level: 1 | 2 | 3) {
     return function MdxHeading({ children }: { children?: React.ReactNode }) {
+        const pageRoute = useContext(MdxPageRouteContext);
         const text = extractTextContent(children);
-        const route = slugify(text);
+        const slug = slugify(text);
+        // h1 gets the page route directly, h2/h3 get pageRoute.slug
+        const route = level === 1 ? pageRoute : pageRoute ? `${pageRoute}.${slug}` : slug;
         return createElement(
             `h${level}`,
             { className: `${Classes.HEADING} docs-title` },

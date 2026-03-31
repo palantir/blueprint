@@ -50,6 +50,9 @@ import { ApiLink } from "./typescript/apiLink";
 export interface MdxPageRendererProps {
     Content: React.ComponentType;
     pageId: string;
+    pageRoute?: string;
+    tagRenderers?: TagRendererMap;
+    renderPageActions?: React.ReactNode;
 }
 
 export interface DocumentationProps extends Props {
@@ -129,16 +132,14 @@ export interface DocumentationProps extends Props {
 
     /**
      * Map of page route IDs to compiled MDX React components.
-     * Pages in this map will be rendered via `renderMdxPage` instead of the
-     * Documentalist-based `Page` component.
      */
-    mdxPages?: Record<string, React.ComponentType>;
+    mdxPages: Record<string, React.ComponentType>;
 
     /**
-     * Callback to render an MDX page. Required when `mdxPages` is provided.
+     * Callback to render an MDX page.
      * This allows docs-theme to remain decoupled from `@mdx-js/react`.
      */
-    renderMdxPage?: (props: MdxPageRendererProps) => React.JSX.Element;
+    renderMdxPage: (props: MdxPageRendererProps) => React.JSX.Element;
 }
 
 export interface DocumentationState {
@@ -310,11 +311,21 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     }
 
     private renderPage(activePageId: string, pages: Record<string, PageData>) {
-        const { mdxPages, renderMdxPage } = this.props;
-        const MdxContent = mdxPages?.[activePageId];
-        if (MdxContent != null && renderMdxPage != null) {
-            return renderMdxPage({ Content: MdxContent, pageId: activePageId });
+        const { mdxPages, renderMdxPage, renderPageActions, tagRenderers } = this.props;
+        const MdxContent = mdxPages[activePageId];
+        if (MdxContent != null) {
+            const page = pages[activePageId];
+            const pageRoute = page?.route;
+            const pageActions = renderPageActions != null && page != null ? renderPageActions(page) : undefined;
+            return renderMdxPage({
+                Content: MdxContent,
+                pageId: activePageId,
+                pageRoute,
+                tagRenderers,
+                renderPageActions: pageActions,
+            });
         }
+        // Fallback for pages not yet in the MDX registry
         return (
             <Page
                 page={pages[activePageId]!}

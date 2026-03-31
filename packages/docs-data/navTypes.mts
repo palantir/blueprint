@@ -81,6 +81,8 @@ export interface DocPage {
     title: string;
     route: string;
     contents: DocContentItem[];
+    metadata: Record<string, any>;
+    sourcePath: string;
 }
 
 /** Fields common to all nav tree nodes. */
