@@ -103,6 +103,16 @@ export function usePopover({
 
     const click = useClick(context, {
         enabled: !disabled,
+        // Disable Floating UI's built-in Space/Enter keyboard handlers because they
+        // call `preventDefault()` on the Space keydown event to prevent page scrolling.
+        // This also prevents space characters from being typed in <input>/<textarea>
+        // elements that are children of the target wrapper element.
+        // See: https://github.com/palantir/blueprint/issues/XXXX
+        //
+        // PopoverTarget provides its own keyboard click handling that avoids this issue
+        // by skipping typeable elements while still maintaining keyboard accessibility
+        // for non-typeable targets.
+        keyboardHandlers: false,
     });
     const dismiss = useDismiss(context, {
         escapeKey: canEscapeKeyClose,
