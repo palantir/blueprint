@@ -1524,9 +1524,13 @@ describe("<PopoverNext>", () => {
             const input = screen.getByPlaceholderText("Search...");
 
             await user.click(input);
+            await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
+
             await user.type(input, "lorem ipsum");
 
             expect(input).toHaveValue("lorem ipsum");
+            // Popover should stay open; Space must not toggle it
+            expect(screen.getByText("popover content")).toBeInTheDocument();
         });
     });
 

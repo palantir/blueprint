@@ -44,7 +44,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     // which prevents space characters from being typed in <input>/<textarea> target children.
     // This handler replicates keyboard-to-click behavior while preserving typeable element input.
     const handleReferenceKeyDown = useCallback((event: React.KeyboardEvent<HTMLElement>) => {
-        if (!Utils.isKeyboardClick(event)) {
+        if (!Utils.isKeyboardClick(event) || event.repeat) {
             return;
         }
 
