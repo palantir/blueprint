@@ -17,7 +17,7 @@
 import type { editor } from "monaco-editor";
 
 import { Colors } from "@blueprintjs/colors";
-import { Classes, Utils } from "@blueprintjs/core";
+import { Utils } from "@blueprintjs/core";
 import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
 
 let monacoEditor: typeof editor | undefined;
@@ -54,23 +54,10 @@ export async function highlightCodeBlocks() {
         monacoEditor.colorizeElement(block, {
             theme: `blueprint-${targetTheme}`,
         });
-        // wondering if we can remove this
-        renderKssModifiersAsTags(block);
         block.setAttribute("data-colorized", targetTheme);
     }
 }
 
-/**
- * Mutates the codeBlock element.
- *
- * @param codeBlock
- */
-function renderKssModifiersAsTags(codeBlock: HTMLElement) {
-    codeBlock.innerHTML = codeBlock.innerHTML.replace(
-        /{{(\.|:)modifier}}/g,
-        `<span class="${Classes.TAG} ${Classes.MINIMAL} ${Classes.INTENT_PRIMARY}">$1modifier</span>`,
-    );
-}
 
 function token(tokenName: string, color: string) {
     return { foreground: color, token: tokenName };
