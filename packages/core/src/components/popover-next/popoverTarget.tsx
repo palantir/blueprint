@@ -50,15 +50,19 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
 
         const eventTarget = event.target as HTMLElement;
 
+        // Don't intercept keyboard events on typeable elements — let them handle
+        // Space (character input) and Enter (form submission) normally
+        if (isTypeableElement(eventTarget)) {
+            return;
+        }
+
         if (event.key === " ") {
-            // Don't intercept Space in typeable elements — let the character be typed
-            if (isTypeableElement(eventTarget)) {
-                return;
-            }
             // Buttons handle Space natively (fire click on keyup), skip to avoid double-toggle
             if (eventTarget.closest("button") != null) {
                 return;
             }
+            // Prevent page scroll for non-typeable, non-button targets
+            event.preventDefault();
         } else if (event.key === "Enter") {
             // Buttons and anchors fire native click on Enter, skip to avoid double-toggle
             if (eventTarget.closest("button, a") != null) {

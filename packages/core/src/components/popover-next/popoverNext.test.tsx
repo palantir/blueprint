@@ -1517,12 +1517,7 @@ describe("<PopoverNext>", () => {
             const handleChange = vi.fn();
             const user = userEvent.setup();
             render(
-                <PopoverNext
-                    content="popover content"
-                    autoFocus={false}
-                    enforceFocus={false}
-                    usePortal={false}
-                >
+                <PopoverNext content="popover content" autoFocus={false} enforceFocus={false} usePortal={false}>
                     <InputGroup placeholder="Search..." onChange={handleChange} />
                 </PopoverNext>,
             );

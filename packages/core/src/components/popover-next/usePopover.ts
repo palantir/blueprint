@@ -107,7 +107,7 @@ export function usePopover({
         // call `preventDefault()` on the Space keydown event to prevent page scrolling.
         // This also prevents space characters from being typed in <input>/<textarea>
         // elements that are children of the target wrapper element.
-        // See: https://github.com/palantir/blueprint/issues/XXXX
+        // See: https://github.com/palantir/blueprint/pull/7997
         //
         // PopoverTarget provides its own keyboard click handling that avoids this issue
         // by skipping typeable elements while still maintaining keyboard accessibility
