@@ -54,6 +54,7 @@ export async function highlightCodeBlocks() {
         monacoEditor.colorizeElement(block, {
             theme: `blueprint-${targetTheme}`,
         });
+        // wondering if we can remove this
         renderKssModifiersAsTags(block);
         block.setAttribute("data-colorized", targetTheme);
     }

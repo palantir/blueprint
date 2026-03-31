@@ -73,6 +73,7 @@ export default {
                     {
                         loader: "@mdx-js/loader",
                         options: {
+                            providerImportSource: "@mdx-js/react",
                             remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
                         },
                     },
@@ -101,6 +102,14 @@ export default {
     resolve: {
         ...baseConfig.resolve,
         extensions: [...(baseConfig.resolve?.extensions || []), ".mdx"],
+        alias: {
+            ...baseConfig.resolve?.alias,
+            // MDX compiler injects `import … from "@mdx-js/react"` into every .mdx file.
+            // Since .mdx files live in other packages (core, datetime, etc.) that don't
+            // depend on @mdx-js/react, webpack can't resolve it from their directories.
+            // This alias forces resolution through docs-app's own node_modules.
+            "@mdx-js/react": resolve(cwd(), "node_modules/@mdx-js/react"),
+        },
     },
 
     plugins: [
