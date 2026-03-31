@@ -9,7 +9,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/tes
 
 import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { Button, Dialog, DialogBody, PopupKind, Tooltip } from "../../components";
+import { Button, Dialog, DialogBody, InputGroup, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 
 import { PopoverNext } from "./popoverNext";
@@ -1509,6 +1509,29 @@ describe("<PopoverNext>", () => {
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).not.toBeInTheDocument());
             await waitFor(() => expect(screen.queryByRole("button", { name: "inner target" })).not.toBeInTheDocument());
+        });
+    });
+
+    describe("key interactions on InputGroup target", () => {
+        it("Space key inserts a space character instead of being swallowed", async () => {
+            const handleChange = vi.fn();
+            const user = userEvent.setup();
+            render(
+                <PopoverNext
+                    content="popover content"
+                    autoFocus={false}
+                    enforceFocus={false}
+                    usePortal={false}
+                >
+                    <InputGroup placeholder="Search..." onChange={handleChange} />
+                </PopoverNext>,
+            );
+            const input = screen.getByPlaceholderText("Search...");
+
+            await user.click(input);
+            await user.type(input, "lorem ipsum");
+
+            expect(input).toHaveValue("lorem ipsum");
         });
     });
 
