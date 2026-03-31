@@ -9,7 +9,6 @@
 @import "components/icon/icon";
 @include pt-typography-colors;
 
-
 .#{$ns}-heading {
   @include heading-typography;
   margin: 0 0 ($pt-spacing * 3);
@@ -55,7 +54,6 @@ $headings: (
   }
 }
 
-
 .#{$ns}-ui-text {
   @include base-typography;
 }
@@ -69,7 +67,6 @@ $headings: (
 .#{$ns}-text-overflow-ellipsis {
   @include overflow-ellipsis;
 }
-
 
 .#{$ns}-running-text {
   @include running-typography;
@@ -131,7 +128,6 @@ $headings: (
   // line-height comes from .@ns-(ui|running)-text
 }
 
-
 a {
   text-decoration: none;
 
@@ -140,7 +136,6 @@ a {
     text-decoration: underline;
   }
 }
-
 
 %code {
   @include monospace-typography;
@@ -196,7 +191,6 @@ a {
   @extend %keyboard;
 }
 
-
 %blockquote {
   border-left: solid $pt-spacing rgba($gray4, 0.5);
   margin: 0 0 ($pt-spacing * 2);
@@ -210,7 +204,6 @@ a {
 .#{$ns}-blockquote {
   @extend %blockquote;
 }
-
 
 %list {
   margin: ($pt-spacing * 2) 0;
@@ -241,11 +234,9 @@ a {
   }
 }
 
-
 .#{$ns}-rtl {
   text-align: right;
 }
-
 
 .#{$ns}-dark {
   @include pt-dark-typography-colors;

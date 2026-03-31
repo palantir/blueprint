@@ -37,14 +37,33 @@ export const cssExampleData: Record<string, CssExampleData> = {
   the world to solve problems we hadn't even dreamed of back then.
 </div>`,
         modifiers: [
-            { name: ".bp6-ui-text", documentation: "Default Blueprint font styles, applied to the <code>&lt;body&gt;</code> tag and available as a class for nested resets." },
+            {
+                name: ".bp6-ui-text",
+                documentation:
+                    "Default Blueprint font styles, applied to the <code>&lt;body&gt;</code> tag and available as a class for nested resets.",
+            },
             { name: ".bp6-monospace-text", documentation: "Use a monospace font (ideal for code)." },
-            { name: ".bp6-running-text", documentation: "Increase line height ideal for longform text. See <a href=\"#core/typography.running-text\">Running text</a> below for additional features." },
+            {
+                name: ".bp6-running-text",
+                documentation:
+                    'Increase line height ideal for longform text. See <a href="#core/typography.running-text">Running text</a> below for additional features.',
+            },
             { name: ".bp6-text-large", documentation: "Use a larger font size." },
             { name: ".bp6-text-small", documentation: "Use a smaller font size." },
-            { name: ".bp6-text-muted", documentation: "Change text color to a gentler gray. This text color meets <a href=\"https://www.w3.org/TR/WCAG21/#contrast-minimum\">minimum contrast standards of WCAG 2.1</a> for $white through $light-gray4 in light theme, and $black through $dark-gray4 in dark theme." },
-            { name: ".bp6-text-disabled", documentation: "Change text color to a transparent, faded gray. This text color will not meet minimum contrast standards and should only be used on &quot;incidental&quot; text as defined by <a href=\"https://www.w3.org/TR/WCAG21/#contrast-minimum\">WCAG 2.1 Contrast Minimum</a>, either purely decorative, or text of a disabled UI element." },
-            { name: ".bp6-text-overflow-ellipsis", documentation: "Truncate a single line of text with an ellipsis if it overflows its container." },
+            {
+                name: ".bp6-text-muted",
+                documentation:
+                    'Change text color to a gentler gray. This text color meets <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">minimum contrast standards of WCAG 2.1</a> for $white through $light-gray4 in light theme, and $black through $dark-gray4 in dark theme.',
+            },
+            {
+                name: ".bp6-text-disabled",
+                documentation:
+                    'Change text color to a transparent, faded gray. This text color will not meet minimum contrast standards and should only be used on &quot;incidental&quot; text as defined by <a href="https://www.w3.org/TR/WCAG21/#contrast-minimum">WCAG 2.1 Contrast Minimum</a>, either purely decorative, or text of a disabled UI element.',
+            },
+            {
+                name: ".bp6-text-overflow-ellipsis",
+                documentation: "Truncate a single line of text with an ellipsis if it overflows its container.",
+            },
         ],
     },
     "running-text": {
@@ -67,9 +86,7 @@ export const cssExampleData: Record<string, CssExampleData> = {
     transform the organization and turn data into a competitive advantage.
   </p>
 </div>`,
-        modifiers: [
-            { name: ".bp6-text-large", documentation: "Use larger font size." },
-        ],
+        modifiers: [{ name: ".bp6-text-large", documentation: "Use larger font size." }],
     },
     headings: {
         reference: "headings",
@@ -81,9 +98,7 @@ export const cssExampleData: Record<string, CssExampleData> = {
   <h5 class="bp6-heading {{.modifier}}">H5 heading</h5>
   <h6 class="bp6-heading {{.modifier}}">H6 heading</h6>
 </div>`,
-        modifiers: [
-            { name: ".bp6-text-muted", documentation: "Change text color to a gentler gray." },
-        ],
+        modifiers: [{ name: ".bp6-text-muted", documentation: "Change text color to a gentler gray." }],
     },
     preformatted: {
         reference: "preformatted",
@@ -128,7 +143,10 @@ export function hasModifier(
 </ol>`,
         modifiers: [
             { name: ".bp6-list", documentation: "Add a little spacing between items for readability." },
-            { name: ".bp6-list-unstyled", documentation: "Remove all list styling (including indicators) so you can add your own." },
+            {
+                name: ".bp6-list-unstyled",
+                documentation: "Remove all list styling (including indicators) so you can add your own.",
+            },
         ],
     },
     rtl: {
