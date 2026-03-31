@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,13 @@
  * limitations under the License.
  */
 
-import type { Tag } from "@documentalist/client";
-
-export interface TagRendererMap {
-    [tagName: string]: React.ComponentType<Tag> | undefined;
+export interface CssModifier {
+    name: string;
+    documentation: string;
 }
 
-export * from "./css";
-export * from "./cssExampleTypes";
-export * from "./defaults";
-export * from "./heading";
-export * from "./mdxHeading";
-export * from "./method";
-export * from "./reactCodeExample";
-export * from "./reactDocs";
-export * from "./reactExample";
-export * from "./see";
-export * from "./typescript";
+export interface CssExampleData {
+    markup: string;
+    modifiers: CssModifier[];
+    reference: string;
+}

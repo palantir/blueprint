@@ -22,20 +22,20 @@ import { Checkbox, Classes, Code } from "@blueprintjs/core";
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { Example } from "../components/example";
 
-import { cssExampleData } from "./cssExampleData";
+import type { CssExampleData } from "./cssExampleTypes";
 
 const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
 const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;
 
 export interface CssExampleProps {
-    value: string;
+    data: CssExampleData;
 }
 
 function escapeHtml(str: string): string {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-export const CssExample: React.FC<CssExampleProps> = ({ value }) => {
+export const CssExample: React.FC<CssExampleProps> = ({ data }) => {
     const [activeModifiers, setActiveModifiers] = useState<Set<string>>(new Set());
 
     const getModifiers = useCallback(
@@ -59,11 +59,6 @@ export const CssExample: React.FC<CssExampleProps> = ({ value }) => {
             setActiveModifiers(newModifiers);
         };
     };
-
-    const data = cssExampleData[value];
-    if (data == null) {
-        return null;
-    }
 
     const { markup, modifiers, reference } = data;
     const markupHtml = useMemo(() => `<pre><code>${escapeHtml(markup)}</code></pre>`, [markup]);

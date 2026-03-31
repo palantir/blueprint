@@ -2,6 +2,8 @@
 title: Typography
 ---
 
+import { uiText, runningText, headings, preformatted, blockquote, lists, rtl } from "./typography_css";
+
 # Typography
 
 ## Usage
@@ -23,7 +25,7 @@ element's font size and line height to the default base styles, use the `.@ns-ui
 
 For longer blocks of running text, such as articles or documents, see [running text styles](#core/typography.running-text).
 
-<CssExample value="ui-text" />
+<CssExample data={uiText} />
 
 ## Running text
 
@@ -34,14 +36,14 @@ Apply `.@ns-running-text` to the parent element to apply the following styles to
 - `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
 - `<ul>` and `<ol>` tags receive [`.@ns-list`](#core/typography.lists) styles for legibility.
 
-<CssExample value="running-text" />
+<CssExample data={runningText} />
 
 ## Headings
 
 Apply the `.@ns-heading` class to one of the six `<h*>` tags (or nest them inside a `.@ns-running-text` container)
 to adjust font size and line height.
 
-<CssExample value="headings" />
+<CssExample data={headings} />
 
 ## Links
 
@@ -58,7 +60,7 @@ Note that `<pre>` blocks will retain _all_ whitespace so you'll have to format t
 
 When nested inside a `.@ns-running-text` container, use the `<pre>` or `<code>` tags directly without CSS classes.
 
-<CssExample value="preformatted" />
+<CssExample data={preformatted} />
 
 ## Block quotes
 
@@ -66,7 +68,7 @@ Block quotes receive a left border and padding to distinguish them from body tex
 
 Use the `.@ns-blockquote` class or nest a `<blockquote>` element inside a `.@ns-running-text` container.
 
-<CssExample value="blockquote" />
+<CssExample data={blockquote} />
 
 ## Lists
 
@@ -79,7 +81,7 @@ Use `.@ns-list-unstyled` to remove list item decorations and margins and padding
 
 Note that these classes must be applied to each nested `<ul>` or `<ol>` element in a tree.
 
-<CssExample value="lists" />
+<CssExample data={lists} />
 
 ## Internationalization
 
@@ -103,7 +105,7 @@ For example, a [`<Checkbox>`](#core/components/checkbox) component with `alignIn
 
 Use the utility class `.@ns-rtl` to apply right alignment to an element to support RTL text.
 
-<CssExample value="rtl" />
+<CssExample data={rtl} />
 
 ## Dark theme
 
