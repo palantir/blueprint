@@ -22,20 +22,20 @@ import { Checkbox, Classes, Code } from "@blueprintjs/core";
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import { Example } from "../components/example";
 
-import type { CssExampleData } from "./cssExampleTypes";
+import { cssExampleData } from "./cssExampleData";
 
 const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
 const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;
 
 export interface CssExampleProps {
-    data: CssExampleData;
+    value: "skeleton" | "ui-text" | "running-text" | "headings" | "preformatted" | "blockquote" | "lists" | "rtl";
 }
 
 function escapeHtml(str: string): string {
     return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-export const CssExample: React.FC<CssExampleProps> = ({ data }) => {
+export const CssExample: React.FC<CssExampleProps> = ({ value }) => {
     const [activeModifiers, setActiveModifiers] = useState<Set<string>>(new Set());
 
     const getModifiers = useCallback(
@@ -60,6 +60,7 @@ export const CssExample: React.FC<CssExampleProps> = ({ data }) => {
         };
     };
 
+    const data = cssExampleData[value];
     const { markup, modifiers, reference } = data;
     const markupHtml = useMemo(() => `<pre><code>${escapeHtml(markup)}</code></pre>`, [markup]);
 

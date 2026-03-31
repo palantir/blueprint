@@ -21,7 +21,6 @@ export interface TagRendererMap {
 }
 
 export * from "./css";
-export * from "./cssExampleTypes";
 export * from "./defaults";
 export * from "./heading";
 export * from "./mdxHeading";

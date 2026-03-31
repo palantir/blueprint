@@ -19,6 +19,8 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
@@ -49,6 +51,7 @@ export default {
                         loader: "@mdx-js/loader",
                         options: {
                             providerImportSource: "@mdx-js/react",
+                            remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
                         },
                     },
                 ],
