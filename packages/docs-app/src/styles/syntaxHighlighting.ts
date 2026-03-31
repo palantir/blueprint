@@ -58,7 +58,6 @@ export async function highlightCodeBlocks() {
     }
 }
 
-
 function token(tokenName: string, color: string) {
     return { foreground: color, token: tokenName };
 }
