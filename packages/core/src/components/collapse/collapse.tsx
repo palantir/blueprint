@@ -217,9 +217,9 @@ export const Collapse: React.FC<CollapseProps> = ({
         if (contents.current != null) {
             const contentHeight = contents.current.clientHeight;
             if (isOpenRef.current) {
-                // When initially open, keep height as "auto" so overflow-y stays "visible"
-                // and content is never clipped. Only record the measured height for future
-                // close animations.
+                // Keep height "auto" on mount — converting to a fixed pixel value here
+                // causes clipping during initial layout. The measured height is still
+                // recorded in heightWhenOpen for close animations.
                 setAnimationState(AnimationStates.OPEN);
                 setHeight("auto");
             } else {
