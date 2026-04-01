@@ -95,6 +95,40 @@ export const FillExample: Story = {
 };
 
 /**
+ * Use the `vertical` prop to make the control group show vertically.
+ */
+export const VerticalExample: Story = {
+    name: "Vertical",
+    argTypes: {
+        vertical: { table: { disable: true } },
+        children: {
+            table: {
+                disable: true,
+            },
+        },
+    },
+    decorators: [
+        Story => (
+            <div style={{ width: "500px" }}>
+                <Story />
+            </div>
+        ),
+    ],
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+            <ControlGroup {...args} vertical={true}>
+                <InputGroup placeholder="Vertical input" />
+                <Button text="Submit" />
+            </ControlGroup>
+            <ControlGroup {...args} vertical={false}>
+                <InputGroup placeholder="Horizontal input" />
+                <Button text="Submit" />
+            </ControlGroup>
+        </div>
+    ),
+};
+
+/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
