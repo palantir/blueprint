@@ -485,6 +485,7 @@ export const DisabledExample: Story = {
 /**
  * Use `hasBackdrop={true}` with click interaction to render an invisible overlay behind the
  * popover that prevents interaction with the rest of the page until it is closed.
+ * Use `backdropProps` to add a visible background color to the backdrop.
  */
 export const HasBackdropExample: Story = {
     name: "Has Backdrop",
@@ -500,8 +501,23 @@ export const HasBackdropExample: Story = {
                 </PopoverNext>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>With Backdrop</span>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Invisible Backdrop</span>
                 <PopoverNext {...args} hasBackdrop={true} content={SAMPLE_MENU}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Visible Backdrop</span>
+                <PopoverNext
+                    {...args}
+                    hasBackdrop={true}
+                    backdropProps={{
+                        style: {
+                            backgroundColor: "oklch(from var(--bp-palette-black) l c h / 0.3)",
+                        },
+                    }}
+                    content={SAMPLE_MENU}
+                >
                     <Button text="Open" endIcon="caret-down" />
                 </PopoverNext>
             </div>
@@ -649,25 +665,53 @@ export const AnimationExample: Story = {
 /**
  * Set `usePortal={false}` to render the popover inline in the DOM rather than in a portal.
  * This can be useful when the popover needs to inherit CSS styles from surrounding elements.
+ * Use `portalContainer` to render the portal into a specific DOM element instead of `document.body`.
  */
 export const UsePortalExample: Story = {
     name: "Use Portal",
-    render: args => (
-        <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>With Portal (default)</span>
-                <PopoverNext {...args} usePortal={true} content={SAMPLE_MENU}>
-                    <Button text="Open" endIcon="caret-down" />
-                </PopoverNext>
+    render: function RenderUsePortal(args) {
+        const portalContainerRef = useRef<HTMLDivElement>(null);
+        return (
+            <div style={{ display: "flex", gap: 16 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>With Portal (default)</span>
+                    <PopoverNext {...args} usePortal={true} content={SAMPLE_MENU}>
+                        <Button text="Open" endIcon="caret-down" />
+                    </PopoverNext>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>No Portal</span>
+                    <PopoverNext {...args} usePortal={false} content={SAMPLE_MENU}>
+                        <Button text="Open" endIcon="caret-down" />
+                    </PopoverNext>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>Custom Portal Container</span>
+                    <PopoverNext
+                        {...args}
+                        usePortal={true}
+                        portalContainer={portalContainerRef.current ?? undefined}
+                        content={SAMPLE_MENU}
+                    >
+                        <Button text="Open" endIcon="caret-down" />
+                    </PopoverNext>
+                    <div
+                        ref={portalContainerRef}
+                        style={{
+                            border: "1px dashed var(--bp-surface-border-color-default)",
+                            borderRadius: "var(--bp-surface-border-radius)",
+                            padding: 4,
+                            minHeight: 24,
+                            fontSize: 11,
+                            opacity: 0.6,
+                        }}
+                    >
+                        portal target
+                    </div>
+                </div>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>No Portal</span>
-                <PopoverNext {...args} usePortal={false} content={SAMPLE_MENU}>
-                    <Button text="Open" endIcon="caret-down" />
-                </PopoverNext>
-            </div>
-        </div>
-    ),
+        );
+    },
 };
 
 /**
@@ -683,8 +727,8 @@ export const BoundaryExample: Story = {
             <div
                 ref={boundaryRef}
                 style={{
-                    border: "2px dashed rgba(128, 128, 128, 0.5)",
-                    borderRadius: 4,
+                    border: "2px dashed var(--bp-surface-border-color-default)",
+                    borderRadius: "var(--bp-surface-border-radius)",
                     padding: 40,
                     width: 400,
                     height: 250,
