@@ -3,11 +3,19 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useRef } from "react";
+import { useArgs } from "storybook/preview-api";
 
 import { Button } from "../button/buttons";
+import { Classes } from "../../common";
+import { Code } from "../html/html";
+import { ControlGroup } from "../forms/controlGroup";
+import { InputGroup } from "../forms/inputGroup";
+import { HTMLSelect } from "../html-select/htmlSelect";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
-import { PopoverInteractionKind } from "../popover/popoverProps";
+import { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
+import { Slider } from "../slider/slider";
 
 import type { PopoverNextPlacement } from "./popoverNextProps";
 import { PopoverNext } from "./popoverNext";
@@ -30,7 +38,6 @@ const PLACEMENTS: PopoverNextPlacement[] = [
 const disabledArgs = [
     "autoUpdateOptions",
     "backdropProps",
-    "boundary",
     "middleware",
     "portalClassName",
     "portalContainer",
@@ -85,6 +92,15 @@ const meta = {
         hasBackdrop: { control: "boolean" },
         fill: { control: "boolean" },
         canEscapeKeyClose: { control: "boolean" },
+        usePortal: { control: "boolean" },
+        isOpen: { control: "boolean" },
+        defaultIsOpen: { control: "boolean" },
+        animation: {
+            control: "select",
+            options: Object.values(PopoverAnimation),
+        },
+        hoverOpenDelay: { control: "number" },
+        hoverCloseDelay: { control: "number" },
         onClose: { action: "closed" },
         ...disabledArgs.reduce(
             (acc, argName) => {
@@ -107,6 +123,39 @@ const SAMPLE_MENU = (
     </Menu>
 );
 
+const PlacementPopover: React.FC<{ placement: PopoverNextPlacement } & React.ComponentProps<typeof PopoverNext>> = ({
+    placement,
+    ...popoverProps
+}) => {
+    const [sideLabel, alignmentLabel] = placement.split("-");
+    const content = (
+        <div style={{ padding: "1.25em" }}>
+            Popover on <Code>{sideLabel}</Code> side
+            <br />
+            {alignmentLabel === undefined ? (
+                <>
+                    Aligned to <Code>(center)</Code>
+                </>
+            ) : (
+                <>
+                    Aligned to <Code>{alignmentLabel}</Code> edge
+                </>
+            )}
+        </div>
+    );
+
+    return (
+        <PopoverNext
+            {...popoverProps}
+            content={content}
+            placement={placement}
+            renderTarget={({ isOpen, ...p }) => (
+                <Button {...p} active={isOpen} className={Classes.BUTTON} text={placement} />
+            )}
+        />
+    );
+};
+
 /**
  * A basic PopoverNext that opens a menu when clicked. PopoverNext wraps its children
  * and uses them as the trigger target. By default, clicking outside or on a menu item
@@ -121,8 +170,115 @@ export const Default: Story = {
 };
 
 /**
+ * The `content` prop accepts a plain string for simple text content.
+ */
+export const TextContentExample: Story = {
+    name: "Content: Text",
+    render: args => (
+        <PopoverNext {...args} content="This is a simple string popover content.">
+            <Button text="Open" endIcon="caret-down" />
+        </PopoverNext>
+    ),
+};
+
+/**
+ * A popover containing form inputs. The popover manages focus so that
+ * keyboard users can interact with form elements inside.
+ */
+export const InputContentExample: Story = {
+    name: "Content: Input",
+    render: args => (
+        <PopoverNext
+            {...args}
+            content={
+                <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <InputGroup placeholder="Enter a value..." />
+                    <Button text="Submit" intent="primary" size="small" />
+                </div>
+            }
+        >
+            <Button text="Edit" icon="edit" />
+        </PopoverNext>
+    ),
+};
+
+/**
+ * A popover with a slider. Useful for inline controls like opacity or volume adjustments.
+ */
+export const SliderContentExample: Story = {
+    name: "Content: Slider",
+    render: args => (
+        <PopoverNext
+            {...args}
+            content={
+                <div style={{ padding: 16, width: 200 }}>
+                    <Slider min={0} max={100} stepSize={1} value={50} labelStepSize={25} />
+                </div>
+            }
+        >
+            <Button text="Adjust" icon="settings" />
+        </PopoverNext>
+    ),
+};
+
+/**
+ * A popover with a menu is the most common use case.
+ */
+export const MenuContentExample: Story = {
+    name: "Content: Menu",
+    render: args => (
+        <PopoverNext {...args} content={SAMPLE_MENU}>
+            <Button text="Actions" endIcon="caret-down" />
+        </PopoverNext>
+    ),
+};
+
+/**
+ * A popover with an HTML select element inside.
+ */
+export const SelectContentExample: Story = {
+    name: "Content: Select",
+    render: args => (
+        <PopoverNext
+            {...args}
+            content={
+                <div style={{ padding: 16 }}>
+                    <HTMLSelect options={["Apple", "Banana", "Cherry", "Date"]} fill={true} />
+                </div>
+            }
+        >
+            <Button text="Choose fruit" endIcon="caret-down" />
+        </PopoverNext>
+    ),
+};
+
+/**
+ * When `content` is empty or undefined, the popover will not open.
+ */
+export const EmptyContentExample: Story = {
+    name: "Content: Empty",
+    render: args => (
+        <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>undefined</span>
+                <PopoverNext {...args} content={undefined}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Empty string</span>
+                <PopoverNext {...args} content="">
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+        </div>
+    ),
+};
+
+/**
  * Use the `placement` prop to control where the popover appears relative to its target.
  * The popover automatically flips to the opposite side if there is insufficient space.
+ * Button positions are flipped here so that all popovers open inward.
  */
 export const PlacementExample: Story = {
     name: "Placement",
@@ -130,23 +286,45 @@ export const PlacementExample: Story = {
         placement: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "center" }}>
-            {(["top", "bottom", "left", "right"] as PopoverNextPlacement[]).map(placement => (
-                <PopoverNext
-                    key={placement}
-                    {...args}
-                    placement={placement}
-                    content={
-                        <Menu>
-                            <MenuItem text="Option 1" />
-                            <MenuItem text="Option 2" />
-                            <MenuItem text="Option 3" />
-                        </Menu>
-                    }
-                >
-                    <Button text={`Open ${placement}`} />
-                </PopoverNext>
-            ))}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr", gap: 16 }}>
+            {/* Row 1: bottom placements (buttons at top, popovers open downward) */}
+            <div />
+            <ControlGroup fill={true}>
+                <PlacementPopover {...args} placement="bottom-start" />
+                <PlacementPopover {...args} placement="bottom" />
+                <PlacementPopover {...args} placement="bottom-end" />
+            </ControlGroup>
+            <div />
+
+            {/* Row 2: right placements | center label | left placements */}
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <ControlGroup vertical={true}>
+                    <PlacementPopover {...args} placement="right-start" />
+                    <PlacementPopover {...args} placement="right" />
+                    <PlacementPopover {...args} placement="right-end" />
+                </ControlGroup>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <em className={Classes.TEXT_MUTED}>
+                    Button positions are flipped here so that all popovers open inward.
+                </em>
+            </div>
+            <div>
+                <ControlGroup vertical={true}>
+                    <PlacementPopover {...args} placement="left-start" />
+                    <PlacementPopover {...args} placement="left" />
+                    <PlacementPopover {...args} placement="left-end" />
+                </ControlGroup>
+            </div>
+
+            {/* Row 3: top placements (buttons at bottom, popovers open upward) */}
+            <div />
+            <ControlGroup fill={true}>
+                <PlacementPopover {...args} placement="top-start" />
+                <PlacementPopover {...args} placement="top" />
+                <PlacementPopover {...args} placement="top-end" />
+            </ControlGroup>
+            <div />
         </div>
     ),
 };
@@ -307,19 +485,255 @@ export const DisabledExample: Story = {
 };
 
 /**
+ * Use `hasBackdrop={true}` with click interaction to render an invisible overlay behind the
+ * popover that prevents interaction with the rest of the page until it is closed.
+ */
+export const HasBackdropExample: Story = {
+    name: "Has Backdrop",
+    argTypes: {
+        hasBackdrop: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>No Backdrop</span>
+                <PopoverNext {...args} hasBackdrop={false} content={SAMPLE_MENU}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>With Backdrop</span>
+                <PopoverNext {...args} hasBackdrop={true} content={SAMPLE_MENU}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Use `fill={true}` to make the popover target take up the full width of its container.
+ * This automatically sets the target tag name to `"div"`.
+ */
+export const FillExample: Story = {
+    name: "Fill",
+    argTypes: {
+        fill: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: 300 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Default (inline)</span>
+                <PopoverNext {...args} fill={false} content={SAMPLE_MENU}>
+                    <Button text="Open Menu" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Fill</span>
+                <PopoverNext {...args} fill={true} content={SAMPLE_MENU}>
+                    <Button text="Open Menu" endIcon="caret-down" fill={true} />
+                </PopoverNext>
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Use `isOpen` to control the popover's open state externally. In controlled mode,
+ * the popover will only open or close when the `isOpen` prop changes. Use `onInteraction`
+ * to respond to user interactions that would normally toggle the popover.
+ */
+export const ControlledExample: Story = {
+    name: "Controlled",
+    argTypes: {
+        disabled: { table: { disable: true } },
+    },
+    render: args => {
+        const [, updateArgs] = useArgs();
+        return (
+            <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                <PopoverNext
+                    {...args}
+                    isOpen={args.isOpen}
+                    onInteraction={nextOpenState => updateArgs({ isOpen: nextOpenState })}
+                    content={SAMPLE_MENU}
+                >
+                    <Button text="Popover Target" endIcon="caret-down" />
+                </PopoverNext>
+                <Button
+                    text={args.isOpen ? "Close" : "Open"}
+                    onClick={() => updateArgs({ isOpen: !args.isOpen })}
+                    intent="primary"
+                    minimal={true}
+                />
+            </div>
+        );
+    },
+    args: {
+        isOpen: false,
+    },
+};
+
+/**
+ * Use `defaultIsOpen={true}` to have the popover open on initial render in uncontrolled mode.
+ */
+export const DefaultIsOpenExample: Story = {
+    name: "Default Is Open",
+    render: args => (
+        <PopoverNext {...args} defaultIsOpen={true} content={SAMPLE_MENU}>
+            <Button text="Initially Open" endIcon="caret-down" />
+        </PopoverNext>
+    ),
+};
+
+/**
+ * Use `hoverOpenDelay` and `hoverCloseDelay` to control the timing of hover-triggered popovers.
+ * These props only apply when `interactionKind` is `"hover"` or `"hover-target"`.
+ */
+export const HoverDelaysExample: Story = {
+    name: "Hover Delays",
+    argTypes: {
+        interactionKind: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Default delays</span>
+                <PopoverNext {...args} interactionKind={PopoverInteractionKind.HOVER} content={SAMPLE_MENU}>
+                    <Button text="Hover me" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Slow open (800ms)</span>
+                <PopoverNext
+                    {...args}
+                    interactionKind={PopoverInteractionKind.HOVER}
+                    hoverOpenDelay={800}
+                    content={SAMPLE_MENU}
+                >
+                    <Button text="Hover me" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>No close delay</span>
+                <PopoverNext
+                    {...args}
+                    interactionKind={PopoverInteractionKind.HOVER}
+                    hoverCloseDelay={0}
+                    content={SAMPLE_MENU}
+                >
+                    <Button text="Hover me" />
+                </PopoverNext>
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Use the `animation` prop to control the popover's entrance animation.
+ * `"scale"` (default) applies a scale + fade transition, while `"minimal"` uses only a fade.
+ */
+export const AnimationExample: Story = {
+    name: "Animation",
+    render: args => (
+        <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Scale (default)</span>
+                <PopoverNext {...args} animation="scale" content={SAMPLE_MENU}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>Minimal</span>
+                {/* eslint-disable-next-line @typescript-eslint/no-deprecated -- demonstrating the minimal animation */}
+                <PopoverNext {...args} animation="minimal" content={SAMPLE_MENU}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Set `usePortal={false}` to render the popover inline in the DOM rather than in a portal.
+ * This can be useful when the popover needs to inherit CSS styles from surrounding elements.
+ */
+export const UsePortalExample: Story = {
+    name: "Use Portal",
+    render: args => (
+        <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>With Portal (default)</span>
+                <PopoverNext {...args} usePortal={true} content={SAMPLE_MENU}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>No Portal</span>
+                <PopoverNext {...args} usePortal={false} content={SAMPLE_MENU}>
+                    <Button text="Open" endIcon="caret-down" />
+                </PopoverNext>
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Use the `boundary` prop to constrain the popover within a specific container element.
+ * When the popover would overflow the boundary, it flips or shifts to stay inside.
+ * Try scrolling the container to see the popover reposition itself.
+ */
+export const BoundaryExample: Story = {
+    name: "Boundary",
+    render: args => {
+        const boundaryRef = useRef<HTMLDivElement>(null);
+        return (
+            <div
+                ref={boundaryRef}
+                style={{
+                    border: "2px dashed rgba(128, 128, 128, 0.5)",
+                    borderRadius: 4,
+                    padding: 40,
+                    width: 400,
+                    height: 250,
+                    overflow: "auto",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    position: "relative",
+                }}
+            >
+                <div style={{ display: "flex", gap: 16 }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                        <span style={{ fontSize: 12, opacity: 0.6 }}>With boundary</span>
+                        <PopoverNext
+                            {...args}
+                            placement="top"
+                            boundary={boundaryRef.current ?? undefined}
+                            content={SAMPLE_MENU}
+                        >
+                            <Button text="Open" endIcon="caret-down" />
+                        </PopoverNext>
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                        <span style={{ fontSize: 12, opacity: 0.6 }}>No boundary</span>
+                        <PopoverNext {...args} placement="top" content={SAMPLE_MENU}>
+                            <Button text="Open" endIcon="caret-down" />
+                        </PopoverNext>
+                    </div>
+                </div>
+            </div>
+        );
+    },
+};
+
+/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
     render: args => (
         <PopoverNext
-            arrow={args.arrow}
-            canEscapeKeyClose={args.canEscapeKeyClose}
-            disabled={args.disabled}
-            fill={args.fill}
-            hasBackdrop={args.hasBackdrop}
-            interactionKind={args.interactionKind}
-            matchTargetWidth={args.matchTargetWidth}
-            placement={args.placement}
+            {...args}
             content={
                 <Menu>
                     <MenuItem text="New" icon="document" />
@@ -332,11 +746,4 @@ export const Playground: Story = {
             <Button text="File" endIcon="caret-down" />
         </PopoverNext>
     ),
-    args: {
-        placement: "bottom-start",
-        interactionKind: PopoverInteractionKind.CLICK,
-        arrow: true,
-        disabled: false,
-        matchTargetWidth: false,
-    },
 };
