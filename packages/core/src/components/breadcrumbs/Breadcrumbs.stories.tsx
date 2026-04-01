@@ -5,7 +5,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import React from "react";
 
-import { Boundary } from "../../common";
+import { Boundary } from "../../common/boundary";
+
 import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";
 
