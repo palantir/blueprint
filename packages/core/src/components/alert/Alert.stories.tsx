@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
+import { Button } from "../button/buttons";
 
 import { Alert } from "./alert";
 
@@ -24,7 +25,7 @@ const meta: Meta<typeof Alert> = {
     },
     tags: ["autodocs"],
     args: {
-        intent: "none",
+        intent: Intent.NONE,
         isOpen: true,
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
@@ -78,81 +79,121 @@ export const Default: Story = {
 };
 
 /**
- * Use the `intent` prop to apply a semantic color to the confirm button and icon.
+ * Primary intent alert.
  */
-export const IntentExample: Story = {
-    name: "Intent",
-    argTypes: {
-        intent: { table: { disable: true } },
+export const Primary: Story = {
+    args: {
+        intent: Intent.PRIMARY,
+        icon: "info-sign",
+        children: "This is a primary intent alert.",
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {Object.values(Intent)
-                .filter(i => i !== "none")
-                .map(intent => (
-                    <Alert key={intent} {...args} isOpen={true} intent={intent} icon="info-sign" confirmButtonText="OK">
-                        This is a <strong>{intent}</strong> alert.
-                    </Alert>
-                ))}
-        </div>
-    ),
 };
 
 /**
- * Alerts support `loading` state and can include a cancel button with `cancelButtonText`.
+ * Success intent alert.
  */
-export const StateExample: Story = {
-    name: "State",
-    argTypes: {
-        loading: { table: { disable: true } },
-        cancelButtonText: { table: { disable: true } },
+export const Success: Story = {
+    args: {
+        intent: Intent.SUCCESS,
+        icon: "tick-circle",
+        children: "This is a success intent alert.",
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <Alert {...args} isOpen={true} intent="danger" icon="trash" confirmButtonText="Delete">
-                Default alert with confirm only.
-            </Alert>
-            <Alert
-                {...args}
-                isOpen={true}
-                intent="danger"
-                icon="trash"
-                confirmButtonText="Delete"
-                cancelButtonText="Cancel"
-            >
-                Alert with cancel button.
-            </Alert>
-            <Alert {...args} isOpen={true} intent="primary" icon="info-sign" confirmButtonText="OK" loading={true}>
-                Loading alert.
-            </Alert>
-        </div>
-    ),
+};
+
+/**
+ * Warning intent alert.
+ */
+export const Warning: Story = {
+    args: {
+        intent: Intent.WARNING,
+        icon: "warning-sign",
+        children: "This is a warning intent alert.",
+    },
+};
+
+/**
+ * Danger intent alert.
+ */
+export const Danger: Story = {
+    args: {
+        intent: Intent.DANGER,
+        icon: "error",
+        children: "This is a danger intent alert.",
+    },
+};
+
+/**
+ * Alert with only a confirm button (no cancel).
+ */
+export const ConfirmOnly: Story = {
+    args: {
+        intent: Intent.NONE,
+        icon: "info-sign",
+        confirmButtonText: "OK",
+        cancelButtonText: undefined,
+        children: "Alert with confirm button only.",
+    },
+};
+
+/**
+ * Alert with both confirm and cancel buttons.
+ */
+export const WithCancel: Story = {
+    args: {
+        intent: Intent.NONE,
+        icon: "info-sign",
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+        children: "Alert with cancel button.",
+    },
+};
+
+/**
+ * Alert in a loading state. The confirm button shows a spinner and the cancel button is disabled.
+ */
+export const Loading: Story = {
+    args: {
+        intent: Intent.PRIMARY,
+        icon: "info-sign",
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        loading: true,
+        children: "Loading alert.",
+    },
 };
 
 /**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
-    render: function Render(args) {
+    render: function Render({ onConfirm, onCancel, onClose, ...args }) {
         const [isOpen, setIsOpen] = useState(true);
 
         const handleConfirm = useCallback(() => {
-            args.onConfirm?.();
+            onConfirm?.();
             setIsOpen(false);
-        }, [args]);
+        }, [onConfirm]);
 
         const handleCancel = useCallback(() => {
-            args.onCancel?.();
+            onCancel?.();
             setIsOpen(false);
-        }, [args]);
+        }, [onCancel]);
+
+        const handleClose = useCallback(
+            (confirmed: boolean) => {
+                onClose?.(confirmed);
+                setIsOpen(false);
+            },
+            [onClose],
+        );
 
         const handleReopen = useCallback(() => setIsOpen(true), []);
 
         return (
             <div>
-                <button type="button" onClick={handleReopen}>
+                <Button type="button" onClick={handleReopen}>
                     Open Alert
-                </button>
+                </Button>
                 <Alert
                     cancelButtonText={args.cancelButtonText}
                     canEscapeKeyCancel={args.canEscapeKeyCancel}
@@ -163,6 +204,7 @@ export const Playground: Story = {
                     isOpen={isOpen}
                     loading={args.loading}
                     onCancel={handleCancel}
+                    onClose={handleClose}
                     onConfirm={handleConfirm}
                 >
                     This is a playground alert. Use the controls to customize it.
@@ -171,7 +213,7 @@ export const Playground: Story = {
         );
     },
     args: {
-        intent: "danger",
+        intent: Intent.DANGER,
         icon: "trash",
         confirmButtonText: "Confirm",
         cancelButtonText: "Cancel",
