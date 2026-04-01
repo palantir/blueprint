@@ -3,15 +3,18 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { type ComponentProps, type CSSProperties, useCallback } from "react";
+import { useArgs } from "storybook/preview-api";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
+import { InputGroup } from "../forms/inputGroup";
+import { Code, H3, H4 } from "../html/html";
 
 import { Overlay2 } from "./overlay2";
 
 const disabledArgs = ["childRef", "childRefs", "portalStopPropagationEvents"] as const satisfies ReadonlyArray<
-    keyof React.ComponentProps<typeof Overlay2>
+    keyof ComponentProps<typeof Overlay2>
 >;
 
 const meta = {
@@ -54,8 +57,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const OVERLAY_CONTENT_STYLE: React.CSSProperties = {
-    background: "var(--pt-app-background-color, white)",
+const OVERLAY_CONTENT_STYLE: CSSProperties = {
+    background: "var(--bp-surface-background-color, white)",
     borderRadius: 6,
     boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
     left: "calc(50% - 200px)",
@@ -72,16 +75,16 @@ const OVERLAY_CONTENT_STYLE: React.CSSProperties = {
  * the backdrop or press Escape to close it.
  */
 export const Default: Story = {
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
+    render: function RenderDefault(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
         return (
             <>
                 <Button text="Open Overlay" onClick={handleOpen} />
-                <Overlay2 {...args} isOpen={isOpen} onClose={handleClose}>
+                <Overlay2 {...args} onClose={handleClose}>
                     <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>Overlay Content</h3>
+                        <H3>Overlay Content</H3>
                         <p>This is the overlay body content. Click outside or press Escape to close.</p>
                         <Button text="Close" onClick={handleClose} />
                     </div>
@@ -97,19 +100,22 @@ export const Default: Story = {
  */
 export const WithoutBackdrop: Story = {
     name: "Without Backdrop",
+    args: {
+        hasBackdrop: false,
+    },
     argTypes: {
         hasBackdrop: { table: { disable: true } },
     },
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
+    render: function RenderWithoutBackdrop(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
         return (
             <>
                 <Button text="Open Overlay" onClick={handleOpen} />
-                <Overlay2 {...args} hasBackdrop={false} isOpen={isOpen} onClose={handleClose}>
+                <Overlay2 {...args} onClose={handleClose}>
                     <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>No Backdrop</h3>
+                        <H3>No Backdrop</H3>
                         <p>
                             This overlay has no backdrop. You can still interact with the page behind it. Click outside
                             or press Escape to close.
@@ -128,27 +134,31 @@ export const WithoutBackdrop: Story = {
  */
 export const InlineOverlay: Story = {
     name: "Inline (No Portal)",
+    args: {
+        usePortal: false,
+        hasBackdrop: false,
+    },
     argTypes: {
         usePortal: { table: { disable: true } },
     },
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
+    render: function RenderInlineOverlay(args) {
+        const [, updateArgs] = useArgs();
+        const handleToggle = useCallback(() => updateArgs({ isOpen: !args.isOpen }), [args.isOpen, updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
         return (
             <div style={{ position: "relative", minHeight: 200, width: 400 }}>
-                <Button text="Toggle Inline Overlay" onClick={isOpen ? handleClose : handleOpen} />
-                <Overlay2 {...args} usePortal={false} hasBackdrop={false} isOpen={isOpen} onClose={handleClose}>
+                <Button text="Toggle Inline Overlay" onClick={handleToggle} />
+                <Overlay2 {...args} onClose={handleClose}>
                     <div
                         style={{
-                            background: "var(--pt-app-background-color, white)",
-                            border: "1px solid var(--pt-divider-black, #ccc)",
+                            background: "var(--bp-surface-background-color, white)",
+                            border: "1px solid var(--bp-surface-border-color-default, #ccc)",
                             borderRadius: 6,
                             marginTop: 8,
                             padding: 20,
                         }}
                     >
-                        <h4 style={{ marginTop: 0 }}>Inline Overlay</h4>
+                        <H4 style={{ marginTop: 0 }}>Inline Overlay</H4>
                         <p>This overlay is rendered inline without a Portal.</p>
                         <Button text="Close" onClick={handleClose} />
                     </div>
@@ -159,31 +169,182 @@ export const InlineOverlay: Story = {
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Demonstrates `autoFocus` behavior. When enabled (the default), focus moves inside the
+ * overlay on open — specifically to an internal focus trap element, not the first interactive
+ * child. Press Tab once after opening to reach the first input. Toggle the `autoFocus` control
+ * to `false` to see that focus stays on the trigger button instead.
  */
-export const Playground: Story = {
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
+export const AutoFocus: Story = {
+    name: "Auto Focus",
+    render: function RenderAutoFocus(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
         return (
             <>
                 <Button text="Open Overlay" onClick={handleOpen} />
-                <Overlay2
-                    autoFocus={args.autoFocus}
-                    canEscapeKeyClose={args.canEscapeKeyClose}
-                    canOutsideClickClose={args.canOutsideClickClose}
-                    enforceFocus={args.enforceFocus}
-                    hasBackdrop={args.hasBackdrop}
-                    isOpen={isOpen}
-                    lazy={args.lazy}
-                    shouldReturnFocusOnClose={args.shouldReturnFocusOnClose}
-                    transitionDuration={args.transitionDuration}
-                    usePortal={args.usePortal}
-                    onClose={handleClose}
-                >
+                <Overlay2 {...args} onClose={handleClose}>
                     <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
-                        <h3>Playground Overlay</h3>
+                        <H3>Auto Focus</H3>
+                        <p>
+                            Focus is moved inside the overlay on open. Press <Code>Tab</Code> to reach the first input.
+                        </p>
+                        <InputGroup placeholder="First input" style={{ marginBottom: 10 }} />
+                        <InputGroup placeholder="Second input" style={{ marginBottom: 10 }} />
+                        <div style={{ display: "flex", gap: 10 }}>
+                            <Button text="OK" intent="primary" onClick={handleClose} />
+                            <Button text="Cancel" onClick={handleClose} />
+                        </div>
+                    </div>
+                </Overlay2>
+            </>
+        );
+    },
+};
+
+/**
+ * When `enforceFocus` is enabled (the default), the overlay traps keyboard focus inside its
+ * content. Open the overlay, then press Tab repeatedly — focus wraps from the last focusable
+ * element back to the first. Press Shift+Tab at the first element to wrap to the last.
+ */
+export const EnforceFocus: Story = {
+    name: "Enforce Focus (Focus Trap)",
+    render: function RenderEnforceFocus(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <>
+                <Button text="Open Overlay" onClick={handleOpen} />
+                <Overlay2 {...args} onClose={handleClose}>
+                    <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
+                        <H3>Focus Trap</H3>
+                        <p>Tab and Shift+Tab wrap around the focusable elements. Focus cannot leave this overlay.</p>
+                        <InputGroup placeholder="Field 1" style={{ marginBottom: 10 }} />
+                        <InputGroup placeholder="Field 2" style={{ marginBottom: 10 }} />
+                        <InputGroup placeholder="Field 3" style={{ marginBottom: 10 }} />
+                        <div style={{ display: "flex", gap: 10 }}>
+                            <Button text="Submit" intent="primary" onClick={handleClose} />
+                            <Button text="Cancel" onClick={handleClose} />
+                        </div>
+                    </div>
+                </Overlay2>
+            </>
+        );
+    },
+};
+
+/**
+ * When `enforceFocus` is disabled, focus can leave the overlay and reach elements behind it.
+ * Open the overlay, then Tab past the "Close" button — focus should reach the background input.
+ * Compare with the "Enforce Focus" story above.
+ */
+export const WithoutEnforceFocus: Story = {
+    name: "Without Enforce Focus",
+    args: {
+        enforceFocus: false,
+        hasBackdrop: false,
+    },
+    render: function RenderWithoutEnforceFocus(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+                    <Button text="Open Overlay" onClick={handleOpen} />
+                    <InputGroup placeholder="Background input (should be reachable with Tab)" />
+                </div>
+                <Overlay2 {...args} onClose={handleClose}>
+                    <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
+                        <H3>No Focus Trap</H3>
+                        <p>Focus can leave this overlay. Try tabbing past the button below.</p>
+                        <InputGroup placeholder="Overlay input" style={{ marginBottom: 10 }} />
+                        <Button text="Close" onClick={handleClose} />
+                    </div>
+                </Overlay2>
+            </>
+        );
+    },
+};
+
+/**
+ * When `shouldReturnFocusOnClose` is enabled (the default), focus returns to the element
+ * that had focus before the overlay opened. Open the overlay, then press Escape — focus
+ * should return to the "Open Overlay" button (not "Before" or "After").
+ */
+export const ReturnFocusOnClose: Story = {
+    name: "Return Focus on Close",
+    args: {
+        shouldReturnFocusOnClose: true,
+    },
+    render: function RenderReturnFocusOnClose(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <>
+                <div style={{ display: "flex", gap: 10 }}>
+                    <Button text="Before" />
+                    <Button text="Open Overlay" onClick={handleOpen} />
+                    <Button text="After" />
+                </div>
+                <Overlay2 {...args} onClose={handleClose}>
+                    <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
+                        <H3>Return Focus on Close</H3>
+                        <p>Press Escape to close. Focus should return to the "Open Overlay" button.</p>
+                        <Button text="Close" intent="primary" onClick={handleClose} />
+                    </div>
+                </Overlay2>
+            </>
+        );
+    },
+};
+
+/**
+ * When `canEscapeKeyClose` is true (the default), pressing Escape closes the overlay.
+ * Toggle the control to disable Escape-to-close — the overlay can then only be closed
+ * by clicking the Close button or the backdrop.
+ */
+export const EscapeKeyClose: Story = {
+    name: "Escape Key Close",
+    render: function RenderEscapeKeyClose(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <>
+                <Button text="Open Overlay" onClick={handleOpen} />
+                <Overlay2 {...args} onClose={handleClose}>
+                    <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
+                        <H3>Escape Key Close</H3>
+                        <p>
+                            Press Escape to close this overlay. Use the Storybook controls to toggle{" "}
+                            <Code>canEscapeKeyClose</Code>.
+                        </p>
+                        <InputGroup placeholder="Type here, then press Escape" style={{ marginBottom: 10 }} />
+                        <Button text="Close" onClick={handleClose} />
+                    </div>
+                </Overlay2>
+            </>
+        );
+    },
+};
+
+/**
+ * Interactive playground with all props toggleable via Storybook controls.
+ */
+export const Playground: Story = {
+    render: function RenderPlayground(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <>
+                <Button text="Open Overlay" onClick={handleOpen} />
+                <Overlay2 {...args} onClose={handleClose}>
+                    <div className={Classes.OVERLAY_CONTENT} style={OVERLAY_CONTENT_STYLE}>
+                        <H3>Playground Overlay</H3>
                         <p>Use the Storybook controls to customize overlay behavior.</p>
                         <Button text="Close" onClick={handleClose} />
                     </div>
