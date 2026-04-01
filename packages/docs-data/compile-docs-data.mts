@@ -37,7 +37,7 @@ const LIBRARY_AND_DOCS_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
 
 console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
 
-// assume we are running from packages/docs-data
+// assume we are running from packages/docs-app
 const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const docsDataFilePath = join(generatedSrcDir, "docs.json");
@@ -60,7 +60,7 @@ try {
 } catch (err) {
     // console.error messages get swallowed by lerna but console.log is emitted to terminal.
     console.error(`[docs-data] ERROR when generating JSON docs data:`);
-    throw err instanceof Error ? err : new Error(String(err));
+    throw new Error(err);
 }
 
 console.info(`[docs-data] successfully generated docs.json`);
