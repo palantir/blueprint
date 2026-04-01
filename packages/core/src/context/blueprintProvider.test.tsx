@@ -21,7 +21,7 @@ const PortalContextConsumer = () => {
 const HotkeysDialogTrigger = () => {
     const [, dispatch] = useContext(HotkeysContext);
     return (
-        <button data-testid="open-dialog" onClick={() => dispatch({ type: "OPEN_DIALOG" })}>
+        <button type="button" data-testid="open-dialog" onClick={() => dispatch({ type: "OPEN_DIALOG" })}>
             Open dialog
         </button>
     );
