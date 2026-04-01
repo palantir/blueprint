@@ -3,22 +3,22 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useArgs } from "storybook/preview-api";
 
-import { Button } from "../button/buttons";
 import { Classes } from "../../common";
-import { Code } from "../html/html";
+import { Button } from "../button/buttons";
 import { ControlGroup } from "../forms/controlGroup";
 import { InputGroup } from "../forms/inputGroup";
+import { Code } from "../html/html";
 import { HTMLSelect } from "../html-select/htmlSelect";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import { Slider } from "../slider/slider";
 
-import type { PopoverNextPlacement } from "./popoverNextProps";
 import { PopoverNext } from "./popoverNext";
+import type { PopoverNextPlacement } from "./popoverNextProps";
 
 const PLACEMENTS: PopoverNextPlacement[] = [
     "top",
@@ -144,16 +144,14 @@ const PlacementPopover: React.FC<{ placement: PopoverNextPlacement } & React.Com
         </div>
     );
 
-    return (
-        <PopoverNext
-            {...popoverProps}
-            content={content}
-            placement={placement}
-            renderTarget={({ isOpen, ...p }) => (
-                <Button {...p} active={isOpen} className={Classes.BUTTON} text={placement} />
-            )}
-        />
+    const renderTarget = useCallback(
+        ({ isOpen, ...p }: { isOpen: boolean } & Record<string, unknown>) => (
+            <Button {...p} active={isOpen} className={Classes.BUTTON} text={placement} />
+        ),
+        [placement],
     );
+
+    return <PopoverNext {...popoverProps} content={content} placement={placement} renderTarget={renderTarget} />;
 };
 
 /**
@@ -548,24 +546,19 @@ export const ControlledExample: Story = {
     argTypes: {
         disabled: { table: { disable: true } },
     },
-    render: args => {
+    render: function RenderControlled({ isOpen, ...args }) {
         const [, updateArgs] = useArgs();
+        const handleInteraction = useCallback(
+            (nextOpenState: boolean) => updateArgs({ isOpen: nextOpenState }),
+            [updateArgs],
+        );
+        const handleToggle = useCallback(() => updateArgs({ isOpen: !isOpen }), [isOpen, updateArgs]);
         return (
             <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-                <PopoverNext
-                    {...args}
-                    isOpen={args.isOpen}
-                    onInteraction={nextOpenState => updateArgs({ isOpen: nextOpenState })}
-                    content={SAMPLE_MENU}
-                >
+                <PopoverNext {...args} isOpen={isOpen} onInteraction={handleInteraction} content={SAMPLE_MENU}>
                     <Button text="Popover Target" endIcon="caret-down" />
                 </PopoverNext>
-                <Button
-                    text={args.isOpen ? "Close" : "Open"}
-                    onClick={() => updateArgs({ isOpen: !args.isOpen })}
-                    intent="primary"
-                    minimal={true}
-                />
+                <Button text={isOpen ? "Close" : "Open"} onClick={handleToggle} intent="primary" variant={"minimal"} />
             </div>
         );
     },
@@ -645,7 +638,6 @@ export const AnimationExample: Story = {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Minimal</span>
-                {/* eslint-disable-next-line @typescript-eslint/no-deprecated -- demonstrating the minimal animation */}
                 <PopoverNext {...args} animation="minimal" content={SAMPLE_MENU}>
                     <Button text="Open" endIcon="caret-down" />
                 </PopoverNext>
@@ -685,7 +677,7 @@ export const UsePortalExample: Story = {
  */
 export const BoundaryExample: Story = {
     name: "Boundary",
-    render: args => {
+    render: function RenderBoundary(args) {
         const boundaryRef = useRef<HTMLDivElement>(null);
         return (
             <div
@@ -725,25 +717,4 @@ export const BoundaryExample: Story = {
             </div>
         );
     },
-};
-
-/**
- * Interactive playground with all props togglable via Storybook controls.
- */
-export const Playground: Story = {
-    render: args => (
-        <PopoverNext
-            {...args}
-            content={
-                <Menu>
-                    <MenuItem text="New" icon="document" />
-                    <MenuItem text="Open" icon="folder-shared" />
-                    <MenuItem text="Save" icon="floppy-disk" />
-                    <MenuItem text="Export" icon="export" />
-                </Menu>
-            }
-        >
-            <Button text="File" endIcon="caret-down" />
-        </PopoverNext>
-    ),
 };
