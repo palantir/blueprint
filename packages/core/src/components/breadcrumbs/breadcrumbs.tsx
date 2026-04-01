@@ -26,6 +26,8 @@ import type { PopoverProps } from "../popover/popoverProps";
 
 import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
 
+const EMPTY_ITEMS: readonly BreadcrumbProps[] = [];
+
 export interface BreadcrumbsProps extends Props {
     /**
      * Callback invoked to render visible breadcrumbs. Best practice is to
@@ -100,7 +102,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
         className,
         collapseFrom = Boundary.START,
         currentBreadcrumbRenderer,
-        items = [],
+        items = EMPTY_ITEMS,
         minVisibleItems = 0,
         overflowButtonProps,
         overflowListProps = {},
