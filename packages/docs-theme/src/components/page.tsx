@@ -17,6 +17,8 @@
 import { Classes } from "@blueprintjs/core";
 
 import type { DocPage } from "@blueprintjs/docs-data";
+import type { Block, StringOrTag } from "@documentalist/client";
+
 import type { TagRendererMap } from "../tags";
 
 import { renderBlock } from "./block";
@@ -27,10 +29,24 @@ export interface PageProps {
     tagRenderers: TagRendererMap;
 }
 
+// this is janky, but just to ensure type safety
+
+/** Convert a single item from `DocPage.contents` to `StringOrTag`, dropping nulls. */
+function docContentToStringOrTag(item: DocPage["contents"][number]): StringOrTag | null {
+    if (item === null) return null;
+    if (typeof item === "string") return item;
+    return { tag: item.tag, value: item.value };
+}
+
 /** @deprecated All pages now render via MDX. This component is retained for backwards compatibility. */
 export const Page: React.FC<PageProps> = ({ page, renderActions, tagRenderers }) => {
     // apply running text styles to blocks in pages (but not on blocks in examples)
-    const pageContents = renderBlock(page as any, tagRenderers, Classes.TEXT_LARGE);
+    const pageAsBlock: Block = {
+        contents: page.contents.map(docContentToStringOrTag).filter((x): x is StringOrTag => x !== null),
+        contentsRaw: "",
+        metadata: page.metadata,
+    };
+    const pageContents = renderBlock(pageAsBlock, tagRenderers, Classes.TEXT_LARGE);
     return (
         <div className="docs-page" data-page-id={page.route}>
             {renderActions && <div className="docs-page-actions">{renderActions(page)}</div>}

@@ -201,20 +201,24 @@ async function generateDocumentalistData(): Promise<void> {
         )
         .use(".scss", new KssPlugin());
 
-    const docs = await documentalist.documentGlobs(
+    const documentalistData = await documentalist.documentGlobs(
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
         `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
-    // 3. Merge MDX pages into the documentalist output
-    (docs as any).pages = pages;
+    // 3. Merge MDX pages with documentalist output into a single typed object
+    const docs = {
+        ...documentalistData,
+        pages,
+        nav: [] as NavTreeNode[],
+    };
 
     // 4. Apply nav config: assign routes and build nav tree
     const rawConfig: RawNavStructure = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
     validateNavConfig(rawConfig);
     const navConfig = normalizeNavConfig(rawConfig);
-    applyNavConfig(docs as any, navConfig);
+    applyNavConfig(docs, navConfig);
 
     // 5. Write docs.json
     const content = JSON.stringify(docs, transformDocumentalistData, 2);
