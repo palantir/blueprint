@@ -73,30 +73,6 @@ export const Default: Story = {
 };
 
 /**
- * Use the `intent` prop to apply a semantic color to the checkbox.
- */
-export const IntentExample: Story = {
-    name: "Intent",
-    argTypes: {
-        intent: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
-            <Checkbox {...args} label="Default (no intent)" defaultChecked={true} />
-            {Object.values(Intent).map(intent => (
-                <Checkbox
-                    key={intent}
-                    {...args}
-                    intent={intent}
-                    label={intent.charAt(0).toUpperCase() + intent.slice(1)}
-                    defaultChecked={true}
-                />
-            ))}
-        </div>
-    ),
-};
-
-/**
  * Use the `size` prop to adjust the checkbox dimensions.
  */
 export const SizeExample: Story = {
@@ -152,8 +128,8 @@ export const StateExample: Story = {
 /**
  * All states across all sizes.
  */
-export const AllStates: Story = {
-    name: "All States",
+export const AllStatesAllSizes: Story = {
+    name: "All States All Sizes",
     render: args => (
         <div style={{ display: "flex", gap: 24, flexDirection: "column" }}>
             {(["medium", "large"] as const).map(size => (
