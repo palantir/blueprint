@@ -115,9 +115,11 @@ function buildMdxPages(): { pages: Record<string, DocPage>; importMap: Map<strin
         const absolutePath = resolve(cwd(), filePath);
         const sourcePath = relative(monorepoRootDir, absolutePath).replace(/\\/g, "/");
 
-        // Import path for webpack: relative to monorepo packages dir, using the @blueprintjs scope alias
-        // e.g. "../core/src/components/alert/alert.mdx" → "@blueprintjs/core/src/components/alert/alert.mdx"
-        const importPath = sourcePath.replace(/^packages\//, "@blueprintjs/");
+        // Import path for webpack: use @blueprintjs scope alias for library packages,
+        // but relative paths for docs-app's own files (since docs-app doesn't self-reference in node_modules)
+        const importPath = sourcePath.startsWith("packages/docs-app/")
+            ? "./" + relative("packages/docs-app/src/generated", sourcePath).replace(/\\/g, "/")
+            : sourcePath.replace(/^packages\//, "@blueprintjs/");
 
         const headings = extractHeadings(content);
 
