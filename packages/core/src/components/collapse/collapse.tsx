@@ -216,16 +216,8 @@ export const Collapse: React.FC<CollapseProps> = ({
         contents.current = element;
         if (contents.current != null) {
             const contentHeight = contents.current.clientHeight;
-            if (isOpenRef.current) {
-                // Keep height "auto" on mount — converting to a fixed pixel value here
-                // causes clipping during initial layout. The measured height is still
-                // recorded in heightWhenOpen for close animations.
-                setAnimationState(AnimationStates.OPEN);
-                setHeight("auto");
-            } else {
-                setAnimationState(AnimationStates.CLOSED);
-                setHeight(contentHeight === 0 ? undefined : `${contentHeight}px`);
-            }
+            setAnimationState(isOpenRef.current ? AnimationStates.OPEN : AnimationStates.CLOSED);
+            setHeight(contentHeight === 0 ? undefined : `${contentHeight}px`);
             setHeightWhenOpen(contentHeight === 0 ? undefined : contentHeight);
         }
     }, []);
@@ -233,10 +225,14 @@ export const Collapse: React.FC<CollapseProps> = ({
     const isContentVisible = animationState !== AnimationStates.CLOSED;
     const shouldRenderChildren = isContentVisible || keepChildrenMounted;
     const displayWithTransform = isContentVisible && animationState !== AnimationStates.CLOSING;
-    const isAutoHeight = height === "auto";
+    // When fully open, always use "auto" height so content is never clipped — the ref
+    // callback may have stored a measured pixel value, but that's only needed for close
+    // animations, not for the resting open state.
+    const effectiveHeight = animationState === AnimationStates.OPEN ? "auto" : height;
+    const isAutoHeight = effectiveHeight === "auto";
 
     const containerStyle = {
-        height: isContentVisible ? height : undefined,
+        height: isContentVisible ? effectiveHeight : undefined,
         overflowY: isAutoHeight ? "visible" : undefined,
         // transitions don't work with height: auto
         transition: isAutoHeight ? "none" : undefined,
