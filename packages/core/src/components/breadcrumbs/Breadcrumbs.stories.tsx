@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import React from "react";
 
 import { Boundary } from "../../common";
 import { type BreadcrumbProps } from "./breadcrumb";
@@ -16,7 +17,10 @@ const SAMPLE_ITEMS: BreadcrumbProps[] = [
     { text: "Breadcrumbs" },
 ];
 
-const meta: Meta<typeof Breadcrumbs> = {
+// Adding extra width arg to showcase Breadcrumbs dynamically
+type StoryArgs = React.ComponentProps<typeof Breadcrumbs> & { width?: number };
+
+const meta: Meta<StoryArgs> = {
     title: "Core/Breadcrumbs",
     component: Breadcrumbs,
     decorators: [
@@ -33,6 +37,7 @@ const meta: Meta<typeof Breadcrumbs> = {
     args: {
         items: SAMPLE_ITEMS,
         collapseFrom: Boundary.START,
+        width: 400,
     },
     argTypes: {
         collapseFrom: {
@@ -42,19 +47,22 @@ const meta: Meta<typeof Breadcrumbs> = {
         minVisibleItems: {
             control: "number",
         },
+        width: { control: { type: "range", min: 100, max: 800, step: 10 } },
     },
-} satisfies Meta<typeof Breadcrumbs>;
+} satisfies Meta<StoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 /**
- * A basic breadcrumbs component with default styling.
+ * A basic breadcrumbs component with default styling. Adjust the width slider to see overflow behavior.
  */
 export const Default: Story = {
-    args: {
-        items: SAMPLE_ITEMS,
-    },
+    render: ({ width, ...args }) => (
+        <div style={{ width }}>
+            <Breadcrumbs {...args} />
+        </div>
+    ),
 };
 
 /**
@@ -65,19 +73,15 @@ export const CollapseFromExample: Story = {
     argTypes: {
         collapseFrom: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div>
+    render: ({ width, ...args }) => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
+            <div style={{ width }}>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Collapse from start (default)</div>
-                <div style={{ width: 300 }}>
-                    <Breadcrumbs {...args} collapseFrom={Boundary.START} />
-                </div>
+                <Breadcrumbs {...args} collapseFrom={Boundary.START} />
             </div>
-            <div>
+            <div style={{ width }}>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Collapse from end</div>
-                <div style={{ width: 300 }}>
-                    <Breadcrumbs {...args} collapseFrom={Boundary.END} />
-                </div>
+                <Breadcrumbs {...args} collapseFrom={Boundary.END} />
             </div>
         </div>
     ),
@@ -115,4 +119,9 @@ export const Playground: Story = {
         collapseFrom: Boundary.START,
         minVisibleItems: 0,
     },
+    render: ({ width, ...args }) => (
+        <div style={{ width }}>
+            <Breadcrumbs {...args} />
+        </div>
+    ),
 };
