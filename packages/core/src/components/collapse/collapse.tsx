@@ -225,10 +225,14 @@ export const Collapse: React.FC<CollapseProps> = ({
     const isContentVisible = animationState !== AnimationStates.CLOSED;
     const shouldRenderChildren = isContentVisible || keepChildrenMounted;
     const displayWithTransform = isContentVisible && animationState !== AnimationStates.CLOSING;
-    const isAutoHeight = height === "auto";
+    // When fully open, always use "auto" height so content is never clipped — the ref
+    // callback may have stored a measured pixel value, but that's only needed for close
+    // animations, not for the resting open state.
+    const effectiveHeight = animationState === AnimationStates.OPEN ? "auto" : height;
+    const isAutoHeight = effectiveHeight === "auto";
 
     const containerStyle = {
-        height: isContentVisible ? height : undefined,
+        height: isContentVisible ? effectiveHeight : undefined,
         overflowY: isAutoHeight ? "visible" : undefined,
         // transitions don't work with height: auto
         transition: isAutoHeight ? "none" : undefined,
