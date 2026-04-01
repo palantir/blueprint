@@ -10,7 +10,7 @@ import { Alignment, Elevation } from "../../common";
 import { CheckboxCard } from "./checkboxCard";
 
 const meta: Meta<typeof CheckboxCard> = {
-    title: "Core/ControlCard/CheckboxCard",
+    title: "Core/Control Card/CheckboxCard",
     component: CheckboxCard,
     decorators: [
         Story => (
@@ -70,7 +70,7 @@ export const Default: Story = {
     args: {
         label: "Checkbox option",
     },
-    render: function Render(args) {
+    render: function RenderDefault(args) {
         const [, updateArgs] = useArgs();
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
         return <CheckboxCard {...args} onChange={handleChange} />;
@@ -85,12 +85,17 @@ export const CompactExample: Story = {
     argTypes: {
         compact: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <CheckboxCard {...args} label="Default" defaultChecked={true} />
-            <CheckboxCard {...args} compact={true} label="Compact" defaultChecked={true} />
-        </div>
-    ),
+    render: function RenderCompact(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+                <CheckboxCard {...args} label="Default" defaultChecked={true} onChange={handleChange} />
+                <CheckboxCard {...args} compact={true} label="Compact" defaultChecked={true} onChange={handleChange} />
+            </div>
+        );
+    },
 };
 
 /**
@@ -102,15 +107,26 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
         checked: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <CheckboxCard {...args} label="Default" />
-            <CheckboxCard {...args} label="Checked" checked={true} />
-            <CheckboxCard {...args} label="Disabled" disabled={true} />
-            <CheckboxCard {...args} label="Disabled Checked" disabled={true} checked={true} />
-            <CheckboxCard {...args} label="No selected styling" checked={true} showAsSelectedWhenChecked={false} />
-        </div>
-    ),
+    render: function RenderState(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+                <CheckboxCard {...args} label="Default" onChange={handleChange} />
+                <CheckboxCard {...args} label="Checked" checked={true} onChange={handleChange} />
+                <CheckboxCard {...args} label="Disabled" disabled={true} />
+                <CheckboxCard {...args} label="Disabled Checked" disabled={true} checked={true} />
+                <CheckboxCard
+                    {...args}
+                    label="No selected styling"
+                    checked={true}
+                    showAsSelectedWhenChecked={false}
+                    onChange={handleChange}
+                />
+            </div>
+        );
+    },
 };
 
 /**
@@ -121,12 +137,29 @@ export const AlignIndicatorExample: Story = {
     argTypes: {
         alignIndicator: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <CheckboxCard {...args} alignIndicator={Alignment.START} label="Align start" defaultChecked={true} />
-            <CheckboxCard {...args} alignIndicator={Alignment.END} label="Align end" defaultChecked={true} />
-        </div>
-    ),
+    render: function RenderAlignIndicator(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+                <CheckboxCard
+                    {...args}
+                    alignIndicator={Alignment.START}
+                    label="Align start"
+                    defaultChecked={true}
+                    onChange={handleChange}
+                />
+                <CheckboxCard
+                    {...args}
+                    alignIndicator={Alignment.END}
+                    label="Align end"
+                    defaultChecked={true}
+                    onChange={handleChange}
+                />
+            </div>
+        );
+    },
 };
 
 /**
@@ -136,7 +169,7 @@ export const Playground: Story = {
     args: {
         label: "Playground checkbox card",
     },
-    render: function Render(args) {
+    render: function RenderPlayground(args) {
         const [, updateArgs] = useArgs();
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
         return <CheckboxCard {...args} onChange={handleChange} />;

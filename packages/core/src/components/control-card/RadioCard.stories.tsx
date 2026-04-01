@@ -10,7 +10,7 @@ import { Alignment, Elevation } from "../../common";
 import { RadioCard } from "./radioCard";
 
 const meta: Meta<typeof RadioCard> = {
-    title: "Core/ControlCard/RadioCard",
+    title: "Core/Control Card/RadioCard",
     component: RadioCard,
     decorators: [
         Story => (
@@ -69,7 +69,7 @@ export const Default: Story = {
     args: {
         label: "Radio option",
     },
-    render: function Render(args) {
+    render: function RenderDefault(args) {
         const [, updateArgs] = useArgs();
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
         return <RadioCard {...args} onChange={handleChange} />;
@@ -84,12 +84,17 @@ export const CompactExample: Story = {
     argTypes: {
         compact: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <RadioCard {...args} compact={false} label="Default" defaultChecked={true} />
-            <RadioCard {...args} compact={true} label="Compact" defaultChecked={true} />
-        </div>
-    ),
+    render: function RenderCompact(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+                <RadioCard {...args} label="Default" defaultChecked={true} onChange={handleChange} />
+                <RadioCard {...args} compact={true} label="Compact" defaultChecked={true} onChange={handleChange} />
+            </div>
+        );
+    },
 };
 
 /**
@@ -101,15 +106,17 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
         checked: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <RadioCard {...args} label="Default" />
-            <RadioCard {...args} label="Checked" checked={true} />
-            <RadioCard {...args} label="Disabled" disabled={true} />
-            <RadioCard {...args} label="Disabled Checked" disabled={true} checked={true} />
-            <RadioCard {...args} label="No selected styling" checked={true} showAsSelectedWhenChecked={false} />
-        </div>
-    ),
+    render: function RenderState(args) {
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+                <RadioCard {...args} label="Default" />
+                <RadioCard {...args} label="Checked" checked={true} />
+                <RadioCard {...args} label="Disabled" disabled={true} />
+                <RadioCard {...args} label="Disabled Checked" disabled={true} checked={true} />
+                <RadioCard {...args} label="No selected styling" checked={true} showAsSelectedWhenChecked={false} />
+            </div>
+        );
+    },
 };
 
 /**
@@ -120,12 +127,29 @@ export const AlignIndicatorExample: Story = {
     argTypes: {
         alignIndicator: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
-            <RadioCard {...args} alignIndicator={Alignment.START} label="Align start" defaultChecked={true} />
-            <RadioCard {...args} alignIndicator={Alignment.END} label="Align end" defaultChecked={true} />
-        </div>
-    ),
+    render: function RenderAlignIndicator(args) {
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+                <RadioCard
+                    {...args}
+                    alignIndicator={Alignment.START}
+                    label="Align start"
+                    defaultChecked={true}
+                    onChange={handleChange}
+                />
+                <RadioCard
+                    {...args}
+                    alignIndicator={Alignment.END}
+                    label="Align end"
+                    defaultChecked={true}
+                    onChange={handleChange}
+                />
+            </div>
+        );
+    },
 };
 
 /**
@@ -135,7 +159,7 @@ export const Playground: Story = {
     args: {
         label: "Playground radio card",
     },
-    render: function Render(args) {
+    render: function RenderPlayground(args) {
         const [, updateArgs] = useArgs();
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
         return <RadioCard {...args} onChange={handleChange} />;
