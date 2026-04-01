@@ -19,11 +19,11 @@ import { filter } from "fuzzaldrin-plus";
 import { PureComponent } from "react";
 
 import { Classes, MenuItem } from "@blueprintjs/core";
+import type { NavTreeNode } from "@blueprintjs/docs-data";
 import { CaretRight } from "@blueprintjs/icons";
 import { type ItemListPredicate, type ItemRenderer, Omnibar } from "@blueprintjs/select";
 
 import { eachLayoutNode } from "../common/documentalistUtils";
-import type { NavTreeNode } from "@blueprintjs/docs-data";
 
 export interface NavigatorProps {
     /** Whether navigator is open. */

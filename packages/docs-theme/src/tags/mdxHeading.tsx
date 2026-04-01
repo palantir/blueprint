@@ -17,9 +17,9 @@
 import { createContext, createElement, useContext } from "react";
 
 import { Classes } from "@blueprintjs/core";
+import { slugify } from "@blueprintjs/docs-data";
 import { Link } from "@blueprintjs/icons";
 
-import { slugify } from "@blueprintjs/docs-data";
 
 /**
  * Context providing the current MDX page's assigned route.

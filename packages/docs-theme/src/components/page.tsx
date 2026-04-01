@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Classes } from "@blueprintjs/core";
-
-import type { DocPage } from "@blueprintjs/docs-data";
 import type { Block, StringOrTag } from "@documentalist/client";
+
+import { Classes } from "@blueprintjs/core";
+import type { DocPage } from "@blueprintjs/docs-data";
 
 import type { TagRendererMap } from "../tags";
 
