@@ -1,14 +1,13 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
-
-import { Code } from "@blueprintjs/core";
+import { useCallback } from "react";
+import { useArgs } from "storybook/preview-api";
 
 import { Button } from "../button/buttons";
-import { H4 } from "../html/html";
+import { Code, H4 } from "../html/html";
 
 import { Collapse } from "./collapse";
 
@@ -26,7 +25,7 @@ const meta: Meta<typeof Collapse> = {
     component: Collapse,
     decorators: [
         Story => (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: "400px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: "400px", maxWidth: "500px" }}>
                 <Story />
             </div>
         ),
@@ -64,38 +63,43 @@ type Story = StoryObj<typeof meta>;
  * Use the `isOpen` control to toggle visibility.
  */
 export const Default: Story = {
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(args.isOpen ?? false);
-        const handleToggle = useCallback(() => setIsOpen(prev => !prev), []);
+    args: {
+        isOpen: true,
+    },
+    argTypes: {
+        component: { table: { disable: true } },
+    },
+    render: function RenderDefault(args) {
+        const [, updateArgs] = useArgs();
+        const handleToggle = useCallback(() => updateArgs({ isOpen: !args.isOpen }), [args.isOpen, updateArgs]);
 
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <Button text={isOpen ? "Hide content" : "Show content"} onClick={handleToggle} />
-                <Collapse {...args} isOpen={isOpen}>
-                    {sampleContent}
-                </Collapse>
+                <Button text={args.isOpen ? "Hide content" : "Show content"} onClick={handleToggle} />
+                <Collapse {...args}>{sampleContent}</Collapse>
             </div>
         );
     },
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(args.isOpen ?? false);
-        const handleToggle = useCallback(() => setIsOpen(prev => !prev), []);
+    args: {
+        isOpen: false,
+    },
+    argTypes: {
+        component: { table: { disable: true } },
+    },
+    render: function RenderPlayground(args) {
+        const [, updateArgs] = useArgs();
+        const handleToggle = useCallback(() => updateArgs({ isOpen: !args.isOpen }), [args.isOpen, updateArgs]);
 
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 400 }}>
-                <Button text={isOpen ? "Collapse" : "Expand"} onClick={handleToggle} icon="exchange" />
-                <Collapse
-                    isOpen={isOpen}
-                    keepChildrenMounted={args.keepChildrenMounted}
-                    transitionDuration={args.transitionDuration}
-                    component={args.component}
-                >
+                <Button text={args.isOpen ? "Collapse" : "Expand"} onClick={handleToggle} icon="exchange" />
+                <Collapse {...args}>
                     <div
                         style={{
                             padding: 16,
