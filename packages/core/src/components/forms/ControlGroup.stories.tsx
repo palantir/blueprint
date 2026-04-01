@@ -44,6 +44,14 @@ type Story = StoryObj<typeof meta>;
  * A basic control group with default styling containing an input and a button.
  */
 export const Default: Story = {
+    argTypes: {
+        fill: { table: { disable: true } },
+        children: {
+            table: {
+                disable: true,
+            },
+        },
+    },
     render: args => (
         <ControlGroup {...args}>
             <InputGroup placeholder="Enter text..." />
@@ -59,6 +67,11 @@ export const FillExample: Story = {
     name: "Fill",
     argTypes: {
         fill: { table: { disable: true } },
+        children: {
+            table: {
+                disable: true,
+            },
+        },
     },
     decorators: [
         Story => (
@@ -85,8 +98,16 @@ export const FillExample: Story = {
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
+    argTypes: {
+        children: {
+            table: {
+                disable: true,
+            },
+        },
+    },
     render: args => (
         <ControlGroup {...args}>
+            <Button icon="filter" />
             <InputGroup placeholder="Enter text..." />
             <Button text="Submit" />
         </ControlGroup>
