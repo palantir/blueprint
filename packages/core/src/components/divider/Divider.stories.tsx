@@ -11,7 +11,7 @@ const meta: Meta<typeof Divider> = {
     component: Divider,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <div style={{ width: "300px" }}>
                 <Story />
             </div>
         ),
@@ -41,30 +41,43 @@ type Story = StoryObj<typeof meta>;
  * A basic horizontal divider rendered inside a column flex container.
  */
 export const Default: Story = {
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", flexDirection: "column", width: "300px" }}>
-                <span>Content above</span>
-                <Story />
-                <span>Content below</span>
+    name: "Default",
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: "3em" }}>
+            <div>
+                Content above
+                <Divider {...args} />
+                Content below
             </div>
-        ),
-    ],
+
+            <div style={{ textAlign: "center" }}>
+                Content above, text center-aligned
+                <Divider {...args} />
+                Content below, text center-aligned
+            </div>
+        </div>
+    ),
 };
 
 /**
  * A basic vertical divider inside a flex container
  */
 export const Vertical: Story = {
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", width: "300px" }}>
-                <span>Content to the left that wraps around a bit more than you'd expect</span>
-                <Story />
-                <span>Content to the right that also wraps around a bit more than you'd expect</span>
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: "3em" }}>
+            <div style={{ display: "flex" }}>
+                Content to the left that wraps around a bit more than you'd expect
+                <Divider {...args} />
+                Content to the right that also wraps around a bit more than you'd expect
             </div>
-        ),
-    ],
+
+            <div style={{ display: "flex", textAlign: "center" }}>
+                Content above, text center-aligned
+                <Divider {...args} />
+                Content below, text center-aligned
+            </div>
+        </div>
+    ),
 };
 
 /**
@@ -77,18 +90,18 @@ export const CompactExample: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: "3em", width: "300px" }}>
-            <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "3em" }}>
+            <div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
-                <span>Above</span>
+                Above
                 <Divider {...args} compact={false} />
-                <span>Below</span>
+                Below
             </div>
-            <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+            <div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Compact</span>
-                <span>Above</span>
+                Above
                 <Divider {...args} compact={true} />
-                <span>Below</span>
+                Below
             </div>
         </div>
     ),
@@ -100,10 +113,10 @@ export const CompactExample: Story = {
 export const Playground: Story = {
     decorators: [
         Story => (
-            <div style={{ display: "flex", flexDirection: "column", width: "300px" }}>
-                <span>Content above</span>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                Content above
                 <Story />
-                <span>Content below</span>
+                Content below
             </div>
         ),
     ],
