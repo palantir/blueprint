@@ -1,13 +1,14 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { type ComponentProps } from "react";
 
 import { Switch } from "./controls";
 
 const disabledArgs = ["large", "tagName", "labelElement", "inputRef"] as const satisfies ReadonlyArray<
-    keyof React.ComponentProps<typeof Switch>
+    keyof ComponentProps<typeof Switch>
 >;
 
 const meta: Meta<typeof Switch> = {
@@ -154,7 +155,7 @@ export const AllStates: Story = {
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
     args: {

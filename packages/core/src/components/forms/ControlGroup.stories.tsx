@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -129,7 +129,7 @@ export const VerticalExample: Story = {
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
     argTypes: {
@@ -141,7 +141,7 @@ export const Playground: Story = {
     },
     render: args => (
         <ControlGroup {...args}>
-            <Button icon="filter" />
+            <Button icon="filter" aria-label="Filter results" />
             <InputGroup placeholder="Enter text..." />
             <Button text="Submit" />
         </ControlGroup>

@@ -1,9 +1,10 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { type ChangeEvent, useCallback, useState } from "react";
+import { useArgs } from "storybook/preview-api";
 
 import { RadioGroup } from "./radioGroup";
 
@@ -54,7 +55,7 @@ export const Default: Story = {
     render: function Render(args) {
         const [selectedValue, setSelectedValue] = useState<string>("a");
         const handleChange = useCallback(
-            (e: React.ChangeEvent<HTMLInputElement>) => {
+            (e: ChangeEvent<HTMLInputElement>) => {
                 setSelectedValue(e.currentTarget.value);
                 args.onChange?.(e);
             },
@@ -69,51 +70,43 @@ export const Default: Story = {
  */
 export const StateExample: Story = {
     name: "State",
+    args: {
+        selectedValue: "a",
+    },
     argTypes: {
         disabled: { table: { disable: true } },
         inline: { table: { disable: true } },
     },
     render: function Render(args) {
-        const [value1, setValue1] = useState<string>("a");
-        const [value2, setValue2] = useState<string>("a");
-        const [value3, setValue3] = useState<string>("a");
-        const handleChange1 = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-            setValue1(e.currentTarget.value);
-        }, []);
-        const handleChange2 = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-            setValue2(e.currentTarget.value);
-        }, []);
-        const handleChange3 = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-            setValue3(e.currentTarget.value);
-        }, []);
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(
+            (e: ChangeEvent<HTMLInputElement>) => {
+                updateArgs({ selectedValue: e.currentTarget.value });
+            },
+            [updateArgs],
+        );
         return (
             <div style={{ display: "flex", gap: 32 }}>
-                <RadioGroup {...args} label="Enabled" selectedValue={value1} onChange={handleChange1} />
-                <RadioGroup
-                    {...args}
-                    label="Disabled"
-                    disabled={true}
-                    selectedValue={value2}
-                    onChange={handleChange2}
-                />
-                <RadioGroup {...args} label="Inline" inline={true} selectedValue={value3} onChange={handleChange3} />
+                <RadioGroup {...args} label="Enabled" onChange={handleChange} />
+                <RadioGroup {...args} label="Disabled" disabled={true} onChange={handleChange} />
+                <RadioGroup {...args} label="Inline" inline={true} onChange={handleChange} />
             </div>
         );
     },
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
-    render: function Render(args) {
+    render: function Render({ onChange, ...args }) {
         const [selectedValue, setSelectedValue] = useState<string>("a");
         const handleChange = useCallback(
-            (e: React.ChangeEvent<HTMLInputElement>) => {
+            (e: ChangeEvent<HTMLInputElement>) => {
                 setSelectedValue(e.currentTarget.value);
-                args.onChange?.(e);
+                onChange?.(e);
             },
-            [args],
+            [onChange],
         );
         return <RadioGroup {...args} selectedValue={selectedValue} onChange={handleChange} />;
     },
