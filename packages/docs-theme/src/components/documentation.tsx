@@ -28,7 +28,7 @@ import {
     hasTypescriptData,
 } from "../common/context";
 import { eachLayoutNode, isPageNode } from "../common/documentalistUtils";
-import type { DocPage, NavTreeNode } from "../common/navTypes";
+import type { DocPage, NavTreeNode } from "@blueprintjs/docs-data";
 import { type TagRendererMap, TypescriptExample } from "../tags";
 
 import { renderBlock } from "./block";

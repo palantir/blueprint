@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { NavTreeNode, NavTreePage } from "./navTypes";
+import type { NavTreeNode, NavTreePage } from "@blueprintjs/docs-data";
 
 /** Type guard to distinguish page nodes (with children) from heading nodes. */
 export function isPageNode(node: NavTreeNode): node is NavTreePage {

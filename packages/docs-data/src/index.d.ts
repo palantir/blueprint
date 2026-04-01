@@ -16,6 +16,7 @@ export type DocsCompleteData = MdxPluginData & KssPluginData & TypescriptPluginD
 export const docsData: DocsCompleteData;
 
 export { PACKAGES, SECTIONS } from "../navTypes.mts";
+export { slugify } from "../navHelpers.mts";
 export type { DocPage, NavTreeHeading, NavTreeNode, NavTreePage, Package, Section } from "../navTypes.mts";
 
 export interface NpmPackageInfo {

@@ -17,7 +17,7 @@
 import type { Block, KssPluginData, TsDocBase, TypescriptPluginData } from "@documentalist/client";
 import { createContext, type ReactNode } from "react";
 
-import type { MdxPluginData } from "./navTypes";
+import type { MdxPluginData } from "@blueprintjs/docs-data";
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /** This docs theme requires MDX page data and optionally supports Typescript and KSS data. */

@@ -14,15 +14,6 @@
  * limitations under the License.
  */
 
-export function slugify(value: string): string {
-    return value
-        .toLowerCase()
-        .replace(/&/g, "and")
-        .replace(/[^a-z0-9-]/g, "-")
-        .replace(/-{2,}/g, "-")
-        .replace(/^-|-$/g, "");
-}
-
 export function smartSearch(query: string, ...content: string[]) {
     const terms = query.toLowerCase().split(" ");
     const dataToSearch = content.map(s => s.toLowerCase());

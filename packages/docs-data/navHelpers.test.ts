@@ -18,8 +18,6 @@ import { readFileSync } from "node:fs";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { slugify } from "@blueprintjs/docs-theme";
-
 import {
     assignRoutes,
     buildNavLeafPage,
@@ -31,6 +29,7 @@ import {
     getSectionRefs,
     normalizeNavConfig,
     requirePage,
+    slugify,
 } from "./navHelpers.mts";
 import { PACKAGES, SECTIONS } from "./navTypes.mts";
 import type {

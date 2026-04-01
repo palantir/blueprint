@@ -2,8 +2,6 @@
  * @license Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  */
 
-import { slugify } from "@blueprintjs/docs-theme";
-
 import type {
     DocContentItem,
     DocHeadingItem,
@@ -17,6 +15,15 @@ import type {
     RawNavStructure,
     Section,
 } from "./navTypes.mts";
+
+export function slugify(value: string): string {
+    return value
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9-]/g, "-")
+        .replace(/-{2,}/g, "-")
+        .replace(/^-|-$/g, "");
+}
 
 /**
  * Convert raw nav.json data (bare strings) into a fully

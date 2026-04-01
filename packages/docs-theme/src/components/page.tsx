@@ -16,7 +16,7 @@
 
 import { Classes } from "@blueprintjs/core";
 
-import type { DocPage } from "../common/navTypes";
+import type { DocPage } from "@blueprintjs/docs-data";
 import type { TagRendererMap } from "../tags";
 
 import { renderBlock } from "./block";

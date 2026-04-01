@@ -11,3 +11,12 @@ module.exports = {
     npmData: require("./generated/npm-data.json"),
     ...require("./generated/nav-constants.js"),
 };
+
+module.exports.slugify = function slugify(value) {
+    return value
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9-]/g, "-")
+        .replace(/-{2,}/g, "-")
+        .replace(/^-|-$/g, "");
+};
