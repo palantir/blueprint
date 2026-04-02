@@ -2,24 +2,25 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useContext } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { BlueprintProvider } from "./blueprintProvider";
 import { HotkeysContext } from "./hotkeys/hotkeysProvider";
-import { PortalContext } from "./portal/portalProvider";
+import { PortalContext, type PortalContextOptions } from "./portal/portalProvider";
 
 // A simple consumer that reads PortalContext and renders values for assertion
 const PortalContextConsumer = () => {
     const { portalClassName } = useContext(PortalContext);
-    return <span data-testid="portal-class">{portalClassName}</span>;
+    return <span data-testid="portal-class" className={portalClassName} />;
 };
 
 // Test helper that reads HotkeysContext and provides a button to open the dialog.
 const HotkeysDialogTrigger = () => {
-    const [, dispatch] = useContext(HotkeysContext);
+    const [_, dispatch] = useContext(HotkeysContext);
     return (
         <button type="button" data-testid="open-dialog" onClick={() => dispatch({ type: "OPEN_DIALOG" })}>
             Open dialog
@@ -31,10 +32,10 @@ describe("BlueprintProvider", () => {
     it("renders children", () => {
         render(
             <BlueprintProvider>
-                <span data-testid="child">hello</span>
+                <span>hello</span>
             </BlueprintProvider>,
         );
-        expect(screen.getByTestId("child")).toHaveTextContent("hello");
+        expect(screen.getByText("hello")).toBeInTheDocument();
     });
 
     describe("PortalProvider", () => {
@@ -44,35 +45,47 @@ describe("BlueprintProvider", () => {
                     <PortalContextConsumer />
                 </BlueprintProvider>,
             );
-            expect(screen.getByTestId("portal-class")).toHaveTextContent("my-portal");
+            expect(screen.getByTestId("portal-class")).toHaveClass("my-portal");
         });
 
         it("forwards portalContainer to PortalProvider", () => {
             const container = document.createElement("div");
+            let receivedContainer: HTMLElement | undefined;
+
             const PortalContainerConsumer = () => {
                 const { portalContainer } = useContext(PortalContext);
-                return <span data-testid="has-container">{String(portalContainer === container)}</span>;
+                receivedContainer = portalContainer;
+                return null;
             };
+
             render(
                 <BlueprintProvider portalContainer={container}>
                     <PortalContainerConsumer />
                 </BlueprintProvider>,
             );
-            expect(screen.getByTestId("has-container")).toHaveTextContent("true");
+            expect(receivedContainer).toBe(container);
         });
 
         it("does not forward hotkeys props to PortalProvider", () => {
-            // If hotkeys props leaked into PortalContext, this would break.
-            // This test ensures clean separation.
+            let receivedContext: PortalContextOptions | undefined;
+
+            const PortalContextSpy = () => {
+                const ctx = useContext(PortalContext);
+                receivedContext = ctx;
+                return null;
+            };
+
             render(
                 <BlueprintProvider
                     portalClassName="portal-only"
                     hotkeysProviderDialogProps={{ className: "my-dialog" }}
                 >
-                    <PortalContextConsumer />
+                    <PortalContextSpy />
                 </BlueprintProvider>,
             );
-            expect(screen.getByTestId("portal-class")).toHaveTextContent("portal-only");
+            expect(receivedContext).toBeDefined();
+            expect(receivedContext).not.toHaveProperty("hotkeysProviderDialogProps");
+            expect(receivedContext!.portalClassName).toBe("portal-only");
         });
     });
 
@@ -91,18 +104,20 @@ describe("BlueprintProvider", () => {
         });
 
         // TODO: unskip once BlueprintProvider destructures prefixed hotkeys props
-        it.skip("forwards hotkeysProviderDialogProps to HotkeysProvider", () => {
+        it.skip("forwards hotkeysProviderDialogProps to HotkeysProvider", async () => {
+            const user = userEvent.setup();
             render(
                 <BlueprintProvider hotkeysProviderDialogProps={{ className: "my-hotkeys-dialog" }}>
                     <HotkeysDialogTrigger />
                 </BlueprintProvider>,
             );
             // Open the dialog so HotkeysDialog renders via Overlay2
-            fireEvent.click(screen.getByTestId("open-dialog"));
+            await user.click(screen.getByTestId("open-dialog"));
             expect(document.querySelector(".my-hotkeys-dialog")).toBeInTheDocument();
         });
 
-        it("uses provided dispatch from hotkeysProviderValue", () => {
+        it("uses provided dispatch from hotkeysProviderValue", async () => {
+            const user = userEvent.setup();
             const state = { hasProvider: true, hotkeys: [], isDialogOpen: false };
             const dispatch = vi.fn();
             const contextValue = [state, dispatch] as const;
@@ -112,7 +127,7 @@ describe("BlueprintProvider", () => {
                     <HotkeysDialogTrigger />
                 </BlueprintProvider>,
             );
-            fireEvent.click(screen.getByTestId("open-dialog"));
+            await user.click(screen.getByTestId("open-dialog"));
             expect(dispatch).toHaveBeenCalledWith({ type: "OPEN_DIALOG" });
         });
     });
