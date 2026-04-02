@@ -4926,5 +4926,12 @@
         "tags": "external, window, arrow, open, new window, detach, breakout, expand, separate",
         "group": "action",
         "codepoint": 62400
+    },
+    {
+        "displayName": "Command",
+        "iconName": "command",
+        "tags": "commands, connection, connections, connect",
+        "group": "action",
+        "codepoint": 62401
     }
 ]
