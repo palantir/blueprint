@@ -18,8 +18,7 @@ import classNames from "classnames";
 
 import { Classes } from "@blueprintjs/core";
 
-import type { NavTreeNode } from "../common";
-import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import { COMPONENT_DISPLAY_NAMESPACE, type NavTreeNode } from "../common";
 
 export interface NavMenuItemProps {
     children?: React.ReactNode;

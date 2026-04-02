@@ -18,8 +18,7 @@ import classNames from "classnames";
 
 import { Classes, type Props } from "@blueprintjs/core";
 
-import type { NavTreeNode } from "../common";
-import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import { COMPONENT_DISPLAY_NAMESPACE, type NavTreeNode } from "../common";
 import { isPageNode } from "../common/documentalistUtils";
 
 import { NavMenuItem, type NavMenuItemProps } from "./navMenuItem";
