@@ -20,7 +20,6 @@ import { Classes } from "@blueprintjs/core";
 import { slugify } from "@blueprintjs/docs-data";
 import { Link } from "@blueprintjs/icons";
 
-
 /**
  * Context providing the current MDX page's assigned route.
  * Used by heading components to construct routes matching `assignRoutes()` format.

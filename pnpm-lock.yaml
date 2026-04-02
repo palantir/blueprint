@@ -622,6 +622,9 @@ importers:
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
+      '@documentalist/client':
+        specifier: ^5.0.0
+        version: 5.0.0
       '@documentalist/compiler':
         specifier: ^5.0.0
         version: 5.0.0(chokidar@3.6.0)(typescript@5.9.3)
