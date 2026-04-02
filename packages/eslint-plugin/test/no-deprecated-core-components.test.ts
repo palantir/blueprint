@@ -32,7 +32,40 @@ const ruleTester = new RuleTester({
 ruleTester.run("no-deprecated-core-components", noDeprecatedCoreComponentsRule, {
     // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
     // for more specific violations which involve certain deprecated props
-    invalid: [],
+    invalid: [
+        {
+            code: dedent`
+                import { Popover } from "@blueprintjs/core";
+
+                return <Popover />;
+            `,
+            errors: [
+                {
+                    data: {
+                        deprecatedComponentName: "Popover",
+                        newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+            ],
+        },
+        {
+            code: dedent`
+                import * as Blueprint from "@blueprintjs/core";
+
+                return <Blueprint.Popover />;
+            `,
+            errors: [
+                {
+                    data: {
+                        deprecatedComponentName: "Popover",
+                        newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+            ],
+        },
+    ],
     valid: [
         {
             code: dedent`
