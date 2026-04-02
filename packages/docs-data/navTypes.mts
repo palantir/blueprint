@@ -81,13 +81,15 @@ export interface DocPage {
     title: string;
     route: string;
     contents: DocContentItem[];
+    metadata: Record<string, any>;
+    sourcePath: string;
 }
 
 /** Fields common to all nav tree nodes. */
 interface NavTreeNodeBase {
     title: string;
     level: number;
-    route: string | undefined;
+    route: string | undefined; //leave undefined
 }
 
 /** A content heading extracted from a page (no children, no reference). */

@@ -20,5 +20,7 @@ export { Classes };
 export * from "./constants";
 export * from "./documentalistUtils";
 export * from "./eventHandlerUtils";
-export * from "./stringUtils";
+export type { NavTreeHeading, NavTreeNode, NavTreePage, DocPage, MdxPluginData } from "@blueprintjs/docs-data";
+export { slugify } from "@blueprintjs/docs-data";
+export { smartSearch } from "./stringUtils";
 export * from "./themeContext";

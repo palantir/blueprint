@@ -607,9 +607,9 @@ importers:
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
-      '@blueprintjs/docs-theme':
-        specifier: workspace:^
-        version: link:../docs-theme
+      '@documentalist/client':
+        specifier: ^5.0.0
+        version: 5.0.0
       '@documentalist/compiler':
         specifier: ^5.0.0
         version: 5.0.0(chokidar@3.6.0)(typescript@5.9.3)
@@ -641,6 +641,9 @@ importers:
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
+      '@blueprintjs/docs-data':
+        specifier: workspace:^
+        version: link:../docs-data
       '@blueprintjs/icons':
         specifier: workspace:^
         version: link:../icons

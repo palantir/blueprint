@@ -8,7 +8,8 @@ import escapeHTML from "escape-html";
 import { marked } from "marked";
 
 import { Classes } from "@blueprintjs/core";
-import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
+
+export const DOCS_CODE_BLOCK = `${Classes.getClassNamespace()}-docs-code-block`;
 
 /**
  * Markdown renderer with some custom logic to handle `<code>` tags.
@@ -42,7 +43,7 @@ renderer.code = (textContent, infostring, isEscaped) => {
             break;
     }
 
-    const pre = `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
+    const pre = `<pre class="${Classes.CODE_BLOCK} ${DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
 
     // Wrap code blocks in a container so the docs app can mount a copy button.
     // Triggered by either an explicit `copy` tag in the info string, or code starting with "import ".
