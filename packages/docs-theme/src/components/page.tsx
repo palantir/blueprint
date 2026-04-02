@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-import type { PageData } from "@documentalist/client";
-
 import { Classes } from "@blueprintjs/core";
 
+import type { DocPage } from "../common";
 import type { TagRendererMap } from "../tags";
 
 import { renderBlock } from "./block";
 
 export interface PageProps {
-    page: PageData;
-    renderActions?: (page: PageData) => React.ReactNode;
+    page: DocPage;
+    renderActions?: (page: DocPage) => React.ReactNode;
     tagRenderers: TagRendererMap;
 }
 

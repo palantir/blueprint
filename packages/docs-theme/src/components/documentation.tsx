@@ -14,27 +14,21 @@
  * limitations under the License.
  */
 
-import {
-    type HeadingNode,
-    isPageNode,
-    linkify,
-    type PageData,
-    type PageNode,
-    type TsDocBase,
-} from "@documentalist/client";
+import { linkify, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import { PureComponent } from "react";
 
 import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
+import type { DocPage, NavTreeNode } from "../common";
 import {
     type DocsData,
     DocumentationContext,
     type DocumentationContextApi,
     hasTypescriptData,
 } from "../common/context";
-import { eachLayoutNode } from "../common/documentalistUtils";
+import { eachLayoutNode, isPageNode } from "../common/documentalistUtils";
 import { type TagRendererMap, TypescriptExample } from "../tags";
 
 import { renderBlock } from "./block";
@@ -82,7 +76,7 @@ export interface DocumentationProps extends Props {
      * searchable in the navigator. Returning `true` will exclude the item from
      * the navigator search results.
      */
-    navigatorExclude?: (node: PageNode | HeadingNode) => boolean;
+    navigatorExclude?: (node: NavTreeNode) => boolean;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -109,7 +103,7 @@ export interface DocumentationProps extends Props {
      * Callback invoked to render actions for a documentation page.
      * Actions appear in an element in the upper-right corner of the page.
      */
-    renderPageActions?: (page: PageData) => React.ReactNode;
+    renderPageActions?: (page: DocPage) => React.ReactNode;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.

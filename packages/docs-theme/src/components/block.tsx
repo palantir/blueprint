@@ -20,11 +20,12 @@ import { createElement } from "react";
 
 import { Classes, Code, H3 } from "@blueprintjs/core";
 
+import type { DocPage } from "../common";
 import type { TagRendererMap } from "../tags";
 
 export function renderBlock(
     /** the block to render */
-    block: Block | undefined,
+    block: Block | DocPage | undefined,
     /** known tag renderers */
     tagRenderers: TagRendererMap,
     /** class names to apply to element wrapping string content. */
@@ -35,6 +36,9 @@ export function renderBlock(
     }
     const textClasses = classNames(Classes.RUNNING_TEXT, textClassName);
     const contents = block.contents.map((node, i) => {
+        if (node == null) {
+            return null;
+        }
         if (typeof node === "string") {
             return <div className={textClasses} key={i} dangerouslySetInnerHTML={{ __html: node }} />;
         }

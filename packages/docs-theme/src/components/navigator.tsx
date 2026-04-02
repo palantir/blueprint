@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
 import { PureComponent } from "react";
@@ -23,6 +22,7 @@ import { Classes, MenuItem } from "@blueprintjs/core";
 import { CaretRight } from "@blueprintjs/icons";
 import { type ItemListPredicate, type ItemRenderer, Omnibar } from "@blueprintjs/select";
 
+import type { NavTreeNode } from "../common";
 import { eachLayoutNode } from "../common/documentalistUtils";
 
 export interface NavigatorProps {
@@ -30,10 +30,10 @@ export interface NavigatorProps {
     isOpen: boolean;
 
     /** All potentially navigable items. */
-    items: Array<PageNode | HeadingNode>;
+    items: NavTreeNode[];
 
     /** Callback to determine if a given item should be excluded. */
-    itemExclude?: (node: PageNode | HeadingNode) => boolean;
+    itemExclude?: (node: NavTreeNode) => boolean;
 
     /**
      * Callback invoked when the navigator is closed. Navigation is performed by
