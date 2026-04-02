@@ -21,6 +21,19 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
     padding: 0;
   }
 
+  &:not(.#{$ns}-section-bordered) {
+    border-radius: 0;
+    box-shadow: none;
+
+    .#{$ns}-dark & {
+      margin: 1px;
+    }
+
+    .#{$ns}-section-header {
+      min-height: math.div($section-min-height * 3, 4);
+    }
+  }
+
   &-header {
     align-items: center;
     border-bottom: 1px solid $pt-divider-black;
