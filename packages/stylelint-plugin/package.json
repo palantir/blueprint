@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/stylelint-plugin",
-    "version": "5.2.1",
+    "version": "5.2.2",
     "description": "Stylelint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -8,7 +8,7 @@
         "compile": "tsc -p src/",
         "lint": "es-lint",
         "lint-fix": "es-lint --fix",
-        "test": "mocha test/index.mjs"
+        "test": "vitest run"
     },
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
@@ -22,8 +22,7 @@
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/stylelint-plugin": "workspace:^",
-        "chai": "^5.0.0",
-        "mocha": "^10.2.0",
+        "vitest": "catalog:",
         "postcss-scss": "^4.0.9",
         "stylelint": "~16.25.0",
         "typescript": "~5.9.3"

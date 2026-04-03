@@ -23,6 +23,7 @@ export interface PopoverNextRef {
 export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
     const {
         animation = "scale",
+        autoUpdateOptions,
         arrow = true,
         boundary = "clippingAncestors",
         canEscapeKeyClose = true,
@@ -131,6 +132,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     }, [placement, boundary, rootBoundary, arrow, arrowRef, matchTargetWidth, middlewareOverrides]);
 
     const floatingData = usePopover({
+        autoUpdateOptions,
         canEscapeKeyClose,
         disabled,
         hasBackdrop,

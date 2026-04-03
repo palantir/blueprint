@@ -8,7 +8,7 @@ This package contains a collection of React components and other files for displ
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/icons
 ```
 

@@ -1,7 +1,4 @@
 {
-    "extends": "../../../config/tsconfig.web",
-    "compilerOptions": {
-        "outDir": "../lib/esm"
-    },
-    "exclude": ["**/*.stories.ts", "**/*.stories.tsx"]
+    "files": [],
+    "references": [{ "path": "./tsconfig.build.json" }, { "path": "./tsconfig.test.json" }]
 }
