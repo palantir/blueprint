@@ -32,6 +32,25 @@ export interface ExampleMap {
     [componentName: string]: ExampleRenderInfo;
 }
 
+/** Renders an example component with a "View source" button. Usable standalone or from Tag renderers. */
+export const ReactExampleView: React.FC<{ example: ExampleRenderInfo; name: string }> = ({ example, name }) => {
+    return (
+        <>
+            {example.render({ id: name })}
+            <AnchorButton
+                className="docs-example-view-source"
+                fill={true}
+                href={example.sourceUrl}
+                icon={<Code />}
+                intent={Intent.PRIMARY}
+                target="_blank"
+                text="View source on GitHub"
+                variant="minimal"
+            />
+        </>
+    );
+};
+
 export class ReactExampleTagRenderer {
     constructor(private examples: ExampleMap) {}
 
@@ -49,20 +68,6 @@ export class ReactExampleTagRenderer {
         if (example == null) {
             throw new Error(`Unknown @example component: ${exampleName}`);
         }
-        return (
-            <>
-                {example.render({ id: exampleName })}
-                <AnchorButton
-                    className="docs-example-view-source"
-                    fill={true}
-                    href={example.sourceUrl}
-                    icon={<Code />}
-                    intent={Intent.PRIMARY}
-                    target="_blank"
-                    text="View source on GitHub"
-                    variant="minimal"
-                />
-            </>
-        );
+        return <ReactExampleView example={example} name={exampleName} />;
     };
 }

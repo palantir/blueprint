@@ -19,3 +19,16 @@ export function smartSearch(query: string, ...content: string[]) {
     const dataToSearch = content.map(s => s.toLowerCase());
     return terms.every(term => dataToSearch.some(d => d.indexOf(term) >= 0));
 }
+
+/**
+ * Slugify a heading value to produce a URL-safe route segment.
+ * Matches the route generation logic in navHelpers.mts.
+ */
+export function slugify(value: string): string {
+    return value
+        .toLowerCase()
+        .replace(/&/g, "and")
+        .replace(/[^a-z0-9-]/g, "-")
+        .replace(/-{2,}/g, "-")
+        .replace(/^-|-$/g, "");
+}

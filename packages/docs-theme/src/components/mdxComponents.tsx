@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-import { createElement, useContext } from "react";
+import { useContext } from "react";
 
-import { AnchorButton, Classes, Intent, Pre } from "@blueprintjs/core";
-import { Classes as DocsClasses, MdxPageRouteContext, TypescriptExample } from "@blueprintjs/docs-theme";
-import { Code, Link } from "@blueprintjs/icons";
+import { Classes, Pre } from "@blueprintjs/core";
 
-import { reactExamples } from "../tags/reactExamples";
+import * as DocsClasses from "../common/classes";
+import { slugify } from "../common/stringUtils";
+import { DocsHeading } from "../tags/heading";
+import type { ExampleMap } from "../tags/reactExample";
+import { ReactExampleView } from "../tags/reactExample";
+import { TypescriptExample } from "../tags/typescript";
 
-/**
- * Slugify a heading value to match the route generation in navHelpers.mts.
- */
-function slugify(value: string): string {
-    return value
-        .toLowerCase()
-        .replace(/&/g, "and")
-        .replace(/[^a-z0-9-]/g, "-")
-        .replace(/-{2,}/g, "-")
-        .replace(/^-|-$/g, "");
-}
+import { MdxPageRouteContext } from "./page";
 
 /**
  * Extract plain text from React children (handles strings and nested elements).
@@ -55,15 +48,7 @@ function MdxHeading({ level, children }: { level: number; children?: React.React
     const text = childrenToString(children);
     const route = level === 1 ? pageRoute : `${pageRoute}.${slugify(text)}`;
 
-    return createElement(
-        `h${level}`,
-        { className: `${Classes.HEADING} docs-title` },
-        <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
-        <a className="docs-anchor-link" href={`#${route}`} key="link" aria-hidden={true} tabIndex={-1}>
-            <Link />
-        </a>,
-        children,
-    );
+    return <DocsHeading level={level} route={route} children={children} />;
 }
 
 function MdxPre({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
@@ -85,37 +70,22 @@ function MdxPre({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
     );
 }
 
-function ReactExample({ name }: { name: string }) {
-    const example = reactExamples[name];
-    if (example == null) {
-        throw new Error(`Unknown @reactExample component: ${name}`);
-    }
-
-    return (
-        <>
-            {example.render({ id: name })}
-            <AnchorButton
-                className="docs-example-view-source"
-                fill={true}
-                href={example.sourceUrl}
-                icon={<Code />}
-                intent={Intent.PRIMARY}
-                target="_blank"
-                text="View source on GitHub"
-                variant="minimal"
-            />
-        </>
-    );
-}
-
 function MdxInterfaceTable({ name }: { name: string }) {
     return <TypescriptExample tag="interface" value={name} />;
 }
 
-export function getMdxComponents(): Record<string, React.ComponentType<any>> {
+export function getMdxComponents(examples: ExampleMap): Record<string, React.ComponentType<any>> {
+    function MdxReactExample({ name }: { name: string }) {
+        const example = examples[name];
+        if (example == null) {
+            throw new Error(`Unknown @reactExample component: ${name}`);
+        }
+        return <ReactExampleView example={example} name={name} />;
+    }
+
     return {
         InterfaceTable: MdxInterfaceTable,
-        ReactExample,
+        ReactExample: MdxReactExample,
         h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <MdxHeading level={1} {...props} />,
         h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <MdxHeading level={2} {...props} />,
         h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <MdxHeading level={3} {...props} />,

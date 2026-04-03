@@ -23,22 +23,33 @@ import { Link } from "@blueprintjs/icons";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 
+export interface DocsHeadingProps {
+    level: number;
+    route: string;
+    children: React.ReactNode;
+}
+
+/** Renders a heading with anchor links. Usable from both Tag renderers and MDX components. */
+export const DocsHeading: React.FC<DocsHeadingProps> = ({ level, route, children }) => {
+    const className = classNames(Classes.HEADING, "docs-title");
+    const content = [
+        <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
+        <a className="docs-anchor-link" href={"#" + route} key="link" aria-hidden={true} tabIndex={-1}>
+            <Link />
+        </a>,
+        children,
+    ];
+
+    // use createElement so we can dynamically choose tag based on depth
+    return createElement(`h${level}`, { className }, content);
+};
+DocsHeading.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.DocsHeading`;
+
 export const Heading: React.FC<Tag> = props => {
     if (!isHeadingTag(props)) {
         return null;
     }
 
-    const { level, route, value } = props;
-    const className = classNames(Classes.HEADING, "docs-title");
-    const children = [
-        <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
-        <a className="docs-anchor-link" href={"#" + route} key="link" aria-hidden={true} tabIndex={-1}>
-            <Link />
-        </a>,
-        value,
-    ];
-
-    // use createElement so we can dynamically choose tag based on depth
-    return createElement(`h${level}`, { className }, children);
+    return <DocsHeading level={props.level} route={props.route} children={props.value} />;
 };
 Heading.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Heading`;

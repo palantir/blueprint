@@ -24,15 +24,16 @@ import {
     Banner,
     Documentation,
     type DocumentationProps,
+    getMdxComponents,
     NavMenuItem,
     type NavMenuItemProps,
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
+import { reactExamples } from "../tags/reactExamples";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
-import { getMdxComponents } from "./mdxComponents";
 import { mdxPages } from "./mdxRegistry";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -104,7 +105,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         return (
             <BlueprintProvider>
                 <ThemeProvider value={themeContextValue}>
-                    <MDXProvider components={getMdxComponents()}>
+                    <MDXProvider components={getMdxComponents(reactExamples)}>
                         <Documentation
                             {...this.props}
                             className={this.state.themeName}
