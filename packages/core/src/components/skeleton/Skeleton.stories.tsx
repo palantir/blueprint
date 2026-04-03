@@ -28,7 +28,7 @@ const SkeletonDemo: React.FC<SkeletonStoryProps> = ({ skeleton }) => (
 );
 
 const meta: Meta<typeof SkeletonDemo> = {
-    title: "Core/Skeleton",
+    title: "Core/Styles/Skeleton",
     component: SkeletonDemo,
     decorators: [
         Story => (
