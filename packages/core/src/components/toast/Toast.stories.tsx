@@ -9,7 +9,7 @@ import { Intent } from "../../common";
 import { Toast } from "./toast";
 
 const meta: Meta<typeof Toast> = {
-    title: "Core/Toast",
+    title: "Core/Overlays/Toast",
     component: Toast,
     decorators: [
         Story => (
