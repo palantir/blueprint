@@ -114,11 +114,11 @@ function MdxInterfaceTable({ name }: { name: string }) {
 
 export function getMdxComponents(): Record<string, React.ComponentType<any>> {
     return {
+        InterfaceTable: MdxInterfaceTable,
+        ReactExample,
         h1: (props: React.HTMLAttributes<HTMLHeadingElement>) => <MdxHeading level={1} {...props} />,
         h2: (props: React.HTMLAttributes<HTMLHeadingElement>) => <MdxHeading level={2} {...props} />,
         h3: (props: React.HTMLAttributes<HTMLHeadingElement>) => <MdxHeading level={3} {...props} />,
-        InterfaceTable: MdxInterfaceTable,
-        ReactExample,
         pre: MdxPre,
     };
 }
