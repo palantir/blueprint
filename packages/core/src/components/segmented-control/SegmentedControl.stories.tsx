@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -27,7 +27,7 @@ const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<
 >;
 
 const meta: Meta<typeof SegmentedControl> = {
-    title: "Core/SegmentedControl",
+    title: "Core/Form/Controls/SegmentedControl",
     component: SegmentedControl,
     decorators: [
         Story => (
@@ -43,7 +43,7 @@ const meta: Meta<typeof SegmentedControl> = {
     args: {
         options: DEFAULT_OPTIONS,
         defaultValue: "list",
-        intent: "none",
+        intent: Intent.NONE,
         size: "medium",
         disabled: false,
         fill: false,
@@ -185,6 +185,40 @@ export const FillExample: Story = {
 };
 
 /**
+ * Each option can include an `icon` prop to display an icon alongside the label.
+ */
+export const WithIcons: Story = {
+    name: "With Icons",
+    args: {
+        options: ICON_OPTIONS,
+    },
+};
+
+/**
+ * Use `aria-label` on the container and `role` to control the ARIA semantics.
+ * The component supports `"radiogroup"` (default), `"group"`, `"toolbar"`, and `"menu"` roles.
+ */
+export const AriaLabels: Story = {
+    name: "Aria Labels",
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>role="radiogroup" (default) + aria-label</span>
+                <SegmentedControl {...args} aria-label="View mode" />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>role="toolbar" + aria-label</span>
+                <SegmentedControl {...args} role="toolbar" aria-label="View mode toolbar" />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontSize: 12, opacity: 0.6 }}>role="group" + aria-label</span>
+                <SegmentedControl {...args} role="group" aria-label="View mode group" />
+            </div>
+        </div>
+    ),
+};
+
+/**
  * All intents across all sizes and states.
  */
 export const AllIntentsAllSizes: Story = {
@@ -198,9 +232,7 @@ export const AllIntentsAllSizes: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[Intent.NONE, Intent.PRIMARY].map(intent => (
                 <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6 }}>
-                        Intent: {intent === Intent.NONE ? "none" : "primary"}
-                    </div>
+                    <div style={{ fontSize: 12, opacity: 0.6 }}>Intent: {intent}</div>
                     {Object.values(Size).map(size => (
                         <SegmentedControl key={size} {...args} intent={intent} size={size} />
                     ))}
