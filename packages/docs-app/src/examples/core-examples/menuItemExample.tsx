@@ -60,24 +60,6 @@ export function MenuItemExample(props: ExampleProps) {
                 checked={disabled}
                 onChange={handleBooleanChange(setDisabled)}
             />
-            <PropCodeTooltip
-                content={
-                    isSelectable ? undefined : (
-                        <>
-                            <Code>selected</Code> prop has no effect when <br />
-                            <Code>roleStructure="menuitem"</Code>
-                        </>
-                    )
-                }
-                disabled={isSelectable}
-            >
-                <BooleanOrUndefinedSelect
-                    disabled={!isSelectable}
-                    label="Selected"
-                    value={selected}
-                    onChange={setSelected}
-                />
-            </PropCodeTooltip>
             <Switch
                 label="Enable icon"
                 checked={iconEnabled}
@@ -97,6 +79,24 @@ export function MenuItemExample(props: ExampleProps) {
                     value={roleStructure}
                 />
             </FormGroup>
+            <PropCodeTooltip
+                content={
+                    isSelectable ? undefined : (
+                        <>
+                            <Code>selected</Code> prop has no effect when <br />
+                            <Code>roleStructure="menuitem"</Code>
+                        </>
+                    )
+                }
+                disabled={isSelectable}
+            >
+                <BooleanOrUndefinedSelect
+                    disabled={!isSelectable}
+                    label="Selected"
+                    value={selected}
+                    onChange={setSelected}
+                />
+            </PropCodeTooltip>
         </>
     );
 
