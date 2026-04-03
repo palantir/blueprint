@@ -24,7 +24,7 @@ const meta: Meta<typeof Toast> = {
     tags: ["autodocs"],
     args: {
         message: "This is a toast message",
-        intent: "none",
+        intent: Intent.NONE,
         icon: undefined,
         isCloseButtonShown: true,
         timeout: 0,
