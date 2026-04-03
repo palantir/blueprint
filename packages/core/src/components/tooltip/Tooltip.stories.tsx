@@ -3,8 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, screen, waitFor } from "storybook/test";
 
 import { Intent } from "../../common";
+import { Button } from "../button/buttons";
 
 import { Tooltip } from "./tooltip";
 
@@ -72,7 +74,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 24 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
             {Object.values(Intent).map(intent => (
                 <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
                     <span>{intent.charAt(0).toUpperCase() + intent.slice(1)}</span>
@@ -92,7 +94,7 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 32 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
             <Tooltip {...args} compact={false} minimal={false} isOpen={true}>
                 <span>Default</span>
             </Tooltip>
@@ -116,5 +118,93 @@ export const Playground: Story = {
     args: {
         content: "Tooltip content",
         children: <span>Hover over me</span>,
+    },
+};
+
+/**
+ * Demonstrates the tooltip appearing on hover. The `play` function simulates
+ * a user hovering over the target, causing the tooltip to open.
+ */
+export const HoverOpen: Story = {
+    name: "Hover Open",
+    args: {
+        content: "I appeared on hover!",
+        hoverOpenDelay: 0,
+        children: <Button>Hover me</Button>,
+    },
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Hover target to open tooltip", async () => {
+            const target = canvas.getByRole("button", { name: "Hover me" });
+            await userEvent.hover(target);
+            await waitFor(() => expect(screen.getByText("I appeared on hover!")).toBeVisible());
+        });
+    },
+};
+
+/**
+ * Demonstrates the tooltip closing when the user moves the cursor away.
+ * After hovering to open, the cursor is moved off and the tooltip disappears.
+ */
+export const HoverClose: Story = {
+    name: "Hover Close",
+    args: {
+        content: "Now you see me",
+        hoverOpenDelay: 0,
+        hoverCloseDelay: 0,
+        transitionDuration: 0,
+        children: <Button>Hover then leave</Button>,
+    },
+    play: async ({ canvas, userEvent, step }) => {
+        const target = canvas.getByRole("button", { name: "Hover then leave" });
+
+        await step("Hover to open tooltip", async () => {
+            await userEvent.hover(target);
+            await waitFor(() => expect(screen.getByText("Now you see me")).toBeVisible());
+        });
+
+        await step("Unhover to close tooltip", async () => {
+            await userEvent.unhover(target);
+            await waitFor(() => expect(screen.queryByText("Now you see me")).not.toBeInTheDocument());
+        });
+    },
+};
+
+/**
+ * When `disabled` is true, hovering over the target does not open the tooltip.
+ */
+export const HoverDisabled: Story = {
+    name: "Hover Disabled",
+    args: {
+        content: "You should not see this",
+        disabled: true,
+        hoverOpenDelay: 0,
+        children: <Button>Tooltip is disabled</Button>,
+    },
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Hover disabled tooltip — nothing appears", async () => {
+            const target = canvas.getByRole("button", { name: "Tooltip is disabled" });
+            await userEvent.hover(target);
+            await expect(screen.queryByText("You should not see this")).not.toBeInTheDocument();
+        });
+    },
+};
+
+/**
+ * Demonstrates `hoverOpenDelay` — the tooltip waits before appearing.
+ * With a 500ms delay, the tooltip is not yet visible immediately after hover.
+ */
+export const HoverOpenDelay: Story = {
+    name: "Hover Open Delay",
+    args: {
+        content: "Delayed tooltip",
+        hoverOpenDelay: 500,
+        children: <Button>500ms delay</Button>,
+    },
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Hover — tooltip not visible immediately due to delay", async () => {
+            const target = canvas.getByRole("button", { name: "500ms delay" });
+            await userEvent.hover(target);
+            await expect(screen.queryByText("Delayed tooltip")).not.toBeInTheDocument();
+        });
     },
 };
