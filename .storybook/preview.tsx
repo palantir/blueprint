@@ -9,8 +9,6 @@ import { BlueprintProvider, Classes, Colors, FocusStyleManager } from "@blueprin
 
 import { Icons } from "../packages/icons/src/iconLoader";
 
-import { modes } from "./modes";
-
 FocusStyleManager.onlyShowFocusOnTabs();
 
 Icons.setLoaderOptions({ loader: "all" });
@@ -27,22 +25,10 @@ import "@blueprintjs/table/lib/css/table.css";
 
 const preview: Preview = {
     parameters: {
-        backgrounds: {
-            options: {
-                dark: {
-                    name: "dark",
-                    value: Colors.BLACK,
-                },
-                light: {
-                    name: "light",
-                    value: "#ffffff",
-                },
-            },
-        },
         chromatic: {
             modes: {
-                dark: modes.dark,
-                light: modes.light,
+                dark: { theme: "dark" },
+                light: { theme: "light" },
             },
         },
         controls: {
@@ -76,7 +62,6 @@ const preview: Preview = {
     ],
 
     initialGlobals: {
-        backgrounds: { value: "light" },
         theme: "light",
     },
 };
