@@ -13,15 +13,17 @@
  * limitations under the License.
  */
 
-const importPlugin = require("eslint-plugin-import");
 const headerPlugin = require("eslint-plugin-header");
+const importPlugin = require("eslint-plugin-import");
 const jsDocPlugin = require("eslint-plugin-jsdoc");
 const jsxA11yPlugin = require("eslint-plugin-jsx-a11y");
 const reactPlugin = require("eslint-plugin-react");
 const reactHooksPlugin = require("eslint-plugin-react-hooks");
 const globals = require("globals");
 const tseslint = require("typescript-eslint");
+
 const blueprintPlugin = require("@blueprintjs/eslint-plugin");
+
 const eslintBuiltinRules = require("./eslint-builtin-rules.js");
 const eslintPluginRules = require("./eslint-plugin-rules.js");
 const tsEslintRules = require("./typescript-eslint-rules.js");
@@ -97,7 +99,6 @@ module.exports = tseslint.config(
         languageOptions: {
             globals: {
                 ...globals.env,
-                ...globals.mocha,
             },
         },
         rules: {

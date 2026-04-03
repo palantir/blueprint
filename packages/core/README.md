@@ -8,7 +8,7 @@ This package contains the core set of UI components as CSS and React code.
 
 ## Installation
 
-```
+```sh copy
 npm install --save @blueprintjs/core
 ```
 

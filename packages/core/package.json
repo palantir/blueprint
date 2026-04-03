@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "6.10.0",
+    "version": "6.11.3",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -90,7 +90,7 @@
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
         "style-dictionary": "^5.0.3",
-        "tsx": "^4.21.0",
+        "tsx": "catalog:",
         "typescript": "~5.9.3",
         "vitest": "catalog:",
         "webpack-cli": "^5.1.4"

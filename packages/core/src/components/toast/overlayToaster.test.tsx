@@ -292,6 +292,24 @@ describe("OverlayToaster", () => {
         });
     });
 
+    describe("with empty array children", () => {
+        beforeAll(async () => {
+            containerElement = document.createElement("div");
+            document.documentElement.appendChild(containerElement);
+            toaster = await OverlayToaster.create({ children: [] }, { container: containerElement, domRenderer });
+        });
+
+        afterAll(() => {
+            document.documentElement.removeChild(containerElement);
+        });
+
+        it("does not treat empty array children as open overlay", async () => {
+            await waitFor(() => {
+                assert.isNull(containerElement.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`));
+            });
+        });
+    });
+
     describe("validation", () => {
         it("throws an error when max toast is set to a number less than 1", () => {
             expectPropValidationError(OverlayToaster, { maxToasts: 0 }, TOASTER_MAX_TOASTS_INVALID);

@@ -147,16 +147,17 @@ jobs:
             chromedriver --version
       - run: mkdir -p ./reports
       - run:
-          # split karma tests into containers because they can take up a lot of memory
-          # running them in one container caused Karma to time out frequently
+          # split vitest tests into containers because they can take up a lot of memory
+          # Orginally did this while tests were still running on Karma because running
+          # them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
             0) pnpm nx run-many -t test:typeCheck ;; \
             1) pnpm nx test:vitest:run @blueprintjs/core ;; \
             2) pnpm nx test:vitest:run @blueprintjs/datetime ;; \
-            4) pnpm nx test:karma @blueprintjs/select ;; \
-            5) pnpm nx test:karma @blueprintjs/table
+            4) pnpm nx test:vitest:run @blueprintjs/select ;; \
+            5) pnpm nx test:vitest:run @blueprintjs/table
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -174,6 +175,13 @@ jobs:
       - run: pnpm nx run-many -t test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
+
+  chromatic:
+    docker: *docker-node-image
+    steps:
+      - checkout
+      - attach_workspace: { at: "." }
+      - run: npx chromatic --storybook-build-dir storybook-static --exit-zero-on-changes
 
   deploy-preview:
     docker: *docker-node-image
@@ -225,6 +233,8 @@ workflows:
           requires: [compile]
       - test-iso-react-18:
           requires: [compile]
+      - chromatic:
+          requires: [dist]
       - deploy-preview:
           requires: [dist]
       - store-packages:
