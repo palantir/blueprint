@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
+import { expect, waitFor } from "storybook/test";
 
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";
@@ -259,5 +260,125 @@ export const Playground: Story = {
                 onNodeExpand={handleNodeExpand}
             />
         );
+    },
+};
+
+/**
+ * Clicking a node selects it. Clicking again deselects it.
+ */
+export const SelectNode: Story = {
+    name: "Select Node",
+    ...Playground,
+    play: async ({ canvas, userEvent, step }) => {
+        const item0 = canvas.getByText("Item 0");
+        const item1 = canvas.getByText("Item 1");
+
+        await step("Click node to select it", async () => {
+            await userEvent.click(item0);
+            await expect(item0.closest(".bp6-tree-node")).toHaveClass("bp6-tree-node-selected");
+        });
+
+        await step("Click another node — selection moves", async () => {
+            await userEvent.click(item1);
+            await expect(item1.closest(".bp6-tree-node")).toHaveClass("bp6-tree-node-selected");
+            await expect(item0.closest(".bp6-tree-node")).not.toHaveClass("bp6-tree-node-selected");
+        });
+
+        await step("Click same node again to deselect", async () => {
+            await userEvent.click(item1);
+            await expect(item1.closest(".bp6-tree-node")).not.toHaveClass("bp6-tree-node-selected");
+        });
+    },
+};
+
+/**
+ * Clicking the caret expands a collapsed folder and reveals its children.
+ */
+export const ExpandNode: Story = {
+    name: "Expand Node",
+    ...Playground,
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Collapsed folder hides children", async () => {
+            await expect(canvas.queryByText("Nested Item 0")).toBeNull();
+        });
+
+        await step("Click caret to expand folder", async () => {
+            const folder1Caret = canvas
+                .getByText("Folder 1")
+                .closest(".bp6-tree-node")!
+                .querySelector(".bp6-tree-node-caret")!;
+            await userEvent.click(folder1Caret);
+            await expect(canvas.getByText("Nested Item 0")).toBeVisible();
+            await expect(canvas.getByText("Nested Item 1")).toBeVisible();
+        });
+    },
+};
+
+/**
+ * Clicking the caret on an expanded folder collapses it and hides its children.
+ */
+export const CollapseNode: Story = {
+    name: "Collapse Node",
+    ...Playground,
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Expanded folder shows children", async () => {
+            await expect(canvas.getByText("Item 0")).toBeVisible();
+            await expect(canvas.getByText("Item 1")).toBeVisible();
+        });
+
+        await step("Click caret to collapse folder", async () => {
+            const folder0Caret = canvas
+                .getByText("Folder 0")
+                .closest(".bp6-tree-node")!
+                .querySelector(".bp6-tree-node-caret")!;
+            await userEvent.click(folder0Caret);
+            await waitFor(() => expect(canvas.queryByText("Item 0")).toBeNull());
+        });
+    },
+};
+
+/**
+ * Disabled nodes do not respond to click interactions.
+ */
+export const DisabledInteraction: Story = {
+    name: "Disabled Interaction",
+    render: function Render(args) {
+        const [nodes, setNodes] = useState<TreeNodeInfo[]>(DISABLED_CONTENTS);
+
+        const handleNodeClick = useCallback((node: TreeNodeInfo) => {
+            setNodes(prev => {
+                const newNodes = structuredClone(prev);
+                const findNode = (items: TreeNodeInfo[]): TreeNodeInfo | undefined => {
+                    for (const item of items) {
+                        if (item.id === node.id) return item;
+                        if (item.childNodes) {
+                            const found = findNode(item.childNodes);
+                            if (found) return found;
+                        }
+                    }
+                    return undefined;
+                };
+                const target = findNode(newNodes);
+                if (target) {
+                    target.isSelected = !target.isSelected;
+                }
+                return newNodes;
+            });
+        }, []);
+
+        return <Tree {...args} contents={nodes} onNodeClick={handleNodeClick} />;
+    },
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Click disabled node — no selection", async () => {
+            const disabledItem = canvas.getByText("Item 0");
+            await userEvent.click(disabledItem);
+            await expect(disabledItem.closest(".bp6-tree-node")).not.toHaveClass("bp6-tree-node-selected");
+        });
+
+        await step("Click enabled node — becomes selected", async () => {
+            const enabledItem = canvas.getByText("Item 2");
+            await userEvent.click(enabledItem);
+            await expect(enabledItem.closest(".bp6-tree-node")).toHaveClass("bp6-tree-node-selected");
+        });
     },
 };
