@@ -23,7 +23,7 @@ const meta: Meta<typeof Spinner> = {
     },
     tags: ["autodocs"],
     args: {
-        intent: "none",
+        intent: Intent.NONE,
         size: SpinnerSize.STANDARD,
         value: undefined,
     },
