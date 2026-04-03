@@ -11,7 +11,7 @@ import { Button } from "../button/buttons";
 import { Tooltip } from "./tooltip";
 
 const meta: Meta<typeof Tooltip> = {
-    title: "Core/Tooltip",
+    title: "Core/Overlays/Tooltip",
     component: Tooltip,
     decorators: [
         Story => (
@@ -26,7 +26,7 @@ const meta: Meta<typeof Tooltip> = {
     tags: ["autodocs"],
     args: {
         content: "This is a tooltip",
-        intent: "none",
+        intent: Intent.NONE,
         compact: false,
         minimal: false,
         disabled: false,
@@ -61,7 +61,7 @@ export const Default: Story = {
     args: {
         content: "This is a tooltip",
         isOpen: true,
-        children: <span>Hover me</span>,
+        children: <Button>Hover me</Button>,
     },
 };
 
@@ -77,7 +77,7 @@ export const IntentExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
             {Object.values(Intent).map(intent => (
                 <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
-                    <span>{intent.charAt(0).toUpperCase() + intent.slice(1)}</span>
+                    <Button>{intent.charAt(0).toUpperCase() + intent.slice(1)}</Button>
                 </Tooltip>
             ))}
         </div>
@@ -96,16 +96,16 @@ export const VariantExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
             <Tooltip {...args} compact={false} minimal={false} isOpen={true}>
-                <span>Default</span>
+                <Button>Default</Button>
             </Tooltip>
             <Tooltip {...args} compact={true} minimal={false} isOpen={true}>
-                <span>Compact</span>
+                <Button>Compact</Button>
             </Tooltip>
             <Tooltip {...args} compact={false} minimal={true} isOpen={true}>
-                <span>Minimal</span>
+                <Button>Minimal</Button>
             </Tooltip>
             <Tooltip {...args} compact={true} minimal={true} isOpen={true}>
-                <span>Compact + Minimal</span>
+                <Button>Compact + Minimal</Button>
             </Tooltip>
         </div>
     ),
@@ -117,7 +117,7 @@ export const VariantExample: Story = {
 export const Playground: Story = {
     args: {
         content: "Tooltip content",
-        children: <span>Hover over me</span>,
+        children: <Button>Hover over me</Button>,
     },
 };
 
@@ -205,6 +205,10 @@ export const HoverOpenDelay: Story = {
             const target = canvas.getByRole("button", { name: "500ms delay" });
             await userEvent.hover(target);
             await expect(screen.queryByText("Delayed tooltip")).not.toBeInTheDocument();
+        });
+
+        await step("Wait for delay — tooltip becomes visible", async () => {
+            await waitFor(() => expect(screen.getByText("Delayed tooltip")).toBeVisible());
         });
     },
 };
