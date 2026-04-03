@@ -3,11 +3,55 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { type MouseEvent, useCallback, useReducer } from "react";
 import { expect, waitFor } from "storybook/test";
 
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";
+
+type NodePath = number[];
+
+type TreeAction =
+    | { type: "SET_IS_EXPANDED"; payload: { path: NodePath; isExpanded: boolean } }
+    | { type: "DESELECT_ALL" }
+    | { type: "SET_IS_SELECTED"; payload: { path: NodePath; isSelected: boolean } };
+
+function forEachNode(nodes: TreeNodeInfo[] | undefined, callback: (node: TreeNodeInfo) => void) {
+    if (nodes === undefined) {
+        return;
+    }
+
+    for (const node of nodes) {
+        callback(node);
+        forEachNode(node.childNodes, callback);
+    }
+}
+
+function forNodeAtPath(nodes: TreeNodeInfo[], path: NodePath, callback: (node: TreeNodeInfo) => void) {
+    callback(Tree.nodeFromPath(path, nodes));
+}
+
+function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
+    switch (action.type) {
+        case "DESELECT_ALL": {
+            const newState = structuredClone(state);
+            forEachNode(newState, node => (node.isSelected = false));
+            return newState;
+        }
+        case "SET_IS_EXPANDED": {
+            const newState = structuredClone(state);
+            forNodeAtPath(newState, action.payload.path, node => (node.isExpanded = action.payload.isExpanded));
+            return newState;
+        }
+        case "SET_IS_SELECTED": {
+            const newState = structuredClone(state);
+            forNodeAtPath(newState, action.payload.path, node => (node.isSelected = action.payload.isSelected));
+            return newState;
+        }
+        default:
+            return state;
+    }
+}
 
 const SAMPLE_CONTENTS: TreeNodeInfo[] = [
     {
@@ -188,66 +232,33 @@ export const AllStates: Story = {
  */
 export const Playground: Story = {
     render: function Render(args) {
-        const [nodes, setNodes] = useState<TreeNodeInfo[]>(SAMPLE_CONTENTS);
+        const [nodes, dispatch] = useReducer(treeExampleReducer, SAMPLE_CONTENTS);
 
-        const forEachNode = useCallback((treeNodes: TreeNodeInfo[], callback: (node: TreeNodeInfo) => void) => {
-            for (const node of treeNodes) {
-                callback(node);
-                if (node.childNodes) {
-                    forEachNode(node.childNodes, callback);
-                }
+        const handleNodeClick = useCallback((node: TreeNodeInfo, nodePath: NodePath, e: MouseEvent<HTMLElement>) => {
+            const originallySelected = node.isSelected;
+            if (!e.shiftKey) {
+                dispatch({ type: "DESELECT_ALL" });
             }
-        }, []);
-
-        const handleNodeClick = useCallback(
-            (node: TreeNodeInfo, _nodePath: number[], e: React.MouseEvent<HTMLElement>) => {
-                const originallySelected = node.isSelected;
-                setNodes(prev => {
-                    const newNodes = structuredClone(prev);
-                    if (!e.shiftKey) {
-                        forEachNode(newNodes, n => (n.isSelected = false));
-                    }
-                    const findNode = (items: TreeNodeInfo[]): TreeNodeInfo | undefined => {
-                        for (const item of items) {
-                            if (item.id === node.id) return item;
-                            if (item.childNodes) {
-                                const found = findNode(item.childNodes);
-                                if (found) return found;
-                            }
-                        }
-                        return undefined;
-                    };
-                    const target = findNode(newNodes);
-                    if (target) {
-                        target.isSelected = originallySelected == null ? true : !originallySelected;
-                    }
-                    return newNodes;
-                });
-            },
-            [forEachNode],
-        );
-
-        const handleNodeCollapse = useCallback((_node: TreeNodeInfo, nodePath: number[]) => {
-            setNodes(prev => {
-                const newNodes = structuredClone(prev);
-                let target: TreeNodeInfo = newNodes[nodePath[0]];
-                for (let i = 1; i < nodePath.length; i++) {
-                    target = target.childNodes![nodePath[i]];
-                }
-                target.isExpanded = false;
-                return newNodes;
+            dispatch({
+                payload: {
+                    isSelected: originallySelected == null ? true : !originallySelected,
+                    path: nodePath,
+                },
+                type: "SET_IS_SELECTED",
             });
         }, []);
 
-        const handleNodeExpand = useCallback((_node: TreeNodeInfo, nodePath: number[]) => {
-            setNodes(prev => {
-                const newNodes = structuredClone(prev);
-                let target: TreeNodeInfo = newNodes[nodePath[0]];
-                for (let i = 1; i < nodePath.length; i++) {
-                    target = target.childNodes![nodePath[i]];
-                }
-                target.isExpanded = true;
-                return newNodes;
+        const handleNodeCollapse = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+            dispatch({
+                payload: { isExpanded: false, path: nodePath },
+                type: "SET_IS_EXPANDED",
+            });
+        }, []);
+
+        const handleNodeExpand = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+            dispatch({
+                payload: { isExpanded: true, path: nodePath },
+                type: "SET_IS_EXPANDED",
             });
         }, []);
 
@@ -343,26 +354,19 @@ export const CollapseNode: Story = {
 export const DisabledInteraction: Story = {
     name: "Disabled Interaction",
     render: function Render(args) {
-        const [nodes, setNodes] = useState<TreeNodeInfo[]>(DISABLED_CONTENTS);
+        const [nodes, dispatch] = useReducer(treeExampleReducer, DISABLED_CONTENTS);
 
-        const handleNodeClick = useCallback((node: TreeNodeInfo) => {
-            setNodes(prev => {
-                const newNodes = structuredClone(prev);
-                const findNode = (items: TreeNodeInfo[]): TreeNodeInfo | undefined => {
-                    for (const item of items) {
-                        if (item.id === node.id) return item;
-                        if (item.childNodes) {
-                            const found = findNode(item.childNodes);
-                            if (found) return found;
-                        }
-                    }
-                    return undefined;
-                };
-                const target = findNode(newNodes);
-                if (target) {
-                    target.isSelected = !target.isSelected;
-                }
-                return newNodes;
+        const handleNodeClick = useCallback((node: TreeNodeInfo, nodePath: NodePath, e: MouseEvent<HTMLElement>) => {
+            const originallySelected = node.isSelected;
+            if (!e.shiftKey) {
+                dispatch({ type: "DESELECT_ALL" });
+            }
+            dispatch({
+                payload: {
+                    isSelected: originallySelected == null ? true : !originallySelected,
+                    path: nodePath,
+                },
+                type: "SET_IS_SELECTED",
             });
         }, []);
 
