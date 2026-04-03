@@ -78,6 +78,13 @@ export interface DocumentationProps extends Props {
     header: React.ReactNode;
 
     /**
+     * Map of page IDs to lazily-loaded MDX components. Pages in this map
+     * will be rendered via the compiled MDX path instead of the Documentalist
+     * HTML path.
+     */
+    mdxPages?: Record<string, React.ComponentType>;
+
+    /**
      * Callback invoked to determine if given nav node should *not* be
      * searchable in the navigator. Returning `true` will exclude the item from
      * the navigator search results.
@@ -240,6 +247,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                             >
                                 <Page
                                     page={pages[activePageId]!}
+                                    mdxComponent={this.props.mdxPages?.[activePageId]}
                                     renderActions={this.props.renderPageActions}
                                     tagRenderers={this.props.tagRenderers}
                                 />

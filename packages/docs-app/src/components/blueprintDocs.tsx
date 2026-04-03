@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { MDXProvider } from "@mdx-js/react";
 import classNames from "classnames";
 import { Component } from "react";
 
@@ -31,6 +32,8 @@ import {
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
 import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
+import { getMdxComponents } from "./mdxComponents";
+import { mdxPages } from "./mdxRegistry";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
@@ -101,18 +104,21 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         return (
             <BlueprintProvider>
                 <ThemeProvider value={themeContextValue}>
-                    <Documentation
-                        {...this.props}
-                        className={this.state.themeName}
-                        banner={banner}
-                        footer={footer}
-                        header={header}
-                        navigatorExclude={isNavSection}
-                        onComponentUpdate={this.handleComponentUpdate}
-                        renderNavMenuItem={this.renderNavMenuItem}
-                        renderPageActions={this.renderPageActions}
-                        renderViewSourceLinkText={this.renderViewSourceLinkText}
-                    />
+                    <MDXProvider components={getMdxComponents()}>
+                        <Documentation
+                            {...this.props}
+                            className={this.state.themeName}
+                            banner={banner}
+                            footer={footer}
+                            header={header}
+                            mdxPages={mdxPages}
+                            navigatorExclude={isNavSection}
+                            onComponentUpdate={this.handleComponentUpdate}
+                            renderNavMenuItem={this.renderNavMenuItem}
+                            renderPageActions={this.renderPageActions}
+                            renderViewSourceLinkText={this.renderViewSourceLinkText}
+                        />
+                    </MDXProvider>
                 </ThemeProvider>
             </BlueprintProvider>
         );

@@ -19,6 +19,8 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
 
@@ -41,6 +43,20 @@ export default {
                 resourceQuery: /raw/,
                 type: "asset/source",
             },
+            // Compile .mdx files with @mdx-js/loader
+            {
+                test: /\.mdx$/,
+                use: [
+                    {
+                        loader: "@mdx-js/loader",
+                        /** @type {import("@mdx-js/loader").Options} */
+                        options: {
+                            providerImportSource: "@mdx-js/react",
+                            remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
+                        },
+                    },
+                ],
+            },
             ...(baseConfig.module?.rules
                 ?.map(rule => {
                     // prevent ?raw TS files from being processed by TypeScript loader
@@ -53,6 +69,15 @@ export default {
                 })
                 .filter(Boolean) || []),
         ],
+    },
+
+    resolve: {
+        ...baseConfig.resolve,
+        alias: {
+            // MDX files live outside docs-app (e.g. in packages/core), so webpack can't
+            // resolve @mdx-js/react from their directories. Alias it to docs-app's copy.
+            "@mdx-js/react": resolve(cwd(), "node_modules/@mdx-js/react"),
+        },
     },
 
     output: {

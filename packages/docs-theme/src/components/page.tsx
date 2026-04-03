@@ -15,22 +15,42 @@
  */
 
 import type { PageData } from "@documentalist/client";
+import { createContext, Suspense } from "react";
 
-import { Classes } from "@blueprintjs/core";
+import { Classes, Spinner } from "@blueprintjs/core";
 
 import type { TagRendererMap } from "../tags";
 
 import { renderBlock } from "./block";
 
+/**
+ * React context providing the current page route to MDX heading components
+ * so they can build correct `data-route` attributes for navigation/scroll.
+ */
+export const MdxPageRouteContext = createContext<string>("");
+
 export interface PageProps {
     page: PageData;
+    mdxComponent?: React.ComponentType;
     renderActions?: (page: PageData) => React.ReactNode;
     tagRenderers: TagRendererMap;
 }
 
-export const Page: React.FC<PageProps> = ({ page, renderActions, tagRenderers }) => {
-    // apply running text styles to blocks in pages (but not on blocks in examples)
-    const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
+export const Page: React.FC<PageProps> = ({ page, mdxComponent: MdxComponent, renderActions, tagRenderers }) => {
+    const pageContents =
+        MdxComponent != null ? (
+            <MdxPageRouteContext.Provider value={page.route}>
+                <Suspense fallback={<Spinner />}>
+                    <div className={`${Classes.RUNNING_TEXT} ${Classes.TEXT_LARGE}`}>
+                        <MdxComponent />
+                    </div>
+                </Suspense>
+            </MdxPageRouteContext.Provider>
+        ) : (
+            // apply running text styles to blocks in pages (but not on blocks in examples)
+            renderBlock(page, tagRenderers, Classes.TEXT_LARGE)
+        );
+
     return (
         <div className="docs-page" data-page-id={page.route}>
             {renderActions && <div className="docs-page-actions">{renderActions(page)}</div>}
