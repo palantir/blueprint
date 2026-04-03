@@ -1,0 +1,4 @@
+<Button icon="refresh" text="Refresh" />
+<Button icon="globe" text="Globe" />
+<Button icon={<Icon icon="refresh" />} text="Refresh" />
+<Button icon={<Icon icon="globe" />} text="Globe" />
