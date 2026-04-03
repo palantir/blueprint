@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -25,7 +25,6 @@ const meta: Meta<typeof Spinner> = {
     args: {
         intent: Intent.NONE,
         size: SpinnerSize.STANDARD,
-        value: undefined,
     },
     argTypes: {
         intent: {
@@ -129,11 +128,11 @@ export const StateExample: Story = {
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
     args: {
-        intent: "primary",
+        intent: Intent.PRIMARY,
         size: SpinnerSize.STANDARD,
         value: 0.7,
     },
