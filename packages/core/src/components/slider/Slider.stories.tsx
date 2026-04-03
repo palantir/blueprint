@@ -3,7 +3,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+import { useArgs } from "storybook/preview-api";
 
 import { Intent } from "../../common";
 
@@ -35,11 +36,12 @@ const meta: Meta<typeof Slider> = {
         min: 0,
         max: 10,
         stepSize: 1,
+        labelStepSize: 1,
         value: 5,
         disabled: false,
         vertical: false,
         showTrackFill: true,
-        intent: "primary",
+        intent: Intent.PRIMARY,
     },
     argTypes: {
         intent: {
@@ -47,16 +49,19 @@ const meta: Meta<typeof Slider> = {
             options: Object.values(Intent),
         },
         min: {
-            control: "number",
+            control: { type: "range", min: -100, max: 0, step: 1 },
         },
         max: {
-            control: "number",
+            control: { type: "range", min: 1, max: 100, step: 1 },
         },
         stepSize: {
-            control: "number",
+            control: { type: "range", min: 0.1, max: 10, step: 0.1 },
+        },
+        labelStepSize: {
+            control: { type: "range", min: 1, max: 10, step: 1 },
         },
         value: {
-            control: "number",
+            control: { type: "range", min: 0, max: 10, step: 1 },
         },
         disabled: {
             control: "boolean",
@@ -85,6 +90,19 @@ export const Default: Story = {
     args: {
         value: 5,
     },
+    render: function Render(args) {
+        const [_, updateArgs] = useArgs();
+        const handleChange = useCallback((newValue: number) => updateArgs({ value: newValue }), [updateArgs]);
+
+        return (
+            <Slider
+                {...args}
+                onChange={handleChange}
+                onRelease={handleChange}
+                handleHtmlProps={{ "aria-label": "Slider" }}
+            />
+        );
+    },
 };
 
 /**
@@ -95,16 +113,27 @@ export const IntentExample: Story = {
     argTypes: {
         intent: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
-            {Object.values(Intent).map(intent => (
-                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
-                    <Slider {...args} intent={intent} value={7} />
-                </div>
-            ))}
-        </div>
-    ),
+    render: function RenderIntent(args) {
+        const [_, updateArgs] = useArgs();
+        const handleChange = useCallback((newValue: number) => updateArgs({ value: newValue }), [updateArgs]);
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
+                {Object.values(Intent).map(intent => (
+                    <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                        <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                        <Slider
+                            {...args}
+                            intent={intent}
+                            onChange={handleChange}
+                            onRelease={handleChange}
+                            handleHtmlProps={{ "aria-label": `${intent} intent slider` }}
+                        />
+                    </div>
+                ))}
+            </div>
+        );
+    },
 };
 
 /**
@@ -116,24 +145,45 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
         vertical: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
-                <Slider {...args} disabled={false} value={5} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
-                <Slider {...args} disabled={true} value={5} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Vertical</span>
-                <div style={{ height: "200px" }}>
-                    <Slider {...args} vertical={true} value={7} />
+    render: function RenderState(args) {
+        const [_, updateArgs] = useArgs();
+        const handleChange = useCallback((newValue: number) => updateArgs({ value: newValue }), [updateArgs]);
+
+        return (
+            <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                    <Slider
+                        {...args}
+                        disabled={false}
+                        onChange={handleChange}
+                        onRelease={handleChange}
+                        handleHtmlProps={{ "aria-label": "Default state slider" }}
+                    />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
+                    <Slider
+                        {...args}
+                        disabled={true}
+                        onChange={handleChange}
+                        onRelease={handleChange}
+                        handleHtmlProps={{ "aria-label": "Disabled slider" }}
+                    />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <span style={{ fontSize: 12, opacity: 0.6 }}>Vertical</span>
+                    <Slider
+                        {...args}
+                        vertical={true}
+                        onChange={handleChange}
+                        onRelease={handleChange}
+                        handleHtmlProps={{ "aria-label": "Vertical slider" }}
+                    />
                 </div>
             </div>
-        </div>
-    ),
+        );
+    },
 };
 
 /**
@@ -141,17 +191,17 @@ export const StateExample: Story = {
  */
 export const Playground: Story = {
     render: function Render(args) {
-        const [value, setValue] = useState(5);
+        const [_, updateArgs] = useArgs();
+        const handleChange = useCallback((newValue: number) => updateArgs({ value: newValue }), [updateArgs]);
 
-        const handleChange = useCallback(
-            (newValue: number) => {
-                setValue(newValue);
-                args.onChange?.(newValue);
-            },
-            [args],
+        return (
+            <Slider
+                {...args}
+                onChange={handleChange}
+                onRelease={handleChange}
+                handleHtmlProps={{ "aria-label": "Playground slider" }}
+            />
         );
-
-        return <Slider {...args} value={value} onChange={handleChange} />;
     },
     args: {
         value: 5,
