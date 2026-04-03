@@ -2,11 +2,14 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Preview } from "@storybook/react-vite";
 
 import { BlueprintProvider, Classes, Colors, FocusStyleManager } from "@blueprintjs/core";
 
 import { Icons } from "../packages/icons/src/iconLoader";
+
+import { modes } from "./modes";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -26,15 +29,20 @@ const preview: Preview = {
     parameters: {
         backgrounds: {
             options: {
-                light: {
-                    name: "light",
-                    value: "#ffffff",
-                },
-
                 dark: {
                     name: "dark",
                     value: Colors.BLACK,
                 },
+                light: {
+                    name: "light",
+                    value: "#ffffff",
+                },
+            },
+        },
+        chromatic: {
+            modes: {
+                dark: modes.dark,
+                light: modes.light,
             },
         },
         controls: {
@@ -46,16 +54,18 @@ const preview: Preview = {
     },
 
     decorators: [
+        withThemeByClassName({
+            defaultTheme: "light",
+            parentSelector: "body",
+            themes: {
+                dark: Classes.DARK,
+                light: "",
+            },
+        }),
         (Story, context) => {
-            // Toggle Blueprint dark mode via the Backgrounds toolbar (light / dark).
-            const bg = context.globals?.backgrounds;
-            const isDark = bg?.value === Colors.BLACK || bg?.value === "dark" || bg?.name === "dark";
+            const isDark = context.globals?.theme === "dark";
             if (typeof document !== "undefined" && document.body) {
-                if (isDark) {
-                    document.body.classList.add(Classes.DARK);
-                } else {
-                    document.body.classList.remove(Classes.DARK);
-                }
+                document.body.style.backgroundColor = isDark ? Colors.BLACK : "#ffffff";
             }
             return (
                 <BlueprintProvider>
@@ -66,9 +76,8 @@ const preview: Preview = {
     ],
 
     initialGlobals: {
-        backgrounds: {
-            value: "light",
-        },
+        backgrounds: { value: "light" },
+        theme: "light",
     },
 };
 
