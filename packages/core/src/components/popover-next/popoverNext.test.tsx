@@ -9,7 +9,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/tes
 
 import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { Button, PopupKind, Tooltip } from "../../components";
+import { Button, Dialog, DialogBody, InputGroup, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 
 import { PopoverNext } from "./popoverNext";
@@ -872,6 +872,34 @@ describe("<PopoverNext>", () => {
                 expect(onInteraction).toHaveBeenCalledOnce();
                 expect(onInteraction).toHaveBeenCalledWith(false, expect.anything());
             });
+
+            it("is not invoked when clicking inside a child Dialog rendered in popover content", async () => {
+                const user = userEvent.setup();
+                const onInteraction = vi.fn();
+                render(
+                    <PopoverNext
+                        content={
+                            <Dialog isOpen={true} title="Child dialog" usePortal={true}>
+                                <DialogBody>
+                                    <Button text="dialog button" />
+                                </DialogBody>
+                            </Dialog>
+                        }
+                        isOpen={true}
+                        onInteraction={onInteraction}
+                    >
+                        <Button text="target" />
+                    </PopoverNext>,
+                );
+
+                await waitFor(() => expect(screen.getByRole("button", { name: "dialog button" })).toBeInTheDocument());
+
+                onInteraction.mockClear();
+
+                await user.click(screen.getByRole("button", { name: "dialog button" }));
+
+                expect(onInteraction).not.toHaveBeenCalledWith(false, expect.anything());
+            });
         });
 
         it("does not apply active class to target when open", () => {
@@ -1481,6 +1509,28 @@ describe("<PopoverNext>", () => {
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).not.toBeInTheDocument());
             await waitFor(() => expect(screen.queryByRole("button", { name: "inner target" })).not.toBeInTheDocument());
+        });
+    });
+
+    describe("key interactions on InputGroup target", () => {
+        it("Space key inserts a space character instead of being swallowed", async () => {
+            const handleChange = vi.fn();
+            const user = userEvent.setup();
+            render(
+                <PopoverNext content="popover content" autoFocus={false} enforceFocus={false} usePortal={false}>
+                    <InputGroup placeholder="Search..." onChange={handleChange} />
+                </PopoverNext>,
+            );
+            const input = screen.getByPlaceholderText("Search...");
+
+            await user.click(input);
+            await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
+
+            await user.type(input, "lorem ipsum");
+
+            expect(input).toHaveValue("lorem ipsum");
+            // Popover should stay open; Space must not toggle it
+            expect(screen.getByText("popover content")).toBeInTheDocument();
         });
     });
 

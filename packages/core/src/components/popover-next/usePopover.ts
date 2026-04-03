@@ -103,11 +103,29 @@ export function usePopover({
 
     const click = useClick(context, {
         enabled: !disabled,
+        // Disable Floating UI's built-in Space/Enter keyboard handlers because they
+        // call `preventDefault()` on the Space keydown event to prevent page scrolling.
+        // This also prevents space characters from being typed in <input>/<textarea>
+        // elements that are children of the target wrapper element.
+        // See: https://github.com/palantir/blueprint/pull/7997
+        //
+        // PopoverTarget provides its own keyboard click handling that avoids this issue
+        // by skipping typeable elements while still maintaining keyboard accessibility
+        // for non-typeable targets.
+        keyboardHandlers: false,
     });
     const dismiss = useDismiss(context, {
         escapeKey: canEscapeKeyClose,
-        // Disable outside press when hasBackdrop=true since Overlay2 handles backdrop clicks
-        outsidePress: interactionKind !== PopoverInteractionKind.CLICK_TARGET_ONLY && !hasBackdrop,
+        // Disable Floating UI outside-press in two cases:
+        // 1. CLICK interactions: delegate to Overlay2's stack-aware handler
+        //    (getThisOverlayAndDescendants) so clicks inside child overlays like Dialog
+        //    don't incorrectly close the popover. useDismiss is not overlay-stack-aware
+        //    and treats clicks in portaled child overlays as "outside" clicks.
+        // 2. hasBackdrop: Overlay2 handles backdrop clicks and outside-click detection.
+        outsidePress:
+            interactionKind !== PopoverInteractionKind.CLICK_TARGET_ONLY &&
+            interactionKind !== PopoverInteractionKind.CLICK &&
+            !hasBackdrop,
     });
 
     const interactions = useInteractions([click, dismiss]);
