@@ -70,7 +70,7 @@ export function MenuItemExample(props: ExampleProps) {
                 checked={submenuEnabled}
                 onChange={handleBooleanChange(setSubmenuEnabled)}
             />
-            <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
+            <IntentSelect intent={intent} onChange={setIntent} />
             <FormGroup label="Role structure">
                 <SegmentedControl
                     options={[{ value: "menuitem" }, { value: "listoption" }]}
