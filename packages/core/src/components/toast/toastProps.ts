@@ -47,7 +47,7 @@ export interface ToastProps extends Props, IntentProps {
 
     /**
      * Milliseconds to wait before automatically dismissing toast.
-     * Providing a value less than or equal to 0 or Infinity will disable the timeout (this is discouraged).
+     * Providing a value less than or equal to 0, or a non-finite value (e.g. Infinity), will disable the timeout.
      *
      * @default 5000
      */
