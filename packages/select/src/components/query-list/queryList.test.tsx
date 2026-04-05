@@ -230,8 +230,7 @@ describe("<QueryList>", () => {
             Object.defineProperty(fakeParent, "style", { value: {} });
             // stub getComputedStyle to return padding values
             const originalGetComputedStyle = window.getComputedStyle;
-            window.getComputedStyle = () =>
-                ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
+            window.getComputedStyle = () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
 
             (queryListInstance as any).itemsParentRef = fakeParent;
 
@@ -263,8 +262,7 @@ describe("<QueryList>", () => {
             } as unknown as HTMLElement;
             Object.defineProperty(fakeParent, "style", { value: {} });
             const originalGetComputedStyle = window.getComputedStyle;
-            window.getComputedStyle = () =>
-                ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
+            window.getComputedStyle = () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
 
             (queryListInstance as any).itemsParentRef = fakeParent;
 
