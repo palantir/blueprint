@@ -213,6 +213,74 @@ describe("<QueryList>", () => {
 
     describe("scrolling", () => {
         it("brings active item into view");
+
+        it("scrolls so that bottom edge of active item aligns with bottom of container", () => {
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...testProps} />);
+            const queryListInstance = filmQueryList.instance() as QueryList<Film>;
+
+            // mock the items parent ref with a fake scrollable container
+            const fakeParent = {
+                offsetTop: 0,
+                scrollTop: 0,
+                clientHeight: 200,
+                children: {
+                    item: () => null,
+                },
+            } as unknown as HTMLElement;
+            Object.defineProperty(fakeParent, "style", { value: {} });
+            // stub getComputedStyle to return padding values
+            const originalGetComputedStyle = window.getComputedStyle;
+            window.getComputedStyle = () =>
+                ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
+
+            (queryListInstance as any).itemsParentRef = fakeParent;
+
+            // mock an active element that is below the visible area
+            const fakeActiveElement = { offsetTop: 350, offsetHeight: 30 };
+            (queryListInstance as any).getActiveElement = () => fakeActiveElement;
+
+            queryListInstance.scrollActiveItemIntoView();
+
+            // activeBottomEdge = 350 + 30 + 0 - 0 = 380
+            // expected scrollTop = activeBottomEdge - parentHeight = 380 - 200 = 180
+            // (not 380 + 30 - 200 = 210, which would over-scroll by one item height)
+            expect(fakeParent.scrollTop).toBe(180);
+
+            window.getComputedStyle = originalGetComputedStyle;
+        });
+
+        it("scrolls so that top edge of active item aligns with top of container", () => {
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...testProps} />);
+            const queryListInstance = filmQueryList.instance() as QueryList<Film>;
+
+            const fakeParent = {
+                offsetTop: 0,
+                scrollTop: 300,
+                clientHeight: 200,
+                children: {
+                    item: () => null,
+                },
+            } as unknown as HTMLElement;
+            Object.defineProperty(fakeParent, "style", { value: {} });
+            const originalGetComputedStyle = window.getComputedStyle;
+            window.getComputedStyle = () =>
+                ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
+
+            (queryListInstance as any).itemsParentRef = fakeParent;
+
+            // mock an active element that is above the visible area
+            const fakeActiveElement = { offsetTop: 50, offsetHeight: 30 };
+            (queryListInstance as any).getActiveElement = () => fakeActiveElement;
+
+            queryListInstance.scrollActiveItemIntoView();
+
+            // activeTopEdge = 50 - 0 - 0 = 50
+            // expected scrollTop = activeTopEdge = 50
+            // (not 50 - 30 = 20, which would over-scroll upward by one item height)
+            expect(fakeParent.scrollTop).toBe(50);
+
+            window.getComputedStyle = originalGetComputedStyle;
+        });
     });
 
     describe("pasting", () => {
