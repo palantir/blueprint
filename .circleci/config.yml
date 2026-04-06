@@ -181,7 +181,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace: { at: "." }
-      - run: npx chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed
+      - run: pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed
 
   deploy-preview:
     docker: *docker-node-image
