@@ -10,7 +10,7 @@ export const modes = {
         theme: "dark",
     },
     light: {
-        backgrounds: { value: "#ffffff" },
+        backgrounds: { value: Colors.WHITE },
         theme: "light",
     },
 } as const;

@@ -54,7 +54,7 @@ const preview: Preview = {
             const isDark = context.globals?.theme === "dark";
             if (typeof document !== "undefined" && document.body) {
                 // Setting dark background based on class
-                document.body.style.backgroundColor = isDark ? Colors.BLACK : "#ffffff";
+                document.body.style.backgroundColor = isDark ? Colors.BLACK : Colors.WHITE;
             }
             return (
                 <BlueprintProvider>
