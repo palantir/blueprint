@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -17,13 +17,19 @@ interface SkeletonStoryProps {
 const SkeletonDemo: React.FC<SkeletonStoryProps> = ({ skeleton }) => (
     <Card>
         <H5 className={`${Classes.HEADING} ${skeleton ? Classes.SKELETON : ""}`}>
-            <span tabIndex={-1}>Card heading</span>
+            <span tabIndex={skeleton ? -1 : undefined}>Card heading</span>
         </H5>
         <p className={skeleton ? Classes.SKELETON : ""}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis. Fusce dapibus metus in
             dapibus mollis. Quisque eget ex diam.
         </p>
-        <Button className={skeleton ? Classes.SKELETON : ""} icon="add" text="Submit" tabIndex={-1} />
+        <Button
+            className={skeleton ? Classes.SKELETON : ""}
+            icon="add"
+            text="Submit"
+            aria-busy={true}
+            tabIndex={skeleton ? -1 : undefined}
+        />
     </Card>
 );
 
@@ -32,7 +38,7 @@ const meta: Meta<typeof SkeletonDemo> = {
     component: SkeletonDemo,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <div style={{ display: "flex", width: "600px" }}>
                 <Story />
             </div>
         ),
@@ -83,7 +89,7 @@ export const ComparisonExample: Story = {
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Interactive playground with all props controlled via Storybook controls.
  */
 export const Playground: Story = {
     args: {
