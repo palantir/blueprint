@@ -34,7 +34,7 @@
         "test": "nx run-many -t test",
         "verify": "npm-run-all -s compile dist -p test lint format-check",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build",
+        "build-storybook": "storybook build --stats-json",
         "chromatic": "chromatic"
     },
     "dependencies": {
