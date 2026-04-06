@@ -18,14 +18,20 @@ import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
 const renderer = new marked.Renderer();
 /**
  * @param {string} textContent
- * @param {string | undefined} language
+ * @param {string | undefined} infostring
  * @param {boolean} isEscaped
  * @returns {string}
  */
-renderer.code = (textContent, language, isEscaped) => {
+renderer.code = (textContent, infostring, isEscaped) => {
     if (!isEscaped) {
         textContent = escapeHTML(textContent);
     }
+
+    // Parse the info string: first token is language, remaining tokens are metadata flags.
+    // e.g. "tsx copy" → language = "tsx", hasCopyTag = true
+    const tokens = (infostring || "").split(/\s+/).filter(Boolean);
+    let language = tokens[0] || "";
+    const hasCopyTag = tokens.includes("copy");
 
     switch (language) {
         case "javascript":
@@ -36,7 +42,15 @@ renderer.code = (textContent, language, isEscaped) => {
             break;
     }
 
-    return `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
+    const pre = `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
+
+    // Wrap code blocks in a container so the docs app can mount a copy button.
+    // Triggered by either an explicit `copy` tag in the info string, or code starting with "import ".
+    if (hasCopyTag) {
+        return `<div class="docs-copyable-import">${pre}</div>`;
+    }
+
+    return pre;
 };
 
 /**

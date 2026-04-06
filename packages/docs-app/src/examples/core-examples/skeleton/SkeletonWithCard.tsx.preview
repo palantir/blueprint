@@ -12,7 +12,4 @@
     <p className={Classes.SKELETON}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
-    <Button className={Classes.SKELETON} disabled={true}>
-        Action
-    </Button>
 </Card>

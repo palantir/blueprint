@@ -477,7 +477,8 @@ $docs-hotkey-piano-height: 510px;
   height: 200%;
 }
 
-#{example("Popover")} {
+#{example("Popover")},
+#{example("PopoverNext")} {
   .docs-example {
     display: block;
     max-height: 785px;

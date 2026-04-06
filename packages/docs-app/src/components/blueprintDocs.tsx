@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
-import type { DocsCompleteData } from "@blueprintjs/docs-data";
+import { type DocsCompleteData, type HeadingNode, npmData, type PageNode, SECTIONS } from "@blueprintjs/docs-data";
 import {
     Banner,
     Documentation,
@@ -31,8 +30,13 @@ import {
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 
+import { addCopyButtonsToImportBlocks } from "./copyableImportButton";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
+
+function isPageNode(node: HeadingNode | PageNode): node is PageNode {
+    return "children" in node && "reference" in node;
+}
 
 const DARK_THEME = Classes.DARK;
 const LIGHT_THEME = "";
@@ -41,17 +45,8 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
 
-// HACKHACK: this is brittle
-// detect Components page and subheadings
-const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
-const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
-const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
-const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
-const isNavSection = ({ route }: HeadingNode) =>
-    COMPONENTS_PATTERN.test(route) ||
-    CONTEXT_PATTERN.test(route) ||
-    HOOKS_PATTERN.test(route) ||
-    LEGACY_PATTERN.test(route);
+const sectionPatterns = SECTIONS.map(name => new RegExp(`/${name}(\\.[\\w-]+)?$`));
+const isNavSection = ({ route }: HeadingNode) => sectionPatterns.some(pattern => pattern.test(route));
 
 /** Return the current theme className. */
 export function getTheme(): string {
@@ -148,7 +143,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions = (page: PageData) => {
+    private renderPageActions = (page: { sourcePath: string }) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -186,7 +181,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         );
     }
 
-    private renderViewSourceLinkText = (entry: TsDocBase) => {
+    private renderViewSourceLinkText = (entry: { fileName?: string }) => {
         return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
     };
 
@@ -204,7 +199,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
     }
 
     private getNpmPackage(packageName: string) {
-        return this.props.docs.npm[packageName];
+        return npmData[packageName];
     }
 
     // This function is called whenever the documentation page changes and should be used to
@@ -216,6 +211,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         );
 
         await highlightCodeBlocks();
+        addCopyButtonsToImportBlocks();
     };
 
     private handleToggleDark = async (useDark: boolean) => {
@@ -224,5 +220,6 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         this.setState({ themeName: nextThemeName });
 
         await highlightCodeBlocks();
+        addCopyButtonsToImportBlocks();
     };
 }

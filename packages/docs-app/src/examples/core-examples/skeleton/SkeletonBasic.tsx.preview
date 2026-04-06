@@ -7,7 +7,4 @@
     <p className={Classes.SKELETON}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
     </p>
-    <Button className={Classes.SKELETON} icon="add" tabIndex={-1}>
-        Submit
-    </Button>
 </Card>

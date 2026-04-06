@@ -17,28 +17,9 @@
 /**
  * Test utilities for Vitest + jsdom/happy-dom environments.
  *
- * These utilities are similar to those in utils.ts but are compatible with
- * jsdom's stricter event validation (no `view: window` property needed).
- *
- * For Karma/Chrome tests, use the utilities from utils.ts instead.
+ * These utilities are compatible with jsdom's stricter event validation
+ * (no `view: window` property needed).
  */
-
-/**
- * Dispatch a native KeyboardEvent on the target element.
- * Works with Vitest + jsdom/happy-dom environments.
- */
-export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, shift = false) {
-    const event = new KeyboardEvent(eventType, {
-        altKey: false,
-        bubbles: true,
-        cancelable: true,
-        ctrlKey: false,
-        key,
-        location: 0,
-        shiftKey: shift,
-    });
-    target.dispatchEvent(event);
-}
 
 // see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
 // tl;dr PhantomJS sucks so we have to manually create click events

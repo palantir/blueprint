@@ -1,0 +1,52 @@
+---
+title: Skeleton
+---
+
+# Skeleton
+
+A CSS class that masks content with a pulsing loading animation, inheriting the dimensions of the element it is applied to.
+
+@reactCodeExample SkeletonBasicExample
+
+## Usage
+
+```ts copy
+import { Classes } from "@blueprintjs/core";
+```
+
+```tsx
+<div className={Classes.SKELETON} />
+```
+
+## Examples
+
+### Basic
+
+Apply `Classes.SKELETON` to an element's `className` to cover its content with a loading animation.
+The skeleton inherits the dimensions of whatever element the class is applied to, so supply
+placeholder content that approximates the final size.
+
+```tsx
+<div className={Classes.SKELETON}>Content to be masked</div>
+```
+
+### Text elements
+
+Apply the skeleton class to text elements to display placeholder loading states. The skeleton
+inherits the dimensions of the element, so supply representative placeholder text to approximate
+the final content size.
+
+@reactCodeExample SkeletonTextExample
+
+### Focusable elements
+
+When applying the skeleton class to focusable elements like buttons and inputs, disable the
+element via the `disabled` attribute or `tabIndex={-1}` to prevent unintended keyboard focus.
+
+@reactCodeExample SkeletonInteractiveExample
+
+### With Card
+
+Wrap skeleton elements inside a **Card** to create a realistic content loading placeholder.
+
+@reactCodeExample SkeletonWithCardExample

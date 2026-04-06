@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "pnpm@10.19.0",
+    "packageManager": "pnpm@10.29.3",
     "workspaces": [
         "packages/*"
     ],
@@ -14,7 +14,7 @@
         "copy:ci-config": "mkdir -p site/.circleci && cp .circleci/config-gh-pages.yml site/.circleci/config.yml",
         "copy:docs-app": "cp -rf packages/docs-app/dist/ site/docs",
         "copy:landing-app": "cp -rf packages/landing-app/dist/ site",
-        "deploy": "gh-pages -d site -b gh-pages",
+        "deploy:site": "gh-pages -d site -b gh-pages",
         "dev": "nx run-many -t dev --exclude @blueprintjs/landing-app @blueprintjs/table-dev-app",
         "dev:core": "nx run-many -t dev -p @blueprintjs/core @blueprintjs/icons @blueprintjs/docs-app",
         "dev:docs": "nx run-many -t dev -p @blueprintjs/docs-app @blueprintjs/docs-theme",
@@ -24,23 +24,24 @@
         "dev:demo": "nx run @blueprintjs/demo-app:dev",
         "dist": "nx run-many -t dist",
         "docs-data": "nx compile @blueprintjs/docs-data",
-        "format": "prettier --write \"./**/*.{ts,tsx,json,yaml,yml,scss}\"",
-        "format-check": "prettier --check \"./**/*.{ts,tsx,json,yaml,yml,scss}\"",
+        "format": "prettier --write \"./**/*.{ts,tsx,mts,mjs,js,json,yaml,yml,scss,md}\"",
+        "format-check": "prettier --check \"./**/*.{ts,tsx,mts,mjs,js,json,yaml,yml,scss,md}\"",
         "lint": "nx run-many -t lint",
         "lint-fix": "nx run-many -t lint-fix",
         "serve": "http-server site",
         "site": "npm-run-all site:clean -p 'copy:*' -s serve",
         "site:clean": "git clean -xdfq site/",
         "test": "nx run-many -t test",
-        "verify": "npm-run-all -s compile dist -p test lint format-check"
+        "verify": "npm-run-all -s compile dist -p test lint format-check",
+        "storybook": "storybook dev -p 6006",
+        "build-storybook": "storybook build",
+        "chromatic": "chromatic"
     },
     "dependencies": {
         "@lerna-lite/cli": "^3.11.0",
         "@lerna-lite/version": "^3.11.0",
-        "@types/chai": "^5.0.0",
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",
-        "@types/mocha": "~10.0.6",
         "@types/node": "~24.10.0",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
@@ -48,22 +49,21 @@
         "@types/sinon": "~17.0.3",
         "@types/yargs": "~17.0.32",
         "@vitejs/plugin-react": "catalog:",
-        "chai": "^5.0.0",
         "dedent": "^1.5.1",
         "eslint": "^9.20.0",
-        "gh-pages": "^6.1.1",
+        "gh-pages": "^6.3.0",
         "globals": "^15.14.0",
         "http-server": "^14.1.1",
         "npm-run-all": "^4.1.5",
         "nx": "^22.3.1",
-        "octokit": "^3.1.2",
+        "octokit": "^5.0.5",
         "prettier": "^3.6.2",
         "sinon": "^17.0.1",
         "stylelint": "~16.25.0",
         "stylelint-config-palantir": "^7.6.0",
         "stylelint-scss": "^6.12.1",
-        "typescript": "~5.3.3",
-        "typescript-eslint": "^8.23.0",
+        "typescript": "~5.9.3",
+        "typescript-eslint": "^8.56.1",
         "vitest": "catalog:",
         "yargs": "^17.7.2"
     },
@@ -74,7 +74,7 @@
         }
     },
     "engines": {
-        "pnpm": "10.19.0",
+        "pnpm": "10.29.3",
         "node": ">=24.11.0"
     },
     "repository": {
@@ -82,5 +82,16 @@
         "url": "git@github.com:palantir/blueprint.git"
     },
     "author": "Palantir Technologies",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@storybook/addon-a11y": "^10.2.14",
+        "@storybook/icons": "^2.0.1",
+        "@storybook/react-dom-shim": "^10.2.14",
+        "@storybook/react-vite": "^10.2.14",
+        "chromatic": "^16.0.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "storybook": "^10.2.14",
+        "vite": "^7.1.12"
+    }
 }

@@ -1,4 +1,4 @@
-import { Button, Card, Classes, H5 } from "@blueprintjs/core";
+import { Card, Classes, H5 } from "@blueprintjs/core";
 
 export default function SkeletonWithCard() {
     return (
@@ -19,9 +19,6 @@ export default function SkeletonWithCard() {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis nulla
                 vitae sem sollicitudin, ac interdum tortor laoreet.
             </p>
-            <Button className={Classes.SKELETON} disabled={true}>
-                Action
-            </Button>
         </Card>
     );
 }
