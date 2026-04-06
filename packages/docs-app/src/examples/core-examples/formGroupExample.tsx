@@ -91,12 +91,7 @@ export const FormGroupExample: React.FC<ExampleProps> = props => {
                 onChange={handleBooleanChange(setSubLabel)}
             />
             <Divider />
-            <IntentSelect
-                intent={intent}
-                label={intentLabelInfo}
-                onChange={setIntent}
-                showClearButton={true}
-            />
+            <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} />
         </>
     );
 
