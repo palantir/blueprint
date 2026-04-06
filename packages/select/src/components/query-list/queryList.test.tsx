@@ -19,7 +19,7 @@ import { act } from "react";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
-import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemListRenderer } from "../../common/itemListRenderer";
@@ -229,23 +229,26 @@ describe("<QueryList>", () => {
             } as unknown as HTMLElement;
             Object.defineProperty(fakeParent, "style", { value: {} });
             // stub getComputedStyle to return padding values
-            const originalGetComputedStyle = window.getComputedStyle;
-            window.getComputedStyle = () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
+            const spy = vi.spyOn(window, "getComputedStyle").mockImplementation(
+                () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration,
+            );
 
-            (queryListInstance as any).itemsParentRef = fakeParent;
+            try {
+                (queryListInstance as any).itemsParentRef = fakeParent;
 
-            // mock an active element that is below the visible area
-            const fakeActiveElement = { offsetTop: 350, offsetHeight: 30 };
-            (queryListInstance as any).getActiveElement = () => fakeActiveElement;
+                // mock an active element that is below the visible area
+                const fakeActiveElement = { offsetTop: 350, offsetHeight: 30 };
+                (queryListInstance as any).getActiveElement = () => fakeActiveElement;
 
-            queryListInstance.scrollActiveItemIntoView();
+                queryListInstance.scrollActiveItemIntoView();
 
-            // activeBottomEdge = 350 + 30 + 0 - 0 = 380
-            // expected scrollTop = activeBottomEdge - parentHeight = 380 - 200 = 180
-            // (not 380 + 30 - 200 = 210, which would over-scroll by one item height)
-            expect(fakeParent.scrollTop).toBe(180);
-
-            window.getComputedStyle = originalGetComputedStyle;
+                // activeBottomEdge = 350 + 30 + 0 - 0 = 380
+                // expected scrollTop = activeBottomEdge - parentHeight = 380 - 200 = 180
+                // (not 380 + 30 - 200 = 210, which would over-scroll by one item height)
+                expect(fakeParent.scrollTop).toBe(180);
+            } finally {
+                spy.mockRestore();
+            }
         });
 
         it("scrolls so that top edge of active item aligns with top of container", () => {
@@ -261,23 +264,26 @@ describe("<QueryList>", () => {
                 },
             } as unknown as HTMLElement;
             Object.defineProperty(fakeParent, "style", { value: {} });
-            const originalGetComputedStyle = window.getComputedStyle;
-            window.getComputedStyle = () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration;
+            const spy = vi.spyOn(window, "getComputedStyle").mockImplementation(
+                () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration,
+            );
 
-            (queryListInstance as any).itemsParentRef = fakeParent;
+            try {
+                (queryListInstance as any).itemsParentRef = fakeParent;
 
-            // mock an active element that is above the visible area
-            const fakeActiveElement = { offsetTop: 50, offsetHeight: 30 };
-            (queryListInstance as any).getActiveElement = () => fakeActiveElement;
+                // mock an active element that is above the visible area
+                const fakeActiveElement = { offsetTop: 50, offsetHeight: 30 };
+                (queryListInstance as any).getActiveElement = () => fakeActiveElement;
 
-            queryListInstance.scrollActiveItemIntoView();
+                queryListInstance.scrollActiveItemIntoView();
 
-            // activeTopEdge = 50 - 0 - 0 = 50
-            // expected scrollTop = activeTopEdge = 50
-            // (not 50 - 30 = 20, which would over-scroll upward by one item height)
-            expect(fakeParent.scrollTop).toBe(50);
-
-            window.getComputedStyle = originalGetComputedStyle;
+                // activeTopEdge = 50 - 0 - 0 = 50
+                // expected scrollTop = activeTopEdge = 50
+                // (not 50 - 30 = 20, which would over-scroll upward by one item height)
+                expect(fakeParent.scrollTop).toBe(50);
+            } finally {
+                spy.mockRestore();
+            }
         });
     });
 
