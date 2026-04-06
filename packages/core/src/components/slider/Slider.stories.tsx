@@ -1,4 +1,4 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -55,7 +55,7 @@ const meta: Meta<typeof Slider> = {
             control: { type: "range", min: 1, max: 100, step: 1 },
         },
         stepSize: {
-            control: { type: "range", min: 0.1, max: 10, step: 0.1 },
+            control: { type: "range", min: 1, max: 10, step: 1 },
         },
         labelStepSize: {
             control: { type: "range", min: 1, max: 10, step: 1 },
