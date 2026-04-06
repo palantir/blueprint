@@ -4928,9 +4928,9 @@
         "codepoint": 62400
     },
     {
-        "displayName": "Command",
-        "iconName": "command",
-        "tags": "application, browser, cams, commands, connect, connection, connections, link, page, pages, platforms, sync",
+        "displayName": "Frame to frame",
+        "iconName": "frame-to-frame",
+        "tags": "command, connection, connect, link, application, flow",
         "group": "action",
         "codepoint": 62401
     }
