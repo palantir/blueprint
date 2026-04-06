@@ -17,3 +17,9 @@ catalog:
   vitest: 4.0.7
 
 publishBranch: develop
+
+# Supply chain security
+minimumReleaseAge: 4320 # 3 days in minutes
+blockExoticSubdeps: true
+trustPolicy: "no-downgrade"
+trustPolicyIgnoreAfter: 525960 # 1 year in minutes
