@@ -27,6 +27,7 @@ import "@blueprintjs/table/lib/css/table.css";
 
 const preview: Preview = {
     parameters: {
+        backgrounds: { disable: true },
         chromatic: {
             modes: {
                 dark: modes.dark,
