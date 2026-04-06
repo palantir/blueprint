@@ -4930,7 +4930,7 @@
     {
         "displayName": "Command",
         "iconName": "command",
-        "tags": "commands, connection, connections, connect",
+        "tags": "application, browser, cams, commands, connect, connection, connections, link, page, pages, platforms, sync",
         "group": "action",
         "codepoint": 62401
     }
