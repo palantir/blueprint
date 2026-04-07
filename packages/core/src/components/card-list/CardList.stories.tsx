@@ -136,8 +136,8 @@ export const CombiningWithSection: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 24, width: 800 }}>
-            <div style={{ display: "flex", flex: 1, flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <div style={{ display: "flex", gap: 24 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>padded=false, bordered=false</span>
                 <Section title="Fresh Ingredients" style={{ width: 350 }}>
                     <SectionCard padded={false} style={{ height: 152, overflowY: "auto" }}>
@@ -149,7 +149,7 @@ export const CombiningWithSection: Story = {
                     </SectionCard>
                 </Section>
             </div>
-            <div style={{ display: "flex", flex: 1, flexDirection: "column", gap: 4, alignItems: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>padded=true, bordered=true</span>
                 <Section title="Fresh Ingredients" style={{ width: 350 }}>
                     <SectionCard padded={true} style={{ height: 152, overflowY: "auto" }}>
