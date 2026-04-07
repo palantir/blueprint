@@ -31,7 +31,7 @@ function StepPanel({ stepNumber }: { stepNumber: number }) {
 }
 
 function MultistepDialogDemo(props: React.ComponentProps<typeof MultistepDialog> & { buttonText?: string }) {
-    const { buttonText = "Open Multistep Dialog", ...dialogProps } = props;
+    const { buttonText = "Open Multistep Dialog", children: _children, ...dialogProps } = props;
     const [isOpen, setIsOpen] = useState(false);
     const handleOpen = useCallback(() => setIsOpen(true), []);
     const handleClose = useCallback(() => setIsOpen(false), []);
@@ -40,13 +40,9 @@ function MultistepDialogDemo(props: React.ComponentProps<typeof MultistepDialog>
         <>
             <Button text={buttonText} onClick={handleOpen} />
             <MultistepDialog {...dialogProps} isOpen={isOpen} onClose={handleClose}>
-                {dialogProps.children ?? (
-                    <>
-                        <DialogStep id="select" title="Select items" panel={<StepPanel stepNumber={1} />} />
-                        <DialogStep id="confirm" title="Confirm selection" panel={<StepPanel stepNumber={2} />} />
-                        <DialogStep id="complete" title="Complete" panel={<StepPanel stepNumber={3} />} />
-                    </>
-                )}
+                <DialogStep id="select" title="Select items" panel={<StepPanel stepNumber={1} />} />
+                <DialogStep id="confirm" title="Confirm selection" panel={<StepPanel stepNumber={2} />} />
+                <DialogStep id="complete" title="Complete" panel={<StepPanel stepNumber={3} />} />
             </MultistepDialog>
         </>
     );
