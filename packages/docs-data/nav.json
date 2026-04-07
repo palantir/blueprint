@@ -44,11 +44,7 @@
             },
             {
                 "section": "control-cards",
-                "pages": [
-                    "checkbox-card",
-                    "radio-card",
-                    "switch-card"
-                ]
+                "pages": ["checkbox-card", "radio-card", "switch-card"]
             },
             {
                 "section": "form-controls",
