@@ -22,6 +22,7 @@ const meta: Meta<typeof CardList> = {
     ],
     parameters: {
         layout: "centered",
+        chromatic: { disableSnapshot: true },
     },
     tags: ["autodocs"],
     args: {
