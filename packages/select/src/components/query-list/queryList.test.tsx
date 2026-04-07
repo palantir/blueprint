@@ -220,24 +220,24 @@ describe("<QueryList>", () => {
 
             // mock the items parent ref with a fake scrollable container
             const fakeParent = {
-                offsetTop: 0,
-                scrollTop: 0,
-                clientHeight: 200,
                 children: {
                     item: () => null,
                 },
+                clientHeight: 200,
+                offsetTop: 0,
+                scrollTop: 0,
             } as unknown as HTMLElement;
             Object.defineProperty(fakeParent, "style", { value: {} });
             // stub getComputedStyle to return padding values
-            const spy = vi.spyOn(window, "getComputedStyle").mockImplementation(
-                () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration,
-            );
+            const spy = vi
+                .spyOn(window, "getComputedStyle")
+                .mockImplementation(() => ({ paddingBottom: "0px", paddingTop: "0px" }) as CSSStyleDeclaration);
 
             try {
                 (queryListInstance as any).itemsParentRef = fakeParent;
 
                 // mock an active element that is below the visible area
-                const fakeActiveElement = { offsetTop: 350, offsetHeight: 30 };
+                const fakeActiveElement = { offsetHeight: 30, offsetTop: 350 };
                 (queryListInstance as any).getActiveElement = () => fakeActiveElement;
 
                 queryListInstance.scrollActiveItemIntoView();
@@ -256,23 +256,23 @@ describe("<QueryList>", () => {
             const queryListInstance = filmQueryList.instance() as QueryList<Film>;
 
             const fakeParent = {
-                offsetTop: 0,
-                scrollTop: 300,
-                clientHeight: 200,
                 children: {
                     item: () => null,
                 },
+                clientHeight: 200,
+                offsetTop: 0,
+                scrollTop: 300,
             } as unknown as HTMLElement;
             Object.defineProperty(fakeParent, "style", { value: {} });
-            const spy = vi.spyOn(window, "getComputedStyle").mockImplementation(
-                () => ({ paddingTop: "0px", paddingBottom: "0px" }) as CSSStyleDeclaration,
-            );
+            const spy = vi
+                .spyOn(window, "getComputedStyle")
+                .mockImplementation(() => ({ paddingBottom: "0px", paddingTop: "0px" }) as CSSStyleDeclaration);
 
             try {
                 (queryListInstance as any).itemsParentRef = fakeParent;
 
                 // mock an active element that is above the visible area
-                const fakeActiveElement = { offsetTop: 50, offsetHeight: 30 };
+                const fakeActiveElement = { offsetHeight: 30, offsetTop: 50 };
                 (queryListInstance as any).getActiveElement = () => fakeActiveElement;
 
                 queryListInstance.scrollActiveItemIntoView();
