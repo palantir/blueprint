@@ -57,6 +57,7 @@ export { IconExample } from "./iconExample";
 export { IconGeneratedComponentExample } from "./iconGeneratedComponentExample";
 export * from "./linkExamples";
 export * from "./menuExample";
+export * from "./menuExamples";
 export { MenuItemExample } from "./menuItemExample";
 export * from "./multiSliderExample";
 export * from "./multistepDialogExample";
