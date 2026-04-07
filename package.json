@@ -71,7 +71,16 @@
         "overrides": {
             "@types/react": "18.3.12",
             "cheerio": "0.22.0"
-        }
+        },
+        "ignoredBuiltDependencies": [
+            "@parcel/watcher",
+            "@swc/core",
+            "core-js",
+            "core-js-pure",
+            "esbuild",
+            "nx",
+            "ttf2woff2"
+        ]
     },
     "engines": {
         "pnpm": "10.29.3",
