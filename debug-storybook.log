@@ -1,0 +1,34 @@
+[15:45:34.120] [INFO] storybook v10.2.14
+[15:45:35.003] [ERROR] [38;2;241;97;97mSB_CORE-SERVER_0007 (MainFileEvaluationError): Storybook couldn't evaluate your [33m.storybook/main.ts[39m file.
+
+Original error:
+[37mError [ERR_MODULE_NOT_FOUND]: Cannot find package '@storybook/addon-themes' imported from /.storybook/main.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:764:81)
+    at moduleResolve (node:internal/modules/esm/resolve:855:18)
+    at defaultResolve (node:internal/modules/esm/resolve:988:11)
+    at nextResolve (node:internal/modules/esm/hooks:769:28)
+    at AsyncLoaderHooksOnLoaderHookWorker.resolve (node:internal/modules/esm/hooks:265:30)
+    at MessagePort.handleMessage (node:internal/modules/esm/worker:251:24)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)
+    at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28)[39m[39m
+    at loadMainConfig (file://./node_modules/.pnpm/storybook@10.2.14_@testing-library+dom@10.4.1_prettier@3.6.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/storybook/dist/_node-chunks/chunk-VCZAAJQM.js:11709:11)
+    at async buildDevStandalone (file://./node_modules/.pnpm/storybook@10.2.14_@testing-library+dom@10.4.1_prettier@3.6.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/storybook/dist/core-server/index.js:7552:16)
+    at async withTelemetry (file://./node_modules/.pnpm/storybook@10.2.14_@testing-library+dom@10.4.1_prettier@3.6.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/storybook/dist/_node-chunks/chunk-DTZLXIO2.js:218:12)
+    at async dev (file://./node_modules/.pnpm/storybook@10.2.14_@testing-library+dom@10.4.1_prettier@3.6.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/storybook/dist/bin/core.js:2734:3)
+    at async _Command.<anonymous> (file://./node_modules/.pnpm/storybook@10.2.14_@testing-library+dom@10.4.1_prettier@3.6.2_react-dom@18.3.1_react@18.3.1__react@18.3.1/node_modules/storybook/dist/bin/core.js:2804:92)
+[15:45:35.005] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
+[15:45:35.007] [WARN]   Failed to load preset: "/Volumes/git/blueprint/.storybook/main.ts"
+[15:45:35.007] [ERROR] Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@storybook/addon-themes' imported from ./.storybook/main.ts
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:301:9)
+    at packageResolve (node:internal/modules/esm/resolve:764:81)
+    at moduleResolve (node:internal/modules/esm/resolve:855:18)
+    at defaultResolve (node:internal/modules/esm/resolve:988:11)
+    at nextResolve (node:internal/modules/esm/hooks:769:28)
+    at AsyncLoaderHooksOnLoaderHookWorker.resolve (node:internal/modules/esm/hooks:265:30)
+    at MessagePort.handleMessage (node:internal/modules/esm/worker:251:24)
+    at [nodejs.internal.kHybridDispatch] (node:internal/event_target:843:20)
+    at MessagePort.<anonymous> (node:internal/per_context/messageport:23:28)
+[15:45:39.446] [PROMPT] Would you like to send anonymous crash reports to improve Storybook and fix bugs faster? {"choice":true}
+[15:45:39.447] [INFO] Storybook collects completely anonymous usage telemetry. We use it to shape Storybook's roadmap and prioritize features. You can learn more, including how to opt out, at https://storybook.js.org/telemetry
