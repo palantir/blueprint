@@ -212,9 +212,6 @@ importers:
       tslib:
         specifier: 'catalog:'
         version: 2.6.3
-      use-sync-external-store:
-        specifier: ^1.2.0
-        version: 1.6.0(react@18.3.1)
     devDependencies:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
@@ -243,9 +240,6 @@ importers:
       '@types/culori':
         specifier: ^4.0.1
         version: 4.0.1
-      '@types/use-sync-external-store':
-        specifier: 0.0.6
-        version: 0.0.6
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))
@@ -3298,9 +3292,6 @@ packages:
 
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
-
-  '@types/use-sync-external-store@0.0.6':
-    resolution: {integrity: sha512-zFDAD+tlpf2r4asuHEj0XH6pY6i0g5NeAHPn+15wk3BV6JA69eERFXC1gyGThDkVa1zCyKr5jox1+2LbV/AMLg==}
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
@@ -10793,8 +10784,6 @@ snapshots:
 
   '@types/trusted-types@2.0.7':
     optional: true
-
-  '@types/use-sync-external-store@0.0.6': {}
 
   '@types/ws@8.18.1':
     dependencies:
