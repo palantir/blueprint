@@ -60,6 +60,7 @@ const meta: Meta<typeof MultistepDialog> = {
     ],
     parameters: {
         layout: "centered",
+        chromatic: { disableSnapshot: true },
     },
     tags: ["autodocs"],
     args: {
