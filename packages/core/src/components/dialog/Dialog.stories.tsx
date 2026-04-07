@@ -74,7 +74,23 @@ const meta: Meta<typeof Dialog> = {
         isCloseButtonShown: true,
     },
     argTypes: {
-        icon: { control: "text" },
+        icon: {
+            control: "select",
+            options: [
+                undefined,
+                "cog",
+                "info-sign",
+                "tick-circle",
+                "warning-sign",
+                "error",
+                "trash",
+                "search",
+                "home",
+                "user",
+                "lock",
+                "document",
+            ],
+        },
         title: { control: "text" },
         isCloseButtonShown: { control: "boolean" },
         isOpen: { control: "boolean" },
@@ -94,6 +110,49 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
     render: args => <DialogDemo {...args} title="Dialog Title" />,
+};
+
+/**
+ * A dialog without a title bar.
+ */
+export const WithoutTitle: Story = {
+    name: "Without Title",
+    render: args => <DialogDemo {...args} title={undefined} />,
+};
+
+/**
+ * A dialog with a minimal footer that flows inline with the content.
+ */
+export const WithMinimalFooter: Story = {
+    name: "With Minimal Footer",
+    render: function Render(args) {
+        const [isOpen, setIsOpen] = useState(false);
+        const handleOpen = useCallback(() => setIsOpen(true), []);
+        const handleClose = useCallback(() => setIsOpen(false), []);
+
+        return (
+            <>
+                <Button text="Open Dialog" onClick={handleOpen} />
+                <Dialog {...args} isOpen={isOpen} onClose={handleClose}>
+                    <DialogBody>
+                        <p>
+                            This dialog uses a minimal footer, which flows inline with the content rather than being
+                            fixed at the bottom.
+                        </p>
+                    </DialogBody>
+                    <DialogFooter
+                        minimal={true}
+                        actions={
+                            <>
+                                <Button text="Cancel" onClick={handleClose} />
+                                <Button text="Confirm" intent="primary" onClick={handleClose} />
+                            </>
+                        }
+                    />
+                </Dialog>
+            </>
+        );
+    },
 };
 
 /**
@@ -157,10 +216,10 @@ export const IntentExample: Story = {
  */
 export const IconExample: Story = {
     name: "Icon",
-    argTypes: {
-        icon: { table: { disable: true } },
+    args: {
+        icon: "cog",
     },
-    render: args => <DialogDemo {...args} title="Settings" icon="cog" />,
+    render: args => <DialogDemo {...args} title="Settings" />,
 };
 
 /**
