@@ -116,6 +116,10 @@ const config: Record<string, IsomorphicTestConfig> = {
     Popover: {
         children: requiredChild,
     },
+    PopoverNext: {
+        children: requiredChild,
+        className: false,
+    },
     Portal: {
         className: false,
     },
@@ -125,6 +129,9 @@ const config: Record<string, IsomorphicTestConfig> = {
     ResizeSensor: {
         children: requiredChild,
         className: false,
+    },
+    SegmentedControl: {
+        props: { options: [] },
     },
     TabPanel: {
         skip: true,

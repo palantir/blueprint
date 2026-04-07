@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
 import { mount } from "enzyme";
 import sinon from "sinon";
 
 import { EditableText } from "@blueprintjs/core";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { EditableName } from "..";
 

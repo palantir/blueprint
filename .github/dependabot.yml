@@ -30,18 +30,10 @@ updates:
           - "stylelint-*"
       test-infra:
         patterns:
-          - "chai"
-          - "@types/chai"
           - "enzyme"
           - "enzyme-*"
           - "@types/enzyme"
           - "@types/enzyme-*"
-          - "jest"
-          - "@jest/*"
-          - "karma"
-          - "karma-*"
-          - "mocha"
-          - "@types/mocha"
           - "sinon"
           - "@sinonjs/*"
           - "@types/sinon"
