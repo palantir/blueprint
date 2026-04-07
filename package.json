@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "pnpm@10.29.3",
+    "packageManager": "pnpm@10.33.0",
     "workspaces": [
         "packages/*"
     ],
@@ -83,7 +83,7 @@
         ]
     },
     "engines": {
-        "pnpm": "10.29.3",
+        "pnpm": "10.33.0",
         "node": ">=24.11.0"
     },
     "repository": {
