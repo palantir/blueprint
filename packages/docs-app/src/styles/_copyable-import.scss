@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 .docs-copyable-import {
+  margin: ($pt-spacing * 2) 0;
   position: relative;
 
   > pre {
@@ -11,6 +12,7 @@
 
 .docs-copy-import-btn {
   position: absolute;
+  background-color: var(--bp-surface-background-color-default-rest);
   right: 6px;
   top: 6px;
   z-index: 1;
