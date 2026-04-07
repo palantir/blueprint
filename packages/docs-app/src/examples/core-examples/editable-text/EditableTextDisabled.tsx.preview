@@ -1,0 +1,1 @@
+<EditableText disabled={true} defaultValue="This text cannot be edited" />
