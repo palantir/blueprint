@@ -16,7 +16,6 @@
                     "callout",
                     "card",
                     "card-list",
-                    "control-card",
                     "collapse",
                     "divider",
                     "editable-text",
@@ -41,6 +40,14 @@
                     "compound-tag",
                     "text",
                     "tree"
+                ]
+            },
+            {
+                "section": "control-cards",
+                "pages": [
+                    "checkbox-card",
+                    "radio-card",
+                    "switch-card"
                 ]
             },
             {
