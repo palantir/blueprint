@@ -71,7 +71,23 @@ const meta: Meta<typeof MultistepDialog> = {
         showCloseButtonInFooter: false,
     },
     argTypes: {
-        icon: { control: "text" },
+        icon: {
+            control: "select",
+            options: [
+                undefined,
+                "cog",
+                "info-sign",
+                "tick-circle",
+                "warning-sign",
+                "error",
+                "trash",
+                "search",
+                "home",
+                "user",
+                "lock",
+                "document",
+            ],
+        },
         title: { control: "text" },
         isCloseButtonShown: { control: "boolean" },
         navigationPosition: { control: "select", options: ["left", "top", "right"] },
@@ -110,6 +126,17 @@ export const NavigationPositionExample: Story = {
             <MultistepDialogDemo {...args} navigationPosition="right" buttonText="Right" />
         </div>
     ),
+};
+
+/**
+ * Use the `icon` prop to display an icon in the dialog header.
+ */
+export const IconExample: Story = {
+    name: "Icon",
+    args: {
+        icon: "cog",
+    },
+    render: args => <MultistepDialogDemo {...args} title="Settings" />,
 };
 
 /**
