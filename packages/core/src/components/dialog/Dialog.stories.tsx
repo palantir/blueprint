@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { useArgs, useCallback, useState } from "storybook/preview-api";
 
 import { Intent } from "../../common";
 import { Button } from "../button/buttons";
@@ -23,14 +23,14 @@ function DialogDemo({
     buttonText = "Open Dialog",
     ...dialogProps
 }: React.ComponentProps<typeof Dialog> & { buttonText?: string }) {
-    const [isOpen, setIsOpen] = useState(false);
-    const handleOpen = useCallback(() => setIsOpen(true), []);
-    const handleClose = useCallback(() => setIsOpen(false), []);
+    const [, updateArgs] = useArgs();
+    const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+    const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
 
     return (
         <>
             <Button text={buttonText} onClick={handleOpen} />
-            <Dialog {...dialogProps} isOpen={isOpen} onClose={handleClose}>
+            <Dialog {...dialogProps} isOpen={dialogProps.isOpen} onClose={handleClose}>
                 {dialogProps.children ?? (
                     <>
                         <DialogBody>
@@ -75,23 +75,7 @@ const meta: Meta<typeof Dialog> = {
         isCloseButtonShown: true,
     },
     argTypes: {
-        icon: {
-            control: "select",
-            options: [
-                undefined,
-                "cog",
-                "info-sign",
-                "tick-circle",
-                "warning-sign",
-                "error",
-                "trash",
-                "search",
-                "home",
-                "user",
-                "lock",
-                "document",
-            ],
-        },
+        icon: { control: "text" },
         title: { control: "text" },
         isCloseButtonShown: { control: "boolean" },
         isOpen: { control: "boolean" },
@@ -127,14 +111,14 @@ export const WithoutTitle: Story = {
 export const WithMinimalFooter: Story = {
     name: "With Minimal Footer",
     render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
 
         return (
             <>
                 <Button text="Open Dialog" onClick={handleOpen} />
-                <Dialog {...args} isOpen={isOpen} onClose={handleClose}>
+                <Dialog {...args} isOpen={args.isOpen} onClose={handleClose}>
                     <DialogBody>
                         <p>
                             This dialog uses a minimal footer, which flows inline with the content rather than being
