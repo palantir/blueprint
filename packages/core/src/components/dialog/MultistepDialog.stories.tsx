@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useArgs } from "storybook/preview-api";
+import { expect, screen, waitFor } from "storybook/test";
 import React, { useCallback } from "react";
 
 import { Button } from "../button/buttons";
@@ -178,5 +179,105 @@ export const Playground: Story = {
                 </MultistepDialog>
             </>
         );
+    },
+};
+
+/**
+ * Opens the multistep dialog and verifies step 1 is active.
+ */
+export const OpenDialog: Story = {
+    render: renderMultistepDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Dialog is not visible initially", async () => {
+            await expect(screen.queryByText("This is the content for step 1.")).toBeNull();
+        });
+
+        await step("Click open button shows dialog at step 1", async () => {
+            await userEvent.click(canvas.getByText("Open Multistep Dialog"));
+            await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
+            const selectStep = screen.getByText("Select items").closest(".bp6-dialog-step-container");
+            await expect(selectStep).toHaveClass("bp6-active");
+        });
+    },
+};
+
+/**
+ * Navigates from step 1 to step 2 using the Next button.
+ */
+export const NavigateNext: Story = {
+    render: renderMultistepDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog", async () => {
+            await userEvent.click(canvas.getByText("Open Multistep Dialog"));
+            await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
+        });
+
+        await step("Click Next goes to step 2", async () => {
+            await userEvent.click(screen.getByRole("button", { name: "Next" }));
+            await waitFor(() => expect(screen.getByText("This is the content for step 2.")).toBeVisible());
+
+            const confirmStep = screen.getByText("Confirm selection").closest(".bp6-dialog-step-container");
+            await expect(confirmStep).toHaveClass("bp6-active");
+            await expect(screen.getByRole("button", { name: "Back" })).toBeVisible();
+        });
+    },
+};
+
+/**
+ * Navigates forward to step 2 then back to step 1.
+ */
+export const NavigateBack: Story = {
+    render: renderMultistepDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog and go to step 2", async () => {
+            await userEvent.click(canvas.getByText("Open Multistep Dialog"));
+            await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
+            await userEvent.click(screen.getByRole("button", { name: "Next" }));
+            await waitFor(() => expect(screen.getByText("This is the content for step 2.")).toBeVisible());
+        });
+
+        await step("Click Back returns to step 1", async () => {
+            await userEvent.click(screen.getByRole("button", { name: "Back" }));
+            await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
+            const selectStep = screen.getByText("Select items").closest(".bp6-dialog-step-container");
+            await expect(selectStep).toHaveClass("bp6-active");
+        });
+    },
+};
+
+/**
+ * Pressing Escape closes the dialog.
+ */
+export const EscapeKeyClose: Story = {
+    render: renderMultistepDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog", async () => {
+            await userEvent.click(canvas.getByText("Open Multistep Dialog"));
+            await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
+        });
+
+        await step("Escape key closes dialog", async () => {
+            await userEvent.keyboard("{Escape}");
+            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).toBeNull());
+        });
+    },
+};
+
+/**
+ * Clicking outside the dialog (on the backdrop) closes it.
+ */
+export const OutsideClickClose: Story = {
+    render: renderMultistepDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog", async () => {
+            await userEvent.click(canvas.getByText("Open Multistep Dialog"));
+            await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
+        });
+
+        await step("Clicking backdrop closes dialog", async () => {
+            const backdrop = document.querySelector(".bp6-overlay-backdrop") as HTMLElement;
+            await userEvent.click(backdrop);
+            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).toBeNull());
+        });
     },
 };
