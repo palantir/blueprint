@@ -1,0 +1,209 @@
+/*
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
+ */
+
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useArgs } from "storybook/preview-api";
+import React, { useCallback } from "react";
+
+import { Button } from "../button/buttons";
+
+import { DialogBody } from "./dialogBody";
+import { DialogStep } from "./dialogStep";
+import { MultistepDialog } from "./multistepDialog";
+
+const disabledArgs = [
+    "containerRef",
+    "hasBackdrop",
+    "transitionName",
+    "backButtonProps",
+    "closeButtonProps",
+    "finalButtonProps",
+    "nextButtonProps",
+] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof MultistepDialog>>;
+
+function StepPanel({ stepNumber }: { stepNumber: number }) {
+    return (
+        <DialogBody>
+            <p>This is the content for step {stepNumber}.</p>
+            <p>You can place forms, instructions, or any other content here.</p>
+        </DialogBody>
+    );
+}
+
+function MultistepDialogDemo(
+    props: React.ComponentProps<typeof MultistepDialog> & {
+        buttonText?: string;
+        onOpen: () => void;
+        onClose: () => void;
+    },
+) {
+    const { buttonText = "Open Multistep Dialog", children: _children, onOpen, onClose, ...dialogProps } = props;
+
+    return (
+        <>
+            <Button text={buttonText} onClick={onOpen} />
+            <MultistepDialog {...dialogProps} onClose={onClose}>
+                <DialogStep id="select" title="Select items" panel={<StepPanel stepNumber={1} />} />
+                <DialogStep id="confirm" title="Confirm selection" panel={<StepPanel stepNumber={2} />} />
+                <DialogStep id="complete" title="Complete" panel={<StepPanel stepNumber={3} />} />
+            </MultistepDialog>
+        </>
+    );
+}
+
+const meta: Meta<typeof MultistepDialog> = {
+    title: "Core/MultistepDialog",
+    component: MultistepDialog,
+    decorators: [
+        Story => (
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+                <Story />
+            </div>
+        ),
+    ],
+    parameters: {
+        layout: "centered",
+    },
+    tags: ["autodocs"],
+    args: {
+        title: "Multistep Dialog",
+        isOpen: false,
+        isCloseButtonShown: true,
+        navigationPosition: "left",
+        resetOnClose: true,
+        showCloseButtonInFooter: false,
+    },
+    argTypes: {
+        icon: { control: "text" },
+        title: { control: "text" },
+        isCloseButtonShown: { control: "boolean" },
+        navigationPosition: { control: "select", options: ["left", "top", "right"] },
+        resetOnClose: { control: "boolean" },
+        showCloseButtonInFooter: { control: "boolean" },
+        initialStepIndex: { control: "number" },
+        ...disabledArgs.reduce(
+            (acc, argName) => {
+                acc[argName] = { table: { disable: true } };
+                return acc;
+            },
+            {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
+        ),
+    },
+} satisfies Meta<typeof MultistepDialog>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return <MultistepDialogDemo {...args} onOpen={handleOpen} onClose={handleClose} />;
+    },
+};
+
+/**
+ * The `navigationPosition` prop controls where step navigation appears: left, top, or right.
+ */
+export const LeftPositionExample: Story = {
+    name: "Left Navigation",
+    argTypes: {
+        navigationPosition: { table: { disable: true } },
+    },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <MultistepDialogDemo
+                {...args}
+                navigationPosition="left"
+                buttonText="Open Left Navigation (default)"
+                onOpen={handleOpen}
+                onClose={handleClose}
+            />
+        );
+    },
+};
+
+export const RightPositionExample: Story = {
+    name: "Right Navigation",
+    argTypes: {
+        navigationPosition: { table: { disable: true } },
+    },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <MultistepDialogDemo
+                {...args}
+                navigationPosition="right"
+                buttonText="Open Right Navigation"
+                onOpen={handleOpen}
+                onClose={handleClose}
+            />
+        );
+    },
+};
+
+export const TopPositionExample: Story = {
+    name: "Top Navigation",
+    argTypes: {
+        navigationPosition: { table: { disable: true } },
+    },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return (
+            <MultistepDialogDemo
+                {...args}
+                navigationPosition="top"
+                buttonText="Open Top Navigation"
+                onOpen={handleOpen}
+                onClose={handleClose}
+            />
+        );
+    },
+};
+
+/**
+ * Use the `icon` prop to display an icon in the dialog header.
+ */
+export const IconExample: Story = {
+    name: "Icon",
+    args: {
+        icon: "cog",
+    },
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return <MultistepDialogDemo {...args} title="Settings" onOpen={handleOpen} onClose={handleClose} />;
+    },
+};
+
+/**
+ * Interactive playground with all props togglable via Storybook controls.
+ */
+export const Playground: Story = {
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+
+        return (
+            <>
+                <Button text="Open Multistep Dialog" onClick={handleOpen} />
+                <MultistepDialog {...args} isOpen={args.isOpen} onClose={handleClose}>
+                    <DialogStep id="step1" title="Select items" panel={<StepPanel stepNumber={1} />} />
+                    <DialogStep id="step2" title="Confirm selection" panel={<StepPanel stepNumber={2} />} />
+                    <DialogStep id="step3" title="Complete" panel={<StepPanel stepNumber={3} />} />
+                </MultistepDialog>
+            </>
+        );
+    },
+};
