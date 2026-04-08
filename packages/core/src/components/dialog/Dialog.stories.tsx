@@ -316,7 +316,7 @@ export const OutsideClickClose: Story = {
         });
 
         await step("Click backdrop to close dialog", async () => {
-            // eslint-disable-next-line @blueprintjs/html-components
+             
             const backdrop = document.querySelector(".bp6-overlay-backdrop") as HTMLElement;
             await userEvent.click(backdrop);
             await waitFor(() => expect(screen.queryByText(/This is a simple dialog body/)).toBeNull());
