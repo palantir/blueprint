@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
-@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../../common/mixins";
@@ -87,11 +86,6 @@ $tree-intent-icon-colors: (
 
   &.#{$ns}-tree-node-caret-open {
     transform: rotate(90deg);
-  }
-
-  // CSS API support
-  &.#{$ns}-icon-standard::before {
-    content: map.get($blueprint-icon-codepoints, "chevron-right");
   }
 }
 

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { createElement, forwardRef, useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 
 import {
     type DefaultSVGIconProps,
@@ -38,6 +38,8 @@ import {
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { type IconName, IconSize };
+
+const EMPTY_ICON_PATHS: IconPaths = [];
 
 export interface IconOwnProps {
     /**
@@ -117,8 +119,8 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
 
     const size = props.size ?? IconSize.STANDARD;
 
-    const [iconPaths, setIconPaths] = useState<IconPaths | undefined>(() =>
-        typeof icon === "string" ? Icons.getPaths(icon, size) : undefined,
+    const [iconPaths, setIconPaths] = useState<IconPaths>(() =>
+        typeof icon === "string" ? (Icons.getPaths(icon, size) ?? EMPTY_ICON_PATHS) : EMPTY_ICON_PATHS,
     );
 
     useEffect(() => {
@@ -137,7 +139,7 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
                     .then(() => {
                         // if this effect expired by the time icon loaded, then don't set state
                         if (!shouldCancelIconLoading) {
-                            setIconPaths(Icons.getPaths(icon, size));
+                            setIconPaths(Icons.getPaths(icon, size) ?? EMPTY_ICON_PATHS);
                         }
                     })
                     .catch(reason => {
@@ -160,49 +162,26 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
         return icon;
     }
 
-    if (iconPaths == null) {
-        // fall back to icon font if unloaded or unable to load SVG implementation
-        const sizeClass =
-            size === IconSize.STANDARD
-                ? Classes.ICON_STANDARD
-                : size === IconSize.LARGE
-                  ? Classes.ICON_LARGE
-                  : undefined;
-        return createElement(tagName || "span", {
-            "aria-hidden": title ? undefined : true,
-            ...removeNonHTMLProps(htmlProps),
-            className: classNames(
-                Classes.ICON,
-                sizeClass,
-                Classes.iconClass(icon),
-                Classes.intentClass(intent),
-                className,
-            ),
-            "data-icon": icon,
-            ref,
-            title: htmlTitle,
-        });
-    } else {
-        const pathElements = iconPaths.map((d, i) => <path d={d} key={i} fillRule="evenodd" />);
-        // HACKHACK: there is no good way to narrow the type of SVGIconContainerProps here because of the use
-        // of a conditional type within the type union that defines that interface. So we cast to <any>.
-        // see https://github.com/microsoft/TypeScript/issues/24929, https://github.com/microsoft/TypeScript/issues/33014
-        return (
-            <SVGIconContainer<any>
-                children={pathElements}
-                // don't forward `Classes.ICON` or `Classes.iconClass(icon)` here, since the container will render those classes
-                className={classNames(Classes.intentClass(intent), className)}
-                color={color}
-                htmlTitle={htmlTitle}
-                iconName={icon}
-                ref={ref}
-                size={size}
-                svgProps={svgProps}
-                tagName={tagName}
-                title={title}
-                {...removeNonHTMLProps(htmlProps)}
-            />
-        );
-    }
+    const pathElements = iconPaths.map((d, i) => <path d={d} key={i} fillRule="evenodd" />);
+
+    // HACKHACK: there is no good way to narrow the type of SVGIconContainerProps here because of the use
+    // of a conditional type within the type union that defines that interface. So we cast to <any>.
+    // see https://github.com/microsoft/TypeScript/issues/24929, https://github.com/microsoft/TypeScript/issues/33014
+    return (
+        <SVGIconContainer<any>
+            children={pathElements}
+            // don't forward `Classes.ICON` or `Classes.iconClass(icon)` here, since the container will render those classes
+            className={classNames(Classes.intentClass(intent), className)}
+            color={color}
+            htmlTitle={htmlTitle}
+            iconName={icon}
+            ref={ref}
+            size={size}
+            svgProps={svgProps}
+            tagName={tagName}
+            title={title}
+            {...removeNonHTMLProps(htmlProps)}
+        />
+    );
 });
 Icon.displayName = `${DISPLAYNAME_PREFIX}.Icon`;

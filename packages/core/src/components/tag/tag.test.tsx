@@ -42,7 +42,7 @@ describe("<Tag>", () => {
         expect(icons).toHaveLength(2);
         expect(icons[0].firstChild).toBeInstanceOf(SVGElement);
         expect(icons[0].firstChild).toHaveAttribute("data-icon", "tick");
-        expect(icons[1]).toHaveAttribute("data-icon", "airplane");
+        expect(icons[1].querySelector("svg")).toHaveAttribute("data-icon", "airplane");
     });
 
     it("prefers endIcon to rightIcon", () => {

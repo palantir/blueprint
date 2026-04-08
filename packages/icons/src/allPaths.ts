@@ -34,7 +34,11 @@ export { IconSvgPaths16, IconSvgPaths20 };
  */
 export function getIconPaths(name: IconName, size: IconSize): IconPaths {
     const key = pascalCase(name) as PascalCase<IconName>;
-    return size === IconSize.STANDARD ? IconSvgPaths16[key] : IconSvgPaths20[key];
+    const iconPathRecord =
+        size === IconSize.STANDARD
+            ? (IconSvgPaths16 as Record<string, IconPaths>)
+            : (IconSvgPaths20 as Record<string, IconPaths>);
+    return iconPathRecord[key];
 }
 
 /**

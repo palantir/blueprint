@@ -72,7 +72,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
     color: $pt-icon-color;
 
     &:empty {
-      @include pt-icon($pt-icon-size-standard);
+      @include pt-icon-sized($pt-icon-size-standard);
     }
   }
 

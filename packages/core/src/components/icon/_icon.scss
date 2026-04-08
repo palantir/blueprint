@@ -1,7 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "icon-mixins";
@@ -57,45 +56,12 @@
 
 // intent colors for both SVG and font icons are set in _typography-colors.scss
 
-//
-// Icon font styles
-//
-// TOOD: move to @blueprintjs/icons in v6.0
-//
-
 span.#{$ns}-icon-standard {
-  @include pt-icon($pt-icon-size-standard);
+  @include pt-icon-sized($pt-icon-size-standard);
   display: inline-block;
 }
 
 span.#{$ns}-icon-large {
-  @include pt-icon($pt-icon-size-large);
+  @include pt-icon-sized($pt-icon-size-large);
   display: inline-block;
-}
-
-// only apply icon font styles when <svg> image is not present
-span.#{$ns}-icon:empty {
-  font-family: $blueprint-icons-20-font;
-  font-size: inherit;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-
-  &::before {
-    @include pt-icon-font-smoothing;
-  }
-
-  &.#{$ns}-icon-standard {
-    font-size: $pt-icon-size-standard;
-  }
-
-  &.#{$ns}-icon-large {
-    font-size: $pt-icon-size-large;
-  }
-}
-
-@each $name, $codepoint in $blueprint-icon-codepoints {
-  .#{$ns}-icon-#{$name}::before {
-    content: $codepoint;
-  }
 }

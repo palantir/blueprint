@@ -53,7 +53,7 @@ describe("<SegmentedControl>", () => {
         const button = screen.getByRole("radio");
         const icon = button.querySelector(`.${Classes.ICON}`);
         expect(icon).not.toBeNull();
-        expect(icon!).toHaveAttribute("data-icon", IconNames.GRID);
+        expect(icon!.querySelector("svg")).toHaveAttribute("data-icon", IconNames.GRID);
     });
 
     it("button text defaults to value when no label is passed", () => {

@@ -21,22 +21,29 @@
 
 // @ts-check
 
-import { pascalCase } from "change-case";
-import { readFileSync } from "node:fs";
+import { pascalCase, snakeCase } from "change-case";
+import { mkdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { svgOptimizer } from "@blueprintjs/node-build-scripts";
 
-import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
+import { generatedSrcDir, ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
+import { extractPathsFromResourceSvg } from "./extractPathsFromResourceSvg.mjs";
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
 
+const ICON_NAME_LITERAL_UNION = ICON_NAMES.map(iconName => `"${iconName}"`).join(" | ");
+const ICON_NAME_ENUM_LINES = ICON_NAMES.map(iconName => `    ${snakeCase(iconName).toUpperCase()}: "${iconName}",`);
+
 for (const iconSize of ICON_SIZES) {
+    mkdirSync(join(generatedSrcDir, `${iconSize}px`), { recursive: true });
+    mkdirSync(join(generatedSrcDir, `${iconSize}px/paths`), { recursive: true });
     const iconPaths = await getIconPaths(iconSize);
 
     for (const [iconName, pathStrings] of Object.entries(iconPaths)) {
+        const serializedPathStrings = pathStrings.map(path => JSON.stringify(path));
         const line =
-            pathStrings.length > 0
-                ? `export default [${pathStrings.join(", ")}];`
+            serializedPathStrings.length > 0
+                ? `export default [${serializedPathStrings.join(", ")}];`
                 : // special case for "blank" icon - we need an explicit typedef
                   `const p: string[] = []; export default p;`;
 
@@ -51,6 +58,17 @@ for (const iconSize of ICON_SIZES) {
     console.info("Done.");
 }
 
+writeLinesToFile(
+    "16px/blueprint-icons-16.ts",
+    "/* eslint-disable camelcase */",
+    "",
+    `export type BlueprintIcons_16Id = ${ICON_NAME_LITERAL_UNION};`,
+    "",
+    "export const BlueprintIcons_16 = {",
+    ...ICON_NAME_ENUM_LINES,
+    "} as const satisfies Record<string, BlueprintIcons_16Id>;",
+);
+
 /**
  * Loads SVG file for each icon, extracts path strings `d="path-string"`,
  * and constructs map of icon name to array of path strings.
@@ -64,11 +82,7 @@ async function getIconPaths(iconSize) {
         const filepath = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
         const svg = readFileSync(filepath, "utf-8");
         const optimizedSvg = await svgOptimizer.optimize(svg, { path: filepath });
-        const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) || [])
-            // strip off leading 'd="'
-            .map(s => s.slice(3))
-            // strip out newlines and tabs, but keep other whitespace
-            .map(s => s.replace(/[\n\t]/g, ""));
+        const pathStrings = extractPathsFromResourceSvg(optimizedSvg.data);
         iconPaths[iconName] = pathStrings;
     }
     console.info(`Parsed ${Object.keys(iconPaths).length} ${iconSize}px icons.`);
