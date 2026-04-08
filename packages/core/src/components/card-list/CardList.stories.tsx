@@ -3,12 +3,17 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useArgs } from "storybook/preview-api";
+import { useCallback } from "react";
+import { expect, waitFor } from "storybook/test";
 
 import { Card } from "../card/card";
 
 import { CardList } from "./cardList";
 
-const meta: Meta<typeof CardList> = {
+type CardListStoryArgs = React.ComponentProps<typeof CardList> & { selectedIndex: number };
+
+const meta: Meta<CardListStoryArgs> = {
     title: "Core/CardList",
     component: CardList,
     decorators: [
@@ -30,7 +35,7 @@ const meta: Meta<typeof CardList> = {
         bordered: { control: "boolean" },
         compact: { control: "boolean" },
     },
-} satisfies Meta<typeof CardList>;
+} satisfies Meta<CardListStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -124,16 +129,75 @@ export const AllConfigurations: Story = {
 
 /**
  * Interactive playground with all props exposed via Storybook controls.
+ * Click a card to select it. Click again to deselect.
  */
 export const Playground: Story = {
-    render: args => (
-        <CardList {...args} style={{ maxWidth: 300 }}>
-            <Card interactive={true}>First item</Card>
-            <Card interactive={true}>Second item</Card>
-            <Card interactive={true} selected={true}>
-                Third item (selected)
-            </Card>
-            <Card interactive={true}>Fourth item</Card>
-        </CardList>
-    ),
+    args: {
+        selectedIndex: -1,
+    },
+    argTypes: {
+        selectedIndex: { control: "number", description: "Index of the currently selected card (-1 for none)" },
+    },
+    render: function Render(args) {
+        const { selectedIndex, ...cardListProps } = args;
+        const [, updateArgs] = useArgs();
+
+        const handleCardClick = useCallback(
+            (index: number) => {
+                updateArgs({ selectedIndex: selectedIndex === index ? -1 : index });
+            },
+            [selectedIndex, updateArgs],
+        );
+
+        return (
+            <CardList {...cardListProps} style={{ maxWidth: 300 }}>
+                {FRUITS.map((fruit, i) => (
+                    <Card
+                        key={fruit}
+                        interactive={true}
+                        selected={selectedIndex === i}
+                        onClick={() => handleCardClick(i)}
+                    >
+                        {fruit}
+                    </Card>
+                ))}
+            </CardList>
+        );
+    },
+};
+
+/**
+ * Clicking a card selects it. Clicking again deselects it.
+ */
+export const SelectCard: Story = {
+    name: "Select Card",
+    ...Playground,
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Hover over a card before selection", async () => {
+            await userEvent.hover(canvas.getByText("Apples"));
+            await expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass("bp6-elevation-0 bp6-interactive");
+        });
+
+        await step("Click card to select it", async () => {
+            await userEvent.click(canvas.getByText("Apples"));
+            await waitFor(() =>
+                expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass("bp6-selected"),
+            );
+        });
+
+        await step("Click another card — selection moves", async () => {
+            await userEvent.click(canvas.getByText("Oranges"));
+            await waitFor(() => {
+                expect(canvas.getByText("Oranges").closest(".bp6-card")).toHaveClass("bp6-selected");
+                expect(canvas.getByText("Apples").closest(".bp6-card")).not.toHaveClass("bp6-selected");
+            });
+        });
+
+        await step("Click same card again to deselect", async () => {
+            await userEvent.click(canvas.getByText("Oranges"));
+            await waitFor(() =>
+                expect(canvas.getByText("Oranges").closest(".bp6-card")).not.toHaveClass("bp6-selected"),
+            );
+        });
+    },
 };
