@@ -264,6 +264,52 @@ export const EscapeKeyClose: Story = {
 };
 
 /**
+ * When `showCloseButtonInFooter` is true, the footer close button appears regardless
+ * of `isCloseButtonShown` being false.
+ */
+export const ShowCloseButtonInFooter: Story = {
+    render: renderMultistepDialog({ showCloseButtonInFooter: true, isCloseButtonShown: false }),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog with showCloseButtonInFooter=true and isCloseButtonShown=false", async () => {
+            await userEvent.click(canvas.getByText("Open Multistep Dialog"));
+            await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
+        });
+
+        await step("Header close button is hidden", async () => {
+            const headerCloseButton = document.querySelector(`.bp6-dialog-header .bp6-dialog-close-button`);
+            await expect(headerCloseButton).toBeNull();
+        });
+
+        await step("Footer close button is still visible", async () => {
+            const footerCloseButton = screen.getByRole("button", { name: "Close" });
+            await expect(footerCloseButton).toBeVisible();
+        });
+    },
+};
+
+/**
+ * The `initialStepIndex` prop allows the dialog to open at a specific step.
+ */
+export const InitialStepIndex: Story = {
+    render: renderMultistepDialog({ initialStepIndex: 1 }),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog with initialStepIndex=1", async () => {
+            await userEvent.click(canvas.getByText("Open Multistep Dialog"));
+            await waitFor(() => expect(screen.getByText("This is the content for step 2.")).toBeVisible());
+        });
+
+        await step("Step 2 is active", async () => {
+            const confirmStep = screen.getByText("Confirm selection").closest(".bp6-dialog-step-container");
+            await expect(confirmStep).toHaveClass("bp6-active");
+        });
+
+        await step("Back button is available since we started at step 2", async () => {
+            await expect(screen.getByRole("button", { name: "Back" })).toBeVisible();
+        });
+    },
+};
+
+/**
  * Clicking outside the dialog (on the backdrop) closes it.
  */
 export const OutsideClickClose: Story = {
