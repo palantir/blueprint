@@ -316,7 +316,6 @@ export const OutsideClickClose: Story = {
         });
 
         await step("Click backdrop to close dialog", async () => {
-             
             const backdrop = document.querySelector(".bp6-overlay-backdrop") as HTMLElement;
             await userEvent.click(backdrop);
             await waitFor(() => expect(screen.queryByText(/This is a simple dialog body/)).toBeNull());
