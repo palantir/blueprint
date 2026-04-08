@@ -15,10 +15,11 @@
  */
 
 import { fireEvent, render } from "@testing-library/react";
-import { expect } from "chai";
 import { mount } from "enzyme";
 import { Component } from "react";
 import sinon from "sinon";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import * as Classes from "../common/classes";
 import { ElementHarness } from "../harness";
@@ -88,7 +89,7 @@ describe("Resizable", () => {
         );
         const resizable = new ElementHarness(container);
 
-        expect(resizable.find(".resizable-div").bounds()!.width).to.equal(100);
+        expect((resizable.find(".resizable-div").element as HTMLElement).style.width).to.equal("100px");
         expect(onLayoutLock.called).to.be.false;
         expect(onSizeChanged.called).to.be.false;
         expect(onResizeEnd.called).to.be.false;
@@ -127,7 +128,7 @@ describe("Resizable", () => {
         expect(onSizeChanged.called).to.be.true;
         expect(onResizeEnd.called).to.be.true;
         expect(onDoubleClick.called).to.be.false;
-        expect(container.querySelector(".resizable-div")!.getBoundingClientRect().width).to.equal(110);
+        expect((container.querySelector(".resizable-div")! as HTMLElement).style.width).to.equal("110px");
 
         onDoubleClick.resetHistory();
         onLayoutLock.resetHistory();

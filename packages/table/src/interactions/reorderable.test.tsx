@@ -15,8 +15,9 @@
  */
 
 import { render } from "@testing-library/react";
-import { expect } from "chai";
 import sinon from "sinon";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Regions } from "../";
 import { FocusMode } from "../common/cellTypes";
