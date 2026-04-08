@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useArgs, useCallback, useState } from "storybook/preview-api";
+import { expect, screen, waitFor } from "storybook/test";
 
 import { Intent } from "../../common";
 import { Button } from "../button/buttons";
@@ -54,6 +55,15 @@ function DialogDemo({
             </Dialog>
         </>
     );
+}
+
+function renderDialog(extraProps?: Partial<React.ComponentProps<typeof DialogDemo>>) {
+    return function Render(args: React.ComponentProps<typeof Dialog>) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return <DialogDemo {...args} onOpen={handleOpen} onClose={handleClose} {...extraProps} />;
+    };
 }
 
 const meta: Meta<typeof Dialog> = {
@@ -254,5 +264,62 @@ export const Playground: Story = {
                 </Dialog>
             </>
         );
+    },
+};
+
+/**
+ * Opens the dialog and verifies that the body content is visible.
+ */
+export const OpenDialog: Story = {
+    name: "Open Dialog",
+    render: renderDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Click button to open dialog", async () => {
+            const button = canvas.getByRole("button", { name: "Open Dialog" });
+            await userEvent.click(button);
+            await waitFor(() => expect(screen.getByText(/This is a simple dialog body/)).toBeVisible());
+        });
+    },
+};
+
+/**
+ * Opens the dialog, presses Escape, and verifies it closes.
+ */
+export const EscapeKeyClose: Story = {
+    name: "Escape Key Close",
+    render: renderDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog", async () => {
+            const button = canvas.getByRole("button", { name: "Open Dialog" });
+            await userEvent.click(button);
+            await waitFor(() => expect(screen.getByText(/This is a simple dialog body/)).toBeVisible());
+        });
+
+        await step("Press Escape to close dialog", async () => {
+            await userEvent.keyboard("{Escape}");
+            await waitFor(() => expect(screen.queryByText(/This is a simple dialog body/)).toBeNull());
+        });
+    },
+};
+
+/**
+ * Opens the dialog, clicks the backdrop, and verifies it closes.
+ */
+export const OutsideClickClose: Story = {
+    name: "Outside Click Close",
+    render: renderDialog(),
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open dialog", async () => {
+            const button = canvas.getByRole("button", { name: "Open Dialog" });
+            await userEvent.click(button);
+            await waitFor(() => expect(screen.getByText(/This is a simple dialog body/)).toBeVisible());
+        });
+
+        await step("Click backdrop to close dialog", async () => {
+            // eslint-disable-next-line @blueprintjs/html-components
+            const backdrop = document.querySelector(".bp6-overlay-backdrop") as HTMLElement;
+            await userEvent.click(backdrop);
+            await waitFor(() => expect(screen.queryByText(/This is a simple dialog body/)).toBeNull());
+        });
     },
 };
