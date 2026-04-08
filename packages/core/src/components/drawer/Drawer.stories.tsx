@@ -3,7 +3,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import * as React from "react";
+import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Position } from "../../common";
 import { Button } from "../button/buttons";
@@ -61,106 +62,133 @@ const meta: Meta<typeof Drawer> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+function DrawerStoryRender(args: React.ComponentProps<typeof Drawer>) {
+    const [, updateArgs] = useArgs();
+    const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+    const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+
+    return (
+        <>
+            <Button text="Open Drawer" onClick={handleOpen} />
+            <Drawer {...args} isOpen={args.isOpen} onClose={handleClose}>
+                <div style={{ padding: 20 }}>
+                    <p>Drawer content goes here.</p>
+                </div>
+            </Drawer>
+        </>
+    );
+}
+
 /**
  * A basic drawer opening from the right side with a title and icon.
  */
 export const Default: Story = {
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <>
-                <Button text="Open Drawer" onClick={handleOpen} />
-                <Drawer {...args} isOpen={isOpen} onClose={handleClose}>
-                    <div style={{ padding: 20 }}>
-                        <p>Drawer content goes here.</p>
-                    </div>
-                </Drawer>
-            </>
-        );
-    },
+    render: DrawerStoryRender,
 };
 
 /**
- * Drawers can open from any of the four edges of the screen.
+ * Drawer opening from the top edge of the screen.
  */
-export const PositionExample: Story = {
-    name: "Position",
+export const PositionTop: Story = {
+    name: "Position: Top",
     argTypes: {
         position: { table: { disable: true } },
     },
-    render: function Render(args) {
-        const [openPosition, setOpenPosition] = useState<string | null>(null);
-        const positions = [Position.TOP, Position.BOTTOM, Position.LEFT, Position.RIGHT] as const;
-
-        const handleClose = useCallback(() => setOpenPosition(null), []);
-
-        return (
-            <div style={{ display: "flex", gap: 8 }}>
-                {positions.map(pos => (
-                    // eslint-disable-next-line react/jsx-no-bind
-                    <Button key={pos} onClick={() => setOpenPosition(pos)}>
-                        {pos.charAt(0).toUpperCase() + pos.slice(1)}
-                    </Button>
-                ))}
-                <Drawer
-                    {...args}
-                    isOpen={openPosition !== null}
-                    position={openPosition ?? "right"}
-                    onClose={handleClose}
-                    title={`Drawer (${openPosition})`}
-                >
-                    <div style={{ padding: 20 }}>
-                        <p>This drawer opens from the {openPosition} edge.</p>
-                    </div>
-                </Drawer>
-            </div>
-        );
+    args: {
+        position: Position.TOP,
+        title: "Top Drawer",
     },
+    render: DrawerStoryRender,
 };
 
 /**
- * Drawers come in three predefined sizes: Small (360px), Standard (50%), and Large (90%).
+ * Drawer opening from the bottom edge of the screen.
  */
-export const SizeExample: Story = {
-    name: "Size",
+export const PositionBottom: Story = {
+    name: "Position: Bottom",
+    argTypes: {
+        position: { table: { disable: true } },
+    },
+    args: {
+        position: Position.BOTTOM,
+        title: "Bottom Drawer",
+    },
+    render: DrawerStoryRender,
+};
+
+/**
+ * Drawer opening from the left edge of the screen.
+ */
+export const PositionLeft: Story = {
+    name: "Position: Left",
+    argTypes: {
+        position: { table: { disable: true } },
+    },
+    args: {
+        position: Position.LEFT,
+        title: "Left Drawer",
+    },
+    render: DrawerStoryRender,
+};
+
+/**
+ * Drawer opening from the right edge of the screen.
+ */
+export const PositionRight: Story = {
+    name: "Position: Right",
+    argTypes: {
+        position: { table: { disable: true } },
+    },
+    args: {
+        position: Position.RIGHT,
+        title: "Right Drawer",
+    },
+    render: DrawerStoryRender,
+};
+
+/**
+ * Drawer with the small size.
+ */
+export const SizeSmall: Story = {
+    name: "Size: Small",
     argTypes: {
         size: { table: { disable: true } },
     },
-    render: function Render(args) {
-        const [openSize, setOpenSize] = useState<string | null>(null);
-        const sizes = [
-            { label: "Small", value: DrawerSize.SMALL },
-            { label: "Standard", value: DrawerSize.STANDARD },
-            { label: "Large", value: DrawerSize.LARGE },
-        ];
-
-        const handleClose = useCallback(() => setOpenSize(null), []);
-
-        return (
-            <div style={{ display: "flex", gap: 8 }}>
-                {sizes.map(({ label, value }) => (
-                    // eslint-disable-next-line react/jsx-no-bind
-                    <Button key={label} onClick={() => setOpenSize(value)}>
-                        {label}
-                    </Button>
-                ))}
-                <Drawer
-                    {...args}
-                    isOpen={openSize !== null}
-                    size={openSize ?? DrawerSize.SMALL}
-                    onClose={handleClose}
-                    title={`${sizes.find(s => s.value === openSize)?.label ?? ""} Drawer`}
-                >
-                    <div style={{ padding: 20 }}>
-                        <p>This drawer uses the {openSize} size.</p>
-                    </div>
-                </Drawer>
-            </div>
-        );
+    args: {
+        size: DrawerSize.SMALL,
+        title: "Small Drawer",
     },
+    render: DrawerStoryRender,
+};
+
+/**
+ * Drawer with the standard size.
+ */
+export const SizeStandard: Story = {
+    name: "Size: Standard",
+    argTypes: {
+        size: { table: { disable: true } },
+    },
+    args: {
+        size: DrawerSize.STANDARD,
+        title: "Standard Drawer",
+    },
+    render: DrawerStoryRender,
+};
+
+/**
+ * Drawer with the large size.
+ */
+export const SizeLarge: Story = {
+    name: "Size: Large",
+    argTypes: {
+        size: { table: { disable: true } },
+    },
+    args: {
+        size: DrawerSize.LARGE,
+        title: "Large Drawer",
+    },
+    render: DrawerStoryRender,
 };
 
 /**
