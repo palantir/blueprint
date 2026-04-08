@@ -3,9 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useArgs } from "storybook/preview-api";
+import { useArgs, useCallback } from "storybook/preview-api";
 import { expect, screen, waitFor } from "storybook/test";
-import React, { useCallback } from "react";
+import React from "react";
 
 import { Button } from "../button/buttons";
 
