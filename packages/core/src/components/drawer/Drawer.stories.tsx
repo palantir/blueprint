@@ -3,13 +3,13 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import * as React from "react";
-import { useArgs, useCallback } from "storybook/preview-api";
+import { useArgs, useCallback, useState } from "storybook/preview-api";
+import { expect, screen, waitFor } from "storybook/test";
 
 import { Position } from "../../common";
 import { Button } from "../button/buttons";
 
-import { Drawer, DrawerSize } from "./drawer";
+import { Drawer, type DrawerProps, DrawerSize } from "./drawer";
 
 const meta: Meta<typeof Drawer> = {
     title: "Core/Drawer",
@@ -62,7 +62,7 @@ const meta: Meta<typeof Drawer> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function DrawerStoryRender(args: React.ComponentProps<typeof Drawer>) {
+function DrawerStoryRender(args: DrawerProps) {
     const [, updateArgs] = useArgs();
     const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
     const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
@@ -217,5 +217,40 @@ export const Playground: Story = {
                 </Drawer>
             </>
         );
+    },
+};
+
+export const EscapeKeyClose: Story = {
+    name: "Escape Key Close",
+    render: DrawerStoryRender,
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open drawer", async () => {
+            const button = canvas.getByRole("button", { name: "Open Drawer" });
+            await userEvent.click(button);
+            await waitFor(() => expect(screen.getByText(/Drawer content goes here/)).toBeVisible());
+        });
+
+        await step("Press Escape to close drawer", async () => {
+            await userEvent.keyboard("{Escape}");
+            await waitFor(() => expect(screen.queryByText(/Drawer content goes here/)).toBeNull());
+        });
+    },
+};
+
+export const OutsideClickClose: Story = {
+    name: "Outside Click Close",
+    render: DrawerStoryRender,
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open drawer", async () => {
+            const button = canvas.getByRole("button", { name: "Open Drawer" });
+            await userEvent.click(button);
+            await waitFor(() => expect(screen.getByText(/Drawer content goes here/)).toBeVisible());
+        });
+
+        await step("Click backdrop to close drawer", async () => {
+            const backdrop = document.querySelector(".bp6-overlay-backdrop") as HTMLElement;
+            await userEvent.click(backdrop);
+            await waitFor(() => expect(screen.queryByText(/Drawer content goes here/)).toBeNull());
+        });
     },
 };
