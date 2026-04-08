@@ -5,8 +5,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Card } from "../card/card";
-import { Section } from "../section/section";
-import { SectionCard } from "../section/sectionCard";
 
 import { CardList } from "./cardList";
 
@@ -22,7 +20,6 @@ const meta: Meta<typeof CardList> = {
     ],
     parameters: {
         layout: "centered",
-        chromatic: { disableSnapshot: true },
     },
     tags: ["autodocs"],
     args: {
@@ -121,47 +118,6 @@ export const AllConfigurations: Story = {
                     </div>
                 </div>
             ))}
-        </div>
-    ),
-};
-
-const INGREDIENTS = ["Tomatoes", "Garlic", "Olive Oil", "Basil", "Parmesan", "Pine Nuts"];
-
-/**
- * CardList can be embedded inside a Section → SectionCard to create a scrollable list within a section.
- * Set the same value for `SectionCard padded` and `CardList bordered` for a consistent appearance.
- */
-export const CombiningWithSection: Story = {
-    argTypes: {
-        bordered: { table: { disable: true } },
-        compact: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", gap: 24 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>padded=false, bordered=false</span>
-                <Section title="Fresh Ingredients" style={{ width: 350 }}>
-                    <SectionCard padded={false} style={{ height: 152, overflowY: "auto" }}>
-                        <CardList {...args} bordered={false}>
-                            {INGREDIENTS.map(item => (
-                                <Card key={item}>{item}</Card>
-                            ))}
-                        </CardList>
-                    </SectionCard>
-                </Section>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>padded=true, bordered=true</span>
-                <Section title="Fresh Ingredients" style={{ width: 350 }}>
-                    <SectionCard padded={true} style={{ height: 152, overflowY: "auto" }}>
-                        <CardList {...args} bordered={true}>
-                            {INGREDIENTS.map(item => (
-                                <Card key={item}>{item}</Card>
-                            ))}
-                        </CardList>
-                    </SectionCard>
-                </Section>
-            </div>
         </div>
     ),
 };
