@@ -60,14 +60,6 @@
             "outputs": ["{projectRoot}/lib"],
             "cache": true
         },
-        "copy:scss": {
-            "outputs": ["{projectRoot}/lib/scss"],
-            "cache": true
-        },
-        "copy:fonts": {
-            "outputs": ["{projectRoot}/lib/css"],
-            "cache": true
-        },
         "generate-icon-src": {
             "outputs": ["{projectRoot}/src/generated"],
             "cache": true

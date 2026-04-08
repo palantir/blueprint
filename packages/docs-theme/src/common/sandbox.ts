@@ -32,7 +32,6 @@ const BLUEPRINT_PACKAGE_MAP: Record<string, { package: string; css?: string[] }>
     },
     "@blueprintjs/icons": {
         package: "@blueprintjs/icons",
-        css: ["@blueprintjs/icons/lib/css/blueprint-icons.css"],
     },
     "@blueprintjs/datetime": {
         package: "@blueprintjs/datetime",
@@ -122,7 +121,6 @@ export function extractStylesheets(imports: string[]): string[] {
 
     // Always include core Blueprint styles
     stylesheets.add("@blueprintjs/core/lib/css/blueprint.css");
-    stylesheets.add("@blueprintjs/icons/lib/css/blueprint-icons.css");
 
     for (const importPath of imports) {
         if (BLUEPRINT_PACKAGE_MAP[importPath]?.css) {
@@ -170,10 +168,7 @@ export const getHtml = ({ title }: { title: string }) => {
 };
 
 export const getIndex = (stylesheets?: string[], isDark = false) => {
-    const defaultStylesheets = [
-        "@blueprintjs/core/lib/css/blueprint.css",
-        "@blueprintjs/icons/lib/css/blueprint-icons.css",
-    ];
+    const defaultStylesheets = ["@blueprintjs/core/lib/css/blueprint.css"];
 
     const allStylesheets = stylesheets || defaultStylesheets;
     const cssImports = allStylesheets.map(css => `import "${css}";`).join("\n");

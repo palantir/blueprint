@@ -1,7 +1,0 @@
-${{ name }}-font: "{{ name }}";
-
-${{ name }}-codepoints: (
-{{# each codepoints }}
-    "{{ @key }}": "\\{{ codepoint this }}",
-{{/ each }}
-);

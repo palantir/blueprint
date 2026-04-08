@@ -19,19 +19,6 @@ $callout-padding-compact: $pt-spacing * 2;
     background-color: rgba($gray3, 0.15);
   }
 
-  // CSS API support
-  &[class*="#{$ns}-icon-"] {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
-
-    &::before {
-      @include pt-icon($pt-icon-size-standard);
-      color: $pt-icon-color;
-      left: $callout-padding;
-      position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
-    }
-  }
-
   // High contrast mode hides backgrounds, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid $pt-high-contrast-mode-border-color;
@@ -78,7 +65,6 @@ $callout-padding-compact: $pt-spacing * 2;
       background-color: rgba($gray3, 0.2);
     }
 
-    &[class*="#{$ns}-icon-"]::before,
     &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
       color: $pt-dark-icon-color;
     }
@@ -96,7 +82,6 @@ $callout-padding-compact: $pt-spacing * 2;
         border: 1px solid $pt-high-contrast-mode-border-color;
       }
 
-      &[class*="#{$ns}-icon-"]::before,
       > .#{$ns}-icon:first-child,
       .#{$ns}-heading {
         color: map.get($pt-intent-text-colors, $intent);
@@ -109,7 +94,6 @@ $callout-padding-compact: $pt-spacing * 2;
           background-color: rgba($color, 0.2);
         }
 
-        &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
           color: map.get($pt-dark-intent-text-colors, $intent);

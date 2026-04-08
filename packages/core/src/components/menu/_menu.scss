@@ -2,7 +2,6 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
-@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 
 @import "./common";
@@ -32,7 +31,7 @@
 
   &::before {
     // support pt-icon-* classes directly on this element
-    @include pt-icon;
+    @include pt-icon-sized;
     margin-right: $menu-item-padding;
   }
 
@@ -40,7 +39,7 @@
     @include menu-item-large;
 
     &::before {
-      @include pt-icon($pt-icon-size-large);
+      @include pt-icon-sized($pt-icon-size-large);
       margin-right: $menu-item-padding-large;
     }
   }

@@ -3,7 +3,6 @@
 
 @use "sass:map";
 @use "sass:math";
-@import "@blueprintjs/icons/lib/scss/variables";
 
 $palette-spacing: $pt-spacing * 5;
 $palette-border-radius: $pt-spacing;
@@ -12,7 +11,7 @@ $swatch-height: $pt-input-height-large;
 $swatch-hover-offset: -$pt-spacing;
 
 $swatch-hover-message: "Click to copy hex code";
-$swatch-copied-message: "#{map.get($blueprint-icon-codepoints, "tick")} Copied to clipboard";
+$swatch-copied-message: "✓ Copied to clipboard";
 
 @function palette-width($columns) {
   @return math.div(102% - 2% * $columns, $columns);
@@ -43,7 +42,7 @@ $swatch-copied-message: "#{map.get($blueprint-icon-codepoints, "tick")} Copied t
   /* stylelint-disable declaration-no-important */
   &.docs-clipboard-copied .docs-clipboard-message::after {
     content: $swatch-copied-message !important;
-    font-family: $blueprint-icons-16-font, $pt-font-family-monospace, sans-serif;
+    font-family: $pt-font-family-monospace, sans-serif;
   }
 
   &.docs-clipboard-copied .docs-clipboard-message[data-copied-message]::after {

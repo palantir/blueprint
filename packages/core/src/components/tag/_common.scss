@@ -360,21 +360,10 @@ $minimal-dark-tag-intent-colors: (
     color: var(--bp-intent-default-foreground);
   }
 
-  // CSS API support
-  &:empty::before {
-    @include pt-icon;
-    content: map.get($blueprint-icon-codepoints, "small-cross");
-  }
-
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
     margin-right: calc(var(--bp-surface-spacing) * -2) !important;
     padding: 0 var(--bp-surface-spacing) 0 0;
-
-    &:empty::before {
-      // font-family name "blueprint-icons-20" requires a compile-time value for Sass string interpolation
-      @include pt-icon-sized(calc(var(--bp-surface-spacing) * 5), 20);
-    }
   }
 }
 

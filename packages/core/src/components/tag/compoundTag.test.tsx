@@ -40,8 +40,8 @@ describe("<CompoundTag>", () => {
         );
         const icons = container.querySelectorAll(`.${Classes.ICON}`);
         expect(icons).toHaveLength(2);
-        expect(icons[0]).toHaveAttribute("data-icon", "tick");
-        expect(icons[1]).toHaveAttribute("data-icon", "airplane");
+        expect(icons[0].querySelector("svg")).toHaveAttribute("data-icon", "tick");
+        expect(icons[1].querySelector("svg")).toHaveAttribute("data-icon", "airplane");
     });
 
     it("prefers endIcon to rightIcon", () => {

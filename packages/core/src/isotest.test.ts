@@ -71,6 +71,7 @@ const config: Record<string, IsomorphicTestConfig> = {
         skip: true,
     },
     Icon: {
+        className: false,
         props: { icon: "build" },
     },
     KeyComboTag: {
