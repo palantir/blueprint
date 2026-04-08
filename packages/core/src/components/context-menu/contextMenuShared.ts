@@ -15,7 +15,7 @@
  */
 
 import type { OverlayLifecycleProps } from "../overlay/overlayProps";
-import type { PopoverProps } from "../popover/popoverProps";
+import type { PopoverNextProps } from "../popover-next/popoverNextProps";
 
 export type Offset = {
     left: number;
@@ -31,4 +31,4 @@ export type Offset = {
  * not work effectively.
  */
 export type ContextMenuPopoverOptions = OverlayLifecycleProps &
-    Pick<PopoverProps, "placement" | "popoverClassName" | "transitionDuration" | "popoverRef" | "rootBoundary">;
+    Pick<PopoverNextProps, "placement" | "popoverClassName" | "transitionDuration" | "rootBoundary">;

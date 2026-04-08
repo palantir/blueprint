@@ -18,8 +18,8 @@ import classNames from "classnames";
 import { memo, useCallback } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
-import { Popover } from "../popover/popover";
-import type { PopoverTargetProps } from "../popover/popoverSharedProps";
+import { PopoverNext } from "../popover-next/popoverNext";
+import type { PopoverRenderTargetProps } from "../popover-next/popoverNextProps";
 import { Portal } from "../portal/portal";
 
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
@@ -53,9 +53,9 @@ export const ContextMenuPopover = memo(function ContextMenuPopover(props: Contex
     } = props;
     const cancelContextMenu = useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
 
-    // Popover should attach its ref to the virtual target we render inside a Portal, not the "inline" child target
+    // PopoverNext should attach its ref to the virtual target we render inside a Portal, not the "inline" child target
     const renderTarget = useCallback(
-        ({ ref }: PopoverTargetProps) => (
+        ({ ref }: PopoverRenderTargetProps) => (
             <Portal>
                 <div className={Classes.CONTEXT_MENU_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
             </Portal>
@@ -73,7 +73,7 @@ export const ContextMenuPopover = memo(function ContextMenuPopover(props: Contex
     );
 
     return (
-        <Popover
+        <PopoverNext
             placement="right-start"
             rootBoundary={rootBoundary}
             transitionDuration={transitionDuration}
@@ -83,12 +83,14 @@ export const ContextMenuPopover = memo(function ContextMenuPopover(props: Contex
                 <div onContextMenu={cancelContextMenu}>{content}</div>
             }
             enforceFocus={false}
-            // Generate key based on offset so that a new Popover instance is created
+            // Generate key based on offset so that a new PopoverNext instance is created
             // when offset changes, to force recomputing position.
             key={getPopoverKey(targetOffset)}
             hasBackdrop={true}
             backdropProps={{ className: Classes.CONTEXT_MENU_BACKDROP }}
-            minimal={true}
+            arrow={false}
+            animation="minimal"
+            shouldReturnFocusOnClose={false}
             onInteraction={handleInteraction}
             popoverClassName={classNames(Classes.CONTEXT_MENU_POPOVER, popoverClassName, {
                 [Classes.DARK]: isDarkTheme,
