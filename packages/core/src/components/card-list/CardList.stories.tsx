@@ -3,8 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useArgs } from "storybook/preview-api";
-import { useCallback } from "react";
+import { useArgs, useCallback } from "storybook/preview-api";
 import { expect, waitFor } from "storybook/test";
 
 import { Card } from "../card/card";
@@ -143,7 +142,7 @@ export const Playground: Story = {
         const [, updateArgs] = useArgs();
 
         const handleCardClick = useCallback(
-            (index: number) => {
+            (index: number) => () => {
                 updateArgs({ selectedIndex: selectedIndex === index ? -1 : index });
             },
             [selectedIndex, updateArgs],
@@ -152,12 +151,7 @@ export const Playground: Story = {
         return (
             <CardList {...cardListProps} style={{ maxWidth: 300 }}>
                 {FRUITS.map((fruit, i) => (
-                    <Card
-                        key={fruit}
-                        interactive={true}
-                        selected={selectedIndex === i}
-                        onClick={() => handleCardClick(i)}
-                    >
+                    <Card key={fruit} interactive={true} selected={selectedIndex === i} onClick={handleCardClick(i)}>
                         {fruit}
                     </Card>
                 ))}
@@ -175,14 +169,14 @@ export const SelectCard: Story = {
     play: async ({ canvas, userEvent, step }) => {
         await step("Hover over a card before selection", async () => {
             await userEvent.hover(canvas.getByText("Apples"));
-            await expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass("bp6-elevation-0 bp6-interactive");
+            await expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass(
+                "bp6-elevation-0 bp6-interactive",
+            );
         });
 
         await step("Click card to select it", async () => {
             await userEvent.click(canvas.getByText("Apples"));
-            await waitFor(() =>
-                expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass("bp6-selected"),
-            );
+            await waitFor(() => expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass("bp6-selected"));
         });
 
         await step("Click another card — selection moves", async () => {
