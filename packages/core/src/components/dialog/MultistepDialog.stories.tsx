@@ -95,13 +95,31 @@ const meta: Meta<typeof MultistepDialog> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    render: function Render(args) {
+type DemoProps = Omit<React.ComponentProps<typeof MultistepDialogDemo>, "onOpen" | "onClose">;
+
+function renderMultistepDialog(extraProps?: Partial<DemoProps>) {
+    return function Render(args: React.ComponentProps<typeof MultistepDialog>) {
         const [, updateArgs] = useArgs();
         const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
         const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return <MultistepDialogDemo {...args} onOpen={handleOpen} onClose={handleClose} />;
-    },
+        return (
+            <MultistepDialogDemo
+                {...args}
+                finalButtonProps={{ text: "Submit", onClick: handleClose }}
+                onOpen={handleOpen}
+                onClose={handleClose}
+                {...extraProps}
+            />
+        );
+    };
+}
+
+const disableNavigationPosition = {
+    argTypes: { navigationPosition: { table: { disable: true } } },
+} as const;
+
+export const Default: Story = {
+    render: renderMultistepDialog(),
 };
 
 /**
@@ -109,65 +127,20 @@ export const Default: Story = {
  */
 export const LeftPositionExample: Story = {
     name: "Left Navigation",
-    argTypes: {
-        navigationPosition: { table: { disable: true } },
-    },
-    render: function Render(args) {
-        const [, updateArgs] = useArgs();
-        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return (
-            <MultistepDialogDemo
-                {...args}
-                navigationPosition="left"
-                buttonText="Open Left Navigation (default)"
-                onOpen={handleOpen}
-                onClose={handleClose}
-            />
-        );
-    },
+    ...disableNavigationPosition,
+    render: renderMultistepDialog({ navigationPosition: "left", buttonText: "Open Left Navigation (default)" }),
 };
 
 export const RightPositionExample: Story = {
     name: "Right Navigation",
-    argTypes: {
-        navigationPosition: { table: { disable: true } },
-    },
-    render: function Render(args) {
-        const [, updateArgs] = useArgs();
-        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return (
-            <MultistepDialogDemo
-                {...args}
-                navigationPosition="right"
-                buttonText="Open Right Navigation"
-                onOpen={handleOpen}
-                onClose={handleClose}
-            />
-        );
-    },
+    ...disableNavigationPosition,
+    render: renderMultistepDialog({ navigationPosition: "right", buttonText: "Open Right Navigation" }),
 };
 
 export const TopPositionExample: Story = {
     name: "Top Navigation",
-    argTypes: {
-        navigationPosition: { table: { disable: true } },
-    },
-    render: function Render(args) {
-        const [, updateArgs] = useArgs();
-        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return (
-            <MultistepDialogDemo
-                {...args}
-                navigationPosition="top"
-                buttonText="Open Top Navigation"
-                onOpen={handleOpen}
-                onClose={handleClose}
-            />
-        );
-    },
+    ...disableNavigationPosition,
+    render: renderMultistepDialog({ navigationPosition: "top", buttonText: "Open Top Navigation" }),
 };
 
 /**
@@ -178,12 +151,7 @@ export const IconExample: Story = {
     args: {
         icon: "cog",
     },
-    render: function Render(args) {
-        const [, updateArgs] = useArgs();
-        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return <MultistepDialogDemo {...args} title="Settings" onOpen={handleOpen} onClose={handleClose} />;
-    },
+    render: renderMultistepDialog({ title: "Settings" }),
 };
 
 /**
@@ -198,7 +166,12 @@ export const Playground: Story = {
         return (
             <>
                 <Button text="Open Multistep Dialog" onClick={handleOpen} />
-                <MultistepDialog {...args} isOpen={args.isOpen} onClose={handleClose}>
+                <MultistepDialog
+                    {...args}
+                    isOpen={args.isOpen}
+                    onClose={handleClose}
+                    finalButtonProps={{ text: "Submit", onClick: handleClose }}
+                >
                     <DialogStep id="step1" title="Select items" panel={<StepPanel stepNumber={1} />} />
                     <DialogStep id="step2" title="Confirm selection" panel={<StepPanel stepNumber={2} />} />
                     <DialogStep id="step3" title="Complete" panel={<StepPanel stepNumber={3} />} />
