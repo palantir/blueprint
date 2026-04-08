@@ -21,16 +21,18 @@ const disabledArgs = ["containerRef", "hasBackdrop", "transitionName"] as const 
  */
 function DialogDemo({
     buttonText = "Open Dialog",
+    onOpen,
+    onClose,
     ...dialogProps
-}: React.ComponentProps<typeof Dialog> & { buttonText?: string }) {
-    const [, updateArgs] = useArgs();
-    const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-    const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-
+}: React.ComponentProps<typeof Dialog> & {
+    buttonText?: string;
+    onOpen: () => void;
+    onClose: () => void;
+}) {
     return (
         <>
-            <Button text={buttonText} onClick={handleOpen} />
-            <Dialog {...dialogProps} isOpen={dialogProps.isOpen} onClose={handleClose}>
+            <Button text={buttonText} onClick={onOpen} />
+            <Dialog {...dialogProps} isOpen={dialogProps.isOpen} onClose={onClose}>
                 {dialogProps.children ?? (
                     <>
                         <DialogBody>
@@ -42,8 +44,8 @@ function DialogDemo({
                         <DialogFooter
                             actions={
                                 <>
-                                    <Button text="Cancel" onClick={handleClose} />
-                                    <Button text="Confirm" intent="primary" onClick={handleClose} />
+                                    <Button text="Cancel" onClick={onClose} />
+                                    <Button text="Confirm" intent="primary" onClick={onClose} />
                                 </>
                             }
                         />
@@ -94,7 +96,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: args => <DialogDemo {...args} title="Dialog Title" />,
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return <DialogDemo {...args} title="Dialog Title" onOpen={handleOpen} onClose={handleClose} />;
+    },
 };
 
 /**
@@ -102,7 +109,12 @@ export const Default: Story = {
  */
 export const WithoutTitle: Story = {
     name: "Without Title",
-    render: args => <DialogDemo {...args} title={undefined} />,
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return <DialogDemo {...args} title={undefined} onOpen={handleOpen} onClose={handleClose} />;
+    },
 };
 
 /**
@@ -204,7 +216,12 @@ export const IconExample: Story = {
     args: {
         icon: "cog",
     },
-    render: args => <DialogDemo {...args} title="Settings" />,
+    render: function Render(args) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+        return <DialogDemo {...args} title="Settings" onOpen={handleOpen} onClose={handleClose} />;
+    },
 };
 
 /**
