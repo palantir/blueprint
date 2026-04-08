@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { forwardRef } from "react";
 
-import { CaretDown, DoubleCaretVertical, type IconName, type SVGIconProps } from "@blueprintjs/icons";
+import { CaretDownIcon, DoubleCaretVerticalIcon, type IconName, type SVGIconProps } from "@blueprintjs/icons";
 
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, type OptionProps } from "../../common/props";
@@ -109,9 +109,9 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => 
     const iconTitle = "Open dropdown";
     const endIcon =
         iconName === "double-caret-vertical" ? (
-            <DoubleCaretVertical title={iconTitle} {...iconProps} />
+            <DoubleCaretVerticalIcon title={iconTitle} {...iconProps} />
         ) : (
-            <CaretDown title={iconTitle} {...iconProps} />
+            <CaretDownIcon title={iconTitle} {...iconProps} />
         );
 
     const optionChildren = options.map(option => {

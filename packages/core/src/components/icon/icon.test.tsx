@@ -16,7 +16,7 @@
 
 import { mount } from "enzyme";
 
-import { Graph as GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
+import { GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 import { afterEach, beforeAll, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
