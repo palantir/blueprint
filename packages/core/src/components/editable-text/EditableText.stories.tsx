@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect, userEvent, within } from "storybook/test";
 
 import { Intent } from "../../common";
 
@@ -127,11 +128,103 @@ export const StateExample: Story = {
 };
 
 /**
+ * Enabling the `multiline` prop transforms EditableText into a `<textarea>` that grows and shrinks
+ * vertically as content changes. Use `minLines` and `maxLines` to constrain the height.
+ *
+ * In multiline mode, press **Ctrl+Enter** (or **Cmd+Enter** on Mac) to confirm. Pressing **Enter**
+ * alone inserts a newline. This behavior can be inverted with the `confirmOnEnterKey` prop.
+ */
+export const MultilineExample: Story = {
+    name: "Multiline",
+    argTypes: {
+        multiline: { table: { disable: true } },
+    },
+    args: {
+        multiline: true,
+        minLines: 3,
+        maxLines: 5,
+        placeholder: "Click to edit multiple lines...",
+    },
+};
+
+/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
     args: {
         placeholder: "Click to Edit",
         defaultValue: "Hello, world!",
+    },
+};
+
+/**
+ * Clicking an editable text enters edit mode (focus ring appears). Clicking outside
+ * confirms the value and removes the editing state.
+ */
+export const FocusExample: Story = {
+    name: "Focus",
+    args: {
+        defaultValue: "Click to Edit",
+    },
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+
+        await step("Click editable text to enter edit mode", async () => {
+            const editableText = canvas.getByText("Click to Edit");
+            await userEvent.click(editableText);
+            const root = canvasElement.querySelector(".bp6-editable-text");
+            await expect(root).toHaveClass("bp6-editable-text-editing");
+        });
+
+        await step("Click outside to confirm and exit edit mode", async () => {
+            await userEvent.click(canvasElement);
+            const root = canvasElement.querySelector(".bp6-editable-text");
+            await expect(root).not.toHaveClass("bp6-editable-text-editing");
+        });
+    },
+};
+
+/**
+ * Hovering over each intent variant reveals the highlight ring (CSS-driven).
+ * The editing class is only applied on click, not on hover.
+ */
+export const HoverExample: Story = {
+    name: "Hover",
+    argTypes: {
+        intent: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {Object.values(Intent).map(intent => (
+                <div key={intent} data-testid={`editable-${intent || "none"}`}>
+                    <EditableText
+                        {...args}
+                        intent={intent}
+                        placeholder={intent.charAt(0).toUpperCase() + intent.slice(1) || "None"}
+                    />
+                </div>
+            ))}
+        </div>
+    ),
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+
+        for (const intent of Object.values(Intent)) {
+            const testId = `editable-${intent || "none"}`;
+
+            await step(`Hover over ${intent || "none"} intent`, async () => {
+                const wrapper = canvas.getByTestId(testId);
+                const root = wrapper.querySelector(".bp6-editable-text")!;
+                await userEvent.hover(root);
+                await expect(root).not.toHaveClass("bp6-editable-text-editing");
+            });
+
+            await step(`Unhover ${intent || "none"} intent`, async () => {
+                const wrapper = canvas.getByTestId(testId);
+                const root = wrapper.querySelector(".bp6-editable-text")!;
+                await userEvent.unhover(root);
+                await expect(root).not.toHaveClass("bp6-editable-text-editing");
+            });
+        }
     },
 };
