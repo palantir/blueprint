@@ -57,16 +57,17 @@ $control-group-stack: (
 );
 
 // animating shadows requires the same number of shadows in different states
+// stylelint-disable alpha-value-notation
 @function input-transition-shadow(
   $color: $input-shadow-color-focus,
   $focus: false,
   $outer-shadow-focus-width: 1px
 ) {
   @if $focus {
-    @return inset border-shadow(0.752, $color, 1px),
-      border-shadow(0.752, $color, $outer-shadow-focus-width);
+    @return inset 0 0 0 1px #{oklch(from #{$color} l c h / 0.752)},
+      0 0 0 #{$outer-shadow-focus-width} #{oklch(from #{$color} l c h / 0.752)};
   } @else {
-    @return border-shadow(0, $color, 0), border-shadow(0, $color, 0);
+    @return 0 0 0 0 #{oklch(from #{$color} l c h / 0)}, 0 0 0 0 #{oklch(from #{$color} l c h / 0)};
   }
 }
 
@@ -76,23 +77,28 @@ $control-group-stack: (
   $outer-shadow-focus-width: 1px
 ) {
   @if $focus {
-    @return inset border-shadow(0.752, $color, 1px),
-      border-shadow(0.752, $color, $outer-shadow-focus-width);
+    @return inset 0 0 0 1px #{oklch(from #{$color} l c h / 0.752)},
+      0 0 0 #{$outer-shadow-focus-width} #{oklch(from #{$color} l c h / 0.752)};
   } @else {
-    @return border-shadow(0, $color, 0), border-shadow(0, $color, 0);
+    @return 0 0 0 0 #{oklch(from #{$color} l c h / 0)}, 0 0 0 0 #{oklch(from #{$color} l c h / 0)};
   }
 }
+// stylelint-enable alpha-value-notation
 
 @mixin pt-input() {
   @include pt-input-placeholder;
   appearance: none;
-  background: var(--bp-palette-white);
+  background: var(--bp-surface-background-color-default-rest);
   border: none;
   border-radius: var(--bp-surface-border-radius);
-  box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
+  box-shadow:
+    inset 0 0 0 0 #{oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0)},
+    0 0 0 0 #{oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0)},
+    inset 0 0 0 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)},
+    inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.3)};
   color: var(--bp-typography-color-default-rest);
   font-size: var(--bp-typography-size-body-medium);
-  font-weight: $input-font-weight;
+  font-weight: var(--bp-typography-weight-default);
   height: calc(var(--bp-surface-spacing) * 7.5);
   line-height: calc(var(--bp-surface-spacing) * 7.5);
 
@@ -103,7 +109,12 @@ $control-group-stack: (
 
   &:focus,
   &.#{$ns}-active {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    box-shadow:
+      inset 0 0 0 1px
+        #{oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)},
+      0 0 0 1px
+        #{oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)},
+      inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)};
   }
 
   &[type="search"],
@@ -118,7 +129,13 @@ $control-group-stack: (
     box-shadow: inset 0 0 0 1px var(--bp-surface-border-color-default);
 
     &:focus {
-      box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+      box-shadow:
+        inset 0 0 0 1px
+          #{oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)},
+        0 0 0 1px
+          #{oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)},
+        inset 0 0 0 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)},
+        inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.3)};
     }
   }
 
@@ -141,7 +158,7 @@ $control-group-stack: (
 }
 
 @mixin pt-input-disabled() {
-  background: #{oklch(from var(--bp-palette-light-gray-1) l c h / 0.5)};
+  background: #{oklch(from var(--bp-intent-default-disabled) calc(l + 0.200) calc(c - 0.015) h / 0.5)};
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
   cursor: not-allowed;
@@ -193,18 +210,29 @@ $control-group-stack: (
   background: #{oklch(from var(--bp-palette-black) l c h / 0.3)};
 
   box-shadow:
-    dark-input-transition-shadow($dark-input-shadow-color-focus), $pt-dark-input-box-shadow;
+    inset 0 0 0 0 #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)},
+    0 0 0 0 #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)},
+    inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
+    inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
   color: var(--bp-typography-color-default-rest);
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true);
+    box-shadow:
+      inset 0 0 0 1px
+        #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)},
+      0 0 0 1px
+        #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)};
   }
 
   &[readonly] {
     box-shadow: inset 0 0 0 1px #{oklch(from var(--bp-palette-black) l c h / 0.4)};
 
     &:focus {
-      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true);
+      box-shadow:
+        inset 0 0 0 1px
+          #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)},
+        0 0 0 1px
+          #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)};
     }
   }
 
@@ -214,20 +242,22 @@ $control-group-stack: (
   }
 }
 
-@mixin pt-input-intent($color) {
+@mixin pt-input-intent($color-token) {
   box-shadow:
-    input-transition-shadow($color, false, calc(var(--bp-surface-spacing) * 0.5)),
-    inset border-shadow(1, $color),
-    $pt-input-box-shadow;
+    inset 0 0 0 0 #{oklch(from $color-token l c h / 0)},
+    0 0 0 0 #{oklch(from $color-token l c h / 0)},
+    inset 0 0 0 1px $color-token,
+    inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.3)};
 
   &:focus {
     box-shadow:
-      input-transition-shadow($color, true, calc(var(--bp-surface-spacing) * 0.5)),
-      $input-box-shadow-focus;
+      inset 0 0 0 1px #{oklch(from $color-token l c h / 0.752)},
+      0 0 0 calc(var(--bp-surface-spacing) * 0.5) #{oklch(from $color-token l c h / 0.752)},
+      inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)};
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color;
+    box-shadow: inset 0 0 0 1px $color-token;
   }
 
   &:disabled,
@@ -236,20 +266,24 @@ $control-group-stack: (
   }
 }
 
-@mixin pt-dark-input-intent($color) {
+@mixin pt-dark-input-intent($color-token) {
   box-shadow:
-    dark-input-transition-shadow($color, false, calc(var(--bp-surface-spacing) * 0.5)),
-    inset border-shadow(1, $color),
-    $pt-dark-input-box-shadow;
+    inset 0 0 0 0 #{oklch(from $color-token l c h / 0)},
+    0 0 0 0 #{oklch(from $color-token l c h / 0)},
+    inset 0 0 0 1px $color-token,
+    inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
+    inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
 
   &:focus {
     box-shadow:
-      dark-input-transition-shadow($color, true, calc(var(--bp-surface-spacing) * 0.5)),
-      $pt-dark-input-box-shadow;
+      inset 0 0 0 1px #{oklch(from $color-token l c h / 0.752)},
+      0 0 0 calc(var(--bp-surface-spacing) * 0.5) #{oklch(from $color-token l c h / 0.752)},
+      inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
+      inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color;
+    box-shadow: inset 0 0 0 1px $color-token;
   }
 
   &:disabled,

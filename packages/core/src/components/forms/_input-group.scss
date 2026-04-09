@@ -49,9 +49,9 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-button {
-    @include pt-button-height($input-button-height);
+    @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
     margin: calc(var(--bp-surface-spacing) * 0.75);
-    padding: $button-padding-small;
+    padding: 0 calc(var(--bp-surface-spacing) * 2);
 
     // icons CSS API support
     &:empty {
@@ -128,7 +128,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-large {
     .#{$ns}-button {
-      @include pt-button-height($input-button-height-large);
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
       margin: calc(var(--bp-surface-spacing) * 1.25);
     }
 
@@ -153,12 +153,12 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-small {
     .#{$ns}-button {
-      @include pt-button-height($pt-button-height-smaller);
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
       margin: calc(var(--bp-surface-spacing) * 0.5);
     }
 
     .#{$ns}-tag {
-      @include pt-button-height($pt-button-height-smaller);
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
       margin: calc(var(--bp-surface-spacing) * 0.5);
     }
 
@@ -206,10 +206,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-intent-primary {
     .#{$ns}-input {
-      @include pt-input-intent($pt-intent-primary);
+      @include pt-input-intent(var(--bp-intent-primary-rest));
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent($blue4);
+        @include pt-dark-input-intent(#{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)});
       }
     }
 
@@ -224,10 +224,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-intent-success {
     .#{$ns}-input {
-      @include pt-input-intent($pt-intent-success);
+      @include pt-input-intent(var(--bp-intent-success-rest));
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent($green4);
+        @include pt-dark-input-intent(#{oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)});
       }
     }
 
@@ -242,10 +242,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-intent-warning {
     .#{$ns}-input {
-      @include pt-input-intent($pt-intent-warning);
+      @include pt-input-intent(var(--bp-intent-warning-rest));
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent($orange4);
+        @include pt-dark-input-intent(#{oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)});
       }
     }
 
@@ -260,10 +260,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-intent-danger {
     .#{$ns}-input {
-      @include pt-input-intent($pt-intent-danger);
+      @include pt-input-intent(var(--bp-intent-danger-rest));
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent($red4);
+        @include pt-dark-input-intent(#{oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.020) h)});
       }
     }
 
