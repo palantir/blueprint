@@ -48,8 +48,16 @@ console.info("Generating ES modules for each icon...");
 mkdirSync(generatedComponentsDir, { recursive: true });
 
 for (const { iconName } of iconsMetadata) {
-    const paths16 = await extractPathsFromResourceSvg(16, iconName);
-    const paths20 = await extractPathsFromResourceSvg(20, iconName);
+    let paths16;
+    let paths20;
+    try {
+        paths16 = await extractPathsFromResourceSvg(16, iconName);
+        paths20 = await extractPathsFromResourceSvg(20, iconName);
+    } catch (error) {
+        throw new Error(`[generate-icon-components] Failed to extract 16px/20px paths for "${iconName}"`, {
+            cause: error,
+        });
+    }
     writeFileSync(
         join(generatedComponentsDir, `${iconName}.tsx`),
         iconComponentTemplate({
