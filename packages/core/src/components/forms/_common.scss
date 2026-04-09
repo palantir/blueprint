@@ -199,7 +199,7 @@ $control-group-stack: (
 
 @mixin pt-dark-input-placeholder() {
   &::placeholder {
-    color: var(--bp-typography-color-muted);
+    color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.240) calc(c - 0.011) h)};
   }
 }
 
@@ -212,7 +212,7 @@ $control-group-stack: (
     0 0 0 0 #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)},
     inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
     inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
-  color: #{oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) calc(c - 0.012) h)};
+  color: #{oklch(from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h)};
 
   &:focus {
     box-shadow:

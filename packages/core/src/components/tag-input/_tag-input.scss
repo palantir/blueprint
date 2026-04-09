@@ -157,13 +157,13 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   .#{$ns}-dark &,
   &.#{$ns}-dark {
     .#{$ns}-tag-input-icon {
-      color: var(--bp-typography-color-muted);
+      color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.240) calc(c - 0.011) h)};
     }
 
     .#{$ns}-input-ghost {
       @include pt-dark-input-placeholder;
 
-      color: var(--bp-typography-color-default-rest);
+      color: #{oklch(from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h)};
     }
 
     &.#{$ns}-active {

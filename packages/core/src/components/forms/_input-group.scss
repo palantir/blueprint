@@ -97,7 +97,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       // same goes for dark
       /* stylelint-disable-next-line selector-max-compound-selectors */
       .#{$ns}-dark & {
-        color: var(--bp-typography-color-muted);
+        color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.240) calc(c - 0.011) h)};
       }
 
       #{$icon-classes} {
@@ -196,7 +196,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   .#{$ns}-dark & {
     .#{$ns}-icon {
-      color: var(--bp-typography-color-muted);
+      color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.240) calc(c - 0.011) h)};
     }
 
     &.#{$ns}-disabled .#{$ns}-icon {
