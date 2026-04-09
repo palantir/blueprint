@@ -67,7 +67,7 @@ function renderDialog(extraProps?: Partial<React.ComponentProps<typeof DialogDem
 }
 
 const meta: Meta<typeof Dialog> = {
-    title: "Core/Dialog",
+    title: "Core/Overlays/Dialog",
     component: Dialog,
     decorators: [
         Story => (
@@ -83,7 +83,7 @@ const meta: Meta<typeof Dialog> = {
     tags: ["autodocs"],
     args: {
         title: "Dialog Title",
-        isOpen: false,
+        isOpen: true,
         isCloseButtonShown: true,
     },
     argTypes: {
