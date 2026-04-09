@@ -186,14 +186,9 @@ export const Playground: Story = {
  * Opens the multistep dialog and verifies step 1 is active.
  */
 export const OpenDialog: Story = {
+    args: { isOpen: false },
     render: renderMultistepDialog(),
     play: async ({ canvas, userEvent, step }) => {
-        // dialog is open on all example on render
-        await step("Escape key closes dialog", async () => {
-            await userEvent.keyboard("{Escape}");
-            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).toBeNull());
-        });
-
         await step("Click open button shows dialog at step 1", async () => {
             await userEvent.click(canvas.getByText("Open Multistep Dialog"));
             await waitFor(() => expect(screen.getByText("This is the content for step 1.")).toBeVisible());
