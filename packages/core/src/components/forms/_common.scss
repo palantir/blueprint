@@ -57,7 +57,6 @@ $control-group-stack: (
 );
 
 // animating shadows requires the same number of shadows in different states
-// stylelint-disable alpha-value-notation
 @function input-transition-shadow(
   $color: $input-shadow-color-focus,
   $focus: false,
@@ -83,7 +82,6 @@ $control-group-stack: (
     @return 0 0 0 0 #{oklch(from #{$color} l c h / 0)}, 0 0 0 0 #{oklch(from #{$color} l c h / 0)};
   }
 }
-// stylelint-enable alpha-value-notation
 
 @mixin pt-input() {
   @include pt-input-placeholder;
@@ -158,7 +156,7 @@ $control-group-stack: (
 }
 
 @mixin pt-input-disabled() {
-  background: #{oklch(from var(--bp-intent-default-disabled) calc(l + 0.200) calc(c - 0.015) h / 0.5)};
+  background: #{oklch(from var(--bp-intent-default-disabled) calc(l + 0.2) calc(c - 0.015) h / 0.5)};
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
   cursor: not-allowed;
@@ -214,7 +212,7 @@ $control-group-stack: (
     0 0 0 0 #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)},
     inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
     inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
-  color: var(--bp-typography-color-default-rest);
+  color: #{oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) calc(c - 0.012) h)};
 
   &:focus {
     box-shadow:

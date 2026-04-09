@@ -231,11 +231,7 @@ export const FocusedExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            <TagInput
-                {...args}
-                values={INITIAL_VALUES}
-                inputProps={{ placeholder: "Click to focus..." }}
-            />
+            <TagInput {...args} values={INITIAL_VALUES} inputProps={{ placeholder: "Click to focus..." }} />
         </div>
     ),
 };
