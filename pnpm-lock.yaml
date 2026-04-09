@@ -440,9 +440,6 @@ importers:
       classnames:
         specifier: 'catalog:'
         version: 2.5.1
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
@@ -468,9 +465,6 @@ importers:
       '@blueprintjs/webpack-build-scripts':
         specifier: workspace:^
         version: link:../webpack-build-scripts
-      '@types/lodash':
-        specifier: ~4.14.202
-        version: 4.14.202
       copy-webpack-plugin:
         specifier: ^12.0.2
         version: 12.0.2(webpack@5.102.1)
@@ -534,9 +528,6 @@ importers:
       downloadjs:
         specifier: ^1.4.7
         version: 1.4.7
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       moment:
         specifier: ^2.30.1
         version: 2.30.1
@@ -577,9 +568,6 @@ importers:
       '@types/downloadjs':
         specifier: ~1.4.6
         version: 1.4.6
-      '@types/lodash':
-        specifier: ~4.14.202
-        version: 4.14.202
       copy-webpack-plugin:
         specifier: ^12.0.2
         version: 12.0.2(webpack@5.102.1)
@@ -1203,9 +1191,6 @@ importers:
       classnames:
         specifier: 'catalog:'
         version: 2.5.1
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
       normalize.css:
         specifier: ^8.0.1
         version: 8.0.1
@@ -1225,9 +1210,6 @@ importers:
       '@blueprintjs/webpack-build-scripts':
         specifier: workspace:^
         version: link:../webpack-build-scripts
-      '@types/lodash':
-        specifier: ~4.14.202
-        version: 4.14.202
       copy-webpack-plugin:
         specifier: ^12.0.2
         version: 12.0.2(webpack@5.102.1)
@@ -3229,9 +3211,6 @@ packages:
 
   '@types/kss@3.0.4':
     resolution: {integrity: sha512-mwAQG3IFgl4s6PT1FyD4Ml6GyMl9E+uEwU2uasl+8VdgSbCweZHh1pKzyXnK01fyo0xMpPc0njLkxq5DfI5tcg==}
-
-  '@types/lodash@4.14.202':
-    resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
 
   '@types/mime@1.3.5':
     resolution: {integrity: sha512-/pyBZWSLD2n0dcHE3hq8s8ZvcETHtEuF+3E7XVt0Ig2nvsVQXdghHVcEkIWjy9A0wKfTn97a/PSDYohKIlnP/w==}
@@ -10659,8 +10638,6 @@ snapshots:
       '@types/node': 24.10.0
 
   '@types/kss@3.0.4': {}
-
-  '@types/lodash@4.14.202': {}
 
   '@types/mime@1.3.5': {}
 
