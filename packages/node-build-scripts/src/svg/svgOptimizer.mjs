@@ -8,7 +8,7 @@ import { optimize } from "svgo";
  * Keep the legacy `svgOptimizer.optimize()` surface used by callsites.
  */
 export const svgOptimizer = {
-    optimize(svg, config = {}) {
+    async optimize(svg, config = {}) {
         return optimize(svg, config);
     },
 };
