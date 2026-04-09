@@ -79,7 +79,7 @@ approval_rules:
     options:
       allow_contributor: true
       invalidate_on_push: true
-      ignore_update_merges: true
+      ignore_update_merges: false
     requires:
       count: 2
       permissions: ["admin", "maintain"]
