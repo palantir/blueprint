@@ -1,0 +1,130 @@
+# Blueprint
+
+> Blueprint is a React-based UI toolkit for the web by Palantir Technologies. It is optimized for building complex, data-dense web interfaces for desktop applications which run in modern browsers. This is not a mobile-first UI toolkit. It is built with TypeScript, React 18, and Sass/SCSS. It provides a comprehensive set of components including form controls, overlays, date/time pickers, selects, and a scalable table component. Open source under the Apache 2.0 license. Published as scoped packages under @blueprintjs on NPM.
+
+## Overview
+- [Quick Start](https://blueprintjs.com/docs/#blueprint.quick-start): Installation instructions and quick start guide for using Blueprint in your project, as well as a breakdown of what packages exist.
+- [Getting Started](https://blueprintjs.com/docs/#blueprint/getting-started): Installation instructions and quick start guide for using Blueprint in your project. More detail provided about JSX vs TSX usage as well as Vanilla JS APIs.
+- [Reading the Docs](https://blueprintjs.com/docs/#blueprint/reading-the-docs): Guide to navigating and understanding the Blueprint documentation site.
+- [Principles](https://blueprintjs.com/docs/#blueprint/principles): Design principles and philosophy behind Blueprint's component library.
+
+## Core
+
+- [Accessibility](https://blueprintjs.com/docs/#core/accessibility): Guidelines and patterns for building accessible interfaces with Blueprint.
+- [Classes](https://blueprintjs.com/docs/#core/classes): CSS utility classes for common styling patterns and layout helpers.
+- [Colors](https://blueprintjs.com/docs/#core/colors): Design system color palette with qualitative, sequential, and diverging color schemes. Specific CSS usage of colors is detailed here.
+- [Typography](https://blueprintjs.com/docs/#core/typography): Typography styles including headings, running text, links, and preformatted text. In BP these are largely CSS patterns.
+- [Variables](https://blueprintjs.com/docs/#core/variables): Sass and CSS variables for customizing Blueprint's theme and appearance.
+
+## Components
+
+- [Breadcrumbs](https://blueprintjs.com/docs/#core/components/breadcrumbs): Navigation breadcrumb trail with overflow handling.
+- [Buttons](https://blueprintjs.com/docs/#core/components/buttons): Button component with intent-based styling, icons, and loading states.
+- [Button Group](https://blueprintjs.com/docs/#core/components/button-group): Arranges multiple buttons in a horizontal or vertical group.
+- [Callout](https://blueprintjs.com/docs/#core/components/callout): Informational callout box with optional icon and intent styling.
+- [Card](https://blueprintjs.com/docs/#core/components/card): Bounded container for content with optional elevation and interactivity.
+- [Card List](https://blueprintjs.com/docs/#core/components/card-list): Vertical list of interactive cards within a bounded container.
+- [Control Card](https://blueprintjs.com/docs/#core/components/control-card): Card component that wraps a form control like a checkbox, radio, or switch.
+- [Collapse](https://blueprintjs.com/docs/#core/components/collapse): Animated container that shows or hides its content with a smooth transition.
+- [Divider](https://blueprintjs.com/docs/#core/components/divider): Thin line separator between UI elements, works in both horizontal and vertical layouts.
+- [Editable Text](https://blueprintjs.com/docs/#core/components/editable-text): Inline text element that becomes an editable input on interaction.
+- [Entity Title](https://blueprintjs.com/docs/#core/components/entity-title): Title component for entities with optional icon, heading, subtitle, and tags.
+- [HTML Elements](https://blueprintjs.com/docs/#core/components/html): Styled wrapper for native HTML elements with Blueprint styling applied.
+- [HTML Table](https://blueprintjs.com/docs/#core/components/html-table): Styled HTML table element with Blueprint theming and compact/striped options.
+- [Hotkeys Target](https://blueprintjs.com/docs/#core/components/hotkeys-target): Component for binding keyboard shortcuts to elements.
+- [Icon](https://blueprintjs.com/docs/#core/components/icon): Renders Blueprint icons as SVGs with customizable size, color, and intent.
+- [Link](https://blueprintjs.com/docs/#core/components/link): Styled anchor element with optional icon and Blueprint theming.
+- [Menu](https://blueprintjs.com/docs/#core/components/menu): Vertical list of interactive menu items, often used inside popovers and dropdowns.
+- [Navbar](https://blueprintjs.com/docs/#core/components/navbar): Horizontal navigation bar with support for groups, headings, and dividers.
+- [Non-ideal State](https://blueprintjs.com/docs/#core/components/non-ideal-state): Placeholder component for empty states, errors, or loading scenarios.
+- [Overflow List](https://blueprintjs.com/docs/#core/components/overflow-list): OverflowList takes a generic list of items and renders as many items as can fit inside its container. It automatically collapses items that don't fit into available space.
+- [Panel Stack](https://blueprintjs.com/docs/#core/components/panel-stack): PanelStack manages a stack of panels and displays only the topmost panel. Each panel appears with a header containing a "back" button to return to the previous panel.
+- [Progress Bar](https://blueprintjs.com/docs/#core/components/progress-bar): Horizontal bar indicating determinate or indeterminate progress.
+- [Resize Sensor](https://blueprintjs.com/docs/#core/components/resize-sensor): Utility component that detects and reports element size changes.
+- [Section](https://blueprintjs.com/docs/#core/components/section): Collapsible section container with a title bar and optional right element.
+- [Skeleton](https://blueprintjs.com/docs/#core/components/skeleton): Placeholder loading animation applied to text and block elements.
+- [Spinner](https://blueprintjs.com/docs/#core/components/spinner): Circular loading spinner with configurable size and intent.
+- [Tabs](https://blueprintjs.com/docs/#core/components/tabs): Tabbed interface component for switching between views.
+- [Tag](https://blueprintjs.com/docs/#core/components/tag): Small label component with intent styling, icons, and optional remove button.
+- [Compound Tag](https://blueprintjs.com/docs/#core/components/compound-tag): Tag with a left label and a right value section for key-value display.
+- [Text](https://blueprintjs.com/docs/#core/components/text): Text component that handles overflow with ellipsis and optional title attribute.
+- [Tree](https://blueprintjs.com/docs/#core/components/tree): Hierarchical tree view with expandable/collapsible nodes.
+
+## Form Controls
+
+- [Form Group](https://blueprintjs.com/docs/#core/components/form-group): Groups a label, helper text, and a form control together.
+- [Control Group](https://blueprintjs.com/docs/#core/components/control-group): Renders multiple form controls as a single connected group.
+- [Label](https://blueprintjs.com/docs/#core/components/label): Form label element with optional helper text.
+- [Checkbox](https://blueprintjs.com/docs/#core/components/checkbox): Checkbox control with label, indeterminate state support, and alignment options.
+- [Radio](https://blueprintjs.com/docs/#core/components/radio): Radio button component and radio group for selecting one option from a set.
+- [HTML Select](https://blueprintjs.com/docs/#core/components/html-select): Styled wrapper around the native HTML select element.
+- [Segmented Control](https://blueprintjs.com/docs/#core/components/segmented-control): Linear set of two or more segments acting as mutually exclusive buttons.
+- [Slider](https://blueprintjs.com/docs/#core/components/sliders): Slider and range slider components for selecting numeric values.
+- [Switch](https://blueprintjs.com/docs/#core/components/switch): Toggle switch for boolean on/off states.
+
+## Form Inputs
+
+- [Input Group](https://blueprintjs.com/docs/#core/components/input-group): Text input with optional left icon and right element.
+- [Text Area](https://blueprintjs.com/docs/#core/components/text-area): Multi-line text input with auto-resizing support.
+- [File Input](https://blueprintjs.com/docs/#core/components/file-input): Styled file upload input with customizable button text.
+- [Numeric Input](https://blueprintjs.com/docs/#core/components/numeric-input): Input for numeric values with increment/decrement buttons and configurable bounds.
+- [Tag Input](https://blueprintjs.com/docs/#core/components/tag-input): Input that manages a list of tag values with add and remove functionality.
+
+## Overlays
+
+- [Overlay](https://blueprintjs.com/docs/#core/components/overlay): [DEPRECATED, use Overlay2] Generic overlay wrapper that renders content above the page with a backdrop.
+- [Overlay2](https://blueprintjs.com/docs/#core/components/overlay2): Next-generation overlay component with improved focus management and lifecycle.
+- [Portal](https://blueprintjs.com/docs/#core/components/portal): Renders children into a DOM node outside the parent component hierarchy.
+- [Alert](https://blueprintjs.com/docs/#core/components/alert): Modal alert dialog for confirming user actions with configurable intent buttons.
+- [Context Menu](https://blueprintjs.com/docs/#core/components/context-menu): Right-click context menu triggered on an element.
+- [Context Menu Popover](https://blueprintjs.com/docs/#core/components/context-menu-popover): Popover-based context menu with configurable positioning.
+- [Dialog](https://blueprintjs.com/docs/#core/components/dialog): Modal dialog with header, body, and footer sections.
+- [Drawer](https://blueprintjs.com/docs/#core/components/drawer): Panel that slides in from the edge of the screen.
+- [Popover](https://blueprintjs.com/docs/#core/components/popover): [DEPRECATED, use PopoverNext] Floating container that appears next to a target element, used for tooltips, menus, and forms.
+- [Popover Next](https://blueprintjs.com/docs/#core/components/popover-next): Next-generation Popover built on Floating UI with improved positioning and performance.
+- [Toast](https://blueprintjs.com/docs/#core/components/toast): Ephemeral notification message that appears and auto-dismisses.
+- [Tooltip](https://blueprintjs.com/docs/#core/components/tooltip): Lightweight popover for showing additional information on hover or focus.
+
+## Context Providers
+
+- [Blueprint Provider](https://blueprintjs.com/docs/#core/context/blueprint-provider): Top-level provider that configures global Blueprint settings.
+- [Hotkeys Provider](https://blueprintjs.com/docs/#core/context/hotkeys-provider): Provider for the hotkeys system that enables keyboard shortcut registration.
+- [Overlays Provider](https://blueprintjs.com/docs/#core/context/overlays-provider): Provider that manages the overlay stack for proper focus and z-index handling.
+- [Portal Provider](https://blueprintjs.com/docs/#core/context/portal-provider): Provider that configures the container element for all portaled content.
+
+## Hooks
+
+- [useHotkeys](https://blueprintjs.com/docs/#core/hooks/use-hotkeys): Hook for registering keyboard shortcuts with automatic binding and cleanup.
+- [useOverlayStack](https://blueprintjs.com/docs/#core/hooks/use-overlay-stack): Hook for interacting with the overlay stack to manage overlay lifecycle.
+
+## DateTime
+
+- [Date Picker](https://blueprintjs.com/docs/#datetime/date-picker): Calendar-based component for selecting a single date.
+- [Date Input](https://blueprintjs.com/docs/#datetime/date-input): Text input that parses and formats dates with an optional calendar popover.
+- [Date Range Picker](https://blueprintjs.com/docs/#datetime/date-range-picker): Two-calendar component for selecting a date range with shortcut presets.
+- [Date Range Input](https://blueprintjs.com/docs/#datetime/date-range-input): Dual text inputs for entering a date range with calendar popover.
+- [Time Picker](https://blueprintjs.com/docs/#datetime/timepicker): Input for selecting a time of day with hour, minute, second, and millisecond precision.
+- [Timezone Select](https://blueprintjs.com/docs/#datetime/timezone-select): Dropdown for selecting a timezone from the IANA timezone database.
+
+## Icons
+
+- [Loading Icons](https://blueprintjs.com/docs/#icons/loading-icons): Guide to loading and bundling Blueprint icons efficiently with tree-shaking.
+- [Icons List](https://blueprintjs.com/docs/#icons/icons-list): Searchable catalog of all 500+ Blueprint icons.
+
+## Select
+
+- [Select](https://blueprintjs.com/docs/#select/select-component): Single-item selector with built-in filtering and keyboard navigation.
+- [Suggest](https://blueprintjs.com/docs/#select/suggest): Text input with autocomplete suggestions from a filterable list.
+- [Multi Select](https://blueprintjs.com/docs/#select/multi-select): Multi-item selector that renders selected items as tags.
+- [Omnibar](https://blueprintjs.com/docs/#select/omnibar): Full-screen overlay search input for searching across all items.
+- [Query List](https://blueprintjs.com/docs/#select/query-list): Headless component that manages item filtering and keyboard interaction for list selection.
+
+## Table
+
+- [Features](https://blueprintjs.com/docs/#table/features): Overview of table features including sorting, filtering, selection, and resizing.
+- [API](https://blueprintjs.com/docs/#table/api): Complete API reference for table components including Table, Column, Cell, and related types.
+
+## Labs
+
+- [Box](https://blueprintjs.com/docs/#labs/box): Polymorphic layout primitive for building flexible UI compositions.
+- [Flex](https://blueprintjs.com/docs/#labs/flex): Flexbox layout component with typed props for alignment, direction, and spacing.

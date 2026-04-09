@@ -1,0 +1,199 @@
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
+import { act } from "react";
+import sinon from "sinon";
+
+import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
+import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
+import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
+import type { ItemRendererProps } from "../../common/itemRenderer";
+import { selectComponentSuite } from "../select/selectComponentTestUtils";
+
+import { MultiSelect, type MultiSelectProps, type MultiSelectState } from "./multiSelect";
+
+describe("<MultiSelect>", () => {
+    const defaultProps = {
+        items: TOP_100_FILMS,
+        popoverProps: { isOpen: true, usePortal: false },
+        query: "",
+        selectedItems: [] as Film[],
+        tagRenderer: renderTag,
+    };
+    let handlers: {
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], React.JSX.Element | null>;
+        onItemSelect: sinon.SinonSpy;
+    };
+
+    beforeEach(() => {
+        handlers = {
+            itemPredicate: sinon.spy(filterByYear),
+            itemRenderer: sinon.spy(renderFilm),
+            onItemSelect: sinon.spy(),
+        };
+    });
+
+    selectComponentSuite<MultiSelectProps<Film>, MultiSelectState>(props =>
+        mount(
+            <MultiSelect<Film>
+                selectedItems={[]}
+                {...props}
+                popoverProps={{ isOpen: true, usePortal: false }}
+                tagRenderer={renderTag}
+            />,
+        ),
+    );
+
+    it("placeholder can be controlled with placeholder prop", () => {
+        const placeholder = "look here";
+
+        const input = multiselect({ placeholder }).find("input");
+        expect(input.getDOMNode<HTMLInputElement>().placeholder).toBe(placeholder);
+    });
+
+    it("placeholder can be controlled with TagInput's inputProps", () => {
+        const placeholder = "look here";
+
+        const input = multiselect({ tagInputProps: { placeholder } }).find("input");
+        expect(input.getDOMNode<HTMLInputElement>().placeholder).toBe(placeholder);
+    });
+
+    it("tagRenderer can return JSX", () => {
+        const wrapper = multiselect({
+            selectedItems: [TOP_100_FILMS[0]],
+            tagRenderer: film => <strong>{film.title}</strong>,
+        });
+        expect(wrapper.find(Tag).find("strong")).toHaveLength(1);
+    });
+
+    it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
+        const itemSelectSpy = sinon.spy();
+        const wrapper = multiselect({
+            onItemSelect: itemSelectSpy,
+            selectedItems: [TOP_100_FILMS[1]],
+        });
+
+        const firstTagRemoveButton = wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(0).getDOMNode();
+        firstTagRemoveButton.dispatchEvent(new KeyboardEvent("keyup", { bubbles: true, key: "Enter" }));
+
+        // checks for the bug in https://github.com/palantir/blueprint/issues/3674
+        // where the first item in the dropdown list would get selected upon hitting Enter inside
+        // a TAG_REMOVE button
+        expect(itemSelectSpy.calledWith(TOP_100_FILMS[0])).toBe(false);
+    });
+
+    it("triggers onRemove", () => {
+        const handleRemove = sinon.spy();
+        const wrapper = multiselect({
+            onRemove: handleRemove,
+            selectedItems: [TOP_100_FILMS[2], TOP_100_FILMS[3], TOP_100_FILMS[4]],
+        });
+        wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(1).simulate("click");
+        expect(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1)).toBe(true);
+    });
+
+    it("opens popover with custom target", async () => {
+        const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
+        const wrapper = multiselect({
+            customTarget,
+            popoverProps: { usePortal: false },
+        });
+
+        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        findTargetButton(wrapper).simulate("click");
+
+        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+    });
+
+    it("allows searching within popover content when custom target provided", async () => {
+        // Mount to document for this test to check from input focus
+        const containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+
+        const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
+        const handleQueryChange = sinon.spy();
+        const props = {
+            customTarget,
+            onQueryChange: handleQueryChange,
+            popoverProps: { usePortal: false },
+        };
+
+        const wrapper = mount(<MultiSelect<Film> {...defaultProps} {...handlers} {...props} />, {
+            attachTo: containerElement,
+        });
+
+        findTargetButton(wrapper).simulate("click");
+
+        // There's a slight delay between the Popover rendering and input getting focus
+        await delay(500);
+        wrapper.update();
+
+        let input = wrapper.find("input");
+        expect(input.prop("value")).toBe("");
+        expect(handleQueryChange.notCalled).toBe(true);
+
+        // Want to check if activeElement changed from default state before doing strictEqual check,
+        // otherwise this test will take really long in the failure case due to strictEqual having to check
+        // the entire document.body
+        if (document.activeElement !== document.body) {
+            expect(document.activeElement).toBe(input.getDOMNode());
+        } else {
+            throw new Error("activeElement is still on document.body, input is not in focus");
+        }
+
+        input.simulate("change", { target: { value: "Hello World" } });
+
+        input = wrapper.find("input");
+        expect(input.prop("value")).toBe("Hello World");
+
+        // Unmount React tree before removing container from DOM
+        wrapper.unmount();
+        containerElement.remove();
+    });
+
+    function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
+        const wrapper = mount(
+            <MultiSelect<Film> {...defaultProps} {...handlers} {...props}>
+                <article />
+            </MultiSelect>,
+        );
+        if (query !== undefined) {
+            act(() => {
+                wrapper.setState({ query });
+            });
+        }
+        return wrapper;
+    }
+
+    function findTargetButton(wrapper: ReactWrapper): ReactWrapper<HTMLAttributes> {
+        return wrapper.find("[data-testid='custom-target-button']").hostNodes();
+    }
+});
+
+function renderTag(film: Film) {
+    return film.title;
+}
+
+function filterByYear(query: string, film: Film) {
+    return query === "" || film.year.toString() === query;
+}
+
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}

@@ -15,20 +15,14 @@
  */
 
 import classNames from "classnames";
-import { createRef } from "react";
+import { useMemo, useRef } from "react";
 
 import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import {
-    AbstractPureComponent,
-    Classes,
-    DISPLAYNAME_PREFIX,
-    type MaybeElement,
-    mergeRefs,
-    type Props,
-} from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, mergeRefs, type Props } from "../../common";
 import * as Errors from "../../common/errors";
 import { uniqueId } from "../../common/utils";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Button } from "../button/buttons";
 import { H2 } from "../html/html";
 import { Icon } from "../icon/icon";
@@ -40,10 +34,17 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     children?: React.ReactNode;
 
     /**
+     * Ref attached to the `Classes.DIALOG_CONTAINER` element.
+     */
+    containerRef?: React.Ref<HTMLDivElement>;
+
+    /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
+     *
+     * @default false
      */
-    isOpen: boolean;
+    isOpen?: boolean;
 
     /**
      * Dialog always has a backdrop so this prop cannot be overriden.
@@ -53,13 +54,13 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the
      * dialog's header. Note that the header will only be rendered if `title` is
-     * provided.
+     * not null or undefined.
      */
     icon?: IconName | MaybeElement;
 
     /**
      * Whether to show the close button in the dialog's header.
-     * Note that the header will only be rendered if `title` is provided.
+     * Note that the header will only be rendered if `title` is not null or undefined.
      *
      * @default true
      */
@@ -78,8 +79,10 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     style?: React.CSSProperties;
 
     /**
-     * Title of the dialog. If provided, an element with `Classes.DIALOG_HEADER`
+     * Title of the dialog. If not null or undefined, an element with `Classes.DIALOG_HEADER`
      * will be rendered inside the dialog before any children elements.
+     * An empty string `""` will render the header without a visible title (useful for
+     * showing the close button without a title).
      */
     title?: React.ReactNode;
 
@@ -95,11 +98,6 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
      * name here will require defining new CSS transition properties.
      */
     transitionName?: string;
-
-    /**
-     * Ref attached to the `Classes.DIALOG_CONTAINER` element.
-     */
-    containerRef?: React.Ref<HTMLDivElement>;
 
     /**
      * ID of the element that contains title or label text for this dialog.
@@ -120,55 +118,27 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog
  */
-export class Dialog extends AbstractPureComponent<DialogProps> {
-    public static defaultProps: DialogProps = {
-        canOutsideClickClose: true,
-        isOpen: false,
-        titleTagName: H2,
-    };
+export const Dialog: React.FC<DialogProps> & { displayName?: string } = props => {
+    const {
+        canOutsideClickClose = true,
+        children,
+        className,
+        containerRef,
+        icon,
+        isCloseButtonShown,
+        isOpen = false,
+        onClose,
+        role = "dialog",
+        style,
+        title,
+        titleTagName: TitleTagName = H2,
+        ...overlayProps
+    } = props;
+    const childRef = useRef<HTMLDivElement>(null);
+    const titleId = useMemo(() => `title-${uniqueId("bp-dialog")}`, []);
 
-    private childRef = createRef<HTMLDivElement>();
-
-    private titleId: string;
-
-    public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
-
-    public constructor(props: DialogProps) {
-        super(props);
-
-        const id = uniqueId("bp-dialog");
-        this.titleId = `title-${id}`;
-    }
-
-    public render() {
-        const { className, children, containerRef, style, title, role = "dialog", ...overlayProps } = this.props;
-
-        return (
-            <Overlay2
-                {...overlayProps}
-                className={Classes.OVERLAY_SCROLL_CONTAINER}
-                childRef={this.childRef}
-                hasBackdrop={true}
-            >
-                <div className={Classes.DIALOG_CONTAINER} ref={mergeRefs(containerRef, this.childRef)}>
-                    <div
-                        className={classNames(Classes.DIALOG, className)}
-                        role={role}
-                        aria-modal={overlayProps.enforceFocus ?? true}
-                        aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
-                        aria-describedby={this.props["aria-describedby"]}
-                        style={style}
-                    >
-                        {this.maybeRenderHeader()}
-                        {children}
-                    </div>
-                </div>
-            </Overlay2>
-        );
-    }
-
-    protected validateProps(props: DialogProps) {
-        if (props.title == null) {
+    useValidateProps(() => {
+        if (title == null) {
             if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);
             }
@@ -176,37 +146,47 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_CLOSE_BUTTON);
             }
         }
-    }
+    }, [title, props.icon, props.isCloseButtonShown]);
 
-    private maybeRenderCloseButton() {
-        // show close button if prop is undefined or null
-        // this gives us a behavior as if the default value were `true`
-        if (this.props.isCloseButtonShown !== false) {
-            return (
-                <Button
-                    aria-label="Close"
-                    className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<SmallCross size={IconSize.STANDARD} />}
-                    onClick={this.props.onClose}
-                    variant="minimal"
-                />
-            );
-        } else {
-            return undefined;
-        }
-    }
-
-    private maybeRenderHeader() {
-        const { icon, title, titleTagName: TitleTagName = H2 } = this.props;
-        if (title == null) {
-            return undefined;
-        }
-        return (
-            <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
-                <TitleTagName id={this.titleId}>{title}</TitleTagName>
-                {this.maybeRenderCloseButton()}
+    return (
+        <Overlay2
+            {...overlayProps}
+            isOpen={isOpen}
+            canOutsideClickClose={canOutsideClickClose}
+            className={Classes.OVERLAY_SCROLL_CONTAINER}
+            childRef={childRef}
+            hasBackdrop={true}
+            onClose={onClose}
+        >
+            <div className={Classes.DIALOG_CONTAINER} ref={mergeRefs(containerRef, childRef)}>
+                <div
+                    aria-describedby={overlayProps["aria-describedby"]}
+                    aria-labelledby={overlayProps["aria-labelledby"] || (title != null ? titleId : undefined)}
+                    aria-modal={overlayProps.enforceFocus ?? true}
+                    className={classNames(Classes.DIALOG, className)}
+                    role={role}
+                    style={style}
+                >
+                    {title != null && (
+                        <div className={Classes.DIALOG_HEADER}>
+                            <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
+                            <TitleTagName id={titleId}>{title}</TitleTagName>
+                            {isCloseButtonShown !== false && (
+                                <Button
+                                    aria-label="Close"
+                                    className={Classes.DIALOG_CLOSE_BUTTON}
+                                    icon={<SmallCross size={IconSize.STANDARD} />}
+                                    onClick={onClose}
+                                    variant="minimal"
+                                />
+                            )}
+                        </div>
+                    )}
+                    {children}
+                </div>
             </div>
-        );
-    }
-}
+        </Overlay2>
+    );
+};
+
+Dialog.displayName = `${DISPLAYNAME_PREFIX}.Dialog`;

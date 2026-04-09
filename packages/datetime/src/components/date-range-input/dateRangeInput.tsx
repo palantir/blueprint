@@ -230,6 +230,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 isOpen={this.state.isOpen}
                 placement="bottom-start"
                 {...popoverProps}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 className={classNames(Classes.DATE_RANGE_INPUT, popoverProps.className, this.props.className)}
                 content={popoverContent}
@@ -456,11 +457,11 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
 
         switch (e.type) {
             case "blur":
-                this.handleInputBlur(e, boundary);
+                this.handleInputBlur(e as React.FocusEvent<HTMLInputElement>, boundary);
                 inputProps?.onBlur?.(e as React.FocusEvent<HTMLInputElement>);
                 break;
             case "change":
-                this.handleInputChange(e, boundary);
+                this.handleInputChange(e as React.ChangeEvent<HTMLInputElement>, boundary);
                 inputProps?.onChange?.(e as React.ChangeEvent<HTMLInputElement>);
                 break;
             case "click":
@@ -469,7 +470,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 inputProps?.onClick?.(e);
                 break;
             case "focus":
-                this.handleInputFocus(e, boundary);
+                this.handleInputFocus(e as React.FocusEvent<HTMLInputElement>, boundary);
                 inputProps?.onFocus?.(e as React.FocusEvent<HTMLInputElement>);
                 break;
             case "keydown":
@@ -648,7 +649,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         e.stopPropagation();
     };
 
-    private handleInputFocus = (_e: React.FormEvent<HTMLInputElement>, boundary: Boundary) => {
+    private handleInputFocus = (_e: React.FocusEvent<HTMLInputElement>, boundary: Boundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
         const isValueControlled = this.isControlled();
         // We may be reacting to a programmatic focus triggered by componentDidUpdate() at a point when
@@ -676,7 +677,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         });
     };
 
-    private handleInputBlur = (_e: React.FormEvent<HTMLInputElement>, boundary: Boundary) => {
+    private handleInputBlur = (_e: React.FocusEvent<HTMLInputElement>, boundary: Boundary) => {
         const { keys, values } = this.getStateKeysAndValuesForBoundary(boundary);
 
         const maybeNextDate = this.parseDate(values.inputString);
@@ -714,8 +715,8 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         this.setState(nextState);
     };
 
-    private handleInputChange = (e: React.FormEvent<HTMLInputElement>, boundary: Boundary) => {
-        const inputString = (e.target as HTMLInputElement).value;
+    private handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, boundary: Boundary) => {
+        const inputString = e.target.value;
 
         const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
         const maybeNextDate = this.parseDate(inputString);

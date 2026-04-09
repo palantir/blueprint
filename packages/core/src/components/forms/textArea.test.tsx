@@ -1,0 +1,145 @@
+/*
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { mount } from "enzyme";
+import { createRef } from "react";
+
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
+import { TextArea } from "./textArea";
+
+describe("<TextArea>", () => {
+    let containerElement: HTMLElement;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        containerElement.setAttribute("style", "width: 1000px; height: 1000px;");
+        document.body.appendChild(containerElement);
+    });
+
+    afterEach(() => {
+        containerElement.remove();
+    });
+
+    it("No manual resizes when autoResize enabled", () => {
+        const wrapper = mount(<TextArea autoResize={true} />, { attachTo: containerElement });
+        const textarea = wrapper.find("textarea");
+
+        textarea.simulate("change", { target: { scrollHeight: 500 } });
+
+        assert.notEqual(textarea.getDOMNode<HTMLElement>().style.height, "500px");
+    });
+
+    it("resizes with large initial input when autoResize enabled", () => {
+        const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenean finibus eget enim non accumsan.
+        Nunc lobortis luctus magna eleifend consectetur.
+        Suspendisse ut semper sem, quis efficitur felis.
+        Praesent suscipit nunc non semper tempor.
+        Sed eros sapien, semper sed imperdiet sed,
+        dictum eget purus. Donec porta accumsan pretium.
+        Fusce at felis mattis, tincidunt erat non, varius erat.`;
+        const wrapper = mount(<TextArea value={initialValue} autoResize={true} />, { attachTo: containerElement });
+        const textarea = wrapper.find("textarea");
+
+        const scrollHeightInPixels = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
+
+        assert.equal(textarea.getDOMNode<HTMLElement>().style.height, scrollHeightInPixels);
+    });
+
+    // Skip: jsdom doesn't compute real scroll heights
+    it.skip("resizes with long text input when autoResize enabled", () => {
+        const initialValue = "A";
+        const nextValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Aenean finibus eget enim non accumsan.
+        Nunc lobortis luctus magna eleifend consectetur.
+        Suspendisse ut semper sem, quis efficitur felis.
+        Praesent suscipit nunc non semper tempor.
+        Sed eros sapien, semper sed imperdiet sed,
+        dictum eget purus. Donec porta accumsan pretium.
+        Fusce at felis mattis, tincidunt erat non, varius erat.`;
+        const wrapper = mount(<TextArea value={initialValue} autoResize={true} />, { attachTo: containerElement });
+        const textarea = wrapper.find("textarea");
+
+        const scrollHeightInPixelsBefore = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
+        wrapper.setProps({ value: nextValue }).update();
+        const scrollHeightInPixelsAfter = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
+
+        assert.notEqual(scrollHeightInPixelsBefore, scrollHeightInPixelsAfter);
+    });
+
+    it("doesn't resize by default", () => {
+        const wrapper = mount(<TextArea />, { attachTo: containerElement });
+        const textarea = wrapper.find("textarea");
+
+        textarea.simulate("change", {
+            target: {
+                scrollHeight: textarea.getDOMNode().scrollHeight,
+            },
+        });
+
+        assert.equal(textarea.getDOMNode<HTMLElement>().style.height, "");
+    });
+
+    it("doesn't clobber user-supplied styles", () => {
+        const wrapper = mount(<TextArea autoResize={true} style={{ marginTop: 10 }} />, {
+            attachTo: containerElement,
+        });
+        const textarea = wrapper.find("textarea");
+
+        textarea.simulate("change", { target: { scrollHeight: 500 } });
+
+        assert.equal(textarea.getDOMNode<HTMLElement>().style.marginTop, "10px");
+    });
+
+    it("updates on ref change", () => {
+        let textArea: HTMLTextAreaElement | null = null;
+        let textAreaNew: HTMLTextAreaElement | null = null;
+        let callCount = 0;
+        let newCallCount = 0;
+        const textAreaRefCallback = (ref: HTMLTextAreaElement | null) => {
+            callCount += 1;
+            textArea = ref;
+        };
+        const textAreaNewRefCallback = (ref: HTMLTextAreaElement | null) => {
+            newCallCount += 1;
+            textAreaNew = ref;
+        };
+
+        const textAreawrapper = mount(<TextArea inputRef={textAreaRefCallback} />, { attachTo: containerElement });
+        assert.instanceOf(textArea, HTMLTextAreaElement);
+        assert.strictEqual(callCount, 1);
+
+        textAreawrapper.setProps({ inputRef: textAreaNewRefCallback });
+        textAreawrapper.update();
+        assert.strictEqual(callCount, 2);
+        assert.isNull(textArea);
+        assert.strictEqual(newCallCount, 1);
+        assert.instanceOf(textAreaNew, HTMLTextAreaElement);
+    });
+
+    it("accepts object refs created with createRef and updates on change", () => {
+        const textAreaRef = createRef<HTMLTextAreaElement>();
+        const textAreaNewRef = createRef<HTMLTextAreaElement>();
+
+        const textAreawrapper = mount(<TextArea inputRef={textAreaRef} />, { attachTo: containerElement });
+        assert.instanceOf(textAreaRef.current, HTMLTextAreaElement);
+
+        textAreawrapper.setProps({ inputRef: textAreaNewRef });
+        assert.isNull(textAreaRef.current);
+        assert.instanceOf(textAreaNewRef.current, HTMLTextAreaElement);
+    });
+});

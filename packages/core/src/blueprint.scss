@@ -6,6 +6,8 @@ Licensed under the Apache License, Version 2.0.
 */
 
 // Import files in the same order that they are documented in the docs
+@import "design-tokens/build/tokens";
+@import "design-tokens/build/tokens-dark";
 @import "@blueprintjs/colors/lib/scss/colors";
 @import "common/variables";
 @import "common/variables-extended";

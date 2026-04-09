@@ -222,6 +222,12 @@ export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
 export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
+export const LINK = `${NS}-link`;
+export const LINK_UNDERLINE_ALWAYS = `${LINK}-underline-always`;
+export const LINK_UNDERLINE_HOVER = `${LINK}-underline-hover`;
+export const LINK_UNDERLINE_NONE = `${LINK}-underline-none`;
+export const LINK_COLOR_INHERIT = `${LINK}-color-inherit`;
+
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
 export const MENU_ITEM_IS_SELECTABLE = `${MENU_ITEM}-is-selectable`;
@@ -305,6 +311,8 @@ export const POPOVER_POPPER_ESCAPED = `${POPOVER}-popper-escaped`;
 export const POPOVER_REFERENCE_HIDDEN = `${POPOVER}-reference-hidden`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
 export const POPOVER_TRANSITION_CONTAINER = `${POPOVER}-transition-container`;
+export const POPOVER_MINIMAL_ANIMATION = `${POPOVER}-minimal-animation`;
+
 /** @deprecated, no longer used in Blueprint v5.x */
 export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
 

@@ -61,6 +61,7 @@ export { HTMLSelect, type HTMLSelectIconName, type HTMLSelectProps } from "./htm
 export { HTMLTable, type HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
 export { type DefaultIconProps, Icon, type IconComponent, type IconName, type IconProps, IconSize } from "./icon/icon";
+export { Link, type LinkProps as LinkComponentProps } from "./link/link";
 export { Menu, type MenuProps } from "./menu/menu";
 export { MenuDivider, type MenuDividerProps } from "./menu/menuDivider";
 export { MenuItem, type MenuItemProps } from "./menu/menuItem";
@@ -80,8 +81,22 @@ export { Text, type TextProps } from "./text/text";
 export { PanelStack, type PanelStackProps, PanelStack2, type PanelStack2Props } from "./panel-stack/panelStack";
 export type { Panel, PanelProps } from "./panel-stack/panelTypes";
 export { Popover } from "./popover/popover";
-export { PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
+export { PopoverAnimation, PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
 export { PopoverPosition } from "./popover/popoverPosition";
+export type {
+    MiddlewareConfig,
+    PopoverNextAutoUpdateOptions,
+    PopoverNextBoundary,
+    PopoverNextPlacement,
+    PopoverNextPositioningStrategy,
+    PopoverNextProps,
+    PopoverNextRootBoundary,
+} from "./popover-next/popoverNextProps";
+export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
+export {
+    popoverPositionToNextPlacement,
+    popperModifiersToNextMiddleware,
+} from "./popover-next/popoverNextMigrationUtils";
 export type {
     DefaultPopoverTargetHTMLProps,
     PopoverSharedProps,

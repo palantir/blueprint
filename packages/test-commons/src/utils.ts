@@ -14,16 +14,14 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { expect } from "vitest";
 
 /**
  * Dispatch a native KeyBoardEvent on the target element with the given type
  * and event arguments. `type` can be one of "keydown|keyup|keypress".
  *
- * This method is for unit testing with Karma and Chrome ONLY! The hacks we
- * use aren't compatible with other browsers. Do not use this method for
- * anything other than simulating keyboard events for PhantomJS and karma
- * chrome tests.
+ * This method is for unit testing with Vitest and jsdom. Do not use this
+ * method for anything other than simulating keyboard events in tests.
  */
 export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, shift = false) {
     const event = new KeyboardEvent(eventType, {
@@ -98,13 +96,9 @@ export function expectPropValidationError<P extends object>(
     Component: React.ComponentClass<P>,
     props: P & { children?: React.ReactNode },
     errorMessage?: string,
-    assertionMessage?: string,
 ) {
     const { defaultProps = {} } = Component;
     // HACKHACK: weird casts ahead
 
-    expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).to.throw(
-        errorMessage,
-        assertionMessage,
-    );
+    expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).toThrow(errorMessage);
 }

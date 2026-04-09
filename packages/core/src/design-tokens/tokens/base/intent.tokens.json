@@ -1,0 +1,41 @@
+{
+    "intent": {
+        "$type": "color",
+        "$description": "Semantic intent colors with interaction states (BP6 pattern: darker on hover)",
+        "default": {
+            "rest": { "$value": "{palette.gray.1}" },
+            "hover": { "$value": "{palette.dark-gray.5}" },
+            "active": { "$value": "{palette.dark-gray.4}" },
+            "disabled": { "$value": "{palette.gray.3}" },
+            "foreground": { "$value": "{palette.white}" }
+        },
+        "primary": {
+            "rest": { "$value": "{palette.blue.3}" },
+            "hover": { "$value": "{palette.blue.2}" },
+            "active": { "$value": "{palette.blue.1}" },
+            "disabled": { "$value": "{palette.blue.4}" },
+            "foreground": { "$value": "{palette.white}" }
+        },
+        "success": {
+            "rest": { "$value": "{palette.green.3}" },
+            "hover": { "$value": "{palette.green.2}" },
+            "active": { "$value": "{palette.green.1}" },
+            "disabled": { "$value": "{palette.green.4}" },
+            "foreground": { "$value": "{palette.white}" }
+        },
+        "warning": {
+            "rest": { "$value": "{palette.orange.3}" },
+            "hover": { "$value": "{palette.orange.2}" },
+            "active": { "$value": "{palette.orange.1}" },
+            "disabled": { "$value": "{palette.orange.4}" },
+            "foreground": { "$value": "{palette.black}" }
+        },
+        "danger": {
+            "rest": { "$value": "{palette.red.3}" },
+            "hover": { "$value": "{palette.red.2}" },
+            "active": { "$value": "{palette.red.1}" },
+            "disabled": { "$value": "{palette.red.4}" },
+            "foreground": { "$value": "{palette.white}" }
+        }
+    }
+}

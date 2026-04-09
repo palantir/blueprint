@@ -1,0 +1,16 @@
+{
+    "extends": "../../../config/tsconfig.web",
+    "compilerOptions": {
+        "composite": true,
+        "outDir": "../lib/esm"
+    },
+    "exclude": [
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
+        "vitest-env.d.ts",
+        "design-tokens/build.ts",
+        "design-tokens/sd.config.ts"
+    ]
+}

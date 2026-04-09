@@ -89,7 +89,7 @@ const cssLoaders = [
         loader: fileURLToPath(import.meta.resolve("postcss-loader")),
         options: {
             postcssOptions: {
-                plugins: [autoprefixer, cssnanoPlugin({ preset: "default" })],
+                plugins: [autoprefixer, cssnanoPlugin({ preset: ["default", { calc: false }] })],
             },
         },
     },

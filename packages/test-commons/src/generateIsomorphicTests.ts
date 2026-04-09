@@ -2,11 +2,9 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-import { strictEqual } from "assert";
-import Enzyme from "enzyme";
-import { type ComponentClass, createElement, type FC, type ReactNode } from "react";
+import { type ComponentClass, type FC, type ReactNode } from "react";
 
-function isReactClass(Component: any): Component is ComponentClass<any> {
+export function isReactClass(Component: any): Component is ComponentClass<any> {
     return (
         typeof Component !== "undefined" &&
         typeof Component.prototype !== "undefined" &&
@@ -15,9 +13,19 @@ function isReactClass(Component: any): Component is ComponentClass<any> {
     );
 }
 
-/** Janky heuristic for detecting function components. */
-function isReactFunctionComponent(Component: any, name: string): Component is FC<any> {
-    return typeof Component === "function" && name.charAt(0) === name.charAt(0).toUpperCase();
+/** Janky heuristic for detecting function components (including forwardRef). */
+export function isReactFunctionComponent(Component: any, name: string): Component is FC<any> {
+    if (name.charAt(0) !== name.charAt(0).toUpperCase()) {
+        return false;
+    }
+    if (typeof Component === "function" && !isReactClass(Component)) {
+        return true;
+    }
+    // React.forwardRef() returns an object with $$typeof, not a function
+    if (typeof Component === "object" && Component !== null && Component.$$typeof === Symbol.for("react.forward_ref")) {
+        return true;
+    }
+    return false;
 }
 
 export interface IsomorphicTestConfig {
@@ -48,53 +56,19 @@ export interface GenerateIsomorphicTestsOptions {
 }
 
 /**
- * Tests that each ComponentClass in Components can be isomorphically rendered on the server.
- *
- * @param Components Namespace import of all components to test.
- * @param config Configuration per component. This is a mapped type supporting all keys in Components.
- * @param options Test generator options.
+ * Filters a namespace of exports down to just the React component names.
  */
-export function generateIsomorphicTests<T extends { [name: string]: any }>(
+export function getComponentNames<T extends { [name: string]: any }>(
     Components: T,
-    config: { [P in keyof T]?: IsomorphicTestConfig } = {},
     options: GenerateIsomorphicTestsOptions = {},
-) {
-    function render(name: string, extraProps?: Record<string, unknown>) {
-        const { children, props }: IsomorphicTestConfig = config[name] || {};
-        const finalProps = extraProps ? { ...props, ...extraProps } : props;
-        // Render to static HTML, just as a server would.
-        // We care merely that `render()` succeeds: it can be server-rendered.
-        // Errors will fail the test and log full stack traces to the console. Nifty!
-        const element = createElement(Components[name], finalProps, children);
-        return Enzyme.render(element);
-    }
-
+): string[] {
     const { excludedSymbols = [], testFunctionComponents = true } = options;
-
-    Object.keys(Components)
+    return Object.keys(Components)
         .sort()
         .filter(
             name =>
                 excludedSymbols.indexOf(name) === -1 &&
                 (isReactClass(Components[name]) ||
                     (testFunctionComponents && isReactFunctionComponent(Components[name], name))),
-        )
-        .forEach(componentName => {
-            const { className, skip }: IsomorphicTestConfig = config[componentName] || {};
-            if (skip) {
-                it.skip(`<${componentName}>`);
-                return;
-            }
-
-            it(`<${componentName}>`, () => render(componentName));
-            if (className === false) {
-                it.skip(`<${componentName} className>`);
-            } else {
-                it(`<${componentName} className>`, () => {
-                    const testClass = "test-test-test";
-                    const doc = render(componentName, { className: testClass });
-                    strictEqual(doc.find(`.${testClass}`).length + doc.filter(`.${testClass}`).length, 1);
-                });
-            }
-        });
+        );
 }

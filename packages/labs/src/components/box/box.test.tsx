@@ -4,9 +4,9 @@
 
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
-import { describe, expect, it } from "vitest";
 
 import { Button, Classes as CoreClasses, H1 } from "@blueprintjs/core";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -15,42 +15,42 @@ import { Box } from "./box";
 const NS = Classes.getClassNamespace();
 
 describe("<Box>", () => {
-    it("should render content", () => {
+    test("should render content", () => {
         render(<Box>Test</Box>);
         const box = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(box).toBeInTheDocument();
     });
 
-    it("should render as a div by default", () => {
+    test("should render as a div by default", () => {
         render(<Box>Test</Box>);
         const box = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(box.tagName).toBe("DIV");
     });
 
-    it("should pass through data attributes", () => {
+    test("should pass through data attributes", () => {
         render(<Box data-test="foo">Test</Box>);
         const box = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(box.dataset.test).toBe("foo");
     });
 
-    it("should support className", () => {
+    test("should support className", () => {
         render(<Box className="foo">Test</Box>);
         const box = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(box).toHaveClass("foo");
     });
 
-    it("should support style", () => {
+    test("should support style", () => {
         render(<Box style={{ fontWeight: 700 }}>Test</Box>);
         const box = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(box).toHaveStyle({ fontWeight: 700 });
     });
 
-    it("should support computed class names", () => {
+    test("should support computed class names", () => {
         render(
             <Box display="flex" margin={2}>
                 Test
@@ -62,7 +62,20 @@ describe("<Box>", () => {
         expect(box).toHaveClass(`${NS}-margin-2`);
     });
 
-    it("should attach ref", () => {
+    test("should support flexGrow, flexShrink, and flexBasis props", () => {
+        render(
+            <Box flexGrow={1} flexShrink={0} flexBasis={0}>
+                Test
+            </Box>,
+        );
+        const box = screen.getByText<HTMLDivElement>(/test/i);
+
+        expect(box).toHaveClass(`${NS}-flex-grow-1`);
+        expect(box).toHaveClass(`${NS}-flex-shrink-0`);
+        expect(box).toHaveClass(`${NS}-flex-basis-0`);
+    });
+
+    test("should attach ref", () => {
         const ref = createRef<HTMLDivElement>();
         render(<Box ref={ref}>Test</Box>);
 
@@ -70,7 +83,7 @@ describe("<Box>", () => {
         expect(ref.current).toBeInTheDocument();
     });
 
-    it("should not support unsupported/invalid props in types", () => {
+    test("should not support unsupported/invalid props in types", () => {
         // "foo" is not a valid HTML attribute
         // @ts-expect-error
         render(<Box foo="bar">Test</Box>);
@@ -80,7 +93,7 @@ describe("<Box>", () => {
     });
 
     describe("asChild", () => {
-        it("should render as child with asChild prop", () => {
+        test("should render as child with asChild prop", () => {
             render(
                 <Box asChild={true} data-test="foo">
                     <Button intent="primary">Test</Button>
@@ -94,7 +107,7 @@ describe("<Box>", () => {
             expect(button).toHaveAttribute("data-test", "foo");
         });
 
-        it("should merge styles with asChild prop", () => {
+        test("should merge styles with asChild prop", () => {
             render(
                 <Box asChild={true} style={{ fontWeight: 700 }}>
                     <Button style={{ color: "blue" }}>Test</Button>
@@ -105,7 +118,7 @@ describe("<Box>", () => {
             expect(button).toHaveStyle({ fontWeight: 700 });
         });
 
-        it("should remove margin on wrapped component", () => {
+        test("should remove margin on wrapped component", () => {
             render(
                 <Box asChild={true} marginYEnd={0}>
                     <H1>Test</H1>

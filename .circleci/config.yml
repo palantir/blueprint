@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@2.1.0
+  browser-tools: circleci/browser-tools@2.4.0
 
 aliases:
   - &docker-node-image
@@ -103,6 +103,10 @@ jobs:
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
+      - run: pnpm build-storybook
+      - persist_to_workspace:
+          root: "."
+          paths: [storybook-static]
 
   test-node-libs:
     docker: *docker-node-image
@@ -134,10 +138,6 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # Use an explicit version of Chrome for better test reproducibility.
-      - run: sudo apt-get update
-      - browser-tools/install_chrome:
-          chrome_version: "143.0.7499.192"
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:
@@ -147,16 +147,17 @@ jobs:
             chromedriver --version
       - run: mkdir -p ./reports
       - run:
-          # split karma tests into containers because they can take up a lot of memory
-          # running them in one container caused Karma to time out frequently
+          # split vitest tests into containers because they can take up a lot of memory
+          # Orginally did this while tests were still running on Karma because running
+          # them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
             0) pnpm nx run-many -t test:typeCheck ;; \
-            1) pnpm nx test:karma @blueprintjs/core ;; \
-            2) pnpm nx test:karma @blueprintjs/datetime ;; \
-            4) pnpm nx test:karma @blueprintjs/select ;; \
-            5) pnpm nx test:karma @blueprintjs/table
+            1) pnpm nx test:vitest:run @blueprintjs/core ;; \
+            2) pnpm nx test:vitest:run @blueprintjs/datetime ;; \
+            4) pnpm nx test:vitest:run @blueprintjs/select ;; \
+            5) pnpm nx test:vitest:run @blueprintjs/table
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -175,6 +176,21 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
+  chromatic:
+    docker: *docker-node-image
+    steps:
+      - checkout
+      - attach_workspace: { at: "." }
+      - run:
+          # Checks for the project token for Chromatic, which is not available to forked repos
+          name: Check chromatic project token available
+          command: |
+            if [ -z "$CHROMATIC_PROJECT_TOKEN" ]; then
+              echo "Skipping Chromatic (no project token — likely a fork build)"
+              exit 0
+            fi
+            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed
+
   deploy-preview:
     docker: *docker-node-image
     steps:
@@ -184,6 +200,7 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
+      - store_artifacts: { path: storybook-static }
       - run: ./scripts/submit-preview-comment.sh
 
   store-packages:
@@ -224,6 +241,8 @@ workflows:
           requires: [compile]
       - test-iso-react-18:
           requires: [compile]
+      - chromatic:
+          requires: [dist]
       - deploy-preview:
           requires: [dist]
       - store-packages:
