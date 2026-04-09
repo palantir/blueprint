@@ -3,10 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useArgs, useCallback, useState } from "storybook/preview-api";
+import { useArgs, useCallback } from "storybook/preview-api";
 import { expect, screen, waitFor } from "storybook/test";
 
-import { Intent } from "../../common";
 import { Button } from "../button/buttons";
 
 import { Dialog } from "./dialog";
@@ -21,32 +20,33 @@ const disabledArgs = ["containerRef", "hasBackdrop", "transitionName"] as const 
  * Helper wrapper so that each story can open/close its own Dialog.
  */
 function DialogDemo({
+    bodyText = "This is a simple dialog body. You can put any content here, including forms, text, or other components.",
+    intent,
     buttonText = "Open Dialog",
     onOpen,
     onClose,
     ...dialogProps
 }: React.ComponentProps<typeof Dialog> & {
+    bodyText?: string;
+    intent?: React.ComponentProps<typeof Button>["intent"];
     buttonText?: string;
     onOpen: () => void;
     onClose: () => void;
 }) {
     return (
         <>
-            <Button text={buttonText} onClick={onOpen} />
+            <Button text={buttonText} intent={intent} onClick={onOpen} />
             <Dialog {...dialogProps} isOpen={dialogProps.isOpen} onClose={onClose}>
                 {dialogProps.children ?? (
                     <>
                         <DialogBody>
-                            <p>
-                                This is a simple dialog body. You can put any content here, including forms, text, or
-                                other components.
-                            </p>
+                            <p>{bodyText}</p>
                         </DialogBody>
                         <DialogFooter
                             actions={
                                 <>
                                     <Button text="Cancel" onClick={onClose} />
-                                    <Button text="Confirm" intent="primary" onClick={onClose} />
+                                    <Button text="Confirm" intent={intent} onClick={onClose} />
                                 </>
                             }
                         />
@@ -78,7 +78,6 @@ const meta: Meta<typeof Dialog> = {
     ],
     parameters: {
         layout: "centered",
-        chromatic: { disableSnapshot: true },
     },
     tags: ["autodocs"],
     args: {
@@ -106,12 +105,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-    render: function Render(args) {
-        const [, updateArgs] = useArgs();
-        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return <DialogDemo {...args} title="Dialog Title" onOpen={handleOpen} onClose={handleClose} />;
-    },
+    render: renderDialog(),
 };
 
 /**
@@ -119,12 +113,10 @@ export const Default: Story = {
  */
 export const WithoutTitle: Story = {
     name: "Without Title",
-    render: function Render(args) {
-        const [, updateArgs] = useArgs();
-        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return <DialogDemo {...args} title={undefined} onOpen={handleOpen} onClose={handleClose} />;
+    args: {
+        title: undefined,
     },
+    render: renderDialog(),
 };
 
 /**
@@ -163,59 +155,67 @@ export const WithMinimalFooter: Story = {
 };
 
 /**
- * Dialogs with intent-colored footer actions and corresponding icons.
+ * Dialog with a primary intent action and info icon.
  */
-export const IntentExample: Story = {
-    name: "Intent",
-    argTypes: {
-        intent: { table: { disable: true } },
+export const PrimaryIntent: Story = {
+    name: "Primary Intent",
+    args: {
+        title: "Primary Dialog",
+        icon: "info-sign",
     },
-    render: function Render(args) {
-        const [openIntent, setOpenIntent] = useState<string | null>(null);
-        const handleClose = useCallback(() => setOpenIntent(null), []);
+    render: renderDialog({
+        buttonText: "Open Primary Dialog",
+        intent: "primary",
+        bodyText: "This dialog demonstrates a primary intent action.",
+    }),
+};
 
-        return (
-            <div style={{ display: "flex", gap: 8 }}>
-                {Object.values(Intent).map(intent => (
-                    <div key={intent}>
-                        <Button
-                            text={intent.charAt(0).toUpperCase() + intent.slice(1)}
-                            intent={intent}
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onClick={() => setOpenIntent(intent)}
-                        />
-                        <Dialog
-                            {...args}
-                            title={`${intent.charAt(0).toUpperCase() + intent.slice(1)} Dialog`}
-                            icon={
-                                intent === "primary"
-                                    ? "info-sign"
-                                    : intent === "success"
-                                      ? "tick-circle"
-                                      : intent === "warning"
-                                        ? "warning-sign"
-                                        : "error"
-                            }
-                            isOpen={openIntent === intent}
-                            onClose={handleClose}
-                        >
-                            <DialogBody>
-                                <p>This dialog demonstrates a {intent} intent action.</p>
-                            </DialogBody>
-                            <DialogFooter
-                                actions={
-                                    <>
-                                        <Button text="Cancel" onClick={handleClose} />
-                                        <Button text="Confirm" intent={intent} onClick={handleClose} />
-                                    </>
-                                }
-                            />
-                        </Dialog>
-                    </div>
-                ))}
-            </div>
-        );
+/**
+ * Dialog with a success intent action and tick icon.
+ */
+export const SuccessIntent: Story = {
+    name: "Success Intent",
+    args: {
+        title: "Success Dialog",
+        icon: "tick-circle",
     },
+    render: renderDialog({
+        buttonText: "Open Success Dialog",
+        intent: "success",
+        bodyText: "This dialog demonstrates a success intent action.",
+    }),
+};
+
+/**
+ * Dialog with a warning intent action and warning icon.
+ */
+export const WarningIntent: Story = {
+    name: "Warning Intent",
+    args: {
+        title: "Warning Dialog",
+        icon: "warning-sign",
+    },
+    render: renderDialog({
+        buttonText: "Open Warning Dialog",
+        intent: "warning",
+        bodyText: "This dialog demonstrates a warning intent action.",
+    }),
+};
+
+/**
+ * Dialog with a danger intent action and error icon.
+ */
+export const DangerIntent: Story = {
+    name: "Danger Intent",
+    args: {
+        title: "Danger Dialog",
+        icon: "error",
+    },
+    render: renderDialog({
+        buttonText: "Open Danger Dialog",
+        intent: "danger",
+        bodyText: "This dialog demonstrates a danger intent action.",
+    }),
 };
 
 /**
@@ -225,46 +225,19 @@ export const IconExample: Story = {
     name: "Icon",
     args: {
         icon: "cog",
+        title: "Settings",
     },
-    render: function Render(args) {
-        const [, updateArgs] = useArgs();
-        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
-        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
-        return <DialogDemo {...args} title="Settings" onOpen={handleOpen} onClose={handleClose} />;
-    },
+    render: renderDialog(),
 };
 
 /**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
-    render: function Render(args) {
-        const [isOpen, setIsOpen] = useState(false);
-        const handleOpen = useCallback(() => setIsOpen(true), []);
-        const handleClose = useCallback(() => setIsOpen(false), []);
-
-        return (
-            <>
-                <Button text="Open Dialog" onClick={handleOpen} />
-                <Dialog {...args} isOpen={isOpen} onClose={handleClose}>
-                    <DialogBody>
-                        <p>
-                            Use the Storybook controls panel to adjust the dialog properties. The dialog supports icons,
-                            close buttons, and custom titles.
-                        </p>
-                    </DialogBody>
-                    <DialogFooter
-                        actions={
-                            <>
-                                <Button text="Cancel" onClick={handleClose} />
-                                <Button text="Confirm" intent="primary" onClick={handleClose} />
-                            </>
-                        }
-                    />
-                </Dialog>
-            </>
-        );
-    },
+    render: renderDialog({
+        bodyText:
+            "Use the Storybook controls panel to adjust the dialog properties. The dialog supports icons, close buttons, and custom titles.",
+    }),
 };
 
 /**
