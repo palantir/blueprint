@@ -228,6 +228,7 @@ jobs:
 
 workflows:
   compile_lint_test_dist_deploy:
+    unless: << pipeline.parameters.run-chromatic >>
     jobs:
       - checkout-code
       - clean-lockfile:
