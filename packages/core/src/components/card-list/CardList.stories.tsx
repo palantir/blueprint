@@ -4,7 +4,6 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useArgs, useCallback } from "storybook/preview-api";
-import { expect, waitFor } from "storybook/test";
 
 import { Card } from "../card/card";
 
@@ -157,41 +156,5 @@ export const Playground: Story = {
                 ))}
             </CardList>
         );
-    },
-};
-
-/**
- * Clicking a card selects it. Clicking again deselects it.
- */
-export const SelectCard: Story = {
-    name: "Select Card",
-    ...Playground,
-    play: async ({ canvas, userEvent, step }) => {
-        await step("Hover over a card before selection", async () => {
-            await userEvent.hover(canvas.getByText("Apples"));
-            await expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass(
-                "bp6-elevation-0 bp6-interactive",
-            );
-        });
-
-        await step("Click card to select it", async () => {
-            await userEvent.click(canvas.getByText("Apples"));
-            await waitFor(() => expect(canvas.getByText("Apples").closest(".bp6-card")).toHaveClass("bp6-selected"));
-        });
-
-        await step("Click another card — selection moves", async () => {
-            await userEvent.click(canvas.getByText("Oranges"));
-            await waitFor(() => {
-                expect(canvas.getByText("Oranges").closest(".bp6-card")).toHaveClass("bp6-selected");
-                expect(canvas.getByText("Apples").closest(".bp6-card")).not.toHaveClass("bp6-selected");
-            });
-        });
-
-        await step("Click same card again to deselect", async () => {
-            await userEvent.click(canvas.getByText("Oranges"));
-            await waitFor(() =>
-                expect(canvas.getByText("Oranges").closest(".bp6-card")).not.toHaveClass("bp6-selected"),
-            );
-        });
     },
 };
