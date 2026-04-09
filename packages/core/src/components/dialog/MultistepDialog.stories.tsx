@@ -54,7 +54,7 @@ function MultistepDialogDemo(
 }
 
 const meta: Meta<typeof MultistepDialog> = {
-    title: "Core/MultistepDialog",
+    title: "Core/Overlays/MultistepDialog",
     component: MultistepDialog,
     decorators: [
         Story => (
@@ -69,7 +69,7 @@ const meta: Meta<typeof MultistepDialog> = {
     tags: ["autodocs"],
     args: {
         title: "Multistep Dialog",
-        isOpen: false,
+        isOpen: true,
         isCloseButtonShown: true,
         navigationPosition: "left",
         resetOnClose: true,
