@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  run-chromatic:
+    type: boolean
+    default: false
+
 orbs:
   browser-tools: circleci/browser-tools@2.4.0
 
@@ -258,3 +263,13 @@ workflows:
                 - develop
                 - next
                 - /^release\/.*/
+  chromatic-on-demand:
+    when: << pipeline.parameters.run-chromatic >>
+    jobs:
+      - checkout-code
+      - compile:
+          requires: [checkout-code]
+      - dist:
+          requires: [compile]
+      - chromatic:
+          requires: [dist]
