@@ -16,7 +16,7 @@
 /**
  * @fileoverview Generates SVG React components for each icon.
  *
- * Paths are taken from the same resource SVGs as {@link generate-icon-paths.mjs} (used by {@code <Icon />}).
+ * Paths are taken from the same resource SVGs as {@link generate-icon-paths.mjs} (used by `<Icon />`).
  * We intentionally do not use glyph paths from the generated icon font: those live in an upscaled coordinate
  * system and require fragile scale/translate transforms (see {@link ICON_RASTER_SCALING_FACTOR} in common.mjs).
  */

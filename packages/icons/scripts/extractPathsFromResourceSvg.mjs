@@ -25,7 +25,7 @@ import { iconResourcesDir } from "./common.mjs";
 
 /**
  * Extracts path `d` strings from an on-disk icon SVG. This matches the pipeline used for
- * {@link generate-icon-paths.mjs} and the path modules consumed by {@code <Icon />} from core.
+ * {@link generate-icon-paths.mjs} and the path modules consumed by `<Icon />` from core.
  *
  * @param {16 | 20} iconSize
  * @param {string} iconName

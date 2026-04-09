@@ -18,10 +18,10 @@ import type { SVGIconProps } from "../../svgIconProps";
 import { IconSize } from "../../iconTypes";
 import { SVGIconContainer } from "../../svgIconContainer";
 
-/** Path data for the 16px grid; matches {@link generate-icon-paths.mjs} / {@code <Icon />} from core. */
+/** Path data for the 16px grid; matches {@link generate-icon-paths.mjs} / `<Icon />` from core. */
 const PATHS_16 = {{{paths16Json}}} as readonly string[];
 
-/** Path data for the 20px grid; matches {@link generate-icon-paths.mjs} / {@code <Icon />} from core. */
+/** Path data for the 20px grid; matches {@link generate-icon-paths.mjs} / `<Icon />` from core. */
 const PATHS_20 = {{{paths20Json}}} as readonly string[];
 
 export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => {
