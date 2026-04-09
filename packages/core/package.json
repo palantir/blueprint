@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "6.11.3",
+    "version": "6.12.0",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -57,8 +57,7 @@
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "catalog:",
-        "use-sync-external-store": "^1.2.0"
+        "tslib": "catalog:"
     },
     "peerDependencies": {
         "@types/react": "18",
@@ -80,7 +79,6 @@
         "@testing-library/user-event": "catalog:",
         "@tokens-studio/sd-transforms": "^2.0.3",
         "@types/culori": "^4.0.1",
-        "@types/use-sync-external-store": "0.0.6",
         "@vitejs/plugin-react": "catalog:",
         "culori": "^4.0.2",
         "enzyme": "catalog:",

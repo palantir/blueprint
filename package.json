@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "pnpm@10.29.3",
+    "packageManager": "pnpm@10.33.0",
     "workspaces": [
         "packages/*"
     ],
@@ -71,10 +71,19 @@
         "overrides": {
             "@types/react": "18.3.12",
             "cheerio": "0.22.0"
-        }
+        },
+        "ignoredBuiltDependencies": [
+            "@parcel/watcher",
+            "@swc/core",
+            "core-js",
+            "core-js-pure",
+            "esbuild",
+            "nx",
+            "ttf2woff2"
+        ]
     },
     "engines": {
-        "pnpm": "10.29.3",
+        "pnpm": "10.33.0",
         "node": ">=24.11.0"
     },
     "repository": {
@@ -85,6 +94,7 @@
     "license": "Apache-2.0",
     "devDependencies": {
         "@storybook/addon-a11y": "^10.2.14",
+        "@storybook/addon-themes": "^10.2.14",
         "@storybook/icons": "^2.0.1",
         "@storybook/react-dom-shim": "^10.2.14",
         "@storybook/react-vite": "^10.2.14",
