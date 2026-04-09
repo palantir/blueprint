@@ -243,6 +243,9 @@ workflows:
           requires: [compile]
       - chromatic:
           requires: [dist]
+          filters:
+            branches:
+              only: develop
       - deploy-preview:
           requires: [dist]
       - store-packages:
