@@ -154,6 +154,25 @@ export const ButtonTextExample: Story = {
 };
 
 /**
+ * A file input in the focused state, showing the focus ring.
+ */
+export const FocusedExample: Story = {
+    name: "Focused",
+    play: async ({ canvas }) => {
+        const label = canvas.getByText("Choose file...");
+        const input = label.closest("label")?.querySelector("input");
+        if (input) {
+            input.focus();
+        }
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+            <FileInput {...args} text="Choose file..." />
+        </div>
+    ),
+};
+
+/**
  * Interactive playground with file selection handling.
  */
 export const Playground: Story = {

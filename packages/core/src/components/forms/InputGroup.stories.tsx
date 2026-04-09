@@ -228,6 +228,22 @@ export const FillExample: Story = {
 };
 
 /**
+ * An input in the focused state, showing the focus ring. Use controls to change the intent.
+ */
+export const FocusedExample: Story = {
+    name: "Focused",
+    play: async ({ canvas, userEvent }) => {
+        const input = canvas.getByPlaceholderText("Click to focus...");
+        await userEvent.click(input);
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+            <InputGroup {...args} placeholder="Click to focus..." />
+        </div>
+    ),
+};
+
+/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
