@@ -108,21 +108,65 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
-            <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill enabled</div>
+                <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
+            </div>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill disabled</div>
+                <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
+            </div>
         </div>
     ),
 };
 
 /**
- * Use the `loading` and `ellipsize` props to control loading state and text overflow.
+ * Use the `ellipsize` prop to truncate long titles with an ellipsis when they overflow their container.
  */
-export const StateExample: Story = {
-    name: "State",
+export const EllipsizeExample: Story = {
+    name: "Ellipsize",
+    argTypes: {
+        ellipsize: { table: { disable: true } },
+    },
+    decorators: [
+        Story => (
+            <div style={{ width: "250px", border: "1px dashed #ccc", padding: 8 }}>
+                <Story />
+            </div>
+        ),
+    ],
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Ellipsize enabled</div>
+                <EntityTitle
+                    {...args}
+                    ellipsize={true}
+                    icon="document"
+                    title="This is a very long entity title that should be ellipsized"
+                />
+            </div>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Ellipsize disabled</div>
+                <EntityTitle
+                    {...args}
+                    ellipsize={false}
+                    icon="document"
+                    title="This is a very long entity title that will not be ellipsized"
+                />
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Use the `loading` prop to show a skeleton loading state.
+ */
+export const LoadingExample: Story = {
+    name: "Loading",
     argTypes: {
         loading: { table: { disable: true } },
-        ellipsize: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -130,14 +174,9 @@ export const StateExample: Story = {
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Loading</div>
                 <EntityTitle {...args} loading={true} icon="document" title="Loading Entity" />
             </div>
-            <div style={{ width: "200px" }}>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Ellipsize</div>
-                <EntityTitle
-                    {...args}
-                    ellipsize={true}
-                    icon="document"
-                    title="This is a very long entity title that should be ellipsized"
-                />
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Not loading</div>
+                <EntityTitle {...args} loading={false} icon="document" title="Loaded Entity" />
             </div>
         </div>
     ),
