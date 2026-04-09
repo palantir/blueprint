@@ -42,7 +42,7 @@ const ICON_NAMES = sortedUniqueIconNames();
 // -----------------------------------------------------------------------------
 // Storybook meta & stories
 
-const meta: Meta = {
+const meta = {
     title: "Icons/Icon Gallery",
     decorators: [galleryLayoutDecorator],
     parameters: {
@@ -51,11 +51,11 @@ const meta: Meta = {
         controls: { disable: true },
         interactions: { disable: true },
     },
-};
+} satisfies Meta;
 
 export default meta;
 
-type Story = StoryObj;
+type Story = StoryObj<typeof meta>;
 
 export const Static: Story = {
     render: () => <IconGallery renderIcon={renderStaticGalleryIcon} />,
