@@ -228,3 +228,83 @@ export const HoverExample: Story = {
         }
     },
 };
+
+/**
+ * When `confirmOnEnterKey` is enabled in multiline mode, pressing **Enter** confirms the edit
+ * instead of inserting a newline. This is useful for multiline fields where you want a simple
+ * Enter key to submit the value.
+ */
+export const ConfirmOnEnterKeyExample: Story = {
+    name: "Confirm On Enter Key",
+    args: {
+        multiline: true,
+        confirmOnEnterKey: true,
+        defaultValue: "Original text",
+    },
+    argTypes: {
+        confirmOnEnterKey: { table: { disable: true } },
+        multiline: { table: { disable: true } },
+    },
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+
+        await step("Click editable text to enter edit mode", async () => {
+            const editableText = canvas.getByText("Original text");
+            await userEvent.click(editableText);
+            const root = canvasElement.querySelector(".bp6-editable-text");
+            await expect(root).toHaveClass("bp6-editable-text-editing");
+        });
+
+        await step("Type additional text", async () => {
+            const input = canvasElement.querySelector<HTMLElement>(".bp6-editable-text-input")!;
+            await userEvent.type(input, " updated");
+        });
+
+        await step("Press Enter to confirm edit", async () => {
+            await userEvent.keyboard("{Enter}");
+            const root = canvasElement.querySelector(".bp6-editable-text");
+            await expect(root).not.toHaveClass("bp6-editable-text-editing");
+        });
+
+        await step("Verify text was updated", async () => {
+            await expect(canvas.getByText("Original text updated")).toBeInTheDocument();
+        });
+    },
+};
+
+/**
+ * Pressing **Escape** while editing always cancels the edit and reverts the value to what it was
+ * before editing began. This behavior is built-in and does not require any additional props.
+ */
+export const EscapeCancelExample: Story = {
+    name: "Escape Cancel",
+    args: {
+        defaultValue: "Original text",
+    },
+    play: async ({ canvasElement, step }) => {
+        const canvas = within(canvasElement);
+
+        await step("Click editable text to enter edit mode", async () => {
+            const editableText = canvas.getByText("Original text");
+            await userEvent.click(editableText);
+            const root = canvasElement.querySelector(".bp6-editable-text");
+            await expect(root).toHaveClass("bp6-editable-text-editing");
+        });
+
+        await step("Clear and type new text", async () => {
+            const input = canvasElement.querySelector<HTMLElement>(".bp6-editable-text-input")!;
+            await userEvent.clear(input);
+            await userEvent.type(input, "Changed text");
+        });
+
+        await step("Press Escape to cancel edit", async () => {
+            await userEvent.keyboard("{Escape}");
+            const root = canvasElement.querySelector(".bp6-editable-text");
+            await expect(root).not.toHaveClass("bp6-editable-text-editing");
+        });
+
+        await step("Verify text reverted to original value", async () => {
+            await expect(canvas.getByText("Original text")).toBeInTheDocument();
+        });
+    },
+};
