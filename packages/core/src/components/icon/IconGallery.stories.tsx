@@ -75,7 +75,6 @@ export const CSSIconFont: Story = {
         if (document.fonts != null) {
             await document.fonts.ready;
         }
-        await new Promise(resolve => window.setTimeout(resolve, 250));
     },
     render: () => <IconGallery renderIcon={renderCssFontGalleryIcon} />,
 };
