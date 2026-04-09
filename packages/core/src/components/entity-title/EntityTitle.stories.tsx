@@ -5,6 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
+import { Tag } from "../tag/tag";
 
 import { EntityTitle } from "./entityTitle";
 
@@ -75,6 +76,27 @@ export const Default: Story = {
 };
 
 /**
+ * Use the `heading` prop to control the size of the entity title by rendering it as an HTML heading element.
+ */
+export const SizesExample: Story = {
+    name: "Sizes",
+    argTypes: {
+        heading: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <EntityTitle {...args} icon="document" title="Default (no heading)" />
+            <EntityTitle {...args} icon="document" title="Heading H1" heading={H1} />
+            <EntityTitle {...args} icon="document" title="Heading H2" heading={H2} />
+            <EntityTitle {...args} icon="document" title="Heading H3" heading={H3} />
+            <EntityTitle {...args} icon="document" title="Heading H4" heading={H4} />
+            <EntityTitle {...args} icon="document" title="Heading H5" heading={H5} />
+            <EntityTitle {...args} icon="document" title="Heading H6" heading={H6} />
+        </div>
+    ),
+};
+
+/**
  * Use the `icon` prop to render an icon alongside the title.
  */
 export const IconExample: Story = {
@@ -100,22 +122,19 @@ export const FillExample: Story = {
     argTypes: {
         fill: { table: { disable: true } },
     },
-    decorators: [
-        Story => (
-            <div style={{ width: "400px", border: "1px dashed #ccc", padding: 8 }}>
-                <Story />
-            </div>
-        ),
-    ],
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill enabled</div>
-                <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
+                <div style={{ width: 400, border: "1px dashed #ccc", padding: 8 }}>
+                    <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
+                </div>
             </div>
             <div>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill disabled</div>
-                <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
+                <div style={{ width: 400, border: "1px dashed #ccc", padding: 8 }}>
+                    <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
+                </div>
             </div>
         </div>
     ),
@@ -178,6 +197,49 @@ export const LoadingExample: Story = {
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Not loading</div>
                 <EntityTitle {...args} loading={false} icon="document" title="Loaded Entity" />
             </div>
+        </div>
+    ),
+};
+
+/**
+ * Use the `tags` prop to render `Tag` components alongside the title.
+ */
+export const TagsExample: Story = {
+    name: "Tags",
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <EntityTitle {...args} icon="document" title="Document" tags={<Tag>Draft</Tag>} />
+            <EntityTitle
+                {...args}
+                icon="folder-close"
+                title="Folder"
+                tags={
+                    <>
+                        <Tag intent="success">Active</Tag>
+                        <Tag intent="primary">Shared</Tag>
+                    </>
+                }
+            />
+            <EntityTitle {...args} icon="user" title="User" tags={<Tag intent="warning">Pending</Tag>} />
+        </div>
+    ),
+};
+
+/**
+ * Use the `subtitle` prop to render secondary descriptive text below the title.
+ */
+export const SubtitleExample: Story = {
+    name: "Subtitle",
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            <EntityTitle {...args} icon="document" title="Annual Report" subtitle="Last edited 2 hours ago" />
+            <EntityTitle {...args} icon="folder-close" title="Project Files" subtitle="12 items" />
+            <EntityTitle
+                {...args}
+                icon="user"
+                title="Jane Smith"
+                subtitle={<span style={{ color: "green" }}>Online</span>}
+            />
         </div>
     ),
 };
