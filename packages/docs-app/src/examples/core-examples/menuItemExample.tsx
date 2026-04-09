@@ -60,6 +60,25 @@ export function MenuItemExample(props: ExampleProps) {
                 checked={disabled}
                 onChange={handleBooleanChange(setDisabled)}
             />
+            <Switch
+                label="Enable icon"
+                checked={iconEnabled}
+                onChange={handleBooleanChange(setIconEnabled)}
+            />
+            <Switch
+                label="Enable submenu"
+                checked={submenuEnabled}
+                onChange={handleBooleanChange(setSubmenuEnabled)}
+            />
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <FormGroup label="Role structure">
+                <SegmentedControl
+                    options={[{ value: "menuitem" }, { value: "listoption" }]}
+                    onValueChange={handleRoleStructureChange}
+                    size="small"
+                    value={roleStructure}
+                />
+            </FormGroup>
             <PropCodeTooltip
                 content={
                     isSelectable ? undefined : (
@@ -78,25 +97,6 @@ export function MenuItemExample(props: ExampleProps) {
                     onChange={setSelected}
                 />
             </PropCodeTooltip>
-            <Switch
-                label="Enable icon"
-                checked={iconEnabled}
-                onChange={handleBooleanChange(setIconEnabled)}
-            />
-            <Switch
-                label="Enable submenu"
-                checked={submenuEnabled}
-                onChange={handleBooleanChange(setSubmenuEnabled)}
-            />
-            <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
-            <FormGroup label="Role structure">
-                <SegmentedControl
-                    options={[{ value: "menuitem" }, { value: "listoption" }]}
-                    onValueChange={handleRoleStructureChange}
-                    size="small"
-                    value={roleStructure}
-                />
-            </FormGroup>
         </>
     );
 

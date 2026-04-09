@@ -4,7 +4,7 @@
 
 - **Build**: `pnpm compile` (all packages), `pnpm nx compile @blueprintjs/core` (single package)
 - **Test all**: `pnpm test`, `pnpm nx run-many -t test`
-- **Test single package**: `pnpm nx test:karma @blueprintjs/core` or `cd packages/core && pnpm test:karma`
+- **Test single package**: `pnpm nx test:vitest:run @blueprintjs/core` or `cd packages/core && pnpm test:vitest:run`
 - **Distribute**: `pnpm dist`, `pnpm nx dist @blueprintjs/core` (single package)
 - **Lint**: `pnpm lint`, `pnpm lint-fix` (auto-fix), `pnpm nx lint @blueprintjs/core` (single package)
 - **Format**: `pnpm format`, `pnpm format-check`
@@ -16,8 +16,8 @@
 - **Package manager**: pnpm v10.29.3 (strict dependency resolution)
 - **Packages**: Core UI components in `packages/` - core, datetime, select, table, icons, colors
 - **Apps**: docs-app (blueprintjs.com), demo-app, table-dev-app for development
-- **Build tools**: karma-build-scripts, node-build-scripts, webpack-build-scripts
-- **Testing**: Mocha + Karma (components), Jest (build scripts), Enzyme + Chai + Sinon
+- **Build tools**: node-build-scripts, webpack-build-scripts
+- **Testing**: Vitest (components), Jest (build scripts), Enzyme + Chai + Sinon
     - New tests should be written with React Testing Library (RTL)
 
 ## Code Style

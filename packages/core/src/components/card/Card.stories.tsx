@@ -1,4 +1,4 @@
-/*
+/* !
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
@@ -112,9 +112,6 @@ export const StateExample: Story = {
  * An interactive card that responds to hover and click events.
  */
 export const Interactive: Story = {
-    argTypes: {
-        interactive: { table: { disable: true } },
-    },
     args: {
         children: "Click me",
         interactive: true,
@@ -126,10 +123,6 @@ export const Interactive: Story = {
  * A selected card with the selected visual treatment.
  */
 export const Selected: Story = {
-    argTypes: {
-        interactive: { table: { disable: true } },
-        selected: { table: { disable: true } },
-    },
     args: {
         children: "Selected card",
         interactive: true,
@@ -142,9 +135,6 @@ export const Selected: Story = {
  * A compact card with reduced visual padding.
  */
 export const Compact: Story = {
-    argTypes: {
-        compact: { table: { disable: true } },
-    },
     args: {
         children: "Compact card",
         compact: true,
@@ -155,13 +145,6 @@ export const Compact: Story = {
  * Comprehensive matrix showing all elevations × all states for visual regression testing.
  */
 export const AllElevationsAllStates: Story = {
-    argTypes: {
-        interactive: { table: { disable: true } },
-        selected: { table: { disable: true } },
-        compact: { table: { disable: true } },
-        children: { table: { disable: true } },
-        elevation: { table: { disable: true } },
-    },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {(["Default", "Interactive", "Selected", "Compact"] as const).map(state => (
@@ -196,10 +179,10 @@ export const Playground: Story = {
         children: "Customize this card using the controls below.",
         interactive: true,
     },
-    render: ({ children, ...args }) => (
+    render: args => (
         <Card {...args}>
             <H3>Card Title</H3>
-            <p>{children}</p>
+            <p>{args.children}</p>
         </Card>
     ),
 };

@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 
-import { type ActionProps, Classes, type LinkProps } from "../../common";
+import { type ActionProps, Classes, DISPLAYNAME_PREFIX, type LinkProps } from "../../common";
 import { Icon } from "../icon/icon";
 
 export interface BreadcrumbProps extends ActionProps<HTMLAnchorElement>, LinkProps {
@@ -73,3 +73,5 @@ export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
         </a>
     );
 };
+
+Breadcrumb.displayName = `${DISPLAYNAME_PREFIX}.Breadcrumb`;
