@@ -28,6 +28,7 @@ import { join } from "node:path";
 import { svgOptimizer } from "@blueprintjs/node-build-scripts";
 
 import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
+import { iconSvgoConfig } from "./iconSvgoConfig.mjs";
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
 
 for (const iconSize of ICON_SIZES) {
@@ -63,7 +64,7 @@ async function getIconPaths(iconSize) {
     for (const iconName of ICON_NAMES) {
         const filepath = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
         const svg = readFileSync(filepath, "utf-8");
-        const optimizedSvg = await svgOptimizer.optimize(svg, { path: filepath });
+        const optimizedSvg = svgOptimizer(svg, { path: filepath, ...iconSvgoConfig });
         const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) || [])
             // strip off leading 'd="'
             .map(s => s.slice(3))

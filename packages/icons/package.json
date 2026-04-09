@@ -17,7 +17,7 @@
     ],
     "scripts": {
         "clean": "rm -rf dist/* || rm -rf lib/**/* || rm -rf src/generated/* || true",
-        "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
+        "compile": "npm-run-all -s \"icons:verify\" \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",
         "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src/tsconfig.build.json -t esnext --outDir lib/esnext",
@@ -28,6 +28,9 @@
         "dist": "run-s \"dist:*\"",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
+        "icons:add": "node scripts/add-icons.mjs",
+        "icons:format": "node scripts/format-icons.mjs",
+        "icons:verify": "node scripts/verify-icons.mjs",
         "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
