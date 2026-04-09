@@ -188,8 +188,10 @@ export const Playground: Story = {
 export const OpenDialog: Story = {
     render: renderMultistepDialog(),
     play: async ({ canvas, userEvent, step }) => {
-        await step("Dialog is not visible initially", async () => {
-            await expect(screen.queryByText("This is the content for step 1.")).toBeNull();
+        // dialog is open on all example on render
+        await step("Escape key closes dialog", async () => {
+            await userEvent.keyboard("{Escape}");
+            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).toBeNull());
         });
 
         await step("Click open button shows dialog at step 1", async () => {
