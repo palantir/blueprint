@@ -55,7 +55,7 @@ describe("BlueprintProvider", () => {
             expect(receivedContainer).toBe(container);
         });
 
-        it.todo("does not forward hotkeys props to PortalProvider", () => {
+        it("does not forward hotkeys props to PortalProvider", () => {
             let receivedContext: PortalContextOptions | undefined;
 
             const PortalContextSpy = () => {
@@ -93,8 +93,7 @@ describe("BlueprintProvider", () => {
             );
         };
 
-        // TODO: unskip once BlueprintProvider destructures prefixed hotkeys props
-        it.todo("forwards hotkeysProviderRenderDialog to HotkeysProvider", () => {
+        it("forwards hotkeysProviderRenderDialog to HotkeysProvider", () => {
             const renderDialog = vi.fn(() => <div data-testid="custom-dialog" />);
             render(
                 <BlueprintProvider hotkeysProviderRenderDialog={renderDialog}>
@@ -106,8 +105,7 @@ describe("BlueprintProvider", () => {
             expect(screen.getByTestId("custom-dialog")).toBeInTheDocument();
         });
 
-        // TODO: unskip once BlueprintProvider destructures prefixed hotkeys props
-        it.todo("forwards hotkeysProviderDialogProps to HotkeysProvider", async () => {
+        it("forwards hotkeysProviderDialogProps to HotkeysProvider", async () => {
             const user = userEvent.setup();
             render(
                 <BlueprintProvider hotkeysProviderDialogProps={{ className: "my-hotkeys-dialog" }}>
