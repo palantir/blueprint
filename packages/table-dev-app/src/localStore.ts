@@ -35,7 +35,14 @@ export class LocalStore<T extends {}> {
         if (defaultValue == null) {
             return value;
         }
-        return { ...defaultValue, ...value };
+        const result: T = { ...defaultValue };
+        const resultRecord = result as Record<string, unknown>;
+        for (const [key, storedValue] of Object.entries(value as Record<string, unknown>)) {
+            if (storedValue !== undefined) {
+                resultRecord[key] = storedValue;
+            }
+        }
+        return result;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
