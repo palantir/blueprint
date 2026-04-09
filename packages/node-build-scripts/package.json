@@ -42,13 +42,12 @@
         "strip-css-comments": "^5.0.0",
         "stylelint": "~16.25.0",
         "stylelint-junit-formatter": "^0.2.2",
-        "svgo": "^1.3.2",
+        "svgo": "^4.0.1",
         "typescript": "~5.9.3",
         "yargs": "^17.7.2"
     },
     "devDependencies": {
         "@types/fs-extra": "~11.0.4",
-        "@types/svgo": "~1.3.6",
         "@types/yargs": "~17.0.32",
         "vitest": "catalog:"
     },
