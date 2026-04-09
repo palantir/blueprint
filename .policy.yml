@@ -1,15 +1,19 @@
 # Policy for palantir/blueprint
 #
 # This policy splits approval rules by author type:
-# - Palantir org members: trusted, approvals NOT invalidated on push
+# - Blueprint team members: trusted, approvals NOT invalidated on push
+# - Other Palantir org members: stricter, approvals invalidated on push
 # - External contributors: stricter, approvals invalidated on push (except update merges)
 
 policy:
   approval:
     - or:
-        # Palantir org members - trusted
-        - palantir member approved by one admin
-        - palantir member approved by two admins (contributor allowed)
+        # Blueprint team members - trusted
+        - blueprint team member approved by one admin
+        - blueprint team member approved by two admins (contributor allowed)
+        # Other Palantir org members - stricter
+        - palantir non-team member approved by one admin
+        - palantir non-team member approved by two admins (contributor allowed)
         # External contributors - stricter
         - external contributor approved by one admin
         - external contributor approved by two admins (contributor allowed)
@@ -25,16 +29,49 @@ policy:
 
 approval_rules:
   # ============================================
-  # PALANTIR ORG MEMBERS (trusted)
+  # BLUEPRINT TEAM MEMBERS (trusted)
   # ============================================
 
-  - name: palantir member approved by one admin
+  - name: blueprint team member approved by one admin
     description: >
-      For PRs authored by Palantir org members. Approvals are not invalidated
-      when new commits are pushed, as org members are trusted.
+      For PRs authored by Blueprint team members. Approvals are not invalidated
+      when new commits are pushed, as team members are trusted.
     options:
       allow_contributor: false
       invalidate_on_push: false
+    if:
+      has_author_in:
+        teams: ["palantir/blueprint"]
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+
+  - name: blueprint team member approved by two admins (contributor allowed)
+    description: >
+      Alternative for Blueprint team members: allows the PR author to count as an
+      approver (useful when a maintainer pushes fixes to someone's PR).
+    options:
+      allow_contributor: true
+      invalidate_on_push: false
+    if:
+      has_author_in:
+        teams: ["palantir/blueprint"]
+    requires:
+      count: 2
+      permissions: ["admin", "maintain"]
+
+  # ============================================
+  # OTHER PALANTIR ORG MEMBERS (stricter rules)
+  # ============================================
+
+  - name: palantir non-team member approved by one admin
+    description: >
+      For PRs authored by Palantir org members who are not on the Blueprint team.
+      Approvals are invalidated when new commits are pushed.
+    options:
+      allow_contributor: false
+      invalidate_on_push: true
+      ignore_update_merges: false
     if:
       has_author_in:
         organizations: ["palantir"]
@@ -42,13 +79,14 @@ approval_rules:
       count: 1
       permissions: ["admin", "maintain"]
 
-  - name: palantir member approved by two admins (contributor allowed)
+  - name: palantir non-team member approved by two admins (contributor allowed)
     description: >
-      Alternative for Palantir members: allows the PR author to count as an
-      approver (useful when a maintainer pushes fixes to someone's PR).
+      Alternative for non-team Palantir org members: allows contributors to count
+      as approvers. Approvals invalidated on push.
     options:
       allow_contributor: true
-      invalidate_on_push: false
+      invalidate_on_push: true
+      ignore_update_merges: false
     if:
       has_author_in:
         organizations: ["palantir"]
