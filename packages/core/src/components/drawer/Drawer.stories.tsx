@@ -12,7 +12,7 @@ import { Button } from "../button/buttons";
 import { Drawer, type DrawerProps, DrawerSize } from "./drawer";
 
 const meta: Meta<typeof Drawer> = {
-    title: "Core/Drawer",
+    title: "Core/Overlays/Drawer",
     component: Drawer,
     decorators: [
         Story => (
@@ -26,7 +26,7 @@ const meta: Meta<typeof Drawer> = {
     },
     tags: ["autodocs"],
     args: {
-        isOpen: false,
+        isOpen: true,
         title: "Drawer Title",
         icon: "cog",
         position: "right",
