@@ -40,15 +40,15 @@ const meta: Meta<typeof EntityTitle> = {
         },
         heading: {
             control: "select",
-            options: ["Text", "H1", "H2", "H3", "H4", "H5", "H6"],
+            options: ["Text", "H6", "H5", "H4", "H3", "H2", "H1"],
             mapping: {
                 Text: undefined,
-                H1,
-                H2,
-                H3,
-                H4,
-                H5,
                 H6,
+                H5,
+                H4,
+                H3,
+                H2,
+                H1,
             },
         },
         ellipsize: {
@@ -79,19 +79,19 @@ export const Default: Story = {
  * Use the `heading` prop to control the size of the entity title by rendering it as an HTML heading element.
  */
 export const SizesExample: Story = {
-    name: "Sizes",
+    name: "Heading",
     argTypes: {
         heading: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <EntityTitle {...args} icon="document" title="Default (no heading)" />
-            <EntityTitle {...args} icon="document" title="Heading H1" heading={H1} />
-            <EntityTitle {...args} icon="document" title="Heading H2" heading={H2} />
-            <EntityTitle {...args} icon="document" title="Heading H3" heading={H3} />
-            <EntityTitle {...args} icon="document" title="Heading H4" heading={H4} />
-            <EntityTitle {...args} icon="document" title="Heading H5" heading={H5} />
             <EntityTitle {...args} icon="document" title="Heading H6" heading={H6} />
+            <EntityTitle {...args} icon="document" title="Heading H5" heading={H5} />
+            <EntityTitle {...args} icon="document" title="Heading H4" heading={H4} />
+            <EntityTitle {...args} icon="document" title="Heading H3" heading={H3} />
+            <EntityTitle {...args} icon="document" title="Heading H2" heading={H2} />
+            <EntityTitle {...args} icon="document" title="Heading H1" heading={H1} />
         </div>
     ),
 };
@@ -127,13 +127,17 @@ export const FillExample: Story = {
             <div>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill enabled</div>
                 <div style={{ width: 400, border: "1px dashed #ccc", padding: 8 }}>
-                    <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
+                    <div style={{ background: "#FFCCC4", borderRadius: 4, padding: "4px" }}>
+                        <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
+                    </div>
                 </div>
             </div>
             <div>
                 <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill disabled</div>
                 <div style={{ width: 400, border: "1px dashed #ccc", padding: 8 }}>
-                    <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
+                    <div style={{ background: "#C4E1FF", borderRadius: 4, display: "inline-block", padding: "4px" }}>
+                        <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -207,20 +211,19 @@ export const LoadingExample: Story = {
 export const TagsExample: Story = {
     name: "Tags",
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <EntityTitle {...args} icon="document" title="Document" tags={<Tag>Draft</Tag>} />
-            <EntityTitle
-                {...args}
-                icon="folder-close"
-                title="Folder"
-                tags={
-                    <>
-                        <Tag intent="success">Active</Tag>
-                        <Tag intent="primary">Shared</Tag>
-                    </>
-                }
-            />
-            <EntityTitle {...args} icon="user" title="User" tags={<Tag intent="warning">Pending</Tag>} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>With tag</div>
+                <div style={{ border: "1px dashed #ccc", padding: 8 }}>
+                    <EntityTitle {...args} icon="document" title="Document" tags={<Tag minimal={true}>Draft</Tag>} />
+                </div>
+            </div>
+            <div>
+                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Without tag</div>
+                <div style={{ border: "1px dashed #ccc", padding: 8 }}>
+                    <EntityTitle {...args} icon="document" title="Document" />
+                </div>
+            </div>
         </div>
     ),
 };
@@ -234,12 +237,6 @@ export const SubtitleExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <EntityTitle {...args} icon="document" title="Annual Report" subtitle="Last edited 2 hours ago" />
             <EntityTitle {...args} icon="folder-close" title="Project Files" subtitle="12 items" />
-            <EntityTitle
-                {...args}
-                icon="user"
-                title="Jane Smith"
-                subtitle={<span style={{ color: "green" }}>Online</span>}
-            />
         </div>
     ),
 };
