@@ -37,11 +37,11 @@ export async function extractPathsFromResourceSvg(iconSize, iconName) {
     const optimizedSvg = await svgOptimizer.optimize(svg, { path: filepath });
     /** @type string[] */
     const paths = [];
-    // Match `d` attributes on `<path` elements specifically
-    const re = /<path[^>]*\sd="([^"]+)"/g;
+    // Match `d` attributes on `<path` elements specifically, supporting single or double quotes.
+    const re = /<path[^>]*\sd=(["'])([\s\S]*?)\1/g;
     let m;
     while ((m = re.exec(optimizedSvg.data)) !== null) {
-        paths.push(m[1].replace(/[\n\t]/g, ""));
+        paths.push(m[2].replace(/[\n\t]/g, ""));
     }
     return paths;
 }
