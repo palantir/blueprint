@@ -189,7 +189,7 @@ jobs:
               echo "Skipping Chromatic (no project token — likely a fork build)"
               exit 0
             fi
-            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed
+            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed --trace-changed
 
   deploy-preview:
     docker: *docker-node-image
