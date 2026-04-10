@@ -2,7 +2,6 @@
 #
 # This policy splits approval rules by author type:
 # - Blueprint team members: trusted, approvals NOT invalidated on push
-# - Other Palantir org members: stricter, approvals invalidated on push
 # - External contributors: stricter, approvals invalidated on push (except update merges)
 
 policy:
@@ -66,7 +65,7 @@ approval_rules:
   - name: external contributor approved by one admin
     description: >
       For PRs from external contributors. Approvals are invalidated when new
-      commits are pushed (except for update merges from the target branch).
+      commits are pushed.
     options:
       allow_contributor: false
       invalidate_on_push: true
@@ -79,7 +78,7 @@ approval_rules:
   - name: external contributor approved by two admins (contributor allowed)
     description: >
       Alternative for external contributors: allows contributors to count as
-      approvers. Approvals invalidated on push except for update merges.
+      approvers.
     options:
       allow_contributor: true
       invalidate_on_push: true
@@ -116,41 +115,16 @@ approval_rules:
       has_author_in:
         users: ["svc-excavator-bot", "dependabot[bot]"]
 
-  - name: excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
+  - name: excavator only touched changelog or circle files
     requires:
       count: 0
     if:
       has_author_in:
         users: ["svc-excavator-bot", "dependabot[bot]"]
       only_changed_files:
-        # product-dependencies.lock should never go here, to force review of all product (SLS) dependency changes
-        # this way excavator cannot change the deployability of a service or product via auto-merge
         paths:
           - "changelog/@unreleased/.*\\.yml"
-          - "^\\.baseline/.*$"
-          - "^(.+/)?Cargo.toml$"
-          - "^Cargo.lock$"
           - "^\\.circleci/.*$"
-          - "^\\.docker-compose-rule\\.yml$"
-          - "^.*gradle$"
-          - "^\\.palantir/go-version$"
-          - "^gradle/wrapper/.*"
-          - "^gradlew$"
-          - "^gradlew.bat$"
-          - "^gradle.properties$"
-          - "^settings.gradle$"
-          - "^.*go.mod$"
-          - "^.*go.sum$"
-          - "^.*godelw$"
-          - "^.*godel/config/godel.properties$"
-          - "^.*godel/config/godel.yml$"
-          - "^gradle-jdks-latest/src/main/resources/latestjdks/latest-gradle-jdks.json$"
-          - "^.*vendor/.*$"
-          - "^versions.props$"
-          - "^versions.lock$"
-          - "^internal/generated/.*"
-          - "^internal/generated_src/.*"
-          - "^gradle-baseline-java/src/main/resources/checkstyle.version$"
       has_valid_signatures_by_keys:
         key_ids: ["C9AF124A484882E0", "4AEE18F83AFDEB23"]
 
@@ -177,7 +151,6 @@ approval_rules:
           - "dependabot[bot]"
       only_changed_files:
         paths:
-          - "^.*yarn.lock$"
           - "^.*package.json$"
           - "^.*pnpm-lock.yaml$"
       has_valid_signatures_by_keys:
