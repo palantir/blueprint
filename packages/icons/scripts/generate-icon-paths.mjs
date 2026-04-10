@@ -25,10 +25,8 @@ import { pascalCase } from "change-case";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { svgOptimizer } from "@blueprintjs/node-build-scripts";
-
 import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
-import { iconSvgoConfig } from "./iconSvgoConfig.mjs";
+import { optimizeSvg } from "./iconSvgoConfig.mjs";
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
 
 for (const iconSize of ICON_SIZES) {
@@ -62,10 +60,10 @@ async function getIconPaths(iconSize) {
     /** @type Record<string, string[]> */
     const iconPaths = {};
     for (const iconName of ICON_NAMES) {
-        const filepath = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
-        const svg = readFileSync(filepath, "utf-8");
-        const optimizedSvg = svgOptimizer(svg, { path: filepath, ...iconSvgoConfig });
-        const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) || [])
+        const path = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
+        const source = readFileSync(path, "utf-8");
+        const optimized = optimizeSvg(source, path);
+        const pathStrings = (optimized.match(/ d="[^"]+"/g) || [])
             // strip off leading 'd="'
             .map(s => s.slice(3))
             // strip out newlines and tabs, but keep other whitespace
