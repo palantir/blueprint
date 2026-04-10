@@ -9,7 +9,7 @@ import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/tes
 
 import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
-import { Button, Dialog, DialogBody, PopupKind, Tooltip } from "../../components";
+import { Button, Dialog, DialogBody, InputGroup, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 
 import { PopoverNext } from "./popoverNext";
@@ -264,6 +264,30 @@ describe("<PopoverNext>", () => {
             );
 
             expect(container.querySelector("[aria-haspopup]")).not.toBeInTheDocument();
+        });
+
+        it("applies FILL class to target when fill={true}", () => {
+            const { container } = render(
+                <PopoverNext content="content" fill={true}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).toBeInTheDocument();
+            expect(popoverTarget).toHaveClass(Classes.FILL);
+        });
+
+        it("does not apply FILL class to target when fill={false}", () => {
+            const { container } = render(
+                <PopoverNext content="content" fill={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).toBeInTheDocument();
+            expect(popoverTarget).not.toHaveClass(Classes.FILL);
         });
     });
 
@@ -1509,6 +1533,28 @@ describe("<PopoverNext>", () => {
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).not.toBeInTheDocument());
             await waitFor(() => expect(screen.queryByRole("button", { name: "inner target" })).not.toBeInTheDocument());
+        });
+    });
+
+    describe("key interactions on InputGroup target", () => {
+        it("Space key inserts a space character instead of being swallowed", async () => {
+            const handleChange = vi.fn();
+            const user = userEvent.setup();
+            render(
+                <PopoverNext content="popover content" autoFocus={false} enforceFocus={false} usePortal={false}>
+                    <InputGroup placeholder="Search..." onChange={handleChange} />
+                </PopoverNext>,
+            );
+            const input = screen.getByPlaceholderText("Search...");
+
+            await user.click(input);
+            await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
+
+            await user.type(input, "lorem ipsum");
+
+            expect(input).toHaveValue("lorem ipsum");
+            // Popover should stay open; Space must not toggle it
+            expect(screen.getByText("popover content")).toBeInTheDocument();
         });
     });
 
