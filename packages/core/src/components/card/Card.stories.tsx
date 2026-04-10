@@ -8,6 +8,7 @@ import { Elevation } from "../../common";
 import { H3 } from "../html/html";
 
 import { Card } from "./card";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof Card> = {
     title: "Core/Card",
@@ -72,7 +73,7 @@ export const ElevationExample: Story = {
         <div style={{ display: "flex", gap: 16 }}>
             {Object.values(Elevation).map(elevation => (
                 <Card key={elevation} {...args} elevation={elevation} style={{ width: 140, padding: 16 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Elevation</div>
+                    <StoryLabel title="Elevation" />
                     {elevation}
                 </Card>
             ))}
@@ -149,7 +150,7 @@ export const AllElevationsAllStates: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {(["Default", "Interactive", "Selected", "Compact"] as const).map(state => (
                 <div key={state}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>{state}</div>
+                    <StoryLabel title={state} />
                     <div style={{ display: "flex", gap: 16 }}>
                         {Object.values(Elevation).map(elevation => (
                             <Card

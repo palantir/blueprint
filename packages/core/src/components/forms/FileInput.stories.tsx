@@ -8,6 +8,7 @@ import { type ChangeEvent, useCallback, useState } from "react";
 import { Size } from "../../common";
 
 import { FileInput } from "./fileInput";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof FileInput> = {
     title: "Core/Form/Inputs/FileInput",
@@ -181,7 +182,7 @@ export const Playground: Story = {
                     size={args.size}
                     text={fileName ?? "Choose file..."}
                 />
-                {fileName != null && <div style={{ fontSize: 12, opacity: 0.6 }}>Selected: {fileName}</div>}
+                {fileName != null && <StoryLabel title={`Selected: ${fileName}`} />}
             </div>
         );
     },

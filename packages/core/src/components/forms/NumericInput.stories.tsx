@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 import { Intent, Position, Size } from "../../common";
 
 import { NumericInput } from "./numericInput";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof NumericInput> = {
     title: "Core/Form/Inputs/NumericInput",
@@ -166,11 +167,11 @@ export const ButtonPositionExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Right (default)</div>
+            <StoryLabel title="Right (default)" />
             <NumericInput {...args} buttonPosition={Position.RIGHT} placeholder="Buttons right..." />
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Left</div>
+            <StoryLabel title="Left" />
             <NumericInput {...args} buttonPosition={Position.LEFT} placeholder="Buttons left..." />
-            <div style={{ fontSize: 12, opacity: 0.6 }}>None</div>
+            <StoryLabel title="None" />
             <NumericInput {...args} buttonPosition="none" placeholder="No buttons..." />
         </div>
     ),
@@ -247,7 +248,7 @@ export const Playground: Story = {
                     stepSize={args.stepSize}
                     value={value}
                 />
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Current value: {value}</div>
+                <StoryLabel title={`Current value: ${value}`} />
             </div>
         );
     },

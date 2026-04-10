@@ -9,6 +9,7 @@ import { Intent } from "../../common";
 import { Button } from "../button/buttons";
 
 import { CompoundTag } from "./compoundTag";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 // These props are deprecated on CompoundTag — hide them from the Storybook controls panel.
 const disabledArgs = ["large", "rightIcon", "children"] as const satisfies ReadonlyArray<
@@ -133,13 +134,13 @@ export const VariantExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 16 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <StoryLabel title="Default" />
                 <CompoundTag {...args} leftContent="Key" minimal={false}>
                     Value
                 </CompoundTag>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Minimal</span>
+                <StoryLabel title="Minimal" />
                 <CompoundTag {...args} leftContent="Key" minimal={true}>
                     Value
                 </CompoundTag>
@@ -263,7 +264,7 @@ export const AllIntentsAllVariants: Story = {
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[false, true].map(minimal => (
                     <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                        <div style={{ fontSize: 12, opacity: 0.6 }}>{minimal ? "Minimal" : "Default"}</div>
+                        <StoryLabel title={minimal ? "Minimal" : "Default"} />
                         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                             {Object.values(Intent).map(intent => (
                                 <CompoundTag key={intent} {...args} leftContent="Key" minimal={minimal} intent={intent}>

@@ -9,6 +9,7 @@ import { useArgs } from "storybook/preview-api";
 import { Intent } from "../../common";
 
 import { Slider } from "./slider";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof Slider> = {
     title: "Core/Slider",
@@ -121,7 +122,7 @@ export const IntentExample: Story = {
             <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
                 {Object.values(Intent).map(intent => (
                     <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                        <StoryLabel title={intent} capitalize />
                         <Slider
                             {...args}
                             intent={intent}
@@ -152,7 +153,7 @@ export const StateExample: Story = {
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                    <StoryLabel title="Default" />
                     <Slider
                         {...args}
                         disabled={false}
@@ -162,7 +163,7 @@ export const StateExample: Story = {
                     />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
+                    <StoryLabel title="Disabled" />
                     <Slider
                         {...args}
                         disabled={true}
@@ -172,7 +173,7 @@ export const StateExample: Story = {
                     />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Vertical</span>
+                    <StoryLabel title="Vertical" />
                     <Slider
                         {...args}
                         vertical={true}

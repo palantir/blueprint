@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ComponentProps } from "react";
 
 import { Switch } from "./controls";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const disabledArgs = ["large", "tagName", "labelElement", "inputRef"] as const satisfies ReadonlyArray<
     keyof ComponentProps<typeof Switch>
@@ -102,17 +103,17 @@ export const StateExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Unchecked</div>
+            <StoryLabel title="Unchecked" />
             <div style={{ display: "flex", gap: 16 }}>
                 <Switch {...args} label="Default" />
                 <Switch {...args} label="Disabled" disabled={true} />
             </div>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Checked</div>
+            <StoryLabel title="Checked" />
             <div style={{ display: "flex", gap: 16 }}>
                 <Switch {...args} label="Checked" defaultChecked={true} />
                 <Switch {...args} label="Checked Disabled" defaultChecked={true} disabled={true} />
             </div>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Inline</div>
+            <StoryLabel title="Inline" />
             <div>
                 <Switch {...args} inline={true} label="Wi-Fi" defaultChecked={true} />
                 <Switch {...args} inline={true} label="Bluetooth" />
@@ -131,9 +132,7 @@ export const AllStates: Story = {
         <div style={{ display: "flex", gap: 24, flexDirection: "column" }}>
             {(["medium", "large"] as const).map(size => (
                 <div key={size}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8, textTransform: "capitalize" }}>
-                        {size}
-                    </div>
+                    <StoryLabel title={size} capitalize />
                     <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
                         <Switch {...args} size={size} label="Unchecked" />
                         <Switch {...args} size={size} label="Checked" defaultChecked={true} />

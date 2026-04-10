@@ -7,6 +7,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
 import { Button } from "./buttons";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 // These props are deprecated on Button — hide them from the Storybook controls panel.
 const disabledArgs = [
@@ -280,7 +281,7 @@ export const AllIntentsAllVariants: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {Object.values(ButtonVariant).map(variant => (
                 <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{variant}</div>
+                    <StoryLabel title={variant} capitalize />
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
                             <Button key={intent} {...args} variant={variant} intent={intent} text={intent} />

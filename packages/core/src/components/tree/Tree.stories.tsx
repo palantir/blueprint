@@ -8,6 +8,7 @@ import { expect, waitFor } from "storybook/test";
 
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 type NodePath = number[];
 
@@ -177,13 +178,13 @@ export const StateExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 32 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Selected</div>
+                <StoryLabel title="Selected" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SELECTED_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Disabled</div>
+                <StoryLabel title="Disabled" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={DISABLED_CONTENTS} />
                 </div>
@@ -200,25 +201,25 @@ export const AllStates: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Default</div>
+                <StoryLabel title="Default" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SAMPLE_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Selected</div>
+                <StoryLabel title="Selected" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SELECTED_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Disabled</div>
+                <StoryLabel title="Disabled" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={DISABLED_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Compact</div>
+                <StoryLabel title="Compact" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SAMPLE_CONTENTS} compact={true} />
                 </div>

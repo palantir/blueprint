@@ -9,6 +9,7 @@ import { Boundary } from "../../common/boundary";
 
 import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const SAMPLE_ITEMS: BreadcrumbProps[] = [
     { text: "Home", href: "#", icon: "home" },
@@ -77,11 +78,11 @@ export const CollapseFromExample: Story = {
     render: ({ width, ...args }) => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
             <div style={{ width }}>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Collapse from start (default)</div>
+                <StoryLabel title="Collapse from start (default)" />
                 <Breadcrumbs {...args} collapseFrom={Boundary.START} />
             </div>
             <div style={{ width }}>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Collapse from end</div>
+                <StoryLabel title="Collapse from end" />
                 <Breadcrumbs {...args} collapseFrom={Boundary.END} />
             </div>
         </div>
@@ -96,13 +97,13 @@ export const OverflowExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Constrained width (300px)</div>
+                <StoryLabel title="Constrained width (300px)" />
                 <div style={{ width: 300 }}>
                     <Breadcrumbs {...args} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Full width</div>
+                <StoryLabel title="Full width" />
                 <div style={{ width: 600 }}>
                     <Breadcrumbs {...args} />
                 </div>
