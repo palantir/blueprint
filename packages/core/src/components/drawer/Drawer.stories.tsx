@@ -16,7 +16,7 @@ const meta: Meta<typeof Drawer> = {
     component: Drawer,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Story />
             </div>
         ),
