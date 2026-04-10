@@ -255,7 +255,7 @@ export const EscapeKeyClose: Story = {
 
         await step("Escape key closes dialog", async () => {
             await userEvent.keyboard("{Escape}");
-            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).not.toBeInTheDocument());
         });
     },
 };
@@ -320,7 +320,7 @@ export const OutsideClickClose: Story = {
         await step("Clicking backdrop closes dialog", async () => {
             const backdrop = document.querySelector(".bp6-overlay-backdrop") as HTMLElement;
             await userEvent.click(backdrop);
-            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("This is the content for step 1.")).not.toBeInTheDocument());
         });
     },
 };
