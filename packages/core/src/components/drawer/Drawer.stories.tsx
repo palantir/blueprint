@@ -72,11 +72,7 @@ function DrawerStoryRender(args: DrawerProps) {
     return (
         <>
             <Button text="Open Drawer" onClick={handleOpen} />
-            <Drawer
-                {...args}
-                isOpen={args.isOpen}
-                onClose={handleClose}
-            >
+            <Drawer {...args} isOpen={args.isOpen} onClose={handleClose}>
                 <div style={{ padding: 20 }}>
                     <p>Drawer content goes here.</p>
                 </div>
