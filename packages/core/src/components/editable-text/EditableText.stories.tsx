@@ -188,8 +188,8 @@ export const FocusExample: Story = {
  * Hovering over each intent variant reveals the highlight ring (CSS-driven).
  * The editing class is only applied on click, not on hover.
  */
-export const HoverExample: Story = {
-    name: "Hover",
+export const HoverInteractionExample: Story = {
+    name: "HoverInteraction",
     argTypes: {
         intent: { table: { disable: true } },
     },
