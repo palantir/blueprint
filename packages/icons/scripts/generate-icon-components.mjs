@@ -42,7 +42,7 @@ const componentsIndexTemplate = Handlebars.compile(
 const indexTemplate = Handlebars.compile(readFileSync(resolve(import.meta.dirname, "index.ts.hbs"), "utf8"));
 
 console.info("Clearing existing icon modules...");
-rmSync(generatedComponentsDir, { recursive: true, force: true });
+rmSync(generatedComponentsDir, { force: true, recursive: true });
 
 console.info("Generating ES modules for each icon...");
 mkdirSync(generatedComponentsDir, { recursive: true });
@@ -51,8 +51,10 @@ for (const { iconName } of iconsMetadata) {
     let paths16;
     let paths20;
     try {
-        paths16 = await extractPathsFromResourceSvg(16, iconName);
-        paths20 = await extractPathsFromResourceSvg(20, iconName);
+        [paths16, paths20] = await Promise.all([
+            extractPathsFromResourceSvg(16, iconName),
+            extractPathsFromResourceSvg(20, iconName),
+        ]);
     } catch (error) {
         throw new Error(`[generate-icon-components] Failed to extract 16px/20px paths for "${iconName}"`, {
             cause: error,
