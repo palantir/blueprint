@@ -45,7 +45,7 @@ const FRUITS = ["Apples", "Oranges", "Bananas", "Grapes", "Mangoes"];
  */
 export const Default: Story = {
     render: args => (
-        <CardList {...args} style={{ maxWidth: 300 }}>
+        <CardList {...args}>
             {FRUITS.map(fruit => (
                 <Card key={fruit}>{fruit}</Card>
             ))}
@@ -66,7 +66,7 @@ export const StateExample: Story = {
         <div style={{ display: "flex", gap: 24 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Bordered</span>
-                <CardList {...args} bordered={true} compact={false} style={{ maxWidth: 200 }}>
+                <CardList {...args} bordered={true} compact={false}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
                     <Card selected={true}>Selected</Card>
@@ -74,7 +74,7 @@ export const StateExample: Story = {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Compact</span>
-                <CardList {...args} bordered={true} compact={true} style={{ maxWidth: 200 }}>
+                <CardList {...args} bordered={true} compact={true}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
                     <Card selected={true}>Selected</Card>
@@ -82,7 +82,7 @@ export const StateExample: Story = {
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <span style={{ fontSize: 12, opacity: 0.6 }}>Not bordered</span>
-                <CardList {...args} bordered={false} compact={false} style={{ maxWidth: 200 }}>
+                <CardList {...args} bordered={false} compact={false}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
                     <Card selected={true}>Selected</Card>
@@ -107,12 +107,7 @@ export const AllConfigurations: Story = {
                     <div style={{ fontSize: 12, opacity: 0.6 }}>{compact ? "Compact" : "Default"}</div>
                     <div style={{ display: "flex", gap: 16 }}>
                         {[true, false].map(bordered => (
-                            <CardList
-                                key={String(bordered)}
-                                bordered={bordered}
-                                compact={compact}
-                                style={{ maxWidth: 200 }}
-                            >
+                            <CardList key={String(bordered)} bordered={bordered} compact={compact}>
                                 <Card>Plain</Card>
                                 <Card interactive={true}>Interactive</Card>
                                 <Card selected={true}>Selected</Card>
@@ -148,7 +143,7 @@ export const Playground: Story = {
         );
 
         return (
-            <CardList {...cardListProps} style={{ maxWidth: 300 }}>
+            <CardList {...cardListProps}>
                 {FRUITS.map((fruit, i) => (
                     <Card key={fruit} interactive={true} selected={selectedIndex === i} onClick={handleCardClick(i)}>
                         {fruit}
