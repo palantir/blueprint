@@ -30,9 +30,11 @@ const meta: Meta<typeof Drawer> = {
         title: "Drawer Title",
         icon: "cog",
         position: "right",
-        size: DrawerSize.SMALL,
+        size: DrawerSize.STANDARD,
         isCloseButtonShown: true,
         hasBackdrop: true,
+        transitionDuration: 0,
+        transitionName: "no-transition",
     },
     argTypes: {
         position: {
@@ -70,7 +72,11 @@ function DrawerStoryRender(args: DrawerProps) {
     return (
         <>
             <Button text="Open Drawer" onClick={handleOpen} />
-            <Drawer {...args} isOpen={args.isOpen} onClose={handleClose}>
+            <Drawer
+                {...args}
+                isOpen={args.isOpen}
+                onClose={handleClose}
+            >
                 <div style={{ padding: 20 }}>
                     <p>Drawer content goes here.</p>
                 </div>
@@ -192,6 +198,21 @@ export const SizeLarge: Story = {
 };
 
 /**
+ * Drawer with the close button hidden.
+ */
+export const CloseButtonHidden: Story = {
+    name: "Close Button Hidden",
+    argTypes: {
+        isCloseButtonShown: { table: { disable: true } },
+    },
+    args: {
+        isCloseButtonShown: false,
+        title: "No Close Button",
+    },
+    render: DrawerStoryRender,
+};
+
+/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
@@ -222,6 +243,10 @@ export const Playground: Story = {
 
 export const EscapeKeyClose: Story = {
     name: "Escape Key Close",
+    args: {
+        transitionDuration: undefined,
+        transitionName: undefined,
+    },
     render: DrawerStoryRender,
     play: async ({ canvas, userEvent, step }) => {
         await step("Open drawer", async () => {
@@ -239,6 +264,10 @@ export const EscapeKeyClose: Story = {
 
 export const OutsideClickClose: Story = {
     name: "Outside Click Close",
+    args: {
+        transitionDuration: undefined,
+        transitionName: undefined,
+    },
     render: DrawerStoryRender,
     play: async ({ canvas, userEvent, step }) => {
         await step("Open drawer", async () => {
