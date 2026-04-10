@@ -65,7 +65,7 @@ export const IntentExample: Story = {
             {Object.values(Intent).map(intent => (
                 <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                     <Spinner {...args} intent={intent} size={SpinnerSize.STANDARD} />
-                    <StoryLabel title={intent} capitalize />
+                    <StoryLabel title={intent} />
                 </div>
             ))}
         </div>

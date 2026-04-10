@@ -281,7 +281,7 @@ export const AllIntentsAllVariants: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {Object.values(ButtonVariant).map(variant => (
                 <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <StoryLabel title={variant} capitalize />
+                    <StoryLabel title={variant} />
                     <div style={{ display: "flex", gap: 8 }}>
                         {Object.values(Intent).map(intent => (
                             <Button key={intent} {...args} variant={variant} intent={intent} text={intent} />

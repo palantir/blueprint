@@ -126,7 +126,7 @@ export const SizeExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
             {Object.values(Size).map(size => (
                 <div key={size} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                    <StoryLabel title={size} capitalize />
+                    <StoryLabel title={size} />
                     <SegmentedControl {...args} size={size} />
                 </div>
             ))}

@@ -135,7 +135,7 @@ export const AllStatesAllSizes: Story = {
         <div style={{ display: "flex", gap: 24, flexDirection: "column" }}>
             {(["medium", "large"] as const).map(size => (
                 <div key={size}>
-                    <StoryLabel title={size} capitalize />
+                    <StoryLabel title={size} />
                     <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
                         <Checkbox {...args} size={size} label="Unchecked" />
                         <Checkbox {...args} size={size} label="Checked" defaultChecked={true} />

@@ -122,7 +122,7 @@ export const IntentExample: Story = {
             <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
                 {Object.values(Intent).map(intent => (
                     <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <StoryLabel title={intent} capitalize />
+                        <StoryLabel title={intent} />
                         <Slider
                             {...args}
                             intent={intent}
