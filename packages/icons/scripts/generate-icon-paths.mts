@@ -19,15 +19,14 @@
  * Important: we expect ../src/generated/ to contain SVG definitions of all the icons already before this script runs.
  */
 
-// @ts-check
-
 import { pascalCase } from "change-case";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { svgOptimizer } from "@blueprintjs/node-build-scripts";
 
-import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
+import { ICON_SIZES, type IconRasterSize, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mts";
+
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
 
 for (const iconSize of ICON_SIZES) {
@@ -54,17 +53,14 @@ for (const iconSize of ICON_SIZES) {
 /**
  * Loads SVG file for each icon, extracts path strings `d="path-string"`,
  * and constructs map of icon name to array of path strings.
- *
- * @param {16 | 20} iconSize
  */
-async function getIconPaths(iconSize) {
-    /** @type Record<string, string[]> */
-    const iconPaths = {};
+async function getIconPaths(iconSize: IconRasterSize): Promise<Record<string, string[]>> {
+    const iconPaths: Record<string, string[]> = {};
     for (const iconName of ICON_NAMES) {
         const filepath = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
         const svg = readFileSync(filepath, "utf-8");
         const optimizedSvg = await svgOptimizer.optimize(svg, { path: filepath });
-        const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) || [])
+        const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) ?? [])
             // strip off leading 'd="'
             .map(s => s.slice(3))
             // strip out newlines and tabs, but keep other whitespace

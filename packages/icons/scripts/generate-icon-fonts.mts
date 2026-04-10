@@ -17,22 +17,28 @@
  * @fileoverview Generates icon fonts and codepoints from SVG sources
  */
 
-// @ts-check
-
 import { FontAssetType, OtherAssetType, generateFonts as runFantasticon } from "@twbs/fantasticon";
 import { getLogger } from "@twbs/fantasticon/lib/cli/logger.js";
+import type { RunnerResults } from "@twbs/fantasticon/lib/core/runner.js";
+import type { CodepointsMap } from "@twbs/fantasticon/lib/utils/codepoints.js";
 import { mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
-import { generatedSrcDir, ICON_RASTER_SCALING_FACTOR, iconResourcesDir, iconsMetadata, NS } from "./common.mjs";
+import {
+    generatedSrcDir,
+    ICON_RASTER_SCALING_FACTOR,
+    type IconRasterSize,
+    iconResourcesDir,
+    iconsMetadata,
+    NS,
+} from "./common.mts";
 
 const logger = getLogger();
 
-/** @type {import("@twbs/fantasticon/lib/utils/codepoints").CodepointsMap} */
-const codepoints = {};
+const codepoints: CodepointsMap = {};
 
 for (const icon of iconsMetadata) {
-    if (Object.values(codepoints).indexOf(icon.codepoint) !== -1) {
+    if (Object.values(codepoints).includes(icon.codepoint)) {
         throw new Error(
             `[generate-icon-fonts] Invalid metadata entry in icons.json: icon "${icon.iconName}" cannot have codepoint ${icon.codepoint}, it is already in use.`,
         );
@@ -46,11 +52,7 @@ await Promise.all([
     connectToLogger(generateFonts(20, `${NS}-icon-large`)),
 ]);
 
-/**
- * @param {number} size
- * @param {string} prefix
- */
-async function generateFonts(size, prefix) {
+async function generateFonts(size: IconRasterSize, prefix: string): Promise<RunnerResults> {
     mkdirSync(join(generatedSrcDir, `${size}px/paths`), { recursive: true });
     return runFantasticon({
         name: `blueprint-icons-${size}`,
@@ -76,15 +78,11 @@ async function generateFonts(size, prefix) {
     });
 }
 
-/**
- * @param {Promise<import("@twbs/fantasticon/lib/core/runner").RunnerResults>} runner
- * @returns {Promise<void>}
- */
-async function connectToLogger(runner) {
+async function connectToLogger(runner: Promise<RunnerResults>): Promise<void> {
     try {
         const results = await runner;
         logger.results(results);
-    } catch (error) {
-        logger.error(error);
+    } catch (caught: unknown) {
+        logger.error(caught instanceof Error ? caught : String(caught));
     }
 }

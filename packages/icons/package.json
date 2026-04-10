@@ -15,6 +15,18 @@
     "sideEffects": [
         "**/*.css"
     ],
+    "nx": {
+        "targets": {
+            "test:typeCheck": {
+                "inputs": [
+                    "{projectRoot}/src/**/*",
+                    "{projectRoot}/test/**/*",
+                    "{projectRoot}/scripts/**/*",
+                    "{projectRoot}/icons.json"
+                ]
+            }
+        }
+    },
     "scripts": {
         "clean": "rm -rf dist/* || rm -rf lib/**/* || rm -rf src/generated/* || true",
         "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
@@ -28,13 +40,13 @@
         "dist": "run-s \"dist:*\"",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
-        "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
+        "generate-icon-src": "tsx scripts/generate-icon-fonts.mts && tsx scripts/generate-icon-paths.mts && tsx scripts/generate-icon-components.mts",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "run-s test:typeCheck test:iso test:vitest:run",
-        "test:typeCheck": "tsc -p ./src/tsconfig.test.json",
+        "test:typeCheck": "tsc -p ./src/tsconfig.test.json && tsc -p ./scripts/tsconfig.json",
         "test:iso": "vitest run --config vitest.config.isotest.mts",
         "test:vitest": "vitest",
         "test:vitest:run": "vitest run",
@@ -69,6 +81,7 @@
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
         "svg-parser": "^2.0.4",
+        "tsx": "catalog:",
         "typescript": "~5.9.3",
         "webpack-cli": "^5.1.4"
     },

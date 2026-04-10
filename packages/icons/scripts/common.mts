@@ -13,18 +13,18 @@
  * limitations under the License.
  */
 
-// @ts-check
-
 import { writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+
 import iconsMetadataJson from "../icons.json" with { type: "json" };
 
 export const iconResourcesDir = resolve(import.meta.dirname, "../../../resources/icons");
 export const generatedSrcDir = resolve(import.meta.dirname, "../src/generated");
 export const generatedComponentsDir = join(generatedSrcDir, "components");
 export const NS = "bp6";
-/** @type { [16, 20] } */
-export const ICON_SIZES = [16, 20];
+export const ICON_SIZES = [16, 20] as const;
+
+export type IconRasterSize = (typeof ICON_SIZES)[number];
 
 /**
  * We need to scale up the icon paths during conversion so that the icons do not get visually degraded
@@ -37,25 +37,12 @@ export const ICON_SIZES = [16, 20];
  */
 export const ICON_RASTER_SCALING_FACTOR = 20;
 
-/**
- * @typedef {Object} IconMetadata
- * @property {string} displayName - "Icon name" for display
- * @property {string} iconName - `icon-name` for IconName and CSS class
- * @property {string} tags - comma separated list of tags describing this icon
- * @property {string} group - group to which this icon belongs
- * @property {number} codepoint - icon font codepoint
- */
-
-/** @type {IconMetadata[]} */
-export const iconsMetadata = iconsMetadataJson.sort((a, b) => a.iconName.localeCompare(b.iconName));
+export const iconsMetadata = [...iconsMetadataJson].sort((a, b) => a.iconName.localeCompare(b.iconName));
 
 /**
  * Writes lines to given filename in the generated sources directory.
- *
- * @param {string} filename
- * @param {string[]} lines
  */
-export function writeLinesToFile(filename, ...lines) {
+export function writeLinesToFile(filename: string, ...lines: string[]): void {
     const outputPath = join(generatedSrcDir, filename);
     const contents = [...lines, ""].join("\n");
     writeFileSync(outputPath, contents);

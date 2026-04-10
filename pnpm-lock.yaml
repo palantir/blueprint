@@ -789,6 +789,15 @@ importers:
       '@twbs/fantasticon':
         specifier: ^2.7.2
         version: 2.9.0
+      '@types/svg2ttf':
+        specifier: ^5.0.3
+        version: 5.0.3
+      '@types/svgicons2svgfont':
+        specifier: ^10.0.5
+        version: 10.0.5
+      '@types/ttf2woff':
+        specifier: ^2.0.4
+        version: 2.0.4
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))
@@ -810,6 +819,9 @@ importers:
       svg-parser:
         specifier: ^2.0.4
         version: 2.0.4
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -3301,8 +3313,17 @@ packages:
   '@types/sockjs@0.3.36':
     resolution: {integrity: sha512-MK9V6NzAS1+Ud7JV9lJLFqW85VbC9dq3LmwZCuBe4wBDgKC0Kj/jd8Xl+nSviU+Qc3+m7umHHyHg//2KSa0a0Q==}
 
+  '@types/svg2ttf@5.0.3':
+    resolution: {integrity: sha512-hL+/A4qMISvDbDTtdY73R0zuvsdc7YRYnV5FyAfKVGk8OsluXu/tCFxop7IB5Sgr+ZCS0hHtFxylD0REmm+abA==}
+
+  '@types/svgicons2svgfont@10.0.5':
+    resolution: {integrity: sha512-7BUT1sEFSNBIcc0wlwKn2l3l3OnYJdjsrlruDbAp6hpOK3HbpgMjLVH4ql6xXwD+qYy+XEHrb2EMkIpo9kWZ+Q==}
+
   '@types/trusted-types@2.0.7':
     resolution: {integrity: sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw==}
+
+  '@types/ttf2woff@2.0.4':
+    resolution: {integrity: sha512-pD66iwSkU5lIMWWTz5sxIMjwM7/qs/EYgE01vqu5C3S1izONHiF1GRy2dWvlKMlC39TfZszP7+OVXgVk3BccOg==}
 
   '@types/ws@8.18.1':
     resolution: {integrity: sha512-ThVF6DCVhA8kUGy+aazFQ4kXQ7E1Ty7A3ypFOe0IcJV8O/M511G99AW24irKrW56Wt44yG9+ij8FaqoBGkuBXg==}
@@ -10736,8 +10757,18 @@ snapshots:
     dependencies:
       '@types/node': 24.10.0
 
+  '@types/svg2ttf@5.0.3': {}
+
+  '@types/svgicons2svgfont@10.0.5':
+    dependencies:
+      '@types/node': 24.10.0
+
   '@types/trusted-types@2.0.7':
     optional: true
+
+  '@types/ttf2woff@2.0.4':
+    dependencies:
+      '@types/node': 24.10.0
 
   '@types/ws@8.18.1':
     dependencies:

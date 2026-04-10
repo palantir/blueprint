@@ -20,7 +20,7 @@ import { junitReportPath } from "./src/utils.mjs";
 await main();
 
 async function main() {
-    const FILES_GLOB = "{src,test}/**/*.{ts,tsx}";
+    const FILES_GLOB = "{src,test,scripts}/**/*.{ts,tsx,mts}";
     const absoluteFileGlob = resolve(cwd(), FILES_GLOB);
 
     // ESLint may fail if provided with no files, so we expand the glob before running it

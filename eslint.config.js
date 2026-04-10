@@ -84,6 +84,27 @@ module.exports = tseslint.config([
         },
     },
     {
+        files: ["**/scripts/*.{ts,mts}"],
+        languageOptions: {
+            globals: { ...globals.node },
+            parser: tseslint.parser,
+            parserOptions: {
+                projectService: true,
+            },
+        },
+        rules: {
+            "import/no-default-export": "off",
+            "import/no-extraneous-dependencies": [
+                "error",
+                {
+                    devDependencies: true,
+                },
+            ],
+            "prefer-object-spread": "off",
+            "sort-keys": "off",
+        },
+    },
+    {
         files: ["**/*.stories.{ts,tsx}"],
         languageOptions: {
             parserOptions: {
