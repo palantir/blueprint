@@ -31,7 +31,7 @@ jobs:
       - run:
           name: Validate policy file
           command: |
-            rcode=$(curl "https://policy-bot.general.dmz.palantir.tech/" -XPUT -T "policy.yml" -s -w "%{http_code}" -o /tmp/response)
+            rcode=$(curl "https://policy-bot.general.dmz.palantir.tech/" -XPUT -T ".policy.yml" -s -w "%{http_code}" -o /tmp/response)
             if [[ "${rcode}" -gt 299 ]]; then
               jq -r .message < /tmp/response && exit 1
             fi
