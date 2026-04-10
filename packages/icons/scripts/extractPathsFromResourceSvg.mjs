@@ -34,14 +34,14 @@ import { iconResourcesDir } from "./common.mjs";
 export async function extractPathsFromResourceSvg(iconSize, iconName) {
     const filepath = join(iconResourcesDir, `${iconSize}px`, `${iconName}.svg`);
     const svg = readFileSync(filepath, "utf-8");
-    const optimizedSvg = await svgOptimizer.optimize(svg, { path: filepath });
+    const optimizedSvg = (await svgOptimizer.optimize(svg, { path: filepath })).data;
     /** @type string[] */
     const paths = [];
-    // Match `d` attributes on `<path` elements specifically, supporting single or double quotes.
-    const re = /<path[^>]*\sd=(["'])([\s\S]*?)\1/g;
+    // Match `d` attributes on `<path>` elements from our normalized SVGO output.
+    const re = /<path[^>]*\sd="([^"]+)"/g;
     let m;
-    while ((m = re.exec(optimizedSvg.data)) !== null) {
-        paths.push(m[2].replace(/[\n\t]/g, ""));
+    while ((m = re.exec(optimizedSvg)) !== null) {
+        paths.push(m[1]);
     }
     return paths;
 }
