@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Tag } from "./tag";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 // These props are deprecated on Tag — hide them from the Storybook controls panel.
 const disabledArgs = ["large", "rightIcon", "children"] as const satisfies ReadonlyArray<

@@ -5,9 +5,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Button } from "./buttons";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 // These props are deprecated on Button — hide them from the Storybook controls panel.
 const disabledArgs = [

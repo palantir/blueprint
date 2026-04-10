@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Elevation } from "../../common";
 import { H3 } from "../html/html";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Card } from "./card";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof Card> = {
     title: "Core/Card",

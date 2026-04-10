@@ -7,9 +7,9 @@ import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
 import { Button } from "../button/buttons";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { CompoundTag } from "./compoundTag";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 // These props are deprecated on CompoundTag — hide them from the Storybook controls panel.
 const disabledArgs = ["large", "rightIcon", "children"] as const satisfies ReadonlyArray<

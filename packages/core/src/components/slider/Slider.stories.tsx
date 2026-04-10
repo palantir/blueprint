@@ -7,9 +7,9 @@ import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
 import { Intent } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Slider } from "./slider";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof Slider> = {
     title: "Core/Slider",

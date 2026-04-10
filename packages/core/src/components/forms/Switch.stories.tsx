@@ -5,8 +5,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ComponentProps } from "react";
 
-import { Switch } from "./controls";
 import { StoryLabel } from "../storybook-components/StoryLabel";
+
+import { Switch } from "./controls";
 
 const disabledArgs = ["large", "tagName", "labelElement", "inputRef"] as const satisfies ReadonlyArray<
     keyof ComponentProps<typeof Switch>

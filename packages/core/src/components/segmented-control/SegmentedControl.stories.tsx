@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
 
 import { Intent, Size } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { SegmentedControl } from "./segmentedControl";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const DEFAULT_OPTIONS = [
     { label: "List", value: "list" },

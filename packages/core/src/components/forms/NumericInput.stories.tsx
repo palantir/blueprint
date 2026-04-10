@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
 
 import { Intent, Position, Size } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { NumericInput } from "./numericInput";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof NumericInput> = {
     title: "Core/Form/Inputs/NumericInput",

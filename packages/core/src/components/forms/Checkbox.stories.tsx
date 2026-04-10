@@ -5,9 +5,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Intent } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Checkbox } from "./controls";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const disabledArgs = ["large", "tagName", "labelElement", "inputRef"] as const satisfies ReadonlyArray<
     keyof React.ComponentProps<typeof Checkbox>

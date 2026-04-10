@@ -5,9 +5,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Intent } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Spinner, SpinnerSize } from "./spinner";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof Spinner> = {
     title: "Core/Spinner",

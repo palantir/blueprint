@@ -6,10 +6,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import React from "react";
 
 import { Boundary } from "../../common/boundary";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const SAMPLE_ITEMS: BreadcrumbProps[] = [
     { text: "Home", href: "#", icon: "home" },

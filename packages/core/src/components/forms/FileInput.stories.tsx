@@ -6,9 +6,9 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ChangeEvent, useCallback, useState } from "react";
 
 import { Size } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { FileInput } from "./fileInput";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof FileInput> = {
     title: "Core/Form/Inputs/FileInput",

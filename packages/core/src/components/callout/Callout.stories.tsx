@@ -5,9 +5,9 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { Intent } from "../../common";
+import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Callout } from "./callout";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 const meta: Meta<typeof Callout> = {
     title: "Core/Callout",
