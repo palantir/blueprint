@@ -30,7 +30,7 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<
     return (
         <SVGIconContainer iconName="{{iconName}}" ref={ref} {...props}>
             {paths.map((d, i) => (
-                <path key={i} d={d} fillRule="evenodd" />
+                <path key={i} d={d} />
             ))}
         </SVGIconContainer>
     );

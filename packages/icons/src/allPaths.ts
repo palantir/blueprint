@@ -24,9 +24,10 @@ import type { PascalCase } from "./type-utils";
 export { IconSvgPaths16, IconSvgPaths20 };
 
 /**
- * Get the list of vector paths that define a given icon. These path strings are used to render `<path>`
- * elements inside an `<svg>` icon element. For full implementation details and nuances, see the icon component
- * handlebars template and `generate-icon-components` script in the __@blueprintjs/icons__ package.
+ * Get the vector path data for a given icon as a list of `d` strings used to render `<path>` elements inside an `<svg>`.
+ * For each icon this array has length __0__ (blank) or __1__; multi-path icons are not used after resource normalization.
+ *
+ * For implementation details, see the icon component template and `generate-icon-components` script in __@blueprintjs/icons__.
  *
  * Note: this function loads all icon definitions __statically__, which means every icon is included in your
  * JS bundle. Only use this API if your app is likely to use all Blueprint icons at runtime. If you are looking for a

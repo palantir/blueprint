@@ -19,29 +19,46 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { svgOptimizer } from "@blueprintjs/node-build-scripts";
-
 import { iconResourcesDir } from "./common.mjs";
 
 /**
- * Extracts path `d` strings from an on-disk icon SVG. This matches the pipeline used for
- * {@link generate-icon-paths.mjs} and the path modules consumed by `<Icon />` from core.
+ * Extracts path `d` strings from an on-disk icon SVG.
+ *
+ * Resource SVGs are expected to be SVGO-normalized in version control (`icons:verify`); this does not re-run SVGO.
+ * Each icon has at most one `<path>`; blank icons have none.
  *
  * @param {16 | 20} iconSize
  * @param {string} iconName
- * @returns {Promise<string[]>}
+ * @returns {string[]}
  */
-export async function extractPathsFromResourceSvg(iconSize, iconName) {
+export function extractPathsFromResourceSvg(iconSize, iconName) {
     const filepath = join(iconResourcesDir, `${iconSize}px`, `${iconName}.svg`);
     const svg = readFileSync(filepath, "utf-8");
-    const optimizedSvg = (await svgOptimizer.optimize(svg, { path: filepath })).data;
-    /** @type string[] */
-    const paths = [];
-    // Match `d` attributes on `<path>` elements from our normalized SVGO output.
-    const re = /<path[^>]*\sd="([^"]+)"/g;
-    let m;
-    while ((m = re.exec(optimizedSvg)) !== null) {
-        paths.push(m[1]);
+    /** @type {string[]} */
+    const ds = [];
+    let i = 0;
+    while (i < svg.length) {
+        const pathIdx = svg.indexOf("<path", i);
+        if (pathIdx === -1) {
+            break;
+        }
+        const gt = svg.indexOf(">", pathIdx);
+        if (gt === -1) {
+            break;
+        }
+        const tag = svg.slice(pathIdx, gt + 1);
+        const dq = /\bd\s*=\s*"([^"]*)"/.exec(tag);
+        const sq = /\bd\s*=\s*'([^']*)'/.exec(tag);
+        const d = dq ? dq[1] : sq ? sq[1] : null;
+        if (d !== null) {
+            ds.push(d);
+        }
+        i = gt + 1;
     }
-    return paths;
+    if (ds.length > 1) {
+        throw new Error(
+            `Expected at most one <path> in ${filepath} (icon "${iconName}", ${iconSize}px), found ${ds.length}`,
+        );
+    }
+    return ds;
 }

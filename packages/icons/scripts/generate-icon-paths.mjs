@@ -16,7 +16,8 @@
 /**
  * @fileoverview Generates SVG path modules used by {@code <Icon />} React components in core.
  *
- * Paths are extracted from the optimized resource SVGs in {@code resources/icons/}.
+ * Paths are extracted from SVGO-normalized resource SVGs in {@code resources/icons/} (see {@code icons:verify}).
+ * Each module's default export is a {@code string[]} with length 0 (blank) or 1.
  */
 
 // @ts-check
@@ -29,7 +30,7 @@ import { extractPathsFromResourceSvg } from "./extractPathsFromResourceSvg.mjs";
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
 
 for (const iconSize of ICON_SIZES) {
-    const iconPaths = await getIconPaths(iconSize);
+    const iconPaths = getIconPaths(iconSize);
 
     for (const [iconName, pathStrings] of Object.entries(iconPaths)) {
         const line =
@@ -50,16 +51,15 @@ for (const iconSize of ICON_SIZES) {
 }
 
 /**
- * Loads SVG file for each icon, extracts path strings `d="path-string"`,
- * and constructs map of icon name to array of path strings.
+ * Loads each icon SVG and returns a map of icon name to path `d` strings (0 or 1 per icon).
  *
  * @param {16 | 20} iconSize
  */
-async function getIconPaths(iconSize) {
+function getIconPaths(iconSize) {
     /** @type Record<string, string[]> */
     const iconPaths = {};
     for (const iconName of ICON_NAMES) {
-        iconPaths[iconName] = await extractPathsFromResourceSvg(iconSize, iconName);
+        iconPaths[iconName] = extractPathsFromResourceSvg(iconSize, iconName);
     }
     console.info(`Parsed ${Object.keys(iconPaths).length} ${iconSize}px icons.`);
     return iconPaths;

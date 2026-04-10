@@ -19,4 +19,5 @@ export enum IconSize {
     LARGE = 20,
 }
 
+/** SVG path `d` strings for one icon. Normalized icons use at most one segment; blank icons use an empty array. */
 export type IconPaths = string[];

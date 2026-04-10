@@ -51,10 +51,8 @@ for (const { iconName } of iconsMetadata) {
     let paths16;
     let paths20;
     try {
-        [paths16, paths20] = await Promise.all([
-            extractPathsFromResourceSvg(16, iconName),
-            extractPathsFromResourceSvg(20, iconName),
-        ]);
+        paths16 = extractPathsFromResourceSvg(16, iconName);
+        paths20 = extractPathsFromResourceSvg(20, iconName);
     } catch (error) {
         throw new Error(`[generate-icon-components] Failed to extract 16px/20px paths for "${iconName}"`, {
             cause: error,
