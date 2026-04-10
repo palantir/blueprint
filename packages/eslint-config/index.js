@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
-const headerPlugin = require("eslint-plugin-header");
-const importPlugin = require("eslint-plugin-import");
+const { fixupPluginRules } = require("@eslint/compat");
+const headerPlugin = fixupPluginRules(require("eslint-plugin-header"));
+const importPlugin = fixupPluginRules(require("eslint-plugin-import"));
 const jsDocPlugin = require("eslint-plugin-jsdoc");
 const jsxA11yPlugin = require("eslint-plugin-jsx-a11y");
-const reactPlugin = require("eslint-plugin-react");
+const reactPlugin = fixupPluginRules(require("eslint-plugin-react"));
 const reactHooksPlugin = require("eslint-plugin-react-hooks");
 const globals = require("globals");
 const tseslint = require("typescript-eslint");
@@ -28,13 +29,11 @@ const eslintBuiltinRules = require("./eslint-builtin-rules.js");
 const eslintPluginRules = require("./eslint-plugin-rules.js");
 const tsEslintRules = require("./typescript-eslint-rules.js");
 
-// ESLint 9 requires all rules with options to have a schema, but
-// eslint-plugin-header doesn't do this yet...
+// ESLint requires option schemas; eslint-plugin-header's rule metadata is missing one.
 headerPlugin.rules.header.meta.schema = false;
 
 module.exports = tseslint.config(
     blueprintPlugin.flatConfigs.recommended,
-    importPlugin.flatConfigs.typescript,
     {
         plugins: {
             "@blueprintjs": blueprintPlugin,
@@ -46,6 +45,9 @@ module.exports = tseslint.config(
         },
         languageOptions: {
             ecmaVersion: 2022,
+            parserOptions: {
+                sourceType: "module",
+            },
         },
         settings: {
             "import/internal-regex": "^@blueprintjs",
