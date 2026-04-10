@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
 import { Component, type ReactNode } from "react";
+import { expect } from "vitest";
 
 export interface TestErrorBoundaryProps {
     children?: ReactNode;
@@ -36,7 +36,7 @@ export class TestErrorBoundary extends Component<TestErrorBoundaryProps, TestErr
 
     public componentDidCatch(error: Error, _info: any) {
         this.setState({ didCatch: true }, () => {
-            expect(error.message).to.equal(this.props.expectedErrorString);
+            expect(error.message).toBe(this.props.expectedErrorString);
         });
     }
 

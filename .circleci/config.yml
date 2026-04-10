@@ -176,6 +176,21 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
+  chromatic:
+    docker: *docker-node-image
+    steps:
+      - checkout
+      - attach_workspace: { at: "." }
+      - run:
+          # Checks for the project token for Chromatic, which is not available to forked repos
+          name: Check chromatic project token available
+          command: |
+            if [ -z "$CHROMATIC_PROJECT_TOKEN" ]; then
+              echo "Skipping Chromatic (no project token — likely a fork build)"
+              exit 0
+            fi
+            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed
+
   deploy-preview:
     docker: *docker-node-image
     steps:
@@ -226,6 +241,8 @@ workflows:
           requires: [compile]
       - test-iso-react-18:
           requires: [compile]
+      - chromatic:
+          requires: [dist]
       - deploy-preview:
           requires: [dist]
       - store-packages:

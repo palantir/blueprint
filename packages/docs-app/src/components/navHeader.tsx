@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { NpmPackageInfo } from "@documentalist/client";
 import { PureComponent } from "react";
 
 import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import type { NpmPackageInfo } from "@blueprintjs/docs-data";
 import { NavButton } from "@blueprintjs/docs-theme";
 
 import { Logo } from "./logo";
@@ -78,7 +78,11 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
         const { useNextVersion } = this.props;
         const { version, nextVersion, versions } = this.props.packageInfo;
         if (versions.length === 1) {
-            return <div className={Classes.TEXT_MUTED}>v{versions[0]}</div>;
+            return (
+                <Tag interactive={false} minimal={true} round={true} aria-label={`Version ${major(versions[0])}`}>
+                    v{major(versions[0])}
+                </Tag>
+            );
         }
 
         const versionFromUrl = getVersionFromUrl();
