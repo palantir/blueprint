@@ -13,7 +13,7 @@ const meta: Meta<typeof Link> = {
     component: Link,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Story />
             </div>
         ),
