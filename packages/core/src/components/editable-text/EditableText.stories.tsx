@@ -189,7 +189,7 @@ export const FocusExample: Story = {
  * The editing class is only applied on click, not on hover.
  */
 export const HoverInteractionExample: Story = {
-    name: "HoverInteraction",
+    name: "Hover Interaction",
     argTypes: {
         intent: { table: { disable: true } },
     },
