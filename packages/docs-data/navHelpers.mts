@@ -13,6 +13,7 @@ import type {
     NavTreeNode,
     NavTreePage,
     RawNavStructure,
+    Section,
 } from "./navTypes.mts";
 
 /**
@@ -28,6 +29,28 @@ export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
             pages: section.pages.map(pageRef),
         })),
     }));
+}
+
+/** Extract every page ref from a raw nav config (package names + flat pages + section pages). */
+export function getPageRefs(raw: RawNavStructure): string[] {
+    const refs: string[] = [];
+    for (const entry of raw) {
+        refs.push(entry.package);
+        for (const page of entry.pages) {
+            refs.push(page);
+        }
+        for (const section of entry.sections ?? []) {
+            for (const page of section.pages) {
+                refs.push(page);
+            }
+        }
+    }
+    return refs;
+}
+
+/** Extract all section names from a raw nav config. */
+export function getSectionRefs(raw: RawNavStructure): Section[] {
+    return raw.flatMap(entry => (entry.sections ?? []).map(s => s.section));
 }
 
 /**
@@ -69,6 +92,8 @@ export function assignRoutes(navConfig: NavStructure, pages: Record<string, DocP
         if (page === undefined) return;
 
         page.route = route;
+        page.contents = extractHtmlHeadingsFromContents(page.contents);
+
         for (const item of page.contents) {
             if (isHeading(item)) {
                 item.route = item.level === 1 ? route : createSubheadingRoute(route, item.value);
@@ -220,5 +245,39 @@ export function extractHeadingChildren(page: DocPage, pageNavLevel: number): Nav
         }
     }
 
+    return result;
+}
+
+/**
+ * Regex match #, ##, and ### as headings/subheadings that are shown in nav
+ */
+const HTML_HEADING_RE = /<h([1-3])[^>]*>(.*?)<\/h\1>/gi;
+
+/**
+ * Split HTML strings at heading boundaries, replacing <hN>...</hN> with
+ * DocHeadingItem objects so the rest of the pipeline can process them.
+ */
+function extractHtmlHeadingsFromContents(contents: DocContentItem[]): DocContentItem[] {
+    const result: DocContentItem[] = [];
+    for (const item of contents) {
+        if (typeof item !== "string") {
+            result.push(item);
+            continue;
+        }
+        let lastIndex = 0;
+        let match: RegExpExecArray | null;
+        HTML_HEADING_RE.lastIndex = 0;
+        while ((match = HTML_HEADING_RE.exec(item)) !== null) {
+            const before = item.slice(lastIndex, match.index);
+            if (before) result.push(before);
+            const level = parseInt(match[1], 10);
+            // Strip any nested HTML tags (e.g. <code>, <a>) to get plain text
+            const value = match[2].replace(/<[^>]+>/g, "");
+            result.push({ tag: "heading", level, value, route: "" });
+            lastIndex = match.index + match[0].length;
+        }
+        const remaining = item.slice(lastIndex);
+        if (remaining) result.push(remaining);
+    }
     return result;
 }

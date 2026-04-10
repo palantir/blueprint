@@ -3,10 +3,9 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
 import { createRef } from "react";
 
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Intent } from "../../common";
 
@@ -17,16 +16,16 @@ describe("<Link>", () => {
         render(<Link href="/test">Test</Link>);
         const link = screen.getByRole("link", { name: "Test" });
 
-        expect(link).to.exist;
-        expect(link.tagName).to.equal("A");
-        expect(link.getAttribute("href")).to.equal("/test");
+        expect(link).toBeDefined();
+        expect(link.tagName).toBe("A");
+        expect(link.getAttribute("href")).toBe("/test");
     });
 
     it("should apply base LINK class", () => {
         render(<Link href="#">Test</Link>);
         const link = screen.getByRole("link", { name: "Test" });
 
-        expect(link.classList.contains(Classes.LINK)).to.be.true;
+        expect(link.classList.contains(Classes.LINK)).toBe(true);
     });
 
     it("should support custom className prop", () => {
@@ -37,8 +36,8 @@ describe("<Link>", () => {
         );
         const link = screen.getByRole("link", { name: "Test" });
 
-        expect(link.classList.contains("custom-class")).to.be.true;
-        expect(link.classList.contains(Classes.LINK)).to.be.true;
+        expect(link.classList.contains("custom-class")).toBe(true);
+        expect(link.classList.contains(Classes.LINK)).toBe(true);
     });
 
     describe("underline prop", () => {
@@ -46,9 +45,9 @@ describe("<Link>", () => {
             render(<Link href="#">Test</Link>);
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.true;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.false;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).toBe(true);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).toBe(false);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).toBe(false);
         });
 
         it('should apply always class when underline="always"', () => {
@@ -59,9 +58,9 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.true;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.false;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).toBe(true);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).toBe(false);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).toBe(false);
         });
 
         it('should apply hover class when underline="hover"', () => {
@@ -72,9 +71,9 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.true;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.false;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).toBe(true);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).toBe(false);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).toBe(false);
         });
 
         it('should apply none class when underline="none"', () => {
@@ -85,9 +84,9 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.true;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.false;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).toBe(true);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).toBe(false);
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).toBe(false);
         });
     });
 
@@ -96,7 +95,7 @@ describe("<Link>", () => {
             render(<Link href="#">Test</Link>);
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.INTENT_PRIMARY)).to.be.true;
+            expect(link.classList.contains(Classes.INTENT_PRIMARY)).toBe(true);
         });
 
         it("should apply PRIMARY intent class", () => {
@@ -107,7 +106,7 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.INTENT_PRIMARY)).to.be.true;
+            expect(link.classList.contains(Classes.INTENT_PRIMARY)).toBe(true);
         });
 
         it("should apply SUCCESS intent class", () => {
@@ -118,8 +117,8 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.INTENT_SUCCESS)).to.be.true;
-            expect(link.classList.contains(Classes.INTENT_PRIMARY)).to.be.false;
+            expect(link.classList.contains(Classes.INTENT_SUCCESS)).toBe(true);
+            expect(link.classList.contains(Classes.INTENT_PRIMARY)).toBe(false);
         });
 
         it("should apply WARNING intent class", () => {
@@ -130,7 +129,7 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.INTENT_WARNING)).to.be.true;
+            expect(link.classList.contains(Classes.INTENT_WARNING)).toBe(true);
         });
 
         it("should apply DANGER intent class", () => {
@@ -141,7 +140,7 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.INTENT_DANGER)).to.be.true;
+            expect(link.classList.contains(Classes.INTENT_DANGER)).toBe(true);
         });
 
         it('should apply color-inherit class when color="inherit"', () => {
@@ -152,8 +151,8 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_COLOR_INHERIT)).to.be.true;
-            expect(link.classList.contains(Classes.INTENT_PRIMARY)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_COLOR_INHERIT)).toBe(true);
+            expect(link.classList.contains(Classes.INTENT_PRIMARY)).toBe(false);
         });
     });
 
@@ -166,7 +165,7 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.getAttribute("target")).to.equal("_blank");
+            expect(link.getAttribute("target")).toBe("_blank");
         });
 
         it("should forward standard HTML attributes", () => {
@@ -177,9 +176,9 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.getAttribute("title")).to.equal("Link Title");
-            expect(link.getAttribute("id")).to.equal("test-link");
-            expect(link.getAttribute("data-testid")).to.equal("custom-test-id");
+            expect(link.getAttribute("title")).toBe("Link Title");
+            expect(link.getAttribute("id")).toBe("test-link");
+            expect(link.getAttribute("data-testid")).toBe("custom-test-id");
         });
 
         it("should support aria attributes", () => {
@@ -190,8 +189,8 @@ describe("<Link>", () => {
             );
             const link = screen.getByRole("link", { name: "Custom Label" });
 
-            expect(link.getAttribute("aria-label")).to.equal("Custom Label");
-            expect(link.getAttribute("aria-describedby")).to.equal("description");
+            expect(link.getAttribute("aria-label")).toBe("Custom Label");
+            expect(link.getAttribute("aria-describedby")).toBe("description");
         });
     });
 
@@ -204,9 +203,9 @@ describe("<Link>", () => {
                 </Link>,
             );
 
-            expect(ref.current).to.exist;
-            expect(ref.current).to.be.instanceOf(HTMLAnchorElement);
-            expect(ref.current?.tagName).to.equal("A");
+            expect(ref.current).toBeDefined();
+            expect(ref.current).toBeInstanceOf(HTMLAnchorElement);
+            expect(ref.current?.tagName).toBe("A");
         });
     });
 });

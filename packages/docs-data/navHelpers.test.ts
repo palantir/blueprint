@@ -25,6 +25,8 @@ import {
     buildNavPage,
     buildNavSection,
     extractHeadingChildren,
+    getPageRefs,
+    getSectionRefs,
     normalizeNavConfig,
     requirePage,
     slugify,
@@ -527,6 +529,53 @@ describe("canonical PACKAGES and SECTIONS arrays", () => {
         // eslint-disable-next-line @typescript-eslint/no-require-imports
         const publicApi = require("./src/index.js");
         expect([...publicApi.SECTIONS]).toEqual([...SECTIONS]);
+    });
+});
+
+describe("getPageRefs", () => {
+    it("should return package names, flat pages, and section pages", () => {
+        const raw: RawNavStructure = [
+            {
+                package: "core",
+                pages: ["getting-started"],
+                sections: [{ section: "components", pages: ["buttons", "dialog"] }],
+            },
+        ];
+
+        expect(getPageRefs(raw)).toEqual(["core", "getting-started", "buttons", "dialog"]);
+    });
+
+    it("should handle entries with no sections", () => {
+        const raw: RawNavStructure = [{ package: "icons", pages: ["icons-list"] }];
+
+        expect(getPageRefs(raw)).toEqual(["icons", "icons-list"]);
+    });
+
+    it("should return an empty array for empty input", () => {
+        expect(getPageRefs([])).toEqual([]);
+    });
+});
+
+describe("getSectionRefs", () => {
+    it("should return all section names", () => {
+        const raw: RawNavStructure = [
+            {
+                package: "core",
+                pages: [],
+                sections: [
+                    { section: "components", pages: ["buttons"] },
+                    { section: "overlays", pages: ["dialog"] },
+                ],
+            },
+        ];
+
+        expect(getSectionRefs(raw)).toEqual(["components", "overlays"]);
+    });
+
+    it("should return an empty array when no sections exist", () => {
+        const raw: RawNavStructure = [{ package: "icons", pages: ["icons-list"] }];
+
+        expect(getSectionRefs(raw)).toEqual([]);
     });
 });
 

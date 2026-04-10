@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import sinon from "sinon";
 
-import { describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type ItemListRendererProps, renderFilteredItems } from "./itemListRenderer";
 
@@ -36,16 +35,16 @@ describe("renderFilteredItems()", () => {
 
     it("returns noResults if filtered items is empty", () => {
         const element = renderFilteredItems({ ...PROPS, filteredItems: [] }, noResults);
-        assert.equal(element, noResults);
+        expect(element).toBe(noResults);
     });
 
     it("returns initialContent if query is empty", () => {
         const element = renderFilteredItems({ ...PROPS, query: "" }, noResults, initialContent);
-        assert.equal(element, initialContent);
+        expect(element).toBe(initialContent);
     });
 
     it("returns filteredItems mapped through renderItem", () => {
         const elements = renderFilteredItems(PROPS) as React.JSX.Element[];
-        assert.lengthOf(elements, PROPS.filteredItems.length);
+        expect(elements).toHaveLength(PROPS.filteredItems.length);
     });
 });
