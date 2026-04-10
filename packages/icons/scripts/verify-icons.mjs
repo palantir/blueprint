@@ -115,6 +115,11 @@ export function verifyManifestShape(manifest) {
     /** @type {string[]} */
     const errors = [];
     manifest.forEach((entry, index) => {
+        if (entry == null || typeof entry !== "object" || Array.isArray(entry)) {
+            const kind = entry === null ? "null" : Array.isArray(entry) ? "array" : typeof entry;
+            errors.push(`icons.json[${index}] must be an object entry (got ${kind})`);
+            return;
+        }
         if (typeof entry.displayName !== "string") {
             errors.push(`icons.json[${index}] missing string "displayName"`);
         }
