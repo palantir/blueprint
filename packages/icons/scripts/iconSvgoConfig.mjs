@@ -13,6 +13,8 @@
  * limitations under the License.
  */
 
+import { svgOptimizer } from "@blueprintjs/node-build-scripts";
+
 /** @type {import("svgo").Config} */
 export const iconSvgoConfig = {
     js2svg: {
@@ -42,3 +44,11 @@ export const iconSvgoConfig = {
         },
     ],
 };
+
+/**
+ * @param {string} source
+ * @param {string} path
+ */
+export function optimizeSvg(source, path) {
+    return svgOptimizer.optimize(source, { path, ...iconSvgoConfig }).data;
+}

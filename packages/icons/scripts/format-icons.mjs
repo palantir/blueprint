@@ -18,11 +18,9 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { extname, join } from "node:path";
 
-import { svgOptimizer } from "@blueprintjs/node-build-scripts";
-
 import { createCliLogger } from "./cliLogger.mjs";
 import { ICON_SIZES_PX, iconResourcesDir, repoRelative } from "./common.mjs";
-import { iconSvgoConfig } from "./iconSvgoConfig.mjs";
+import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 const logger = createCliLogger("icons:format");
 
@@ -42,7 +40,7 @@ async function main() {
             total += 1;
             const path = join(sizeDir, filename);
             const source = readFileSync(path, "utf8");
-            const optimized = svgOptimizer(source, { path, ...iconSvgoConfig }).data;
+            const optimized = optimizeSvg(source, path);
             if (optimized !== source) {
                 writeFileSync(path, optimized);
                 changed += 1;

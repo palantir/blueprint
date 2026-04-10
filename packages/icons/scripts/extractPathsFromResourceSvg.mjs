@@ -19,9 +19,8 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { svgOptimizer } from "@blueprintjs/node-build-scripts";
-
 import { iconResourcesDir } from "./common.mjs";
+import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 /**
  * Extracts path `d` strings from an on-disk icon SVG. This matches the pipeline used for
@@ -34,7 +33,7 @@ import { iconResourcesDir } from "./common.mjs";
 export async function extractPathsFromResourceSvg(iconSize, iconName) {
     const path = join(iconResourcesDir, `${iconSize}px`, `${iconName}.svg`);
     const source = readFileSync(path, "utf-8");
-    const optimized = svgOptimizer(source, { path }).data;
+    const optimized = optimizeSvg(source, path);
     /** @type string[] */
     const paths = [];
     // Match `d` attributes on `<path>` elements from our normalized SVGO output.

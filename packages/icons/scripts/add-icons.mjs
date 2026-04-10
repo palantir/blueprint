@@ -20,8 +20,6 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { svgOptimizer } from "@blueprintjs/node-build-scripts";
-
 import { createCliLogger } from "./cliLogger.mjs";
 import {
     getIconNamesInDirectory,
@@ -32,7 +30,7 @@ import {
     repoRelative,
 } from "./common.mjs";
 import { canonicalIconName, ICON_NAME_PATTERN } from "./iconNaming.mjs";
-import { iconSvgoConfig } from "./iconSvgoConfig.mjs";
+import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 const ICONS_JSON_PATH = resolve(import.meta.dirname, "../icons.json");
 
@@ -80,7 +78,7 @@ export async function addIcons() {
         for (const size of ICON_SIZES_PX) {
             const path = join(iconResourcesDir, size, `${iconName}.svg`);
             const source = readFileSync(path, "utf8");
-            const optimized = svgOptimizer(source, { path, ...iconSvgoConfig }).data;
+            const optimized = optimizeSvg(source, path);
             if (optimized !== source) {
                 writeFileSync(path, optimized);
                 optimizedFiles.push({ iconName, path });
