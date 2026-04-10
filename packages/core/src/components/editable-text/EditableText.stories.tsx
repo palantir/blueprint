@@ -18,7 +18,7 @@ const meta: Meta<typeof EditableText> = {
     component: EditableText,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Story />
             </div>
         ),
