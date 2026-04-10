@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { pascalCase } from "change-case";
 import classNames from "classnames";
 import type { ComponentType } from "react";
