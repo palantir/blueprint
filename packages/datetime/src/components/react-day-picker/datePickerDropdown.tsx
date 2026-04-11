@@ -15,8 +15,7 @@
  */
 
 import React, { useMemo, useRef } from "react";
-import type { DropdownProps } from "react-day-picker";
-import { useDayPicker, useNavigation } from "react-day-picker";
+import { type DropdownProps, useDayPicker, useNavigation } from "react-day-picker";
 
 import { HTMLSelect } from "@blueprintjs/core";
 
