@@ -36,11 +36,22 @@ export interface BlueprintProviderProps
  *
  * @see https://blueprintjs.com/docs/#core/context/blueprint-provider
  */
-export const BlueprintProvider = ({ children, hotkeysProviderValue, ...props }: BlueprintProviderProps) => {
+export const BlueprintProvider = ({
+    children,
+    hotkeysProviderValue,
+    hotkeysProviderDialogProps,
+    hotkeysProviderRenderDialog,
+    portalClassName,
+    portalContainer,
+}: BlueprintProviderProps) => {
     return (
-        <PortalProvider {...props}>
+        <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
             <OverlaysProvider>
-                <HotkeysProvider value={hotkeysProviderValue} {...props}>
+                <HotkeysProvider
+                    value={hotkeysProviderValue}
+                    dialogProps={hotkeysProviderDialogProps}
+                    renderDialog={hotkeysProviderRenderDialog}
+                >
                     {children}
                 </HotkeysProvider>
             </OverlaysProvider>

@@ -4926,5 +4926,12 @@
         "tags": "external, window, arrow, open, new window, detach, breakout, expand, separate",
         "group": "action",
         "codepoint": 62400
+    },
+    {
+        "displayName": "Frame to frame",
+        "iconName": "frame-to-frame",
+        "tags": "command, connection, connect, link, application, flow",
+        "group": "action",
+        "codepoint": 62401
     }
 ]

@@ -7,6 +7,9 @@ import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 import EditableTextBasic from "./editable-text/EditableTextBasic";
 import editableTextBasicPreview from "./editable-text/EditableTextBasic.tsx.preview?raw";
 import editableTextBasicCode from "./editable-text/EditableTextBasic.tsx?raw";
+import EditableTextDisabled from "./editable-text/EditableTextDisabled";
+import editableTextDisabledPreview from "./editable-text/EditableTextDisabled.tsx.preview?raw";
+import editableTextDisabledCode from "./editable-text/EditableTextDisabled.tsx?raw";
 import EditableTextIntent from "./editable-text/EditableTextIntent";
 import editableTextIntentPreview from "./editable-text/EditableTextIntent.tsx.preview?raw";
 import editableTextIntentCode from "./editable-text/EditableTextIntent.tsx?raw";
@@ -25,6 +28,18 @@ export const EditableTextBasicExample: React.FC<ExampleProps> = props => {
             {...props}
         >
             <EditableTextBasic />
+        </CodeExample>
+    );
+};
+
+export const EditableTextDisabledExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={editableTextDisabledPreview}
+            sourceCode={editableTextDisabledCode}
+            {...props}
+        >
+            <EditableTextDisabled />
         </CodeExample>
     );
 };
