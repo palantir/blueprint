@@ -3,9 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Button } from "./buttons";
 

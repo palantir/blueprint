@@ -3,12 +3,12 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Card } from "../card/card";
 import { H5 } from "../html/html";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 interface SkeletonStoryProps {
     /** Whether the skeleton class is applied */

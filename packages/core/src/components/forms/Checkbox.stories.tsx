@@ -3,9 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { Intent } from "../../common";
-import { StoryLabel } from "../storybook-components/StoryLabel";
+import { StoryLabel } from "@storybook-common";
 
 import { Checkbox } from "./controls";
 

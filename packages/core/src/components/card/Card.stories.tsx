@@ -3,10 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { Elevation } from "../../common";
 import { H3 } from "../html/html";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Card } from "./card";
 

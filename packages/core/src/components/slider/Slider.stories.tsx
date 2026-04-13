@@ -3,11 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
 import { Intent } from "../../common";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Slider } from "./slider";
 

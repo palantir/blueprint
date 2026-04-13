@@ -3,10 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 
 import { Size } from "../../common";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { FileInput } from "./fileInput";
 

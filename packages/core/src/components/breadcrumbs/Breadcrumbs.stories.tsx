@@ -3,10 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import React from "react";
+import { StoryLabel } from "@storybook-common";
 
 import { Boundary } from "../../common/boundary";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";

@@ -3,11 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
 import { Button } from "../button/buttons";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { CompoundTag } from "./compoundTag";
 
