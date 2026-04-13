@@ -155,7 +155,7 @@ export const EllipsizeExample: Story = {
     },
     decorators: [
         Story => (
-            <div style={{ width: "250px", border: "1px dashed #ccc", padding: 8 }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Story />
             </div>
         ),
@@ -164,21 +164,25 @@ export const EllipsizeExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
                 <StoryLabel title="Ellipsize enabled" />
-                <EntityTitle
-                    {...args}
-                    ellipsize={true}
-                    icon="document"
-                    title="This is a very long entity title that should be ellipsized"
-                />
+                <DashedPaddedContainer width={250}>
+                    <EntityTitle
+                        {...args}
+                        ellipsize={true}
+                        icon="document"
+                        title="This is a very long entity title that should be ellipsized"
+                    />
+                </DashedPaddedContainer>
             </div>
             <div>
                 <StoryLabel title="Ellipsize disabled" />
-                <EntityTitle
-                    {...args}
-                    ellipsize={false}
-                    icon="document"
-                    title="This is a very long entity title that will not be ellipsized"
-                />
+                <DashedPaddedContainer width={250}>
+                    <EntityTitle
+                        {...args}
+                        ellipsize={false}
+                        icon="document"
+                        title="This is a very long entity title that will not be ellipsized"
+                    />
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
