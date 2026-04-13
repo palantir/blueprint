@@ -1,81 +1,153 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:list";
 @import "./card-variables";
 
 .#{$ns}-card {
-  background-color: $card-background-color;
-  border-radius: $pt-border-radius;
-  box-shadow: $pt-elevation-shadow-0;
-  padding: $card-padding;
+  background-color: var(--bp-surface-background-color-default-rest);
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: var(--bp-surface-shadow-0);
+  padding: calc(var(--bp-surface-spacing) * 5);
   transition:
-    transform ($pt-transition-duration * 2) $pt-transition-ease,
-    box-shadow ($pt-transition-duration * 2) $pt-transition-ease;
+    transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default),
+    box-shadow calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: $dark-card-background-color;
-    box-shadow: $pt-dark-elevation-shadow-0;
+    // stylelint-disable-next-line function-no-unknown
+    background-color: #{oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h)};
+    box-shadow: var(--bp-surface-shadow-0);
   }
 
   // High contrast mode hides box-shadows, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
     box-shadow: none;
   }
 }
 
-@for $index from 1 through list.length($elevation-shadows) {
-  .#{$ns}-elevation-#{$index - 1} {
-    box-shadow: list.nth($elevation-shadows, $index);
+.#{$ns}-elevation-0 {
+  box-shadow: var(--bp-surface-shadow-0);
 
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      box-shadow: list.nth($dark-elevation-shadows, $index);
-    }
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
 
-    @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border: 1px solid $pt-high-contrast-mode-border-color;
-    }
+.#{$ns}-elevation-1 {
+  box-shadow: var(--bp-surface-shadow-1);
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-1),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-elevation-2 {
+  box-shadow: var(--bp-surface-shadow-2);
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-2),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-elevation-3 {
+  box-shadow: var(--bp-surface-shadow-3);
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-3),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-elevation-4 {
+  box-shadow: var(--bp-surface-shadow-4);
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    box-shadow:
+      var(--bp-surface-shadow-4),
+      // stylelint-disable-next-line alpha-value-notation
+      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
   }
 }
 
 .#{$ns}-card.#{$ns}-compact {
-  padding: $card-padding-compact;
+  padding: calc(var(--bp-surface-spacing) * 4);
 }
 
 .#{$ns}-card.#{$ns}-interactive {
   &:hover {
-    box-shadow: $pt-elevation-shadow-3;
+    box-shadow: var(--bp-surface-shadow-3);
     cursor: pointer;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
-      box-shadow: $pt-dark-elevation-shadow-3;
+      box-shadow:
+        var(--bp-surface-shadow-3),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
     }
   }
 
   &.#{$ns}-selected {
     box-shadow:
-      0 0 0 3px rgba($blue4, 0.2),
-      0 0 0 1px $blue4;
+      // stylelint-disable-next-line alpha-value-notation
+      0 0 0 3px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h / 0.2)},
+      0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)};
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
       box-shadow:
-        0 0 0 3px rgba($blue5, 0.4),
-        0 0 0 1px $blue5;
+        // stylelint-disable-next-line alpha-value-notation
+        0 0 0 3px
+          #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4)},
+        0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h)};
     }
   }
 
   &:active {
-    box-shadow: $pt-elevation-shadow-1;
+    box-shadow: var(--bp-surface-shadow-1);
     transition-duration: 0;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
-      box-shadow: $pt-dark-elevation-shadow-1;
+      box-shadow:
+        var(--bp-surface-shadow-1),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
     }
   }
 }
