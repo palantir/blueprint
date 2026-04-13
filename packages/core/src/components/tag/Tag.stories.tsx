@@ -3,10 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Tag } from "./tag";
 

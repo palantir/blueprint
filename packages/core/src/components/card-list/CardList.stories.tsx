@@ -3,10 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Card } from "../card/card";
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { CardList } from "./cardList";
 

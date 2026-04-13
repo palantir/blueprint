@@ -3,9 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { type ComponentProps } from "react";
 
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Switch } from "./controls";
 

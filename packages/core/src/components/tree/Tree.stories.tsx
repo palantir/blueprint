@@ -3,10 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { type MouseEvent, useCallback, useReducer } from "react";
 import { expect, waitFor } from "storybook/test";
 
-import { StoryLabel } from "../storybook-components/StoryLabel";
 
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";

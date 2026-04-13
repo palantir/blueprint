@@ -3,8 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
-import { StoryLabel } from "../storybook-components/StoryLabel";
+import { StoryLabel } from "@storybook-common";
 
 import { Divider } from "./divider";
 
