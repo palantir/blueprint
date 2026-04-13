@@ -1,3 +1,17 @@
-# Excavator auto-updates this file. Please contribute improvements to the central template.
-
-# This file is intentionally empty. The file's existence enables changelog-app and is empty to use the default configuration.
+repo-type:
+  type: lernaMonoRepo
+  lernaMonoRepo:
+    changelogDirectories:
+      - packages/colors
+      - packages/core
+      - packages/datetime
+      - packages/datetime2
+      - packages/docs-theme
+      - packages/eslint-config
+      - packages/eslint-plugin
+      - packages/icons
+      - packages/labs
+      - packages/node-build-scripts
+      - packages/select
+      - packages/stylelint-plugin
+      - packages/table

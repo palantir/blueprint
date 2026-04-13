@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// import { expect } from "chai";
+import { afterEach, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Clipboard } from "./clipboard";
 

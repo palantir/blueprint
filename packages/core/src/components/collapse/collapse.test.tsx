@@ -14,60 +14,111 @@
  * limitations under the License.
  */
 
-import { mount, shallow } from "enzyme";
+import { render, screen, waitFor } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { MenuItem } from "../menu/menuItem";
 
-import { AnimationStates, Collapse } from "./collapse";
+import { Collapse } from "./collapse";
+
+const CustomWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = props => <section {...props} />;
 
 describe("<Collapse>", () => {
-    it("has the correct className", () => {
-        const collapse = shallow(<Collapse />);
-        assert.isTrue(collapse.hasClass(Classes.COLLAPSE));
+    it("should render with correct className", () => {
+        const { container } = render(<Collapse />);
+        expect(container.firstElementChild).toHaveClass(Classes.COLLAPSE);
     });
 
-    it("is closed", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "0px");
-    });
-
-    it("is open", () => {
-        const collapse = mount(<Collapse isOpen={true}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "auto");
-    });
-
-    it("is opening", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        collapse.setProps({ isOpen: true });
-        assert.strictEqual(collapse.state("animationState"), AnimationStates.OPENING);
-    });
-
-    it("supports custom intrinsic element", () => {
-        assert.isTrue(shallow(<Collapse component="article" />).is("article"));
-    });
-
-    it("supports custom Component", () => {
-        assert.isTrue(shallow(<Collapse component={MenuItem} />).is(MenuItem));
-    });
-
-    it("unmounts children by default", () => {
-        const collapse = mount(
+    it("should be closed when isOpen is false", () => {
+        const { container } = render(
             <Collapse isOpen={false}>
-                <div className="removed-child" />
+                <div>Content</div>
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".removed-child"), 0);
+        const collapseBody = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
+        expect(collapseBody).toHaveAttribute("aria-hidden", "true");
     });
 
-    it("keepChildrenMounted keeps child mounted", () => {
-        const collapse = mount(
-            <Collapse isOpen={false} keepChildrenMounted={true}>
-                <div className="hidden-child" />
+    it("should be open when isOpen is true", () => {
+        const { container } = render(
+            <Collapse isOpen={true}>
+                <div style={{ height: "100px" }} />
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".hidden-child"), 1);
+        const collapseBody = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
+        expect(collapseBody).toHaveAttribute("aria-hidden", "false");
+        expect(collapseBody).toHaveStyle({ transform: "translateY(0)" });
+    });
+
+    it("should support custom intrinsic elements", () => {
+        const { container } = render(
+            <Collapse component="article">
+                <div>Content</div>
+            </Collapse>,
+        );
+        const root = container.firstElementChild!;
+        expect(root).not.toBeNull();
+        expect(root.tagName.toLowerCase()).toBe("article");
+    });
+
+    it("should support custom components", () => {
+        const { container } = render(
+            <Collapse component={CustomWrapper}>
+                <div>Content</div>
+            </Collapse>,
+        );
+        const root = container.firstElementChild!;
+        expect(root).not.toBeNull();
+        expect(root).toHaveClass(Classes.COLLAPSE);
+        expect(root.tagName.toLowerCase()).toBe("section");
+    });
+
+    it("should unmount children by default when closed", async () => {
+        const { rerender } = render(
+            <Collapse isOpen={true}>
+                <div>Content</div>
+            </Collapse>,
+        );
+
+        // Child should be visible when open
+        expect(screen.getByText("Content")).toBeInTheDocument();
+
+        // Close the collapse
+        rerender(
+            <Collapse isOpen={false}>
+                <div>Content</div>
+            </Collapse>,
+        );
+
+        // Child should be unmounted after the animation completes
+        await waitFor(() => {
+            expect(screen.queryByText("Content")).not.toBeInTheDocument();
+        });
+    });
+
+    it("should keep children mounted when keepChildrenMounted is true", async () => {
+        const { rerender } = render(
+            <Collapse isOpen={true} keepChildrenMounted={true}>
+                <div>Content</div>
+            </Collapse>,
+        );
+
+        // Child should be visible when open
+        expect(screen.getByText("Content")).toBeInTheDocument();
+
+        // Close the collapse
+        rerender(
+            <Collapse isOpen={false} keepChildrenMounted={true}>
+                <div>Content</div>
+            </Collapse>,
+        );
+
+        // Child should still be mounted but hidden after the animation completes
+        await waitFor(() => {
+            const child = screen.getByText("Content");
+            expect(child).toBeInTheDocument();
+            expect(child.parentElement).toHaveAttribute("aria-hidden", "true");
+        });
     });
 });
