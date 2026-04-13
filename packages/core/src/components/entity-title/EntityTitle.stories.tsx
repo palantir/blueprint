@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
 
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Tag } from "../tag/tag";
@@ -125,20 +126,20 @@ export const FillExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill enabled</div>
-                <div style={{ width: 400, border: "1px dashed #ccc", padding: 8 }}>
+                <StoryLabel title="Fill enabled" />
+                <DashedPaddedContainer>
                     <div style={{ background: "#FFCCC4", borderRadius: 4, padding: "4px" }}>
                         <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
                     </div>
-                </div>
+                </DashedPaddedContainer>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Fill disabled</div>
-                <div style={{ width: 400, border: "1px dashed #ccc", padding: 8 }}>
+                <StoryLabel title="Fill disabled" />
+                <DashedPaddedContainer>
                     <div style={{ background: "#C4E1FF", borderRadius: 4, display: "inline-block", padding: "4px" }}>
                         <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
                     </div>
-                </div>
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
@@ -162,7 +163,7 @@ export const EllipsizeExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Ellipsize enabled</div>
+                <StoryLabel title="Ellipsize enabled" />
                 <EntityTitle
                     {...args}
                     ellipsize={true}
@@ -171,7 +172,7 @@ export const EllipsizeExample: Story = {
                 />
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Ellipsize disabled</div>
+                <StoryLabel title="Ellipsize disabled" />
                 <EntityTitle
                     {...args}
                     ellipsize={false}
@@ -194,11 +195,11 @@ export const LoadingExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Loading</div>
+                <StoryLabel title="Loading" />
                 <EntityTitle {...args} loading={true} icon="document" title="Loading Entity" />
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Not loading</div>
+                <StoryLabel title="Not loading" />
                 <EntityTitle {...args} loading={false} icon="document" title="Loaded Entity" />
             </div>
         </div>
@@ -213,13 +214,13 @@ export const TagsExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>With tag</div>
+                <StoryLabel title="With tag" />
                 <div style={{ border: "1px dashed #ccc", padding: 8 }}>
                     <EntityTitle {...args} icon="document" title="Document" tags={<Tag minimal={true}>Draft</Tag>} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Without tag</div>
+                <StoryLabel title="Without tag" />
                 <div style={{ border: "1px dashed #ccc", padding: 8 }}>
                     <EntityTitle {...args} icon="document" title="Document" />
                 </div>
