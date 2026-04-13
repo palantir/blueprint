@@ -7,7 +7,6 @@ import { StoryLabel } from "@storybook-common";
 import { type MouseEvent, useCallback, useReducer } from "react";
 import { expect, waitFor } from "storybook/test";
 
-
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";
 
