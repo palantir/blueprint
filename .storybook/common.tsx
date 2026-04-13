@@ -2,7 +2,6 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-
 export interface StoryLabelProps {
     title: React.ReactNode;
 }
