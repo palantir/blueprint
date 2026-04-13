@@ -96,6 +96,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
             [Classes.POPOVER_OPEN]: isOpen,
             // this class is mainly useful for button targets
             [Classes.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+            [Classes.FILL]: fill,
         }),
         ref,
         ...targetEventHandlers,

@@ -6,15 +6,24 @@ title: Menu
 
 **Menu** displays a list of interactive menu items.
 
-## Import
+## Usage
 
 ```ts copy
 import { Menu } from "@blueprintjs/core";
 ```
 
+```tsx
+<Menu>
+    <MenuItem onClick={handleClick} text="Menu option 1" />
+    <MenuItem onClick={handleClick} text="Menu option 2" />
+</Menu>
+```
+
 @reactExample MenuExample
 
-## Usage
+## Examples
+
+### Basic
 
 Blueprint's **Menu** API includes three React components:
 
@@ -22,18 +31,7 @@ Blueprint's **Menu** API includes three React components:
 - [**MenuItem**](#core/components/menu.menu-item)
 - [**MenuDivider**](#core/components/menu.menu-divider)
 
-```tsx
-<Menu>
-    <MenuItem icon="new-text-box" onClick={handleClick} text="New text box" />
-    <MenuItem icon="new-object" onClick={handleClick} text="New object" />
-    <MenuItem icon="new-link" onClick={handleClick} text="New link" />
-    <MenuDivider />
-    <MenuItem text="Settings..." icon="cog" intent="primary">
-        <MenuItem icon="tick" text="Save on edit" />
-        <MenuItem icon="blank" text="Compile on edit" />
-    </MenuItem>
-</Menu>
-```
+@reactCodeExample MenuBasicExample
 
 ## Props interface
 
@@ -90,12 +88,4 @@ To add a submenu to a **Menu**, you may nest one or more **MenuItem** elements w
 The submenu opens to the right of its parent by default, but will adjust and flip to the left if there is not enough
 room to the right.
 
-```tsx
-<Menu>
-    <MenuItem text="Submenu">
-        <MenuItem text="Child one" />
-        <MenuItem text="Child two" />
-        <MenuItem text="Child three" />
-    </MenuItem>
-</Menu>
-```
+@reactCodeExample MenuSubmenuExample

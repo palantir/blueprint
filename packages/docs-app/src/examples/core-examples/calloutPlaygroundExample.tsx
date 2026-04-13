@@ -55,7 +55,7 @@ export const CalloutPlaygroundExample: React.FC<DocsExampleProps> = props => {
             />
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
-            <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
+            <IntentSelect intent={intent} onChange={setIntent} />
             <IconSelect iconName={icon} onChange={setIcon} />
             <H5>Children</H5>
             <Label>
