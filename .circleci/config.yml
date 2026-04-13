@@ -237,7 +237,11 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: ./scripts/publish-npm-semver-tagged
+      - run:
+          command: |
+            # From https://docs.npmjs.com/trusted-publishers#circleci-configuration
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+            ./scripts/publish-npm-semver-tagged
 
 workflows:
   compile_lint_test_dist_deploy:
