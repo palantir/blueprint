@@ -16,14 +16,13 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mount } from "enzyme";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps } from "../../common";
 
-import { SegmentedControl, type SegmentedControlProps } from "./segmentedControl";
+import { SegmentedControl } from "./segmentedControl";
 
 const OPTIONS: Array<OptionProps<string>> = [
     {
@@ -42,74 +41,71 @@ const OPTIONS: Array<OptionProps<string>> = [
 ];
 
 describe("<SegmentedControl>", () => {
-    let containerElement: HTMLElement;
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-
-    afterEach(() => {
-        containerElement.remove();
-    });
-
-    const mountSegmentedControl = (props?: Partial<SegmentedControlProps>) =>
-        mount(<SegmentedControl options={OPTIONS} {...props} />, {
-            attachTo: containerElement,
-        });
-
     it("supports className", () => {
-        const testClassName = "test-class-name";
-        const wrapper = mountSegmentedControl({ className: testClassName });
-        assert.isTrue(wrapper.find(`.${Classes.SEGMENTED_CONTROL}`).hostNodes().exists());
-        assert.isTrue(wrapper.find(`.${testClassName}`).hostNodes().exists());
+        render(<SegmentedControl className="test" options={OPTIONS} />);
+        const segmentedControl = screen.getByRole("radiogroup");
+        expect(segmentedControl).toHaveClass(Classes.SEGMENTED_CONTROL);
+        expect(segmentedControl).toHaveClass("test");
     });
 
     it("supports icon", () => {
-        const wrapper = mountSegmentedControl({ options: [{ icon: IconNames.GRID, value: "grid" }] });
-        assert.isTrue(wrapper.find(`.${Classes.ICON}`).hostNodes().exists());
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRID}"]`).exists());
+        render(<SegmentedControl options={[{ icon: IconNames.GRID, value: "grid" }]} />);
+        const button = screen.getByRole("radio");
+        const icon = button.querySelector(`.${Classes.ICON}`);
+        expect(icon).not.toBeNull();
+        expect(icon!).toHaveAttribute("data-icon", IconNames.GRID);
     });
 
     it("button text defaults to value when no label is passed", () => {
-        mountSegmentedControl({ options: [{ value: "val" }] });
-        const optionButtons = containerElement.querySelectorAll("button")!;
-        assert.equal(optionButtons[0].textContent, "val");
+        render(<SegmentedControl options={[{ value: "val" }]} />);
+        expect(screen.getByRole("radio", { name: "val" })).toBeInTheDocument();
     });
 
     it("when no default value passed, first button gets tabIndex=0, none have aria-checked initially", () => {
-        const wrapper = mountSegmentedControl();
-        assert.lengthOf(wrapper.find("[tabIndex=0]").hostNodes(), 1);
-        assert.lengthOf(wrapper.find("[aria-checked=true]").hostNodes(), 0);
-        const optionButtons = containerElement.querySelectorAll("button")!;
-        assert.equal(optionButtons[0].getAttribute("tabIndex"), "0");
-        assert.equal(optionButtons[0].getAttribute("aria-checked"), "false");
+        render(<SegmentedControl options={OPTIONS} />);
+        const radios = screen.getAllByRole("radio");
+        const listRadio = screen.getByRole("radio", { name: /list/i });
+        expect(radios[0]).toBe(listRadio);
+        expect(listRadio).toHaveAttribute("tabIndex", "0");
+        expect(listRadio).not.toBeChecked();
+        expect(radios.filter(r => r.getAttribute("tabIndex") === "0")).toHaveLength(1);
+        expect(radios.filter(r => r.getAttribute("aria-checked") === "true")).toHaveLength(0);
     });
 
     it("when defaultValue passed, tabIndex=0 and aria-checked applied to correct option, no others", () => {
-        const wrapper = mountSegmentedControl({ defaultValue: OPTIONS[2].value });
-        assert.lengthOf(wrapper.find("[tabIndex=0]").hostNodes(), 1);
-        assert.lengthOf(wrapper.find("[aria-checked=true]").hostNodes(), 1);
-        const optionButtons = containerElement.querySelectorAll("button")!;
-        assert.equal(optionButtons[2].getAttribute("tabIndex"), "0");
-        assert.equal(optionButtons[2].getAttribute("aria-checked"), "true");
+        render(<SegmentedControl defaultValue={OPTIONS[2].value} options={OPTIONS} />);
+        const radios = screen.getAllByRole("radio");
+        const galleryRadio = screen.getByRole("radio", { name: /gallery/i });
+        expect(radios[2]).toBe(galleryRadio);
+        expect(galleryRadio).toHaveAttribute("tabIndex", "0");
+        expect(galleryRadio).toBeChecked();
+        expect(radios.filter(r => r.getAttribute("tabIndex") === "0")).toHaveLength(1);
+        expect(radios.filter(r => r.getAttribute("aria-checked") === "true")).toHaveLength(1);
     });
 
-    it("changes option button focus when arrow keys are pressed", () => {
-        const wrapper = mountSegmentedControl();
-        const radioGroup = wrapper.find('[role="radiogroup"]');
+    it("changes option button focus when arrow keys are pressed", async () => {
+        const user = userEvent.setup();
+        render(<SegmentedControl options={OPTIONS} />);
+        const radios = screen.getAllByRole("radio");
+        const listRadio = screen.getByRole("radio", { name: /list/i });
+        const galleryRadio = screen.getByRole("radio", { name: /gallery/i });
 
-        const optionButtons = containerElement.querySelectorAll<HTMLElement>('[role="radio"]');
-        optionButtons[0].focus();
+        // tab here moves focus to the first radio
+        await user.tab();
 
-        radioGroup.simulate("keydown", { key: "ArrowRight" });
-        assert.equal(document.activeElement, optionButtons[2], "move right and skip disabled");
-        radioGroup.simulate("keydown", { key: "ArrowRight" });
-        assert.equal(document.activeElement, optionButtons[0], "wrap around to first option");
-        radioGroup.simulate("keydown", { key: "ArrowLeft" });
-        assert.equal(document.activeElement, optionButtons[2], "wrap around to last option");
-        radioGroup.simulate("keydown", { key: "ArrowLeft" });
-        assert.equal(document.activeElement, optionButtons[0], "move left and skip disabled");
+        await user.keyboard("{ArrowRight}");
+        expect(radios[2]).toBe(galleryRadio);
+        expect(galleryRadio).toHaveFocus(); // skips disabled Grid
+
+        await user.keyboard("{ArrowRight}");
+        expect(radios[0]).toBe(listRadio);
+        expect(listRadio).toHaveFocus(); // wraps around to first
+
+        await user.keyboard("{ArrowLeft}");
+        expect(galleryRadio).toHaveFocus(); // wraps around to last
+
+        await user.keyboard("{ArrowLeft}");
+        expect(listRadio).toHaveFocus(); // moves left and skips disabled
     });
 
     it("should select the correct option when clicked", async () => {
@@ -120,9 +116,9 @@ describe("<SegmentedControl>", () => {
 
         await user.click(listButton);
 
-        expect(onValueChange).toHaveBeenCalled();
-        expect(onValueChange.mock.calls[0][0]).to.equal("list");
-        expect(listButton.getAttribute("aria-checked")).to.equal("true");
+        expect(onValueChange).toHaveBeenCalledOnce();
+        expect(onValueChange).toHaveBeenCalledWith("list", expect.any(HTMLElement));
+        expect(listButton).toBeChecked();
     });
 
     it("should not allow disabled options to be selected", async () => {
@@ -134,13 +130,13 @@ describe("<SegmentedControl>", () => {
         await user.click(gridButton);
 
         expect(onValueChange).not.toHaveBeenCalled();
-        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
+        expect(gridButton).not.toBeChecked();
     });
 
     it("should not allow any options to be selected when disabled", async () => {
         const user = userEvent.setup();
         const onValueChange = vi.fn();
-        render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} disabled={true} />);
+        render(<SegmentedControl disabled={true} onValueChange={onValueChange} options={OPTIONS} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
         const gridButton = screen.getByRole("radio", { name: /grid/i });
 
@@ -148,7 +144,7 @@ describe("<SegmentedControl>", () => {
         await user.click(gridButton);
 
         expect(onValueChange).not.toHaveBeenCalled();
-        expect(listButton.getAttribute("aria-checked")).to.equal("false");
-        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
+        expect(listButton).not.toBeChecked();
+        expect(gridButton).not.toBeChecked();
     });
 });

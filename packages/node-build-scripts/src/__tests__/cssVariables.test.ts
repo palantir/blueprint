@@ -2,7 +2,7 @@
  * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  */
 
-import { describe, expect, test } from "@jest/globals";
+import { describe, expect, test } from "vitest";
 import { readFileSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";

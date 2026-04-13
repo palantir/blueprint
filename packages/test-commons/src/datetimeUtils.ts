@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { expect } from "vitest";
 
 /**
  * Converts a `Date` to a "D/M/YYYY" string.
@@ -51,17 +51,19 @@ export function assertTimeIs(
     seconds?: number,
     milliseconds?: number,
 ) {
-    assert.isDefined(time, "time is undefined");
-    assert.strictEqual(time!.getHours(), hours);
-    assert.strictEqual(time!.getMinutes(), minutes);
+    expect(time).toBeDefined();
+    expect(time!.getHours()).toBe(hours);
+    expect(time!.getMinutes()).toBe(minutes);
     if (seconds != null) {
-        assert.strictEqual(time!.getSeconds(), seconds);
+        expect(time!.getSeconds()).toBe(seconds);
     }
     if (milliseconds != null) {
-        assert.strictEqual(time!.getMilliseconds(), milliseconds);
+        expect(time!.getMilliseconds()).toBe(milliseconds);
     }
 }
 
 export function assertDatesEqual(a: Date, b: Date) {
-    assert.isTrue(a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear());
+    expect(a.getDay() === b.getDay() && a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()).toBe(
+        true,
+    );
 }
