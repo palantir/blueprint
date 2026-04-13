@@ -1,0 +1,9 @@
+{
+    "extends": "../../../.storybook/tsconfig.json",
+    "compilerOptions": {
+        "composite": true,
+        "noEmit": true,
+        "rootDir": "../../.."
+    },
+    "include": ["**/*.stories.tsx", "**/*.stories.ts", "../../../.storybook/common.tsx"]
+}
