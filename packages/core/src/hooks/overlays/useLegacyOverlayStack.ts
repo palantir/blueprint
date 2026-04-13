@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-import { useCallback } from "react";
-import { useSyncExternalStore } from "use-sync-external-store/shim";
+import { useCallback, useSyncExternalStore } from "react";
 
 import { Classes } from "../../common";
 import type { OverlayInstance } from "../../components";
