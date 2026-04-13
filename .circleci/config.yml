@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  run-chromatic:
+    type: boolean
+    default: false
+
 orbs:
   browser-tools: circleci/browser-tools@2.4.0
 
@@ -202,7 +207,7 @@ jobs:
               echo "Skipping Chromatic (no project token — likely a fork build)"
               exit 0
             fi
-            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed
+            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed --trace-changed
 
   deploy-preview:
     docker: *docker-node-image
@@ -236,6 +241,7 @@ jobs:
 
 workflows:
   compile_lint_test_dist_deploy:
+    unless: << pipeline.parameters.run-chromatic >>
     jobs:
       - circle-all
       - checkout-code
@@ -257,6 +263,9 @@ workflows:
           requires: [compile]
       - chromatic:
           requires: [dist]
+          filters:
+            branches:
+              only: develop
       - deploy-preview:
           requires: [dist]
       - store-packages:
@@ -269,3 +278,13 @@ workflows:
                 - develop
                 - next
                 - /^release\/.*/
+  chromatic-on-demand:
+    when: << pipeline.parameters.run-chromatic >>
+    jobs:
+      - checkout-code
+      - compile:
+          requires: [checkout-code]
+      - dist:
+          requires: [compile]
+      - chromatic:
+          requires: [dist]
