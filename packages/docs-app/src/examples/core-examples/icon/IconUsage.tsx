@@ -1,5 +1,5 @@
 /* !
- * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import { Button, Icon } from "@blueprintjs/core";

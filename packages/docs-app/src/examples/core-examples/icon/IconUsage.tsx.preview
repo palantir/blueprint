@@ -1,4 +1,4 @@
-<Button icon="refresh" text="Refresh" />
-<Button icon="globe" text="Globe" />
-<Button icon={<Icon icon="refresh" />} text="Refresh" />
-<Button icon={<Icon icon="globe" />} text="Globe" />
+<Button icon="refresh" intent="danger" text="Reset" />
+<Button icon="user" endIcon="caret-down" text="Profile settings" />
+<Button endIcon={<Icon icon="arrow-right" />} intent="success" text="Next step" />
+<Button endIcon={<Icon icon="upload" />} text="Upload" />
