@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { expect } from "storybook/test";
 
 import { HTMLSelect, type HTMLSelectIconName } from "./htmlSelect";
 
@@ -19,7 +20,7 @@ const meta: Meta<typeof HTMLSelect> = {
     component: HTMLSelect,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
                 <Story />
             </div>
         ),
@@ -130,5 +131,25 @@ export const Playground: Story = {
         large: false,
         minimal: false,
         disabled: false,
+    },
+};
+
+/**
+ * Verify that clicking to select an option updates the select's value.
+ */
+export const ClickToSelectOption: Story = {
+    name: "Click to Select Option",
+    ...Playground,
+    play: async ({ canvas, userEvent, step }) => {
+        const select = canvas.getByRole("combobox");
+
+        await step("Initial value is the first option", async () => {
+            await expect(select).toHaveValue("1");
+        });
+
+        await step("Select Option 3 via click", async () => {
+            await userEvent.selectOptions(select, "3");
+            await expect(select).toHaveValue("3");
+        });
     },
 };
