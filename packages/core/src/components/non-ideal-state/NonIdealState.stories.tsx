@@ -113,6 +113,31 @@ export const IconSizeExample: Story = {
 };
 
 /**
+ * Icon size options available for the visual element.
+ */
+export const IconMutedExample: Story = {
+    name: "Icon Muted",
+    argTypes: {
+        iconSize: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
+            {(
+                [
+                    { iconMuted: true, label: "iconMuted={true} (Default)" },
+                    { iconMuted: false, label: "iconMuted={false}" },
+                ] as const
+            ).map(({ iconMuted, label }) => (
+                <div key={label} style={{ textAlign: "center" }}>
+                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>{label}</div>
+                    <NonIdealState {...args} iconMuted={iconMuted} />
+                </div>
+            ))}
+        </div>
+    ),
+};
+
+/**
  * Interactive playground for experimenting with NonIdealState props.
  */
 export const Playground: Story = {
