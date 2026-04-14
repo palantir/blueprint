@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
 import { Button } from "../button/buttons";
 
 import { NonIdealState, NonIdealStateIconSize } from "./nonIdealState";
@@ -73,14 +74,18 @@ export const LayoutExample: Story = {
         layout: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 40, width: "100%" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Vertical (default)</div>
-                <NonIdealState {...args} layout="vertical" />
+                <StoryLabel title="Vertical (default)" />
+                <DashedPaddedContainer>
+                    <NonIdealState {...args} layout="vertical" />
+                </DashedPaddedContainer>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Horizontal</div>
-                <NonIdealState {...args} layout="horizontal" />
+                <StoryLabel title="Horizontal" />
+                <DashedPaddedContainer>
+                    <NonIdealState {...args} layout="horizontal" />
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
@@ -95,7 +100,7 @@ export const IconSizeExample: Story = {
         iconSize: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 40, alignItems: "flex-start" }}>
             {(
                 [
                     { size: NonIdealStateIconSize.EXTRA_SMALL, label: "Extra Small" },
@@ -103,9 +108,11 @@ export const IconSizeExample: Story = {
                     { size: NonIdealStateIconSize.STANDARD, label: "Standard" },
                 ] as const
             ).map(({ size, label }) => (
-                <div key={label} style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>{label}</div>
-                    <NonIdealState {...args} iconSize={size} />
+                <div key={label}>
+                    <StoryLabel title={label} />
+                    <DashedPaddedContainer>
+                        <NonIdealState {...args} iconSize={size} />
+                    </DashedPaddedContainer>
                 </div>
             ))}
         </div>
@@ -121,16 +128,18 @@ export const IconMutedExample: Story = {
         iconSize: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 40, alignItems: "flex-start" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 40, alignItems: "flex-start" }}>
             {(
                 [
                     { iconMuted: true, label: "iconMuted={true} (Default)" },
                     { iconMuted: false, label: "iconMuted={false}" },
                 ] as const
             ).map(({ iconMuted, label }) => (
-                <div key={label} style={{ textAlign: "center" }}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>{label}</div>
-                    <NonIdealState {...args} iconMuted={iconMuted} />
+                <div key={label}>
+                    <StoryLabel title={label} />
+                    <DashedPaddedContainer>
+                        <NonIdealState {...args} iconMuted={iconMuted} />
+                    </DashedPaddedContainer>
                 </div>
             ))}
         </div>
