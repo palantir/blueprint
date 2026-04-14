@@ -41,7 +41,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "change-case": "^4.1.2",
+        "change-case": "^5.4.4",
         "classnames": "catalog:",
         "tslib": "catalog:"
     },
