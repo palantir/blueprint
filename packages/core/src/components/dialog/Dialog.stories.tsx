@@ -124,3 +124,40 @@ export const Playground: Story = {
             "Use the Storybook controls panel to adjust the dialog properties. The dialog supports icons, close buttons, and custom titles.",
     }),
 };
+
+function renderDialog(extraProps?: {
+    bodyText?: string;
+    intent?: React.ComponentProps<typeof Button>["intent"];
+    buttonText?: string;
+}) {
+    return function Render(args: React.ComponentProps<typeof Dialog>) {
+        const [, updateArgs] = useArgs();
+        const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+        const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
+
+        const bodyText =
+            extraProps?.bodyText ??
+            "This is a simple dialog body. You can put any content here, including forms, text, or other components.";
+        const intent = extraProps?.intent;
+        const buttonText = extraProps?.buttonText ?? "Open Dialog";
+
+        return (
+            <>
+                <Button text={buttonText} intent={intent} onClick={handleOpen} />
+                <Dialog {...args} isOpen={args.isOpen} onClose={handleClose}>
+                    <DialogBody>
+                        <p>{bodyText}</p>
+                    </DialogBody>
+                    <DialogFooter
+                        actions={
+                            <>
+                                <Button text="Cancel" onClick={handleClose} />
+                                <Button text="Confirm" intent={intent} onClick={handleClose} />
+                            </>
+                        }
+                    />
+                </Dialog>
+            </>
+        );
+    };
+}
