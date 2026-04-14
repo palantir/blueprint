@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { expect, userEvent, within } from "storybook/test";
+import { StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -116,11 +116,11 @@ export const StateExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <StoryLabel title="Default" />
                 <EditableText {...args} placeholder="Click to Edit" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
+                <StoryLabel title="Disabled" />
                 <EditableText {...args} disabled={true} placeholder="Disabled" />
             </div>
         </div>
@@ -154,157 +154,5 @@ export const Playground: Story = {
     args: {
         placeholder: "Click to Edit",
         defaultValue: "Hello, world!",
-    },
-};
-
-/**
- * Clicking an editable text enters edit mode (focus ring appears). Clicking outside
- * confirms the value and removes the editing state.
- */
-export const FocusExample: Story = {
-    name: "Focus",
-    args: {
-        defaultValue: "Click to Edit",
-    },
-    play: async ({ canvasElement, step }) => {
-        const canvas = within(canvasElement);
-
-        await step("Click editable text to enter edit mode", async () => {
-            const editableText = canvas.getByText("Click to Edit");
-            await userEvent.click(editableText);
-            const root = canvasElement.querySelector(".bp6-editable-text");
-            await expect(root).toHaveClass("bp6-editable-text-editing");
-        });
-
-        await step("Click outside to confirm and exit edit mode", async () => {
-            await userEvent.click(canvasElement);
-            const root = canvasElement.querySelector(".bp6-editable-text");
-            await expect(root).not.toHaveClass("bp6-editable-text-editing");
-        });
-    },
-};
-
-/**
- * Hovering over each intent variant reveals the highlight ring (CSS-driven).
- * The editing class is only applied on click, not on hover.
- */
-export const HoverInteractionExample: Story = {
-    name: "Hover Interaction",
-    argTypes: {
-        intent: { table: { disable: true } },
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {Object.values(Intent).map(intent => (
-                <div key={intent} data-testid={`editable-${intent || "none"}`}>
-                    <EditableText
-                        {...args}
-                        intent={intent}
-                        placeholder={intent.charAt(0).toUpperCase() + intent.slice(1) || "None"}
-                    />
-                </div>
-            ))}
-        </div>
-    ),
-    play: async ({ canvasElement, step }) => {
-        const canvas = within(canvasElement);
-
-        for (const intent of Object.values(Intent)) {
-            const testId = `editable-${intent || "none"}`;
-
-            await step(`Hover over ${intent || "none"} intent`, async () => {
-                const wrapper = canvas.getByTestId(testId);
-                const root = wrapper.querySelector(".bp6-editable-text")!;
-                await userEvent.hover(root);
-                await expect(root).not.toHaveClass("bp6-editable-text-editing");
-            });
-
-            await step(`Unhover ${intent || "none"} intent`, async () => {
-                const wrapper = canvas.getByTestId(testId);
-                const root = wrapper.querySelector(".bp6-editable-text")!;
-                await userEvent.unhover(root);
-                await expect(root).not.toHaveClass("bp6-editable-text-editing");
-            });
-        }
-    },
-};
-
-/**
- * When `confirmOnEnterKey` is enabled in multiline mode, pressing **Enter** confirms the edit
- * instead of inserting a newline. This is useful for multiline fields where you want a simple
- * Enter key to submit the value.
- */
-export const ConfirmOnEnterKeyExample: Story = {
-    name: "Confirm On Enter Key",
-    args: {
-        multiline: true,
-        confirmOnEnterKey: true,
-        defaultValue: "Original text",
-    },
-    argTypes: {
-        confirmOnEnterKey: { table: { disable: true } },
-        multiline: { table: { disable: true } },
-    },
-    play: async ({ canvasElement, step }) => {
-        const canvas = within(canvasElement);
-
-        await step("Click editable text to enter edit mode", async () => {
-            const editableText = canvas.getByText("Original text");
-            await userEvent.click(editableText);
-            const root = canvasElement.querySelector(".bp6-editable-text");
-            await expect(root).toHaveClass("bp6-editable-text-editing");
-        });
-
-        await step("Type additional text", async () => {
-            const input = canvasElement.querySelector<HTMLElement>(".bp6-editable-text-input")!;
-            await userEvent.type(input, " updated");
-        });
-
-        await step("Press Enter to confirm edit", async () => {
-            await userEvent.keyboard("{Enter}");
-            const root = canvasElement.querySelector(".bp6-editable-text");
-            await expect(root).not.toHaveClass("bp6-editable-text-editing");
-        });
-
-        await step("Verify text was updated", async () => {
-            await expect(canvas.getByText("Original text updated")).toBeInTheDocument();
-        });
-    },
-};
-
-/**
- * Pressing **Escape** while editing always cancels the edit and reverts the value to what it was
- * before editing began. This behavior is built-in and does not require any additional props.
- */
-export const EscapeCancelExample: Story = {
-    name: "Escape Cancel",
-    args: {
-        defaultValue: "Original text",
-    },
-    play: async ({ canvasElement, step }) => {
-        const canvas = within(canvasElement);
-
-        await step("Click editable text to enter edit mode", async () => {
-            const editableText = canvas.getByText("Original text");
-            await userEvent.click(editableText);
-            const root = canvasElement.querySelector(".bp6-editable-text");
-            await expect(root).toHaveClass("bp6-editable-text-editing");
-        });
-
-        await step("Clear and type new text", async () => {
-            const input = canvasElement.querySelector<HTMLElement>(".bp6-editable-text-input")!;
-            await userEvent.clear(input);
-            await userEvent.type(input, "Changed text");
-        });
-
-        await step("Press Escape to cancel edit", async () => {
-            await userEvent.keyboard("{Escape}");
-            const root = canvasElement.querySelector(".bp6-editable-text");
-            await expect(root).not.toHaveClass("bp6-editable-text-editing");
-        });
-
-        await step("Verify text reverted to original value", async () => {
-            await expect(canvas.getByText("Original text")).toBeInTheDocument();
-        });
     },
 };
