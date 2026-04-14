@@ -21,3 +21,4 @@ publishBranch: develop
 # Supply chain security
 minimumReleaseAge: 4320 # 3 days in minutes
 blockExoticSubdeps: true
+gitChecks: false
