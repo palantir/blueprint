@@ -14,14 +14,6 @@ if [ -z "$publishable_paths" ]; then
     exit 0
 fi
 
-if [ -z "${NPM_ID_TOKEN}" ]; then
-    echo "No NPM OIDC token available."
-    exit 1
-fi
-
-# see https://pnpm.io/cli/config
-pnpm config set //registry.npmjs.org/:_authToken "${NPM_ID_TOKEN}"
-
 for path in $publishable_paths; do
     pushd "$path"
     echo "Attempting to publish package at path '$path'"
