@@ -98,6 +98,13 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
         border-color: $pt-dark-divider-white;
       }
     }
+
+    // CardList uses a bordered outer Card that keeps the default Card border-radius; flush the top edge with the
+    // section header divider so we do not get rounded corners or a stray top border line on the first row (#7841).
+    > .#{$ns}-card.#{$ns}-card-list.#{$ns}-card-list-bordered {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
 
   &.#{$ns}-section-collapsed {
