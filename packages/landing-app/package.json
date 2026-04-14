@@ -32,6 +32,7 @@
         "raw-loader": "^4.0.2",
         "webpack": "^5.90.0",
         "webpack-cli": "^7.0.2",
+        "tslib": "catalog:",
         "webpack-dev-server": "^5.2.3"
     },
     "repository": {
