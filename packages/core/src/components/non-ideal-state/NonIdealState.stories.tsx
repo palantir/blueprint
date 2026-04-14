@@ -3,8 +3,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
+
 import { Button } from "../button/buttons";
 
 import { NonIdealState, NonIdealStateIconSize } from "./nonIdealState";
