@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StorybookLayout } from "@storybook-common";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
@@ -23,9 +24,9 @@ const meta: Meta<typeof AnchorButton> = {
     component: AnchorButton,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <StorybookLayout>
                 <Story />
-            </div>
+            </StorybookLayout>
         ),
     ],
     parameters: {

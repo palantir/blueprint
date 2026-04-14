@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { StorybookLayout, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent, Size } from "../../common";
@@ -32,9 +32,9 @@ const meta: Meta<typeof SegmentedControl> = {
     component: SegmentedControl,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <StorybookLayout>
                 <Story />
-            </div>
+            </StorybookLayout>
         ),
     ],
     parameters: {

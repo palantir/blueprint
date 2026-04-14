@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { StorybookLayout, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -14,9 +14,9 @@ const meta: Meta<typeof Callout> = {
     component: Callout,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
+            <StorybookLayout>
                 <Story />
-            </div>
+            </StorybookLayout>
         ),
     ],
     parameters: {

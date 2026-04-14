@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { StorybookLayout, StoryLabel } from "@storybook-common";
 import { type ComponentProps } from "react";
 
 import { Switch } from "./controls";
@@ -17,9 +17,9 @@ const meta: Meta<typeof Switch> = {
     component: Switch,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <StorybookLayout>
                 <Story />
-            </div>
+            </StorybookLayout>
         ),
     ],
     parameters: {

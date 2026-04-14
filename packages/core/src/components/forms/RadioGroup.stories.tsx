@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StorybookLayout } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 import { useArgs } from "storybook/preview-api";
 
@@ -19,9 +20,9 @@ const meta: Meta<typeof RadioGroup> = {
     component: RadioGroup,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <StorybookLayout>
                 <Story />
-            </div>
+            </StorybookLayout>
         ),
     ],
     parameters: {

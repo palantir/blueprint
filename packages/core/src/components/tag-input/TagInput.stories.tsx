@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StorybookLayout } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
@@ -22,9 +23,9 @@ const meta: Meta<typeof TagInput> = {
     component: TagInput,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
+            <StorybookLayout>
                 <Story />
-            </div>
+            </StorybookLayout>
         ),
     ],
     parameters: {
