@@ -34,11 +34,11 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
-        "copy-webpack-plugin": "^12.0.2",
+        "copy-webpack-plugin": "^14.0.0",
         "npm-run-all": "^4.1.5",
         "webpack": "^5.90.0",
-        "webpack-cli": "^5.1.4",
-        "webpack-dev-server": "^4.15.1"
+        "webpack-cli": "^7.0.2",
+        "webpack-dev-server": "^5.2.3"
     },
     "repository": {
         "type": "git",
