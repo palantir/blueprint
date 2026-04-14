@@ -64,7 +64,7 @@ const plugins = [
 
 if (!IS_PRODUCTION) {
     plugins.push(
-        new ReactRefreshPlugin(),
+        new ReactRefreshPlugin({ overlay: false }),
         new ForkTsCheckerNotifierPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
         new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
     );
