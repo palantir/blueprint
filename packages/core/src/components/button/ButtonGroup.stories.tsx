@@ -7,10 +7,9 @@ import { StoryLabel } from "@storybook-common";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
-import { Tooltip } from "../tooltip/tooltip";
-
 import { Button } from "./buttons";
 import { ButtonGroup } from "./buttonGroup";
+import { Popover } from "../popover/popover";
 
 // These props are deprecated on ButtonGroup — hide them from the Storybook controls panel.
 const disabledArgs = ["large", "minimal", "outlined", "children"] as const satisfies ReadonlyArray<
@@ -253,9 +252,9 @@ export const AllIntentsAllVariants: Story = {
 };
 
 /**
- * Wrap buttons with Tooltip to provide additional context on hover.
+ * Wrap buttons with Popover to provide additional context on hover.
  */
-export const WithTooltip: Story = {
+export const WithPopover: Story = {
     argTypes: {
         variant: { table: { disable: true } },
     },
@@ -265,15 +264,15 @@ export const WithTooltip: Story = {
                 <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                     <StoryLabel title={variant} />
                     <ButtonGroup {...args} variant={variant}>
-                        <Tooltip content="Save" placement="bottom">
+                        <Popover content="Save" placement="bottom">
                             <Button icon="floppy-disk" aria-label="Save" />
-                        </Tooltip>
-                        <Tooltip content="Export as PDF" placement="bottom">
+                        </Popover>
+                        <Popover content="Export as PDF" placement="bottom">
                             <Button icon="export" aria-label="Export as PDF" />
-                        </Tooltip>
-                        <Tooltip content="Archive" placement="bottom">
+                        </Popover>
+                        <Popover content="Archive" placement="bottom">
                             <Button icon="archive" aria-label="Archive" />
-                        </Tooltip>
+                        </Popover>
                     </ButtonGroup>
                 </div>
             ))}
