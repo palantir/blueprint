@@ -41,7 +41,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "change-case": "^4.1.2",
+        "change-case": "^5.4.4",
         "classnames": "catalog:",
         "tslib": "catalog:"
     },
@@ -68,7 +68,6 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
-        "svg-parser": "^2.0.4",
         "typescript": "~5.9.3",
         "webpack-cli": "^7.0.2"
     },

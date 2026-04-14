@@ -21,7 +21,6 @@
         "@blueprintjs/icons": "workspace:^",
         "@blueprintjs/table": "workspace:^",
         "classnames": "catalog:",
-        "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"
@@ -30,7 +29,6 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
-        "@types/lodash": "~4.14.202",
         "copy-webpack-plugin": "^14.0.0",
         "npm-run-all": "^4.1.5",
         "webpack": "^5.90.0",

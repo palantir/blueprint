@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
@@ -77,11 +78,11 @@ export const ComparisonExample: Story = {
     render: () => (
         <div style={{ display: "flex", gap: 24 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Loading</span>
+                <StoryLabel title="Loading" />
                 <SkeletonDemo skeleton={true} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Loaded</span>
+                <StoryLabel title="Loaded" />
                 <SkeletonDemo skeleton={false} />
             </div>
         </div>
