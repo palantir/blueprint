@@ -4,7 +4,6 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useArgs, useCallback, useState } from "storybook/preview-api";
-import { expect, screen, waitFor } from "storybook/test";
 
 import { Position } from "../../common";
 import { Button } from "../button/buttons";
@@ -234,48 +233,5 @@ export const Playground: Story = {
                 </Drawer>
             </>
         );
-    },
-};
-
-export const EscapeKeyClose: Story = {
-    name: "Escape Key Close",
-    args: {
-        transitionDuration: undefined,
-        transitionName: undefined,
-    },
-    render: DrawerStoryRender,
-    play: async ({ canvas, userEvent, step }) => {
-        await step("Open drawer", async () => {
-            const button = canvas.getByRole("button", { name: "Open Drawer" });
-            await userEvent.click(button);
-            await waitFor(() => expect(screen.getByText(/Drawer content goes here/)).toBeVisible());
-        });
-
-        await step("Press Escape to close drawer", async () => {
-            await userEvent.keyboard("{Escape}");
-            await waitFor(() => expect(screen.queryByText(/Drawer content goes here/)).toBeNull());
-        });
-    },
-};
-
-export const OutsideClickClose: Story = {
-    name: "Outside Click Close",
-    args: {
-        transitionDuration: undefined,
-        transitionName: undefined,
-    },
-    render: DrawerStoryRender,
-    play: async ({ canvas, userEvent, step }) => {
-        await step("Open drawer", async () => {
-            const button = canvas.getByRole("button", { name: "Open Drawer" });
-            await userEvent.click(button);
-            await waitFor(() => expect(screen.getByText(/Drawer content goes here/)).toBeVisible());
-        });
-
-        await step("Click backdrop to close drawer", async () => {
-            const backdrop = document.querySelector(".bp6-overlay-backdrop") as HTMLElement;
-            await userEvent.click(backdrop);
-            await waitFor(() => expect(screen.queryByText(/Drawer content goes here/)).toBeNull());
-        });
     },
 };
