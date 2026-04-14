@@ -134,7 +134,6 @@ export default {
             stats: "errors-only",
         },
         historyApiFallback: true,
-        https: false,
         host: "0.0.0.0",
         hot: true,
         open: false,
