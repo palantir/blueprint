@@ -200,11 +200,15 @@ export const LoadingExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
                 <StoryLabel title="Loading" />
-                <EntityTitle {...args} loading={true} icon="document" title="Loading Entity" />
+                <DashedPaddedContainer width={250}>
+                    <EntityTitle {...args} loading={true} icon="document" title="Loading Entity" />
+                </DashedPaddedContainer>
             </div>
             <div>
                 <StoryLabel title="Not loading" />
-                <EntityTitle {...args} loading={false} icon="document" title="Loaded Entity" />
+                <DashedPaddedContainer width={250}>
+                    <EntityTitle {...args} loading={false} icon="document" title="Loaded Entity" />
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
