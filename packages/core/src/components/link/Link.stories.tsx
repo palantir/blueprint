@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { StoryLabel } from "@storybook-common";
 import { Intent } from "../../common";
 
 import { Link } from "./link";
@@ -87,7 +88,7 @@ export const UnderlineExample: Story = {
         <div style={{ display: "flex", gap: 16 }}>
             {(["always", "hover", "none"] as const).map(underline => (
                 <div key={underline} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                    <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{underline}</span>
+                    <StoryLabel title={underline} />
                     <Link {...args} underline={underline}>
                         Link
                     </Link>
@@ -110,7 +111,7 @@ export const AllIntentsAllUnderlines: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {(["always", "hover", "none"] as const).map(underline => (
                 <div key={underline} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{underline}</div>
+                    <StoryLabel title={underline} />
                     <div style={{ display: "flex", gap: 16 }}>
                         {Object.values(Intent).map(intent => (
                             <Link key={intent} {...args} color={intent} underline={underline}>
