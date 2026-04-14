@@ -5,11 +5,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
 
+import { Colors } from "@blueprintjs/colors";
+
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Tag } from "../tag/tag";
 
 import { EntityTitle } from "./entityTitle";
-import { Colors } from "@blueprintjs/colors";
 
 const HEADINGS = [
     { heading: H1, label: "H1" },
