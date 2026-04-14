@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -93,13 +94,13 @@ export const VariantExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <StoryLabel title="Default" />
                 <Callout {...args} minimal={false}>
                     Default callout with background fill.
                 </Callout>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Minimal</span>
+                <StoryLabel title="Minimal" />
                 <Callout {...args} minimal={true}>
                     Minimal callout without background fill.
                 </Callout>
@@ -119,13 +120,13 @@ export const CompactExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <StoryLabel title="Default" />
                 <Callout {...args} compact={false}>
                     Default padding callout.
                 </Callout>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Compact</span>
+                <StoryLabel title="Compact" />
                 <Callout {...args} compact={true}>
                     Compact padding callout.
                 </Callout>
@@ -170,7 +171,7 @@ export const AllIntentsAllVariants: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[false, true].map(minimal => (
                 <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6 }}>{minimal ? "Minimal" : "Default"}</div>
+                    <StoryLabel title={minimal ? "Minimal" : "Default"} />
                     <Callout {...args} minimal={minimal}>
                         No intent callout.
                     </Callout>
