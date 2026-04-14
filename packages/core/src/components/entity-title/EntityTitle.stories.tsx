@@ -2,6 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import type React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
 
@@ -9,6 +10,15 @@ import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Tag } from "../tag/tag";
 
 import { EntityTitle } from "./entityTitle";
+
+const HEADINGS = [
+    { heading: H1, label: "H1" },
+    { heading: H2, label: "H2" },
+    { heading: H3, label: "H3" },
+    { heading: H4, label: "H4" },
+    { heading: H5, label: "H5" },
+    { heading: H6, label: "H6" },
+] as const satisfies ReadonlyArray<{ heading: React.FC; label: string }>;
 
 const meta: Meta<typeof EntityTitle> = {
     title: "Core/EntityTitle",
@@ -41,15 +51,10 @@ const meta: Meta<typeof EntityTitle> = {
         },
         heading: {
             control: "select",
-            options: ["Text", "H6", "H5", "H4", "H3", "H2", "H1"],
+            options: ["Text", ...HEADINGS.map(h => h.label)],
             mapping: {
                 Text: undefined,
-                H6,
-                H5,
-                H4,
-                H3,
-                H2,
-                H1,
+                ...Object.fromEntries(HEADINGS.map(({ label, heading }) => [label, heading])),
             },
         },
         ellipsize: {
@@ -60,6 +65,9 @@ const meta: Meta<typeof EntityTitle> = {
         },
         loading: {
             control: "boolean",
+        },
+        subtitle: {
+            control: "text",
         },
     },
 } satisfies Meta<typeof EntityTitle>;
@@ -79,20 +87,18 @@ export const Default: Story = {
 /**
  * Use the `heading` prop to control the size of the entity title by rendering it as an HTML heading element.
  */
-export const SizesExample: Story = {
+export const HeadingsExample: Story = {
     name: "Heading",
     argTypes: {
         heading: { table: { disable: true } },
+        title: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {HEADINGS.map(({ heading, label }) => (
+                <EntityTitle key={label} {...args} icon="document" title={`Heading ${label}`} heading={heading} />
+            ))}
             <EntityTitle {...args} icon="document" title="Default (no heading)" />
-            <EntityTitle {...args} icon="document" title="Heading H6" heading={H6} />
-            <EntityTitle {...args} icon="document" title="Heading H5" heading={H5} />
-            <EntityTitle {...args} icon="document" title="Heading H4" heading={H4} />
-            <EntityTitle {...args} icon="document" title="Heading H3" heading={H3} />
-            <EntityTitle {...args} icon="document" title="Heading H2" heading={H2} />
-            <EntityTitle {...args} icon="document" title="Heading H1" heading={H1} />
         </div>
     ),
 };
@@ -104,6 +110,7 @@ export const IconExample: Story = {
     name: "Icon",
     argTypes: {
         icon: { table: { disable: true } },
+        title: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -122,6 +129,7 @@ export const FillExample: Story = {
     name: "Fill",
     argTypes: {
         fill: { table: { disable: true } },
+        title: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -152,6 +160,7 @@ export const EllipsizeExample: Story = {
     name: "Ellipsize",
     argTypes: {
         ellipsize: { table: { disable: true } },
+        title: { table: { disable: true } },
     },
     decorators: [
         Story => (
@@ -195,6 +204,7 @@ export const LoadingExample: Story = {
     name: "Loading",
     argTypes: {
         loading: { table: { disable: true } },
+        title: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -219,6 +229,9 @@ export const LoadingExample: Story = {
  */
 export const TagsExample: Story = {
     name: "Tags",
+    argTypes: {
+        title: { table: { disable: true } },
+    },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
@@ -242,6 +255,9 @@ export const TagsExample: Story = {
  */
 export const SubtitleExample: Story = {
     name: "Subtitle",
+    argTypes: {
+        title: { table: { disable: true } },
+    },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <EntityTitle {...args} icon="document" title="Annual Report" subtitle="Last edited 2 hours ago" />
