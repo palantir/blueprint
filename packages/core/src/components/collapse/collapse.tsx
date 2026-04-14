@@ -15,9 +15,9 @@
  */
 
 import classNames from "classnames";
-import { createElement } from "react";
+import { createElement, useCallback, useEffect, useRef, useState } from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface CollapseProps extends Props {
@@ -56,19 +56,6 @@ export interface CollapseProps extends Props {
      * @default 200
      */
     transitionDuration?: number;
-}
-
-export interface CollapseState {
-    /** The state the element is currently in. */
-    animationState: AnimationStates;
-
-    /** The height that should be used for the content animations. This is a CSS value, not just a number. */
-    height: string | undefined;
-
-    /**
-     * The most recent non-zero height (once a height has been measured upon first open; it is undefined until then)
-     */
-    heightWhenOpen: number | undefined;
 }
 
 /**
@@ -121,158 +108,158 @@ export enum AnimationStates {
  *
  * @see https://blueprintjs.com/docs/#core/components/collapse
  */
-export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
+export const Collapse: React.FC<CollapseProps> = ({
+    children,
+    className,
+    component = "div",
+    isOpen = false,
+    keepChildrenMounted = false,
+    transitionDuration = 200,
+}) => {
+    const [animationState, setAnimationState] = useState<AnimationStates>(
+        isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
+    );
+    const [height, setHeight] = useState<string | undefined>(isOpen ? "auto" : "0px");
+    const [heightWhenOpen, setHeightWhenOpen] = useState<number | undefined>(undefined);
 
-    public static defaultProps: Partial<CollapseProps> = {
-        component: "div",
-        isOpen: false,
-        keepChildrenMounted: false,
-        transitionDuration: 200,
-    };
+    const [prevIsOpen, setPrevIsOpen] = useState(isOpen);
+    const isOpenRef = useRef(isOpen);
+    isOpenRef.current = isOpen;
+    const contents = useRef<HTMLElement | null>(null);
+    const animationStateRef = useRef(animationState);
+    animationStateRef.current = animationState;
+    const delayedTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
-    public static getDerivedStateFromProps(props: CollapseProps, state: CollapseState) {
-        const { isOpen } = props;
-        const { animationState } = state;
-
-        if (isOpen) {
-            switch (animationState) {
-                case AnimationStates.OPEN:
-                    // no-op
-                    break;
-                case AnimationStates.OPENING:
-                    // allow Collapse#onDelayedStateChange() to handle the transition here
-                    break;
-                default:
-                    return { animationState: AnimationStates.OPEN_START };
-            }
-        } else {
-            switch (animationState) {
-                case AnimationStates.CLOSED:
-                    // no-op
-                    break;
-                case AnimationStates.CLOSING:
-                    // allow Collapse#onDelayedStateChange() to handle the transition here
-                    break;
-                default:
-                    // need to set an explicit height so that transition can work
-                    return {
-                        animationState: AnimationStates.CLOSING_START,
-                        height: `${state.heightWhenOpen}px`,
-                    };
-            }
-        }
-
-        return null;
-    }
-
-    public state: CollapseState = {
-        animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
-        height: undefined,
-        heightWhenOpen: undefined,
-    };
-
-    // The element containing the contents of the collapse.
-    private contents: HTMLElement | null = null;
-
-    public render() {
-        const isContentVisible = this.state.animationState !== AnimationStates.CLOSED;
-        const shouldRenderChildren = isContentVisible || this.props.keepChildrenMounted;
-        const displayWithTransform = isContentVisible && this.state.animationState !== AnimationStates.CLOSING;
-        const isAutoHeight = this.state.height === "auto";
-
-        const containerStyle = {
-            height: isContentVisible ? this.state.height : undefined,
-            overflowY: isAutoHeight ? "visible" : undefined,
-            // transitions don't work with height: auto
-            transition: isAutoHeight ? "none" : undefined,
-        };
-
-        const contentsStyle = {
-            // only use heightWhenOpen while closing
-            transform: displayWithTransform ? "translateY(0)" : `translateY(-${this.state.heightWhenOpen}px)`,
-            // transitions don't work with height: auto
-            transition: isAutoHeight ? "none" : undefined,
-        };
-
-        return createElement(
-            this.props.component!,
-            {
-                className: classNames(Classes.COLLAPSE, this.props.className),
-                style: containerStyle,
-            },
-            <div
-                className={Classes.COLLAPSE_BODY}
-                ref={this.contentsRefHandler}
-                style={contentsStyle}
-                aria-hidden={!isContentVisible}
-            >
-                {shouldRenderChildren ? this.props.children : null}
-            </div>,
-        );
-    }
-
-    public componentDidMount() {
-        this.forceUpdate();
-        // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
-        if (this.props.isOpen) {
-            this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
-        } else {
-            this.setState({ animationState: AnimationStates.CLOSED, height: "0px" });
-        }
-    }
-
-    public componentDidUpdate() {
-        if (this.contents == null) {
-            return;
-        }
-
-        const { transitionDuration } = this.props;
-        const { animationState } = this.state;
-
-        if (animationState === AnimationStates.OPEN_START) {
-            const { clientHeight } = this.contents;
-            this.setState({
-                animationState: AnimationStates.OPENING,
-                height: `${clientHeight}px`,
-                heightWhenOpen: clientHeight,
-            });
-            this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
-        } else if (animationState === AnimationStates.CLOSING_START) {
-            const { clientHeight } = this.contents;
-            this.setTimeout(() =>
-                this.setState({
-                    animationState: AnimationStates.CLOSING,
-                    height: "0px",
-                    heightWhenOpen: clientHeight,
-                }),
-            );
-            this.setTimeout(() => this.onDelayedStateChange(), transitionDuration);
-        }
-    }
-
-    private contentsRefHandler = (el: HTMLElement | null) => {
-        this.contents = el;
-        if (this.contents != null) {
-            const height = this.contents.clientHeight;
-            this.setState({
-                animationState: this.props.isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
-                height: height === 0 ? undefined : `${height}px`,
-                heightWhenOpen: height === 0 ? undefined : height,
-            });
-        }
-    };
-
-    private onDelayedStateChange() {
-        switch (this.state.animationState) {
+    const onDelayedStateChange = useCallback(() => {
+        switch (animationStateRef.current) {
             case AnimationStates.OPENING:
-                this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
+                setAnimationState(AnimationStates.OPEN);
+                setHeight("auto");
                 break;
             case AnimationStates.CLOSING:
-                this.setState({ animationState: AnimationStates.CLOSED });
+                setAnimationState(AnimationStates.CLOSED);
                 break;
             default:
                 break;
         }
+    }, []);
+
+    // Synchronize animationState with the isOpen prop during render.
+    if (isOpen !== prevIsOpen) {
+        setPrevIsOpen(isOpen);
+        if (isOpen) {
+            switch (animationState) {
+                case AnimationStates.OPEN:
+                case AnimationStates.OPENING:
+                    break;
+                default:
+                    setAnimationState(AnimationStates.OPEN_START);
+            }
+        } else {
+            switch (animationState) {
+                case AnimationStates.CLOSED:
+                case AnimationStates.CLOSING:
+                    break;
+                default:
+                    setAnimationState(AnimationStates.CLOSING_START);
+                    setHeight(`${heightWhenOpen}px`);
+            }
+        }
     }
-}
+
+    // Clean up delayed timer on unmount only (mirrors AbstractPureComponent.setTimeout behavior)
+    useEffect(() => {
+        return () => {
+            if (delayedTimerRef.current != null) {
+                clearTimeout(delayedTimerRef.current);
+            }
+        };
+    }, []);
+
+    // Handle animation state transitions
+    useEffect(() => {
+        if (!contents.current) return undefined;
+
+        switch (animationState) {
+            case AnimationStates.OPEN_START: {
+                const clientHeight = contents.current.clientHeight;
+                setAnimationState(AnimationStates.OPENING);
+                setHeight(`${clientHeight}px`);
+                setHeightWhenOpen(clientHeight);
+
+                clearTimeout(delayedTimerRef.current);
+                delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
+                break;
+            }
+            case AnimationStates.CLOSING_START: {
+                const clientHeight = contents.current.clientHeight;
+
+                const immediateTimer = setTimeout(() => {
+                    setAnimationState(AnimationStates.CLOSING);
+                    setHeight("0px");
+                    setHeightWhenOpen(clientHeight);
+                });
+
+                clearTimeout(delayedTimerRef.current);
+                delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
+
+                return () => clearTimeout(immediateTimer);
+            }
+            default:
+                break;
+        }
+
+        return undefined;
+    }, [animationState, transitionDuration, onDelayedStateChange]);
+
+    const contentsRefHandler = useCallback((element: HTMLElement | null) => {
+        contents.current = element;
+        if (contents.current != null) {
+            const contentHeight = contents.current.clientHeight;
+            setAnimationState(isOpenRef.current ? AnimationStates.OPEN : AnimationStates.CLOSED);
+            setHeight(contentHeight === 0 ? undefined : `${contentHeight}px`);
+            setHeightWhenOpen(contentHeight === 0 ? undefined : contentHeight);
+        }
+    }, []);
+
+    const isContentVisible = animationState !== AnimationStates.CLOSED;
+    const shouldRenderChildren = isContentVisible || keepChildrenMounted;
+    const displayWithTransform = isContentVisible && animationState !== AnimationStates.CLOSING;
+    // When fully open, always use "auto" height so content is never clipped — the ref
+    // callback may have stored a measured pixel value, but that's only needed for close
+    // animations, not for the resting open state.
+    const effectiveHeight = animationState === AnimationStates.OPEN ? "auto" : height;
+    const isAutoHeight = effectiveHeight === "auto";
+
+    const containerStyle = {
+        height: isContentVisible ? effectiveHeight : undefined,
+        overflowY: isAutoHeight ? "visible" : undefined,
+        // transitions don't work with height: auto
+        transition: isAutoHeight ? "none" : undefined,
+    };
+
+    const contentsStyle = {
+        // only use heightWhenOpen while closing
+        transform: displayWithTransform ? "translateY(0)" : `translateY(-${heightWhenOpen}px)`,
+        // transitions don't work with height: auto
+        transition: isAutoHeight ? "none" : undefined,
+    };
+
+    return createElement(
+        component,
+        {
+            className: classNames(Classes.COLLAPSE, className),
+            style: containerStyle,
+        },
+        <div
+            className={Classes.COLLAPSE_BODY}
+            ref={contentsRefHandler}
+            style={contentsStyle}
+            aria-hidden={!isContentVisible}
+        >
+            {shouldRenderChildren ? children : null}
+        </div>,
+    );
+};
+
+Collapse.displayName = `${DISPLAYNAME_PREFIX}.Collapse`;

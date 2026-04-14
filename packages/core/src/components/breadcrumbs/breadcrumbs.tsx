@@ -15,8 +15,9 @@
  */
 
 import classNames from "classnames";
+import { memo, useCallback } from "react";
 
-import { AbstractPureComponent, Boundary, Classes, type Props, removeNonHTMLProps } from "../../common";
+import { Boundary, Classes, DISPLAYNAME_PREFIX, type Props, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
@@ -24,6 +25,8 @@ import { Popover } from "../popover/popover";
 import type { PopoverProps } from "../popover/popoverProps";
 
 import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
+
+const EMPTY_ITEMS: readonly BreadcrumbProps[] = [];
 
 export interface BreadcrumbsProps extends Props {
     /**
@@ -54,8 +57,10 @@ export interface BreadcrumbsProps extends Props {
     /**
      * All breadcrumbs to display. Breadcrumbs that do not fit in the container
      * will be rendered in an overflow menu instead.
+     *
+     * @default []
      */
-    items: readonly BreadcrumbProps[];
+    items?: readonly BreadcrumbProps[];
 
     /**
      * The minimum number of visible breadcrumbs that should never collapse into
@@ -91,80 +96,94 @@ export interface BreadcrumbsProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
  */
-export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
-    public static defaultProps: Partial<BreadcrumbsProps> = {
-        collapseFrom: Boundary.START,
-    };
+export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
+    const {
+        breadcrumbRenderer,
+        className,
+        collapseFrom = Boundary.START,
+        currentBreadcrumbRenderer,
+        items = EMPTY_ITEMS,
+        minVisibleItems = 0,
+        overflowButtonProps,
+        overflowListProps = {},
+        popoverProps,
+    } = props;
 
-    public render() {
-        const { className, collapseFrom, items, minVisibleItems, overflowListProps = {} } = this.props;
-        return (
-            <OverflowList
-                collapseFrom={collapseFrom}
-                minVisibleItems={minVisibleItems}
-                tagName="ol"
-                navigable={true}
-                navigationAriaLabel="Breadcrumb"
-                {...overflowListProps}
-                className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
-                items={items}
-                overflowRenderer={this.renderOverflow}
-                visibleItemRenderer={this.renderBreadcrumbWrapper}
-            />
-        );
-    }
+    const renderBreadcrumb = useCallback(
+        (breadcrumbProps: BreadcrumbProps, isCurrent: boolean) => {
+            if (isCurrent && currentBreadcrumbRenderer != null) {
+                return currentBreadcrumbRenderer(breadcrumbProps);
+            } else if (breadcrumbRenderer != null) {
+                return breadcrumbRenderer(breadcrumbProps);
+            } else {
+                // allow user to override 'current' prop
+                return <Breadcrumb current={isCurrent} {...breadcrumbProps} />;
+            }
+        },
+        [breadcrumbRenderer, currentBreadcrumbRenderer],
+    );
 
-    private renderOverflow = (items: readonly BreadcrumbProps[]) => {
-        const { collapseFrom, overflowButtonProps, popoverProps } = this.props;
+    const renderBreadcrumbWrapper = useCallback(
+        (breadcrumbProps: BreadcrumbProps, index: number) => {
+            const isCurrent = items[items.length - 1] === breadcrumbProps;
+            return <li key={index}>{renderBreadcrumb(breadcrumbProps, isCurrent)}</li>;
+        },
+        [items, renderBreadcrumb],
+    );
 
-        let orderedItems = items;
-        if (collapseFrom === Boundary.START) {
-            // If we're collapsing from the start, the menu should be read from the bottom to the
-            // top, continuing with the breadcrumbs to the right. Since this means the first
-            // breadcrumb in the props must be the last in the menu, we need to reverse the overlow
-            // order.
-            orderedItems = items.slice().reverse();
-        }
+    const renderOverflowBreadcrumb = useCallback((breadcrumbProps: BreadcrumbProps, index: number) => {
+        const isClickable = breadcrumbProps.href != null || breadcrumbProps.onClick != null;
+        const htmlProps = removeNonHTMLProps(breadcrumbProps);
+        return <MenuItem disabled={!isClickable} {...htmlProps} text={breadcrumbProps.text} key={index} />;
+    }, []);
 
-        return (
-            <li>
-                <Popover
-                    placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
-                    disabled={orderedItems.length === 0}
-                    content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
-                    {...popoverProps}
-                >
-                    <span
-                        aria-label="collapsed breadcrumbs"
-                        role="button"
-                        tabIndex={0}
-                        {...overflowButtonProps}
-                        className={classNames(Classes.BREADCRUMBS_COLLAPSED, overflowButtonProps?.className)}
-                    />
-                </Popover>
-            </li>
-        );
-    };
+    const renderOverflow = useCallback(
+        (overflowItems: readonly BreadcrumbProps[]) => {
+            let orderedItems = overflowItems;
+            if (collapseFrom === Boundary.START) {
+                // If we're collapsing from the start, the menu should be read from the bottom to the
+                // top, continuing with the breadcrumbs to the right. Since this means the first
+                // breadcrumb in the props must be the last in the menu, we need to reverse the overflow
+                // order.
+                orderedItems = overflowItems.slice().reverse();
+            }
 
-    private renderOverflowBreadcrumb = (props: BreadcrumbProps, index: number) => {
-        const isClickable = props.href != null || props.onClick != null;
-        const htmlProps = removeNonHTMLProps(props);
-        return <MenuItem disabled={!isClickable} {...htmlProps} text={props.text} key={index} />;
-    };
+            return (
+                <li>
+                    <Popover
+                        content={<Menu>{orderedItems.map(renderOverflowBreadcrumb)}</Menu>}
+                        disabled={orderedItems.length === 0}
+                        placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
+                        {...popoverProps}
+                    >
+                        <span
+                            aria-label="collapsed breadcrumbs"
+                            role="button"
+                            tabIndex={0}
+                            {...overflowButtonProps}
+                            className={classNames(Classes.BREADCRUMBS_COLLAPSED, overflowButtonProps?.className)}
+                        />
+                    </Popover>
+                </li>
+            );
+        },
+        [collapseFrom, overflowButtonProps, popoverProps, renderOverflowBreadcrumb],
+    );
 
-    private renderBreadcrumbWrapper = (props: BreadcrumbProps, index: number) => {
-        const isCurrent = this.props.items[this.props.items.length - 1] === props;
-        return <li key={index}>{this.renderBreadcrumb(props, isCurrent)}</li>;
-    };
+    return (
+        <OverflowList
+            collapseFrom={collapseFrom}
+            minVisibleItems={minVisibleItems}
+            tagName="ol"
+            navigable={true}
+            navigationAriaLabel="Breadcrumb"
+            {...overflowListProps}
+            className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
+            items={items}
+            overflowRenderer={renderOverflow}
+            visibleItemRenderer={renderBreadcrumbWrapper}
+        />
+    );
+});
 
-    private renderBreadcrumb(props: BreadcrumbProps, isCurrent: boolean) {
-        if (isCurrent && this.props.currentBreadcrumbRenderer != null) {
-            return this.props.currentBreadcrumbRenderer(props);
-        } else if (this.props.breadcrumbRenderer != null) {
-            return this.props.breadcrumbRenderer(props);
-        } else {
-            // allow user to override 'current' prop
-            return <Breadcrumb current={isCurrent} {...props} />;
-        }
-    }
-}
+Breadcrumbs.displayName = `${DISPLAYNAME_PREFIX}.Breadcrumbs`;
