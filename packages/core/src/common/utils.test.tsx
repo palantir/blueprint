@@ -33,6 +33,7 @@ describe("Utils", () => {
         expect(Utils.isReactNodeEmpty(""), '""').toBe(true);
         expect(Utils.isReactNodeEmpty([]), "[]").toBe(true);
         expect(Utils.isReactNodeEmpty([undefined, null, false, ""]), "array").toBe(true);
+        expect(Utils.isReactNodeEmpty(false), "false").toBe(true);
         // not empty nodes
         expect(Utils.isReactNodeEmpty(0), "0").toBe(false);
         expect(Utils.isReactNodeEmpty("text"), "text").toBe(false);
