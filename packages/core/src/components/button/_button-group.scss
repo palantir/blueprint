@@ -123,12 +123,16 @@ $button-group-z-index: (
   }
 
   &.#{$ns}-outlined {
-    > .#{$ns}-button {
+    > .#{$ns}-button,
+    > .#{$ns}-popover-target > .#{$ns}-button,
+    > .#{$ns}-popover-wrapper > .#{$ns}-popover-target > .#{$ns}-button {
       @include pt-button-outlined;
     }
 
     &:not(.#{$ns}-vertical) {
-      > .#{$ns}-button:not(:last-child) {
+      > .#{$ns}-button:not(:last-child),
+      > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
+      > .#{$ns}-popover-wrapper:not(:last-child) > .#{$ns}-popover-target > .#{$ns}-button {
         border-right: none;
       }
     }
@@ -188,7 +192,9 @@ $button-group-z-index: (
     }
 
     &.#{$ns}-outlined {
-      > .#{$ns}-button:not(:last-child) {
+      > .#{$ns}-button:not(:last-child),
+      > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
+      > .#{$ns}-popover-wrapper:not(:last-child) > .#{$ns}-popover-target > .#{$ns}-button {
         border-bottom: none;
       }
     }
