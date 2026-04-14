@@ -7,6 +7,8 @@ import { StoryLabel } from "@storybook-common";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
+import { Tooltip } from "../tooltip/tooltip";
+
 import { Button } from "./buttons";
 import { ButtonGroup } from "./buttonGroup";
 
@@ -244,6 +246,35 @@ export const AllIntentsAllVariants: Story = {
                             <Button intent={intent} text={intent} />
                         </ButtonGroup>
                     ))}
+                </div>
+            ))}
+        </div>
+    ),
+};
+
+/**
+ * Wrap buttons with Tooltip to provide additional context on hover.
+ */
+export const WithTooltip: Story = {
+    argTypes: {
+        variant: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+            {Object.values(ButtonVariant).map(variant => (
+                <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                    <StoryLabel title={variant} />
+                    <ButtonGroup {...args} variant={variant}>
+                        <Tooltip content="Save" placement="bottom">
+                            <Button icon="floppy-disk" aria-label="Save" />
+                        </Tooltip>
+                        <Tooltip content="Export as PDF" placement="bottom">
+                            <Button icon="export" aria-label="Export as PDF" />
+                        </Tooltip>
+                        <Tooltip content="Archive" placement="bottom">
+                            <Button icon="archive" aria-label="Archive" />
+                        </Tooltip>
+                    </ButtonGroup>
                 </div>
             ))}
         </div>
