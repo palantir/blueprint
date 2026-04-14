@@ -4,12 +4,12 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
-import type React from "react";
 
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Tag } from "../tag/tag";
 
 import { EntityTitle } from "./entityTitle";
+import { Colors } from "@blueprintjs/colors";
 
 const HEADINGS = [
     { heading: H1, label: "H1" },
@@ -48,6 +48,7 @@ const meta: Meta<typeof EntityTitle> = {
         },
         icon: {
             control: "text",
+            table: { disable: true },
         },
         heading: {
             control: "select",
@@ -109,7 +110,6 @@ export const HeadingsExample: Story = {
 export const IconExample: Story = {
     name: "Icon",
     argTypes: {
-        icon: { table: { disable: true } },
         title: { table: { disable: true } },
     },
     render: args => (
@@ -136,7 +136,7 @@ export const FillExample: Story = {
             <div>
                 <StoryLabel title="Fill enabled" />
                 <DashedPaddedContainer>
-                    <div style={{ background: "#FFCCC4", borderRadius: 4, padding: "4px" }}>
+                    <div style={{ background: Colors.RED5, borderRadius: 4, padding: 4 }}>
                         <EntityTitle {...args} fill={true} title="Fill enabled" icon="document" />
                     </div>
                 </DashedPaddedContainer>
@@ -144,7 +144,7 @@ export const FillExample: Story = {
             <div>
                 <StoryLabel title="Fill disabled" />
                 <DashedPaddedContainer>
-                    <div style={{ background: "#C4E1FF", borderRadius: 4, display: "inline-block", padding: "4px" }}>
+                    <div style={{ background: Colors.BLUE5, borderRadius: 4, display: "inline-block", padding: 4 }}>
                         <EntityTitle {...args} fill={false} title="Fill disabled" icon="document" />
                     </div>
                 </DashedPaddedContainer>
@@ -236,15 +236,15 @@ export const TagsExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <div>
                 <StoryLabel title="With tag" />
-                <div style={{ border: "1px dashed #ccc", padding: 8 }}>
+                <DashedPaddedContainer>
                     <EntityTitle {...args} icon="document" title="Document" tags={<Tag minimal={true}>Draft</Tag>} />
-                </div>
+                </DashedPaddedContainer>
             </div>
             <div>
                 <StoryLabel title="Without tag" />
-                <div style={{ border: "1px dashed #ccc", padding: 8 }}>
+                <DashedPaddedContainer>
                     <EntityTitle {...args} icon="document" title="Document" />
-                </div>
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
