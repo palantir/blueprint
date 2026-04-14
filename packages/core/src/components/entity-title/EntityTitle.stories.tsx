@@ -2,9 +2,9 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import type React from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
+import type React from "react";
 
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Tag } from "../tag/tag";
