@@ -15,17 +15,12 @@ import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 import { Classes, Intent } from "../../common";
 
 import { Icon, IconSize } from "./icon";
+import { storybookLayoutDecorator } from "@storybook-common";
 
 const meta: Meta<typeof Icon> = {
     title: "Core/Icon",
     component: Icon,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
