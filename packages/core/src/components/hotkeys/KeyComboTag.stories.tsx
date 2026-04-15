@@ -3,9 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 
 import { KeyComboTag } from "./keyComboTag";
-import { storybookLayoutDecorator } from "@storybook-common";
 
 const meta: Meta<typeof KeyComboTag> = {
     title: "Core/Hotkeys/KeyComboTag",
