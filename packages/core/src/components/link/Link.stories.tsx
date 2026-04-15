@@ -3,8 +3,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-
 import { StoryLabel } from "@storybook-common";
+
 import { Intent } from "../../common";
 
 import { Link } from "./link";
