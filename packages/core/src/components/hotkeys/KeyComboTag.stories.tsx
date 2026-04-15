@@ -5,17 +5,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { KeyComboTag } from "./keyComboTag";
+import { storybookLayoutDecorator } from "@storybook-common";
 
 const meta: Meta<typeof KeyComboTag> = {
     title: "Core/Hotkeys/KeyComboTag",
     component: KeyComboTag,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -25,9 +20,6 @@ const meta: Meta<typeof KeyComboTag> = {
         minimal: false,
     },
     argTypes: {
-        combo: {
-            control: "text",
-        },
         minimal: {
             control: "boolean",
         },
