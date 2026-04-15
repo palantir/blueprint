@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 
 import { Button } from "../button/buttons";
 
@@ -12,13 +13,7 @@ import { InputGroup } from "./inputGroup";
 const meta: Meta<typeof ControlGroup> = {
     title: "Core/Form/ControlGroup",
     component: ControlGroup,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
