@@ -72,7 +72,9 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     }
 
     .#{$ns}-dark & .#{$ns}-file-upload-input {
-      color: #{oklch(from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h)};
+      color: #{oklch(
+          from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h
+        )};
     }
   }
 

@@ -199,7 +199,7 @@ $control-group-stack: (
 
 @mixin pt-dark-input-placeholder() {
   &::placeholder {
-    color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.240) calc(c - 0.011) h)};
+    color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)};
   }
 }
 

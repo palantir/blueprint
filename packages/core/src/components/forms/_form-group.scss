@@ -114,7 +114,7 @@
 
     .#{$ns}-form-group-sub-label,
     .#{$ns}-form-helper-text {
-      color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.240) calc(c - 0.011) h)};
+      color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)};
     }
 
     &.#{$ns}-disabled {
