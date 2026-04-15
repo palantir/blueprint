@@ -108,7 +108,7 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <StoryLabel title="Default" />
                 <EditableText {...args} placeholder="Click to Edit" />
