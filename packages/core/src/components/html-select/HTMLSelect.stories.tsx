@@ -3,9 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { HTMLSelect, type HTMLSelectIconName } from "./htmlSelect";
-import { StoryLabel } from "@storybook-common";
 
 const SAMPLE_OPTIONS = [
     { label: "Option 1", value: "1" },
