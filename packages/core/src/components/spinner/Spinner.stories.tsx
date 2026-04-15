@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout, StoryLabel } from "@storybook-common";
+import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -12,13 +12,7 @@ import { Spinner, SpinnerSize } from "./spinner";
 const meta: Meta<typeof Spinner> = {
     title: "Core/Spinner",
     component: Spinner,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

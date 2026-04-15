@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout } from "@storybook-common";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
@@ -14,13 +14,7 @@ import { Alert } from "./alert";
 const meta: Meta<typeof Alert> = {
     title: "Core/Alert",
     component: Alert,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

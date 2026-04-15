@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout, StoryLabel } from "@storybook-common";
+import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Elevation } from "../../common";
 import { H3 } from "../html/html";
@@ -13,13 +13,7 @@ import { Card } from "./card";
 const meta: Meta<typeof Card> = {
     title: "Core/Card",
     component: Card,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

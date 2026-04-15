@@ -3,6 +3,7 @@
  */
 
 import { Flex } from "@blueprintjs/labs";
+import type { Decorator } from "@storybook/react-vite";
 
 export interface StoryLabelProps {
     title: React.ReactNode;
@@ -17,14 +18,19 @@ export function StoryLabel({ title }: StoryLabelProps) {
 
 export interface StorybookLayoutProps {
     children: React.ReactNode;
-    minWidth?: string;
     style?: React.CSSProperties;
 }
 
-export function StorybookLayout({ children, minWidth = "400px", style }: StorybookLayoutProps) {
+export function StorybookLayout({ children, style }: StorybookLayoutProps) {
     return (
-        <Flex justifyContent="center" alignItems="center" style={{ minWidth, ...style }}>
+        <Flex justifyContent="center" alignItems="center" style={{ minWidth: 400, ...style }}>
             {children}
         </Flex>
     );
 }
+
+export const storybookLayoutDecorator: Decorator = Story => (
+    <StorybookLayout>
+        <Story />
+    </StorybookLayout>
+);

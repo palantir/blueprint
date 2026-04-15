@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout, StoryLabel } from "@storybook-common";
+import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Card } from "../card/card";
@@ -15,13 +15,7 @@ type CardListStoryArgs = React.ComponentProps<typeof CardList> & { selectedIndex
 const meta: Meta<CardListStoryArgs> = {
     title: "Core/CardList",
     component: CardList,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

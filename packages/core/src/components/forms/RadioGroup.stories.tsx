@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout } from "@storybook-common";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 import { useArgs } from "storybook/preview-api";
 
@@ -18,13 +18,7 @@ const sampleOptions = [
 const meta: Meta<typeof RadioGroup> = {
     title: "Core/Form/Controls/RadioGroup",
     component: RadioGroup,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

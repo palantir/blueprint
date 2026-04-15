@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout } from "@storybook-common";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Alignment, Elevation } from "../../common";
@@ -13,13 +13,7 @@ import { CheckboxCard } from "./checkboxCard";
 const meta: Meta<typeof CheckboxCard> = {
     title: "Core/Control Card/CheckboxCard",
     component: CheckboxCard,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

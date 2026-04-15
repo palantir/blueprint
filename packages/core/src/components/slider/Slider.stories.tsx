@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout, StoryLabel } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
@@ -14,13 +14,7 @@ import { Slider } from "./slider";
 const meta: Meta<typeof Slider> = {
     title: "Core/Slider",
     component: Slider,
-    decorators: [
-        Story => (
-            <StorybookLayout style={{ padding: "40px 20px" }}>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

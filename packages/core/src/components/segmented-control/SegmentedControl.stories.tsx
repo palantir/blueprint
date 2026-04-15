@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout, StoryLabel } from "@storybook-common";
+import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent, Size } from "../../common";
@@ -30,13 +30,7 @@ const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<
 const meta: Meta<typeof SegmentedControl> = {
     title: "Core/Form/Controls/SegmentedControl",
     component: SegmentedControl,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

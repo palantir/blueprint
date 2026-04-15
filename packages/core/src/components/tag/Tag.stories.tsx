@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout, StoryLabel } from "@storybook-common";
+import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
@@ -18,13 +18,7 @@ const disabledArgs = ["large", "rightIcon", "children"] as const satisfies Reado
 const meta: Meta<typeof Tag> = {
     title: "Core/Tag/Tag",
     component: Tag,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

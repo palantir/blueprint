@@ -3,8 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout } from "@storybook-common";
-
+import { storybookLayoutDecorator } from "@storybook-common";
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
 import { AnchorButton } from "./buttons";
@@ -22,13 +21,7 @@ const disabledArgs = [
 const meta: Meta<typeof AnchorButton> = {
     title: "Core/Button/AnchorButton",
     component: AnchorButton,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

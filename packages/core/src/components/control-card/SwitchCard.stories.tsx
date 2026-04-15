@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout } from "@storybook-common";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Alignment, Elevation } from "../../common";
@@ -13,13 +13,7 @@ import { SwitchCard } from "./switchCard";
 const meta: Meta<typeof SwitchCard> = {
     title: "Core/Control Card/SwitchCard",
     component: SwitchCard,
-    decorators: [
-        Story => (
-            <StorybookLayout>
-                <Story />
-            </StorybookLayout>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
