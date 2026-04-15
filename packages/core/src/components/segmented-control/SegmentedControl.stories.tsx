@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent, Size } from "../../common";
@@ -29,13 +30,7 @@ const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<
 const meta: Meta<typeof SegmentedControl> = {
     title: "Core/Form/Controls/SegmentedControl",
     component: SegmentedControl,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -102,11 +97,11 @@ export const IntentExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>None</span>
+                <StoryLabel title="None" />
                 <SegmentedControl {...args} intent={Intent.NONE} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Primary</span>
+                <StoryLabel title="Primary" />
                 <SegmentedControl {...args} intent={Intent.PRIMARY} />
             </div>
         </div>
@@ -125,7 +120,7 @@ export const SizeExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
             {Object.values(Size).map(size => (
                 <div key={size} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                    <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{size}</span>
+                    <StoryLabel title={size} />
                     <SegmentedControl {...args} size={size} />
                 </div>
             ))}
@@ -144,11 +139,11 @@ export const StateExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <StoryLabel title="Default" />
                 <SegmentedControl {...args} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
+                <StoryLabel title="Disabled" />
                 <SegmentedControl {...args} disabled={true} />
             </div>
         </div>
@@ -173,11 +168,11 @@ export const FillExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Fill</span>
+                <StoryLabel title="Fill" />
                 <SegmentedControl {...args} fill={true} />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Auto Width</span>
+                <StoryLabel title="Auto Width" />
                 <SegmentedControl {...args} fill={false} />
             </div>
         </div>
@@ -203,15 +198,15 @@ export const AriaLabels: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>role="radiogroup" (default) + aria-label</span>
+                <StoryLabel title={'role="radiogroup" (default) + aria-label'} />
                 <SegmentedControl {...args} aria-label="View mode" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>role="toolbar" + aria-label</span>
+                <StoryLabel title={'role="toolbar" + aria-label'} />
                 <SegmentedControl {...args} role="toolbar" aria-label="View mode toolbar" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>role="group" + aria-label</span>
+                <StoryLabel title={'role="group" + aria-label'} />
                 <SegmentedControl {...args} role="group" aria-label="View mode group" />
             </div>
         </div>
@@ -232,7 +227,7 @@ export const AllIntentsAllSizes: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {[Intent.NONE, Intent.PRIMARY].map(intent => (
                 <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6 }}>Intent: {intent}</div>
+                    <StoryLabel title={`Intent: ${intent}`} />
                     {Object.values(Size).map(size => (
                         <SegmentedControl key={size} {...args} intent={intent} size={size} />
                     ))}
@@ -257,7 +252,7 @@ export const Playground: Story = {
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
                 <SegmentedControl {...args} options={ICON_OPTIONS} value={value} onValueChange={handleValueChange} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Selected: {value}</span>
+                <StoryLabel title={`Selected: ${value}`} />
             </div>
         );
     },

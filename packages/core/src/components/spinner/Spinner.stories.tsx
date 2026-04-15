@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -11,13 +12,7 @@ import { Spinner, SpinnerSize } from "./spinner";
 const meta: Meta<typeof Spinner> = {
     title: "Core/Spinner",
     component: Spinner,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -64,7 +59,7 @@ export const IntentExample: Story = {
             {Object.values(Intent).map(intent => (
                 <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                     <Spinner {...args} intent={intent} size={SpinnerSize.STANDARD} />
-                    <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                    <StoryLabel title={intent} />
                 </div>
             ))}
         </div>
@@ -83,15 +78,15 @@ export const SizeExample: Story = {
         <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <Spinner {...args} size={SpinnerSize.SMALL} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Small (20px)</span>
+                <StoryLabel title="Small (20px)" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <Spinner {...args} size={SpinnerSize.STANDARD} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Standard (50px)</span>
+                <StoryLabel title="Standard (50px)" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <Spinner {...args} size={SpinnerSize.LARGE} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Large (100px)</span>
+                <StoryLabel title="Large (100px)" />
             </div>
         </div>
     ),
@@ -109,19 +104,19 @@ export const StateExample: Story = {
         <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <Spinner {...args} value={undefined} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Indeterminate</span>
+                <StoryLabel title="Indeterminate" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <Spinner {...args} value={0} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>0%</span>
+                <StoryLabel title="0%" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <Spinner {...args} value={0.5} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>50%</span>
+                <StoryLabel title="50%" />
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
                 <Spinner {...args} value={1} />
-                <span style={{ fontSize: 12, opacity: 0.6 }}>100%</span>
+                <StoryLabel title="100%" />
             </div>
         </div>
     ),

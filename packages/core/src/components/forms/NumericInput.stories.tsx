@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent, Position, Size } from "../../common";
@@ -166,11 +167,11 @@ export const ButtonPositionExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Right (default)</div>
+            <StoryLabel title="Right (default)" />
             <NumericInput {...args} buttonPosition={Position.RIGHT} placeholder="Buttons right..." />
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Left</div>
+            <StoryLabel title="Left" />
             <NumericInput {...args} buttonPosition={Position.LEFT} placeholder="Buttons left..." />
-            <div style={{ fontSize: 12, opacity: 0.6 }}>None</div>
+            <StoryLabel title="None" />
             <NumericInput {...args} buttonPosition="none" placeholder="No buttons..." />
         </div>
     ),
@@ -247,7 +248,7 @@ export const Playground: Story = {
                     stepSize={args.stepSize}
                     value={value}
                 />
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Current value: {value}</div>
+                <StoryLabel title={`Current value: ${value}`} />
             </div>
         );
     },
