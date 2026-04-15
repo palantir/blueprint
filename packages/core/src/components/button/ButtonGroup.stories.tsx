@@ -12,7 +12,7 @@ import { ButtonGroup } from "./buttonGroup";
 import { Button } from "./buttons";
 
 // These props are deprecated on ButtonGroup — hide them from the Storybook controls panel.
-const disabledArgs = ["large", "minimal", "outlined", "children"] as const satisfies ReadonlyArray<
+const disabledArgs = ["large", "minimal", "outlined", "children", "className"] as const satisfies ReadonlyArray<
     keyof React.ComponentProps<typeof ButtonGroup>
 >;
 
@@ -258,26 +258,37 @@ export const WithPopover: Story = {
     argTypes: {
         variant: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
-            {Object.values(ButtonVariant).map(variant => (
-                <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                    <StoryLabel title={variant} />
-                    <ButtonGroup {...args} variant={variant}>
-                        <Popover content="Save" placement="bottom">
-                            <Button icon="floppy-disk" aria-label="Save" />
-                        </Popover>
-                        <Popover content="Export as PDF" placement="bottom">
-                            <Button icon="export" aria-label="Export as PDF" />
-                        </Popover>
-                        <Popover content="Archive" placement="bottom">
-                            <Button icon="archive" aria-label="Archive" />
-                        </Popover>
-                    </ButtonGroup>
-                </div>
-            ))}
-        </div>
-    ),
+    render: args => {
+        const BUTTONS = [
+            { icon: "floppy-disk", label: "Save" },
+            { icon: "export", label: "Export as PDF" },
+            { icon: "archive", label: "Archive" },
+        ] as const;
+
+        return (
+            <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+                {Object.values(ButtonVariant).map(variant => (
+                    <div
+                        key={variant}
+                        style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}
+                    >
+                        <StoryLabel title={variant} />
+                        <ButtonGroup {...args} variant={variant}>
+                            {BUTTONS.map(({ icon, label }) => (
+                                <Popover
+                                    key={icon}
+                                    content={<span style={{ padding: 10 }}>{label}</span>}
+                                    placement="bottom"
+                                >
+                                    <Button icon={icon} aria-label={label} />
+                                </Popover>
+                            ))}
+                        </ButtonGroup>
+                    </div>
+                ))}
+            </div>
+        );
+    },
 };
 
 /**
