@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
@@ -17,13 +18,7 @@ const disabledArgs = ["large", "rightIcon", "children"] as const satisfies Reado
 const meta: Meta<typeof Tag> = {
     title: "Core/Tag/Tag",
     component: Tag,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -133,13 +128,13 @@ export const VariantExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 16 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <StoryLabel title="Default" />
                 <Tag {...args} minimal={false}>
                     Tag
                 </Tag>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Minimal</span>
+                <StoryLabel title="Minimal" />
                 <Tag {...args} minimal={true}>
                     Tag
                 </Tag>
@@ -261,7 +256,7 @@ export const AllIntentsAllVariants: Story = {
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 {[false, true].map(minimal => (
                     <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                        <div style={{ fontSize: 12, opacity: 0.6 }}>{minimal ? "Minimal" : "Default"}</div>
+                        <StoryLabel title={minimal ? "Minimal" : "Default"} />
                         <div style={{ display: "flex", gap: 8 }}>
                             {Object.values(Intent).map(intent => (
                                 <Tag key={intent} {...args} minimal={minimal} intent={intent}>

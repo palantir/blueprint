@@ -107,9 +107,9 @@
   }
 
   // button with SVG icon only (no text or children)
-  .#{$ns}-icon:first-child:last-child,
+  > .#{$ns}-icon:first-child:last-child,
   // if loading, then it contains exactly [spinner, icon]
-  .#{$ns}-spinner + .#{$ns}-icon:last-child {
+  > .#{$ns}-spinner + .#{$ns}-icon:last-child {
     // center icon horizontally. this works for large buttons too.
     margin: 0
       calc(

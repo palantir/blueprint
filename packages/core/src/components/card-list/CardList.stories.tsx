@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Card } from "../card/card";
@@ -14,13 +15,7 @@ type CardListStoryArgs = React.ComponentProps<typeof CardList> & { selectedIndex
 const meta: Meta<CardListStoryArgs> = {
     title: "Core/CardList",
     component: CardList,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -65,7 +60,7 @@ export const StateExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 24 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Bordered</span>
+                <StoryLabel title="Bordered" />
                 <CardList {...args} bordered={true} compact={false}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
@@ -73,7 +68,7 @@ export const StateExample: Story = {
                 </CardList>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Compact</span>
+                <StoryLabel title="Compact" />
                 <CardList {...args} bordered={true} compact={true}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
@@ -81,7 +76,7 @@ export const StateExample: Story = {
                 </CardList>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Not bordered</span>
+                <StoryLabel title="Not bordered" />
                 <CardList {...args} bordered={false} compact={false}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
@@ -104,7 +99,7 @@ export const AllConfigurations: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             {[false, true].map(compact => (
                 <div key={String(compact)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6 }}>{compact ? "Compact" : "Default"}</div>
+                    <StoryLabel title={compact ? "Compact" : "Default"} />
                     <div style={{ display: "flex", gap: 16 }}>
                         {[true, false].map(bordered => (
                             <CardList key={String(bordered)} bordered={bordered} compact={compact}>

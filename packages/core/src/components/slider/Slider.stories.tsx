@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
@@ -13,21 +14,7 @@ import { Slider } from "./slider";
 const meta: Meta<typeof Slider> = {
     title: "Core/Slider",
     component: Slider,
-    decorators: [
-        Story => (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minWidth: "400px",
-                    padding: "40px 20px",
-                }}
-            >
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -121,7 +108,7 @@ export const IntentExample: Story = {
             <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
                 {Object.values(Intent).map(intent => (
                     <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                        <StoryLabel title={intent} />
                         <Slider
                             {...args}
                             intent={intent}
@@ -152,7 +139,7 @@ export const StateExample: Story = {
         return (
             <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                    <StoryLabel title="Default" />
                     <Slider
                         {...args}
                         disabled={false}
@@ -162,7 +149,7 @@ export const StateExample: Story = {
                     />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
+                    <StoryLabel title="Disabled" />
                     <Slider
                         {...args}
                         disabled={true}
@@ -172,7 +159,7 @@ export const StateExample: Story = {
                     />
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Vertical</span>
+                    <StoryLabel title="Vertical" />
                     <Slider
                         {...args}
                         vertical={true}
