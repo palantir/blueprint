@@ -16,8 +16,6 @@ catalog:
   tsx: ^4.21.0
   vitest: 4.0.7
 
-publishBranch: develop
-
 # Supply chain security
 minimumReleaseAge: 4320 # 3 days in minutes
 blockExoticSubdeps: true
