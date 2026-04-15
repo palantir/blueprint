@@ -79,12 +79,14 @@ $button-group-z-index: (
   &:not(.#{$ns}-minimal),
   &.#{$ns}-outlined {
     > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-button,
+    > .#{$ns}-popover-target:not(:first-child) > .#{$ns}-button,
     > .#{$ns}-button:not(:first-child) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
 
     > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
+    > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
@@ -93,6 +95,7 @@ $button-group-z-index: (
 
   &:not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
     > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
+    > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
       margin-right: calc(-1 * var(--bp-surface-border-width));
     }
@@ -174,11 +177,13 @@ $button-group-z-index: (
     &:not(.#{$ns}-minimal),
     &.#{$ns}-outlined {
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
+      > .#{$ns}-popover-target:first-child > .#{$ns}-button,
       > .#{$ns}-button:first-child {
         border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
       }
 
       > .#{$ns}-popover-wrapper:last-child .#{$ns}-button,
+      > .#{$ns}-popover-target:last-child > .#{$ns}-button,
       > .#{$ns}-button:last-child {
         border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
       }
@@ -186,6 +191,7 @@ $button-group-z-index: (
 
     &:not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
       > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
+      > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-bottom: calc(-1 * var(--bp-surface-border-width));
       }
