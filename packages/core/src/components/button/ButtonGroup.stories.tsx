@@ -6,10 +6,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StoryLabel } from "@storybook-common";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
-
-import { Button } from "./buttons";
-import { ButtonGroup } from "./buttonGroup";
 import { Popover } from "../popover/popover";
+
+import { ButtonGroup } from "./buttonGroup";
+import { Button } from "./buttons";
 
 // These props are deprecated on ButtonGroup — hide them from the Storybook controls panel.
 const disabledArgs = ["large", "minimal", "outlined", "children"] as const satisfies ReadonlyArray<
