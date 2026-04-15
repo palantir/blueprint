@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -16,13 +16,7 @@ const disabledArgs = ["customInputAttributes", "elementRef", "contentId"] as con
 const meta: Meta<typeof EditableText> = {
     title: "Core/EditableText",
     component: EditableText,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -92,7 +86,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {Object.values(Intent).map(intent => (
                 <EditableText
                     key={intent}
@@ -114,7 +108,7 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <StoryLabel title="Default" />
                 <EditableText {...args} placeholder="Click to Edit" />
