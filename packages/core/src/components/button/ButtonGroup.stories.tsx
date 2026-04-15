@@ -16,6 +16,8 @@ const disabledArgs = ["large", "minimal", "outlined", "children", "className"] a
     keyof React.ComponentProps<typeof ButtonGroup>
 >;
 
+const ALIGNMENT = [Alignment.START, Alignment.CENTER, Alignment.END];
+
 const meta: Meta<typeof ButtonGroup> = {
     title: "Core/Button/ButtonGroup",
     component: ButtonGroup,
@@ -41,7 +43,7 @@ const meta: Meta<typeof ButtonGroup> = {
         },
         alignText: {
             control: "select",
-            options: Object.values(Alignment),
+            options: Object.values(ALIGNMENT),
         },
         fill: {
             control: "boolean",
@@ -212,7 +214,7 @@ export const AlignmentExample: Story = {
     ],
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 25 }}>
-            {Object.values(Alignment).map(alignment => (
+            {Object.values(ALIGNMENT).map(alignment => (
                 <div key={alignment} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     <StoryLabel title={alignment} />
                     <ButtonGroup {...args} alignText={alignment} fill={true}>
