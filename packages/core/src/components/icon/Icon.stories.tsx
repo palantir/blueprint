@@ -3,19 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { pascalCase } from "change-case";
-import classNames from "classnames";
-import type { ComponentType } from "react";
+import { storybookLayoutDecorator } from "@storybook-common";
 
-import type { IconName } from "@blueprintjs/icons";
-import * as BlueprintIcons from "@blueprintjs/icons";
-import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-
-import { Classes, Intent } from "../../common";
+import { Intent } from "../../common";
 
 import { Icon, IconSize } from "./icon";
-import { storybookLayoutDecorator } from "@storybook-common";
 
 const meta: Meta<typeof Icon> = {
     title: "Core/Icon",
@@ -103,52 +95,5 @@ export const Playground: Story = {
         size: IconSize.STANDARD,
         intent: "none",
         color: undefined,
-    },
-};
-
-/**
- * Import the icon SVG component directly from `@blueprintjs/icons` and render it without the `<Icon>` wrapper.
- * This avoids async loading and gives you a plain `<svg>` element.
- */
-export const StaticSvg: Story = {
-    name: "Static SVG",
-    render: args => {
-        const name = pascalCase(args.icon as string);
-        const IconComponent = (BlueprintIcons as unknown as Record<string, ComponentType<{ size?: number }>>)[name];
-        if (IconComponent == null) {
-            return <span>Unknown icon: {args.icon as string}</span>;
-        }
-        return <IconComponent size={args.size} />;
-    },
-};
-
-/**
- * Render an icon using Blueprint's CSS icon font classes instead of SVG.
- * This approach uses a `<span>` with the appropriate CSS classes and font-family overrides.
- */
-export const CssIconFont: Story = {
-    name: "CSS Icon Font",
-    parameters: {
-        chromatic: { delay: 250 },
-    },
-    play: async () => {
-        if (document.fonts != null) {
-            await document.fonts.ready;
-        }
-    },
-    render: args => {
-        const iconName = args.icon as IconName;
-        const size = args.size ?? 16;
-        const sizeClass = size < 20 ? Classes.ICON_STANDARD : Classes.ICON_LARGE;
-        const fontFamily =
-            sizeClass === Classes.ICON_STANDARD
-                ? '"blueprint-icons-16", sans-serif'
-                : '"blueprint-icons-20", sans-serif';
-        return (
-            <span
-                className={classNames(Classes.ICON, sizeClass, Classes.iconClass(iconName))}
-                style={{ fontFamily, fontSize: size, height: size, width: size }}
-            />
-        );
     },
 };
