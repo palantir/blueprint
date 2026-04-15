@@ -240,8 +240,7 @@ jobs:
       - run:
           command: |
             # From https://docs.npmjs.com/trusted-publishers#circleci-configuration
-            NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
-            export NPM_ID_TOKEN
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
             ./scripts/publish-npm-semver-tagged
 
 workflows:

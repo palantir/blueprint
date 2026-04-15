@@ -15,11 +15,10 @@ if [ -z "$publishable_paths" ]; then
 fi
 
 if [ -z "${NPM_ID_TOKEN}" ]; then
-    echo "No NPM OIDC token available. Check the "
+    echo "No NPM OIDC token available."
     exit 1
 fi
 
-# see https://pnpm.io/cli/config
 pnpm config set //registry.npmjs.org/:_authToken "${NPM_ID_TOKEN}"
 
 
