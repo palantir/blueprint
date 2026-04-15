@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
+import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Colors } from "@blueprintjs/colors";
 
@@ -24,13 +24,7 @@ const HEADINGS = [
 const meta: Meta<typeof EntityTitle> = {
     title: "Core/EntityTitle",
     component: EntityTitle,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
