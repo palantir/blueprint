@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Card } from "../card/card";
