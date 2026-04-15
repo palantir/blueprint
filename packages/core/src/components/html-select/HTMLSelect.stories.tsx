@@ -5,6 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 import { HTMLSelect, type HTMLSelectIconName } from "./htmlSelect";
+import { StoryLabel } from "@storybook-common";
 
 const SAMPLE_OPTIONS = [
     { label: "Option 1", value: "1" },
@@ -74,9 +75,15 @@ export const SizeExample: Story = {
         large: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <HTMLSelect {...args} large={false} />
-            <HTMLSelect {...args} large={true} />
+        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <StoryLabel title="default" />
+                <HTMLSelect {...args} large={false} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <StoryLabel title="large" />
+                <HTMLSelect {...args} large={true} />
+            </div>
         </div>
     ),
 };
@@ -90,9 +97,15 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <HTMLSelect {...args} disabled={false} />
-            <HTMLSelect {...args} disabled={true} />
+        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <StoryLabel title="enabled" />
+                <HTMLSelect {...args} disabled={false} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <StoryLabel title="disabled" />
+                <HTMLSelect {...args} disabled={true} />
+            </div>
         </div>
     ),
 };
@@ -113,9 +126,15 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <HTMLSelect {...args} fill={true} />
-            <HTMLSelect {...args} fill={false} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 20, alignItems: "flex-start" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4, width: "100%" }}>
+                <StoryLabel title="fill={true}" />
+                <HTMLSelect {...args} fill={true} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <StoryLabel title="fill={false}" />
+                <HTMLSelect {...args} fill={false} />
+            </div>
         </div>
     ),
 };
