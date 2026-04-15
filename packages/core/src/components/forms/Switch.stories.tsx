@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { type ComponentProps } from "react";
 
 import { Switch } from "./controls";
@@ -15,13 +15,7 @@ const disabledArgs = ["large", "tagName", "labelElement", "inputRef"] as const s
 const meta: Meta<typeof Switch> = {
     title: "Core/Form/Controls/Switch",
     component: Switch,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

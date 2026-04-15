@@ -3,6 +3,8 @@
  */
 
 import { Colors } from "@blueprintjs/core";
+import { Flex } from "@blueprintjs/labs";
+import type { Decorator } from "@storybook/react-vite";
 
 export interface StoryLabelProps {
     title: React.ReactNode;
@@ -26,3 +28,22 @@ export interface DashedPaddedContainerProps {
 export function DashedPaddedContainer({ children, width = 400 }: DashedPaddedContainerProps) {
     return <div style={{ width, border: `1px dashed ${Colors.GRAY4}`, borderRadius: 4, padding: 8 }}>{children}</div>;
 }
+
+export interface StorybookLayoutProps {
+    children: React.ReactNode;
+    style?: React.CSSProperties;
+}
+
+export function StorybookLayout({ children, style }: StorybookLayoutProps) {
+    return (
+        <Flex justifyContent="center" alignItems="center" style={{ minWidth: 400, ...style }}>
+            {children}
+        </Flex>
+    );
+}
+
+export const storybookLayoutDecorator: Decorator = Story => (
+    <StorybookLayout>
+        <Story />
+    </StorybookLayout>
+);
