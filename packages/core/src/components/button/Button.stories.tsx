@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
@@ -23,13 +23,7 @@ const disabledArgs = [
 const meta: Meta<typeof Button> = {
     title: "Core/Button/Button",
     component: Button,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

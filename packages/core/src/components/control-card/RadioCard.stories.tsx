@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
 import { Alignment, Elevation } from "../../common";
@@ -12,13 +13,7 @@ import { RadioCard } from "./radioCard";
 const meta: Meta<typeof RadioCard> = {
     title: "Core/Control Card/RadioCard",
     component: RadioCard,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
