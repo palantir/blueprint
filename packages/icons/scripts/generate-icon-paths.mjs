@@ -14,20 +14,18 @@
  */
 
 /**
- * @fileoverview Generates SVG paths used in <Icon> React components
+ * @fileoverview Generates SVG path modules used by {@code <Icon />} React components in core.
  *
- * Important: we expect ../src/generated/ to contain SVG definitions of all the icons already before this script runs.
+ * Paths are extracted from the optimized resource SVGs in {@code resources/icons/}.
  */
 
 // @ts-check
 
 import { pascalCase } from "change-case";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 
-import { svgOptimizer } from "@blueprintjs/node-build-scripts";
+import { ICON_SIZES, iconsMetadata, writeLinesToFile } from "./common.mjs";
+import { extractPathsFromResourceSvg } from "./extractPathsFromResourceSvg.mjs";
 
-import { ICON_SIZES, iconResourcesDir, iconsMetadata, writeLinesToFile } from "./common.mjs";
 const ICON_NAMES = iconsMetadata.map(icon => icon.iconName);
 
 for (const iconSize of ICON_SIZES) {
@@ -36,7 +34,7 @@ for (const iconSize of ICON_SIZES) {
     for (const [iconName, pathStrings] of Object.entries(iconPaths)) {
         const line =
             pathStrings.length > 0
-                ? `export default [${pathStrings.join(", ")}];`
+                ? `export default [${pathStrings.map(p => JSON.stringify(p)).join(", ")}];`
                 : // special case for "blank" icon - we need an explicit typedef
                   `const p: string[] = []; export default p;`;
 
@@ -61,15 +59,7 @@ async function getIconPaths(iconSize) {
     /** @type Record<string, string[]> */
     const iconPaths = {};
     for (const iconName of ICON_NAMES) {
-        const filepath = join(iconResourcesDir, `${iconSize}px/${iconName}.svg`);
-        const svg = readFileSync(filepath, "utf-8");
-        const optimizedSvg = await svgOptimizer.optimize(svg, { path: filepath });
-        const pathStrings = (optimizedSvg.data.match(/ d="[^"]+"/g) || [])
-            // strip off leading 'd="'
-            .map(s => s.slice(3))
-            // strip out newlines and tabs, but keep other whitespace
-            .map(s => s.replace(/[\n\t]/g, ""));
-        iconPaths[iconName] = pathStrings;
+        iconPaths[iconName] = await extractPathsFromResourceSvg(iconSize, iconName);
     }
     console.info(`Parsed ${Object.keys(iconPaths).length} ${iconSize}px icons.`);
     return iconPaths;

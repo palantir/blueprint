@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -100,22 +101,22 @@ export const StateExample: Story = {
     },
     render: args => (
         <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Unchecked</div>
+            <StoryLabel title="Unchecked" />
             <div style={{ display: "flex", gap: 16 }}>
                 <Checkbox {...args} label="Default" />
                 <Checkbox {...args} label="Disabled" disabled={true} />
             </div>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Checked</div>
+            <StoryLabel title="Checked" />
             <div style={{ display: "flex", gap: 16 }}>
                 <Checkbox {...args} label="Checked" defaultChecked={true} />
                 <Checkbox {...args} label="Checked Disabled" defaultChecked={true} disabled={true} />
             </div>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Indeterminate</div>
+            <StoryLabel title="Indeterminate" />
             <div style={{ display: "flex", gap: 16 }}>
                 <Checkbox {...args} label="Indeterminate" indeterminate={true} />
                 <Checkbox {...args} label="Indeterminate Disabled" indeterminate={true} disabled={true} />
             </div>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Inline</div>
+            <StoryLabel title="Inline" />
             <div>
                 <Checkbox {...args} inline={true} label="Option A" />
                 <Checkbox {...args} inline={true} label="Option B" />
@@ -134,9 +135,7 @@ export const AllStatesAllSizes: Story = {
         <div style={{ display: "flex", gap: 24, flexDirection: "column" }}>
             {(["medium", "large"] as const).map(size => (
                 <div key={size}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8, textTransform: "capitalize" }}>
-                        {size}
-                    </div>
+                    <StoryLabel title={size} />
                     <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
                         <Checkbox {...args} size={size} label="Unchecked" />
                         <Checkbox {...args} size={size} label="Checked" defaultChecked={true} />
