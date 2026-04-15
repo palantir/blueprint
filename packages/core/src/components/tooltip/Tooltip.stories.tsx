@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { expect, screen, waitFor } from "storybook/test";
 
 import { Intent } from "../../common";
@@ -13,13 +14,7 @@ import { Tooltip } from "./tooltip";
 const meta: Meta<typeof Tooltip> = {
     title: "Core/Overlays/Tooltip",
     component: Tooltip,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

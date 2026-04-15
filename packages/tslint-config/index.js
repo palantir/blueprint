@@ -52,7 +52,6 @@ module.exports = {
             options: [
                 "core-js",
                 "date-fns",
-                "lodash",
                 "react-dom",
                 "@blueprintjs/table/src",
                 "@blueprintjs/test-commons/bootstrap",

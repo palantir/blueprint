@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import React from "react";
 
 import { Boundary } from "../../common/boundary";
@@ -25,13 +25,7 @@ type StoryArgs = React.ComponentProps<typeof Breadcrumbs> & { width?: number };
 const meta: Meta<StoryArgs> = {
     title: "Core/Breadcrumbs",
     component: Breadcrumbs,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

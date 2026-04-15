@@ -68,8 +68,6 @@ updates:
       # moment is deprecated, we only use it in limited places in the docs
       - dependency-name: "moment"
       - dependency-name: "moment-*"
-      # lodash hasn't released for >2 years
-      - dependency-name: "lodash"
       # we rarely bump Node.js versions, and it requires additional code changes to do so
       - dependency-name: "@types/node"
         update-types:
