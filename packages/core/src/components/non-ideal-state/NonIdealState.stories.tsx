@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, StoryLabel } from "@storybook-common";
+import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Button } from "../button/buttons";
 
@@ -12,21 +12,7 @@ import { NonIdealState, NonIdealStateIconSize } from "./nonIdealState";
 const meta: Meta<typeof NonIdealState> = {
     title: "Core/NonIdealState",
     component: NonIdealState,
-    decorators: [
-        Story => (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minWidth: "400px",
-                    minHeight: "300px",
-                }}
-            >
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
