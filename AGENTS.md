@@ -24,7 +24,7 @@
 
 - **Prettier**: 120 char width, 4-space tabs (2 for SCSS/YAML), trailing commas
 - **ESLint**: TypeScript-ESLint + custom @blueprintjs rules, no console.log
-- **Imports**: Use workspace: deps, no lodash-es (use lodash submodules)
+- **Imports**: Use workspace: deps
 - **Types**: Strict TypeScript, React 18 peer deps
 - **Components**: Follow existing patterns in packages/core/src/components/
 - **Styling**: SCSS in src/, compiled to lib/css/
