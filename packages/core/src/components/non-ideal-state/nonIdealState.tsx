@@ -98,13 +98,17 @@ export const NonIdealState: React.FC<NonIdealStateProps> = props => {
                     className={Classes.NON_IDEAL_STATE_VISUAL}
                     style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
                 >
-                    <Icon
-                        className={classNames({ [Classes.ICON_MUTED]: iconMuted })}
-                        icon={icon}
-                        size={iconSize}
-                        aria-hidden={true}
-                        tabIndex={-1}
-                    />
+                    {typeof icon === "string" ? (
+                        <Icon
+                            className={classNames({ [Classes.ICON_MUTED]: iconMuted })}
+                            icon={icon}
+                            size={iconSize}
+                            aria-hidden={true}
+                            tabIndex={-1}
+                        />
+                    ) : (
+                        <span className={classNames(Classes.ICON, { [Classes.ICON_MUTED]: iconMuted })}>{icon}</span>
+                    )}
                 </div>
             )}
             {title == null && description == null ? undefined : (
