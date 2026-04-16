@@ -22,6 +22,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
   .#{$ns}-tag-input-icon {
     color: var(--bp-typography-color-muted);
+    display: flex;
     margin-left: calc(var(--bp-surface-spacing) * 0.75);
     margin-right: calc(var(--bp-surface-spacing) * 1.75);
     // margins to center icon in one-line input

@@ -317,11 +317,15 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         return (
             // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- container delegates interaction to input element
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
-                <Icon
-                    className={Classes.TAG_INPUT_ICON}
-                    icon={leftIcon}
-                    size={isLarge ? IconSize.LARGE : IconSize.STANDARD}
-                />
+                {typeof leftIcon === "string" ? (
+                    <Icon
+                        className={Classes.TAG_INPUT_ICON}
+                        icon={leftIcon}
+                        size={isLarge ? IconSize.LARGE : IconSize.STANDARD}
+                    />
+                ) : leftIcon != null ? (
+                    <span className={Classes.TAG_INPUT_ICON}>{leftIcon}</span>
+                ) : null}
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}
                     {this.props.children}
