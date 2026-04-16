@@ -148,12 +148,16 @@ export const EntityTitle: React.FC<EntityTitleProps> = forwardRef<HTMLDivElement
                         [Classes.ENTITY_TITLE_HAS_SUBTITLE]: maybeSubtitle != null,
                     })}
                 >
-                    <Icon
-                        aria-hidden={true}
-                        className={classNames(Classes.TEXT_MUTED, { [Classes.SKELETON]: loading })}
-                        icon={loading ? IconNames.SQUARE : icon}
-                        tabIndex={-1}
-                    />
+                    {loading || typeof icon === "string" ? (
+                        <Icon
+                            aria-hidden={true}
+                            className={classNames(Classes.TEXT_MUTED, { [Classes.SKELETON]: loading })}
+                            icon={loading ? IconNames.SQUARE : icon}
+                            tabIndex={-1}
+                        />
+                    ) : (
+                        <span className={Classes.TEXT_MUTED}>{icon}</span>
+                    )}
                 </div>
             )}
             <div className={Classes.ENTITY_TITLE_TEXT}>
