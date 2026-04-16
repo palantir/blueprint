@@ -199,7 +199,11 @@ export const Alert: React.FC<AlertProps> = props => {
             onClose={handleCancel}
         >
             <div className={Classes.ALERT_BODY}>
-                <Icon icon={icon} size={40} intent={intent} />
+                {typeof icon === "string" ? (
+                    <Icon icon={icon} size={40} intent={intent} />
+                ) : icon != null ? (
+                    <span className={classNames(Classes.ICON, Classes.intentClass(intent))}>{icon}</span>
+                ) : null}
                 <div className={Classes.ALERT_CONTENTS}>{children}</div>
             </div>
             <div className={Classes.ALERT_FOOTER}>

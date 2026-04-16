@@ -11,7 +11,8 @@
 .#{$ns}-alert-body {
   display: flex;
 
-  .#{$ns}-icon {
+  > .#{$ns}-icon {
+    display: flex;
     font-size: $pt-icon-size-large * 2;
     margin-right: $pt-spacing * 5;
     margin-top: 0;
