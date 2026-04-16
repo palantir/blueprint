@@ -126,13 +126,14 @@ export const IconMutedExample: Story = {
     name: "Icon Muted",
     argTypes: {
         iconSize: { table: { disable: true } },
+        iconMuted: { table: { disable: true } },
     },
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 40, alignItems: "flex-start" }}>
             {(
                 [
-                    { iconMuted: true, label: "iconMuted={true} (Default)" },
-                    { iconMuted: false, label: "iconMuted={false}" },
+                    { iconMuted: true, label: "Icon muted (Default)" },
+                    { iconMuted: false, label: "Icon isn't muted" },
                 ] as const
             ).map(({ iconMuted, label }) => (
                 <div key={label}>
