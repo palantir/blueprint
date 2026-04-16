@@ -38,6 +38,9 @@ const meta: Meta<typeof Icon> = {
         color: {
             control: "text",
         },
+        className: { table: { disable: true } },
+        autoLoad: { table: { disable: true } },
+        svgProps: { table: { disable: true } },
     },
 } satisfies Meta<typeof Icon>;
 
