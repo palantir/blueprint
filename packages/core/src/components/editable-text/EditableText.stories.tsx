@@ -51,10 +51,10 @@ const meta: Meta<typeof EditableText> = {
         maxLength: {
             control: "number",
         },
-        onCancel: { action: "cancelled" },
-        onChange: { action: "changed" },
-        onConfirm: { action: "confirmed" },
-        onEdit: { action: "editing" },
+        onCancel: { table: { disable: true } },
+        onChange: { table: { disable: true } },
+        onConfirm: { table: { disable: true } },
+        onEdit: { table: { disable: true } },
         ...disabledArgs.reduce(
             (acc, argName) => {
                 acc[argName] = { table: { disable: true } };
