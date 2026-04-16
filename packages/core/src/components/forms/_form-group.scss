@@ -90,31 +90,31 @@
   .#{$ns}-dark & {
     &.#{$ns}-intent-primary {
       .#{$ns}-form-helper-text {
-        color: #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)};
+        color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
       }
     }
 
     &.#{$ns}-intent-success {
       .#{$ns}-form-helper-text {
-        color: #{oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)};
+        color: #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"};
       }
     }
 
     &.#{$ns}-intent-warning {
       .#{$ns}-form-helper-text {
-        color: #{oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)};
+        color: #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"};
       }
     }
 
     &.#{$ns}-intent-danger {
       .#{$ns}-form-helper-text {
-        color: #{oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)};
+        color: #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"};
       }
     }
 
     .#{$ns}-form-group-sub-label,
     .#{$ns}-form-helper-text {
-      color: #{oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)};
+      color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)"};
     }
 
     &.#{$ns}-disabled {
