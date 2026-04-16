@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { StoryLabel } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { HTMLSelect, type HTMLSelectIconName } from "./htmlSelect";
 
@@ -18,13 +18,7 @@ const SAMPLE_OPTIONS = [
 const meta: Meta<typeof HTMLSelect> = {
     title: "Core/Form/HTMLSelect",
     component: HTMLSelect,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
