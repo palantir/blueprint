@@ -185,7 +185,12 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
                     onClick={collapsible ? toggleIsCollapsed : undefined}
                 >
                     <div className={Classes.SECTION_HEADER_LEFT}>
-                        {icon && <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />}
+                        {icon != null &&
+                            (typeof icon === "string" ? (
+                                <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />
+                            ) : (
+                                <span className={Classes.TEXT_MUTED}>{icon}</span>
+                            ))}
                         <div>
                             {createElement(
                                 titleRenderer,
