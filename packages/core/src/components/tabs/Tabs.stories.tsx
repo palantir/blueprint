@@ -3,13 +3,14 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
 import { Colors } from "../../common";
+
 import { Tab } from "./tab";
 import { Tabs } from "./tabs";
-import { DashedPaddedContainer, StoryLabel, storybookLayoutDecorator } from "@storybook-common";
 
 // These props are deprecated on Tabs — hide them from the Storybook controls panel.
 const disabledArgs = [
