@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, StoryLabel, StorybookLayout } from "@storybook-common";
+import { DashedPaddedContainer, StoryLabel, StorybookLayout, storybookLayoutDecorator } from "@storybook-common";
 
 import { H4 } from "../html/html";
 
@@ -12,6 +12,7 @@ import { KeyComboTag } from "./keyComboTag";
 const meta: Meta<typeof KeyComboTag> = {
     title: "Core/Hotkeys/KeyComboTag",
     component: KeyComboTag,
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -33,129 +34,89 @@ type Story = StoryObj<typeof meta>;
 /**
  * Command/meta modifier key.
  */
-export const Command: Story = {
+export const CommandExample: Story = {
+    name: "Command",
     args: {
         combo: "cmd + s",
     },
-    render: args => (
-        <StorybookLayout>
-            <div>
-                <StoryLabel title="Command" />
-                <KeyComboTag {...args} />
-            </div>
-        </StorybookLayout>
-    ),
 };
 
 /**
  * Shift modifier key.
  */
-export const Shift: Story = {
+export const ShiftExample: Story = {
+    name: "Shift",
     args: {
         combo: "shift + a",
     },
-    render: args => (
-        <StorybookLayout>
-            <div>
-                <StoryLabel title="Shift" />
-                <KeyComboTag {...args} />
-            </div>
-        </StorybookLayout>
-    ),
 };
 
 /**
  * Space key with special icon.
  */
-export const Space: Story = {
+export const SpaceExample: Story = {
+    name: "Space",
     args: {
         combo: "space",
     },
-    render: args => (
-        <StorybookLayout>
-            <div>
-                <StoryLabel title="Space" />
-                <KeyComboTag {...args} />
-            </div>
-        </StorybookLayout>
-    ),
 };
 
 /**
  * Control modifier key.
  */
-export const Control: Story = {
+export const ControlExample: Story = {
+    name: "Control",
     args: {
         combo: "ctrl + c",
     },
-    render: args => (
-        <StorybookLayout>
-            <div>
-                <StoryLabel title="Control" />
-                <KeyComboTag {...args} />
-            </div>
-        </StorybookLayout>
-    ),
 };
 
 /**
  * Alt/Option modifier key.
  */
-export const Option: Story = {
+export const OptionExample: Story = {
+    name: "Option",
     args: {
         combo: "option + delete",
     },
-    render: args => (
-        <StorybookLayout>
-            <div>
-                <StoryLabel title="Option" />
-                <KeyComboTag {...args} />
-            </div>
-        </StorybookLayout>
-    ),
 };
+
+const MINIMAL_COMBOS = ["cmd + s", "shift + a", "ctrl + c", "option + delete", "space", "cmd + shift + p"];
 
 /**
  * Minimal rendering shows compact key combos, useful when displayed inline or in a row.
  */
-export const Minimal: Story = {
+export const MinimalExample: Story = {
+    name: "Minimal",
     argTypes: {
         minimal: { table: { disable: true } },
         combo: { table: { disable: true } },
     },
     render: () => (
-        <StorybookLayout>
-            <div>
-                <StoryLabel title="Minimal" />
-                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                    <KeyComboTag combo="cmd + s" minimal={true} />
-                    <KeyComboTag combo="shift + a" minimal={true} />
-                    <KeyComboTag combo="ctrl + c" minimal={true} />
-                    <KeyComboTag combo="option + delete" minimal={true} />
-                    <KeyComboTag combo="space" minimal={true} />
-                    <KeyComboTag combo="cmd + shift + p" minimal={true} />
-                </div>
+        <div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {MINIMAL_COMBOS.map(combo => (
+                    <div key={combo} style={{ width: 100 }}>
+                        <StoryLabel title={combo} />
+                        <DashedPaddedContainer width={100}>
+                            <KeyComboTag combo={combo} minimal={true} />
+                        </DashedPaddedContainer>
+                    </div>
+                ))}
             </div>
-        </StorybookLayout>
+        </div>
     ),
 };
 
 /**
  * Interactive playground with all props togglable via Storybook controls.
  */
-export const Playground: Story = {
+export const PlaygroundExample: Story = {
+    name: "Playground",
     args: {
         combo: "cmd + shift + p",
         minimal: false,
     },
-    render: args => (
-        <StorybookLayout>
-            <div>
-                <StoryLabel title="Playground" />
-                <KeyComboTag {...args} />
-            </div>
-        </StorybookLayout>
-    ),
 };
 
 // ---------------------------------------------------------------------------
@@ -276,9 +237,9 @@ function KeySection({
 /**
  * Comprehensive gallery showing all supported key combos, organized by category.
  */
-export const AllKeys: Story = {
+export const AllKeysExample: Story = {
+    name: "All keys",
     argTypes: {
-        minimal: { table: { disable: true } },
         combo: { table: { disable: true } },
     },
     render: () => (
