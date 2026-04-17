@@ -3,7 +3,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
+import { useArgs } from "storybook/preview-api";
 
 import { Colors } from "../../common";
 import { Tab } from "./tab";
@@ -149,7 +150,7 @@ export const FillExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
             <div>
                 <StoryLabel title="Default" />
-                <DashedPaddedContainer width={500}>
+                <DashedPaddedContainer>
                     <div style={{ background: Colors.BLUE5, borderRadius: 4, padding: 4 }}>
                         <Tabs {...args} id="fill-default" fill={false}>
                             <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
@@ -161,7 +162,7 @@ export const FillExample: Story = {
             </div>
             <div>
                 <StoryLabel title="Fill" />
-                <DashedPaddedContainer width={500}>
+                <DashedPaddedContainer>
                     <div style={{ background: Colors.RED5, borderRadius: 4, padding: 4 }}>
                         <Tabs {...args} id="fill-enabled" fill={true}>
                             <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
@@ -193,36 +194,38 @@ export const WithTagExample: Story = {
  * Interactive playground for experimenting with all Tabs props.
  */
 export const Playground: Story = {
+    args: {
+        selectedTabId: "tab1",
+    },
     render: function Render(args) {
-        const [selectedTabId, setSelectedTabId] = useState<string | number>("tab1");
-        const handleChange = useCallback((newTabId: string | number) => {
-            setSelectedTabId(newTabId);
-        }, []);
+        const [, updateArgs] = useArgs();
+        const handleChange = useCallback(
+            (newTabId: string | number) => updateArgs({ selectedTabId: newTabId }),
+            [updateArgs],
+        );
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                <Tabs {...args} selectedTabId={selectedTabId} onChange={handleChange}>
-                    <Tab
-                        id="tab1"
-                        title="React"
-                        icon="code"
-                        panel={<p>React is a JavaScript library for building user interfaces.</p>}
-                    />
-                    <Tab
-                        id="tab2"
-                        title="Angular"
-                        icon="application"
-                        panel={<p>Angular is a platform for building mobile and desktop web applications.</p>}
-                    />
-                    <Tab
-                        id="tab3"
-                        title="Ember"
-                        icon="flame"
-                        panel={<p>Ember.js is a productive, battle-tested JavaScript framework.</p>}
-                    />
-                    <Tab id="tab4" title="Backbone" disabled={true} icon="disable" panel={<p>Backbone panel</p>} />
-                </Tabs>
-            </div>
+            <Tabs {...args} onChange={handleChange}>
+                <Tab
+                    id="tab1"
+                    title="React"
+                    icon="code"
+                    panel={<p>React is a JavaScript library for building user interfaces.</p>}
+                />
+                <Tab
+                    id="tab2"
+                    title="Angular"
+                    icon="application"
+                    panel={<p>Angular is a platform for building mobile and desktop web applications.</p>}
+                />
+                <Tab
+                    id="tab3"
+                    title="Ember"
+                    icon="flame"
+                    panel={<p>Ember.js is a productive, battle-tested JavaScript framework.</p>}
+                />
+                <Tab id="tab4" title="Backbone" disabled={true} icon="disable" panel={<p>Backbone panel</p>} />
+            </Tabs>
         );
     },
 };
