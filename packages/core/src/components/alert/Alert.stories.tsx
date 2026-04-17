@@ -15,9 +15,6 @@ const meta: Meta<typeof Alert> = {
     title: "Core/Alert",
     component: Alert,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     args: {
         intent: Intent.NONE,
         isOpen: true,

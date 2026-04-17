@@ -43,6 +43,7 @@ const preview: Preview = {
         docs: {
             codePanel: true,
         },
+        layout: "centered",
     },
 
     decorators: [

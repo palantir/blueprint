@@ -26,9 +26,6 @@ const meta: Meta<typeof Label> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
 } satisfies Meta<typeof Label>;
 

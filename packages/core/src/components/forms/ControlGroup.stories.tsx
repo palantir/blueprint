@@ -14,9 +14,6 @@ const meta: Meta<typeof ControlGroup> = {
     title: "Core/Form/ControlGroup",
     component: ControlGroup,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         fill: false,

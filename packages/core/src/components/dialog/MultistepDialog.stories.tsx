@@ -62,9 +62,6 @@ const meta: Meta<typeof MultistepDialog> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         title: "Multistep Dialog",

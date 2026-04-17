@@ -19,9 +19,6 @@ const meta: Meta<typeof Tag> = {
     title: "Core/Tag/Tag",
     component: Tag,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         children: "Tag",
