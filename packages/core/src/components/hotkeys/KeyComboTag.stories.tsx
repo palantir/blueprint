@@ -78,6 +78,10 @@ export const Option: Story = {
  * Minimal rendering shows compact key combos, useful when displayed inline or in a row.
  */
 export const Minimal: Story = {
+    argTypes: {
+        minimal: { table: { disable: true } },
+        combo: { table: { disable: true } },
+    },
     render: () => (
         <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
             <KeyComboTag combo="cmd + s" minimal={true} />
