@@ -18,10 +18,10 @@ const meta: Meta<typeof KeyComboTag> = {
     },
     tags: ["autodocs"],
     args: {
-        combo: "cmd + s",
         minimal: false,
     },
     argTypes: {
+        combo: { table: { disable: true } },
         minimal: {
             control: "boolean",
         },
@@ -36,9 +36,6 @@ type Story = StoryObj<typeof meta>;
  */
 export const CommandExample: Story = {
     name: "Command",
-    argTypes: {
-        combo: { table: { disable: true } },
-    },
     args: {
         combo: "cmd + s",
     },
@@ -49,9 +46,6 @@ export const CommandExample: Story = {
  */
 export const ShiftExample: Story = {
     name: "Shift",
-    argTypes: {
-        combo: { table: { disable: true } },
-    },
     args: {
         combo: "shift + a",
     },
@@ -62,9 +56,6 @@ export const ShiftExample: Story = {
  */
 export const SpaceExample: Story = {
     name: "Space",
-    argTypes: {
-        combo: { table: { disable: true } },
-    },
     args: {
         combo: "space",
     },
@@ -75,9 +66,6 @@ export const SpaceExample: Story = {
  */
 export const ControlExample: Story = {
     name: "Control",
-    argTypes: {
-        combo: { table: { disable: true } },
-    },
     args: {
         combo: "ctrl + c",
     },
@@ -88,9 +76,6 @@ export const ControlExample: Story = {
  */
 export const OptionExample: Story = {
     name: "Option",
-    argTypes: {
-        combo: { table: { disable: true } },
-    },
     args: {
         combo: "option + delete",
     },
@@ -105,7 +90,6 @@ export const MinimalExample: Story = {
     name: "Minimal",
     argTypes: {
         minimal: { table: { disable: true } },
-        combo: { table: { disable: true } },
     },
     render: () => (
         <div>
@@ -128,6 +112,9 @@ export const MinimalExample: Story = {
  */
 export const PlaygroundExample: Story = {
     name: "Playground",
+    argTypes: {
+        combo: { table: { disable: false } },
+    },
     args: {
         combo: "cmd + shift + p",
         minimal: false,
@@ -206,9 +193,6 @@ const ALL_KEY_SECTIONS = [
  */
 export const AllKeysExample: Story = {
     name: "All keys",
-    argTypes: {
-        combo: { table: { disable: true } },
-    },
     args: {
         minimal: false,
     },
