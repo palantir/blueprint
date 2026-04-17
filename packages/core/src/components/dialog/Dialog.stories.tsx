@@ -25,7 +25,6 @@ const meta: Meta<typeof Dialog> = {
             </div>
         ),
     ],
-    tags: ["autodocs"],
     args: {
         title: "Dialog Title",
         isOpen: true,
