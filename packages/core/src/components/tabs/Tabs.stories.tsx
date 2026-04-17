@@ -139,10 +139,13 @@ export const StateExample: Story = {
 };
 
 /**
- * Use the `fill` prop to make tabs stretch to fill their container.
+ * Use the `fill` prop to make the tab list fill the height of its parent container.
+ *
+ * Whether to make the tabs list fill the height of its parent.
+ * This has no effect when vertical={true}.
  */
 export const FillExample: Story = {
-    name: "Fill",
+    name: "Fill Height",
     argTypes: {
         fill: { table: { disable: true } },
     },
@@ -151,23 +154,23 @@ export const FillExample: Story = {
             <div>
                 <StoryLabel title="Default" />
                 <DashedPaddedContainer>
-                    <div style={{ background: Colors.BLUE5, borderRadius: 4, padding: 4 }}>
+                    <div style={{ background: Colors.BLUE5, borderRadius: 4, padding: 4, height: 80 }}>
                         <Tabs {...args} id="fill-default" fill={false}>
-                            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
-                            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
-                            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+                            <Tab id="tab1" title="First" />
+                            <Tab id="tab2" title="Second" />
+                            <Tab id="tab3" title="Third" />
                         </Tabs>
                     </div>
                 </DashedPaddedContainer>
             </div>
             <div>
-                <StoryLabel title="Fill" />
+                <StoryLabel title="Fill Height" />
                 <DashedPaddedContainer>
-                    <div style={{ background: Colors.RED5, borderRadius: 4, padding: 4 }}>
+                    <div style={{ background: Colors.RED5, borderRadius: 4, padding: 4, height: 80 }}>
                         <Tabs {...args} id="fill-enabled" fill={true}>
-                            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
-                            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
-                            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+                            <Tab id="tab1" title="First" />
+                            <Tab id="tab2" title="Second" />
+                            <Tab id="tab3" title="Third" />
                         </Tabs>
                     </div>
                 </DashedPaddedContainer>
