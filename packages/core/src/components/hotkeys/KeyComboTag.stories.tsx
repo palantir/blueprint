@@ -3,9 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, StoryLabel, StorybookLayout, storybookLayoutDecorator } from "@storybook-common";
-
-import { H4 } from "../html/html";
+import { DashedPaddedContainer, StoryLabel, storybookLayoutDecorator } from "@storybook-common";
 
 import { KeyComboTag } from "./keyComboTag";
 
@@ -119,120 +117,72 @@ export const PlaygroundExample: Story = {
     },
 };
 
-// ---------------------------------------------------------------------------
-// AllKeys gallery
-// ---------------------------------------------------------------------------
-
-const KEY_SECTIONS: Array<{
-    title: string;
-    combos: string[] | Array<{ combo: string; resolves: string }>;
-    labelFn?: (entry: { combo: string; resolves: string }) => string;
-}> = [
-    { title: "Modifier Keys", combos: ["shift", "ctrl", "alt", "meta"] },
-    {
-        title: "Named Keys",
-        combos: [
-            "plus",
-            "minus",
-            "backspace",
-            "tab",
-            "enter",
-            "capslock",
-            "escape",
-            "space",
-            "pageup",
-            "pagedown",
-            "end",
-            "home",
-            "left",
-            "up",
-            "right",
-            "down",
-            "ins",
-            "del",
-        ],
-    },
-    {
-        title: "Special Keys",
-        combos: [
-            "!",
-            "@",
-            "#",
-            "$",
-            "%",
-            "^",
-            "&",
-            "*",
-            "(",
-            ")",
-            "_",
-            "-",
-            "=",
-            "[",
-            "]",
-            "\\",
-            "{",
-            "}",
-            "|",
-            ";",
-            "'",
-            ",",
-            ".",
-            "/",
-            ":",
-            '"',
-            "<",
-            ">",
-            "?",
-            "`",
-            "~",
-        ],
-    },
-    {
-        title: "Aliased Keys",
-        combos: [
-            { combo: "option", resolves: "alt" },
-            { combo: "cmd", resolves: "meta" },
-            { combo: "command", resolves: "meta" },
-            { combo: "return", resolves: "enter" },
-            { combo: "esc", resolves: "escape" },
-            { combo: "win", resolves: "meta" },
-        ],
-        labelFn: entry => `${entry.combo} \u2192 ${entry.resolves}`,
-    },
-    { title: "Letters", combos: Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i)) },
-    { title: "Digits", combos: Array.from({ length: 10 }, (_, i) => String(i)) },
+const MODIFIER_KEYS = ["shift", "ctrl", "alt", "meta"];
+const NAMED_KEYS = [
+    "plus",
+    "minus",
+    "backspace",
+    "tab",
+    "enter",
+    "capslock",
+    "escape",
+    "space",
+    "pageup",
+    "pagedown",
+    "end",
+    "home",
+    "left",
+    "up",
+    "right",
+    "down",
+    "ins",
+    "del",
 ];
+const SPECIAL_KEYS = [
+    "!",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "(",
+    ")",
+    "_",
+    "-",
+    "=",
+    "[",
+    "]",
+    "\\",
+    "{",
+    "}",
+    "|",
+    ";",
+    "'",
+    ",",
+    ".",
+    "/",
+    ":",
+    '"',
+    "<",
+    ">",
+    "?",
+    "`",
+    "~",
+];
+const ALIASED_KEYS = ["option", "cmd", "command", "return", "esc", "win"];
+const LETTER_KEYS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i));
+const DIGIT_KEYS = Array.from({ length: 10 }, (_, i) => String(i));
 
-function KeySection({
-    title,
-    combos,
-    labelFn,
-}: {
-    title: string;
-    combos: string[] | Array<{ combo: string; resolves: string }>;
-    labelFn?: (entry: { combo: string; resolves: string }) => string;
-}) {
-    return (
-        <section>
-            <H4>{title}</H4>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {combos.map(entry => {
-                    const combo = typeof entry === "string" ? entry : entry.combo;
-                    const label = typeof entry === "string" ? entry : (labelFn?.(entry) ?? entry.combo);
-                    return (
-                        <div key={combo} style={{ width: 100 }}>
-                            <StoryLabel title={label} />
-                            <DashedPaddedContainer width={100}>
-                                <KeyComboTag combo={combo} />
-                            </DashedPaddedContainer>
-                        </div>
-                    );
-                })}
-            </div>
-        </section>
-    );
-}
+const ALL_KEY_SECTIONS = [
+    { label: "Modifier Keys", keys: MODIFIER_KEYS },
+    { label: "Named Keys", keys: NAMED_KEYS },
+    { label: "Special Keys", keys: SPECIAL_KEYS },
+    { label: "Aliased Keys", keys: ALIASED_KEYS },
+    { label: "Letters", keys: LETTER_KEYS },
+    { label: "Digits", keys: DIGIT_KEYS },
+];
 
 /**
  * Comprehensive gallery showing all supported key combos, organized by category.
@@ -243,12 +193,22 @@ export const AllKeysExample: Story = {
         combo: { table: { disable: true } },
     },
     render: () => (
-        <div style={{ maxWidth: 600, padding: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
-                {KEY_SECTIONS.map(section => (
-                    <KeySection key={section.title} {...section} />
-                ))}
-            </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 24, width: 600 }}>
+            {ALL_KEY_SECTIONS.map(({ label, keys }) => (
+                <section key={label}>
+                    <h2>{label}</h2>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                        {keys.map(combo => (
+                            <div key={combo} style={{ width: 100 }}>
+                                <StoryLabel title={combo} />
+                                <DashedPaddedContainer width={100}>
+                                    <KeyComboTag combo={combo} />
+                                </DashedPaddedContainer>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            ))}
         </div>
     ),
 };
