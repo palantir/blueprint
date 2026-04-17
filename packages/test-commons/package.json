@@ -34,7 +34,7 @@
     },
     "scripts": {
         "compile": "tsc -p ./src",
-        "clean": "rm -rf lib/* || true",
+        "clean": "rm -rf lib",
         "dev": "pnpm compile --watch",
         "lint": "run-p lint:es",
         "lint:es": "es-lint",

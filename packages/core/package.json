@@ -25,7 +25,7 @@
     "scripts": {
         "build:tokens": "tsx src/design-tokens/build.ts",
         "build:sass": "sass-compile ./src",
-        "clean": "rm -rf dist/* || rm -rf lib/* || true",
+        "clean": "rm -rf dist lib",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",
         "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
