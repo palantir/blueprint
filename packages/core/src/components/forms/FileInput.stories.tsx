@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 
 import { Size } from "../../common";
@@ -181,7 +182,7 @@ export const Playground: Story = {
                     size={args.size}
                     text={fileName ?? "Choose file..."}
                 />
-                {fileName != null && <div style={{ fontSize: 12, opacity: 0.6 }}>Selected: {fileName}</div>}
+                {fileName != null && <StoryLabel title={`Selected: ${fileName}`} />}
             </div>
         );
     },

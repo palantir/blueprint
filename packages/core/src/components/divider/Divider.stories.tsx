@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 
 import { Divider } from "./divider";
 
@@ -92,13 +93,13 @@ export const CompactExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: "3em" }}>
             <div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+                <StoryLabel title="Default" />
                 Above
                 <Divider {...args} compact={false} />
                 Below
             </div>
             <div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Compact</span>
+                <StoryLabel title="Compact" />
                 Above
                 <Divider {...args} compact={true} />
                 Below

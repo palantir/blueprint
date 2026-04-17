@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
@@ -20,13 +21,7 @@ const INITIAL_VALUES = ["London", "New York", "San Francisco"];
 const meta: Meta<typeof TagInput> = {
     title: "Core/Form/Inputs/TagInput",
     component: TagInput,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },

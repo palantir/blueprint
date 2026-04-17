@@ -1,14 +1,19 @@
 version: 2.1
 
+parameters:
+  run-chromatic:
+    type: boolean
+    default: false
+
 orbs:
   browser-tools: circleci/browser-tools@2.4.0
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:24.11
+    - image: cimg/node:24.14.1
 
   - &docker-node-browsers-image
-    - image: cimg/node:24.11-browsers
+    - image: cimg/node:24.14.1-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -23,6 +28,19 @@ aliases:
     key: v1-pnpm-store-{{ checksum "pnpm-lock.yaml" }}
 
 jobs:
+  circle-all:
+    resource_class: small
+    docker: *docker-node-image
+    steps:
+      - checkout
+      - run:
+          name: Validate policy file
+          command: |
+            rcode=$(curl "https://policy-bot.general.dmz.palantir.tech/api/validate" -XPUT -T ".policy.yml" -s -w "%{http_code}" -o /tmp/response)
+            if [[ "${rcode}" -gt 299 ]]; then
+              jq -r .message < /tmp/response && exit 1
+            fi
+
   checkout-code:
     docker: *docker-node-image
     steps:
@@ -181,7 +199,15 @@ jobs:
     steps:
       - checkout
       - attach_workspace: { at: "." }
-      - run: npx chromatic --storybook-build-dir storybook-static --exit-zero-on-changes
+      - run:
+          # Checks for the project token for Chromatic, which is not available to forked repos
+          name: Check chromatic project token available
+          command: |
+            if [ -z "$CHROMATIC_PROJECT_TOKEN" ]; then
+              echo "Skipping Chromatic (no project token — likely a fork build)"
+              exit 0
+            fi
+            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed --trace-changed
 
   deploy-preview:
     docker: *docker-node-image
@@ -211,11 +237,17 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: ./scripts/publish-npm-semver-tagged
+      - run:
+          command: |
+            # From https://docs.npmjs.com/trusted-publishers#circleci-configuration
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+            ./scripts/publish-npm-semver-tagged
 
 workflows:
   compile_lint_test_dist_deploy:
+    unless: << pipeline.parameters.run-chromatic >>
     jobs:
+      - circle-all
       - checkout-code
       - clean-lockfile:
           requires: [checkout-code]
@@ -235,6 +267,9 @@ workflows:
           requires: [compile]
       - chromatic:
           requires: [dist]
+          filters:
+            branches:
+              only: develop
       - deploy-preview:
           requires: [dist]
       - store-packages:
@@ -247,3 +282,13 @@ workflows:
                 - develop
                 - next
                 - /^release\/.*/
+  chromatic-on-demand:
+    when: << pipeline.parameters.run-chromatic >>
+    jobs:
+      - checkout-code
+      - compile:
+          requires: [checkout-code]
+      - dist:
+          requires: [compile]
+      - chromatic:
+          requires: [dist]
