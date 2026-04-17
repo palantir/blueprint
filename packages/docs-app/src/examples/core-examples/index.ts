@@ -53,6 +53,7 @@ export { HotkeyModifierExample } from "./hotkeyModifierExample";
 export { HotkeyTesterExample } from "./hotkeyTesterExample";
 export { HotkeysTargetExample } from "./hotkeysTargetExample";
 export { HTMLSelectExample } from "./htmlSelectExample";
+export * from "./keyComboTagExamples";
 export { IconExample } from "./iconExample";
 export { IconGeneratedComponentExample } from "./iconGeneratedComponentExample";
 export * from "./linkExamples";
