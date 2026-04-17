@@ -5,22 +5,26 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useState } from "react";
 
+import { Colors } from "../../common";
 import { Tab } from "./tab";
 import { Tabs } from "./tabs";
+import { DashedPaddedContainer, StoryLabel, storybookLayoutDecorator } from "@storybook-common";
 
 // These props are deprecated on Tabs — hide them from the Storybook controls panel.
-const disabledArgs = ["large"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Tabs>>;
+const disabledArgs = [
+    "large",
+    "className",
+    "children",
+    "defaultSelectedTabId",
+    "selectedTabId",
+    "onChange",
+    "id",
+] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Tabs>>;
 
 const meta: Meta<typeof Tabs> = {
     title: "Core/Tabs",
     component: Tabs,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
@@ -42,7 +46,6 @@ const meta: Meta<typeof Tabs> = {
         vertical: { control: "boolean" },
         fill: { control: "boolean" },
         renderActiveTabPanelOnly: { control: "boolean" },
-        onChange: { action: "changed" },
         ...disabledArgs.reduce(
             (acc, argName) => {
                 acc[argName] = { table: { disable: true } };
@@ -77,20 +80,24 @@ export const SizeExample: Story = {
     render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 24, alignItems: "flex-start" }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Medium</div>
-                <Tabs {...args} id="size-medium" size="medium">
-                    <Tab id="tab1" title="First" panel={<p>First panel</p>} />
-                    <Tab id="tab2" title="Second" panel={<p>Second panel</p>} />
-                    <Tab id="tab3" title="Third" panel={<p>Third panel</p>} />
-                </Tabs>
+                <StoryLabel title="Medium" />
+                <DashedPaddedContainer>
+                    <Tabs {...args} id="size-medium" size="medium">
+                        <Tab id="tab1" title="First" panel={<p>First panel</p>} />
+                        <Tab id="tab2" title="Second" panel={<p>Second panel</p>} />
+                        <Tab id="tab3" title="Third" panel={<p>Third panel</p>} />
+                    </Tabs>
+                </DashedPaddedContainer>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Large</div>
-                <Tabs {...args} id="size-large" size="large">
-                    <Tab id="tab1" title="First" panel={<p>First panel</p>} />
-                    <Tab id="tab2" title="Second" panel={<p>Second panel</p>} />
-                    <Tab id="tab3" title="Third" panel={<p>Third panel</p>} />
-                </Tabs>
+                <StoryLabel title="Large" />
+                <DashedPaddedContainer>
+                    <Tabs {...args} id="size-large" size="large">
+                        <Tab id="tab1" title="First" panel={<p>First panel</p>} />
+                        <Tab id="tab2" title="Second" panel={<p>Second panel</p>} />
+                        <Tab id="tab3" title="Third" panel={<p>Third panel</p>} />
+                    </Tabs>
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
@@ -107,20 +114,24 @@ export const StateExample: Story = {
     render: args => (
         <div style={{ display: "flex", gap: 32 }}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Vertical</div>
-                <Tabs {...args} id="state-vertical" vertical={true}>
-                    <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
-                    <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
-                    <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
-                </Tabs>
+                <StoryLabel title="Vertical" />
+                <DashedPaddedContainer>
+                    <Tabs {...args} id="state-vertical" vertical={true}>
+                        <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
+                        <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
+                        <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+                    </Tabs>
+                </DashedPaddedContainer>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>With Disabled Tab</div>
-                <Tabs {...args} id="state-disabled">
-                    <Tab id="tab1" title="Enabled" panel={<p>Enabled panel content</p>} />
-                    <Tab id="tab2" title="Disabled" disabled={true} panel={<p>Disabled panel content</p>} />
-                    <Tab id="tab3" title="Also Enabled" panel={<p>Also enabled panel content</p>} />
-                </Tabs>
+                <StoryLabel title="With Disabled Tab" />
+                <DashedPaddedContainer>
+                    <Tabs {...args} id="state-disabled">
+                        <Tab id="tab1" title="Enabled" panel={<p>Enabled panel content</p>} />
+                        <Tab id="tab2" title="Disabled" disabled={true} panel={<p>Disabled panel content</p>} />
+                        <Tab id="tab3" title="Also Enabled" panel={<p>Also enabled panel content</p>} />
+                    </Tabs>
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
@@ -134,18 +145,46 @@ export const FillExample: Story = {
     argTypes: {
         fill: { table: { disable: true } },
     },
-    decorators: [
-        Story => (
-            <div style={{ width: "500px", height: "200px", border: "1px dashed gray" }}>
-                <Story />
-            </div>
-        ),
-    ],
     render: args => (
-        <Tabs {...args} fill={true}>
-            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
-            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
-            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            <div>
+                <StoryLabel title="Default" />
+                <DashedPaddedContainer width={500}>
+                    <div style={{ background: Colors.BLUE5, borderRadius: 4, padding: 4 }}>
+                        <Tabs {...args} id="fill-default" fill={false}>
+                            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
+                            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
+                            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+                        </Tabs>
+                    </div>
+                </DashedPaddedContainer>
+            </div>
+            <div>
+                <StoryLabel title="Fill" />
+                <DashedPaddedContainer width={500}>
+                    <div style={{ background: Colors.RED5, borderRadius: 4, padding: 4 }}>
+                        <Tabs {...args} id="fill-enabled" fill={true}>
+                            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
+                            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
+                            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+                        </Tabs>
+                    </div>
+                </DashedPaddedContainer>
+            </div>
+        </div>
+    ),
+};
+
+/**
+ * Tabs can display a `<Tag>` next to the title using the `tagContent` prop.
+ */
+export const WithTagExample: Story = {
+    name: "With Tag",
+    render: args => (
+        <Tabs {...args} id="with-tag">
+            <Tab id="tab1" title="Inbox" tagContent={42} panel={<p>Inbox panel content</p>} />
+            <Tab id="tab2" title="Sent" tagContent={3} panel={<p>Sent panel content</p>} />
+            <Tab id="tab3" title="Drafts" panel={<p>Drafts panel content</p>} />
         </Tabs>
     ),
 };
@@ -183,7 +222,6 @@ export const Playground: Story = {
                     />
                     <Tab id="tab4" title="Backbone" disabled={true} icon="disable" panel={<p>Backbone panel</p>} />
                 </Tabs>
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Selected tab: {selectedTabId}</div>
             </div>
         );
     },
