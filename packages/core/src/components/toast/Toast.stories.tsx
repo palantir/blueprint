@@ -3,27 +3,26 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type React from "react";
 
 import { Intent } from "../../common";
 
 import { Toast } from "./toast";
+import { storybookLayoutDecorator } from "@storybook-common";
+
+const disabledArgs = ["timeout", "className", "action", "onDismiss", "message"] as const satisfies ReadonlyArray<
+    keyof React.ComponentProps<typeof Toast>
+>;
 
 const meta: Meta<typeof Toast> = {
     title: "Core/Overlays/Toast",
     component: Toast,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
     tags: ["autodocs"],
     args: {
-        message: "This is a toast message",
         intent: Intent.NONE,
         icon: undefined,
         isCloseButtonShown: true,
@@ -40,10 +39,13 @@ const meta: Meta<typeof Toast> = {
         isCloseButtonShown: {
             control: "boolean",
         },
-        timeout: {
-            control: "number",
-        },
-        onDismiss: { action: "dismissed" },
+        ...disabledArgs.reduce(
+            (acc, argName) => {
+                acc[argName] = { table: { disable: true } };
+                return acc;
+            },
+            {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
+        ),
     },
 } satisfies Meta<typeof Toast>;
 
@@ -95,6 +97,29 @@ export const IconExample: Story = {
             <Toast {...args} icon="warning-sign" intent="warning" message="Connection is unstable" />
             <Toast {...args} icon="error" intent="danger" message="Failed to save changes" />
             <Toast {...args} icon="info-sign" intent="primary" message="New update available" />
+        </div>
+    ),
+};
+
+/**
+ * Use the `action` prop to render an {@link AnchorButton} alongside the message.
+ * The action accepts `ActionProps & LinkProps`, supporting text, icons, and links.
+ */
+export const ActionExample: Story = {
+    name: "Action",
+    argTypes: {
+        isCloseButtonShown: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <Toast {...args} message="File deleted" action={{ text: "Undo" }} />
+            <Toast {...args} message="Changes saved" intent="success" action={{ text: "View", icon: "share" }} />
+            <Toast
+                {...args}
+                message="New version available"
+                intent="primary"
+                action={{ text: "Release notes", href: "#", icon: "link" }}
+            />
         </div>
     ),
 };
