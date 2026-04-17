@@ -16,7 +16,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist lib src/generated",
+        "clean": "rm -rf coverage dist lib src/generated",
         "compile": "npm-run-all -s \"icons:verify\" \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",
         "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
