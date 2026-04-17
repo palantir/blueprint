@@ -131,7 +131,7 @@ export const Playground: Story = {
     args: {
         message: "Playground toast message",
         icon: "info-sign",
-        intent: "primary",
+        intent: Intent.PRIMARY,
         isCloseButtonShown: true,
         action: {
             text: "Undo",
