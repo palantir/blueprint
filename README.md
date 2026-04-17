@@ -132,6 +132,12 @@ The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#inco
 
 If you are updating icons or adding new ones, you'll need to run `pnpm compile` in `packages/icons` to see those changes reflected before running any of the dev scripts.
 
+## Thanks
+
+<a href="https://www.chromatic.com/"><img src="https://user-images.githubusercontent.com/321738/84662277-e3db4f80-af1b-11ea-88f5-91d67a5e59f6.png" width="153" height="30" alt="Chromatic" /></a>
+
+Thanks to [Chromatic](https://www.chromatic.com/) for providing the visual testing platform that helps us review UI changes and catch visual regressions.
+
 ## License
 
 This project is made available under the Apache 2.0 License.
