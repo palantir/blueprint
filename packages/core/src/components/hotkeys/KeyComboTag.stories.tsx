@@ -5,7 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
-import { H2 } from "@blueprintjs/core";
+import { H3 } from "@blueprintjs/core";
 
 import { KeyComboTag } from "./keyComboTag";
 
@@ -36,6 +36,9 @@ type Story = StoryObj<typeof meta>;
  */
 export const CommandExample: Story = {
     name: "Command",
+    argTypes: {
+        combo: { table: { disable: true } },
+    },
     args: {
         combo: "cmd + s",
     },
@@ -46,6 +49,9 @@ export const CommandExample: Story = {
  */
 export const ShiftExample: Story = {
     name: "Shift",
+    argTypes: {
+        combo: { table: { disable: true } },
+    },
     args: {
         combo: "shift + a",
     },
@@ -56,6 +62,9 @@ export const ShiftExample: Story = {
  */
 export const SpaceExample: Story = {
     name: "Space",
+    argTypes: {
+        combo: { table: { disable: true } },
+    },
     args: {
         combo: "space",
     },
@@ -66,6 +75,9 @@ export const SpaceExample: Story = {
  */
 export const ControlExample: Story = {
     name: "Control",
+    argTypes: {
+        combo: { table: { disable: true } },
+    },
     args: {
         combo: "ctrl + c",
     },
@@ -76,6 +88,9 @@ export const ControlExample: Story = {
  */
 export const OptionExample: Story = {
     name: "Option",
+    argTypes: {
+        combo: { table: { disable: true } },
+    },
     args: {
         combo: "option + delete",
     },
@@ -194,17 +209,20 @@ export const AllKeysExample: Story = {
     argTypes: {
         combo: { table: { disable: true } },
     },
-    render: () => (
+    args: {
+        minimal: false,
+    },
+    render: args => (
         <div style={{ display: "flex", flexDirection: "column", gap: 24, width: 600 }}>
             {ALL_KEY_SECTIONS.map(({ label, keys }) => (
                 <section key={label}>
-                    <H2>{label}</H2>
+                    <H3>{label}</H3>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                         {keys.map(combo => (
                             <div key={combo} style={{ width: 100 }}>
                                 <StoryLabel title={combo} />
                                 <DashedPaddedContainer width={100}>
-                                    <KeyComboTag combo={combo} />
+                                    <KeyComboTag combo={combo} minimal={args.minimal} />
                                 </DashedPaddedContainer>
                             </div>
                         ))}
