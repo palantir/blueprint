@@ -18,7 +18,6 @@ const meta: Meta<typeof Alert> = {
     parameters: {
         layout: "centered",
     },
-    tags: ["autodocs"],
     args: {
         intent: Intent.NONE,
         isOpen: true,
