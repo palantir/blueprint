@@ -1,0 +1,229 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:map";
+@use "../../common/variables-extended-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../icon/icon-mixins-next" as *;
+@use "../button/common-next" as *;
+@use "./common-next" as *;
+
+// 3px space between small button and regular input
+$input-button-height: $pt-button-height-small !default;
+// 5px space between regular button and large input
+$input-button-height-large: $pt-button-height !default;
+// 1px space between regular button and small input
+$input-button-height-small: $pt-button-height-smaller !default;
+
+.#{$ns}-input-group {
+  display: block;
+  position: relative;
+
+  .#{$ns}-input {
+    // explicit position prevents shadow clipping https://github.com/palantir/blueprint/pull/490#issuecomment-273342170
+    position: relative;
+    width: 100%;
+
+    // add space if there's something before or after the input
+    &:not(:first-child) {
+      padding-left: $pt-input-height;
+    }
+
+    &:not(:last-child) {
+      padding-right: $pt-input-height;
+    }
+  }
+
+  .#{$ns}-input-action,
+  > .#{$ns}-input-left-container,
+  > .#{$ns}-button,
+  > .#{$ns}-icon {
+    position: absolute;
+    top: 0;
+
+    // glue it to the end it appears on
+    &:first-child {
+      left: 0;
+    }
+
+    &:last-child {
+      right: 0;
+    }
+  }
+
+  .#{$ns}-button {
+    @include pt-button-height($input-button-height);
+    margin: ($pt-input-height - $input-button-height) * 0.5;
+    padding: $button-padding-small;
+
+    // icons CSS API support
+    &:empty {
+      padding: 0;
+    }
+  }
+
+  // bump icon or left content up so it sits above input
+  > .#{$ns}-input-left-container,
+  > .#{$ns}-icon {
+    z-index: 1;
+  }
+
+  // direct descendant to exclude icons in buttons
+  > .#{$ns}-input-left-container > .#{$ns}-icon,
+  > .#{$ns}-icon {
+    color: $pt-icon-color;
+
+    &:empty {
+      @include pt-icon($pt-icon-size-standard);
+    }
+  }
+
+  // adjusting the margin of spinners in input groups
+  // we have to avoid targetting buttons that contain a spinner
+  > .#{$ns}-input-left-container > .#{$ns}-icon,
+  > .#{$ns}-icon,
+  .#{$ns}-input-action > .#{$ns}-spinner {
+    margin: ($pt-input-height - $pt-icon-size-standard) * 0.5;
+  }
+
+  .#{$ns}-tag {
+    margin: $pt-spacing * 1.25;
+  }
+
+  // all buttons go gray in default state and assume their native colors only when hovered
+  // or when input is focused. this prevents distracting colors in the UI.
+  .#{$ns}-input:not(:focus) + .#{$ns}-button,
+  .#{$ns}-input:not(:focus) + .#{$ns}-input-action .#{$ns}-button {
+    &.#{$ns}-minimal:not(:hover):not(:focus) {
+      color: $pt-text-color-muted;
+
+      // same goes for dark
+      /* stylelint-disable-next-line selector-max-compound-selectors */
+      .#{$ns}-dark & {
+        color: $pt-dark-text-color-muted;
+      }
+
+      #{$icon-classes} {
+        color: $pt-icon-color;
+      }
+    }
+
+    &.#{$ns}-minimal:disabled {
+      // override more specific selector above
+      /* stylelint-disable declaration-no-important */
+      color: $pt-icon-color-disabled !important;
+
+      #{$icon-classes} {
+        color: $pt-icon-color-disabled !important;
+      }
+    }
+  }
+
+  // this class echoes `input:disabled` on the child input, but each action must individually be disabled
+  &.#{$ns}-disabled {
+    // note that enabled buttons inside this input group are still clickable
+    cursor: not-allowed;
+
+    .#{$ns}-icon {
+      color: $pt-icon-color-disabled;
+    }
+  }
+
+  &.#{$ns}-large {
+    .#{$ns}-button {
+      @include pt-button-height($input-button-height-large);
+      margin: ($pt-input-height-large - $input-button-height-large) * 0.5;
+    }
+
+    > .#{$ns}-input-left-container > .#{$ns}-icon,
+    > .#{$ns}-icon,
+    .#{$ns}-input-action > .#{$ns}-spinner {
+      margin: ($pt-input-height-large - $pt-icon-size-standard) * 0.5;
+    }
+
+    .#{$ns}-input {
+      @include pt-input-large;
+
+      &:not(:first-child) {
+        padding-left: $pt-button-height-large;
+      }
+
+      &:not(:last-child) {
+        padding-right: $pt-button-height-large;
+      }
+    }
+  }
+
+  &.#{$ns}-small {
+    .#{$ns}-button {
+      @include pt-button-height($pt-button-height-smaller);
+      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
+    }
+
+    .#{$ns}-tag {
+      @include pt-button-height($pt-button-height-smaller);
+      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
+    }
+
+    > .#{$ns}-input-left-container > .#{$ns}-icon,
+    > .#{$ns}-icon,
+    .#{$ns}-input-action > .#{$ns}-spinner {
+      margin: ($pt-input-height-small - $pt-icon-size-standard) * 0.5;
+    }
+
+    .#{$ns}-input {
+      @include pt-input-small;
+
+      &:not(:first-child) {
+        padding-left: $pt-icon-size-standard + $input-small-padding;
+      }
+
+      &:not(:last-child) {
+        padding-right: $pt-icon-size-standard + $input-small-padding;
+      }
+    }
+  }
+
+  &.#{$ns}-fill {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  &.#{$ns}-round {
+    .#{$ns}-button,
+    .#{$ns}-input,
+    .#{$ns}-tag {
+      border-radius: $pt-input-height;
+    }
+  }
+
+  .#{$ns}-dark & {
+    .#{$ns}-icon {
+      color: $pt-dark-icon-color;
+    }
+
+    &.#{$ns}-disabled .#{$ns}-icon {
+      color: $pt-dark-icon-color-disabled;
+    }
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-input {
+        @include pt-input-intent($color);
+
+        .#{$ns}-dark & {
+          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
+        }
+      }
+
+      > .#{$ns}-icon {
+        color: map.get($pt-intent-text-colors, $intent);
+
+        .#{$ns}-dark & {
+          color: map.get($pt-dark-intent-text-colors, $intent);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "../button/common-next" as *;
+@use "../forms/common-next" as *;
+
+%pt-select {
+  @include pt-button-layout;
+  @include pt-button;
+
+  /* stylelint-disable property-no-vendor-prefix */
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: $pt-border-radius;
+  height: $pt-button-height;
+  padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
+  // fill parent container
+  width: 100%;
+  /* stylelint-enable property-no-vendor-prefix */
+}
+
+%pt-select-minimal {
+  @include pt-button-minimal;
+}
+
+%pt-select-large {
+  font-size: $pt-font-size-large;
+  height: $pt-button-height-large;
+  padding-right: $input-padding-horizontal * 3.5;
+}
+
+%pt-dark-select {
+  @include pt-dark-button;
+}
+
+%pt-select-disabled {
+  background-color: $button-background-color-disabled;
+  box-shadow: none;
+  color: $button-color-disabled;
+  cursor: not-allowed;
+}
+
+%pt-select-icon {
+  color: $pt-icon-color;
+  pointer-events: none;
+  position: absolute;
+  // N.B. it's more important for the icon to vertically align with button end icons rather than
+  // input right padding, see https://github.com/palantir/blueprint/issues/6184
+  right: $pt-spacing * 2;
+  top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
+
+  &.#{$ns}-disabled {
+    color: $pt-icon-color-disabled;
+  }
+}

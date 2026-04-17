@@ -1,0 +1,105 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+
+label.#{$ns}-label {
+  display: block;
+  margin-bottom: $pt-spacing * 4;
+  margin-top: 0;
+
+  .#{$ns}-html-select,
+  .#{$ns}-input,
+  .#{$ns}-select,
+  .#{$ns}-slider,
+  .#{$ns}-popover-wrapper {
+    display: block;
+    margin-top: $pt-spacing;
+    text-transform: none;
+  }
+
+  .#{$ns}-button-group {
+    margin-top: $pt-spacing;
+  }
+
+  .#{$ns}-select select,
+  .#{$ns}-html-select select {
+    font-weight: 400;
+    vertical-align: top;
+    width: 100%;
+  }
+
+  .#{$ns}-control-group {
+    margin-top: $pt-spacing;
+
+    > .#{$ns}-button-group,
+    > .#{$ns}-html-select,
+    > .#{$ns}-input,
+    > .#{$ns}-select,
+    > .#{$ns}-slider,
+    > .#{$ns}-popover-wrapper {
+      margin-top: 0;
+    }
+  }
+
+  &.#{$ns}-disabled {
+    &,
+    .#{$ns}-text-muted {
+      color: $pt-text-color-disabled;
+    }
+  }
+
+  &.#{$ns}-inline {
+    line-height: $pt-input-height;
+
+    .#{$ns}-html-select,
+    .#{$ns}-input,
+    .#{$ns}-input-group,
+    .#{$ns}-select,
+    .#{$ns}-popover-wrapper {
+      display: inline-block;
+      margin: 0 0 0 $pt-spacing;
+      vertical-align: top;
+    }
+
+    .#{$ns}-button-group {
+      margin: 0 0 0 $pt-spacing;
+    }
+
+    .#{$ns}-input-group .#{$ns}-input {
+      margin-left: 0;
+    }
+
+    &.#{$ns}-large {
+      line-height: $pt-input-height-large;
+    }
+
+    .#{$ns}-control-group {
+      margin: 0 0 0 $pt-spacing;
+
+      > .#{$ns}-button-group,
+      > .#{$ns}-html-select,
+      > .#{$ns}-input,
+      > .#{$ns}-select,
+      > .#{$ns}-slider,
+      > .#{$ns}-popover-wrapper {
+        margin: 0;
+      }
+    }
+  }
+
+  &:not(.#{$ns}-inline) .#{$ns}-popover-target {
+    display: block;
+  }
+
+  .#{$ns}-dark & {
+    color: $pt-dark-heading-color;
+
+    &.#{$ns}-disabled {
+      &,
+      .#{$ns}-text-muted {
+        color: $pt-dark-text-color-disabled;
+      }
+    }
+  }
+}

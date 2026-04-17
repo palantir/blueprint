@@ -1,0 +1,96 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "../icon/icon-mixins-next" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+
+@use "./common-next" as *;
+@use "./submenu-next" as *;
+
+.#{$ns}-menu {
+  background: $menu-background-color;
+  border-radius: $pt-border-radius;
+  color: $pt-text-color;
+  list-style: none;
+  margin: 0;
+  min-width: $menu-min-width;
+  padding: $pt-spacing;
+  text-align: left;
+}
+
+.#{$ns}-menu-divider {
+  @include menu-divider;
+}
+
+.#{$ns}-menu-item {
+  @include menu-item;
+
+  @each $intent, $colors in $menu-item-intent-colors {
+    @include menu-item-intent($intent, false, $colors...);
+  }
+
+  &::before {
+    // support pt-icon-* classes directly on this element
+    @include pt-icon;
+    margin-right: $menu-item-padding;
+  }
+
+  .#{$ns}-large & {
+    @include menu-item-large;
+
+    &::before {
+      @include pt-icon($pt-icon-size-large);
+      margin-right: $menu-item-padding-large;
+    }
+  }
+
+  .#{$ns}-small & {
+    @include menu-item-small;
+  }
+}
+
+button.#{$ns}-menu-item {
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+}
+
+.#{$ns}-menu-header {
+  @include menu-header($heading-selector: "> h6");
+
+  .#{$ns}-large & {
+    @include menu-header-large($heading-selector: "> h6");
+  }
+}
+
+// dark theme
+.#{$ns}-dark {
+  .#{$ns}-menu {
+    background: $dark-menu-background-color;
+    color: $pt-dark-text-color;
+  }
+
+  .#{$ns}-menu-item {
+    @include dark-menu-item;
+
+    @each $intent, $colors in $dark-menu-item-intent-colors {
+      @include menu-item-intent($intent, true, $colors...);
+    }
+  }
+
+  .#{$ns}-menu-divider,
+  .#{$ns}-menu-header {
+    border-color: $pt-dark-divider-white;
+  }
+
+  .#{$ns}-menu-header > h6 {
+    color: $pt-dark-heading-color;
+  }
+}
+
+// #402 support menu inside label
+.#{$ns}-label .#{$ns}-menu {
+  margin-top: $pt-spacing;
+}

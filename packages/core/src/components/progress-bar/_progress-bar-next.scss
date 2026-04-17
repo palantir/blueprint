@@ -1,0 +1,76 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "../../common/mixins-next" as *;
+@use "common-next" as *;
+
+$progress-bar-stripes-color: rgba($white, 0.2) !default;
+
+$progress-bar-height: $pt-spacing * 2 !default;
+$progress-bar-stripes-size: $pt-spacing * 7.5 !default;
+$progress-bar-border-radius: $pt-spacing * 10 !default;
+
+$progress-bar-gradient: linear-gradient(
+  -45deg,
+  $progress-bar-stripes-color 25%,
+  transparent 25%,
+  transparent 50%,
+  $progress-bar-stripes-color 50%,
+  $progress-bar-stripes-color 75%,
+  transparent 75%
+) !default;
+
+@keyframes linear-progress-bar-stripes {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: $progress-bar-stripes-size 0;
+  }
+}
+
+.#{$ns}-progress-bar {
+  background: $progress-track-color;
+  border-radius: $progress-bar-border-radius;
+  display: block;
+  height: $progress-bar-height;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  .#{$ns}-progress-meter {
+    background: $progress-bar-gradient;
+    background-color: $progress-head-color;
+    background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
+    border-radius: $progress-bar-border-radius;
+    height: 100%;
+    position: absolute;
+    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
+    // initial state is a full bar, a la "indeterminate"
+    width: 100%;
+  }
+
+  &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {
+    animation: linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse;
+  }
+
+  &.#{$ns}-no-stripes .#{$ns}-progress-meter {
+    background-image: none;
+  }
+}
+
+.#{$ns}-dark .#{$ns}-progress-bar {
+  background: $dark-progress-track-color;
+
+  .#{$ns}-progress-meter {
+    background-color: $dark-progress-head-color;
+  }
+}
+
+@each $intent, $color in $pt-intent-colors {
+  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
+    background-color: $color;
+  }
+}

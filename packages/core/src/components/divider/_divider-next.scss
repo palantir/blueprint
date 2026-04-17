@@ -1,0 +1,22 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+
+$divider-margin: $pt-spacing !default;
+
+.#{$ns}-divider {
+  border-bottom: 1px solid $pt-divider-black;
+  // since the element is empty, it will occupy minimal space and only show
+  // the appropriate border based on direction of container.
+  border-right: 1px solid $pt-divider-black;
+  margin: $divider-margin;
+
+  .#{$ns}-dark & {
+    border-color: $pt-dark-divider-white;
+  }
+
+  &.#{$ns}-compact {
+    margin: 0;
+  }
+}

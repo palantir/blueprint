@@ -1,0 +1,43 @@
+{
+    "emphasis": {
+        "transition-duration": {
+            "$type": "duration",
+            "$value": {
+                "value": 100,
+                "unit": "ms"
+            }
+        },
+        "ease": {
+            "$type": "cubicBezier",
+            "default": {
+                "$value": [0.4, 1, 0.75, 0.9]
+            },
+            "bounce": {
+                "$value": [0.54, 1.12, 0.38, 1.11]
+            }
+        },
+        "focus-color": {
+            "$type": "color",
+            "$value": "{intent.primary.rest}"
+        },
+        "focus-width": {
+            "$type": "dimension",
+            "$value": {
+                "value": 2,
+                "unit": "px"
+            }
+        },
+        "focus-offset": {
+            "$type": "dimension",
+            "$value": {
+                "value": 2,
+                "unit": "px"
+            }
+        },
+        "motion-reduced": {
+            "$type": "number",
+            "$value": 0,
+            "$description": "0 = motion allowed, 1 = reduced motion"
+        }
+    }
+}

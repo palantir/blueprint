@@ -1,0 +1,48 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "./common-next" as *;
+
+.#{$ns}-tag {
+  @include pt-tag;
+
+  &.#{$ns}-large,
+  .#{$ns}-large & {
+    @include pt-tag-large;
+  }
+
+  @each $intent, $colors in $tag-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-tag-intent($colors...);
+    }
+  }
+
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+
+  &.#{$ns}-minimal {
+    @include pt-tag-minimal;
+
+    @each $intent, $colors in $minimal-tag-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-tag-minimal-intent($colors...);
+      }
+    }
+
+    @each $intent, $colors in $minimal-dark-tag-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        .#{$ns}-dark &,
+        [data-bp-color-scheme="dark"] & {
+          @include pt-tag-minimal-dark-intent($colors...);
+        }
+      }
+    }
+  }
+}
+
+.#{$ns}-tag-remove {
+  @include pt-tag-remove;
+}

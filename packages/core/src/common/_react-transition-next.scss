@@ -1,0 +1,90 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:list";
+@use "sass:map";
+@use "./variables-next" as *;
+
+@mixin react-transition(
+  $name,
+  $properties,
+  $duration: $pt-transition-duration,
+  $easing: $pt-transition-ease,
+  $delay: 0,
+  $before: "",
+  $after: ""
+) {
+  @include each-prop($properties, 2);
+  @include react-transition-phase(
+    $name,
+    "enter",
+    $properties,
+    $duration,
+    $easing,
+    $delay,
+    $before,
+    $after
+  );
+  @include react-transition-phase(
+    $name,
+    "exit",
+    $properties,
+    $duration,
+    $easing,
+    $delay,
+    $before,
+    $after
+  );
+}
+
+@mixin react-transition-phase(
+  $name,
+  $phase,
+  $properties,
+  $duration: $pt-transition-duration,
+  $easing: $pt-transition-ease,
+  $delay: 0,
+  $before: "",
+  $after: ""
+) {
+  $start-index: 1;
+  $end-index: 2;
+
+  @if ($phase == "exit") {
+    $start-index: 2;
+    $end-index: 1;
+  } @else if ($phase != "enter" and $phase != "appear") {
+    @error "Unknown transition phase: #{$phase}. Expected appear|enter|exit.";
+  }
+
+  #{transition-name($phase, $name, $before, $after)} {
+    @include each-prop($properties, $start-index);
+  }
+
+  #{transition-name(#{$phase}-active, $name, $before, $after)} {
+    @include each-prop($properties, $end-index);
+    transition-delay: $delay;
+    transition-duration: $duration;
+    transition-property: map.keys($properties);
+    /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
+    transition-timing-function: $easing;
+  }
+}
+
+@mixin each-prop($properties, $index) {
+  @each $prop, $values in $properties {
+    #{$prop}: list.nth($values, $index);
+  }
+}
+
+@function transition-name($phase, $name, $before, $after) {
+  $full-name: "#{$before}.#{$name}-#{$phase}#{$after}";
+
+  @if ($phase == "enter") {
+    @return ($full-name, transition-name("appear", $name, $before, $after));
+  } @else if ($phase == "enter-active") {
+    @return ($full-name, transition-name("appear-active", $name, $before, $after));
+  } @else {
+    @return $full-name;
+  }
+}

@@ -1,0 +1,55 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+
+@use "../../common/variables-next" as *;
+@use "../../common/mixins-next" as *;
+
+.#{$ns}-key-combo {
+  align-items: center;
+
+  &:not(.#{$ns}-minimal) {
+    @include pt-flex-container(row, $pt-spacing);
+  }
+
+  &.#{$ns}-minimal {
+    @include pt-flex-container(row);
+  }
+}
+
+.#{$ns}-hotkey-dialog {
+  padding-bottom: 0;
+  top: $pt-spacing * 10;
+
+  .#{$ns}-dialog-body {
+    margin: 0;
+    padding: 0;
+  }
+
+  .#{$ns}-hotkey-label {
+    flex-grow: 1;
+  }
+}
+
+.#{$ns}-hotkey-column {
+  margin: auto;
+  padding: $pt-spacing * 7.5;
+
+  .#{$ns}-heading {
+    margin-bottom: $pt-spacing * 5;
+
+    &:not(:first-child) {
+      margin-top: $pt-spacing * 10;
+    }
+  }
+}
+
+.#{$ns}-hotkey {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-left: 0;
+  margin-right: 0;
+
+  &:not(:last-child) {
+    margin-bottom: $pt-spacing * 2;
+  }
+}

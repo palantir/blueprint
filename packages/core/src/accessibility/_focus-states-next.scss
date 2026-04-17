@@ -1,0 +1,20 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../common/variables-next" as *;
+@use "../common/mixins-next" as *;
+
+:focus {
+  @include focus-outline;
+}
+
+// override any focus outline anywhere unless specifically ignored
+.#{$ns}-focus-disabled :focus:not(.#{$ns}-focus-style-manager-ignore *) {
+  /* stylelint-disable declaration-no-important */
+  outline: none !important;
+
+  // special override for checkbox etc which render focus on a separate element
+  ~ .#{$ns}-control-indicator {
+    outline: none !important;
+  }
+}

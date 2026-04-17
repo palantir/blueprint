@@ -1,0 +1,346 @@
+{
+    "surface": {
+        "layer": {
+            "app": {
+                "$type": "color",
+                "$value": "{palette.blue.900}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.015
+                    }
+                }
+            },
+            "default": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.grey.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.03
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.grey.700}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.045
+                        }
+                    }
+                }
+            },
+            "primary": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.blue.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.03
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.blue.600}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.045
+                        }
+                    }
+                }
+            },
+            "success": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.green.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.03
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.green.700}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.045
+                        }
+                    }
+                }
+            },
+            "warning": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.orange.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.03
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.orange.700}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.045
+                        }
+                    }
+                }
+            },
+            "danger": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.red.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.03
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.red.700}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.045
+                        }
+                    }
+                }
+            }
+        },
+        "background-color": {
+            "app": {
+                "$type": "color",
+                "$value": "{palette.white.1000}"
+            },
+            "default": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.grey.600}"
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.grey.700}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.grey.800}"
+                }
+            },
+            "primary": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.blue.600}"
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.blue.700}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.blue.800}"
+                }
+            },
+            "success": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.green.600}"
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.green.700}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.green.600}"
+                }
+            },
+            "warning": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.orange.600}"
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.orange.700}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.orange.800}"
+                }
+            },
+            "danger": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.red.600}"
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.red.700}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.red.800}"
+                }
+            }
+        },
+        "spacing": {
+            "1": {
+                "$type": "number",
+                "$value": 4
+            },
+            "2": {
+                "$type": "number",
+                "$value": 8
+            },
+            "3": {
+                "$type": "number",
+                "$value": 12
+            },
+            "4": {
+                "$type": "number",
+                "$value": 16
+            },
+            "5": {
+                "$type": "number",
+                "$value": 20
+            },
+            "6": {
+                "$type": "number",
+                "$value": 24
+            },
+            "7": {
+                "$type": "number",
+                "$value": 28
+            },
+            "8": {
+                "$type": "number",
+                "$value": 32
+            },
+            "9": {
+                "$type": "number",
+                "$value": 36
+            },
+            "10": {
+                "$type": "number",
+                "$value": 40
+            },
+            "11": {
+                "$type": "number",
+                "$value": 44
+            },
+            "12": {
+                "$type": "number",
+                "$value": 48
+            },
+            "13": {
+                "$type": "number",
+                "$value": 52
+            },
+            "14": {
+                "$type": "number",
+                "$value": 56
+            },
+            "15": {
+                "$type": "number",
+                "$value": 60
+            },
+            "16": {
+                "$type": "number",
+                "$value": 64
+            },
+            "17": {
+                "$type": "number",
+                "$value": 68
+            },
+            "18": {
+                "$type": "number",
+                "$value": 72
+            },
+            "19": {
+                "$type": "number",
+                "$value": 76
+            },
+            "20": {
+                "$type": "number",
+                "$value": 80
+            }
+        },
+        "border": {
+            "radius": {
+                "$type": "number",
+                "$value": 4
+            },
+            "color": {
+                "default": {
+                    "$type": "color",
+                    "$value": "{palette.grey.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.81
+                        }
+                    }
+                },
+                "primary": {
+                    "$type": "color",
+                    "$value": "{palette.blue.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.76
+                        }
+                    }
+                },
+                "success": {
+                    "$type": "color",
+                    "$value": "{palette.green.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.79
+                        }
+                    }
+                },
+                "warning": {
+                    "$type": "color",
+                    "$value": "{palette.orange.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.73
+                        }
+                    }
+                },
+                "danger": {
+                    "$type": "color",
+                    "$value": "{palette.red.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.72
+                        }
+                    }
+                }
+            }
+        },
+        "divider": {
+            "default": {
+                "$type": "color",
+                "$value": "{palette.black.200}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.09
+                    }
+                }
+            },
+            "strong": {
+                "$type": "color",
+                "$value": "{palette.black.300}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.12
+                    }
+                }
+            }
+        }
+    }
+}

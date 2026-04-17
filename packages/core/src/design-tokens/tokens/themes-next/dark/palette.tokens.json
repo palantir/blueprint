@@ -1,0 +1,626 @@
+{
+    "palette": {
+        "$type": "color",
+        "white": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(1 0 0 / 0.07000000029802322)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#ffffff12"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(1 0 0 / 0.10999999940395355)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#ffffff1c"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(1 0 0 / 0.1599999964237213)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#ffffff29"
+                    }
+                }
+            }
+        },
+        "grey": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(0.9357 0.0281 256.49)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#deebfd"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(0.8188 0.0279 255.11)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#b8c5d6"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(0.7047 0.0271 255.6)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#95a1b1"
+                    }
+                }
+            },
+            "400": {
+                "$type": "color",
+                "$value": "oklch(0.5956 0.0251 254.48)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#75808e"
+                    }
+                }
+            },
+            "500": {
+                "$type": "color",
+                "$value": "oklch(0.4892 0.0257 256.79)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#57616f"
+                    }
+                }
+            },
+            "600": {
+                "$type": "color",
+                "$value": "oklch(0.3875 0.0251 257.52)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#3c4552"
+                    }
+                }
+            },
+            "700": {
+                "$type": "color",
+                "$value": "oklch(0.2912 0.0225 259.36)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#252c37"
+                    }
+                }
+            },
+            "800": {
+                "$type": "color",
+                "$value": "oklch(0.2026 0.0228 257.29)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#101721"
+                    }
+                }
+            },
+            "900": {
+                "$type": "color",
+                "$value": "oklch(0.1223 0.0213 261.24)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#03060e"
+                    }
+                }
+            },
+            "1000": {
+                "$type": "color",
+                "$value": "oklch(0.0383 0.0265 264.05)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#000002"
+                    }
+                }
+            }
+        },
+        "black": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(0.0696 0.0248 257.1 / 0.029999999329447746)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#00010508"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(0.0696 0.0248 257.1 / 0.10000000149011612)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#0001051a"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(0.0696 0.0248 257.1 / 0.20000000298023224)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#00010533"
+                    }
+                }
+            }
+        },
+        "light-blue-t": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.05000000074505806)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfb0d"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.10999999940395355)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfb1c"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.1599999964237213)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfb29"
+                    }
+                }
+            },
+            "400": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.30000001192092896)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfb4d"
+                    }
+                }
+            },
+            "500": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.5)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfb80"
+                    }
+                }
+            },
+            "600": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.800000011920929)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfbcc"
+                    }
+                }
+            },
+            "700": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.8500000238418579)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfbd9"
+                    }
+                }
+            },
+            "800": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.8999999761581421)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfbe5"
+                    }
+                }
+            },
+            "900": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09 / 0.949999988079071)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfbf2"
+                    }
+                }
+            },
+            "1000": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfb"
+                    }
+                }
+            }
+        },
+        "red": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(0.8872 0.0491 24.35)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#f9ceca"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(0.7795 0.0987 22.64)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#f09e9a"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(0.6734 0.1306 22.86)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#db7370"
+                    }
+                }
+            },
+            "400": {
+                "$type": "color",
+                "$value": "oklch(0.5707 0.1474 22.95)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#bf4d4d"
+                    }
+                }
+            },
+            "500": {
+                "$type": "color",
+                "$value": "oklch(0.4712 0.1497 22.76)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#9e2c31"
+                    }
+                }
+            },
+            "600": {
+                "$type": "color",
+                "$value": "oklch(0.3763 0.1401 23.1)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#7b0f1a"
+                    }
+                }
+            },
+            "700": {
+                "$type": "color",
+                "$value": "oklch(0.2857 0.1156 24.21)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#560009"
+                    }
+                }
+            },
+            "800": {
+                "$type": "color",
+                "$value": "oklch(0.2021 0.0821 26.02)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#330002"
+                    }
+                }
+            },
+            "900": {
+                "$type": "color",
+                "$value": "oklch(0.1229 0.0504 29.23)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#150000"
+                    }
+                }
+            },
+            "1000": {
+                "$type": "color",
+                "$value": "oklch(0.0532 0.0218 29.23)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#020000"
+                    }
+                }
+            }
+        },
+        "blue": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(0.8894 0.0488 254.09)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c5ddfb"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(0.7799 0.1001 256.18)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#8dbaf7"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(0.6765 0.1383 257.14)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#5d98eb"
+                    }
+                }
+            },
+            "400": {
+                "$type": "color",
+                "$value": "oklch(0.5719 0.1581 257.64)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#3476d3"
+                    }
+                }
+            },
+            "500": {
+                "$type": "color",
+                "$value": "oklch(0.4739 0.1616 257.03)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#0a58b4"
+                    }
+                }
+            },
+            "600": {
+                "$type": "color",
+                "$value": "oklch(0.3776 0.1497 259.46)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#003b8f"
+                    }
+                }
+            },
+            "700": {
+                "$type": "color",
+                "$value": "oklch(0.2884 0.1285 261.47)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#002369"
+                    }
+                }
+            },
+            "800": {
+                "$type": "color",
+                "$value": "oklch(0.2021 0.0962 262.36)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#001041"
+                    }
+                }
+            },
+            "900": {
+                "$type": "color",
+                "$value": "oklch(0.1186 0.0602 263.07)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#00031c"
+                    }
+                }
+            },
+            "1000": {
+                "$type": "color",
+                "$value": "oklch(0.0383 0.0265 264.05)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#000002"
+                    }
+                }
+            }
+        },
+        "green": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(0.888 0.0508 148.69)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#c4e4c8"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(0.7812 0.1016 148.11)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#8aca93"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(0.675 0.1342 148.2)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#55ad66"
+                    }
+                }
+            },
+            "400": {
+                "$type": "color",
+                "$value": "oklch(0.5719 0.1506 148.53)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#1f8f41"
+                    }
+                }
+            },
+            "500": {
+                "$type": "color",
+                "$value": "oklch(0.4774 0.1459 145.99)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#007121"
+                    }
+                }
+            },
+            "600": {
+                "$type": "color",
+                "$value": "oklch(0.3836 0.1273 143.27)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#005306"
+                    }
+                }
+            },
+            "700": {
+                "$type": "color",
+                "$value": "oklch(0.2952 0.1004 142.5)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#003800"
+                    }
+                }
+            },
+            "800": {
+                "$type": "color",
+                "$value": "oklch(0.2073 0.0705 142.5)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#001f00"
+                    }
+                }
+            },
+            "900": {
+                "$type": "color",
+                "$value": "oklch(0.1255 0.0427 142.5)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#000a00"
+                    }
+                }
+            },
+            "1000": {
+                "$type": "color",
+                "$value": "oklch(0.0582 0.0198 142.5)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#000100"
+                    }
+                }
+            }
+        },
+        "indigo": {
+            "1000": {
+                "$type": "color",
+                "$value": "oklch(0.0853 0.0204 156.67)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#000301"
+                    }
+                }
+            }
+        },
+        "orange": {
+            "100": {
+                "$type": "color",
+                "$value": "oklch(0.8883 0.0494 46.83)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#f7d1bf"
+                    }
+                }
+            },
+            "200": {
+                "$type": "color",
+                "$value": "oklch(0.7801 0.0988 47.39)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#eca480"
+                    }
+                }
+            },
+            "300": {
+                "$type": "color",
+                "$value": "oklch(0.6748 0.1303 46.68)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#d77b4c"
+                    }
+                }
+            },
+            "400": {
+                "$type": "color",
+                "$value": "oklch(0.573 0.1452 46.06)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#bb571e"
+                    }
+                }
+            },
+            "500": {
+                "$type": "color",
+                "$value": "oklch(0.4728 0.1431 41.84)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#9a3700"
+                    }
+                }
+            },
+            "600": {
+                "$type": "color",
+                "$value": "oklch(0.3768 0.1298 35.77)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#771c00"
+                    }
+                }
+            },
+            "700": {
+                "$type": "color",
+                "$value": "oklch(0.2859 0.1036 33.71)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#520c00"
+                    }
+                }
+            },
+            "800": {
+                "$type": "color",
+                "$value": "oklch(0.1977 0.0764 31.32)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#300200"
+                    }
+                }
+            },
+            "900": {
+                "$type": "color",
+                "$value": "oklch(0.1201 0.0493 29.23)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#140000"
+                    }
+                }
+            },
+            "1000": {
+                "$type": "color",
+                "$value": "oklch(0.0422 0.0173 29.23)",
+                "$extensions": {
+                    "com.blueprint.reference": {
+                        "hex": "#010000"
+                    }
+                }
+            }
+        }
+    }
+}

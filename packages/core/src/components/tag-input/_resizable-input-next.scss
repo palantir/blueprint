@@ -1,0 +1,13 @@
+@use "../../common/variables-next" as *;
+@use "../tag/common-next" as *;
+
+.#{$ns}-resizable-input-span {
+  max-height: 0;
+  max-width: 100%;
+  min-width: calc(var(--bp-surface-spacing) * 20);
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  z-index: -1;
+}

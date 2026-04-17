@@ -1,0 +1,123 @@
+@use "sass:math";
+@use "../../common/variables-next" as *;
+
+$section-min-height: $pt-spacing * 12.5 !default;
+$section-padding-vertical: $pt-spacing * 2 !default;
+$section-padding-horizontal: $pt-spacing * 5 !default;
+$section-card-padding: $pt-spacing * 5 !default;
+
+$section-min-height-compact: $pt-spacing * 10 !default;
+$section-padding-compact-vertical: $pt-spacing * 2 !default;
+$section-padding-compact-horizontal: $pt-spacing * 4 !default;
+$section-card-padding-compact: $pt-spacing * 4 !default;
+
+.#{$ns}-section {
+  overflow: hidden;
+  width: 100%;
+
+  &,
+  &.#{$ns}-compact {
+    // override Card compact styles here
+    padding: 0;
+  }
+
+  &-header {
+    align-items: center;
+    border-bottom: 1px solid $pt-divider-black;
+    display: flex;
+    gap: $pt-spacing * 5;
+    justify-content: space-between;
+    min-height: $section-min-height;
+    padding: 0 $section-padding-horizontal;
+    position: relative;
+    width: 100%;
+
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
+      border-color: $pt-dark-divider-white;
+    }
+
+    &-left {
+      align-items: center;
+      display: flex;
+      gap: $pt-spacing * 2;
+      padding: $section-padding-vertical 0;
+    }
+
+    &-title {
+      margin-bottom: 0;
+    }
+
+    &-sub-title {
+      margin-top: $pt-spacing * 0.5;
+    }
+
+    &-right {
+      align-items: center;
+      display: flex;
+      gap: $pt-spacing * 2;
+      margin-left: auto;
+    }
+
+    &-collapse-caret {
+      display: inline-flex;
+      justify-content: center;
+      vertical-align: middle;
+    }
+
+    &-divider {
+      align-self: stretch;
+      margin: $pt-spacing * 4 0;
+    }
+
+    &.#{$ns}-interactive {
+      cursor: pointer;
+
+      &:hover,
+      &:active {
+        background: $light-gray5;
+
+        &.#{$ns}-dark,
+        .#{$ns}-dark & {
+          background: $dark-gray4;
+        }
+      }
+    }
+  }
+
+  &-card {
+    &.#{$ns}-padded {
+      padding: $section-card-padding;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 1px solid $pt-divider-black;
+
+      &.#{$ns}-dark,
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-white;
+      }
+    }
+  }
+
+  &.#{$ns}-section-collapsed {
+    .#{$ns}-section-header {
+      border: none;
+    }
+  }
+
+  &.#{$ns}-compact {
+    .#{$ns}-section-header {
+      min-height: $section-min-height-compact;
+      padding: 0 $section-padding-compact-horizontal;
+
+      &-left {
+        padding: $section-padding-compact-vertical 0;
+      }
+    }
+
+    .#{$ns}-section-card.#{$ns}-padded {
+      padding: $section-card-padding-compact;
+    }
+  }
+}

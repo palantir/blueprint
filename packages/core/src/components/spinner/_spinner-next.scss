@@ -1,0 +1,71 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../progress-bar/common-next" as *;
+
+@keyframes pt-spinner-animation {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.#{$ns}-spinner {
+  align-items: center;
+  // center animation container inside parent element to isolate layout
+  display: flex;
+  justify-content: center;
+
+  // allow paths to overflow container -- critical for edges of circles!
+  overflow: visible;
+  vertical-align: middle;
+
+  svg {
+    display: block;
+  }
+
+  path {
+    fill-opacity: 0;
+  }
+
+  .#{$ns}-spinner-head {
+    stroke: $progress-head-color;
+    stroke-linecap: round;
+    transform-origin: center;
+    transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
+  }
+
+  .#{$ns}-spinner-track {
+    stroke: $progress-track-color;
+  }
+}
+
+// put the animation on a child HTML element to isolate it from display of parent
+.#{$ns}-spinner-animation {
+  animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
+
+  .#{$ns}-no-spin > & {
+    animation: none;
+  }
+}
+
+.#{$ns}-dark .#{$ns}-spinner {
+  .#{$ns}-spinner-head {
+    stroke: $dark-progress-head-color;
+  }
+
+  .#{$ns}-spinner-track {
+    stroke: $dark-progress-track-color;
+  }
+}
+
+@each $intent, $color in $pt-intent-colors {
+  .#{$ns}-spinner.#{$ns}-intent-#{$intent} .#{$ns}-spinner-head {
+    stroke: $color;
+  }
+}

@@ -1,0 +1,44 @@
+// Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "./variables-next" as *;
+
+@mixin pt-flex-container($direction: row, $margin: none, $inline: none, $fill: ".#{$ns}-fill") {
+  @if $inline == inline or $inline == true {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
+  flex-direction: $direction;
+
+  > * {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  > #{$fill} {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+
+  @if $margin != none {
+    @include pt-flex-margin($direction, $margin);
+  }
+}
+
+@mixin pt-flex-margin($direction, $margin) {
+  $margin-prop: if($direction == row, margin-right, margin-bottom);
+
+  // CSS API support
+  &::before,
+  > * {
+    // space after all children
+    #{$margin-prop}: $margin;
+  }
+
+  // remove space after last child
+  &:empty::before,
+  > :last-child {
+    #{$margin-prop}: 0;
+  }
+}

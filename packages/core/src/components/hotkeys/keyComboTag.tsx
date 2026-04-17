@@ -109,7 +109,7 @@ export const KeyComboTagInternal: React.FC<KeyComboTagInternalProps> = memo(prop
         (key: string, index: number, isLastKey: boolean) => {
             const icon = getKeyIcon(key);
             if (icon == null) {
-                return isLastKey ? key : <Fragment key={`key-${index}`}>{key}&nbsp;+&nbsp;</Fragment>;
+                return isLastKey ? key : <Fragment key={`key-${index}`}>{key}&nbsp;+&nbsp;+&nbsp;</Fragment>;
             }
             return <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
         },

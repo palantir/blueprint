@@ -157,6 +157,19 @@ const THEMES: readonly ThemeConfig[] = [
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
+    {
+        name: "light-next",
+        sources: ["src/design-tokens/tokens/base-next/**/*.tokens.json"],
+        selector: ":root",
+        destination: "tokens-next.css",
+    },
+    {
+        name: "dark-next",
+        include: ["src/design-tokens/tokens/base-next/**/*.tokens.json"],
+        sources: ["src/design-tokens/tokens/themes-next/dark/**/*.tokens.json"],
+        selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
+        destination: "tokens-dark-next.css",
+    },
 ];
 
 // -- Parsers ------------------------------------------------------------------
@@ -613,17 +626,38 @@ const makeFallbackMap = (
  * Classifies a token for progressive enhancement output. Tokens with a fallback get
  * the hex value as `fallbackValue` and the relative color syntax as `modernValue`.
  */
+const buildTokenComment = (token: TransformedToken): string | undefined => {
+    const ext = parseObject(token.$extensions ?? token.extensions);
+
+    // Palette tokens: show hex from com.blueprint.reference
+    const ref = ext !== undefined ? parseObject(ext["com.blueprint.reference"]) : undefined;
+    if (ref !== undefined && typeof ref.hex === "string") {
+        return ref.hex;
+    }
+
+    // Aliased tokens: show the original alias path (e.g. "{palette.grey.600}")
+    const original = token.original ?? {};
+    const originalValue = original.$value ?? original.value;
+    const aliasRef = parseTokenReference(originalValue);
+    if (aliasRef !== undefined) {
+        return aliasRef;
+    }
+
+    return token.$description;
+};
+
 const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
     const tokenPath = token.path.join(".");
     const currentValue = getTokenValueAsString(token);
     const fallback = fallbackMap.get(tokenPath);
+    const description = buildTokenComment(token);
 
     if (fallback !== undefined) {
         return {
             name: token.name,
             fallbackValue: fallback,
             modernValue: currentValue,
-            description: token.$description,
+            description,
         };
     }
 
@@ -631,7 +665,7 @@ const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string,
         name: token.name,
         fallbackValue: currentValue,
         modernValue: undefined,
-        description: token.$description,
+        description,
     };
 };
 

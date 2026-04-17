@@ -1,0 +1,33 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+
+.#{$ns}-alert {
+  max-width: $pt-spacing * 100;
+  padding: $pt-spacing * 5;
+}
+
+.#{$ns}-alert-body {
+  display: flex;
+
+  .#{$ns}-icon {
+    font-size: $pt-icon-size-large * 2;
+    margin-right: $pt-spacing * 5;
+    margin-top: 0;
+  }
+}
+
+.#{$ns}-alert-contents {
+  word-break: break-word;
+}
+
+.#{$ns}-alert-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-top: $pt-spacing * 3;
+
+  .#{$ns}-button {
+    margin-left: $pt-spacing * 2;
+  }
+}

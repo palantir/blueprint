@@ -1,0 +1,396 @@
+{
+    "typography": {
+        "font": {
+            "family": {
+                "default": {
+                    "$type": "string",
+                    "$value": "Inter"
+                },
+                "display": {
+                    "$type": "string",
+                    "$value": "\"Alliance No.2\""
+                },
+                "mono": {
+                    "$type": "string",
+                    "$value": "\"JetBrains Mono\""
+                }
+            },
+            "weight": {
+                "default": {
+                    "$type": "number",
+                    "$value": 400
+                },
+                "strong": {
+                    "$type": "number",
+                    "$value": 500
+                }
+            }
+        },
+        "styles": {
+            "code": {
+                "small": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.mono}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 10
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 15
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 385
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": 0
+                    }
+                },
+                "medium": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.mono}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 11
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 20
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 490
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": 0
+                    }
+                },
+                "large": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.mono}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 14
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 21
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 560
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": 0
+                    }
+                },
+                "x-small": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.mono}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 9
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 15
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 385
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": 0
+                    }
+                }
+            },
+            "body": {
+                "x-small": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 9
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 15
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 420
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": 0
+                    }
+                },
+                "small": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 11
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 18
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 420
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": -0.15000000596046448
+                    }
+                },
+                "medium": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 13
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 18
+                    },
+                    "runningLineHeight": {
+                        "$type": "number",
+                        "$value": 20
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 490
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": -0.25
+                    }
+                },
+                "large": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 15
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 20
+                    },
+                    "runningLineHeight": {
+                        "$type": "number",
+                        "$value": 22
+                    },
+                    "maxLineLength": {
+                        "$type": "number",
+                        "$value": 560
+                    },
+                    "letterSpacing": {
+                        "$type": "number",
+                        "$value": -0.25
+                    }
+                }
+            },
+            "heading": {
+                "small": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 16
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.strong}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 20
+                    },
+                    "maxLineWidth": {
+                        "$type": "number",
+                        "$value": 600
+                    }
+                },
+                "medium": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 20
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.strong}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 22
+                    },
+                    "maxLineWidth": {
+                        "$type": "number",
+                        "$value": 700
+                    }
+                },
+                "large": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 24
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.strong}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 26
+                    },
+                    "maxLineWidth": {
+                        "$type": "number",
+                        "$value": 800
+                    }
+                },
+                "x-large": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.default}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 28
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.strong}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 30
+                    },
+                    "maxLineWidth": {
+                        "$type": "number",
+                        "$value": 900
+                    }
+                },
+                "display": {
+                    "fontFamily": {
+                        "$type": "string",
+                        "$value": "{typography.font.family.display}"
+                    },
+                    "fontSize": {
+                        "$type": "number",
+                        "$value": 48
+                    },
+                    "fontWeight": {
+                        "$type": "number",
+                        "$value": "{typography.font.weight.default}"
+                    },
+                    "lineHeight": {
+                        "$type": "number",
+                        "$value": 56
+                    },
+                    "maxLineWidth": {
+                        "$type": "number",
+                        "$value": 1100
+                    }
+                }
+            }
+        },
+        "color": {
+            "app": {
+                "$type": "color",
+                "$value": "{palette.grey.1000}"
+            },
+            "disabled-opacity": {
+                "$type": "number",
+                "$value": 40
+            },
+            "intent": {
+                "default": {
+                    "$type": "color",
+                    "$value": "{palette.grey.600}"
+                },
+                "primary": {
+                    "$type": "color",
+                    "$value": "{palette.blue.600}"
+                },
+                "success": {
+                    "$type": "color",
+                    "$value": "{palette.green.600}"
+                },
+                "warning": {
+                    "$type": "color",
+                    "$value": "{palette.orange.600}"
+                },
+                "danger": {
+                    "$type": "color",
+                    "$value": "{palette.red.600}"
+                }
+            }
+        }
+    }
+}

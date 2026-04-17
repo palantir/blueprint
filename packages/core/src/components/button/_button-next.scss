@@ -1,0 +1,284 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-extended-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../icon/icon-mixins-next" as *;
+@use "./common-next" as *;
+
+.#{$ns}-button {
+  @include pt-button-layout;
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
+
+  &:empty {
+    // override padding from other modifiers (for CSS icon support)
+    /* stylelint-disable-next-line declaration-no-important */
+    padding: 0 !important;
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    cursor: not-allowed;
+  }
+
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+
+  &.#{$ns}-align-right,
+  .#{$ns}-align-right & {
+    text-align: right;
+  }
+
+  &.#{$ns}-align-left,
+  .#{$ns}-align-left & {
+    text-align: left;
+  }
+
+  // default styles
+  &:not([class*="#{$ns}-intent-"]) {
+    @include pt-button;
+  }
+
+  // intents
+  @each $intent, $colors in $button-intent-states {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-button-intent($colors...);
+    }
+  }
+
+  &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: var(--bp-intent-primary-foreground);
+  }
+
+  // size modifiers
+  &.#{$ns}-large,
+  .#{$ns}-large & {
+    @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+    font-size: var(--bp-typography-size-body-large);
+    min-height: calc(var(--bp-surface-spacing) * 10);
+    min-width: calc(var(--bp-surface-spacing) * 10);
+    padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 4);
+  }
+
+  &.#{$ns}-small,
+  .#{$ns}-small & {
+    min-height: calc(var(--bp-surface-spacing) * 6);
+    min-width: calc(var(--bp-surface-spacing) * 6);
+    padding: 0 calc(var(--bp-surface-spacing) * 2);
+  }
+
+  // loading state
+  &.#{$ns}-loading {
+    position: relative;
+
+    &[class*="#{$ns}-icon-"]::before {
+      visibility: hidden;
+    }
+
+    .#{$ns}-button-spinner {
+      margin: 0;
+      // spinner appears centered within button
+      position: absolute;
+    }
+
+    > :not(.#{$ns}-button-spinner) {
+      visibility: hidden;
+    }
+  }
+
+  // icons
+  &[class*="#{$ns}-icon-"] {
+    &::before {
+      @include pt-icon;
+      color: var(--bp-typography-color-muted);
+    }
+  }
+
+  #{$icon-classes} {
+    &.#{$ns}-align-right {
+      margin-left: calc(var(--bp-surface-spacing) * 2);
+    }
+  }
+
+  .#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
+    color: var(--bp-typography-color-muted);
+  }
+
+  // button with SVG icon only (no text or children)
+  > .#{$ns}-icon:first-child:last-child,
+  // if loading, then it contains exactly [spinner, icon]
+  > .#{$ns}-spinner + .#{$ns}-icon:last-child {
+    // center icon horizontally. this works for large buttons too.
+    margin: 0
+      calc(
+        -1 * calc(calc(var(--bp-surface-spacing) * 7.5) - calc(var(--bp-surface-spacing) * 4)) * 0.5
+      );
+  }
+
+  // dark theme
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    &:not([class*="#{$ns}-intent-"]) {
+      @include pt-dark-button;
+
+      &[class*="#{$ns}-icon-"]::before {
+        color: var(--bp-typography-color-default-rest);
+      }
+
+      #{$icon-classes} {
+        &:not([class*="#{$ns}-intent-"]) {
+          color: var(--bp-typography-color-default-rest);
+        }
+      }
+    }
+
+    &[class*="#{$ns}-intent-"] {
+      box-shadow:
+        inset 0 0 0 var(--bp-surface-border-width)
+          color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+
+      &:hover {
+        box-shadow:
+          inset 0 0 0 var(--bp-surface-border-width)
+            color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        box-shadow:
+          inset 0 0 0 var(--bp-surface-border-width)
+            color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        box-shadow: none;
+        color: color-mix(in oklch, var(--bp-intent-default-foreground) 30%, transparent);
+      }
+
+      .#{$ns}-button-spinner .#{$ns}-spinner-head {
+        stroke: var(--bp-typography-color-default-hover);
+      }
+    }
+  }
+
+  // disabled and intent button icon should use same color as text
+  &:disabled,
+  &.#{$ns}-disabled,
+  &[class*="#{$ns}-intent-"] {
+    &::before,
+    #{$icon-classes} {
+      /* stylelint-disable-next-line declaration-no-important */
+      color: inherit !important;
+    }
+  }
+
+  // minimal must come last to override all default styles
+  &.#{$ns}-minimal {
+    @include pt-button-minimal;
+  }
+
+  // outline is based on the styles of minimal
+  &.#{$ns}-outlined {
+    @include pt-button-minimal;
+    @include pt-button-outlined;
+  }
+
+  // special case override: use dark text for warning intent
+  &.#{$ns}-intent-warning {
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+      fill: color-mix(in oklch, var(--bp-intent-warning-foreground) 70%, transparent);
+    }
+
+    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+      &:hover {
+        background: color-mix(
+          in oklch,
+          var(--bp6-button-warning-rest) 77%,
+          var(--bp-intent-warning-hover)
+        );
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background: color-mix(
+          in oklch,
+          var(--bp6-button-warning-rest) 46%,
+          var(--bp-intent-warning-active)
+        );
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          background: highlight;
+        }
+      }
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background-color: color-mix(in oklch, var(--bp-intent-warning-rest) 40%, transparent);
+
+      .#{$ns}-dark &,
+      [data-bp-color-scheme="dark"] & {
+        color: color-mix(in oklch, var(--bp-intent-warning-foreground) 50%, transparent);
+      }
+    }
+
+    &.#{$ns}-minimal,
+    &.#{$ns}-outlined {
+      background: none;
+
+      // Mute disabled text — orange is perceptually brighter than other intents
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: color-mix(in oklch, var(--bp-intent-warning-hover) 40%, transparent);
+      }
+
+      .#{$ns}-dark &,
+      [data-bp-color-scheme="dark"] & {
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+          fill: color-mix(in oklch, var(--bp-intent-warning-rest) 35%, transparent);
+        }
+      }
+    }
+  }
+}
+
+a.#{$ns}-button {
+  text-align: center;
+  text-decoration: none;
+  transition: none;
+
+  &,
+  &:hover,
+  &:active {
+    // override global 'a' styles
+    color: var(--bp-typography-color-default-rest);
+  }
+
+  &.#{$ns}-disabled {
+    color: var(--bp-typography-color-default-disabled);
+  }
+}
+
+.#{$ns}-button-text {
+  // default: don't grow to fill but allow shrinking as necessary
+  flex: 0 1 auto;
+}
+
+// when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
+.#{$ns}-button,
+.#{$ns}-button-group {
+  &.#{$ns}-align-left,
+  &.#{$ns}-align-right {
+    .#{$ns}-button-text {
+      flex: 1 1 auto;
+    }
+  }
+}

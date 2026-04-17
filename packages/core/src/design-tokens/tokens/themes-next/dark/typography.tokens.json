@@ -1,0 +1,32 @@
+{
+    "typography": {
+        "color": {
+            "app": {
+                "$type": "color",
+                "$value": "{palette.grey.100}"
+            },
+            "intent": {
+                "default": {
+                    "$type": "color",
+                    "$value": "{palette.grey.300}"
+                },
+                "primary": {
+                    "$type": "color",
+                    "$value": "{palette.blue.200}"
+                },
+                "success": {
+                    "$type": "color",
+                    "$value": "{palette.green.200}"
+                },
+                "warning": {
+                    "$type": "color",
+                    "$value": "{palette.orange.200}"
+                },
+                "danger": {
+                    "$type": "color",
+                    "$value": "{palette.red.200}"
+                }
+            }
+        }
+    }
+}

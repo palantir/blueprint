@@ -1,0 +1,207 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:map";
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../../common/variables-extended-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../icon/icon-mixins-next" as *;
+
+$tree-row-height: $pt-spacing * 7.5 !default;
+$tree-icon-spacing: $pt-spacing * 2 !default;
+
+$tree-row-height-compact: $pt-spacing * 6 !default;
+$tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
+
+$tree-intent-icon-colors: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger": $red5,
+) !default;
+
+.#{$ns}-tree {
+  #{$icon-classes} {
+    color: $pt-icon-color;
+
+    @each $intent, $colors in $pt-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include intent-color($intent);
+      }
+    }
+  }
+}
+
+.#{$ns}-tree-node-list {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.#{$ns}-tree-root {
+  background-color: transparent;
+  cursor: default;
+  padding-left: 0;
+  // lets us position hover/selection effects based on the width of the whole tree
+  position: relative;
+}
+
+@for $i from 0 through 20 {
+  .#{$ns}-tree-node-content-#{$i} {
+    padding-left: ($tree-row-height - $tree-icon-spacing) * $i;
+  }
+}
+
+.#{$ns}-tree-node-content {
+  align-items: center;
+  background: none;
+  display: flex;
+  height: $tree-row-height;
+  padding-right: $pt-spacing;
+  width: 100%;
+
+  &:hover {
+    background-color: rgba($gray3, 0.15);
+  }
+
+  &:active {
+    background-color: rgba($gray3, 0.3);
+  }
+}
+
+.#{$ns}-tree-node-caret,
+.#{$ns}-tree-node-caret-none {
+  min-width: $tree-row-height;
+}
+
+.#{$ns}-tree-node-caret {
+  @include pt-icon-colors;
+  cursor: pointer;
+  padding: $tree-icon-spacing;
+  transform: rotate(0deg);
+  transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
+
+  &:hover {
+    color: $pt-text-color;
+  }
+
+  &.#{$ns}-tree-node-caret-open {
+    transform: rotate(90deg);
+  }
+
+  // CSS API support
+  &.#{$ns}-icon-standard::before {
+    content: map.get($blueprint-icon-codepoints, "chevron-right");
+  }
+}
+
+.#{$ns}-tree-node-icon {
+  margin-right: $tree-icon-spacing;
+  position: relative;
+}
+
+.#{$ns}-tree-node-label {
+  @include overflow-ellipsis;
+  flex: 1 1 auto;
+  position: relative;
+  user-select: none;
+
+  span {
+    // prevents spans from interfering with text overflows (e.g. when Tooltips are used in labels)
+    display: inline;
+  }
+}
+
+.#{$ns}-tree-node-secondary-label {
+  padding: 0 $pt-spacing;
+  user-select: none;
+
+  .#{$ns}-popover-wrapper,
+  .#{$ns}-popover-target {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.#{$ns}-tree-node.#{$ns}-disabled {
+  .#{$ns}-tree-node-content {
+    background-color: inherit;
+    color: $pt-text-color-disabled;
+    cursor: not-allowed;
+  }
+
+  .#{$ns}-tree-node-caret,
+  .#{$ns}-tree-node-icon {
+    color: $pt-text-color-disabled;
+    cursor: not-allowed;
+  }
+}
+
+.#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
+  background-color: $pt-intent-primary;
+
+  &,
+  #{$icon-classes} {
+    color: $white;
+  }
+
+  .#{$ns}-tree-node-caret {
+    &::before {
+      color: rgba($white, 0.7);
+    }
+
+    &:hover::before {
+      color: $white;
+    }
+  }
+}
+
+// Variant: compact
+.#{$ns}-tree.#{$ns}-compact {
+  .#{$ns}-tree-node-content {
+    height: $tree-row-height-compact;
+  }
+
+  .#{$ns}-tree-node-caret {
+    margin-right: $pt-spacing * 0.75;
+    min-width: $tree-row-height-compact;
+    padding: $tree-icon-spacing-compact;
+  }
+}
+
+// Variant: dark theme
+.#{$ns}-dark {
+  .#{$ns}-tree-node-content {
+    &:hover {
+      background-color: rgba($gray1, 0.3);
+    }
+  }
+
+  .#{$ns}-tree {
+    #{$icon-classes} {
+      color: $pt-dark-icon-color;
+
+      @each $intent, $color in $tree-intent-icon-colors {
+        &.#{$ns}-intent-#{$intent} {
+          color: $color;
+        }
+      }
+    }
+  }
+
+  .#{$ns}-tree-node {
+    &:not(.#{$ns}-disabled) {
+      .#{$ns}-tree-node-caret:hover {
+        color: $pt-dark-text-color;
+      }
+    }
+
+    &.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
+      background-color: $pt-intent-primary;
+
+      #{$icon-classes} {
+        color: $white;
+      }
+    }
+  }
+}

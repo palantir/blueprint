@@ -1,0 +1,13 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "./common-next" as *;
+
+label.#{$ns}-label {
+  .#{$ns}-popover-target {
+    display: block;
+    margin-top: $pt-spacing;
+    text-transform: none;
+  }
+}

@@ -1,0 +1,7 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+
+@use "../../common/variables-next" as *;
+
+$skeleton-animation: ($pt-transition-duration * 10) linear infinite alternate skeleton-glow !default;
+$skeleton-color-start: rgba($light-gray1, 0.2) !default;
+$skeleton-color-end: rgba($gray1, 0.2) !default;

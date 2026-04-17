@@ -1,0 +1,100 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../../common/react-transition-next" as *;
+
+$overlay-background-color: rgba($black, 0.7) !default;
+
+// restricts scrolling of underlying content while the overlay is open
+body.#{$ns}-overlay-open {
+  overflow: hidden;
+}
+
+.#{$ns}-overlay {
+  // 0-out all positions so page won't jump when position changes (0s already there)
+  @include position-all(static, 0);
+  z-index: $pt-z-index-overlay;
+
+  &:not(.#{$ns}-overlay-open) {
+    // because of the 0-position covering the viewport,
+    // we must ignore the mouse when not open
+    pointer-events: none;
+  }
+
+  // N.B. this class name is a bit of a misnomer since it is only being used by the Drawer component. It also
+  // shares quite a bit with the "overlay-scroll-container" class, so it's due for a DRY refactor.
+  &.#{$ns}-overlay-container {
+    overflow: hidden;
+    // container covers the entire viewport
+    position: fixed;
+
+    &.#{$ns}-overlay-inline {
+      // when rendered inline, we want the overlay to position itself relative to
+      // its parent container, not relative to the whole window. thus, we change
+      // to position:absolute.
+      position: absolute;
+    }
+  }
+
+  &.#{$ns}-overlay-scroll-container {
+    overflow: auto;
+    // scroll container covers the entire viewport
+    position: fixed;
+
+    &.#{$ns}-overlay-inline {
+      // when rendered inline, we want the overlay to position itself relative to
+      // its parent container, not relative to the whole window. thus, we change
+      // to position:absolute.
+      position: absolute;
+    }
+  }
+
+  &.#{$ns}-overlay-inline {
+    display: inline;
+    // inline overlays can overflow container by default (see Dialog & Popover)
+    overflow: visible;
+  }
+}
+
+// this class is added to each Overlay child so that users won't need to
+// explicitly manage the position mode for inline and non-inline rendering.
+.#{$ns}-overlay-content {
+  // default fixed pulls it out of the flow and makes it viewport-relative
+  position: fixed;
+  z-index: $pt-z-index-overlay;
+
+  .#{$ns}-overlay-inline &,
+  .#{$ns}-overlay-scroll-container & {
+    // but inline (or scrollable) overlays want their children to respect
+    // the parent positioning context. also allows the content to scroll.
+    position: absolute;
+  }
+}
+
+// fixed position so the backdrop forecefully covers the whole screen
+.#{$ns}-overlay-backdrop {
+  @include position-all(fixed, 0);
+  @include react-transition(
+    "#{$ns}-overlay",
+    (
+      opacity: 0 1,
+    ),
+    $pt-transition-duration * 2,
+    $before: "&"
+  );
+  background-color: $overlay-background-color;
+  overflow: auto;
+  user-select: none;
+  z-index: $pt-z-index-overlay;
+
+  &:focus {
+    outline: none;
+  }
+
+  // as mentioned above: when inline, Overlay backdrop must respect parent
+  .#{$ns}-overlay-inline & {
+    position: absolute;
+  }
+}

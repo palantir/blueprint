@@ -1,0 +1,458 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:list";
+@use "sass:map";
+@use "../../common/variables-extended-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../icon/icon-mixins-next" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+
+// Variables
+// ---------------------------------------------------------------------------------------------------------------------
+
+$tag-default-color: $gray1 !default;
+
+$tag-height: $pt-spacing * 5 !default;
+$tag-line-height: $pt-icon-size-standard !default;
+$tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
+$tag-padding: $tag-padding-top * 3 !default;
+$tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
+
+$tag-height-large: $pt-spacing * 7.5 !default;
+$tag-line-height-large: $pt-spacing * 4.5 !default;
+$tag-padding-large: $pt-spacing * 2 !default;
+
+$tag-icon-spacing: $pt-spacing !default;
+$tag-icon-spacing-large: $pt-spacing * 2 !default;
+
+$tag-round-adjustment: $pt-spacing * 0.5 !default;
+
+$tag-intent-colors: (
+  "primary": (
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
+    var(--bp-intent-primary-foreground),
+  ),
+  "success": (
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
+    var(--bp-intent-success-foreground),
+  ),
+  "warning": (
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h)"},
+    #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h)"},
+    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.20) calc(c + 0.05) h)"},
+    #{"oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h)"},
+  ),
+  "danger": (
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
+    var(--bp-intent-danger-foreground),
+  ),
+) !default;
+
+$minimal-tag-intent-colors: (
+  "primary": (
+    var(--bp-intent-primary-rest),
+    var(--bp-intent-primary-hover),
+    var(--bp-intent-primary-active),
+  ),
+  "success": (
+    var(--bp-intent-success-rest),
+    var(--bp-intent-success-hover),
+    var(--bp-intent-success-active),
+  ),
+  "warning": (
+    var(--bp-intent-warning-rest),
+    var(--bp-intent-warning-hover),
+    var(--bp-intent-warning-active),
+  ),
+  "danger": (
+    var(--bp-intent-danger-rest),
+    var(--bp-intent-danger-hover),
+    var(--bp-intent-danger-active),
+  ),
+) !default;
+
+$minimal-dark-tag-intent-colors: (
+  "primary": (
+    var(--bp-intent-primary-rest),
+    #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"},
+    #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h)"},
+  ),
+  "success": (
+    var(--bp-intent-success-rest),
+    #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"},
+    #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h)"},
+  ),
+  "warning": (
+    var(--bp-intent-warning-rest),
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"},
+    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h)"},
+  ),
+  "danger": (
+    var(--bp-intent-danger-rest),
+    #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"},
+    #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h)"},
+  ),
+) !default;
+
+// Mixins - Tag component
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin pt-tag() {
+  @include pt-flex-container(row, var(--bp-surface-spacing), inline);
+  align-items: center;
+  background-color: var(--bp-intent-default-rest);
+  border: none;
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: none;
+  color: var(--bp-intent-default-foreground);
+  font-size: var(--bp-typography-size-body-small);
+  line-height: calc(var(--bp-surface-spacing) * 4);
+  max-width: 100%;
+  min-height: calc(var(--bp-surface-spacing) * 5);
+  min-width: calc(var(--bp-surface-spacing) * 5);
+  padding: calc(var(--bp-surface-spacing) * 0.5) calc(var(--bp-surface-spacing) * 1.5);
+  position: relative;
+
+  // Center text for short content (e.g. single characters) only when the text
+  // element is the sole child (no icons/remove button) and the tag is not fill.
+  &:not(.#{$ns}-fill) > .#{$ns}-fill:only-child {
+    text-align: center;
+  }
+
+  &:focus {
+    @include focus-outline(0);
+  }
+
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--bp-intent-default-hover);
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background: var(--bp-intent-default-active);
+    }
+  }
+
+  &.#{$ns}-round {
+    border-radius: calc(var(--bp-surface-spacing) * 7.5);
+    padding-left: calc(var(--bp-surface-spacing) * 2);
+    // optical adjustment for rounded tags
+    padding-right: calc(var(--bp-surface-spacing) * 2);
+  }
+
+  > #{$icon-classes} {
+    fill: var(--bp-intent-default-foreground);
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
+}
+
+@mixin pt-tag-large() {
+  @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+  font-size: var(--bp-typography-size-body-medium);
+  line-height: calc(var(--bp-surface-spacing) * 4.5);
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
+  padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 2);
+
+  &.#{$ns}-round {
+    padding-left: calc(var(--bp-surface-spacing) * 2.5);
+    // optical adjustment for rounded tags
+    padding-right: calc(var(--bp-surface-spacing) * 2.5);
+  }
+}
+
+@mixin pt-tag-intent($background-color, $hover-color, $active-color, $text-color) {
+  background: $background-color;
+  color: $text-color;
+
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background-color: $active-color;
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    /* stylelint-disable-next-line alpha-value-notation */
+    color: #{"oklch(from "}#{$text-color}#{" l c h / 0.7)"};
+
+    &:hover,
+    &:active {
+      color: $text-color;
+    }
+  }
+}
+
+@mixin pt-tag-minimal() {
+  > #{$icon-classes} {
+    fill: var(--bp-typography-color-muted);
+  }
+
+  &:not([class*="#{$ns}-intent-"]) {
+    @include pt-tag-minimal-interactive(
+      #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+      var(--bp-palette-black)
+    );
+
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+    color: var(--bp-typography-color-default-rest);
+
+    .#{$ns}-tag-remove {
+      color: var(--bp-typography-color-muted);
+
+      &:hover,
+      &:active {
+        color: var(--bp-intent-default-hover);
+      }
+    }
+
+    .#{$ns}-dark &,
+    [data-bp-color-scheme="dark"] & {
+      @include pt-tag-minimal-interactive(
+        #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+        var(--bp-palette-white)
+      );
+
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+      color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h)"};
+
+      .#{$ns}-tag-remove {
+        color: var(--bp-typography-color-muted);
+
+        &:hover,
+        &:active {
+          color: #{"oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h)"};
+        }
+      }
+    }
+  }
+}
+
+@mixin pt-tag-minimal-interactive($background-color, $text-color) {
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      color: $text-color;
+    }
+
+    &.#{$ns}-active,
+    &:active {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      color: $text-color;
+    }
+  }
+}
+
+@mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
+  /* stylelint-disable-next-line alpha-value-notation */
+  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.1)"};
+  color: $text-color;
+
+  > #{$icon-classes} {
+    fill: $text-color;
+  }
+
+  &.#{$ns}-interactive {
+    &:hover {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+      color: $hover-active-text-color;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      color: $hover-active-text-color;
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    color: $text-color;
+
+    &:hover,
+    &:active {
+      color: $hover-active-text-color;
+    }
+  }
+}
+
+@mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
+  /* stylelint-disable-next-line alpha-value-notation */
+  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+  color: $text-color;
+
+  &.#{$ns}-interactive {
+    &:hover {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      color: $hover-active-text-color;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      color: $hover-active-text-color;
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    color: $text-color;
+
+    &:hover,
+    &:active {
+      color: $hover-active-text-color;
+    }
+  }
+}
+
+@mixin pt-tag-remove() {
+  background: none;
+  border: none;
+  /* stylelint-disable-next-line alpha-value-notation */
+  color: #{"oklch(from var(--bp-intent-default-foreground) l c h / 0.7)"};
+  cursor: pointer;
+  display: flex;
+  margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
+  /* stylelint-disable-next-line declaration-no-important */
+  margin-right: calc(var(--bp-surface-spacing) * -1.5) !important;
+  // top/bottom to allow for padding to enlarge click area,
+  // right to tuck remove button into padding space.
+  margin-top: calc(var(--bp-surface-spacing) * -0.5);
+  padding: calc(var(--bp-surface-spacing) * 0.5);
+  padding-left: 0;
+
+  &:hover {
+    background: none;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .#{$ns}-icon:first-child {
+    color: inherit;
+  }
+
+  &:hover,
+  &:active {
+    color: var(--bp-intent-default-foreground);
+  }
+
+  // CSS API support
+  &:empty::before {
+    @include pt-icon;
+    content: map.get($blueprint-icon-codepoints, "small-cross");
+  }
+
+  .#{$ns}-large & {
+    /* stylelint-disable-next-line declaration-no-important */
+    margin-right: calc(var(--bp-surface-spacing) * -2) !important;
+    padding: 0 var(--bp-surface-spacing) 0 0;
+
+    &:empty::before {
+      // font-family name "blueprint-icons-20" requires a compile-time value for Sass string interpolation
+      @include pt-icon-sized(calc(var(--bp-surface-spacing) * 5), 20);
+    }
+  }
+}
+
+// Mixins - CompoundTag component
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin compound-tag-colors(
+  /* each list is a (default, hover, active) tuple of background colors */ $left-colors,
+  $right-colors
+) {
+  // override default tag background styles: this is important for minimal tags with opacity values
+  // which we want to define _absolutely_ in our design system and not by stacking opacities on top of each other.
+  background: none;
+
+  .#{$ns}-compound-tag-left {
+    background-color: list.nth($left-colors, 1);
+  }
+
+  .#{$ns}-compound-tag-right {
+    background-color: list.nth($right-colors, 1);
+  }
+
+  &.#{$ns}-interactive {
+    &:hover {
+      .#{$ns}-compound-tag-left {
+        background-color: list.nth($left-colors, 2);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: list.nth($right-colors, 2);
+      }
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      .#{$ns}-compound-tag-left {
+        background-color: list.nth($left-colors, 3);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: list.nth($right-colors, 3);
+      }
+    }
+  }
+}
+
+@mixin minimal-compound-tag-colors($base-color) {
+  /* stylelint-disable alpha-value-notation */
+  $left-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.4)"}
+  );
+  $right-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.1)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"}
+  );
+  /* stylelint-enable alpha-value-notation */
+
+  @include compound-tag-colors($left-colors, $right-colors);
+}
+
+@mixin dark-minimal-compound-tag-colors($base-color) {
+  /* stylelint-disable alpha-value-notation */
+  $left-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.4)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.5)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.55)"}
+  );
+  $right-colors: (
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"},
+    #{"oklch(from "}#{$base-color}#{" l c h / 0.35)"}
+  );
+  /* stylelint-enable alpha-value-notation */
+
+  @include compound-tag-colors($left-colors, $right-colors);
+}

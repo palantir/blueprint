@@ -1,0 +1,236 @@
+{
+    "surface": {
+        "layer": {
+            "app": {
+                "$type": "color",
+                "$value": "{palette.blue.200}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.03
+                    }
+                }
+            },
+            "default": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.grey.600}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.grey.400}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.14
+                        }
+                    }
+                }
+            },
+            "primary": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.blue.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.blue.400}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.14
+                        }
+                    }
+                }
+            },
+            "success": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.green.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.green.400}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.14
+                        }
+                    }
+                }
+            },
+            "warning": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.orange.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.orange.400}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.14
+                        }
+                    }
+                }
+            },
+            "danger": {
+                "rest": {
+                    "$type": "color",
+                    "$value": "{palette.red.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
+                        }
+                    }
+                },
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.red.400}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.14
+                        }
+                    }
+                }
+            }
+        },
+        "background-color": {
+            "app": {
+                "$type": "color",
+                "$value": "{palette.grey.900}"
+            },
+            "default": {
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.grey.500}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.grey.600}"
+                }
+            },
+            "primary": {
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.blue.500}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.blue.600}"
+                }
+            },
+            "success": {
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.green.500}"
+                }
+            },
+            "warning": {
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.orange.500}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.orange.600}"
+                }
+            },
+            "danger": {
+                "hover": {
+                    "$type": "color",
+                    "$value": "{palette.red.500}"
+                },
+                "active": {
+                    "$type": "color",
+                    "$value": "{palette.red.600}"
+                }
+            }
+        },
+        "border": {
+            "color": {
+                "default": {
+                    "$type": "color",
+                    "$value": "{palette.grey.600}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.95
+                        }
+                    }
+                },
+                "primary": {
+                    "$type": "color",
+                    "$value": "{palette.blue.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.77
+                        }
+                    }
+                },
+                "success": {
+                    "$type": "color",
+                    "$value": "{palette.green.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.74
+                        }
+                    }
+                },
+                "warning": {
+                    "$type": "color",
+                    "$value": "{palette.orange.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.8
+                        }
+                    }
+                },
+                "danger": {
+                    "$type": "color",
+                    "$value": "{palette.red.500}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.81
+                        }
+                    }
+                }
+            }
+        },
+        "divider": {
+            "default": {
+                "$type": "color",
+                "$value": "{palette.light-blue-t.200}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.12
+                    }
+                }
+            },
+            "strong": {
+                "$type": "color",
+                "$value": "{palette.light-blue-t.300}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            }
+        }
+    }
+}

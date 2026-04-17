@@ -1,0 +1,47 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../button/common-next" as *;
+
+@mixin slider-orientation($size, $vertical: false) {
+  $slider-min-size: $pt-spacing * 37.5;
+
+  @if $vertical == false {
+    height: $size;
+    min-width: $slider-min-size;
+    width: 100%;
+  } @else {
+    // define the same rules for both vertical as for horizontal to ensure all
+    // horizontal rules are fully overridden.
+    height: $slider-min-size;
+    min-width: $size;
+    width: $size;
+  }
+}
+
+@mixin slider-track-orientation($handle-size, $track-size, $vertical: false) {
+  $slider-track-offset: ($handle-size - $track-size) * 0.5;
+
+  @if $vertical == false {
+    height: $track-size;
+    left: 0;
+    right: 0;
+    top: $slider-track-offset;
+  } @else {
+    bottom: 0;
+    height: auto; // override the non-vertical rule above
+    left: $slider-track-offset;
+    top: 0;
+    width: $track-size;
+  }
+}
+
+@mixin slider-label-orientation($label-offset, $vertical: false) {
+  @if $vertical == false {
+    transform: translate(-50%, $label-offset);
+  } @else {
+    transform: translate($label-offset, 50%);
+  }
+}

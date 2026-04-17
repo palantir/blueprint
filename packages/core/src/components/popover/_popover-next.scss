@@ -1,0 +1,156 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:color";
+@use "../../common/variables-next" as *;
+@use "../../common/react-transition-next" as *;
+@use "./common-next" as *;
+@use "./popover-in-button-group-next";
+@use "./popover-in-control-group-next";
+@use "./popover-in-label-next";
+@use "./popover-in-submenu-next";
+@use "./popover-in-tree-next";
+
+$popover-width: $pt-spacing * 87.5 !default;
+$popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+// Extra border shadow added here to match the one in $pt-dark-popover-box-shadow.
+// We can't use a transparent color here because it is outset and will overlay other lines/borders underneath.
+// Also, it needs to have slightly increased lightness because its apparent width makes it look darker otherwise.
+$dark-popover-arrow-box-shadow:
+  0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
+  1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+
+.#{$ns}-popover {
+  @include popover-sizing(
+    $arrow-square-size: $pt-spacing * 7.5,
+    $arrow-offset: $pt-spacing,
+    $arrow-target-offset: -$pt-spacing
+  );
+  @include popover-appearance(
+    $pt-popover-background-color,
+    inherit,
+    $pt-popover-box-shadow,
+    $popover-arrow-box-shadow,
+    $pt-border-shadow-opacity
+  );
+  @include scale-transition;
+  border-radius: $pt-border-radius;
+  display: inline-block;
+  z-index: $pt-z-index-overlay;
+
+  .#{$ns}-popover-content {
+    border-radius: $pt-border-radius;
+    position: relative;
+  }
+
+  &.#{$ns}-popover-content-sizing {
+    .#{$ns}-popover-content {
+      max-width: $popover-width;
+      padding: $pt-spacing * 5;
+    }
+
+    // only inline popovers get a width if this class is applied.
+    // note that an inline overlay will be an immediate next sibling
+    // of the popover target as of Blueprint 2.0.
+    .#{$ns}-popover-target + .#{$ns}-overlay & {
+      width: $popover-width;
+    }
+  }
+
+  &.#{$ns}-minimal {
+    // Popover with no obvious trigger will never have margin because the arrow is hidden,
+    // so it is safe to remove.
+    margin: 0 !important; /* stylelint-disable-line declaration-no-important */
+
+    .#{$ns}-popover-arrow {
+      display: none;
+    }
+  }
+
+  &.#{$ns}-minimal,
+  &.#{$ns}-popover-minimal-animation {
+    &.#{$ns}-popover {
+      @include react-transition(
+        "#{$ns}-popover",
+        (
+          transform: scale(1) scale(1),
+        ),
+        $duration: $pt-transition-duration,
+        $after: "> &"
+      );
+    }
+  }
+
+  &.#{$ns}-popover-match-target-width {
+    // parent element will have width styles set by our custom popper.js modifier,
+    // so we should fill that container's width
+    width: 100%;
+  }
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    @include popover-appearance(
+      $pt-dark-popover-background-color,
+      inherit,
+      $pt-dark-popover-box-shadow,
+      $dark-popover-arrow-box-shadow,
+      $pt-dark-border-shadow-opacity
+    );
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+    // Windows High Contrast dark theme
+    box-shadow: none;
+  }
+}
+
+// the box-shadow under the arrow SVG paths
+.#{$ns}-popover-arrow::before {
+  border-radius: 1px;
+  content: "";
+  display: block;
+  position: absolute;
+  transform: rotate(45deg);
+}
+
+.#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
+  background: rgba($white, 0);
+}
+
+.#{$ns}-popover-transition-container {
+  @include fade-transition;
+
+  // ensure element size exactly equals its children, no edge-case 4px spacing!
+  // (try removing this property with Slider content in example)
+  display: flex;
+  z-index: $pt-z-index-overlay;
+
+  &:focus {
+    outline: none;
+  }
+
+  // popover content should ignore pointer events during a popover's exit transition
+  &.#{$ns}-popover-leave .#{$ns}-popover-content {
+    pointer-events: none;
+  }
+
+  // Popper.js applies this attribute when the target fully leaves boundaries
+  // &[data-x-out-of-boundaries] {
+  //   display: none;
+  // }
+}
+
+span.#{$ns}-popover-target {
+  // avoid `inline` elements as they won't account for padding etc
+  display: inline-block;
+
+  // this is important for span tag as default inline display height only includes text.
+  // div tag can be used for display: block, which works fine.
+}
+
+.#{$ns}-popover-target {
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+}

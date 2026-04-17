@@ -1,0 +1,241 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../button/common-next" as *;
+@use "../tooltip/common-next" as *;
+@use "../tooltip/tooltip-next";
+@use "./common-next" as *;
+
+$handle-size: $pt-icon-size-standard !default;
+$track-size: $handle-size - ($pt-spacing * 2.5) !default;
+$label-offset: $handle-size + $pt-spacing !default;
+
+$handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
+$handle-box-shadow:
+  $handle-border-shadow,
+  0 1px 1px rgba($black, 0.5) !default;
+$handle-box-shadow-hover:
+  $handle-border-shadow,
+  0 1px 2px rgba($black, 0.6) !default;
+$handle-box-shadow-active:
+  inset 0 1px 1px rgba($black, 0.1),
+  $handle-border-shadow,
+  0 1px 2px rgba($black, 0.2) !default;
+
+// retain legacy variable aliases so as to not break consumers
+$handle-height: $handle-size !default;
+$track-height: $track-size !default;
+
+.#{$ns}-slider {
+  @include slider-orientation($pt-input-height-large, $vertical: false);
+  cursor: default;
+  outline: none;
+  position: relative;
+  user-select: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  &.#{$ns}-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.#{$ns}-slider-unlabeled {
+    height: $handle-size;
+  }
+}
+
+.#{$ns}-slider-track,
+.#{$ns}-slider-progress {
+  @include slider-track-orientation($handle-size, $track-size, $vertical: false);
+  position: absolute;
+}
+
+.#{$ns}-slider-track {
+  border-radius: $pt-border-radius;
+  overflow: hidden;
+}
+
+.#{$ns}-slider-progress {
+  background: rgba($gray1, 0.2);
+
+  .#{$ns}-dark & {
+    background: rgba($black, 0.5);
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: $color;
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    background: ButtonText;
+  }
+}
+
+.#{$ns}-slider-handle {
+  @include pt-button;
+  border-radius: $pt-border-radius;
+  box-shadow: $handle-box-shadow;
+  cursor: pointer;
+  height: $handle-size;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: $handle-size;
+
+  // ensure target handle's label always covers neighbors
+  &:focus {
+    z-index: 1;
+  }
+
+  &:hover {
+    @include pt-button-hover;
+    box-shadow: $handle-box-shadow-hover;
+    cursor: grab;
+    z-index: 2;
+  }
+
+  &.#{$ns}-active {
+    @include pt-button-active;
+    box-shadow: $handle-box-shadow-active;
+    cursor: grabbing;
+  }
+
+  .#{$ns}-disabled & {
+    background: $gray5;
+    box-shadow: none;
+    // easy way to avoid lots of special cases to ignore mouse states when disabled:
+    pointer-events: none;
+  }
+
+  .#{$ns}-dark & {
+    // don't use pt-dark-button() here, since we want to appear more like a light theme button
+    background-color: $gray4;
+    box-shadow: $dark-button-box-shadow;
+
+    &:hover {
+      background-color: $gray3;
+      box-shadow: $dark-button-box-shadow-active;
+    }
+
+    &.#{$ns}-active {
+      background-color: $gray2;
+      box-shadow:
+        inset 0 1px 1px rgba($black, 0.1),
+        $dark-button-box-shadow-active;
+    }
+  }
+
+  .#{$ns}-dark .#{$ns}-disabled & {
+    background: $gray1;
+    border-color: $gray1;
+    box-shadow: none;
+  }
+
+  .#{$ns}-slider-label {
+    background: $tooltip-background-color;
+    border-radius: $pt-border-radius;
+    box-shadow: $pt-tooltip-box-shadow;
+    color: $tooltip-text-color;
+    margin-left: $handle-size * 0.5;
+
+    .#{$ns}-dark & {
+      background: $dark-tooltip-background-color;
+      box-shadow: $pt-dark-tooltip-box-shadow;
+      color: $dark-tooltip-text-color;
+    }
+
+    .#{$ns}-disabled & {
+      box-shadow: none;
+    }
+  }
+
+  &.#{$ns}-start,
+  &.#{$ns}-end {
+    width: $handle-size * 0.5;
+  }
+
+  &.#{$ns}-start {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &.#{$ns}-end {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-left: $handle-size * 0.5;
+
+    .#{$ns}-slider-label {
+      margin-left: 0;
+    }
+  }
+}
+
+.#{$ns}-slider-label {
+  @include slider-label-orientation($label-offset);
+  display: inline-block;
+  font-size: $pt-font-size-small;
+  line-height: 1;
+  padding: ($pt-spacing * 0.5) $pt-spacing;
+  position: absolute;
+  vertical-align: top;
+}
+
+.#{$ns}-slider.#{$ns}-vertical {
+  @include slider-orientation($pt-input-height-large, $vertical: true);
+
+  .#{$ns}-slider-track,
+  .#{$ns}-slider-progress {
+    @include slider-track-orientation($handle-size, $track-size, $vertical: true);
+  }
+
+  .#{$ns}-slider-progress {
+    top: auto;
+  }
+
+  .#{$ns}-slider-label {
+    @include slider-label-orientation($label-offset, $vertical: true);
+  }
+
+  .#{$ns}-slider-handle {
+    top: auto;
+
+    .#{$ns}-slider-label {
+      margin-left: 0;
+      margin-top: -$handle-size * 0.5;
+    }
+
+    &.#{$ns}-end,
+    &.#{$ns}-start {
+      height: $handle-size * 0.5;
+      margin-left: 0;
+      width: $handle-size;
+    }
+
+    &.#{$ns}-start {
+      border-bottom-right-radius: $pt-border-radius;
+      border-top-left-radius: 0;
+
+      .#{$ns}-slider-label {
+        transform: translate($label-offset);
+      }
+    }
+
+    &.#{$ns}-end {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: $pt-border-radius;
+      margin-bottom: $handle-size * 0.5;
+    }
+  }
+}

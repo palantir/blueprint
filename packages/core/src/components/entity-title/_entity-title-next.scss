@@ -1,0 +1,108 @@
+// Copyright 2024 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:list";
+@use "../../common/variables-next" as *;
+
+// Duplicated from _typography-next.scss since @use does not share variables across modules
+$headings: (
+  "h1": (36px, 40px),
+  "h2": (28px, 32px),
+  "h3": (22px, 25px),
+  "h4": (18px, 21px),
+  "h5": (16px, 19px),
+  "h6": (14px, 16px),
+) !default;
+
+.#{$ns}-entity-title {
+  align-items: center;
+  display: flex;
+  gap: $pt-spacing * 2;
+  min-width: 0;
+
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+
+  &-icon-container {
+    &.#{$ns}-entity-title-has-subtitle {
+      align-self: flex-start;
+    }
+
+    &:not(.#{$ns}-entity-title-has-subtitle) {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  &-text {
+    display: flex;
+    flex-direction: column;
+
+    .#{$ns}-fill & {
+      flex-grow: 1;
+    }
+  }
+
+  &-title-and-tags {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: $pt-spacing;
+  }
+
+  &-tags-container {
+    display: flex;
+    gap: $pt-spacing * 0.5;
+    margin-left: $pt-spacing;
+  }
+
+  &-title {
+    margin-bottom: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+
+    .#{$ns}-fill & {
+      flex-grow: 1;
+    }
+  }
+
+  &-subtitle {
+    font-size: $pt-font-size-small;
+    margin-top: $pt-spacing * 0.5;
+  }
+
+  &-ellipsize,
+  &-ellipsize &-text {
+    overflow: hidden;
+  }
+
+  @each $tag, $props in $headings {
+    &-heading-#{$tag} .#{$ns}-icon-container {
+      align-items: center;
+      display: flex;
+      // Aligning icon which has unknown dimensions on the title size
+      height: list.nth($props, 2);
+    }
+  }
+
+  &-heading-h1,
+  &-heading-h2,
+  &-heading-h3 {
+    gap: $pt-spacing * 4;
+
+    .#{$ns}-entity-title-subtitle {
+      font-size: $pt-font-size;
+    }
+  }
+
+  &-heading-h4,
+  &-heading-h5,
+  &-heading-h6 {
+    gap: $pt-spacing * 2;
+
+    .#{$ns}-entity-title-subtitle {
+      font-size: $pt-font-size-small;
+    }
+  }
+}

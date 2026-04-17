@@ -1,0 +1,110 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "../../common/variables-next" as *;
+@use "../../common/mixins-next" as *;
+@use "../../common/react-transition-next" as *;
+@use "../../common/typography-colors-next" as *;
+@use "../popover/common-next" as *;
+@use "./common-next" as *;
+
+$tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+
+$tooltip-padding-compact-vertical: $pt-spacing !default;
+$tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
+
+.#{$ns}-tooltip {
+  @include popover-sizing(
+    $arrow-square-size: $pt-spacing * 5.5,
+    $arrow-offset: $pt-spacing * 0.75,
+    $arrow-target-offset: -$pt-spacing
+  );
+  @include popover-appearance(
+    $tooltip-background-color,
+    $tooltip-text-color,
+    $pt-tooltip-box-shadow,
+    $tooltip-arrow-box-shadow,
+    $pt-border-shadow-opacity
+  );
+  // lightweight scale for tooltips
+  @include react-transition(
+    "#{$ns}-popover",
+    (
+      transform: scale(0.8) scale(1),
+    ),
+    $duration: $pt-transition-duration,
+    $after: "> &"
+  );
+  // override typography & icon colors because we use a dark background
+  @include pt-dark-typography-colors;
+
+  .#{$ns}-popover-content {
+    padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+  }
+
+  &.#{$ns}-compact {
+    .#{$ns}-popover-content {
+      line-height: 1rem; // ensure a consistent line height
+      padding: $tooltip-padding-compact-vertical $tooltip-padding-compact-horizontal;
+    }
+
+    // Compact tooltip content is usually just a single line with default line-height, where the slight vertical
+    // misalignment of <Code> spans inside text stands out more than it does elsewhere in the design system. We apply
+    // a small typographic adjustment here to counteract this problem.
+    // TODO(adahiya): consider applying this more broadly to fix the root problem...
+    .#{$ns}-code {
+      vertical-align: text-bottom;
+    }
+  }
+
+  // need to adjust arrow placement a little bit for tooltips
+  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
+    transform: translateY($pt-spacing * -0.75);
+  }
+  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
+    transform: translateX($pt-spacing * -0.75);
+  }
+  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
+    transform: translateY($pt-spacing * 0.75);
+  }
+  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
+    transform: translateX($pt-spacing * 0.75);
+  }
+
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    @include popover-appearance(
+      $dark-tooltip-background-color,
+      $dark-tooltip-text-color,
+      $pt-dark-tooltip-box-shadow,
+      $dark-tooltip-arrow-box-shadow,
+      $pt-dark-border-shadow-opacity
+    );
+    // override typography because we use a light background
+    @include pt-typography-colors;
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-popover-content {
+        background: $color;
+        color: $white;
+      }
+
+      .#{$ns}-popover-arrow-fill {
+        fill: $color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // In Windows high contrast mode, just force the color to be the same as the border.
+          fill: $pt-high-contrast-mode-border-color;
+        }
+      }
+    }
+  }
+}
+
+.#{$ns}-tooltip-indicator {
+  border-bottom: dotted 1px;
+  cursor: help;
+}

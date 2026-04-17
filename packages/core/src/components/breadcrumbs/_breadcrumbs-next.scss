@@ -1,0 +1,162 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../../common/variables-next" as *;
+
+.#{$ns}-breadcrumbs {
+  align-items: center;
+  cursor: default;
+  display: flex;
+  flex-wrap: wrap;
+  height: $pt-input-height;
+  list-style: none;
+  // unstyled inline list reset
+  margin: 0;
+  padding: 0;
+
+  // descendant selector because nothing should come between ol and li
+  > li {
+    align-items: center;
+    display: flex;
+
+    &::after {
+      background: svg-icon(
+        "16px/chevron-right.svg",
+        (
+          path: (
+            fill: $pt-icon-color,
+          ),
+        )
+      );
+      content: "";
+      display: block;
+      height: $pt-icon-size-standard;
+      margin: 0 $pt-spacing;
+      width: $pt-icon-size-standard;
+    }
+
+    &:last-of-type::after {
+      display: none;
+    }
+  }
+}
+
+.#{$ns}-breadcrumb,
+.#{$ns}-breadcrumb-current,
+.#{$ns}-breadcrumbs-collapsed {
+  align-items: center;
+  display: inline-flex;
+  font-size: $pt-font-size-large;
+}
+
+.#{$ns}-breadcrumb,
+.#{$ns}-breadcrumbs-collapsed {
+  color: $pt-text-color-muted;
+}
+
+.#{$ns}-breadcrumb {
+  &:hover {
+    text-decoration: none;
+  }
+
+  &.#{$ns}-disabled {
+    color: $pt-text-color-disabled;
+    cursor: not-allowed;
+  }
+
+  .#{$ns}-icon {
+    margin-right: $pt-spacing;
+  }
+}
+
+.#{$ns}-breadcrumb-current {
+  color: inherit;
+  font-weight: 600;
+
+  .#{$ns}-input {
+    font-size: inherit;
+    font-weight: inherit;
+    vertical-align: baseline;
+  }
+}
+
+.#{$ns}-breadcrumbs-collapsed {
+  background: rgba($gray3, 0.15);
+  border: none;
+  border-radius: $pt-border-radius;
+  cursor: pointer;
+  margin-right: $pt-spacing * 0.5;
+  padding: 1px $pt-spacing;
+  vertical-align: text-bottom;
+
+  &::before {
+    background: svg-icon(
+        "16px/more.svg",
+        (
+          path: (
+            fill: $pt-icon-color,
+          ),
+        )
+      )
+      center no-repeat;
+    content: "";
+    display: block;
+    height: $pt-icon-size-standard;
+    width: $pt-icon-size-standard;
+  }
+
+  &:hover {
+    background: rgba($gray3, 0.3);
+    color: $pt-text-color;
+    text-decoration: none;
+  }
+}
+
+.#{$ns}-dark {
+  .#{$ns}-breadcrumb,
+  .#{$ns}-breadcrumbs-collapsed {
+    color: $pt-dark-text-color-muted;
+  }
+
+  .#{$ns}-breadcrumbs > li::after {
+    background: svg-icon(
+      "16px/chevron-right.svg",
+      (
+        path: (
+          fill: $pt-dark-icon-color,
+        ),
+      )
+    );
+    color: $pt-dark-icon-color;
+  }
+
+  .#{$ns}-breadcrumb.#{$ns}-disabled {
+    color: $pt-dark-text-color-disabled;
+  }
+
+  .#{$ns}-breadcrumb-current {
+    color: $pt-dark-text-color;
+  }
+
+  .#{$ns}-breadcrumbs-collapsed {
+    background: rgba($gray3, 0.2);
+
+    &::before {
+      background: svg-icon(
+          "16px/more.svg",
+          (
+            path: (
+              fill: $pt-dark-icon-color,
+            ),
+          )
+        )
+        center no-repeat;
+    }
+
+    &:hover {
+      background: rgba($gray3, 0.3);
+      color: $pt-dark-text-color;
+    }
+  }
+}

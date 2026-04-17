@@ -1,0 +1,112 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@forward "./flex-next";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "./color-aliases-next" as *;
+@use "./variables-next" as *;
+@use "./functions-next" as *;
+@use "./flex-next" as *;
+
+$pt-intent-colors: (
+  "primary": $pt-intent-primary,
+  "success": $pt-intent-success,
+  "warning": $pt-intent-warning,
+  "danger": $pt-intent-danger,
+) !default;
+
+$pt-intent-text-colors: (
+  "primary": $blue2,
+  "success": $green2,
+  "warning": $orange2,
+  "danger": $red2,
+) !default;
+
+$pt-intent-active-text-colors: (
+  "primary": $blue1,
+  "success": $green1,
+  "warning": $orange1,
+  "danger": $red1,
+) !default;
+
+$pt-dark-intent-text-colors: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger": $red5,
+) !default;
+
+@mixin intent-color($intentName) {
+  color: map.get($pt-intent-colors, $intentName);
+}
+
+@mixin position-all($position, $value) {
+  inset: $value;
+  position: $position;
+}
+
+@mixin base-typography() {
+  font-size: $pt-font-size;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: $pt-line-height;
+  text-transform: none;
+}
+
+@mixin running-typography() {
+  font-size: $pt-font-size;
+  line-height: 1.5;
+}
+
+@mixin heading-typography() {
+  color: $pt-heading-color;
+  font-weight: 600;
+
+  .#{$ns}-dark & {
+    color: $pt-dark-heading-color;
+  }
+
+  &.#{$ns}-text-muted {
+    color: $pt-text-color-muted;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
+  }
+}
+
+@mixin monospace-typography() {
+  font-family: $pt-font-family-monospace;
+  text-transform: none;
+}
+
+@mixin overflow-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+@mixin focus-outline($offset: $pt-spacing * 0.5) {
+  outline: $pt-focus-indicator-color solid ($pt-spacing * 0.5);
+  outline-offset: $offset;
+  -moz-outline-radius: $pt-spacing * 1.5;
+
+  .#{$ns}-dark & {
+    outline-color: $pt-dark-focus-indicator-color;
+  }
+}
+
+// returns the padding necessary to center text in a container of the given height.
+@function centered-text($height, $line-height: math.floor($pt-font-size * $pt-line-height)) {
+  @return math.floor(($height - $line-height) * 0.5);
+}
+
+// Isolates z-indices
+
+@mixin new-render-layer() {
+  transform: translateZ(0);
+}
