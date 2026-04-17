@@ -3,7 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, StoryLabel, storybookLayoutDecorator } from "@storybook-common";
+import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+
+import { H2 } from "@blueprintjs/core";
 
 import { KeyComboTag } from "./keyComboTag";
 
@@ -196,7 +198,7 @@ export const AllKeysExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 24, width: 600 }}>
             {ALL_KEY_SECTIONS.map(({ label, keys }) => (
                 <section key={label}>
-                    <h2>{label}</h2>
+                    <H2>{label}</H2>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                         {keys.map(combo => (
                             <div key={combo} style={{ width: 100 }}>
