@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+
 import { Flex } from "@blueprintjs/labs";
 
 import { Intent } from "../../common";
