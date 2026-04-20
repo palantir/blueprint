@@ -90,7 +90,8 @@ $control-group-stack: (
   border: none;
   border-radius: var(--bp-surface-border-radius);
   box-shadow:
-    inset 0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0)"},
+    inset 0 0 0 0
+      #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0)"},
     0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0)"},
     inset 0 0 0 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)},
     inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.3)};
@@ -208,7 +209,8 @@ $control-group-stack: (
   background: #{oklch(from var(--bp-palette-black) l c h / 0.3)};
 
   box-shadow:
-    inset 0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)"},
+    inset 0 0 0 0
+      #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)"},
     0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)"},
     inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
     inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
