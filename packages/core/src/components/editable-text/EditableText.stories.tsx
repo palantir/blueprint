@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -48,13 +48,19 @@ const meta: Meta<typeof EditableText> = {
         placeholder: {
             control: "text",
         },
-        maxLength: {
-            control: "number",
-        },
         onCancel: { table: { disable: true } },
         onChange: { table: { disable: true } },
         onConfirm: { table: { disable: true } },
         onEdit: { table: { disable: true } },
+        className: { table: { disable: true } },
+        alwaysRenderInput: { table: { disable: true } },
+        defaultValue: { table: { disable: true } },
+        isEditing: { table: { disable: true } },
+        maxLength: { table: { disable: true } },
+        minWidth: { table: { disable: true } },
+        maxLines: { table: { disable: true } },
+        minLines: { table: { disable: true } },
+        type: { table: { disable: true } },
         ...disabledArgs.reduce(
             (acc, argName) => {
                 acc[argName] = { table: { disable: true } };
@@ -111,11 +117,15 @@ export const StateExample: Story = {
         <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <StoryLabel title="Default" />
-                <EditableText {...args} placeholder="Click to Edit" />
+                <DashedPaddedContainer>
+                    <EditableText {...args} placeholder="Click to Edit" />
+                </DashedPaddedContainer>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <StoryLabel title="Disabled" />
-                <EditableText {...args} disabled={true} placeholder="Disabled" />
+                <DashedPaddedContainer>
+                    <EditableText {...args} disabled={true} placeholder="Disabled" />
+                </DashedPaddedContainer>
             </div>
         </div>
     ),
@@ -133,12 +143,28 @@ export const MultilineExample: Story = {
     argTypes: {
         multiline: { table: { disable: true } },
     },
-    args: {
-        multiline: true,
-        minLines: 3,
-        maxLines: 5,
-        placeholder: "Click to edit multiple lines...",
-    },
+    render: args => (
+        <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <StoryLabel title="Single line" />
+                <DashedPaddedContainer>
+                    <EditableText {...args} multiline={false} placeholder="Click to Edit" />
+                </DashedPaddedContainer>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <StoryLabel title="Multiline [4 lines minimum, 6 lines maximum]" />
+                <DashedPaddedContainer>
+                    <EditableText
+                        {...args}
+                        multiline={true}
+                        minLines={4}
+                        maxLines={6}
+                        placeholder="Click to edit multiple lines..."
+                    />
+                </DashedPaddedContainer>
+            </div>
+        </div>
+    ),
 };
 
 /**
