@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Flex } from "@blueprintjs/labs";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
@@ -76,10 +77,10 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <Flex gap={4} alignItems="center">
             <Checkbox {...args} size="medium" label="Medium" defaultChecked={true} />
             <Checkbox {...args} size="large" label="Large" defaultChecked={true} />
-        </div>
+        </Flex>
     ),
 };
 
@@ -94,29 +95,29 @@ export const StateExample: Story = {
         inline: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
+        <Flex gap={4} flexDirection="column">
             <StoryLabel title="Unchecked" />
-            <div style={{ display: "flex", gap: 16 }}>
+            <Flex gap={4}>
                 <Checkbox {...args} label="Default" />
                 <Checkbox {...args} label="Disabled" disabled={true} />
-            </div>
+            </Flex>
             <StoryLabel title="Checked" />
-            <div style={{ display: "flex", gap: 16 }}>
+            <Flex gap={4}>
                 <Checkbox {...args} label="Checked" defaultChecked={true} />
                 <Checkbox {...args} label="Checked Disabled" defaultChecked={true} disabled={true} />
-            </div>
+            </Flex>
             <StoryLabel title="Indeterminate" />
-            <div style={{ display: "flex", gap: 16 }}>
+            <Flex gap={4}>
                 <Checkbox {...args} label="Indeterminate" indeterminate={true} />
                 <Checkbox {...args} label="Indeterminate Disabled" indeterminate={true} disabled={true} />
-            </div>
+            </Flex>
             <StoryLabel title="Inline" />
             <div>
                 <Checkbox {...args} inline={true} label="Option A" />
                 <Checkbox {...args} inline={true} label="Option B" />
                 <Checkbox {...args} inline={true} label="Option C" />
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -126,11 +127,11 @@ export const StateExample: Story = {
 export const AllStatesAllSizes: Story = {
     name: "All States All Sizes",
     render: args => (
-        <div style={{ display: "flex", gap: 24, flexDirection: "column" }}>
+        <Flex gap={6} flexDirection="column">
             {(["medium", "large"] as const).map(size => (
                 <div key={size}>
                     <StoryLabel title={size} />
-                    <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
+                    <Flex gap={4} flexDirection="column">
                         <Checkbox {...args} size={size} label="Unchecked" />
                         <Checkbox {...args} size={size} label="Checked" defaultChecked={true} />
                         <Checkbox {...args} size={size} label="Indeterminate" indeterminate={true} />
@@ -149,10 +150,10 @@ export const AllStatesAllSizes: Story = {
                             indeterminate={true}
                             disabled={true}
                         />
-                    </div>
+                    </Flex>
                 </div>
             ))}
-        </div>
+        </Flex>
     ),
 };
 

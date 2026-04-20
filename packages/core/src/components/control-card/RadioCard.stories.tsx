@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Alignment, Elevation } from "../../common";
 
 import { RadioCard } from "./radioCard";
@@ -84,10 +86,10 @@ export const CompactExample: Story = {
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
                 <RadioCard {...args} label="Default" defaultChecked={true} onChange={handleChange} />
                 <RadioCard {...args} compact={true} label="Compact" defaultChecked={true} onChange={handleChange} />
-            </div>
+            </Flex>
         );
     },
 };
@@ -103,13 +105,13 @@ export const StateExample: Story = {
     },
     render: function RenderState(args) {
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
                 <RadioCard {...args} label="Default" />
                 <RadioCard {...args} label="Checked" checked={true} />
                 <RadioCard {...args} label="Disabled" disabled={true} />
                 <RadioCard {...args} label="Disabled Checked" disabled={true} checked={true} />
                 <RadioCard {...args} label="No selected styling" checked={true} showAsSelectedWhenChecked={false} />
-            </div>
+            </Flex>
         );
     },
 };
@@ -127,7 +129,7 @@ export const AlignIndicatorExample: Story = {
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
                 <RadioCard
                     {...args}
                     alignIndicator={Alignment.START}
@@ -142,7 +144,7 @@ export const AlignIndicatorExample: Story = {
                     defaultChecked={true}
                     onChange={handleChange}
                 />
-            </div>
+            </Flex>
         );
     },
 };

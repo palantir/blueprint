@@ -8,6 +8,7 @@ import { pascalCase } from "change-case";
 import classNames from "classnames";
 import React, { type ComponentType, type ReactElement } from "react";
 
+import { Flex } from "@blueprintjs/labs";
 import type { IconName } from "@blueprintjs/icons";
 import * as BlueprintIcons from "@blueprintjs/icons";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
@@ -94,7 +95,7 @@ type GalleryRenderIcon = (iconName: IconName, pixelSize: number) => ReactElement
 
 function IconGallery({ renderIcon }: { renderIcon: GalleryRenderIcon }) {
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+        <Flex flexDirection="column" gap={8}>
             <section>
                 <H4>Small (16px)</H4>
                 <IconGrid pixelSize={DISPLAY_ICON_SIZE_SMALL} renderIcon={renderIcon} />
@@ -103,19 +104,19 @@ function IconGallery({ renderIcon }: { renderIcon: GalleryRenderIcon }) {
                 <H4>Large (20px)</H4>
                 <IconGrid pixelSize={DISPLAY_ICON_SIZE_LARGE} renderIcon={renderIcon} />
             </section>
-        </div>
+        </Flex>
     );
 }
 
 function IconGrid({ pixelSize, renderIcon }: { pixelSize: number; renderIcon: GalleryRenderIcon }) {
     return (
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        <Flex flexWrap="wrap" gap={2}>
             {ICON_NAMES.map(iconName => (
                 <Card key={iconName} title={`${iconName} (${pixelSize}px)`} style={ICON_GRID_CARD_STYLE}>
                     {renderIcon(iconName, pixelSize)}
                 </Card>
             ))}
-        </div>
+        </Flex>
     );
 }
 

@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Flex } from "@blueprintjs/labs";
 import { useArgs, useCallback, useState } from "storybook/preview-api";
 
 import { Position } from "../../common";
@@ -15,9 +16,9 @@ const meta: Meta<typeof Drawer> = {
     component: Drawer,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Flex justifyContent="center" alignItems="center">
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     parameters: {
@@ -226,9 +227,9 @@ export const Playground: Story = {
                         </div>
                     </div>
                     <div className="bp6-drawer-footer">
-                        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+                        <Flex gap={2} justifyContent="end">
                             <Button onClick={handleClose}>Close</Button>
-                        </div>
+                        </Flex>
                     </div>
                 </Drawer>
             </>

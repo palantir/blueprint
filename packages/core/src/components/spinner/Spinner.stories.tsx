@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { Flex } from "@blueprintjs/labs";
 
 import { Intent } from "../../common";
 
@@ -55,14 +56,14 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <Flex gap={4} alignItems="center">
             {Object.values(Intent).map(intent => (
-                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <Flex key={intent} flexDirection="column" gap={1} alignItems="center">
                     <Spinner {...args} intent={intent} size={SpinnerSize.STANDARD} />
                     <StoryLabel title={intent} />
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -75,20 +76,20 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={6} alignItems="center">
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <Spinner {...args} size={SpinnerSize.SMALL} />
                 <StoryLabel title="Small (20px)" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <Spinner {...args} size={SpinnerSize.STANDARD} />
                 <StoryLabel title="Standard (50px)" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <Spinner {...args} size={SpinnerSize.LARGE} />
                 <StoryLabel title="Large (100px)" />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -101,24 +102,24 @@ export const StateExample: Story = {
         value: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={6} alignItems="center">
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <Spinner {...args} value={undefined} />
                 <StoryLabel title="Indeterminate" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <Spinner {...args} value={0} />
                 <StoryLabel title="0%" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <Spinner {...args} value={0.5} />
                 <StoryLabel title="50%" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <Spinner {...args} value={1} />
                 <StoryLabel title="100%" />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 

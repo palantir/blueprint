@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { Flex } from "@blueprintjs/labs";
 import { useCallback, useState } from "react";
 
 import { Intent, Size } from "../../common";
@@ -95,16 +96,16 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="None" />
                 <SegmentedControl {...args} intent={Intent.NONE} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Primary" />
                 <SegmentedControl {...args} intent={Intent.PRIMARY} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -117,14 +118,14 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+        <Flex flexDirection="column" gap={3} alignItems="center">
             {Object.values(Size).map(size => (
-                <div key={size} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <Flex key={size} flexDirection="column" gap={1} alignItems="center">
                     <StoryLabel title={size} />
                     <SegmentedControl {...args} size={size} />
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -137,16 +138,16 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Default" />
                 <SegmentedControl {...args} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Disabled" />
                 <SegmentedControl {...args} disabled={true} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -166,16 +167,16 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Fill" />
                 <SegmentedControl {...args} fill={true} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Auto Width" />
                 <SegmentedControl {...args} fill={false} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -196,20 +197,20 @@ export const WithIcons: Story = {
 export const AriaLabels: Story = {
     name: "Aria Labels",
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title={'role="radiogroup" (default) + aria-label'} />
                 <SegmentedControl {...args} aria-label="View mode" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title={'role="toolbar" + aria-label'} />
                 <SegmentedControl {...args} role="toolbar" aria-label="View mode toolbar" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title={'role="group" + aria-label'} />
                 <SegmentedControl {...args} role="group" aria-label="View mode group" />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 

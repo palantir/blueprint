@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Flex } from "@blueprintjs/labs";
 
 import { Label } from "../html/html";
 
@@ -13,17 +14,9 @@ const meta: Meta<typeof Label> = {
     component: Label,
     decorators: [
         Story => (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 12,
-                    width: "100%",
-                    minWidth: "400px",
-                }}
-            >
+            <Flex flexDirection="column" gap={3} style={{ width: "100%", minWidth: "400px" }}>
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     parameters: {
@@ -53,12 +46,12 @@ export const WithInput: Story = {
         children: "Label text",
     },
     render: ({ children, ...args }) => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             <Label {...args}>
                 {children}
                 <InputGroup placeholder="Placeholder..." />
             </Label>
-        </div>
+        </Flex>
     ),
 };
 
@@ -68,7 +61,7 @@ export const WithInput: Story = {
 export const StateExample: Story = {
     name: "State",
     render: () => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             <Label>
                 Enabled label
                 <InputGroup placeholder="Enabled..." />
@@ -77,7 +70,7 @@ export const StateExample: Story = {
                 Disabled label
                 <InputGroup disabled={true} placeholder="Disabled..." />
             </Label>
-        </div>
+        </Flex>
     ),
 };
 

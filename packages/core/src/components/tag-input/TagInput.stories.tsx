@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
+import { Flex } from "@blueprintjs/labs";
 import { useCallback, useState } from "react";
 
 import { Intent } from "../../common";
@@ -102,7 +103,7 @@ export const IntentExample: Story = {
         separator: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             {Object.values(Intent).map(intent => (
                 <TagInput
                     key={intent}
@@ -112,7 +113,7 @@ export const IntentExample: Story = {
                     placeholder={`${intent} intent...`}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -128,10 +129,10 @@ export const SizeExample: Story = {
         separator: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <TagInput {...args} size="medium" values={["Medium"]} placeholder="Medium size..." />
             <TagInput {...args} size="large" values={["Large"]} placeholder="Large size..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -147,10 +148,10 @@ export const StateExample: Story = {
         separator: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <TagInput {...args} values={["Enabled"]} placeholder="Enabled..." />
             <TagInput {...args} disabled={true} values={["Disabled"]} placeholder="Disabled..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -166,10 +167,10 @@ export const IconExample: Story = {
         separator: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <TagInput {...args} leftIcon="search" values={["Search"]} placeholder="With left icon..." />
             <TagInput {...args} leftIcon="tag" values={["Tags"]} placeholder="With tag icon..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -192,10 +193,10 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <Flex flexDirection="column" gap={3}>
             <TagInput {...args} fill={true} values={["Full Width"]} placeholder="Fill..." />
             <TagInput {...args} fill={false} values={["Auto Width"]} placeholder="Auto..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -212,10 +213,10 @@ export const AutoResizeExample: Story = {
         separator: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <Flex flexDirection="column" gap={3}>
             <TagInput {...args} autoResize={true} values={["Auto Resize"]} placeholder="Type to resize..." />
             <TagInput {...args} autoResize={false} values={["Fixed Width"]} placeholder="Fixed input width..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -252,7 +253,7 @@ export const Playground: Story = {
         const handleReset = useCallback(() => setValues([...INITIAL_VALUES]), []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: "400px" }}>
+            <Flex flexDirection="column" gap={3} style={{ minWidth: "400px" }}>
                 <TagInput
                     addOnBlur={args.addOnBlur}
                     addOnPaste={args.addOnPaste}
@@ -275,7 +276,7 @@ export const Playground: Story = {
                 {values.length === 0 && (
                     <Button icon="refresh" variant="outlined" size="small" text="Reset tags" onClick={handleReset} />
                 )}
-            </div>
+            </Flex>
         );
     },
     args: {

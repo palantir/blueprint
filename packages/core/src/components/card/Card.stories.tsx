@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Flex } from "@blueprintjs/labs";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Elevation } from "../../common";
@@ -64,14 +65,14 @@ export const ElevationExample: Story = {
         elevation: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16 }}>
+        <Flex gap={4}>
             {Object.values(Elevation).map(elevation => (
                 <Card key={elevation} {...args} elevation={elevation} style={{ width: 140, padding: 16 }}>
                     <StoryLabel title="Elevation" />
                     {elevation}
                 </Card>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -86,7 +87,7 @@ export const StateExample: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+        <Flex gap={4} alignItems="start">
             <Card {...args} style={{ width: 140, padding: 16 }}>
                 Default
             </Card>
@@ -99,7 +100,7 @@ export const StateExample: Story = {
             <Card {...args} compact={true} style={{ width: 140 }}>
                 Compact
             </Card>
-        </div>
+        </Flex>
     ),
 };
 
@@ -141,11 +142,11 @@ export const Compact: Story = {
  */
 export const AllElevationsAllStates: Story = {
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {(["Default", "Interactive", "Selected", "Compact"] as const).map(state => (
                 <div key={state}>
                     <StoryLabel title={state} />
-                    <div style={{ display: "flex", gap: 16 }}>
+                    <Flex gap={4}>
                         {Object.values(Elevation).map(elevation => (
                             <Card
                                 key={elevation}
@@ -159,10 +160,10 @@ export const AllElevationsAllStates: Story = {
                                 Elev {elevation}
                             </Card>
                         ))}
-                    </div>
+                    </Flex>
                 </div>
             ))}
-        </div>
+        </Flex>
     ),
 };
 

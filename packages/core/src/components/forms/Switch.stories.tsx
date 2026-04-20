@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { Flex } from "@blueprintjs/labs";
 import { type ComponentProps } from "react";
 
 import { Switch } from "./controls";
@@ -78,10 +79,10 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <Flex gap={4} alignItems="center">
             <Switch {...args} size="medium" label="Medium" defaultChecked={true} />
             <Switch {...args} size="large" label="Large" defaultChecked={true} />
-        </div>
+        </Flex>
     ),
 };
 
@@ -96,24 +97,24 @@ export const StateExample: Story = {
         defaultChecked: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
+        <Flex gap={4} flexDirection="column">
             <StoryLabel title="Unchecked" />
-            <div style={{ display: "flex", gap: 16 }}>
+            <Flex gap={4}>
                 <Switch {...args} label="Default" />
                 <Switch {...args} label="Disabled" disabled={true} />
-            </div>
+            </Flex>
             <StoryLabel title="Checked" />
-            <div style={{ display: "flex", gap: 16 }}>
+            <Flex gap={4}>
                 <Switch {...args} label="Checked" defaultChecked={true} />
                 <Switch {...args} label="Checked Disabled" defaultChecked={true} disabled={true} />
-            </div>
+            </Flex>
             <StoryLabel title="Inline" />
             <div>
                 <Switch {...args} inline={true} label="Wi-Fi" defaultChecked={true} />
                 <Switch {...args} inline={true} label="Bluetooth" />
                 <Switch {...args} inline={true} label="Airplane Mode" />
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -123,11 +124,11 @@ export const StateExample: Story = {
 export const AllStates: Story = {
     name: "All States",
     render: args => (
-        <div style={{ display: "flex", gap: 24, flexDirection: "column" }}>
+        <Flex gap={6} flexDirection="column">
             {(["medium", "large"] as const).map(size => (
                 <div key={size}>
                     <StoryLabel title={size} />
-                    <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
+                    <Flex gap={4} flexDirection="column">
                         <Switch {...args} size={size} label="Unchecked" />
                         <Switch {...args} size={size} label="Checked" defaultChecked={true} />
                         <Switch {...args} size={size} label="Disabled" disabled={true} />
@@ -140,10 +141,10 @@ export const AllStates: Story = {
                             innerLabelChecked="On"
                             defaultChecked={true}
                         />
-                    </div>
+                    </Flex>
                 </div>
             ))}
-        </div>
+        </Flex>
     ),
 };
 

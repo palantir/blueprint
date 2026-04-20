@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Colors } from "@blueprintjs/colors";
+import { Flex } from "@blueprintjs/labs";
 
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Tag } from "../tag/tag";
@@ -90,12 +91,12 @@ export const HeadingsExample: Story = {
         title: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <Flex flexDirection="column" gap={5}>
             {HEADINGS.map(({ heading, label }) => (
                 <EntityTitle key={label} {...args} icon="document" title={`Heading ${label}`} heading={heading} />
             ))}
             <EntityTitle {...args} icon="document" title="Default (no heading)" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -108,12 +109,12 @@ export const IconExample: Story = {
         title: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <Flex flexDirection="column" gap={3}>
             <EntityTitle {...args} icon="document" title="Document" />
             <EntityTitle {...args} icon="folder-close" title="Folder" />
             <EntityTitle {...args} icon="user" title="User" />
             <EntityTitle {...args} icon={undefined} title="No icon" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -127,7 +128,7 @@ export const FillExample: Story = {
         title: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <div>
                 <StoryLabel title="Fill enabled" />
                 <DashedPaddedContainer>
@@ -144,7 +145,7 @@ export const FillExample: Story = {
                     </div>
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -159,13 +160,13 @@ export const EllipsizeExample: Story = {
     },
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Flex justifyContent="center" alignItems="center">
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <div>
                 <StoryLabel title="Ellipsize enabled" />
                 <DashedPaddedContainer width={250}>
@@ -188,7 +189,7 @@ export const EllipsizeExample: Story = {
                     />
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -202,7 +203,7 @@ export const LoadingExample: Story = {
         title: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <div>
                 <StoryLabel title="Loading" />
                 <DashedPaddedContainer width={250}>
@@ -215,7 +216,7 @@ export const LoadingExample: Story = {
                     <EntityTitle {...args} loading={false} icon="document" title="Loaded Entity" />
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -228,7 +229,7 @@ export const TagsExample: Story = {
         title: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <div>
                 <StoryLabel title="With tag" />
                 <DashedPaddedContainer>
@@ -241,7 +242,7 @@ export const TagsExample: Story = {
                     <EntityTitle {...args} icon="document" title="Document" />
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -254,10 +255,10 @@ export const SubtitleExample: Story = {
         title: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        <Flex flexDirection="column" gap={3}>
             <EntityTitle {...args} icon="document" title="Annual Report" subtitle="Last edited 2 hours ago" />
             <EntityTitle {...args} icon="folder-close" title="Project Files" subtitle="12 items" />
-        </div>
+        </Flex>
     ),
 };
 

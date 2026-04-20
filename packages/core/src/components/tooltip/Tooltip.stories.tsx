@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
 import { expect, screen, waitFor } from "storybook/test";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 import { Button } from "../button/buttons";
 
@@ -69,13 +71,13 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
+        <Flex flexDirection="column" gap={10}>
             {Object.values(Intent).map(intent => (
                 <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
                     <Button>{intent.charAt(0).toUpperCase() + intent.slice(1)}</Button>
                 </Tooltip>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -89,7 +91,7 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
+        <Flex flexDirection="column" gap={10}>
             <Tooltip {...args} compact={false} minimal={false} isOpen={true}>
                 <Button>Default</Button>
             </Tooltip>
@@ -102,7 +104,7 @@ export const VariantExample: Story = {
             <Tooltip {...args} compact={true} minimal={true} isOpen={true}>
                 <Button>Compact + Minimal</Button>
             </Tooltip>
-        </div>
+        </Flex>
     ),
 };
 

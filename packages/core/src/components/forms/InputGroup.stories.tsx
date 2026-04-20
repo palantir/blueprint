@@ -5,6 +5,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ChangeEvent, useCallback, useState } from "react";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent, Size } from "../../common";
 import { Button } from "../button/buttons";
 import { Tag } from "../tag/tag";
@@ -16,17 +18,9 @@ const meta: Meta<typeof InputGroup> = {
     component: InputGroup,
     decorators: [
         Story => (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 12,
-                    width: "100%",
-                    minWidth: "400px",
-                }}
-            >
+            <Flex flexDirection="column" gap={3} style={{ width: "100%", minWidth: "400px" }}>
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     parameters: {
@@ -93,7 +87,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             {Object.values(Intent).map(intent => (
                 <InputGroup
                     key={intent}
@@ -102,7 +96,7 @@ export const IntentExample: Story = {
                     placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -115,7 +109,7 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             {Object.values(Size).map(size => (
                 <InputGroup
                     key={size}
@@ -124,7 +118,7 @@ export const SizeExample: Story = {
                     placeholder={`${size.charAt(0).toUpperCase() + size.slice(1)} size...`}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -138,11 +132,11 @@ export const StateExample: Story = {
         readOnly: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <InputGroup {...args} placeholder="Enabled..." />
             <InputGroup {...args} disabled={true} placeholder="Disabled..." />
             <InputGroup {...args} readOnly={true} defaultValue="Read only" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -155,7 +149,7 @@ export const IconExample: Story = {
         leftIcon: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <InputGroup {...args} leftIcon="search" placeholder="Search..." />
             <InputGroup {...args} leftIcon="user" placeholder="Username..." />
             <InputGroup
@@ -165,7 +159,7 @@ export const IconExample: Story = {
                 placeholder="Password..."
                 type="password"
             />
-        </div>
+        </Flex>
     ),
 };
 
@@ -179,7 +173,7 @@ export const LeftRightElementsExample: Story = {
         rightElement: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <InputGroup {...args} leftElement={<Tag interactive={true}>Left</Tag>} placeholder="Search..." />
             <InputGroup
                 {...args}
@@ -192,7 +186,7 @@ export const LeftRightElementsExample: Story = {
                 rightElement={<Tag interactive={true}>Right</Tag>}
                 placeholder="With right element..."
             />
-        </div>
+        </Flex>
     ),
 };
 
@@ -205,11 +199,11 @@ export const RoundExample: Story = {
         round: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <InputGroup {...args} round={false} placeholder="Default shape..." />
             <InputGroup {...args} round={true} placeholder="Round shape..." />
             <InputGroup {...args} round={true} leftIcon="search" placeholder="Round with icon..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -229,10 +223,10 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={2} alignItems="start">
             <InputGroup {...args} fill={true} placeholder="Full Width" />
             <InputGroup {...args} fill={false} placeholder="Auto Width" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -254,7 +248,7 @@ export const Playground: Story = {
         const handleClear = useCallback(() => setValue(""), []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: "400px" }}>
+            <Flex flexDirection="column" gap={3} style={{ minWidth: "400px" }}>
                 <InputGroup
                     disabled={args.disabled}
                     fill={args.fill}
@@ -272,7 +266,7 @@ export const Playground: Story = {
                     size={args.size}
                     value={value}
                 />
-            </div>
+            </Flex>
         );
     },
     args: {

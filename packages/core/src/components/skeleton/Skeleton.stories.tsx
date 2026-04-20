@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Flex } from "@blueprintjs/labs";
 import { StoryLabel } from "@storybook-common";
 
 import { Classes } from "../../common";
@@ -39,9 +40,9 @@ const meta: Meta<typeof SkeletonDemo> = {
     component: SkeletonDemo,
     decorators: [
         Story => (
-            <div style={{ display: "flex", width: "600px" }}>
+            <Flex style={{ width: "600px" }}>
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     parameters: {
@@ -76,16 +77,16 @@ export const Default: Story = {
 export const ComparisonExample: Story = {
     name: "Comparison",
     render: () => (
-        <div style={{ display: "flex", gap: 24 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={6}>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Loading" />
                 <SkeletonDemo skeleton={true} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Loaded" />
                 <SkeletonDemo skeleton={false} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
