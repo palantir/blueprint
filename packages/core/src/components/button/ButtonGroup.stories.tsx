@@ -92,7 +92,7 @@ export const VariantExample: Story = {
         variant: { table: { disable: true } },
     },
     render: args => (
-        <Flex gap={10} alignItems="center">
+        <Flex gap={10} alignItems="center" style={{ gap: 50 }}>
             {Object.values(ButtonVariant).map(variant => (
                 <Flex key={variant} flexDirection="column" gap={1} alignItems="center">
                     <StoryLabel title={variant} />
@@ -116,7 +116,7 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <Flex gap={10} alignItems="center">
+        <Flex gap={10} alignItems="center" style={{ gap: 50 }}>
             {Object.values(Size).map(size => (
                 <Flex key={size} flexDirection="column" gap={1} alignItems="center">
                     <StoryLabel title={size} />
@@ -238,7 +238,7 @@ export const AllIntentsAllVariants: Story = {
         variant: { table: { disable: true } },
     },
     render: args => (
-        <Flex flexDirection="row" gap={10}>
+        <Flex flexDirection="row" gap={10} style={{ gap: 50 }}>
             {Object.values(ButtonVariant).map(variant => (
                 <Flex key={variant} flexDirection="column" gap={2}>
                     <StoryLabel title={variant} />
@@ -270,7 +270,7 @@ export const WithPopover: Story = {
         ] as const;
 
         return (
-            <Flex gap={10} alignItems="center">
+            <Flex gap={10} alignItems="center" style={{ gap: 50 }}>
                 {Object.values(ButtonVariant).map(variant => (
                     <Flex key={variant} flexDirection="column" gap={1} alignItems="center">
                         <StoryLabel title={variant} />

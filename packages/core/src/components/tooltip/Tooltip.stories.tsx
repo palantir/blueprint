@@ -71,7 +71,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <Flex flexDirection="column" gap={10}>
+        <Flex flexDirection="column" gap={10} style={{ gap: 108 }}>
             {Object.values(Intent).map(intent => (
                 <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
                     <Button>{intent.charAt(0).toUpperCase() + intent.slice(1)}</Button>
@@ -91,7 +91,7 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <Flex flexDirection="column" gap={10}>
+        <Flex flexDirection="column" gap={10} style={{ gap: 108 }}>
             <Tooltip {...args} compact={false} minimal={false} isOpen={true}>
                 <Button>Default</Button>
             </Tooltip>

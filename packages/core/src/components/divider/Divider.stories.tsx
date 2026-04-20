@@ -46,7 +46,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     name: "Default",
     render: args => (
-        <Flex flexDirection="column" gap={10}>
+        <Flex flexDirection="column" gap={10} style={{ gap: "3em" }}>
             <div>
                 Content above
                 <Divider {...args} />
@@ -67,7 +67,7 @@ export const Default: Story = {
  */
 export const Vertical: Story = {
     render: args => (
-        <Flex flexDirection="column" gap={10}>
+        <Flex flexDirection="column" gap={10} style={{ gap: "3em" }}>
             <Flex>
                 Content to the left that wraps around a bit more than you'd expect
                 <Divider {...args} />
@@ -93,7 +93,7 @@ export const CompactExample: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <Flex flexDirection="column" gap={10}>
+        <Flex flexDirection="column" gap={10} style={{ gap: "3em" }}>
             <Flex flexDirection="column" style={{ textAlign: "center" }}>
                 <StoryLabel title="Default" />
                 Above
