@@ -225,17 +225,17 @@ export const AllIntentsAllSizes: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {[Intent.NONE, Intent.PRIMARY].map(intent => (
-                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <Flex key={intent} flexDirection="column" gap={2}>
                     <StoryLabel title={`Intent: ${intent}`} />
                     {Object.values(Size).map(size => (
                         <SegmentedControl key={size} {...args} intent={intent} size={size} />
                     ))}
                     <SegmentedControl {...args} intent={intent} disabled={true} />
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -251,10 +251,10 @@ export const Playground: Story = {
         }, []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+            <Flex flexDirection="column" gap={3} alignItems="center">
                 <SegmentedControl {...args} options={ICON_OPTIONS} value={value} onValueChange={handleValueChange} />
                 <StoryLabel title={`Selected: ${value}`} />
-            </div>
+            </Flex>
         );
     },
 };
