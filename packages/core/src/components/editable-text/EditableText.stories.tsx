@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { DashedPaddedContainer, StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
@@ -92,7 +92,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <StorybookLayout style={{ flexDirection: "column", gap: 16 }}>
             {Object.values(Intent).map(intent => (
                 <EditableText
                     key={intent}
@@ -101,7 +101,7 @@ export const IntentExample: Story = {
                     placeholder={intent.charAt(0).toUpperCase() + intent.slice(1)}
                 />
             ))}
-        </div>
+        </StorybookLayout>
     ),
 };
 
@@ -114,7 +114,7 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+        <StorybookLayout style={{ flexDirection: "column", gap: 40 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <StoryLabel title="Default" />
                 <DashedPaddedContainer>
@@ -127,7 +127,7 @@ export const StateExample: Story = {
                     <EditableText {...args} disabled={true} placeholder="Disabled" />
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </StorybookLayout>
     ),
 };
 
@@ -144,7 +144,7 @@ export const MultilineExample: Story = {
         multiline: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 40 }}>
+        <StorybookLayout style={{ flexDirection: "column", gap: 40 }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 <StoryLabel title="Single line" />
                 <DashedPaddedContainer>
@@ -163,7 +163,7 @@ export const MultilineExample: Story = {
                     />
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </StorybookLayout>
     ),
 };
 
