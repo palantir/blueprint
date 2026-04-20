@@ -5,7 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
-import { H3 } from "@blueprintjs/core";
+import { Flex } from "@blueprintjs/labs";
 
 import { KeyComboTag } from "./keyComboTag";
 
@@ -21,7 +21,6 @@ const meta: Meta<typeof KeyComboTag> = {
         minimal: false,
     },
     argTypes: {
-        combo: { table: { disable: true } },
         minimal: {
             control: "boolean",
         },
@@ -90,20 +89,51 @@ export const MinimalExample: Story = {
     name: "Minimal",
     argTypes: {
         minimal: { table: { disable: true } },
+        combo: { table: { disable: true } },
     },
     render: () => (
-        <div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {MINIMAL_COMBOS.map(combo => (
-                    <div key={combo} style={{ width: 100 }}>
-                        <StoryLabel title={combo} />
-                        <DashedPaddedContainer width={100}>
-                            <KeyComboTag combo={combo} minimal={true} />
-                        </DashedPaddedContainer>
-                    </div>
-                ))}
-            </div>
-        </div>
+        <Flex flexWrap="wrap" gap={2}>
+            {MINIMAL_COMBOS.map(combo => (
+                <div key={combo} style={{ width: 100 }}>
+                    <StoryLabel title={combo} />
+                    <DashedPaddedContainer width={100}>
+                        <KeyComboTag combo={combo} minimal={true} />
+                    </DashedPaddedContainer>
+                </div>
+            ))}
+        </Flex>
+    ),
+};
+
+const COMMON_COMBOS = [
+    "cmd + s",
+    "cmd + shift + p",
+    "cmd + del",
+    "alt + tab",
+    "option + delete",
+    "ctrl + z",
+    "shift + enter",
+];
+
+/**
+ * Grid of common real-world key combos.
+ */
+export const AllKeysExample: Story = {
+    name: "Common key combos",
+    args: {
+        minimal: false,
+    },
+    render: args => (
+        <Flex flexDirection="row" gap={2}>
+            {COMMON_COMBOS.map(combo => (
+                <div key={combo}>
+                    <StoryLabel title={combo} />
+                    <DashedPaddedContainer width={160}>
+                        <KeyComboTag combo={combo} minimal={args.minimal} />
+                    </DashedPaddedContainer>
+                </div>
+            ))}
+        </Flex>
     ),
 };
 
@@ -119,100 +149,4 @@ export const PlaygroundExample: Story = {
         combo: "cmd + shift + p",
         minimal: false,
     },
-};
-
-const MODIFIER_KEYS = ["shift", "ctrl", "alt", "meta"];
-const NAMED_KEYS = [
-    "plus",
-    "minus",
-    "backspace",
-    "tab",
-    "enter",
-    "capslock",
-    "escape",
-    "space",
-    "pageup",
-    "pagedown",
-    "end",
-    "home",
-    "left",
-    "up",
-    "right",
-    "down",
-    "ins",
-    "del",
-];
-const SPECIAL_KEYS = [
-    "!",
-    "@",
-    "#",
-    "$",
-    "%",
-    "^",
-    "&",
-    "*",
-    "(",
-    ")",
-    "_",
-    "-",
-    "=",
-    "[",
-    "]",
-    "\\",
-    "{",
-    "}",
-    "|",
-    ";",
-    "'",
-    ",",
-    ".",
-    "/",
-    ":",
-    '"',
-    "<",
-    ">",
-    "?",
-    "`",
-    "~",
-];
-const ALIASED_KEYS = ["option", "cmd", "command", "return", "esc", "win"];
-const LETTER_KEYS = Array.from({ length: 26 }, (_, i) => String.fromCharCode(97 + i));
-const DIGIT_KEYS = Array.from({ length: 10 }, (_, i) => String(i));
-
-const ALL_KEY_SECTIONS = [
-    { label: "Modifier Keys", keys: MODIFIER_KEYS },
-    { label: "Named Keys", keys: NAMED_KEYS },
-    { label: "Special Keys", keys: SPECIAL_KEYS },
-    { label: "Aliased Keys", keys: ALIASED_KEYS },
-    { label: "Letters", keys: LETTER_KEYS },
-    { label: "Digits", keys: DIGIT_KEYS },
-];
-
-/**
- * Comprehensive gallery showing all supported key combos, organized by category.
- */
-export const AllKeysExample: Story = {
-    name: "All keys",
-    args: {
-        minimal: false,
-    },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, width: 600 }}>
-            {ALL_KEY_SECTIONS.map(({ label, keys }) => (
-                <section key={label}>
-                    <H3>{label}</H3>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                        {keys.map(combo => (
-                            <div key={combo} style={{ width: 100 }}>
-                                <StoryLabel title={combo} />
-                                <DashedPaddedContainer width={100}>
-                                    <KeyComboTag combo={combo} minimal={args.minimal} />
-                                </DashedPaddedContainer>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            ))}
-        </div>
-    ),
 };
