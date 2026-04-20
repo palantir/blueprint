@@ -3,7 +3,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, StorybookLayout, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { Flex } from "@blueprintjs/labs";
 
 import { Intent } from "../../common";
 
@@ -92,7 +93,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <StorybookLayout style={{ flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {Object.values(Intent).map(intent => (
                 <EditableText
                     key={intent}
@@ -101,7 +102,7 @@ export const IntentExample: Story = {
                     placeholder={intent.charAt(0).toUpperCase() + intent.slice(1)}
                 />
             ))}
-        </StorybookLayout>
+        </Flex>
     ),
 };
 
@@ -114,20 +115,20 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <StorybookLayout style={{ flexDirection: "column", gap: 40 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={10}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Default" />
                 <DashedPaddedContainer>
                     <EditableText {...args} placeholder="Click to Edit" />
                 </DashedPaddedContainer>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Disabled" />
                 <DashedPaddedContainer>
                     <EditableText {...args} disabled={true} placeholder="Disabled" />
                 </DashedPaddedContainer>
-            </div>
-        </StorybookLayout>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -144,14 +145,14 @@ export const MultilineExample: Story = {
         multiline: { table: { disable: true } },
     },
     render: args => (
-        <StorybookLayout style={{ flexDirection: "column", gap: 40 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={10}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Single line" />
                 <DashedPaddedContainer>
                     <EditableText {...args} multiline={false} placeholder="Click to Edit" />
                 </DashedPaddedContainer>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Multiline [4 lines minimum, 6 lines maximum]" />
                 <DashedPaddedContainer>
                     <EditableText
@@ -162,8 +163,8 @@ export const MultilineExample: Story = {
                         placeholder="Click to edit multiple lines..."
                     />
                 </DashedPaddedContainer>
-            </div>
-        </StorybookLayout>
+            </Flex>
+        </Flex>
     ),
 };
 
