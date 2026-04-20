@@ -3,8 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Flex } from "@blueprintjs/labs";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Elevation } from "../../common";
 import { H3 } from "../html/html";

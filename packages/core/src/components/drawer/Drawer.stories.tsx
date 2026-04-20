@@ -3,8 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Flex } from "@blueprintjs/labs";
 import { useArgs, useCallback, useState } from "storybook/preview-api";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Position } from "../../common";
 import { Button } from "../button/buttons";

@@ -4,8 +4,9 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
-import { Flex } from "@blueprintjs/labs";
 import { useArgs, useCallback } from "storybook/preview-api";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Alignment, Elevation } from "../../common";
 

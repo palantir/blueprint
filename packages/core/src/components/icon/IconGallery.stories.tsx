@@ -8,9 +8,9 @@ import { pascalCase } from "change-case";
 import classNames from "classnames";
 import React, { type ComponentType, type ReactElement } from "react";
 
-import { Flex } from "@blueprintjs/labs";
 import type { IconName } from "@blueprintjs/icons";
 import * as BlueprintIcons from "@blueprintjs/icons";
+import { Flex } from "@blueprintjs/labs";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 
 import { Classes } from "../../common";

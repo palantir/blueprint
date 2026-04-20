@@ -4,9 +4,10 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
-import { Flex } from "@blueprintjs/labs";
 import { type ChangeEvent, useCallback, useState } from "react";
 import { useArgs } from "storybook/preview-api";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { RadioGroup } from "./radioGroup";
 

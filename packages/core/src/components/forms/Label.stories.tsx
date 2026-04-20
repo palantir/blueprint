@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+
 import { Flex } from "@blueprintjs/labs";
 
 import { Label } from "../html/html";

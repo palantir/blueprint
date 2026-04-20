@@ -3,9 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Flex } from "@blueprintjs/labs";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import React from "react";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Boundary } from "../../common/boundary";
 

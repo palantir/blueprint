@@ -3,10 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Flex } from "@blueprintjs/labs";
 import { StoryLabel } from "@storybook-common";
 import { type MouseEvent, useCallback, useReducer } from "react";
 import { expect, waitFor } from "storybook/test";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";

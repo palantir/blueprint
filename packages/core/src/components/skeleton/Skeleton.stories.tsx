@@ -3,8 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Flex } from "@blueprintjs/labs";
 import { StoryLabel } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";

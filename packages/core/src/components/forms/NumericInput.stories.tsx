@@ -3,9 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { Flex } from "@blueprintjs/labs";
 import { StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Intent, Position, Size } from "../../common";
 
