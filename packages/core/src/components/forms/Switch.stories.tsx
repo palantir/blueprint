@@ -16,9 +16,6 @@ const meta: Meta<typeof Switch> = {
     title: "Core/Form/Controls/Switch",
     component: Switch,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Switch",

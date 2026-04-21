@@ -50,7 +50,11 @@ const storybookConfig: StorybookConfig = {
         });
     },
 
-    addons: [getAbsolutePath("@storybook/addon-a11y"), getAbsolutePath("@storybook/addon-themes")],
+    addons: [
+        getAbsolutePath("@storybook/addon-a11y"),
+        getAbsolutePath("@storybook/addon-docs"),
+        getAbsolutePath("@storybook/addon-themes"),
+    ],
 };
 
 // eslint-disable-next-line import/no-default-export

@@ -28,9 +28,6 @@ const meta: Meta<typeof NumericInput> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         intent: "none",

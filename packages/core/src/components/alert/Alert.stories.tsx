@@ -15,10 +15,6 @@ const meta: Meta<typeof Alert> = {
     title: "Core/Alert",
     component: Alert,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         intent: Intent.NONE,
         isOpen: true,

@@ -29,9 +29,6 @@ const meta: Meta<typeof InputGroup> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         intent: "none",
