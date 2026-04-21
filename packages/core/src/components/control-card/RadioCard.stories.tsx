@@ -14,9 +14,6 @@ const meta: Meta<typeof RadioCard> = {
     title: "Core/Control Card/RadioCard",
     component: RadioCard,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Radio option",

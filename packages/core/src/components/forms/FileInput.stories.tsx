@@ -28,9 +28,6 @@ const meta: Meta<typeof FileInput> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         text: "Choose file...",

@@ -13,9 +13,6 @@ const meta: Meta<typeof Callout> = {
     title: "Core/Callout",
     component: Callout,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         children: "This is a callout with some informational content.",
