@@ -62,6 +62,7 @@ const meta: Meta<typeof EditableText> = {
         minWidth: { table: { disable: true } },
         maxLines: { table: { disable: true } },
         minLines: { table: { disable: true } },
+        value: { table: { disable: true } },
         type: { table: { disable: true } },
         ...disabledArgs.reduce(
             (acc, argName) => {
