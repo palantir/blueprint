@@ -19,9 +19,6 @@ const meta: Meta<typeof Link> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         children: "Blueprint Link",

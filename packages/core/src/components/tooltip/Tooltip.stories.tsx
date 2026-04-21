@@ -15,9 +15,6 @@ const meta: Meta<typeof Tooltip> = {
     title: "Core/Overlays/Tooltip",
     component: Tooltip,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         content: "This is a tooltip",

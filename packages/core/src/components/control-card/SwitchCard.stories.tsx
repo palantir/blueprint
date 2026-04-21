@@ -14,9 +14,6 @@ const meta: Meta<typeof SwitchCard> = {
     title: "Core/Control Card/SwitchCard",
     component: SwitchCard,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Switch option",

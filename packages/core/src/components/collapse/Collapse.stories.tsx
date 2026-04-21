@@ -30,9 +30,6 @@ const meta: Meta<typeof Collapse> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         isOpen: false,

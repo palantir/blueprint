@@ -94,8 +94,8 @@
     "license": "Apache-2.0",
     "devDependencies": {
         "@storybook/addon-a11y": "^10.2.14",
+        "@storybook/addon-docs": "^10.2.14",
         "@storybook/addon-themes": "^10.2.14",
-        "@storybook/icons": "^2.0.1",
         "@storybook/react-dom-shim": "^10.2.14",
         "@storybook/react-vite": "^10.2.14",
         "chromatic": "^16.0.0",
