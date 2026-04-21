@@ -26,9 +26,6 @@ const meta: Meta<StoryArgs> = {
     title: "Core/Breadcrumbs",
     component: Breadcrumbs,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         items: SAMPLE_ITEMS,

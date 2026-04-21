@@ -31,9 +31,6 @@ const meta: Meta<typeof SegmentedControl> = {
     title: "Core/Form/Controls/SegmentedControl",
     component: SegmentedControl,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         options: DEFAULT_OPTIONS,

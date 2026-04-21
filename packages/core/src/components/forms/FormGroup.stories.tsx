@@ -37,9 +37,6 @@ const meta: Meta<typeof FormGroup> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Label",

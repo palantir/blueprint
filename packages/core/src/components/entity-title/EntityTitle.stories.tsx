@@ -25,9 +25,6 @@ const meta: Meta<typeof EntityTitle> = {
     title: "Core/EntityTitle",
     component: EntityTitle,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         title: "Entity Title",
