@@ -21,10 +21,6 @@ const meta: Meta<typeof HTMLSelect> = {
     title: "Core/Form/HTMLSelect",
     component: HTMLSelect,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         options: SAMPLE_OPTIONS,
         fill: false,
