@@ -22,9 +22,6 @@ const meta: Meta<typeof TagInput> = {
     title: "Core/Form/Inputs/TagInput",
     component: TagInput,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         values: INITIAL_VALUES,

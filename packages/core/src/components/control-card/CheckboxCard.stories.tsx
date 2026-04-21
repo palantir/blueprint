@@ -14,9 +14,6 @@ const meta: Meta<typeof CheckboxCard> = {
     title: "Core/Control Card/CheckboxCard",
     component: CheckboxCard,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Checkbox option",
