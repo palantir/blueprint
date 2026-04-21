@@ -20,10 +20,6 @@ const meta: Meta<typeof Drawer> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         isOpen: true,
         title: "Drawer Title",
