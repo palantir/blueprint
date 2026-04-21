@@ -15,7 +15,7 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf coverage dist lib",
+        "clean": "rm -rf coverage lib",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",
         "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
