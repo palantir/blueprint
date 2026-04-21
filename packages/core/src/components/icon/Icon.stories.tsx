@@ -15,10 +15,6 @@ const meta: Meta<typeof Icon> = {
     title: "Core/Icon",
     component: Icon,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         icon: "buggy",
         size: IconSize.STANDARD,
