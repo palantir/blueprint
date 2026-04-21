@@ -192,6 +192,20 @@ export const WithTagExample: Story = {
 };
 
 /**
+ * Each tab can display an icon using the `icon` prop.
+ */
+export const IconExample: Story = {
+    name: "Icon",
+    render: args => (
+        <Tabs {...args} id="with-icon">
+            <Tab id="tab1" title="Books" icon="book" panel={<p>Books panel content</p>} />
+            <Tab id="tab2" title="Documents" icon="document" panel={<p>Documents panel content</p>} />
+            <Tab id="tab3" title="Applications" icon="application" panel={<p>Applications panel content</p>} />
+        </Tabs>
+    ),
+};
+
+/**
  * Interactive playground for experimenting with all Tabs props.
  */
 export const Playground: Story = {
