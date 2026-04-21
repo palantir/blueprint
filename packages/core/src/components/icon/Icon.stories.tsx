@@ -91,7 +91,7 @@ export const SizeExample: Story = {
             </Flex>
 
             <Flex flexDirection="column" gap={2} alignItems="center">
-                <StoryLabel title="standard size - 20px" />
+                <StoryLabel title="large size - 20px" />
                 <Icon {...args} size={IconSize.LARGE} />
             </Flex>
         </Flex>
