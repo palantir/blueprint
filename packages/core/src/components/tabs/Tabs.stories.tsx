@@ -146,6 +146,7 @@ export const FillExample: Story = {
     name: "Fill Height",
     argTypes: {
         fill: { table: { disable: true } },
+        vertical: { table: { disable: true } },
     },
     render: args => (
         <Flex flexDirection="column" gap={6}>
@@ -174,6 +175,26 @@ export const FillExample: Story = {
                 </DashedPaddedContainer>
             </div>
         </Flex>
+    ),
+};
+
+/**
+ * Use the `vertical` prop to display tabs in a vertical layout.
+ *
+ * In vertical mode, the tab list is rendered as a column alongside the tab panels.
+ */
+export const VerticalExample: Story = {
+    name: "Vertical",
+    argTypes: {
+        vertical: { table: { disable: true } },
+        fill: { table: { disable: true } },
+    },
+    render: args => (
+        <Tabs {...args} id="vertical-example" vertical={true}>
+            <Tab id="tab1" title="First" panel={<p>First panel content</p>} />
+            <Tab id="tab2" title="Second" panel={<p>Second panel content</p>} />
+            <Tab id="tab3" title="Third" panel={<p>Third panel content</p>} />
+        </Tabs>
     ),
 };
 
