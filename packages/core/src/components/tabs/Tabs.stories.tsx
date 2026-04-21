@@ -7,6 +7,8 @@ import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@st
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Colors } from "../../common";
 
 import { Tab } from "./tab";
@@ -21,6 +23,7 @@ const disabledArgs = [
     "selectedTabId",
     "onChange",
     "id",
+    "renderActiveTabPanelOnly",
 ] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Tabs>>;
 
 const meta: Meta<typeof Tabs> = {
@@ -80,7 +83,7 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={6} alignItems="start">
             <div>
                 <StoryLabel title="Medium" />
                 <DashedPaddedContainer>
@@ -101,7 +104,7 @@ export const SizeExample: Story = {
                     </Tabs>
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -114,7 +117,7 @@ export const StateExample: Story = {
         vertical: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 32 }}>
+        <Flex gap={8}>
             <div>
                 <StoryLabel title="Vertical" />
                 <DashedPaddedContainer>
@@ -135,7 +138,7 @@ export const StateExample: Story = {
                     </Tabs>
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -151,11 +154,11 @@ export const FillExample: Story = {
         fill: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <Flex flexDirection="column" gap={6}>
             <div>
                 <StoryLabel title="Default" />
                 <DashedPaddedContainer>
-                    <div style={{ background: Colors.BLUE5, borderRadius: 4, padding: 4, height: 80 }}>
+                    <div style={{ background: Colors.LIGHT_GRAY3, borderRadius: 4, padding: 4, height: 80 }}>
                         <Tabs {...args} id="fill-default" fill={false}>
                             <Tab id="tab1" title="First" />
                             <Tab id="tab2" title="Second" />
@@ -167,7 +170,7 @@ export const FillExample: Story = {
             <div>
                 <StoryLabel title="Fill Height" />
                 <DashedPaddedContainer>
-                    <div style={{ background: Colors.RED5, borderRadius: 4, padding: 4, height: 80 }}>
+                    <div style={{ background: Colors.LIGHT_GRAY3, borderRadius: 4, padding: 4, height: 80 }}>
                         <Tabs {...args} id="fill-enabled" fill={true}>
                             <Tab id="tab1" title="First" />
                             <Tab id="tab2" title="Second" />
@@ -176,7 +179,7 @@ export const FillExample: Story = {
                     </div>
                 </DashedPaddedContainer>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -210,25 +213,10 @@ export const Playground: Story = {
 
         return (
             <Tabs {...args} onChange={handleChange}>
-                <Tab
-                    id="tab1"
-                    title="React"
-                    icon="code"
-                    panel={<p>React is a JavaScript library for building user interfaces.</p>}
-                />
-                <Tab
-                    id="tab2"
-                    title="Angular"
-                    icon="application"
-                    panel={<p>Angular is a platform for building mobile and desktop web applications.</p>}
-                />
-                <Tab
-                    id="tab3"
-                    title="Ember"
-                    icon="flame"
-                    panel={<p>Ember.js is a productive, battle-tested JavaScript framework.</p>}
-                />
-                <Tab id="tab4" title="Backbone" disabled={true} icon="disable" panel={<p>Backbone panel</p>} />
+                <Tab id="tab1" title="Photos" icon="media" panel={<p>Photos panel content</p>} />
+                <Tab id="tab2" title="Videos" icon="video" panel={<p>Videos panel content</p>} />
+                <Tab id="tab3" title="Music" icon="music" panel={<p>Music panel content</p>} />
+                <Tab id="tab4" title="Books" disabled={true} icon="book" panel={<p>Books panel content</p>} />
             </Tabs>
         );
     },
