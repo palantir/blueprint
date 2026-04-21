@@ -5,10 +5,11 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 
 import { Icon, IconSize } from "./icon";
-import { Flex } from "@blueprintjs/labs";
 
 const meta: Meta<typeof Icon> = {
     title: "Core/Icon",
