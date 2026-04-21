@@ -23,9 +23,6 @@ const meta: Meta<typeof InputGroup> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         intent: "none",

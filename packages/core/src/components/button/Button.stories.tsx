@@ -26,9 +26,6 @@ const meta: Meta<typeof Button> = {
     title: "Core/Button/Button",
     component: Button,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         text: "Button",

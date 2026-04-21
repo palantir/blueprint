@@ -16,9 +16,6 @@ const meta: Meta<typeof Card> = {
     title: "Core/Card",
     component: Card,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         children: "Card content",

@@ -31,9 +31,6 @@ const meta: Meta<typeof FormGroup> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Label",

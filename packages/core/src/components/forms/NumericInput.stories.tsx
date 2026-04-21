@@ -29,9 +29,6 @@ const meta: Meta<typeof NumericInput> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         intent: "none",

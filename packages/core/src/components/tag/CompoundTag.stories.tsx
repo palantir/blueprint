@@ -22,9 +22,6 @@ const meta: Meta<typeof CompoundTag> = {
     title: "Core/Tag/CompoundTag",
     component: CompoundTag,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         leftContent: "Key",

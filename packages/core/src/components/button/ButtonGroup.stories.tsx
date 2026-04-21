@@ -23,9 +23,6 @@ const ALIGNMENT = [Alignment.START, Alignment.CENTER, Alignment.END];
 const meta: Meta<typeof ButtonGroup> = {
     title: "Core/Button/ButtonGroup",
     component: ButtonGroup,
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         variant: "solid",

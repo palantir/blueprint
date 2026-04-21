@@ -134,9 +134,6 @@ const meta: Meta<typeof Tree> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         contents: SAMPLE_CONTENTS,

@@ -64,10 +64,6 @@ const meta: Meta<typeof MultistepDialog> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         title: "Multistep Dialog",
         isOpen: true,

@@ -21,9 +21,6 @@ const meta: Meta<typeof Link> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         children: "Blueprint Link",

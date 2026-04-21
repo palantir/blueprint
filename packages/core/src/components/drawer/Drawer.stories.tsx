@@ -22,10 +22,6 @@ const meta: Meta<typeof Drawer> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         isOpen: true,
         title: "Drawer Title",

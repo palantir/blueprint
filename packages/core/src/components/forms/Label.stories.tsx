@@ -20,9 +20,6 @@ const meta: Meta<typeof Label> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
 } satisfies Meta<typeof Label>;
 

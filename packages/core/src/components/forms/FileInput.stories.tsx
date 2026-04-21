@@ -29,9 +29,6 @@ const meta: Meta<typeof FileInput> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         text: "Choose file...",

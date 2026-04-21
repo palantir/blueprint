@@ -18,9 +18,6 @@ const meta: Meta<CardListStoryArgs> = {
     title: "Core/CardList",
     component: CardList,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         bordered: true,

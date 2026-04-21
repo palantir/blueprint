@@ -46,9 +46,6 @@ const meta: Meta<typeof SkeletonDemo> = {
             </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         skeleton: true,

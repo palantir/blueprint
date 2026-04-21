@@ -23,9 +23,6 @@ const meta: Meta<typeof AnchorButton> = {
     title: "Core/Button/AnchorButton",
     component: AnchorButton,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         text: "Link",

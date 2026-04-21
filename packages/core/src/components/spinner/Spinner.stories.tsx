@@ -15,9 +15,6 @@ const meta: Meta<typeof Spinner> = {
     title: "Core/Spinner",
     component: Spinner,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         intent: Intent.NONE,

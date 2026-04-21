@@ -17,9 +17,6 @@ const meta: Meta<typeof Slider> = {
     title: "Core/Slider",
     component: Slider,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         min: 0,

@@ -19,9 +19,6 @@ const meta: Meta<typeof Divider> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         compact: false,
