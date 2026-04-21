@@ -13,10 +13,6 @@ const meta: Meta<typeof NonIdealState> = {
     title: "Core/NonIdealState",
     component: NonIdealState,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         icon: "search",
         title: "No search results",
