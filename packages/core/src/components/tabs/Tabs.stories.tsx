@@ -12,7 +12,7 @@ import { Flex } from "@blueprintjs/labs";
 import { Colors } from "../../common";
 
 import { Tab } from "./tab";
-import { Tabs } from "./tabs";
+import { Tabs, type TabsProps } from "./tabs";
 
 // These props are deprecated on Tabs — hide them from the Storybook controls panel.
 const disabledArgs = [
@@ -24,9 +24,9 @@ const disabledArgs = [
     "onChange",
     "id",
     "renderActiveTabPanelOnly",
-] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Tabs>>;
+] as const satisfies ReadonlyArray<keyof TabsProps>;
 
-const meta: Meta<typeof Tabs> = {
+const meta: Meta<TabsProps> = {
     title: "Core/Tabs",
     component: Tabs,
     decorators: [storybookLayoutDecorator],
@@ -40,7 +40,6 @@ const meta: Meta<typeof Tabs> = {
         vertical: false,
         fill: false,
         size: "medium",
-        renderActiveTabPanelOnly: false,
     },
     argTypes: {
         size: {
@@ -50,7 +49,6 @@ const meta: Meta<typeof Tabs> = {
         animate: { control: "boolean" },
         vertical: { control: "boolean" },
         fill: { control: "boolean" },
-        renderActiveTabPanelOnly: { control: "boolean" },
         ...disabledArgs.reduce(
             (acc, argName) => {
                 acc[argName] = { table: { disable: true } };
@@ -59,7 +57,7 @@ const meta: Meta<typeof Tabs> = {
             {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
         ),
     },
-} satisfies Meta<typeof Tabs>;
+} satisfies Meta<TabsProps>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
