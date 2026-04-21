@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Flex } from "@blueprintjs/labs";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { HTMLSelect, type HTMLSelectIconName } from "./htmlSelect";
@@ -48,7 +49,7 @@ const meta: Meta<typeof HTMLSelect> = {
             control: "select",
             options: ["double-caret-vertical", "caret-down"] satisfies HTMLSelectIconName[],
         },
-        onChange: { action: "changed" },
+        onChange: { action: "changed", table: { disable: true } },
     },
 } satisfies Meta<typeof HTMLSelect>;
 
@@ -69,16 +70,16 @@ export const SizeExample: Story = {
         large: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={10} alignItems="center">
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="default" />
                 <HTMLSelect {...args} large={false} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="large" />
                 <HTMLSelect {...args} large={true} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -91,16 +92,16 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={10} alignItems="center">
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="enabled" />
                 <HTMLSelect {...args} disabled={false} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="disabled" />
                 <HTMLSelect {...args} disabled={true} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -120,16 +121,38 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 20, alignItems: "flex-start" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, width: "100%" }}>
-                <StoryLabel title="fill={true}" />
+        <Flex flexDirection="column" gap={5} alignItems="start">
+            <Flex flexDirection="column" gap={1} width={100}>
+                <StoryLabel title="fill is true" />
                 <HTMLSelect {...args} fill={true} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <StoryLabel title="fill={false}" />
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
+                <StoryLabel title="fill is false" />
                 <HTMLSelect {...args} fill={false} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
+    ),
+};
+
+/**
+ * Use the `minimal` prop to render a select with minimal chrome.
+ */
+export const MinimalExample: Story = {
+    name: "Minimal",
+    argTypes: {
+        minimal: { table: { disable: true } },
+    },
+    render: args => (
+        <Flex gap={10} alignItems="center">
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <StoryLabel title="default" />
+                <HTMLSelect {...args} minimal={false} />
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <StoryLabel title="minimal" />
+                <HTMLSelect {...args} minimal={true} />
+            </Flex>
+        </Flex>
     ),
 };
 
