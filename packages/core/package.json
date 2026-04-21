@@ -12,6 +12,15 @@
         "scripts",
         "src"
     ],
+    "exports": {
+        ".": {
+            "import": "./lib/esm/index.js",
+            "require": "./lib/cjs/index.js",
+            "types": "./lib/esm/index.d.ts"
+        },
+        "./styles": "./lib/css/blueprint.css",
+        "./styles-next": "./lib/css/blueprint-next.css"
+    },
     "sideEffects": [
         "**/*.css",
         "lib/cjs/components/context-menu/contextMenuSingleton.js",
