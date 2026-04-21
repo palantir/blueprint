@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
 import type React from "react";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 
 import { Toast } from "./toast";
@@ -18,10 +20,6 @@ const meta: Meta<typeof Toast> = {
     title: "Core/Overlays/Toast",
     component: Toast,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         intent: Intent.NONE,
         icon: undefined,
@@ -70,7 +68,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Flex flexDirection="column" gap={2}>
             {Object.values(Intent).map(intent => (
                 <Toast
                     key={intent}
@@ -79,7 +77,7 @@ export const IntentExample: Story = {
                     message={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent toast`}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -90,14 +88,15 @@ export const IconExample: Story = {
     name: "Icons",
     argTypes: {
         icon: { table: { disable: true } },
+        intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Flex flexDirection="column" gap={2}>
             <Toast {...args} icon="tick-circle" intent="success" message="File saved successfully" />
             <Toast {...args} icon="warning-sign" intent="warning" message="Connection is unstable" />
             <Toast {...args} icon="error" intent="danger" message="Failed to save changes" />
             <Toast {...args} icon="info-sign" intent="primary" message="New update available" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -109,9 +108,10 @@ export const ActionExample: Story = {
     name: "Action",
     argTypes: {
         isCloseButtonShown: { table: { disable: true } },
+        intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Flex flexDirection="column" gap={2}>
             <Toast {...args} message="File deleted" action={{ text: "Undo" }} />
             <Toast {...args} message="Changes saved" intent="success" action={{ text: "View", icon: "share" }} />
             <Toast
@@ -120,7 +120,7 @@ export const ActionExample: Story = {
                 intent="primary"
                 action={{ text: "Release notes", href: "#", icon: "link" }}
             />
-        </div>
+        </Flex>
     ),
 };
 
