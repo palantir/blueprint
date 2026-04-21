@@ -19,9 +19,6 @@ const meta: Meta<typeof RadioGroup> = {
     title: "Core/Form/Controls/RadioGroup",
     component: RadioGroup,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Choose an option",

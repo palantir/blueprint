@@ -17,9 +17,6 @@ const meta: Meta<typeof Checkbox> = {
     title: "Core/Form/Controls/Checkbox",
     component: Checkbox,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         label: "Checkbox",

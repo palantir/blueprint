@@ -44,9 +44,6 @@ const meta: Meta<typeof SkeletonDemo> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         skeleton: true,
