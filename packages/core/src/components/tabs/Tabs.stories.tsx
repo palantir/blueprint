@@ -30,10 +30,6 @@ const meta: Meta<TabsProps> = {
     title: "Core/Tabs",
     component: Tabs,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         id: "tabs-story",
         animate: true,
