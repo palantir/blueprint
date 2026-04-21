@@ -19,10 +19,6 @@ const meta: Meta<typeof EditableText> = {
     title: "Core/EditableText",
     component: EditableText,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         placeholder: "Click to Edit",
         disabled: false,
