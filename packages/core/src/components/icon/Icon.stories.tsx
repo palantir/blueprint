@@ -3,11 +3,12 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { storybookLayoutDecorator } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Intent } from "../../common";
 
 import { Icon, IconSize } from "./icon";
+import { Flex } from "@blueprintjs/labs";
 
 const meta: Meta<typeof Icon> = {
     title: "Core/Icon",
@@ -65,11 +66,11 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <Flex gap={6}>
             {Object.values(Intent).map(intent => (
                 <Icon key={intent} {...args} intent={intent} />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -82,10 +83,17 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <Icon {...args} size={IconSize.STANDARD} />
-            <Icon {...args} size={IconSize.LARGE} />
-        </div>
+        <Flex flexDirection="column" gap={10}>
+            <Flex flexDirection="column" gap={2} alignItems="center">
+                <StoryLabel title="standard size - 16px" />
+                <Icon {...args} size={IconSize.STANDARD} />
+            </Flex>
+
+            <Flex flexDirection="column" gap={2} alignItems="center">
+                <StoryLabel title="standard size - 20px" />
+                <Icon {...args} size={IconSize.LARGE} />
+            </Flex>
+        </Flex>
     ),
 };
 
