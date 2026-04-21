@@ -13,10 +13,6 @@ const meta: Meta<typeof KeyComboTag> = {
     title: "Core/Hotkeys/KeyComboTag",
     component: KeyComboTag,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         minimal: false,
     },
