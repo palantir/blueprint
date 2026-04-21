@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { createElement, forwardRef, useEffect, useState } from "react";
+import { cloneElement, createElement, forwardRef, isValidElement, useEffect, useState } from "react";
 
 import {
     type DefaultSVGIconProps,
@@ -56,8 +56,9 @@ export interface IconOwnProps {
      * - If given an `IconName` (a string literal union of all icon names), that
      *   icon will be rendered as an `<svg>` with `<path>` tags. Unknown strings
      *   will render a blank icon to occupy space.
-     * - If given a `React.JSX.Element`, that element will be rendered and _all other
-     *   props on this component are ignored._ This type is supported to
+     * - If given a `React.JSX.Element`, that element will be rendered with the
+     *   parent-provided `className` and intent class merged onto its root. All
+     *   other props on this component are ignored. This type is supported to
      *   simplify icon support in other Blueprint components. As a consumer, you
      *   should avoid using `<Icon icon={<Element />}` directly; simply render
      *   `<Element />` instead.
@@ -157,6 +158,11 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
     if (icon == null || typeof icon === "boolean") {
         return null;
     } else if (typeof icon !== "string") {
+        if (isValidElement<{ className?: string }>(icon)) {
+            return cloneElement(icon, {
+                className: classNames(icon.props.className, className, Classes.intentClass(intent)),
+            });
+        }
         return icon;
     }
 
