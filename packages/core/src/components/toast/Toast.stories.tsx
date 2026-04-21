@@ -3,12 +3,12 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import type React from "react";
 
 import { Intent } from "../../common";
 
 import { Toast } from "./toast";
-import { storybookLayoutDecorator } from "@storybook-common";
 
 const disabledArgs = ["timeout", "className", "action", "onDismiss", "message"] as const satisfies ReadonlyArray<
     keyof React.ComponentProps<typeof Toast>
