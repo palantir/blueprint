@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { storybookLayoutDecorator } from "@storybook-common";
+import { DashedPaddedContainer, storybookLayoutDecorator } from "@storybook-common";
 import { expect, screen, waitFor } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
@@ -67,15 +67,26 @@ export const IntentExample: Story = {
     argTypes: {
         intent: { table: { disable: true } },
     },
-    render: args => (
-        <Flex flexDirection="column" gap={10} style={{ gap: 108 }}>
-            {Object.values(Intent).map(intent => (
-                <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
-                    <Button>{intent.charAt(0).toUpperCase() + intent.slice(1)}</Button>
-                </Tooltip>
-            ))}
-        </Flex>
-    ),
+    render: args => {
+        const intents = Object.values(Intent);
+        const mid = Math.ceil(intents.length / 2);
+        const columns = [intents.slice(0, mid), intents.slice(mid)];
+        return (
+            <Flex flexDirection="row" gap={10}>
+                {columns.map((col, i) => (
+                    <Flex key={i} flexDirection="column" gap={10} alignItems="center">
+                        {col.map(intent => (
+                            <div key={intent} style={{ padding: 80 }}>
+                                <Tooltip {...args} intent={intent} placement="bottom" isOpen={true}>
+                                    <Button>{intent.charAt(0).toUpperCase() + intent.slice(1)}</Button>
+                                </Tooltip>
+                            </div>
+                        ))}
+                    </Flex>
+                ))}
+            </Flex>
+        );
+    },
 };
 
 /**
@@ -88,19 +99,31 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <Flex flexDirection="column" gap={10} style={{ gap: 108 }}>
-            <Tooltip {...args} compact={false} minimal={false} isOpen={true}>
-                <Button>Default</Button>
-            </Tooltip>
-            <Tooltip {...args} compact={true} minimal={false} isOpen={true}>
-                <Button>Compact</Button>
-            </Tooltip>
-            <Tooltip {...args} compact={false} minimal={true} isOpen={true}>
-                <Button>Minimal</Button>
-            </Tooltip>
-            <Tooltip {...args} compact={true} minimal={true} isOpen={true}>
-                <Button>Compact + Minimal</Button>
-            </Tooltip>
+        <Flex flexDirection="row" gap={10}>
+            <Flex flexDirection="column" gap={10} alignItems="center">
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={false} placement="bottom" minimal={false} isOpen={true}>
+                        <Button>Default</Button>
+                    </Tooltip>
+                </div>
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={true} placement="bottom" minimal={false} isOpen={true}>
+                        <Button>Compact</Button>
+                    </Tooltip>
+                </div>
+            </Flex>
+            <Flex flexDirection="column" gap={10} alignItems="center">
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={false} placement="bottom" minimal={true} isOpen={true}>
+                        <Button>Minimal</Button>
+                    </Tooltip>
+                </div>
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={true} placement="bottom" minimal={true} isOpen={true}>
+                        <Button>Compact + Minimal</Button>
+                    </Tooltip>
+                </div>
+            </Flex>
         </Flex>
     ),
 };
