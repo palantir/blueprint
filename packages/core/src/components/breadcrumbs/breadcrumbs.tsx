@@ -22,7 +22,6 @@ import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
 import { Popover } from "../popover/popover";
-import type { PopoverProps } from "../popover/popoverProps";
 
 import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
 
@@ -82,13 +81,6 @@ export interface BreadcrumbsProps extends Props {
     overflowListProps?: Partial<
         Omit<OverflowListProps<BreadcrumbProps>, "items" | "overflowRenderer" | "visibleItemRenderer">
     >;
-
-    /**
-     * Props to spread to the popover showing the overflow menu.
-     */
-    popoverProps?: Partial<
-        Omit<PopoverProps, "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget" | "targetTagName">
-    >;
 }
 
 /**
@@ -106,7 +98,6 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
         minVisibleItems = 0,
         overflowButtonProps,
         overflowListProps = {},
-        popoverProps,
     } = props;
 
     const renderBreadcrumb = useCallback(
@@ -154,7 +145,6 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
                         content={<Menu>{orderedItems.map(renderOverflowBreadcrumb)}</Menu>}
                         disabled={orderedItems.length === 0}
                         placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
-                        {...popoverProps}
                     >
                         <span
                             aria-label="collapsed breadcrumbs"
@@ -167,7 +157,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
                 </li>
             );
         },
-        [collapseFrom, overflowButtonProps, popoverProps, renderOverflowBreadcrumb],
+        [collapseFrom, overflowButtonProps, renderOverflowBreadcrumb],
     );
 
     return (
