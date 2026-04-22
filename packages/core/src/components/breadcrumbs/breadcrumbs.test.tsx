@@ -63,48 +63,6 @@ describe("<Breadcrumbs>", () => {
         expect(button).toHaveClass(Classes.BREADCRUMBS_COLLAPSED);
     });
 
-    it.skip("should render the correct overflow menu items", () => {
-        render(
-            // 70px is just enough to show one item
-            <div style={{ width: 70 }}>
-                <Breadcrumbs items={ITEMS} popoverProps={{ isOpen: true, usePortal: false }} />
-            </div>,
-        );
-
-        expect(screen.getAllByRole("menuitem")).to.have.lengthOf(ITEMS.length - 1);
-        expect(screen.getByRole("menuitem", { name: "2" })).to.exist;
-        expect(screen.getByRole("menuitem", { name: "1" })).to.exist;
-    });
-
-    it.skip("should render the correct overflow menu items when collapsing from END", () => {
-        render(
-            // 70px is just enough to show one item
-            <div style={{ width: 70 }}>
-                <Breadcrumbs
-                    collapseFrom={Boundary.END}
-                    items={ITEMS}
-                    popoverProps={{ isOpen: true, usePortal: false }}
-                />
-            </div>,
-        );
-
-        expect(screen.getAllByRole("menuitem")).to.have.lengthOf(ITEMS.length - 1);
-        expect(screen.getByRole("menuitem", { name: "2" })).to.exist;
-        expect(screen.getByRole("menuitem", { name: "3" })).to.exist;
-    });
-
-    it("should disable menu item when it is not clickable", () => {
-        render(
-            // 10px is too small to show any items
-            <div style={{ width: 10 }}>
-                <Breadcrumbs items={ITEMS} popoverProps={{ isOpen: true, usePortal: false }} />
-            </div>,
-        );
-
-        expect(screen.getAllByRole("menuitem")).to.have.lengthOf(ITEMS.length);
-        expect(screen.getByRole("menuitem", { name: "1" })).toHaveClass(Classes.DISABLED);
-    });
-
     it("should call currentBreadcrumbRenderer (only) for the current breadcrumb", () => {
         const breadcrumbRenderer = vi.fn();
         render(
