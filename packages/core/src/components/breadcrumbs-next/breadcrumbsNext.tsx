@@ -18,11 +18,11 @@ import classNames from "classnames";
 import { memo, useCallback } from "react";
 
 import { Boundary, Classes, DISPLAYNAME_PREFIX, type Props, removeNonHTMLProps } from "../../common";
+import { Breadcrumb, type BreadcrumbProps } from "../breadcrumbs/breadcrumb";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
 import { PopoverNext } from "../popover-next/popoverNext";
-import { Breadcrumb, type BreadcrumbProps } from "../breadcrumbs/breadcrumb";
 
 const EMPTY_ITEMS: readonly BreadcrumbProps[] = [];
 
