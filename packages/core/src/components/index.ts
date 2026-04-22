@@ -17,6 +17,7 @@
 export { Alert, type AlertProps } from "./alert/alert";
 export { Breadcrumb, type BreadcrumbProps } from "./breadcrumbs/breadcrumb";
 export { Breadcrumbs, type BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
+export { BreadcrumbsNext, type BreadcrumbsNextProps } from "./breadcrumbs-next/breadcrumbsNext";
 export { AnchorButton, Button } from "./button/buttons";
 export type {
     AnchorButtonProps,
