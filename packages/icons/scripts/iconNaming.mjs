@@ -15,7 +15,7 @@
 
 // @ts-check
 
-import { kebabCase } from "change-case";
+import { paramCase } from "change-case";
 
 /** Lowercase kebab-case segments only (matches Blueprint icon filenames / IconName strings). */
 export const ICON_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -27,5 +27,5 @@ export const ICON_NAME_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
  * @param {string} name
  */
 export function canonicalIconName(name) {
-    return kebabCase(name);
+    return paramCase(name);
 }
