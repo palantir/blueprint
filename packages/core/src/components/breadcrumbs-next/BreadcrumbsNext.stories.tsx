@@ -3,7 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { storybookLayoutDecorator } from "@storybook-common";
 import React from "react";
 
 import { Boundary } from "../../common/boundary";
@@ -53,51 +53,6 @@ export const Default: Story = {
     render: ({ width, ...args }) => (
         <div style={{ width }}>
             <BreadcrumbsNext {...args} />
-        </div>
-    ),
-};
-
-/**
- * Use the `collapseFrom` prop to control which end of the breadcrumb trail is collapsed when items overflow.
- */
-export const CollapseFromExample: Story = {
-    name: "Collapse From",
-    argTypes: {
-        collapseFrom: { table: { disable: true } },
-    },
-    render: ({ width, ...args }) => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
-            <div style={{ width }}>
-                <StoryLabel title="Collapse from start (default)" />
-                <BreadcrumbsNext {...args} collapseFrom={Boundary.START} />
-            </div>
-            <div style={{ width }}>
-                <StoryLabel title="Collapse from end" />
-                <BreadcrumbsNext {...args} collapseFrom={Boundary.END} />
-            </div>
-        </div>
-    ),
-};
-
-/**
- * When the breadcrumb trail contains many items, overflow is handled by collapsing items into a dropdown.
- */
-export const OverflowExample: Story = {
-    name: "Overflow",
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div>
-                <StoryLabel title="Constrained width (300px)" />
-                <div style={{ width: 300 }}>
-                    <BreadcrumbsNext {...args} />
-                </div>
-            </div>
-            <div>
-                <StoryLabel title="Full width" />
-                <div style={{ width: 600 }}>
-                    <BreadcrumbsNext {...args} />
-                </div>
-            </div>
         </div>
     ),
 };
