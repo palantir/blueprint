@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Button } from "../button/buttons";
 import { Code, H4 } from "../html/html";
 
@@ -25,9 +27,9 @@ const meta: Meta<typeof Collapse> = {
     component: Collapse,
     decorators: [
         Story => (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: "400px", maxWidth: "500px" }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: "400px", maxWidth: "500px" }}>
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     tags: ["autodocs"],
@@ -71,10 +73,10 @@ export const Default: Story = {
         const handleToggle = useCallback(() => updateArgs({ isOpen: !args.isOpen }), [args.isOpen, updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            <Flex flexDirection="column" gap={2}>
                 <Button text={args.isOpen ? "Hide content" : "Show content"} onClick={handleToggle} />
                 <Collapse {...args}>{sampleContent}</Collapse>
-            </div>
+            </Flex>
         );
     },
 };
@@ -94,7 +96,7 @@ export const Playground: Story = {
         const handleToggle = useCallback(() => updateArgs({ isOpen: !args.isOpen }), [args.isOpen, updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 400 }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: 400 }}>
                 <Button text={args.isOpen ? "Collapse" : "Expand"} onClick={handleToggle} icon="exchange" />
                 <Collapse {...args}>
                     <div
@@ -116,7 +118,7 @@ export const Playground: Story = {
                         </p>
                     </div>
                 </Collapse>
-            </div>
+            </Flex>
         );
     },
 };

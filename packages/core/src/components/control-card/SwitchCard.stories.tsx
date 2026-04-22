@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Alignment, Elevation } from "../../common";
 
 import { SwitchCard } from "./switchCard";
@@ -81,10 +83,10 @@ export const CompactExample: Story = {
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
                 <SwitchCard {...args} label="Default" defaultChecked={true} onChange={handleChange} />
                 <SwitchCard {...args} compact={true} label="Compact" defaultChecked={true} onChange={handleChange} />
-            </div>
+            </Flex>
         );
     },
 };
@@ -103,7 +105,7 @@ export const StateExample: Story = {
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
                 <SwitchCard {...args} label="Default" onChange={handleChange} />
                 <SwitchCard {...args} label="Checked" checked={true} onChange={handleChange} />
                 <SwitchCard {...args} label="Disabled" disabled={true} />
@@ -115,7 +117,7 @@ export const StateExample: Story = {
                     showAsSelectedWhenChecked={false}
                     onChange={handleChange}
                 />
-            </div>
+            </Flex>
         );
     },
 };
@@ -133,7 +135,7 @@ export const AlignIndicatorExample: Story = {
         const handleChange = useCallback(() => updateArgs({ checked: !args.checked }), [args.checked, updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+            <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
                 <SwitchCard
                     {...args}
                     alignIndicator={Alignment.START}
@@ -148,7 +150,7 @@ export const AlignIndicatorExample: Story = {
                     defaultChecked={true}
                     onChange={handleChange}
                 />
-            </div>
+            </Flex>
         );
     },
 };

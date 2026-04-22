@@ -4,6 +4,8 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 import { HTMLSelect } from "../html-select/htmlSelect";
 import { SegmentedControl } from "../segmented-control/segmentedControl";
@@ -24,17 +26,9 @@ const meta: Meta<typeof FormGroup> = {
     component: FormGroup,
     decorators: [
         Story => (
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 12,
-                    width: "100%",
-                    minWidth: "400px",
-                }}
-            >
+            <Flex flexDirection="column" gap={3} style={{ width: "100%", minWidth: "400px" }}>
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     tags: ["autodocs"],
@@ -307,7 +301,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             <FormGroup {...args} intent="primary" labelInfo="(text input)" labelFor="intent-primary-input">
                 <InputGroup
                     id="intent-primary-input"
@@ -360,7 +354,7 @@ export const IntentExample: Story = {
                     ]}
                 />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -378,7 +372,7 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             <FormGroup {...args} labelInfo="(text input, enabled)" labelFor="state-enabled-input">
                 <InputGroup
                     id="state-enabled-input"
@@ -419,7 +413,7 @@ export const StateExample: Story = {
                     options={["Option A", "Option B"]}
                 />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -435,7 +429,7 @@ export const LabelsExample: Story = {
         subLabel: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             <FormGroup {...args} label="Text input" labelFor="labels-basic-input">
                 <InputGroup
                     id="labels-basic-input"
@@ -505,7 +499,7 @@ export const LabelsExample: Story = {
                     ]}
                 />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -519,7 +513,7 @@ export const InlineExample: Story = {
         inline: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             <FormGroup {...args} inline={true} labelInfo="(text input)" labelFor="inline-name-input">
                 <InputGroup
                     id="inline-name-input"
@@ -555,7 +549,7 @@ export const InlineExample: Story = {
             <FormGroup {...args} inline={true} labelInfo="(checkbox)">
                 <Checkbox label="I accept the terms" disabled={args.disabled} />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -576,7 +570,7 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={4} alignItems="start">
             <FormGroup {...args} fill={true} labelInfo="(text input, fill)" labelFor="fill-full-input">
                 <InputGroup
                     id="fill-full-input"
@@ -632,7 +626,7 @@ export const FillExample: Story = {
                     ]}
                 />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -652,7 +646,7 @@ export const AllStates: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <FormGroup {...args} labelInfo="(text input, enabled)" labelFor="allstates-input">
                 <InputGroup id="allstates-input" intent={args.intent} fill={args.fill} placeholder="Enter value..." />
             </FormGroup>
@@ -763,7 +757,7 @@ export const AllStates: Story = {
                     ]}
                 />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -772,7 +766,7 @@ export const AllStates: Story = {
  */
 export const AllControlsDisabled: Story = {
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <FormGroup {...args} disabled={true} labelInfo="(text input)" labelFor="disabled-text">
                 <InputGroup id="disabled-text" disabled={true} intent={args.intent} placeholder="Disabled input..." />
             </FormGroup>
@@ -815,7 +809,7 @@ export const AllControlsDisabled: Story = {
                     ]}
                 />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -824,7 +818,7 @@ export const AllControlsDisabled: Story = {
  */
 export const InlineControls: Story = {
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             <FormGroup {...args} inline={true} labelInfo="(text input)" labelFor="inline-name">
                 <InputGroup
                     id="inline-name"
@@ -851,7 +845,7 @@ export const InlineControls: Story = {
             <FormGroup {...args} inline={true} labelInfo="(checkbox)">
                 <Checkbox label="I accept the terms" disabled={args.disabled} />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -871,7 +865,7 @@ export const MixedForm: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <FormGroup {...args} label="Full name" labelFor="mixed-name" labelInfo="(required)">
                 <InputGroup
                     id="mixed-name"
@@ -970,7 +964,7 @@ export const MixedForm: Story = {
                 <Switch label="Subscribe to newsletter" disabled={args.disabled} />
                 <Switch label="Allow data collection" disabled={args.disabled} />
             </FormGroup>
-        </div>
+        </Flex>
     ),
 };
 

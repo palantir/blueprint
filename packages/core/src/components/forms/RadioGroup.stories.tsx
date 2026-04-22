@@ -7,6 +7,8 @@ import { storybookLayoutDecorator } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 import { useArgs } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { RadioGroup } from "./radioGroup";
 
 const sampleOptions = [
@@ -78,11 +80,11 @@ export const StateExample: Story = {
             [updateArgs],
         );
         return (
-            <div style={{ display: "flex", gap: 32 }}>
+            <Flex gap={8}>
                 <RadioGroup {...args} label="Enabled" onChange={handleChange} />
                 <RadioGroup {...args} label="Disabled" disabled={true} onChange={handleChange} />
                 <RadioGroup {...args} label="Inline" inline={true} onChange={handleChange} />
-            </div>
+            </Flex>
         );
     },
 };

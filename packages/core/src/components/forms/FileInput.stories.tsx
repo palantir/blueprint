@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StoryLabel } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Size } from "../../common";
 
 import { FileInput } from "./fileInput";
@@ -15,17 +17,16 @@ const meta: Meta<typeof FileInput> = {
     component: FileInput,
     decorators: [
         Story => (
-            <div
+            <Flex
+                flexDirection="column"
+                gap={3}
                 style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 12,
                     width: "100%",
                     minWidth: "400px",
                 }}
             >
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     tags: ["autodocs"],
@@ -81,7 +82,7 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             {Object.values(Size).map(size => (
                 <FileInput
                     key={size}
@@ -90,7 +91,7 @@ export const SizeExample: Story = {
                     text={`${size.charAt(0).toUpperCase() + size.slice(1)} size`}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -104,11 +105,11 @@ export const StateExample: Story = {
         hasSelection: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <FileInput {...args} text="Choose file..." />
             <FileInput {...args} hasSelection={true} text="document.pdf" />
             <FileInput {...args} disabled={true} text="Disabled..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -128,10 +129,10 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={2} alignItems="start">
             <FileInput {...args} fill={true} text="Full Width" />
             <FileInput {...args} fill={false} text="Auto Width" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -144,11 +145,11 @@ export const ButtonTextExample: Story = {
         buttonText: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <FileInput {...args} buttonText="Browse" text="Default button text..." />
             <FileInput {...args} buttonText="Upload" text="Custom button text..." />
             <FileInput {...args} buttonText="Select" text="Another button text..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -169,7 +170,7 @@ export const Playground: Story = {
         );
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: "400px" }}>
+            <Flex flexDirection="column" gap={3} style={{ minWidth: "400px" }}>
                 <FileInput
                     buttonText={args.buttonText}
                     disabled={args.disabled}
@@ -180,7 +181,7 @@ export const Playground: Story = {
                     text={fileName ?? "Choose file..."}
                 />
                 {fileName != null && <StoryLabel title={`Selected: ${fileName}`} />}
-            </div>
+            </Flex>
         );
     },
     args: {
