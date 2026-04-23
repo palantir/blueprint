@@ -75,7 +75,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
         onError,
         onTimezoneChange,
         outOfRangeMessage = OUT_OF_RANGE_MESSAGE,
-        popoverProps = {},
         popoverRef,
         rightElement,
         reverseMonthAndYearMenus = false,
@@ -162,13 +161,9 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
     // Popover contents (date picker)
     // ------------------------------------------------------------------------
 
-    const handlePopoverClose = useCallback(
-        (e: React.SyntheticEvent<HTMLElement>) => {
-            popoverProps.onClose?.(e);
-            setIsOpen(false);
-        },
-        [popoverProps],
-    );
+    const handlePopoverClose = useCallback((_e: React.SyntheticEvent<HTMLElement>) => {
+        setIsOpen(false);
+    }, []);
 
     const handleDateChange = useCallback(
         (newDate: Date | null, isUserChange: boolean, didSubmitWithEnter = false) => {
@@ -497,7 +492,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
                             {maybeTimezonePicker}
                         </>
                     }
-                    tagName={popoverProps.targetTagName}
                     type="text"
                     role="combobox"
                     {...targetProps}
@@ -532,7 +526,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
             maybeTimezonePicker,
             placeholder,
             popoverId,
-            popoverProps.targetTagName,
             rightElement,
             shouldShowErrorStyling,
         ],
@@ -542,14 +535,13 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
     return (
         <Popover
             isOpen={isOpen && !disabled}
-            {...popoverProps}
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={false}
-            className={classNames(Classes.DATE_INPUT, popoverProps.className, props.className)}
+            className={classNames(Classes.DATE_INPUT, props.className)}
             content={popoverContent}
             enforceFocus={false}
             onClose={handlePopoverClose}
-            popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
+            popoverClassName={classNames(Classes.DATE_INPUT_POPOVER)}
             ref={popoverRef}
             renderTarget={renderTarget}
         />

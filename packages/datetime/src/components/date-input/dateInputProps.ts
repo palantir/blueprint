@@ -7,7 +7,6 @@ import type { InputGroupProps, Props } from "@blueprintjs/core";
 import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { DateFormatProps } from "../../common/dateFormatProps";
 import type { DatePickerBaseProps } from "../../common/datePickerBaseProps";
-import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
@@ -16,7 +15,6 @@ export interface DateInputProps
         ReactDayPickerSingleProps,
         DateFnsLocaleProps,
         Partial<Omit<DateFormatProps, "locale">>,
-        DatetimePopoverProps,
         Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
