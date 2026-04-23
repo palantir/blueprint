@@ -199,7 +199,6 @@ export const DateInputExample: React.FC<ExampleProps> = props => {
                 fill={fill}
                 locale={localeCode}
                 onChange={setValue}
-                popoverProps={{ placement: "bottom" }}
                 reverseMonthAndYearMenus={reverseMonthAndYearMenus}
                 rightElement={
                     showRightElement && (
