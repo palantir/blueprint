@@ -75,7 +75,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
         onError,
         onTimezoneChange,
         outOfRangeMessage = OUT_OF_RANGE_MESSAGE,
-        popoverRef,
         rightElement,
         reverseMonthAndYearMenus = false,
         showTimezoneSelect,
@@ -542,7 +541,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
             enforceFocus={false}
             onClose={handlePopoverClose}
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER)}
-            ref={popoverRef}
             renderTarget={renderTarget}
         />
     );
