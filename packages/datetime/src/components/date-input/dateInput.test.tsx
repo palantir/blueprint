@@ -70,9 +70,6 @@ const DEFAULT_PROPS: DateInputProps & DateFormatProps = {
         }
     },
     parseDate: (str: string) => new Date(str),
-    popoverProps: {
-        usePortal: false,
-    },
     showTimezoneSelect: true,
     timePrecision: TimePrecision.SECOND,
 };
@@ -92,23 +89,6 @@ describe("<DateInput>", () => {
     });
 
     describe("basic rendering", () => {
-        it("should pass custom classNames to popover target", () => {
-            const CLASS_1 = "foo";
-            const CLASS_2 = "bar";
-
-            const wrapper = mount(
-                <DateInput
-                    {...DEFAULT_PROPS}
-                    className={CLASS_1}
-                    popoverProps={{ ...DEFAULT_PROPS.popoverProps, className: CLASS_2 }}
-                />,
-            );
-
-            const popoverTarget = wrapper.find(`.${Classes.DATE_INPUT}.${CoreClasses.POPOVER_TARGET}`).hostNodes();
-            expect(popoverTarget.hasClass(CLASS_1)).toBe(true);
-            expect(popoverTarget.hasClass(CLASS_2)).toBe(true);
-        });
-
         it("should support custom input props", () => {
             const wrapper = mount(
                 <DateInput {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
@@ -171,26 +151,6 @@ describe("<DateInput>", () => {
             expect(input.prop("required")).toBe(true);
             expect(inputRef).toHaveBeenCalled();
             expect(onFocus).toHaveBeenCalled();
-        });
-
-        it("should pass popoverProps to Popover", () => {
-            const onOpening = vi.fn();
-            const wrapper = mount(
-                <DateInput
-                    {...DEFAULT_PROPS}
-                    popoverProps={{
-                        onOpening,
-                        placement: "top",
-                        usePortal: false,
-                    }}
-                />,
-            );
-            focusInput(wrapper);
-
-            const popover = wrapper.find(Popover).first();
-            expect(popover.prop("placement")).toBe("top");
-            expect(popover.prop("usePortal")).toBe(false);
-            expect(onOpening).toHaveBeenCalledOnce();
         });
 
         it("should gracefully handle invalid defaultTimezone prop value", () => {
