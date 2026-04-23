@@ -39,8 +39,8 @@ import { INVALID_DATE_MESSAGE, LOCALE, MAX_DATE, MIN_DATE, OUT_OF_RANGE_MESSAGE 
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
-import type { DateInputProps } from "./dateInputProps";
 import type { DateInputNextProps } from "./dateInputNextProps";
+import type { DateInputProps } from "./dateInputProps";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
 
