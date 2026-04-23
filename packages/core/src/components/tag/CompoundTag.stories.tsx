@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 import { Button } from "../button/buttons";
 
@@ -102,7 +104,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <Flex gap={2} flexWrap="wrap">
             {Object.values(Intent)
                 .filter(i => i !== "none")
                 .map(intent => (
@@ -110,7 +112,7 @@ export const IntentExample: Story = {
                         {intent.charAt(0).toUpperCase() + intent.slice(1)}
                     </CompoundTag>
                 ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -123,20 +125,20 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={4}>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Default" />
                 <CompoundTag {...args} leftContent="Key" minimal={false}>
                     Value
                 </CompoundTag>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Minimal" />
                 <CompoundTag {...args} leftContent="Key" minimal={true}>
                     Value
                 </CompoundTag>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -149,14 +151,14 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <Flex gap={2} alignItems="center">
             <CompoundTag {...args} leftContent="Size" size="medium">
                 Medium
             </CompoundTag>
             <CompoundTag {...args} leftContent="Size" size="large">
                 Large
             </CompoundTag>
-        </div>
+        </Flex>
     ),
 };
 
@@ -171,7 +173,7 @@ export const StateExample: Story = {
     },
     render: function Render(args) {
         return (
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <Flex gap={2} flexWrap="wrap">
                 <CompoundTag {...args} leftContent="Key">
                     Default
                 </CompoundTag>
@@ -184,7 +186,7 @@ export const StateExample: Story = {
                 <CompoundTag {...args} leftContent="Key" onRemove={args.onRemove}>
                     Removable
                 </CompoundTag>
-            </div>
+            </Flex>
         );
     },
 };
@@ -199,7 +201,7 @@ export const IconExample: Story = {
         endIcon: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+        <Flex gap={2} flexWrap="wrap">
             <CompoundTag {...args} leftContent="City" icon="globe">
                 London
             </CompoundTag>
@@ -209,7 +211,7 @@ export const IconExample: Story = {
             <CompoundTag {...args} leftContent="City" icon="globe" endIcon="map-marker">
                 New York
             </CompoundTag>
-        </div>
+        </Flex>
     ),
 };
 
@@ -229,14 +231,14 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={2} alignItems="start">
             <CompoundTag {...args} leftContent="Region" fill={true}>
                 Full Width
             </CompoundTag>
             <CompoundTag {...args} leftContent="Region" fill={false}>
                 Auto Width
             </CompoundTag>
-        </div>
+        </Flex>
     ),
 };
 
@@ -252,18 +254,18 @@ export const AllIntentsAllVariants: Story = {
     },
     render: function Render(args) {
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <Flex flexDirection="column" gap={4}>
                 {[false, true].map(minimal => (
-                    <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    <Flex key={String(minimal)} flexDirection="column" gap={2}>
                         <StoryLabel title={minimal ? "Minimal" : "Default"} />
-                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        <Flex gap={2} flexWrap="wrap">
                             {Object.values(Intent).map(intent => (
                                 <CompoundTag key={intent} {...args} leftContent="Key" minimal={minimal} intent={intent}>
                                     {intent === Intent.NONE ? "none" : intent}
                                 </CompoundTag>
                             ))}
-                        </div>
-                        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                        </Flex>
+                        <Flex gap={2} flexWrap="wrap">
                             {Object.values(Intent).map(intent => (
                                 <CompoundTag
                                     key={intent}
@@ -277,10 +279,10 @@ export const AllIntentsAllVariants: Story = {
                                     {intent === Intent.NONE ? "none" : intent}
                                 </CompoundTag>
                             ))}
-                        </div>
-                    </div>
+                        </Flex>
+                    </Flex>
                 ))}
-            </div>
+            </Flex>
         );
     },
 };
@@ -299,8 +301,8 @@ export const Playground: Story = {
         const handleReset = useCallback(() => setTags(PLAYGROUND_INITIAL_TAGS), []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <Flex flexDirection="column" gap={2} alignItems="center">
+                <Flex gap={2} flexWrap="wrap">
                     {tags.map(tag => (
                         <CompoundTag
                             key={tag}
@@ -319,11 +321,11 @@ export const Playground: Story = {
                             {tag}
                         </CompoundTag>
                     ))}
-                </div>
+                </Flex>
                 {tags.length === 0 && (
                     <Button icon="refresh" variant="outlined" size="small" text="Reset tags" onClick={handleReset} />
                 )}
-            </div>
+            </Flex>
         );
     },
     args: {

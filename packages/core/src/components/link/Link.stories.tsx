@@ -5,6 +5,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StoryLabel } from "@storybook-common";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 
 import { Link } from "./link";
@@ -14,9 +16,9 @@ const meta: Meta<typeof Link> = {
     component: Link,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Flex justifyContent="center" alignItems="center">
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
     tags: ["autodocs"],
@@ -63,13 +65,13 @@ export const IntentExample: Story = {
         color: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16 }}>
+        <Flex gap={4}>
             {Object.values(Intent).map(intent => (
                 <Link key={intent} {...args} color={intent}>
                     {intent.charAt(0).toUpperCase() + intent.slice(1)}
                 </Link>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -82,16 +84,16 @@ export const UnderlineExample: Story = {
         underline: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16 }}>
+        <Flex gap={4}>
             {(["always", "hover", "none"] as const).map(underline => (
-                <div key={underline} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <Flex key={underline} flexDirection="column" gap={1} alignItems="center">
                     <StoryLabel title={underline} />
                     <Link {...args} underline={underline}>
                         Link
                     </Link>
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -105,11 +107,11 @@ export const AllIntentsAllUnderlines: Story = {
         underline: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {(["always", "hover", "none"] as const).map(underline => (
-                <div key={underline} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <Flex key={underline} flexDirection="column" gap={2}>
                     <StoryLabel title={underline} />
-                    <div style={{ display: "flex", gap: 16 }}>
+                    <Flex gap={4}>
                         {Object.values(Intent).map(intent => (
                             <Link key={intent} {...args} color={intent} underline={underline}>
                                 {intent.charAt(0).toUpperCase() + intent.slice(1)}
@@ -118,10 +120,10 @@ export const AllIntentsAllUnderlines: Story = {
                         <Link {...args} color="inherit" underline={underline}>
                             Inherit
                         </Link>
-                    </div>
-                </div>
+                    </Flex>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 

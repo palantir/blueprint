@@ -7,6 +7,8 @@ import { StoryLabel } from "@storybook-common";
 import { type MouseEvent, useCallback, useReducer } from "react";
 import { expect, waitFor } from "storybook/test";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";
 
@@ -173,7 +175,7 @@ export const CompactExample: Story = {
 export const StateExample: Story = {
     name: "State",
     render: args => (
-        <div style={{ display: "flex", gap: 32 }}>
+        <Flex gap={8}>
             <div>
                 <StoryLabel title="Selected" />
                 <div style={{ minWidth: "300px" }}>
@@ -186,7 +188,7 @@ export const StateExample: Story = {
                     <Tree {...args} contents={DISABLED_CONTENTS} />
                 </div>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -196,7 +198,7 @@ export const StateExample: Story = {
 export const AllStates: Story = {
     name: "All States",
     render: args => (
-        <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
+        <Flex gap={8} flexWrap="wrap">
             <div>
                 <StoryLabel title="Default" />
                 <div style={{ minWidth: "300px" }}>
@@ -221,7 +223,7 @@ export const AllStates: Story = {
                     <Tree {...args} contents={SAMPLE_CONTENTS} compact={true} />
                 </div>
             </div>
-        </div>
+        </Flex>
     ),
 };
 

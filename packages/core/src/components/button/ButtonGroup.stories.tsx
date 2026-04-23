@@ -5,6 +5,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { StoryLabel } from "@storybook-common";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 import { Popover } from "../popover/popover";
 
@@ -87,18 +89,18 @@ export const VariantExample: Story = {
         variant: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+        <Flex gap={10} alignItems="center">
             {Object.values(ButtonVariant).map(variant => (
-                <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <Flex key={variant} flexDirection="column" gap={1} alignItems="center">
                     <StoryLabel title={variant} />
                     <ButtonGroup {...args} variant={variant}>
                         <Button text="First" />
                         <Button text="Second" />
                         <Button text="Third" />
                     </ButtonGroup>
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -111,18 +113,18 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+        <Flex gap={10} alignItems="center">
             {Object.values(Size).map(size => (
-                <div key={size} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <Flex key={size} flexDirection="column" gap={1} alignItems="center">
                     <StoryLabel title={size} />
                     <ButtonGroup {...args} size={size}>
                         <Button text="First" />
                         <Button text="Second" />
                         <Button text="Third" />
                     </ButtonGroup>
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -142,24 +144,24 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={5}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="fill={true}" />
                 <ButtonGroup {...args} fill={true}>
                     <Button text="First" />
                     <Button text="Second" />
                     <Button text="Third" />
                 </ButtonGroup>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="fill={false}" />
                 <ButtonGroup {...args} fill={false}>
                     <Button text="First" />
                     <Button text="Second" />
                     <Button text="Third" />
                 </ButtonGroup>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -172,24 +174,24 @@ export const VerticalExample: Story = {
         vertical: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 24, alignItems: "start" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex gap={6} alignItems="start">
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="horizontal" />
                 <ButtonGroup {...args} vertical={false}>
                     <Button text="First" />
                     <Button text="Second" />
                     <Button text="Third" />
                 </ButtonGroup>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="vertical" />
                 <ButtonGroup {...args} vertical={true}>
                     <Button text="First" />
                     <Button text="Second" />
                     <Button text="Third" />
                 </ButtonGroup>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -210,18 +212,18 @@ export const AlignmentExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 25 }}>
+        <Flex flexDirection="column" gap={6}>
             {Object.values(ALIGNMENT).map(alignment => (
-                <div key={alignment} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <Flex key={alignment} flexDirection="column" gap={1}>
                     <StoryLabel title={alignment} />
                     <ButtonGroup {...args} alignText={alignment} fill={true}>
                         <Button text="First" />
                         <Button text="Second" />
                         <Button text="Third" />
                     </ButtonGroup>
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -233,9 +235,9 @@ export const AllIntentsAllVariants: Story = {
         variant: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "row", gap: 50 }}>
+        <Flex flexDirection="row" gap={10}>
             {Object.values(ButtonVariant).map(variant => (
-                <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <Flex key={variant} flexDirection="column" gap={2}>
                     <StoryLabel title={variant} />
                     {Object.values(Intent).map(intent => (
                         <ButtonGroup key={intent} {...args} variant={variant}>
@@ -244,9 +246,9 @@ export const AllIntentsAllVariants: Story = {
                             <Button intent={intent} text={intent} />
                         </ButtonGroup>
                     ))}
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -265,12 +267,9 @@ export const WithPopover: Story = {
         ] as const;
 
         return (
-            <div style={{ display: "flex", gap: 50, alignItems: "center" }}>
+            <Flex gap={10} alignItems="center">
                 {Object.values(ButtonVariant).map(variant => (
-                    <div
-                        key={variant}
-                        style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}
-                    >
+                    <Flex key={variant} flexDirection="column" gap={1} alignItems="center">
                         <StoryLabel title={variant} />
                         <ButtonGroup {...args} variant={variant}>
                             {BUTTONS.map(({ icon, label }) => (
@@ -283,9 +282,9 @@ export const WithPopover: Story = {
                                 </Popover>
                             ))}
                         </ButtonGroup>
-                    </div>
+                    </Flex>
                 ))}
-            </div>
+            </Flex>
         );
     },
 };
