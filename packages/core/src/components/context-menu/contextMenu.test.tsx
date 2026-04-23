@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, type RenderOptions, type RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, useCallback, useState } from "react";
 
-import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
+import { OverlaysProvider } from "../../context/overlays/overlaysProvider";
 import { Drawer } from "../drawer/drawer";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
@@ -42,10 +43,21 @@ const COMMON_TOOLTIP_PROPS: Partial<TooltipProps> = {
     usePortal: false,
 };
 
+function renderWithOverlaysProvider(ui: React.ReactElement, renderOptions: RenderOptions = {}): RenderResult {
+    return render(ui, {
+        wrapper: OverlaysProvider,
+        ...renderOptions,
+    });
+}
+
 describe("ContextMenu", () => {
+    afterEach(() => {
+        document.querySelectorAll(`.${Classes.PORTAL}`).forEach(el => el.remove());
+    });
+
     describe("basic usage", () => {
         it("renders children", () => {
-            render(
+            renderWithOverlaysProvider(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
                     <div data-testid="target" />
                 </ContextMenu>,
@@ -56,7 +68,7 @@ describe("ContextMenu", () => {
 
         it("opens popover on right click", async () => {
             const user = userEvent.setup();
-            const { baseElement } = render(
+            const { baseElement } = renderWithOverlaysProvider(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
                     <div data-testid="target" />
                 </ContextMenu>,
@@ -68,7 +80,7 @@ describe("ContextMenu", () => {
         });
 
         it("renders custom HTML tag if specified", () => {
-            render(
+            renderWithOverlaysProvider(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} tagName="span">
                     target
                 </ContextMenu>,
@@ -79,7 +91,7 @@ describe("ContextMenu", () => {
 
         it("supports custom refs", () => {
             const ref = createRef<HTMLElement>();
-            render(
+            renderWithOverlaysProvider(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} className="test" ref={ref}>
                     <div data-testid="target" />
                 </ContextMenu>,
@@ -90,7 +102,7 @@ describe("ContextMenu", () => {
 
         it("closes popover on ESC key press", async () => {
             const user = userEvent.setup();
-            const { baseElement } = render(
+            const { baseElement } = renderWithOverlaysProvider(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
                     <div data-testid="target" />
                 </ContextMenu>,
@@ -98,9 +110,10 @@ describe("ContextMenu", () => {
             const target = screen.getByTestId("target");
             expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).not.toBeInTheDocument();
             await user.pointer({ keys: "[MouseRight>]", target });
-            expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).toBeInTheDocument();
+            const overlayElement = baseElement.querySelector(`.${Classes.OVERLAY_OPEN}`);
+            expect(overlayElement).toBeInTheDocument();
 
-            await user.keyboard("{Escape}");
+            fireEvent.keyDown(overlayElement!, { key: "Escape" });
 
             await waitFor(() => {
                 expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).not.toBeInTheDocument();
@@ -111,7 +124,7 @@ describe("ContextMenu", () => {
             const user = userEvent.setup();
             const itemClickSpy = vi.fn();
             const wrapperClickSpy = vi.fn();
-            const { baseElement } = render(
+            const { baseElement } = renderWithOverlaysProvider(
                 <ContextMenu
                     content={
                         <Menu>
@@ -139,11 +152,8 @@ describe("ContextMenu", () => {
             const user = userEvent.setup();
             const placement = "top";
             const popoverClassName = "test-popover-class";
-            const { baseElement } = render(
-                <ContextMenu
-                    content={MENU}
-                    popoverProps={{ placement, popoverClassName, transitionDuration: 0 }}
-                >
+            const { baseElement } = renderWithOverlaysProvider(
+                <ContextMenu content={MENU} popoverProps={{ placement, popoverClassName, transitionDuration: 0 }}>
                     <div data-testid="target" />
                 </ContextMenu>,
             );
@@ -194,7 +204,7 @@ describe("ContextMenu", () => {
         });
 
         function renderChildFnMenu(props?: Partial<ContextMenuProps>) {
-            return render(
+            return renderWithOverlaysProvider(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     {ctxMenuProps => (
                         <div
@@ -225,7 +235,7 @@ describe("ContextMenu", () => {
             const onContextMenu = vi.fn((event: React.MouseEvent) => {
                 expect(event.defaultPrevented).toBe(true);
             });
-            const { baseElement } = render(
+            const { baseElement } = renderWithOverlaysProvider(
                 <ContextMenu
                     content={renderContent}
                     popoverProps={{ transitionDuration: 0 }}
@@ -246,7 +256,7 @@ describe("ContextMenu", () => {
             const onContextMenu = vi.fn((event: React.MouseEvent) => {
                 expect(event.defaultPrevented).toBe(false);
             });
-            render(
+            renderWithOverlaysProvider(
                 <ContextMenu
                     content={() => undefined}
                     popoverProps={{ transitionDuration: 0 }}
@@ -262,7 +272,7 @@ describe("ContextMenu", () => {
 
         it("updates menu if content prop value changes", async () => {
             const user = userEvent.setup();
-            const { baseElement, rerender } = render(
+            const { baseElement, rerender } = renderWithOverlaysProvider(
                 <ContextMenu content={renderContent} popoverProps={{ transitionDuration: 0 }}>
                     <div data-testid="target" />
                 </ContextMenu>,
@@ -283,7 +293,9 @@ describe("ContextMenu", () => {
 
         it("updates menu if content render function return value changes", async () => {
             const user = userEvent.setup();
-            const { baseElement, rerender } = render(<TestMenuWithChangingContent useAltContent={false} />);
+            const { baseElement, rerender } = renderWithOverlaysProvider(
+                <TestMenuWithChangingContent useAltContent={false} />,
+            );
             const target = screen.getByTestId("target");
             await user.pointer({ keys: "[MouseRight>]", target });
             expect(baseElement.querySelector(`.${MENU_CLASSNAME}`)).toBeInTheDocument();
@@ -320,7 +332,7 @@ describe("ContextMenu", () => {
     describe("theming", () => {
         it("detects dark theme", async () => {
             const user = userEvent.setup();
-            const { baseElement } = render(
+            const { baseElement } = renderWithOverlaysProvider(
                 <div className={Classes.DARK}>
                     <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
                         <div data-testid="target" />
@@ -348,7 +360,7 @@ describe("ContextMenu", () => {
                     </div>
                 );
             }
-            const { baseElement } = render(<ThemeWrapper />);
+            const { baseElement } = renderWithOverlaysProvider(<ThemeWrapper />);
             const target = screen.getByTestId("target");
 
             // Open the context menu with dark theme
@@ -357,7 +369,11 @@ describe("ContextMenu", () => {
             expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).toBeInTheDocument();
             expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).toHaveClass(Classes.DARK);
 
-            await user.keyboard("{Escape}");
+            const overlayElement = baseElement.querySelector(`.${Classes.OVERLAY_OPEN}`);
+            fireEvent.keyDown(overlayElement!, { key: "Escape" });
+            await waitFor(() => {
+                expect(baseElement.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`)).not.toBeInTheDocument();
+            });
 
             // Switch from dark to light via state change
             await user.click(screen.getByText("Toggle theme"));
@@ -375,7 +391,7 @@ describe("ContextMenu", () => {
         describe("with one level of nesting", () => {
             it("opens context menu when tooltip is parent", async () => {
                 const user = userEvent.setup();
-                const { baseElement } = render(
+                const { baseElement } = renderWithOverlaysProvider(
                     <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
                         <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
                             <div data-testid="target" />
@@ -390,7 +406,7 @@ describe("ContextMenu", () => {
 
             it("opens context menu when tooltip is child", async () => {
                 const user = userEvent.setup();
-                const { baseElement } = render(
+                const { baseElement } = renderWithOverlaysProvider(
                     <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
                         <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
                             <div data-testid="target" />
@@ -408,7 +424,7 @@ describe("ContextMenu", () => {
             describe("ContextMenu > Tooltip > ContextMenu", () => {
                 it("opens inner context menu on right click", async () => {
                     const user = userEvent.setup();
-                    const { baseElement } = render(
+                    const { baseElement } = renderWithOverlaysProvider(
                         <ContextMenu
                             content={MENU}
                             popoverProps={{ transitionDuration: 0 }}
@@ -444,7 +460,7 @@ describe("ContextMenu", () => {
 
                 it("opens outer context menu on right click of outer target", async () => {
                     const user = userEvent.setup();
-                    const { baseElement } = render(
+                    const { baseElement } = renderWithOverlaysProvider(
                         <ContextMenu
                             content={MENU}
                             popoverProps={{ transitionDuration: 0 }}
@@ -484,7 +500,7 @@ describe("ContextMenu", () => {
 
                 it("opens context menu after hovering inner target", async () => {
                     const user = userEvent.setup();
-                    const { baseElement } = render(
+                    const { baseElement } = renderWithOverlaysProvider(
                         <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
                             <div
                                 data-testid="outer-target"
@@ -514,7 +530,7 @@ describe("ContextMenu", () => {
 
                 it("opens context menu after hovering ctx menu target", async () => {
                     const user = userEvent.setup();
-                    const { baseElement } = render(
+                    const { baseElement } = renderWithOverlaysProvider(
                         <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
                             <div
                                 data-testid="outer-target"
@@ -549,7 +565,7 @@ describe("ContextMenu", () => {
             it("opens context menu inside Drawer", async () => {
                 const user = userEvent.setup();
                 const popoverClassName = "test-positions-popover";
-                const { baseElement } = render(
+                const { baseElement } = renderWithOverlaysProvider(
                     <Drawer isOpen={true} position="right" transitionDuration={0}>
                         <ContextMenu
                             content={MENU}
