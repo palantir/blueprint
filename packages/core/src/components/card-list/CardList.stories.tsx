@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Card } from "../card/card";
 
 import { CardList } from "./cardList";
@@ -16,9 +18,6 @@ const meta: Meta<CardListStoryArgs> = {
     title: "Core/CardList",
     component: CardList,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         bordered: true,
@@ -58,32 +57,32 @@ export const StateExample: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 24 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={6}>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Bordered" />
                 <CardList {...args} bordered={true} compact={false}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
                     <Card selected={true}>Selected</Card>
                 </CardList>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Compact" />
                 <CardList {...args} bordered={true} compact={true}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
                     <Card selected={true}>Selected</Card>
                 </CardList>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Not bordered" />
                 <CardList {...args} bordered={false} compact={false}>
                     <Card>Plain</Card>
                     <Card interactive={true}>Interactive</Card>
                     <Card selected={true}>Selected</Card>
                 </CardList>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -96,11 +95,11 @@ export const AllConfigurations: Story = {
         compact: { table: { disable: true } },
     },
     render: () => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <Flex flexDirection="column" gap={6}>
             {[false, true].map(compact => (
-                <div key={String(compact)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <Flex key={String(compact)} flexDirection="column" gap={2}>
                     <StoryLabel title={compact ? "Compact" : "Default"} />
-                    <div style={{ display: "flex", gap: 16 }}>
+                    <Flex gap={4}>
                         {[true, false].map(bordered => (
                             <CardList key={String(bordered)} bordered={bordered} compact={compact}>
                                 <Card>Plain</Card>
@@ -108,10 +107,10 @@ export const AllConfigurations: Story = {
                                 <Card selected={true}>Selected</Card>
                             </CardList>
                         ))}
-                    </div>
-                </div>
+                    </Flex>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 

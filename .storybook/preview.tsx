@@ -40,6 +40,10 @@ const preview: Preview = {
                 date: /Date$/i,
             },
         },
+        docs: {
+            codePanel: true,
+        },
+        layout: "centered",
     },
 
     decorators: [

@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 
 import { Tag } from "./tag";
@@ -19,9 +21,6 @@ const meta: Meta<typeof Tag> = {
     title: "Core/Tag/Tag",
     component: Tag,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         children: "Tag",
@@ -105,7 +104,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <Flex gap={2}>
             {Object.values(Intent)
                 .filter(i => i !== "none")
                 .map(intent => (
@@ -113,7 +112,7 @@ export const IntentExample: Story = {
                         {intent.charAt(0).toUpperCase() + intent.slice(1)}
                     </Tag>
                 ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -126,20 +125,20 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+        <Flex gap={4}>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Default" />
                 <Tag {...args} minimal={false}>
                     Tag
                 </Tag>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
                 <StoryLabel title="Minimal" />
                 <Tag {...args} minimal={true}>
                     Tag
                 </Tag>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -152,14 +151,14 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <Flex gap={2} alignItems="center">
             <Tag {...args} size="medium">
                 Medium
             </Tag>
             <Tag {...args} size="large">
                 Large
             </Tag>
-        </div>
+        </Flex>
     ),
 };
 
@@ -174,7 +173,7 @@ export const StateExample: Story = {
     },
     render: function Render(args) {
         return (
-            <div style={{ display: "flex", gap: 8 }}>
+            <Flex gap={2}>
                 <Tag {...args}>Default</Tag>
                 <Tag {...args} active={true}>
                     Active
@@ -185,7 +184,7 @@ export const StateExample: Story = {
                 <Tag {...args} onRemove={args.onRemove}>
                     Removable
                 </Tag>
-            </div>
+            </Flex>
         );
     },
 };
@@ -200,7 +199,7 @@ export const IconExample: Story = {
         endIcon: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <Flex gap={2}>
             <Tag {...args} icon="home">
                 Start icon
             </Tag>
@@ -210,7 +209,7 @@ export const IconExample: Story = {
             <Tag {...args} icon="home" endIcon="map">
                 Both
             </Tag>
-        </div>
+        </Flex>
     ),
 };
 
@@ -230,14 +229,14 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={2} alignItems="start">
             <Tag {...args} fill={true}>
                 Full Width
             </Tag>
             <Tag {...args} fill={false}>
                 Auto Width
             </Tag>
-        </div>
+        </Flex>
     ),
 };
 
@@ -253,18 +252,18 @@ export const AllIntentsAllVariants: Story = {
     },
     render: function Render(args) {
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <Flex flexDirection="column" gap={4}>
                 {[false, true].map(minimal => (
-                    <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                    <Flex key={String(minimal)} flexDirection="column" gap={2}>
                         <StoryLabel title={minimal ? "Minimal" : "Default"} />
-                        <div style={{ display: "flex", gap: 8 }}>
+                        <Flex gap={2}>
                             {Object.values(Intent).map(intent => (
                                 <Tag key={intent} {...args} minimal={minimal} intent={intent}>
                                     {intent === Intent.NONE ? "none" : intent}
                                 </Tag>
                             ))}
-                        </div>
-                        <div style={{ display: "flex", gap: 8 }}>
+                        </Flex>
+                        <Flex gap={2}>
                             {Object.values(Intent).map(intent => (
                                 <Tag
                                     key={intent}
@@ -277,10 +276,10 @@ export const AllIntentsAllVariants: Story = {
                                     {intent === Intent.NONE ? "none" : intent}
                                 </Tag>
                             ))}
-                        </div>
-                    </div>
+                        </Flex>
+                    </Flex>
                 ))}
-            </div>
+            </Flex>
         );
     },
 };
@@ -299,8 +298,8 @@ export const Playground: Story = {
         const handleReset = useCallback(() => setTags(PLAYGROUND_INITIAL_TAGS), []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "center" }}>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <Flex flexDirection="column" gap={2} alignItems="center">
+                <Flex gap={2} flexWrap="wrap">
                     {tags.map(tag => (
                         <Tag
                             key={tag}
@@ -318,13 +317,13 @@ export const Playground: Story = {
                             {tag}
                         </Tag>
                     ))}
-                </div>
+                </Flex>
                 {tags.length === 0 && (
                     <button type="button" onClick={handleReset}>
                         Reset tags
                     </button>
                 )}
-            </div>
+            </Flex>
         );
     },
     args: {

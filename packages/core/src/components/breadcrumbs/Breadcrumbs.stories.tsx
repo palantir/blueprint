@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import React from "react";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Boundary } from "../../common/boundary";
 
 import { type BreadcrumbProps } from "./breadcrumb";
@@ -26,9 +28,6 @@ const meta: Meta<StoryArgs> = {
     title: "Core/Breadcrumbs",
     component: Breadcrumbs,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         items: SAMPLE_ITEMS,
@@ -70,7 +69,7 @@ export const CollapseFromExample: Story = {
         collapseFrom: { table: { disable: true } },
     },
     render: ({ width, ...args }) => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={4} alignItems="start">
             <div style={{ width }}>
                 <StoryLabel title="Collapse from start (default)" />
                 <Breadcrumbs {...args} collapseFrom={Boundary.START} />
@@ -79,7 +78,7 @@ export const CollapseFromExample: Story = {
                 <StoryLabel title="Collapse from end" />
                 <Breadcrumbs {...args} collapseFrom={Boundary.END} />
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -89,7 +88,7 @@ export const CollapseFromExample: Story = {
 export const OverflowExample: Story = {
     name: "Overflow",
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <div>
                 <StoryLabel title="Constrained width (300px)" />
                 <div style={{ width: 300 }}>
@@ -102,7 +101,7 @@ export const OverflowExample: Story = {
                     <Breadcrumbs {...args} />
                 </div>
             </div>
-        </div>
+        </Flex>
     ),
 };
 

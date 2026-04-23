@@ -5,6 +5,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent } from "../../common";
 
 import { Callout } from "./callout";
@@ -13,9 +15,6 @@ const meta: Meta<typeof Callout> = {
     title: "Core/Callout",
     component: Callout,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         children: "This is a callout with some informational content.",
@@ -67,13 +66,13 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Flex flexDirection="column" gap={2}>
             {Object.values(Intent).map(intent => (
                 <Callout key={intent} {...args} intent={intent}>
                     {intent.charAt(0).toUpperCase() + intent.slice(1)} intent callout.
                 </Callout>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -86,20 +85,20 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={4}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Default" />
                 <Callout {...args} minimal={false}>
                     Default callout with background fill.
                 </Callout>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Minimal" />
                 <Callout {...args} minimal={true}>
                     Minimal callout without background fill.
                 </Callout>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -112,20 +111,20 @@ export const CompactExample: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={4}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Default" />
                 <Callout {...args} compact={false}>
                     Default padding callout.
                 </Callout>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Compact" />
                 <Callout {...args} compact={true}>
                     Compact padding callout.
                 </Callout>
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -139,7 +138,7 @@ export const IconExample: Story = {
         icon: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Flex flexDirection="column" gap={2}>
             <Callout {...args} icon="home">
                 Custom icon callout.
             </Callout>
@@ -149,7 +148,7 @@ export const IconExample: Story = {
             <Callout {...args} intent="primary" icon={null}>
                 Intent with icon explicitly hidden.
             </Callout>
-        </div>
+        </Flex>
     ),
 };
 
@@ -162,9 +161,9 @@ export const AllIntentsAllVariants: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {[false, true].map(minimal => (
-                <div key={String(minimal)} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <Flex key={String(minimal)} flexDirection="column" gap={2}>
                     <StoryLabel title={minimal ? "Minimal" : "Default"} />
                     <Callout {...args} minimal={minimal}>
                         No intent callout.
@@ -174,9 +173,9 @@ export const AllIntentsAllVariants: Story = {
                             {intent.charAt(0).toUpperCase() + intent.slice(1)} intent callout content.
                         </Callout>
                     ))}
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 

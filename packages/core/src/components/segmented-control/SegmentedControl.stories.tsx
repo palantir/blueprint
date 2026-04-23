@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Intent, Size } from "../../common";
 
 import { SegmentedControl } from "./segmentedControl";
@@ -31,9 +33,6 @@ const meta: Meta<typeof SegmentedControl> = {
     title: "Core/Form/Controls/SegmentedControl",
     component: SegmentedControl,
     decorators: [storybookLayoutDecorator],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         options: DEFAULT_OPTIONS,
@@ -95,16 +94,16 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="None" />
                 <SegmentedControl {...args} intent={Intent.NONE} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Primary" />
                 <SegmentedControl {...args} intent={Intent.PRIMARY} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -117,14 +116,14 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+        <Flex flexDirection="column" gap={3} alignItems="center">
             {Object.values(Size).map(size => (
-                <div key={size} style={{ display: "flex", flexDirection: "column", gap: 4, alignItems: "center" }}>
+                <Flex key={size} flexDirection="column" gap={1} alignItems="center">
                     <StoryLabel title={size} />
                     <SegmentedControl {...args} size={size} />
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -137,16 +136,16 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Default" />
                 <SegmentedControl {...args} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Disabled" />
                 <SegmentedControl {...args} disabled={true} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -166,16 +165,16 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Fill" />
                 <SegmentedControl {...args} fill={true} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title="Auto Width" />
                 <SegmentedControl {...args} fill={false} />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -196,20 +195,20 @@ export const WithIcons: Story = {
 export const AriaLabels: Story = {
     name: "Aria Labels",
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+        <Flex flexDirection="column" gap={3}>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title={'role="radiogroup" (default) + aria-label'} />
                 <SegmentedControl {...args} aria-label="View mode" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title={'role="toolbar" + aria-label'} />
                 <SegmentedControl {...args} role="toolbar" aria-label="View mode toolbar" />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
                 <StoryLabel title={'role="group" + aria-label'} />
                 <SegmentedControl {...args} role="group" aria-label="View mode group" />
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -224,17 +223,17 @@ export const AllIntentsAllSizes: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {[Intent.NONE, Intent.PRIMARY].map(intent => (
-                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <Flex key={intent} flexDirection="column" gap={2}>
                     <StoryLabel title={`Intent: ${intent}`} />
                     {Object.values(Size).map(size => (
                         <SegmentedControl key={size} {...args} intent={intent} size={size} />
                     ))}
                     <SegmentedControl {...args} intent={intent} disabled={true} />
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -250,10 +249,10 @@ export const Playground: Story = {
         }, []);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, alignItems: "center" }}>
+            <Flex flexDirection="column" gap={3} alignItems="center">
                 <SegmentedControl {...args} options={ICON_OPTIONS} value={value} onValueChange={handleValueChange} />
                 <StoryLabel title={`Selected: ${value}`} />
-            </div>
+            </Flex>
         );
     },
 };

@@ -5,6 +5,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useArgs, useCallback } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Button } from "../button/buttons";
 
 import { Dialog } from "./dialog";
@@ -20,15 +22,11 @@ const meta: Meta<typeof Dialog> = {
     component: Dialog,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Flex justifyContent="center" alignItems="center">
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         title: "Dialog Title",
         isOpen: true,

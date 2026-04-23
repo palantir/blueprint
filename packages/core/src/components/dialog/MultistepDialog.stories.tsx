@@ -6,6 +6,8 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import React from "react";
 import { useArgs, useCallback } from "storybook/preview-api";
 
+import { Flex } from "@blueprintjs/labs";
+
 import { Button } from "../button/buttons";
 
 import { DialogBody } from "./dialogBody";
@@ -57,15 +59,11 @@ const meta: Meta<typeof MultistepDialog> = {
     component: MultistepDialog,
     decorators: [
         Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
+            <Flex justifyContent="center" alignItems="center" style={{ minWidth: "300px" }}>
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
     args: {
         title: "Multistep Dialog",
         isOpen: true,
