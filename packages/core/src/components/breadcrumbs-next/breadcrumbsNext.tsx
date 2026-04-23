@@ -23,6 +23,7 @@ import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
 import { PopoverNext } from "../popover-next/popoverNext";
+import type { PopoverNextProps } from "../popover-next/popoverNextProps";
 
 const EMPTY_ITEMS: readonly BreadcrumbProps[] = [];
 
@@ -80,14 +81,22 @@ export interface BreadcrumbsNextProps extends Props {
     overflowListProps?: Partial<
         Omit<OverflowListProps<BreadcrumbProps>, "items" | "overflowRenderer" | "visibleItemRenderer">
     >;
+
+    /**
+     * Props to spread to the `PopoverNext` showing the overflow menu.
+     */
+    popoverNextProps?: Partial<
+        Omit<
+            PopoverNextProps,
+            "children" | "content" | "defaultIsOpen" | "disabled" | "fill" | "renderTarget" | "targetTagName"
+        >
+    >;
 }
 
 /**
  * BreadcrumbsNext component.
  *
  * Uses PopoverNext (Floating UI) for the overflow menu instead of Popover (Popper.js).
- * Does not expose popover configuration props, making it forward-compatible with
- * future popover implementation changes.
  *
  * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
  */
@@ -101,6 +110,7 @@ export const BreadcrumbsNext: React.FC<BreadcrumbsNextProps> = memo(props => {
         minVisibleItems = 0,
         overflowButtonProps,
         overflowListProps = {},
+        popoverNextProps,
     } = props;
 
     const renderBreadcrumb = useCallback(
@@ -140,9 +150,9 @@ export const BreadcrumbsNext: React.FC<BreadcrumbsNextProps> = memo(props => {
             return (
                 <li>
                     <PopoverNext
+                        {...popoverNextProps}
                         content={<Menu>{orderedItems.map(renderOverflowBreadcrumb)}</Menu>}
                         disabled={orderedItems.length === 0}
-                        placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
                     >
                         <span
                             aria-label="collapsed breadcrumbs"
@@ -155,7 +165,7 @@ export const BreadcrumbsNext: React.FC<BreadcrumbsNextProps> = memo(props => {
                 </li>
             );
         },
-        [collapseFrom, overflowButtonProps, renderOverflowBreadcrumb],
+        [collapseFrom, overflowButtonProps, popoverNextProps, renderOverflowBreadcrumb],
     );
 
     return (
