@@ -80,7 +80,7 @@
         "@tokens-studio/sd-transforms": "^2.0.3",
         "@types/culori": "^4.0.1",
         "@vitejs/plugin-react": "catalog:",
-        "change-case": "^5.4.4",
+        "change-case": "^4.1.2",
         "culori": "^4.0.2",
         "enzyme": "catalog:",
         "jsdom": "catalog:",
