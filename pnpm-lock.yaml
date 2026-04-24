@@ -244,8 +244,8 @@ importers:
         specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.12.2)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))
       change-case:
-        specifier: ^5.4.4
-        version: 5.4.4
+        specifier: ^4.1.2
+        version: 4.1.2
       culori:
         specifier: ^4.0.2
         version: 4.0.2
@@ -753,8 +753,8 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       change-case:
-        specifier: ^5.4.4
-        version: 5.4.4
+        specifier: ^4.1.2
+        version: 4.1.2
       classnames:
         specifier: 'catalog:'
         version: 2.5.1
