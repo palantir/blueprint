@@ -159,7 +159,6 @@ export type DateRangeInputDefaultProps = Required<
         | "minDate"
         | "outOfRangeMessage"
         | "overlappingDatesMessage"
-        | "popoverProps"
         | "selectAllOnFocus"
         | "shortcuts"
         | "singleMonthOnly"

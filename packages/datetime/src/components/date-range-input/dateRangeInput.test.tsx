@@ -29,7 +29,6 @@ import {
     InputGroup,
     type InputGroupProps,
     Popover,
-    type PopoverProps,
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -60,7 +59,6 @@ type InvalidDateTestFunction = (
 ) => void;
 
 // Change the default for testability
-DateRangeInput.defaultProps.popoverProps = { usePortal: false };
 (DateRangeInput.defaultProps as DateRangeInputProps).dateFnsLocaleLoader = loadDateFnsLocaleFake;
 
 const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
@@ -563,34 +561,6 @@ describe("<DateRangeInput>", () => {
             changeEndInputText(root, "");
             changeEndInputText(root, START_STR);
             assertInputValuesEqual(root, START_STR, START_STR);
-        });
-    });
-
-    describe("popoverProps", () => {
-        it("should accept custom popoverProps", () => {
-            const popoverProps: Partial<PopoverProps> = {
-                backdropProps: {},
-                placement: "top-start",
-                usePortal: false,
-            };
-            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
-            expect(popover.prop("backdropProps")).toBe(popoverProps.backdropProps);
-            expect(popover.prop("placement")).toBe(popoverProps.placement);
-        });
-
-        it("should ignore autoFocus, enforceFocus, and content in custom popoverProps", () => {
-            const CUSTOM_CONTENT = "Here is some custom content";
-            const popoverProps = {
-                autoFocus: true,
-                content: CUSTOM_CONTENT,
-                enforceFocus: true,
-                usePortal: false,
-            };
-            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
-            // this test assumes the following values will be the defaults internally
-            expect(popover.prop("autoFocus")).toBe(false);
-            expect(popover.prop("enforceFocus")).toBe(false);
-            expect(popover.prop("content")).not.toBe(CUSTOM_CONTENT);
         });
     });
 
@@ -3029,7 +2999,6 @@ describe("<DateRangeInput>", () => {
                 <DateRangeInput
                     {...DATE_FORMAT}
                     closeOnSelection={false}
-                    popoverProps={{ isOpen: true }}
                     onChange={onChange}
                     value={[DEC_6_DATE, DEC_8_DATE]}
                 />,

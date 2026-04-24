@@ -106,7 +106,6 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         minDate: MIN_DATE,
         outOfRangeMessage: OUT_OF_RANGE_MESSAGE,
         overlappingDatesMessage: OVERLAPPING_DATES_MESSAGE,
-        popoverProps: {},
         selectAllOnFocus: false,
         shortcuts: true,
         singleMonthOnly: false,
