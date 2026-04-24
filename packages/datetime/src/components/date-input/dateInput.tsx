@@ -23,8 +23,8 @@ import {
     InputGroup,
     Intent,
     mergeRefs,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverNext,
     type PopoverTargetProps,
     Tag,
     Utils,
@@ -163,7 +163,7 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
     // ------------------------------------------------------------------------
 
     const handlePopoverClose = useCallback(
-        (e: React.SyntheticEvent<HTMLElement>) => {
+        (e?: React.SyntheticEvent<HTMLElement>) => {
             popoverProps.onClose?.(e);
             setIsOpen(false);
         },
@@ -540,7 +540,7 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
 
     // N.B. no need to set `fill` since that is unused with the `renderTarget` API
     return (
-        <Popover
+        <PopoverNext
             isOpen={isOpen && !disabled}
             {...popoverProps}
             // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -552,6 +552,7 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
             ref={popoverRef}
             renderTarget={renderTarget}
+            shouldReturnFocusOnClose={false}
         />
     );
 });

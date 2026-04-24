@@ -2,12 +2,11 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import type { InputGroupProps, Props } from "@blueprintjs/core";
+import type { InputGroupProps, PopoverNextProps, PopoverNextRef, Props } from "@blueprintjs/core";
 
 import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { DateFormatProps } from "../../common/dateFormatProps";
 import type { DatePickerBaseProps } from "../../common/datePickerBaseProps";
-import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
@@ -16,7 +15,6 @@ export interface DateInputProps
         ReactDayPickerSingleProps,
         DateFnsLocaleProps,
         Partial<Omit<DateFormatProps, "locale">>,
-        DatetimePopoverProps,
         Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
@@ -117,6 +115,24 @@ export interface DateInputProps
      * @param timezone the new timezone's IANA code
      */
     onTimezoneChange?: (timezone: string) => void;
+
+    /**
+     * Props to spread to `PopoverNext`.
+     * NOTE THAT THIS IS AN EXPERIMENT AND WOULD BE NAMED popoverNextProps IN A REAL WORKFLOW
+     * THIS WOULD ALSO BE ADAPTED INTO A NEW COMPONENT INSTEAD OF EDITING A CURRENT COMPONENT
+     */
+    popoverProps?: Partial<
+        Omit<
+            PopoverNextProps,
+            "autoFocus" | "content" | "defaultIsOpen" | "disabled" | "enforceFocus" | "fill" | "renderTarget"
+        >
+    >;
+
+    /**
+     * Optional ref for the PopoverNext component instance.
+     * This is sometimes useful to reposition the popover.
+     */
+    popoverRef?: React.RefObject<PopoverNextRef>;
 
     /**
      * Element to render on right side of input.

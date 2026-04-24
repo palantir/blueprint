@@ -20,7 +20,7 @@ import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
 
-import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
+import { Classes as CoreClasses, InputGroup, PopoverNext, Tag } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
@@ -173,7 +173,7 @@ describe("<DateInput>", () => {
             expect(onFocus).toHaveBeenCalled();
         });
 
-        it("should pass popoverProps to Popover", () => {
+        it("should pass popoverProps to PopoverNext", () => {
             const onOpening = vi.fn();
             const wrapper = mount(
                 <DateInput
@@ -187,7 +187,7 @@ describe("<DateInput>", () => {
             );
             focusInput(wrapper);
 
-            const popover = wrapper.find(Popover).first();
+            const popover = wrapper.find(PopoverNext).first();
             expect(popover.prop("placement")).toBe("top");
             expect(popover.prop("usePortal")).toBe(false);
             expect(onOpening).toHaveBeenCalledOnce();
@@ -255,7 +255,7 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             focusInput(wrapper);
             blurInput(wrapper);
-            const firstTabbable = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 }).first();
+            const firstTabbable = wrapper.find(PopoverNext).find(".DayPicker-Day").filter({ tabIndex: 0 }).first();
             const lastDayOfPrevMonth = wrapper
                 .find(Popover)
                 .find(".DayPicker-Body > .DayPicker-Week .DayPicker-Day--outside")
