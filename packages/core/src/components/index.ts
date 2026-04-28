@@ -95,6 +95,7 @@ export type {
 export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
 export {
     popoverPositionToNextPlacement,
+    popoverPropsToNextProps,
     popperModifiersToNextMiddleware,
 } from "./popover-next/popoverNextMigrationUtils";
 export type {

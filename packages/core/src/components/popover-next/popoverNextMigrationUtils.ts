@@ -2,11 +2,14 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import { isNodeEnv } from "../../common/utils";
 import { positionToPlacement } from "../popover/popoverPlacementUtils";
 import { type PopoverPosition } from "../popover/popoverPosition";
-import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
+import type { PopoverProps } from "../popover/popoverProps";
+import type { DefaultPopoverTargetHTMLProps, PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 import type { MiddlewareConfig, PopoverNextPlacement } from "./middlewareTypes";
+import type { PopoverNextProps } from "./popoverNextProps";
 
 /**
  * Converts a legacy `PopoverPosition` value to a `PopoverNextPlacement` value for use with `PopoverNext`.
@@ -126,4 +129,94 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
     }
 
     return middleware;
+}
+
+/**
+ * Converts a partial legacy `PopoverProps` bag into a partial `PopoverNextProps` bag suitable
+ * for spreading onto `PopoverNext`. Preserves legacy default behavior where it differs from
+ * `PopoverNext`'s defaults (`shouldReturnFocusOnClose`).
+ *
+ * Transformations:
+ * - `position` → `placement` (via {@link popoverPositionToNextPlacement}). If both are supplied,
+ *   `placement` wins, mirroring legacy `Popover`'s mutex behavior.
+ * - `modifiers` → `middleware` (via {@link popperModifiersToNextMiddleware}). A consumer-supplied
+ *   `middleware` bag takes precedence over the converted modifiers.
+ * - `minimal: true` → `animation: "minimal"` and `arrow: false` (legacy `minimal` disables the arrow).
+ * - `boundary: "clippingParents"` → `"clippingAncestors"` (the Floating UI equivalent).
+ *
+ * Dropped (with dev-only `console.warn`):
+ * - `modifiersCustom` — no Floating UI equivalent; migrate manually to `middleware`.
+ * - `popoverRef` — `PopoverNext`'s `forwardRef` exposes `{ reposition }`, not the popover DOM node.
+ * - `portalStopPropagationEvents` — already deprecated and non-functional in React 17+.
+ *
+ * Intended for use inside Blueprint components that wrap `Popover` internally and pass
+ * through a `popoverProps` prop, so they can swap to `PopoverNext` without changing their public API.
+ */
+export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>(
+    props: Partial<PopoverProps<T>>,
+): Partial<PopoverNextProps<T>> {
+    const {
+        boundary,
+        minimal,
+        modifiers,
+        modifiersCustom,
+        popoverRef,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        portalStopPropagationEvents,
+        position,
+        shouldReturnFocusOnClose,
+        ...rest
+    } = props;
+
+    if (!isNodeEnv("production")) {
+        if (modifiersCustom !== undefined) {
+            console.warn(
+                "[Blueprint] popoverPropsToNextProps: `modifiersCustom` has no equivalent in PopoverNext and will be dropped. " +
+                    "Migrate to the `middleware` prop manually.",
+            );
+        }
+        if (popoverRef !== undefined) {
+            console.warn(
+                "[Blueprint] popoverPropsToNextProps: `popoverRef` has no equivalent in PopoverNext and will be dropped. " +
+                    "PopoverNext's forwarded ref exposes `{ reposition }`, not the popover DOM element.",
+            );
+        }
+        if (portalStopPropagationEvents !== undefined) {
+            console.warn(
+                "[Blueprint] popoverPropsToNextProps: `portalStopPropagationEvents` has no equivalent in PopoverNext and will be dropped.",
+            );
+        }
+    }
+
+    // `rest` is the 1:1 pass-through. Cast through `unknown` because the legacy `boundary` type
+    // (Popper.js's `Boundary`, which permits the string `"clippingParents"`) is structurally
+    // incompatible with `PopoverNextBoundary`, even though we strip `boundary` out above.
+    const nextProps: Partial<PopoverNextProps<T>> = { ...rest } as unknown as Partial<PopoverNextProps<T>>;
+
+    if (boundary !== undefined) {
+        // "clippingParents" (Popper.js) ≡ "clippingAncestors" (Floating UI).
+        nextProps.boundary = boundary === "clippingParents" ? "clippingAncestors" : (boundary as Element | Element[]);
+    }
+
+    // position → placement. Legacy `placement` wins over `position` when both are supplied.
+    if (position !== undefined && rest.placement === undefined) {
+        const converted = popoverPositionToNextPlacement(position);
+        if (converted !== undefined) {
+            nextProps.placement = converted;
+        }
+    }
+
+    if (modifiers !== undefined) {
+        nextProps.middleware = popperModifiersToNextMiddleware(modifiers);
+    }
+
+    if (minimal === true) {
+        nextProps.animation ??= "minimal";
+        nextProps.arrow ??= false;
+    }
+
+    // Legacy default for `shouldReturnFocusOnClose` is `false`; PopoverNext's is `true`.
+    nextProps.shouldReturnFocusOnClose = shouldReturnFocusOnClose ?? false;
+
+    return nextProps;
 }

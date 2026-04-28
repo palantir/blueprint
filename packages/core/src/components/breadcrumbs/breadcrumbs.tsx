@@ -21,8 +21,9 @@ import { Boundary, Classes, DISPLAYNAME_PREFIX, type Props, removeNonHTMLProps }
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
-import { Popover } from "../popover/popover";
 import type { PopoverProps } from "../popover/popoverProps";
+import { PopoverNext } from "../popover-next/popoverNext";
+import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 
 import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
 
@@ -150,11 +151,11 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
 
             return (
                 <li>
-                    <Popover
+                    <PopoverNext
                         content={<Menu>{orderedItems.map(renderOverflowBreadcrumb)}</Menu>}
                         disabled={orderedItems.length === 0}
                         placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
-                        {...popoverProps}
+                        {...popoverPropsToNextProps(popoverProps ?? {})}
                     >
                         <span
                             aria-label="collapsed breadcrumbs"
@@ -163,7 +164,7 @@ export const Breadcrumbs: React.FC<BreadcrumbsProps> = memo(props => {
                             {...overflowButtonProps}
                             className={classNames(Classes.BREADCRUMBS_COLLAPSED, overflowButtonProps?.className)}
                         />
-                    </Popover>
+                    </PopoverNext>
                 </li>
             );
         },
