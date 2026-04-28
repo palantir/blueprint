@@ -6,9 +6,14 @@ import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import type { MiddlewareConfig } from "../..";
 import { PopoverPosition } from "../popover/popoverPosition";
+import type { PopoverProps } from "../popover/popoverProps";
 import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
 
-import { popoverPositionToNextPlacement, popperModifiersToNextMiddleware } from "./popoverNextMigrationUtils";
+import {
+    popoverPositionToNextPlacement,
+    popoverPropsToNextProps,
+    popperModifiersToNextMiddleware,
+} from "./popoverNextMigrationUtils";
 
 describe("popoverPositionToNextPlacement", () => {
     it("should convert top-left to top-start", () => {
@@ -264,5 +269,129 @@ describe("popperModifiersToNextMiddleware", () => {
             shift: { padding: 4 },
         };
         expect(popperModifiersToNextMiddleware(value)).to.deep.equal(expected);
+    });
+});
+
+describe("popoverPropsToNextProps", () => {
+    it("should pin shouldReturnFocusOnClose to false when not supplied (legacy default)", () => {
+        expect(popoverPropsToNextProps({})).to.deep.equal({ shouldReturnFocusOnClose: false });
+    });
+
+    it("should pass through shouldReturnFocusOnClose when supplied", () => {
+        const result = popoverPropsToNextProps({ shouldReturnFocusOnClose: true });
+        expect(result.shouldReturnFocusOnClose).to.equal(true);
+    });
+
+    it("should pass through 1:1 props as-is", () => {
+        const onClose = vi.fn();
+        const result = popoverPropsToNextProps({
+            content: "hello",
+            hasBackdrop: true,
+            isOpen: true,
+            matchTargetWidth: true,
+            onClose,
+            usePortal: false,
+        });
+        expect(result.content).to.equal("hello");
+        expect(result.hasBackdrop).to.equal(true);
+        expect(result.isOpen).to.equal(true);
+        expect(result.matchTargetWidth).to.equal(true);
+        expect(result.onClose).to.equal(onClose);
+        expect(result.usePortal).to.equal(false);
+    });
+
+    describe("position → placement", () => {
+        it("should convert position to placement", () => {
+            const result = popoverPropsToNextProps({ position: PopoverPosition.TOP_LEFT });
+            expect(result.placement).to.equal("top-start");
+        });
+
+        it("should leave placement undefined when position is auto", () => {
+            const result = popoverPropsToNextProps({ position: "auto" });
+            expect(result.placement).to.be.undefined;
+        });
+
+        it("should prefer placement over position when both are supplied", () => {
+            const result = popoverPropsToNextProps({
+                placement: "right",
+                position: PopoverPosition.TOP_LEFT,
+            });
+            expect(result.placement).to.equal("right");
+        });
+    });
+
+    describe("modifiers → middleware", () => {
+        it("should convert modifiers to middleware", () => {
+            const result = popoverPropsToNextProps({
+                modifiers: { flip: { options: { padding: 8 } } },
+            });
+            expect(result.middleware).to.deep.equal({ flip: { padding: 8 } });
+        });
+
+        it("should leave middleware undefined when modifiers is not supplied", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.middleware).to.be.undefined;
+        });
+    });
+
+    describe("minimal", () => {
+        it("should map minimal: true to animation: 'minimal' and arrow: false", () => {
+            const result = popoverPropsToNextProps({ minimal: true });
+            expect(result.animation).to.equal("minimal");
+            expect(result.arrow).to.equal(false);
+        });
+
+        it("should not set animation or arrow when minimal is false", () => {
+            const result = popoverPropsToNextProps({ minimal: false });
+            expect(result.animation).to.be.undefined;
+            expect(result.arrow).to.be.undefined;
+        });
+    });
+
+    describe("boundary", () => {
+        it("should remap 'clippingParents' to 'clippingAncestors'", () => {
+            const result = popoverPropsToNextProps({ boundary: "clippingParents" });
+            expect(result.boundary).to.equal("clippingAncestors");
+        });
+
+        it("should pass through Element boundary", () => {
+            const element = document.createElement("div");
+            const result = popoverPropsToNextProps({ boundary: element });
+            expect(result.boundary).to.equal(element);
+        });
+
+        it("should leave boundary undefined when not supplied (PopoverNext default = clippingAncestors)", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.boundary).to.be.undefined;
+        });
+    });
+
+    describe("dropped props", () => {
+        it("should drop modifiersCustom with a dev warning", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            const props: Partial<PopoverProps> = { modifiersCustom: [{ name: "custom" }] };
+            const result = popoverPropsToNextProps(props);
+            expect(result).not.to.have.property("modifiersCustom");
+            expect(warnSpy).toHaveBeenCalledOnce();
+            warnSpy.mockRestore();
+        });
+
+        it("should drop popoverRef with a dev warning", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            const ref = { current: null };
+            const result = popoverPropsToNextProps({ popoverRef: ref });
+            expect(result).not.to.have.property("popoverRef");
+            expect(warnSpy).toHaveBeenCalledOnce();
+            warnSpy.mockRestore();
+        });
+
+        it("should drop portalStopPropagationEvents with a dev warning", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+
+            const result = popoverPropsToNextProps({ portalStopPropagationEvents: ["click"] });
+            expect(result).not.to.have.property("portalStopPropagationEvents");
+            expect(warnSpy).toHaveBeenCalledOnce();
+            warnSpy.mockRestore();
+        });
     });
 });
