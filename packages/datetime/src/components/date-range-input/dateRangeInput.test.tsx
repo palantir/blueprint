@@ -28,7 +28,7 @@ import {
     type HTMLInputProps,
     InputGroup,
     type InputGroupProps,
-    Popover,
+    PopoverNext,
     type PopoverProps,
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -75,18 +75,25 @@ describe("<DateRangeInput>", () => {
         document.body.appendChild(containerElement);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         // Unmount all Enzyme wrappers before removing the container to prevent
         // React from trying to commit updates to removed DOM nodes, which causes
         // "window is not defined" and "Should not already be working" errors.
+        // The unmount + microtask flush is wrapped in act() so any teardown work
+        // queued by floating-ui's autoUpdate (ResizeObserver / RAF callbacks)
+        // settles before jsdom is torn down.
         try {
-            for (const wrapper of mountedWrappers) {
-                try {
-                    wrapper.unmount();
-                } catch {
-                    // best-effort: continue unmounting remaining wrappers
+            await act(async () => {
+                for (const wrapper of mountedWrappers) {
+                    try {
+                        wrapper.unmount();
+                    } catch {
+                        // best-effort: continue unmounting remaining wrappers
+                    }
                 }
-            }
+                // Yield once so any queued microtasks/RAF callbacks fire while jsdom is still alive.
+                await new Promise<void>(resolve => setTimeout(resolve, 0));
+            });
         } finally {
             mountedWrappers = [];
             containerElement.remove();
@@ -190,7 +197,7 @@ describe("<DateRangeInput>", () => {
                 root.setState({ isOpen: true });
             });
             root.update();
-            expect(root.find(Popover).prop("isOpen")).toBe(true);
+            expect(root.find(PopoverNext).prop("isOpen")).toBe(true);
 
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
             expect(isStartInputFocused(root)).toBe(false);
@@ -218,7 +225,7 @@ describe("<DateRangeInput>", () => {
 
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
             root.update();
-            expect(root.find(Popover).prop("isOpen")).toBe(true);
+            expect(root.find(PopoverNext).prop("isOpen")).toBe(true);
         });
 
         it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
@@ -231,7 +238,7 @@ describe("<DateRangeInput>", () => {
             root.update();
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp", 1);
             root.update();
-            expect(root.find(Popover).prop("isOpen")).toBe(true);
+            expect(root.find(PopoverNext).prop("isOpen")).toBe(true);
         });
 
         function keyDownOnInput(className: string, key: string, inputElementIndex: number = 0) {
@@ -251,7 +258,7 @@ describe("<DateRangeInput>", () => {
             const startInput = getStartInput(root);
 
             startInput.simulate("click");
-            expect(root.find(Popover).prop("isOpen")).toBe(false);
+            expect(root.find(PopoverNext).prop("isOpen")).toBe(false);
             expect(startInput.prop("disabled")).toBe(true);
         });
 
@@ -266,7 +273,7 @@ describe("<DateRangeInput>", () => {
             const endInput = getEndInput(root);
 
             endInput.simulate("click");
-            expect(root.find(Popover).prop("isOpen")).toBe(false);
+            expect(root.find(PopoverNext).prop("isOpen")).toBe(false);
             expect(endInput.prop("disabled")).toBe(true);
         });
 
@@ -392,7 +399,7 @@ describe("<DateRangeInput>", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} disabled={true} />);
         const startInput = getStartInput(root);
         startInput.simulate("click");
-        expect(root.find(Popover).prop("isOpen")).toBe(false);
+        expect(root.find(PopoverNext).prop("isOpen")).toBe(false);
         expect(startInput.prop("disabled")).toBe(true);
         expect(getEndInput(root).prop("disabled")).toBe(true);
     });
@@ -573,7 +580,9 @@ describe("<DateRangeInput>", () => {
                 placement: "top-start",
                 usePortal: false,
             };
-            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(
+                PopoverNext,
+            );
             expect(popover.prop("backdropProps")).toBe(popoverProps.backdropProps);
             expect(popover.prop("placement")).toBe(popoverProps.placement);
         });
@@ -586,7 +595,9 @@ describe("<DateRangeInput>", () => {
                 enforceFocus: true,
                 usePortal: false,
             };
-            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(Popover);
+            const popover = wrap(<DateRangeInput {...DATE_FORMAT} popoverProps={popoverProps} />).root.find(
+                PopoverNext,
+            );
             // this test assumes the following values will be the defaults internally
             expect(popover.prop("autoFocus")).toBe(false);
             expect(popover.prop("enforceFocus")).toBe(false);

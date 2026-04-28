@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { PureComponent } from "react";
 
-import { DISPLAYNAME_PREFIX, Popover, type Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, PopoverNext, type Props } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";
 
 import * as Classes from "../../common/classes";
@@ -232,16 +232,17 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
-                <Popover
+                <PopoverNext
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     content={popoverContent}
                     isOpen={true}
                     onClose={this.handlePopoverClose}
                     placement="bottom"
                     rootBoundary="document"
+                    shouldReturnFocusOnClose={false}
                 >
                     <More />
-                </Popover>
+                </PopoverNext>
             );
         } else {
             // NOTE: This structure matches what `<Popover>` does internally. If `<Popover>` changes, this must be updated.

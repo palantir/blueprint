@@ -18,7 +18,7 @@ import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import * as sinon from "sinon";
 
-import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
+import { Button, Classes, InputGroup, MenuItem, PopoverNext } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
@@ -90,18 +90,18 @@ describe("<Select>", () => {
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
         expect(wrapper.find(InputGroup)).toHaveLength(1);
-        expect(wrapper.find(Popover)).toHaveLength(1);
+        expect(wrapper.find(PopoverNext)).toHaveLength(1);
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
         expect(wrapper.find(InputGroup)).toHaveLength(0);
-        expect(wrapper.find(Popover)).toHaveLength(1);
+        expect(wrapper.find(PopoverNext)).toHaveLength(1);
     });
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
-        expect(wrapper.find(Popover).prop("disabled")).toBe(true);
+        expect(wrapper.find(PopoverNext).prop("disabled")).toBe(true);
     });
 
     it("disabled=true doesn't call itemRenderer", () => {
@@ -125,10 +125,8 @@ describe("<Select>", () => {
     it("Popover can be controlled with popoverProps", () => {
         // Select defines its own onOpening so this ensures that the passthrough happens
         const onOpening = sinon.spy();
-        const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { modifiers, onOpening } });
+        const wrapper = select({ popoverProps: { onOpening } });
         findTargetButton(wrapper).simulate("click");
-        expect(wrapper.find(Popover).prop("modifiers")).toBe(modifiers);
         expect(onOpening.calledOnce).toBe(true);
     });
 
@@ -137,16 +135,16 @@ describe("<Select>", () => {
         // override isOpen in defaultProps
         const wrapper = select({ popoverProps: { usePortal: false } });
         // should be closed to start
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
         findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
         // ...then open after key down
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
     it("invokes onItemSelect when clicking first MenuItem", () => {
         const wrapper = select();
         // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM
-        wrapper.find(Popover).find(MenuItem).first().find("a").simulate("click");
+        wrapper.find(PopoverNext).find(MenuItem).first().find("a").simulate("click");
         expect(handlers.onItemSelect.calledOnce).toBe(true);
     });
 
@@ -158,7 +156,7 @@ describe("<Select>", () => {
         findTargetButton(wrapper).simulate("click");
         wrapper.find("input").simulate("keydown", { key: "Enter" });
         wrapper.find("input").simulate("keyup", { key: "Enter" });
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
     });
 
     // N.B. it's not worth refactoring these tests to be DRY since there will soon
@@ -171,15 +169,15 @@ describe("<Select>", () => {
         const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
 
         // popover should start close
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
 
         // popover should open after clicking the button
         findTargetButton(wrapper).simulate("click");
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
 
         // and should close after the a menu item is clicked
-        wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        wrapper.find(PopoverNext).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
     });
 
     it("does not close the popover when selecting a MenuItem with shouldDismissPopover", () => {
@@ -189,15 +187,15 @@ describe("<Select>", () => {
         const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
 
         // popover should start closed
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
 
         // popover should open after clicking the button
         findTargetButton(wrapper).simulate("click");
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
 
         // and should not close after the a menu item is clicked
-        wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+        wrapper.find(PopoverNext).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
     function select(props: Partial<SelectProps<Film>> = {}, query?: string) {
