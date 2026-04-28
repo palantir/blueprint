@@ -187,6 +187,7 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         nextProps.arrow ??= false;
     }
 
+<<<<<<< HEAD
     if (onClose !== undefined) {
         // Legacy `onClose` requires a non-undefined `event`; PopoverNext's signature allows
         // `event` to be undefined. Wrap to honor the legacy contract — invoke the legacy
@@ -209,11 +210,14 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         nextProps.popoverRef = popoverRef as React.Ref<HTMLDivElement>;
     }
 
+=======
+>>>>>>> 6bb8a2307 (feat(core): migrate Breadcrumbs to PopoverNext via compat shim)
     // Legacy default for `shouldReturnFocusOnClose` is `false`; PopoverNext's is `true`.
     nextProps.shouldReturnFocusOnClose = shouldReturnFocusOnClose ?? false;
 
     return nextProps;
 }
+<<<<<<< HEAD
 
 /**
  * Converts a Popper.js `Boundary` value to a Floating UI `PopoverNextBoundary` value.
@@ -274,3 +278,5 @@ export function popoverPositionToNextPlacement(position: PopoverPosition): Popov
     // through unchanged. `popoverPlacementToNextPlacement` then filters out the auto* values.
     return popoverPlacementToNextPlacement(positionToPlacement(position));
 }
+=======
+>>>>>>> 6bb8a2307 (feat(core): migrate Breadcrumbs to PopoverNext via compat shim)
