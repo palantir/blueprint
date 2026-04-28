@@ -6,7 +6,7 @@
     "scripts": {
         "bundle": "webpack",
         "bundle:analyze": "webpack --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json",
-        "clean": "rm -rf dist/* || true",
+        "clean": "rm -rf dist",
         "dev": "PORT=9002 webpack-dev-server",
         "dist": "NODE_ENV=production pnpm bundle",
         "lint": "run-p lint:scss lint:es",
