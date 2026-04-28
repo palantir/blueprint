@@ -4933,5 +4933,12 @@
         "tags": "command, connection, connect, link, application, flow",
         "group": "action",
         "codepoint": 62401
+    },
+    {
+        "displayName": "Crystal ball",
+        "iconName": "crystal-ball",
+        "tags": "scenario, sparkle, star, possibility, option",
+        "group": "miscellaneous",
+        "codepoint": 62402
     }
 ]
