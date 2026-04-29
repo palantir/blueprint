@@ -238,7 +238,6 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
-                ref={this.props.popoverNextRef}
                 renderTarget={this.renderTarget}
             />
         );

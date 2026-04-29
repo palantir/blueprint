@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DefaultPopoverTargetHTMLProps, Popover, PopoverNextRef, PopoverProps } from "@blueprintjs/core";
+import type { DefaultPopoverTargetHTMLProps, Popover, PopoverProps } from "@blueprintjs/core";
 
 /**
  * Reusable collection of props for components in this package which render a popover
@@ -22,7 +22,7 @@ import type { DefaultPopoverTargetHTMLProps, Popover, PopoverNextRef, PopoverPro
  */
 export interface DatetimePopoverProps {
     /**
-     * Props to spread to the popover.
+     * Props to spread to `Popover`.
      */
     popoverProps?: Partial<
         Omit<
@@ -32,14 +32,11 @@ export interface DatetimePopoverProps {
     >;
 
     /**
-     * Optional ref for the PopoverNext component instance.
-     * Exposes `{ reposition(): void }` to allow manual repositioning.
-     */
-    popoverNextRef?: React.RefObject<PopoverNextRef>;
-
-    /**
-     * @deprecated Use `popoverNextRef` instead. This prop is a no-op since the internal popover
-     * was migrated to PopoverNext, which uses a different ref type.
+     * Optional ref for the popover component instance.
+     * This is sometimes useful to reposition the popover.
+     *
+     * Note that this is defined as a specific kind of Popover which should be compatible with
+     * most use cases, since it uses the default target props interface.
      */
     popoverRef?: React.RefObject<Popover<DefaultPopoverTargetHTMLProps>>;
 }
