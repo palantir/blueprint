@@ -257,7 +257,7 @@ describe("<DateInput>", () => {
             blurInput(wrapper);
             const firstTabbable = wrapper.find(PopoverNext).find(".DayPicker-Day").filter({ tabIndex: 0 }).first();
             const lastDayOfPrevMonth = wrapper
-                .find(Popover)
+                .find(PopoverNext)
                 .find(".DayPicker-Body > .DayPicker-Week .DayPicker-Day--outside")
                 .last();
 
