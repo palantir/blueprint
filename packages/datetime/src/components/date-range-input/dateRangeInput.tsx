@@ -24,9 +24,8 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     Intent,
+    Popover,
     type PopoverClickTargetHandlers,
-    PopoverNext,
-    popoverPropsToNextProps,
     type PopoverTargetProps,
     refHandler,
     setRef,
@@ -209,7 +208,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
 
     public render() {
         const { locale, selectedShortcutIndex } = this.state;
-        const { popoverProps = {} } = this.props;
+        const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
             <DateRangePicker
@@ -227,10 +226,10 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
-            <PopoverNext
+            <Popover
                 isOpen={this.state.isOpen}
                 placement="bottom-start"
-                {...popoverPropsToNextProps(popoverProps)}
+                {...popoverProps}
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 className={classNames(Classes.DATE_RANGE_INPUT, popoverProps.className, this.props.className)}
@@ -238,6 +237,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
+                ref={popoverRef}
                 renderTarget={this.renderTarget}
             />
         );
@@ -764,11 +764,9 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
     // Callbacks - Popover
     // ===================
 
-    private handlePopoverClose = (event?: React.SyntheticEvent<HTMLElement>) => {
+    private handlePopoverClose = (event: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
-        if (event != null) {
-            this.props.popoverProps?.onClose?.(event);
-        }
+        this.props.popoverProps?.onClose?.(event);
     };
 
     // Helpers
