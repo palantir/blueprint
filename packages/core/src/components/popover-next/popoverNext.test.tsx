@@ -4,6 +4,7 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createRef } from "react";
 
 import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
@@ -12,7 +13,7 @@ import * as Errors from "../../common/errors";
 import { Button, Dialog, DialogBody, InputGroup, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 
-import { PopoverNext } from "./popoverNext";
+import { PopoverNext, type PopoverNextRef } from "./popoverNext";
 
 describe("<PopoverNext>", () => {
     describe("validation", () => {
@@ -1594,6 +1595,43 @@ describe("<PopoverNext>", () => {
 
                 expect(targetButton).toBe(document.activeElement);
             });
+        });
+    });
+
+    describe("imperative ref API", () => {
+        it("getPopoverElement returns the Classes.POPOVER element when open", () => {
+            const ref = createRef<PopoverNextRef>();
+            const { baseElement } = render(
+                <PopoverNext ref={ref} content="content" isOpen={true}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            const popoverElement = baseElement.querySelector(`.${Classes.POPOVER}`);
+            expect(popoverElement).toBeInTheDocument();
+            expect(ref.current?.getPopoverElement()).toBe(popoverElement);
+        });
+
+        it("getPopoverElement returns null when closed", () => {
+            const ref = createRef<PopoverNextRef>();
+            render(
+                <PopoverNext ref={ref} content="content" isOpen={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            expect(ref.current?.getPopoverElement()).toBeNull();
+        });
+
+        it("reposition triggers a position update without throwing", () => {
+            const ref = createRef<PopoverNextRef>();
+            render(
+                <PopoverNext ref={ref} content="content" isOpen={true}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            expect(() => ref.current?.reposition()).not.toThrow();
         });
     });
 

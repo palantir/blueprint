@@ -17,7 +17,20 @@ import { PopoverTarget } from "./popoverTarget";
 import { usePopover } from "./usePopover";
 
 export interface PopoverNextRef {
+    /**
+     * Imperatively recompute the popover's position. Most consumers should not need to call this:
+     * `PopoverNext` uses Floating UI's `autoUpdate` to reposition automatically on scroll, ancestor
+     * resize, element resize, and layout shift. Use `autoUpdateOptions` to tune that behavior.
+     */
     reposition(): void;
+
+    /**
+     * Returns the `Classes.POPOVER` DOM element if the popover is currently mounted, or `null`
+     * otherwise. Useful for click-outside detection, z-index coordination, and rendering portals
+     * into the popover. Replaces the legacy `Popover` `popoverRef` prop, which exposed the same
+     * DOM element via a `React.Ref<HTMLElement>`.
+     */
+    getPopoverElement(): HTMLElement | null;
 }
 
 export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
@@ -148,16 +161,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         positioningStrategy,
     });
 
-    useImperativeHandle(
-        ref,
-        () => ({
-            reposition: () => {
-                floatingData.update();
-            },
-        }),
-        [floatingData],
-    );
-
     const popoverElement = floatingData.refs.floating.current;
 
     const isHoverInteractionKind =
@@ -165,8 +168,19 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
 
     const getPopoverElement = useCallback(() => {
-        return popoverElement?.querySelector<HTMLElement>(`.${Classes.POPOVER}`);
+        return popoverElement?.querySelector<HTMLElement>(`.${Classes.POPOVER}`) ?? null;
     }, [popoverElement]);
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            getPopoverElement,
+            reposition: () => {
+                floatingData.update();
+            },
+        }),
+        [floatingData, getPopoverElement],
+    );
 
     const isElementInPopover = useCallback(
         (element: Element) => {
