@@ -18,7 +18,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useMemo } from "react";
 
-import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { InputGroup } from "../components/forms/inputGroup";
 import { HotkeysProvider } from "../context";
@@ -81,6 +81,7 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
 describe("useHotkeys", () => {
     const onKeyASpy = vi.fn();
     const onKeyBSpy = vi.fn();
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
 
     const TestComponentContainer = (props: TestComponentContainerProps) => {
         return (
@@ -94,7 +95,10 @@ describe("useHotkeys", () => {
     afterEach(() => {
         onKeyASpy.mockClear();
         onKeyBSpy.mockClear();
+        warnSpy.mockClear();
     });
+
+    afterAll(() => warnSpy.mockRestore());
 
     it("binds local hotkey", async () => {
         const user = userEvent.setup();
@@ -177,10 +181,6 @@ describe("useHotkeys", () => {
     });
 
     describe("working with HotkeysProvider", () => {
-        const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
-        beforeEach(() => warnSpy.mockClear());
-        afterAll(() => warnSpy.mockRestore());
-
         it("logs a warning when used outside of HotkeysProvider context", () => {
             render(<TestComponentContainer />);
             expect(warnSpy).toHaveBeenCalledOnce();

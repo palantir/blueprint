@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { H6 } from "../html/html";
 
 import { Menu } from "./menu";
 import { MenuDivider } from "./menuDivider";
@@ -27,28 +26,31 @@ import { MenuItem } from "./menuItem";
 
 describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {
-        const divider = shallow(<MenuDivider />);
-        assert.isTrue(divider.hasClass(Classes.MENU_DIVIDER));
-        assert.isFalse(divider.hasClass(Classes.MENU_HEADER));
-        assert.isFalse(divider.find(H6).exists());
+        const { container } = render(<MenuDivider />);
+        const divider = container.firstElementChild!;
+        expect(divider).toHaveClass(Classes.MENU_DIVIDER);
+        expect(divider).not.toHaveClass(Classes.MENU_HEADER);
+        expect(container.querySelector("h6")).toBeNull();
     });
 
     it("React renders MenuDivider with title", () => {
-        const divider = shallow(<MenuDivider title="Subject" />);
-        assert.isFalse(divider.hasClass(Classes.MENU_DIVIDER));
-        assert.isTrue(divider.hasClass(Classes.MENU_HEADER));
-        assert.isTrue(divider.find(H6).exists());
+        const { container } = render(<MenuDivider title="Subject" />);
+        const divider = container.firstElementChild!;
+        expect(divider).not.toHaveClass(Classes.MENU_DIVIDER);
+        expect(divider).toHaveClass(Classes.MENU_HEADER);
+        expect(container.querySelector("h6")).not.toBeNull();
     });
 });
 
 describe("<Menu>", () => {
     it("React renders Menu with children", () => {
-        const menu = shallow(
+        const { container } = render(
             <Menu>
                 <MenuItem icon="graph" text="Graph" />
             </Menu>,
         );
-        assert.isTrue(menu.hasClass(Classes.MENU));
-        assert.lengthOf(menu.find(MenuItem), 1);
+        const menu = container.firstElementChild!;
+        expect(menu).toHaveClass(Classes.MENU);
+        expect(menu.querySelectorAll(`.${Classes.MENU_ITEM}`)).toHaveLength(1);
     });
 });

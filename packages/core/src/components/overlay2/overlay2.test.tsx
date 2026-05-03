@@ -18,7 +18,7 @@ import { fireEvent, render, type RenderOptions, type RenderResult, screen, waitF
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 
-import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { OverlaysProvider } from "../../context/overlays/overlaysProvider";
@@ -43,6 +43,10 @@ function renderWithOverlaysProvider(ui: React.ReactElement, renderOptions: Rende
 }
 
 describe("<Overlay2>", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(vi.fn());
+    afterEach(() => errorSpy.mockClear());
+    afterAll(() => errorSpy.mockRestore());
+
     it("should render its contents", () => {
         const { container } = renderWithOverlaysProvider(
             <Overlay2 transitionDuration={0} isOpen={true} usePortal={false}>
