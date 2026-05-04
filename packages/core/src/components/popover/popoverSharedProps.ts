@@ -313,6 +313,13 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
     targetProps?: TProps;
 
     /**
+     * HTML props applied to the popover content element (the inner
+     * `.bp6-popover-content` wrapper). Useful for ARIA attributes such as `id`
+     * and `role` on the floating element.
+     */
+    popoverContentProps?: React.HTMLProps<HTMLDivElement>;
+
+    /**
      * Whether the popover should be rendered inside a `Portal` attached to
      * `portalContainer` prop.
      *

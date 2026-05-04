@@ -468,7 +468,15 @@ export class Popover<
                             {this.isArrowEnabled() && (
                                 <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
                             )}
-                            <div className={Classes.POPOVER_CONTENT}>{this.props.content}</div>
+                            <div
+                                {...this.props.popoverContentProps}
+                                className={classNames(
+                                    Classes.POPOVER_CONTENT,
+                                    this.props.popoverContentProps?.className,
+                                )}
+                            >
+                                {this.props.content}
+                            </div>
                         </div>
                     </ResizeSensor>
                 </div>
