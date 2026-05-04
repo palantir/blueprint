@@ -26,6 +26,7 @@ export function normalizeNavConfig(raw: RawNavStructure): NavStructure {
         pages: entry.pages.map(pageRef),
         sections: entry.sections?.map(section => ({
             section: section.section,
+            routeAlias: section.routeAlias,
             pages: section.pages.map(pageRef),
         })),
     }));
@@ -72,8 +73,9 @@ export function assignRoutes(navConfig: NavStructure, pages: Record<string, DocP
             const sectionRoute = `${packageRoute}/${section.section}`;
             applyRoute(section.section, sectionRoute);
 
+            const childRoutePrefix = section.routeAlias ? `${packageRoute}/${section.routeAlias}` : sectionRoute;
             for (const child of section.pages) {
-                applyRoute(child.ref, `${sectionRoute}/${child.ref}`);
+                applyRoute(child.ref, `${childRoutePrefix}/${child.ref}`);
             }
         }
     }
@@ -139,7 +141,8 @@ export function buildNavTree(navConfig: NavStructure, pages: Record<string, DocP
             ...entry.pages.map(pageRef => buildNavLeafPage(pageRef.ref, 2, `${packageRoute}/${pageRef.ref}`, pages)),
             ...(entry.sections ?? []).map(section => {
                 const sectionRoute = `${packageRoute}/${section.section}`;
-                return buildNavSection(section, 2, sectionRoute, pages);
+                const childRoutePrefix = section.routeAlias ? `${packageRoute}/${section.routeAlias}` : sectionRoute;
+                return buildNavSection(section, 2, sectionRoute, childRoutePrefix, pages);
             }),
         ];
         return buildNavPage(entry.package, 1, packageRoute, pages, packageChildren);
@@ -157,11 +160,12 @@ export function buildNavSection(
     section: NavSection,
     level: number,
     route: string,
+    childRoutePrefix: string,
     pages: Record<string, DocPage>,
 ): NavTreePage {
     const childLevel = level + 1;
     const children: NavTreeNode[] = section.pages.map(child =>
-        buildNavLeafPage(child.ref, childLevel, `${route}/${child.ref}`, pages),
+        buildNavLeafPage(child.ref, childLevel, `${childRoutePrefix}/${child.ref}`, pages),
     );
 
     const page = pages[section.section];
