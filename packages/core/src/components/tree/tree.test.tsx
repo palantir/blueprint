@@ -15,8 +15,6 @@
  */
 
 import { fireEvent, render, waitFor } from "@testing-library/react";
-
-type RenderResult = ReturnType<typeof render>;
 import { createRef } from "react";
 
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -25,6 +23,8 @@ import { Classes } from "../../common";
 
 import { Tree, type TreeProps } from "./tree";
 import { type TreeNodeInfo } from "./treeTypes";
+
+type RenderResult = ReturnType<typeof render>;
 
 describe("<Tree>", () => {
     let containerElement: HTMLElement;

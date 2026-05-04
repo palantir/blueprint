@@ -15,8 +15,6 @@
  */
 
 import { fireEvent, render } from "@testing-library/react";
-
-type RenderResult = ReturnType<typeof render>;
 import { useState } from "react";
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -26,6 +24,8 @@ import { NumericInput } from "../forms/numericInput";
 
 import { PanelStack, type PanelStackProps } from "./panelStack";
 import { type Panel, type PanelProps } from "./panelTypes";
+
+type RenderResult = ReturnType<typeof render>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TestPanelInfo = {};

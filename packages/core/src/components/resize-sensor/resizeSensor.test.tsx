@@ -15,8 +15,6 @@
  */
 
 import { render } from "@testing-library/react";
-
-type RenderResult = ReturnType<typeof render>;
 import { createRef } from "react";
 
 import { afterAll, afterEach, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
@@ -24,6 +22,8 @@ import { afterAll, afterEach, describe, expect, it, type MockInstance, vi } from
 import { sleep } from "../../common/test-utils";
 
 import { ResizeSensor, type ResizeSensorProps } from "./resizeSensor";
+
+type RenderResult = ReturnType<typeof render>;
 
 describe.skip("<ResizeSensor>", () => {
     let result: RenderResult | undefined;

@@ -14,8 +14,6 @@
  */
 
 import { fireEvent, render, waitFor } from "@testing-library/react";
-
-type RenderResult = ReturnType<typeof render>;
 import { cloneElement, createRef } from "react";
 
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -25,6 +23,8 @@ import { Classes } from "../../common";
 import { Tab } from "./tab";
 import { Tabs } from "./tabs";
 import { generateTabIds } from "./tabTitle";
+
+type RenderResult = ReturnType<typeof render>;
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";
