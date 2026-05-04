@@ -90,7 +90,7 @@ export class Navigator extends PureComponent<NavigatorProps> {
     }
 
     private filterMatches: ItemListPredicate<NavigationSection> = (query, items) =>
-        filter(items, query, {
+        filter([...items], query, {
             key: "route",
             maxInners: items.length / 5,
             maxResults: 10,
