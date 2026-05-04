@@ -23,7 +23,6 @@ import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vite
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
 import { Icon } from "../icon/icon";
-import { Popover } from "../popover/popover";
 import { PopoverInteractionKind } from "../popover/popoverProps";
 import { PopoverNext } from "../popover-next/popoverNext";
 import { Text } from "../text/text";
@@ -93,7 +92,7 @@ describe("MenuItem", () => {
                 <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
-        assert.isTrue(wrapper.find(Popover).prop("disabled"));
+        assert.isTrue(wrapper.find(PopoverNext).prop("disabled"));
     });
 
     it("disabled MenuItem blocks mouse listeners", () => {
@@ -168,12 +167,12 @@ describe("MenuItem", () => {
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
+        assert.strictEqual(wrapper.find(PopoverNext).prop("interactionKind"), popoverProps.interactionKind);
         assert.notStrictEqual(
-            wrapper.find(Popover).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
+            wrapper.find(PopoverNext).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
             0,
         );
-        assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
+        assert.notStrictEqual(wrapper.find(PopoverNext).prop("content"), popoverProps.content);
     });
 
     it("multiline prop determines if long content is ellipsized", () => {
@@ -272,7 +271,7 @@ describe("MenuItem", () => {
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
-    return wrapper.find(Popover).prop("content") as React.ReactElement<
+    return wrapper.find(PopoverNext).prop("content") as React.ReactElement<
         MenuProps & { children: Array<React.ReactElement<MenuItemProps>> }
     >;
 }
