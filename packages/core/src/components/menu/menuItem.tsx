@@ -23,8 +23,9 @@ import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover } from "../popover/popover";
 import type { PopoverProps } from "../popover/popoverProps";
+import { PopoverNext } from "../popover-next/popoverNext";
+import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -283,7 +284,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             {children == null ? (
                 target
             ) : (
-                <Popover
+                <PopoverNext
                     // eslint-disable-next-line jsx-a11y/no-autofocus -- intentionally disabled
                     autoFocus={false}
                     captureDismiss={false}
@@ -295,13 +296,13 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     targetProps={{ role: targetRole, tabIndex: 0 }}
                     placement="right-start"
                     usePortal={false}
-                    {...popoverProps}
+                    {...popoverPropsToNextProps(popoverProps)}
                     content={<Menu {...submenuProps}>{children}</Menu>}
                     minimal={true}
                     popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 >
                     {target}
-                </Popover>
+                </PopoverNext>
             )}
         </li>
     );

@@ -25,6 +25,7 @@ import { Button } from "../button/buttons";
 import { Icon } from "../icon/icon";
 import { Popover } from "../popover/popover";
 import { PopoverInteractionKind } from "../popover/popoverProps";
+import { PopoverNext } from "../popover-next/popoverNext";
 import { Text } from "../text/text";
 
 import { type MenuProps } from "./menu";
@@ -134,9 +135,9 @@ describe("MenuItem", () => {
         const handleClose = vi.fn();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
         const wrapper = mount(
-            <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
+            <PopoverNext content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
                 <Button />
-            </Popover>,
+            </PopoverNext>,
         );
         wrapper.find(MenuItem).find("a").simulate("click");
         expect(handleClose).not.toHaveBeenCalled();
