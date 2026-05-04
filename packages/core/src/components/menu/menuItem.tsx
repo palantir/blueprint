@@ -24,6 +24,7 @@ import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import type { PopoverProps } from "../popover/popoverProps";
+import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
 import { PopoverNext } from "../popover-next/popoverNext";
 import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 import { Text } from "../text/text";
@@ -292,13 +293,12 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     interactionKind="hover"
-                    modifiers={SUBMENU_POPOVER_MODIFIERS}
+                    middleware={SUBMENU_POPOVER_MIDDLEWARE}
                     targetProps={{ role: targetRole, tabIndex: 0 }}
                     placement="right-start"
                     usePortal={false}
                     {...popoverPropsToNextProps(popoverProps)}
                     content={<Menu {...submenuProps}>{children}</Menu>}
-                    minimal={true}
                     popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 >
                     {target}
@@ -309,12 +309,11 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
 });
 MenuItem.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
-const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
-    // 20px padding - scrollbar width + a bit
-    flip: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
+const SUBMENU_POPOVER_MIDDLEWARE: MiddlewareConfig = {
+    flip: { padding: 20, rootBoundary: "viewport" },
     // shift popover up 5px so MenuItems align
-    offset: { enabled: true, options: { offset: [-5, 0] } },
-    preventOverflow: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
+    offset: { crossAxis: -5, mainAxis: 0 },
+    shift: { padding: 20, rootBoundary: "viewport" },
 };
 
 // props to ignore when disabled
