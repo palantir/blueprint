@@ -14,6 +14,7 @@ import semver from "semver";
 import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
+import { stripDocumentalistTags } from "./markdownExport.mts";
 import { assignRoutes, buildNavTree, normalizeNavConfig } from "./navHelpers.mts";
 import {
     PACKAGES,
@@ -88,6 +89,10 @@ async function generateDocumentalistData(): Promise<void> {
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
         `../{${LIBRARY_PACKAGES}}/package.json`,
     );
+
+    // Attach sourceMarkdown to each page so the docs UI can offer a "Copy page" button
+    // that hands an LLM-friendly markdown blob to the reader.
+    attachSourceMarkdown(docs.pages);
 
     // Post-process: replace documentalist's nav with one built from nav.json
     const rawConfig: RawNavStructure = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
@@ -204,4 +209,19 @@ function validateNavConfig(raw: RawNavStructure): void {
 function applyNavConfig(docs: { pages: Record<string, DocPage>; nav: NavTreeNode[] }, navConfig: NavStructure): void {
     assignRoutes(navConfig, docs.pages);
     docs.nav = buildNavTree(navConfig, docs.pages);
+}
+
+function attachSourceMarkdown(pages: Record<string, DocPage>): void {
+    for (const page of Object.values(pages)) {
+        const sourcePath = (page as DocPage & { sourcePath?: string }).sourcePath;
+        if (sourcePath == null) {
+            continue;
+        }
+        try {
+            const raw = readFileSync(resolve(monorepoRootDir, sourcePath), "utf-8");
+            page.sourceMarkdown = stripDocumentalistTags(raw);
+        } catch {
+            // Source file disappeared between documentalist scan and now — non-fatal.
+        }
+    }
 }

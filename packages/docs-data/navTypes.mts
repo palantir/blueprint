@@ -81,6 +81,8 @@ export interface DocPage {
     title: string;
     route: string;
     contents: DocContentItem[];
+    /** Cleaned source markdown of the page, suitable for "Copy as markdown". */
+    sourceMarkdown?: string;
 }
 
 /** Fields common to all nav tree nodes. */
