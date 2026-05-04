@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { fireEvent, render, type RenderResult, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
+
+type RenderResult = ReturnType<typeof render>;
 import { createRef } from "react";
 
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -41,10 +43,11 @@ describe("<Tree>", () => {
 
     function renderTree(props?: Partial<TreeProps>) {
         const ref = createRef<Tree>();
-        result = render(<Tree ref={ref} contents={createDefaultContents()} {...props} />, {
+        const r = render(<Tree ref={ref} contents={createDefaultContents()} {...props} />, {
             container: containerElement,
         });
-        return { container: result.container, instance: ref.current!, ref, rerender: result.rerender };
+        result = r;
+        return { container: r.container, instance: ref.current!, ref, rerender: r.rerender };
     }
 
     function findNodeChildClass(container: HTMLElement, nodeClass: string, childClass: string): HTMLElement | null {

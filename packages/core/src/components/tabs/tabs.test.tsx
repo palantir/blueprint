@@ -13,7 +13,9 @@
  * limitations under the License.
  */
 
-import { fireEvent, render, type RenderResult, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
+
+type RenderResult = ReturnType<typeof render>;
 import { cloneElement, createRef } from "react";
 
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -49,8 +51,9 @@ describe("<Tabs>", () => {
     function renderTabs(ui: React.ReactElement) {
         const ref = createRef<Tabs>();
         const cloned = ui.type === Tabs ? cloneElement(ui, { ref } as any) : ui;
-        result = render(cloned, { container: containerElement });
-        return { container: result.container, instance: ref.current!, rerender: result.rerender };
+        const r = render(cloned, { container: containerElement });
+        result = r;
+        return { container: r.container, instance: ref.current!, rerender: r.rerender };
     }
 
     function findTabs(container: HTMLElement) {

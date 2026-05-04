@@ -320,7 +320,7 @@ describe("<EditableText>", () => {
         const customProps = {
             "aria-label": "Edit description",
             "data-gramm": "false",
-            spellCheck: "false",
+            spellCheck: false,
         };
 
         it("passes custom attributes to textarea when multiline is true", () => {
@@ -330,6 +330,7 @@ describe("<EditableText>", () => {
             const textarea = container.querySelector("textarea")!;
             expect(textarea.getAttribute("data-gramm")).toBe("false");
             expect(textarea.getAttribute("spellcheck")).toBe("false");
+            // ^ note: React `spellCheck={false}` serializes to attribute `spellcheck="false"`
             expect(textarea.getAttribute("aria-label")).toBe("Edit description");
         });
 

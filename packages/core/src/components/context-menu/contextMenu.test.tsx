@@ -56,10 +56,6 @@ function isCtxMenuOpen() {
     return document.querySelector(`.${Classes.CONTEXT_MENU_POPOVER}`) != null;
 }
 
-function isTooltipOpen() {
-    return document.querySelector(`.${Classes.TOOLTIP}`) != null;
-}
-
 function openCtxMenu(container: HTMLElement, targetClassName = TARGET_CLASSNAME) {
     const target = container.querySelector<HTMLElement>(`.${targetClassName}`);
     if (target == null) {

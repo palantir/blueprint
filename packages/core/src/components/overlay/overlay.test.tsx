@@ -21,7 +21,7 @@
 
 /* eslint-disable @typescript-eslint/no-deprecated */
 
-import { fireEvent, render, type RenderResult, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { cloneElement, createRef } from "react";
 
 import { afterAll, afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -32,6 +32,7 @@ import { sleep } from "../../common/test-utils";
 
 import { Overlay } from "./overlay";
 
+type RenderResult = ReturnType<typeof render>;
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
 /*
@@ -40,24 +41,22 @@ polluting the DOM with leftover overlay elements. This was the cause of the Over
 late 2017/early 2018 and was resolved by ensuring that every wrapper is unmounted.
 */
 describe("<Overlay>", () => {
-    const containerElement = document.createElement("div");
+    const containerElement: HTMLElement = document.createElement("div");
     document.documentElement.appendChild(containerElement);
 
     let result: RenderResult | undefined;
-    let overlayInstance: Overlay | null = null;
 
     function renderOverlay(content: React.ReactElement) {
         const ref = createRef<Overlay>();
         const cloned = content.type === Overlay ? cloneElement(content, { ref } as any) : content;
-        result = render(cloned, { container: containerElement });
-        overlayInstance = ref.current;
-        return result;
+        const r = render(cloned, { container: containerElement });
+        result = r;
+        return r;
     }
 
     afterEach(() => {
         result?.unmount();
         result = undefined;
-        overlayInstance = null;
         // Clean up any portals leaked between tests
         document.querySelectorAll(`.${Classes.PORTAL}`).forEach(el => el.remove());
         document.body.classList.remove(Classes.OVERLAY_OPEN);

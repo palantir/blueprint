@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { render, type RenderResult } from "@testing-library/react";
+import { render } from "@testing-library/react";
+
+type RenderResult = ReturnType<typeof render>;
 import { createRef } from "react";
 
 import { afterAll, afterEach, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
@@ -93,8 +95,9 @@ describe.skip("<ResizeSensor>", () => {
     let lastProps: ResizeTesterProps | undefined;
     function mountResizeSensor(props: Omit<ResizeSensorProps, "children">) {
         lastProps = { id: 0, ...props };
-        result = render(<ResizeTester {...lastProps} />, { container: containerElement });
-        return result;
+        const r = render(<ResizeTester {...lastProps} />, { container: containerElement });
+        result = r;
+        return r;
     }
 
     async function resize(size: SizeProps) {

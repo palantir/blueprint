@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-import { render, type RenderResult } from "@testing-library/react";
+import { render } from "@testing-library/react";
 
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { OverflowList, type OverflowListProps } from "./overflowList";
+
+type RenderResult = ReturnType<typeof render>;
 
 type OverflowProps = OverflowListProps<TestItemProps>;
 
@@ -64,12 +66,12 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
 
     it("adds className to itself", () => {
         const r = overflowList(30, { className: "winner" });
-        assert.isNotNull(r.container.querySelector(".winner"));
+        assert.isNotNull(r!.container.querySelector(".winner"));
     });
 
     it("uses custom tagName", () => {
         const r = overflowList(undefined, { tagName: "section" });
-        assert.lengthOf(r.container.querySelectorAll("section"), 1);
+        assert.lengthOf(r!.container.querySelectorAll("section"), 1);
     });
 
     it("overflows correctly on initial mount", () => {
@@ -207,8 +209,9 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
             visibleItemRenderer: renderVisibleItem,
             ...props,
         } as OverflowProps;
-        result = render(<OverflowList {...lastProps} />, { container: containerElement });
-        return result;
+        const r = render(<OverflowList {...lastProps} />, { container: containerElement });
+        result = r;
+        return r;
     }
 
     function setProps(newProps: Partial<OverflowProps>) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { fireEvent, render, type RenderResult, waitFor } from "@testing-library/react";
+import { fireEvent, render, waitFor } from "@testing-library/react";
 import { createRef } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -42,20 +42,13 @@ function fireKeyDown(input: HTMLInputElement, key: string) {
     fireEvent.keyDown(input, { key });
 }
 
-interface RenderedTagInput {
-    container: HTMLElement;
-    instance: TagInput;
-    rerender: RenderResult["rerender"];
-}
-
-function renderTagInput(props: Partial<TagInputProps> = {}): RenderedTagInput {
+function renderTagInput(props: Partial<TagInputProps> = {}) {
     const ref = createRef<TagInput>();
-    const ui = (p: Partial<TagInputProps>) => <TagInput ref={ref} values={VALUES} {...p} />;
-    const result = render(ui(props));
+    const result = render(<TagInput ref={ref} values={VALUES} {...props} />);
     return {
         container: result.container,
         instance: ref.current!,
-        rerender: (newUi: React.ReactElement<TagInputProps>) => result.rerender(newUi),
+        rerender: result.rerender,
     };
 }
 

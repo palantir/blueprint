@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { render, type RenderResult } from "@testing-library/react";
+import { render } from "@testing-library/react";
+
+type RenderResult = ReturnType<typeof render>;
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
@@ -38,8 +40,9 @@ describe("<Portal>", () => {
     });
 
     function renderInRoot(ui: React.ReactElement) {
-        result = render(ui, { container: rootElement });
-        return result;
+        const r = render(ui, { container: rootElement });
+        result = r;
+        return r;
     }
 
     it("attaches contents to document.body", () => {

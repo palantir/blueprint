@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-import { fireEvent, render, type RenderResult } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
+
+type RenderResult = ReturnType<typeof render>;
 import { useState } from "react";
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
@@ -70,9 +72,10 @@ describe("<PanelStack>", () => {
         containerElement.remove();
     });
 
-    function renderPanelStack(props: PanelStackProps<TestPanelType>): RenderResult {
-        result = render(<PanelStack {...props} />, { container: containerElement });
-        return result;
+    function renderPanelStack(props: PanelStackProps<TestPanelType>) {
+        const r = render(<PanelStack {...props} />, { container: containerElement });
+        result = r;
+        return r;
     }
 
     function findAll(selector: string): HTMLElement[] {
