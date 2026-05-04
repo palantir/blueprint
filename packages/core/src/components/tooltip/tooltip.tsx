@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { createRef } from "react";
 
-import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } from "../../common";
 import * as Classes from "../../common/classes";
 import { Popover } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
@@ -100,6 +100,8 @@ export class Tooltip<
 
     private popoverRef = createRef<Popover<T>>();
 
+    private tooltipId = Utils.uniqueId(`${Classes.TOOLTIP}-`);
+
     public render() {
         // if we have an ancestor TooltipContext, we should take its state into account in this render path,
         // it was likely created by a parent ContextMenu
@@ -116,10 +118,24 @@ export class Tooltip<
 
     // any descendant ContextMenus may update this ctxState
     private renderPopover = (ctxState: TooltipContextState) => {
-        const { children, compact, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const { children, compact, content, disabled, intent, popoverClassName, targetProps, ...restProps } =
+            this.props;
         const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
             [Classes.COMPACT]: compact,
         });
+        const isDisabled = ctxState.forceDisabled ?? disabled;
+        const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
+        const resolvedContent = isContentEmpty ? (
+            content
+        ) : (
+            <div id={this.tooltipId} role="tooltip">
+                {content}
+            </div>
+        );
+        const mergedTargetProps = {
+            "aria-describedby": isDisabled || isContentEmpty ? undefined : this.tooltipId,
+            ...targetProps,
+        } as T;
 
         return (
             <Popover
@@ -136,12 +152,14 @@ export class Tooltip<
                 {...restProps}
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
-                disabled={ctxState.forceDisabled ?? disabled}
+                content={resolvedContent}
+                disabled={isDisabled}
                 enforceFocus={false}
                 lazy={true}
                 popoverClassName={popoverClasses}
                 portalContainer={this.props.portalContainer}
                 ref={this.popoverRef}
+                targetProps={mergedTargetProps}
             >
                 {children}
             </Popover>
