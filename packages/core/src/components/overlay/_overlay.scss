@@ -71,6 +71,19 @@ body.#{$ns}-overlay-open {
   }
 }
 
+// Fade content alongside the backdrop. Dialog/Drawer get their own transitions on this element,
+// so we exclude them to avoid clobbering their duration/easing.
+.#{$ns}-overlay-content:not(.#{$ns}-dialog-container, .#{$ns}-drawer) {
+  @include react-transition(
+    "#{$ns}-overlay",
+    (
+      opacity: 0 1,
+    ),
+    $pt-transition-duration * 2,
+    $before: "&"
+  );
+}
+
 // fixed position so the backdrop forecefully covers the whole screen
 .#{$ns}-overlay-backdrop {
   @include position-all(fixed, 0);
