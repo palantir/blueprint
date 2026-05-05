@@ -26,10 +26,10 @@ import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { Popover } from "../popover/popover";
 import { PopoverInteractionKind } from "../popover/popoverProps";
+import { PopoverNext } from "../popover-next/popoverNext";
 import { Tooltip, type TooltipProps } from "../tooltip/tooltip";
 
 import { ContextMenu, type ContextMenuContentProps, type ContextMenuProps } from "./contextMenu";
-import { PopoverNext } from "../popover-next/popoverNext";
 
 // use a unique ID to avoid collisons with other tests
 const MENU_CLASSNAME = Utils.uniqueId("test-menu");

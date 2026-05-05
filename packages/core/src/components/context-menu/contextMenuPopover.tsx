@@ -19,11 +19,11 @@ import { memo, useCallback } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import type { PopoverTargetProps } from "../popover/popoverSharedProps";
+import { PopoverNext } from "../popover-next/popoverNext";
+import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 import { Portal } from "../portal/portal";
 
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
-import { PopoverNext } from "../popover-next/popoverNext";
-import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     isOpen: boolean;
