@@ -10,6 +10,7 @@ import type { PopoverProps } from "../popover/popoverProps";
 import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 import {
+    popoverPlacementToNextPlacement,
     popoverPositionToNextPlacement,
     popoverPropsToNextProps,
     popperModifiersToNextMiddleware,
@@ -74,6 +75,27 @@ describe("popoverPositionToNextPlacement", () => {
 
     it("should return undefined for auto-end", () => {
         expect(popoverPositionToNextPlacement("auto-end")).to.be.undefined;
+    });
+});
+
+describe("popoverPlacementToNextPlacement", () => {
+    it("should pass through non-auto placements unchanged", () => {
+        expect(popoverPlacementToNextPlacement("top")).to.equal("top");
+        expect(popoverPlacementToNextPlacement("top-start")).to.equal("top-start");
+        expect(popoverPlacementToNextPlacement("bottom-end")).to.equal("bottom-end");
+        expect(popoverPlacementToNextPlacement("left-start")).to.equal("left-start");
+    });
+
+    it("should return undefined for auto", () => {
+        expect(popoverPlacementToNextPlacement("auto")).to.be.undefined;
+    });
+
+    it("should return undefined for auto-start", () => {
+        expect(popoverPlacementToNextPlacement("auto-start")).to.be.undefined;
+    });
+
+    it("should return undefined for auto-end", () => {
+        expect(popoverPlacementToNextPlacement("auto-end")).to.be.undefined;
     });
 });
 
@@ -283,21 +305,40 @@ describe("popoverPropsToNextProps", () => {
     });
 
     it("should pass through 1:1 props as-is", () => {
-        const onClose = vi.fn();
         const result = popoverPropsToNextProps({
             content: "hello",
             hasBackdrop: true,
             isOpen: true,
             matchTargetWidth: true,
-            onClose,
             usePortal: false,
         });
         expect(result.content).to.equal("hello");
         expect(result.hasBackdrop).to.equal(true);
         expect(result.isOpen).to.equal(true);
         expect(result.matchTargetWidth).to.equal(true);
-        expect(result.onClose).to.equal(onClose);
         expect(result.usePortal).to.equal(false);
+    });
+
+    describe("onClose", () => {
+        it("should wrap onClose so legacy callbacks are only invoked with a defined event", () => {
+            const onClose = vi.fn();
+            const result = popoverPropsToNextProps({ onClose });
+            // Wrapper, not the original.
+            expect(result.onClose).to.not.equal(onClose);
+            // Forwards real events.
+            const event = { type: "click" } as React.SyntheticEvent<HTMLElement>;
+            result.onClose!(event);
+            expect(onClose).toHaveBeenCalledOnce();
+            expect(onClose).toHaveBeenCalledWith(event);
+            // Drops undefined events to honor legacy `(event: SyntheticEvent) => void` signature.
+            result.onClose!(undefined);
+            expect(onClose).toHaveBeenCalledOnce();
+        });
+
+        it("should leave onClose undefined when not supplied", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.onClose).to.be.undefined;
+        });
     });
 
     describe("position → placement", () => {
@@ -366,21 +407,25 @@ describe("popoverPropsToNextProps", () => {
         });
     });
 
+    describe("popoverRef", () => {
+        it("should pass through popoverRef to PopoverNext", () => {
+            const ref: React.RefObject<HTMLElement> = { current: null };
+            const result = popoverPropsToNextProps({ popoverRef: ref });
+            expect(result.popoverRef).to.equal(ref);
+        });
+
+        it("should leave popoverRef undefined when not supplied", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.popoverRef).to.be.undefined;
+        });
+    });
+
     describe("dropped props", () => {
         it("should drop modifiersCustom with a dev warning", () => {
             const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
             const props: Partial<PopoverProps> = { modifiersCustom: [{ name: "custom" }] };
             const result = popoverPropsToNextProps(props);
             expect(result).not.to.have.property("modifiersCustom");
-            expect(warnSpy).toHaveBeenCalledOnce();
-            warnSpy.mockRestore();
-        });
-
-        it("should drop popoverRef with a dev warning", () => {
-            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
-            const ref = { current: null };
-            const result = popoverPropsToNextProps({ popoverRef: ref });
-            expect(result).not.to.have.property("popoverRef");
             expect(warnSpy).toHaveBeenCalledOnce();
             warnSpy.mockRestore();
         });
