@@ -209,7 +209,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
 
     public render() {
         const { locale, selectedShortcutIndex } = this.state;
-        const { popoverProps = {} } = this.props;
+        const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
             <DateRangePicker
@@ -238,6 +238,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
+                ref={popoverRef}
                 renderTarget={this.renderTarget}
             />
         );
