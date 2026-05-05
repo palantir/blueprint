@@ -23,6 +23,8 @@ import type { PopoverTargetProps } from "../popover/popoverSharedProps";
 import { Portal } from "../portal/portal";
 
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
+import { PopoverNext } from "../popover-next/popoverNext";
+import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     isOpen: boolean;
@@ -73,11 +75,11 @@ export const ContextMenuPopover = memo(function ContextMenuPopover(props: Contex
     );
 
     return (
-        <Popover
+        <PopoverNext
             placement="right-start"
             rootBoundary={rootBoundary}
             transitionDuration={transitionDuration}
-            {...popoverProps}
+            {...popoverPropsToNextProps(popoverProps)}
             content={
                 // this prevents right-clicking inside our context menu
                 <div onContextMenu={cancelContextMenu}>{content}</div>
@@ -88,7 +90,6 @@ export const ContextMenuPopover = memo(function ContextMenuPopover(props: Contex
             key={getPopoverKey(targetOffset)}
             hasBackdrop={true}
             backdropProps={{ className: Classes.CONTEXT_MENU_BACKDROP }}
-            minimal={true}
             onInteraction={handleInteraction}
             popoverClassName={classNames(Classes.CONTEXT_MENU_POPOVER, popoverClassName, {
                 [Classes.DARK]: isDarkTheme,

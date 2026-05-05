@@ -29,6 +29,7 @@ import { PopoverInteractionKind } from "../popover/popoverProps";
 import { Tooltip, type TooltipProps } from "../tooltip/tooltip";
 
 import { ContextMenu, type ContextMenuContentProps, type ContextMenuProps } from "./contextMenu";
+import { PopoverNext } from "../popover-next/popoverNext";
 
 // use a unique ID to avoid collisons with other tests
 const MENU_CLASSNAME = Utils.uniqueId("test-menu");
@@ -88,13 +89,13 @@ describe("ContextMenu", () => {
         it("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
             expect(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists()).toBe(true);
-            expect(ctxMenu.find(Popover).exists()).toBe(true);
+            expect(ctxMenu.find(PopoverNext).exists()).toBe(true);
         });
 
         it("opens popover on right click", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
-            expect(ctxMenu.find(Popover).prop("isOpen")).toBe(true);
+            expect(ctxMenu.find(PopoverNext).prop("isOpen")).toBe(true);
         });
 
         it("renders custom HTML tag if specified", () => {
@@ -119,7 +120,7 @@ describe("ContextMenu", () => {
                     key: "Escape",
                     nativeEvent: new KeyboardEvent("keydown"),
                 });
-            expect(ctxMenu.find(Popover).prop("isOpen")).toBe(false);
+            expect(ctxMenu.find(PopoverNext).prop("isOpen")).toBe(false);
         });
 
         it("clicks inside popover don't propagate to context menu wrapper", () => {
@@ -166,13 +167,13 @@ describe("ContextMenu", () => {
         it("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
             expect(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists()).toBe(true);
-            expect(ctxMenu.find(Popover).exists()).toBe(true);
+            expect(ctxMenu.find(PopoverNext).exists()).toBe(true);
         });
 
         it("opens popover on right click", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
-            expect(ctxMenu.find(Popover).prop("isOpen")).toBe(true);
+            expect(ctxMenu.find(PopoverNext).prop("isOpen")).toBe(true);
         });
 
         it("handles context menu event, even if content is undefined", () => {
@@ -352,7 +353,7 @@ describe("ContextMenu", () => {
                 openTooltip(wrapper);
                 openCtxMenu(wrapper);
                 expect(
-                    wrapper.find(ContextMenu).find(Popover).prop("isOpen"),
+                    wrapper.find(ContextMenu).find(PopoverNext).prop("isOpen"),
                     "ContextMenu popover should be open",
                 ).toBe(true);
                 assertTooltipClosed(wrapper);
@@ -372,7 +373,7 @@ describe("ContextMenu", () => {
                 openTooltip(wrapper);
                 openCtxMenu(wrapper);
                 expect(
-                    wrapper.find(ContextMenu).find(Popover).first().prop("isOpen"),
+                    wrapper.find(ContextMenu).find(PopoverNext).first().prop("isOpen"),
                     "ContextMenu popover should be open",
                 ).toBe(true);
                 // this assertion is difficult to unit test, but we know that the tooltip closes in manual testing,
@@ -515,7 +516,7 @@ describe("ContextMenu", () => {
                     // this assertion is difficult to test, but we know that the tooltip eventually does close in manual testing
                     // assert.isFalse(
                     //     wrapper
-                    //         .find(Popover)
+                    //         .find(PopoverNext)
                     //         .find({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
                     //         .last()
                     //         .state("isOpen"),
