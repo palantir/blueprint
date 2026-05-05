@@ -23,8 +23,10 @@ import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover } from "../popover/popover";
 import type { PopoverProps } from "../popover/popoverProps";
+import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
+import { PopoverNext } from "../popover-next/popoverNext";
+import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -283,7 +285,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             {children == null ? (
                 target
             ) : (
-                <Popover
+                <PopoverNext
                     // eslint-disable-next-line jsx-a11y/no-autofocus -- intentionally disabled
                     autoFocus={false}
                     captureDismiss={false}
@@ -291,29 +293,27 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     interactionKind="hover"
-                    modifiers={SUBMENU_POPOVER_MODIFIERS}
+                    middleware={SUBMENU_POPOVER_MIDDLEWARE}
                     targetProps={{ role: targetRole, tabIndex: 0 }}
                     placement="right-start"
                     usePortal={false}
-                    {...popoverProps}
+                    {...popoverPropsToNextProps(popoverProps)}
                     content={<Menu {...submenuProps}>{children}</Menu>}
-                    minimal={true}
                     popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 >
                     {target}
-                </Popover>
+                </PopoverNext>
             )}
         </li>
     );
 });
 MenuItem.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
-const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
-    // 20px padding - scrollbar width + a bit
-    flip: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
+const SUBMENU_POPOVER_MIDDLEWARE: MiddlewareConfig = {
+    flip: { padding: 20, rootBoundary: "viewport" },
     // shift popover up 5px so MenuItems align
-    offset: { enabled: true, options: { offset: [-5, 0] } },
-    preventOverflow: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
+    offset: { crossAxis: -5, mainAxis: 0 },
+    shift: { padding: 20, rootBoundary: "viewport" },
 };
 
 // props to ignore when disabled
