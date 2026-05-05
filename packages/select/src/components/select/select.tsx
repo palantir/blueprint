@@ -24,7 +24,6 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     type InputGroupProps,
-    Popover,
     type PopoverClickTargetHandlers,
     PopoverNext,
     popoverPropsToNextProps,

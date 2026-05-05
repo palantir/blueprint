@@ -18,7 +18,6 @@ import classNames from "classnames";
 import { memo, useCallback } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
-import { Popover } from "../popover/popover";
 import type { PopoverTargetProps } from "../popover/popoverSharedProps";
 import { Portal } from "../portal/portal";
 
