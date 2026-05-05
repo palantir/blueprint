@@ -2,39 +2,16 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import type { Placement, Boundary as PopperBoundary } from "@popperjs/core";
+
+import { isNodeEnv } from "../../common/utils";
 import { positionToPlacement } from "../popover/popoverPlacementUtils";
 import { type PopoverPosition } from "../popover/popoverPosition";
-import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
+import type { PopoverProps } from "../popover/popoverProps";
+import type { DefaultPopoverTargetHTMLProps, PopperModifierOverrides } from "../popover/popoverSharedProps";
 
-import type { MiddlewareConfig, PopoverNextPlacement } from "./middlewareTypes";
-
-/**
- * Converts a legacy `PopoverPosition` value to a `PopoverNextPlacement` value for use with `PopoverNext`.
- *
- * The `position` prop is not supported in `PopoverNext`; use the `placement` prop instead.
- * `"auto"`, `"auto-start"`, and `"auto-end"` have no direct equivalent — they return `undefined`,
- * which causes `PopoverNext` to use its default automatic placement behavior.
- *
- * @example
- * // Before (Popover)
- * <Popover position={PopoverPosition.TOP_LEFT} />
- *
- * // After (PopoverNext)
- * <PopoverNext placement={popoverPositionToNextPlacement(PopoverPosition.TOP_LEFT)} />
- */
-export function popoverPositionToNextPlacement(position: PopoverPosition): PopoverNextPlacement | undefined {
-    switch (position) {
-        case "auto":
-        case "auto-start":
-        case "auto-end":
-            // PopoverNext uses autoPlacement middleware by default when placement is undefined.
-            return undefined;
-        default:
-            // positionToPlacement handles all remaining PopoverPosition values.
-            // The string literal values it returns are identical to PopoverNextPlacement.
-            return positionToPlacement(position) as PopoverNextPlacement;
-    }
-}
+import type { MiddlewareConfig, PopoverNextBoundary, PopoverNextPlacement } from "./middlewareTypes";
+import type { PopoverNextProps } from "./popoverNextProps";
 
 /**
  * Converts Popper.js v2 `modifiers` (used by `Popover`) to a Floating UI `MiddlewareConfig` (used by `PopoverNext`).
@@ -66,7 +43,7 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
     if (modifiers.flip && modifiers.flip.enabled !== false) {
         const { options } = modifiers.flip;
         middleware.flip = {
-            ...(options?.boundary != null ? { boundary: options.boundary as Element } : {}),
+            ...(options?.boundary != null ? { boundary: popperBoundaryToNextBoundary(options.boundary) } : {}),
             ...(options?.rootBoundary != null ? { rootBoundary: options.rootBoundary } : {}),
             ...(options?.padding != null ? { padding: options.padding } : {}),
             ...(options?.fallbackPlacements != null
@@ -81,7 +58,7 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
     if (modifiers.preventOverflow && modifiers.preventOverflow.enabled !== false) {
         const { options } = modifiers.preventOverflow;
         middleware.shift = {
-            ...(options?.boundary != null ? { boundary: options.boundary as Element } : {}),
+            ...(options?.boundary != null ? { boundary: popperBoundaryToNextBoundary(options.boundary) } : {}),
             ...(options?.rootBoundary != null ? { rootBoundary: options.rootBoundary } : {}),
             ...(options?.padding != null ? { padding: options.padding } : {}),
             ...(options?.mainAxis != null ? { mainAxis: options.mainAxis } : {}),
@@ -126,4 +103,177 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
     }
 
     return middleware;
+}
+
+/**
+ * Converts a partial legacy `PopoverProps` bag into a partial `PopoverNextProps` bag suitable
+ * for spreading onto `PopoverNext`. Preserves legacy default behavior where it differs from
+ * `PopoverNext`'s defaults (`shouldReturnFocusOnClose`).
+ *
+ * Transformations:
+ * - `position` → `placement` (via {@link popoverPositionToNextPlacement}). If both are supplied,
+ *   `placement` wins, mirroring legacy `Popover`'s mutex behavior.
+ * - `modifiers` → `middleware` (via {@link popperModifiersToNextMiddleware}). A consumer-supplied
+ *   `middleware` bag takes precedence over the converted modifiers.
+ * - `minimal: true` → `animation: "minimal"` and `arrow: false` (legacy `minimal` disables the arrow).
+ * - `boundary: "clippingParents"` → `"clippingAncestors"` (the Floating UI equivalent).
+ *
+ * Dropped (with dev-only `console.warn`):
+ * - `modifiersCustom` — no Floating UI equivalent; migrate manually to `middleware`.
+ * - `portalStopPropagationEvents` — already deprecated and non-functional in React 17+.
+ *
+ * Intended for use inside Blueprint components that wrap `Popover` internally and pass
+ * through a `popoverProps` prop, so they can swap to `PopoverNext` without changing their public API.
+ */
+export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>(
+    props: Partial<PopoverProps<T>>,
+): Partial<PopoverNextProps<T>> {
+    // Pull out every prop whose legacy type is structurally incompatible with its
+    // PopoverNext counterpart. After this destructure, `rest` contains only fields that
+    // share an identical type between Popover and PopoverNext, so the spread below is
+    // sound without any blanket cast.
+    const {
+        boundary,
+        minimal,
+        modifiers,
+        modifiersCustom,
+        onClose,
+        placement,
+        popoverRef,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        portalStopPropagationEvents,
+        position,
+        shouldReturnFocusOnClose,
+        ...rest
+    } = props;
+
+    if (!isNodeEnv("production")) {
+        if (modifiersCustom !== undefined) {
+            console.warn(
+                "[Blueprint] popoverPropsToNextProps: `modifiersCustom` has no equivalent in PopoverNext and will be dropped. " +
+                    "Migrate to the `middleware` prop manually.",
+            );
+        }
+        if (portalStopPropagationEvents !== undefined) {
+            console.warn(
+                "[Blueprint] popoverPropsToNextProps: `portalStopPropagationEvents` has no equivalent in PopoverNext and will be dropped.",
+            );
+        }
+    }
+
+    const nextProps: Partial<PopoverNextProps<T>> = { ...rest };
+
+    if (boundary !== undefined) {
+        nextProps.boundary = popperBoundaryToNextBoundary(boundary);
+    }
+
+    if (placement !== undefined) {
+        const converted = popoverPlacementToNextPlacement(placement);
+        if (converted !== undefined) {
+            nextProps.placement = converted;
+        }
+    }
+
+    // position → placement. Legacy `placement` wins over `position` when both are supplied.
+    if (position !== undefined && nextProps.placement === undefined) {
+        const converted = popoverPositionToNextPlacement(position);
+        if (converted !== undefined) {
+            nextProps.placement = converted;
+        }
+    }
+
+    if (modifiers !== undefined) {
+        nextProps.middleware = popperModifiersToNextMiddleware(modifiers);
+    }
+
+    if (minimal === true) {
+        nextProps.animation ??= "minimal";
+        nextProps.arrow ??= false;
+    }
+
+    if (onClose !== undefined) {
+        // Legacy `onClose` requires a non-undefined `event`; PopoverNext's signature allows
+        // `event` to be undefined. Wrap to honor the legacy contract — invoke the legacy
+        // handler only when an event is actually present.
+        nextProps.onClose = event => {
+            if (event !== undefined) {
+                onClose(event);
+            }
+        };
+    }
+
+    if (popoverRef !== undefined) {
+        // Legacy `popoverRef` is `React.Ref<HTMLElement>`; PopoverNext's is `React.Ref<HTMLDivElement>`.
+        // `RefObject<T>` is covariant in `T`, so `RefObject<HTMLElement>` is not strictly assignable
+        // to `RefObject<HTMLDivElement>`. In practice, the underlying DOM node *is* a `<div>` (the
+        // `Classes.POPOVER` element), so a ref slot typed for the wider `HTMLElement` will safely
+        // receive it. Cast narrowly here to acknowledge this known unsoundness without laundering
+        // it across the entire props bag.
+        nextProps.popoverRef = popoverRef as React.Ref<HTMLDivElement>;
+    }
+
+    // Legacy default for `shouldReturnFocusOnClose` is `false`; PopoverNext's is `true`.
+    nextProps.shouldReturnFocusOnClose = shouldReturnFocusOnClose ?? false;
+
+    return nextProps;
+}
+
+/**
+ * Converts a Popper.js `Boundary` value to a Floating UI `PopoverNextBoundary` value.
+ *
+ * The two systems use different names for the "all clipping ancestors" sentinel:
+ * - Popper.js: `"clippingParents"`
+ * - Floating UI: `"clippingAncestors"`
+ *
+ * Element / `Element[]` values pass through unchanged.
+ */
+export function popperBoundaryToNextBoundary(boundary: PopperBoundary): PopoverNextBoundary {
+    return boundary === "clippingParents" ? "clippingAncestors" : boundary;
+}
+
+/**
+ * Converts a Popper.js `Placement` value to a `PopoverNextPlacement` value for use with `PopoverNext`.
+ *
+ * `"auto"`, `"auto-start"`, and `"auto-end"` have no direct equivalent in Floating UI — they return
+ * `undefined`, which causes `PopoverNext` to use its default automatic placement behavior.
+ * All other values pass through unchanged (the residual literal union is identical to `PopoverNextPlacement`).
+ *
+ * @example
+ * // Before (Popover)
+ * <Popover placement="top-start" />
+ *
+ * // After (PopoverNext)
+ * <PopoverNext placement={popoverPlacementToNextPlacement("top-start")} />
+ */
+export function popoverPlacementToNextPlacement(placement: Placement): PopoverNextPlacement | undefined {
+    switch (placement) {
+        case "auto":
+        case "auto-start":
+        case "auto-end":
+            // PopoverNext uses autoPlacement middleware by default when placement is undefined.
+            return undefined;
+        default:
+            return placement;
+    }
+}
+
+/**
+ * Converts a legacy `PopoverPosition` value to a `PopoverNextPlacement` value for use with `PopoverNext`.
+ *
+ * The `position` prop is not supported in `PopoverNext`; use the `placement` prop instead.
+ * `"auto"`, `"auto-start"`, and `"auto-end"` have no direct equivalent — they return `undefined`,
+ * which causes `PopoverNext` to use its default automatic placement behavior.
+ *
+ * @example
+ * // Before (Popover)
+ * <Popover position={PopoverPosition.TOP_LEFT} />
+ *
+ * // After (PopoverNext)
+ * <PopoverNext placement={popoverPositionToNextPlacement(PopoverPosition.TOP_LEFT)} />
+ */
+export function popoverPositionToNextPlacement(position: PopoverPosition): PopoverNextPlacement | undefined {
+    // `positionToPlacement` translates PopoverPosition's `"top-left"`/`"bottom-right"` forms to
+    // Popper's `"top-start"`/`"bottom-end"` forms, and passes `"auto"`/`"auto-start"`/`"auto-end"`
+    // through unchanged. `popoverPlacementToNextPlacement` then filters out the auto* values.
+    return popoverPlacementToNextPlacement(positionToPlacement(position));
 }
