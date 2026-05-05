@@ -88,8 +88,10 @@ describe("showContextMenu() + hideContextMenu()", () => {
                     requestAnimationFrame(() => {
                         assertMenuState(true);
                         // important: close menu for the next test
-                        dismissContextMenu();
-                        done();
+                        hideContextMenu();
+                        requestAnimationFrame(() => {
+                            done();
+                        });
                     }),
             });
         }));
@@ -99,8 +101,10 @@ describe("showContextMenu() + hideContextMenu()", () => {
             new Promise<void>(done => {
                 const handleClose = () =>
                     requestAnimationFrame(() => {
-                        assertMenuState(false);
-                        done();
+                        requestAnimationFrame(() => {
+                            assertMenuState(false);
+                            done();
+                        });
                     });
 
                 showContextMenu({
@@ -118,11 +122,12 @@ describe("showContextMenu() + hideContextMenu()", () => {
                 showContextMenu({
                     ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
                     onOpened: () =>
-                        // defer assertions until the next animation frame
                         requestAnimationFrame(() => {
                             hideContextMenu();
-                            assertMenuState(false);
-                            done();
+                            requestAnimationFrame(() => {
+                                assertMenuState(false);
+                                done();
+                            });
                         }),
                 });
             }));
