@@ -24,6 +24,8 @@ import {
     mergeRefs,
     Popover,
     type PopoverClickTargetHandlers,
+    PopoverNext,
+    popoverPropsToNextProps,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -197,12 +199,12 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverNext
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
-                {...popoverProps}
+                {...popoverPropsToNextProps(popoverProps)}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>

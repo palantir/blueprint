@@ -18,7 +18,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/core";
+import { InputGroup, MenuItem, PopoverNext, type PopoverProps } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
@@ -94,7 +94,7 @@ describe("Suggest", () => {
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
-            const popover = wrapper.find(Popover);
+            const popover = wrapper.find(PopoverNext);
             expect(wrapper.find(InputGroup)).toHaveLength(1);
             expect(popover).toHaveLength(1);
             expect(popover.find(MenuItem)).toHaveLength(100);
@@ -272,19 +272,18 @@ describe("Suggest", () => {
         });
 
         it("popover can be controlled with popoverProps", () => {
-            const modifiers = {}; // our own instance
-            const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
-            wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
-            expect(wrapper.find(Popover).prop("modifiers")).toBe(modifiers);
+            const wrapper = suggest({ popoverProps: getPopoverProps(false) });
+            wrapper.setProps({ popoverProps: getPopoverProps(true) }).update();
+            expect(wrapper.find(PopoverNext).prop("popoverClassName")).toContain("custom-popover-class");
             expect(onOpening.calledOnce).toBe(true);
         });
 
-        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<PopoverProps> {
+        function getPopoverProps(isOpen: boolean): Partial<PopoverProps> {
             return {
                 ...defaultProps.popoverProps,
                 isOpen,
-                modifiers,
                 onOpening,
+                popoverClassName: "custom-popover-class",
             };
         }
     });
