@@ -200,11 +200,12 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
 
     if (popoverRef !== undefined) {
         // Legacy `popoverRef` is `React.Ref<HTMLElement>`; PopoverNext's is `React.Ref<HTMLDivElement>`.
-        // `RefObject<T>` is covariant in `T`, so `RefObject<HTMLElement>` is not strictly assignable
-        // to `RefObject<HTMLDivElement>`. In practice, the underlying DOM node *is* a `<div>` (the
-        // `Classes.POPOVER` element), so a ref slot typed for the wider `HTMLElement` will safely
-        // receive it. Cast narrowly here to acknowledge this known unsoundness without laundering
-        // it across the entire props bag.
+        // `RefObject<T>` is invariant in `T` (`.current` is mutable, so `T` appears in both read
+        // and write positions), so `RefObject<HTMLElement>` is not assignable to
+        // `RefObject<HTMLDivElement>` even though `HTMLDivElement` is a subtype of `HTMLElement`.
+        // In practice the underlying DOM node is a `<div>` (the `Classes.POPOVER` element), so a
+        // ref slot typed for the wider `HTMLElement` safely receives it. Cast narrowly here so
+        // the unsoundness stays scoped to this one prop instead of the whole bag.
         nextProps.popoverRef = popoverRef as React.Ref<HTMLDivElement>;
     }
 
