@@ -310,12 +310,16 @@ describe("popoverPropsToNextProps", () => {
             hasBackdrop: true,
             isOpen: true,
             matchTargetWidth: true,
+            positioningStrategy: "fixed",
+            rootBoundary: "viewport",
             usePortal: false,
         });
         expect(result.content).to.equal("hello");
         expect(result.hasBackdrop).to.equal(true);
         expect(result.isOpen).to.equal(true);
         expect(result.matchTargetWidth).to.equal(true);
+        expect(result.positioningStrategy).to.equal("fixed");
+        expect(result.rootBoundary).to.equal("viewport");
         expect(result.usePortal).to.equal(false);
     });
 
@@ -323,15 +327,17 @@ describe("popoverPropsToNextProps", () => {
         it("should wrap onClose so legacy callbacks are only invoked with a defined event", () => {
             const onClose = vi.fn();
             const result = popoverPropsToNextProps({ onClose });
-            // Wrapper, not the original.
+            // Wrapper exists, and it's not the original.
+            expect(result.onClose).to.be.a("function");
             expect(result.onClose).to.not.equal(onClose);
+            const wrapped = result.onClose!;
             // Forwards real events.
             const event = { type: "click" } as React.SyntheticEvent<HTMLElement>;
-            result.onClose!(event);
+            wrapped(event);
             expect(onClose).toHaveBeenCalledOnce();
             expect(onClose).toHaveBeenCalledWith(event);
             // Drops undefined events to honor legacy `(event: SyntheticEvent) => void` signature.
-            result.onClose!(undefined);
+            wrapped(undefined);
             expect(onClose).toHaveBeenCalledOnce();
         });
 
