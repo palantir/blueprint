@@ -274,7 +274,3 @@ export function popoverPositionToNextPlacement(position: PopoverPosition): Popov
     // through unchanged. `popoverPlacementToNextPlacement` then filters out the auto* values.
     return popoverPlacementToNextPlacement(positionToPlacement(position));
 }
-=======
->>>>>>> 6bb8a2307 (feat(core): migrate Breadcrumbs to PopoverNext via compat shim)
-=======
->>>>>>> 976ab3b0b (feat(core): migrate Breadcrumbs to PopoverNext via compat shim)
