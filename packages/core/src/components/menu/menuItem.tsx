@@ -24,13 +24,12 @@ import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import type { PopoverProps } from "../popover/popoverProps";
-import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
+import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
 import { PopoverNext } from "../popover-next/popoverNext";
 import { popoverPropsToNextProps, popperModifiersToNextMiddleware } from "../popover-next/popoverNextMigrationUtils";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
-import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 /**
  * Note that the HTML attributes supported by this component are spread to the nested `<a>` element, while the
