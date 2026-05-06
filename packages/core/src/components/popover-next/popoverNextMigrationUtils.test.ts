@@ -341,7 +341,7 @@ describe("popoverPropsToNextProps", () => {
         });
     });
 
-    describe("position → placement", () => {
+    describe("placement / position", () => {
         it("should convert position to placement", () => {
             const result = popoverPropsToNextProps({ position: PopoverPosition.TOP_LEFT });
             expect(result.placement).to.equal("top-start");
@@ -352,12 +352,37 @@ describe("popoverPropsToNextProps", () => {
             expect(result.placement).to.be.undefined;
         });
 
-        it("should prefer placement over position when both are supplied", () => {
+        it("should leave placement undefined when placement is auto", () => {
+            const result = popoverPropsToNextProps({ placement: "auto" });
+            expect(result.placement).to.be.undefined;
+        });
+
+        it("should prefer placement over position when both are supplied (placement ?? position)", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
             const result = popoverPropsToNextProps({
                 placement: "right",
                 position: PopoverPosition.TOP_LEFT,
             });
             expect(result.placement).to.equal("right");
+            warnSpy.mockRestore();
+        });
+
+        it("should prefer explicit placement: 'auto' over position (legacy placement ?? position rule)", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            const result = popoverPropsToNextProps({
+                placement: "auto",
+                position: PopoverPosition.TOP_LEFT,
+            });
+            // Explicit `placement: "auto"` wins, mapping to undefined (autoPlacement default).
+            expect(result.placement).to.be.undefined;
+            warnSpy.mockRestore();
+        });
+
+        it("should warn when both placement and position are supplied (mutex)", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            popoverPropsToNextProps({ placement: "right", position: PopoverPosition.TOP_LEFT });
+            expect(warnSpy).toHaveBeenCalledOnce();
+            warnSpy.mockRestore();
         });
     });
 

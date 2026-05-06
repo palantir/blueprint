@@ -4,6 +4,7 @@
 
 import type { Placement, Boundary as PopperBoundary } from "@popperjs/core";
 
+import * as Errors from "../../common/errors";
 import { isNodeEnv } from "../../common/utils";
 import { positionToPlacement } from "../popover/popoverPlacementUtils";
 import { type PopoverPosition } from "../popover/popoverPosition";
@@ -111,10 +112,9 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
  * `PopoverNext`'s defaults (`shouldReturnFocusOnClose`).
  *
  * Transformations:
- * - `position` → `placement` (via {@link popoverPositionToNextPlacement}). If both are supplied,
- *   `placement` wins, mirroring legacy `Popover`'s mutex behavior.
- * - `modifiers` → `middleware` (via {@link popperModifiersToNextMiddleware}). A consumer-supplied
- *   `middleware` bag takes precedence over the converted modifiers.
+ * - `placement` ?? `position` → `placement`, mirroring legacy `Popover`'s resolution
+ *   (`placement ?? positionToPlacement(position)`). When `placement` is defined it always wins.
+ * - `modifiers` → `middleware` (via {@link popperModifiersToNextMiddleware}).
  * - `minimal: true` → `animation: "minimal"` and `arrow: false` (legacy `minimal` disables the arrow).
  * - `boundary: "clippingParents"` → `"clippingAncestors"` (the Floating UI equivalent).
  *
@@ -159,6 +159,9 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
                 "[Blueprint] popoverPropsToNextProps: `portalStopPropagationEvents` has no equivalent in PopoverNext and will be dropped.",
             );
         }
+        if (placement !== undefined && position !== undefined) {
+            console.warn(Errors.POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX);
+        }
     }
 
     const nextProps: Partial<PopoverNextProps<T>> = { ...rest };
@@ -167,19 +170,12 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         nextProps.boundary = popperBoundaryToNextBoundary(boundary);
     }
 
+    // Mirror legacy `Popover`'s `placement ?? positionToPlacement(position)` rule: an explicit
+    // `placement` always wins, even `"auto*"` (which maps to `undefined` = autoPlacement default).
     if (placement !== undefined) {
-        const converted = popoverPlacementToNextPlacement(placement);
-        if (converted !== undefined) {
-            nextProps.placement = converted;
-        }
-    }
-
-    // position → placement. Legacy `placement` wins over `position` when both are supplied.
-    if (position !== undefined && nextProps.placement === undefined) {
-        const converted = popoverPositionToNextPlacement(position);
-        if (converted !== undefined) {
-            nextProps.placement = converted;
-        }
+        nextProps.placement = popoverPlacementToNextPlacement(placement);
+    } else if (position !== undefined) {
+        nextProps.placement = popoverPositionToNextPlacement(position);
     }
 
     if (modifiers !== undefined) {
