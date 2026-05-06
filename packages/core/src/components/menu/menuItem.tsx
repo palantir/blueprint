@@ -26,10 +26,11 @@ import { Icon } from "../icon/icon";
 import type { PopoverProps } from "../popover/popoverProps";
 import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
 import { PopoverNext } from "../popover-next/popoverNext";
-import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
+import { popoverPropsToNextProps, popperModifiersToNextMiddleware } from "../popover-next/popoverNextMigrationUtils";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
+import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 /**
  * Note that the HTML attributes supported by this component are spread to the nested `<a>` element, while the
@@ -293,7 +294,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     interactionKind="hover"
-                    middleware={SUBMENU_POPOVER_MIDDLEWARE}
+                    middleware={popperModifiersToNextMiddleware(SUBMENU_POPOVER_MODIFIERS)}
                     targetProps={{ role: targetRole, tabIndex: 0 }}
                     placement="right-start"
                     usePortal={false}
@@ -309,11 +310,12 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
 });
 MenuItem.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
-const SUBMENU_POPOVER_MIDDLEWARE: MiddlewareConfig = {
-    flip: { padding: 20, rootBoundary: "viewport" },
+const SUBMENU_POPOVER_MODIFIERS: PopperModifierOverrides = {
+    // 20px padding - scrollbar width + a bit
+    flip: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
     // shift popover up 5px so MenuItems align
-    offset: { crossAxis: -5, mainAxis: 0 },
-    shift: { padding: 20, rootBoundary: "viewport" },
+    offset: { enabled: true, options: { offset: [-5, 0] } },
+    preventOverflow: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
 };
 
 // props to ignore when disabled
