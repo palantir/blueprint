@@ -248,7 +248,7 @@ workflows:
     unless: << pipeline.parameters.run-chromatic >>
     jobs:
       - circle-all:
-          requires: [dist, lint, test-node-libs, test-react-18, test-iso-react-18, deploy-preview, store-packages]
+          requires: [dist, lint, test-node-libs, test-react-18, test-iso-react-18]
       - checkout-code
       - clean-lockfile:
           requires: [checkout-code]
