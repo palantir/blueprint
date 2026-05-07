@@ -299,6 +299,11 @@ describe("popoverPropsToNextProps", () => {
         expect(popoverPropsToNextProps({})).to.deep.equal({ shouldReturnFocusOnClose: false });
     });
 
+    it("should treat undefined input the same as an empty object", () => {
+        expect(popoverPropsToNextProps()).to.deep.equal({ shouldReturnFocusOnClose: false });
+        expect(popoverPropsToNextProps(undefined)).to.deep.equal({ shouldReturnFocusOnClose: false });
+    });
+
     it("should pass through shouldReturnFocusOnClose when supplied", () => {
         const result = popoverPropsToNextProps({ shouldReturnFocusOnClose: true });
         expect(result.shouldReturnFocusOnClose).to.equal(true);

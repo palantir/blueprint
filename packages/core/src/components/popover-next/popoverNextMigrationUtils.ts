@@ -131,9 +131,12 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
  *
  * Intended for use inside Blueprint components that wrap `Popover` internally and pass
  * through a `popoverProps` prop, so they can swap to `PopoverNext` without changing their public API.
+ *
+ * `props` may be omitted or `undefined`; in that case the function behaves as if called with `{}`,
+ * which makes it convenient at sites where the consumer's `popoverProps` is itself optional.
  */
 export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>(
-    props: Partial<PopoverProps<T>>,
+    props?: Partial<PopoverProps<T>>,
 ): Partial<PopoverNextProps<T>> {
     // Pull out every prop whose legacy type is structurally incompatible with its
     // PopoverNext counterpart. After this destructure, `rest` contains only fields that
@@ -152,7 +155,7 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         position,
         shouldReturnFocusOnClose,
         ...rest
-    } = props;
+    } = props ?? {};
 
     if (!isNodeEnv("production")) {
         if (modifiersCustom !== undefined) {
