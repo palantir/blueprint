@@ -18,7 +18,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         animation = PopoverAnimation.SCALE,
         arrow = true,
         arrowRef,
-        autoFocus = true,
+        autoFocus,
         backdropProps,
         canEscapeKeyClose,
         captureDismiss = false,
