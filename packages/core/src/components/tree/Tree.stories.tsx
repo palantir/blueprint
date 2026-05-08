@@ -7,6 +7,7 @@ import { StoryLabel } from "@storybook-common";
 import { type MouseEvent, useCallback, useReducer } from "react";
 import { expect, waitFor } from "storybook/test";
 
+import { Home } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
 import { Tree } from "./tree";
@@ -106,6 +107,11 @@ const SELECTED_CONTENTS: TreeNodeInfo[] = [
         ],
     },
     { id: 3, icon: "document", label: "Item 2" },
+];
+
+const ELEMENT_ICON_CONTENTS: TreeNodeInfo[] = [
+    { id: 0, icon: "home", label: "String icon" },
+    { id: 1, icon: <Home />, label: "Element icon" },
 ];
 
 const DISABLED_CONTENTS: TreeNodeInfo[] = [
@@ -225,6 +231,14 @@ export const AllStates: Story = {
             </div>
         </Flex>
     ),
+};
+
+/**
+ * `TreeNodeInfo.icon` accepts either a string icon name or a React element.
+ */
+export const ElementIconExample: Story = {
+    name: "Element icon",
+    args: { contents: ELEMENT_ICON_CONTENTS },
 };
 
 /**

@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator } from "@storybook-common";
 import { useCallback, useState } from "react";
 
+import { Home } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
 import { Intent } from "../../common";
@@ -168,6 +169,7 @@ export const IconExample: Story = {
         <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <TagInput {...args} leftIcon="search" values={["Search"]} placeholder="With left icon..." />
             <TagInput {...args} leftIcon="tag" values={["Tags"]} placeholder="With tag icon..." />
+            <TagInput {...args} leftIcon={<Home />} values={["Element icon"]} placeholder="leftIcon={<Home />}" />
         </Flex>
     ),
 };
