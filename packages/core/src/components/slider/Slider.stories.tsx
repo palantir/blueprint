@@ -3,8 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Intent } from "../../common";
 
@@ -13,24 +16,7 @@ import { Slider } from "./slider";
 const meta: Meta<typeof Slider> = {
     title: "Core/Slider",
     component: Slider,
-    decorators: [
-        Story => (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minWidth: "400px",
-                    padding: "40px 20px",
-                }}
-            >
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         min: 0,
@@ -118,10 +104,10 @@ export const IntentExample: Story = {
         const handleChange = useCallback((newValue: number) => updateArgs({ value: newValue }), [updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
+            <Flex flexDirection="column" gap={6} style={{ width: "100%" }}>
                 {Object.values(Intent).map(intent => (
-                    <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                        <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                    <Flex key={intent} flexDirection="column" gap={1}>
+                        <StoryLabel title={intent} />
                         <Slider
                             {...args}
                             intent={intent}
@@ -129,9 +115,9 @@ export const IntentExample: Story = {
                             onRelease={handleChange}
                             handleHtmlProps={{ "aria-label": `${intent} intent slider` }}
                         />
-                    </div>
+                    </Flex>
                 ))}
-            </div>
+            </Flex>
         );
     },
 };
@@ -150,9 +136,9 @@ export const StateExample: Story = {
         const handleChange = useCallback((newValue: number) => updateArgs({ value: newValue }), [updateArgs]);
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 24, width: "100%" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+            <Flex flexDirection="column" gap={6} style={{ width: "100%" }}>
+                <Flex flexDirection="column" gap={1}>
+                    <StoryLabel title="Default" />
                     <Slider
                         {...args}
                         disabled={false}
@@ -160,9 +146,9 @@ export const StateExample: Story = {
                         onRelease={handleChange}
                         handleHtmlProps={{ "aria-label": "Default state slider" }}
                     />
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Disabled</span>
+                </Flex>
+                <Flex flexDirection="column" gap={1}>
+                    <StoryLabel title="Disabled" />
                     <Slider
                         {...args}
                         disabled={true}
@@ -170,9 +156,9 @@ export const StateExample: Story = {
                         onRelease={handleChange}
                         handleHtmlProps={{ "aria-label": "Disabled slider" }}
                     />
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6 }}>Vertical</span>
+                </Flex>
+                <Flex flexDirection="column" gap={1}>
+                    <StoryLabel title="Vertical" />
                     <Slider
                         {...args}
                         vertical={true}
@@ -180,8 +166,8 @@ export const StateExample: Story = {
                         onRelease={handleChange}
                         handleHtmlProps={{ "aria-label": "Vertical slider" }}
                     />
-                </div>
-            </div>
+                </Flex>
+            </Flex>
         );
     },
 };

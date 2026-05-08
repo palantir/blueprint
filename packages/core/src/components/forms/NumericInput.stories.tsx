@@ -3,7 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { useCallback, useState } from "react";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Intent, Position, Size } from "../../common";
 
@@ -14,22 +17,18 @@ const meta: Meta<typeof NumericInput> = {
     component: NumericInput,
     decorators: [
         Story => (
-            <div
+            <Flex
+                flexDirection="column"
+                gap={3}
                 style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 12,
                     width: "100%",
                     minWidth: "400px",
                 }}
             >
                 <Story />
-            </div>
+            </Flex>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         intent: "none",
@@ -103,7 +102,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             {Object.values(Intent).map(intent => (
                 <NumericInput
                     key={intent}
@@ -112,7 +111,7 @@ export const IntentExample: Story = {
                     placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} intent...`}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -125,7 +124,7 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             {Object.values(Size).map(size => (
                 <NumericInput
                     key={size}
@@ -134,7 +133,7 @@ export const SizeExample: Story = {
                     placeholder={`${size.charAt(0).toUpperCase() + size.slice(1)} size...`}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -148,11 +147,11 @@ export const StateExample: Story = {
         readOnly: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <NumericInput {...args} placeholder="Enabled..." />
             <NumericInput {...args} disabled={true} placeholder="Disabled..." />
             <NumericInput {...args} readOnly={true} value={42} />
-        </div>
+        </Flex>
     ),
 };
 
@@ -165,14 +164,14 @@ export const ButtonPositionExample: Story = {
         buttonPosition: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Right (default)</div>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
+            <StoryLabel title="Right (default)" />
             <NumericInput {...args} buttonPosition={Position.RIGHT} placeholder="Buttons right..." />
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Left</div>
+            <StoryLabel title="Left" />
             <NumericInput {...args} buttonPosition={Position.LEFT} placeholder="Buttons left..." />
-            <div style={{ fontSize: 12, opacity: 0.6 }}>None</div>
+            <StoryLabel title="None" />
             <NumericInput {...args} buttonPosition="none" placeholder="No buttons..." />
-        </div>
+        </Flex>
     ),
 };
 
@@ -185,10 +184,10 @@ export const IconExample: Story = {
         leftIcon: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={3} style={{ width: "100%" }}>
             <NumericInput {...args} leftIcon="dollar" placeholder="Price..." />
             <NumericInput {...args} leftIcon="percentage" placeholder="Percentage..." min={0} max={100} />
-        </div>
+        </Flex>
     ),
 };
 
@@ -208,10 +207,10 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={2} alignItems="start">
             <NumericInput {...args} fill={true} placeholder="Full Width" />
             <NumericInput {...args} fill={false} placeholder="Auto Width" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -231,7 +230,7 @@ export const Playground: Story = {
         );
 
         return (
-            <div style={{ display: "flex", flexDirection: "column", gap: 12, minWidth: "400px" }}>
+            <Flex flexDirection="column" gap={3} style={{ minWidth: "400px" }}>
                 <NumericInput
                     buttonPosition={args.buttonPosition}
                     disabled={args.disabled}
@@ -247,8 +246,8 @@ export const Playground: Story = {
                     stepSize={args.stepSize}
                     value={value}
                 />
-                <div style={{ fontSize: 12, opacity: 0.6 }}>Current value: {value}</div>
-            </div>
+                <StoryLabel title={`Current value: ${value}`} />
+            </Flex>
         );
     },
     args: {

@@ -1,10 +1,10 @@
 {
     "name": "@blueprintjs/stylelint-plugin",
-    "version": "5.2.2",
+    "version": "5.2.3",
     "description": "Stylelint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
-        "clean": "rm -rf lib/* || true",
+        "clean": "rm -rf lib",
         "compile": "tsc -p src/",
         "lint": "es-lint",
         "lint-fix": "es-lint --fix",

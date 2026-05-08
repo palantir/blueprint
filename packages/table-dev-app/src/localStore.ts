@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import defaults from "lodash/defaults";
-
 /**
  * Simple typed storage API for a JSON serializable object in web local storage
  * or session storage.
@@ -33,7 +31,18 @@ export class LocalStore<T extends {}> {
 
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     public getWithDefaults(defaultValue?: T): T | {} {
-        return defaults(this.get(), defaultValue);
+        const value = this.get();
+        if (defaultValue == null) {
+            return value;
+        }
+        const result: T = { ...defaultValue };
+        const resultRecord = result as Record<string, unknown>;
+        for (const [key, storedValue] of Object.entries(value as Record<string, unknown>)) {
+            if (storedValue !== undefined) {
+                resultRecord[key] = storedValue;
+            }
+        }
+        return result;
     }
 
     // eslint-disable-next-line @typescript-eslint/no-empty-object-type

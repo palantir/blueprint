@@ -205,6 +205,35 @@ describe("assignRoutes", () => {
         expect((pages.buttons.contents[1] as DocHeadingItem).route).toBe("core/components/buttons.usage");
     });
 
+    it("should route section children through routeAlias when set", () => {
+        const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
+            overlays: makePage("Overlays"),
+            popover: makePage("Popover", [makeHeading("Popover", 1), makeHeading("Concepts", 2)]),
+        };
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [],
+                sections: [
+                    {
+                        section: "overlays",
+                        routeAlias: "components",
+                        pages: [{ type: "page", ref: "popover" }],
+                    },
+                ],
+            },
+        ];
+
+        assignRoutes(navConfig, pages);
+
+        // section landing route is unchanged
+        expect(pages.overlays.route).toBe("core/overlays");
+        // child page and its sub-headings are routed under the alias
+        expect(pages.popover.route).toBe("core/components/popover");
+        expect((pages.popover.contents[1] as DocHeadingItem).route).toBe("core/components/popover.concepts");
+    });
+
     it("should not modify pages that are not referenced in the nav config", () => {
         const pages: Record<string, DocPage> = {
             core: makePage("Core"),
@@ -262,6 +291,33 @@ describe("buildNavTree", () => {
         expect((tree[0].children[0] as NavTreePage).route).toBe("core/overview");
     });
 
+    it("should apply routeAlias to section children but keep section route unchanged", () => {
+        const pages: Record<string, DocPage> = {
+            core: makePage("Core"),
+            popover: makePage("Popover"),
+        };
+        const navConfig: NavStructure = [
+            {
+                package: "core",
+                pages: [],
+                sections: [
+                    {
+                        section: "overlays",
+                        routeAlias: "components",
+                        pages: [{ type: "page", ref: "popover" }],
+                    },
+                ],
+            },
+        ];
+
+        const tree = buildNavTree(navConfig, pages);
+
+        const sectionNode = tree[0].children[0] as NavTreePage;
+        expect(sectionNode.reference).toBe("overlays");
+        expect(sectionNode.route).toBe("core/overlays");
+        expect((sectionNode.children[0] as NavTreePage).route).toBe("core/components/popover");
+    });
+
     it("should include section children and leaf pages at correct levels", () => {
         const pages: Record<string, DocPage> = {
             core: makePage("Core"),
@@ -308,7 +364,7 @@ describe("buildNavSection", () => {
             ],
         };
 
-        const node = buildNavSection(section, 2, "core/components", pages);
+        const node = buildNavSection(section, 2, "core/components", "core/components", pages);
 
         expect(node.reference).toBe("components");
         expect(node.route).toBe("core/components");
@@ -333,7 +389,7 @@ describe("buildNavSection", () => {
             ],
         };
 
-        const node = buildNavSection(section, 2, "core/overlays", pages);
+        const node = buildNavSection(section, 2, "core/overlays", "core/overlays", pages);
 
         expect(node.reference).toBe("overlays");
         expect(node.title).toBe("Overlays");
@@ -343,6 +399,27 @@ describe("buildNavSection", () => {
         expect((node.children[0] as NavTreePage).route).toBe("core/overlays/dialog");
         expect((node.children[1] as NavTreePage).reference).toBe("popover");
         expect((node.children[1] as NavTreePage).route).toBe("core/overlays/popover");
+    });
+
+    it("should route children through childRoutePrefix when it differs from the section route", () => {
+        const pages: Record<string, DocPage> = {
+            dialog: makePage("Dialog"),
+            popover: makePage("Popover"),
+        };
+        const section: NavSection = {
+            section: "overlays",
+            routeAlias: "components",
+            pages: [
+                { type: "page", ref: "dialog" },
+                { type: "page", ref: "popover" },
+            ],
+        };
+
+        const node = buildNavSection(section, 2, "core/overlays", "core/components", pages);
+
+        expect(node.route).toBe("core/overlays");
+        expect((node.children[0] as NavTreePage).route).toBe("core/components/dialog");
+        expect((node.children[1] as NavTreePage).route).toBe("core/components/popover");
     });
 });
 

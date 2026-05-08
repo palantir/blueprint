@@ -1,14 +1,19 @@
 version: 2.1
 
+parameters:
+  run-chromatic:
+    type: boolean
+    default: false
+
 orbs:
   browser-tools: circleci/browser-tools@2.4.0
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:24.11
+    - image: cimg/node:24.14.1
 
   - &docker-node-browsers-image
-    - image: cimg/node:24.11-browsers
+    - image: cimg/node:24.14.1-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -202,7 +207,7 @@ jobs:
               echo "Skipping Chromatic (no project token — likely a fork build)"
               exit 0
             fi
-            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed
+            pnpm exec chromatic --storybook-build-dir storybook-static --exit-zero-on-changes --only-changed --trace-changed
 
   deploy-preview:
     docker: *docker-node-image
@@ -232,12 +237,18 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: ./scripts/publish-npm-semver-tagged
+      - run:
+          command: |
+            # From https://docs.npmjs.com/trusted-publishers#circleci-configuration
+            export NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud": "npm:registry.npmjs.org"}')
+            ./scripts/publish-npm-semver-tagged
 
 workflows:
   compile_lint_test_dist_deploy:
+    unless: << pipeline.parameters.run-chromatic >>
     jobs:
-      - circle-all
+      - circle-all:
+          requires: [dist, lint, test-node-libs, test-react-18, test-iso-react-18]
       - checkout-code
       - clean-lockfile:
           requires: [checkout-code]
@@ -257,6 +268,9 @@ workflows:
           requires: [compile]
       - chromatic:
           requires: [dist]
+          filters:
+            branches:
+              only: develop
       - deploy-preview:
           requires: [dist]
       - store-packages:
@@ -269,3 +283,13 @@ workflows:
                 - develop
                 - next
                 - /^release\/.*/
+  chromatic-on-demand:
+    when: << pipeline.parameters.run-chromatic >>
+    jobs:
+      - checkout-code
+      - compile:
+          requires: [checkout-code]
+      - dist:
+          requires: [compile]
+      - chromatic:
+          requires: [dist]

@@ -3,7 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import React from "react";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Boundary } from "../../common/boundary";
 
@@ -24,16 +27,7 @@ type StoryArgs = React.ComponentProps<typeof Breadcrumbs> & { width?: number };
 const meta: Meta<StoryArgs> = {
     title: "Core/Breadcrumbs",
     component: Breadcrumbs,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         items: SAMPLE_ITEMS,
@@ -75,16 +69,16 @@ export const CollapseFromExample: Story = {
         collapseFrom: { table: { disable: true } },
     },
     render: ({ width, ...args }) => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16, alignItems: "flex-start" }}>
+        <Flex flexDirection="column" gap={4} alignItems="start">
             <div style={{ width }}>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Collapse from start (default)</div>
+                <StoryLabel title="Collapse from start (default)" />
                 <Breadcrumbs {...args} collapseFrom={Boundary.START} />
             </div>
             <div style={{ width }}>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Collapse from end</div>
+                <StoryLabel title="Collapse from end" />
                 <Breadcrumbs {...args} collapseFrom={Boundary.END} />
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -94,20 +88,20 @@ export const CollapseFromExample: Story = {
 export const OverflowExample: Story = {
     name: "Overflow",
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Constrained width (300px)</div>
+                <StoryLabel title="Constrained width (300px)" />
                 <div style={{ width: 300 }}>
                     <Breadcrumbs {...args} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Full width</div>
+                <StoryLabel title="Full width" />
                 <div style={{ width: 600 }}>
                     <Breadcrumbs {...args} />
                 </div>
             </div>
-        </div>
+        </Flex>
     ),
 };
 

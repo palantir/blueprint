@@ -284,6 +284,11 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
     openOnTargetFocus?: boolean;
 
     /**
+     * DOM ref attached to the `Classes.POPOVER` element.
+     */
+    popoverRef?: React.Ref<HTMLDivElement>;
+
+    /**
      * The placement (relative to the target) at which the popover should appear.
      * Mutually exclusive with `position` prop. Prefer using this over `position`,
      * as it more closely aligns with Floating UI semantics.
@@ -476,6 +481,7 @@ export interface PopoverPopupProps
         | "onOpened"
         | "onOpening"
         | "popoverClassName"
+        | "popoverRef"
         | "portalClassName"
         | "portalContainer"
         | "shouldReturnFocusOnClose"

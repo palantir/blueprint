@@ -3,7 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { type ComponentProps } from "react";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Switch } from "./controls";
 
@@ -14,16 +17,7 @@ const disabledArgs = ["large", "tagName", "labelElement", "inputRef"] as const s
 const meta: Meta<typeof Switch> = {
     title: "Core/Form/Controls/Switch",
     component: Switch,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         label: "Switch",
@@ -83,10 +77,10 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+        <Flex gap={4} alignItems="center">
             <Switch {...args} size="medium" label="Medium" defaultChecked={true} />
             <Switch {...args} size="large" label="Large" defaultChecked={true} />
-        </div>
+        </Flex>
     ),
 };
 
@@ -101,24 +95,24 @@ export const StateExample: Story = {
         defaultChecked: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Unchecked</div>
-            <div style={{ display: "flex", gap: 16 }}>
+        <Flex gap={4} flexDirection="column">
+            <StoryLabel title="Unchecked" />
+            <Flex gap={4}>
                 <Switch {...args} label="Default" />
                 <Switch {...args} label="Disabled" disabled={true} />
-            </div>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Checked</div>
-            <div style={{ display: "flex", gap: 16 }}>
+            </Flex>
+            <StoryLabel title="Checked" />
+            <Flex gap={4}>
                 <Switch {...args} label="Checked" defaultChecked={true} />
                 <Switch {...args} label="Checked Disabled" defaultChecked={true} disabled={true} />
-            </div>
-            <div style={{ fontSize: 12, opacity: 0.6 }}>Inline</div>
+            </Flex>
+            <StoryLabel title="Inline" />
             <div>
                 <Switch {...args} inline={true} label="Wi-Fi" defaultChecked={true} />
                 <Switch {...args} inline={true} label="Bluetooth" />
                 <Switch {...args} inline={true} label="Airplane Mode" />
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -128,13 +122,11 @@ export const StateExample: Story = {
 export const AllStates: Story = {
     name: "All States",
     render: args => (
-        <div style={{ display: "flex", gap: 24, flexDirection: "column" }}>
+        <Flex gap={6} flexDirection="column">
             {(["medium", "large"] as const).map(size => (
                 <div key={size}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8, textTransform: "capitalize" }}>
-                        {size}
-                    </div>
-                    <div style={{ display: "flex", gap: 16, flexDirection: "column" }}>
+                    <StoryLabel title={size} />
+                    <Flex gap={4} flexDirection="column">
                         <Switch {...args} size={size} label="Unchecked" />
                         <Switch {...args} size={size} label="Checked" defaultChecked={true} />
                         <Switch {...args} size={size} label="Disabled" disabled={true} />
@@ -147,10 +139,10 @@ export const AllStates: Story = {
                             innerLabelChecked="On"
                             defaultChecked={true}
                         />
-                    </div>
+                    </Flex>
                 </div>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
