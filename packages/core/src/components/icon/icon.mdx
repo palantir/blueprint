@@ -10,10 +10,14 @@ See the [**Icons package**](#icons) for a searchable list of all available UI ic
 
 </div>
 
-## Import
+## Usage
 
 ```ts copy
 import { Icon } from "@blueprintjs/core";
+```
+
+```tsx
+<Icon icon="buggy" size={30} />
 ```
 
 Blueprint provides icons in two formats (SVG and fonts). It's easy to change their color
@@ -28,7 +32,9 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 
 @reactExample IconExample
 
-## Usage
+## Examples
+
+### Basic
 
 Use the `<Icon>` component to easily render **SVG icons** in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
@@ -81,6 +87,12 @@ Custom sizes are supported. The following React element:
     </svg>
 </span>
 ```
+
+### Usage with other components
+
+Many Blueprint components accept an `icon` prop which can be specified as either a string icon name (e.g. `"refresh"`) or a JSX element such as a dynamically-loaded `<Icon>` component.
+
+@reactCodeExample IconUsageExample
 
 ## Props interface
 
