@@ -34,6 +34,7 @@ const storybookConfig: StorybookConfig = {
                 // Blueprint workspace packages: use package names so preview and stories share one copy.
                 // Array form so order is guaranteed: more specific (core/lib) must match before core.
                 alias: [
+                    { find: "@storybook-common", replacement: resolve(rootDir, ".storybook/common") },
                     { find: "@blueprintjs/core/lib", replacement: resolve(rootDir, "packages/core/lib") },
                     { find: "@blueprintjs/core", replacement: resolve(rootDir, "packages/core/src") },
                     { find: "@blueprintjs/datetime", replacement: resolve(rootDir, "packages/datetime") },
@@ -49,7 +50,11 @@ const storybookConfig: StorybookConfig = {
         });
     },
 
-    addons: [getAbsolutePath("@storybook/addon-a11y"), getAbsolutePath("@storybook/addon-themes")],
+    addons: [
+        getAbsolutePath("@storybook/addon-a11y"),
+        getAbsolutePath("@storybook/addon-docs"),
+        getAbsolutePath("@storybook/addon-themes"),
+    ],
 };
 
 // eslint-disable-next-line import/no-default-export

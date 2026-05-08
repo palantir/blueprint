@@ -3,6 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Button } from "../button/buttons";
 
@@ -12,16 +15,7 @@ import { InputGroup } from "./inputGroup";
 const meta: Meta<typeof ControlGroup> = {
     title: "Core/Form/ControlGroup",
     component: ControlGroup,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         fill: false,
@@ -81,7 +75,7 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Flex flexDirection="column" gap={2}>
             <ControlGroup {...args} fill={true}>
                 <InputGroup placeholder="Full width input" />
                 <Button text="Submit" />
@@ -90,7 +84,7 @@ export const FillExample: Story = {
                 <InputGroup placeholder="Auto width input" />
                 <Button text="Submit" />
             </ControlGroup>
-        </div>
+        </Flex>
     ),
 };
 
@@ -115,7 +109,7 @@ export const VerticalExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 32 }}>
+        <Flex flexDirection="column" gap={8}>
             <ControlGroup {...args} vertical={true}>
                 <InputGroup placeholder="Vertical input" />
                 <Button text="Submit" />
@@ -124,7 +118,7 @@ export const VerticalExample: Story = {
                 <InputGroup placeholder="Horizontal input" />
                 <Button text="Submit" />
             </ControlGroup>
-        </div>
+        </Flex>
     ),
 };
 

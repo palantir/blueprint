@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime2",
-    "version": "3.0.22",
+    "version": "3.0.23",
     "description": "Re-exports of @blueprintjs/datetime APIs",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -15,7 +15,7 @@
         "src"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* || rm -rf lib/* || true",
+        "clean": "rm -rf coverage lib",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",

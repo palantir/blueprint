@@ -3,6 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Divider } from "./divider";
 
@@ -16,9 +19,6 @@ const meta: Meta<typeof Divider> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         compact: false,
@@ -43,7 +43,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     name: "Default",
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: "3em" }}>
+        <Flex flexDirection="column" gap={10}>
             <div>
                 Content above
                 <Divider {...args} />
@@ -55,7 +55,7 @@ export const Default: Story = {
                 <Divider {...args} />
                 Content below, text center-aligned
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -64,19 +64,19 @@ export const Default: Story = {
  */
 export const Vertical: Story = {
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: "3em" }}>
-            <div style={{ display: "flex" }}>
+        <Flex flexDirection="column" gap={10}>
+            <Flex>
                 Content to the left that wraps around a bit more than you'd expect
                 <Divider {...args} />
                 Content to the right that also wraps around a bit more than you'd expect
-            </div>
+            </Flex>
 
-            <div style={{ display: "flex", textAlign: "center" }}>
+            <Flex style={{ textAlign: "center" }}>
                 Content above, text center-aligned
                 <Divider {...args} />
                 Content below, text center-aligned
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -90,20 +90,20 @@ export const CompactExample: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: "3em" }}>
-            <div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Default</span>
+        <Flex flexDirection="column" gap={10}>
+            <Flex flexDirection="column" style={{ textAlign: "center" }}>
+                <StoryLabel title="Default" />
                 Above
                 <Divider {...args} compact={false} />
                 Below
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", textAlign: "center" }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Compact</span>
+            </Flex>
+            <Flex flexDirection="column" style={{ textAlign: "center" }}>
+                <StoryLabel title="Compact" />
                 Above
                 <Divider {...args} compact={true} />
                 Below
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -113,11 +113,11 @@ export const CompactExample: Story = {
 export const Playground: Story = {
     decorators: [
         Story => (
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <Flex flexDirection="column">
                 Content above
                 <Story />
                 Content below
-            </div>
+            </Flex>
         ),
     ],
     args: {

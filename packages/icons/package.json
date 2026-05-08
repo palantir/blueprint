@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "6.9.0",
+    "version": "6.9.1",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/generated/index.js",
     "module": "lib/esm/generated/index.js",
@@ -16,8 +16,8 @@
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* || rm -rf lib/**/* || rm -rf src/generated/* || true",
-        "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
+        "clean": "rm -rf coverage lib src/generated",
+        "compile": "npm-run-all -s \"icons:verify\" \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",
         "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src/tsconfig.build.json -t esnext --outDir lib/esnext",
@@ -28,6 +28,9 @@
         "dist": "run-s \"dist:*\"",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
+        "icons:add": "node scripts/add-icons.mjs",
+        "icons:format": "node scripts/format-icons.mjs",
+        "icons:verify": "node scripts/verify-icons.mjs",
         "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -68,7 +71,6 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
-        "svg-parser": "^2.0.4",
         "typescript": "~5.9.3",
         "webpack-cli": "^5.1.4"
     },

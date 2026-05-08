@@ -41,6 +41,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         onClose,
         onInteraction,
         openOnTargetFocus = true,
+        popoverRef,
         placement,
         positioningStrategy = "absolute",
         renderTarget,
@@ -399,6 +400,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                     hasDarkParent={hasDarkParent}
                     isClosingViaEscapeKeypress={isClosingViaEscapeKeypress}
                     isHoverInteractionKind={isHoverInteractionKind}
+                    popoverRef={popoverRef}
                     shouldReturnFocusOnClose={shouldReturnFocusOnClose}
                     {...props}
                 />

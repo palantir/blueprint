@@ -35,6 +35,14 @@ export type RawNavSectionItem = string;
 
 export interface RawNavSection {
     section: Section;
+    /**
+     * Optional override for the URL prefix applied to child page routes.
+     * When set, children are routed as `${package}/${routeAlias}/${page}`
+     * instead of `${package}/${section}/${page}`. Used to preserve URL
+     * stability when a section is split out of an existing parent (e.g.
+     * `overlays` aliasing back to `components`).
+     */
+    routeAlias?: Section;
     pages: RawNavSectionItem[];
 }
 
@@ -55,6 +63,7 @@ export interface NavPageRef {
 
 export interface NavSection {
     section: Section;
+    routeAlias?: Section;
     pages: NavPageRef[];
 }
 

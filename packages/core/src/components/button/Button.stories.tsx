@@ -3,6 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
@@ -22,16 +25,7 @@ const disabledArgs = [
 const meta: Meta<typeof Button> = {
     title: "Core/Button/Button",
     component: Button,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         text: "Button",
@@ -124,7 +118,7 @@ export const IntentExample: Story = {
         intent: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <Flex gap={2}>
             {Object.values(Intent)
                 .filter(i => i !== "none")
                 .map(intent => (
@@ -135,7 +129,7 @@ export const IntentExample: Story = {
                         text={intent.charAt(0).toUpperCase() + intent.slice(1)}
                     />
                 ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -149,7 +143,7 @@ export const VariantExample: Story = {
         variant: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <Flex gap={2}>
             {Object.values(ButtonVariant).map(variant => (
                 <Button
                     key={variant}
@@ -158,7 +152,7 @@ export const VariantExample: Story = {
                     text={variant.charAt(0).toUpperCase() + variant.slice(1)}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -171,11 +165,11 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <Flex gap={2} alignItems="center">
             {Object.values(Size).map(size => (
                 <Button key={size} {...args} size={size} text={size.charAt(0).toUpperCase() + size.slice(1)} />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -190,12 +184,12 @@ export const StateExample: Story = {
         loading: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <Flex gap={2}>
             <Button {...args} text="Default" />
             <Button {...args} active={true} text="Active" />
             <Button {...args} disabled={true} text="Disabled" />
             <Button {...args} loading={true} text="Loading" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -209,12 +203,12 @@ export const IconExample: Story = {
         endIcon: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 8 }}>
+        <Flex gap={2}>
             <Button {...args} icon="refresh" text="Reset" />
             <Button {...args} icon="user" endIcon="caret-down" text="Profile" />
             <Button {...args} endIcon="arrow-right" text="Next" />
             <Button {...args} icon="edit" text={undefined} aria-label="edit" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -227,7 +221,7 @@ export const AlignmentExample: Story = {
         alignText: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 300 }}>
+        <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
             {Object.values(Alignment).map(alignment => (
                 <Button
                     key={alignment}
@@ -238,7 +232,7 @@ export const AlignmentExample: Story = {
                     text={alignment.charAt(0).toUpperCase() + alignment.slice(1)}
                 />
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -258,10 +252,10 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        <Flex flexDirection="column" gap={2}>
             <Button {...args} fill={true} text="Full Width" />
             <Button {...args} fill={false} text="Auto Width" />
-        </div>
+        </Flex>
     ),
 };
 
@@ -277,16 +271,16 @@ export const AllIntentsAllVariants: Story = {
         loading: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {Object.values(ButtonVariant).map(variant => (
-                <div key={variant} style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{variant}</div>
-                    <div style={{ display: "flex", gap: 8 }}>
+                <Flex key={variant} flexDirection="column" gap={2}>
+                    <StoryLabel title={variant} />
+                    <Flex gap={2}>
                         {Object.values(Intent).map(intent => (
                             <Button key={intent} {...args} variant={variant} intent={intent} text={intent} />
                         ))}
-                    </div>
-                    <div style={{ display: "flex", gap: 8 }}>
+                    </Flex>
+                    <Flex gap={2}>
                         {Object.values(Intent).map(intent => (
                             <Button
                                 key={intent}
@@ -297,8 +291,8 @@ export const AllIntentsAllVariants: Story = {
                                 text={intent}
                             />
                         ))}
-                    </div>
-                    <div style={{ display: "flex", gap: 8 }}>
+                    </Flex>
+                    <Flex gap={2}>
                         {Object.values(Intent).map(intent => (
                             <Button
                                 key={intent}
@@ -309,8 +303,8 @@ export const AllIntentsAllVariants: Story = {
                                 text={intent}
                             />
                         ))}
-                    </div>
-                    <div style={{ display: "flex", gap: 8 }}>
+                    </Flex>
+                    <Flex gap={2}>
                         {Object.values(Intent).map(intent => (
                             <Button
                                 key={intent}
@@ -321,10 +315,10 @@ export const AllIntentsAllVariants: Story = {
                                 text={intent}
                             />
                         ))}
-                    </div>
-                </div>
+                    </Flex>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 

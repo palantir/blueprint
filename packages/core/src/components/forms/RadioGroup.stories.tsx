@@ -3,8 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 import { useArgs } from "storybook/preview-api";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { RadioGroup } from "./radioGroup";
 
@@ -17,16 +20,7 @@ const sampleOptions = [
 const meta: Meta<typeof RadioGroup> = {
     title: "Core/Form/Controls/RadioGroup",
     component: RadioGroup,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         label: "Choose an option",
@@ -86,11 +80,11 @@ export const StateExample: Story = {
             [updateArgs],
         );
         return (
-            <div style={{ display: "flex", gap: 32 }}>
+            <Flex gap={8}>
                 <RadioGroup {...args} label="Enabled" onChange={handleChange} />
                 <RadioGroup {...args} label="Disabled" disabled={true} onChange={handleChange} />
                 <RadioGroup {...args} label="Inline" inline={true} onChange={handleChange} />
-            </div>
+            </Flex>
         );
     },
 };

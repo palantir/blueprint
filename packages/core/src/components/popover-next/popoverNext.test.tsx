@@ -4,6 +4,7 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createRef } from "react";
 
 import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
@@ -234,6 +235,32 @@ describe("<PopoverNext>", () => {
 
             expect(popoverElement).toBeInTheDocument();
             expect(popoverElement).toHaveClass(Classes.DARK);
+        });
+
+        it("attaches popoverRef to the popover element", async () => {
+            const popoverRef = createRef<HTMLDivElement>();
+            const { container } = render(
+                <PopoverNext content="content" isOpen={true} popoverRef={popoverRef} usePortal={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            await waitFor(() => expect(screen.getByText("content")).toBeInTheDocument());
+
+            const popoverElement = container.querySelector(`.${Classes.POPOVER}`);
+            expect(popoverElement).toBeInTheDocument();
+            expect(popoverRef.current).toBe(popoverElement);
+        });
+
+        it("popoverRef returns null when closed", () => {
+            const ref = createRef<HTMLDivElement>();
+            render(
+                <PopoverNext popoverRef={ref} content="content" isOpen={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            expect(ref.current).toBeNull();
         });
 
         it("renders with aria-haspopup attr", () => {

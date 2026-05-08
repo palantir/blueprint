@@ -3,8 +3,11 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 import { type MouseEvent, useCallback, useReducer } from "react";
 import { expect, waitFor } from "storybook/test";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Tree } from "./tree";
 import type { TreeNodeInfo } from "./treeTypes";
@@ -131,9 +134,6 @@ const meta: Meta<typeof Tree> = {
             </div>
         ),
     ],
-    parameters: {
-        layout: "centered",
-    },
     tags: ["autodocs"],
     args: {
         contents: SAMPLE_CONTENTS,
@@ -175,20 +175,20 @@ export const CompactExample: Story = {
 export const StateExample: Story = {
     name: "State",
     render: args => (
-        <div style={{ display: "flex", gap: 32 }}>
+        <Flex gap={8}>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Selected</div>
+                <StoryLabel title="Selected" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SELECTED_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Disabled</div>
+                <StoryLabel title="Disabled" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={DISABLED_CONTENTS} />
                 </div>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
@@ -198,32 +198,32 @@ export const StateExample: Story = {
 export const AllStates: Story = {
     name: "All States",
     render: args => (
-        <div style={{ display: "flex", gap: 32, flexWrap: "wrap" }}>
+        <Flex gap={8} flexWrap="wrap">
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Default</div>
+                <StoryLabel title="Default" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SAMPLE_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Selected</div>
+                <StoryLabel title="Selected" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SELECTED_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Disabled</div>
+                <StoryLabel title="Disabled" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={DISABLED_CONTENTS} />
                 </div>
             </div>
             <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Compact</div>
+                <StoryLabel title="Compact" />
                 <div style={{ minWidth: "300px" }}>
                     <Tree {...args} contents={SAMPLE_CONTENTS} compact={true} />
                 </div>
             </div>
-        </div>
+        </Flex>
     ),
 };
 
