@@ -6,6 +6,7 @@ import type { Placement, Boundary as PopperBoundary } from "@popperjs/core";
 
 import * as Errors from "../../common/errors";
 import { isNodeEnv } from "../../common/utils";
+import { POPOVER_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import { positionToPlacement } from "../popover/popoverPlacementUtils";
 import { type PopoverPosition } from "../popover/popoverPosition";
 import type { PopoverProps } from "../popover/popoverProps";
@@ -83,6 +84,12 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
                     ...(distance != null ? { mainAxis: distance } : {}),
                 };
             }
+        } else {
+            // Legacy `Popover` always populated `options.offset` with a default of
+            // `[0, POPOVER_ARROW_SVG_SIZE / 2]`, so `{ offset: { enabled: true } }` (a common pattern
+            // for forcing the offset on when the arrow is disabled) implicitly produced a 15px main-axis
+            // gap. Preserve that behavior here so the visual gap is not silently dropped.
+            middleware.offset = { mainAxis: POPOVER_ARROW_SVG_SIZE / 2 };
         }
     }
 
