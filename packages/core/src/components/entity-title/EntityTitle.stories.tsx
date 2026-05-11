@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Colors } from "@blueprintjs/colors";
+import { Home } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
@@ -110,6 +111,7 @@ export const IconExample: Story = {
             <EntityTitle {...args} icon="document" title="Document" />
             <EntityTitle {...args} icon="folder-close" title="Folder" />
             <EntityTitle {...args} icon="user" title="User" />
+            <EntityTitle {...args} icon={<Home />} title="Element icon" />
             <EntityTitle {...args} icon={undefined} title="No icon" />
         </Flex>
     ),

@@ -6,6 +6,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Button } from "../button/buttons";
+import { Spinner } from "../spinner/spinner";
 
 import { NonIdealState, NonIdealStateIconSize } from "./nonIdealState";
 
@@ -127,6 +128,22 @@ export const IconMutedExample: Story = {
             ))}
         </div>
     ),
+};
+
+/**
+ * Pass a `<Spinner>` as the `icon` to communicate a loading state.
+ */
+export const LoadingExample: Story = {
+    name: "Loading",
+    args: {
+        icon: <Spinner />,
+        title: "Loading search results",
+        description: "This may take a moment.",
+    },
+    argTypes: {
+        icon: { table: { disable: true } },
+    },
+    render: args => <NonIdealState {...args} icon={<Spinner size={args.iconSize} />} />,
 };
 
 /**

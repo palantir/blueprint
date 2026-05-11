@@ -7,6 +7,7 @@ import { DashedPaddedContainer, storybookLayoutDecorator, StoryLabel } from "@st
 import { useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
 
+import { Home } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
 import { Colors } from "../../common";
@@ -222,6 +223,7 @@ export const IconExample: Story = {
             <Tab id="tab1" title="Books" icon="book" panel={<p>Books panel content</p>} />
             <Tab id="tab2" title="Documents" icon="document" panel={<p>Documents panel content</p>} />
             <Tab id="tab3" title="Applications" icon="application" panel={<p>Applications panel content</p>} />
+            <Tab id="tab4" title="Element icon" icon={<Home />} panel={<p>Element icon panel</p>} />
         </Tabs>
     ),
 };
