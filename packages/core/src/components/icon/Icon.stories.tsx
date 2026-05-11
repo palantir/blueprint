@@ -5,7 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
-import { Buggy } from "@blueprintjs/icons";
+import { Buggy, IconNames } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
 import { Colors, Intent } from "../../common";
@@ -17,7 +17,7 @@ const meta: Meta<typeof Icon> = {
     component: Icon,
     decorators: [storybookLayoutDecorator],
     args: {
-        icon: "buggy",
+        icon: IconNames.BUGGY,
         intent: Intent.NONE,
         size: IconSize.STANDARD,
         color: undefined,
@@ -123,7 +123,7 @@ export const ElementIcon: Story = {
     render: args => (
         <Flex gap={4} alignItems="center">
             <Flex flexDirection="column" gap={1} alignItems="center">
-                <Icon {...args} icon="buggy" />
+                <Icon {...args} icon={IconNames.BUGGY} />
                 <StoryLabel title='icon="buggy"' />
             </Flex>
             <Flex flexDirection="column" gap={1} alignItems="center">
@@ -139,7 +139,7 @@ export const ElementIcon: Story = {
  */
 export const Playground: Story = {
     args: {
-        icon: "buggy",
+        icon: IconNames.BUGGY,
         size: IconSize.STANDARD,
         intent: "none",
         color: undefined,
