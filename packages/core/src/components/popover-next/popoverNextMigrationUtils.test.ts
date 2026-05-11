@@ -208,10 +208,10 @@ describe("popperModifiersToNextMiddleware", () => {
             warnSpy.mockRestore();
         });
 
-        it("should omit offset from result when no offset options provided", () => {
-            const value: PopperModifierOverrides = { offset: {} };
-            const expected: MiddlewareConfig = {};
-            expect(popperModifiersToNextMiddleware(value)).to.deep.equal(expected);
+        it("should fall back to Blueprint's legacy default offset (15px main-axis) when modifier is enabled with no explicit options", () => {
+            const expected: MiddlewareConfig = { offset: { mainAxis: 15 } };
+            expect(popperModifiersToNextMiddleware({ offset: {} })).to.deep.equal(expected);
+            expect(popperModifiersToNextMiddleware({ offset: { enabled: true } })).to.deep.equal(expected);
         });
     });
 
