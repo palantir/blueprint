@@ -1,0 +1,2 @@
+<Breadcrumbs items={ITEMS} collapseFrom={Boundary.START} />
+<Breadcrumbs items={ITEMS} collapseFrom={Boundary.END} />

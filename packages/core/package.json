@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "6.9.1",
+    "version": "6.12.1",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -25,7 +25,7 @@
     "scripts": {
         "build:tokens": "tsx src/design-tokens/build.ts",
         "build:sass": "sass-compile ./src",
-        "clean": "rm -rf dist/* || rm -rf lib/* || true",
+        "clean": "rm -rf coverage lib src/design-tokens/build",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",
         "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
@@ -41,8 +41,9 @@
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "prepack": "run-s compile dist",
-        "test": "run-s test:iso test:vitest:run",
+        "test": "run-s test:typeCheck test:iso test:vitest:run",
         "test:iso": "vitest run --config vitest.config.isotest.mts",
+        "test:typeCheck": "tsc -p ./src/tsconfig.test.json",
         "test:vitest": "vitest",
         "test:vitest:run": "vitest run",
         "verify": "npm-run-all compile -p dist test lint"
@@ -56,8 +57,7 @@
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "catalog:",
-        "use-sync-external-store": "^1.2.0"
+        "tslib": "catalog:"
     },
     "peerDependencies": {
         "@types/react": "18",
@@ -79,8 +79,8 @@
         "@testing-library/user-event": "catalog:",
         "@tokens-studio/sd-transforms": "^2.0.3",
         "@types/culori": "^4.0.1",
-        "@types/use-sync-external-store": "0.0.6",
         "@vitejs/plugin-react": "catalog:",
+        "change-case": "^4.1.2",
         "culori": "^4.0.2",
         "enzyme": "catalog:",
         "jsdom": "catalog:",
@@ -89,8 +89,8 @@
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
         "style-dictionary": "^5.0.3",
-        "tsx": "^4.21.0",
-        "typescript": "~5.3.3",
+        "tsx": "catalog:",
+        "typescript": "~5.9.3",
         "vitest": "catalog:",
         "webpack-cli": "^5.1.4"
     },

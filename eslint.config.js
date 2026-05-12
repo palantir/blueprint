@@ -24,17 +24,9 @@ module.exports = tseslint.config([
         rules: {
             // we have these across the codebase, it's not useful for this repo
             "@blueprintjs/no-deprecated-type-references": "off",
-            // Run import/no-cycle only in CI because it is slow.
-            "import/no-cycle": process.env.CI ? "error" : "off",
+            // TODO: Update to other option such as oxlint or upcoming capabilities, as this is too slow
+            "import/no-cycle": "off",
             "no-console": "error",
-            // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
-            "no-restricted-imports": [
-                "error",
-                {
-                    message: "lodash-es cannot be imported in CommonJS, use lodash submodules instead",
-                    name: "lodash-es",
-                },
-            ],
         },
         settings: {
             react: {
@@ -53,7 +45,6 @@ module.exports = tseslint.config([
         languageOptions: {
             globals: {
                 ...globals.browser,
-                ...globals.mocha,
             },
         },
         rules: {
@@ -82,6 +73,19 @@ module.exports = tseslint.config([
                 },
             ],
             "prefer-object-spread": "off",
+        },
+    },
+    {
+        files: ["**/*.stories.{ts,tsx}"],
+        languageOptions: {
+            parserOptions: {
+                projectService: false,
+                project: `${__dirname}/.storybook/tsconfig.json`,
+            },
+        },
+        rules: {
+            "import/no-default-export": "off",
+            "sort-keys": "off",
         },
     },
     {

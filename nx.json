@@ -38,15 +38,6 @@
         "test": {
             "dependsOn": ["^compile"]
         },
-        "test:karma": {
-            "dependsOn": [],
-            "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/test/**/*"],
-            "cache": true
-        },
-        "test:karma:debug": {
-            "dependsOn": [],
-            "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/test/**/*"]
-        },
         "test:typeCheck": {
             "dependsOn": ["compile"],
             "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/test/**/*"]

@@ -1,0 +1,22 @@
+{
+    "extends": "../config/tsconfig.base.json",
+    "compilerOptions": {
+        "jsx": "react-jsx",
+        "module": "ESNext",
+        "target": "ESNext",
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "moduleResolution": "bundler",
+        "skipLibCheck": true,
+        "paths": {
+            "@storybook-common": ["./common"],
+            "@blueprintjs/core": ["../packages/core/src"],
+            "@blueprintjs/datetime": ["../packages/datetime/src"],
+            "@blueprintjs/icons": ["../packages/icons/src"],
+            "@blueprintjs/labs": ["../packages/labs/src"],
+            "@blueprintjs/select": ["../packages/select/src"],
+            "@blueprintjs/table": ["../packages/table/src"]
+        }
+    },
+    "include": ["../packages/*/src/**/*", "./**/*"],
+    "exclude": ["../node_modules", "../**/node_modules", "../**/dist", "../**/lib"]
+}

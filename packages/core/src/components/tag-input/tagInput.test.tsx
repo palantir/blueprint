@@ -270,7 +270,7 @@ describe("<TagInput>", () => {
             expect(onAdd.mock.calls[0][0]).toEqual([value]);
         });
 
-        function mountTagInput(onAdd: ReturnType<typeof vi.fn>, props?: Partial<TagInputProps>) {
+        function mountTagInput(onAdd: TagInputProps["onAdd"], props?: Partial<TagInputProps>) {
             return mount(<TagInput onAdd={onAdd} values={VALUES} {...props} />);
         }
     });

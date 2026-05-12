@@ -4,6 +4,7 @@
     "private": true,
     "description": "TSLint configuration for @blueprintjs packages",
     "scripts": {
+        "clean": "rm -rf lib",
         "compile": "tsc -p ./src",
         "test": "tslint --rules-dir ./lib/rules --test test/rules/**/tslint.json"
     },
@@ -11,7 +12,7 @@
         "tslib": "catalog:",
         "tslint-react": "^5.0.0",
         "tsutils": "^3.21.0",
-        "typescript": "~5.3.3"
+        "typescript": "~5.9.3"
     },
     "peerDependencies": {
         "tslint": "^6.0.0"
