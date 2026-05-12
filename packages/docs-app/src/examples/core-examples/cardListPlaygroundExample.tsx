@@ -63,7 +63,7 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
                 }
             >
                 <Switch
-                    checked={bordered || useSectionContainer}
+                    checked={useSectionContainer ? false : bordered}
                     disabled={useSectionContainer}
                     label="Bordered"
                     onChange={handleBooleanChange(setBordered)}
