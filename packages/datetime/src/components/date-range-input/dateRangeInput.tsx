@@ -767,7 +767,9 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
 
     private handlePopoverClose = (event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isOpen: false });
-        this.props.popoverProps?.onClose?.(event!);
+        if (event !== undefined) {
+            this.props.popoverProps?.onClose?.(event);
+        }
     };
 
     // Helpers

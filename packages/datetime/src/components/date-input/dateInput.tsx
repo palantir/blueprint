@@ -165,7 +165,9 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
 
     const handlePopoverClose = useCallback(
         (e?: React.SyntheticEvent<HTMLElement>) => {
-            popoverProps.onClose?.(e!);
+            if (e !== undefined) {
+                popoverProps.onClose?.(e);
+            }
             setIsOpen(false);
         },
         [popoverProps],
