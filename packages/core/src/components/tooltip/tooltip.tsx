@@ -121,13 +121,17 @@ export class Tooltip<
         const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
             [Classes.COMPACT]: compact,
         });
+        const nextProps = popoverPropsToNextProps(restProps);
 
         return (
             <PopoverNext
+                {...nextProps}
+                // Merge per-key so a consumer that passes `modifiers={{ flip: ... }}` doesn't wipe out
+                // the arrow-fitting offset; consumer-supplied middleware keys still win.
                 middleware={{
                     offset: { mainAxis: TOOLTIP_ARROW_SVG_SIZE / 2 },
+                    ...nextProps.middleware,
                 }}
-                {...popoverPropsToNextProps(restProps)}
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 disabled={ctxState.forceDisabled ?? disabled}

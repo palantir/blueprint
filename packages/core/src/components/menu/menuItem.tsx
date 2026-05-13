@@ -280,6 +280,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
     );
 
     const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
+    const nextPopoverProps = popoverPropsToNextProps(popoverProps);
     return (
         <li className={liClasses} ref={ref} role={liRole} aria-selected={ariaSelected}>
             {children == null ? (
@@ -293,11 +294,16 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     interactionKind="hover"
-                    middleware={SUBMENU_POPOVER_MIDDLEWARE}
                     targetProps={{ role: targetRole, tabIndex: 0 }}
                     placement="right-start"
                     usePortal={false}
-                    {...popoverPropsToNextProps(popoverProps)}
+                    {...nextPopoverProps}
+                    // Merge per-key so a consumer that customizes one middleware (e.g. `flip`) doesn't
+                    // wipe out the submenu's positioning baseline; consumer-supplied keys still win.
+                    middleware={{
+                        ...SUBMENU_POPOVER_MIDDLEWARE,
+                        ...nextPopoverProps.middleware,
+                    }}
                     content={<Menu {...submenuProps}>{children}</Menu>}
                     animation="minimal"
                     arrow={false}
