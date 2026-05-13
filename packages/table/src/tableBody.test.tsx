@@ -18,6 +18,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
 import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { unmountWrappers } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Cell } from "./cell/cell";
 import { Batcher } from "./common/batcher";
@@ -49,15 +50,9 @@ describe("TableBody", () => {
         document.body.appendChild(containerElement);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         try {
-            for (const wrapper of mountedWrappers) {
-                try {
-                    wrapper.unmount();
-                } catch {
-                    // best-effort cleanup
-                }
-            }
+            await unmountWrappers(mountedWrappers);
         } finally {
             mountedWrappers = [];
             containerElement?.remove();

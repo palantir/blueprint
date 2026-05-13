@@ -20,6 +20,7 @@ import * as sinon from "sinon";
 
 import { Button, Classes, InputGroup, MenuItem, PopoverNext } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { unmountWrappers } from "@blueprintjs/test-commons/vitest-utils";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -52,15 +53,9 @@ describe("<Select>", () => {
         document.body.appendChild(containerElement);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         try {
-            for (const wrapper of mountedWrappers) {
-                try {
-                    wrapper.unmount();
-                } catch {
-                    // best-effort
-                }
-            }
+            await unmountWrappers(mountedWrappers);
         } finally {
             mountedWrappers = [];
             for (const spy of Object.values(handlers)) {

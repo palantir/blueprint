@@ -33,6 +33,7 @@ import {
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { unmountWrappers } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes, type DateFormatProps, type DateRange, Months, TimePrecision } from "../..";
 import { ReactDayPickerClasses } from "../../common/classes";
@@ -76,24 +77,10 @@ describe("<DateRangeInput>", () => {
     });
 
     afterEach(async () => {
-        // Unmount all Enzyme wrappers before removing the container to prevent
-        // React from trying to commit updates to removed DOM nodes, which causes
-        // "window is not defined" and "Should not already be working" errors.
-        // The unmount + microtask flush is wrapped in act() so any teardown work
-        // queued by floating-ui's autoUpdate (ResizeObserver / RAF callbacks)
-        // settles before jsdom is torn down.
+        // Unmount wrappers (act-wrapped, with a microtask flush) before removing the container so
+        // floating-ui's autoUpdate cleanup doesn't race jsdom teardown — see unmountWrappers.
         try {
-            await act(async () => {
-                for (const wrapper of mountedWrappers) {
-                    try {
-                        wrapper.unmount();
-                    } catch {
-                        // best-effort: continue unmounting remaining wrappers
-                    }
-                }
-                // Yield once so any queued microtasks/RAF callbacks fire while jsdom is still alive.
-                await new Promise<void>(resolve => setTimeout(resolve, 0));
-            });
+            await unmountWrappers(mountedWrappers);
         } finally {
             mountedWrappers = [];
             containerElement.remove();

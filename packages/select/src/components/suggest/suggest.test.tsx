@@ -20,6 +20,7 @@ import * as sinon from "sinon";
 
 import { InputGroup, MenuItem, PopoverNext, type PopoverProps } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { unmountWrappers } from "@blueprintjs/test-commons/vitest-utils";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -55,15 +56,9 @@ describe("Suggest", () => {
         document.body.appendChild(containerElement);
     });
 
-    afterEach(() => {
+    afterEach(async () => {
         try {
-            for (const wrapper of mountedWrappers) {
-                try {
-                    wrapper.unmount();
-                } catch {
-                    // best-effort
-                }
-            }
+            await unmountWrappers(mountedWrappers);
         } finally {
             mountedWrappers = [];
             containerElement.remove();
@@ -272,11 +267,12 @@ describe("Suggest", () => {
         });
 
         it("popover can be controlled with popoverProps", () => {
-            const modifiers = {};
+            const modifiers = { flip: { options: { padding: 10 } } };
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
-            // Note: legacy `modifiers` is converted to PopoverNext `middleware` by the shim, so we
-            // can't compare references here anymore — assert the open-state side effect instead.
+            // Legacy `modifiers` is converted to PopoverNext `middleware` by the shim. Assert the
+            // conversion actually happened so consumer-supplied positioning still reaches the popover.
+            expect(wrapper.find(PopoverNext).prop("middleware")).toMatchObject({ flip: { padding: 10 } });
             expect(onOpening.calledOnce).toBe(true);
         });
 
