@@ -22,7 +22,6 @@ import type { PopoverNextAutoUpdateOptions } from "./popoverNextProps";
 
 interface PopoverOptions {
     autoUpdateOptions?: PopoverNextAutoUpdateOptions;
-    canEscapeKeyClose?: boolean;
     disabled?: boolean;
     hasBackdrop?: boolean;
     interactionKind?: PopoverInteractionKind;
@@ -41,7 +40,6 @@ interface UsePopoverReturn extends UseFloatingReturn, UseInteractionsReturn {
 
 export function usePopover({
     autoUpdateOptions,
-    canEscapeKeyClose,
     disabled = false,
     hasBackdrop = false,
     interactionKind,
@@ -115,7 +113,11 @@ export function usePopover({
         keyboardHandlers: false,
     });
     const dismiss = useDismiss(context, {
-        escapeKey: canEscapeKeyClose,
+        // Escape handling lives on Overlay2 (`canEscapeKeyClose`), which is stack-aware via
+        // OverlayContext so only the topmost overlay closes per keystroke. Floating UI's
+        // `useDismiss` attaches a non-stack-aware document keydown listener — enabling both
+        // means every stacked popover/tooltip closes on a single Escape.
+        escapeKey: false,
         // Disable Floating UI outside-press in two cases:
         // 1. CLICK interactions: delegate to Overlay2's stack-aware handler
         //    (getThisOverlayAndDescendants) so clicks inside child overlays like Dialog
