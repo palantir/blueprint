@@ -245,27 +245,27 @@ describe("<Tooltip>", () => {
         });
     });
 
-    // TODO(popover-next-migration): PopoverNext fires onClose twice on Escape (once from the overlay's
-    // canEscapeKeyClose path, once from its own keydown). Worth a closer look at PopoverNext escape handling.
-    it.skip("Escape key closes tooltip", async () => {
+    it("Escape key closes tooltip", async () => {
         const user = userEvent.setup();
         const onClose = vi.fn();
         render(
-            <Tooltip content="content" hoverOpenDelay={0} isOpen={true} onClose={onClose}>
+            <Tooltip content="content" defaultIsOpen={true} hoverOpenDelay={0} onClose={onClose}>
                 <Button text="target" />
             </Tooltip>,
         );
 
-        expect(screen.getByText("content")).to.exist;
+        expect(screen.getByText("content")).toBeInTheDocument();
 
         await user.keyboard("{Escape}");
+
+        await waitFor(() => {
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
+        });
 
         expect(onClose).toHaveBeenCalledOnce();
     });
 
-    // TODO(popover-next-migration): same root cause as the test above — PopoverNext closes both stacked
-    // tooltips on a single Escape rather than just the most recent.
-    it.skip("Escape key closes only the most recently opened tooltip when multiple are open", async () => {
+    it("Escape key closes only the most recently opened tooltip when multiple are open", async () => {
         const user = userEvent.setup();
         render(
             <div>
