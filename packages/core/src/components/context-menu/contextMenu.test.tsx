@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import classNames from "classnames";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef, useCallback } from "react";
@@ -24,7 +25,6 @@ import { Classes, Utils } from "../../common";
 import { Drawer } from "../drawer/drawer";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
-import { PopoverInteractionKind } from "../popover/popoverProps";
 import { PopoverNext } from "../popover-next/popoverNext";
 import { Tooltip, type TooltipProps } from "../tooltip/tooltip";
 
@@ -44,6 +44,7 @@ const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 const COMMON_TOOLTIP_PROPS: Partial<TooltipProps> = {
     hoverCloseDelay: 0,
     hoverOpenDelay: 0,
+    transitionDuration: 0,
     usePortal: false,
 };
 
@@ -339,9 +340,7 @@ describe("ContextMenu", () => {
 
     describe("interacting with other components", () => {
         describe("with one level of nesting", () => {
-            // TODO(popover-next-migration): re-enable after migrating these assertions off PopoverNext class state.
-            // PopoverNext is a function component; .state("isOpen") no longer applies.
-            it.skip("closes parent Tooltip", () => {
+            it("closes parent Tooltip", async () => {
                 const wrapper = mount(
                     <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
                         <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
@@ -357,7 +356,7 @@ describe("ContextMenu", () => {
                     wrapper.find(ContextMenu).find(PopoverNext).prop("isOpen"),
                     "ContextMenu popover should be open",
                 ).toBe(true);
-                assertTooltipClosed(wrapper);
+                await assertTooltipClosed();
                 closeCtxMenu(wrapper);
             });
 
@@ -383,14 +382,15 @@ describe("ContextMenu", () => {
                 closeCtxMenu(wrapper);
             });
 
-            function assertTooltipClosed(wrapper: ReactWrapper) {
-                expect(
-                    wrapper
-                        .find(PopoverNext)
-                        .find({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
-                        .state("isOpen"),
-                    "Tooltip should be closed",
-                ).toBe(false);
+            async function assertTooltipClosed() {
+                // Tooltip close is driven by a `useEffect` inside PopoverNext that syncs internal
+                // state when `disabled` flips true, so the DOM unmount lands in a later tick.
+                // Query the document directly because the Enzyme wrapper can hold stale references.
+                await waitFor(() => {
+                    expect(document.querySelectorAll(`.${Classes.TOOLTIP}`), "Tooltip should be closed").toHaveLength(
+                        0,
+                    );
+                });
             }
         });
 
@@ -398,13 +398,12 @@ describe("ContextMenu", () => {
             const OUTER_TARGET_CLASSNAME = "outer-target";
 
             describe("ContextMenu > Tooltip > ContextMenu", () => {
-                // TODO(popover-next-migration): re-enable after migrating these assertions off PopoverNext class state.
-                it.skip("closes tooltip when inner menu opens", () => {
+                it("closes tooltip when inner menu opens", async () => {
                     const wrapper = mountTestCase();
                     openTooltip(wrapper);
                     expect(wrapper.find(TOOLTIP_SELECTOR), "tooltip should be open").toHaveLength(1);
                     openCtxMenu(wrapper);
-                    assertTooltipClosed(wrapper);
+                    await assertTooltipClosed();
                     const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
                     expect(ctxMenuPopover.exists(), "ContextMenu popover should be open").toBe(true);
                     expect(ctxMenuPopover.text().includes("first"), "inner ContextMenu should be open").toBe(true);
@@ -473,14 +472,16 @@ describe("ContextMenu", () => {
                     return wrapper;
                 }
 
-                function assertTooltipClosed(wrapper: ReactWrapper) {
-                    expect(
-                        wrapper
-                            .find(PopoverNext)
-                            .find({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
-                            .state("isOpen"),
-                        "Tooltip should be closed",
-                    ).toBe(false);
+                async function assertTooltipClosed() {
+                    // Tooltip close is driven by a `useEffect` inside PopoverNext that syncs internal
+                    // state when `disabled` flips true, so the DOM unmount lands in a later tick.
+                    // Query the document directly because the Enzyme wrapper can hold stale references.
+                    await waitFor(() => {
+                        expect(
+                            document.querySelectorAll(`.${Classes.TOOLTIP}`),
+                            "Tooltip should be closed",
+                        ).toHaveLength(0);
+                    });
                 }
             });
 
@@ -489,22 +490,21 @@ describe("ContextMenu", () => {
                 const INNER_TOOLTIP_CONTENT = "goodbye";
                 const CTX_MENU_CLASSNAME = "test-ctx-menu";
 
-                // TODO(popover-next-migration): re-enable after migrating these assertions off PopoverNext class state.
-                it.skip("closes inner tooltip when menu opens (after hovering inner target)", () => {
+                it("closes inner tooltip when menu opens (after hovering inner target)", async () => {
                     const wrapper = mountTestCase();
                     wrapper.find(`.${OUTER_TARGET_CLASSNAME}`).simulate("mouseenter");
                     openTooltip(wrapper);
-                    expect(wrapper.find(`.${Classes.TOOLTIP}`), "tooltip should be open").toHaveLength(1);
+                    expect(wrapper.find(TOOLTIP_SELECTOR), "tooltip should be open").toHaveLength(1);
                     openCtxMenu(wrapper);
-                    // this assertion is difficult to test, but we know that the tooltip eventually does close in manual testing
-                    expect(
-                        wrapper
-                            .find(PopoverNext)
-                            .find({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY })
-                            .first()
-                            .state("isOpen"),
-                        "Tooltip should be closed",
-                    ).toBe(false);
+                    // Tooltip close is driven by a `useEffect` inside PopoverNext that syncs internal
+                    // state when `disabled` flips true, so the DOM unmount lands in a later tick.
+                    // Query the document directly because the Enzyme wrapper can hold stale references.
+                    await waitFor(() => {
+                        expect(
+                            document.querySelectorAll(`.${Classes.TOOLTIP}`),
+                            "Tooltip should be closed",
+                        ).toHaveLength(0);
+                    });
                     const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
                     expect(ctxMenuPopover.exists(), "ContextMenu popover should be open").toBe(true);
                     closeCtxMenu(wrapper);

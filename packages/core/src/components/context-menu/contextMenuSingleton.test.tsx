@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
+
 import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
@@ -70,8 +72,10 @@ describe("showContextMenu() + hideContextMenu()", () => {
         document.body.appendChild(containerElement);
     });
 
-    beforeEach(() => {
-        assertMenuState(false);
+    beforeEach(async () => {
+        // The prior test's dismissal may still be flushing through React when the next test starts;
+        // poll briefly so we don't fail on leftover overlay state.
+        await waitFor(() => assertMenuState(false));
     });
 
     afterAll(() => {
@@ -95,10 +99,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
         }));
 
     describe("hides a menu", () => {
-        // TODO(popover-next-migration): the OVERLAY_OPEN class lingers on the portal after dismissal.
-        // Likely a transition-timing diff between PopoverNext and the legacy Popover. Skipped pending
-        // a closer look at ContextMenuPopover + PopoverNext close behavior.
-        it.skip("by clicking on the backdrop (when onClose prop is defined)", () =>
+        it("by clicking on the backdrop (when onClose prop is defined)", () =>
             new Promise<void>(done => {
                 const handleClose = () =>
                     requestAnimationFrame(() => {
@@ -116,8 +117,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
                 });
             }));
 
-        // TODO(popover-next-migration): same story as the backdrop dismissal test above.
-        it.skip("via hideContextMenu()", () =>
+        it("via hideContextMenu()", () =>
             new Promise<void>(done => {
                 showContextMenu({
                     ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
