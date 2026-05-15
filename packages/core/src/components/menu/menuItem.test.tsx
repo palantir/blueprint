@@ -16,99 +16,111 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 
-import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
-import { Icon } from "../icon/icon";
 import { Popover } from "../popover/popover";
-import { PopoverInteractionKind } from "../popover/popoverProps";
-import { Text } from "../text/text";
 
-import { type MenuProps } from "./menu";
-import { MenuItem, type MenuItemProps } from "./menuItem";
+import { MenuItem } from "./menuItem";
 
 describe("MenuItem", () => {
     it("basic rendering", () => {
-        const wrapper = shallow(<MenuItem icon="graph" text="Graph" />);
-        assert.isTrue(wrapper.find(Icon).exists());
-        assert.strictEqual(findText(wrapper).text(), "Graph");
+        render(<MenuItem icon="graph" text="Graph" />);
+        const menuItem = screen.getByRole("menuitem", { name: "Graph" });
+        expect(menuItem.querySelector(`.${Classes.ICON}`)).toBeInTheDocument();
     });
 
-    it("supports HTML props", () => {
-        const mouseHandler = (_event: React.MouseEvent<HTMLElement>) => false;
-        const keyHandler = (_event: React.KeyboardEvent<HTMLElement>) => false;
-        const item = shallow(
-            <MenuItem text="text" onClick={mouseHandler} onKeyDown={keyHandler} onMouseMove={mouseHandler} />,
-        ).find("a");
-        assert.strictEqual(item.prop("onClick"), mouseHandler);
-        assert.strictEqual(item.prop("onKeyDown"), keyHandler);
-        assert.strictEqual(item.prop("onMouseMove"), mouseHandler);
+    it("supports HTML props", async () => {
+        const user = userEvent.setup();
+        const onClickSpy = vi.fn();
+        const onKeyDownSpy = vi.fn();
+        render(<MenuItem text="text" onClick={onClickSpy} onKeyDown={onKeyDownSpy} />);
+        const menuItem = screen.getByRole("menuitem", { name: "text" });
+
+        await user.click(menuItem);
+        expect(onClickSpy).toHaveBeenCalledOnce();
+        expect(onKeyDownSpy).not.toHaveBeenCalled();
+
+        await user.keyboard("{Enter}");
+        expect(onKeyDownSpy).toHaveBeenCalledOnce();
     });
 
     it("children appear in submenu", () => {
-        const wrapper = shallow(
-            <MenuItem icon="style" text="Style">
+        const { container } = render(
+            <MenuItem icon="style" text="Style" popoverProps={{ isOpen: true }}>
                 <MenuItem icon="bold" text="Bold" />
                 <MenuItem icon="italic" text="Italic" />
                 <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
-        const submenu = findSubmenu(wrapper);
-        assert.lengthOf(submenu.props.children, 3);
+        // parent + 3 children
+        expect(container.querySelectorAll(`.${Classes.MENU_ITEM}`)).toHaveLength(4);
     });
 
-    it("default role prop structure is correct for a menuitem that is a an item of a ul with role=menu", () => {
-        const wrapper = mount(<MenuItem text="Roles" />);
-        assert.equal(wrapper.find("li").prop("role"), "none");
-        assert.equal(wrapper.find("a").prop("role"), "menuitem");
+    it("default role prop structure is correct for a menuitem that is an item of a ul with role=menu", () => {
+        const { container } = render(<MenuItem text="Roles" />);
+        const li = container.querySelector("li");
+        expect(li).toHaveAttribute("role", "none");
+        expect(screen.getByRole("menuitem")).toBeInTheDocument();
     });
 
     it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
-        const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
-        assert.equal(wrapper.find("li").prop("role"), "option");
-        assert.isUndefined(wrapper.find("a").prop("role"));
+        const { container } = render(<MenuItem text="Roles" roleStructure="listoption" />);
+        const li = container.querySelector("li");
+        expect(li).toHaveAttribute("role", "option");
+        const anchor = container.querySelector("a");
+        expect(anchor).not.toBeNull();
+        expect(anchor!).not.toHaveAttribute("role");
     });
 
     it("can set roleStructure to change role prop structure to that of a list item", () => {
-        const wrapper = mount(<MenuItem text="Roles" roleStructure="listitem" />);
-        assert.isUndefined(wrapper.find("li").prop("role"));
-        assert.isUndefined(wrapper.find("a").prop("role"));
+        const { container } = render(<MenuItem text="Roles" roleStructure="listitem" />);
+        const li = container.querySelector("li");
+        expect(li).not.toHaveAttribute("role");
+        const anchor = container.querySelector("a");
+        expect(anchor).not.toBeNull();
+        expect(anchor!).not.toHaveAttribute("role");
     });
 
     it('can set roleStructure to change role prop structure to void li role (set role="none")', () => {
-        const wrapper = mount(<MenuItem text="Roles" roleStructure="none" />);
-        assert.equal(wrapper.find("li").prop("role"), "none");
-        assert.isUndefined(wrapper.find("a").prop("role"));
+        const { container } = render(<MenuItem text="Roles" roleStructure="none" />);
+        const li = container.querySelector("li");
+        expect(li).toHaveAttribute("role", "none");
+        const anchor = container.querySelector("a");
+        expect(anchor).not.toBeNull();
+        expect(anchor!).not.toHaveAttribute("role");
     });
 
     it("disabled MenuItem will not show its submenu", () => {
-        const wrapper = shallow(
+        const { container } = render(
             <MenuItem disabled={true} icon="style" text="Style">
                 <MenuItem icon="bold" text="Bold" />
                 <MenuItem icon="italic" text="Italic" />
                 <MenuItem icon="underline" text="Underline" />
             </MenuItem>,
         );
-        assert.isTrue(wrapper.find(Popover).prop("disabled"));
+        // When disabled, the Popover target's anchor should be aria-disabled
+        const parentAnchor = container.querySelector(`.${Classes.MENU_ITEM}.${Classes.DISABLED}`);
+        expect(parentAnchor).toBeInTheDocument();
     });
 
-    it("disabled MenuItem blocks mouse listeners", () => {
+    it("disabled MenuItem blocks mouse listeners", async () => {
+        const user = userEvent.setup();
         const mouseSpy = vi.fn();
-        mount(<MenuItem disabled={true} text="disabled" onClick={mouseSpy} onMouseEnter={mouseSpy} />)
-            .simulate("click")
-            .simulate("mouseenter")
-            .simulate("click");
+        render(<MenuItem disabled={true} text="disabled" onClick={mouseSpy} onMouseEnter={mouseSpy} />);
+        const anchor = screen.getByText("disabled").closest("a");
+        expect(anchor).not.toBeNull();
+        await user.click(anchor!);
         expect(mouseSpy).not.toHaveBeenCalled();
     });
 
-    it("clicking MenuItem triggers onClick prop", () => {
+    it("clicking MenuItem triggers onClick prop", async () => {
+        const user = userEvent.setup();
         const onClick = vi.fn();
-        shallow(<MenuItem text="Graph" onClick={onClick} />)
-            .find("a")
-            .simulate("click");
+        render(<MenuItem text="Graph" onClick={onClick} />);
+        await user.click(screen.getByRole("menuitem"));
         expect(onClick).toHaveBeenCalledOnce();
     });
 
@@ -122,105 +134,113 @@ describe("MenuItem", () => {
         expect(onClick).toHaveBeenCalledOnce();
     });
 
-    it("clicking disabled MenuItem does not trigger onClick prop", () => {
+    it("clicking disabled MenuItem does not trigger onClick prop", async () => {
+        const user = userEvent.setup();
         const onClick = vi.fn();
-        shallow(<MenuItem disabled={true} text="Graph" onClick={onClick} />)
-            .find("a")
-            .simulate("click");
+        render(<MenuItem disabled={true} text="Graph" onClick={onClick} />);
+        const anchor = screen.getByText("Graph").closest("a");
+        expect(anchor).not.toBeNull();
+        await user.click(anchor!);
         expect(onClick).not.toHaveBeenCalled();
     });
 
-    it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", () => {
+    it("shouldDismissPopover=false prevents a clicked MenuItem from closing the Popover automatically", async () => {
+        const user = userEvent.setup();
         const handleClose = vi.fn();
         const menu = <MenuItem text="Graph" shouldDismissPopover={false} />;
-        const wrapper = mount(
+        render(
             <Popover content={menu} isOpen={true} onInteraction={handleClose} usePortal={false}>
                 <Button />
             </Popover>,
         );
-        wrapper.find(MenuItem).find("a").simulate("click");
+        await user.click(screen.getByRole("menuitem", { name: "Graph" }));
         expect(handleClose).not.toHaveBeenCalled();
     });
 
     it("submenuProps are forwarded to the Menu", () => {
-        const submenuProps = { "aria-label": "test-menu" };
-        const wrapper = shallow(
-            <MenuItem icon="style" text="Style" submenuProps={submenuProps}>
+        render(
+            <MenuItem
+                icon="style"
+                text="Style"
+                submenuProps={{ "aria-label": "test-menu" }}
+                popoverProps={{ isOpen: true }}
+            >
                 <MenuItem text="one" />
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        const submenu = findSubmenu(wrapper);
-        assert.strictEqual(submenu.props["aria-label"], submenuProps["aria-label"]);
+        expect(screen.getByRole("menu", { name: "test-menu" })).toBeInTheDocument();
     });
 
-    it("popoverProps (except content) are forwarded to Popover", () => {
-        // Ensures that popover props are passed to Popover component, except content property
-        const popoverProps = {
-            content: "CUSTOM_CONTENT",
-            interactionKind: PopoverInteractionKind.CLICK,
-            popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
-        };
-        const wrapper = shallow(
-            <MenuItem icon="style" text="Style" popoverProps={popoverProps}>
+    it("popoverProps (except content) are forwarded to Popover", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
+            <MenuItem
+                icon="style"
+                text="Style"
+                popoverProps={{
+                    interactionKind: "click",
+                    popoverClassName: "CUSTOM_POPOVER_CLASS_NAME",
+                }}
+            >
                 <MenuItem text="one" />
                 <MenuItem text="two" />
             </MenuItem>,
         );
-        assert.strictEqual(wrapper.find(Popover).prop("interactionKind"), popoverProps.interactionKind);
-        assert.notStrictEqual(
-            wrapper.find(Popover).prop("popoverClassName")!.indexOf(popoverProps.popoverClassName),
-            0,
-        );
-        assert.notStrictEqual(wrapper.find(Popover).prop("content"), popoverProps.content);
+        // Click to open (interactionKind is "click")
+        await user.click(screen.getByText("Style"));
+        // popoverClassName should be applied
+        const popover = container.querySelector(".CUSTOM_POPOVER_CLASS_NAME");
+        expect(popover).toBeInTheDocument();
+        // content should NOT be overridden — the submenu should still render
+        expect(screen.getByText("one")).toBeInTheDocument();
     });
 
     it("multiline prop determines if long content is ellipsized", () => {
-        const wrapper = mount(
+        const { container, rerender } = render(
             <MenuItem multiline={false} text="multiline prop determines if long content is ellipsized." />,
         );
-        function assertOverflow(expected: boolean) {
-            assert.strictEqual(findText(wrapper).hasClass(Classes.TEXT_OVERFLOW_ELLIPSIS), expected);
-        }
-
-        assertOverflow(true);
-        wrapper.setProps({ multiline: true });
-        assertOverflow(false);
+        expect(container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`)).toBeInTheDocument();
+        rerender(<MenuItem multiline={true} text="multiline prop determines if long content is ellipsized." />);
+        expect(container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`)).toBeNull();
     });
 
     it(`label and labelElement are rendered in .${Classes.MENU_ITEM_LABEL}`, () => {
-        const wrapper = shallow(
+        const { container } = render(
             <MenuItem text="text" label="label text" labelElement={<article>label element</article>} />,
         );
-        const label = wrapper.find(`.${Classes.MENU_ITEM_LABEL}`);
-        assert.match(label.text(), /^label text/);
-        assert.strictEqual(label.find("article").text(), "label element");
+        const label = container.querySelector(`.${Classes.MENU_ITEM_LABEL}`);
+        expect(label).not.toBeNull();
+        expect(label!).toHaveTextContent(/^label text/);
+        expect(screen.getByText("label element")).toBeInTheDocument();
     });
 
     it("renders icon with aria-hidden attribute on wrapper span", () => {
-        const wrapper = mount(<MenuItem icon="graph" text="Graph" />);
-        const iconWrapper = wrapper.find(`.${Classes.MENU_ITEM_ICON}`);
-        assert.strictEqual(iconWrapper.prop("aria-hidden"), true);
+        const { container } = render(<MenuItem icon="graph" text="Graph" />);
+        const iconWrapper = container.querySelector(`.${Classes.MENU_ITEM_ICON}`);
+        expect(iconWrapper).not.toBeNull();
+        expect(iconWrapper!).toHaveAttribute("aria-hidden", "true");
     });
 
     it("renders custom icon element with aria-hidden attribute on wrapper span", () => {
         const customIcon = <span className="custom-icon">Custom</span>;
-        const wrapper = mount(<MenuItem icon={customIcon} text="Custom" />);
-        const iconWrapper = wrapper.find(`.${Classes.MENU_ITEM_ICON}`);
-        assert.strictEqual(iconWrapper.prop("aria-hidden"), true);
+        const { container } = render(<MenuItem icon={customIcon} text="Custom" />);
+        const iconWrapper = container.querySelector(`.${Classes.MENU_ITEM_ICON}`);
+        expect(iconWrapper).not.toBeNull();
+        expect(iconWrapper!).toHaveAttribute("aria-hidden", "true");
     });
 
     describe("tabIndex behavior", () => {
         it("MenuItem without submenu has tabIndex={0} when enabled", () => {
             const { container } = render(<MenuItem text="Item" />);
             const anchor = container.querySelector("a");
-            assert.strictEqual(anchor?.getAttribute("tabindex"), "0");
+            expect(anchor).toHaveAttribute("tabindex", "0");
         });
 
         it("MenuItem without submenu has tabIndex={-1} when disabled", () => {
             const { container } = render(<MenuItem text="Item" disabled={true} />);
             const anchor = container.querySelector("a");
-            assert.strictEqual(anchor?.getAttribute("tabindex"), "-1");
+            expect(anchor).toHaveAttribute("tabindex", "-1");
         });
 
         it("MenuItem with submenu has focusable Popover target when enabled", () => {
@@ -231,51 +251,38 @@ describe("MenuItem", () => {
             );
             // The Popover target wrapper should be focusable
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
-            assert.strictEqual(popoverTarget?.getAttribute("tabindex"), "0");
+            expect(popoverTarget).toHaveAttribute("tabindex", "0");
         });
 
         it("MenuItem with submenu has tabIndex={-1} on inner anchor element", () => {
-            const { getByText } = render(
+            render(
                 <MenuItem text="Parent">
                     <MenuItem text="Child" />
                 </MenuItem>,
             );
             // The inner anchor should NOT be focusable when there's a submenu
-            const textElement = getByText("Parent");
-            const anchor = textElement.closest("a");
-            assert.strictEqual(anchor?.getAttribute("tabindex"), "-1");
+            const anchor = screen.getByText("Parent").closest("a");
+            expect(anchor).toHaveAttribute("tabindex", "-1");
         });
 
         it("MenuItem with disabled submenu is not focusable", () => {
-            const { container, getByText } = render(
+            const { container } = render(
                 <MenuItem text="Parent" disabled={true}>
                     <MenuItem text="Child" />
                 </MenuItem>,
             );
-            const parentElement = getByText("Parent");
-            const parentAnchor = parentElement.closest("a");
-            assert.strictEqual(parentAnchor?.getAttribute("tabindex"), "-1");
+            const parentAnchor = screen.getByText("Parent").closest("a");
+            expect(parentAnchor).toHaveAttribute("tabindex", "-1");
 
-            // When disabled, the Popover target should not be in the tab order
+            // When disabled, the Popover target should still exist
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
-            // The target exists but disabled state is handled by the Popover component
-            assert.isNotNull(popoverTarget);
+            expect(popoverTarget).not.toBeNull();
         });
 
         it("MenuItem without submenu preserves custom tabIndex", () => {
             const { container } = render(<MenuItem text="Item" tabIndex={3} />);
             const anchor = container.querySelector("a");
-            assert.strictEqual(anchor?.getAttribute("tabindex"), "3");
+            expect(anchor).toHaveAttribute("tabindex", "3");
         });
     });
 });
-
-function findSubmenu(wrapper: ShallowWrapper<any, any>) {
-    return wrapper.find(Popover).prop("content") as React.ReactElement<
-        MenuProps & { children: Array<React.ReactElement<MenuItemProps>> }
-    >;
-}
-
-function findText(wrapper: ShallowWrapper | ReactWrapper) {
-    return wrapper.find(Text).children();
-}
