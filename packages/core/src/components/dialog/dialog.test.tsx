@@ -19,7 +19,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 
-import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
@@ -38,6 +38,10 @@ const COMMON_PROPS: DialogProps = {
 };
 
 describe("<Dialog>", () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+    afterEach(() => warnSpy.mockClear());
+    afterAll(() => warnSpy.mockRestore());
+
     it("should render its content correctly", () => {
         render(
             <Dialog {...COMMON_PROPS}>

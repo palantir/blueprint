@@ -14,35 +14,43 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
+import { render } from "@testing-library/react";
+
+type RenderResult = ReturnType<typeof render>;
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { PortalProvider } from "../../context/portal/portalProvider";
 
-import { Portal, type PortalProps } from "./portal";
+import { Portal } from "./portal";
 
 describe("<Portal>", () => {
-    let rootElement: HTMLElement | undefined;
-    let portal: ReactWrapper<PortalProps>;
+    let rootElement: HTMLElement;
+    let result: RenderResult | undefined;
 
     beforeEach(() => {
         rootElement = document.createElement("div");
         document.body.appendChild(rootElement);
     });
     afterEach(() => {
-        portal?.unmount();
-        rootElement?.remove();
+        result?.unmount();
+        result = undefined;
+        rootElement.remove();
     });
+
+    function renderInRoot(ui: React.ReactElement) {
+        const r = render(ui, { container: rootElement });
+        result = r;
+        return r;
+    }
 
     it("attaches contents to document.body", () => {
         const CLASS_TO_TEST = "bp-test-content";
-        portal = mount(
+        renderInRoot(
             <Portal>
                 <p className={CLASS_TO_TEST}>test</p>
             </Portal>,
-            { attachTo: rootElement },
         );
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
@@ -51,11 +59,10 @@ describe("<Portal>", () => {
         const CLASS_TO_TEST = "bp-test-content";
         const container = document.createElement("div");
         document.body.appendChild(container);
-        portal = mount(
+        renderInRoot(
             <Portal container={container}>
                 <p className={CLASS_TO_TEST}>test</p>
             </Portal>,
-            { attachTo: rootElement },
         );
         assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
         document.body.removeChild(container);
@@ -63,11 +70,10 @@ describe("<Portal>", () => {
 
     it("propagates className to portal element", () => {
         const CLASS_TO_TEST = "bp-test-klass";
-        portal = mount(
+        renderInRoot(
             <Portal className={CLASS_TO_TEST}>
                 <p>test</p>
             </Portal>,
-            { attachTo: rootElement },
         );
 
         const portalChild = document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`);
@@ -75,26 +81,28 @@ describe("<Portal>", () => {
     });
 
     it("updates className on portal element", () => {
-        portal = mount(
+        const { rerender } = renderInRoot(
             <Portal className="class-one">
                 <p>test</p>
             </Portal>,
-            { attachTo: rootElement },
         );
-        assert.exists(portal.find(".class-one"));
-        portal.setProps({ className: "class-two" });
-        assert.exists(portal.find(".class-two"));
+        assert.exists(document.querySelector(".class-one"));
+        rerender(
+            <Portal className="class-two">
+                <p>test</p>
+            </Portal>,
+        );
+        assert.exists(document.querySelector(".class-two"));
     });
 
     it("respects portalClassName on <PortalProvider> context", () => {
         const CLASS_TO_TEST = "bp-test-klass bp-other-class";
-        portal = mount(
+        renderInRoot(
             <PortalProvider portalClassName={CLASS_TO_TEST}>
                 <Portal>
                     <p>test</p>
                 </Portal>
             </PortalProvider>,
-            { attachTo: rootElement },
         );
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
@@ -102,39 +110,43 @@ describe("<Portal>", () => {
     });
 
     it("does not crash when removing multiple classes from className", () => {
-        portal = mount(
+        const { rerender } = renderInRoot(
             <Portal className="class-one class-two">
                 <p>test</p>
             </Portal>,
-            { attachTo: rootElement },
         );
-        portal.setProps({ className: undefined });
+        rerender(
+            <Portal className={undefined}>
+                <p>test</p>
+            </Portal>,
+        );
         // no assertion necessary - will crash on incorrect code
     });
 
     it("does not crash when an empty string is provided for className", () => {
-        portal = mount(
+        const { rerender } = renderInRoot(
             <Portal className="">
                 <p>test</p>
             </Portal>,
-            { attachTo: rootElement },
         );
-        portal.setProps({ className: "class-one" });
+        rerender(
+            <Portal className="class-one">
+                <p>test</p>
+            </Portal>,
+        );
         // no assertion necessary - will crash on incorrect code
     });
 
     it("children mount before onChildrenMount invoked", () =>
         new Promise<void>(done => {
             function handleChildrenMount() {
-                // can't use `portal` in here as `mount()` has not finished, so we query DOM directly instead
                 assert.exists(document.querySelector("p"));
                 done();
             }
-            portal = mount(
+            renderInRoot(
                 <Portal onChildrenMount={handleChildrenMount}>
                     <p>test</p>
                 </Portal>,
-                { attachTo: rootElement },
             );
         }));
 });

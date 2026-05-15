@@ -22,7 +22,8 @@ import {
 } from "enzyme";
 import { act, PureComponent } from "react";
 
-import { afterAll, afterEach, assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { Icons } from "@blueprintjs/icons";
+import { afterAll, afterEach, assert, beforeAll, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { type HTMLInputProps, Position } from "../../common";
@@ -44,6 +45,14 @@ const shallow = (el: React.ReactElement<NumericInputProps>, options?: ShallowRen
     untypedShallow<NumericInput>(el, options);
 
 describe("<NumericInput>", () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+    beforeAll(() => {
+        // Stub the async icon loader to avoid post-mount setState (which emits act() warnings).
+        vi.spyOn(Icons, "load").mockResolvedValue(undefined);
+    });
+    afterEach(() => warnSpy.mockClear());
+    afterAll(() => warnSpy.mockRestore());
+
     describe("Defaults", () => {
         it("renders the buttons on the right by default", () => {
             // this ordering is trivial to test with shallow renderer

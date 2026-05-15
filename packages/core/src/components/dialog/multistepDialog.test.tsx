@@ -14,24 +14,42 @@
  * limitations under the License.
  */
 
+import { fireEvent, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mount, type ReactWrapper } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { AnchorButton } from "../button/buttons";
 
 import { DialogStep } from "./dialogStep";
 import { MultistepDialog } from "./multistepDialog";
 
-// TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
-// need to reference AnchorButton directly
-const findButtonWithText = (wrapper: ReactWrapper, text: string) => wrapper.find(AnchorButton).find(`[text='${text}']`);
+function findButtonWithText(container: HTMLElement, text: string): HTMLElement | null {
+    const buttons = Array.from(container.querySelectorAll<HTMLElement>("a, button"));
+    return buttons.find(b => b.textContent?.trim() === text) ?? null;
+}
+
+function getStepContainers(container: HTMLElement): HTMLElement[] {
+    return Array.from(container.querySelectorAll<HTMLElement>(`.${Classes.DIALOG_STEP_CONTAINER}`));
+}
+
+function activeStepIndex(container: HTMLElement): number {
+    return getStepContainers(container).findIndex(s => s.classList.contains(Classes.ACTIVE));
+}
+
+function isStepActive(step: HTMLElement): boolean {
+    return step.classList.contains(Classes.ACTIVE);
+}
+
+function isStepViewed(step: HTMLElement): boolean {
+    return step.classList.contains(Classes.DIALOG_STEP_VIEWED);
+}
+
+const Panel: React.FC = () => <strong> panel</strong>;
 
 describe("<MultistepDialog>", () => {
     it("renders its content correctly", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
@@ -47,157 +65,144 @@ describe("<MultistepDialog>", () => {
             Classes.DIALOG_STEP_TITLE,
             Classes.DIALOG_FOOTER_ACTIONS,
         ].forEach(className => {
-            assert.lengthOf(dialog.find(`.${className}`).hostNodes(), 1, `missing ${className}`);
+            assert.lengthOf(container.querySelectorAll(`.${className}`), 1, `missing ${className}`);
         });
-        dialog.unmount();
     });
 
     it("initially selected step is first step", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.lengthOf(steps.at(0).find(`.${Classes.ACTIVE}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 0);
-        dialog.unmount();
+        assert.strictEqual(activeStepIndex(container), 0);
+        const steps = getStepContainers(container);
+        assert.isTrue(isStepActive(steps[0]));
+        assert.isFalse(isStepActive(steps[1]));
     });
 
     it("clicking next should move to the next step", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.lengthOf(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 1);
-        dialog.unmount();
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
+        const steps = getStepContainers(container);
+        assert.isTrue(isStepViewed(steps[0]));
+        assert.isTrue(isStepActive(steps[1]));
     });
 
     it("clicking back should move to the prev step", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
 
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.lengthOf(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 1);
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
+        let steps = getStepContainers(container);
+        assert.isTrue(isStepViewed(steps[0]));
+        assert.isTrue(isStepActive(steps[1]));
 
-        findButtonWithText(dialog, "Back").simulate("click");
-        const newSteps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(newSteps.at(0).find(`.${Classes.ACTIVE}`), 1);
-        assert.lengthOf(newSteps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        dialog.unmount();
+        fireEvent.click(findButtonWithText(container, "Back")!);
+        steps = getStepContainers(container);
+        assert.strictEqual(activeStepIndex(container), 0);
+        assert.isTrue(isStepActive(steps[0]));
+        assert.isTrue(isStepViewed(steps[1]));
     });
 
     it("footer on last step of multiple steps should contain back and submit buttons", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.lengthOf(findButtonWithText(dialog, "Back"), 1);
-        assert.lengthOf(findButtonWithText(dialog, "Next"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Submit"), 1);
-        dialog.unmount();
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
+        assert.isNotNull(findButtonWithText(container, "Back"));
+        assert.isNull(findButtonWithText(container, "Next"));
+        assert.isNotNull(findButtonWithText(container, "Submit"));
     });
 
     it("footer on first step of multiple steps should contain next button only", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
 
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Back"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Next"), 1);
-        assert.lengthOf(findButtonWithText(dialog, "Submit"), 0);
-        dialog.unmount();
+        assert.strictEqual(activeStepIndex(container), 0);
+        assert.isNull(findButtonWithText(container, "Back"));
+        assert.isNotNull(findButtonWithText(container, "Next"));
+        assert.isNull(findButtonWithText(container, "Submit"));
     });
 
     it("footer on first step of single step should contain submit button only", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
         );
 
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Back"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Next"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Submit"), 1);
-        dialog.unmount();
+        assert.strictEqual(activeStepIndex(container), 0);
+        assert.isNull(findButtonWithText(container, "Back"));
+        assert.isNull(findButtonWithText(container, "Next"));
+        assert.isNotNull(findButtonWithText(container, "Submit"));
     });
 
     it("selecting older step should leave already viewed steps active", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        step.at(0).simulate("click");
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(steps.at(0).find(`.${Classes.ACTIVE}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        dialog.unmount();
+        assert.strictEqual(activeStepIndex(container), 0);
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
+        const stepClickables = container.querySelectorAll<HTMLElement>(`.${Classes.DIALOG_STEP}`);
+        fireEvent.click(stepClickables[0]);
+        const steps = getStepContainers(container);
+        assert.strictEqual(activeStepIndex(container), 0);
+        assert.isTrue(isStepActive(steps[0]));
+        assert.isTrue(isStepViewed(steps[1]));
     });
 
     it("pressing enter on older step takes effect", async () => {
         const user = userEvent.setup();
-        const containerElement = document.createElement("div");
-        document.documentElement.appendChild(containerElement);
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
-            { attachTo: containerElement },
         );
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        (step.at(0).getDOMNode() as HTMLElement).focus();
+        assert.strictEqual(activeStepIndex(container), 0);
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
+        const stepClickables = container.querySelectorAll<HTMLElement>(`.${Classes.DIALOG_STEP}`);
+        stepClickables[0].focus();
         await user.keyboard("{Enter}");
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        dialog.unmount();
-        containerElement.remove();
+        assert.strictEqual(activeStepIndex(container), 0);
     });
 
     it("gets by without children", () => {
         assert.doesNotThrow(() => {
-            const dialog = mount(<MultistepDialog isOpen={true} />);
-            dialog.unmount();
+            const { unmount } = render(<MultistepDialog isOpen={true} />);
+            unmount();
         });
     });
 
     it("supports non-existent children", () => {
         assert.doesNotThrow(() => {
-            const dialog = mount(
+            const { unmount } = render(
                 <MultistepDialog>
                     {null}
                     <DialogStep id="one" panel={<Panel />} />
@@ -205,34 +210,34 @@ describe("<MultistepDialog>", () => {
                     <DialogStep id="two" panel={<Panel />} />
                 </MultistepDialog>,
             );
-            dialog.unmount();
+            unmount();
         });
     });
 
     it("enables next by default", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.isUndefined(findButtonWithText(dialog, "Next").prop("disabled"));
-        dialog.unmount();
+        const nextButton = findButtonWithText(container, "Next") as HTMLButtonElement | HTMLAnchorElement | null;
+        assert.isFalse(nextButton?.classList.contains(Classes.DISABLED));
     });
 
     it("disables next if disabled on nextButtonProps is set to true", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog nextButtonProps={{ disabled: true }} isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.isTrue(findButtonWithText(dialog, "Next").prop("disabled"));
-        dialog.unmount();
+        const nextButton = findButtonWithText(container, "Next");
+        assert.isTrue(nextButton?.classList.contains(Classes.DISABLED));
     });
 
     it("disables next for second step when disabled on nextButtonProps is set to true", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} nextButtonProps={{ disabled: true }} />
@@ -240,18 +245,17 @@ describe("<MultistepDialog>", () => {
             </MultistepDialog>,
         );
 
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.isUndefined(findButtonWithText(dialog, "Next").prop("disabled"));
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.isTrue(findButtonWithText(dialog, "Next").prop("disabled"));
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        dialog.unmount();
+        assert.strictEqual(activeStepIndex(container), 0);
+        assert.isFalse(findButtonWithText(container, "Next")?.classList.contains(Classes.DISABLED));
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
+        assert.isTrue(findButtonWithText(container, "Next")?.classList.contains(Classes.DISABLED));
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
     });
 
     it("disables back for second step when disabled on backButtonProps is set to true", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} backButtonProps={{ disabled: true }} />
@@ -259,14 +263,11 @@ describe("<MultistepDialog>", () => {
             </MultistepDialog>,
         );
 
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.isTrue(findButtonWithText(dialog, "Back").prop("disabled"));
-        findButtonWithText(dialog, "Back").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        dialog.unmount();
+        assert.strictEqual(activeStepIndex(container), 0);
+        fireEvent.click(findButtonWithText(container, "Next")!);
+        assert.strictEqual(activeStepIndex(container), 1);
+        assert.isTrue(findButtonWithText(container, "Back")?.classList.contains(Classes.DISABLED));
+        fireEvent.click(findButtonWithText(container, "Back")!);
+        assert.strictEqual(activeStepIndex(container), 1);
     });
 });
-
-const Panel: React.FC = () => <strong> panel</strong>;

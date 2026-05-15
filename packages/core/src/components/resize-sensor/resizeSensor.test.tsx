@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
+import { render } from "@testing-library/react";
 import { createRef } from "react";
 
 import { afterAll, afterEach, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
@@ -23,16 +23,16 @@ import { sleep } from "../../common/test-utils";
 
 import { ResizeSensor, type ResizeSensorProps } from "./resizeSensor";
 
+type RenderResult = ReturnType<typeof render>;
+
 describe.skip("<ResizeSensor>", () => {
-    // this scope variable is assigned in mountResizeSensor() and used in resize()
-    let wrapper: ReactWrapper<ResizeTesterProps, any> | undefined;
+    let result: RenderResult | undefined;
     const containerElement = document.createElement("div");
     document.documentElement.appendChild(containerElement);
 
     afterEach(() => {
-        // clean up wrapper after each test, if it was used
-        wrapper?.unmount();
-        wrapper?.detach();
+        result?.unmount();
+        result = undefined;
     });
 
     afterAll(() => containerElement.remove());
@@ -67,11 +67,12 @@ describe.skip("<ResizeSensor>", () => {
 
     it("onResize can be changed", async () => {
         const onResize1 = vi.fn();
-        mountResizeSensor({ onResize: onResize1 });
+        const props1 = { onResize: onResize1 };
+        mountResizeSensor(props1);
         await resize({ id: 1, width: 200 });
 
         const onResize2 = vi.fn();
-        wrapper!.setProps({ onResize: onResize2 });
+        result!.rerender(<ResizeTester id={1} width={200} {...{ onResize: onResize2 }} />);
         await resize({ height: 100, id: 2 });
         await resize({ id: 3, width: 55 });
 
@@ -91,17 +92,17 @@ describe.skip("<ResizeSensor>", () => {
         expect(targetRef.current?.clientWidth, "user-provided targetRef.current.clientWidth").toBe(RESIZE_WIDTH);
     });
 
+    let lastProps: ResizeTesterProps | undefined;
     function mountResizeSensor(props: Omit<ResizeSensorProps, "children">) {
-        return (wrapper = mount<ResizeTesterProps>(
-            <ResizeTester id={0} {...props} />,
-            // must be in the DOM for measurement
-            { attachTo: containerElement },
-        ));
+        lastProps = { id: 0, ...props };
+        const r = render(<ResizeTester {...lastProps} />, { container: containerElement });
+        result = r;
+        return r;
     }
 
     async function resize(size: SizeProps) {
-        wrapper!.setProps(size);
-        wrapper!.update();
+        lastProps = { ...lastProps!, ...size };
+        result!.rerender(<ResizeTester {...lastProps} />);
         await sleep(30);
     }
 

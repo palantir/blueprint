@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { fireEvent, render } from "@testing-library/react";
 import { PureComponent } from "react";
 
 import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest"; // this component is not part of the public API, but we want to test its implementation in isolation
@@ -52,99 +52,106 @@ describe("asyncControllable tests", () => {
             describe("uncontrolled mode", () => {
                 it(`renders a ${element}`, () => {
                     const handleChangeSpy = vi.fn();
-                    const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
-                    assert.strictEqual(wrapper.childAt(0).type(), element);
+                    const { container } = render(
+                        <Component defaultValue="hi" onChange={handleChangeSpy} type={type} />,
+                    );
+                    expect(container.firstElementChild?.tagName.toLowerCase()).toBe(element);
                 });
 
                 it("triggers onChange", () => {
                     const handleChangeSpy = vi.fn();
-                    const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
-                    const input = wrapper.find(element);
-                    input.simulate("change", { target: { value: "bye" } });
+                    const { container } = render(
+                        <Component defaultValue="hi" onChange={handleChangeSpy} type={type} />,
+                    );
+                    const input = container.querySelector<HTMLInputElement | HTMLTextAreaElement>(element)!;
+                    fireEvent.change(input, { target: { value: "bye" } });
                     expect(handleChangeSpy).toHaveBeenCalledWith(
-                        expect.objectContaining({ target: expect.objectContaining({ value: "bye" }) }),
+                        expect.objectContaining({
+                            target: expect.objectContaining({ value: "bye" }),
+                        }),
                     );
                 });
             });
 
             describe("controlled mode", () => {
                 it(`renders a ${element}`, () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    assert.strictEqual(wrapper.childAt(0).type(), element);
+                    const { container } = render(<Component value="hi" type={type} />);
+                    expect(container.firstElementChild?.tagName.toLowerCase()).toBe(element);
                 });
 
                 it("accepts controlled update 'hi' -> 'bye'", () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi");
-                    wrapper.setProps({ value: "bye" });
-                    assert.strictEqual(wrapper.find(element).prop("value"), "bye");
+                    const { container, rerender } = render(<Component value="hi" type={type} />);
+                    const getInput = () => container.querySelector<HTMLInputElement | HTMLTextAreaElement>(element)!;
+                    assert.strictEqual(getInput().value, "hi");
+                    rerender(<Component value="bye" type={type} />);
+                    assert.strictEqual(getInput().value, "bye");
                 });
 
                 it("triggers onChange events during composition", () => {
                     const handleChangeSpy = vi.fn();
-                    const wrapper = mount(<Component value="hi" onChange={handleChangeSpy} type={type} />);
-                    const input = wrapper.find(element);
+                    const { container } = render(<Component value="hi" onChange={handleChangeSpy} type={type} />);
+                    const input = container.querySelector<HTMLInputElement | HTMLTextAreaElement>(element)!;
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
+                    fireEvent.compositionStart(input, { data: "" });
+                    fireEvent.compositionUpdate(input, { data: " " });
                     // some browsers trigger this change event during composition, so we test to ensure that our wrapper component does too
-                    input.simulate("change", { target: { value: "hi " } });
-                    input.simulate("compositionupdate", { data: " ." });
-                    input.simulate("change", { target: { value: "hi ." } });
-                    input.simulate("compositionend", { data: " ." });
+                    fireEvent.change(input, { target: { value: "hi " } });
+                    fireEvent.compositionUpdate(input, { data: " ." });
+                    fireEvent.change(input, { target: { value: "hi ." } });
+                    fireEvent.compositionEnd(input, { data: " ." });
 
                     expect(handleChangeSpy).toHaveBeenCalledTimes(2);
                 });
 
                 it("external updates DO NOT override in-progress composition", async () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    const input = wrapper.find(element);
+                    const { container, rerender } = render(<Component value="hi" type={type} />);
+                    const getInput = () => container.querySelector<HTMLInputElement | HTMLTextAreaElement>(element)!;
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
-                    input.simulate("change", { target: { value: "hi " } });
+                    fireEvent.compositionStart(getInput(), { data: "" });
+                    fireEvent.compositionUpdate(getInput(), { data: " " });
+                    fireEvent.change(getInput(), { target: { value: "hi " } });
 
                     await Promise.resolve();
-                    wrapper.setProps({ value: "bye" }).update();
+                    rerender(<Component value="bye" type={type} />);
 
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi ");
+                    assert.strictEqual(getInput().value, "hi ");
                 });
 
                 it("external updates DO NOT flush with immediately ongoing compositions", async () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    const input = wrapper.find(element);
+                    const { container, rerender } = render(<Component value="hi" type={type} />);
+                    const getInput = () => container.querySelector<HTMLInputElement | HTMLTextAreaElement>(element)!;
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
-                    input.simulate("change", { target: { value: "hi " } });
+                    fireEvent.compositionStart(getInput(), { data: "" });
+                    fireEvent.compositionUpdate(getInput(), { data: " " });
+                    fireEvent.change(getInput(), { target: { value: "hi " } });
 
-                    wrapper.setProps({ value: "bye" }).update();
+                    rerender(<Component value="bye" type={type} />);
 
-                    input.simulate("compositionend", { data: " " });
-                    input.simulate("compositionstart", { data: "" });
+                    fireEvent.compositionEnd(getInput(), { data: " " });
+                    fireEvent.compositionStart(getInput(), { data: "" });
 
                     // Wait for the composition ending delay to pass
                     await sleep(COMPOSITION_END_DELAY + 5);
 
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi ");
+                    assert.strictEqual(getInput().value, "hi ");
                 });
 
                 it("external updates flush after composition ends", async () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    const input = wrapper.find(element);
+                    const { container, rerender } = render(<Component value="hi" type={type} />);
+                    const getInput = () => container.querySelector<HTMLInputElement | HTMLTextAreaElement>(element)!;
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
-                    input.simulate("change", { target: { value: "hi " } });
-                    input.simulate("compositionend", { data: " " });
+                    fireEvent.compositionStart(getInput(), { data: "" });
+                    fireEvent.compositionUpdate(getInput(), { data: " " });
+                    fireEvent.change(getInput(), { target: { value: "hi " } });
+                    fireEvent.compositionEnd(getInput(), { data: " " });
 
                     // Wait for the composition ending delay to pass
                     await sleep(COMPOSITION_END_DELAY + 5);
 
                     // we are "rejecting" the composition here by supplying a different controlled value
-                    wrapper.setProps({ value: "bye" }).update();
+                    rerender(<Component value="bye" type={type} />);
 
-                    assert.strictEqual(wrapper.find(element).prop("value"), "bye");
+                    assert.strictEqual(getInput().value, "bye");
                 });
 
                 it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
@@ -162,32 +169,22 @@ describe("asyncControllable tests", () => {
                         };
                     }
 
-                    const wrapper = mount(<TestComponent initialValue="hi" />);
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi");
+                    const { container } = render(<TestComponent initialValue="hi" />);
+                    const getInput = () => container.querySelector<HTMLInputElement | HTMLTextAreaElement>(element)!;
+                    assert.strictEqual(getInput().value, "hi");
 
-                    wrapper.find(element).simulate("change", { target: { value: "hi " } });
-                    wrapper.update();
+                    fireEvent.change(getInput(), { target: { value: "hi " } });
 
+                    // rendered input should optimistically show new value
                     assert.strictEqual(
-                        wrapper.find(Component).prop("value"),
-                        "hi",
-                        "local state should still have initial value",
-                    );
-                    // but rendered input should optimistically show new value
-                    assert.strictEqual(
-                        wrapper.find(element).prop("value"),
+                        getInput().value,
                         "hi ",
                         `rendered <${element}> should optimistically show new value`,
                     );
 
                     // after async delay, confirm the update
                     await sleep(20);
-                    assert.strictEqual(
-                        wrapper.find(element).prop("value"),
-                        "hi ",
-                        `rendered <${element}> should still show new value`,
-                    );
-                    return;
+                    assert.strictEqual(getInput().value, "hi ", `rendered <${element}> should still show new value`);
                 });
             });
         }),

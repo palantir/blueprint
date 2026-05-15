@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
+import { fireEvent, render, type RenderResult } from "@testing-library/react";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
-import { Handle } from "./handle";
 import { MultiSlider, MultiSliderHandle, type MultiSliderProps } from "./multiSlider";
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -34,9 +33,7 @@ describe("<MultiSlider>", () => {
     const onRelease = vi.fn();
 
     beforeEach(() => {
-        // need an element in the document for tickSize to be a real number
         containerElement = document.createElement("div");
-        // default min-max is 0-10 so there are 10 steps
         containerElement.style.width = `${STEP_SIZE * 10}px`;
         document.body.appendChild(containerElement);
 
@@ -50,28 +47,32 @@ describe("<MultiSlider>", () => {
 
     describe("handles", () => {
         it.skip("handle values are automatically sorted", () => {
-            const slider = renderSlider({ onRelease, values: [5, 10, 0] });
-            slider.find(Handle).first().simulate("mousedown", { clientX: 0 });
+            const { container } = renderSlider({ onRelease, values: [5, 10, 0] });
+            const firstHandle = container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_HANDLE}`)[0];
+            fireEvent.mouseDown(firstHandle, { clientX: 0 });
             mouseUpHorizontal(0);
             expect(onRelease).toHaveBeenCalledOnce();
             expect(onRelease.mock.calls[0][0]).toEqual([0, 5, 10]);
         });
 
         it("propagates className to the handles", () => {
-            const slider = mount(
+            const { container } = render(
                 <MultiSlider>
                     <MultiSliderHandle value={3} className="testClass" />
                     <MultiSliderHandle value={5} />
                 </MultiSlider>,
-                { attachTo: containerElement },
+                { container: containerElement },
             );
-            assert.lengthOf(slider.find("span.testClass"), 1);
+            expect(container.querySelectorAll("span.testClass")).toHaveLength(1);
         });
 
         it.skip("moving mouse on the first handle updates the first value", () => {
-            const slider = renderSlider({ onChange });
-            simulateMovement(slider, { dragSize: STEP_SIZE, dragTimes: 4, handleIndex: 0 });
-            // called 3 times for the move to 1, 2, 3, and 4
+            const { container } = renderSlider({ onChange });
+            simulateMovement(container.firstElementChild as HTMLElement, {
+                dragSize: STEP_SIZE,
+                dragTimes: 4,
+                handleIndex: 0,
+            });
             expect(onChange).toHaveBeenCalledTimes(4);
             expect(onChange.mock.calls.map(arg => arg[0])).toEqual([
                 [1, 5, 10],
@@ -82,14 +83,13 @@ describe("<MultiSlider>", () => {
         });
 
         it.skip("moving mouse on the middle handle updates the middle value", () => {
-            const slider = renderSlider({ onChange });
-            simulateMovement(slider, {
+            const { container } = renderSlider({ onChange });
+            simulateMovement(container.firstElementChild as HTMLElement, {
                 dragSize: STEP_SIZE,
                 dragTimes: 4,
                 from: STEP_SIZE * 5,
                 handleIndex: 1,
             });
-            // called 3 times for the move to 6, 7, 8, and 9
             expect(onChange).toHaveBeenCalledTimes(4);
             expect(onChange.mock.calls.map(arg => arg[0])).toEqual([
                 [0, 6, 10],
@@ -100,14 +100,13 @@ describe("<MultiSlider>", () => {
         });
 
         it.skip("moving mouse on the last handle updates the last value", () => {
-            const slider = renderSlider({ onChange });
-            simulateMovement(slider, {
+            const { container } = renderSlider({ onChange });
+            simulateMovement(container.firstElementChild as HTMLElement, {
                 dragSize: -STEP_SIZE,
                 dragTimes: 4,
                 from: STEP_SIZE * 10,
                 handleIndex: 2,
             });
-            // called 3 times for the move to 9, 8, 7, and 6
             expect(onChange).toHaveBeenCalledTimes(4);
             expect(onChange.mock.calls.map(arg => arg[0])).toEqual([
                 [0, 5, 9],
@@ -118,54 +117,53 @@ describe("<MultiSlider>", () => {
         });
 
         it.skip("releasing mouse on a track value closer to the first handle moves the first handle", () => {
-            const slider = renderSlider({ onChange });
-            slider.simulate("mousedown", { clientX: STEP_SIZE });
+            const { container } = renderSlider({ onChange });
+            fireEvent.mouseDown(container.firstElementChild as HTMLElement, { clientX: STEP_SIZE });
             expect(onChange).toHaveBeenCalledOnce();
             expect(onChange.mock.calls[0][0]).toEqual([1, 5, 10]);
         });
 
         it.skip("releasing mouse on a track value slightly below the middle handle moves the middle handle", () => {
-            const slider = renderSlider({ onChange });
-            slider.simulate("mousedown", { clientX: STEP_SIZE * 4 });
+            const { container } = renderSlider({ onChange });
+            fireEvent.mouseDown(container.firstElementChild as HTMLElement, { clientX: STEP_SIZE * 4 });
             expect(onChange).toHaveBeenCalledOnce();
             expect(onChange.mock.calls[0][0]).toEqual([0, 4, 10]);
         });
 
         it.skip("releasing mouse on a track value slightly above the middle handle moves the middle handle", () => {
-            const slider = renderSlider({ onChange });
-            slider.simulate("mousedown", { clientX: STEP_SIZE * 6 });
+            const { container } = renderSlider({ onChange });
+            fireEvent.mouseDown(container.firstElementChild as HTMLElement, { clientX: STEP_SIZE * 6 });
             expect(onChange).toHaveBeenCalledOnce();
             expect(onChange.mock.calls[0][0]).toEqual([0, 6, 10]);
         });
 
         it.skip("releasing mouse on a track value closer to the last handle moves the last handle", () => {
-            const slider = renderSlider({ onChange });
-            slider.simulate("mousedown", { clientX: STEP_SIZE * 9 });
+            const { container } = renderSlider({ onChange });
+            fireEvent.mouseDown(container.firstElementChild as HTMLElement, { clientX: STEP_SIZE * 9 });
             expect(onChange).toHaveBeenCalledOnce();
             expect(onChange.mock.calls[0][0]).toEqual([0, 5, 9]);
         });
 
         it.skip("when values are equal, releasing mouse on a track still moves the nearest handle", () => {
-            const slider = renderSlider({ onChange, values: [5, 5, 7] });
+            const { container } = renderSlider({ onChange, values: [5, 5, 7] });
+            const slider = container.firstElementChild as HTMLElement;
 
-            slider.simulate("mousedown", { clientX: STEP_SIZE * 1 });
+            fireEvent.mouseDown(slider, { clientX: STEP_SIZE * 1 });
             expect(onChange).toHaveBeenCalledOnce();
             expect(onChange.mock.calls[0][0]).toEqual([1, 5, 7]);
             onChange.mockClear();
 
-            slider.simulate("mousedown", { clientX: STEP_SIZE * 9 });
+            fireEvent.mouseDown(slider, { clientX: STEP_SIZE * 9 });
             expect(onChange).toHaveBeenCalledOnce();
             expect(onChange.mock.calls[0][0]).toEqual([5, 5, 9]);
         });
 
         it("values outside of bounds are clamped", () => {
-            const slider = renderSlider({ values: [-1, 5, 12] });
-            slider.find(`.${Classes.SLIDER_PROGRESS}`).forEach(progress => {
-                const { left, right } = progress.prop("style")!;
-                // CSS properties are percentage strings, but parsing will ignore trailing "%".
-                // percentages should be in 0-100% range.
-                assert.isAtLeast(parseFloat(left!.toString()), 0);
-                assert.isAtMost(parseFloat(right!.toString()), 100);
+            const { container } = renderSlider({ values: [-1, 5, 12] });
+            container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_PROGRESS}`).forEach(progress => {
+                const { left, right } = progress.style;
+                expect(parseFloat(left)).toBeGreaterThanOrEqual(0);
+                expect(parseFloat(right)).toBeLessThanOrEqual(100);
             });
         });
     });
@@ -173,116 +171,122 @@ describe("<MultiSlider>", () => {
     describe("labels", () => {
         it("renders label with labelStepSize fallback of 1 when not provided", () => {
             // [0 1 2 3 4 5]
-            const wrapper = renderSlider({ max: 5, min: 0 });
-            assertLabelCount(wrapper, 6);
+            const { container } = renderSlider({ max: 5, min: 0 });
+            expectLabelCount(container, 6);
         });
 
         it("renders label for value and for each labelStepSize", () => {
             // [0  10  20  30  40  50]
-            const wrapper = renderSlider({ labelStepSize: 10, max: 50, min: 0 });
-            assertLabelCount(wrapper, 6);
+            const { container } = renderSlider({ labelStepSize: 10, max: 50, min: 0 });
+            expectLabelCount(container, 6);
         });
 
         it("renders labels provided in labelValues prop", () => {
             const labelValues = [0, 30, 50, 60];
-            const wrapper = renderSlider({ labelValues, max: 50, min: 0 });
-            assertLabelCount(wrapper, 4);
+            const { container } = renderSlider({ labelValues, max: 50, min: 0 });
+            expectLabelCount(container, 4);
         });
 
         it("renders all labels even when floating point approx would cause the last one to be skipped", () => {
             // [0  0.14  0.28  0.42  0.56  0.70]
-            const wrapper = renderSlider({ labelStepSize: 0.14, max: 0.7, min: 0 });
-            assertLabelCount(wrapper, 6);
+            const { container } = renderSlider({ labelStepSize: 0.14, max: 0.7, min: 0 });
+            expectLabelCount(container, 6);
         });
 
         it("renders result of labelRenderer() in each label", () => {
             const labelRenderer = (val: number) => val + "#";
-            const wrapper = renderSlider({ labelRenderer, labelStepSize: 10, max: 50, min: 0 });
-            assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
+            const { container } = renderSlider({ labelRenderer, labelStepSize: 10, max: 50, min: 0 });
+            expect(container.querySelector(`.${Classes.SLIDER}-axis`)?.textContent).toBe("0#10#20#30#40#50#");
         });
 
         it("renders result of labelRenderer() in each label with labelValues", () => {
             const labelRenderer = (val: number) => val + "#";
-            const wrapper = renderSlider({ labelRenderer, labelValues: [20, 40, 50], max: 50, min: 0 });
-            assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "20#40#50#");
+            const { container } = renderSlider({ labelRenderer, labelValues: [20, 40, 50], max: 50, min: 0 });
+            expect(container.querySelector(`.${Classes.SLIDER}-axis`)?.textContent).toBe("20#40#50#");
         });
 
         it("default labelRenderer() fixes decimal places to labelPrecision", () => {
-            const wrapper = renderSlider({ labelPrecision: 1, values: [0.99 / 10, 1, 1] });
-            const firstHandle = wrapper.find(Handle).first();
-            assert.strictEqual(firstHandle.text(), "0.1");
+            const { container } = renderSlider({ labelPrecision: 1, values: [0.99 / 10, 1, 1] });
+            const firstHandle = container.querySelector(`.${Classes.SLIDER_HANDLE}`);
+            expect(firstHandle?.textContent).toBe("0.1");
         });
 
         it("infers precision of default labelRenderer from stepSize", () => {
-            const wrapper = renderSlider({ stepSize: 0.01 });
-            assert.strictEqual(wrapper.state("labelPrecision"), 2);
+            // stepSize 0.01 implies precision 2; verify via rendered label content.
+            const { container } = renderSlider({ stepSize: 0.01 });
+            const firstHandle = container.querySelector(`.${Classes.SLIDER_HANDLE}`);
+            expect(firstHandle?.textContent).toBe("0.00");
         });
 
         it("labelRenderer={false} removes all labels", () => {
-            const wrapper = renderSlider({ labelRenderer: false });
-            assertLabelCount(wrapper, 0);
+            const { container } = renderSlider({ labelRenderer: false });
+            expectLabelCount(container, 0);
         });
 
-        function assertLabelCount(wrapper: ReactWrapper, expected: number) {
-            assert.lengthOf(wrapper.find(`.${Classes.SLIDER}-axis`).find(`.${Classes.SLIDER_LABEL}`), expected);
+        function expectLabelCount(container: HTMLElement, expected: number) {
+            expect(container.querySelectorAll(`.${Classes.SLIDER}-axis .${Classes.SLIDER_LABEL}`)).toHaveLength(
+                expected,
+            );
         }
     });
 
     describe("track", () => {
-        let slider: ReactWrapper;
+        let result: RenderResult;
         beforeEach(() => {
-            slider = mount(
+            result = render(
                 <MultiSlider defaultTrackIntent="warning">
                     <MultiSliderHandle value={3} intentBefore="primary" intentAfter="danger" />
                     <MultiSliderHandle value={5} intentBefore="primary" intentAfter="danger" />
                     <MultiSliderHandle value={7} intentBefore="primary" />
                 </MultiSlider>,
-                { attachTo: containerElement },
+                { container: containerElement },
             );
         });
 
         it("progress bars are rendered between all handles", () => {
             // N values = N+1 track segments
-            assert.lengthOf(slider.find(`.${Classes.SLIDER_PROGRESS}`), 4);
+            expect(result.container.querySelectorAll(`.${Classes.SLIDER_PROGRESS}`)).toHaveLength(4);
         });
 
         it("intentAfter beats intentBefore", () => {
-            const intents = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
-                const match = segment.prop("className")?.match(/-intent-(\w+)/) || [];
-                return match[1];
-            });
-            // last segment has default intent
-            assert.deepEqual(intents, ["primary", "danger", "danger", "warning"]);
+            const intents = Array.from(
+                result.container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_PROGRESS}`),
+            ).map(segment => segment.className.match(/-intent-(\w+)/)?.[1]);
+            expect(intents).toEqual(["primary", "danger", "danger", "warning"]);
         });
 
         it("showTrackFill=false ignores track intents", () => {
-            slider.setProps({ showTrackFill: false });
-            slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
-                // segments rendered but they nave no intent
-                assert.isNull(segment.prop("className")?.match(/-intent-(\w+)/));
+            result.rerender(
+                <MultiSlider defaultTrackIntent="warning" showTrackFill={false}>
+                    <MultiSliderHandle value={3} intentBefore="primary" intentAfter="danger" />
+                    <MultiSliderHandle value={5} intentBefore="primary" intentAfter="danger" />
+                    <MultiSliderHandle value={7} intentBefore="primary" />
+                </MultiSlider>,
+            );
+            result.container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_PROGRESS}`).forEach(segment => {
+                expect(segment.className.match(/-intent-(\w+)/)).toBeNull();
             });
         });
 
         it("track section positioning is correct", () => {
-            slider = mount(
+            const { container } = render(
                 <MultiSlider max={1}>
                     <MultiSliderHandle value={1.2e-7} intentBefore="warning" intentAfter="warning" />
                     <MultiSliderHandle value={0.2} intentBefore="danger" intentAfter="success" />
                 </MultiSlider>,
             );
-            const locations = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
-                const match = segment.prop("style")!;
-                return [match.left, match.right];
-            });
-            assert.deepEqual(locations, [
-                ["0.00%", "100.00%"],
-                ["0.00%", "80.00%"],
-                ["20.00%", "0.00%"],
+            const locations = Array.from(container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_PROGRESS}`)).map(
+                segment => [parseFloat(segment.style.left), parseFloat(segment.style.right)],
+            );
+            expect(locations).toEqual([
+                [0, 100],
+                [0, 80],
+                [20, 0],
             ]);
         });
 
         it("trackStyleBefore and trackStyleAfter work as intended", () => {
-            slider = mount(
+            const { container } = render(
                 <MultiSlider>
                     <MultiSliderHandle
                         value={1}
@@ -297,13 +301,13 @@ describe("<MultiSlider>", () => {
                 </MultiSlider>,
             );
 
-            const trackBackgrounds = slider
-                .find(`.${Classes.SLIDER_PROGRESS}`)
-                .map(segment => segment.prop("style")?.background);
+            const trackBackgrounds = Array.from(
+                container.querySelectorAll<HTMLElement>(`.${Classes.SLIDER_PROGRESS}`),
+            ).map(segment => segment.style.background);
 
-            assert.equal(trackBackgrounds[0], "red");
-            assert.equal(trackBackgrounds[1], "yellow");
-            assert.equal(trackBackgrounds[2], "purple");
+            expect(trackBackgrounds[0]).toBe("red");
+            expect(trackBackgrounds[1]).toBe("yellow");
+            expect(trackBackgrounds[2]).toBe("purple");
         });
     });
 
@@ -341,15 +345,15 @@ describe("<MultiSlider>", () => {
         });
     });
 
-    function renderSlider(joinedProps: MultiSliderProps & { values?: [number, number, number] } = {}) {
+    function renderSlider(joinedProps: MultiSliderProps & { values?: [number, number, number] } = {}): RenderResult {
         const { values = [0, 5, 10], ...props } = joinedProps;
-        return mount(
+        return render(
             <MultiSlider {...props}>
                 <MultiSliderHandle value={values[0]} />
                 <MultiSliderHandle value={values[1]} />
                 <MultiSliderHandle value={values[2]} />
             </MultiSlider>,
-            { attachTo: containerElement },
+            { container: containerElement },
         );
     }
 });

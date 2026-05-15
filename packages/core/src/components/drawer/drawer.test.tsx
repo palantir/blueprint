@@ -14,197 +14,198 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
+import { fireEvent, render, type RenderResult } from "@testing-library/react";
 
 import { afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Position } from "../../common";
 import { Button } from "../button/buttons";
 
-import { Drawer, type DrawerProps } from "./drawer";
+import { Drawer } from "./drawer";
 
 describe("<Drawer>", () => {
-    let drawer: ReactWrapper<DrawerProps, any>;
-    let isMounted = false;
-    const containerElement = document.createElement("div");
-    document.documentElement.appendChild(containerElement);
-
-    /**
-     * Mount the `content` into `containerElement` and assign to local `wrapper` variable.
-     * Use this method in this suite instead of Enzyme's `mount` method.
-     */
-    function mountDrawer(content: React.JSX.Element) {
-        drawer = mount(content, { attachTo: containerElement });
-        isMounted = true;
-        return drawer;
-    }
+    let result: RenderResult | undefined;
 
     afterEach(() => {
-        if (isMounted) {
-            // clean up wrapper after each test, if it was used
-            drawer?.unmount();
-            drawer?.detach();
-            isMounted = false;
-        }
+        result?.unmount();
+        result = undefined;
+        // Clean up any portal artifacts left in document.body
+        document.querySelectorAll(`.${Classes.PORTAL}`).forEach(el => el.remove());
     });
 
+    function renderDrawer(content: React.JSX.Element) {
+        result = render(content);
+        return result;
+    }
+
+    function findInDocument(selector: string): HTMLElement | null {
+        // Drawer renders into a portal by default, but with usePortal={false} it stays in container.
+        return document.querySelector<HTMLElement>(selector);
+    }
+
+    function findAllInDocument(selector: string): HTMLElement[] {
+        return Array.from(document.querySelectorAll<HTMLElement>(selector));
+    }
+
     it("renders its content correctly", () => {
-        mountDrawer(
+        renderDrawer(
             <Drawer isOpen={true} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
         [Classes.DRAWER, Classes.DRAWER_BODY, Classes.DRAWER_FOOTER, Classes.OVERLAY_BACKDROP].forEach(className => {
-            expect(drawer.find(`.${className}`), `missing ${className}`).toHaveLength(1);
+            expect(findAllInDocument(`.${className}`), `missing ${className}`).toHaveLength(1);
         });
     });
 
     describe("position", () => {
         describe("RIGHT", () => {
             it("position right, size becomes width", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.RIGHT} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width).toBe(100);
+                expect(findInDocument(`.${Classes.DRAWER}`)?.style.width).toBe("100px");
             });
 
             it("position right, adds appropriate classes (default behavior)", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.RIGHT}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.POSITION_RIGHT}`).exists()).toBe(true);
+                expect(findInDocument(`.${Classes.POSITION_RIGHT}`)).not.toBeNull();
             });
         });
 
         describe("TOP", () => {
             it("position top, size becomes height", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.TOP} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height).toBe(100);
+                expect(findInDocument(`.${Classes.DRAWER}`)?.style.height).toBe("100px");
             });
 
             it("position top, adds appropriate classes (vertical, reverse)", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.TOP}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.POSITION_TOP}`).exists()).toBe(true);
+                expect(findInDocument(`.${Classes.POSITION_TOP}`)).not.toBeNull();
             });
         });
 
         describe("BOTTOM", () => {
             it("position bottom, size becomes height", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.BOTTOM} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height).toBe(100);
+                expect(findInDocument(`.${Classes.DRAWER}`)?.style.height).toBe("100px");
             });
 
             it("position bottom, adds appropriate classes (vertical)", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.BOTTOM}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.POSITION_BOTTOM}`).exists()).toBe(true);
+                expect(findInDocument(`.${Classes.POSITION_BOTTOM}`)).not.toBeNull();
             });
         });
 
         describe("LEFT", () => {
             it("position left, size becomes width", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.LEFT} size={100}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width).toBe(100);
+                expect(findInDocument(`.${Classes.DRAWER}`)?.style.width).toBe("100px");
             });
 
             it("position left, adds appropriate classes (reverse)", () => {
-                mountDrawer(
+                renderDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.LEFT}>
                         {createDrawerContents()}
                     </Drawer>,
                 );
-                expect(drawer.find(`.${Classes.POSITION_LEFT}`).exists()).toBe(true);
+                expect(findInDocument(`.${Classes.POSITION_LEFT}`)).not.toBeNull();
             });
         });
     });
 
     it("size becomes width", () => {
-        mountDrawer(
+        renderDrawer(
             <Drawer isOpen={true} usePortal={false} size={100}>
                 {createDrawerContents()}
             </Drawer>,
         );
-        expect(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width).toBe(100);
+        expect(findInDocument(`.${Classes.DRAWER}`)?.style.width).toBe("100px");
     });
 
     it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
-        mountDrawer(
+        renderDrawer(
             <Drawer isOpen={true} portalClassName={TEST_CLASS}>
                 {createDrawerContents()}
             </Drawer>,
         );
-        expect(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`)).toBeDefined();
+        expect(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`)).not.toBeNull();
     });
 
     it("renders contents to specified container correctly", () => {
-        const container = document.createElement("div");
-        document.body.appendChild(container);
-        mountDrawer(
-            <Drawer isOpen={true} portalContainer={container}>
+        const portalContainer = document.createElement("div");
+        document.body.appendChild(portalContainer);
+        renderDrawer(
+            <Drawer isOpen={true} portalContainer={portalContainer}>
                 {createDrawerContents()}
             </Drawer>,
         );
-        drawer.unmount();
-        document.body.removeChild(container);
+        result?.unmount();
+        result = undefined;
+        document.body.removeChild(portalContainer);
+
         const onClose = vi.fn();
-        mountDrawer(
+        renderDrawer(
             <Drawer isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
-        drawer.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
+        fireEvent.mouseDown(findInDocument(`.${Classes.OVERLAY_BACKDROP}`)!);
         expect(onClose).toHaveBeenCalledOnce();
     });
 
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = vi.fn();
-        mountDrawer(
+        renderDrawer(
             <Drawer canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
-        drawer.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
+        fireEvent.mouseDown(findInDocument(`.${Classes.OVERLAY_BACKDROP}`)!);
         expect(onClose).not.toHaveBeenCalled();
     });
 
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
         const onClose = vi.fn();
-        mountDrawer(
+        renderDrawer(
             <Drawer canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
-        drawer.simulate("keydown", { key: "Escape" });
+        fireEvent.keyDown(findInDocument(`.${Classes.OVERLAY}`)!, { key: "Escape" });
         expect(onClose).not.toHaveBeenCalled();
     });
 
     it("supports overlay lifecycle props", () => {
         const onOpening = vi.fn();
-        mountDrawer(
+        renderDrawer(
             <Drawer isOpen={true} onOpening={onOpening}>
                 body
             </Drawer>,
@@ -214,50 +215,55 @@ describe("<Drawer>", () => {
 
     describe("header", () => {
         it(`does not render .${Classes.DRAWER_HEADER} if title omitted`, () => {
-            mountDrawer(
+            renderDrawer(
                 <Drawer isOpen={true} usePortal={false}>
                     drawer body
                 </Drawer>,
             );
-            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).exists()).toBe(false);
+            expect(findInDocument(`.${Classes.DRAWER_HEADER}`)).toBeNull();
         });
 
         it(`renders .${Classes.DRAWER_HEADER} if title prop is given`, () => {
-            mountDrawer(
+            renderDrawer(
                 <Drawer isOpen={true} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
             );
-            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).text()).toMatch(/^Hello!/);
+            expect(findInDocument(`.${Classes.DRAWER_HEADER}`)?.textContent).toMatch(/^Hello!/);
         });
 
         it(`renders close button if isCloseButtonShown={true}`, () => {
-            mountDrawer(
+            const { rerender } = renderDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
             );
-            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button)).toHaveLength(1);
+            expect(findInDocument(`.${Classes.DRAWER_HEADER}`)!.querySelectorAll("button")).toHaveLength(1);
 
-            drawer.setProps({ isCloseButtonShown: false });
-            expect(drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button)).toHaveLength(0);
+            rerender(
+                <Drawer isCloseButtonShown={false} isOpen={true} title="Hello!" usePortal={false}>
+                    drawer body
+                </Drawer>,
+            );
+            expect(findInDocument(`.${Classes.DRAWER_HEADER}`)!.querySelectorAll("button")).toHaveLength(0);
         });
 
         it("clicking close button triggers onClose", () => {
             const onClose = vi.fn();
-            mountDrawer(
+            renderDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
             );
-            drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button).simulate("click");
+            const closeButton = findInDocument(`.${Classes.DRAWER_HEADER} button`)!;
+            fireEvent.click(closeButton);
             expect(onClose).toHaveBeenCalledOnce();
         });
     });
 
     it("only adds its className in one location", () => {
-        mountDrawer(<Drawer className="foo" isOpen={true} title="title" usePortal={false} />);
-        expect(drawer.find(".foo").hostNodes()).toHaveLength(1);
+        renderDrawer(<Drawer className="foo" isOpen={true} title="title" usePortal={false} />);
+        expect(findAllInDocument(".foo")).toHaveLength(1);
     });
 
     // everything else about Drawer is tested by Overlay
