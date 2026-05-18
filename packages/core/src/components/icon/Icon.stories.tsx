@@ -5,9 +5,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
+import { Buggy, IconNames } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
-import { Intent } from "../../common";
+import { Colors, Intent } from "../../common";
 
 import { Icon, IconSize } from "./icon";
 
@@ -16,28 +17,38 @@ const meta: Meta<typeof Icon> = {
     component: Icon,
     decorators: [storybookLayoutDecorator],
     args: {
-        icon: "buggy",
+        icon: IconNames.BUGGY,
+        intent: Intent.NONE,
         size: IconSize.STANDARD,
-        intent: "none",
         color: undefined,
+        title: undefined,
+        tagName: "span",
+        autoLoad: true,
     },
     argTypes: {
+        icon: {
+            control: "text",
+        },
         intent: {
             control: "select",
             options: Object.values(Intent),
         },
         size: {
-            control: "select",
-            options: [IconSize.STANDARD, IconSize.LARGE],
-        },
-        icon: {
-            control: "text",
+            control: "number",
         },
         color: {
+            control: "color",
+        },
+        title: {
             control: "text",
         },
+        tagName: {
+            control: "text",
+        },
+        autoLoad: {
+            control: "boolean",
+        },
         className: { table: { disable: true } },
-        autoLoad: { table: { disable: true } },
         svgProps: { table: { disable: true } },
     },
 } satisfies Meta<typeof Icon>;
@@ -48,11 +59,7 @@ type Story = StoryObj<typeof meta>;
 /**
  * A basic icon with default styling.
  */
-export const Default: Story = {
-    args: {
-        icon: "buggy",
-    },
-};
+export const Default: Story = {};
 
 /**
  * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the icon.
@@ -80,15 +87,48 @@ export const SizeExample: Story = {
         size: { table: { disable: true } },
     },
     render: args => (
-        <Flex flexDirection="column" gap={10}>
-            <Flex flexDirection="column" gap={2} alignItems="center">
-                <StoryLabel title="standard size - 16px" />
-                <Icon {...args} size={IconSize.STANDARD} />
-            </Flex>
+        <Flex gap={5}>
+            <Icon {...args} size={IconSize.STANDARD} />
+            <Icon {...args} size={IconSize.LARGE} />
+            <Icon {...args} size={48} />
+        </Flex>
+    ),
+};
 
-            <Flex flexDirection="column" gap={2} alignItems="center">
-                <StoryLabel title="large size - 20px" />
-                <Icon {...args} size={IconSize.LARGE} />
+/**
+ * Use the `color` prop to override the icon fill with a custom CSS color.
+ * This takes precedence over `intent`.
+ */
+export const ColorExample: Story = {
+    name: "Color",
+    render: args => (
+        <Flex gap={4} alignItems="center">
+            {[Colors.BLUE3, Colors.FOREST3, Colors.GOLD3, Colors.RED3, Colors.INDIGO4].map(color => (
+                <Flex key={color} flexDirection="column" gap={1} alignItems="center">
+                    <Icon {...args} color={color} />
+                    <StoryLabel title={color} />
+                </Flex>
+            ))}
+        </Flex>
+    ),
+};
+
+/**
+ * The `icon` prop accepts either a string icon name or a React element (typically an icon
+ * component from `@blueprintjs/icons`). When an element is provided, `<Icon>` clones it and
+ * merges the parent-provided `className` and intent class onto its root.
+ */
+export const ElementIcon: Story = {
+    name: "Element icon",
+    render: args => (
+        <Flex gap={4} alignItems="center">
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <Icon {...args} icon={IconNames.BUGGY} />
+                <StoryLabel title='icon="buggy"' />
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <Icon {...args} icon={<Buggy size={args.size} />} />
+                <StoryLabel title="icon={<Buggy />}" />
             </Flex>
         </Flex>
     ),
@@ -99,7 +139,7 @@ export const SizeExample: Story = {
  */
 export const Playground: Story = {
     args: {
-        icon: "buggy",
+        icon: IconNames.BUGGY,
         size: IconSize.STANDARD,
         intent: "none",
         color: undefined,
