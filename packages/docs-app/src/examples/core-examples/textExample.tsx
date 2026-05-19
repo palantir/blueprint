@@ -16,7 +16,7 @@
 
 import { useState } from "react";
 
-import { Button, Menu, MenuItem, Popover, Text, TextArea } from "@blueprintjs/core";
+import { Button, Menu, MenuItem, PopoverNext, Text, TextArea } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 import { type Film, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
@@ -36,7 +36,7 @@ export const TextExample: React.FC<ExampleProps> = props => {
                 &nbsp;
             </Text>
             <TextArea fill={true} onChange={handleChange} value={textContent} />
-            <Popover
+            <PopoverNext
                 content={
                     <Menu className="docs-text-example-dropdown-menu">
                         {TOP_100_FILMS.map((film: Film) => (
@@ -50,7 +50,7 @@ export const TextExample: React.FC<ExampleProps> = props => {
                     icon="media"
                     text="Text is used in MenuItems, and is performant at scale in long lists"
                 />
-            </Popover>
+            </PopoverNext>
         </Example>
     );
 };
