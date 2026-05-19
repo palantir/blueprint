@@ -16,7 +16,15 @@
 
 import { useCallback, useRef, useState } from "react";
 
-import { Code, H5, Intent, MenuItem, type Popover, Switch, type TagProps } from "@blueprintjs/core";
+import {
+    Code,
+    H5,
+    Intent,
+    MenuItem,
+    type PopoverNextRef,
+    Switch,
+    type TagProps,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { type ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import {
@@ -55,7 +63,7 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
     const [showClearButton, setShowClearButton] = useState(true);
     const [tagMinimal, setTagMinimal] = useState(false);
 
-    const popoverRef = useRef<Popover>(null);
+    const popoverRef = useRef<PopoverNextRef>(null);
 
     const selectFilms = useCallback(
         (filmsToSelect: Film[]) => {

@@ -62,12 +62,12 @@ prop to define **MenuItem** content.
 ## Dropdowns
 
 **Menu** only renders a static list container element. To make an interactive dropdown menu, you may leverage
-[**Popover**](#core/components/popover) and specify a **Menu** as the `content` property:
+[**PopoverNext**](#core/components/popover-next) and specify a **Menu** as the `content` property:
 
 ```tsx
-<Popover content={<Menu>...</Menu>} placement="bottom">
+<PopoverNext content={<Menu>...</Menu>} placement="bottom">
     <Button alignText="start" icon="applications" endIcon="caret-down" text="Open with..." />
-</Popover>
+</PopoverNext>
 ```
 
 Some tips for designing dropdown menus:

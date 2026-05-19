@@ -54,24 +54,27 @@ describe("<Tooltip>", () => {
             expect(container.querySelector(`address.${Classes.POPOVER_TARGET}`)).to.exist;
         });
 
-        it("applies minimal class when minimal is true", () => {
+        it("applies minimal animation class when minimal is true", () => {
             const { container } = render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={true} minimal={true} usePortal={false}>
                     <Button text="target" />
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).to.exist;
+            // PopoverNext uses POPOVER_MINIMAL_ANIMATION instead of the legacy MINIMAL class.
+            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.POPOVER_MINIMAL_ANIMATION}`)).to.exist;
         });
 
-        it("does not apply minimal class when minimal is false", () => {
+        it("does not apply minimal animation class when minimal is false", () => {
             const { container } = render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={true} usePortal={false}>
                     <Button text="target" />
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).not.toBeInTheDocument();
+            expect(
+                container.querySelector(`.${Classes.TOOLTIP}.${Classes.POPOVER_MINIMAL_ANIMATION}`),
+            ).not.toBeInTheDocument();
         });
     });
 
@@ -246,14 +249,18 @@ describe("<Tooltip>", () => {
         const user = userEvent.setup();
         const onClose = vi.fn();
         render(
-            <Tooltip content="content" hoverOpenDelay={0} isOpen={true} onClose={onClose}>
+            <Tooltip content="content" defaultIsOpen={true} hoverOpenDelay={0} onClose={onClose}>
                 <Button text="target" />
             </Tooltip>,
         );
 
-        expect(screen.getByText("content")).to.exist;
+        expect(screen.getByText("content")).toBeInTheDocument();
 
         await user.keyboard("{Escape}");
+
+        await waitFor(() => {
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
+        });
 
         expect(onClose).toHaveBeenCalledOnce();
     });

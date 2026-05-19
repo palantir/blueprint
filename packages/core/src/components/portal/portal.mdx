@@ -48,7 +48,7 @@ components which use portals (popovers, tooltips, dialogs, etc.). You can do so 
 (usually, this should be done near the root of your application).
 
 ```tsx
-import { Button, Popover, PortalProvider } from "@blueprintjs/core";
+import { Button, PopoverNext, PortalProvider } from "@blueprintjs/core";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
@@ -56,9 +56,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
     <PortalProvider portalClassName="my-custom-class">
-        <Popover content="My portal has a custom class">
+        <PopoverNext content="My portal has a custom class">
             <Button text="Example" />
-        </Popover>
+        </PopoverNext>
     </PortalProvider>,
 );
 ```

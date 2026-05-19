@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { PureComponent } from "react";
 
-import { DISPLAYNAME_PREFIX, Popover, type Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, PopoverNext, type Props } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";
 
 import * as Classes from "../../common/classes";
@@ -221,7 +221,7 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
     private renderPopover() {
         const { children, preformatted } = this.props;
 
-        // `<Popover>` will always check the content's position on update
+        // `<PopoverNext>` will always check the content's position on update
         // regardless if it is open or not. This negatively affects perf due to
         // layout thrashing. So instead we manage the popover state ourselves
         // and mimic its popover target
@@ -232,19 +232,20 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
-                <Popover
+                <PopoverNext
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     content={popoverContent}
                     isOpen={true}
                     onClose={this.handlePopoverClose}
                     placement="bottom"
                     rootBoundary="document"
+                    shouldReturnFocusOnClose={false}
                 >
                     <More />
-                </Popover>
+                </PopoverNext>
             );
         } else {
-            // NOTE: This structure matches what `<Popover>` does internally. If `<Popover>` changes, this must be updated.
+            // NOTE: This structure matches what `<PopoverNext>` does internally. If `<PopoverNext>` changes, this must be updated.
             return (
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>

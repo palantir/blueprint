@@ -23,8 +23,10 @@ import {
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
     mergeRefs,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverNext,
+    type PopoverNextRef,
+    popoverPropsToNextProps,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -168,7 +170,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
-        popover: React.RefObject<Popover>;
+        popover: React.RefObject<PopoverNextRef>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
@@ -217,14 +219,14 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverNext
                 autoFocus={false}
                 canEscapeKeyClose={true}
                 disabled={disabled}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
-                {...popoverProps}
+                {...popoverPropsToNextProps(popoverProps)}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div
