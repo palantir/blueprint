@@ -13,7 +13,8 @@
             "default": "./lib/cjs/index.js"
         },
         "./styles": "./lib/css/blueprint-layer.css",
-        "./styles-next": "./lib/css/blueprint-next.css"
+        "./styles-next": "./lib/css/blueprint-next.css",
+        "./*": "./*"
     },
     "files": [
         "lib",
