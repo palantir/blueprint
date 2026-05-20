@@ -15,16 +15,12 @@ import {
 } from "@floating-ui/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { PopoverInteractionKind } from "../popover/popoverProps";
-
 import type { PopoverNextPositioningStrategy } from "./middlewareTypes";
 import type { PopoverNextAutoUpdateOptions } from "./popoverNextProps";
 
 interface PopoverOptions {
     autoUpdateOptions?: PopoverNextAutoUpdateOptions;
     disabled?: boolean;
-    hasBackdrop?: boolean;
-    interactionKind?: PopoverInteractionKind;
     isControlled?: boolean;
     isOpen?: boolean;
     middleware?: Middleware[];
@@ -41,8 +37,6 @@ interface UsePopoverReturn extends UseFloatingReturn, UseInteractionsReturn {
 export function usePopover({
     autoUpdateOptions,
     disabled = false,
-    hasBackdrop = false,
-    interactionKind,
     isControlled = false,
     isOpen = false,
     middleware,
@@ -118,16 +112,12 @@ export function usePopover({
         // `useDismiss` attaches a non-stack-aware document keydown listener — enabling both
         // means every stacked popover/tooltip closes on a single Escape.
         escapeKey: false,
-        // Disable Floating UI outside-press in two cases:
-        // 1. CLICK interactions: delegate to Overlay2's stack-aware handler
-        //    (getThisOverlayAndDescendants) so clicks inside child overlays like Dialog
-        //    don't incorrectly close the popover. useDismiss is not overlay-stack-aware
-        //    and treats clicks in portaled child overlays as "outside" clicks.
-        // 2. hasBackdrop: Overlay2 handles backdrop clicks and outside-click detection.
-        outsidePress:
-            interactionKind !== PopoverInteractionKind.CLICK_TARGET_ONLY &&
-            interactionKind !== PopoverInteractionKind.CLICK &&
-            !hasBackdrop,
+        // Outside-press handling lives on Overlay2 (`canOutsideClickClose`), which is
+        // stack-aware via OverlayContext so clicks inside portaled child overlays (e.g. a
+        // Dialog rendered in popover content) don't incorrectly close the popover. Floating
+        // UI's `useDismiss` treats those clicks as "outside" the popover because the child
+        // overlay is rendered outside the popover's DOM subtree.
+        outsidePress: false,
     });
 
     const interactions = useInteractions([click, dismiss]);
