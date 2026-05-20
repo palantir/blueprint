@@ -19,6 +19,7 @@ import sinon from "sinon";
 
 import { Classes, type HTMLInputProps } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { unmountWrappers } from "@blueprintjs/test-commons/vitest-utils";
 
 import {
     areFilmsEqual,
@@ -63,15 +64,12 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
         testProps.onQueryChange.resetHistory();
     });
 
-    afterEach(() => {
-        for (const wrapper of mountedWrappers) {
-            try {
-                wrapper.unmount();
-            } catch {
-                // best-effort
-            }
+    afterEach(async () => {
+        try {
+            await unmountWrappers(mountedWrappers);
+        } finally {
+            mountedWrappers = [];
         }
-        mountedWrappers = [];
     });
 
     describe("common behavior", () => {

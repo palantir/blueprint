@@ -22,7 +22,7 @@ import {
     type ButtonVariant,
     H5,
     type IconName,
-    Popover,
+    PopoverNext,
     type Size,
     Switch,
     TextAlignment,
@@ -82,8 +82,8 @@ const PopoverButton: React.FC<{ text: string; iconName: IconName; vertical: bool
 }) => {
     const endIconName: IconName = vertical ? IconNames.CARET_RIGHT : IconNames.CARET_DOWN;
     return (
-        <Popover content={<FileMenu />} placement={vertical ? "right-start" : "bottom-start"}>
+        <PopoverNext content={<FileMenu />} placement={vertical ? "right-start" : "bottom-start"}>
             <Button endIcon={endIconName} icon={iconName} text={text} />
-        </Popover>
+        </PopoverNext>
     );
 };
