@@ -122,16 +122,16 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
 
     const handleGlobalKeyDown = useCallback(
         (e: KeyboardEvent) => {
-            // special case for global keydown: if the dialog combo is pressed, open the hotkeys dialog
             const combo = getKeyCombo(e);
-            const isTextInput = elementIsTextInput(e.target as HTMLElement);
-            const dialogComboMatched =
-                showDialogKeyCombo !== false && comboMatches(parseKeyCombo(showDialogKeyCombo), combo);
-            if (!isTextInput && dialogComboMatched) {
-                dispatch({ type: "OPEN_DIALOG" });
-            } else {
-                invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyDown", e);
+            // special case for global keydown: if the dialog combo is pressed, open the hotkeys dialog
+            if (showDialogKeyCombo !== false) {
+                const isTextInput = elementIsTextInput(e.target as HTMLElement);
+                if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
+                    dispatch({ type: "OPEN_DIALOG" });
+                    return;
+                }
             }
+            invokeNamedCallbackIfComboRecognized(true, combo, "onKeyDown", e);
         },
         [dispatch, invokeNamedCallbackIfComboRecognized, showDialogKeyCombo],
     );
