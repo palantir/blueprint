@@ -134,8 +134,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const floatingData = usePopover({
         autoUpdateOptions,
         disabled,
-        hasBackdrop,
-        interactionKind,
         isControlled,
         isOpen: computedIsOpen,
         middleware,
