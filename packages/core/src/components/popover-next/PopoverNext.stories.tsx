@@ -5,10 +5,15 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useCallback, useRef } from "react";
 import { useArgs } from "storybook/preview-api";
+import { expect, screen, waitFor } from "storybook/test";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
+import { Dialog } from "../dialog/dialog";
+import { DialogBody } from "../dialog/dialogBody";
+import { DialogFooter } from "../dialog/dialogFooter";
 import { ControlGroup } from "../forms/controlGroup";
+import { Checkbox, Radio } from "../forms/controls";
 import { InputGroup } from "../forms/inputGroup";
 import { Code } from "../html/html";
 import { HTMLSelect } from "../html-select/htmlSelect";
@@ -760,5 +765,155 @@ export const BoundaryExample: Story = {
                 </div>
             </div>
         );
+    },
+};
+
+/**
+ * A popover can open a Dialog from within its content. Even though the dialog is
+ * rendered in a portal outside the popover, PopoverNext recognizes it as a child
+ * overlay and stays open while the dialog is on screen. Closing the dialog leaves
+ * the popover open so the user can take further actions.
+ */
+export const OpensDialog: Story = {
+    name: "Opens Dialog",
+    render: function RenderOpensDialog(args) {
+        const [{ isOpen, dialogOpen }, updateArgs] = useArgs<{ isOpen?: boolean; dialogOpen?: boolean }>();
+        const handleInteraction = useCallback(
+            (nextOpenState: boolean) => updateArgs({ isOpen: nextOpenState }),
+            [updateArgs],
+        );
+        const openDialog = useCallback(() => updateArgs({ dialogOpen: true }), [updateArgs]);
+        const closeDialog = useCallback(() => updateArgs({ dialogOpen: false }), [updateArgs]);
+        return (
+            <>
+                <PopoverNext
+                    {...args}
+                    isOpen={isOpen}
+                    onInteraction={handleInteraction}
+                    content={
+                        <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+                            <span>Choose an action</span>
+                            <Button text="Edit details" icon="edit" onClick={openDialog} />
+                        </div>
+                    }
+                >
+                    <Button text="Open menu" endIcon="caret-down" />
+                </PopoverNext>
+                <Dialog isOpen={dialogOpen === true} title="Edit details" onClose={closeDialog} usePortal={true}>
+                    <DialogBody>
+                        <p>This dialog was launched from inside a popover. The popover remains open behind it.</p>
+                        <Checkbox label={"Clickable"} />
+                        <Checkbox label={"Options"} />
+                    </DialogBody>
+                    <DialogFooter
+                        actions={
+                            <>
+                                <Button text="Cancel" onClick={closeDialog} />
+                                <Button text="Save" intent="primary" onClick={closeDialog} />
+                            </>
+                        }
+                    />
+                </Dialog>
+            </>
+        );
+    },
+    args: {
+        isOpen: false,
+    },
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Open the popover", async () => {
+            await userEvent.click(canvas.getByRole("button", { name: "Open menu" }));
+            await waitFor(() => expect(screen.getByRole("button", { name: /Edit details/ })).toBeVisible());
+        });
+
+        await step("Open the dialog from inside the popover", async () => {
+            await userEvent.click(screen.getByRole("button", { name: /Edit details/ }));
+            await waitFor(() => expect(screen.getByRole("dialog")).toBeVisible());
+        });
+
+        await step("Popover remains open while dialog is on screen", async () => {
+            await expect(screen.getByPlaceholderText("Enter a value...")).toBeInTheDocument();
+            await expect(screen.getByRole("button", { name: /Edit details/ })).toBeVisible();
+        });
+
+        await step("Clicking inside the dialog does not close the popover", async () => {
+            await userEvent.click(screen.getByPlaceholderText("Enter a value..."));
+            await expect(screen.getByRole("dialog")).toBeVisible();
+            await expect(screen.getByRole("button", { name: /Edit details/ })).toBeVisible();
+        });
+
+        await step("Closing the dialog leaves the popover open", async () => {
+            await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+            await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+            await expect(screen.getByRole("button", { name: /Edit details/ })).toBeVisible();
+        });
+    },
+};
+
+/**
+ * The same child-overlay handling applies when the popover is triggered by hover.
+ * Moving the cursor into a dialog launched from the popover does not count as moving
+ * away from the popover, so the popover stays open while the dialog is on screen.
+ */
+export const OpensDialogOnHover: Story = {
+    name: "Opens Dialog (Hover)",
+    render: function RenderOpensDialogOnHover(args) {
+        const [{ isOpen, dialogOpen }, updateArgs] = useArgs<{ isOpen?: boolean; dialogOpen?: boolean }>();
+        const openDialog = useCallback(() => updateArgs({ dialogOpen: true }), [updateArgs]);
+        const closeDialog = useCallback(() => updateArgs({ dialogOpen: false }), [updateArgs]);
+
+        const handleInteraction = useCallback(
+            (nextOpenState: boolean) => updateArgs({ isOpen: nextOpenState }),
+            [updateArgs],
+        );
+
+        return (
+            <>
+                <PopoverNext
+                    {...args}
+                    isOpen={isOpen}
+                    onInteraction={handleInteraction}
+                    interactionKind={PopoverInteractionKind.HOVER}
+                    content={
+                        <div style={{ padding: 16, display: "flex", flexDirection: "column", gap: 8 }}>
+                            <span>Hover-triggered popover</span>
+                            <Button text="Open settings" icon="cog" onClick={openDialog} />
+                        </div>
+                    }
+                >
+                    <Button text="Hover me" />
+                </PopoverNext>
+                <Dialog isOpen={dialogOpen === true} title="Settings" onClose={closeDialog} usePortal={true}>
+                    <DialogBody>
+                        <p>Clicking inside this dialog does not dismiss the hover-triggered popover behind it.</p>
+                        <Checkbox label={"Clickable"} />
+                        <Checkbox label={"Options"} />
+                    </DialogBody>
+                    <DialogFooter actions={<Button text="Done" intent="primary" onClick={closeDialog} />} />
+                </Dialog>
+            </>
+        );
+    },
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Hover the target to open the popover", async () => {
+            await userEvent.hover(canvas.getByRole("button", { name: "Hover me" }));
+            await waitFor(() => expect(screen.getByRole("button", { name: /Open settings/ })).toBeVisible());
+        });
+
+        await step("Click the popover action to open the dialog", async () => {
+            await userEvent.click(screen.getByRole("button", { name: /Open settings/ }));
+            await waitFor(() => expect(screen.getByRole("dialog")).toBeVisible());
+        });
+
+        await step("Popover stays open while dialog is on screen", async () => {
+            await waitFor(() => expect(screen.getByRole("dialog")).toBeVisible());
+            await expect(screen.getByRole("button", { name: /Open settings/ })).toBeVisible();
+        });
+
+        await step("Close the dialog — popover remains open", async () => {
+            await userEvent.click(screen.getByRole("button", { name: "Done" }));
+            await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+            await expect(screen.getByRole("button", { name: /Open settings/ })).toBeVisible();
+        });
     },
 };
