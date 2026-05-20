@@ -13,7 +13,7 @@ import { Dialog } from "../dialog/dialog";
 import { DialogBody } from "../dialog/dialogBody";
 import { DialogFooter } from "../dialog/dialogFooter";
 import { ControlGroup } from "../forms/controlGroup";
-import { Checkbox, Radio } from "../forms/controls";
+import { Checkbox } from "../forms/controls";
 import { InputGroup } from "../forms/inputGroup";
 import { Code } from "../html/html";
 import { HTMLSelect } from "../html-select/htmlSelect";
