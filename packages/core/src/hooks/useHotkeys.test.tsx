@@ -33,9 +33,16 @@ interface TestComponentProps extends TestComponentContainerProps {
 interface TestComponentContainerProps {
     bindExtraKeys?: boolean;
     isInputReadOnly?: boolean;
+    showDialogKeyCombo?: string | false;
 }
 
-const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputReadOnly, onKeyA, onKeyB }) => {
+const TestComponent: React.FC<TestComponentProps> = ({
+    bindExtraKeys,
+    isInputReadOnly,
+    onKeyA,
+    onKeyB,
+    showDialogKeyCombo,
+}) => {
     const hotkeys = useMemo(() => {
         const keys = [
             {
@@ -68,7 +75,7 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
         return keys;
     }, [bindExtraKeys, onKeyA, onKeyB]);
 
-    const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
+    const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys, { showDialogKeyCombo });
 
     return (
         <div onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
@@ -193,6 +200,33 @@ describe("useHotkeys", () => {
                 </HotkeysProvider>,
             );
             expect(warnSpy).not.toHaveBeenCalled();
+        });
+    });
+
+    describe("showDialogKeyCombo", () => {
+        it("opens the help dialog when the default combo (?) is pressed", async () => {
+            const user = userEvent.setup();
+            render(
+                <HotkeysProvider>
+                    <TestComponentContainer />
+                </HotkeysProvider>,
+            );
+            expect(screen.queryByRole("dialog")).toBeNull();
+            screen.getByTestId("target-outside-component").focus();
+            await user.keyboard("{Shift>}/{/Shift}");
+            expect(await screen.findByRole("dialog")).toBeInTheDocument();
+        });
+
+        it("does not open the help dialog when showDialogKeyCombo is false", async () => {
+            const user = userEvent.setup();
+            render(
+                <HotkeysProvider>
+                    <TestComponentContainer showDialogKeyCombo={false} />
+                </HotkeysProvider>,
+            );
+            screen.getByTestId("target-outside-component").focus();
+            await user.keyboard("{Shift>}/{/Shift}");
+            expect(screen.queryByRole("dialog")).toBeNull();
         });
     });
 });
