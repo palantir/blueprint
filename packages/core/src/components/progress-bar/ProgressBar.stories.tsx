@@ -1,8 +1,11 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Intent } from "../../common";
 
@@ -11,38 +14,21 @@ import { ProgressBar } from "./progressBar";
 const meta: Meta<typeof ProgressBar> = {
     title: "Core/ProgressBar",
     component: ProgressBar,
-    decorators: [
-        Story => (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    minWidth: "400px",
-                    width: "100%",
-                }}
-            >
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
-        intent: "none",
         animate: true,
+        intent: Intent.NONE,
         stripes: true,
         value: undefined,
     },
     argTypes: {
+        animate: {
+            control: "boolean",
+        },
         intent: {
             control: "select",
             options: Object.values(Intent),
-        },
-        animate: {
-            control: "boolean",
         },
         stripes: {
             control: "boolean",
@@ -68,16 +54,17 @@ export const IntentExample: Story = {
     name: "Intent",
     argTypes: {
         intent: { table: { disable: true } },
+        value: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
             {Object.values(Intent).map(intent => (
-                <div key={intent} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <span style={{ fontSize: 12, opacity: 0.6, textTransform: "capitalize" }}>{intent}</span>
+                <Flex key={intent} flexDirection="column" gap={1}>
+                    <StoryLabel title={intent} />
                     <ProgressBar {...args} intent={intent} value={0.6} />
-                </div>
+                </Flex>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -85,51 +72,51 @@ export const IntentExample: Story = {
  * Use the `value` prop to show determinate progress. Omit it for an indeterminate bar that fills entirely.
  * Toggle `animate` and `stripes` to control visual feedback.
  */
-export const StateExample: Story = {
-    name: "State",
+export const ValueExample: Story = {
+    name: "Value",
     argTypes: {
-        value: { table: { disable: true } },
         animate: { table: { disable: true } },
         stripes: { table: { disable: true } },
+        value: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>Indeterminate</span>
+        <Flex flexDirection="column" gap={4} style={{ width: "100%" }}>
+            <Flex flexDirection="column" gap={1}>
+                <StoryLabel title="Indeterminate" />
                 <ProgressBar {...args} value={undefined} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>0%</span>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
+                <StoryLabel title="0%" />
                 <ProgressBar {...args} value={0} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>50%</span>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
+                <StoryLabel title="50%" />
                 <ProgressBar {...args} value={0.5} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>100%</span>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
+                <StoryLabel title="100%" />
                 <ProgressBar {...args} value={1} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>No stripes</span>
-                <ProgressBar {...args} value={0.6} stripes={false} />
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                <span style={{ fontSize: 12, opacity: 0.6 }}>No animation</span>
-                <ProgressBar {...args} value={0.6} animate={false} />
-            </div>
-        </div>
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
+                <StoryLabel title="No stripes" />
+                <ProgressBar {...args} stripes={false} value={0.6} />
+            </Flex>
+            <Flex flexDirection="column" gap={1}>
+                <StoryLabel title="No animation" />
+                <ProgressBar {...args} animate={false} value={0.6} />
+            </Flex>
+        </Flex>
     ),
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
     args: {
-        intent: "primary",
-        value: 0.65,
         animate: true,
+        intent: Intent.PRIMARY,
         stripes: true,
+        value: 0.65,
     },
 };
