@@ -2,9 +2,9 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import classNames from "classnames";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import classNames from "classnames";
 import { expect, screen, waitFor } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
