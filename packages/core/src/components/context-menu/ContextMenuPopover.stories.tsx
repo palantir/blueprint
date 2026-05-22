@@ -4,6 +4,7 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useArgs, useCallback } from "storybook/preview-api";
+import { expect, screen, waitFor } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
@@ -117,4 +118,22 @@ export const DarkTheme: Story = {
  */
 export const Playground: Story = {
     render: ContextMenuPopoverStoryRender,
+};
+
+/**
+ * Demonstrates the popover opening on click. The play function simulates a left-click
+ * at the center of the trigger button, which sets `targetOffset` to those coordinates.
+ */
+export const ClickToOpen: Story = {
+    name: "Click To Open",
+    render: ContextMenuPopoverStoryRender,
+    play: async ({ canvas, userEvent, step }) => {
+        await step("Click button to open menu at click location", async () => {
+            const target = canvas.getByRole("button", { name: "Click to open menu" });
+            const rect = target.getBoundingClientRect();
+            const coords = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 };
+            await userEvent.pointer({ keys: "[MouseLeft]", target, coords });
+            await waitFor(() => expect(screen.getByText("Select all")).toBeVisible());
+        });
+    },
 };

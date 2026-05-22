@@ -49,7 +49,7 @@ const TARGET_STYLE: React.CSSProperties = {
 const disabledArgs = ["children"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof ContextMenu>>;
 
 const meta: Meta<typeof ContextMenu> = {
-    title: "Core/ContextMenu",
+    title: "Core/Context Menu/ContextMenu",
     component: ContextMenu,
     decorators: [storybookLayoutDecorator],
     args: {
@@ -226,7 +226,9 @@ export const RightClickOpen: Story = {
     play: async ({ canvas, userEvent, step }) => {
         await step("Right-click target to open menu", async () => {
             const target = canvas.getByText("Right-click to open menu");
-            await userEvent.pointer({ keys: "[MouseRight>]", target });
+            const rect = target.getBoundingClientRect();
+            const coords = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 };
+            await userEvent.pointer({ keys: "[MouseRight]", target, coords });
             await waitFor(() => expect(screen.getByText("Select all")).toBeVisible());
         });
     },
@@ -244,7 +246,9 @@ export const DisabledNoOpen: Story = {
     play: async ({ canvas, userEvent, step }) => {
         await step("Right-click disabled target — menu does not open", async () => {
             const target = canvas.getByText("Disabled target");
-            await userEvent.pointer({ keys: "[MouseRight>]", target });
+            const rect = target.getBoundingClientRect();
+            const coords = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 };
+            await userEvent.pointer({ keys: "[MouseRight]", target, coords });
             await expect(screen.queryByText("Select all")).not.toBeInTheDocument();
         });
     },
