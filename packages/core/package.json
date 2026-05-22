@@ -10,11 +10,15 @@
     "exports": {
         ".": {
             "types": "./lib/esm/index.d.ts",
+            "import": "./lib/esm/index.js",
             "default": "./lib/cjs/index.js"
         },
         "./styles": "./lib/css/blueprint-layer.css",
         "./styles-next": "./lib/css/blueprint-next.css",
-        "./*": "./*"
+        "./*": {
+            "types": "./*",
+            "default": "./*"
+        }
     },
     "files": [
         "lib",
