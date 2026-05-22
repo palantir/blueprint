@@ -24,8 +24,6 @@ const SAMPLE_MENU = (
     </Menu>
 );
 
-const DEFAULT_OFFSET = { left: 200, top: 200 };
-
 const meta: Meta<typeof ContextMenuPopover> = {
     title: "Core/Context Menu/ContextMenuPopover",
     component: ContextMenuPopover,
@@ -38,8 +36,7 @@ const meta: Meta<typeof ContextMenuPopover> = {
     ],
     args: {
         content: SAMPLE_MENU,
-        isOpen: true,
-        targetOffset: DEFAULT_OFFSET,
+        isOpen: false,
         transitionDuration: 0,
         isDarkTheme: false,
     },
@@ -47,6 +44,7 @@ const meta: Meta<typeof ContextMenuPopover> = {
         content: { control: false },
         isOpen: { control: "boolean" },
         isDarkTheme: { control: "boolean" },
+        targetOffset: { control: false },
         onClose: { action: "closed" },
     },
 } satisfies Meta<typeof ContextMenuPopover>;
@@ -56,20 +54,27 @@ type Story = StoryObj<typeof meta>;
 
 function ContextMenuPopoverStoryRender(args: ContextMenuPopoverProps) {
     const [, updateArgs] = useArgs();
-    const handleOpen = useCallback(() => updateArgs({ isOpen: true }), [updateArgs]);
+    const handleOpen = useCallback(
+        (event: React.MouseEvent<HTMLElement>) =>
+            updateArgs({
+                isOpen: true,
+                targetOffset: { left: event.clientX, top: event.clientY },
+            }),
+        [updateArgs],
+    );
     const handleClose = useCallback(() => updateArgs({ isOpen: false }), [updateArgs]);
     return (
         <>
-            <Button text="Open Context Menu" onClick={handleOpen} />
+            <Button text="Click to open menu" onClick={handleOpen} />
             <ContextMenuPopover {...args} onClose={handleClose} />
         </>
     );
 }
 
 /**
- * A basic controlled context menu popover anchored at a fixed `targetOffset`.
- * Unlike `ContextMenu`, this lower-level component does not wire up its own
- * right-click handler — you control its open state directly.
+ * A basic controlled context menu popover. Click the button to open the menu
+ * anchored at the click location. Unlike `ContextMenu`, this lower-level component
+ * does not wire up its own right-click handler — you control its open state directly.
  */
 export const Default: Story = {
     render: ContextMenuPopoverStoryRender,
@@ -108,7 +113,7 @@ export const DarkTheme: Story = {
 };
 
 /**
- * Interactive playground — toggle `isOpen` and adjust other props via the controls panel.
+ * Interactive playground — click the button to open the menu, then adjust props via the controls panel.
  */
 export const Playground: Story = {
     render: ContextMenuPopoverStoryRender,
