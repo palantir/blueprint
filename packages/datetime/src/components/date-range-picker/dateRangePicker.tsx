@@ -268,14 +268,9 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         newTimeRange[dateIndex] = newTime;
 
         if (newDateRange[0] != null && newDateRange[1] != null && newDateRange[0] > newDateRange[1]) {
-        const temp = newDateRange[0];
-        newDateRange[0] = newDateRange[1];
-        newDateRange[1] = temp;
-
-        const tempTime = newTimeRange[0];
-        newTimeRange[0] = newTimeRange[1];
-        newTimeRange[1] = tempTime;
-    }
+            [newDateRange[0], newDateRange[1]] = [newDateRange[1], newDateRange[0]];
+            [newTimeRange[0], newTimeRange[1]] = [newTimeRange[1], newTimeRange[0]];
+        }
 
         this.props.onChange?.(newDateRange);
         this.setState({ time: newTimeRange, value: newDateRange });
