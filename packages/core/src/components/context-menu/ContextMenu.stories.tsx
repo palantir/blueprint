@@ -62,6 +62,11 @@ const meta: Meta<typeof ContextMenu> = {
         tagName: { control: "text" },
         onContextMenu: { action: "context-menu-opened" },
         onClose: { action: "closed" },
+        popoverProps: { table: { disable: true } },
+        onOpening: { table: { disable: true } },
+        onOpened: { table: { disable: true } },
+        onClosing: { table: { disable: true } },
+        onClosed: { table: { disable: true } },
         ...disabledArgs.reduce(
             (acc, argName) => {
                 acc[argName] = { table: { disable: true } };

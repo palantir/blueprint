@@ -45,8 +45,16 @@ const meta: Meta<typeof ContextMenuPopover> = {
         content: { control: false },
         isOpen: { control: "boolean" },
         isDarkTheme: { control: "boolean" },
-        targetOffset: { control: false },
+        targetOffset: { table: { disable: true } },
         onClose: { action: "closed" },
+        onOpening: { table: { disable: true } },
+        onOpened: { table: { disable: true } },
+        onClosing: { table: { disable: true } },
+        onClosed: { table: { disable: true } },
+        popoverClassName: { table: { disable: true } },
+        popoverRef: { table: { disable: true } },
+        rootBoundary: { table: { disable: true } },
+        transitionDuration: { table: { disable: true } },
     },
 } satisfies Meta<typeof ContextMenuPopover>;
 
