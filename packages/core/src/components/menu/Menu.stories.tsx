@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 
 import { Intent, Size } from "../../common";
 
@@ -14,15 +15,9 @@ import { MenuItem } from "./menuItem";
 const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Menu>>;
 
 const meta: Meta<typeof Menu> = {
-    title: "Core/Menu",
+    title: "Core/Menu/Menu",
     component: Menu,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
     },
