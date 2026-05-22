@@ -5,6 +5,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { type ComponentProps, type CSSProperties, useCallback } from "react";
 import { useArgs } from "storybook/preview-api";
+import { expect, screen, waitFor } from "storybook/test";
 
 import { Classes } from "../../common";
 import { Button } from "../button/buttons";
@@ -32,6 +33,8 @@ const meta = {
         autoFocus: true,
         enforceFocus: true,
         usePortal: true,
+        transitionDuration: 0,
+        transitionName: "no-transition",
     },
     argTypes: {
         hasBackdrop: { control: "boolean" },
@@ -96,7 +99,6 @@ export const Default: Story = {
 
 /**
  * An overlay without a backdrop. Users can still interact with the content behind the overlay.
- * The overlay closes when clicking outside of its content area.
  */
 export const WithoutBackdrop: Story = {
     name: "Without Backdrop",
@@ -170,9 +172,8 @@ export const InlineOverlay: Story = {
 
 /**
  * Demonstrates `autoFocus` behavior. When enabled (the default), focus moves inside the
- * overlay on open — specifically to an internal focus trap element, not the first interactive
- * child. Press Tab once after opening to reach the first input. Toggle the `autoFocus` control
- * to `false` to see that focus stays on the trigger button instead.
+ * overlay on open. Toggle `autoFocus` to `false` to see that focus stays on the trigger
+ * button instead.
  */
 export const AutoFocus: Story = {
     name: "Auto Focus",
@@ -204,8 +205,7 @@ export const AutoFocus: Story = {
 
 /**
  * When `enforceFocus` is enabled (the default), the overlay traps keyboard focus inside its
- * content. Open the overlay, then press Tab repeatedly — focus wraps from the last focusable
- * element back to the first. Press Shift+Tab at the first element to wrap to the last.
+ * content. Tab and Shift+Tab wrap around the focusable elements.
  */
 export const EnforceFocus: Story = {
     name: "Enforce Focus (Focus Trap)",
@@ -236,8 +236,6 @@ export const EnforceFocus: Story = {
 
 /**
  * When `enforceFocus` is disabled, focus can leave the overlay and reach elements behind it.
- * Open the overlay, then Tab past the "Close" button — focus should reach the background input.
- * Compare with the "Enforce Focus" story above.
  */
 export const WithoutEnforceFocus: Story = {
     name: "Without Enforce Focus",
@@ -270,8 +268,7 @@ export const WithoutEnforceFocus: Story = {
 
 /**
  * When `shouldReturnFocusOnClose` is enabled (the default), focus returns to the element
- * that had focus before the overlay opened. Open the overlay, then press Escape — focus
- * should return to the "Open Overlay" button (not "Before" or "After").
+ * that had focus before the overlay opened.
  */
 export const ReturnFocusOnClose: Story = {
     name: "Return Focus on Close",
@@ -303,8 +300,6 @@ export const ReturnFocusOnClose: Story = {
 
 /**
  * When `canEscapeKeyClose` is true (the default), pressing Escape closes the overlay.
- * Toggle the control to disable Escape-to-close — the overlay can then only be closed
- * by clicking the Close button or the backdrop.
  */
 export const EscapeKeyClose: Story = {
     name: "Escape Key Close",
@@ -332,7 +327,7 @@ export const EscapeKeyClose: Story = {
 };
 
 /**
- * Interactive playground with all props toggleable via Storybook controls.
+ * Interactive playground with all props.
  */
 export const Playground: Story = {
     render: function RenderPlayground(args) {
@@ -351,5 +346,80 @@ export const Playground: Story = {
                 </Overlay2>
             </>
         );
+    },
+};
+
+/**
+ * Clicking the trigger button opens the overlay.
+ */
+export const OpenOnClick: Story = {
+    name: "Open on Click",
+    ...Default,
+    play: async ({ canvas, userEvent }) => {
+        await userEvent.click(canvas.getByRole("button", { name: "Open Overlay" }));
+        await waitFor(() => expect(screen.getByText("Overlay Content")).toBeVisible());
+        await userEvent.keyboard("{Escape}");
+    },
+};
+
+/**
+ * Pressing Escape closes an open overlay.
+ */
+export const CloseOnEscape: Story = {
+    name: "Close on Escape",
+    ...Default,
+    play: async ({ canvas, userEvent }) => {
+        await userEvent.click(canvas.getByRole("button", { name: "Open Overlay" }));
+        await waitFor(() => expect(screen.getByText("Overlay Content")).toBeVisible());
+        await userEvent.keyboard("{Escape}");
+        await waitFor(() => expect(screen.queryByText("Overlay Content")).not.toBeInTheDocument());
+    },
+};
+
+/**
+ * Typing into an input inside the overlay updates its value.
+ */
+export const TypeIntoInput: Story = {
+    name: "Type into Input",
+    ...EscapeKeyClose,
+    play: async ({ canvas, userEvent }) => {
+        await userEvent.click(canvas.getByRole("button", { name: "Open Overlay" }));
+        const input = await screen.findByPlaceholderText<HTMLInputElement>("Type here, then press Escape");
+        await userEvent.click(input);
+        await userEvent.type(input, "hello");
+        await expect(input).toHaveValue("hello");
+        await userEvent.keyboard("{Escape}");
+    },
+};
+
+/**
+ * With `enforceFocus`, Tab moves focus from the overlay's container into the first user-focusable element.
+ */
+export const TabIntoFocusTrap: Story = {
+    name: "Tab into Focus Trap",
+    ...EnforceFocus,
+    play: async ({ canvas, userEvent }) => {
+        await userEvent.click(canvas.getByRole("button", { name: "Open Overlay" }));
+        const field1 = await screen.findByPlaceholderText("Field 1");
+        await userEvent.tab();
+        await userEvent.tab();
+        await waitFor(() => expect(document.activeElement).toBe(field1));
+        await userEvent.keyboard("{Escape}");
+    },
+};
+
+/**
+ * With `shouldReturnFocusOnClose`, closing the overlay restores focus to the trigger.
+ */
+export const RestoreFocusOnClose: Story = {
+    name: "Restore Focus on Close",
+    ...ReturnFocusOnClose,
+    play: async ({ canvas, userEvent }) => {
+        const trigger = canvas.getByRole("button", { name: "Open Overlay" });
+        trigger.focus();
+        await userEvent.keyboard("{Enter}");
+        await waitFor(() => expect(screen.getByText("Return Focus on Close")).toBeVisible());
+        await userEvent.keyboard("{Escape}");
+        await waitFor(() => expect(document.activeElement).toBe(trigger));
     },
 };
