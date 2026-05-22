@@ -1,22 +1,23 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 
 import { HTMLTable } from "./htmlTable";
 
-const sampleRows = [
+const SAMPLE_ROWS = [
     { name: "Blueprint", role: "UI Framework", location: "GitHub" },
     { name: "TSX", role: "Type-safe JSX", location: "TypeScript" },
     { name: "Sass", role: "CSS Preprocessor", location: "Node" },
     { name: "Storybook", role: "Component Explorer", location: "Browser" },
     { name: "React", role: "View Library", location: "npm" },
-];
+] as const;
 
-function renderTable(props: React.ComponentProps<typeof HTMLTable>) {
+function TableContents() {
     return (
-        <HTMLTable {...props}>
+        <>
             <thead>
                 <tr>
                     <th>Project</th>
@@ -25,7 +26,7 @@ function renderTable(props: React.ComponentProps<typeof HTMLTable>) {
                 </tr>
             </thead>
             <tbody>
-                {sampleRows.map(row => (
+                {SAMPLE_ROWS.map(row => (
                     <tr key={row.name}>
                         <td>{row.name}</td>
                         <td>{row.role}</td>
@@ -33,23 +34,14 @@ function renderTable(props: React.ComponentProps<typeof HTMLTable>) {
                     </tr>
                 ))}
             </tbody>
-        </HTMLTable>
+        </>
     );
 }
 
 const meta: Meta<typeof HTMLTable> = {
     title: "Core/HTMLTable",
     component: HTMLTable,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "400px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         bordered: false,
@@ -72,83 +64,67 @@ type Story = StoryObj<typeof meta>;
  * A basic HTML table with default styling.
  */
 export const Default: Story = {
-    render: args => renderTable(args),
-};
-
-/**
- * Use the `bordered`, `compact`, `interactive`, and `striped` props to control table appearance.
- */
-export const StateExample: Story = {
-    name: "State",
-    argTypes: {
-        bordered: { table: { disable: true } },
-        compact: { table: { disable: true } },
-        interactive: { table: { disable: true } },
-        striped: { table: { disable: true } },
-    },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Bordered</div>
-                {renderTable({ ...args, bordered: true })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Compact</div>
-                {renderTable({ ...args, compact: true })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Striped</div>
-                {renderTable({ ...args, striped: true })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Interactive (hover rows)</div>
-                {renderTable({ ...args, interactive: true })}
-            </div>
-        </div>
+        <HTMLTable {...args}>
+            <TableContents />
+        </HTMLTable>
     ),
 };
 
 /**
- * All prop combinations displayed together for visual comparison.
+ * Use the `bordered` prop to add borders between rows and cells.
  */
-export const AllCombinations: Story = {
-    name: "All Combinations",
-    argTypes: {
-        bordered: { table: { disable: true } },
-        compact: { table: { disable: true } },
-        interactive: { table: { disable: true } },
-        striped: { table: { disable: true } },
-    },
+export const BorderedExample: Story = {
+    name: "Bordered",
+    argTypes: { bordered: { table: { disable: true } } },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Default</div>
-                {renderTable(args)}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Bordered + Striped</div>
-                {renderTable({ ...args, bordered: true, striped: true })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Bordered + Compact</div>
-                {renderTable({ ...args, bordered: true, compact: true })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>Bordered + Striped + Interactive</div>
-                {renderTable({ ...args, bordered: true, striped: true, interactive: true })}
-            </div>
-            <div>
-                <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>
-                    Bordered + Striped + Compact + Interactive
-                </div>
-                {renderTable({ ...args, bordered: true, striped: true, compact: true, interactive: true })}
-            </div>
-        </div>
+        <HTMLTable {...args} bordered={true}>
+            <TableContents />
+        </HTMLTable>
     ),
 };
 
 /**
- * Interactive playground with all props togglable via Storybook controls.
+ * Use the `striped` prop to apply an alternate background color on odd-numbered rows.
+ */
+export const StripedExample: Story = {
+    name: "Striped",
+    argTypes: { striped: { table: { disable: true } } },
+    render: args => (
+        <HTMLTable {...args} striped={true}>
+            <TableContents />
+        </HTMLTable>
+    ),
+};
+
+/**
+ * Use the `compact` prop for a denser appearance with less padding.
+ */
+export const CompactExample: Story = {
+    name: "Compact",
+    argTypes: { compact: { table: { disable: true } } },
+    render: args => (
+        <HTMLTable {...args} compact={true}>
+            <TableContents />
+        </HTMLTable>
+    ),
+};
+
+/**
+ * Use the `interactive` prop to enable hover styles on rows.
+ */
+export const InteractiveExample: Story = {
+    name: "Interactive",
+    argTypes: { interactive: { table: { disable: true } } },
+    render: args => (
+        <HTMLTable {...args} interactive={true}>
+            <TableContents />
+        </HTMLTable>
+    ),
+};
+
+/**
+ * Interactive playground with all props toggleable via Storybook controls.
  */
 export const Playground: Story = {
     args: {
@@ -157,5 +133,9 @@ export const Playground: Story = {
         interactive: true,
         striped: true,
     },
-    render: args => renderTable(args),
+    render: args => (
+        <HTMLTable {...args}>
+            <TableContents />
+        </HTMLTable>
+    ),
 };
