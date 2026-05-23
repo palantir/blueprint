@@ -1,20 +1,11 @@
-#### Fixes #0000
+## Before this PR
+<!-- What's wrong with the current state of the world and why change it now? -->
 
-#### Checklist
+## After this PR
+<!-- User-facing outcomes this PR delivers go below -->
+==COMMIT_MSG==
+==COMMIT_MSG==
 
-- [ ] Includes tests
-- [ ] Update documentation
+## Possible downsides?
+<!-- Please describe any way users could be negatively affected by this PR. -->
 
-<!-- DO NOT enable CircleCI for your fork. Our build will run when you open this PR. -->
-
-#### Changes proposed in this pull request:
-
-<!-- Fill this out. -->
-
-#### Reviewers should focus on:
-
-<!-- Fill this out. -->
-
-#### Screenshot
-
-<!-- Include an image of the most relevant user-facing change, if any. -->
