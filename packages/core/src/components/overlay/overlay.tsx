@@ -27,7 +27,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
-import { getActiveElement, isFunction } from "../../common/utils";
+import { getActiveElement, isFunction, isReactElement } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 import type { OverlayProps } from "./overlayProps";
@@ -83,10 +83,10 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     /** Ref for container element, containing all children and the backdrop */
     public containerElement = createRef<HTMLDivElement>();
 
-    // An empty, keyboard-focusable div at the beginning of the Overlay content
+    /** An empty, keyboard-focusable div at the beginning of the Overlay content */
     private startFocusTrapElement = createRef<HTMLDivElement>();
 
-    // An empty, keyboard-focusable div at the end of the Overlay content
+    /** An empty, keyboard-focusable div at the end of the Overlay content */
     private endFocusTrapElement = createRef<HTMLDivElement>();
 
     public render() {
@@ -108,7 +108,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         }
         if (isOpen && (autoFocus || enforceFocus) && childrenWithTransitions.length > 0) {
             childrenWithTransitions.unshift(
-                this.renderDummyElement("__start", {
+                this.renderFocusTrap("__start", {
                     className: Classes.OVERLAY_START_FOCUS_TRAP,
                     onFocus: this.handleStartFocusTrapElementFocus,
                     onKeyDown: this.handleStartFocusTrapElementKeyDown,
@@ -117,7 +117,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             );
             if (enforceFocus) {
                 childrenWithTransitions.push(
-                    this.renderDummyElement("__end", {
+                    this.renderFocusTrap("__end", {
                         className: Classes.OVERLAY_END_FOCUS_TRAP,
                         onFocus: this.handleEndFocusTrapElementFocus,
                         ref: this.endFocusTrapElement,
@@ -216,17 +216,13 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
 
         // decorate the child with a few injected props
         const tabIndex = this.props.enforceFocus || this.props.autoFocus ? 0 : undefined;
-        const decoratedChild =
-            typeof child === "object" ? (
-                cloneElement(child as React.ReactElement, {
-                    className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
-                    tabIndex,
-                })
-            ) : (
-                <span className={Classes.OVERLAY_CONTENT} tabIndex={tabIndex}>
-                    {child}
-                </span>
-            );
+        const decoratedChild = isReactElement(child) ? (
+            cloneElement(child, { className: classNames(child.props.className, Classes.OVERLAY_CONTENT), tabIndex })
+        ) : (
+            <span className={Classes.OVERLAY_CONTENT} tabIndex={tabIndex}>
+                {child}
+            </span>
+        );
 
         const { onOpening, onOpened, onClosing, transitionDuration, transitionName } = this.props;
 
@@ -270,7 +266,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         }
     }
 
-    private renderDummyElement(key: string, props: HTMLDivProps & { ref?: React.Ref<HTMLDivElement> }) {
+    private renderFocusTrap(key: string, props: HTMLDivProps & { ref?: React.Ref<HTMLDivElement> }) {
         const { transitionDuration, transitionName } = this.props;
         return (
             <CSSTransition
@@ -292,7 +288,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
      * the `startFocusTrapElement`), depending on whether the element losing focus is inside the
      * Overlay.
      */
-    private handleStartFocusTrapElementFocus = (e: React.FocusEvent<HTMLDivElement>) => {
+    private handleStartFocusTrapElementFocus = (e: React.FocusEvent<HTMLDivElement, Element>) => {
         if (!this.props.enforceFocus || this.isAutoFocusing) {
             return;
         }
@@ -302,7 +298,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         // element in this transition group.
         if (
             e.relatedTarget != null &&
-            this.containerElement.current?.contains(e.relatedTarget as Element) &&
+            this.containerElement.current?.contains(e.relatedTarget) &&
             e.relatedTarget !== this.endFocusTrapElement.current
         ) {
             this.endFocusTrapElement.current?.focus({ preventScroll: true });
@@ -332,7 +328,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
      * `startFocusTrapElement`), depending on whether the element losing focus is inside the
      * Overlay.
      */
-    private handleEndFocusTrapElementFocus = (e: React.FocusEvent<HTMLDivElement>) => {
+    private handleEndFocusTrapElementFocus = (e: React.FocusEvent<HTMLDivElement, Element>) => {
         // No need for this.props.enforceFocus check here because this element is only rendered
         // when that prop is true.
         // During user interactions, e.relatedTarget will be defined, and we should wrap around to the
@@ -341,7 +337,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         // presses shift+tab from the first focusable element in the overlay.
         if (
             e.relatedTarget != null &&
-            this.containerElement.current?.contains(e.relatedTarget as Element) &&
+            this.containerElement.current?.contains(e.relatedTarget) &&
             e.relatedTarget !== this.startFocusTrapElement.current
         ) {
             const firstFocusableElement = getKeyboardFocusableElements(this.containerElement).shift();
