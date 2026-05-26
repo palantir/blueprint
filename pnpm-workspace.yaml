@@ -18,7 +18,6 @@ catalog:
 
 # Supply chain security
 minimumReleaseAge: 4320 # 3 days in minutes
-blockExoticSubdeps: true
 gitChecks: false
 overrides:
   "@types/react": 18.3.12
