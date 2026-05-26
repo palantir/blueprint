@@ -18,5 +18,15 @@ catalog:
 
 # Supply chain security
 minimumReleaseAge: 4320 # 3 days in minutes
-blockExoticSubdeps: true
 gitChecks: false
+overrides:
+  "@types/react": 18.3.12
+  cheerio: 0.22.0
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
+  core-js: false
+  core-js-pure: false
+  esbuild: false
+  nx: false
+  ttf2woff2: false
