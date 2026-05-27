@@ -1,5 +1,0 @@
-type: fix
-fix:
-  description: "`Regions.eachUniqueFullRow` and `Regions.eachUniqueFullColumn` no longer hang on regions with an unbounded interval"
-  links:
-  - https://github.com/palantir/blueprint/pull/8134
