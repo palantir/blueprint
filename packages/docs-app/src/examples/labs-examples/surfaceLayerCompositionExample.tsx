@@ -34,9 +34,9 @@ export const SurfaceLayerCompositionExample: React.FC<ExampleProps> = props => {
                                 <H5 style={{ margin: 0 }}>Surface + Layer</H5>
                                 <span>
                                     The <Code>&lt;Section&gt;</Code> is the substrate and the{" "}
-                                    <Code>&lt;SectionCard&gt;</Code> is the <Code>primary</Code> wash
-                                    — both applied via <Code>asChild</Code>, adding no extra DOM
-                                    nodes.
+                                    <Code>&lt;SectionCard&gt;</Code> is the <Code>primary</Code>{" "}
+                                    wash — both applied via <Code>asChild</Code>, adding no extra
+                                    DOM nodes.
                                 </span>
                                 <Button intent="primary" text="Action" />
                             </Flex>

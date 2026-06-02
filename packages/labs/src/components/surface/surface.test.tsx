@@ -79,9 +79,7 @@ describe("<Layer>", () => {
     });
 
     test("applies the intent wash and forwards index", () => {
-        render(
-            <Layer data-testid="layer" intent="success" index={3} />,
-        );
+        render(<Layer data-testid="layer" intent="success" index={3} />);
         const el = screen.getByTestId("layer");
         expect(el).toHaveClass(`${Classes.LAYER}-success`);
         expect(el).toHaveAttribute("data-layer-index", "3");
