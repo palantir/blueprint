@@ -109,6 +109,6 @@
     },
     {
         "package": "labs",
-        "pages": ["box", "flex"]
+        "pages": ["box", "flex", "surface"]
     }
 ]

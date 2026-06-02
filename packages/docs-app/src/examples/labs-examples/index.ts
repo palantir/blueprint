@@ -21,3 +21,8 @@ export * from "./boxPaddingExample";
 export * from "./flexAlignExample";
 export * from "./flexDirectionExample";
 export * from "./flexGapExample";
+export * from "./layerStackExample";
+export * from "./surfaceAsChildExample";
+export * from "./surfaceKindExample";
+export * from "./surfaceLayerCompositionExample";
+export * from "./surfaceShadowExample";
