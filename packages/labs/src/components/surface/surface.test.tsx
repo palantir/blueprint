@@ -50,7 +50,7 @@ describe("<Surface>", () => {
 
     test("asChild merges into the child without an extra DOM node", () => {
         render(
-            <Surface asChild shadow={2}>
+            <Surface asChild={true} shadow={2}>
                 <section data-testid="child">content</section>
             </Surface>,
         );
@@ -99,7 +99,7 @@ describe("<Layer>", () => {
 
     test("asChild merges into the child without an extra DOM node", () => {
         render(
-            <Layer asChild intent="danger">
+            <Layer asChild={true} intent="danger">
                 <header data-testid="child">content</header>
             </Layer>,
         );

@@ -21,9 +21,9 @@ $intents: ("default", "primary", "success", "warning", "danger");
   // kind: glass — translucent base
   // `--bp-surface-color-code` token already bakes in the glass opacity
   &-glass {
-    background-color: var(--bp-surface-color-code);
-    -webkit-backdrop-filter: blur($glass-blur);
     backdrop-filter: blur($glass-blur);
+    backdrop-filter: blur($glass-blur);
+    background-color: var(--bp-surface-color-code);
   }
 
   @each $intent in $intents {
@@ -41,7 +41,7 @@ $intents: ("default", "primary", "success", "warning", "danger");
 }
 
 .#{bp.$ns}-layer {
-  -webkit-backdrop-filter: blur($glass-blur);
+  backdrop-filter: blur($glass-blur);
   backdrop-filter: blur($glass-blur);
 
   // none family — subtle wash when no intent is set. Need a new token for this
