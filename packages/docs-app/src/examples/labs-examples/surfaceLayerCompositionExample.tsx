@@ -23,7 +23,7 @@ export const SurfaceLayerCompositionExample: React.FC<ExampleProps> = props => {
         <Example {...props}>
             {/*
              * Both axes use `asChild`, so no extra wrapper nodes are rendered:
-             * the substrate styling merges onto the <Section>, and the tonal
+             * the base styling merges onto the <Section>, and the tonal
              * wash merges onto the <SectionCard> nested inside it.
              */}
             <Surface asChild={true} shadow={3}>
@@ -33,7 +33,7 @@ export const SurfaceLayerCompositionExample: React.FC<ExampleProps> = props => {
                             <Flex flexDirection="column" gap={3}>
                                 <H5 style={{ margin: 0 }}>Surface + Layer</H5>
                                 <span>
-                                    The <Code>&lt;Section&gt;</Code> is the substrate and the{" "}
+                                    The <Code>&lt;Section&gt;</Code> is the base and the{" "}
                                     <Code>&lt;SectionCard&gt;</Code> is the <Code>primary</Code>{" "}
                                     wash — both applied via <Code>asChild</Code>, adding no extra
                                     DOM nodes.

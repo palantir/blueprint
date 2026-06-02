@@ -15,7 +15,7 @@ const NS = Classes.getClassNamespace();
 /**
  * Surface component.
  *
- * The substrate of a BP7 surface — an `opaque` or `glass` background that may
+ * The base of a BP7 surface — an `opaque` or `glass` background that may
  * lift off the page via `shadow`. Tonal washes stack inside it via {@link Layer}.
  *
  * @see https://blueprintjs.com/docs/#labs/components/surface

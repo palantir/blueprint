@@ -9,14 +9,14 @@
  * We split that model across two components rather than one discriminated
  * union, because two of the axes never combine:
  *
- *   • <Surface> is the *substrate* — what the surface itself is (`opaque` or
- *     `glass`). A substrate may lift off the page via `shadow`.
- *   • <Layer> is a tonal *wash* that stacks inside a substrate. It carries an
+ *   • <Surface> is the *base* — what the surface itself is (`opaque` or
+ *     `glass`). A base may lift off the page via `shadow`.
+ *   • <Layer> is a tonal *wash* that stacks inside a base. It carries an
  *     `intent` tint and an `index` for its position in the stack; depth comes
  *     from nesting <Layer>s, not from a per-level token.
  *
  * Keeping them separate means neither component carries props that are invalid
- * for it (a substrate has no `index`; a layer has no `shadow`).
+ * for it (a base has no `index`; a layer has no `shadow`).
  */
 
 import type * as React from "react";
@@ -28,22 +28,22 @@ import type * as React from "react";
 export type SurfaceIntent = "default" | "primary" | "success" | "warning" | "danger";
 
 /**
- * What the substrate is. `opaque` is a solid background; `glass` is a
+ * What the base is. `opaque` is a solid background; `glass` is a
  * translucent, blurred background that de-emphasizes whatever sits behind it.
  */
 export type SurfaceKind = "opaque" | "glass";
 
 /**
- * Drop-shadow lift for a substrate, mapping to `--bp-surface-shadow-{0..4}`.
+ * Drop-shadow lift for a base, mapping to `--bp-surface-shadow-{0..4}`.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/box-shadow
  */
 export type Shadow = 0 | 1 | 2 | 3 | 4;
 
 /**
- * Props for the `<Surface>` component (the substrate).
+ * Props for the `<Surface>` component (the base).
  *
- * Extends standard HTML div props with the substrate axes.
+ * Extends standard HTML div props with the base axes.
  */
 export interface SurfaceProps extends React.ComponentPropsWithoutRef<"div"> {
     /**
@@ -54,13 +54,13 @@ export interface SurfaceProps extends React.ComponentPropsWithoutRef<"div"> {
     asChild?: boolean;
 
     /**
-     * What kind of substrate this is.
+     * What kind of base this is.
      *
      * @default "opaque"
      */
     kind?: SurfaceKind;
 
-    /** Optional semantic tint applied to the substrate background. */
+    /** Optional semantic tint applied to the base background. */
     intent?: SurfaceIntent;
 
     /** Optional drop-shadow lift, `0`–`4`. Omitted = no shadow. */
@@ -69,7 +69,7 @@ export interface SurfaceProps extends React.ComponentPropsWithoutRef<"div"> {
 
 /**
  * Props for the `<Layer>` component (a tonal wash that stacks inside a
- * substrate).
+ * base).
  */
 export interface LayerProps extends React.ComponentPropsWithoutRef<"div"> {
     /**

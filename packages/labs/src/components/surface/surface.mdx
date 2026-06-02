@@ -13,7 +13,7 @@ The model is split across two components, because two of its concerns never comb
 - **`<Surface>`** is the _base_ — what the surface itself is. A base is `opaque`
   (a solid background) or `glass` (translucent and blurred), and it can lift off the page with a
   drop `shadow`.
-- **`<Layer>`** is a tonal _wash_ that stacks _inside_ a substrate. It carries a semantic `intent`
+- **`<Layer>`** is a tonal _wash_ that stacks _inside_ a base. It carries a semantic `intent`
   tint and an `index` for its position in the stack. Depth comes from **nesting** layers, not from a
   single token — the same family composites to arbitrary depth.
 

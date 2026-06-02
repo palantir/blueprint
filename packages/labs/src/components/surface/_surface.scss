@@ -13,12 +13,12 @@ $intents: ("default", "primary", "success", "warning", "danger");
   border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-default);
   border-radius: var(--bp-surface-border-radius);
 
-  // kind: opaque (default) — solid, fully-opaque substrate fill
+  // kind: opaque (default) — solid, fully-opaque base fill
   &-opaque {
     background-color: var(--bp-surface-background-color-default-rest);
   }
 
-  // kind: glass — translucent substrate
+  // kind: glass — translucent base
   // `--bp-surface-color-code` token already bakes in the glass opacity
   &-glass {
     background-color: var(--bp-surface-color-code);
