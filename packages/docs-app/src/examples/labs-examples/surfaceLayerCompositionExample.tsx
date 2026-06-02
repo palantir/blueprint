@@ -21,17 +21,12 @@ import { Flex, Layer, Surface } from "@blueprintjs/labs";
 export const SurfaceLayerCompositionExample: React.FC<ExampleProps> = props => {
     return (
         <Example {...props}>
-            {/*
-             * Both axes use `asChild`, so no extra wrapper nodes are rendered:
-             * the base styling merges onto the <Section>, and the tonal
-             * wash merges onto the <SectionCard> nested inside it.
-             */}
             <Surface asChild={true} shadow={3}>
                 <Section style={{ maxWidth: 320 }} title="Composed surface">
                     <Layer asChild={true} intent="primary" index={1}>
-                        <SectionCard style={{ padding: 24 }}>
+                        <SectionCard>
                             <Flex flexDirection="column" gap={3}>
-                                <H5 style={{ margin: 0 }}>Surface + Layer</H5>
+                                <H5>Surface + Layer</H5>
                                 <span>
                                     The <Code>&lt;Section&gt;</Code> is the base and the{" "}
                                     <Code>&lt;SectionCard&gt;</Code> is the <Code>primary</Code>{" "}

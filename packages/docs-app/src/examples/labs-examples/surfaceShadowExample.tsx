@@ -25,12 +25,10 @@ export const SurfaceShadowExample: React.FC<ExampleProps> = props => {
         <Example {...props}>
             <Flex alignItems="center" gap={6} justifyContent="center" flexWrap="wrap" width="100">
                 {SHADOW_LEVELS.map(shadow => (
-                    <Surface
-                        key={shadow}
-                        shadow={shadow}
-                        style={{ minWidth: 80, padding: 20, textAlign: "center" }}
-                    >
-                        <Code>{shadow}</Code>
+                    <Surface key={shadow} shadow={shadow} style={{ minWidth: 80 }}>
+                        <Flex alignItems="center" justifyContent="center" padding={4}>
+                            <Code>{shadow}</Code>
+                        </Flex>
                     </Surface>
                 ))}
             </Flex>

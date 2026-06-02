@@ -28,7 +28,7 @@ export const SurfaceAsChildExample: React.FC<ExampleProps> = props => {
                         <H5 style={{ margin: 0 }}>Composed surface</H5>
                         <span>
                             <Code>asChild</Code> applies the surface styling directly to this{" "}
-                            <Code>&lt;section&gt;</Code> instead of rendering an extra{" "}
+                            <Code>&lt;Section&gt;</Code> instead of rendering an extra{" "}
                             <Code>&lt;div&gt;</Code>.
                         </span>
                         <Button intent="primary" text="Action" />

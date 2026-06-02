@@ -18,30 +18,28 @@ import { useState } from "react";
 
 import { Code, FormGroup, H5, HTMLSelect, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
-import { Layer, Surface, type SurfaceIntent } from "@blueprintjs/labs";
+import { Flex, Layer, Surface, type SurfaceIntent } from "@blueprintjs/labs";
 
 const INTENT_OPTIONS = ["none", "default", "primary", "success", "warning", "danger"];
 
 /**
- * Render `depth` nested <Layer>s. Each layer paints one tonal wash; nesting
- * composites them, so the innermost content sits on the deepest stack.
+ * Render `depth` nested <Layer>s. Each layer paints one tonal wash and shows its
+ * own label above the next deeper layer; nesting composites the washes, so the
+ * full stack is visible from the outermost layer down to the deepest.
  */
 function renderLayers(
     depth: number,
     intent: SurfaceIntent | undefined,
     index = 1,
 ): React.ReactNode {
-    const content =
-        depth <= 1 ? (
-            <div style={{ padding: 16, textAlign: "center" }}>
-                Layer <Code>{index}</Code>
-            </div>
-        ) : (
-            renderLayers(depth - 1, intent, index + 1)
-        );
     return (
-        <Layer intent={intent} index={index} style={{ borderRadius: 4, padding: 16 }}>
-            {content}
+        <Layer asChild={true} intent={intent} index={index}>
+            <Flex alignItems="stretch" flexDirection="column" gap={3} padding={3}>
+                <Flex justifyContent="center">
+                    Layer&nbsp;<Code>{index}</Code>
+                </Flex>
+                {depth > 1 && renderLayers(depth - 1, intent, index + 1)}
+            </Flex>
         </Layer>
     );
 }

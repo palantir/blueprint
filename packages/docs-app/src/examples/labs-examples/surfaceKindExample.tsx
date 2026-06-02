@@ -18,7 +18,7 @@ import { useState } from "react";
 
 import { FormGroup, H5, HTMLSelect } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
-import { Surface, type SurfaceIntent, type SurfaceKind } from "@blueprintjs/labs";
+import { Flex, Surface, type SurfaceIntent, type SurfaceKind } from "@blueprintjs/labs";
 
 const KIND_OPTIONS: SurfaceKind[] = ["opaque", "glass"];
 const INTENT_OPTIONS = ["none", "default", "primary", "success", "warning", "danger"];
@@ -71,9 +71,12 @@ export const SurfaceKindExample: React.FC<ExampleProps> = props => {
                     kind={kind}
                     intent={intent === "none" ? undefined : (intent as SurfaceIntent)}
                     shadow={Number(shadow) as 0 | 1 | 2 | 3 | 4}
-                    style={{ padding: 24, textAlign: "center" }}
                 >
-                    {kind === "glass" ? "Glass surface — backdrop blurs through" : "Opaque surface"}
+                    <Flex alignItems="center" justifyContent="center" padding={4}>
+                        {kind === "glass"
+                            ? "Glass surface — backdrop blurs through"
+                            : "Opaque surface"}
+                    </Flex>
                 </Surface>
             </div>
         </Example>
