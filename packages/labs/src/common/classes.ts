@@ -18,3 +18,5 @@ export function getClassNamespace() {
 }
 
 export const BOX = `${NS}-box`;
+export const SURFACE = `${NS}-surface`;
+export const LAYER = `${NS}-layer`;

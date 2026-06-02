@@ -1,0 +1,74 @@
+---
+title: Surface
+tag: new
+---
+
+# Surface
+
+**Surface** and **Layer** implement the BP7 _surface_ model: elements that have an opaque or slightly
+translucent background with layered washes on top.
+
+The model is split across two components, because two of its concerns never combine:
+
+- **`<Surface>`** is the _base_ — what the surface itself is. A base is `opaque`
+  (a solid background) or `glass` (translucent and blurred), and it can lift off the page with a
+  drop `shadow`.
+- **`<Layer>`** is a tonal _wash_ that stacks _inside_ a substrate. It carries a semantic `intent`
+  tint and an `index` for its position in the stack. Depth comes from **nesting** layers, not from a
+  single token — the same family composites to arbitrary depth.
+
+## Import
+
+```ts copy
+import { Surface, Layer } from "@blueprintjs/labs";
+```
+
+## Surface
+
+Use **Surface** as the opaque or glass base beneath your content. Pick a `kind`, optionally
+tint it with an `intent`, and lift it with a `shadow`.
+
+@reactExample SurfaceKindExample
+
+### Shadow
+
+`shadow` accepts `0`–`4`, mapping to the `--bp-surface-shadow-*` elevation tokens. Level `0` is a
+hairline border-only treatment; higher levels read as progressively more lifted (popover, dialog,
+modal).
+
+@reactExample SurfaceShadowExample
+
+### Glass
+
+Setting `kind="glass"` makes the base translucent and applies `backdrop-filter: blur(...)`, so
+whatever sits behind it is de-emphasized. On a flat background the blur is a near no-op; over busy
+content it lets the surface read as distinct.
+
+## Layer
+
+Use **Layer** for tonal stacking _inside_ a surface. Each layer paints a single wash; nest layers to
+build depth. Omitting `intent` uses the subtle "none" family.
+
+@reactExample LayerStackExample
+
+## Composition with `asChild`
+
+When `asChild` is set, **Surface** (and **Layer**) will not render an extra wrapper element. Instead
+it clones and enhances its single child, merging class names and props. This is useful for applying
+surface styling to an existing element or component without adding a DOM node.
+
+@reactExample SurfaceAsChildExample
+
+### Composing a surface and a layer
+
+The base and wash work together. Here a shadowed **Surface** merges onto a `<Section>`
+and a tinted **Layer** merges onto the nested `<SectionCard>` — both via `asChild`, so the composed
+styling adds no extra DOM nodes.
+
+@reactExample SurfaceLayerCompositionExample
+
+## Props interface
+
+@interface SurfaceProps
+
+@interface LayerProps

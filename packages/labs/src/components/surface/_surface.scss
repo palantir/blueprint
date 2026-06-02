@@ -1,0 +1,57 @@
+/* !
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
+ */
+
+@use "../../common" as bp;
+
+// TODO: glass blur is hardcoded until core ships `--bp-glass-blur`.
+$glass-blur: 16px;
+
+$intents: ("default", "primary", "success", "warning", "danger");
+
+.#{bp.$ns}-surface {
+  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-default);
+  border-radius: var(--bp-surface-border-radius);
+
+  // kind: opaque (default) — solid, fully-opaque substrate fill
+  &-opaque {
+    background-color: var(--bp-surface-background-color-default-rest);
+  }
+
+  // kind: glass — translucent substrate
+  // `--bp-surface-color-code` token already bakes in the glass opacity
+  &-glass {
+    background-color: var(--bp-surface-color-code);
+    -webkit-backdrop-filter: blur($glass-blur);
+    backdrop-filter: blur($glass-blur);
+  }
+
+  @each $intent in $intents {
+    &-intent-#{$intent} {
+      background-color: var(--bp-surface-background-color-#{$intent}-rest);
+    }
+  }
+
+  // shadow: drop-shadow lift, 0–4
+  @for $level from 0 through 4 {
+    &-shadow-#{$level} {
+      box-shadow: var(--bp-surface-shadow-#{$level});
+    }
+  }
+}
+
+.#{bp.$ns}-layer {
+  -webkit-backdrop-filter: blur($glass-blur);
+  backdrop-filter: blur($glass-blur);
+
+  // none family — subtle wash when no intent is set. Need a new token for this
+  &-none {
+    background-color: var(--bp-surface-layer-color-default);
+  }
+
+  @each $intent in $intents {
+    &-#{$intent} {
+      background-color: var(--bp-surface-layer-color-#{$intent});
+    }
+  }
+}
