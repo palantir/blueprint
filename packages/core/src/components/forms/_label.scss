@@ -93,7 +93,7 @@ label.#{$ns}-label {
   }
 
   .#{$ns}-dark & {
-    color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.212) calc(c + -0.016) calc(h + 6.2))"};
+    color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.452) calc(c + -0.028) calc(h + 6.2))"};
 
     &.#{$ns}-disabled {
       &,
