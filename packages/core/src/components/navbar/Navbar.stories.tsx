@@ -17,7 +17,7 @@ type NavbarStoryArgs = React.ComponentProps<typeof Navbar> & {
 };
 
 const meta: Meta<NavbarStoryArgs> = {
-    title: "Core/Navbar and NavbarGroup",
+    title: "Core/Navbar",
     component: Navbar,
     subcomponents: { NavbarGroup },
     parameters: {
@@ -45,6 +45,30 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     argTypes: {
         align: { table: { disable: true } },
+    },
+    render: args => (
+        <Navbar {...args}>
+            <NavbarGroup align={Alignment.START}>
+                <NavbarHeading>Blueprint</NavbarHeading>
+                <NavbarDivider />
+                <Button variant="minimal" icon="home" text="Home" />
+                <Button variant="minimal" icon="document" text="Files" />
+            </NavbarGroup>
+            <NavbarGroup align={Alignment.END}>
+                <Button variant="minimal" icon="notifications" />
+                <Button variant="minimal" icon="cog" />
+            </NavbarGroup>
+        </Navbar>
+    ),
+};
+
+export const FixedToTop: Story = {
+    args: {
+        fixedToTop: true,
+    },
+    argTypes: {
+        align: { table: { disable: true } },
+        fixedToTop: { table: { disable: true } },
     },
     render: args => (
         <Navbar {...args}>
