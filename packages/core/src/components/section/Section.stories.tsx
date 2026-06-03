@@ -115,6 +115,7 @@ export const IconExample: Story = {
     argTypes: {
         icon: { table: { disable: true } },
         subtitle: { table: { disable: true } },
+        title: { table: { disable: true } },
     },
     render: args => (
         <Flex flexDirection="column" gap={4}>
@@ -142,11 +143,7 @@ export const RightElementExample: Story = {
     },
     render: args => (
         <Flex flexDirection="column" gap={4}>
-            <Section
-                {...args}
-                title="Description"
-                rightElement={<Button intent="primary" text="Edit" variant="minimal" />}
-            >
+            <Section {...args} rightElement={<Button intent="primary" text="Edit" variant="minimal" />}>
                 <SectionCard>Section with a right element action button.</SectionCard>
             </Section>
         </Flex>
@@ -175,7 +172,6 @@ export const Collapsible: Story = {
         title: "Collapsible section",
         collapsible: true,
         children: <SectionCard>This section's content can be toggled by clicking the header.</SectionCard>,
-        icon: "",
     },
     argTypes: {
         collapsible: { table: { disable: true } },
