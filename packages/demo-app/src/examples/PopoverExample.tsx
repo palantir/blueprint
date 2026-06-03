@@ -44,7 +44,7 @@ export const PopoverExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Popover" subLabel="Text content" width={200}>
-                {/* eslint-disable-next-line @typescript-eslint/no-deprecated */}
+                {/* eslint-disable-next-line @blueprintjs/no-deprecated-components, @typescript-eslint/no-deprecated */}
                 <Popover
                     content={
                         <div style={{ minWidth: 100 }}>
@@ -60,7 +60,7 @@ export const PopoverExample = memo(() => {
                 </Popover>
             </ExampleCard>
             <ExampleCard label="Popover" subLabel="Dropdown menu" width={200}>
-                {/* eslint-disable-next-line @typescript-eslint/no-deprecated */}
+                {/* eslint-disable-next-line @blueprintjs/no-deprecated-components, @typescript-eslint/no-deprecated */}
                 <Popover content={textEditorMenu} fill={true} placement="bottom-start" minimal={true}>
                     <Button fill={true} text="Click to open" endIcon="caret-down" />
                 </Popover>

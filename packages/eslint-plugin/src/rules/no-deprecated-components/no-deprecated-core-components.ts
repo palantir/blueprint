@@ -4,11 +4,12 @@
 
 import type { TSESLint } from "@typescript-eslint/utils";
 
-import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
+import { createNoDeprecatedComponentsRule, type DeprecatedComponentsConfig } from "./createNoDeprecatedComponentsRule";
 
-export const coreComponentsMigrationMapping = {
+export const coreComponentsMigrationMapping: DeprecatedComponentsConfig = {
     // TODO(@adidahiya): Blueprint v6
     // PanelStack: "PanelStack2",
+    Popover: "PopoverNext",
 };
 
 /**

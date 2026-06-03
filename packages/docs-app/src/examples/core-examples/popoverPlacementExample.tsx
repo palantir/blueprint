@@ -101,6 +101,7 @@ const PlacementPopover: React.FC<{ placement: Placement }> = ({ placement }) => 
     );
 
     return (
+        // eslint-disable-next-line @blueprintjs/no-deprecated-components
         <Popover
             content={content}
             placement={placement}

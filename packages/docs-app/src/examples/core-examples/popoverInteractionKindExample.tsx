@@ -34,6 +34,7 @@ export const PopoverInteractionKindExample: React.FC<ExampleProps> = props => {
                     // MenuItem's default shouldDismissPopover={true} behavior is confusing
                     // in this example, since it introduces an additional way popovers can
                     // close. set it to false here for clarity.
+                    // eslint-disable-next-line @blueprintjs/no-deprecated-components
                     <Popover
                         key={interactionKind}
                         content={<FileMenu shouldDismissPopover={false} />}
