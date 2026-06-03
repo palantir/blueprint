@@ -216,7 +216,7 @@ describe("popperModifiersToNextMiddleware", () => {
     });
 
     describe("arrow", () => {
-        it("should omit arrow middleware when enabled is false", () => {
+        it("should omit arrow middleware when enabled is false (no middleware equivalent)", () => {
             const element = document.createElement("div");
             const value: PopperModifierOverrides = { arrow: { enabled: false, options: { element } } };
             const expected: MiddlewareConfig = {};
@@ -408,6 +408,25 @@ describe("popoverPropsToNextProps", () => {
         it("should leave middleware undefined when modifiers is not supplied", () => {
             const result = popoverPropsToNextProps({});
             expect(result.middleware).to.be.undefined;
+        });
+    });
+
+    describe("arrow disabling via modifiers", () => {
+        it("should map modifiers.arrow.enabled: false to arrow: false", () => {
+            const result = popoverPropsToNextProps({ modifiers: { arrow: { enabled: false } } });
+            expect(result.arrow).to.equal(false);
+            // The disable cannot ride along in middleware, so the converted middleware is empty.
+            expect(result.middleware).to.deep.equal({});
+        });
+
+        it("should not set arrow when the arrow modifier is enabled", () => {
+            const result = popoverPropsToNextProps({ modifiers: { arrow: { enabled: true } } });
+            expect(result.arrow).to.be.undefined;
+        });
+
+        it("should not set arrow when the arrow modifier is absent", () => {
+            const result = popoverPropsToNextProps({ modifiers: { flip: {} } });
+            expect(result.arrow).to.be.undefined;
         });
     });
 
