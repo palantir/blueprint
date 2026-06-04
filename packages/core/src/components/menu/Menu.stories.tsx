@@ -39,7 +39,7 @@ const disabledArgs = ["large", "small"] as const satisfies ReadonlyArray<keyof R
 const meta: Meta<MenuStoryArgs> = {
     title: "Core/Menu",
     component: Menu,
-    subcomponents: { MenuItem },
+    subcomponents: { MenuItem, MenuDivider },
     decorators: [storybookLayoutDecorator],
     parameters: {
         layout: "centered",
@@ -410,6 +410,44 @@ export const ShouldDismissPopoverExample: Story = {
                     >
                         <Button icon="caret-down" text="Persists menu" />
                     </PopoverNext>
+                </Flex>
+            </Flex>
+        );
+    },
+};
+
+/**
+ * Use `MenuDivider` to separate groups of items. Pass a `title` to render a section header; omit it for a
+ * plain horizontal separator.
+ */
+export const MenuDividerExample: Story = {
+    name: "Divider",
+    argTypes: {
+        size: { table: { disable: true } },
+    },
+    render: args => {
+        const { menuProps } = splitArgs(args);
+        return (
+            <Flex gap={4} alignItems="start">
+                <Flex flexDirection="column" gap={1} alignItems="center">
+                    <StoryLabel title="With title (section header)" />
+                    <Menu {...menuProps}>
+                        <MenuDivider title="Edit" />
+                        <MenuItem icon="cut" text="Cut" label="⌘X" />
+                        <MenuItem icon="duplicate" text="Copy" label="⌘C" />
+                        <MenuDivider title="View" />
+                        <MenuItem icon="zoom-in" text="Zoom in" label="⌘+" />
+                        <MenuItem icon="zoom-out" text="Zoom out" label="⌘-" />
+                    </Menu>
+                </Flex>
+                <Flex flexDirection="column" gap={1} alignItems="center">
+                    <StoryLabel title="Without title (separator)" />
+                    <Menu {...menuProps}>
+                        <MenuItem icon="document" text="New file" />
+                        <MenuItem icon="folder-close" text="New folder" />
+                        <MenuDivider />
+                        <MenuItem icon="cog" text="Settings" />
+                    </Menu>
                 </Flex>
             </Flex>
         );
