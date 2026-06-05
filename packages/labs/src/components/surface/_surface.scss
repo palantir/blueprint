@@ -7,34 +7,64 @@
 // TODO: glass blur is hardcoded until core ships `--bp-glass-blur`.
 $glass-blur: 16px;
 
-$intents: ("default", "primary", "success", "warning", "danger");
+$intents: ("none", "primary", "success", "warning", "danger");
 
 .#{bp.$ns}-surface {
-  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-default);
+  // `elevation` (set inline as `--bp-surface-elevation`) controls the tonal wash.
+  // It is the N-fold composite of a single <Layer> wash: a <Layer> paints one
+  // wash of alpha `--bp-surface-layer-opacity`, and stacking N of them composites
+  // to `1 - (1 - a)^N`. So `elevation: 1` is identical to one <Layer>, and higher
+  // values deepen it — all from the *same* base color + opacity tokens the
+  // `--bp-surface-layer-color-*` tokens use, so the two wash definitions can't drift.
+  --bp-surface-elevation: 0;
+  --bp-surface-elevation-alpha: #{"calc(1 - pow(1 - var(--bp-surface-layer-opacity), var(--bp-surface-elevation)))"};
+
+  // default (no-intent) wash family
+  background-image: #{"linear-gradient(oklch(from var(--bp-intent-default-rest) l c h / var(--bp-surface-elevation-alpha)) 0 0)"};
   border-radius: var(--bp-surface-border-radius);
 
+  &[data-bordered] {
+    border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-default);
+  }
+
   // kind: opaque (default) — solid, fully-opaque base fill
-  &-opaque {
+  &[data-kind="opaque"] {
     background-color: var(--bp-surface-background-color-default-rest);
   }
 
   // kind: glass — translucent base
   // `--bp-surface-color-code` token already bakes in the glass opacity
-  &-glass {
-    backdrop-filter: blur($glass-blur);
+  &[data-kind="glass"] {
     backdrop-filter: blur($glass-blur);
     background-color: var(--bp-surface-color-code);
   }
 
+  // kind: transparent — see-through base. Stays transparent even when an `intent`
+  // is set (the nested selector outranks the `[data-intent]` fill below); the
+  // elevation wash still applies, so a transparent surface can carry a tint.
+  &[data-kind="transparent"] {
+    background-color: transparent;
+
+    &[data-intent] {
+      background-color: transparent;
+    }
+  }
+
   @each $intent in $intents {
-    &-intent-#{$intent} {
-      background-color: var(--bp-surface-background-color-#{$intent}-rest);
+    // The neutral intent is `none` in the public API but `default` in the token
+    // system, so map it back when building token names.
+    $intent-token: if($intent == "none", "default", $intent);
+
+    &[data-intent="#{$intent}"] {
+      // elevation wash tinted by this intent — same base color + opacity tokens as
+      // a <Layer> wash (--bp-surface-layer-color-*), deepened by `elevation`.
+      background-image: #{"linear-gradient(oklch(from var(--bp-intent-#{$intent-token}-rest) l c h / var(--bp-surface-elevation-alpha)) 0 0)"};
     }
   }
 
   // shadow: drop-shadow lift, 0–4
   @for $level from 0 through 4 {
-    &-shadow-#{$level} {
+    &[data-shadow="#{$level}"] {
       box-shadow: var(--bp-surface-shadow-#{$level});
     }
   }
@@ -42,16 +72,16 @@ $intents: ("default", "primary", "success", "warning", "danger");
 
 .#{bp.$ns}-layer {
   backdrop-filter: blur($glass-blur);
-  backdrop-filter: blur($glass-blur);
-
-  // none family — subtle wash when no intent is set. Need a new token for this
-  &-none {
-    background-color: var(--bp-surface-layer-color-default);
-  }
 
   @each $intent in $intents {
-    &-#{$intent} {
-      background-color: var(--bp-surface-layer-color-#{$intent});
+    // The neutral intent is `none` in the public API but `default` in the token
+    // system, so map it back when building token names.
+    $intent-token: if($intent == "none", "default", $intent);
+
+    &[data-intent="#{$intent}"] {
+      // a single wash — the shared `--bp-surface-layer-color-*` token, which is
+      // the intent color at `--bp-surface-layer-opacity` (i.e. `elevation: 1`).
+      background-color: var(--bp-surface-layer-color-#{$intent-token});
     }
   }
 }

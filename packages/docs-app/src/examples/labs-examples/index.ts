@@ -23,6 +23,8 @@ export * from "./flexDirectionExample";
 export * from "./flexGapExample";
 export * from "./layerStackExample";
 export * from "./surfaceAsChildExample";
+export * from "./surfaceElevationExample";
 export * from "./surfaceKindExample";
 export * from "./surfaceLayerCompositionExample";
 export * from "./surfaceShadowExample";
+export * from "./surfaceStackExample";

@@ -6,6 +6,5 @@
 export { Box } from "./box/box";
 export type { BoxProps } from "./box/boxProps";
 export { Flex, type FlexProps } from "./flex/flex";
-export { Layer } from "./surface/layer";
-export { Surface } from "./surface/surface";
+export { Layer, Surface } from "./surface/surface";
 export type { LayerProps, Shadow, SurfaceIntent, SurfaceKind, SurfaceProps } from "./surface/surfaceProps";

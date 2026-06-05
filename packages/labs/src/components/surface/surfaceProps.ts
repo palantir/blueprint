@@ -21,17 +21,20 @@
 
 import type * as React from "react";
 
+import type { Intent } from "@blueprintjs/core";
+
 /**
- * Semantic tint shared by surfaces and layers. Omitting `intent` puts a
- * <Layer> in the subtle "none" wash family.
+ * Semantic tint shared by surfaces and layers. Aliases the core {@link Intent}
+ * type so surface intents stay in lockstep with the rest of Blueprint.
  */
-export type SurfaceIntent = "default" | "primary" | "success" | "warning" | "danger";
+export type SurfaceIntent = Intent;
 
 /**
  * What the base is. `opaque` is a solid background; `glass` is a
- * translucent, blurred background that de-emphasizes whatever sits behind it.
+ * translucent, blurred background that de-emphasizes whatever sits behind it;
+ * `transparent` is a transparent background.
  */
-export type SurfaceKind = "opaque" | "glass";
+export type SurfaceKind = "opaque" | "glass" | "transparent";
 
 /**
  * Drop-shadow lift for a base, mapping to `--bp-surface-shadow-{0..4}`.
@@ -61,10 +64,22 @@ export interface SurfaceProps extends React.ComponentPropsWithoutRef<"div"> {
     kind?: SurfaceKind;
 
     /** Optional semantic tint applied to the base background. */
-    intent?: SurfaceIntent;
+    intent?: Intent;
 
     /** Optional drop-shadow lift, `0`–`4`. Omitted = no shadow. */
     shadow?: Shadow;
+
+    /**
+     * Optional. Number of tonal wash levels painted on the surface, `0..N`. Each step
+     * deepens the `intent` wash via alpha compositing (`1 - (1 - a)^elevation`);
+     * `0` (the default) paints no wash. Unbounded theoretically.
+     *
+     * @default 0
+     */
+    elevation?: number;
+
+    /** Optional border */
+    bordered?: boolean;
 }
 
 /**
@@ -81,7 +96,7 @@ export interface LayerProps extends React.ComponentPropsWithoutRef<"div"> {
     /**
      * Optional semantic tint for the wash. Omitted = the subtle "none" family.
      */
-    intent?: SurfaceIntent;
+    intent?: Intent;
 
     /**
      * Position in the tonal stack, `0..N`. Unbounded — the same family stacks

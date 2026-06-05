@@ -16,18 +16,22 @@
 
 import { useState } from "react";
 
-import { FormGroup, H5, HTMLSelect } from "@blueprintjs/core";
+import { Code, FormGroup, H5, HTMLSelect, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
 import { Flex, Surface, type SurfaceIntent, type SurfaceKind } from "@blueprintjs/labs";
 
 const KIND_OPTIONS: SurfaceKind[] = ["opaque", "glass", "transparent"];
 const INTENT_OPTIONS: SurfaceIntent[] = ["none", "primary", "success", "warning", "danger"];
-const SHADOW_OPTIONS = ["0", "1", "2", "3", "4"];
 
-export const SurfaceKindExample: React.FC<ExampleProps> = props => {
+/**
+ * Show the `elevation` scale side by side: one <Surface> per level from `0` up to
+ * the selected max. Each step deepens the tonal wash (`1 - (1 - a)^elevation`),
+ * all rendered in CSS with no extra DOM nodes.
+ */
+export const SurfaceStackExample: React.FC<ExampleProps> = props => {
+    const [maxElevation, setMaxElevation] = useState<number>(5);
     const [kind, setKind] = useState<SurfaceKind>("opaque");
-    const [intent, setIntent] = useState<SurfaceIntent>("none");
-    const [shadow, setShadow] = useState<string>("2");
+    const [intent, setIntent] = useState<SurfaceIntent>("primary");
 
     const options = (
         <>
@@ -46,42 +50,49 @@ export const SurfaceKindExample: React.FC<ExampleProps> = props => {
                     onChange={handleValueChange(setIntent)}
                 />
             </FormGroup>
-            <FormGroup label="Shadow">
-                <HTMLSelect
-                    value={shadow}
-                    options={SHADOW_OPTIONS}
-                    onChange={handleValueChange(setShadow)}
-                />
-            </FormGroup>
+            <Label>
+                Max elevation: <Code>{maxElevation}</Code>
+            </Label>
+            <Slider
+                labelStepSize={1}
+                max={8}
+                min={0}
+                showTrackFill={false}
+                value={maxElevation}
+                onChange={setMaxElevation}
+            />
         </>
     );
 
+    const levels = Array.from({ length: maxElevation + 1 }, (_, index) => index);
+
     return (
         <Example options={options} {...props}>
-            {/* A patterned backdrop so the difference between opaque and glass is visible. */}
-            <div
+            <Flex
+                flexWrap="wrap"
+                gap={3}
+                justifyContent="center"
                 style={{
                     backgroundImage:
-                        "repeating-linear-gradient(45deg, rgba(45, 114, 210, 0.25) 0 12px, transparent 12px 24px)",
+                        "repeating-linear-gradient(45deg, rgba(45, 114, 210, 0.10) 0 12px, transparent 12px 24px)",
                     borderRadius: 4,
                     padding: 40,
                 }}
             >
-                <Surface
-                    kind={kind}
-                    intent={intent}
-                    shadow={Number(shadow) as 0 | 1 | 2 | 3 | 4}
-                >
-                    <Flex
-                        alignItems="center"
-                        justifyContent="center"
-                        padding={4}
-                        style={{ height: "400px", textTransform: "capitalize" }}
+                {levels.map(level => (
+                    <Surface
+                        key={level}
+                        elevation={level}
+                        kind={kind}
+                        intent={intent}
+                        style={{ padding: 16, width: 120 }}
                     >
-                        {`${kind} surface`}
-                    </Flex>
-                </Surface>
-            </div>
+                        <Flex justifyContent="center">
+                            Elevation&nbsp;<Code>{level}</Code>
+                        </Flex>
+                    </Surface>
+                ))}
+            </Flex>
         </Example>
     );
 };

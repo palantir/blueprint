@@ -16,18 +16,23 @@
 
 import { useState } from "react";
 
-import { FormGroup, H5, HTMLSelect } from "@blueprintjs/core";
+import { Code, FormGroup, H5, HTMLSelect, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
 import { Flex, Surface, type SurfaceIntent, type SurfaceKind } from "@blueprintjs/labs";
 
 const KIND_OPTIONS: SurfaceKind[] = ["opaque", "glass", "transparent"];
 const INTENT_OPTIONS: SurfaceIntent[] = ["none", "primary", "success", "warning", "danger"];
-const SHADOW_OPTIONS = ["0", "1", "2", "3", "4"];
 
-export const SurfaceKindExample: React.FC<ExampleProps> = props => {
+/**
+ * Drive the surface's tonal wash with the `elevation` prop, across each surface
+ * `kind` and `intent`. Unlike a manual <Layer> stack, this renders no extra DOM
+ * nodes — `elevation` composites the wash entirely in CSS (`1 - (1 - a)^elevation`),
+ * so depth is unbounded.
+ */
+export const SurfaceElevationExample: React.FC<ExampleProps> = props => {
+    const [elevation, setElevation] = useState<number>(3);
     const [kind, setKind] = useState<SurfaceKind>("opaque");
-    const [intent, setIntent] = useState<SurfaceIntent>("none");
-    const [shadow, setShadow] = useState<string>("2");
+    const [intent, setIntent] = useState<SurfaceIntent>("primary");
 
     const options = (
         <>
@@ -46,39 +51,38 @@ export const SurfaceKindExample: React.FC<ExampleProps> = props => {
                     onChange={handleValueChange(setIntent)}
                 />
             </FormGroup>
-            <FormGroup label="Shadow">
-                <HTMLSelect
-                    value={shadow}
-                    options={SHADOW_OPTIONS}
-                    onChange={handleValueChange(setShadow)}
-                />
-            </FormGroup>
+            <Label>
+                Elevation: <Code>{elevation}</Code>
+            </Label>
+            <Slider
+                labelStepSize={1}
+                max={5}
+                min={0}
+                showTrackFill={false}
+                value={elevation}
+                onChange={setElevation}
+            />
         </>
     );
 
     return (
         <Example options={options} {...props}>
-            {/* A patterned backdrop so the difference between opaque and glass is visible. */}
             <div
                 style={{
                     backgroundImage:
-                        "repeating-linear-gradient(45deg, rgba(45, 114, 210, 0.25) 0 12px, transparent 12px 24px)",
+                        "repeating-linear-gradient(45deg, rgba(45, 114, 210, 0.10) 0 12px, transparent 12px 24px)",
                     borderRadius: 4,
                     padding: 40,
                 }}
             >
                 <Surface
-                    kind={kind}
+                    elevation={elevation}
                     intent={intent}
-                    shadow={Number(shadow) as 0 | 1 | 2 | 3 | 4}
+                    kind={kind}
+                    style={{ padding: 16, width: 280 }}
                 >
-                    <Flex
-                        alignItems="center"
-                        justifyContent="center"
-                        padding={4}
-                        style={{ height: "400px", textTransform: "capitalize" }}
-                    >
-                        {`${kind} surface`}
+                    <Flex justifyContent="center">
+                        Elevation&nbsp;<Code>{elevation}</Code>
                     </Flex>
                 </Surface>
             </div>

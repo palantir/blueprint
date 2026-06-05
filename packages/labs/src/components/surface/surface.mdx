@@ -44,10 +44,27 @@ Setting `kind="glass"` makes the base translucent and applies `backdrop-filter: 
 whatever sits behind it is de-emphasized. On a flat background the blur is a near no-op; over busy
 content it lets the surface read as distinct.
 
+### Elevation
+
+`elevation` deepens the surface's tonal wash. Each step composites one more wash of the surface's
+`intent` (`1 - (1 - a)^elevation`), so higher values read as a stronger tint; `0` (the default)
+paints no wash. This is the primary way to build layered depth — it renders entirely in CSS, adding
+**no extra DOM nodes** regardless of depth, so `elevation` is unbounded. It is distinct from
+`shadow`, which controls drop-shadow lift.
+
+@reactExample SurfaceElevationExample
+
+Seen across the whole scale, each level deepens the wash over the one before it:
+
+@reactExample SurfaceStackExample
+
 ## Layer
 
-Use **Layer** for tonal stacking _inside_ a surface. Each layer paints a single wash; nest layers to
-build depth. Omitting `intent` uses the subtle "none" family.
+For most layered surfaces, prefer **Surface**'s `elevation` prop above. **Layer** is the lower-level
+primitive: it paints a single tonal wash as its own element, for cases where you need a wash on a
+_specific_ subtree (e.g. merged onto an existing component via `asChild`) rather than across the
+whole surface. Each layer paints one wash; nesting layers composites them. Omitting `intent` uses
+the subtle "none" family.
 
 @reactExample LayerStackExample
 
