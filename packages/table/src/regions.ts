@@ -439,6 +439,11 @@ export class Regions {
         regions.forEach((region: Region) => {
             if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_COLUMNS) {
                 const [start, end] = region.cols!;
+                if (!isFinite(end)) {
+                    // An unbounded interval (e.g. [0, Infinity], which can result from shift-clicking a
+                    // column header) would loop forever, so skip it rather than hang. See issue #6383.
+                    return;
+                }
                 for (let col = start; col <= end; col++) {
                     if (!seen[col]) {
                         seen[col] = true;
@@ -458,6 +463,11 @@ export class Regions {
         regions.forEach((region: Region) => {
             if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_ROWS) {
                 const [start, end] = region.rows!;
+                if (!isFinite(end)) {
+                    // An unbounded interval (e.g. [1, Infinity], which can result from shift-clicking a
+                    // row header) would loop forever, so skip it rather than hang. See issue #6383.
+                    return;
+                }
                 for (let row = start; row <= end; row++) {
                     if (!seen[row]) {
                         seen[row] = true;
