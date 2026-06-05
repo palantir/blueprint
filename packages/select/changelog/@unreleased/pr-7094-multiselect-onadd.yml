@@ -1,5 +1,0 @@
-type: fix
-fix:
-  description: "[MultiSelect] `tagInputProps.onAdd` is now forwarded to the underlying `TagInput` instead of being overwritten (#7094)."
-  links:
-  - https://github.com/palantir/blueprint/issues/7094
