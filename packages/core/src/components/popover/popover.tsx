@@ -143,6 +143,9 @@ export class Popover<
     // element on the same page.
     private lostFocusOnSamePage = true;
 
+    // Ensures the React 19 incompatibility warning fires at most once per instance.
+    private didWarnReact19 = false;
+
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
 
@@ -206,6 +209,19 @@ export class Popover<
 
     public componentDidMount() {
         this.updateDarkParent();
+        this.warnIfReact19();
+    }
+
+    /**
+     * Dev-only: warn that this deprecated component's react-popper dependency silently mis-positions
+     * content under React 19 (worst under StrictMode). Steers consumers to PopoverNext.
+     */
+    private warnIfReact19() {
+        if (this.didWarnReact19 || Utils.isNodeEnv("production") || Utils.getReactMajorVersion() < 19) {
+            return;
+        }
+        this.didWarnReact19 = true;
+        console.warn(Errors.POPOVER_WARN_REACT19);
     }
 
     public componentDidUpdate(props: PopoverProps<T>, state: PopoverState) {
