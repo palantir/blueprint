@@ -23,6 +23,7 @@ import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
+import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
 import { PopoverNext, type PopoverNextRef } from "../popover-next/popoverNext";
 import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 
@@ -67,6 +68,14 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * @default PopoverInteractionKind.HOVER_TARGET_ONLY
      */
     interactionKind?: typeof PopoverInteractionKind.HOVER | typeof PopoverInteractionKind.HOVER_TARGET_ONLY;
+
+    /**
+     * Config for Floating UI middlewares.
+     * Each config is a partial options object, keyed by its middleware name.
+     *
+     * @see https://floating-ui.com/docs/middleware
+     */
+    middleware?: MiddlewareConfig;
 
     /**
      * Indicates how long (in milliseconds) the tooltip's appear/disappear
@@ -117,7 +126,7 @@ export class Tooltip<
 
     // any descendant ContextMenus may update this ctxState
     private renderPopover = (ctxState: TooltipContextState) => {
-        const { children, compact, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const { children, compact, disabled, intent, middleware, popoverClassName, ...restProps } = this.props;
         const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
             [Classes.COMPACT]: compact,
         });
@@ -131,6 +140,7 @@ export class Tooltip<
                 middleware={{
                     offset: { mainAxis: TOOLTIP_ARROW_SVG_SIZE / 2 },
                     ...nextProps.middleware,
+                    ...middleware,
                 }}
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}

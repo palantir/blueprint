@@ -76,6 +76,16 @@ describe("<Tooltip>", () => {
                 container.querySelector(`.${Classes.TOOLTIP}.${Classes.POPOVER_MINIMAL_ANIMATION}`),
             ).not.toBeInTheDocument();
         });
+
+        it("accepts middleware props", () => {
+            render(
+                <Tooltip content="content" isOpen={true} middleware={{ offset: { mainAxis: 6 } }} usePortal={false}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(screen.getByText("content")).to.exist;
+        });
     });
 
     describe("basic functionality", () => {
