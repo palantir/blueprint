@@ -21,6 +21,7 @@ import userEvent from "@testing-library/user-event";
 
 import {
     afterAll,
+    afterEach,
     beforeAll,
     beforeEach,
     describe,
@@ -33,6 +34,7 @@ import {
 import { Button, PopupKind, Tooltip } from "..";
 import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
+import * as Utils from "../../common/utils";
 
 import { Popover } from "./popover";
 import { type PopoverInteractionKind } from "./popoverProps";
@@ -137,6 +139,32 @@ describe("<Popover>", () => {
                     expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
                 });
             }
+        });
+    });
+
+    describe("React 19 deprecation warning", () => {
+        afterEach(() => vi.restoreAllMocks());
+
+        it("does not warn on React < 19", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            vi.spyOn(Utils, "getReactMajorVersion").mockReturnValue(18);
+            render(
+                <Popover content="hello">
+                    <button>target</button>
+                </Popover>,
+            );
+            expect(warnSpy).not.toHaveBeenCalledWith(Errors.POPOVER_WARN_REACT19);
+        });
+
+        it("warns once on React 19", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            vi.spyOn(Utils, "getReactMajorVersion").mockReturnValue(19);
+            render(
+                <Popover content="hello">
+                    <button>target</button>
+                </Popover>,
+            );
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_REACT19);
         });
     });
 
