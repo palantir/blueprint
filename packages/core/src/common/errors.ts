@@ -84,7 +84,8 @@ export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onIntera
 export const POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET =
     ns + ` <Popover> targetProps value is ignored when renderTarget API is used.`;
 export const POPOVER_WARN_REACT19 =
-    ns + ` <Popover> mis-positions content under React 19 (especially in StrictMode); migrate to <PopoverNext>.`;
+    ns +
+    ` <Popover> positions content incorrectly under React 19 (especially in StrictMode); migrate to <PopoverNext>.`;
 
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;
