@@ -87,13 +87,10 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * If true, the component waits until a keydown event in the TagInput
      * before opening its popover.
      *
-     * If false, the popover opens immediately after a mouse click focuses
-     * the component's TagInput.
+     * If false, the popover opens as soon as the component's TagInput is
+     * focused, matching the Suggest component.
      *
-     * N.B. the behavior of this prop differs slightly from the same one
-     * in the Suggest component; see https://github.com/palantir/blueprint/issues/4152.
-     *
-     * Ignored is customTarget prop is supplied.
+     * Ignored if the customTarget prop is supplied.
      *
      * @default false
      */
@@ -328,6 +325,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         const inputProps: HTMLInputProps = {
             ...tagInputProps.inputProps,
             className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
+            onFocus: this.handleInputFocus,
         };
 
         return (
@@ -355,6 +353,15 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         }
         this.props.onItemSelect?.(item, evt);
         this.refHandlers.popover.current?.reposition(); // reposition when size of input changes
+    };
+
+    private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        // open the popover when the input gains focus to match <Suggest>, unless the popover should
+        // only open on keydown or a custom target is in use (in which case the input is not the target)
+        if (!this.props.openOnKeyDown && this.props.customTarget == null) {
+            this.setState({ isOpen: true });
+        }
+        this.props.tagInputProps?.inputProps?.onFocus?.(event);
     };
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {
