@@ -88,6 +88,17 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     // Ensure target is focusable if relevant prop enabled
     const targetTabIndex = !isContentEmpty && !disabled && openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
 
+    // Hover targets (including Tooltip) open via the mouse/focus handlers in `targetEventHandlers`, so
+    // they must not receive Floating UI's reference props; those carry the `onClick`/keyboard click
+    // handlers used for click interactions. Applying them to a hover target injects an `onClick` that
+    // can shadow a consumer's own handler when the target is shared with an enclosing Popover via
+    // `renderTarget`. This mirrors legacy `Popover`, which only attached click handlers for click kinds.
+    const floatingProps = isHoverInteractionKind
+        ? {}
+        : floatingData.getReferenceProps({
+              onKeyDown: handleReferenceKeyDown,
+          });
+
     const ownTargetProps = {
         // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
         // If, instead, renderTarget is undefined and the target is provided as a child, props.className is
@@ -118,10 +129,6 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     let target: React.JSX.Element | undefined;
 
     if (renderTarget !== undefined) {
-        const floatingProps = floatingData.getReferenceProps({
-            onKeyDown: handleReferenceKeyDown,
-        });
-
         // When using renderTarget, if the consumer renders a tooltip target, it's their responsibility
         // to disable that tooltip when this popover is open
         target = renderTarget({
@@ -152,9 +159,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
                 ...ownTargetProps,
                 ...targetProps,
                 // Apply Floating UI's interaction props to the wrapper element (same element that has the ref)
-                ...floatingData.getReferenceProps({
-                    onKeyDown: handleReferenceKeyDown,
-                }),
+                ...floatingProps,
             },
             clonedTarget,
         );

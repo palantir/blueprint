@@ -105,6 +105,10 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
 
     const computedIsOpen = disabled ? false : (isOpen ?? defaultIsOpen);
 
+    const isHoverInteractionKind =
+        interactionKind === PopoverInteractionKind.HOVER ||
+        interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+
     const middleware = useMemo(() => {
         const defaultMiddleware: MiddlewareConfig = {
             ...(placement === undefined
@@ -135,6 +139,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         autoUpdateOptions,
         disabled,
         isControlled,
+        isHoverInteractionKind,
         isOpen: computedIsOpen,
         middleware,
         onOpenChange: (nextOpen, event) => {
@@ -156,10 +161,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     );
 
     const popoverElement = floatingData.refs.floating.current;
-
-    const isHoverInteractionKind =
-        interactionKind === PopoverInteractionKind.HOVER ||
-        interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
 
     const getPopoverElement = useCallback(() => {
         return popoverElement?.querySelector<HTMLElement>(`.${Classes.POPOVER}`);

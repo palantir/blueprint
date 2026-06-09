@@ -20,7 +20,8 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Button } from "..";
-import { Classes } from "../../common";
+import { Classes, mergeRefs } from "../../common";
+import { PopoverNext } from "../popover-next/popoverNext";
 
 import { Tooltip } from "./tooltip";
 
@@ -75,6 +76,23 @@ describe("<Tooltip>", () => {
             expect(
                 container.querySelector(`.${Classes.TOOLTIP}.${Classes.POPOVER_MINIMAL_ANIMATION}`),
             ).not.toBeInTheDocument();
+        });
+
+        it("does not inject click handlers into renderTarget props", () => {
+            let targetProps: Partial<React.HTMLProps<HTMLElement>> | undefined;
+
+            render(
+                <Tooltip
+                    content="content"
+                    renderTarget={({ isOpen: _isOpen, ref, ...props }) => {
+                        targetProps = props;
+                        return <Button {...props} ref={ref} text="target" />;
+                    }}
+                />,
+            );
+
+            expect(targetProps?.onClick).toBeUndefined();
+            expect(targetProps?.onKeyDown).toBeUndefined();
         });
     });
 
@@ -299,5 +317,37 @@ describe("<Tooltip>", () => {
         await user.keyboard("{Escape}");
 
         await waitFor(() => expect(screen.queryByText("first tooltip")).not.toBeInTheDocument());
+    });
+
+    // Regression test: a Tooltip nested inside a click Popover, both rendering a single shared target via
+    // `renderTarget`. Because Tooltip is hover-only, it must not inject an `onClick` into its target props;
+    // otherwise it would shadow the enclosing Popover's `onClick` and the target click would not open the
+    // Popover. The popover's props are spread first and the tooltip's second, the order that broke before.
+    it("does not inject an onClick that shadows an enclosing Popover's target onClick", async () => {
+        const user = userEvent.setup();
+        render(
+            <PopoverNext
+                content={<div>popover content</div>}
+                hoverOpenDelay={0}
+                renderTarget={({ isOpen: _isPopoverOpen, ref: popoverRef, ...popoverProps }) => (
+                    <Tooltip
+                        content="tooltip content"
+                        hoverOpenDelay={0}
+                        renderTarget={({ isOpen: _isTooltipOpen, ref: tooltipRef, ...tooltipProps }) => (
+                            <Button
+                                {...popoverProps}
+                                {...tooltipProps}
+                                ref={mergeRefs(popoverRef, tooltipRef)}
+                                text="target"
+                            />
+                        )}
+                    />
+                )}
+            />,
+        );
+
+        await user.click(screen.getByText("target"));
+
+        await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
     });
 });

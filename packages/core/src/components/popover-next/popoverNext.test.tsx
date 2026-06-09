@@ -8,7 +8,7 @@ import { createRef } from "react";
 
 import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "../../common";
+import { Classes, mergeRefs } from "../../common";
 import * as Errors from "../../common/errors";
 import { Button, Dialog, DialogBody, InputGroup, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
@@ -1245,6 +1245,34 @@ describe("<PopoverNext>", () => {
             expect(screen.queryByText("tooltip content")).not.toBeInTheDocument();
         });
 
+        it("opens popover when Tooltip renderTarget props are spread after PopoverNext renderTarget props", async () => {
+            const user = userEvent.setup();
+            render(
+                <PopoverNext
+                    content="popover content"
+                    renderTarget={({ isOpen: isPopoverOpen, ref: popoverRef, ...popoverProps }) => (
+                        <Tooltip
+                            content="tooltip content"
+                            disabled={isPopoverOpen}
+                            renderTarget={({ isOpen: _isTooltipOpen, ref: tooltipRef, ...tooltipProps }) => (
+                                <Button
+                                    {...popoverProps}
+                                    {...tooltipProps}
+                                    active={isPopoverOpen}
+                                    ref={mergeRefs(popoverRef, tooltipRef)}
+                                    text="target"
+                                />
+                            )}
+                        />
+                    )}
+                />,
+            );
+
+            await user.click(screen.getByRole("button", { name: "target" }));
+
+            await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
+        });
+
         it("the target is focusable", () => {
             render(
                 <PopoverNext content="popover content">
@@ -1669,6 +1697,32 @@ describe("<PopoverNext>", () => {
                     )}
                 />,
             );
+        });
+    });
+
+    describe("renderTarget interaction props", () => {
+        it.each(["click", "click-target"] as const)("injects onClick into renderTarget props for %s", kind => {
+            const renderTarget = vi.fn(({ isOpen: _isOpen, ref, ...props }) => (
+                <Button ref={ref} text="target" {...props} />
+            ));
+            render(<PopoverNext content="content" interactionKind={kind} renderTarget={renderTarget} />);
+
+            expect(renderTarget).toHaveBeenCalled();
+            expect(typeof renderTarget.mock.calls[0][0].onClick).toBe("function");
+        });
+
+        // Hover popovers (and Tooltip, which is always hover) open via mouseenter/focus, never click, so
+        // their target must not receive an onClick. Injecting one shadows a consumer's own onClick when a
+        // hover target is shared with an enclosing Popover via renderTarget. See usePopover's useClick and
+        // PopoverTarget's floatingReferenceProps.
+        it.each(["hover", "hover-target"] as const)("does not inject onClick into renderTarget props for %s", kind => {
+            const renderTarget = vi.fn(({ isOpen: _isOpen, ref, ...props }) => (
+                <Button ref={ref} text="target" {...props} />
+            ));
+            render(<PopoverNext content="content" interactionKind={kind} renderTarget={renderTarget} />);
+
+            expect(renderTarget).toHaveBeenCalled();
+            expect(renderTarget.mock.calls[0][0].onClick).toBeUndefined();
         });
     });
 });
