@@ -158,6 +158,7 @@ export const WithPopover: Story = {
     name: "With Popover",
     args: {
         content: "Tooltip: more actions",
+        placement: "top",
     },
     render: args => (
         <PopoverNext
@@ -165,19 +166,16 @@ export const WithPopover: Story = {
             placement="bottom"
             transitionDuration={0}
             // eslint-disable-next-line react/jsx-no-bind
-            renderTarget={({ isOpen: isPopoverOpen, ref: popoverRef, ...popoverProps }) => (
+            renderTarget={({ ref: popoverRef, ...popoverProps }) => (
                 <Tooltip
                     {...args}
-                    disabled={args.disabled || isPopoverOpen}
-                    placement="top"
                     // eslint-disable-next-line react/jsx-no-bind
                     renderTarget={({ ref: tooltipRef, ...tooltipProps }) => (
                         <Button
                             {...popoverProps}
                             {...tooltipProps}
-                            active={isPopoverOpen}
-                            icon="more"
                             ref={mergeRefs(popoverRef, tooltipRef)}
+                            icon="more"
                             text="Actions"
                         />
                     )}
