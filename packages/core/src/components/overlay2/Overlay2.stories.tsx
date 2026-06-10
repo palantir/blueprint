@@ -46,7 +46,6 @@ const meta = {
         lazy: { control: "boolean" },
         shouldReturnFocusOnClose: { control: "boolean" },
         transitionDuration: { control: "number" },
-        onClose: { action: "closed" },
         ...disabledArgs.reduce(
             (acc, argName) => {
                 acc[argName] = { table: { disable: true } };
