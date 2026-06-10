@@ -1,8 +1,11 @@
-/*
+/* !
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Elevation } from "../../common";
 import { H3 } from "../html/html";
@@ -12,16 +15,7 @@ import { Card } from "./card";
 const meta: Meta<typeof Card> = {
     title: "Core/Card",
     component: Card,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         children: "Card content",
@@ -69,14 +63,14 @@ export const ElevationExample: Story = {
         elevation: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16 }}>
+        <Flex gap={4}>
             {Object.values(Elevation).map(elevation => (
                 <Card key={elevation} {...args} elevation={elevation} style={{ width: 140, padding: 16 }}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 4 }}>Elevation</div>
+                    <StoryLabel title="Elevation" />
                     {elevation}
                 </Card>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -91,7 +85,7 @@ export const StateExample: Story = {
         compact: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", gap: 16, alignItems: "flex-start" }}>
+        <Flex gap={4} alignItems="start">
             <Card {...args} style={{ width: 140, padding: 16 }}>
                 Default
             </Card>
@@ -104,7 +98,7 @@ export const StateExample: Story = {
             <Card {...args} compact={true} style={{ width: 140 }}>
                 Compact
             </Card>
-        </div>
+        </Flex>
     ),
 };
 
@@ -112,9 +106,6 @@ export const StateExample: Story = {
  * An interactive card that responds to hover and click events.
  */
 export const Interactive: Story = {
-    argTypes: {
-        interactive: { table: { disable: true } },
-    },
     args: {
         children: "Click me",
         interactive: true,
@@ -126,10 +117,6 @@ export const Interactive: Story = {
  * A selected card with the selected visual treatment.
  */
 export const Selected: Story = {
-    argTypes: {
-        interactive: { table: { disable: true } },
-        selected: { table: { disable: true } },
-    },
     args: {
         children: "Selected card",
         interactive: true,
@@ -142,9 +129,6 @@ export const Selected: Story = {
  * A compact card with reduced visual padding.
  */
 export const Compact: Story = {
-    argTypes: {
-        compact: { table: { disable: true } },
-    },
     args: {
         children: "Compact card",
         compact: true,
@@ -155,19 +139,12 @@ export const Compact: Story = {
  * Comprehensive matrix showing all elevations × all states for visual regression testing.
  */
 export const AllElevationsAllStates: Story = {
-    argTypes: {
-        interactive: { table: { disable: true } },
-        selected: { table: { disable: true } },
-        compact: { table: { disable: true } },
-        children: { table: { disable: true } },
-        elevation: { table: { disable: true } },
-    },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <Flex flexDirection="column" gap={4}>
             {(["Default", "Interactive", "Selected", "Compact"] as const).map(state => (
                 <div key={state}>
-                    <div style={{ fontSize: 12, opacity: 0.6, marginBottom: 8 }}>{state}</div>
-                    <div style={{ display: "flex", gap: 16 }}>
+                    <StoryLabel title={state} />
+                    <Flex gap={4}>
                         {Object.values(Elevation).map(elevation => (
                             <Card
                                 key={elevation}
@@ -181,10 +158,10 @@ export const AllElevationsAllStates: Story = {
                                 Elev {elevation}
                             </Card>
                         ))}
-                    </div>
+                    </Flex>
                 </div>
             ))}
-        </div>
+        </Flex>
     ),
 };
 
@@ -196,10 +173,10 @@ export const Playground: Story = {
         children: "Customize this card using the controls below.",
         interactive: true,
     },
-    render: ({ children, ...args }) => (
+    render: args => (
         <Card {...args}>
             <H3>Card Title</H3>
-            <p>{children}</p>
+            <p>{args.children}</p>
         </Card>
     ),
 };

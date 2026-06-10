@@ -1,0 +1,7 @@
+<Menu>
+    <MenuItem text="Submenu">
+        <MenuItem text="Child one" />
+        <MenuItem text="Child two" />
+        <MenuItem text="Child three" />
+    </MenuItem>
+</Menu>

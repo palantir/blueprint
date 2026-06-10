@@ -22,8 +22,9 @@ import {
     Icon,
     type IconName,
     type OverlayLifecycleProps,
-    Popover,
+    PopoverNext,
     type PopoverProps,
+    popoverPropsToNextProps,
     type Props,
 } from "@blueprintjs/core";
 
@@ -223,17 +224,17 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
-                <Popover
+                <PopoverNext
                     className={classNames(Classes.TABLE_TH_MENU, menuPopoverProps?.className)}
                     content={menuRenderer(index)}
                     onClosing={this.handlePopoverClosing}
                     onOpened={this.handlePopoverOpened}
                     placement="bottom"
                     rootBoundary="document"
-                    {...menuPopoverProps}
+                    {...popoverPropsToNextProps(menuPopoverProps)}
                 >
                     <Icon icon={menuIcon} />
-                </Popover>
+                </PopoverNext>
             </div>
         );
     }

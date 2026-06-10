@@ -26,7 +26,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         autoUpdateOptions,
         arrow = true,
         boundary = "clippingAncestors",
-        canEscapeKeyClose = true,
         children,
         content,
         defaultIsOpen = false,
@@ -41,6 +40,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         onClose,
         onInteraction,
         openOnTargetFocus = true,
+        popoverRef,
         placement,
         positioningStrategy = "absolute",
         renderTarget,
@@ -105,6 +105,10 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
 
     const computedIsOpen = disabled ? false : (isOpen ?? defaultIsOpen);
 
+    const isHoverInteractionKind =
+        interactionKind === PopoverInteractionKind.HOVER ||
+        interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+
     const middleware = useMemo(() => {
         const defaultMiddleware: MiddlewareConfig = {
             ...(placement === undefined
@@ -133,11 +137,9 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
 
     const floatingData = usePopover({
         autoUpdateOptions,
-        canEscapeKeyClose,
         disabled,
-        hasBackdrop,
-        interactionKind,
         isControlled,
+        isHoverInteractionKind,
         isOpen: computedIsOpen,
         middleware,
         onOpenChange: (nextOpen, event) => {
@@ -159,10 +161,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     );
 
     const popoverElement = floatingData.refs.floating.current;
-
-    const isHoverInteractionKind =
-        interactionKind === PopoverInteractionKind.HOVER ||
-        interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
 
     const getPopoverElement = useCallback(() => {
         return popoverElement?.querySelector<HTMLElement>(`.${Classes.POPOVER}`);
@@ -399,6 +397,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                     hasDarkParent={hasDarkParent}
                     isClosingViaEscapeKeypress={isClosingViaEscapeKeypress}
                     isHoverInteractionKind={isHoverInteractionKind}
+                    popoverRef={popoverRef}
                     shouldReturnFocusOnClose={shouldReturnFocusOnClose}
                     {...props}
                 />

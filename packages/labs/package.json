@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/labs",
-    "version": "6.2.7",
+    "version": "6.4.0",
     "description": "Incubator for unstable and in-development Blueprint components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -8,7 +8,7 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-labs.css",
     "scripts": {
-        "clean": "rm -rf lib/* || true",
+        "clean": "rm -rf lib",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
@@ -33,9 +33,9 @@
         "tslib": "catalog:"
     },
     "peerDependencies": {
-        "@types/react": "18",
-        "react": "18",
-        "react-dom": "18"
+        "@types/react": "18 || 19",
+        "react": "18 || 19",
+        "react-dom": "18 || 19"
     },
     "peerDependenciesMeta": {
         "@types/react": {

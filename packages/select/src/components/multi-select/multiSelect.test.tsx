@@ -18,7 +18,7 @@ import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
 
-import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, PopoverNext, Tag } from "@blueprintjs/core";
 import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
@@ -115,10 +115,10 @@ describe("<MultiSelect>", () => {
             popoverProps: { usePortal: false },
         });
 
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
         findTargetButton(wrapper).simulate("click");
 
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
     it("allows searching within popover content when custom target provided", async () => {

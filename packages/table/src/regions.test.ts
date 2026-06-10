@@ -257,6 +257,26 @@ describe("Regions", () => {
         expect(hits).to.have.lengthOf(4);
     });
 
+    it("does not hang on unbounded intervals", () => {
+        // regression test for https://github.com/palantir/blueprint/issues/6383:
+        // an unbounded interval such as [1, Infinity] (which can result from shift-clicking a
+        // row or column header) must not cause an infinite loop.
+        const hits: number[] = [];
+        const append = (index: number) => {
+            hits.push(index);
+        };
+
+        Regions.eachUniqueFullRow([Regions.row(1, Infinity)], append);
+        expect(hits).to.have.lengthOf(0);
+
+        Regions.eachUniqueFullColumn([Regions.column(1, Infinity)], append);
+        expect(hits).to.have.lengthOf(0);
+
+        // bounded regions in the same array are still enumerated normally
+        Regions.eachUniqueFullRow([Regions.row(1, Infinity), Regions.row(0, 2)], append);
+        expect(hits).to.deep.equal([0, 1, 2]);
+    });
+
     it("enumerates cells", () => {
         const invalid = Regions.enumerateUniqueCells(null, 3, 2);
         expect(invalid).to.have.lengthOf(0);

@@ -3,26 +3,31 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { expect, screen, waitFor } from "storybook/test";
 
-import { Intent } from "../../common";
+import { Flex } from "@blueprintjs/labs";
+
+import { Intent, mergeRefs } from "../../common";
 import { Button } from "../button/buttons";
+import { Menu } from "../menu/menu";
+import { MenuItem } from "../menu/menuItem";
+import { PopoverNext } from "../popover-next/popoverNext";
 
 import { Tooltip } from "./tooltip";
+
+const TOOLTIP_POPOVER_MENU = (
+    <Menu>
+        <MenuItem icon="edit" text="Rename" />
+        <MenuItem icon="duplicate" text="Duplicate" />
+        <MenuItem icon="trash" intent="danger" text="Delete" />
+    </Menu>
+);
 
 const meta: Meta<typeof Tooltip> = {
     title: "Core/Overlays/Tooltip",
     component: Tooltip,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         content: "This is a tooltip",
@@ -73,15 +78,26 @@ export const IntentExample: Story = {
     argTypes: {
         intent: { table: { disable: true } },
     },
-    render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
-            {Object.values(Intent).map(intent => (
-                <Tooltip key={intent} {...args} intent={intent} isOpen={true}>
-                    <Button>{intent.charAt(0).toUpperCase() + intent.slice(1)}</Button>
-                </Tooltip>
-            ))}
-        </div>
-    ),
+    render: args => {
+        const intents = Object.values(Intent);
+        const mid = Math.ceil(intents.length / 2);
+        const columns = [intents.slice(0, mid), intents.slice(mid)];
+        return (
+            <Flex flexDirection="row" gap={10}>
+                {columns.map((col, i) => (
+                    <Flex key={i} flexDirection="column" gap={10} alignItems="center">
+                        {col.map(intent => (
+                            <div key={intent} style={{ padding: 80 }}>
+                                <Tooltip {...args} intent={intent} placement="bottom" isOpen={true}>
+                                    <Button>{intent.charAt(0).toUpperCase() + intent.slice(1)}</Button>
+                                </Tooltip>
+                            </div>
+                        ))}
+                    </Flex>
+                ))}
+            </Flex>
+        );
+    },
 };
 
 /**
@@ -94,20 +110,32 @@ export const VariantExample: Story = {
         minimal: { table: { disable: true } },
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 108 }}>
-            <Tooltip {...args} compact={false} minimal={false} isOpen={true}>
-                <Button>Default</Button>
-            </Tooltip>
-            <Tooltip {...args} compact={true} minimal={false} isOpen={true}>
-                <Button>Compact</Button>
-            </Tooltip>
-            <Tooltip {...args} compact={false} minimal={true} isOpen={true}>
-                <Button>Minimal</Button>
-            </Tooltip>
-            <Tooltip {...args} compact={true} minimal={true} isOpen={true}>
-                <Button>Compact + Minimal</Button>
-            </Tooltip>
-        </div>
+        <Flex flexDirection="row" gap={10}>
+            <Flex flexDirection="column" gap={10} alignItems="center">
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={false} placement="bottom" minimal={false} isOpen={true}>
+                        <Button>Default</Button>
+                    </Tooltip>
+                </div>
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={true} placement="bottom" minimal={false} isOpen={true}>
+                        <Button>Compact</Button>
+                    </Tooltip>
+                </div>
+            </Flex>
+            <Flex flexDirection="column" gap={10} alignItems="center">
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={false} placement="bottom" minimal={true} isOpen={true}>
+                        <Button>Minimal</Button>
+                    </Tooltip>
+                </div>
+                <div style={{ padding: 80 }}>
+                    <Tooltip {...args} compact={true} placement="bottom" minimal={true} isOpen={true}>
+                        <Button>Compact + Minimal</Button>
+                    </Tooltip>
+                </div>
+            </Flex>
+        </Flex>
     ),
 };
 
@@ -119,6 +147,42 @@ export const Playground: Story = {
         content: "Tooltip content",
         children: <Button>Hover over me</Button>,
     },
+};
+
+/**
+ * A tooltip can share a single target with a click popover. Tooltip render-target
+ * props are spread after PopoverNext's props here to verify that Tooltip does not
+ * inject an `onClick` handler which would shadow the popover trigger.
+ */
+export const WithPopover: Story = {
+    name: "With Popover",
+    args: {
+        content: "Tooltip: more actions",
+        placement: "top",
+    },
+    render: args => (
+        <PopoverNext
+            content={TOOLTIP_POPOVER_MENU}
+            placement="bottom"
+            transitionDuration={0}
+            // eslint-disable-next-line react/jsx-no-bind
+            renderTarget={({ ref: popoverRef, ...popoverProps }) => (
+                <Tooltip
+                    {...args}
+                    // eslint-disable-next-line react/jsx-no-bind
+                    renderTarget={({ ref: tooltipRef, ...tooltipProps }) => (
+                        <Button
+                            {...popoverProps}
+                            {...tooltipProps}
+                            ref={mergeRefs(popoverRef, tooltipRef)}
+                            icon="more"
+                            text="Actions"
+                        />
+                    )}
+                />
+            )}
+        />
+    ),
 };
 
 /**

@@ -18,7 +18,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         animation = PopoverAnimation.SCALE,
         arrow = true,
         arrowRef,
-        autoFocus = true,
+        autoFocus,
         backdropProps,
         canEscapeKeyClose,
         captureDismiss = false,
@@ -42,6 +42,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         onOpened,
         onOpening,
         popoverClassName,
+        popoverRef,
         portalClassName,
         portalContainer,
         transitionDuration = 300,
@@ -139,7 +140,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
                 ref={mergeRefs(floatingData.refs.setFloating, transitionContainerElement)}
                 {...popoverHandlers}
             >
-                <div className={popoverClasses} style={{ transformOrigin }}>
+                <div className={popoverClasses} ref={popoverRef} style={{ transformOrigin }}>
                     {arrow && (
                         <PopoverArrow
                             arrowProps={{ ref: arrowRef, style: arrowStyle }}

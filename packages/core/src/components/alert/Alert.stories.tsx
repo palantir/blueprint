@@ -3,7 +3,10 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { useCallback, useState } from "react";
+
+import { Home } from "@blueprintjs/icons";
 
 import { Intent } from "../../common";
 import { Button } from "../button/buttons";
@@ -13,17 +16,7 @@ import { Alert } from "./alert";
 const meta: Meta<typeof Alert> = {
     title: "Core/Alert",
     component: Alert,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
-    tags: ["autodocs"],
+    decorators: [storybookLayoutDecorator],
     args: {
         intent: Intent.NONE,
         isOpen: true,
@@ -159,6 +152,20 @@ export const Loading: Story = {
         cancelButtonText: "Cancel",
         loading: true,
         children: "Loading alert.",
+    },
+};
+
+/**
+ * The `icon` prop accepts either a string icon name or a React element.
+ * When an element is provided, `<Icon>` clones it and merges the parent-provided
+ * `className` and intent class onto its root.
+ */
+export const ElementIconExample: Story = {
+    name: "Element icon",
+    args: {
+        intent: Intent.PRIMARY,
+        icon: <Home size={40} />,
+        children: "This alert renders <Home /> as its icon.",
     },
 };
 

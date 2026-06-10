@@ -8,6 +8,7 @@
         "moduleResolution": "bundler",
         "skipLibCheck": true,
         "paths": {
+            "@storybook-common": ["./common"],
             "@blueprintjs/core": ["../packages/core/src"],
             "@blueprintjs/datetime": ["../packages/datetime/src"],
             "@blueprintjs/icons": ["../packages/icons/src"],

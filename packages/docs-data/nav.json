@@ -45,6 +45,7 @@
             },
             {
                 "section": "form-controls",
+                "routeAlias": "components",
                 "pages": [
                     "form-group",
                     "control-group",
@@ -59,10 +60,12 @@
             },
             {
                 "section": "form-inputs",
+                "routeAlias": "components",
                 "pages": ["input-group", "text-area", "file-input", "numeric-input", "tag-input"]
             },
             {
                 "section": "overlays",
+                "routeAlias": "components",
                 "pages": [
                     "overlay",
                     "overlay2",

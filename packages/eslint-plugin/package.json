@@ -1,10 +1,10 @@
 {
     "name": "@blueprintjs/eslint-plugin",
-    "version": "6.1.24",
+    "version": "6.2.0",
     "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
-        "clean": "rm -rf lib/* || true",
+        "clean": "rm -rf lib",
         "compile": "tsc -p src/",
         "lint": "es-lint",
         "lint-fix": "es-lint --fix",
