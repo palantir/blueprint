@@ -49,6 +49,22 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
         },
         {
             code: dedent`
+                import { Popover as BlueprintPopover } from "@blueprintjs/core";
+
+                return <BlueprintPopover />;
+            `,
+            errors: [
+                {
+                    data: {
+                        deprecatedComponentName: "Popover",
+                        newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+            ],
+        },
+        {
+            code: dedent`
                 import * as Blueprint from "@blueprintjs/core";
 
                 return <Blueprint.Popover />;
@@ -58,6 +74,38 @@ ruleTester.run("no-deprecated-components", noDeprecatedComponentsRule, {
                     data: {
                         deprecatedComponentName: "Popover",
                         newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+            ],
+        },
+        {
+            code: dedent`
+                import { Popover as BlueprintPopover } from "@blueprintjs/core";
+
+                export class MyPopover extends BlueprintPopover {}
+            `,
+            errors: [
+                {
+                    data: {
+                        deprecatedComponentName: "Popover",
+                        newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+            ],
+        },
+        {
+            code: dedent`
+                import { Select2 as BlueprintSelect } from "@blueprintjs/select";
+
+                BlueprintSelect.ofType<string>();
+            `,
+            errors: [
+                {
+                    data: {
+                        deprecatedComponentName: "Select2",
+                        newComponentName: "Select",
                     },
                     messageId: "migration",
                 },
