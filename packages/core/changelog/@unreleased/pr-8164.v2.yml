@@ -1,5 +1,0 @@
-type: improvement
-improvement:
-  description: Document OverflowList item key requirements.
-  links:
-    - https://github.com/palantir/blueprint/pull/8164
