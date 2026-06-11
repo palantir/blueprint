@@ -1,0 +1,25 @@
+{
+    "intent": {
+        "$type": "color",
+        "default": {
+            "$value": "{palette.grey.500}",
+            "foreground": { "$value": "{palette.white.1000}" }
+        },
+        "primary": {
+            "$value": "{palette.blue.500}",
+            "foreground": { "$value": "{palette.white.1000}" }
+        },
+        "success": {
+            "$value": "{palette.green.500}",
+            "foreground": { "$value": "{palette.white.1000}" }
+        },
+        "warning": {
+            "$value": "{palette.orange.500}",
+            "foreground": { "$value": "{palette.black.1000}" }
+        },
+        "danger": {
+            "$value": "{palette.red.500}",
+            "foreground": { "$value": "{palette.white.1000}" }
+        }
+    }
+}
