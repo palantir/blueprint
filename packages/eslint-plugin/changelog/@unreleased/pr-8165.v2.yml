@@ -1,5 +1,0 @@
-type: fix
-fix:
-  description: Detect deprecated components imported with aliases.
-  links:
-    - https://github.com/palantir/blueprint/pull/8165
