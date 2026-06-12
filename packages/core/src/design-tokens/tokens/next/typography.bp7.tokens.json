@@ -17,6 +17,21 @@
                     "sans-serif"
                 ]
             },
+            "display": {
+                "$description": "Placeholder display face: mirrors the default system stack until a prescribed display font is supplied.",
+                "$value": [
+                    "-apple-system",
+                    "BlinkMacSystemFont",
+                    "Segoe UI",
+                    "Roboto",
+                    "Oxygen",
+                    "Ubuntu",
+                    "Cantarell",
+                    "Open Sans",
+                    "Helvetica Neue",
+                    "sans-serif"
+                ]
+            },
             "mono": {
                 "$value": ["monospace"]
             }
@@ -39,20 +54,109 @@
         },
         "weight": {
             "$type": "fontWeight",
-            "default": {
-                "$value": 400
-            },
-            "strong": {
-                "$value": 500
-            }
+            "default": { "$value": 400 },
+            "strong": { "$value": 500 }
         },
-        "line-height": {
-            "$type": "number",
-            "default": {
-                "$value": 1.28581
+        "styles": {
+            "$description": "Composite text styles. family/size/weight reference the primitives above; line-height is a unitless ratio. letter-spacing is held at 0 — tracking is font-specific and Blueprint ships font-less by default. runningLineHeight loosens body text across multiple lines.",
+            "code": {
+                "x-small": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.code-x-small}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.66667 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "small": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.code-small}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.5 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "medium": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.code-medium}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.81818 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "large": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.code-large}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.5 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                }
             },
-            "large": {
-                "$value": 1.5
+            "body": {
+                "x-small": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.body-x-small}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.66667 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "small": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.body-small}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.63636 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "medium": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.body-medium}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.38462 },
+                    "runningLineHeight": { "$type": "number", "$value": 1.53846 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "large": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.body-large}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.33333 },
+                    "runningLineHeight": { "$type": "number", "$value": 1.46667 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                }
+            },
+            "heading": {
+                "small": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-small}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
+                    "lineHeight": { "$type": "number", "$value": 1.25 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "medium": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-medium}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
+                    "lineHeight": { "$type": "number", "$value": 1.1 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "large": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-large}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
+                    "lineHeight": { "$type": "number", "$value": 1.08333 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "x-large": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-x-large}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
+                    "lineHeight": { "$type": "number", "$value": 1.07143 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                },
+                "display": {
+                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.display}" },
+                    "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-display}" },
+                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                    "lineHeight": { "$type": "number", "$value": 1.16667 },
+                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
+                }
             }
         },
         "color": {
