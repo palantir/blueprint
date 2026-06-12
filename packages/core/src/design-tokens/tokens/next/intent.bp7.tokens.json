@@ -1,7 +1,7 @@
 {
     "intent": {
         "$type": "color",
-        "default": {
+        "neutral": {
             "$value": "{palette.grey.500}",
             "foreground": { "$value": "{palette.white.1000}" }
         },

@@ -3,19 +3,19 @@
         "color-default": {
             "$type": "color",
             "rest": {
-                "$value": "{intent.default}",
+                "$value": "{intent.neutral}",
                 "$extensions": {
                     "com.blueprint.derive": { "lightnessOffset": 0.212, "chromaOffset": -0.016, "hueOffset": 6.2 }
                 }
             },
             "hover": {
-                "$value": "{intent.default}",
+                "$value": "{intent.neutral}",
                 "$extensions": {
                     "com.blueprint.derive": { "lightnessOffset": 0.12, "chromaOffset": -0.01, "hueOffset": 0 }
                 }
             },
             "active": {
-                "$value": "{intent.default}",
+                "$value": "{intent.neutral}",
                 "$extensions": {
                     "com.blueprint.derive": { "lightnessOffset": 0.095, "chromaOffset": -0.008, "hueOffset": 0 }
                 }

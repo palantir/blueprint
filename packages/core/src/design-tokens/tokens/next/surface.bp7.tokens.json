@@ -22,7 +22,7 @@
         "border-color": {
             "$type": "color",
             "$description": "Light-mode borders are the intent lightened toward its .200 tint; dark mode uses the raw intent.",
-            "default": { "$value": "{intent.default}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
+            "neutral": { "$value": "{intent.neutral}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
             "primary": { "$value": "{intent.primary}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
             "success": { "$value": "{intent.success}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
             "warning": { "$value": "{intent.warning}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
@@ -183,7 +183,7 @@
         "layer-opacity": {
             "$type": "number",
             "$description": "Single lever for layer-tint strength; layer-color reads its alpha from here.",
-            "app": { "$value": 0.01 },
+            "base": { "$value": 0.01 },
             "intent": {
                 "rest": { "$value": 0.03 },
                 "hover": { "$value": 0.06 },
@@ -193,23 +193,23 @@
         "layer-color": {
             "$type": "color",
             "$description": "Intent tint at the layer opacity. rest = raw intent; hover/active derived from it.",
-            "app": {
+            "base": {
                 "$value": "{intent.primary}",
                 "$extensions": {
                     "com.blueprint.derive": {
                         "lightnessOffset": -0.369,
                         "chromaOffset": -0.077,
-                        "alpha": "{surface.layer-opacity.app}"
+                        "alpha": "{surface.layer-opacity.base}"
                     }
                 }
             },
-            "default": {
+            "neutral": {
                 "rest": {
-                    "$value": "{intent.default}",
+                    "$value": "{intent.neutral}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
-                    "$value": "{intent.default}",
+                    "$value": "{intent.neutral}",
                     "$extensions": {
                         "com.blueprint.derive": {
                             "lightnessOffset": -0.18,
@@ -219,7 +219,7 @@
                     }
                 },
                 "active": {
-                    "$value": "{intent.default}",
+                    "$value": "{intent.neutral}",
                     "$extensions": {
                         "com.blueprint.derive": {
                             "lightnessOffset": -0.18,
@@ -338,21 +338,21 @@
         "layer": {
             "$type": "color",
             "$description": "layer-color wrapped in linear-gradient() so it can composite as a background-image.",
-            "app": {
-                "$value": "{surface.layer-color.app}",
+            "base": {
+                "$value": "{surface.layer-color.base}",
                 "$extensions": { "com.blueprint.role": "stackable-layer" }
             },
-            "default": {
+            "neutral": {
                 "rest": {
-                    "$value": "{surface.layer-color.default.rest}",
+                    "$value": "{surface.layer-color.neutral.rest}",
                     "$extensions": { "com.blueprint.role": "stackable-layer" }
                 },
                 "hover": {
-                    "$value": "{surface.layer-color.default.hover}",
+                    "$value": "{surface.layer-color.neutral.hover}",
                     "$extensions": { "com.blueprint.role": "stackable-layer" }
                 },
                 "active": {
-                    "$value": "{surface.layer-color.default.active}",
+                    "$value": "{surface.layer-color.neutral.active}",
                     "$extensions": { "com.blueprint.role": "stackable-layer" }
                 }
             },
@@ -415,31 +415,31 @@
         },
         "background-color": {
             "$type": "color",
-            "$description": "Light mode app backgrounds: white → light-gray on interaction",
-            "app": {
+            "$description": "Light mode base backgrounds: white → light-gray on interaction",
+            "base": {
                 "rest": { "$value": "{palette.white.1000}" },
                 "hover": { "$value": "{palette.white.1000}" },
                 "active": { "$value": "{palette.white.1000}" }
             },
-            "default": {
+            "neutral": {
                 "rest": {
-                    "$value": "{intent.default}",
+                    "$value": "{intent.neutral}",
                     "$extensions": { "com.blueprint.derive": { "lightnessScale": 1.909, "chromaScale": 0 } }
                 },
                 "hover": {
-                    "$value": "{intent.default}",
+                    "$value": "{intent.neutral}",
                     "$extensions": {
                         "com.blueprint.derive": { "lightnessOffset": 0.577, "chromaOffset": -0.02, "hueOffset": 6.2 }
                     }
                 },
                 "active": {
-                    "$value": "{intent.default}",
+                    "$value": "{intent.neutral}",
                     "$extensions": {
                         "com.blueprint.derive": { "lightnessOffset": 0.59, "chromaOffset": -0.013, "hueOffset": 0 }
                     }
                 },
                 "disabled": {
-                    "$value": "{intent.default}",
+                    "$value": "{intent.neutral}",
                     "$extensions": { "com.blueprint.derive": { "lightnessScale": 1.471, "chromaScale": 0 } }
                 }
             },
