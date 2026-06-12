@@ -1,23 +1,29 @@
 {
     "typography": {
-        "color-default": {
+        "color": {
             "$type": "color",
-            "rest": {
-                "$value": "{intent.neutral}",
-                "$extensions": {
-                    "com.blueprint.derive": { "lightnessOffset": 0.212, "chromaOffset": -0.016, "hueOffset": 6.2 }
-                }
-            },
-            "hover": {
-                "$value": "{intent.neutral}",
-                "$extensions": {
-                    "com.blueprint.derive": { "lightnessOffset": 0.12, "chromaOffset": -0.01, "hueOffset": 0 }
-                }
-            },
-            "active": {
-                "$value": "{intent.neutral}",
-                "$extensions": {
-                    "com.blueprint.derive": { "lightnessOffset": 0.095, "chromaOffset": -0.008, "hueOffset": 0 }
+            "$description": "Dark-mode text. base is near-white body text (grey.100); intent text resolves one stop lighter (.200) from the global intent tokens.",
+            "base": { "$value": "{palette.grey.100}" },
+            "intent": {
+                "neutral": {
+                    "$value": "{intent.neutral}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.277 } }
+                },
+                "primary": {
+                    "$value": "{intent.primary}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
+                },
+                "success": {
+                    "$value": "{intent.success}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
+                },
+                "warning": {
+                    "$value": "{intent.warning}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
+                },
+                "danger": {
+                    "$value": "{intent.danger}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
                 }
             }
         }
