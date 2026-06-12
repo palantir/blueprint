@@ -6,7 +6,7 @@
                 "$value": "{palette.white.1000}",
                 "$extensions": {
                     "com.blueprint.derive": {
-                        "alpha": 0.1
+                        "alpha": 0.12
                     }
                 }
             },
