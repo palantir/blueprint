@@ -19,6 +19,15 @@
                 }
             }
         },
+        "border-color": {
+            "$type": "color",
+            "$description": "Dark-mode borders use the raw intent (.500); light mode lightens to the .200 tint.",
+            "default": { "$value": "{intent.default}" },
+            "primary": { "$value": "{intent.primary}" },
+            "success": { "$value": "{intent.success}" },
+            "warning": { "$value": "{intent.warning}" },
+            "danger": { "$value": "{intent.danger}" }
+        },
         "layer-opacity": {
             "$type": "number",
             "$description": "Single lever for layer-tint strength; layer-color reads its alpha from here.",
