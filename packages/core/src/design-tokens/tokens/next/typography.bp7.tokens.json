@@ -57,11 +57,11 @@
         },
         "color": {
             "$type": "color",
-            "$description": "app is the near-black body text (palette grey.1000); intent text colors derive one stop darker (.600) from the global intent tokens.",
-            "app": { "$value": "{palette.grey.1000}" },
+            "$description": "base is the near-black body text (palette grey.1000); intent text colors derive one stop darker (.600) from the global intent tokens.",
+            "base": { "$value": "{palette.grey.1000}" },
             "intent": {
-                "default": {
-                    "$value": "{intent.default}",
+                "neutral": {
+                    "$value": "{intent.neutral}",
                     "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
                 },
                 "primary": {
