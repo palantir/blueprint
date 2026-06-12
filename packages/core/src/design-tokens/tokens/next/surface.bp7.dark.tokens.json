@@ -41,62 +41,189 @@
         "layer-color": {
             "$type": "color",
             "$description": "Intent tint at the layer opacity. rest = raw intent; hover/active derived from it.",
-            "base": { "$value": "{intent.primary}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.307, "chromaOffset": -0.062, "alpha": "{surface.layer-opacity.base}" } } },
+            "base": {
+                "$value": "{intent.primary}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.307,
+                        "chromaOffset": -0.062,
+                        "alpha": "{surface.layer-opacity.base}"
+                    }
+                }
+            },
             "neutral": {
-                "rest": { "$value": "{intent.neutral}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } } },
-                "hover": { "$value": "{intent.neutral}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.1, "alpha": "{surface.layer-opacity.intent.hover}" } } },
-                "active": { "$value": "{intent.neutral}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } } }
+                "rest": {
+                    "$value": "{intent.neutral}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.neutral}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "lightnessOffset": 0.1,
+                            "alpha": "{surface.layer-opacity.intent.hover}"
+                        }
+                    }
+                },
+                "active": {
+                    "$value": "{intent.neutral}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
             },
             "primary": {
-                "rest": { "$value": "{intent.primary}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } } },
-                "hover": { "$value": "{intent.primary}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.1, "alpha": "{surface.layer-opacity.intent.hover}" } } },
-                "active": { "$value": "{intent.primary}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } } }
+                "rest": {
+                    "$value": "{intent.primary}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.primary}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "lightnessOffset": 0.1,
+                            "alpha": "{surface.layer-opacity.intent.hover}"
+                        }
+                    }
+                },
+                "active": {
+                    "$value": "{intent.primary}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
             },
             "success": {
-                "rest": { "$value": "{intent.success}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } } },
-                "hover": { "$value": "{intent.success}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.1, "alpha": "{surface.layer-opacity.intent.hover}" } } },
-                "active": { "$value": "{intent.success}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } } }
+                "rest": {
+                    "$value": "{intent.success}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.success}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "lightnessOffset": 0.1,
+                            "alpha": "{surface.layer-opacity.intent.hover}"
+                        }
+                    }
+                },
+                "active": {
+                    "$value": "{intent.success}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
             },
             "warning": {
-                "rest": { "$value": "{intent.warning}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } } },
-                "hover": { "$value": "{intent.warning}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.1, "alpha": "{surface.layer-opacity.intent.hover}" } } },
-                "active": { "$value": "{intent.warning}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } } }
+                "rest": {
+                    "$value": "{intent.warning}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.warning}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "lightnessOffset": 0.1,
+                            "alpha": "{surface.layer-opacity.intent.hover}"
+                        }
+                    }
+                },
+                "active": {
+                    "$value": "{intent.warning}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
             },
             "danger": {
-                "rest": { "$value": "{intent.danger}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } } },
-                "hover": { "$value": "{intent.danger}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.1, "alpha": "{surface.layer-opacity.intent.hover}" } } },
-                "active": { "$value": "{intent.danger}", "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } } }
+                "rest": {
+                    "$value": "{intent.danger}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.danger}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "lightnessOffset": 0.1,
+                            "alpha": "{surface.layer-opacity.intent.hover}"
+                        }
+                    }
+                },
+                "active": {
+                    "$value": "{intent.danger}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
             }
         },
 
         "layer": {
             "$type": "color",
             "$description": "layer-color wrapped in linear-gradient() so it can composite as a background-image.",
-            "base": { "$value": "{surface.layer-color.base}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
+            "base": {
+                "$value": "{surface.layer-color.base}",
+                "$extensions": { "com.blueprint.role": "stackable-layer" }
+            },
             "neutral": {
-                "rest": { "$value": "{surface.layer-color.neutral.rest}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "hover": { "$value": "{surface.layer-color.neutral.hover}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "active": { "$value": "{surface.layer-color.neutral.active}", "$extensions": { "com.blueprint.role": "stackable-layer" } }
+                "rest": {
+                    "$value": "{surface.layer-color.neutral.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.neutral.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.neutral.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
             },
             "primary": {
-                "rest": { "$value": "{surface.layer-color.primary.rest}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "hover": { "$value": "{surface.layer-color.primary.hover}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "active": { "$value": "{surface.layer-color.primary.active}", "$extensions": { "com.blueprint.role": "stackable-layer" } }
+                "rest": {
+                    "$value": "{surface.layer-color.primary.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.primary.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.primary.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
             },
             "success": {
-                "rest": { "$value": "{surface.layer-color.success.rest}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "hover": { "$value": "{surface.layer-color.success.hover}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "active": { "$value": "{surface.layer-color.success.active}", "$extensions": { "com.blueprint.role": "stackable-layer" } }
+                "rest": {
+                    "$value": "{surface.layer-color.success.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.success.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.success.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
             },
             "warning": {
-                "rest": { "$value": "{surface.layer-color.warning.rest}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "hover": { "$value": "{surface.layer-color.warning.hover}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "active": { "$value": "{surface.layer-color.warning.active}", "$extensions": { "com.blueprint.role": "stackable-layer" } }
+                "rest": {
+                    "$value": "{surface.layer-color.warning.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.warning.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.warning.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
             },
             "danger": {
-                "rest": { "$value": "{surface.layer-color.danger.rest}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "hover": { "$value": "{surface.layer-color.danger.hover}", "$extensions": { "com.blueprint.role": "stackable-layer" } },
-                "active": { "$value": "{surface.layer-color.danger.active}", "$extensions": { "com.blueprint.role": "stackable-layer" } }
+                "rest": {
+                    "$value": "{surface.layer-color.danger.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.danger.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.danger.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
             }
         },
         "shadow": {

@@ -22,11 +22,26 @@
         "border-color": {
             "$type": "color",
             "$description": "Light-mode borders are the intent lightened toward its .200 tint; dark mode uses the raw intent.",
-            "neutral": { "$value": "{intent.neutral}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
-            "primary": { "$value": "{intent.primary}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
-            "success": { "$value": "{intent.success}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
-            "warning": { "$value": "{intent.warning}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } },
-            "danger": { "$value": "{intent.danger}", "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } } }
+            "neutral": {
+                "$value": "{intent.neutral}",
+                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+            },
+            "primary": {
+                "$value": "{intent.primary}",
+                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+            },
+            "success": {
+                "$value": "{intent.success}",
+                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+            },
+            "warning": {
+                "$value": "{intent.warning}",
+                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+            },
+            "danger": {
+                "$value": "{intent.danger}",
+                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+            }
         },
         "border-width": {
             "$type": "dimension",
