@@ -23,86 +23,27 @@
         },
         "size": {
             "$type": "dimension",
-            "body-x-small": {
-                "$value": {
-                    "value": 10,
-                    "unit": "px"
-                }
-            },
-            "body-small": {
-                "$value": {
-                    "value": 12,
-                    "unit": "px"
-                }
-            },
-            "body-medium": {
-                "$value": {
-                    "value": 14,
-                    "unit": "px"
-                }
-            },
-            "body-large": {
-                "$value": {
-                    "value": 16,
-                    "unit": "px"
-                }
-            },
-            "heading-small": {
-                "$value": {
-                    "value": 16,
-                    "unit": "px"
-                }
-            },
-            "heading-medium": {
-                "$value": {
-                    "value": 20,
-                    "unit": "px"
-                }
-            },
-            "heading-large": {
-                "$value": {
-                    "value": 24,
-                    "unit": "px"
-                }
-            },
-            "heading-x-large": {
-                "$value": {
-                    "value": 28,
-                    "unit": "px"
-                }
-            },
-            "heading-display": {
-                "$value": {
-                    "value": 46,
-                    "unit": "px"
-                }
-            },
-            "code-small": {
-                "$value": {
-                    "value": 12,
-                    "unit": "px"
-                }
-            },
-            "code-medium": {
-                "$value": {
-                    "value": 13,
-                    "unit": "px"
-                }
-            },
-            "code-large": {
-                "$value": {
-                    "value": 14,
-                    "unit": "px"
-                }
-            }
+            "body-x-small": { "$value": { "value": 9, "unit": "px" } },
+            "body-small": { "$value": { "value": 11, "unit": "px" } },
+            "body-medium": { "$value": { "value": 13, "unit": "px" } },
+            "body-large": { "$value": { "value": 15, "unit": "px" } },
+            "heading-small": { "$value": { "value": 16, "unit": "px" } },
+            "heading-medium": { "$value": { "value": 20, "unit": "px" } },
+            "heading-large": { "$value": { "value": 24, "unit": "px" } },
+            "heading-x-large": { "$value": { "value": 28, "unit": "px" } },
+            "heading-display": { "$value": { "value": 48, "unit": "px" } },
+            "code-x-small": { "$value": { "value": 9, "unit": "px" } },
+            "code-small": { "$value": { "value": 10, "unit": "px" } },
+            "code-medium": { "$value": { "value": 11, "unit": "px" } },
+            "code-large": { "$value": { "value": 14, "unit": "px" } }
         },
         "weight": {
             "$type": "fontWeight",
             "default": {
                 "$value": 400
             },
-            "bold": {
-                "$value": 600
+            "strong": {
+                "$value": 500
             }
         },
         "line-height": {
@@ -114,32 +55,32 @@
                 "$value": 1.5
             }
         },
-        "color-muted": {
+        "color": {
             "$type": "color",
-            "$value": "{intent.default}"
-        },
-        "color-default": {
-            "$type": "color",
-            "$value": "{intent.default}",
-            "$extensions": {
-                "com.blueprint.derive": { "lightnessOffset": -0.279, "chromaOffset": -0.017, "hueOffset": -4 }
+            "$description": "app is the near-black body text (palette grey.1000); intent text colors derive one stop darker (.600) from the global intent tokens.",
+            "app": { "$value": "{palette.grey.1000}" },
+            "intent": {
+                "default": {
+                    "$value": "{intent.default}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                },
+                "primary": {
+                    "$value": "{intent.primary}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                },
+                "success": {
+                    "$value": "{intent.success}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                },
+                "warning": {
+                    "$value": "{intent.warning}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                },
+                "danger": {
+                    "$value": "{intent.danger}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                }
             }
-        },
-        "color-primary": {
-            "$type": "color",
-            "$value": "{intent.primary}"
-        },
-        "color-success": {
-            "$type": "color",
-            "$value": "{intent.success}"
-        },
-        "color-warning": {
-            "$type": "color",
-            "$value": "{intent.warning}"
-        },
-        "color-danger": {
-            "$type": "color",
-            "$value": "{intent.danger}"
         }
     }
 }
