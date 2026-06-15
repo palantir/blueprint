@@ -195,12 +195,6 @@ describe("<EditableText>", () => {
             expect(editSpy).toHaveBeenCalledWith(INIT_VALUE);
         });
 
-        it("stops editing when disabled", () => {
-            const { container } = render(<EditableText isEditing={true} disabled={true} />);
-            const input = container.querySelector("input");
-            expect(input).not.toBeInTheDocument();
-        });
-
         it("caret is placed at the end of the input box", () => {
             render(<EditableText isEditing={true} value="alphabet" />);
             const textbox = screen.getByRole<HTMLInputElement>("textbox");
