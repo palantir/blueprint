@@ -375,8 +375,6 @@
                     "$value": "{intent.neutral}",
                     "$extensions": {
                         "com.blueprint.derive": {
-                            "lightnessOffset": null,
-                            "chromaOffset": null,
                             "lightnessScale": 0.615,
                             "chromaScale": 0.597,
                             "hueOffset": -5.29
@@ -387,8 +385,6 @@
                     "$value": "{intent.neutral}",
                     "$extensions": {
                         "com.blueprint.derive": {
-                            "lightnessOffset": null,
-                            "chromaOffset": null,
                             "lightnessScale": 0.782,
                             "chromaScale": 0.84,
                             "hueOffset": -1.58
