@@ -52,7 +52,7 @@ describe("<EditableText>", () => {
         expect(input).not.toBeInTheDocument();
     });
 
-    it("allows resetting controlled value to undefined or null", () => {
+    it("allows resetting controlled value to undefined", () => {
         const { rerender } = render(<EditableText isEditing={false} placeholder="placeholder" value="alphabet" />);
         expect(screen.queryByText("alphabet")).toBeInTheDocument();
         rerender(<EditableText isEditing={false} placeholder="placeholder" value={undefined} />);
