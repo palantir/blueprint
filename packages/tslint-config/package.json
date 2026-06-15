@@ -4,6 +4,7 @@
     "private": true,
     "description": "TSLint configuration for @blueprintjs packages",
     "scripts": {
+        "clean": "rm -rf lib",
         "compile": "tsc -p ./src",
         "test": "tslint --rules-dir ./lib/rules --test test/rules/**/tslint.json"
     },

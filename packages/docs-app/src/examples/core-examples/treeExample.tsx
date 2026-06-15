@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import cloneDeep from "lodash/cloneDeep";
 import { useCallback, useReducer, useState } from "react";
 
 import {
@@ -38,6 +37,13 @@ type TreeAction =
     | { type: "DESELECT_ALL" }
     | { type: "SET_IS_SELECTED"; payload: { path: NodePath; isSelected: boolean } };
 
+function cloneTreeNodes(nodes: TreeNodeInfo[]): TreeNodeInfo[] {
+    return nodes.map(node => ({
+        ...node,
+        childNodes: node.childNodes == null ? node.childNodes : cloneTreeNodes(node.childNodes),
+    }));
+}
+
 function forEachNode(nodes: TreeNodeInfo[] | undefined, callback: (node: TreeNodeInfo) => void) {
     if (nodes === undefined) {
         return;
@@ -60,11 +66,11 @@ function forNodeAtPath(
 function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
     switch (action.type) {
         case "DESELECT_ALL":
-            const newState1 = cloneDeep(state);
+            const newState1 = cloneTreeNodes(state);
             forEachNode(newState1, node => (node.isSelected = false));
             return newState1;
         case "SET_IS_EXPANDED":
-            const newState2 = cloneDeep(state);
+            const newState2 = cloneTreeNodes(state);
             forNodeAtPath(
                 newState2,
                 action.payload.path,
@@ -72,7 +78,7 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
             );
             return newState2;
         case "SET_IS_SELECTED":
-            const newState3 = cloneDeep(state);
+            const newState3 = cloneTreeNodes(state);
             forNodeAtPath(
                 newState3,
                 action.payload.path,

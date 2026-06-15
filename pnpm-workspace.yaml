@@ -16,4 +16,17 @@ catalog:
   tsx: ^4.21.0
   vitest: 4.0.7
 
-publishBranch: develop
+# Supply chain security
+minimumReleaseAge: 4320 # 3 days in minutes
+gitChecks: false
+overrides:
+  "@types/react": 18.3.12
+  cheerio: 0.22.0
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
+  core-js: false
+  core-js-pure: false
+  esbuild: false
+  nx: false
+  ttf2woff2: false

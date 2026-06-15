@@ -17,7 +17,7 @@ module.exports = {
     "import/no-extraneous-dependencies": [
         "error",
         {
-            devDependencies: ["**/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}", "webpack.config.js", "karma.conf.js"],
+            devDependencies: ["**/test/**/*.{ts,tsx}", "**/*.test.{ts,tsx}", "webpack.config.js"],
         },
     ],
     "import/order": [
