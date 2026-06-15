@@ -68,7 +68,7 @@ describe("<EditableText>", () => {
     describe("when editing", () => {
         it('renders <input type="text"> when editing', () => {
             render(<EditableText isEditing={true} />);
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
             expect(textbox).toHaveAttribute("type", "text");
         });
 
@@ -84,7 +84,7 @@ describe("<EditableText>", () => {
             // Note: using controlled component (value prop), so fireEvent.change is needed
             // to directly set values since user.clear() won't work on controlled inputs
             render(<EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." value="alphabet" />);
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
 
             fireEvent.change(textbox, { target: { value: "hello" } });
             fireEvent.change(textbox, { target: { value: " " } });
@@ -99,7 +99,7 @@ describe("<EditableText>", () => {
             render(
                 <EditableText isEditing={true} onChange={changeSpy} placeholder="Edit..." defaultValue="alphabet" />,
             );
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
 
             await user.clear(textbox);
             await user.type(textbox, "hello");
@@ -120,7 +120,7 @@ describe("<EditableText>", () => {
             const { container } = render(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
 
             await user.clear(textbox);
             await user.type(textbox, NEW_VALUE);
@@ -146,7 +146,7 @@ describe("<EditableText>", () => {
             render(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
 
             await user.clear(textbox);
             await user.type(textbox, NEW_VALUE);
@@ -168,7 +168,7 @@ describe("<EditableText>", () => {
             render(
                 <EditableText isEditing={true} onCancel={cancelSpy} onConfirm={confirmSpy} defaultValue={OLD_VALUE} />,
             );
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
 
             await user.clear(textbox);
             await user.type(textbox, NEW_VALUE); // change
@@ -203,7 +203,7 @@ describe("<EditableText>", () => {
 
         it("caret is placed at the end of the input box", () => {
             render(<EditableText isEditing={true} value="alphabet" />);
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
             expect(textbox.selectionStart).toBe(8);
             expect(textbox.selectionEnd).toBe(8);
         });
@@ -212,7 +212,7 @@ describe("<EditableText>", () => {
             const user = userEvent.setup();
             let expected = "alphabet";
             const { rerender } = render(<EditableText isEditing={true} value={expected} />);
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
 
             await user.type(textbox, "hello");
             expect(textbox).toHaveValue(expected);
@@ -238,7 +238,7 @@ describe("<EditableText>", () => {
 
         it("the full input box is highlighted when selectAllOnFocus is true", () => {
             render(<EditableText isEditing={true} selectAllOnFocus={true} value="alphabet" />);
-            const textbox = screen.getByRole<HTMLTextAreaElement>("textbox");
+            const textbox = screen.getByRole<HTMLInputElement>("textbox");
             expect(textbox.selectionStart).toBe(0);
             expect(textbox.selectionEnd).toBe(8);
         });
