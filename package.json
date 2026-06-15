@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "pnpm@10.29.3",
+    "packageManager": "pnpm@11.3.0",
     "workspaces": [
         "packages/*"
     ],
@@ -34,23 +34,21 @@
         "test": "nx run-many -t test",
         "verify": "npm-run-all -s compile dist -p test lint format-check",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build"
+        "build-storybook": "storybook build --stats-json",
+        "chromatic": "chromatic"
     },
     "dependencies": {
         "@lerna-lite/cli": "^3.11.0",
         "@lerna-lite/version": "^3.11.0",
-        "@types/chai": "^5.0.0",
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",
-        "@types/mocha": "~10.0.6",
-        "@types/node": "~24.10.0",
+        "@types/node": "~24.12.2",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "@types/react-transition-group": "~4.4.10",
         "@types/sinon": "~17.0.3",
         "@types/yargs": "~17.0.32",
         "@vitejs/plugin-react": "catalog:",
-        "chai": "^5.0.0",
         "dedent": "^1.5.1",
         "eslint": "^9.20.0",
         "gh-pages": "^6.3.0",
@@ -69,15 +67,9 @@
         "vitest": "catalog:",
         "yargs": "^17.7.2"
     },
-    "pnpm": {
-        "overrides": {
-            "@types/react": "18.3.12",
-            "cheerio": "0.22.0"
-        }
-    },
     "engines": {
-        "pnpm": "10.29.3",
-        "node": ">=24.11.0"
+        "pnpm": "11.3.0",
+        "node": ">=24.14.1"
     },
     "repository": {
         "type": "git",
@@ -86,9 +78,12 @@
     "author": "Palantir Technologies",
     "license": "Apache-2.0",
     "devDependencies": {
-        "@storybook/icons": "^2.0.1",
+        "@storybook/addon-a11y": "^10.2.14",
+        "@storybook/addon-docs": "^10.2.14",
+        "@storybook/addon-themes": "^10.2.14",
         "@storybook/react-dom-shim": "^10.2.14",
         "@storybook/react-vite": "^10.2.14",
+        "chromatic": "^16.0.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "storybook": "^10.2.14",

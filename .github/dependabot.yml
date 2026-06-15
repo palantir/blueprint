@@ -30,18 +30,10 @@ updates:
           - "stylelint-*"
       test-infra:
         patterns:
-          - "chai"
-          - "@types/chai"
           - "enzyme"
           - "enzyme-*"
           - "@types/enzyme"
           - "@types/enzyme-*"
-          - "jest"
-          - "@jest/*"
-          - "karma"
-          - "karma-*"
-          - "mocha"
-          - "@types/mocha"
           - "sinon"
           - "@sinonjs/*"
           - "@types/sinon"
@@ -76,12 +68,6 @@ updates:
       # moment is deprecated, we only use it in limited places in the docs
       - dependency-name: "moment"
       - dependency-name: "moment-*"
-      # we are stuck on svgo v1 for now
-      # see https://github.com/palantir/blueprint/blob/727b91ffe76f49cded1acb8240c44502f34fce48/packages/icons/scripts/generate-icon-paths.mjs#L27-L30
-      - dependency-name: "svgo"
-      - dependency-name: "@types/svgo"
-      # lodash hasn't released for >2 years
-      - dependency-name: "lodash"
       # we rarely bump Node.js versions, and it requires additional code changes to do so
       - dependency-name: "@types/node"
         update-types:

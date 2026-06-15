@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
+
 import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
@@ -70,8 +72,10 @@ describe("showContextMenu() + hideContextMenu()", () => {
         document.body.appendChild(containerElement);
     });
 
-    beforeEach(() => {
-        assertMenuState(false);
+    beforeEach(async () => {
+        // The prior test's dismissal may still be flushing through React when the next test starts;
+        // poll briefly so we don't fail on leftover overlay state.
+        await waitFor(() => assertMenuState(false));
     });
 
     afterAll(() => {

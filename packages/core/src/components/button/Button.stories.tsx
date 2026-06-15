@@ -3,29 +3,29 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+
+import { Flex } from "@blueprintjs/labs";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
 
 import { Button } from "./buttons";
 
 // These props are deprecated on Button — hide them from the Storybook controls panel.
-const disabledArgs = ["large", "minimal", "outlined", "rightIcon", "small", "type"] as const satisfies ReadonlyArray<
-    keyof React.ComponentProps<typeof Button>
->;
+const disabledArgs = [
+    "large",
+    "minimal",
+    "outlined",
+    "rightIcon",
+    "small",
+    "type",
+    "children",
+] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Button>>;
 
 const meta: Meta<typeof Button> = {
-    title: "Core/Button",
+    title: "Core/Button/Button",
     component: Button,
-    decorators: [
-        Story => (
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minWidth: "300px" }}>
-                <Story />
-            </div>
-        ),
-    ],
-    parameters: {
-        layout: "centered",
-    },
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         text: "Button",
@@ -39,6 +39,7 @@ const meta: Meta<typeof Button> = {
         active: false,
         loading: false,
         disabled: false,
+        ellipsizeText: false,
     },
     argTypes: {
         text: {
@@ -70,6 +71,9 @@ const meta: Meta<typeof Button> = {
             control: "boolean",
         },
         disabled: {
+            control: "boolean",
+        },
+        ellipsizeText: {
             control: "boolean",
         },
         fill: {
@@ -105,221 +109,247 @@ export const Default: Story = {
     },
 };
 
-// Intent variants
-export const Primary: Story = {
-    args: {
-        text: "Primary Button",
-        intent: "primary",
+/**
+ * Use the `intent` prop to apply a semantic color that conveys the purpose or status of the button.
+ */
+export const IntentExample: Story = {
+    name: "Intent",
+    argTypes: {
+        intent: { table: { disable: true } },
     },
+    render: args => (
+        <Flex gap={2}>
+            {Object.values(Intent)
+                .filter(i => i !== "none")
+                .map(intent => (
+                    <Button
+                        key={intent}
+                        {...args}
+                        intent={intent}
+                        text={intent.charAt(0).toUpperCase() + intent.slice(1)}
+                    />
+                ))}
+        </Flex>
+    ),
 };
 
-export const Success: Story = {
-    args: {
-        text: "Success Button",
-        intent: "success",
+/**
+ * Use the `variant` prop to change the visual style. "solid" (default) renders a filled button,
+ * "minimal" renders without a background, and "outlined" adds a border without fill.
+ */
+export const VariantExample: Story = {
+    name: "Variant",
+    argTypes: {
+        variant: { table: { disable: true } },
     },
+    render: args => (
+        <Flex gap={2}>
+            {Object.values(ButtonVariant).map(variant => (
+                <Button
+                    key={variant}
+                    {...args}
+                    variant={variant}
+                    text={variant.charAt(0).toUpperCase() + variant.slice(1)}
+                />
+            ))}
+        </Flex>
+    ),
 };
 
-export const Warning: Story = {
-    args: {
-        text: "Warning Button",
-        intent: "warning",
+/**
+ * Use the `size` prop to adjust the button dimensions.
+ */
+export const SizeExample: Story = {
+    name: "Size",
+    argTypes: {
+        size: { table: { disable: true } },
     },
+    render: args => (
+        <Flex gap={2} alignItems="center">
+            {Object.values(Size).map(size => (
+                <Button key={size} {...args} size={size} text={size.charAt(0).toUpperCase() + size.slice(1)} />
+            ))}
+        </Flex>
+    ),
 };
 
-export const Danger: Story = {
-    args: {
-        text: "Danger Button",
-        intent: "danger",
+/**
+ * Buttons support `active`, `disabled`, and `loading` states.
+ */
+export const StateExample: Story = {
+    name: "State",
+    argTypes: {
+        active: { table: { disable: true } },
+        disabled: { table: { disable: true } },
+        loading: { table: { disable: true } },
     },
+    render: args => (
+        <Flex gap={2}>
+            <Button {...args} text="Default" />
+            <Button {...args} active={true} text="Active" />
+            <Button {...args} disabled={true} text="Disabled" />
+            <Button {...args} loading={true} text="Loading" />
+        </Flex>
+    ),
 };
 
-// Size variants
-export const Small: Story = {
-    args: {
-        text: "Small Button",
-        size: "small",
+/**
+ * Use `icon` and `endIcon` props to render icons alongside text, or use `icon` alone for icon-only buttons.
+ */
+export const IconExample: Story = {
+    name: "Icons",
+    argTypes: {
+        icon: { table: { disable: true } },
+        endIcon: { table: { disable: true } },
     },
+    render: args => (
+        <Flex gap={2}>
+            <Button {...args} icon="refresh" text="Reset" />
+            <Button {...args} icon="user" endIcon="caret-down" text="Profile" />
+            <Button {...args} endIcon="arrow-right" text="Next" />
+            <Button {...args} icon="edit" text={undefined} aria-label="edit" />
+        </Flex>
+    ),
 };
 
-export const Medium: Story = {
+/**
+ * Use the `alignText` prop to control text alignment within the button.
+ */
+export const AlignmentExample: Story = {
+    name: "Alignment",
+    argTypes: {
+        alignText: { table: { disable: true } },
+    },
+    render: args => (
+        <Flex flexDirection="column" gap={2} style={{ minWidth: 300 }}>
+            {Object.values(Alignment).map(alignment => (
+                <Button
+                    key={alignment}
+                    {...args}
+                    alignText={alignment}
+                    fill={true}
+                    endIcon="caret-down"
+                    text={alignment.charAt(0).toUpperCase() + alignment.slice(1)}
+                />
+            ))}
+        </Flex>
+    ),
+};
+
+/**
+ * Use the `fill` prop to make the button expand to the full width of its container.
+ */
+export const FillExample: Story = {
+    name: "Fill",
+    argTypes: {
+        fill: { table: { disable: true } },
+    },
+    decorators: [
+        Story => (
+            <div style={{ width: "400px" }}>
+                <Story />
+            </div>
+        ),
+    ],
+    render: args => (
+        <Flex flexDirection="column" gap={2}>
+            <Button {...args} fill={true} text="Full Width" />
+            <Button {...args} fill={false} text="Auto Width" />
+        </Flex>
+    ),
+};
+
+/**
+ * All intents across all variants and states.
+ */
+export const AllIntentsAllVariants: Story = {
+    argTypes: {
+        intent: { table: { disable: true } },
+        variant: { table: { disable: true } },
+        active: { table: { disable: true } },
+        disabled: { table: { disable: true } },
+        loading: { table: { disable: true } },
+    },
+    render: args => (
+        <Flex flexDirection="column" gap={4}>
+            {Object.values(ButtonVariant).map(variant => (
+                <Flex key={variant} flexDirection="column" gap={2}>
+                    <StoryLabel title={variant} />
+                    <Flex gap={2}>
+                        {Object.values(Intent).map(intent => (
+                            <Button key={intent} {...args} variant={variant} intent={intent} text={intent} />
+                        ))}
+                    </Flex>
+                    <Flex gap={2}>
+                        {Object.values(Intent).map(intent => (
+                            <Button
+                                key={intent}
+                                {...args}
+                                variant={variant}
+                                intent={intent}
+                                active={true}
+                                text={intent}
+                            />
+                        ))}
+                    </Flex>
+                    <Flex gap={2}>
+                        {Object.values(Intent).map(intent => (
+                            <Button
+                                key={intent}
+                                {...args}
+                                variant={variant}
+                                intent={intent}
+                                disabled={true}
+                                text={intent}
+                            />
+                        ))}
+                    </Flex>
+                    <Flex gap={2}>
+                        {Object.values(Intent).map(intent => (
+                            <Button
+                                key={intent}
+                                {...args}
+                                variant={variant}
+                                intent={intent}
+                                loading={true}
+                                text={intent}
+                            />
+                        ))}
+                    </Flex>
+                </Flex>
+            ))}
+        </Flex>
+    ),
+};
+
+/**
+ * Interactive playground with all props togglable via Storybook controls.
+ */
+export const Playground: Story = {
+    render: function Render(args) {
+        return (
+            <Button
+                active={args.active}
+                alignText={args.alignText}
+                disabled={args.disabled}
+                ellipsizeText={args.ellipsizeText}
+                endIcon={args.endIcon}
+                fill={args.fill}
+                icon={args.icon}
+                intent={args.intent}
+                loading={args.loading}
+                size={args.size}
+                text={args.text}
+                variant={args.variant}
+            />
+        );
+    },
     args: {
-        text: "Medium Button",
+        text: "Click",
+        icon: "refresh",
+        endIcon: undefined,
+        intent: "none",
+        variant: "solid",
         size: "medium",
     },
-};
-
-export const Large: Story = {
-    args: {
-        text: "Large Button",
-        size: "large",
-    },
-};
-
-// Visual style variants
-export const Solid: Story = {
-    args: {
-        text: "Solid Button",
-        variant: "solid",
-        intent: "primary",
-    },
-};
-
-export const Minimal: Story = {
-    args: {
-        text: "Minimal Button",
-        variant: "minimal",
-        intent: "primary",
-    },
-};
-
-export const Outlined: Story = {
-    args: {
-        text: "Outlined Button",
-        variant: "outlined",
-        intent: "primary",
-    },
-};
-
-// States
-export const Active: Story = {
-    args: {
-        text: "Active Button",
-        active: true,
-        intent: "primary",
-    },
-};
-
-export const Disabled: Story = {
-    args: {
-        text: "Disabled Button",
-        disabled: true,
-    },
-};
-
-export const Loading: Story = {
-    args: {
-        text: "Loading Button",
-        loading: true,
-        intent: "primary",
-    },
-};
-
-export const WithStartIcon: Story = {
-    args: {
-        text: "Upload",
-        icon: "upload",
-    },
-};
-
-export const WithEndIcon: Story = {
-    args: {
-        text: "Next",
-        endIcon: "arrow-right",
-        intent: "primary",
-    },
-};
-
-export const IconOnly: Story = {
-    args: {
-        icon: "search",
-        text: undefined,
-        "aria-label": "Search",
-    },
-};
-
-// Text alignment
-export const AlignStart: Story = {
-    args: {
-        text: "Start",
-        alignText: "start",
-        icon: "align-left",
-        endIcon: "caret-down",
-        fill: true,
-    },
-};
-
-export const AlignCenter: Story = {
-    args: {
-        text: "Center",
-        alignText: "center",
-        icon: "align-center",
-        endIcon: "caret-down",
-        fill: true,
-    },
-};
-
-export const AlignEnd: Story = {
-    args: {
-        text: "End",
-        alignText: "end",
-        icon: "align-right",
-        endIcon: "caret-down",
-        fill: true,
-    },
-};
-
-// Fill
-export const Fill: Story = {
-    args: {
-        text: "Fill Container",
-        fill: true,
-        intent: "primary",
-    },
-};
-
-// All intents
-export const AllIntents: Story = {
-    render: () => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ display: "flex", gap: 8 }}>
-                <Button>None</Button>
-                <Button intent="primary">Primary</Button>
-                <Button intent="success">Success</Button>
-                <Button intent="warning">Warning</Button>
-                <Button intent="danger">Danger</Button>
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-                <Button variant="minimal">None</Button>
-                <Button variant="minimal" intent="primary">
-                    Primary
-                </Button>
-                <Button variant="minimal" intent="success">
-                    Success
-                </Button>
-                <Button variant="minimal" intent="warning">
-                    Warning
-                </Button>
-                <Button variant="minimal" intent="danger">
-                    Danger
-                </Button>
-            </div>
-            <div style={{ display: "flex", gap: 8 }}>
-                <Button variant="outlined">None</Button>
-                <Button variant="outlined" intent="primary">
-                    Primary
-                </Button>
-                <Button variant="outlined" intent="success">
-                    Success
-                </Button>
-                <Button variant="outlined" intent="warning">
-                    Warning
-                </Button>
-                <Button variant="outlined" intent="danger">
-                    Danger
-                </Button>
-            </div>
-        </div>
-    ),
-};
-
-// All sizes
-export const AllSizes: Story = {
-    render: () => (
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-            <Button size="small">Small</Button>
-            <Button size="medium">Medium</Button>
-            <Button size="large">Large</Button>
-        </div>
-    ),
 };

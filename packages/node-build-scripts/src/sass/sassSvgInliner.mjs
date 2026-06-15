@@ -16,8 +16,7 @@ import svgToDataUri from "mini-svg-data-uri";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import * as sass from "sass";
-
-import { svgOptimizer } from "../svg/svgOptimizer.mjs";
+import { optimize as svgoOptimize } from "svgo";
 
 /**
  * The SVG inliner function.
@@ -46,7 +45,7 @@ export function sassSvgInlinerFactory(base, opts) {
             }
 
             if (optimize) {
-                svgContents = (await svgOptimizer.optimize(svgContents, { path: resolvedPath })).data;
+                svgContents = svgoOptimize(svgContents, { path: resolvedPath }).data;
             }
 
             return encode(svgContents, { encodingFormat });

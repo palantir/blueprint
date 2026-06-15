@@ -4,12 +4,13 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createRef } from "react";
 
 import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "../../common";
+import { Classes, mergeRefs } from "../../common";
 import * as Errors from "../../common/errors";
-import { Button, PopupKind, Tooltip } from "../../components";
+import { Button, Dialog, DialogBody, InputGroup, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 
 import { PopoverNext } from "./popoverNext";
@@ -236,6 +237,32 @@ describe("<PopoverNext>", () => {
             expect(popoverElement).toHaveClass(Classes.DARK);
         });
 
+        it("attaches popoverRef to the popover element", async () => {
+            const popoverRef = createRef<HTMLDivElement>();
+            const { container } = render(
+                <PopoverNext content="content" isOpen={true} popoverRef={popoverRef} usePortal={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            await waitFor(() => expect(screen.getByText("content")).toBeInTheDocument());
+
+            const popoverElement = container.querySelector(`.${Classes.POPOVER}`);
+            expect(popoverElement).toBeInTheDocument();
+            expect(popoverRef.current).toBe(popoverElement);
+        });
+
+        it("popoverRef returns null when closed", () => {
+            const ref = createRef<HTMLDivElement>();
+            render(
+                <PopoverNext popoverRef={ref} content="content" isOpen={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            expect(ref.current).toBeNull();
+        });
+
         it("renders with aria-haspopup attr", () => {
             const { container } = render(
                 <PopoverNext content="content" isOpen={true}>
@@ -264,6 +291,30 @@ describe("<PopoverNext>", () => {
             );
 
             expect(container.querySelector("[aria-haspopup]")).not.toBeInTheDocument();
+        });
+
+        it("applies FILL class to target when fill={true}", () => {
+            const { container } = render(
+                <PopoverNext content="content" fill={true}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).toBeInTheDocument();
+            expect(popoverTarget).toHaveClass(Classes.FILL);
+        });
+
+        it("does not apply FILL class to target when fill={false}", () => {
+            const { container } = render(
+                <PopoverNext content="content" fill={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).toBeInTheDocument();
+            expect(popoverTarget).not.toHaveClass(Classes.FILL);
         });
     });
 
@@ -872,6 +923,59 @@ describe("<PopoverNext>", () => {
                 expect(onInteraction).toHaveBeenCalledOnce();
                 expect(onInteraction).toHaveBeenCalledWith(false, expect.anything());
             });
+
+            it("is not invoked when clicking inside a child Dialog rendered in popover content", async () => {
+                const user = userEvent.setup();
+                const onInteraction = vi.fn();
+                render(
+                    <PopoverNext
+                        content={
+                            <Dialog isOpen={true} title="Child dialog" usePortal={true}>
+                                <DialogBody>
+                                    <Button text="dialog button" />
+                                </DialogBody>
+                            </Dialog>
+                        }
+                        isOpen={true}
+                        onInteraction={onInteraction}
+                    >
+                        <Button text="target" />
+                    </PopoverNext>,
+                );
+
+                await waitFor(() => expect(screen.getByRole("button", { name: "dialog button" })).toBeInTheDocument());
+
+                await user.click(screen.getByRole("button", { name: "dialog button" }));
+
+                expect(onInteraction).not.toHaveBeenCalledWith(false, expect.anything());
+            });
+
+            it("is not invoked on HOVER popover when clicking inside a child Dialog rendered in popover content", async () => {
+                const user = userEvent.setup();
+                const onInteraction = vi.fn();
+                render(
+                    <PopoverNext
+                        content={
+                            <Dialog isOpen={true} title="Child dialog" usePortal={true}>
+                                <DialogBody>
+                                    <Button text="dialog button" />
+                                </DialogBody>
+                            </Dialog>
+                        }
+                        interactionKind="hover"
+                        isOpen={true}
+                        onInteraction={onInteraction}
+                    >
+                        <Button text="target" />
+                    </PopoverNext>,
+                );
+
+                await waitFor(() => expect(screen.getByRole("button", { name: "dialog button" })).toBeInTheDocument());
+
+                await user.click(screen.getByRole("button", { name: "dialog button" }));
+
+                expect(onInteraction).not.toHaveBeenCalledWith(false, expect.anything());
+            });
         });
 
         it("does not apply active class to target when open", () => {
@@ -1139,6 +1243,34 @@ describe("<PopoverNext>", () => {
             await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
 
             expect(screen.queryByText("tooltip content")).not.toBeInTheDocument();
+        });
+
+        it("opens popover when Tooltip renderTarget props are spread after PopoverNext renderTarget props", async () => {
+            const user = userEvent.setup();
+            render(
+                <PopoverNext
+                    content="popover content"
+                    renderTarget={({ isOpen: isPopoverOpen, ref: popoverRef, ...popoverProps }) => (
+                        <Tooltip
+                            content="tooltip content"
+                            disabled={isPopoverOpen}
+                            renderTarget={({ isOpen: _isTooltipOpen, ref: tooltipRef, ...tooltipProps }) => (
+                                <Button
+                                    {...popoverProps}
+                                    {...tooltipProps}
+                                    active={isPopoverOpen}
+                                    ref={mergeRefs(popoverRef, tooltipRef)}
+                                    text="target"
+                                />
+                            )}
+                        />
+                    )}
+                />,
+            );
+
+            await user.click(screen.getByRole("button", { name: "target" }));
+
+            await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
         });
 
         it("the target is focusable", () => {
@@ -1484,6 +1616,28 @@ describe("<PopoverNext>", () => {
         });
     });
 
+    describe("key interactions on InputGroup target", () => {
+        it("Space key inserts a space character instead of being swallowed", async () => {
+            const handleChange = vi.fn();
+            const user = userEvent.setup();
+            render(
+                <PopoverNext content="popover content" autoFocus={false} enforceFocus={false} usePortal={false}>
+                    <InputGroup placeholder="Search..." onChange={handleChange} />
+                </PopoverNext>,
+            );
+            const input = screen.getByPlaceholderText("Search...");
+
+            await user.click(input);
+            await waitFor(() => expect(screen.getByText("popover content")).toBeInTheDocument());
+
+            await user.type(input, "lorem ipsum");
+
+            expect(input).toHaveValue("lorem ipsum");
+            // Popover should stay open; Space must not toggle it
+            expect(screen.getByText("popover content")).toBeInTheDocument();
+        });
+    });
+
     describe("key interactions on Button target", () => {
         describe("Space key down opens click interaction popover", () => {
             it("when autoFocus={true}", async () => {
@@ -1543,6 +1697,32 @@ describe("<PopoverNext>", () => {
                     )}
                 />,
             );
+        });
+    });
+
+    describe("renderTarget interaction props", () => {
+        it.each(["click", "click-target"] as const)("injects onClick into renderTarget props for %s", kind => {
+            const renderTarget = vi.fn(({ isOpen: _isOpen, ref, ...props }) => (
+                <Button ref={ref} text="target" {...props} />
+            ));
+            render(<PopoverNext content="content" interactionKind={kind} renderTarget={renderTarget} />);
+
+            expect(renderTarget).toHaveBeenCalled();
+            expect(typeof renderTarget.mock.calls[0][0].onClick).toBe("function");
+        });
+
+        // Hover popovers (and Tooltip, which is always hover) open via mouseenter/focus, never click, so
+        // their target must not receive an onClick. Injecting one shadows a consumer's own onClick when a
+        // hover target is shared with an enclosing Popover via renderTarget. See usePopover's useClick and
+        // PopoverTarget's floatingReferenceProps.
+        it.each(["hover", "hover-target"] as const)("does not inject onClick into renderTarget props for %s", kind => {
+            const renderTarget = vi.fn(({ isOpen: _isOpen, ref, ...props }) => (
+                <Button ref={ref} text="target" {...props} />
+            ));
+            render(<PopoverNext content="content" interactionKind={kind} renderTarget={renderTarget} />);
+
+            expect(renderTarget).toHaveBeenCalled();
+            expect(renderTarget.mock.calls[0][0].onClick).toBeUndefined();
         });
     });
 });

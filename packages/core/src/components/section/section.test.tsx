@@ -14,127 +14,104 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { H5, H6 } from "../html/html";
+import { H5 } from "../html/html";
 
 import { Section } from "./section";
 import { SectionCard } from "./sectionCard";
 
 describe("<Section>", () => {
-    let containerElement: HTMLElement;
-
-    const isOpenSelector = `[data-icon="${IconNames.CHEVRON_UP}"]`;
-    const isClosedSelector = `[data-icon="${IconNames.CHEVRON_DOWN}"]`;
-
-    const assertIsOpen = (wrapper: ReactWrapper) => {
-        assert.isTrue(wrapper.find(isOpenSelector).exists());
-    };
-
-    const assertIsClosed = (wrapper: ReactWrapper) => {
-        assert.isTrue(wrapper.find(isClosedSelector).exists());
-    };
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-
-    afterEach(() => {
-        containerElement.remove();
-    });
-
     it("supports className", () => {
-        const wrapper = mount(<Section className="foo" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`.${Classes.SECTION}`).hostNodes().exists());
-        assert.isTrue(wrapper.find(`.foo`).hostNodes().exists());
+        const { container } = render(<Section className="foo" />);
+        const section = container.querySelector(`.${Classes.SECTION}`);
+        expect(section).not.toBeNull();
+        expect(section!).toHaveClass("foo");
     });
 
     it("supports icon", () => {
-        const wrapper = mount(<Section icon={IconNames.GRAPH} title="title" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
+        const { container } = render(<Section icon={IconNames.GRAPH} title="title" />);
+        expect(container.querySelector(`[data-icon="${IconNames.GRAPH}"]`)).toBeInTheDocument();
     });
 
     it("renders optional title element", () => {
-        const wrapper = mount(<Section title="title" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(H6).exists());
+        render(<Section title="title" />);
+        const title = screen.getByRole("heading", { name: "title" });
+        expect(title.tagName.toLowerCase()).toBe("h6");
     });
 
     it("renders optional sub-title element", () => {
-        const wrapper = mount(<Section title="title" subtitle="subtitle" />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(`.${Classes.SECTION_HEADER_SUB_TITLE}`).hostNodes().exists());
+        render(<Section title="title" subtitle="subtitle" />);
+        const subtitle = screen.getByText("subtitle");
+        expect(subtitle).toHaveClass(Classes.SECTION_HEADER_SUB_TITLE);
     });
 
     it("renders custom title element with titleRenderer", () => {
-        const wrapper = mount(<Section title="title" titleRenderer={H5} />, {
-            attachTo: containerElement,
-        });
-        assert.isTrue(wrapper.find(H5).exists());
+        render(<Section title="title" titleRenderer={H5} />);
+        const title = screen.getByRole("heading", { name: "title" });
+        expect(title.tagName.toLowerCase()).toBe("h5");
     });
 
     describe("uncontrolled collapse mode", () => {
         it("collapsible is open when defaultIsOpen={undefined}", () => {
-            const wrapper = mount(
+            render(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }} title="Test">
                     <SectionCard>is open</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsOpen(wrapper);
+            const button = screen.getByRole("button", { name: "collapse section" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(screen.getByText("is open")).toBeVisible();
         });
 
         it("collapsible is open when defaultIsOpen={true}", () => {
-            const wrapper = mount(
+            render(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: true }} title="Test">
                     <SectionCard>is open</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsOpen(wrapper);
+            const button = screen.getByRole("button", { name: "collapse section" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(screen.getByText("is open")).toBeVisible();
         });
 
         it("collapsible is closed when defaultIsOpen={false}", () => {
-            const wrapper = mount(
+            render(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: false }} title="Test">
                     <SectionCard>is closed</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsClosed(wrapper);
+            const button = screen.getByRole("button", { name: "expand section" });
+            expect(button).toHaveAttribute("aria-expanded", "true");
+            expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
 
     describe("controlled collapse mode", () => {
         it("collapsible is open when isOpen={true}", () => {
-            const wrapper = mount(
+            render(
                 <Section collapsible={true} collapseProps={{ isOpen: true }} title="Test">
                     <SectionCard>is open</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsOpen(wrapper);
+            const button = screen.getByRole("button", { name: "collapse section" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(screen.getByText("is open")).toBeVisible();
         });
 
         it("collapsible is closed when isOpen={false}", () => {
-            const wrapper = mount(
+            render(
                 <Section collapsible={true} collapseProps={{ isOpen: false }} title="Test">
                     <SectionCard>is closed</SectionCard>
                 </Section>,
-                { attachTo: containerElement },
             );
-            assertIsClosed(wrapper);
+            const button = screen.getByRole("button", { name: "expand section" });
+            expect(button).toHaveAttribute("aria-expanded", "true");
+            expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
 });

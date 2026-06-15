@@ -19,11 +19,12 @@ import { createRef } from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
-import { Popover } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
+import { PopoverNext, type PopoverNextRef } from "../popover-next/popoverNext";
+import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
@@ -98,7 +99,7 @@ export class Tooltip<
         transitionDuration: 100,
     };
 
-    private popoverRef = createRef<Popover<T>>();
+    private popoverRef = createRef<PopoverNextRef>();
 
     public render() {
         // if we have an ancestor TooltipContext, we should take its state into account in this render path,
@@ -120,20 +121,17 @@ export class Tooltip<
         const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
             [Classes.COMPACT]: compact,
         });
+        const nextProps = popoverPropsToNextProps(restProps);
 
         return (
-            <Popover
-                modifiers={{
-                    arrow: {
-                        enabled: !this.props.minimal,
-                    },
-                    offset: {
-                        options: {
-                            offset: [0, TOOLTIP_ARROW_SVG_SIZE / 2],
-                        },
-                    },
+            <PopoverNext
+                {...nextProps}
+                // Merge per-key so a consumer that passes `modifiers={{ flip: ... }}` doesn't wipe out
+                // the arrow-fitting offset; consumer-supplied middleware keys still win.
+                middleware={{
+                    offset: { mainAxis: TOOLTIP_ARROW_SVG_SIZE / 2 },
+                    ...nextProps.middleware,
                 }}
-                {...restProps}
                 // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 disabled={ctxState.forceDisabled ?? disabled}
@@ -144,7 +142,7 @@ export class Tooltip<
                 ref={this.popoverRef}
             >
                 {children}
-            </Popover>
+            </PopoverNext>
         );
     };
 }

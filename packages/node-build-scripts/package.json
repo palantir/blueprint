@@ -1,13 +1,13 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "9.3.2",
+    "version": "10.0.0",
     "description": "Node.js build scripts for @blueprintjs packages",
     "module": "./index.mjs",
     "exports": {
         "import": "./index.mjs"
     },
     "scripts": {
-        "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+        "test": "vitest run"
     },
     "bin": {
         "assert-package-layout": "./assert-package-layout.mjs",
@@ -31,7 +31,7 @@
         "htmlparser2": "^9.1.0",
         "mini-svg-data-uri": "^1.4.4",
         "package-up": "^5.0.0",
-        "postcss": "^8.4.33",
+        "postcss": "^8.5.8",
         "postcss-cli": "^11.0.0",
         "postcss-discard-comments": "^6.0.1",
         "postcss-scss": "^4.0.9",
@@ -42,18 +42,14 @@
         "strip-css-comments": "^5.0.0",
         "stylelint": "~16.25.0",
         "stylelint-junit-formatter": "^0.2.2",
-        "svgo": "^1.3.2",
+        "svgo": "^4.0.1",
         "typescript": "~5.9.3",
         "yargs": "^17.7.2"
     },
     "devDependencies": {
-        "@jest/globals": "^29.7.0",
-        "@swc/core": "^1.3.105",
-        "@swc/jest": "^0.2.31",
         "@types/fs-extra": "~11.0.4",
-        "@types/svgo": "~1.3.6",
         "@types/yargs": "~17.0.32",
-        "jest": "^29.7.0"
+        "vitest": "catalog:"
     },
     "engines": {
         "node": ">=20.11"

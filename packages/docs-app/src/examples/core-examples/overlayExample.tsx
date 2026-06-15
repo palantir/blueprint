@@ -97,6 +97,7 @@ export class OverlayExample extends PureComponent<
                     onClick={this.handleOpen}
                     text="Show overlay"
                 />
+                {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
                 <Overlay
                     onClose={this.handleClose}
                     className={Classes.OVERLAY_SCROLL_CONTAINER}
