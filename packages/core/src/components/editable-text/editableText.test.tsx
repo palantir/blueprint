@@ -257,53 +257,22 @@ describe("<EditableText>", () => {
             expect(confirmSpy).not.toHaveBeenCalled();
         });
 
-        it("calls onConfirm when cmd+, ctrl+, shift+, or alt+ enter is pressed", async () => {
+        it.each([
+            { keySequence: "{Control>}{Enter}{/Control}", label: "ctrl", text: "control" },
+            { keySequence: "{Meta>}{Enter}{/Meta}", label: "cmd", text: "meta" },
+            { keySequence: "{Shift>}{Enter}{/Shift}", label: "shift", text: "shift" },
+            { keySequence: "{Alt>}{Enter}{/Alt}", label: "alt", text: "alt" },
+        ])("calls onConfirm when $label+enter is pressed", async ({ keySequence, text }) => {
             const user = userEvent.setup();
             const confirmSpy = vi.fn();
+            const { container } = render(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
+            const textarea = container.querySelector("textarea")!;
 
-            // Test ctrl+Enter
-            const { container: container1, unmount: unmount1 } = render(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />,
-            );
-            const textarea1 = container1.querySelector("textarea")!;
-            await user.type(textarea1, "control");
-            await user.keyboard("{Control>}{Enter}{/Control}");
-            expect(confirmSpy).toHaveBeenCalledTimes(1);
-            unmount1();
+            await user.type(textarea, text);
+            await user.keyboard(keySequence);
 
-            // Test meta+Enter
-            const { container: container2, unmount: unmount2 } = render(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />,
-            );
-            const textarea2 = container2.querySelector("textarea")!;
-            await user.type(textarea2, "meta");
-            await user.keyboard("{Meta>}{Enter}{/Meta}");
-            expect(confirmSpy).toHaveBeenCalledTimes(2);
-            unmount2();
-
-            // Test shift+Enter
-            const { container: container3, unmount: unmount3 } = render(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />,
-            );
-            const textarea3 = container3.querySelector("textarea")!;
-            await user.type(textarea3, "shift");
-            await user.keyboard("{Shift>}{Enter}{/Shift}");
-            expect(confirmSpy).toHaveBeenCalledTimes(3);
-            unmount3();
-
-            // Test alt+Enter
-            const { container: container4 } = render(
-                <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />,
-            );
-            const textarea4 = container4.querySelector("textarea")!;
-            await user.type(textarea4, "alt");
-            await user.keyboard("{Alt>}{Enter}{/Alt}");
-            expect(confirmSpy).toHaveBeenCalledTimes(4);
-
-            expect(confirmSpy).toHaveBeenNthCalledWith(1, "control");
-            expect(confirmSpy).toHaveBeenNthCalledWith(2, "meta");
-            expect(confirmSpy).toHaveBeenNthCalledWith(3, "shift");
-            expect(confirmSpy).toHaveBeenNthCalledWith(4, "alt");
+            expect(confirmSpy).toHaveBeenCalledOnce();
+            expect(confirmSpy).toHaveBeenCalledWith(text);
         });
 
         it("confirmOnEnterKey={true} calls onConfirm when enter is pressed", async () => {
