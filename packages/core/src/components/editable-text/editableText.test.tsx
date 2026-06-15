@@ -79,7 +79,7 @@ describe("<EditableText>", () => {
             expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
         });
 
-        it("calls onChange when input is changed", async () => {
+        it("calls onChange when input is changed", () => {
             const changeSpy = vi.fn();
             // Note: using controlled component (value prop), so fireEvent.change is needed
             // to directly set values since user.clear() won't work on controlled inputs
