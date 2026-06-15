@@ -124,7 +124,7 @@ describe("<Tree>", () => {
         expect(item0Content).not.toBeNull();
         await user.click(item0Content!);
         expect(onNodeClick).toHaveBeenCalledOnce();
-        expect(onNodeClick.mock.calls[0][1]).toEqual([0]);
+        expect(onNodeClick).toHaveBeenCalledWith(expect.objectContaining({ id: 0 }), [0], expect.anything());
 
         const item1Content = screen.getByText("Item 1").closest(`.${Classes.TREE_NODE_CONTENT}`);
         const item1Caret = item1Content!.querySelector(`.${Classes.TREE_NODE_CARET}`);
@@ -133,24 +133,24 @@ describe("<Tree>", () => {
         expect(onNodeExpand).toHaveBeenCalledOnce();
         // make sure that onNodeClick isn't fired again, only onNodeExpand should be
         expect(onNodeClick).toHaveBeenCalledTimes(1);
-        expect(onNodeExpand.mock.calls[0][1]).toEqual([1]);
+        expect(onNodeExpand).toHaveBeenCalledWith(expect.objectContaining({ id: 1 }), [1], expect.anything());
 
         const item6Content = screen.getByText("Item 6").closest(`.${Classes.TREE_NODE_CONTENT}`);
         expect(item6Content).not.toBeNull();
         await user.dblClick(item6Content!);
         expect(onNodeDoubleClick).toHaveBeenCalledOnce();
-        expect(onNodeDoubleClick.mock.calls[0][1]).toEqual([3, 0]);
+        expect(onNodeDoubleClick).toHaveBeenCalledWith(expect.objectContaining({ id: 6 }), [3, 0], expect.anything());
 
         const item3Content = screen.getByText("Item 3").closest(`.${Classes.TREE_NODE_CONTENT}`);
         const item3Caret = item3Content!.querySelector(`.${Classes.TREE_NODE_CARET}`);
         expect(item3Caret).not.toBeNull();
         await user.click(item3Caret!);
         expect(onNodeCollapse).toHaveBeenCalledOnce();
-        expect(onNodeCollapse.mock.calls[0][1]).toEqual([3]);
+        expect(onNodeCollapse).toHaveBeenCalledWith(expect.objectContaining({ id: 3 }), [3], expect.anything());
 
         fireEvent.contextMenu(item0Content!);
         expect(onNodeContextMenu).toHaveBeenCalledOnce();
-        expect(onNodeContextMenu.mock.calls[0][1]).toEqual([0]);
+        expect(onNodeContextMenu).toHaveBeenCalledWith(expect.objectContaining({ id: 0 }), [0], expect.anything());
 
         const item2Content = screen.getByText("Item 2").closest(`.${Classes.TREE_NODE_CONTENT}`);
         expect(item2Content).not.toBeNull();
@@ -158,11 +158,11 @@ describe("<Tree>", () => {
         onNodeMouseLeave.mockClear();
         fireEvent.mouseEnter(item2Content!);
         expect(onNodeMouseEnter).toHaveBeenCalledOnce();
-        expect(onNodeMouseEnter.mock.calls[0][1]).toEqual([2]);
+        expect(onNodeMouseEnter).toHaveBeenCalledWith(expect.objectContaining({ id: 2 }), [2], expect.anything());
 
         fireEvent.mouseLeave(item2Content!);
         expect(onNodeMouseLeave).toHaveBeenCalledOnce();
-        expect(onNodeMouseLeave.mock.calls[0][1]).toEqual([2]);
+        expect(onNodeMouseLeave).toHaveBeenCalledWith(expect.objectContaining({ id: 2 }), [2], expect.anything());
     });
 
     it("if disabled, event callbacks are not fired", async () => {
