@@ -170,7 +170,7 @@
     {
         "displayName": "Predictive analysis",
         "iconName": "predictive-analysis",
-        "tags": "analysis, investigation, search, study, test, brain, it\u2019s a brain, definitely a brain, could mean anything, but, yep, still a brain",
+        "tags": "analysis, investigation, search, study, test, brain",
         "group": "action",
         "codepoint": 62076
     },
@@ -4870,5 +4870,75 @@
         "tags": "application, browser, windows, platforms, pages, page, website",
         "group": "action",
         "codepoint": 62392
+    },
+    {
+        "displayName": "Add column: derived",
+        "iconName": "add-derived-column",
+        "tags": "table, column, add, calculate, formula, new, spreadsheet, data, plus",
+        "group": "table",
+        "codepoint": 62393
+    },
+    {
+        "displayName": "Add tile",
+        "iconName": "add-tile",
+        "tags": "plus, layout, module, grid, card, new, create, panel",
+        "group": "interface",
+        "codepoint": 62394
+    },
+    {
+        "displayName": "Dashed circle",
+        "iconName": "circle-dashed",
+        "tags": "dotted, outline, border, pending, placeholder, empty, incomplete, partial",
+        "group": "miscellaneous",
+        "codepoint": 62395
+    },
+    {
+        "displayName": "Descendant",
+        "iconName": "descendant",
+        "tags": "child, hierarchy, tree, node, nested, branch, relationship, lineage, arrow, sub",
+        "group": "action",
+        "codepoint": 62396
+    },
+    {
+        "displayName": "Engagement",
+        "iconName": "engagement",
+        "tags": "interaction, person, communication, chat, activity, participation, social, audience, outreach, user",
+        "group": "interface",
+        "codepoint": 62397
+    },
+    {
+        "displayName": "New comment",
+        "iconName": "new-comment",
+        "tags": "comment, add, chat, speech, bubble, message, discussion, plus, create",
+        "group": "action",
+        "codepoint": 62398
+    },
+    {
+        "displayName": "Outer join",
+        "iconName": "outer-join",
+        "tags": "venn diagram, circles, overlap, union, data, merge, combine, set, database, sql",
+        "group": "action",
+        "codepoint": 62399
+    },
+    {
+        "displayName": "Popout",
+        "iconName": "popout",
+        "tags": "external, window, arrow, open, new window, detach, breakout, expand, separate",
+        "group": "action",
+        "codepoint": 62400
+    },
+    {
+        "displayName": "Frame to frame",
+        "iconName": "frame-to-frame",
+        "tags": "command, connection, connect, link, application, flow",
+        "group": "action",
+        "codepoint": 62401
+    },
+    {
+        "displayName": "Crystal ball",
+        "iconName": "crystal-ball",
+        "tags": "scenario, sparkle, star, possibility, option",
+        "group": "miscellaneous",
+        "codepoint": 62402
     }
 ]

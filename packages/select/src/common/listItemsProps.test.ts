@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import sinon from "sinon";
+
+import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { executeItemsEqual } from "./listItemsProps";
 
@@ -60,49 +61,49 @@ describe("ListItemsProps Utils", () => {
 
         describe("itemsEqual is undefined", () => {
             it("treats null and undefined as distinctly different", () => {
-                assert.isTrue(executeItemsEqual(undefined, null, null));
-                assert.isTrue(executeItemsEqual(undefined, undefined, undefined));
-                assert.isFalse(executeItemsEqual(undefined, null, undefined));
-                assert.isFalse(executeItemsEqual(undefined, undefined, null));
+                expect(executeItemsEqual(undefined, null, null)).toBe(true);
+                expect(executeItemsEqual(undefined, undefined, undefined)).toBe(true);
+                expect(executeItemsEqual(undefined, null, undefined)).toBe(false);
+                expect(executeItemsEqual(undefined, undefined, null)).toBe(false);
             });
 
             it("compares primitives correctly", () => {
-                assert.isTrue(executeItemsEqual(undefined, 42, 42));
-                assert.isFalse(executeItemsEqual(undefined, 42, 1337));
+                expect(executeItemsEqual(undefined, 42, 42)).toBe(true);
+                expect(executeItemsEqual(undefined, 42, 1337)).toBe(false);
 
-                assert.isTrue(executeItemsEqual(undefined, "A", "A"));
-                assert.isFalse(executeItemsEqual(undefined, "A", "B"));
+                expect(executeItemsEqual(undefined, "A", "A")).toBe(true);
+                expect(executeItemsEqual(undefined, "A", "B")).toBe(false);
             });
 
             it("uses strict equality", () => {
-                assert.isTrue(executeItemsEqual(undefined, ITEM_OBJECT_A, ITEM_OBJECT_A));
+                expect(executeItemsEqual(undefined, ITEM_OBJECT_A, ITEM_OBJECT_A)).toBe(true);
                 // Duplicate objects fail strict equality test
-                assert.isFalse(executeItemsEqual(undefined, ITEM_OBJECT_A, ITEM_OBJECT_A_DUPLICATE));
+                expect(executeItemsEqual(undefined, ITEM_OBJECT_A, ITEM_OBJECT_A_DUPLICATE)).toBe(false);
             });
         });
 
         describe("itemsEqual is a property name", () => {
             it("treats null and undefined as distinctly different", () => {
-                assert.isTrue(executeItemsEqual<ItemObject>("id", null, null));
-                assert.isTrue(executeItemsEqual<ItemObject>("id", undefined, undefined));
-                assert.isFalse(executeItemsEqual<ItemObject>("id", null, undefined));
-                assert.isFalse(executeItemsEqual<ItemObject>("id", undefined, null));
+                expect(executeItemsEqual<ItemObject>("id", null, null)).toBe(true);
+                expect(executeItemsEqual<ItemObject>("id", undefined, undefined)).toBe(true);
+                expect(executeItemsEqual<ItemObject>("id", null, undefined)).toBe(false);
+                expect(executeItemsEqual<ItemObject>("id", undefined, null)).toBe(false);
             });
 
             it("compares primitives correctly", () => {
-                assert.isTrue(executeItemsEqual("id", ITEM_OBJECT_A, ITEM_OBJECT_A_EQUIVALENT));
-                assert.isFalse(executeItemsEqual("id", ITEM_OBJECT_A, ITEM_OBJECT_B));
+                expect(executeItemsEqual("id", ITEM_OBJECT_A, ITEM_OBJECT_A_EQUIVALENT)).toBe(true);
+                expect(executeItemsEqual("id", ITEM_OBJECT_A, ITEM_OBJECT_B)).toBe(false);
             });
 
             it("uses strict equality", () => {
-                assert.isTrue(executeItemsEqual("listOfValues", ITEM_OBJECT_A, ITEM_OBJECT_A));
+                expect(executeItemsEqual("listOfValues", ITEM_OBJECT_A, ITEM_OBJECT_A)).toBe(true);
                 // "listOfValues" property is an array, so strict equality fails even though the
                 // arrays contain the same values.
-                assert.isFalse(executeItemsEqual("listOfValues", ITEM_OBJECT_A, ITEM_OBJECT_A_DUPLICATE));
+                expect(executeItemsEqual("listOfValues", ITEM_OBJECT_A, ITEM_OBJECT_A_DUPLICATE)).toBe(false);
             });
 
             it("does not incorrectly compare null to a property with a null value", () => {
-                assert.isFalse(executeItemsEqual<ItemObject>("nullField", ITEM_OBJECT_A, null));
+                expect(executeItemsEqual<ItemObject>("nullField", ITEM_OBJECT_A, null)).toBe(false);
             });
         });
 
@@ -117,35 +118,35 @@ describe("ListItemsProps Utils", () => {
             });
 
             it("treats null and undefined as distinctly different", () => {
-                assert.isTrue(executeItemsEqual<ItemObject>(equalityComparator, null, null));
-                assert.isTrue(executeItemsEqual<ItemObject>(equalityComparator, undefined, undefined));
-                assert.isFalse(executeItemsEqual<ItemObject>(equalityComparator, null, undefined));
-                assert.isFalse(executeItemsEqual<ItemObject>(equalityComparator, undefined, null));
+                expect(executeItemsEqual<ItemObject>(equalityComparator, null, null)).toBe(true);
+                expect(executeItemsEqual<ItemObject>(equalityComparator, undefined, undefined)).toBe(true);
+                expect(executeItemsEqual<ItemObject>(equalityComparator, null, undefined)).toBe(false);
+                expect(executeItemsEqual<ItemObject>(equalityComparator, undefined, null)).toBe(false);
 
-                assert(!equalityComparator.called);
+                expect(equalityComparator.called).toBeFalsy();
             });
 
             it("calls the function and uses its result (true)", () => {
-                assert.isTrue(
-                    executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, ITEM_OBJECT_A_EQUIVALENT),
+                expect(executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, ITEM_OBJECT_A_EQUIVALENT)).toBe(
+                    true,
                 );
-                assert(equalityComparator.calledWith(ITEM_OBJECT_A, ITEM_OBJECT_A_EQUIVALENT));
-                assert(equalityComparator.returned(true));
+                expect(equalityComparator.calledWith(ITEM_OBJECT_A, ITEM_OBJECT_A_EQUIVALENT)).toBeTruthy();
+                expect(equalityComparator.returned(true)).toBeTruthy();
             });
 
             it("calls the function and uses its result (false)", () => {
-                assert.isFalse(executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, ITEM_OBJECT_B));
-                assert(equalityComparator.calledWith(ITEM_OBJECT_A, ITEM_OBJECT_B));
-                assert(equalityComparator.returned(false));
+                expect(executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, ITEM_OBJECT_B)).toBe(false);
+                expect(equalityComparator.calledWith(ITEM_OBJECT_A, ITEM_OBJECT_B)).toBeTruthy();
+                expect(equalityComparator.returned(false)).toBeTruthy();
             });
 
             it("does not call the function if one param is null/undefined", () => {
-                assert.isFalse(executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, null));
-                assert.isFalse(executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, undefined));
-                assert.isFalse(executeItemsEqual<ItemObject>(equalityComparator, null, ITEM_OBJECT_A));
-                assert.isFalse(executeItemsEqual<ItemObject>(equalityComparator, undefined, ITEM_OBJECT_A));
+                expect(executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, null)).toBe(false);
+                expect(executeItemsEqual<ItemObject>(equalityComparator, ITEM_OBJECT_A, undefined)).toBe(false);
+                expect(executeItemsEqual<ItemObject>(equalityComparator, null, ITEM_OBJECT_A)).toBe(false);
+                expect(executeItemsEqual<ItemObject>(equalityComparator, undefined, ITEM_OBJECT_A)).toBe(false);
 
-                assert(!equalityComparator.called);
+                expect(equalityComparator.called).toBeFalsy();
             });
         });
     });

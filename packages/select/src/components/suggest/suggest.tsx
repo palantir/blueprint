@@ -22,8 +22,9 @@ import {
     InputGroup,
     type InputGroupProps,
     mergeRefs,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverNext,
+    popoverPropsToNextProps,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -111,6 +112,8 @@ export interface SuggestState<T> {
     selectedItem: T | null;
 }
 
+const DEFAULT_POPOVER_TRANSITION_DURATION = 300;
+
 /**
  * Suggest component.
  *
@@ -181,7 +184,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
-            const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
+            const timeout = this.props.popoverProps?.transitionDuration ?? DEFAULT_POPOVER_TRANSITION_DURATION;
             setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
@@ -197,12 +200,12 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverNext
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
-                {...popoverProps}
+                {...popoverPropsToNextProps(popoverProps)}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>

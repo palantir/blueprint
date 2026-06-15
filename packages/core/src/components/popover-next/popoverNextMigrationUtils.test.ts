@@ -6,9 +6,15 @@ import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import type { MiddlewareConfig } from "../..";
 import { PopoverPosition } from "../popover/popoverPosition";
+import type { PopoverProps } from "../popover/popoverProps";
 import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
 
-import { popoverPositionToNextPlacement, popperModifiersToNextMiddleware } from "./popoverNextMigrationUtils";
+import {
+    popoverPlacementToNextPlacement,
+    popoverPositionToNextPlacement,
+    popoverPropsToNextProps,
+    popperModifiersToNextMiddleware,
+} from "./popoverNextMigrationUtils";
 
 describe("popoverPositionToNextPlacement", () => {
     it("should convert top-left to top-start", () => {
@@ -69,6 +75,27 @@ describe("popoverPositionToNextPlacement", () => {
 
     it("should return undefined for auto-end", () => {
         expect(popoverPositionToNextPlacement("auto-end")).to.be.undefined;
+    });
+});
+
+describe("popoverPlacementToNextPlacement", () => {
+    it("should pass through non-auto placements unchanged", () => {
+        expect(popoverPlacementToNextPlacement("top")).to.equal("top");
+        expect(popoverPlacementToNextPlacement("top-start")).to.equal("top-start");
+        expect(popoverPlacementToNextPlacement("bottom-end")).to.equal("bottom-end");
+        expect(popoverPlacementToNextPlacement("left-start")).to.equal("left-start");
+    });
+
+    it("should return undefined for auto", () => {
+        expect(popoverPlacementToNextPlacement("auto")).to.be.undefined;
+    });
+
+    it("should return undefined for auto-start", () => {
+        expect(popoverPlacementToNextPlacement("auto-start")).to.be.undefined;
+    });
+
+    it("should return undefined for auto-end", () => {
+        expect(popoverPlacementToNextPlacement("auto-end")).to.be.undefined;
     });
 });
 
@@ -181,10 +208,10 @@ describe("popperModifiersToNextMiddleware", () => {
             warnSpy.mockRestore();
         });
 
-        it("should omit offset from result when no offset options provided", () => {
-            const value: PopperModifierOverrides = { offset: {} };
-            const expected: MiddlewareConfig = {};
-            expect(popperModifiersToNextMiddleware(value)).to.deep.equal(expected);
+        it("should fall back to Blueprint's legacy default offset (15px main-axis) when modifier is enabled with no explicit options", () => {
+            const expected: MiddlewareConfig = { offset: { mainAxis: 15 } };
+            expect(popperModifiersToNextMiddleware({ offset: {} })).to.deep.equal(expected);
+            expect(popperModifiersToNextMiddleware({ offset: { enabled: true } })).to.deep.equal(expected);
         });
     });
 
@@ -264,5 +291,188 @@ describe("popperModifiersToNextMiddleware", () => {
             shift: { padding: 4 },
         };
         expect(popperModifiersToNextMiddleware(value)).to.deep.equal(expected);
+    });
+});
+
+describe("popoverPropsToNextProps", () => {
+    it("should pin shouldReturnFocusOnClose to false when not supplied (legacy default)", () => {
+        expect(popoverPropsToNextProps({})).to.deep.equal({ shouldReturnFocusOnClose: false });
+    });
+
+    it("should treat undefined input the same as an empty object", () => {
+        expect(popoverPropsToNextProps()).to.deep.equal({ shouldReturnFocusOnClose: false });
+        expect(popoverPropsToNextProps(undefined)).to.deep.equal({ shouldReturnFocusOnClose: false });
+    });
+
+    it("should pass through shouldReturnFocusOnClose when supplied", () => {
+        const result = popoverPropsToNextProps({ shouldReturnFocusOnClose: true });
+        expect(result.shouldReturnFocusOnClose).to.equal(true);
+    });
+
+    it("should pass through 1:1 props as-is", () => {
+        const result = popoverPropsToNextProps({
+            content: "hello",
+            hasBackdrop: true,
+            isOpen: true,
+            matchTargetWidth: true,
+            positioningStrategy: "fixed",
+            rootBoundary: "viewport",
+            usePortal: false,
+        });
+        expect(result.content).to.equal("hello");
+        expect(result.hasBackdrop).to.equal(true);
+        expect(result.isOpen).to.equal(true);
+        expect(result.matchTargetWidth).to.equal(true);
+        expect(result.positioningStrategy).to.equal("fixed");
+        expect(result.rootBoundary).to.equal("viewport");
+        expect(result.usePortal).to.equal(false);
+    });
+
+    describe("onClose", () => {
+        it("should wrap onClose so legacy callbacks are only invoked with a defined event", () => {
+            const onClose = vi.fn();
+            const result = popoverPropsToNextProps({ onClose });
+            // Wrapper exists, and it's not the original.
+            expect(result.onClose).to.be.a("function");
+            expect(result.onClose).to.not.equal(onClose);
+            const wrapped = result.onClose!;
+            // Forwards real events.
+            const event = { type: "click" } as React.SyntheticEvent<HTMLElement>;
+            wrapped(event);
+            expect(onClose).toHaveBeenCalledOnce();
+            expect(onClose).toHaveBeenCalledWith(event);
+            // Drops undefined events to honor legacy `(event: SyntheticEvent) => void` signature.
+            wrapped(undefined);
+            expect(onClose).toHaveBeenCalledOnce();
+        });
+
+        it("should leave onClose undefined when not supplied", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.onClose).to.be.undefined;
+        });
+    });
+
+    describe("placement / position", () => {
+        it("should convert position to placement", () => {
+            const result = popoverPropsToNextProps({ position: PopoverPosition.TOP_LEFT });
+            expect(result.placement).to.equal("top-start");
+        });
+
+        it("should leave placement undefined when position is auto", () => {
+            const result = popoverPropsToNextProps({ position: "auto" });
+            expect(result.placement).to.be.undefined;
+        });
+
+        it("should leave placement undefined when placement is auto", () => {
+            const result = popoverPropsToNextProps({ placement: "auto" });
+            expect(result.placement).to.be.undefined;
+        });
+
+        it("should prefer placement over position when both are supplied (placement ?? position)", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            const result = popoverPropsToNextProps({
+                placement: "right",
+                position: PopoverPosition.TOP_LEFT,
+            });
+            expect(result.placement).to.equal("right");
+            warnSpy.mockRestore();
+        });
+
+        it("should prefer explicit placement: 'auto' over position (legacy placement ?? position rule)", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            const result = popoverPropsToNextProps({
+                placement: "auto",
+                position: PopoverPosition.TOP_LEFT,
+            });
+            // Explicit `placement: "auto"` wins, mapping to undefined (autoPlacement default).
+            expect(result.placement).to.be.undefined;
+            warnSpy.mockRestore();
+        });
+
+        it("should warn when both placement and position are supplied (mutex)", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            popoverPropsToNextProps({ placement: "right", position: PopoverPosition.TOP_LEFT });
+            expect(warnSpy).toHaveBeenCalledOnce();
+            warnSpy.mockRestore();
+        });
+    });
+
+    describe("modifiers → middleware", () => {
+        it("should convert modifiers to middleware", () => {
+            const result = popoverPropsToNextProps({
+                modifiers: { flip: { options: { padding: 8 } } },
+            });
+            expect(result.middleware).to.deep.equal({ flip: { padding: 8 } });
+        });
+
+        it("should leave middleware undefined when modifiers is not supplied", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.middleware).to.be.undefined;
+        });
+    });
+
+    describe("minimal", () => {
+        it("should map minimal: true to animation: 'minimal' and arrow: false", () => {
+            const result = popoverPropsToNextProps({ minimal: true });
+            expect(result.animation).to.equal("minimal");
+            expect(result.arrow).to.equal(false);
+        });
+
+        it("should not set animation or arrow when minimal is false", () => {
+            const result = popoverPropsToNextProps({ minimal: false });
+            expect(result.animation).to.be.undefined;
+            expect(result.arrow).to.be.undefined;
+        });
+    });
+
+    describe("boundary", () => {
+        it("should remap 'clippingParents' to 'clippingAncestors'", () => {
+            const result = popoverPropsToNextProps({ boundary: "clippingParents" });
+            expect(result.boundary).to.equal("clippingAncestors");
+        });
+
+        it("should pass through Element boundary", () => {
+            const element = document.createElement("div");
+            const result = popoverPropsToNextProps({ boundary: element });
+            expect(result.boundary).to.equal(element);
+        });
+
+        it("should leave boundary undefined when not supplied (PopoverNext default = clippingAncestors)", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.boundary).to.be.undefined;
+        });
+    });
+
+    describe("popoverRef", () => {
+        it("should pass through popoverRef to PopoverNext", () => {
+            const ref: React.RefObject<HTMLElement> = { current: null };
+            const result = popoverPropsToNextProps({ popoverRef: ref });
+            expect(result.popoverRef).to.equal(ref);
+        });
+
+        it("should leave popoverRef undefined when not supplied", () => {
+            const result = popoverPropsToNextProps({});
+            expect(result.popoverRef).to.be.undefined;
+        });
+    });
+
+    describe("dropped props", () => {
+        it("should drop modifiersCustom with a dev warning", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+            const props: Partial<PopoverProps> = { modifiersCustom: [{ name: "custom" }] };
+            const result = popoverPropsToNextProps(props);
+            expect(result).not.to.have.property("modifiersCustom");
+            expect(warnSpy).toHaveBeenCalledOnce();
+            warnSpy.mockRestore();
+        });
+
+        it("should drop portalStopPropagationEvents with a dev warning", () => {
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
+
+            const result = popoverPropsToNextProps({ portalStopPropagationEvents: ["click"] });
+            expect(result).not.to.have.property("portalStopPropagationEvents");
+            expect(warnSpy).toHaveBeenCalledOnce();
+            warnSpy.mockRestore();
+        });
     });
 });

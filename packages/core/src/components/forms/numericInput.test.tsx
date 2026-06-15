@@ -1249,7 +1249,7 @@ describe("<NumericInput>", () => {
     }
 
     function runTextInputSuite(
-        invalidKeyNames: string[],
+        keyNames: string[],
         expectDefaultPrevented: boolean,
         eventOptions?: Partial<KeyboardEvent>,
         allowNumericCharactersOnly?: boolean,
@@ -1261,19 +1261,29 @@ describe("<NumericInput>", () => {
         );
         const inputField = screen.getByRole(allowNumericCharactersOnly === false ? "textbox" : "spinbutton");
 
-        invalidKeyNames.forEach(keyName => {
+        keyNames.forEach(keyName => {
             onKeyPressSpy.mockClear();
-            // fireEvent.keyPress is used intentionally here to inspect event.defaultPrevented,
-            // which is not accessible through userEvent
-            fireEvent.keyPress(inputField, { key: keyName, ...eventOptions });
-            if (onKeyPressSpy.mock.calls.length > 0) {
-                const event = onKeyPressSpy.mock.calls[0][0] as KeyboardEvent;
-                const valueToCheck = expectDefaultPrevented ? event.defaultPrevented : !event.defaultPrevented;
-                expect(valueToCheck).toBe(true);
+
+            // React only forwards a synthetic `keypress` to `onKeyPress` for keys that produce a
+            // character (i.e. a non-zero `charCode`), so single-character keys must supply one.
+            // Multi-character keys (e.g. "ArrowUp", "Shift") never emit a `keypress` in a real
+            // browser, so they are dispatched without a `charCode` and pass through unfiltered. The
+            // component decides whether to block a key based on `key`, not `charCode`.
+            const isSingleCharKey = keyName.length === 1;
+            const charCode = isSingleCharKey ? keyName.charCodeAt(0) : 0;
+
+            // `fireEvent` returns `false` when a handler called `preventDefault()`. This is observable
+            // for every key, unlike the spy below, which only fires for character keys.
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            const notPrevented = fireEvent.keyPress(inputField, { charCode, key: keyName, ...eventOptions });
+            expect(notPrevented, `keypress "${keyName}"`).toBe(!expectDefaultPrevented);
+
+            // An allowed keystroke is never prevented whether or not the handler runs, so assert the
+            // handler actually fired for character keys; otherwise the check above could pass
+            // vacuously if the keypress never reached the component.
+            if (isSingleCharKey) {
+                expect(onKeyPressSpy, `onKeyPress should fire for "${keyName}"`).toHaveBeenCalled();
             }
-            // If the spy wasn't called, jsdom didn't fire the keypress for this key.
-            // Non-character keys (Arrow, Backspace, etc.) don't produce keypress events per spec.
-            // Some less common symbols also may not fire in jsdom. We skip assertion in these cases.
         });
         unmount();
     }

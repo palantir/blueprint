@@ -27,14 +27,6 @@ module.exports = tseslint.config([
             // TODO: Update to other option such as oxlint or upcoming capabilities, as this is too slow
             "import/no-cycle": "off",
             "no-console": "error",
-            // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
-            "no-restricted-imports": [
-                "error",
-                {
-                    message: "lodash-es cannot be imported in CommonJS, use lodash submodules instead",
-                    name: "lodash-es",
-                },
-            ],
         },
         settings: {
             react: {
@@ -53,7 +45,6 @@ module.exports = tseslint.config([
         languageOptions: {
             globals: {
                 ...globals.browser,
-                ...globals.mocha,
             },
         },
         rules: {

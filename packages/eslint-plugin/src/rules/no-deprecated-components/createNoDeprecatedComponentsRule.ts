@@ -29,6 +29,12 @@ type MessageIds =
  */
 export type DeprecatedComponentsConfig = Record<string, string | [string, string]>;
 
+type DeprecatedImport =
+    | { namespace: string; type: "namespace" }
+    | { type: "function"; functionName: string; localFunctionName: string };
+
+type DeprecatedFunctionImport = Extract<DeprecatedImport, { type: "function" }>;
+
 /**
  * Higher-order function to create an ESLint rule which checks for usage of deprecated React components in JSX syntax.
  *
@@ -73,10 +79,7 @@ export function createNoDeprecatedComponentsRule(
         },
         defaultOptions: [],
         create: context => {
-            const deprecatedImports: Array<
-                | { namespace: string; type: "namespace" }
-                | { type: "function"; functionName: string; localFunctionName: string }
-            > = [];
+            const deprecatedImports: DeprecatedImport[] = [];
 
             // parses out additional deprecated components from entries like { "MenuItem.popoverProps": "MenuItem2" }
             const additionalDeprecatedComponents = Object.keys(deprecatedComponentConfig).reduce<string[]>(
@@ -90,13 +93,21 @@ export function createNoDeprecatedComponentsRule(
                 [],
             );
 
-            function isDeprecatedComponent(name: string) {
+            function getDeprecatedComponentImport(name: string): DeprecatedFunctionImport | undefined {
+                return deprecatedImports.find(
+                    (deprecatedImport): deprecatedImport is DeprecatedFunctionImport =>
+                        deprecatedImport.type === "function" &&
+                        deprecatedImport.localFunctionName === name &&
+                        deprecatedComponentConfig[deprecatedImport.functionName] != null,
+                );
+            }
+
+            function getImportedComponentName(localName: string) {
                 return (
-                    deprecatedComponentConfig[name] != null &&
-                    deprecatedImports.some(
-                        deprecatedImport =>
-                            deprecatedImport.type === "function" && deprecatedImport.localFunctionName === name,
-                    )
+                    deprecatedImports.find(
+                        (deprecatedImport): deprecatedImport is DeprecatedFunctionImport =>
+                            deprecatedImport.type === "function" && deprecatedImport.localFunctionName === localName,
+                    )?.functionName ?? localName
                 );
             }
 
@@ -133,7 +144,7 @@ export function createNoDeprecatedComponentsRule(
                     getReportDescriptor(
                         jsxOpeningElementChildNode,
                         deprecatedComponentConfig,
-                        elementName,
+                        getImportedComponentName(elementName),
                         deprecatedPropName,
                     ),
                 );
@@ -173,8 +184,15 @@ export function createNoDeprecatedComponentsRule(
 
                 // check <DeprecatedComponent> syntax (includes self-closing tags)
                 "JSXElement > JSXOpeningElement > JSXIdentifier": (node: TSESTree.JSXIdentifier) => {
-                    if (isDeprecatedComponent(node.name)) {
-                        context.report(getReportDescriptor(node, deprecatedComponentConfig, node.name));
+                    const deprecatedComponentImport = getDeprecatedComponentImport(node.name);
+                    if (deprecatedComponentImport !== undefined) {
+                        context.report(
+                            getReportDescriptor(
+                                node,
+                                deprecatedComponentConfig,
+                                deprecatedComponentImport.functionName,
+                            ),
+                        );
                     } else if (isOpeningElement(node.parent)) {
                         // check <DeprecatedComponent withDeprecatedProp={...}> syntax
                         checkDeprecatedComponentAndProp(node, node.name, node.parent);
@@ -207,8 +225,15 @@ export function createNoDeprecatedComponentsRule(
                 // check `class Foo extends DeprecatedComponent` syntax
                 "ClassDeclaration[superClass.type='Identifier']": (node: TSESTree.ClassDeclaration) => {
                     const superClass = node.superClass as TSESTree.Identifier;
-                    if (isDeprecatedComponent(superClass.name)) {
-                        context.report(getReportDescriptor(node, deprecatedComponentConfig, superClass.name));
+                    const deprecatedComponentImport = getDeprecatedComponentImport(superClass.name);
+                    if (deprecatedComponentImport !== undefined) {
+                        context.report(
+                            getReportDescriptor(
+                                node,
+                                deprecatedComponentConfig,
+                                deprecatedComponentImport.functionName,
+                            ),
+                        );
                     }
                 },
 
@@ -241,8 +266,15 @@ export function createNoDeprecatedComponentsRule(
                         return;
                     }
 
-                    if (isDeprecatedComponent(node.object.name)) {
-                        context.report(getReportDescriptor(node.object, deprecatedComponentConfig, node.object.name));
+                    const deprecatedComponentImport = getDeprecatedComponentImport(node.object.name);
+                    if (deprecatedComponentImport !== undefined) {
+                        context.report(
+                            getReportDescriptor(
+                                node.object,
+                                deprecatedComponentConfig,
+                                deprecatedComponentImport.functionName,
+                            ),
+                        );
                     }
                 },
             };

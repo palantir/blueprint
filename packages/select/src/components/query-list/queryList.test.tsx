@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
+import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemListRenderer } from "../../common/itemListRenderer";
@@ -50,7 +50,7 @@ describe("<QueryList>", () => {
             const wrapper = shallow(<QueryList<Film> {...testProps} />);
             const newItems = TOP_100_FILMS.slice(0, 1);
             wrapper.setProps({ items: newItems });
-            assert.deepEqual(wrapper.state("filteredItems"), newItems);
+            expect(wrapper.state("filteredItems")).toEqual(newItems);
         });
     });
 
@@ -61,8 +61,8 @@ describe("<QueryList>", () => {
 
         it("renderItem calls itemRenderer", () => {
             const wrapper = shallow(<QueryList<Film> {...testProps} itemListRenderer={itemListRenderer} />);
-            assert.lengthOf(wrapper.find("ul.foo"), 1, "should find element");
-            assert.equal(testProps.itemRenderer.callCount, 20);
+            expect(wrapper.find("ul.foo")).toHaveLength(1);
+            expect(testProps.itemRenderer.callCount).toBe(20);
         });
     });
 
@@ -71,18 +71,18 @@ describe("<QueryList>", () => {
             const predicate = sinon.spy((query: string, film: Film) => film.year === +query);
             shallow(<QueryList<Film> {...testProps} itemPredicate={predicate} query="1994" />);
 
-            assert.equal(predicate.callCount, testProps.items.length, "called once per item");
+            expect(predicate.callCount).toBe(testProps.items.length);
             const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
-            assert.lengthOf(filteredItems, 3, "returns only films from 1994");
+            expect(filteredItems).toHaveLength(3);
         });
 
         it("itemListPredicate filters entire list by query", () => {
             const predicate = sinon.spy((query: string, films: Film[]) => films.filter(f => f.year === +query));
             shallow(<QueryList<Film> {...testProps} itemListPredicate={predicate} query="1994" />);
 
-            assert.equal(predicate.callCount, 1, "called once for entire list");
+            expect(predicate.callCount).toBe(1);
             const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
-            assert.lengthOf(filteredItems, 3, "returns only films from 1994");
+            expect(filteredItems).toHaveLength(3);
         });
 
         it("prefers itemListPredicate if both are defined", () => {
@@ -97,14 +97,14 @@ describe("<QueryList>", () => {
                     query="1980"
                 />,
             );
-            assert.isTrue(listPredicateSpy.called, "listPredicate should be invoked");
-            assert.isFalse(predicate.called, "item predicate should not be invoked");
+            expect(listPredicateSpy.called).toBe(true);
+            expect(predicate.called).toBe(false);
         });
 
         it("omitting both predicate props is supported", () => {
             shallow(<QueryList<Film> {...testProps} query="1980" />);
             const { filteredItems } = testProps.renderer.args[0][0] as QueryListRendererProps<Film>;
-            assert.lengthOf(filteredItems, testProps.items.length, "returns all films");
+            expect(filteredItems).toHaveLength(testProps.items.length);
         });
 
         it("ensure onActiveItemChange is not called with undefined and empty list", () => {
@@ -118,7 +118,7 @@ describe("<QueryList>", () => {
             act(() => {
                 filmQueryList.setState({ activeItem: undefined });
             });
-            assert.equal(testProps.onActiveItemChange.callCount, 0);
+            expect(testProps.onActiveItemChange.callCount).toBe(0);
         });
 
         it("ensure onActiveItemChange is not called updating props and query doesn't change", () => {
@@ -131,7 +131,7 @@ describe("<QueryList>", () => {
             };
             const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
             filmQueryList.setProps(props);
-            assert.equal(testProps.onActiveItemChange.callCount, 0);
+            expect(testProps.onActiveItemChange.callCount).toBe(0);
         });
 
         it("ensure activeItem changes on query change", () => {
@@ -141,12 +141,12 @@ describe("<QueryList>", () => {
                 query: "abc",
             };
             const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
-            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
+            expect(filmQueryList.state().activeItem).toEqual(TOP_100_FILMS[0]);
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
                 query: "123",
             });
-            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
+            expect(filmQueryList.state().activeItem).toEqual(TOP_100_FILMS[1]);
         });
 
         it("ensure activeItem changes on when no longer in new items", () => {
@@ -156,11 +156,11 @@ describe("<QueryList>", () => {
                 query: "abc",
             };
             const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
-            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
+            expect(filmQueryList.state().activeItem).toEqual(TOP_100_FILMS[0]);
             filmQueryList.setProps({
                 items: [TOP_100_FILMS[1]],
             });
-            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[1]);
+            expect(filmQueryList.state().activeItem).toEqual(TOP_100_FILMS[1]);
         });
     });
 
@@ -174,7 +174,7 @@ describe("<QueryList>", () => {
                 query: "123",
             };
             const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
-            assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
+            expect(filmQueryList.state().activeItem === TOP_100_FILMS[11]).toBeTruthy();
         });
 
         it("initializes to controlled activeItem prop (non-null)", () => {
@@ -184,7 +184,7 @@ describe("<QueryList>", () => {
                 activeItem: TOP_100_FILMS[11],
             };
             const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
-            assert(filmQueryList.state().activeItem === TOP_100_FILMS[11]);
+            expect(filmQueryList.state().activeItem === TOP_100_FILMS[11]).toBeTruthy();
         });
 
         it("initializes to controlled activeItem prop (null)", () => {
@@ -193,7 +193,7 @@ describe("<QueryList>", () => {
                 activeItem: null,
             };
             const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
-            assert(filmQueryList.state().activeItem === null);
+            expect(filmQueryList.state().activeItem === null).toBeTruthy();
         });
 
         it("createNewItemPosition affects position of create new item", () => {
@@ -205,9 +205,9 @@ describe("<QueryList>", () => {
                 query: "the",
             };
             const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
-            assert(filmQueryList.find(Menu).children().children().last().is("article"));
+            expect(filmQueryList.find(Menu).children().children().last().is("article")).toBeTruthy();
             filmQueryList.setProps({ createNewItemPosition: "first" });
-            assert(filmQueryList.find(Menu).children().children().first().is("article"));
+            expect(filmQueryList.find(Menu).children().children().first().is("article")).toBeTruthy();
         });
     });
 
@@ -253,10 +253,10 @@ describe("<QueryList>", () => {
             const pastedValue = TOP_100_FILMS[0].title;
             handlePaste([pastedValue]);
 
-            assert.isTrue(onItemsPaste.calledOnce);
-            assert.deepEqual(onItemsPaste.args[0][0], [TOP_100_FILMS[0]]);
-            assert.deepEqual(filmQueryList.state().activeItem, TOP_100_FILMS[0]);
-            assert.deepEqual(filmQueryList.state().query, "");
+            expect(onItemsPaste.calledOnce).toBe(true);
+            expect(onItemsPaste.args[0][0]).toEqual([TOP_100_FILMS[0]]);
+            expect(filmQueryList.state().activeItem).toEqual(TOP_100_FILMS[0]);
+            expect(filmQueryList.state().query).toEqual("");
         });
 
         it("convert multiple pasted values into items", () => {
@@ -275,12 +275,12 @@ describe("<QueryList>", () => {
                 handlePaste([pastedValue1, pastedValue2, pastedValue3]);
             });
 
-            assert.isTrue(onItemsPaste.calledOnce);
+            expect(onItemsPaste.calledOnce).toBe(true);
             // Emits all three items.
-            assert.deepEqual(onItemsPaste.args[0][0], [item1, item2, item3]);
+            expect(onItemsPaste.args[0][0]).toEqual([item1, item2, item3]);
             // Highlight the last item pasted.
-            assert.deepEqual(filmQueryList.state().activeItem, item3);
-            assert.deepEqual(filmQueryList.state().query, "");
+            expect(filmQueryList.state().activeItem).toEqual(item3);
+            expect(filmQueryList.state().query).toEqual("");
         });
 
         it("concatenates unrecognized values into the ghost input by default", () => {
@@ -298,12 +298,12 @@ describe("<QueryList>", () => {
                 handlePaste([pastedValue1, pastedValue2, pastedValue3, pastedValue4]);
             });
 
-            assert.isTrue(onItemsPaste.calledOnce);
+            expect(onItemsPaste.calledOnce).toBe(true);
             // Emits just the 2 valid items.
-            assert.deepEqual(onItemsPaste.args[0][0], [item2, item4]);
+            expect(onItemsPaste.args[0][0]).toEqual([item2, item4]);
             // Highlight the last item pasted.
-            assert.deepEqual(filmQueryList.state().activeItem, item4);
-            assert.deepEqual(filmQueryList.state().query, "unrecognized1, unrecognized2");
+            expect(filmQueryList.state().activeItem).toEqual(item4);
+            expect(filmQueryList.state().query).toEqual("unrecognized1, unrecognized2");
         });
 
         it("creates new items out of unrecognized values if 'Create item' option is enabled", () => {
@@ -334,12 +334,12 @@ describe("<QueryList>", () => {
 
             const createdItem = { rank: createdRank, title: "unrecognized", year: createdYear };
 
-            assert.isTrue(onItemsPaste.calledOnce);
+            expect(onItemsPaste.calledOnce).toBe(true);
             // Emits 2 existing items and 1 newly created item.
-            assert.deepEqual(onItemsPaste.args[0][0], [item1, item2, createdItem]);
+            expect(onItemsPaste.args[0][0]).toEqual([item1, item2, createdItem]);
             // Highlight the last *already existing* item pasted.
-            assert.deepEqual(filmQueryList.state().activeItem, item2);
-            assert.deepEqual(filmQueryList.state().query, "");
+            expect(filmQueryList.state().activeItem).toEqual(item2);
+            expect(filmQueryList.state().query).toEqual("");
         });
     });
 
@@ -365,20 +365,20 @@ describe("<QueryList>", () => {
             const untrimmedQuery = " foo ";
             const trimmedQuery = untrimmedQuery.trim();
 
-            assert.isDefined(triggerInputQueryChange, "query list should render with input change callbacks");
+            expect(triggerInputQueryChange).toBeDefined();
             triggerInputQueryChange!({ target: { value: untrimmedQuery } });
-            assert.isTrue(createNewItemFromQuerySpy.calledWith(trimmedQuery));
-            assert.isTrue(createNewItemRendererSpy.calledWith(trimmedQuery));
+            expect(createNewItemFromQuerySpy.calledWith(trimmedQuery)).toBe(true);
+            expect(createNewItemRendererSpy.calledWith(trimmedQuery)).toBe(true);
         });
 
         it("resets the query after creating new item if resetOnSelect=true", () => {
             const onQueryChangeSpy = runResetOnSelectTest(true);
-            assert.isTrue(onQueryChangeSpy.calledWith(""));
+            expect(onQueryChangeSpy.calledWith("")).toBe(true);
         });
 
         it("does not reset the query after creating new item if resetOnSelect=false", () => {
             const onQueryChangeSpy = runResetOnSelectTest(false);
-            assert.isTrue(onQueryChangeSpy.notCalled);
+            expect(onQueryChangeSpy.notCalled).toBe(true);
         });
 
         function runResetOnSelectTest(resetOnSelect: boolean): sinon.SinonSpy {
@@ -407,7 +407,7 @@ describe("<QueryList>", () => {
             (queryList.instance() as QueryList<Film>).setQuery("some query");
             onQueryChangeSpy.resetHistory();
 
-            assert.isDefined(triggerItemCreate, "query list should pass click handler to createNewItemRenderer");
+            expect(triggerItemCreate).toBeDefined();
             triggerItemCreate!({});
 
             return onQueryChangeSpy;

@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import * as sinon from "sinon";
 
-import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
+import { Button, Classes, InputGroup, MenuItem, PopoverNext } from "@blueprintjs/core";
+import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { unmountWrappers } from "@blueprintjs/test-commons/vitest-utils";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemRendererProps } from "../../common/itemRenderer";
@@ -40,6 +41,7 @@ describe("<Select>", () => {
         onItemSelect: sinon.SinonSpy;
     };
     let containerElement: HTMLElement;
+    let mountedWrappers: Array<ReactWrapper<any, any>> = [];
 
     beforeEach(() => {
         handlers = {
@@ -51,64 +53,76 @@ describe("<Select>", () => {
         document.body.appendChild(containerElement);
     });
 
-    afterEach(() => {
-        for (const spy of Object.values(handlers)) {
-            spy.resetHistory();
+    afterEach(async () => {
+        try {
+            await unmountWrappers(mountedWrappers);
+        } finally {
+            mountedWrappers = [];
+            for (const spy of Object.values(handlers)) {
+                spy.resetHistory();
+            }
+            containerElement.remove();
         }
-        containerElement.remove();
     });
 
-    selectComponentSuite<SelectProps<Film>, SelectState>(props =>
-        mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />),
+    selectComponentSuite<SelectProps<Film>, SelectState>(
+        props =>
+            mount(<Select {...props} popoverProps={{ isOpen: true, usePortal: false }} />) as ReactWrapper<
+                SelectProps<Film>,
+                SelectState
+            >,
     );
 
-    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props =>
-        mount(<Select {...props} />, { attachTo: containerElement }),
-    );
+    selectPopoverTestSuite<SelectProps<Film>, SelectState>(props => {
+        const wrapper = mount(<Select {...props} />, { attachTo: containerElement }) as ReactWrapper<
+            SelectProps<Film>,
+            SelectState
+        >;
+        mountedWrappers.push(wrapper);
+        return wrapper;
+    });
 
     it("renders a Popover around children that contains InputGroup and items", () => {
         const wrapper = select();
-        assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
-        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
+        expect(wrapper.find(InputGroup)).toHaveLength(1);
+        expect(wrapper.find(PopoverNext)).toHaveLength(1);
     });
 
     it("filterable=false hides InputGroup", () => {
         const wrapper = select({ filterable: false });
-        assert.lengthOf(wrapper.find(InputGroup), 0, "should not render InputGroup");
-        assert.lengthOf(wrapper.find(Popover), 1, "should render Popover");
+        expect(wrapper.find(InputGroup)).toHaveLength(0);
+        expect(wrapper.find(PopoverNext)).toHaveLength(1);
     });
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
-        assert.isTrue(wrapper.find(Popover).prop("disabled"));
+        expect(wrapper.find(PopoverNext).prop("disabled")).toBe(true);
     });
 
     it("disabled=true doesn't call itemRenderer", () => {
         select({ disabled: true });
-        assert.equal(handlers.itemRenderer.callCount, 0);
+        expect(handlers.itemRenderer.callCount).toBe(0);
     });
 
     it("disabled=false calls itemRenderer", () => {
         select({ disabled: false });
-        assert.equal(handlers.itemRenderer.callCount, 100);
+        expect(handlers.itemRenderer.callCount).toBe(100);
     });
 
     it("inputProps value and onChange are ignored", () => {
         const inputProps = { onChange: sinon.spy(), value: "nailed it" };
         // @ts-expect-error - value and onChange are now omitted from the props type
         const input = select({ inputProps }).find("input");
-        assert.notEqual(input.prop("onChange"), inputProps.onChange);
-        assert.notEqual(input.prop("value"), inputProps.value);
+        expect(input.prop("onChange")).not.toBe(inputProps.onChange);
+        expect(input.prop("value")).not.toBe(inputProps.value);
     });
 
     it("Popover can be controlled with popoverProps", () => {
         // Select defines its own onOpening so this ensures that the passthrough happens
         const onOpening = sinon.spy();
-        const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { modifiers, onOpening } });
+        const wrapper = select({ popoverProps: { onOpening } });
         findTargetButton(wrapper).simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
-        assert.isTrue(onOpening.calledOnce);
+        expect(onOpening.calledOnce).toBe(true);
     });
 
     // TODO(adahiya): move into selectComponentSuite, generalize for Suggest & MultiSelect
@@ -116,17 +130,17 @@ describe("<Select>", () => {
         // override isOpen in defaultProps
         const wrapper = select({ popoverProps: { usePortal: false } });
         // should be closed to start
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
         findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
         // ...then open after key down
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
     it("invokes onItemSelect when clicking first MenuItem", () => {
         const wrapper = select();
         // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM
-        wrapper.find(Popover).find(MenuItem).first().find("a").simulate("click");
-        assert.isTrue(handlers.onItemSelect.calledOnce);
+        wrapper.find(PopoverNext).find(MenuItem).first().find("a").simulate("click");
+        expect(handlers.onItemSelect.calledOnce).toBe(true);
     });
 
     it("closes Popover after selecting active item with the Enter key", () => {
@@ -137,7 +151,7 @@ describe("<Select>", () => {
         findTargetButton(wrapper).simulate("click");
         wrapper.find("input").simulate("keydown", { key: "Enter" });
         wrapper.find("input").simulate("keyup", { key: "Enter" });
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
     });
 
     // N.B. it's not worth refactoring these tests to be DRY since there will soon
@@ -150,15 +164,15 @@ describe("<Select>", () => {
         const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
 
         // popover should start close
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
 
         // popover should open after clicking the button
         findTargetButton(wrapper).simulate("click");
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
 
         // and should close after the a menu item is clicked
-        wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        wrapper.find(PopoverNext).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
     });
 
     it("does not close the popover when selecting a MenuItem with shouldDismissPopover", () => {
@@ -168,15 +182,15 @@ describe("<Select>", () => {
         const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
 
         // popover should start closed
-        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
 
         // popover should open after clicking the button
         findTargetButton(wrapper).simulate("click");
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
 
         // and should not close after the a menu item is clicked
-        wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
-        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        wrapper.find(PopoverNext).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
     function select(props: Partial<SelectProps<Film>> = {}, query?: string) {
@@ -186,6 +200,7 @@ describe("<Select>", () => {
             </Select>,
             { attachTo: containerElement },
         );
+        mountedWrappers.push(wrapper);
         if (query !== undefined) {
             act(() => {
                 wrapper.setState({ query });

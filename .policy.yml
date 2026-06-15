@@ -1,0 +1,157 @@
+# Policy for palantir/blueprint
+#
+# This policy splits approval rules by author type:
+# - Blueprint team members: trusted, approvals NOT invalidated on push
+# - External contributors: stricter, approvals invalidated on push (except update merges)
+
+policy:
+  approval:
+    - or:
+        # Blueprint team members - trusted
+        - blueprint team member approved by one admin
+        - blueprint team member approved by two admins (contributor allowed)
+        # External contributors - stricter
+        - external contributor approved by one admin
+        - external contributor approved by two admins (contributor allowed)
+        # Special cases
+        - changelog only and contributor approval
+        - fixing excavator
+        - excavator only touched changelog or circle files
+        - excavator only touched config files
+        - bots updated package.json and lock files
+  disapproval:
+    requires:
+      organizations: ["palantir"]
+
+approval_rules:
+  # ============================================
+  # BLUEPRINT TEAM MEMBERS (trusted)
+  # ============================================
+
+  - name: blueprint team member approved by one admin
+    description: >
+      For PRs authored by Blueprint team members. Approvals are not invalidated
+      when new commits are pushed, as team members are trusted.
+    options:
+      allow_contributor: false
+      invalidate_on_push: false
+      ignore_edited_comments: true
+    if:
+      has_author_in:
+        teams: ["palantir/blueprint"]
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+
+  - name: blueprint team member approved by two admins (contributor allowed)
+    description: >
+      Alternative for Blueprint team members: allows the PR author to count as an
+      approver (useful when a maintainer pushes fixes to someone's PR).
+    options:
+      allow_contributor: true
+      invalidate_on_push: false
+      ignore_edited_comments: true
+    if:
+      has_author_in:
+        teams: ["palantir/blueprint"]
+    requires:
+      count: 2
+      permissions: ["admin", "maintain"]
+
+  # ============================================
+  # EXTERNAL CONTRIBUTORS (stricter rules)
+  # ============================================
+
+  - name: external contributor approved by one admin
+    description: >
+      For PRs from external contributors. Approvals are invalidated when new
+      commits are pushed.
+    options:
+      allow_contributor: false
+      invalidate_on_push: true
+      ignore_update_merges: false
+      ignore_edited_comments: true
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+
+  - name: external contributor approved by two admins (contributor allowed)
+    description: >
+      Alternative for external contributors: allows contributors to count as
+      approvers.
+    options:
+      allow_contributor: true
+      invalidate_on_push: true
+      ignore_update_merges: false
+      ignore_edited_comments: true
+    requires:
+      count: 2
+      permissions: ["admin", "maintain"]
+
+  # ============================================
+  # SPECIAL CASES (for all authors)
+  # ============================================
+
+  - name: changelog only and contributor approval
+    options:
+      allow_contributor: true
+      ignore_edited_comments: true
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+    if:
+      only_changed_files:
+        paths:
+          - "changelog/@unreleased/.*\\.yml"
+
+  - name: fixing excavator
+    options:
+      allow_contributor: true
+      ignore_edited_comments: true
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+    if:
+      has_author_in:
+        users: ["svc-excavator-bot", "dependabot[bot]"]
+
+  - name: excavator only touched changelog or circle files
+    requires:
+      count: 0
+    if:
+      has_author_in:
+        users: ["svc-excavator-bot", "dependabot[bot]"]
+      only_changed_files:
+        paths:
+          - "changelog/@unreleased/.*\\.yml"
+          - "^\\.circleci/.*$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0", "4AEE18F83AFDEB23"]
+
+  - name: excavator only touched config files
+    requires:
+      count: 0
+    if:
+      has_author_in:
+        users: ["svc-excavator-bot"]
+      only_changed_files:
+        paths:
+          - "^\\..*.yml$"
+          - "^\\.github/.*$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0"]
+
+  - name: bots updated package.json and lock files
+    requires:
+      count: 0
+    if:
+      has_author_in:
+        users:
+          - "svc-excavator-bot"
+          - "dependabot[bot]"
+      only_changed_files:
+        paths:
+          - "^.*package.json$"
+          - "^.*pnpm-lock.yaml$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0"]
