@@ -223,7 +223,13 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
 
     public componentDidUpdate(prevProps: MultiSliderProps, prevState: SliderState) {
         super.componentDidUpdate(prevProps, prevState);
-        this.updateTickSize();
+        if (
+            prevProps.min !== this.props.min ||
+            prevProps.max !== this.props.max ||
+            prevProps.vertical !== this.props.vertical
+        ) {
+            this.updateTickSize();
+        }
     }
 
     protected validateProps(props: React.PropsWithChildren<MultiSliderProps>) {

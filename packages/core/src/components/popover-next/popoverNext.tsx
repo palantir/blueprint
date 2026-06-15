@@ -23,9 +23,9 @@ export interface PopoverNextRef {
 export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
     const {
         animation = "scale",
+        autoUpdateOptions,
         arrow = true,
         boundary = "clippingAncestors",
-        canEscapeKeyClose = true,
         children,
         content,
         defaultIsOpen = false,
@@ -40,6 +40,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         onClose,
         onInteraction,
         openOnTargetFocus = true,
+        popoverRef,
         placement,
         positioningStrategy = "absolute",
         renderTarget,
@@ -104,6 +105,10 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
 
     const computedIsOpen = disabled ? false : (isOpen ?? defaultIsOpen);
 
+    const isHoverInteractionKind =
+        interactionKind === PopoverInteractionKind.HOVER ||
+        interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+
     const middleware = useMemo(() => {
         const defaultMiddleware: MiddlewareConfig = {
             ...(placement === undefined
@@ -131,11 +136,10 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     }, [placement, boundary, rootBoundary, arrow, arrowRef, matchTargetWidth, middlewareOverrides]);
 
     const floatingData = usePopover({
-        canEscapeKeyClose,
+        autoUpdateOptions,
         disabled,
-        hasBackdrop,
-        interactionKind,
         isControlled,
+        isHoverInteractionKind,
         isOpen: computedIsOpen,
         middleware,
         onOpenChange: (nextOpen, event) => {
@@ -157,10 +161,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     );
 
     const popoverElement = floatingData.refs.floating.current;
-
-    const isHoverInteractionKind =
-        interactionKind === PopoverInteractionKind.HOVER ||
-        interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
 
     const getPopoverElement = useCallback(() => {
         return popoverElement?.querySelector<HTMLElement>(`.${Classes.POPOVER}`);
@@ -397,6 +397,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                     hasDarkParent={hasDarkParent}
                     isClosingViaEscapeKeypress={isClosingViaEscapeKeypress}
                     isHoverInteractionKind={isHoverInteractionKind}
+                    popoverRef={popoverRef}
                     shouldReturnFocusOnClose={shouldReturnFocusOnClose}
                     {...props}
                 />

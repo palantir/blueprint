@@ -26,7 +26,7 @@ import {
     Intent,
     Menu,
     MenuItem,
-    Popover,
+    PopoverNext,
     type Size,
     Spinner,
     Switch,
@@ -155,7 +155,7 @@ const PopoverInputGroup: React.FC<InputGroupProps> = props => (
         {...props}
         placeholder="Add people or groups..."
         rightElement={
-            <Popover
+            <PopoverNext
                 content={
                     <Menu>
                         <MenuItem text="can edit" />
@@ -168,7 +168,7 @@ const PopoverInputGroup: React.FC<InputGroupProps> = props => (
                 <Button disabled={props.disabled} endIcon={IconNames.CARET_DOWN} variant="minimal">
                     can edit
                 </Button>
-            </Popover>
+            </PopoverNext>
         }
     />
 );

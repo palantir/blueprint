@@ -16,9 +16,9 @@
 
 import type { editor } from "monaco-editor";
 
+import { Colors } from "@blueprintjs/colors";
 import { Classes, Utils } from "@blueprintjs/core";
 import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
-import { MonacoThemeDark, MonacoThemeLight } from "@blueprintjs/monaco-editor-theme";
 
 let monacoEditor: typeof editor | undefined;
 
@@ -30,8 +30,6 @@ async function initializeMonaco() {
 
 /**
  * Highlight code blocks rendered by @blueprintjs/docs-theme with the Monaco editor.
- *
- * TODO(adahiya): move this to @blueprintjs/docs-theme in v5.0, once we can switch tsc "module" option to "es2020"
  *
  * @see https://github.com/microsoft/monaco-editor
  */
@@ -72,3 +70,60 @@ function renderKssModifiersAsTags(codeBlock: HTMLElement) {
         `<span class="${Classes.TAG} ${Classes.MINIMAL} ${Classes.INTENT_PRIMARY}">$1modifier</span>`,
     );
 }
+
+function token(tokenName: string, color: string) {
+    return { foreground: color, token: tokenName };
+}
+
+/**
+ * Dark & light themes for monaco-editor.
+ *
+ * @see https://microsoft.github.io/monaco-editor/playground.html#customizing-the-appearence-tokens-and-colors
+ * @see https://github.com/microsoft/vscode/blob/1a58734121fed4606cbb804dc03b286fc7bb9c0a/src/vs/editor/standalone/common/themes.ts
+ */
+
+const MonacoThemeLight: editor.IStandaloneThemeData = {
+    base: "vs",
+    colors: {
+        "editor.background": Colors.WHITE,
+        "editor.foreground": Colors.DARK_GRAY1,
+    },
+    inherit: false,
+    rules: [
+        token("attribute.name", Colors.ORANGE3),
+        token("attribute.value", Colors.LIME2),
+        token("comment", Colors.GRAY2),
+        token("delimiter", Colors.DARK_GRAY5),
+        token("function", Colors.BLUE3),
+        token("identifier", Colors.TURQUOISE2),
+        token("keyword", Colors.VIOLET4),
+        token("number", Colors.ROSE2),
+        token("operator", Colors.VIOLET4),
+        token("string", Colors.LIME2),
+        token("tag", Colors.FOREST3),
+        token("type.identifier", Colors.GOLD2),
+    ],
+};
+
+const MonacoThemeDark: editor.IStandaloneThemeData = {
+    base: "vs-dark",
+    colors: {
+        "editor.background": Colors.BLACK,
+        "editor.foreground": Colors.GRAY5,
+    },
+    inherit: false,
+    rules: [
+        token("attribute.name", Colors.ORANGE4),
+        token("attribute.value", Colors.LIME4),
+        token("comment", Colors.GRAY2),
+        token("delimiter", Colors.LIGHT_GRAY3),
+        token("function", Colors.BLUE4),
+        token("identifier", Colors.TURQUOISE3),
+        token("keyword", Colors.VIOLET4),
+        token("number", Colors.ROSE4),
+        token("operator", Colors.VIOLET5),
+        token("string", Colors.LIME4),
+        token("tag", Colors.FOREST3),
+        token("type.identifier", Colors.GOLD5),
+    ],
+};

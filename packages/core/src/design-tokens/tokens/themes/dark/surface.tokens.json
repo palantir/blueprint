@@ -155,23 +155,39 @@
             "default": {
                 "rest": {
                     "$value": "{intent.default.rest}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 0.248, "chromaScale": 0.487 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessScale": 0.362, "chromaScale": 0.308, "hueOffset": -1.44 }
+                    }
                 },
                 "hover": {
                     "$value": "{intent.default.hover}",
                     "$extensions": {
-                        "com.blueprint.derive": { "lightnessScale": 0.279, "chromaScale": 1.379, "hueOffset": 0.3 }
+                        "com.blueprint.derive": {
+                            "lightnessOffset": null,
+                            "chromaOffset": null,
+                            "lightnessScale": 0.615,
+                            "chromaScale": 0.597,
+                            "hueOffset": -5.29
+                        }
                     }
                 },
                 "active": {
                     "$value": "{intent.default.active}",
                     "$extensions": {
-                        "com.blueprint.derive": { "lightnessScale": 0.313, "chromaScale": 1.825, "hueOffset": 2.9 }
+                        "com.blueprint.derive": {
+                            "lightnessOffset": null,
+                            "chromaOffset": null,
+                            "lightnessScale": 0.782,
+                            "chromaScale": 0.84,
+                            "hueOffset": -1.58
+                        }
                     }
                 },
                 "disabled": {
                     "$value": "{intent.default.disabled}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 0.319, "chromaScale": 0.312 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessScale": 0.279, "chromaScale": 0.377, "hueOffset": -2.74 }
+                    }
                 }
             }
         }

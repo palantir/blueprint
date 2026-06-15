@@ -22,6 +22,7 @@ import { FileMenu } from "./common/fileMenu";
 export const PopoverSizingExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={false} {...props}>
+            {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
             <Popover
                 content={<FileMenu className="docs-popover-sizing-example" />}
                 placement="bottom-end"

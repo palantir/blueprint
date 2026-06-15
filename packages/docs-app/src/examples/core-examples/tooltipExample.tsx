@@ -22,7 +22,7 @@ import {
     Classes,
     Code,
     H1,
-    Popover,
+    PopoverNext,
     Switch,
     Tooltip,
 } from "@blueprintjs/core";
@@ -136,7 +136,7 @@ export const TooltipExample: React.FC<ExampleProps> = props => {
                 </Tooltip>
             </div>
             <br />
-            <Popover
+            <PopoverNext
                 content={<H1>Popover!</H1>}
                 placement="right"
                 popoverClassName={Classes.POPOVER_CONTENT_SIZING}
@@ -149,7 +149,7 @@ export const TooltipExample: React.FC<ExampleProps> = props => {
                 >
                     <Button intent="success" text="Hover and click me" />
                 </Tooltip>
-            </Popover>
+            </PopoverNext>
             <br />
 
             <ButtonGroup>
