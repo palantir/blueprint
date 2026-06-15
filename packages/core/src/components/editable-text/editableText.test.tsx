@@ -34,6 +34,12 @@ describe("<EditableText>", () => {
         expect(screen.queryByText("default")).toBeInTheDocument();
     });
 
+    it("value takes precedence over defaultValue", () => {
+        render(<EditableText value="controlled" defaultValue="uncontrolled" />);
+        expect(screen.queryByText("controlled")).toBeInTheDocument();
+        expect(screen.queryByText("uncontrolled")).not.toBeInTheDocument();
+    });
+
     it("renders placeholder", () => {
         render(<EditableText placeholder="Edit..." />);
         expect(screen.queryByText("Edit...")).toBeInTheDocument();
