@@ -3,11 +3,8 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
-import classNames from "classnames";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { expect, screen, waitFor } from "storybook/test";
-
-import { Flex } from "@blueprintjs/labs";
 
 import { Menu } from "../menu/menu";
 import { MenuDivider } from "../menu/menuDivider";
@@ -46,8 +43,6 @@ const TARGET_STYLE: React.CSSProperties = {
     width: 240,
 };
 
-const disabledArgs = ["children"] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof ContextMenu>>;
-
 const meta: Meta<typeof ContextMenu> = {
     title: "Core/Context Menu/ContextMenu",
     component: ContextMenu,
@@ -57,23 +52,13 @@ const meta: Meta<typeof ContextMenu> = {
         disabled: false,
     },
     argTypes: {
-        content: { control: false },
+        content: { control: false, table: { disable: true } },
         disabled: { control: "boolean" },
         tagName: { control: "text" },
         onContextMenu: { action: "context-menu-opened" },
-        onClose: { action: "closed" },
+        onClose: { table: { disable: true } },
         popoverProps: { table: { disable: true } },
-        onOpening: { table: { disable: true } },
-        onOpened: { table: { disable: true } },
-        onClosing: { table: { disable: true } },
-        onClosed: { table: { disable: true } },
-        ...disabledArgs.reduce(
-            (acc, argName) => {
-                acc[argName] = { table: { disable: true } };
-                return acc;
-            },
-            {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
-        ),
+        children: { table: { disable: true } },
     },
 } satisfies Meta<typeof ContextMenu>;
 
@@ -127,7 +112,7 @@ export const AdvancedChildren: Story = {
     args: {
         children: (props: ContextMenuChildrenProps) => (
             <div
-                className={classNames(props.className)}
+                className={props.className}
                 onContextMenu={props.onContextMenu}
                 ref={props.ref}
                 style={{
@@ -149,7 +134,7 @@ export const CustomTagName: Story = {
     name: "Custom Tag Name",
     args: {
         tagName: "section",
-        children: <div style={TARGET_STYLE}>Wrapped in a &lt;section&gt; element</div>,
+        children: <div style={TARGET_STYLE}>{"Wrapped in a <section> element"}</div>,
     },
 };
 
@@ -174,40 +159,6 @@ export const Disabled: Story = {
         disabled: true,
         children: <div style={TARGET_STYLE}>Disabled — browser context menu shows instead</div>,
     },
-};
-
-/**
- * Showcases how the same `ContextMenu` wrapper can be applied around a variety
- * of targets — text, blocks, and inline elements all support right-click.
- */
-export const MultipleTargets: Story = {
-    argTypes: {
-        children: { table: { disable: true } },
-    },
-    render: args => (
-        <Flex flexDirection="column" gap={4}>
-            <Flex flexDirection="column" gap={1}>
-                <StoryLabel title="Block target" />
-                <ContextMenu {...args}>
-                    <div style={TARGET_STYLE}>Right-click this block</div>
-                </ContextMenu>
-            </Flex>
-            <Flex flexDirection="column" gap={1}>
-                <StoryLabel title="Inline target" />
-                <ContextMenu {...args} tagName="span">
-                    <span
-                        style={{
-                            background: "rgba(138, 155, 168, 0.15)",
-                            borderRadius: 3,
-                            padding: "2px 6px",
-                        }}
-                    >
-                        Right-click this inline span
-                    </span>
-                </ContextMenu>
-            </Flex>
-        </Flex>
-    ),
 };
 
 /**
