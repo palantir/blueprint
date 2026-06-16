@@ -116,7 +116,6 @@ export const AdvancedChildren: Story = {
                 onContextMenu={props.onContextMenu}
                 ref={props.ref}
                 style={{
-                    ...TARGET_STYLE,
                     background: props.contentProps.isOpen ? "rgba(45, 114, 210, 0.2)" : TARGET_STYLE.background,
                 }}
             >

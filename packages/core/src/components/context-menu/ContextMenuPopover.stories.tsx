@@ -3,10 +3,9 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { useArgs, useCallback } from "storybook/preview-api";
 import { expect, screen, waitFor } from "storybook/test";
-
-import { Flex } from "@blueprintjs/labs";
 
 import { Button } from "../button/buttons";
 import { Menu } from "../menu/menu";
@@ -28,13 +27,7 @@ const SAMPLE_MENU = (
 const meta: Meta<typeof ContextMenuPopover> = {
     title: "Core/Context Menu/ContextMenuPopover",
     component: ContextMenuPopover,
-    decorators: [
-        Story => (
-            <Flex justifyContent="center" alignItems="center" style={{ minHeight: 320, minWidth: 480 }}>
-                <Story />
-            </Flex>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     args: {
         content: SAMPLE_MENU,
         isOpen: false,
@@ -111,13 +104,6 @@ export const DarkTheme: Story = {
     args: {
         isDarkTheme: true,
     },
-    decorators: [
-        Story => (
-            <div className="bp6-dark" style={{ padding: 40, background: "#1c2127" }}>
-                <Story />
-            </div>
-        ),
-    ],
     render: ContextMenuPopoverStoryRender,
 };
 
