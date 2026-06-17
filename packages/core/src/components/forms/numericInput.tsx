@@ -302,7 +302,9 @@ export class NumericInput extends AbstractPureComponent<
             return NumericInput.VALUE_EMPTY;
         }
         const currentValue = parseStringToStringNumber(value, locale);
-        const nextValue = toMaxPrecision(Number(currentValue) + delta, stepMaxPrecision);
+        const numericValue = Number(currentValue) + delta;
+        const shouldRound = delta !== 0;
+        const nextValue = shouldRound ? Number(toMaxPrecision(numericValue, stepMaxPrecision)) : numericValue;
         const clampedValue = clampValue(nextValue, min, max);
         return toLocaleString(clampedValue, locale);
     }
