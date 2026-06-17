@@ -1,0 +1,5 @@
+{
+    "main": "../lib/cjs/next/generated/index.js",
+    "module": "../lib/esm/next/generated/index.js",
+    "typings": "./index.d.ts"
+}
