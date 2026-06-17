@@ -29,6 +29,212 @@ $icons-per-row: 5;
   }
 }
 
+// Standalone styles for the next-generation icon browser.
+$docs-icon-next-rail-width: $pt-spacing * 30;
+$docs-icon-next-columns: 6;
+
+.docs-icons-next {
+  .docs-icons-next-search {
+    margin: 0 0 ($pt-spacing * 8);
+  }
+
+  .docs-icons-next-body {
+    align-items: flex-start;
+    display: flex;
+    gap: $pt-spacing * 8;
+  }
+
+  .docs-icons-next-filter {
+    flex: 0 0 $docs-icon-next-rail-width;
+    width: $docs-icon-next-rail-width;
+
+    .#{$ns}-heading {
+      margin-bottom: $pt-spacing * 4;
+    }
+  }
+
+  .docs-icons-next-results {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .docs-icons-next-count {
+    font-size: $pt-font-size-small;
+    margin-bottom: $pt-spacing * 4;
+    text-align: end;
+  }
+
+  .docs-icon-next-grid {
+    display: grid;
+    gap: $pt-spacing * 3;
+    grid-template-columns: repeat($docs-icon-next-columns, minmax(0, 1fr));
+  }
+
+  .docs-icon-next-card {
+    align-items: center;
+    appearance: none;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    font: inherit;
+    gap: $pt-spacing * 2;
+    padding: $pt-spacing * 3;
+
+    &:hover .docs-icon-next-glyph {
+      background-color: $light-gray4;
+    }
+
+    &:active .docs-icon-next-glyph {
+      background-color: $light-gray3;
+    }
+
+    &:focus-visible {
+      outline: none;
+
+      .docs-icon-next-glyph {
+        @include focus-outline;
+      }
+    }
+
+    .#{$ns}-dark & {
+      &:hover .docs-icon-next-glyph {
+        background-color: $dark-gray3;
+      }
+
+      &:active .docs-icon-next-glyph {
+        background-color: $dark-gray2;
+      }
+    }
+  }
+
+  .docs-icon-next-glyph {
+    align-items: center;
+    border-radius: $pt-border-radius * 2;
+    color: $pt-icon-color;
+    display: flex;
+    justify-content: center;
+    padding: $pt-spacing * 4;
+    transition: background-color $hover-transition;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-icon-color;
+    }
+  }
+
+  .docs-icon-next-name {
+    color: $pt-text-color-muted;
+    font-size: 10px;
+    max-width: 100%;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
+  }
+}
+
+// detail dialog opened by clicking an icon card.
+.docs-icons-next-dialog {
+  width: 600px;
+
+  .docs-icons-next-dialog-heroes {
+    display: grid;
+    gap: $pt-spacing * 3;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-bottom: $pt-spacing * 6;
+  }
+
+  .docs-icons-next-dialog-hero {
+    align-items: center;
+    border-radius: $pt-border-radius * 2;
+    display: flex;
+    justify-content: center;
+    padding: $pt-spacing * 8;
+  }
+
+  .docs-icons-next-dialog-hero-default {
+    background-color: $white;
+    box-shadow: $pt-elevation-shadow-1;
+    color: $pt-icon-color;
+
+    .#{$ns}-dark & {
+      background-color: $dark-gray3;
+      box-shadow: $pt-dark-elevation-shadow-1;
+      color: $pt-dark-icon-color;
+    }
+  }
+
+  .docs-icons-next-dialog-hero-primary {
+    background-color: $pt-intent-primary;
+    color: $white;
+  }
+
+  .docs-icons-next-dialog-hero-dark {
+    background-color: $dark-gray1;
+    color: $white;
+  }
+
+  .docs-icons-next-dialog-section-label,
+  .docs-icons-next-code-label {
+    color: $pt-text-color-muted;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
+  }
+
+  .docs-icons-next-dialog-section-label {
+    margin-bottom: $pt-spacing * 3;
+  }
+
+  .docs-icons-next-dialog-sizes {
+    align-items: flex-end;
+    display: flex;
+    gap: $pt-spacing * 6;
+    margin-bottom: $pt-spacing * 6;
+  }
+
+  .docs-icons-next-dialog-size {
+    align-items: center;
+    color: $pt-icon-color;
+    display: flex;
+    flex-direction: column;
+    gap: $pt-spacing * 2;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-icon-color;
+    }
+
+    .docs-icons-next-dialog-size-label {
+      font-size: $pt-font-size-small;
+    }
+  }
+
+  .docs-icons-next-code + .docs-icons-next-code {
+    margin-top: $pt-spacing * 4;
+  }
+
+  .docs-icons-next-code-header {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $pt-spacing * 1;
+  }
+
+  .docs-icons-next-code-block {
+    display: block;
+    overflow-x: auto;
+    padding: ($pt-spacing * 4) ($pt-spacing * 3);
+    white-space: nowrap;
+  }
+}
+
 .docs-icon-container,
 .docs-icon-spacer {
   height: $pt-spacing * 30;

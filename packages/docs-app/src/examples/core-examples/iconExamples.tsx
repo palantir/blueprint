@@ -7,11 +7,22 @@ import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 import IconUsage from "./icon/IconUsage";
 import iconUsagePreview from "./icon/IconUsage.tsx.preview?raw";
 import iconUsageCode from "./icon/IconUsage.tsx?raw";
+import NextIconUsage from "./icon/NextIconUsage";
+import nextIconUsagePreview from "./icon/NextIconUsage.tsx.preview?raw";
+import nextIconUsageCode from "./icon/NextIconUsage.tsx?raw";
 
 export const IconUsageExample: React.FC<ExampleProps> = props => {
     return (
         <CodeExample previewCode={iconUsagePreview} sourceCode={iconUsageCode} {...props}>
             <IconUsage />
+        </CodeExample>
+    );
+};
+
+export const NextIconUsageExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample previewCode={nextIconUsagePreview} sourceCode={nextIconUsageCode} {...props}>
+            <NextIconUsage />
         </CodeExample>
     );
 };
