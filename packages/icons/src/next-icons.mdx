@@ -1,0 +1,23 @@
+---
+title: Next icons
+tag: new
+---
+
+# Next icons
+
+This page previews the new static icon components available from `@blueprintjs/icons/next`.
+Outlined variants are exported as `*Icon`, and filled variants (when available) are exported as
+`*FilledIcon`.
+
+```tsx
+import { Button } from "@blueprintjs/core";
+import { DownloadFilledIcon, DownloadIcon } from "@blueprintjs/icons/next";
+
+<Button icon={<DownloadIcon size={16} />} text="Download" />
+<Button icon={<DownloadFilledIcon size={16} />} text="Download (filled)" />
+```
+
+Icons inherit color via `currentColor`, so intent-based styles work through surrounding text or
+Blueprint intent classes.
+
+@reactDocs IconsNext

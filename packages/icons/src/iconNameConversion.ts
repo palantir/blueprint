@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-// These components can be references via the @react-docs flag
+import { LegacyToNextIconNameMap } from "./generated/iconNameMap";
+import type { IconName } from "./iconNames";
+import type { NextIconName } from "./next/generated/manifest";
 
-export * from "../components/colorPalettes";
-export * from "../components/colorSchemes";
-export * from "../components/icons";
-export * from "../components/iconsNext";
-export * from "../components/welcome";
+export { LegacyToNextIconNameMap };
+
+/**
+ * Returns the next-generation (`@blueprintjs/icons/next`) icon name corresponding to a legacy icon name.
+ */
+export function getNextIconName(name: IconName): NextIconName {
+    return LegacyToNextIconNameMap[name];
+}

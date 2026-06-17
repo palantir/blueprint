@@ -9,8 +9,11 @@
     "style": "lib/css/blueprint-icons.css",
     "files": [
         "lib",
+        "next",
         "src",
-        "icons.json"
+        "icons.json",
+        "icons-next.json",
+        "icons-name-map.json"
     ],
     "sideEffects": [
         "**/*.css"
@@ -31,7 +34,7 @@
         "icons:add": "node scripts/add-icons.mjs",
         "icons:format": "node scripts/format-icons.mjs",
         "icons:verify": "node scripts/verify-icons.mjs",
-        "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
+        "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs && node scripts/generate-next-icon-components.mjs && node scripts/generate-icon-name-map.mjs",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
