@@ -18,6 +18,7 @@ import classNames from "classnames";
 import { createElement, forwardRef, useEffect, useState } from "react";
 
 import {
+    type DefaultSVGIconProps,
     type IconPaths,
     IconSize,
     IconsNext,
@@ -56,6 +57,14 @@ export interface IconNextOwnProps {
 }
 
 export type IconNextProps<T extends Element = Element> = IntentProps & Props & SVGIconProps<T> & IconNextOwnProps;
+
+/**
+ * The default `<IconNext>` props interface, equivalent to `IconNextProps` with its default type parameter.
+ * This is primarily exported for documentation purposes; users should reference `IconNextProps<T>` instead.
+ */
+export interface DefaultIconNextProps extends IntentProps, Props, DefaultSVGIconProps, IconNextOwnProps {
+    // empty interface for documentation purposes (documentalist handles this better than the IconNextProps<T> type alias)
+}
 
 export interface IconNextComponent extends React.FC<IconNextProps<Element>> {
     <T extends Element = Element>(props: IconNextProps<T>): React.ReactNode;

@@ -1,0 +1,159 @@
+---
+title: IconNext
+tag: new
+---
+
+# IconNext
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+
+**Experimental**
+
+`IconNext` renders the next-generation icon set, which is experimental: names are stable, but the
+icon set and component API may change in upcoming 6.x releases.
+
+</div>
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+
+See the [**next icons**](#icons/next-icons) page for a searchable list of all available next-generation icons.
+
+</div>
+
+## Usage
+
+```ts copy
+import { IconNext } from "@blueprintjs/core";
+```
+
+```tsx
+<IconNext icon="star" size={30} />
+```
+
+`IconNext` renders an icon from the **@blueprintjs/icons/next** set as an inline `<svg>`. Give it an
+icon name and it loads that icon's SVG paths on demand via a dynamic import, so an app only ships the
+icons it actually renders. You can also pass a JSX element directly, in which case it is rendered as-is.
+
+Many Blueprint components provide an `icon` prop which accepts an icon name or a JSX element to use as
+the icon. Pass an `<IconNext>` element to use a next-generation icon in those slots.
+
+@reactExample IconNextExample
+
+## Examples
+
+### Basic
+
+Use the `<IconNext>` component to render a next icon in React. The `icon` prop is typed against
+`BlueprintIconsNext`, so editors offer autocomplete for known icon names and reject unknown ones. The
+companion `IconNextNames` object maps PascalCase identifiers to those names (for example
+`IconNextNames.Star` is `"star"`).
+
+The optional `size` prop sets the exact width and height of the icon; the element can also be sized
+with CSS. If `title` is _not_ provided, `aria-hidden` is set to `true`, since an unlabeled icon is
+assumed to be decorative.
+
+```tsx
+import { IconNext } from "@blueprintjs/core";
+import { IconNextNames, IconSize } from "@blueprintjs/icons/next";
+
+// icon name string literals are type checked
+<IconNext icon="circle-plus" />
+<IconNext icon={IconNextNames.Star} size={20} />
+
+// constants are provided for standard sizes
+<IconNext icon="trash" size={IconSize.LARGE} intent="danger" />
+
+// you can also pass all valid HTML props
+<IconNext icon="plus" onClick={handleAdd} onKeyDown={handleAddKeys} />
+```
+
+Custom sizes are supported. The following React element:
+
+```tsx
+<IconNext icon="star" size={30} />
+```
+
+...renders this HTML markup:
+
+```xml
+<span class="@ns-icon @ns-icon-star" aria-hidden="true">
+    <svg data-icon="star" width="30" height="30" viewBox="0 0 16 16" role="img">
+        <path d="..."></path>
+    </svg>
+</span>
+```
+
+Unlike the legacy `Icon` component, next icons are drawn on a single 16px grid (note the
+`viewBox="0 0 16 16"` above) and scaled to the requested `size`, so there is no separate 20px grid to
+switch between.
+
+### Outlined and filled variants
+
+Next icons come in two styles. Every icon has an **outlined** version (the default); a subset also have
+a **filled** version. Select the style with the `variant` prop:
+
+```tsx
+<IconNext icon="play" />
+<IconNext icon="play" variant="filled" />
+```
+
+If `"filled"` is requested for an icon that has no filled version (for example `"anchor"`), the
+component falls back to the outlined style and logs a development-mode warning.
+
+### Usage with other components
+
+Many Blueprint components accept an `icon` prop which can be specified as either a string icon name or a
+JSX element. To use a next-generation icon, pass an `<IconNext>` element:
+
+```tsx
+import { Button, IconNext } from "@blueprintjs/core";
+
+<Button icon={<IconNext icon="magnifying-glass" />} text="Search" />
+<Button icon={<IconNext icon="bell" variant="filled" />} text="Notifications" />
+```
+
+## Props interface
+
+@interface DefaultIconNextProps
+
+## DOM attributes
+
+The `<IconNext>` component forwards extra HTML attributes to its root DOM element. By default, the root
+element is a `<span>` wrapper around the icon `<svg>`. The tag name of this element may be customized via
+the `tagName` prop as either:
+
+- a custom HTML tag name (for example `<div>` instead of the default `<span>` wrapper), or
+- `null`, which makes the component omit the wrapper element and only render the `<svg>` as its root element
+
+By default, `<IconNext>` supports a limited set of DOM attributes which are assignable to _all_ HTML and
+SVG elements. In some cases, you may want to use more specific attributes which are only available on HTML
+elements or SVG elements. The `<IconNext>` component has a generic type which allows for this more advanced
+usage. You can specify a type parameter on the component opening tag to (for example) set an HTML-only
+attribute:
+
+```tsx
+import { IconNext } from "@blueprintjs/core";
+import * as React from "react";
+
+function Example() {
+    const [isDraggable, setIsDraggable] = React.useState();
+    // explicitly declare type of the root element so that we can set the "draggable" DOM attribute
+    return <IconNext<HTMLSpanElement> icon="house" draggable={isDraggable} />;
+}
+```
+
+Another use case for this type parameter API may be to get the correct type definition for an event
+handler on the root element when _omitting_ the icon wrapper element:
+
+```tsx
+import { IconNext } from "@blueprintjs/core";
+import * as React from "react";
+
+function Example() {
+    const handleClick: React.MouseEventHandler<SVGSVGElement> = () => {
+        /* ... */
+    };
+    // explicitly declare type of the root element so that we can narrow the type of the event handler
+    return <IconNext<SVGSVGElement> icon="plus" onClick={handleClick} tagName={null} />;
+}
+```
