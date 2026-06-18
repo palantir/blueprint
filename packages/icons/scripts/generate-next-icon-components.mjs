@@ -28,6 +28,7 @@ const filledResourcesDir = join(iconResourcesDir, "next/filled");
 const legacyResourcesDir = join(iconResourcesDir, "16px");
 const generatedNextDir = resolve(import.meta.dirname, "../src/next/generated");
 const generatedNextComponentsDir = join(generatedNextDir, "components");
+const generatedNextPathsDir = join(generatedNextDir, "paths");
 const iconsNextManifestPath = resolve(import.meta.dirname, "../icons-next.json");
 const iconNameMapPath = resolve(import.meta.dirname, "../icons-name-map.json");
 
@@ -86,7 +87,9 @@ export default ${exportName};
 
 console.info("Clearing existing next icon modules...");
 rmSync(generatedNextComponentsDir, { force: true, recursive: true });
+rmSync(generatedNextPathsDir, { force: true, recursive: true });
 mkdirSync(generatedNextComponentsDir, { recursive: true });
+mkdirSync(generatedNextPathsDir, { recursive: true });
 
 const outlinedIconNames = [...getIconNamesInDirectory(outlinedResourcesDir)].sort();
 const filledIconNames = [...getIconNamesInDirectory(filledResourcesDir)].sort();
@@ -98,30 +101,46 @@ console.info(
 );
 /** @type {string[]} */
 const componentIndexLines = [];
+/** @type {string[]} */
+const pathIndexLines = [];
 
 for (const iconName of outlinedIconNames) {
     const outlinedPaths = extractPathsFromSvgFile(join(outlinedResourcesDir, `${iconName}.svg`));
 
-    // Generate component module (outlined)
+    // Generate component module
+    const outlinedFileName = `${iconName}.tsx`;
     writeFileSync(
-        join(generatedNextComponentsDir, `${iconName}.tsx`),
+        join(generatedNextComponentsDir, outlinedFileName),
         generateNextComponentSource(iconName, "outlined", outlinedPaths),
     );
     componentIndexLines.push(`export { ${pascalCase(iconName)}Icon } from "./${iconName}";`);
+
+    // Generate path module (outlined)
+    writeFileSync(join(generatedNextPathsDir, `${iconName}.ts`), `export default ${JSON.stringify(outlinedPaths)};\n`);
+    pathIndexLines.push(`export { default as ${pascalCase(iconName)} } from "./${iconName}";`);
 
     if (filledIconNameSet.has(iconName)) {
         const filledPaths = extractPathsFromSvgFile(join(filledResourcesDir, `${iconName}.svg`));
 
         // Generate component module (filled)
+        const filledFileName = `${iconName}-filled.tsx`;
         writeFileSync(
-            join(generatedNextComponentsDir, `${iconName}-filled.tsx`),
+            join(generatedNextComponentsDir, filledFileName),
             generateNextComponentSource(iconName, "filled", filledPaths),
         );
         componentIndexLines.push(`export { ${pascalCase(iconName)}FilledIcon } from "./${iconName}-filled";`);
+
+        // Generate path module (filled)
+        writeFileSync(
+            join(generatedNextPathsDir, `${iconName}-filled.ts`),
+            `export default ${JSON.stringify(filledPaths)};\n`,
+        );
+        pathIndexLines.push(`export { default as ${pascalCase(iconName)}Filled } from "./${iconName}-filled";`);
     }
 }
 
 writeFileSync(join(generatedNextComponentsDir, "index.ts"), `${componentIndexLines.join("\n")}\n`);
+writeFileSync(join(generatedNextPathsDir, "index.ts"), `${pathIndexLines.join("\n")}\n`);
 
 // Legacy icon-name aliases: emit one renamed re-export per legacy icon so consumers can migrate from
 // `@blueprintjs/icons` to `@blueprintjs/icons/next` by changing only the import path. Every legacy name
@@ -196,6 +215,9 @@ writeFileSync(
         `export * from "./components";`,
         `export * from "./legacyAliases";`,
         `export { nextIconManifest, type BlueprintIconsNext, type IconNextName, type NextIconManifestEntry } from "./manifest";`,
+        `export { IconNextNames, IconNextNamesSet, type IconNextName } from "../iconNextNames";`,
+        `export { IconsNext, type NextIconVariant, type NextIconLoaderOptions } from "../iconLoaderNext";`,
+        `export { type NextIconPathsLoader } from "../pathsLoader";`,
         `export { SvgIconContainerNext, type SvgIconContainerNextComponent, type SvgIconContainerNextProps } from "../svgIconContainerNext";`,
         "",
     ].join("\n"),
@@ -210,6 +232,9 @@ if (manifestErrors.length > 0) {
 
 // Derive the literal-union members from the manifest itself so the union can never drift from `nextIconManifest`.
 const iconNextNameUnion = iconsNextManifest.map(entry => `    | "${entry.name}"`).join("\n");
+
+// Derive the literal-union members from the manifest itself so the union can never drift from `nextIconManifest`.
+const nextIconNameUnion = iconsNextManifest.map(entry => `    | "${entry.name}"`).join("\n");
 
 writeFileSync(
     join(generatedNextDir, "manifest.ts"),
