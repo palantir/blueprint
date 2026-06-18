@@ -50,7 +50,7 @@
         "@types/yargs": "~17.0.32",
         "@vitejs/plugin-react": "catalog:",
         "dedent": "^1.5.1",
-        "eslint": "^9.20.0",
+        "eslint": "^10.5.0",
         "gh-pages": "^6.3.0",
         "globals": "^15.14.0",
         "http-server": "^14.1.1",
