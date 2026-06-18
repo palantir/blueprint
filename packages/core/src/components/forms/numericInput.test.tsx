@@ -1235,7 +1235,7 @@ describe("<NumericInput>", () => {
                 />,
             );
 
-            // Set value to "3e2" (i.e. 300)
+            // Set value to "3e2" (i.e. 302)
             await user.clear(screen.getByRole("spinbutton"));
             await user.type(screen.getByRole("spinbutton"), "3e2");
 
