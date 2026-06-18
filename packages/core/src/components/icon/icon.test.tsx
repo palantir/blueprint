@@ -16,7 +16,7 @@
 
 import { mount } from "enzyme";
 
-import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
+import { Graph as GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 import { afterEach, beforeAll, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
@@ -62,6 +62,19 @@ describe("<Icon>", () => {
     it("size=20 renders large size", async () =>
         assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
 
+    it("forwards size onto an element icon", async () =>
+        assertIconSize(<Icon icon={<GraphIcon />} size={IconSize.LARGE} />, IconSize.LARGE));
+
+    it("forwards a custom size onto an element icon", async () =>
+        assertIconSize(<Icon icon={<GraphIcon />} size={128} />, 128));
+
+    it("element icon's own size takes precedence over the <Icon> size", async () =>
+        // non-regression: the element's explicit size wins over the forwarded one
+        assertIconSize(<Icon icon={<GraphIcon size={IconSize.STANDARD} />} size={128} />, IconSize.STANDARD));
+
+    it("element icon without a size falls back to the default size", async () =>
+        assertIconSize(<Icon icon={<GraphIcon />} />, IconSize.STANDARD));
+
     it("renders intent class", async () => {
         const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);
         expect(wrapper.find(`.${Classes.INTENT_DANGER}`).exists()).toBe(true);
@@ -99,6 +112,8 @@ describe("<Icon>", () => {
         wrapper.update();
         expect(wrapper.childAt(0).is("article")).toBe(true);
         expect(wrapper.find("article").prop("onClick")).toBe(onClick);
+        // a forwarded `size` should not leak onto a non-icon element when none is provided
+        expect(wrapper.find("article").prop("size")).toBeUndefined();
     });
 
     it("icon=undefined renders nothing", async () => {
