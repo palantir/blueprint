@@ -5,6 +5,7 @@
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../button/common";
+@import "../tag/common";
 
 // 3px space between small button and regular input
 $input-button-height: $pt-button-height-small !default;
@@ -85,7 +86,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-tag {
-    margin: $pt-spacing * 1.25;
+    margin: ($pt-input-height - $tag-height) * 0.5;
   }
 
   // all buttons go gray in default state and assume their native colors only when hovered
