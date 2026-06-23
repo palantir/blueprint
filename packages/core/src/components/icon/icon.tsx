@@ -57,11 +57,12 @@ export interface IconOwnProps {
      *   icon will be rendered as an `<svg>` with `<path>` tags. Unknown strings
      *   will render a blank icon to occupy space.
      * - If given a `React.JSX.Element`, that element will be rendered with the
-     *   parent-provided `className` and intent class merged onto its root. All
-     *   other props on this component are ignored. This type is supported to
-     *   simplify icon support in other Blueprint components. As a consumer, you
-     *   should avoid using `<Icon icon={<Element />}` directly; simply render
-     *   `<Element />` instead.
+     *   parent-provided `className`, intent class merged onto its root, and
+     *   `size` prop forwarded onto it (the element's own `size` takes
+     *   precedence). Other props on this component are ignored. This type is
+     *   supported to simplify icon support in other Blueprint components. As a
+     *   consumer, you should avoid using `<Icon icon={<Element />}` directly;
+     *   simply render `<Element />` instead.
      */
     icon: IconName | MaybeElement;
 
@@ -158,9 +159,11 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
     if (icon == null || typeof icon === "boolean") {
         return null;
     } else if (typeof icon !== "string") {
-        if (isValidElement<{ className?: string }>(icon)) {
+        if (isValidElement<Pick<SVGIconProps, "className" | "size">>(icon)) {
             return cloneElement(icon, {
                 className: classNames(icon.props.className, className, Classes.intentClass(intent)),
+                // Forward `size`, letting the element's own `size` take precedence.
+                size: icon.props.size ?? props.size,
             });
         }
         return icon;
