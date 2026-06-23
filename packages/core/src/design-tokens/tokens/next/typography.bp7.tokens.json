@@ -42,11 +42,11 @@
             "body-small": { "$value": { "value": 11, "unit": "px" } },
             "body-medium": { "$value": { "value": 13, "unit": "px" } },
             "body-large": { "$value": { "value": 15, "unit": "px" } },
+            "display": { "$value": { "value": 48, "unit": "px" } },
             "heading-small": { "$value": { "value": 16, "unit": "px" } },
             "heading-medium": { "$value": { "value": 20, "unit": "px" } },
             "heading-large": { "$value": { "value": 24, "unit": "px" } },
             "heading-x-large": { "$value": { "value": 28, "unit": "px" } },
-            "heading-display": { "$value": { "value": 48, "unit": "px" } },
             "code-x-small": { "$value": { "value": 9, "unit": "px" } },
             "code-small": { "$value": { "value": 10, "unit": "px" } },
             "code-medium": { "$value": { "value": 11, "unit": "px" } },
@@ -60,103 +60,85 @@
         "styles": {
             "$description": "Composite text styles. family/size/weight reference the primitives above; line-height is a unitless ratio. letter-spacing is held at 0 — tracking is font-specific and Blueprint ships font-less by default. runningLineHeight loosens body text across multiple lines.",
             "code": {
+                "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
+                "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                 "x-small": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.code-x-small}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.66667 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "small": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.code-small}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.5 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "medium": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.code-medium}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.81818 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "large": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.mono}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.code-large}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.5 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 }
             },
             "body": {
+                "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                 "x-small": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.body-x-small}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.66667 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "small": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.body-small}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.63636 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "medium": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.body-medium}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.38462 },
                     "runningLineHeight": { "$type": "number", "$value": 1.53846 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "large": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.body-large}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
                     "lineHeight": { "$type": "number", "$value": 1.33333 },
                     "runningLineHeight": { "$type": "number", "$value": 1.46667 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 }
             },
             "heading": {
+                "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
+                "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
                 "small": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-small}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
                     "lineHeight": { "$type": "number", "$value": 1.25 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "medium": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-medium}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
                     "lineHeight": { "$type": "number", "$value": 1.1 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "large": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-large}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
                     "lineHeight": { "$type": "number", "$value": 1.08333 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 },
                 "x-large": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.default}" },
                     "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-x-large}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.strong}" },
                     "lineHeight": { "$type": "number", "$value": 1.07143 },
                     "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
-                },
-                "display": {
-                    "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.display}" },
-                    "fontSize": { "$type": "dimension", "$value": "{typography.size.heading-display}" },
-                    "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
-                    "lineHeight": { "$type": "number", "$value": 1.16667 },
-                    "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
                 }
+            },
+            "display": {
+                "fontFamily": { "$type": "fontFamily", "$value": "{typography.family.display}" },
+                "fontSize": { "$type": "dimension", "$value": "{typography.size.display}" },
+                "fontWeight": { "$type": "fontWeight", "$value": "{typography.weight.default}" },
+                "lineHeight": { "$type": "number", "$value": 1.16667 },
+                "letterSpacing": { "$type": "dimension", "$value": { "value": 0, "unit": "px" } }
             }
         },
         "color": {
@@ -166,23 +148,38 @@
             "intent": {
                 "neutral": {
                     "$value": "{intent.neutral}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": -0.09 },
+                        "com.blueprint.palette-equivalent": "{palette.grey.600}"
+                    }
                 },
                 "primary": {
                     "$value": "{intent.primary}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": -0.09 },
+                        "com.blueprint.palette-equivalent": "{palette.blue.600}"
+                    }
                 },
                 "success": {
                     "$value": "{intent.success}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": -0.09 },
+                        "com.blueprint.palette-equivalent": "{palette.green.600}"
+                    }
                 },
                 "warning": {
                     "$value": "{intent.warning}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": -0.09 },
+                        "com.blueprint.palette-equivalent": "{palette.orange.600}"
+                    }
                 },
                 "danger": {
                     "$value": "{intent.danger}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": -0.09 },
+                        "com.blueprint.palette-equivalent": "{palette.red.600}"
+                    }
                 }
             }
         }

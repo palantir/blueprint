@@ -28,19 +28,31 @@
             },
             "primary": {
                 "$value": "{intent.primary}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 },
+                    "com.blueprint.palette-equivalent": "{palette.blue.200}"
+                }
             },
             "success": {
                 "$value": "{intent.success}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 },
+                    "com.blueprint.palette-equivalent": "{palette.green.200}"
+                }
             },
             "warning": {
                 "$value": "{intent.warning}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 },
+                    "com.blueprint.palette-equivalent": "{palette.orange.200}"
+                }
             },
             "danger": {
                 "$value": "{intent.danger}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 },
+                    "com.blueprint.palette-equivalent": "{palette.red.200}"
+                }
             }
         },
         "border-width": {

@@ -157,6 +157,19 @@ const THEMES: readonly ThemeConfig[] = [
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
+    {
+        name: "light-next",
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        selector: ":root",
+        destination: "tokens-next.css",
+    },
+    {
+        name: "dark-next",
+        include: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.dark.tokens.json"],
+        selector: '[data-bp-color-scheme=\"dark\"],\n.bp7-dark',
+        destination: "tokens-dark-next.css",
+    },
 ];
 
 // -- Parsers ------------------------------------------------------------------
@@ -256,6 +269,28 @@ const parseFontFamily = (value: unknown): readonly string[] | undefined => parse
 const parseTokenReference = (value: unknown): string | undefined =>
     typeof value === "string" && value.startsWith("{") && value.endsWith("}") ? value : undefined;
 
+// -- Token Reference Conversions ----------------------------------------------
+//
+// A DTCG token reference is a brace-wrapped dot path, e.g. `"{palette.blue.500}"`.
+// These helpers are the single place that unwraps the braces and reshapes the path;
+// every consumer (map lookups, CSS `var()`, display) goes through one of them rather
+// than slicing/splitting the string inline.
+
+/** Strips the surrounding braces from a token reference, yielding its dot path (e.g. `"palette.blue.500"`). */
+const tokenRefToPath = (ref: string): string => ref.slice(1, -1);
+
+/** Splits a token reference into its path segments (e.g. `["palette", "blue", "500"]`). */
+const tokenRefToSegments = (ref: string): readonly string[] => tokenRefToPath(ref).split(".");
+
+/** Converts a DTCG token reference (e.g. `"{color.primary}"`) to a CSS `var()` expression. */
+const tokenReferenceToVar = (ref: string): string => `var(--bp-${tokenRefToSegments(ref).join("-")})`;
+
+/** Looks up the token a reference points to in the token map (e.g. `"{palette.blue.500}"` → its token). */
+const resolveTokenReference = (
+    ref: string,
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+): TransformedToken | undefined => tokenMap.get(tokenRefToPath(ref));
+
 /**
  * Parses an offset or scale channel modification from a derive extension object.
  * Checks the `offsetKey` first; if not found, falls back to `scaleKey`.
@@ -306,6 +341,18 @@ const parseRole = (ext: unknown): BlueprintRole | undefined => {
     }
 
     return undefined;
+};
+
+/**
+ * Parses the `com.blueprint.palette-equivalent` extension — a token reference string
+ * (e.g. `"{palette.blue.600}"`) marking the palette shade a derived color resolves to.
+ * Returned verbatim for use in an output CSS comment; not used for value resolution.
+ */
+const parsePaletteEquivalent = (ext: unknown): string | undefined => {
+    const extObj = parseObject(ext);
+    if (extObj === undefined) return undefined;
+
+    return parseTokenReference(extObj["com.blueprint.palette-equivalent"]);
 };
 
 /** Parses any CSS color string into an {@link OklchColor} via culori. Returns `undefined` on failure. */
@@ -393,12 +440,6 @@ const formatChannelModification = (channel: string, mod: ChannelModification | u
     }
 };
 
-/** Converts a DTCG token reference (e.g. `"{color.primary}"`) to a CSS `var()` expression. */
-const tokenReferenceToVar = (ref: string): string => {
-    const path = ref.slice(1, -1).split(".");
-    return `var(--bp-${path.join("-")})`;
-};
-
 /** Formats an alpha value as a CSS string — either a literal number or a resolved `var()` reference. */
 const formatAlpha = (alpha: number | string): string =>
     typeof alpha === "number" ? String(alpha) : tokenReferenceToVar(alpha);
@@ -453,7 +494,7 @@ const containsRelativeColorSyntax = (value: string): boolean => value.includes("
 
 /** Returns `true` if the token has a `com.blueprint.derive` extension. */
 const hasDeriveExtension = (token: TransformedToken): boolean => {
-    const ext = parseObject(token.$extensions ?? token.extensions);
+    const ext = parseObject(token.$extensions);
     return ext !== undefined && ext["com.blueprint.derive"] !== undefined;
 };
 
@@ -483,8 +524,7 @@ const resolveAlphaValue = (
     const tokenRef = parseTokenReference(alpha);
     if (tokenRef === undefined) return undefined;
 
-    const refPath = tokenRef.slice(1, -1);
-    const referencedToken = tokenMap.get(refPath);
+    const referencedToken = resolveTokenReference(tokenRef, tokenMap);
     if (referencedToken === undefined) return undefined;
 
     return parseTokenValueAsNumber(referencedToken);
@@ -521,8 +561,7 @@ const computeStaticFallbackForDerivedToken = (
     const tokenRef = parseTokenReference(originalValue);
     if (tokenRef === undefined) return undefined;
 
-    const refPath = tokenRef.slice(1, -1);
-    const baseToken = tokenMap.get(refPath);
+    const baseToken = resolveTokenReference(tokenRef, tokenMap);
     if (baseToken === undefined) return undefined;
 
     const fallbackValue = getTokenValue(baseToken);
@@ -550,14 +589,12 @@ const computeStaticFallbackForReferencingToken = (
     const tokenRef = parseTokenReference(originalValue);
     if (tokenRef === undefined) return undefined;
 
-    const refPath = tokenRef.slice(1, -1);
-
-    const cachedFallback = fallbackCache.get(refPath);
+    const cachedFallback = fallbackCache.get(tokenRefToPath(tokenRef));
     if (cachedFallback !== undefined) {
         return cachedFallback;
     }
 
-    const referencedToken = tokenMap.get(refPath);
+    const referencedToken = resolveTokenReference(tokenRef, tokenMap);
     if (referencedToken === undefined) return undefined;
 
     return computeStaticFallbackForReferencingToken(referencedToken, tokenMap, fallbackCache);
@@ -610,12 +647,76 @@ const makeFallbackMap = (
 };
 
 /**
+ * If the token's original value is a single, pure token reference (e.g. `"{palette.blue.500}"`)
+ * and the token is not a derived color, returns the equivalent `var(--bp-...)` expression.
+ * This preserves the authored reference chain in the output CSS instead of inlining the
+ * resolved value, so e.g. `--bp-intent-primary` emits as `var(--bp-palette-blue-500)`.
+ *
+ * Derived tokens are excluded: their `original.$value` is also a pure reference, but they
+ * must emit relative color syntax (`oklch(from ...)`) via the derive transform, not a `var()`.
+ */
+const pureReferenceAsVar = (token: TransformedToken): string | undefined => {
+    if (hasDeriveExtension(token)) return undefined;
+
+    const original = token.original ?? {};
+    const originalValue = original.$value ?? original.value;
+    const tokenRef = parseTokenReference(originalValue);
+    if (tokenRef === undefined) return undefined;
+
+    return tokenReferenceToVar(tokenRef);
+};
+
+/**
+ * Builds the description used in the output CSS comment. When `annotateEquivalent` is true and
+ * a token declares a `com.blueprint.palette-equivalent`, an `≈ palette.x.y` note is appended to
+ * (or, if there is no description, used as) the comment — flagging that the derived value resolves
+ * to that palette shade. The note is gated because the equivalent only holds for the theme that
+ * authors the field (light): in themes built with `include` (dark), the light token's extension
+ * bleeds in via path-merge, so the note would be inaccurate there and is suppressed.
+ * Returns `undefined` when neither a description nor an applicable equivalent is present.
+ */
+const buildDescription = (token: TransformedToken, annotateEquivalent: boolean): string | undefined => {
+    // Prefer original extensions: the tokens-studio preprocessor may strip/relocate
+    // `$extensions` on the transformed token (same reason the derive transform reads `original`).
+    const original = token.original ?? {};
+    const ext = original.$extensions ?? original.extensions ?? token.$extensions ?? token.extensions;
+    const equivalent = annotateEquivalent ? parsePaletteEquivalent(ext) : undefined;
+    const note = equivalent !== undefined ? `≈ ${tokenRefToPath(equivalent)}` : undefined;
+
+    if (token.$description !== undefined && note !== undefined) {
+        return `${token.$description} — ${note}`;
+    }
+    return token.$description ?? note;
+};
+
+/**
  * Classifies a token for progressive enhancement output. Tokens with a fallback get
  * the hex value as `fallbackValue` and the relative color syntax as `modernValue`.
  */
-const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
+const classifyToken = (
+    token: TransformedToken,
+    fallbackMap: ReadonlyMap<string, string>,
+    annotateEquivalent: boolean,
+): TokenClassification => {
     const tokenPath = token.path.join(".");
     const currentValue = getTokenValueAsString(token);
+    const description = buildDescription(token, annotateEquivalent);
+    const equivalentPaletteToken = parsePaletteEquivalent(token.original.$extensions);
+
+    // Pure references emit as `var()` in both blocks: the target var carries its own
+    // fallback + `@supports` enhancement, so no separate modern value is needed here.
+    const referenceVar = equivalentPaletteToken
+        ? tokenReferenceToVar(equivalentPaletteToken)
+        : pureReferenceAsVar(token);
+    if (referenceVar !== undefined) {
+        return {
+            name: token.name,
+            fallbackValue: referenceVar,
+            modernValue: undefined,
+            description,
+        };
+    }
+
     const fallback = fallbackMap.get(tokenPath);
 
     if (fallback !== undefined) {
@@ -623,7 +724,7 @@ const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string,
             name: token.name,
             fallbackValue: fallback,
             modernValue: currentValue,
-            description: token.$description,
+            description,
         };
     }
 
@@ -631,7 +732,7 @@ const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string,
         name: token.name,
         fallbackValue: currentValue,
         modernValue: undefined,
-        description: token.$description,
+        description,
     };
 };
 
@@ -765,10 +866,7 @@ const deriveTransformConfig: Parameters<typeof StyleDictionary.registerTransform
             return typeof value === "string" ? value : JSON.stringify(value);
         }
 
-        const refPath = tokenRef.slice(1, -1).split(".");
-        const baseVar = `var(--bp-${refPath.join("-")})`;
-
-        return formatDerivedColorToCss(baseVar, derivation);
+        return formatDerivedColorToCss(tokenReferenceToVar(tokenRef), derivation);
     },
 };
 
@@ -860,7 +958,11 @@ const formatProgressiveEnhancementCss = (
 
     // Filter to only source tokens for output when requested.
     const outputTokens = onlySourceTokens ? tokens.filter(t => t.isSource) : tokens;
-    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap));
+    // Palette-equivalent notes are authored only in base (light) token files; in themes built
+    // with `include` (dark, where onlySourceTokens is set) the field bleeds in via path-merge and
+    // would be inaccurate, so annotate only when this build is not include-based.
+    const annotateEquivalent = !onlySourceTokens;
+    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap, annotateEquivalent));
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
@@ -951,6 +1053,9 @@ const makeThemeConfig = (theme: ThemeConfig): Config => ({
                 },
             ],
         },
+    },
+    log: {
+        verbosity: "verbose",
     },
 });
 
