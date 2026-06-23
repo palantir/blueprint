@@ -24,7 +24,10 @@
             "$description": "Light-mode borders are the intent lightened toward its .200 tint; dark mode uses the raw intent.",
             "neutral": {
                 "$value": "{intent.neutral}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": 0.265, "chromaOffset": -0.066 },
+                    "com.blueprint.palette-equivalent": "{palette.grey.200}"
+                }
             },
             "primary": {
                 "$value": "{intent.primary}",

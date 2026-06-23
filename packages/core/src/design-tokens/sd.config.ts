@@ -14,6 +14,7 @@
 
 import { register } from "@tokens-studio/sd-transforms";
 import { formatHex, formatHex8, oklch, parse } from "culori";
+import { globSync, readFileSync } from "node:fs";
 import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
 
@@ -117,6 +118,12 @@ type FormatOptions = {
     readonly outputReferences: boolean;
     readonly selector: string;
     readonly onlySourceTokens: boolean;
+    /**
+     * The theme's own source-file globs (the `*.bp7.dark.tokens.json` overrides for an
+     * `include`-based build). Used to determine which token paths genuinely own their
+     * `$extensions` in this theme vs. inherit them from the base (light) theme via merge.
+     */
+    readonly sourceGlobs: readonly string[];
 };
 
 /**
@@ -657,7 +664,16 @@ const makeFallbackMap = (
  */
 const pureReferenceAsVar = (token: TransformedToken): string | undefined => {
     if (hasDeriveExtension(token)) return undefined;
+    return pureReferenceFromOriginal(token);
+};
 
+/**
+ * Like {@link pureReferenceAsVar} but without the derive guard: returns the `var()` form of the
+ * token's original value when that value is a single pure token reference, regardless of any
+ * `com.blueprint.derive` extension. Used when a dark token's derive extension is known to be
+ * inherited from light (not authored for dark) and so must be ignored.
+ */
+const pureReferenceFromOriginal = (token: TransformedToken): string | undefined => {
     const original = token.original ?? {};
     const originalValue = original.$value ?? original.value;
     const tokenRef = parseTokenReference(originalValue);
@@ -697,10 +713,23 @@ const classifyToken = (
     token: TransformedToken,
     fallbackMap: ReadonlyMap<string, string>,
     annotateEquivalent: boolean,
+    ignoreInheritedExtensions: boolean,
 ): TokenClassification => {
     const tokenPath = token.path.join(".");
     const currentValue = getTokenValueAsString(token);
     const description = buildDescription(token, annotateEquivalent);
+
+    // When the dark token only inherits its `$extensions` from the base (light) theme via merge
+    // (i.e. it declares none of its own), the derive/palette-equivalent are not meant to apply: the
+    // dark token's raw `{intent.*}` reference should win. Emit that reference and skip the inherited
+    // derived treatment entirely. `pureReferenceFromOriginal` ignores the (inherited) derive guard.
+    if (ignoreInheritedExtensions) {
+        const rawReferenceVar = pureReferenceFromOriginal(token);
+        if (rawReferenceVar !== undefined) {
+            return { name: token.name, fallbackValue: rawReferenceVar, modernValue: undefined, description };
+        }
+    }
+
     const equivalentPaletteToken = parsePaletteEquivalent(token.original.$extensions);
 
     // Pure references emit as `var()` in both blocks: the target var carries its own
@@ -896,12 +925,59 @@ const parseFormatOptions = (options: unknown): FormatOptions => {
     const outputReferences = obj?.outputReferences;
     const selector = obj?.selector;
     const onlySourceTokens = obj?.onlySourceTokens;
+    const sourceGlobs = parseStringTuple(obj?.sourceGlobs);
 
     return {
         outputReferences: typeof outputReferences === "boolean" ? outputReferences : false,
         selector: typeof selector === "string" ? selector : ":root",
         onlySourceTokens: typeof onlySourceTokens === "boolean" ? onlySourceTokens : false,
+        sourceGlobs: sourceGlobs ?? [],
     };
+};
+
+/**
+ * Recursively walks a raw token-file JSON tree, collecting the dot-path of every token node that
+ * declares its own `$extensions`. A node is a token when it has a `$value`; its path is the chain
+ * of object keys, excluding DTCG meta keys (those starting with `$`). Every dark token sets its own
+ * `$value` (none are derive-only), so a dark node that pairs `$value` with `$extensions` owns its
+ * derived treatment, whereas one with `$value` alone is meant to use that value raw.
+ */
+const collectOwnedExtensionPaths = (node: unknown, path: readonly string[], out: Set<string>): void => {
+    const obj = parseObject(node);
+    if (obj === undefined) return;
+
+    if (obj.$value !== undefined && obj.$extensions !== undefined) {
+        out.add(path.join("."));
+    }
+
+    for (const [key, child] of Object.entries(obj)) {
+        if (key.startsWith("$")) continue;
+        collectOwnedExtensionPaths(child, [...path, key], out);
+    }
+};
+
+/**
+ * Reads the theme's own source files (the `*.bp7.dark.tokens.json` overrides) and returns the set
+ * of token dot-paths that declare their own `$extensions` in this theme.
+ *
+ * The intent is whole-token override: a dark token fully replaces the base (light) token it shadows,
+ * including its `$extensions`. But Style Dictionary's `include` + `source` merge is a deep path-merge,
+ * so a dark token that overrides only `$value` still inherits the light token's `$extensions`
+ * (derive/palette-equivalent), and the merged token carries no signal distinguishing inherited
+ * extensions from dark-authored ones. Consulting the source files directly is the only lossless way
+ * to recover ownership, so an inherited light treatment doesn't silently override a dark token's raw
+ * value. Paths in the returned set keep their (dark-authored) extensions; dark tokens absent from it
+ * use their raw `$value`, with any inherited light extensions ignored.
+ */
+const collectThemeExtensionOwnership = (sourceGlobs: readonly string[]): ReadonlySet<string> => {
+    const owned = new Set<string>();
+    for (const glob of sourceGlobs) {
+        for (const file of globSync(glob)) {
+            const parsed: unknown = JSON.parse(readFileSync(file, "utf8"));
+            collectOwnedExtensionPaths(parsed, [], owned);
+        }
+    }
+    return owned;
 };
 
 /**
@@ -950,6 +1026,7 @@ const formatProgressiveEnhancementCss = (
     tokens: readonly TransformedToken[],
     selector: string,
     onlySourceTokens: boolean,
+    sourceGlobs: readonly string[],
 ): string => {
     // Build the full token map and fallback map from ALL tokens (including non-source)
     // so that reference resolution and derived-color fallback computation works correctly.
@@ -962,7 +1039,18 @@ const formatProgressiveEnhancementCss = (
     // with `include` (dark, where onlySourceTokens is set) the field bleeds in via path-merge and
     // would be inaccurate, so annotate only when this build is not include-based.
     const annotateEquivalent = !onlySourceTokens;
-    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap, annotateEquivalent));
+    // In include-based (dark) builds, a token's merged `$extensions` may be inherited from the
+    // base (light) theme rather than authored for dark. Read this theme's own source files to learn
+    // which paths genuinely own their extensions; for all others, ignore the inherited derive.
+    const ownedExtensionPaths = onlySourceTokens ? collectThemeExtensionOwnership(sourceGlobs) : undefined;
+    const classifications = outputTokens.map(token =>
+        classifyToken(
+            token,
+            fallbackMap,
+            annotateEquivalent,
+            ownedExtensionPaths !== undefined && !ownedExtensionPaths.has(token.path.join(".")),
+        ),
+    );
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
@@ -1024,8 +1112,8 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     sd.registerFormat({
         name: "bp/css/variables",
         format: ({ dictionary, options }) => {
-            const { selector, onlySourceTokens } = parseFormatOptions(options);
-            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens);
+            const { selector, onlySourceTokens, sourceGlobs } = parseFormatOptions(options);
+            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens, sourceGlobs);
         },
     });
 };
@@ -1049,6 +1137,7 @@ const makeThemeConfig = (theme: ThemeConfig): Config => ({
                         outputReferences: true,
                         selector: theme.selector,
                         onlySourceTokens: theme.include !== undefined,
+                        sourceGlobs: [...theme.sources],
                     },
                 },
             ],
