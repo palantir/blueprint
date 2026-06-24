@@ -19,7 +19,7 @@ Icons.setLoaderOptions({ loader: "all" });
 await Icons.loadAll();
 
 // Import Blueprint compiled CSS
-import "@blueprintjs/core/lib/css/blueprint-layer.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/labs/lib/css/blueprint-labs.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
