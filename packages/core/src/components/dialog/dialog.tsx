@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import { useMemo, useRef } from "react";
 
-import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
+import { type IconName, IconSize } from "@blueprintjs/icons";
+import { XIcon } from "@blueprintjs/icons/next";
 
 import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, mergeRefs, type Props } from "../../common";
 import * as Errors from "../../common/errors";
@@ -175,7 +176,7 @@ export const Dialog: React.FC<DialogProps> & { displayName?: string } = props =>
                                 <Button
                                     aria-label="Close"
                                     className={Classes.DIALOG_CLOSE_BUTTON}
-                                    icon={<SmallCross size={IconSize.STANDARD} />}
+                                    icon={<XIcon />}
                                     onClick={onClose}
                                     variant="minimal"
                                 />

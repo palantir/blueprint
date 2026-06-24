@@ -18,7 +18,7 @@ import classNames from "classnames";
 import { PureComponent } from "react";
 
 import { DISPLAYNAME_PREFIX, InputGroup, type InputGroupProps, Overlay2, type OverlayProps } from "@blueprintjs/core";
-import { Search } from "@blueprintjs/icons";
+import { MagnifyingGlassIcon } from "@blueprintjs/icons/next";
 
 import { Classes, type ListItemsProps } from "../../common";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
@@ -99,7 +99,7 @@ export class Omnibar<T> extends PureComponent<OmnibarProps<T>> {
                 <div className={classNames(Classes.OMNIBAR, listProps.className)} {...handlers}>
                     <InputGroup
                         autoFocus={true}
-                        leftIcon={<Search />}
+                        leftIcon={<MagnifyingGlassIcon />}
                         placeholder="Search..."
                         size="large"
                         {...inputProps}

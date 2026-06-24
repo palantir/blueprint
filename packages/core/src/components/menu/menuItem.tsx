@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { createElement, forwardRef } from "react";
 
-import { CaretRight, SmallTick } from "@blueprintjs/icons";
+import { CaretRightIcon, CheckSmallIcon } from "@blueprintjs/icons/next";
 
 import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
@@ -264,7 +264,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             ...(disabled ? DISABLED_PROPS : {}),
             className: anchorClasses,
         },
-        isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
+        isSelected ? <CheckSmallIcon className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
             // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
             // so that we always render this class and hide it from a screen reader
@@ -276,7 +276,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             {text}
         </Text>,
         maybeLabel,
-        hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" /> : undefined,
+        hasSubmenu ? <CaretRightIcon className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" /> : undefined,
     );
 
     const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });

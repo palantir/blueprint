@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import { createElement, forwardRef, useMemo } from "react";
 
-import { type IconName, IconNames } from "@blueprintjs/icons";
+import { type IconName } from "@blueprintjs/icons";
+import { SquareIcon } from "@blueprintjs/icons/next";
 
 import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
@@ -151,7 +152,7 @@ export const EntityTitle: React.FC<EntityTitleProps> = forwardRef<HTMLDivElement
                     <Icon
                         aria-hidden={true}
                         className={classNames(Classes.TEXT_MUTED, { [Classes.SKELETON]: loading })}
-                        icon={loading ? IconNames.SQUARE : icon}
+                        icon={loading ? <SquareIcon /> : icon}
                         tabIndex={-1}
                     />
                 </div>
