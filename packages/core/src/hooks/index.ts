@@ -20,3 +20,4 @@ export { useOverlayStack } from "./overlays/useOverlayStack";
 export { useAsyncControllableValue } from "./useAsyncControllableValue";
 export { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 export { usePrevious } from "./usePrevious";
+export { useSystemTheme } from "./useSystemTheme";
