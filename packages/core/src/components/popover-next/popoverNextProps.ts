@@ -27,6 +27,7 @@ export type {
     PopoverNextPositioningStrategy,
     PopoverNextRootBoundary,
 } from "./middlewareTypes";
+export { POPOVER_NEXT_PLACEMENTS } from "./middlewareTypes";
 
 /**
  * Options to configure how the popover position is automatically updated.
