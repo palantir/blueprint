@@ -230,9 +230,9 @@ export const FocusedExample: Story = {
         await userEvent.click(input);
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex gap={3}>
             <TagInput {...args} values={INITIAL_VALUES} inputProps={{ placeholder: "Click to focus..." }} />
-        </div>
+        </Flex>
     ),
 };
 

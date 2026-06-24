@@ -166,9 +166,9 @@ export const FocusedExample: Story = {
         }
     },
     render: args => (
-        <div style={{ display: "flex", flexDirection: "column", gap: 12, width: "100%" }}>
+        <Flex gap={3}>
             <FileInput {...args} text="Choose file..." />
-        </div>
+        </Flex>
     ),
 };
 
