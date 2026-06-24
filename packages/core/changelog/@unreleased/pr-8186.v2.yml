@@ -1,0 +1,6 @@
+type: feature
+improvement:
+  description: Add `useSystemTheme` hook for automatic system color scheme detection
+  links:
+    - href: https://github.com/palantir/blueprint/pull/8186
+      text: 8186
