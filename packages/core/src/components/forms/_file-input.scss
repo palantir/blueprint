@@ -5,9 +5,9 @@
 @import "../button/common";
 @import "../../common/mixins";
 
-$file-input-button-width: $pt-spacing * 17.5 !default;
-$file-input-button-width-large: $pt-spacing * 21.25 !default;
-$file-input-button-width-small: $pt-spacing * 13.75 !default;
+$file-input-button-width: calc(var(--bp-surface-spacing) * 17.5) !default;
+$file-input-button-width-large: calc(var(--bp-surface-spacing) * 21.25) !default;
+$file-input-button-width-small: calc(var(--bp-surface-spacing) * 13.75) !default;
 $file-input-button-padding: ($pt-input-height - $pt-button-height-small) * 0.5 !default;
 $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) * 0.5 !default;
 $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-smaller) * 0.5 !default;
@@ -100,7 +100,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
   @include overflow-ellipsis;
   color: #{oklch(from var(--bp-typography-color-muted) l c h / 0.6)};
   left: 0;
-  padding-right: calc(var(--bp-surface-spacing) * 19.5);
+  padding-right: calc($file-input-button-width + calc(var(--bp-surface-spacing) * 2));
   position: absolute;
   right: 0;
   top: 0;
@@ -118,7 +118,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     right: 0;
     text-align: center;
     top: 0;
-    width: calc(var(--bp-surface-spacing) * 17.5);
+    width: $file-input-button-width;
   }
 
   &:hover::after {
@@ -133,25 +133,25 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   .#{$ns}-large & {
     @include pt-input-large;
-    padding-right: calc(var(--bp-surface-spacing) * 23.25);
+    padding-right: calc($file-input-button-width-large + calc(var(--bp-surface-spacing) * 2));
 
     &::after {
       @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
       line-height: calc(var(--bp-surface-spacing) * 7.5);
       margin: calc(var(--bp-surface-spacing) * 1.25);
-      width: calc(var(--bp-surface-spacing) * 21.25);
+      width: $file-input-button-width-large;
     }
   }
 
   .#{$ns}-small & {
     @include pt-input-small;
-    padding-right: calc(var(--bp-surface-spacing) * 15.75);
+    padding-right: calc($file-input-button-width-small + calc(var(--bp-surface-spacing) * 2));
 
     &::after {
       @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
       line-height: calc(var(--bp-surface-spacing) * 5);
       margin: calc(var(--bp-surface-spacing) * 0.5);
-      width: calc(var(--bp-surface-spacing) * 13.75);
+      width: $file-input-button-width-small;
     }
   }
 
