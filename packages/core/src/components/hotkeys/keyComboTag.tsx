@@ -21,14 +21,14 @@ import {
     ArrowDownIcon,
     ArrowLeftIcon,
     ArrowRightIcon,
+    ArrowTurnBottomLeftIcon,
     ArrowUpIcon,
     KeyCommandIcon,
     KeyControlIcon,
     KeyDeleteIcon,
-    KeyEnterIcon,
     KeyOptionIcon,
     KeyShiftIcon,
-} from "@blueprintjs/icons";
+} from "@blueprintjs/icons/next";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { Icon } from "../icon/icon";
@@ -44,7 +44,7 @@ const KEY_ICONS: Record<string, { icon: React.JSX.Element; iconTitle: string; is
     cmd: { icon: <KeyCommandIcon />, iconTitle: "Command key", isMacOnly: true },
     ctrl: { icon: <KeyControlIcon />, iconTitle: "Control key", isMacOnly: true },
     delete: { icon: <KeyDeleteIcon />, iconTitle: "Delete key" },
-    enter: { icon: <KeyEnterIcon />, iconTitle: "Enter key" },
+    enter: { icon: <ArrowTurnBottomLeftIcon />, iconTitle: "Enter key" },
     meta: { icon: <KeyCommandIcon />, iconTitle: "Command key", isMacOnly: true },
     shift: { icon: <KeyShiftIcon />, iconTitle: "Shift key", isMacOnly: true },
 };

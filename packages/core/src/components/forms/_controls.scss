@@ -248,7 +248,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
         background-image: svg-icon(
-          "16px/#{$icon}.svg",
+          "next/outlined/#{$icon}.svg",
           (
             path: (
               fill: $fill-color,
@@ -266,11 +266,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
-      @include indicator-inline-icon("small-tick");
+      @include indicator-inline-icon("check-small");
     }
 
     input:indeterminate ~ .#{$ns}-control-indicator {
-      @include indicator-inline-icon("small-minus");
+      @include indicator-inline-icon("minus-small");
     }
 
     input:disabled ~ .#{$ns}-control-indicator::before {
@@ -279,11 +279,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-tick", $black);
+        @include indicator-inline-icon("check-small", $black);
       }
 
       input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-minus", $black);
+        @include indicator-inline-icon("minus-small", $black);
       }
 
       input:disabled ~ .#{$ns}-control-indicator {
