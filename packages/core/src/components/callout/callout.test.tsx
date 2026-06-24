@@ -16,7 +16,6 @@
 
 import { render, screen } from "@testing-library/react";
 
-import { IconNames } from "@blueprintjs/icons";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Intent } from "../../common";
@@ -53,7 +52,7 @@ describe("<Callout>", () => {
     it(`should render the associated default icon when intent="primary"`, () => {
         const { container } = render(<Callout intent={Intent.PRIMARY} />);
 
-        expect(container.querySelector(`[data-icon="${IconNames.INFO_SIGN}"]`)).to.exist;
+        expect(container.querySelector(`[data-icon="circle-info"]`)).to.exist;
     });
 
     it("should remove intent icon when icon=null", () => {
