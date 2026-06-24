@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from "react";
  */
 export function useSystemTheme(): "dark" | "light" {
     const getTheme = useCallback(
-        () => window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light",
+        () => (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"),
         [],
     );
 
