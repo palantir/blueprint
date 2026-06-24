@@ -144,7 +144,7 @@ $control-group-stack: (
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid buttonborder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 
@@ -171,7 +171,7 @@ $control-group-stack: (
 @mixin pt-input-large() {
   font-size: var(--bp-typography-size-body-large);
   height: calc(var(--bp-surface-spacing) * 10);
-  line-height: calc(var(--bp-surface-spacing) * 10);
+  line-height: calc(var(--bp-typography-line-height-default) * 10);
 
   &[type="search"],
   &.#{$ns}-round {
@@ -214,7 +214,7 @@ $control-group-stack: (
     0 0 0 0 #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0)"},
     inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
     inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
-  color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h)"};
+  color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.239) calc(c - 0.011) h)"};
 
   &:focus {
     box-shadow:
@@ -242,22 +242,22 @@ $control-group-stack: (
   }
 }
 
-@mixin pt-input-intent($color-token) {
+@mixin pt-input-intent($color) {
   box-shadow:
-    inset 0 0 0 0 #{oklch(from $color-token l c h / 0)},
-    0 0 0 0 #{oklch(from $color-token l c h / 0)},
-    inset 0 0 0 1px $color-token,
+    inset 0 0 0 0 #{oklch(from $color l c h / 0)},
+    0 0 0 0 #{oklch(from $color l c h / 0)},
+    inset 0 0 0 1px $color,
     inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.3)};
 
   &:focus {
     box-shadow:
-      inset 0 0 0 1px #{oklch(from $color-token l c h / 0.752)},
-      0 0 0 calc(var(--bp-surface-spacing) * 0.5) #{oklch(from $color-token l c h / 0.752)},
+      inset 0 0 0 1px #{oklch(from $color l c h / 0.752)},
+      0 0 0 calc(var(--bp-surface-spacing) * 0.5) #{oklch(from $color l c h / 0.752)},
       inset 0 1px 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)};
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color-token;
+    box-shadow: inset 0 0 0 1px $color;
   }
 
   &:disabled,
@@ -266,24 +266,24 @@ $control-group-stack: (
   }
 }
 
-@mixin pt-dark-input-intent($color-token) {
+@mixin pt-dark-input-intent($color) {
   box-shadow:
-    inset 0 0 0 0 #{oklch(from $color-token l c h / 0)},
-    0 0 0 0 #{oklch(from $color-token l c h / 0)},
-    inset 0 0 0 1px $color-token,
+    inset 0 0 0 0 #{oklch(from $color l c h / 0)},
+    0 0 0 0 #{oklch(from $color l c h / 0)},
+    inset 0 0 0 1px $color,
     inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
     inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
 
   &:focus {
     box-shadow:
-      inset 0 0 0 1px #{oklch(from $color-token l c h / 0.752)},
-      0 0 0 calc(var(--bp-surface-spacing) * 0.5) #{oklch(from $color-token l c h / 0.752)},
+      inset 0 0 0 1px #{oklch(from $color l c h / 0.752)},
+      0 0 0 calc(var(--bp-surface-spacing) * 0.5) #{oklch(from $color l c h / 0.752)},
       inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
       inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color-token;
+    box-shadow: inset 0 0 0 1px $color;
   }
 
   &:disabled,
