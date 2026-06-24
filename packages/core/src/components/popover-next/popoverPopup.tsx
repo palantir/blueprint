@@ -41,6 +41,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         onClosing,
         onOpened,
         onOpening,
+        popoverId,
         popoverClassName,
         popoverRef,
         portalClassName,
@@ -140,7 +141,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
                 ref={mergeRefs(floatingData.refs.setFloating, transitionContainerElement)}
                 {...popoverHandlers}
             >
-                <div className={popoverClasses} ref={popoverRef} style={{ transformOrigin }}>
+                <div className={popoverClasses} id={popoverId} ref={popoverRef} style={{ transformOrigin }}>
                     {arrow && (
                         <PopoverArrow
                             arrowProps={{ ref: arrowRef, style: arrowStyle }}
