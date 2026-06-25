@@ -28,6 +28,7 @@ $menu-item-padding-small: $pt-spacing !default;
 $menu-item-padding-vertical-small: $pt-spacing * 0.5 !default;
 $menu-item-selected-icon-spacing: $pt-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
+$menu-item-hover-indicator-font-size: 1.2em !default;
 
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray3 !default;
@@ -86,12 +87,15 @@ $dark-menu-item-intent-colors: (
   align-items: flex-start;
   border-radius: $menu-item-border-radius;
   color: inherit;
+  font-size: $pt-font-size;
   line-height: $menu-item-line-height;
   padding: $menu-item-padding-vertical $menu-item-padding;
+  position: relative;
   text-decoration: none;
   user-select: none;
 
   > .#{$ns}-fill {
+    min-width: 0;
     word-break: break-word;
   }
 
@@ -104,6 +108,23 @@ $dark-menu-item-intent-colors: (
 
   .#{$ns}-menu-item-label {
     color: $pt-text-color-muted;
+  }
+
+  .bp-menu-item-hover-indicator {
+    align-items: center;
+    color: $pt-text-color-muted;
+    display: none;
+    font-size: $menu-item-hover-indicator-font-size;
+    justify-content: center;
+    line-height: 1;
+    position: absolute;
+    right: $menu-item-padding;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &:hover .bp-menu-item-hover-indicator {
+    display: flex;
   }
 
   &::before,
@@ -227,6 +248,24 @@ $dark-menu-item-intent-colors: (
   color: inherit;
   cursor: pointer;
   text-decoration: none;
+
+  // Insert an accessible selection indicator for items with text labels
+  &:not(:has(.#{$ns}-submenu-icon)) {
+    .#{$ns}-menu-item-label:not(.bp-menu-item-hover-indicator)::before {
+      content: "• ";
+      font-size: $menu-item-hover-indicator-font-size;
+      line-height: 0;
+    }
+
+    // Hide bullet if label contains form controls
+    .#{$ns}-menu-item-label:has(input),
+    .#{$ns}-menu-item-label:has(textarea),
+    .#{$ns}-menu-item-label:has(select) {
+      &::before {
+        display: none;
+      }
+    }
+  }
 }
 
 @mixin dark-menu-item-hover() {
@@ -236,6 +275,13 @@ $dark-menu-item-intent-colors: (
   .#{$ns}-menu-item-icon,
   .#{$ns}-submenu-icon {
     color: $pt-dark-icon-color;
+  }
+
+  // Show hover indicator for non-submenu items
+  &:not(:has(.#{$ns}-submenu-icon)) {
+    .bp-menu-item-hover-indicator {
+      display: flex;
+    }
   }
 }
 

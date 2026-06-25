@@ -250,6 +250,14 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             </span>
         );
 
+    // Render a hover indicator for items without submenu or label
+    const shouldRenderHoverIndicator = !hasSubmenu && props.label == null && labelElement == null;
+    const maybeHoverIndicator = shouldRenderHoverIndicator ? (
+        <span className={classNames("bp-menu-item-hover-indicator", Classes.MENU_ITEM_LABEL)} title="Selected">
+            •
+        </span>
+    ) : null;
+
     const htmlPropsOnly = removeNonHTMLProps(htmlProps);
 
     const target = createElement(
@@ -276,6 +284,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             {text}
         </Text>,
         maybeLabel,
+        maybeHoverIndicator,
         hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" /> : undefined,
     );
 
