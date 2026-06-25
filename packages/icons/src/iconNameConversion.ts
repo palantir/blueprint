@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import { LegacyToNextIconNameMap } from "./generated/iconNameMap";
+import { LegacyToIconNextNameMap } from "./generated/iconNameMap";
 import type { IconName } from "./iconNames";
-import type { NextIconName } from "./next/generated/manifest";
+import type { IconNextName } from "./next/generated/manifest";
 
-export { LegacyToNextIconNameMap };
+export { LegacyToIconNextNameMap };
 
 /**
  * Returns the next-generation (`@blueprintjs/icons/next`) icon name corresponding to a legacy icon name.
  */
-export function getNextIconName(name: IconName): NextIconName {
-    return LegacyToNextIconNameMap[name];
+export function getIconNextName(name: IconName): IconNextName {
+    return LegacyToIconNextNameMap[name];
 }

@@ -4,21 +4,21 @@
 
 import { describe, expect, it } from "vitest";
 
-import { getNextIconName, LegacyToNextIconNameMap } from "./iconNameConversion";
+import { getIconNextName, LegacyToIconNextNameMap } from "./iconNameConversion";
 
-describe("getNextIconName", () => {
+describe("getIconNextName", () => {
     it("maps a legacy icon name to its next-generation equivalent", () => {
-        expect(getNextIconName("add")).toBe("circle-plus");
+        expect(getIconNextName("add")).toBe("circle-plus");
     });
 
     it("maps icons whose name is unchanged across sets", () => {
-        expect(getNextIconName("crystal-ball")).toBe("crystal-ball");
+        expect(getIconNextName("crystal-ball")).toBe("crystal-ball");
     });
 });
 
-describe("LegacyToNextIconNameMap", () => {
+describe("LegacyToIconNextNameMap", () => {
     it("is non-empty and exposes the raw mapping", () => {
-        expect(Object.keys(LegacyToNextIconNameMap).length).toBeGreaterThan(0);
-        expect(LegacyToNextIconNameMap.add).toBe("circle-plus");
+        expect(Object.keys(LegacyToIconNextNameMap).length).toBeGreaterThan(0);
+        expect(LegacyToIconNextNameMap.add).toBe("circle-plus");
     });
 });

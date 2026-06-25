@@ -212,7 +212,7 @@ writeFileSync(
     [
         `export * from "../../index";`,
         `export * from "./components";`,
-        `export { nextIconManifest, type NextIconName, type NextIconManifestEntry } from "./manifest";`,
+        `export { nextIconManifest, type BlueprintIconsNext, type IconNextName, type NextIconManifestEntry } from "./manifest";`,
         `export { SvgIconContainerNext, type SvgIconContainerNextComponent, type SvgIconContainerNextProps } from "../svgIconContainerNext";`,
         "",
     ].join("\n"),
@@ -222,6 +222,9 @@ writeFileSync(
 const iconsNextManifestFromDisk = readIconsManifestFile(iconsNextManifestPath);
 const iconsNextManifest = validateIconsNextManifest(iconsNextManifestFromDisk, outlinedIconNameSet, filledIconNameSet);
 
+// Derive the literal-union members from the manifest itself so the union can never drift from `nextIconManifest`.
+const iconNextNameUnion = iconsNextManifest.map(entry => `    | "${entry.name}"`).join("\n");
+
 writeFileSync(
     join(generatedNextDir, "manifest.ts"),
     [
@@ -230,13 +233,16 @@ writeFileSync(
         ' * Licensed under the Apache License, Version 2.0 (the "License");',
         " */",
         "",
+        "export type BlueprintIconsNext =",
+        `${iconNextNameUnion};`,
+        "",
         "export interface NextIconManifestEntry {",
-        "    name: string;",
+        "    name: BlueprintIconsNext;",
         "    tags: readonly string[];",
         "    hasFilled: boolean;",
         "}",
         "",
-        'export type NextIconName = NextIconManifestEntry["name"];',
+        "export type IconNextName = BlueprintIconsNext;",
         "",
         `export const nextIconManifest = ${JSON.stringify(iconsNextManifest, null, 4)} as const satisfies readonly NextIconManifestEntry[];`,
         "",
