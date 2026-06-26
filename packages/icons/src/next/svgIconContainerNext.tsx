@@ -23,6 +23,13 @@ import type { SVGIconProps } from "../svgIconProps";
 export type SvgIconContainerNextProps<T extends Element> = Omit<SVGIconProps<T>, "children"> & {
     children: React.JSX.Element | React.JSX.Element[];
     iconName: string;
+
+    /**
+     * `viewBox` for the rendered `<svg>`, i.e. the coordinate system the icon paths are drawn in.
+     *
+     * @default "0 0 16 16"
+     */
+    viewBox?: string;
 };
 
 export interface SvgIconContainerNextComponent extends React.FC<SvgIconContainerNextProps<Element>> {
@@ -41,6 +48,7 @@ export const SvgIconContainerNext: SvgIconContainerNextComponent = forwardRef(
             svgProps,
             tagName = "span",
             title,
+            viewBox = "0 0 16 16",
             ...htmlProps
         } = props;
 
@@ -49,7 +57,7 @@ export const SvgIconContainerNext: SvgIconContainerNextComponent = forwardRef(
             fill: color,
             height: size,
             role: "img",
-            viewBox: "0 0 16 16",
+            viewBox,
             width: size,
             ...svgProps,
         };
