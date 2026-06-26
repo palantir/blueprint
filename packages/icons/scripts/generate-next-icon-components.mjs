@@ -16,11 +16,11 @@
 // @ts-check
 
 import { pascalCase } from "change-case";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 import { getIconNamesInDirectory, iconResourcesDir, readIconsManifestFile, repoRelative, repoRoot } from "./common.mjs";
-import { optimizeSvg } from "./iconSvgoConfig.mjs";
+import { extractPathsFromSvgFile } from "./extractPathsFromResourceSvg.mjs";
 
 const outlinedResourcesDir = join(iconResourcesDir, "next/outlined");
 const filledResourcesDir = join(iconResourcesDir, "next/filled");
@@ -98,24 +98,6 @@ function validateIconsNextManifest(manifest, outlinedIconNameSet, filledIconName
 }
 
 /**
- * @param {"outlined" | "filled"} variant
- * @param {string} iconName
- * @returns {string[]}
- */
-function extractPathsFromNextResourceSvg(variant, iconName) {
-    const path = join(iconResourcesDir, "next", variant, `${iconName}.svg`);
-    const source = readFileSync(path, "utf8");
-    const optimized = optimizeSvg(source, path);
-    const paths = [];
-    const re = /<path[^>]*\sd="([^"]+)"/g;
-    let m;
-    while ((m = re.exec(optimized)) !== null) {
-        paths.push(m[1]);
-    }
-    return paths;
-}
-
-/**
  * @param {string} iconName
  * @param {"outlined" | "filled"} variant
  * @param {string[]} paths
@@ -184,7 +166,7 @@ console.info(
 const componentIndexLines = [];
 
 for (const iconName of outlinedIconNames) {
-    const outlinedPaths = extractPathsFromNextResourceSvg("outlined", iconName);
+    const outlinedPaths = extractPathsFromSvgFile(join(outlinedResourcesDir, `${iconName}.svg`));
 
     // Generate component module (outlined)
     writeFileSync(
@@ -194,7 +176,7 @@ for (const iconName of outlinedIconNames) {
     componentIndexLines.push(`export { ${pascalCase(iconName)}Icon } from "./${iconName}";`);
 
     if (filledIconNameSet.has(iconName)) {
-        const filledPaths = extractPathsFromNextResourceSvg("filled", iconName);
+        const filledPaths = extractPathsFromSvgFile(join(filledResourcesDir, `${iconName}.svg`));
 
         // Generate component module (filled)
         writeFileSync(
