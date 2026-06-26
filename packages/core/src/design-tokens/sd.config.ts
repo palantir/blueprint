@@ -165,6 +165,23 @@ const THEMES: readonly ThemeConfig[] = [
         destination: "tokens-dark.css",
     },
     {
+        name: "light-transition",
+        include: ["src/design-tokens/tokens/transition/palette.tokens.json"],
+        sources: ["src/design-tokens/tokens/transition/*.tokens.next.json"],
+        selector: ":root",
+        destination: "tokens-transition.css",
+    },
+    {
+        name: "dark-transition",
+        include: [
+            "src/design-tokens/tokens/transition/palette.tokens.json",
+            "src/design-tokens/tokens/transition/*.tokens.next.json",
+        ],
+        sources: ["src/design-tokens/tokens/transition/*.dark.tokens.json"],
+        selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
+        destination: "tokens-transition-dark.css",
+    },
+    {
         name: "light-next",
         sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
         selector: ":root",
@@ -768,11 +785,24 @@ const classifyToken = (
 // -- Transform Definitions ----------------------------------------------------
 
 /**
+ * Erases a `TransformDefinition<TValue>`'s value type to `unknown` so definitions for different
+ * value types can live in one array. Sound because `parse` and `format` are only ever invoked as a
+ * pair on the same definition (in {@link makeTransformConfig}): `parse`'s output feeds straight into
+ * `format`, so the intermediate `TValue` never escapes and the per-definition correlation is kept.
+ */
+const asUntypedTransform = <TValue>(def: TransformDefinition<TValue>): TransformDefinition<unknown> => ({
+    name: def.name,
+    tokenType: def.tokenType,
+    parse: def.parse,
+    format: value => def.format(value as TValue),
+});
+
+/**
  * Converts a {@link TransformDefinition} into a Style Dictionary transform registration object.
  * The resulting transform is transitive and filters tokens by `$type` or `type`.
  */
-const makeTransformConfig = <TValue>(
-    def: TransformDefinition<TValue>,
+const makeTransformConfig = (
+    def: TransformDefinition<unknown>,
 ): Parameters<typeof StyleDictionary.registerTransform>[0] => ({
     name: def.name,
     type: "value",
@@ -907,7 +937,7 @@ const nameTransformConfig: Parameters<typeof StyleDictionary.registerTransform>[
 };
 
 /** All standard DTCG type transforms registered via {@link makeTransformConfig}. */
-const standardTransforms = [
+const standardTransforms: ReadonlyArray<TransformDefinition<unknown>> = [
     colorTransform,
     dimensionTransform,
     durationTransform,
@@ -915,7 +945,7 @@ const standardTransforms = [
     fontWeightTransform,
     numberTransform,
     cubicBezierTransform,
-] as const;
+].map(def => asUntypedTransform(def));
 
 // -- Format Definition --------------------------------------------------------
 

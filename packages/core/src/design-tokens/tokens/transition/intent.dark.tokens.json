@@ -1,0 +1,20 @@
+{
+    "intent": {
+        "$type": "color",
+        "neutral": {
+            "$value": "{palette.gray.1}"
+        },
+        "primary": {
+            "$value": "{palette.blue.3}"
+        },
+        "success": {
+            "$value": "{palette.green.3}"
+        },
+        "warning": {
+            "$value": "{palette.orange.3}"
+        },
+        "danger": {
+            "$value": "{palette.red.3}"
+        }
+    }
+}
