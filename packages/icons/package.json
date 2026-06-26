@@ -9,14 +9,17 @@
     "style": "lib/css/blueprint-icons.css",
     "files": [
         "lib",
+        "next",
         "src",
-        "icons.json"
+        "icons.json",
+        "icons-next.json",
+        "icons-name-map.json"
     ],
     "sideEffects": [
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf coverage lib src/generated",
+        "clean": "rm -rf coverage lib src/generated src/next/generated",
         "compile": "npm-run-all -s \"icons:verify\" \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",
         "compile:cjs": "tsc -p ./src/tsconfig.build.json -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
@@ -31,7 +34,7 @@
         "icons:add": "node scripts/add-icons.mjs",
         "icons:format": "node scripts/format-icons.mjs",
         "icons:verify": "node scripts/verify-icons.mjs",
-        "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
+        "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs && node scripts/generate-next-icon-components.mjs && node scripts/generate-icon-name-map.mjs",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
