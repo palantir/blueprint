@@ -30,6 +30,7 @@ import {
 } from "./common.mjs";
 import { validateIconNameMap } from "./iconNameMapValidation.mjs";
 import { canonicalIconName, ICON_NAME_PATTERN } from "./iconNaming.mjs";
+import { validateIconsNextManifest } from "./iconsNextManifestValidation.mjs";
 import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 const ICONS_JSON_PATH = resolve(import.meta.dirname, "../icons.json");
@@ -103,67 +104,10 @@ export function verifyIconsNext() {
         return [`${repoRelative(ICONS_NEXT_JSON_PATH)} is missing (required by generate-next-icon-components.mjs)`];
     }
 
-    /** @type {string[]} */
-    const errors = [];
-    const outlinedDir = join(iconResourcesDir, "next/outlined");
-    const filledDir = join(iconResourcesDir, "next/filled");
-    const outlinedIconNames = getIconNamesInDirectory(outlinedDir);
-    const filledIconNames = getIconNamesInDirectory(filledDir);
+    const outlinedIconNames = getIconNamesInDirectory(join(iconResourcesDir, "next/outlined"));
+    const filledIconNames = getIconNamesInDirectory(join(iconResourcesDir, "next/filled"));
     const manifest = readIconsManifestFile(ICONS_NEXT_JSON_PATH);
-    const manifestNames = new Set();
-
-    for (const [index, entry] of manifest.entries()) {
-        const label = `icons-next.json[${index}]`;
-        if (entry == null || typeof entry !== "object") {
-            errors.push(`${label} must be an object`);
-            continue;
-        }
-        if (typeof entry.name !== "string") {
-            errors.push(`${label} missing string "name"`);
-        }
-        if (typeof entry.hasFilled !== "boolean") {
-            errors.push(`${label} missing boolean "hasFilled"`);
-        }
-        if (!Array.isArray(entry.tags) || !entry.tags.every(tag => typeof tag === "string")) {
-            errors.push(`${label} "tags" must be an array of strings`);
-        }
-        if (typeof entry.name === "string") {
-            if (manifestNames.has(entry.name)) {
-                errors.push(`icons-next.json has duplicate name "${entry.name}"`);
-            }
-            manifestNames.add(entry.name);
-
-            const hasFilledOnDisk = filledIconNames.has(entry.name);
-            if (entry.hasFilled !== hasFilledOnDisk) {
-                errors.push(
-                    `icons-next.json icon "${entry.name}" has hasFilled=${entry.hasFilled} but filled SVG ${
-                        hasFilledOnDisk ? "exists" : "is missing"
-                    }`,
-                );
-            }
-        }
-    }
-
-    for (const iconName of outlinedIconNames) {
-        if (!manifestNames.has(iconName)) {
-            errors.push(`resources/icons/next/outlined/${iconName}.svg has no entry in icons-next.json`);
-        }
-    }
-
-    for (const name of manifestNames) {
-        if (!outlinedIconNames.has(name)) {
-            errors.push(`icons-next.json icon "${name}" is missing resources/icons/next/outlined/${name}.svg`);
-        }
-    }
-
-    const missingOutlined = [...filledIconNames].filter(name => !outlinedIconNames.has(name));
-    if (missingOutlined.length > 0) {
-        errors.push(
-            `Filled next icon SVGs must have outlined counterparts. Missing outlined files: ${missingOutlined.join(", ")}`,
-        );
-    }
-
-    return errors;
+    return validateIconsNextManifest(manifest, outlinedIconNames, filledIconNames);
 }
 
 /**

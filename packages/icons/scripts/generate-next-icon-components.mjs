@@ -21,6 +21,7 @@ import { join, resolve } from "node:path";
 
 import { getIconNamesInDirectory, iconResourcesDir, readIconsManifestFile, repoRelative, repoRoot } from "./common.mjs";
 import { extractPathsFromSvgFile } from "./extractPathsFromResourceSvg.mjs";
+import { validateIconsNextManifest } from "./iconsNextManifestValidation.mjs";
 
 const outlinedResourcesDir = join(iconResourcesDir, "next/outlined");
 const filledResourcesDir = join(iconResourcesDir, "next/filled");
@@ -34,68 +35,6 @@ const iconsNextManifestPath = resolve(import.meta.dirname, "../icons-next.json")
  * @property {boolean} hasFilled
  * @property {string[]} tags
  */
-
-/**
- * @param {IconsNextManifestEntry[]} manifest
- * @param {Set<string>} outlinedIconNameSet
- * @param {Set<string>} filledIconNameSet
- * @returns {IconsNextManifestEntry[]}
- */
-function validateIconsNextManifest(manifest, outlinedIconNameSet, filledIconNameSet) {
-    const manifestNames = new Set();
-    /** @type {string[]} */
-    const errors = [];
-
-    for (const [index, entry] of manifest.entries()) {
-        const label = `icons-next.json[${index}]`;
-        if (entry == null || typeof entry !== "object") {
-            errors.push(`${label} must be an object`);
-            continue;
-        }
-        if (typeof entry.name !== "string") {
-            errors.push(`${label} missing string "name"`);
-        }
-        if (typeof entry.hasFilled !== "boolean") {
-            errors.push(`${label} missing boolean "hasFilled"`);
-        }
-        if (!Array.isArray(entry.tags) || !entry.tags.every(tag => typeof tag === "string")) {
-            errors.push(`${label} "tags" must be an array of strings`);
-        }
-        if (typeof entry.name === "string") {
-            if (manifestNames.has(entry.name)) {
-                errors.push(`icons-next.json has duplicate name "${entry.name}"`);
-            }
-            manifestNames.add(entry.name);
-
-            const hasFilledOnDisk = filledIconNameSet.has(entry.name);
-            if (entry.hasFilled !== hasFilledOnDisk) {
-                errors.push(
-                    `icons-next.json icon "${entry.name}" has hasFilled=${entry.hasFilled} but filled SVG ${
-                        hasFilledOnDisk ? "exists" : "is missing"
-                    }`,
-                );
-            }
-        }
-    }
-
-    for (const iconName of outlinedIconNameSet) {
-        if (!manifestNames.has(iconName)) {
-            errors.push(`resources/icons/next/outlined/${iconName}.svg has no entry in icons-next.json`);
-        }
-    }
-
-    for (const name of manifestNames) {
-        if (!outlinedIconNameSet.has(name)) {
-            errors.push(`icons-next.json icon "${name}" is missing resources/icons/next/outlined/${name}.svg`);
-        }
-    }
-
-    if (errors.length > 0) {
-        throw new Error(`icons-next.json validation failed:\n${errors.map(e => `  - ${e}`).join("\n")}`);
-    }
-
-    return manifest;
-}
 
 /**
  * @param {string} iconName
@@ -152,13 +91,6 @@ const filledIconNames = [...getIconNamesInDirectory(filledResourcesDir)].sort();
 const outlinedIconNameSet = new Set(outlinedIconNames);
 const filledIconNameSet = new Set(filledIconNames);
 
-const missingOutlined = filledIconNames.filter(name => !outlinedIconNameSet.has(name));
-if (missingOutlined.length > 0) {
-    throw new Error(
-        `Filled icon SVGs must have outlined counterparts. Missing outlined files: ${missingOutlined.join(", ")}`,
-    );
-}
-
 console.info(
     `Generating next icon components (${outlinedIconNames.length} outlined, ${filledIconNames.length} filled)...`,
 );
@@ -201,8 +133,11 @@ writeFileSync(
 );
 
 /** @type {IconsNextManifestEntry[]} */
-const iconsNextManifestFromDisk = readIconsManifestFile(iconsNextManifestPath);
-const iconsNextManifest = validateIconsNextManifest(iconsNextManifestFromDisk, outlinedIconNameSet, filledIconNameSet);
+const iconsNextManifest = readIconsManifestFile(iconsNextManifestPath);
+const manifestErrors = validateIconsNextManifest(iconsNextManifest, outlinedIconNameSet, filledIconNameSet);
+if (manifestErrors.length > 0) {
+    throw new Error(`icons-next.json validation failed:\n${manifestErrors.map(e => `  - ${e}`).join("\n")}`);
+}
 
 // Derive the literal-union members from the manifest itself so the union can never drift from `nextIconManifest`.
 const iconNextNameUnion = iconsNextManifest.map(entry => `    | "${entry.name}"`).join("\n");
