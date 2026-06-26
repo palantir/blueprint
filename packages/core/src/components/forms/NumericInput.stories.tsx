@@ -215,6 +215,22 @@ export const FillExample: Story = {
 };
 
 /**
+ * A numeric input in the focused state, showing the focus ring. Use controls to change the intent.
+ */
+export const FocusedExample: Story = {
+    name: "Focused",
+    play: async ({ canvas, userEvent }) => {
+        const input = canvas.getByPlaceholderText("Click to focus...");
+        await userEvent.click(input);
+    },
+    render: args => (
+        <Flex gap={3}>
+            <NumericInput {...args} placeholder="Click to focus..." />
+        </Flex>
+    ),
+};
+
+/**
  * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {

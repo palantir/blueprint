@@ -8,36 +8,52 @@
 .#{$ns}-form-group {
   display: flex;
   flex-direction: column;
-  margin: 0 0 ($pt-spacing * 4);
+  margin: 0 0 calc(var(--bp-surface-spacing) * 4);
 
   label.#{$ns}-label {
-    margin-bottom: $pt-spacing;
+    margin-bottom: var(--bp-surface-spacing);
   }
 
   .#{$ns}-control {
-    margin-top: $pt-spacing * 2;
+    margin-top: calc(var(--bp-surface-spacing) * 2);
   }
 
   .#{$ns}-form-group-sub-label,
   .#{$ns}-form-helper-text {
-    color: $pt-text-color-muted;
-    font-size: $pt-font-size-small;
+    color: var(--bp-typography-color-muted);
+    font-size: var(--bp-typography-size-body-small);
   }
 
   .#{$ns}-form-group-sub-label {
-    margin-bottom: $pt-spacing;
+    margin-bottom: var(--bp-surface-spacing);
   }
 
   .#{$ns}-form-helper-text {
-    margin-top: $pt-spacing;
+    margin-top: var(--bp-surface-spacing);
   }
 
   /* stylelint-disable-next-line order/declaration-block-order */
-  @each $intent, $color in $pt-intent-text-colors {
-    &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-form-helper-text {
-        color: $color;
-      }
+  &.#{$ns}-intent-primary {
+    .#{$ns}-form-helper-text {
+      color: var(--bp-intent-primary-hover);
+    }
+  }
+
+  &.#{$ns}-intent-success {
+    .#{$ns}-form-helper-text {
+      color: var(--bp-intent-success-hover);
+    }
+  }
+
+  &.#{$ns}-intent-warning {
+    .#{$ns}-form-helper-text {
+      color: var(--bp-intent-warning-hover);
+    }
+  }
+
+  &.#{$ns}-intent-danger {
+    .#{$ns}-form-helper-text {
+      color: var(--bp-intent-danger-hover);
     }
   }
 
@@ -50,13 +66,13 @@
     flex-direction: row;
 
     &.#{$ns}-large label.#{$ns}-label {
-      line-height: $pt-input-height-large;
-      margin: 0 ($pt-spacing * 3) 0 0;
+      line-height: calc(var(--bp-surface-spacing) * 10);
+      margin: 0 calc(var(--bp-surface-spacing) * 3) 0 0;
     }
 
     label.#{$ns}-label {
-      line-height: $pt-input-height;
-      margin: 0 ($pt-spacing * 3) 0 0;
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+      margin: 0 calc(var(--bp-surface-spacing) * 3) 0 0;
     }
   }
 
@@ -67,22 +83,38 @@
     .#{$ns}-form-helper-text {
       // disabled state always overrides over styles
       /* stylelint-disable-next-line declaration-no-important */
-      color: $pt-text-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
     }
   }
 
   .#{$ns}-dark & {
-    @each $intent, $color in $pt-dark-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-form-helper-text {
-          color: $color;
-        }
+    &.#{$ns}-intent-primary {
+      .#{$ns}-form-helper-text {
+        color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+      }
+    }
+
+    &.#{$ns}-intent-success {
+      .#{$ns}-form-helper-text {
+        color: #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"};
+      }
+    }
+
+    &.#{$ns}-intent-warning {
+      .#{$ns}-form-helper-text {
+        color: #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"};
+      }
+    }
+
+    &.#{$ns}-intent-danger {
+      .#{$ns}-form-helper-text {
+        color: #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"};
       }
     }
 
     .#{$ns}-form-group-sub-label,
     .#{$ns}-form-helper-text {
-      color: $pt-dark-text-color-muted;
+      color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)"};
     }
 
     &.#{$ns}-disabled {
@@ -92,7 +124,7 @@
       .#{$ns}-form-helper-text {
         // disabled state always overrides over styles
         /* stylelint-disable-next-line declaration-no-important */
-        color: $pt-dark-text-color-disabled !important;
+        color: var(--bp-typography-color-default-disabled) !important;
       }
     }
   }

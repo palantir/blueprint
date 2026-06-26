@@ -5,9 +5,9 @@
 @import "../button/common";
 @import "../../common/mixins";
 
-$file-input-button-width: $pt-spacing * 17.5 !default;
-$file-input-button-width-large: $pt-spacing * 21.25 !default;
-$file-input-button-width-small: $pt-spacing * 13.75 !default;
+$file-input-button-width: calc(var(--bp-surface-spacing) * 17.5) !default;
+$file-input-button-width-large: calc(var(--bp-surface-spacing) * 21.25) !default;
+$file-input-button-width-small: calc(var(--bp-surface-spacing) * 13.75) !default;
 $file-input-button-padding: ($pt-input-height - $pt-button-height-small) * 0.5 !default;
 $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) * 0.5 !default;
 $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-smaller) * 0.5 !default;
@@ -15,12 +15,12 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 .#{$ns}-file-input {
   cursor: pointer;
   display: inline-block;
-  height: $pt-input-height;
+  height: calc(var(--bp-surface-spacing) * 7.5);
   position: relative;
 
   input {
     margin: 0;
-    min-width: $pt-spacing * 50;
+    min-width: calc(var(--bp-surface-spacing) * 50);
     opacity: 0;
 
     // unlike other form controls that directly style native elements,
@@ -47,23 +47,32 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
     // borrows focus styles from pt-input and pt-dark-input mixins (see _common.scss)
     &:focus + .#{$ns}-file-upload-input {
-      box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+      box-shadow:
+        inset 0 0 0 1px
+          #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)"},
+        0 0 0 1px
+          #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)"},
+        inset 0 1px 1px #{"oklch(from var(--bp-palette-black) l c h / 0.2)"};
 
       .#{$ns}-dark & {
         box-shadow:
-          dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-          $pt-dark-input-box-shadow;
+          inset 0 0 0 1px
+            #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)"},
+          0 0 0 1px
+            #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)"},
+          inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
+          inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
       }
     }
   }
 
   &.#{$ns}-file-input-has-selection {
     .#{$ns}-file-upload-input {
-      color: $pt-text-color;
+      color: var(--bp-typography-color-default-rest);
     }
 
     .#{$ns}-dark & .#{$ns}-file-upload-input {
-      color: $pt-dark-text-color;
+      color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h)"};
     }
   }
 
@@ -73,12 +82,12 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   &.#{$ns}-large,
   .#{$ns}-large & {
-    height: $pt-input-height-large;
+    height: calc(var(--bp-surface-spacing) * 10);
   }
 
   &.#{$ns}-small,
   .#{$ns}-small & {
-    height: $pt-input-height-small;
+    height: calc(var(--bp-surface-spacing) * 6);
   }
 
   .#{$ns}-file-upload-input-custom-text::after {
@@ -89,9 +98,9 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 .#{$ns}-file-upload-input {
   @include pt-input;
   @include overflow-ellipsis;
-  color: $pt-text-color-disabled;
+  color: #{oklch(from var(--bp-typography-color-muted) l c h / 0.6)};
   left: 0;
-  padding-right: $file-input-button-width + $input-padding-horizontal;
+  padding-right: calc($file-input-button-width + calc(var(--bp-surface-spacing) * 2));
   position: absolute;
   right: 0;
   top: 0;
@@ -99,12 +108,12 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   &::after {
     @include pt-button-default-colors;
-    @include pt-button-height($pt-button-height-small);
+    @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
     @include overflow-ellipsis;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     content: "Browse";
-    line-height: $pt-button-height-small;
-    margin: $file-input-button-padding;
+    line-height: calc(var(--bp-surface-spacing) * 6);
+    margin: calc(var(--bp-surface-spacing) * 0.75);
     position: absolute;
     right: 0;
     text-align: center;
@@ -124,31 +133,31 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   .#{$ns}-large & {
     @include pt-input-large;
-    padding-right: $file-input-button-width-large + $input-padding-horizontal;
+    padding-right: calc($file-input-button-width-large + calc(var(--bp-surface-spacing) * 2));
 
     &::after {
-      @include pt-button-height($pt-button-height);
-      line-height: $pt-button-height;
-      margin: $file-input-button-padding-large;
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+      margin: calc(var(--bp-surface-spacing) * 1.25);
       width: $file-input-button-width-large;
     }
   }
 
   .#{$ns}-small & {
     @include pt-input-small;
-    padding-right: $file-input-button-width-small + $input-padding-horizontal;
+    padding-right: calc($file-input-button-width-small + calc(var(--bp-surface-spacing) * 2));
 
     &::after {
-      @include pt-button-height($pt-button-height-smaller);
-      line-height: $pt-button-height-smaller;
-      margin: $file-input-button-padding-small;
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
+      line-height: calc(var(--bp-surface-spacing) * 5);
+      margin: calc(var(--bp-surface-spacing) * 0.5);
       width: $file-input-button-width-small;
     }
   }
 
   .#{$ns}-dark & {
     @include pt-dark-input;
-    color: $pt-dark-text-color-disabled;
+    color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h / 0.6)"};
 
     &::after {
       @include pt-dark-button-default-colors;
@@ -168,5 +177,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 // it doesn't render correct via the `pt-button` mixin
 /* stylelint-disable-next-line no-duplicate-selectors */
 .#{$ns}-file-upload-input::after {
-  box-shadow: $button-box-shadow;
+  box-shadow:
+    inset 0 0 0 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)},
+    0 1px 2px #{oklch(from var(--bp-palette-black) l c h / 0.1)};
 }
