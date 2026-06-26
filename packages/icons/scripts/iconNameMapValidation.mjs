@@ -33,9 +33,11 @@ export function validateIconNameMap(rawMap, iconNameMap, legacyIconNames, nextIc
     /** @type {string[]} */
     const errors = [];
 
-    // Detect duplicate keys, which JSON.parse silently collapses to the last value.
+    // Detect duplicate keys, which JSON.parse silently collapses to the last value. We match every
+    // quoted token immediately followed by a colon (a key, wherever it sits) rather than anchoring to
+    // line starts, so the check is independent of how `icons-name-map.json` happens to be formatted.
     const seen = new Set();
-    for (const match of rawMap.matchAll(/^\s*"([^"]+)"\s*:/gm)) {
+    for (const match of rawMap.matchAll(/"((?:[^"\\]|\\.)*)"\s*:/g)) {
         const key = match[1];
         if (seen.has(key)) {
             errors.push(`icons-name-map.json has duplicate key "${key}"`);
