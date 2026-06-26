@@ -3,15 +3,16 @@
  */
 
 import { type Meta, type StoryObj } from "@storybook/react-vite";
+import { StoryLabel } from "@storybook-common";
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook-only; mirrors icons package generator casing
 import { pascalCase } from "change-case";
 import React, { type ComponentType, type ReactElement, useCallback, useState } from "react";
 
 import * as NextIcons from "@blueprintjs/icons/next";
 import { nextIconManifest, type NextIconManifestEntry } from "@blueprintjs/icons/next";
+import { Flex } from "@blueprintjs/labs";
 
 import { Card } from "../card/card";
-import { H6 } from "../html/html";
 
 // -----------------------------------------------------------------------------
 // Constants & data
@@ -20,10 +21,7 @@ const GALLERY_MAX_WIDTH = 1024;
 const DISPLAY_ICON_SIZE = 32;
 
 const ICON_GRID_CARD_STYLE: React.CSSProperties = {
-    alignItems: "center",
     aspectRatio: "1 / 1",
-    display: "flex",
-    justifyContent: "center",
     minWidth: 72,
 };
 
@@ -87,33 +85,33 @@ function NextIconGallery({
     variant: "outlined" | "filled";
 }) {
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <H6 style={{ opacity: 0.6 }}>
-                {icons.length} {variant} icons
-            </H6>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        <Flex flexDirection="column" gap={4}>
+            <StoryLabel title={`${icons.length} ${variant} icons`} />
+            <Flex flexWrap="wrap" gap={2}>
                 {icons.map(entry => (
                     <Card key={entry.name} title={entry.name} style={ICON_GRID_CARD_STYLE}>
-                        {renderNextIcon(entry.name, size, variant)}
+                        <Flex alignItems="center" justifyContent="center" style={{ height: "100%" }}>
+                            {renderNextIcon(entry.name, size, variant)}
+                        </Flex>
                     </Card>
                 ))}
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 }
 
 function CompareGallery({ icons, size }: { icons: NextIconManifestEntry[]; size: number }) {
     return (
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <H6 style={{ opacity: 0.6, userSelect: "none" }}>
-                {icons.length} icons with both variants - click a card to swap between outlined and filled
-            </H6>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+        <Flex flexDirection="column" gap={4}>
+            <StoryLabel
+                title={`${icons.length} icons with both variants - click a card to swap between outlined and filled`}
+            />
+            <Flex flexWrap="wrap" gap={2}>
                 {icons.map(entry => (
                     <CompareCard key={entry.name} iconName={entry.name} size={size} />
                 ))}
-            </div>
-        </div>
+            </Flex>
+        </Flex>
     );
 }
 
@@ -128,7 +126,9 @@ function CompareCard({ iconName, size }: { iconName: string; size: number }) {
             interactive={true}
             onClick={handleClick}
         >
-            {renderNextIcon(iconName, size, showFilled ? "filled" : "outlined")}
+            <Flex alignItems="center" justifyContent="center" style={{ height: "100%" }}>
+                {renderNextIcon(iconName, size, showFilled ? "filled" : "outlined")}
+            </Flex>
         </Card>
     );
 }
