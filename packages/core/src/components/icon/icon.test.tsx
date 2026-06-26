@@ -92,6 +92,14 @@ describe("<Icon>", () => {
         assertIconColor(<Icon icon="add" color="red" />, "red");
     });
 
+    it("forwards color onto an element icon", async () => {
+        assertIconColor(<Icon icon={<GraphIcon />} color="red" />, "red");
+    });
+
+    it("element icon's own color takes precedence over the <Icon> color", async () =>
+        // non-regression: the element's explicit color wins over the forwarded one
+        assertIconColor(<Icon icon={<GraphIcon color="blue" />} color="red" />, "blue"));
+
     it("unknown icon name renders blank icon", async () => {
         const wrapper = mount(<Icon icon={"unknown" as any} />);
         wrapper.update();
