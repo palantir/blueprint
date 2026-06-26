@@ -14,11 +14,10 @@
  */
 
 import classNames from "classnames";
-import { createElement, forwardRef } from "react";
+import { createElement, forwardRef, useId } from "react";
 
 import * as Classes from "../classes";
 import { IconSize } from "../iconTypes";
-import { uniqueId } from "../jsUtils";
 import type { SVGIconProps } from "../svgIconProps";
 
 export type SvgIconContainerNextProps<T extends Element> = Omit<SVGIconProps<T>, "children"> & {
@@ -45,7 +44,7 @@ export const SvgIconContainerNext: SvgIconContainerNextComponent = forwardRef(
             ...htmlProps
         } = props;
 
-        const titleId = uniqueId("iconTitle");
+        const titleId = useId();
         const sharedSvgProps: React.SVGProps<SVGSVGElement> = {
             fill: color,
             height: size,
