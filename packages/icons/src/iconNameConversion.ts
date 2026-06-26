@@ -24,5 +24,9 @@ export { LegacyToIconNextNameMap };
  * Returns the next-generation (`@blueprintjs/icons/next`) icon name corresponding to a legacy icon name.
  */
 export function getIconNextName(name: IconName): IconNextName {
-    return LegacyToIconNextNameMap[name];
+    const nextName = LegacyToIconNextNameMap[name];
+    if (nextName === undefined) {
+        throw new Error(`No next-generation icon mapping for legacy icon "${name}"`);
+    }
+    return nextName;
 }
