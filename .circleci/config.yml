@@ -78,6 +78,9 @@ jobs:
           paths:
             - packages/*/lib
             - packages/*/src/generated
+            # Generated design-token CSS (incl. tokens-next.css) lives in this gitignored
+            # build/ dir; persist it so the Storybook build in the `dist` job can resolve it.
+            - packages/core/src/design-tokens/build
 
   format-check:
     docker: *docker-node-image
