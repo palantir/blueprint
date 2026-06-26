@@ -45,6 +45,13 @@ export function validateIconNameMap(rawMap, iconNameMap, legacyIconNames, nextIc
         seen.add(key);
     }
 
+    // Coverage: every legacy icon must have a mapping.
+    for (const legacyName of legacyIconNames) {
+        if (!(legacyName in iconNameMap)) {
+            errors.push(`legacy icon "${legacyName}" has no entry in icons-name-map.json`);
+        }
+    }
+
     for (const [legacyName, nextName] of Object.entries(iconNameMap)) {
         if (!legacyIconNames.has(legacyName)) {
             errors.push(
@@ -57,13 +64,6 @@ export function validateIconNameMap(rawMap, iconNameMap, legacyIconNames, nextIc
             errors.push(
                 `icons-name-map.json maps "${legacyName}" to "${nextName}", which is not a next icon (no resources/icons/next/outlined/${nextName}.svg)`,
             );
-        }
-    }
-
-    // Coverage: every legacy icon must have a mapping.
-    for (const legacyName of legacyIconNames) {
-        if (!(legacyName in iconNameMap)) {
-            errors.push(`legacy icon "${legacyName}" has no entry in icons-name-map.json`);
         }
     }
 
