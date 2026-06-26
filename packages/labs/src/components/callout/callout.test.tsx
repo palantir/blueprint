@@ -85,17 +85,13 @@ describe("<Callout>", () => {
         test("reduces the padding variable", () => {
             const { container } = render(<Callout compact={true}>Test</Callout>);
             const callout = container.firstElementChild as HTMLElement;
-            expect(callout.style.getPropertyValue("--callout-padding")).toBe(
-                "calc(var(--bp-surface-spacing) * 2)",
-            );
+            expect(callout.style.getPropertyValue("--callout-padding")).toBe("calc(var(--bp-surface-spacing) * 2)");
         });
 
         test("uses the larger padding by default", () => {
             const { container } = render(<Callout>Test</Callout>);
             const callout = container.firstElementChild as HTMLElement;
-            expect(callout.style.getPropertyValue("--callout-padding")).toBe(
-                "calc(var(--bp-surface-spacing) * 4)",
-            );
+            expect(callout.style.getPropertyValue("--callout-padding")).toBe("calc(var(--bp-surface-spacing) * 4)");
         });
     });
 

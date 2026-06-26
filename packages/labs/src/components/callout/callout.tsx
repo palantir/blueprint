@@ -99,9 +99,7 @@ export const Callout = forwardRef<HTMLDivElement, CalloutProps>(function Callout
             : `var(--bp-intent-${slug})`,
         "--callout-color": minimal ? "var(--bp-typography-color-base)" : "var(--bp-palette-white-1000)",
         "--callout-layer": minimal ? `var(--bp-surface-layer-${slug}-rest)` : "none",
-        "--callout-padding": compact
-            ? "calc(var(--bp-surface-spacing) * 2)"
-            : "calc(var(--bp-surface-spacing) * 4)",
+        "--callout-padding": compact ? "calc(var(--bp-surface-spacing) * 2)" : "calc(var(--bp-surface-spacing) * 4)",
     };
 
     return (
