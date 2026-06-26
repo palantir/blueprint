@@ -1,0 +1,67 @@
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ */
+
+@use "../../common" as bp;
+
+// Layout constants. Colors, density, and minimal/solid appearance are all driven by CSS
+// custom properties set on the element by the React component, so a single class covers
+// every intent / compact / minimal permutation.
+$icon-gap: calc(var(--bp-surface-spacing) * 4);
+
+.#{bp.$ns}-callout {
+  // Fallbacks keep the component usable as plain CSS (no React) — they mirror the neutral,
+  // solid, non-compact defaults the component would otherwise inject. All values come from the
+  // Blueprint 7 "next" semantic token set (tokens-next.css / tokens-dark-next.css).
+  --callout-background-color: var(--bp-intent-neutral);
+  --callout-layer: none;
+  --callout-color: var(--bp-palette-white-1000);
+  --callout-padding: calc(var(--bp-surface-spacing) * 4);
+
+  // The optional intent tint (background-image) composites over the opaque base (background-color).
+  background-color: var(--callout-background-color);
+  background-image: var(--callout-layer);
+  border-radius: var(--bp-surface-border-radius);
+  color: var(--callout-color);
+  font-size: var(--bp-typography-size-body-medium);
+  line-height: 1.5;
+  padding: var(--callout-padding);
+  position: relative;
+  width: 100%;
+
+  // Heading and icon inherit the resolved foreground color.
+  .#{bp.$bp-ns}-heading {
+    color: inherit;
+    line-height: bp.$pt-icon-size-standard;
+    margin-bottom: 0;
+    margin-top: calc(var(--bp-surface-spacing) * 0.5);
+  }
+
+  // Leading icon sits in a gutter carved out of the left padding.
+  &[data-has-icon] {
+    padding-left: calc(var(--callout-padding) + #{bp.$pt-icon-size-standard} + #{$icon-gap});
+  }
+
+  > .#{bp.$bp-ns}-icon:first-child {
+    color: inherit;
+    left: var(--callout-padding);
+    position: absolute;
+    top: calc(var(--callout-padding) + var(--bp-surface-spacing) * 0.5);
+  }
+
+  &[data-has-body-content] .#{bp.$bp-ns}-heading {
+    margin-bottom: bp.$pt-spacing;
+  }
+
+  // High contrast mode hides backgrounds, so fall back to a border.
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid bp.$pt-high-contrast-mode-border-color;
+  }
+}
+
+// Expose the labs namespace to JS/TS consumers via a CSS Modules `:export` block. Bundlers
+// with CSS Modules support can read `styles.namespace` to derive fully-qualified class names
+// without hardcoding the `bp6-labs` prefix.
+:export {
+  namespace: bp.$ns;
+}

@@ -5,4 +5,5 @@
 
 export { Box } from "./box/box";
 export type { BoxProps } from "./box/boxProps";
+export { Callout, type CalloutProps } from "./callout/callout";
 export { Flex, type FlexProps } from "./flex/flex";

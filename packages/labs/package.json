@@ -29,6 +29,7 @@
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/icons": "workspace:^",
         "classnames": "catalog:",
         "tslib": "catalog:"
     },

@@ -2,9 +2,10 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import type { Decorator } from "@storybook/react-vite";
+
 import { Colors } from "@blueprintjs/core";
 import { Flex } from "@blueprintjs/labs";
-import type { Decorator } from "@storybook/react-vite";
 
 export interface StoryLabelProps {
     title: React.ReactNode;

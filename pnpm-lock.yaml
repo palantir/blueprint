@@ -813,6 +813,9 @@ importers:
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
+      '@blueprintjs/icons':
+        specifier: workspace:^
+        version: link:../icons
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12

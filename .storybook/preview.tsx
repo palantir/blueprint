@@ -25,6 +25,11 @@ import "@blueprintjs/labs/lib/css/blueprint-labs.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 import "@blueprintjs/table/lib/css/table.css";
 
+// Blueprint 7 "next" semantic tokens, consumed by labs components such as the labs Callout. These are
+// not yet part of any package's compiled CSS bundle, so load them directly from the token build.
+import "../packages/core/src/design-tokens/build/tokens-next.css";
+import "../packages/core/src/design-tokens/build/tokens-dark-next.css";
+
 const preview: Preview = {
     parameters: {
         backgrounds: { disable: true },

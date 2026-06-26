@@ -18,3 +18,5 @@ export function getClassNamespace() {
 }
 
 export const BOX = `${NS}-box`;
+
+export const CALLOUT = `${NS}-callout`;
