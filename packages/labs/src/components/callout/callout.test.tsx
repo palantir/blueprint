@@ -65,7 +65,7 @@ describe("<Callout>", () => {
     });
 
     describe("minimal", () => {
-        test("stacks the intent tint layer over the base surface with neutral body text", () => {
+        test("sets the intent tint layer over the base surface with neutral body text", () => {
             const { container } = render(
                 <Callout intent={Intent.SUCCESS} minimal={true}>
                     Test
@@ -75,10 +75,8 @@ describe("<Callout>", () => {
             expect(callout.style.getPropertyValue("--callout-background-color")).toBe(
                 "var(--bp-surface-background-color-base-rest)",
             );
-            // The rest tint is stacked several times to reach a visible minimal fill.
-            const layer = callout.style.getPropertyValue("--callout-layer");
-            expect(layer).toContain("var(--bp-surface-layer-success-rest)");
-            expect(layer.split(",").length).toBeGreaterThan(1);
+            // The stylesheet stacks this single tint token several times to reach a visible fill.
+            expect(callout.style.getPropertyValue("--callout-layer")).toBe("var(--bp-surface-layer-success-rest)");
             expect(callout.style.getPropertyValue("--callout-color")).toBe("var(--bp-typography-color-base)");
         });
     });

@@ -10,12 +10,6 @@ import { Error, type IconName, InfoSign, type SVGIconProps, Tick, WarningSign } 
 
 import { Classes, type CSSPropertiesWithVars, DISPLAYNAME_PREFIX } from "../../common";
 
-/**
- * Number of times the `surface-layer` rest tint (~3% each) is stacked to produce the minimal
- * callout's background fill. Four layers composite to roughly a 10% tint, matching the design.
- */
-const MINIMAL_LAYER_STACK = 4;
-
 /** This component also supports the full range of HTML `<div>` attributes. */
 export interface CalloutProps
     extends IntentProps,
@@ -87,15 +81,12 @@ export const Callout = forwardRef<HTMLDivElement, CalloutProps>(function Callout
         ...style,
         // Two background layers composite to form the fill:
         //   - background-color: the opaque base.
-        //   - background-image: an optional translucent intent tint.
+        //   - background-image: an optional translucent intent tint. The stylesheet stacks this
+        //     `--callout-layer` value several times (the `surface-layer-*` tokens are authored as
+        //     `linear-gradient(color 0 0)` "stackable layers" for exactly this purpose) to deepen
+        //     the faint ~3% rest tint into the visible minimal fill shown in the design.
         //
-        // The `surface-layer-*` tokens are authored as `linear-gradient(color 0 0)` ("stackable
-        // layer") specifically so they can composite as `background-image`. A single rest layer is
-        // a faint ~3% tint, so for the minimal callout fill we stack the layer several times — the
-        // spec'd way to deepen a layer without inventing a new opacity — to reach the visible tint
-        // shown in the design.
-        //
-        // Minimal: a neutral base with the stacked intent tint on top, plus neutral body text.
+        // Minimal: a neutral base with the intent tint stacked on top, plus neutral body text.
         // Solid: the opaque intent color with no tint and white text. In Blueprint 7 the on-intent
         // text color is uniformly white.
         //
@@ -107,9 +98,7 @@ export const Callout = forwardRef<HTMLDivElement, CalloutProps>(function Callout
             ? "var(--bp-surface-background-color-base-rest)"
             : `var(--bp-intent-${slug})`,
         "--callout-color": minimal ? "var(--bp-typography-color-base)" : "var(--bp-palette-white-1000)",
-        "--callout-layer": minimal
-            ? Array.from({ length: MINIMAL_LAYER_STACK }, () => `var(--bp-surface-layer-${slug}-rest)`).join(", ")
-            : "none",
+        "--callout-layer": minimal ? `var(--bp-surface-layer-${slug}-rest)` : "none",
         "--callout-padding": compact
             ? "calc(var(--bp-surface-spacing) * 2)"
             : "calc(var(--bp-surface-spacing) * 4)",

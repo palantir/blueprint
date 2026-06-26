@@ -9,6 +9,16 @@
 // every intent / compact / minimal permutation.
 $icon-gap: calc(var(--bp-surface-spacing) * 4);
 
+// The `--callout-layer` tint is a faint ~3% "stackable layer" token. Repeating it as multiple
+// background-image layers composites it into the visible minimal fill (4 ≈ 10%, matching design).
+// `none` (the solid/non-minimal case) repeats harmlessly as `none, none, …`.
+$minimal-layer-stack: 4;
+$layer-list: ();
+
+@for $i from 1 through $minimal-layer-stack {
+  $layer-list: append($layer-list, var(--callout-layer), comma);
+}
+
 .#{bp.$ns}-callout {
   // Fallbacks keep the component usable as plain CSS (no React) — they mirror the neutral,
   // solid, non-compact defaults the component would otherwise inject. All values come from the
@@ -20,7 +30,7 @@ $icon-gap: calc(var(--bp-surface-spacing) * 4);
 
   // The optional intent tint (background-image) composites over the opaque base (background-color).
   background-color: var(--callout-background-color);
-  background-image: var(--callout-layer);
+  background-image: $layer-list;
   border-radius: var(--bp-surface-border-radius);
   color: var(--callout-color);
   font-size: var(--bp-typography-size-body-medium);
