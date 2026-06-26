@@ -16,7 +16,8 @@
 
 import type { IconPaths } from "../iconTypes";
 
-import { nextIconManifest, type NextIconName } from "./generated/manifest";
+import { nextIconManifest } from "./generated/manifest";
+import type { IconNextName } from "./iconNextNames";
 import { defaultNextIconPathsLoader, type NextIconPathsLoader } from "./pathsLoader";
 
 export type NextIconVariant = "outlined" | "filled";
@@ -60,7 +61,7 @@ export class IconsNext {
     /**
      * Load one or more next icons for use in Blueprint components.
      */
-    public static async load(icons: NextIconName | NextIconName[], variant: NextIconVariant = "outlined") {
+    public static async load(icons: IconNextName | IconNextName[], variant: NextIconVariant = "outlined") {
         if (!Array.isArray(icons)) {
             icons = [icons];
         }
@@ -83,7 +84,7 @@ export class IconsNext {
      * Get the icon SVG paths. Returns `undefined` if the icon has not been loaded yet.
      * If `variant="filled"` is requested but unavailable, falls back to outlined.
      */
-    public static getPaths(icon: NextIconName, variant: NextIconVariant = "outlined"): IconPaths | undefined {
+    public static getPaths(icon: IconNextName, variant: NextIconVariant = "outlined"): IconPaths | undefined {
         const resolvedVariant = this.resolveVariant(icon, variant);
         return this.cache.get(this.cacheKey(icon, resolvedVariant));
     }
@@ -91,18 +92,18 @@ export class IconsNext {
     /**
      * Returns `true` if the given icon has a filled variant available.
      */
-    public static hasFilled(icon: NextIconName): boolean {
+    public static hasFilled(icon: IconNextName): boolean {
         return this.filledSet.has(icon);
     }
 
     /**
      * Returns `true` if the given string is a valid next icon name.
      */
-    public static isValidIconName(name: string): name is NextIconName {
+    public static isValidIconName(name: string): name is IconNextName {
         return this.validSet.has(name);
     }
 
-    private static async loadImpl(icon: NextIconName, variant: NextIconVariant) {
+    private static async loadImpl(icon: IconNextName, variant: NextIconVariant) {
         if (!this.isValidIconName(icon)) {
             console.error(`[Blueprint] Unknown next icon '${icon}'`);
             return;
@@ -123,11 +124,11 @@ export class IconsNext {
         }
     }
 
-    private static resolveVariant(icon: NextIconName, variant: NextIconVariant): NextIconVariant {
+    private static resolveVariant(icon: IconNextName, variant: NextIconVariant): NextIconVariant {
         return variant === "filled" && this.filledSet.has(icon) ? "filled" : "outlined";
     }
 
-    private static cacheKey(icon: NextIconName, variant: NextIconVariant): string {
+    private static cacheKey(icon: IconNextName, variant: NextIconVariant): string {
         return `${icon}:${variant}`;
     }
 }

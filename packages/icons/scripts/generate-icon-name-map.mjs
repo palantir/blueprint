@@ -52,7 +52,7 @@ writeFileSync(
         " */",
         "",
         'import type { IconName } from "../iconNames";',
-        'import type { IconNextName } from "../next/generated/manifest";',
+        'import type { IconNextName } from "../next/iconNextNames";',
         "",
         "/**",
         ' * Maps legacy ("current") Blueprint icon names to their next-generation',

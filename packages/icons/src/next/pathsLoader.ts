@@ -18,11 +18,11 @@ import { pascalCase } from "change-case";
 
 import type { IconPaths } from "../iconTypes";
 
-import type { NextIconName } from "./generated/manifest";
 import type { NextIconVariant } from "./iconLoaderNext";
+import type { IconNextName } from "./iconNextNames";
 
 /** Loader function signature for next icon paths. */
-export type NextIconPathsLoader = (iconName: NextIconName, variant: NextIconVariant) => Promise<IconPaths>;
+export type NextIconPathsLoader = (iconName: IconNextName, variant: NextIconVariant) => Promise<IconPaths>;
 
 /**
  * Default dynamic loader for next icon paths. Loads all next icon paths into a single chunk.

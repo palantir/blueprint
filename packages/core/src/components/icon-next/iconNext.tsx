@@ -19,10 +19,10 @@ import { createElement, forwardRef, useEffect, useState } from "react";
 
 import {
     type DefaultSVGIconProps,
+    type IconNextName,
     type IconPaths,
     IconSize,
     IconsNext,
-    type NextIconName,
     type NextIconVariant,
     SvgIconContainerNext,
     type SVGIconProps,
@@ -42,10 +42,10 @@ export interface IconNextOwnProps {
      * Name of a next-generation Blueprint UI icon, or an icon element, to render.
      *
      * - If `null` or `undefined` or `false`, this component will render nothing.
-     * - If given a `NextIconName` string, that icon will be rendered as an `<svg>` with `<path>` tags.
+     * - If given a `IconNextName` string, that icon will be rendered as an `<svg>` with `<path>` tags.
      * - If given a `React.JSX.Element`, that element will be rendered and all other props are ignored.
      */
-    icon: NextIconName | MaybeElement;
+    icon: IconNextName | MaybeElement;
 
     /**
      * Icon variant. Next icons support outlined (default) and filled variants.
