@@ -25,6 +25,7 @@ import {
     ICON_SIZES_PX,
     iconDirectoryParityDiff,
     iconResourcesDir,
+    NEXT_ICON_DIRS,
     readIconsManifestFile,
     repoRelative,
 } from "./common.mjs";
@@ -69,8 +70,35 @@ export async function verifyIcons() {
     const pairedIconNames = new Set([...iconNames16].filter(name => iconNames20.has(name)));
     errors.push(...(await verifySvgFormatting(pairedIconNames)));
     errors.push(...verifyIconsNext());
+    errors.push(...verifyNextSvgFormatting());
     errors.push(...verifyIconNameMap());
 
+    return errors;
+}
+
+/**
+ * Checks that next-generation icon SVGs (outlined + filled) are SVGO-normalized, mirroring
+ * {@link verifySvgFormatting} for the legacy size directories.
+ *
+ * @returns {string[]}
+ */
+export function verifyNextSvgFormatting() {
+    /** @type {string[]} */
+    const errors = [];
+    for (const subdir of NEXT_ICON_DIRS) {
+        const dir = join(iconResourcesDir, subdir);
+        if (!existsSync(dir)) {
+            continue;
+        }
+        for (const iconName of [...getIconNamesInDirectory(dir)].sort()) {
+            const path = join(dir, `${iconName}.svg`);
+            if (!isSvgFormatted(path)) {
+                errors.push(
+                    `${repoRelative(path)} is not normalized; run "pnpm --filter @blueprintjs/icons icons:format"`,
+                );
+            }
+        }
+    }
     return errors;
 }
 
@@ -265,6 +293,15 @@ export function verifyManifestResourceParity(manifestNames, iconNames16, iconNam
 }
 
 /**
+ * @param {string} svgPath absolute path to an SVG resource
+ * @returns {boolean} whether the file already matches its SVGO-normalized form
+ */
+function isSvgFormatted(svgPath) {
+    const source = readFileSync(svgPath, "utf8");
+    return optimizeSvg(source, svgPath) === source;
+}
+
+/**
  * @param {Set<string>} iconNames
  */
 async function verifySvgFormatting(iconNames) {
@@ -273,12 +310,9 @@ async function verifySvgFormatting(iconNames) {
     for (const iconName of [...iconNames].sort()) {
         for (const size of ICON_SIZES_PX) {
             const path = join(iconResourcesDir, size, `${iconName}.svg`);
-            const source = readFileSync(path, "utf8");
-            const optimized = optimizeSvg(source, path);
-            if (optimized !== source) {
-                const displayPath = repoRelative(path);
+            if (!isSvgFormatted(path)) {
                 errors.push(
-                    `${displayPath} is not normalized; run "pnpm --filter @blueprintjs/icons icons:add" or reformat icon resources`,
+                    `${repoRelative(path)} is not normalized; run "pnpm --filter @blueprintjs/icons icons:add" or reformat icon resources`,
                 );
             }
         }
