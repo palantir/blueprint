@@ -16,7 +16,8 @@
 
 import { useCallback } from "react";
 
-import { IconSize, SmallCross } from "@blueprintjs/icons";
+import { IconSize } from "@blueprintjs/icons";
+import { XSmallIcon } from "@blueprintjs/icons/next";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 
@@ -43,7 +44,7 @@ export const TagRemoveButton = (props: TagRemoveButtonProps) => {
             onClick={handleRemoveClick}
             tabIndex={tabIndex}
         >
-            <SmallCross size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
+            <XSmallIcon size={isLarge ? IconSize.LARGE : IconSize.STANDARD} />
         </button>
     );
 };

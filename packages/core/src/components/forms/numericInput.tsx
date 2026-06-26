@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 
-import { ChevronDown, ChevronUp } from "@blueprintjs/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@blueprintjs/icons/next";
 
 import {
     AbstractPureComponent,
@@ -439,7 +439,7 @@ export class NumericInput extends AbstractPureComponent<
                     aria-label="increment"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isIncrementDisabled}
-                    icon={<ChevronUp />}
+                    icon={<ChevronUpIcon />}
                     intent={intent}
                     {...this.incrementButtonHandlers}
                 />
@@ -447,7 +447,7 @@ export class NumericInput extends AbstractPureComponent<
                     aria-label="decrement"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isDecrementDisabled}
-                    icon={<ChevronDown />}
+                    icon={<ChevronDownIcon />}
                     intent={intent}
                     {...this.decrementButtonHandlers}
                 />

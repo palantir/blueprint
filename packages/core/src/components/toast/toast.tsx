@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { forwardRef, useCallback, useEffect, useState } from "react";
 
-import { Cross } from "@blueprintjs/icons";
+import { XIcon } from "@blueprintjs/icons/next";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -99,7 +99,7 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
             </span>
             <ButtonGroup variant="minimal">
                 {action && <AnchorButton {...action} intent={undefined} onClick={handleActionClick} />}
-                {isCloseButtonShown && <Button aria-label="Close" icon={<Cross />} onClick={handleCloseClick} />}
+                {isCloseButtonShown && <Button aria-label="Close" icon={<XIcon />} onClick={handleCloseClick} />}
             </ButtonGroup>
         </div>
     );
