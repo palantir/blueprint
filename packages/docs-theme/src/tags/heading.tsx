@@ -19,7 +19,7 @@ import classNames from "classnames";
 import { createElement } from "react";
 
 import { Classes } from "@blueprintjs/core";
-import { Link } from "@blueprintjs/icons";
+import { LinkIcon } from "@blueprintjs/icons";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 
@@ -33,7 +33,7 @@ export const Heading: React.FC<Tag> = props => {
     const children = [
         <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
         <a className="docs-anchor-link" href={"#" + route} key="link" aria-hidden={true} tabIndex={-1}>
-            <Link />
+            <LinkIcon />
         </a>,
         value,
     ];

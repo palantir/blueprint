@@ -16,7 +16,14 @@
 
 import classNames from "classnames";
 
-import { Error, type IconName, InfoSign, type SVGIconProps, Tick, WarningSign } from "@blueprintjs/icons";
+import {
+    ErrorIcon,
+    type IconName,
+    InfoSignIcon,
+    type SVGIconProps,
+    TickIcon,
+    WarningSignIcon,
+} from "@blueprintjs/icons";
 
 import {
     Classes,
@@ -118,13 +125,13 @@ const renderIcon = (icon?: CalloutProps["icon"], intent?: Intent): IconName | Ma
     // 3. icon specified by intent prop
     switch (intent) {
         case Intent.DANGER:
-            return <Error {...iconProps} />;
+            return <ErrorIcon {...iconProps} />;
         case Intent.PRIMARY:
-            return <InfoSign {...iconProps} />;
+            return <InfoSignIcon {...iconProps} />;
         case Intent.WARNING:
-            return <WarningSign {...iconProps} />;
+            return <WarningSignIcon {...iconProps} />;
         case Intent.SUCCESS:
-            return <Tick {...iconProps} />;
+            return <TickIcon {...iconProps} />;
         default:
             return undefined;
     }
