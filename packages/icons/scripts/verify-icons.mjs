@@ -78,7 +78,7 @@ export async function verifyIcons() {
  */
 export function verifyIconNameMap() {
     if (!existsSync(ICONS_NAME_MAP_PATH)) {
-        return [];
+        return [`${repoRelative(ICONS_NAME_MAP_PATH)} is missing (required by generate-icon-name-map.mjs)`];
     }
 
     const rawMap = readFileSync(ICONS_NAME_MAP_PATH, "utf8");
@@ -100,7 +100,7 @@ export function verifyIconNameMap() {
  */
 export function verifyIconsNext() {
     if (!existsSync(ICONS_NEXT_JSON_PATH)) {
-        return [];
+        return [`${repoRelative(ICONS_NEXT_JSON_PATH)} is missing (required by generate-next-icon-components.mjs)`];
     }
 
     /** @type {string[]} */
