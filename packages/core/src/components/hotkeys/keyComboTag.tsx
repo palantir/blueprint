@@ -18,16 +18,16 @@ import classNames from "classnames";
 import { Fragment, memo, useCallback } from "react";
 
 import {
-    ArrowDown,
-    ArrowLeft,
-    ArrowRight,
-    ArrowUp,
-    KeyCommand,
-    KeyControl,
-    KeyDelete,
-    KeyEnter,
-    KeyOption,
-    KeyShift,
+    ArrowDownIcon,
+    ArrowLeftIcon,
+    ArrowRightIcon,
+    ArrowUpIcon,
+    KeyCommandIcon,
+    KeyControlIcon,
+    KeyDeleteIcon,
+    KeyEnterIcon,
+    KeyOptionIcon,
+    KeyShiftIcon,
 } from "@blueprintjs/icons";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
@@ -36,17 +36,17 @@ import { Icon } from "../icon/icon";
 import { isMac, normalizeKeyCombo } from "./hotkeyParser";
 
 const KEY_ICONS: Record<string, { icon: React.JSX.Element; iconTitle: string; isMacOnly?: boolean }> = {
-    alt: { icon: <KeyOption />, iconTitle: "Alt/Option key", isMacOnly: true },
-    arrowdown: { icon: <ArrowDown />, iconTitle: "Down key" },
-    arrowleft: { icon: <ArrowLeft />, iconTitle: "Left key" },
-    arrowright: { icon: <ArrowRight />, iconTitle: "Right key" },
-    arrowup: { icon: <ArrowUp />, iconTitle: "Up key" },
-    cmd: { icon: <KeyCommand />, iconTitle: "Command key", isMacOnly: true },
-    ctrl: { icon: <KeyControl />, iconTitle: "Control key", isMacOnly: true },
-    delete: { icon: <KeyDelete />, iconTitle: "Delete key" },
-    enter: { icon: <KeyEnter />, iconTitle: "Enter key" },
-    meta: { icon: <KeyCommand />, iconTitle: "Command key", isMacOnly: true },
-    shift: { icon: <KeyShift />, iconTitle: "Shift key", isMacOnly: true },
+    alt: { icon: <KeyOptionIcon />, iconTitle: "Alt/Option key", isMacOnly: true },
+    arrowdown: { icon: <ArrowDownIcon />, iconTitle: "Down key" },
+    arrowleft: { icon: <ArrowLeftIcon />, iconTitle: "Left key" },
+    arrowright: { icon: <ArrowRightIcon />, iconTitle: "Right key" },
+    arrowup: { icon: <ArrowUpIcon />, iconTitle: "Up key" },
+    cmd: { icon: <KeyCommandIcon />, iconTitle: "Command key", isMacOnly: true },
+    ctrl: { icon: <KeyControlIcon />, iconTitle: "Control key", isMacOnly: true },
+    delete: { icon: <KeyDeleteIcon />, iconTitle: "Delete key" },
+    enter: { icon: <KeyEnterIcon />, iconTitle: "Enter key" },
+    meta: { icon: <KeyCommandIcon />, iconTitle: "Command key", isMacOnly: true },
+    shift: { icon: <KeyShiftIcon />, iconTitle: "Shift key", isMacOnly: true },
 };
 
 /** Reverse table of some CONFIG_ALIASES fields, for display by KeyComboTag */

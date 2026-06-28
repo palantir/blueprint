@@ -17,7 +17,7 @@
 import type { Tag } from "@documentalist/client";
 
 import { AnchorButton, Intent } from "@blueprintjs/core";
-import { Code } from "@blueprintjs/icons";
+import { CodeIcon } from "@blueprintjs/icons";
 
 import type { ExampleProps } from "../components/example";
 
@@ -56,7 +56,7 @@ export class ReactExampleTagRenderer {
                     className="docs-example-view-source"
                     fill={true}
                     href={example.sourceUrl}
-                    icon={<Code />}
+                    icon={<CodeIcon />}
                     intent={Intent.PRIMARY}
                     target="_blank"
                     text="View source on GitHub"

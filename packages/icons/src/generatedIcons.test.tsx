@@ -5,21 +5,21 @@
 import { render } from "@testing-library/react";
 import { describe, it } from "vitest";
 
-import { Add } from "./generated/components";
+import { AddIcon } from "./generated/components";
 
-describe("<Add> icon component", () => {
+describe("<AddIcon> icon component", () => {
     it("allows attaching an event handler", () => {
         const handleClick: React.MouseEventHandler<HTMLSpanElement> = () => undefined;
-        render(<Add onClick={handleClick} />);
+        render(<AddIcon onClick={handleClick} />);
     });
 
     it("disallows child elements", () => {
         const handleClick: React.MouseEventHandler<HTMLSpanElement> = () => undefined;
         render(
-            <Add onClick={handleClick}>
+            <AddIcon onClick={handleClick}>
                 {/* @ts-expect-error */}
                 <path />
-            </Add>,
+            </AddIcon>,
         );
     });
 });

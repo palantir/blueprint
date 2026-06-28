@@ -1,7 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:map";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../button/common";
@@ -24,11 +23,11 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
     // add space if there's something before or after the input
     &:not(:first-child) {
-      padding-left: $pt-input-height;
+      padding-left: calc(var(--bp-surface-spacing) * 7.5);
     }
 
     &:not(:last-child) {
-      padding-right: $pt-input-height;
+      padding-right: calc(var(--bp-surface-spacing) * 7.5);
     }
   }
 
@@ -50,9 +49,9 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-button {
-    @include pt-button-height($input-button-height);
-    margin: ($pt-input-height - $input-button-height) * 0.5;
-    padding: $button-padding-small;
+    @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
+    margin: calc(var(--bp-surface-spacing) * 0.75);
+    padding: 0 calc(var(--bp-surface-spacing) * 2);
 
     // icons CSS API support
     &:empty {
@@ -69,7 +68,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
   // direct descendant to exclude icons in buttons
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon {
-    color: $pt-icon-color;
+    color: var(--bp-typography-color-muted);
 
     &:empty {
       @include pt-icon($pt-icon-size-standard);
@@ -81,11 +80,11 @@ $input-button-height-small: $pt-button-height-smaller !default;
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon,
   .#{$ns}-input-action > .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-icon-size-standard) * 0.5;
+    margin: calc(var(--bp-surface-spacing) * 1.75);
   }
 
   .#{$ns}-tag {
-    margin: $pt-spacing * 1.25;
+    margin: calc(var(--bp-surface-spacing) * 1.25);
   }
 
   // all buttons go gray in default state and assume their native colors only when hovered
@@ -93,26 +92,26 @@ $input-button-height-small: $pt-button-height-smaller !default;
   .#{$ns}-input:not(:focus) + .#{$ns}-button,
   .#{$ns}-input:not(:focus) + .#{$ns}-input-action .#{$ns}-button {
     &.#{$ns}-minimal:not(:hover):not(:focus) {
-      color: $pt-text-color-muted;
+      color: var(--bp-typography-color-muted);
 
       // same goes for dark
       /* stylelint-disable-next-line selector-max-compound-selectors */
       .#{$ns}-dark & {
-        color: $pt-dark-text-color-muted;
+        color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)"};
       }
 
       #{$icon-classes} {
-        color: $pt-icon-color;
+        color: var(--bp-typography-color-muted);
       }
     }
 
     &.#{$ns}-minimal:disabled {
       // override more specific selector above
       /* stylelint-disable declaration-no-important */
-      color: $pt-icon-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
 
       #{$icon-classes} {
-        color: $pt-icon-color-disabled !important;
+        color: var(--bp-typography-color-default-disabled) !important;
       }
     }
   }
@@ -123,61 +122,61 @@ $input-button-height-small: $pt-button-height-smaller !default;
     cursor: not-allowed;
 
     .#{$ns}-icon {
-      color: $pt-icon-color-disabled;
+      color: var(--bp-typography-color-default-disabled);
     }
   }
 
   &.#{$ns}-large {
     .#{$ns}-button {
-      @include pt-button-height($input-button-height-large);
-      margin: ($pt-input-height-large - $input-button-height-large) * 0.5;
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
+      margin: calc(var(--bp-surface-spacing) * 1.25);
     }
 
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-icon-size-standard) * 0.5;
+      margin: calc(var(--bp-surface-spacing) * 3);
     }
 
     .#{$ns}-input {
       @include pt-input-large;
 
       &:not(:first-child) {
-        padding-left: $pt-button-height-large;
+        padding-left: calc(var(--bp-surface-spacing) * 10);
       }
 
       &:not(:last-child) {
-        padding-right: $pt-button-height-large;
+        padding-right: calc(var(--bp-surface-spacing) * 10);
       }
     }
   }
 
   &.#{$ns}-small {
     .#{$ns}-button {
-      @include pt-button-height($pt-button-height-smaller);
-      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
+      margin: calc(var(--bp-surface-spacing) * 0.5);
     }
 
     .#{$ns}-tag {
-      @include pt-button-height($pt-button-height-smaller);
-      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
+      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
+      margin: calc(var(--bp-surface-spacing) * 0.5);
     }
 
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: ($pt-input-height-small - $pt-icon-size-standard) * 0.5;
+      margin: var(--bp-surface-spacing);
     }
 
     .#{$ns}-input {
       @include pt-input-small;
 
       &:not(:first-child) {
-        padding-left: $pt-icon-size-standard + $input-small-padding;
+        padding-left: calc(var(--bp-surface-spacing) * 6);
       }
 
       &:not(:last-child) {
-        padding-right: $pt-icon-size-standard + $input-small-padding;
+        padding-right: calc(var(--bp-surface-spacing) * 6);
       }
     }
   }
@@ -191,36 +190,96 @@ $input-button-height-small: $pt-button-height-smaller !default;
     .#{$ns}-button,
     .#{$ns}-input,
     .#{$ns}-tag {
-      border-radius: $pt-input-height;
+      border-radius: calc(var(--bp-surface-spacing) * 7.5);
     }
   }
 
   .#{$ns}-dark & {
     .#{$ns}-icon {
-      color: $pt-dark-icon-color;
+      color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)"};
     }
 
     &.#{$ns}-disabled .#{$ns}-icon {
-      color: $pt-dark-icon-color-disabled;
+      color: var(--bp-typography-color-default-disabled);
     }
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-input {
-        @include pt-input-intent($color);
+  &.#{$ns}-intent-primary {
+    .#{$ns}-input {
+      @include pt-input-intent(var(--bp-intent-primary-rest));
 
-        .#{$ns}-dark & {
-          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
-        }
+      .#{$ns}-dark & {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)"}
+        );
       }
+    }
 
-      > .#{$ns}-icon {
-        color: map.get($pt-intent-text-colors, $intent);
+    > .#{$ns}-icon {
+      color: var(--bp-intent-primary-hover);
 
-        .#{$ns}-dark & {
-          color: map.get($pt-dark-intent-text-colors, $intent);
-        }
+      .#{$ns}-dark & {
+        color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+      }
+    }
+  }
+
+  &.#{$ns}-intent-success {
+    .#{$ns}-input {
+      @include pt-input-intent(var(--bp-intent-success-rest));
+
+      .#{$ns}-dark & {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)"}
+        );
+      }
+    }
+
+    > .#{$ns}-icon {
+      color: var(--bp-intent-success-hover);
+
+      .#{$ns}-dark & {
+        color: #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"};
+      }
+    }
+  }
+
+  &.#{$ns}-intent-warning {
+    .#{$ns}-input {
+      @include pt-input-intent(var(--bp-intent-warning-rest));
+
+      .#{$ns}-dark & {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)"}
+        );
+      }
+    }
+
+    > .#{$ns}-icon {
+      color: var(--bp-intent-warning-hover);
+
+      .#{$ns}-dark & {
+        color: #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"};
+      }
+    }
+  }
+
+  &.#{$ns}-intent-danger {
+    .#{$ns}-input {
+      @include pt-input-intent(var(--bp-intent-danger-rest));
+
+      .#{$ns}-dark & {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)"}
+        );
+      }
+    }
+
+    > .#{$ns}-icon {
+      color: var(--bp-intent-danger-hover);
+
+      .#{$ns}-dark & {
+        color: #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"};
       }
     }
   }

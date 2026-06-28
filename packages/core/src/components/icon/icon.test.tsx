@@ -16,7 +16,7 @@
 
 import { mount } from "enzyme";
 
-import { Graph as GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
+import { GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 import { afterEach, beforeAll, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
@@ -91,6 +91,14 @@ describe("<Icon>", () => {
     it("renders icon color", async () => {
         assertIconColor(<Icon icon="add" color="red" />, "red");
     });
+
+    it("forwards color onto an element icon", async () => {
+        assertIconColor(<Icon icon={<GraphIcon />} color="red" />, "red");
+    });
+
+    it("element icon's own color takes precedence over the <Icon> color", async () =>
+        // non-regression: the element's explicit color wins over the forwarded one
+        assertIconColor(<Icon icon={<GraphIcon color="blue" />} color="red" />, "blue"));
 
     it("unknown icon name renders blank icon", async () => {
         const wrapper = mount(<Icon icon={"unknown" as any} />);

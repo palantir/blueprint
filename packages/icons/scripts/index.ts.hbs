@@ -17,5 +17,5 @@
 export * from "../index";
 
 {{#each iconNames}}
-export { {{pascalCase this}} } from "./components/{{this}}";
+export { {{pascalCase this}}Icon, {{pascalCase this}} } from "./components/{{this}}";
 {{/each}}

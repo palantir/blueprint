@@ -20,7 +20,7 @@ import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "re
 import innerText from "react-innertext";
 
 import { Button, DISPLAYNAME_PREFIX, HTMLSelect, type OptionProps } from "@blueprintjs/core";
-import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@blueprintjs/icons";
 
 import { DateUtils, Months } from "../../common";
 import { DatePickerCaptionClasses as CaptionClasses, ReactDayPickerClasses } from "../../common/classes";
@@ -64,7 +64,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
                 CaptionClasses.DATEPICKER3_NAV_BUTTON_PREVIOUS,
             )}
             disabled={!previousMonth}
-            icon={<ChevronLeft />}
+            icon={<ChevronLeftIcon />}
             onClick={handlePreviousClick}
             variant="minimal"
         />
@@ -74,7 +74,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
             aria-label={labels.labelNext(nextMonth, { locale })}
             className={classNames(CaptionClasses.DATEPICKER3_NAV_BUTTON, CaptionClasses.DATEPICKER3_NAV_BUTTON_NEXT)}
             disabled={!nextMonth}
-            icon={<ChevronRight />}
+            icon={<ChevronRightIcon />}
             onClick={handleNextClick}
             variant="minimal"
         />

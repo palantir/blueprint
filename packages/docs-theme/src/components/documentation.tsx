@@ -26,7 +26,7 @@ import classNames from "classnames";
 import { PureComponent } from "react";
 
 import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
-import { Search } from "@blueprintjs/icons";
+import { SearchIcon } from "@blueprintjs/icons";
 
 import {
     type DocsData,
@@ -216,7 +216,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                     {this.props.header}
                                     <div className="docs-nav-divider" />
                                     <NavButton
-                                        icon={<Search />}
+                                        icon={<SearchIcon />}
                                         hotkey="shift + s"
                                         text="Search..."
                                         onClick={this.handleOpenNavigator}
