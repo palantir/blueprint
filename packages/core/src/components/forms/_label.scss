@@ -93,7 +93,12 @@ label.#{$ns}-label {
   }
 
   .#{$ns}-dark & {
-    color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.452) calc(c + -0.028) calc(h + 6.2))"};
+    // TODO(chrome109): Compute static fallback for oklch(from var(--bp-intent-default-rest) calc(l + 0.452) calc(c + -0.028) calc(h + 6.2))
+    color: $light-gray5;
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.452) calc(c + -0.028) calc(h + 6.2))"};
+    }
 
     &.#{$ns}-disabled {
       &,

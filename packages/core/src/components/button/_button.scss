@@ -135,30 +135,50 @@
     }
 
     &[class*="#{$ns}-intent-"] {
-      box-shadow:
-        inset 0 0 0 var(--bp-surface-border-width)
-          color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+      // Fallback for browsers without color-mix support
+      box-shadow: $dark-button-box-shadow;
 
-      &:hover {
+      @supports (color: color-mix(in srgb, red, blue)) {
         box-shadow:
           inset 0 0 0 var(--bp-surface-border-width)
             color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
           0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
       }
 
+      &:hover {
+        // Fallback for browsers without color-mix support
+        box-shadow: $dark-button-box-shadow;
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          box-shadow:
+            inset 0 0 0 var(--bp-surface-border-width)
+              color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+            0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+        }
+      }
+
       &:active,
       &.#{$ns}-active {
-        box-shadow:
-          inset 0 0 0 var(--bp-surface-border-width)
-            color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+        // Fallback for browsers without color-mix support
+        box-shadow: $dark-button-box-shadow-active;
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          box-shadow:
+            inset 0 0 0 var(--bp-surface-border-width)
+              color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+            0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+        }
       }
 
       &:disabled,
       &.#{$ns}-disabled {
         box-shadow: none;
-        color: color-mix(in oklch, var(--bp-intent-default-foreground) 30%, transparent);
+        // TODO(chrome109): fallback since CSS var cannot be used with rgba()
+        color: $dark-button-intent-color-disabled;
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          color: color-mix(in oklch, var(--bp-intent-default-foreground) 30%, transparent);
+        }
       }
 
       .#{$ns}-button-spinner .#{$ns}-spinner-head {
@@ -192,25 +212,40 @@
   // special case override: use dark text for warning intent
   &.#{$ns}-intent-warning {
     &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-      fill: color-mix(in oklch, var(--bp-intent-warning-foreground) 70%, transparent);
+      // TODO(chrome109): fallback since CSS var cannot be used with rgba()
+      fill: rgba($orange3, 0.7);
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        fill: color-mix(in oklch, var(--bp-intent-warning-foreground) 70%, transparent);
+      }
     }
 
     &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
       &:hover {
-        background: color-mix(
-          in oklch,
-          var(--bp6-button-warning-rest) 77%,
-          var(--bp-intent-warning-hover)
-        );
+        // TODO(chrome109): fallback with legacy warning colors
+        background: $orange2;
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          background: color-mix(
+            in oklch,
+            var(--bp6-button-warning-rest) 77%,
+            var(--bp-intent-warning-hover)
+          );
+        }
       }
 
       &:active,
       &.#{$ns}-active {
-        background: color-mix(
-          in oklch,
-          var(--bp6-button-warning-rest) 46%,
-          var(--bp-intent-warning-active)
-        );
+        // TODO(chrome109): fallback with legacy warning colors
+        background: $orange1;
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          background: color-mix(
+            in oklch,
+            var(--bp6-button-warning-rest) 46%,
+            var(--bp-intent-warning-active)
+          );
+        }
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
@@ -221,11 +256,21 @@
 
     &:disabled,
     &.#{$ns}-disabled {
-      background-color: color-mix(in oklch, var(--bp-intent-warning-rest) 40%, transparent);
+      // TODO(chrome109): fallback with legacy warning colors
+      background-color: rgba($orange3, 0.4);
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        background-color: color-mix(in oklch, var(--bp-intent-warning-rest) 40%, transparent);
+      }
 
       .#{$ns}-dark &,
       [data-bp-color-scheme="dark"] & {
-        color: color-mix(in oklch, var(--bp-intent-warning-foreground) 50%, transparent);
+        // TODO(chrome109): fallback since CSS var cannot be used with rgba()
+        color: rgba($orange5, 0.5);
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          color: color-mix(in oklch, var(--bp-intent-warning-foreground) 50%, transparent);
+        }
       }
     }
 
@@ -236,13 +281,23 @@
       // Mute disabled text — orange is perceptually brighter than other intents
       &:disabled,
       &.#{$ns}-disabled {
-        color: color-mix(in oklch, var(--bp-intent-warning-hover) 40%, transparent);
+        // TODO(chrome109): fallback with legacy warning colors
+        color: rgba($orange2, 0.4);
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          color: color-mix(in oklch, var(--bp-intent-warning-hover) 40%, transparent);
+        }
       }
 
       .#{$ns}-dark &,
       [data-bp-color-scheme="dark"] & {
         &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-          fill: color-mix(in oklch, var(--bp-intent-warning-rest) 35%, transparent);
+          // TODO(chrome109): fallback since CSS var cannot be used with rgba()
+          fill: rgba($orange3, 0.35);
+
+          @supports (color: color-mix(in srgb, red, blue)) {
+            fill: color-mix(in oklch, var(--bp-intent-warning-rest) 35%, transparent);
+          }
         }
       }
     }

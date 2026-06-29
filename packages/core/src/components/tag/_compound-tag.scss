@@ -23,6 +23,13 @@ $compound-tag-right-default-colors: (
   var(--bp-intent-default-active)
 ) !default;
 
+// TODO(chrome109): Verify these legacy compound tag left default colors
+$compound-tag-left-default-colors-legacy: (
+  $gray2,
+  $gray1,
+  $dark-gray5,
+) !default;
+
 // one shade darker than $tag-intent-colors
 $compound-tag-left-intent-colors: (
   "primary": (
@@ -47,12 +54,29 @@ $compound-tag-left-intent-colors: (
   ),
 ) !default;
 
+// TODO(chrome109): Verify these legacy compound tag left intent colors
+$compound-tag-left-intent-colors-legacy: (
+  "primary": ($blue2, $blue1, $blue1),
+  "success": ($green2, $green1, $green1),
+  "warning": ($orange4, $orange3, $orange3),
+  "danger": ($red2, $red1, $red1),
+) !default;
+
 .#{$ns}-compound-tag {
   // Variants: default & interactive
+  // TODO(chrome109): Compute static fallback for compound tag default left colors
   @include compound-tag-colors(
-    $compound-tag-left-default-colors,
+    $compound-tag-left-default-colors-legacy,
     $compound-tag-right-default-colors
   );
+
+  @supports (color: oklch(from var(--any-color) l c h)) {
+    @include compound-tag-colors(
+      $compound-tag-left-default-colors,
+      $compound-tag-right-default-colors
+    );
+  }
+
   padding: 0;
 
   // Layout
@@ -161,24 +185,64 @@ $compound-tag-left-intent-colors: (
   &.#{$ns}-minimal {
     // Variants: minimal default & interactive
     &:not([class*="#{$ns}-intent-"]) {
-      @include minimal-compound-tag-colors(var(--bp-intent-default-rest));
+      // TODO(chrome109): Provide static fallback for minimal compound tag colors
+      @include compound-tag-colors(
+        (rgba($gray1, 0.2), rgba($gray1, 0.3), rgba($gray1, 0.4)),
+        (rgba($gray1, 0.1), rgba($gray1, 0.2), rgba($gray1, 0.3))
+      );
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include minimal-compound-tag-colors(var(--bp-intent-default-rest));
+      }
     }
 
     // Variant: minimal intent
     &.#{$ns}-intent-primary {
-      @include minimal-compound-tag-colors(var(--bp-intent-primary-rest));
+      // TODO(chrome109): Provide static fallback for minimal compound tag intent colors
+      @include compound-tag-colors(
+        (rgba($blue3, 0.2), rgba($blue3, 0.3), rgba($blue3, 0.4)),
+        (rgba($blue3, 0.1), rgba($blue3, 0.2), rgba($blue3, 0.3))
+      );
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include minimal-compound-tag-colors(var(--bp-intent-primary-rest));
+      }
     }
 
     &.#{$ns}-intent-success {
-      @include minimal-compound-tag-colors(var(--bp-intent-success-rest));
+      // TODO(chrome109): Provide static fallback for minimal compound tag intent colors
+      @include compound-tag-colors(
+        (rgba($green3, 0.2), rgba($green3, 0.3), rgba($green3, 0.4)),
+        (rgba($green3, 0.1), rgba($green3, 0.2), rgba($green3, 0.3))
+      );
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include minimal-compound-tag-colors(var(--bp-intent-success-rest));
+      }
     }
 
     &.#{$ns}-intent-warning {
-      @include minimal-compound-tag-colors(var(--bp-intent-warning-rest));
+      // TODO(chrome109): Provide static fallback for minimal compound tag intent colors
+      @include compound-tag-colors(
+        (rgba($orange3, 0.2), rgba($orange3, 0.3), rgba($orange3, 0.4)),
+        (rgba($orange3, 0.1), rgba($orange3, 0.2), rgba($orange3, 0.3))
+      );
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include minimal-compound-tag-colors(var(--bp-intent-warning-rest));
+      }
     }
 
     &.#{$ns}-intent-danger {
-      @include minimal-compound-tag-colors(var(--bp-intent-danger-rest));
+      // TODO(chrome109): Provide static fallback for minimal compound tag intent colors
+      @include compound-tag-colors(
+        (rgba($red3, 0.2), rgba($red3, 0.3), rgba($red3, 0.4)),
+        (rgba($red3, 0.1), rgba($red3, 0.2), rgba($red3, 0.3))
+      );
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include minimal-compound-tag-colors(var(--bp-intent-danger-rest));
+      }
     }
   }
 
@@ -193,35 +257,85 @@ $compound-tag-left-intent-colors: (
     &.#{$ns}-minimal {
       // Variants: dark minimal default & interactive
       &:not([class*="#{$ns}-intent-"]) {
-        @include dark-minimal-compound-tag-colors(var(--bp-intent-default-rest));
+        // TODO(chrome109): Provide static fallback for dark minimal compound tag colors
+        @include compound-tag-colors(
+          (rgba($gray3, 0.4), rgba($gray3, 0.5), rgba($gray3, 0.55)),
+          (rgba($gray3, 0.2), rgba($gray3, 0.3), rgba($gray3, 0.35))
+        );
+
+        @supports (color: oklch(from var(--any-color) l c h)) {
+          @include dark-minimal-compound-tag-colors(var(--bp-intent-default-rest));
+        }
       }
 
       // Variant: dark minimal intent
       &.#{$ns}-intent-primary {
-        @include dark-minimal-compound-tag-colors(var(--bp-intent-primary-rest));
+        // TODO(chrome109): Provide static fallback for dark minimal compound tag intent colors
+        @include compound-tag-colors(
+          (rgba($blue3, 0.4), rgba($blue3, 0.5), rgba($blue3, 0.55)),
+          (rgba($blue3, 0.2), rgba($blue3, 0.3), rgba($blue3, 0.35))
+        );
+
+        @supports (color: oklch(from var(--any-color) l c h)) {
+          @include dark-minimal-compound-tag-colors(var(--bp-intent-primary-rest));
+        }
       }
 
       &.#{$ns}-intent-success {
-        @include dark-minimal-compound-tag-colors(var(--bp-intent-success-rest));
+        // TODO(chrome109): Provide static fallback for dark minimal compound tag intent colors
+        @include compound-tag-colors(
+          (rgba($green3, 0.4), rgba($green3, 0.5), rgba($green3, 0.55)),
+          (rgba($green3, 0.2), rgba($green3, 0.3), rgba($green3, 0.35))
+        );
+
+        @supports (color: oklch(from var(--any-color) l c h)) {
+          @include dark-minimal-compound-tag-colors(var(--bp-intent-success-rest));
+        }
       }
 
       &.#{$ns}-intent-warning {
-        @include dark-minimal-compound-tag-colors(var(--bp-intent-warning-rest));
+        // TODO(chrome109): Provide static fallback for dark minimal compound tag intent colors
+        @include compound-tag-colors(
+          (rgba($orange3, 0.4), rgba($orange3, 0.5), rgba($orange3, 0.55)),
+          (rgba($orange3, 0.2), rgba($orange3, 0.3), rgba($orange3, 0.35))
+        );
+
+        @supports (color: oklch(from var(--any-color) l c h)) {
+          @include dark-minimal-compound-tag-colors(var(--bp-intent-warning-rest));
+        }
       }
 
       &.#{$ns}-intent-danger {
-        @include dark-minimal-compound-tag-colors(var(--bp-intent-danger-rest));
+        // TODO(chrome109): Provide static fallback for dark minimal compound tag intent colors
+        @include compound-tag-colors(
+          (rgba($red3, 0.4), rgba($red3, 0.5), rgba($red3, 0.55)),
+          (rgba($red3, 0.2), rgba($red3, 0.3), rgba($red3, 0.35))
+        );
+
+        @supports (color: oklch(from var(--any-color) l c h)) {
+          @include dark-minimal-compound-tag-colors(var(--bp-intent-danger-rest));
+        }
       }
     }
   }
 
   // Important: these styles must come last to override dark theme default (no intent) styles
   // Variant: intent
-  @each $intent, $left-colors in $compound-tag-left-intent-colors {
+  @each $intent, $left-colors in $compound-tag-left-intent-colors-legacy {
     &.#{$ns}-intent-#{$intent} {
-      $right-colors: map.get($tag-intent-colors, $intent);
+      $right-colors: map.get($tag-intent-colors-legacy, $intent);
 
       @include compound-tag-colors($left-colors, $right-colors);
+    }
+  }
+
+  @supports (color: oklch(from var(--any-color) l c h)) {
+    @each $intent, $left-colors in $compound-tag-left-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        $right-colors: map.get($tag-intent-colors, $intent);
+
+        @include compound-tag-colors($left-colors, $right-colors);
+      }
     }
   }
 }

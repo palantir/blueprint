@@ -225,6 +225,33 @@ $button-dark-minimal-active-text-colors: (
   "default": color-mix(in srgb, var(--bp-intent-default-active) 46%, var(--bp-palette-white)),
 ) !default;
 
+// TODO(chrome109): Verify these legacy color-mix fallbacks
+$button-dark-intent-text-colors-legacy: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger": $red5,
+  "default": $light-gray5,
+) !default;
+
+// TODO(chrome109): Verify these legacy color-mix fallbacks
+$button-dark-minimal-hover-text-colors-legacy: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger": $red5,
+  "default": $light-gray5,
+) !default;
+
+// TODO(chrome109): Verify these legacy color-mix fallbacks
+$button-dark-minimal-active-text-colors-legacy: (
+  "primary": $blue4,
+  "success": $green4,
+  "warning": $orange4,
+  "danger": $red4,
+  "default": $light-gray4,
+) !default;
+
 @mixin pt-button-layout() {
   @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2), $inline: inline);
   align-items: center;
@@ -274,8 +301,13 @@ $button-dark-minimal-active-text-colors: (
 
     &.#{$ns}-active,
     &.#{$ns}-active:hover {
-      // Use srgb for consistency (avoids hue shift with near-neutral gray)
-      background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 28%, transparent);
+      // Fallback for browsers without color-mix support
+      background-color: $button-background-color-active-disabled;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        // Use srgb for consistency (avoids hue shift with near-neutral gray)
+        background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 28%, transparent);
+      }
     }
   }
 
@@ -286,36 +318,54 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-default-colors() {
-  // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
-  background-color: color-mix(in srgb, var(--bp-intent-default-rest) 5%, var(--bp-palette-white));
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $button-background-color;
+  box-shadow: $button-box-shadow;
   color: var(--bp-typography-color-default-rest);
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
+    background-color: color-mix(in srgb, var(--bp-intent-default-rest) 5%, var(--bp-palette-white));
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+  }
 }
 
 @mixin pt-button-hover() {
   background-clip: padding-box;
-  // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
-  background-color: color-mix(in srgb, var(--bp-intent-default-hover) 9%, var(--bp-palette-white));
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $button-background-color-hover;
+  box-shadow: $button-box-shadow;
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
+    background-color: color-mix(in srgb, var(--bp-intent-default-hover) 9%, var(--bp-palette-white));
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+  }
 }
 
 @mixin pt-button-active() {
-  // Use srgb to avoid hue shift with near-neutral gray
-  background-color: color-mix(
-    in srgb,
-    var(--bp-intent-default-active) 16%,
-    var(--bp-palette-white)
-  );
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $button-background-color-active;
+  box-shadow: $button-box-shadow-active;
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb to avoid hue shift with near-neutral gray
+    background-color: color-mix(
+      in srgb,
+      var(--bp-intent-default-active) 16%,
+      var(--bp-palette-white)
+    );
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+  }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
@@ -324,12 +374,17 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-disabled() {
-  // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
-  background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 20%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $button-background-color-disabled;
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
   cursor: not-allowed;
   outline: none;
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb for consistency with dark theme (avoids hue shift with near-neutral gray)
+    background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 20%, transparent);
+  }
 }
 
 @mixin pt-button-intent(
@@ -339,11 +394,16 @@ $button-dark-minimal-active-text-colors: (
   $text-color: var(--bp-palette-white)
 ) {
   background-color: $default-color;
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+  // Fallback for browsers without color-mix support
+  box-shadow: $button-box-shadow;
   color: $text-color;
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+  }
 
   &:hover,
   &:active,
@@ -353,27 +413,43 @@ $button-dark-minimal-active-text-colors: (
 
   &:hover {
     background-color: $hover-color;
-    box-shadow:
-      inset 0 0 0 var(--bp-surface-border-width)
-        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+    // Fallback for browsers without color-mix support
+    box-shadow: $button-box-shadow;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      box-shadow:
+        inset 0 0 0 var(--bp-surface-border-width)
+          color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+    }
   }
 
   &:active,
   &.#{$ns}-active {
     background-color: $active-color;
-    box-shadow:
-      inset 0 0 0 var(--bp-surface-border-width)
-        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+    // Fallback for browsers without color-mix support
+    box-shadow: $button-box-shadow-active;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      box-shadow:
+        inset 0 0 0 var(--bp-surface-border-width)
+          color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
+        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+    }
   }
 
   &:disabled,
   &.#{$ns}-disabled {
-    background-color: color-mix(in oklch, $default-color 50%, transparent);
+    // TODO(chrome109): fallback uses legacy intent disabled pattern since $default-color/$text-color are CSS vars
+    background-color: $button-intent-color-disabled;
     border-color: transparent;
     box-shadow: none;
-    color: color-mix(in oklch, $text-color 60%, transparent);
+    color: $button-intent-color-disabled;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      background-color: color-mix(in oklch, $default-color 50%, transparent);
+      color: color-mix(in oklch, $text-color 60%, transparent);
+    }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
@@ -396,8 +472,13 @@ $button-dark-minimal-active-text-colors: (
   &:hover,
   &:active,
   &.#{$ns}-active {
-    // Use srgb to avoid hue shift with near-neutral gray
-    color: color-mix(in srgb, var(--bp-intent-default-hover) 4%, var(--bp-palette-white));
+    // Fallback for browsers without color-mix support
+    color: $pt-dark-text-color;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      // Use srgb to avoid hue shift with near-neutral gray
+      color: color-mix(in srgb, var(--bp-intent-default-hover) 4%, var(--bp-palette-white));
+    }
   }
 
   &:hover {
@@ -414,63 +495,97 @@ $button-dark-minimal-active-text-colors: (
     @include pt-dark-button-disabled;
 
     &.#{$ns}-active {
-      // Use srgb to avoid hue shift with near-neutral gray
-      background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 7%, transparent);
+      // Fallback for browsers without color-mix support
+      background-color: $dark-button-background-color-active-disabled;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        // Use srgb to avoid hue shift with near-neutral gray
+        background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 7%, transparent);
+      }
     }
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    // Use srgb to avoid hue shift with near-neutral gray
-    background: color-mix(
-      in srgb,
-      var(--bp-intent-default-rest) 20%,
-      var(--bp-palette-black)
-    ); //$dark-progress-track-color;
-    stroke: color-mix(
-      in srgb,
-      var(--bp-intent-default-rest) 68%,
-      var(--bp-palette-white)
-    ); //$dark-progress-head-color;
+    // Fallback for browsers without color-mix support
+    background: $dark-progress-track-color;
+    stroke: $dark-progress-head-color;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      // Use srgb to avoid hue shift with near-neutral gray
+      background: color-mix(
+        in srgb,
+        var(--bp-intent-default-rest) 20%,
+        var(--bp-palette-black)
+      ); //$dark-progress-track-color;
+      stroke: color-mix(
+        in srgb,
+        var(--bp-intent-default-rest) 68%,
+        var(--bp-palette-white)
+      ); //$dark-progress-head-color;
+    }
   }
 }
 
 @mixin pt-dark-button-default-colors() {
-  // Use srgb to avoid hue shift with near-neutral gray
-  background-color: color-mix(in srgb, var(--bp-intent-default-rest) 40%, var(--bp-palette-black));
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-      color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $dark-button-background-color;
+  box-shadow: $dark-button-box-shadow;
   color: var(--bp-intent-default-foreground);
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb to avoid hue shift with near-neutral gray
+    background-color: color-mix(in srgb, var(--bp-intent-default-rest) 40%, var(--bp-palette-black));
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+  }
 }
 
 @mixin pt-dark-button-hover() {
-  // Use srgb instead of oklch to avoid hue shift with near-neutral dark colors
-  background-color: color-mix(in srgb, var(--bp-intent-default-hover) 42%, var(--bp-palette-black));
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-      color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $dark-button-background-color-hover;
+  box-shadow: $dark-button-box-shadow;
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb instead of oklch to avoid hue shift with near-neutral dark colors
+    background-color: color-mix(in srgb, var(--bp-intent-default-hover) 42%, var(--bp-palette-black));
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+  }
 }
 
 @mixin pt-dark-button-active() {
-  // Use srgb instead of oklch to avoid hue shift with near-neutral dark colors
-  background-color: color-mix(
-    in srgb,
-    var(--bp-intent-default-active) 30%,
-    var(--bp-palette-black)
-  );
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-      color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $dark-button-background-color-active;
+  box-shadow: $dark-button-box-shadow-active;
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb instead of oklch to avoid hue shift with near-neutral dark colors
+    background-color: color-mix(
+      in srgb,
+      var(--bp-intent-default-active) 30%,
+      var(--bp-palette-black)
+    );
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width)
+        color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+  }
 }
 
 @mixin pt-dark-button-disabled() {
-  // Use srgb to avoid hue shift with near-neutral gray
-  background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 4%, transparent);
+  // Fallback for browsers without color-mix support
+  background-color: $dark-button-background-color-disabled;
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    // Use srgb to avoid hue shift with near-neutral gray
+    background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 4%, transparent);
+  }
 }
 
 @mixin pt-button-minimal() {
@@ -478,19 +593,29 @@ $button-dark-minimal-active-text-colors: (
   box-shadow: none;
 
   &:hover {
-    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background-color: color-mix(in srgb, var(--bp-intent-default-hover) 8%, transparent);
+    // Fallback for browsers without color-mix support
+    background-color: $minimal-button-background-color-hover;
     box-shadow: none;
     color: var(--bp-typography-color-default-rest);
     text-decoration: none;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+      background-color: color-mix(in srgb, var(--bp-intent-default-hover) 8%, transparent);
+    }
   }
 
   &:active,
   &.#{$ns}-active {
-    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background-color: color-mix(in srgb, var(--bp-intent-default-active) 16%, transparent);
+    // Fallback for browsers without color-mix support
+    background-color: $minimal-button-background-color-active;
     box-shadow: none;
     color: var(--bp-typography-color-default-rest);
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+      background-color: color-mix(in srgb, var(--bp-intent-default-active) 16%, transparent);
+    }
   }
 
   &:disabled,
@@ -502,7 +627,13 @@ $button-dark-minimal-active-text-colors: (
     cursor: not-allowed;
 
     &.#{$ns}-active {
-      background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 30%, transparent);
+      // Fallback for browsers without color-mix support
+      // TODO(chrome109): fallback approximate since CSS var cannot be used with rgba()
+      background-color: $minimal-button-background-color-active;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 30%, transparent);
+      }
     }
   }
 
@@ -521,16 +652,26 @@ $button-dark-minimal-active-text-colors: (
     }
 
     &:hover {
-      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // TODO(BP7): Update this semantic token to use `--bp-intent-default-hover`
-      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent);
+      // Fallback for browsers without color-mix support
+      background-color: $dark-minimal-button-background-color-hover;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+        // TODO(BP7): Update this semantic token to use `--bp-intent-default-hover`
+        background-color: color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent);
+      }
     }
 
     &:active,
     &.#{$ns}-active {
-      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // TODO(BP7): Update this semantic token to use `--bp-intent-default-active`
-      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent);
+      // Fallback for browsers without color-mix support
+      background-color: $dark-minimal-button-background-color-active;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+        // TODO(BP7): Update this semantic token to use `--bp-intent-default-active`
+        background-color: color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent);
+      }
     }
 
     &:disabled,
@@ -542,7 +683,13 @@ $button-dark-minimal-active-text-colors: (
       cursor: not-allowed;
 
       &.#{$ns}-active {
-        background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 30%, transparent);
+        // Fallback for browsers without color-mix support
+        // TODO(chrome109): fallback approximate since CSS var cannot be used with rgba()
+        background-color: $dark-minimal-button-background-color-active;
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          background-color: color-mix(in srgb, var(--bp-intent-default-disabled) 30%, transparent);
+        }
       }
     }
   }
@@ -559,8 +706,11 @@ $button-dark-minimal-active-text-colors: (
   $text-color: map.get($button-minimal-intent-text-colors, $intent);
   $active-text-color: map.get($button-intent-active-text-colors, $intent);
   $dark-text-color: map.get($button-dark-intent-text-colors, $intent);
+  $dark-text-color-legacy: map.get($button-dark-intent-text-colors-legacy, $intent);
   $dark-hover-text-color: map.get($button-dark-minimal-hover-text-colors, $intent);
+  $dark-hover-text-color-legacy: map.get($button-dark-minimal-hover-text-colors-legacy, $intent);
   $dark-active-text-color: map.get($button-dark-minimal-active-text-colors, $intent);
+  $dark-active-text-color-legacy: map.get($button-dark-minimal-active-text-colors-legacy, $intent);
 
   color: $text-color;
 
@@ -573,23 +723,43 @@ $button-dark-minimal-active-text-colors: (
   }
 
   &:hover {
-    background-color: color-mix(in oklch, $intent-color 15%, transparent);
+    // TODO(chrome109): fallback is transparent since $intent-color is a CSS var and cannot be used with rgba()
+    background-color: transparent;
     color: $text-color;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      background-color: color-mix(in oklch, $intent-color 15%, transparent);
+    }
   }
 
   &:active,
   &.#{$ns}-active {
-    background-color: color-mix(in oklch, $intent-color 30%, transparent);
+    // TODO(chrome109): fallback is transparent since $intent-color is a CSS var and cannot be used with rgba()
+    background-color: transparent;
     color: $active-text-color;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      background-color: color-mix(in oklch, $intent-color 30%, transparent);
+    }
   }
 
   &:disabled,
   &.#{$ns}-disabled {
     background: none;
-    color: color-mix(in oklch, $text-color 50%, transparent);
+    // TODO(chrome109): fallback since $text-color is a CSS var
+    color: $button-intent-color-disabled;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      color: color-mix(in oklch, $text-color 50%, transparent);
+    }
 
     &.#{$ns}-active {
-      background-color: color-mix(in oklch, $intent-color 30%, transparent);
+      // TODO(chrome109): fallback is transparent since $intent-color is a CSS var and cannot be used with rgba()
+      background-color: transparent;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        background-color: color-mix(in oklch, $intent-color 30%, transparent);
+      }
     }
   }
 
@@ -599,26 +769,55 @@ $button-dark-minimal-active-text-colors: (
 
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
-    color: $dark-text-color;
+    // TODO(chrome109): fallback since $dark-text-color uses color-mix
+    color: $dark-text-color-legacy;
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      color: $dark-text-color;
+    }
 
     &:hover {
-      background-color: color-mix(in oklch, $intent-color 20%, transparent);
-      color: $dark-hover-text-color;
+      // TODO(chrome109): fallback is transparent since $intent-color is a CSS var and cannot be used with rgba()
+      background-color: transparent;
+      // TODO(chrome109): fallback since $dark-hover-text-color uses color-mix
+      color: $dark-hover-text-color-legacy;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        background-color: color-mix(in oklch, $intent-color 20%, transparent);
+        color: $dark-hover-text-color;
+      }
     }
 
     &:active,
     &.#{$ns}-active {
-      background-color: color-mix(in oklch, $intent-color 30%, transparent);
-      color: $dark-active-text-color;
+      // TODO(chrome109): fallback is transparent since $intent-color is a CSS var and cannot be used with rgba()
+      background-color: transparent;
+      // TODO(chrome109): fallback since $dark-active-text-color uses color-mix
+      color: $dark-active-text-color-legacy;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        background-color: color-mix(in oklch, $intent-color 30%, transparent);
+        color: $dark-active-text-color;
+      }
     }
 
     &:disabled,
     &.#{$ns}-disabled {
       background: none;
-      color: color-mix(in oklch, $dark-text-color 50%, transparent);
+      // TODO(chrome109): fallback since $dark-text-color uses color-mix
+      color: $dark-button-intent-color-disabled;
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        color: color-mix(in oklch, $dark-text-color 50%, transparent);
+      }
 
       &.#{$ns}-active {
-        background-color: color-mix(in oklch, $intent-color 30%, transparent);
+        // TODO(chrome109): fallback is transparent since $intent-color is a CSS var and cannot be used with rgba()
+        background-color: transparent;
+
+        @supports (color: color-mix(in srgb, red, blue)) {
+          background-color: color-mix(in oklch, $intent-color 30%, transparent);
+        }
       }
     }
   }
@@ -658,20 +857,40 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-outlined-intent($text-color, $dark-text-color) {
-  border-color: color-mix(in oklch, $text-color 60%, transparent);
+  // TODO(chrome109): fallback since $text-color is a CSS var and cannot be used with rgba()
+  border-color: rgba($gray3, $button-outlined-border-intent-opacity);
+
+  @supports (color: color-mix(in srgb, red, blue)) {
+    border-color: color-mix(in oklch, $text-color 60%, transparent);
+  }
 
   &:disabled,
   &.#{$ns}-disabled {
-    border-color: color-mix(in oklch, $text-color 20%, transparent);
+    // TODO(chrome109): fallback since $text-color is a CSS var and cannot be used with rgba()
+    border-color: rgba($gray3, $button-outlined-border-disabled-intent-opacity);
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      border-color: color-mix(in oklch, $text-color 20%, transparent);
+    }
   }
 
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
-    border-color: color-mix(in oklch, $dark-text-color 60%, transparent);
+    // TODO(chrome109): fallback since $dark-text-color uses color-mix
+    border-color: rgba($gray3, $button-outlined-border-intent-opacity);
+
+    @supports (color: color-mix(in srgb, red, blue)) {
+      border-color: color-mix(in oklch, $dark-text-color 60%, transparent);
+    }
 
     &:disabled,
     &.#{$ns}-disabled {
-      border-color: color-mix(in oklch, $dark-text-color 20%, transparent);
+      // TODO(chrome109): fallback since $dark-text-color uses color-mix
+      border-color: rgba($gray3, $button-outlined-border-disabled-intent-opacity);
+
+      @supports (color: color-mix(in srgb, red, blue)) {
+        border-color: color-mix(in oklch, $dark-text-color 20%, transparent);
+      }
     }
   }
 }

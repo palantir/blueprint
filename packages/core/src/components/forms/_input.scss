@@ -27,9 +27,14 @@
     @include pt-input-intent(var(--bp-intent-primary-rest));
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)"}
-      );
+      // TODO(chrome109): Compute static fallback for oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)
+      @include pt-dark-input-intent($blue4);
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)"}
+        );
+      }
     }
   }
 
@@ -37,9 +42,14 @@
     @include pt-input-intent(var(--bp-intent-success-rest));
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)"}
-      );
+      // TODO(chrome109): Compute static fallback for oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)
+      @include pt-dark-input-intent($green4);
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)"}
+        );
+      }
     }
   }
 
@@ -47,9 +57,14 @@
     @include pt-input-intent(var(--bp-intent-warning-rest));
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)"}
-      );
+      // TODO(chrome109): Compute static fallback for oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)
+      @include pt-dark-input-intent($orange4);
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)"}
+        );
+      }
     }
   }
 
@@ -57,9 +72,14 @@
     @include pt-input-intent(var(--bp-intent-danger-rest));
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)"}
-      );
+      // TODO(chrome109): Compute static fallback for oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)
+      @include pt-dark-input-intent($red4);
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include pt-dark-input-intent(
+          #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)"}
+        );
+      }
     }
   }
 

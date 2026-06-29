@@ -14,9 +14,13 @@
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    // stylelint-disable-next-line function-no-unknown
-    background-color: #{oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h)};
+    background-color: $dark-card-background-color;
     box-shadow: var(--bp-surface-shadow-0);
+
+    // stylelint-disable-next-line function-no-unknown
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      background-color: #{oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h)};
+    }
   }
 
   // High contrast mode hides box-shadows, so we need to use a border instead
@@ -41,9 +45,16 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-1),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 rgba($white, 0.3),
+      inset 0 0.5px 0 0 rgba($white, 0.08);
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      box-shadow:
+        var(--bp-surface-shadow-1),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+    }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -58,9 +69,16 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-2),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 rgba($white, 0.3),
+      inset 0 0.5px 0 0 rgba($white, 0.08);
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      box-shadow:
+        var(--bp-surface-shadow-2),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+    }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -75,9 +93,16 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-3),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 rgba($white, 0.3),
+      inset 0 0.5px 0 0 rgba($white, 0.08);
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      box-shadow:
+        var(--bp-surface-shadow-3),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+    }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -92,9 +117,16 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-4),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 rgba($white, 0.3),
+      inset 0 0.5px 0 0 rgba($white, 0.08);
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      box-shadow:
+        var(--bp-surface-shadow-4),
+        // stylelint-disable-next-line alpha-value-notation
+        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+    }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -115,25 +147,46 @@
     .#{$ns}-dark & {
       box-shadow:
         var(--bp-surface-shadow-3),
-        // stylelint-disable-next-line alpha-value-notation
-        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+        inset 0 0 0.5px 0 rgba($white, 0.3),
+        inset 0 0.5px 0 0 rgba($white, 0.08);
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        box-shadow:
+          var(--bp-surface-shadow-3),
+          // stylelint-disable-next-line alpha-value-notation
+          inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+          inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      }
     }
   }
 
   &.#{$ns}-selected {
+    // TODO(chrome109): Compute static fallback for oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)
     box-shadow:
-      // stylelint-disable-next-line alpha-value-notation
-      0 0 0 3px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h / 0.2)},
-      0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)};
+      0 0 0 3px rgba($pt-intent-primary, 0.3),
+      0 0 0 1px $pt-intent-primary;
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      box-shadow:
+        // stylelint-disable-next-line alpha-value-notation
+        0 0 0 3px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h / 0.2)},
+        0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)};
+    }
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
+      // TODO(chrome109): Compute static fallback for oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h)
       box-shadow:
-        // stylelint-disable-next-line alpha-value-notation
-        0 0 0 3px
-          #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4)},
-        0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h)};
+        0 0 0 3px rgba($blue5, 0.4),
+        0 0 0 1px $blue5;
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        box-shadow:
+          // stylelint-disable-next-line alpha-value-notation
+          0 0 0 3px
+            #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4)},
+          0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h)};
+      }
     }
   }
 
@@ -145,9 +198,16 @@
     .#{$ns}-dark & {
       box-shadow:
         var(--bp-surface-shadow-1),
-        // stylelint-disable-next-line alpha-value-notation
-        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+        inset 0 0 0.5px 0 rgba($white, 0.3),
+        inset 0 0.5px 0 0 rgba($white, 0.08);
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        box-shadow:
+          var(--bp-surface-shadow-1),
+          // stylelint-disable-next-line alpha-value-notation
+          inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
+          inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      }
     }
   }
 }

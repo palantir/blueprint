@@ -53,6 +53,14 @@ $tag-intent-colors: (
   ),
 ) !default;
 
+// TODO(chrome109): Verify these legacy tag intent color fallbacks
+$tag-intent-colors-legacy: (
+  "primary": ($blue3, $blue2, $blue1, $white),
+  "success": ($green3, $green2, $green1, $white),
+  "warning": ($orange5, $orange4, $orange3, $pt-text-color),
+  "danger": ($red3, $red2, $red1, $white),
+) !default;
+
 $minimal-tag-intent-colors: (
   "primary": (
     var(--bp-intent-primary-rest),
@@ -97,6 +105,14 @@ $minimal-dark-tag-intent-colors: (
     #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"},
     #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h)"},
   ),
+) !default;
+
+// TODO(chrome109): Verify these legacy minimal dark tag intent color fallbacks
+$minimal-dark-tag-intent-colors-legacy: (
+  "primary": ($blue3, $blue4, $blue5),
+  "success": ($green3, $green4, $green5),
+  "warning": ($orange3, $orange4, $orange5),
+  "danger": ($red3, $red4, $red5),
 ) !default;
 
 // Mixins - Tag component
@@ -189,8 +205,13 @@ $minimal-dark-tag-intent-colors: (
   }
 
   .#{$ns}-tag-remove {
-    /* stylelint-disable-next-line alpha-value-notation */
-    color: #{"oklch(from "}#{$text-color}#{" l c h / 0.7)"};
+    // TODO(chrome109): fallback loses the 0.7 alpha modification
+    color: $text-color;
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      /* stylelint-disable-next-line alpha-value-notation */
+      color: #{"oklch(from "}#{$text-color}#{" l c h / 0.7)"};
+    }
 
     &:hover,
     &:active {
@@ -205,14 +226,19 @@ $minimal-dark-tag-intent-colors: (
   }
 
   &:not([class*="#{$ns}-intent-"]) {
-    @include pt-tag-minimal-interactive(
-      #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
-      var(--bp-palette-black)
-    );
-
-    /* stylelint-disable-next-line alpha-value-notation */
-    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+    // TODO(chrome109): Compute static fallback for minimal tag background-color
+    background-color: rgba($gray1, 0.15);
     color: var(--bp-typography-color-default-rest);
+
+    @supports (color: oklch(from var(--any-color) l c h)) {
+      @include pt-tag-minimal-interactive(
+        #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+        var(--bp-palette-black)
+      );
+
+      /* stylelint-disable-next-line alpha-value-notation */
+      background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+    }
 
     .#{$ns}-tag-remove {
       color: var(--bp-typography-color-muted);
@@ -225,21 +251,32 @@ $minimal-dark-tag-intent-colors: (
 
     .#{$ns}-dark &,
     [data-bp-color-scheme="dark"] & {
-      @include pt-tag-minimal-interactive(
-        #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
-        var(--bp-palette-white)
-      );
+      // TODO(chrome109): Compute static fallback for dark minimal tag background-color
+      background-color: rgba($gray3, 0.15);
+      color: $pt-dark-text-color;
 
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
-      color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h)"};
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        @include pt-tag-minimal-interactive(
+          #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+          var(--bp-palette-white)
+        );
+
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+        color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h)"};
+      }
 
       .#{$ns}-tag-remove {
         color: var(--bp-typography-color-muted);
 
         &:hover,
         &:active {
-          color: #{"oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h)"};
+          // TODO(chrome109): Compute static fallback for dark minimal tag-remove hover color
+          color: $pt-dark-text-color;
+
+          @supports (color: oklch(from var(--any-color) l c h)) {
+            color: #{"oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h)"};
+          }
         }
       }
     }
@@ -251,23 +288,41 @@ $minimal-dark-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      // TODO(chrome109): Compute static fallback for minimal interactive hover background
+      background-color: $background-color;
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      }
+
       color: $text-color;
     }
 
     &.#{$ns}-active,
     &:active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      // TODO(chrome109): Compute static fallback for minimal interactive active background
+      background-color: $background-color;
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      }
+
       color: $text-color;
     }
   }
 }
 
 @mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.1)"};
+  // TODO(chrome109): Compute static fallback for minimal intent background
+  background-color: transparent;
+
+  @supports (color: oklch(from var(--any-color) l c h)) {
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.1)"};
+  }
+
   color: $text-color;
 
   > #{$icon-classes} {
@@ -276,15 +331,27 @@ $minimal-dark-tag-intent-colors: (
 
   &.#{$ns}-interactive {
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+      // TODO(chrome109): Compute static fallback for minimal intent hover background
+      background-color: transparent;
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+      }
+
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      // TODO(chrome109): Compute static fallback for minimal intent active background
+      background-color: transparent;
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      }
+
       color: $hover-active-text-color;
     }
   }
@@ -300,21 +367,39 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+  // TODO(chrome109): Compute static fallback for dark minimal intent background
+  background-color: transparent;
+
+  @supports (color: oklch(from var(--any-color) l c h)) {
+    /* stylelint-disable-next-line alpha-value-notation */
+    background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+  }
+
   color: $text-color;
 
   &.#{$ns}-interactive {
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      // TODO(chrome109): Compute static fallback for dark minimal intent hover background
+      background-color: transparent;
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      }
+
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      // TODO(chrome109): Compute static fallback for dark minimal intent active background
+      background-color: transparent;
+
+      @supports (color: oklch(from var(--any-color) l c h)) {
+        /* stylelint-disable-next-line alpha-value-notation */
+        background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      }
+
       color: $hover-active-text-color;
     }
   }
@@ -332,8 +417,14 @@ $minimal-dark-tag-intent-colors: (
 @mixin pt-tag-remove() {
   background: none;
   border: none;
-  /* stylelint-disable-next-line alpha-value-notation */
-  color: #{"oklch(from var(--bp-intent-default-foreground) l c h / 0.7)"};
+  // TODO(chrome109): Compute static fallback for tag-remove color
+  color: $pt-text-color-muted;
+
+  @supports (color: oklch(from var(--any-color) l c h)) {
+    /* stylelint-disable-next-line alpha-value-notation */
+    color: #{"oklch(from var(--bp-intent-default-foreground) l c h / 0.7)"};
+  }
+
   cursor: pointer;
   display: flex;
   margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
