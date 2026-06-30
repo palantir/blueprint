@@ -14,49 +14,34 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
-
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
-
-export interface TableFreezingExampleState {
-    numFrozenColumns?: number;
-    numFrozenRows?: number;
-}
 
 const NUM_ROWS = 20;
 const NUM_COLUMNS = 20;
 const NUM_FROZEN_ROWS = 2;
 const NUM_FROZEN_COLUMNS = 1;
 
-export class TableFreezingExample extends PureComponent<ExampleProps, TableFreezingExampleState> {
-    public render() {
-        return (
-            <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table
-                    numRows={NUM_ROWS}
-                    numFrozenRows={NUM_FROZEN_ROWS}
-                    numFrozenColumns={NUM_FROZEN_COLUMNS}
-                >
-                    {this.renderColumns()}
-                </Table>
-            </Example>
-        );
-    }
+const renderCell = (rowIndex: number, columnIndex: number) => (
+    <Cell>{Utils.toBase26CellName(rowIndex, columnIndex)}</Cell>
+);
 
-    public renderCell = (rowIndex: number, columnIndex: number) => {
-        return <Cell>{Utils.toBase26CellName(rowIndex, columnIndex)}</Cell>;
-    };
+const columns = Array.from({ length: NUM_COLUMNS }, (_, columnIndex) => (
+    <Column
+        key={columnIndex}
+        name={`Column ${Utils.toBase26Alpha(columnIndex)}`}
+        cellRenderer={renderCell}
+    />
+));
 
-    public renderColumns = () => {
-        return Utils.times(NUM_COLUMNS, (columnIndex: number) => {
-            return (
-                <Column
-                    key={columnIndex}
-                    name={`Column ${Utils.toBase26Alpha(columnIndex)}`}
-                    cellRenderer={this.renderCell}
-                />
-            );
-        });
-    };
-}
+export const TableFreezingExample: React.FC<ExampleProps> = props => (
+    <Example options={false} showOptionsBelowExample={true} {...props}>
+        <Table
+            numRows={NUM_ROWS}
+            numFrozenRows={NUM_FROZEN_ROWS}
+            numFrozenColumns={NUM_FROZEN_COLUMNS}
+        >
+            {columns}
+        </Table>
+    </Example>
+);
