@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
+import { useCallback } from "react";
 
 import {
     Classes,
@@ -38,109 +38,6 @@ export interface NavHeaderProps {
     packageInfo: NpmPackageInfo;
 }
 
-export class NavHeader extends PureComponent<NavHeaderProps> {
-    public render() {
-        const { useDarkTheme } = this.props;
-        return (
-            <HotkeysTarget
-                hotkeys={[
-                    {
-                        combo: "shift + d",
-                        global: true,
-                        label: "Toggle dark theme",
-                        onKeyDown: this.handleDarkSwitchChange,
-                    },
-                ]}
-            >
-                <>
-                    <div className="docs-nav-title">
-                        <a className="docs-logo" href="/" aria-label="docs home">
-                            <Logo />
-                        </a>
-                        <div>
-                            <NavbarHeading className="docs-heading">
-                                <span>Blueprint</span> {this.renderVersionsMenu()}
-                            </NavbarHeading>
-                            <a
-                                className={Classes.TEXT_MUTED}
-                                href="https://github.com/palantir/blueprint"
-                                target="_blank"
-                            >
-                                <small>View on GitHub</small>
-                            </a>
-                        </div>
-                    </div>
-                    <div className="docs-nav-divider" />
-                    <NavButton
-                        icon={useDarkTheme ? "flash" : "moon"}
-                        hotkey="shift + d"
-                        text={useDarkTheme ? "Light theme" : "Dark theme"}
-                        onClick={this.handleDarkSwitchChange}
-                    />
-                </>
-            </HotkeysTarget>
-        );
-    }
-
-    private renderVersionsMenu() {
-        const VERSION_MENU_ID = "version-menu";
-        const { useNextVersion } = this.props;
-        const { version, nextVersion, versions } = this.props.packageInfo;
-        if (versions.length === 1) {
-            return (
-                <Tag interactive={false} minimal={true} round={true} aria-label={`Version ${major(versions[0])}`}>
-                    v{major(versions[0])}
-                </Tag>
-            );
-        }
-
-        const versionFromUrl = getVersionFromUrl();
-        // default to latest release if we can't find a major version in the URL
-        const currentVersion = versionFromUrl ?? (useNextVersion ? nextVersion : version);
-        const releaseItems = versions
-            .filter(v => +major(v) > 0)
-            .map(v => {
-                let href;
-                let intent: Intent | undefined;
-                // pre-release versions are not served as the default docs, they are inside the /versions/ folder
-                if (useNextVersion) {
-                    const isLatestStableMajor = +major(v) === +major(currentVersion) - 1;
-                    href = isLatestStableMajor ? "/docs" : `/docs/versions/${major(v)}`;
-                    if (isLatestStableMajor) {
-                        intent = "primary";
-                    }
-                } else {
-                    href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
-                }
-                return <MenuItem href={href} intent={intent} key={v} text={v} />;
-            });
-        return (
-            <PopoverNext
-                content={
-                    <Menu aria-label="docs version" className="docs-version-list" id={VERSION_MENU_ID}>
-                        {releaseItems}
-                    </Menu>
-                }
-                placement="bottom"
-            >
-                <Tag
-                    endIcon="caret-down"
-                    interactive={true}
-                    minimal={true}
-                    round={true}
-                    role="button"
-                    aria-label={`Version ${major(currentVersion)}`}
-                    aria-controls={VERSION_MENU_ID}
-                >
-                    v{major(currentVersion)}
-                </Tag>
-            </PopoverNext>
-        );
-    }
-
-    private handleDarkSwitchChange = () => this.props.onToggleDark(!this.props.useDarkTheme);
-}
-
 /** Get major component of semver string. */
 function major(version: string) {
     return version.split(".", 1)[0];
@@ -151,3 +48,106 @@ function getVersionFromUrl() {
     // if matched, we'll get ["/versions/4", "4"]
     return urlMatch?.[1];
 }
+
+const VERSION_MENU_ID = "version-menu";
+
+interface VersionsMenuProps {
+    useNextVersion: boolean;
+    packageInfo: NpmPackageInfo;
+}
+
+const VersionsMenu: React.FC<VersionsMenuProps> = ({ useNextVersion, packageInfo }) => {
+    const { version, nextVersion, versions } = packageInfo;
+    if (versions.length === 1) {
+        return (
+            <Tag interactive={false} minimal={true} round={true} aria-label={`Version ${major(versions[0])}`}>
+                v{major(versions[0])}
+            </Tag>
+        );
+    }
+
+    const versionFromUrl = getVersionFromUrl();
+    // default to latest release if we can't find a major version in the URL
+    const currentVersion = versionFromUrl ?? (useNextVersion ? nextVersion : version);
+    const releaseItems = versions
+        .filter(v => +major(v) > 0)
+        .map(v => {
+            let href;
+            let intent: Intent | undefined;
+            // pre-release versions are not served as the default docs, they are inside the /versions/ folder
+            if (useNextVersion) {
+                const isLatestStableMajor = +major(v) === +major(currentVersion) - 1;
+                href = isLatestStableMajor ? "/docs" : `/docs/versions/${major(v)}`;
+                if (isLatestStableMajor) {
+                    intent = "primary";
+                }
+            } else {
+                href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
+            }
+            return <MenuItem href={href} intent={intent} key={v} text={v} />;
+        });
+
+    return (
+        <PopoverNext
+            content={
+                <Menu aria-label="docs version" className="docs-version-list" id={VERSION_MENU_ID}>
+                    {releaseItems}
+                </Menu>
+            }
+            placement="bottom"
+        >
+            <Tag
+                endIcon="caret-down"
+                interactive={true}
+                minimal={true}
+                round={true}
+                role="button"
+                aria-label={`Version ${major(currentVersion)}`}
+                aria-controls={VERSION_MENU_ID}
+            >
+                v{major(currentVersion)}
+            </Tag>
+        </PopoverNext>
+    );
+};
+
+export const NavHeader: React.FC<NavHeaderProps> = ({ onToggleDark, useDarkTheme, useNextVersion, packageInfo }) => {
+    const handleDarkSwitchChange = useCallback(() => onToggleDark(!useDarkTheme), [onToggleDark, useDarkTheme]);
+
+    return (
+        <HotkeysTarget
+            hotkeys={[
+                {
+                    combo: "shift + d",
+                    global: true,
+                    label: "Toggle dark theme",
+                    onKeyDown: handleDarkSwitchChange,
+                },
+            ]}
+        >
+            <>
+                <div className="docs-nav-title">
+                    <a className="docs-logo" href="/" aria-label="docs home">
+                        <Logo />
+                    </a>
+                    <div>
+                        <NavbarHeading className="docs-heading">
+                            <span>Blueprint</span>{" "}
+                            <VersionsMenu useNextVersion={useNextVersion} packageInfo={packageInfo} />
+                        </NavbarHeading>
+                        <a className={Classes.TEXT_MUTED} href="https://github.com/palantir/blueprint" target="_blank">
+                            <small>View on GitHub</small>
+                        </a>
+                    </div>
+                </div>
+                <div className="docs-nav-divider" />
+                <NavButton
+                    icon={useDarkTheme ? "flash" : "moon"}
+                    hotkey="shift + d"
+                    text={useDarkTheme ? "Light theme" : "Dark theme"}
+                    onClick={handleDarkSwitchChange}
+                />
+            </>
+        </HotkeysTarget>
+    );
+};
