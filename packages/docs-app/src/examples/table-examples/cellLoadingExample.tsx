@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
@@ -44,111 +44,120 @@ const CONFIGURATIONS = [
     { label: "None", value: CellsLoadingConfiguration.NONE },
 ];
 
-export interface CellLoadingExampleState {
-    configuration?: CellsLoadingConfiguration;
-    randomNumbers?: number[];
+function formatColumnName(columnName: string) {
+    return columnName
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
 }
 
-export class CellLoadingExample extends PureComponent<ExampleProps, CellLoadingExampleState> {
-    public state: CellLoadingExampleState = {
-        configuration: CellsLoadingConfiguration.ALL,
-    };
+export const CellLoadingExample: React.FC<ExampleProps> = props => {
+    const [configuration, setConfiguration] = useState<CellsLoadingConfiguration>(
+        CellsLoadingConfiguration.ALL,
+    );
+    const [randomNumbers, setRandomNumbers] = useState<number[] | undefined>(undefined);
 
-    private handleConfigurationChange = handleStringChange(configuration => {
-        if (configuration === CellsLoadingConfiguration.RANDOM) {
+    const handleConfigurationChange = handleStringChange((value: string) => {
+        if (value === CellsLoadingConfiguration.RANDOM) {
             // calculate random numbers just once instead of inside cellRenderer which is called during table scrolling
-            const randomNumbers: number[] = [];
+            const numbers: number[] = [];
             const numberOfCells = bigSpaceRocks.length * Object.keys(bigSpaceRocks[0]).length;
             for (let i = 0; i < numberOfCells; i++) {
-                randomNumbers.push(Math.random());
+                numbers.push(Math.random());
             }
-            this.setState({ randomNumbers });
+            setRandomNumbers(numbers);
         }
-        this.setState({ configuration: configuration as CellsLoadingConfiguration });
+        setConfiguration(value as CellsLoadingConfiguration);
     });
 
-    public render() {
-        const options = (
-            <RadioGroup
-                label="Example cell loading configurations"
-                selectedValue={this.state.configuration}
-                options={CONFIGURATIONS}
-                onChange={this.handleConfigurationChange}
-            />
-        );
-        return (
-            <Example options={options} showOptionsBelowExample={true} {...this.props}>
-                <Table
-                    numRows={bigSpaceRocks.length}
-                    rowHeaderCellRenderer={this.renderRowHeaderCell}
-                    enableColumnInteractionBar={true}
-                >
-                    {this.renderColumns()}
-                </Table>
-            </Example>
-        );
-    }
+    const isLoading = useCallback(
+        (rowIndex: number, columnIndex: number) => {
+            switch (configuration) {
+                case CellsLoadingConfiguration.ALL:
+                    return true;
+                case CellsLoadingConfiguration.FIRST_COLUMN:
+                    return columnIndex === 1;
+                case CellsLoadingConfiguration.FIRST_ROW:
+                    return rowIndex === 1;
+                case CellsLoadingConfiguration.NONE:
+                    return false;
+                case CellsLoadingConfiguration.RANDOM: {
+                    const numColumns = Object.keys(bigSpaceRocks[0]).length;
+                    return randomNumbers![rowIndex * numColumns + columnIndex] > 0.4;
+                }
+                default:
+                    throw new Error(`Unexpected value: ${configuration}`);
+            }
+        },
+        [configuration, randomNumbers],
+    );
 
-    private renderColumns() {
-        const columns: React.JSX.Element[] = [];
+    const renderCell = useCallback(
+        (rowIndex: number, columnIndex: number) => {
+            const bigSpaceRock = bigSpaceRocks[rowIndex];
+            return (
+                <Cell loading={isLoading(rowIndex + 1, columnIndex + 1)}>
+                    {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
+                </Cell>
+            );
+        },
+        [isLoading],
+    );
 
-        Object.keys(bigSpaceRocks[0]).forEach(columnName => {
-            const formattedColumnName = columnName
-                .replace(/([A-Z])/g, " $1")
-                .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-            columns.push(
+    const renderColumnHeaderCell = useCallback(
+        (columnIndex: number) => {
+            const columnName = Object.keys(bigSpaceRocks[0])[columnIndex];
+            return (
+                <ColumnHeaderCell
+                    loading={isLoading(0, columnIndex + 1)}
+                    name={formatColumnName(columnName)}
+                />
+            );
+        },
+        [isLoading],
+    );
+
+    const renderRowHeaderCell = useCallback(
+        (rowIndex: number) => (
+            <RowHeaderCell loading={isLoading(rowIndex + 1, 0)} name={`${rowIndex + 1}`} />
+        ),
+        [isLoading],
+    );
+
+    const columns = useMemo(() => {
+        return Array.from({ length: Object.keys(bigSpaceRocks[0]).length }, (_, index) => {
+            const columnName = Object.keys(bigSpaceRocks[0])[index];
+            const formattedColumnName = formatColumnName(columnName);
+            return (
                 <Column
                     key={formattedColumnName}
-                    cellRenderer={this.renderCell}
-                    columnHeaderCellRenderer={this.renderColumnHeaderCell}
-                />,
+                    cellRenderer={renderCell}
+                    columnHeaderCellRenderer={renderColumnHeaderCell}
+                />
             );
         });
+    }, [renderCell, renderColumnHeaderCell]);
 
-        return columns;
-    }
-
-    private renderCell = (rowIndex: number, columnIndex: number) => {
-        const bigSpaceRock = bigSpaceRocks[rowIndex];
-        return (
-            <Cell loading={this.isLoading(rowIndex + 1, columnIndex + 1)}>
-                {bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}
-            </Cell>
-        );
-    };
-
-    private renderColumnHeaderCell = (columnIndex: number) => {
-        const columnName = Object.keys(bigSpaceRocks[0])[columnIndex];
-        const formattedColumnName = columnName
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-        return (
-            <ColumnHeaderCell
-                loading={this.isLoading(0, columnIndex + 1)}
-                name={formattedColumnName}
+    const options = useMemo(
+        () => (
+            <RadioGroup
+                label="Example cell loading configurations"
+                selectedValue={configuration}
+                options={CONFIGURATIONS}
+                onChange={handleConfigurationChange}
             />
-        );
-    };
+        ),
+        [configuration, handleConfigurationChange],
+    );
 
-    private renderRowHeaderCell = (rowIndex: number) => {
-        return <RowHeaderCell loading={this.isLoading(rowIndex + 1, 0)} name={`${rowIndex + 1}`} />;
-    };
-
-    private isLoading = (rowIndex: number, columnIndex: number) => {
-        switch (this.state.configuration) {
-            case CellsLoadingConfiguration.ALL:
-                return true;
-            case CellsLoadingConfiguration.FIRST_COLUMN:
-                return columnIndex === 1;
-            case CellsLoadingConfiguration.FIRST_ROW:
-                return rowIndex === 1;
-            case CellsLoadingConfiguration.NONE:
-                return false;
-            case CellsLoadingConfiguration.RANDOM:
-                const numColumns = Object.keys(bigSpaceRocks[0]).length;
-                return this.state.randomNumbers[rowIndex * numColumns + columnIndex] > 0.4;
-            default:
-                throw new Error(`Unexpected value: ${this.state.configuration}`);
-        }
-    };
-}
+    return (
+        <Example options={options} showOptionsBelowExample={true} {...props}>
+            <Table
+                numRows={bigSpaceRocks.length}
+                rowHeaderCellRenderer={renderRowHeaderCell}
+                enableColumnInteractionBar={true}
+            >
+                {columns}
+            </Table>
+        </Example>
+    );
+};
