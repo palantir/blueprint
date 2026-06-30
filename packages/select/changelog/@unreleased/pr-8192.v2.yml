@@ -3,4 +3,4 @@ fix:
   description: "fix(select): respect shouldDismissPopover={false} when selecting items via keyboard Enter"
   links:
     - href: https://github.com/palantir/blueprint/pull/8192
-      text: "8192"
+      text: 8192

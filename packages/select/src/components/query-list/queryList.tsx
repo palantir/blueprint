@@ -450,14 +450,6 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         return null;
     };
 
-    /**
-     * Returns the DOM element corresponding to the currently active (keyboard-focused) list item,
-     * or `undefined` if there is no active item or the items parent is not yet mounted.
-     *
-     * This is intentionally public so that host components (e.g. `Select`) can inspect the active
-     * element's class list — for example to check `Classes.POPOVER_DISMISS` — when keyboard
-     * events don't originate from the menu item element itself.
-     */
     public getActiveElement(): HTMLElement | undefined {
         const { activeItem } = this.state;
         if (this.itemsParentRef != null) {
