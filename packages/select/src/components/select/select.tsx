@@ -179,6 +179,10 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             <InputGroup
                 aria-activedescendant={listProps.activeItemId}
                 aria-autocomplete="list"
+                // aria-controls links this combobox input to the listbox it opens, which is required
+                // by the ARIA 1.1 combobox pattern so that screen readers can announce the relationship.
+                // Suggest already sets this correctly; Select was missing it.
+                aria-controls={this.listboxId}
                 aria-expanded={this.state.isOpen}
                 leftIcon={<SearchIcon />}
                 placeholder={placeholder}
@@ -241,9 +245,12 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                     ...targetProps,
                     "aria-disabled": disabled,
                     "aria-expanded": isOpen,
-                    // When filterable, the InputGroup inside is the combobox; this trigger is just a button
-                    // When not filterable, this trigger is the combobox
-                    ...(filterable ? { "aria-haspopup": "listbox" } : {}),
+                    // When filterable, the InputGroup inside is the combobox; this trigger is just a button.
+                    // When not filterable, this trigger IS the combobox and needs aria-activedescendant
+                    // so screen readers announce the currently focused item during keyboard navigation.
+                    ...(filterable
+                        ? { "aria-haspopup": "listbox" }
+                        : { "aria-activedescendant": listProps.activeItemId }),
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps?.className, {
                         [CoreClasses.FILL]: this.props.fill,
