@@ -14,30 +14,20 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
-
 import { Card, H4, Icon, type IconName } from "@blueprintjs/core";
 
-export class Welcome extends PureComponent {
-    public render() {
-        return (
-            <div className="blueprint-welcome">
-                <WelcomeCard href="#blueprint/getting-started" icon="star" title="Getting started" sameTab={true} />
-                <WelcomeCard href="https://github.com/palantir/blueprint" icon="git-repo" title="Git repository" />
-                <WelcomeCard
-                    href="https://codesandbox.io/p/sandbox/blueprint-v6-react-18-template-lc69nt"
-                    icon="code-block"
-                    title="Code Sandbox"
-                />
-                <WelcomeCard
-                    href="https://github.com/palantir/blueprint#contributing"
-                    icon="git-merge"
-                    title="Contributing"
-                />
-            </div>
-        );
-    }
-}
+export const Welcome: React.FC = () => (
+    <div className="blueprint-welcome">
+        <WelcomeCard href="#blueprint/getting-started" icon="star" title="Getting started" sameTab={true} />
+        <WelcomeCard href="https://github.com/palantir/blueprint" icon="git-repo" title="Git repository" />
+        <WelcomeCard
+            href="https://codesandbox.io/p/sandbox/blueprint-v6-react-18-template-lc69nt"
+            icon="code-block"
+            title="Code Sandbox"
+        />
+        <WelcomeCard href="https://github.com/palantir/blueprint#contributing" icon="git-merge" title="Contributing" />
+    </div>
+);
 
 const WelcomeCard: React.FC<{
     children?: React.ReactNode;
