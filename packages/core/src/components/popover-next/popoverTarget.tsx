@@ -3,7 +3,7 @@
  */
 
 import classNames from "classnames";
-import { Children, cloneElement, createElement, forwardRef, useCallback } from "react";
+import { Children, cloneElement, createElement, forwardRef, useCallback, useMemo } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
 import { PopoverInteractionKind } from "../popover/popoverProps";
@@ -37,7 +37,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     const tagName = fill ? "div" : targetTagName;
     const { isOpen } = floatingData;
 
-    const ref = mergeRefs(floatingData.refs.setReference, targetRef);
+    const ref = useMemo(() => mergeRefs(floatingData.refs.setReference, targetRef), [floatingData.refs.setReference, targetRef]);
 
     // Custom keyboard click handler for the reference element. Floating UI's useClick hook
     // has its keyboardHandlers disabled because it calls `preventDefault()` on Space keydown,
