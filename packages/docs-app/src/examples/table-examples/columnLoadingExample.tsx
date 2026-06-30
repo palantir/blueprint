@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { FormGroup, HTMLSelect } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
@@ -27,78 +27,59 @@ interface BigSpaceRock {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bigSpaceRocks: BigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
-export interface ColumnLoadingExampleState {
-    loadingColumn?: number;
+function formatColumnName(columnName: string) {
+    return columnName
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
 }
 
-export class ColumnLoadingExample extends PureComponent<ExampleProps, ColumnLoadingExampleState> {
-    public state: ColumnLoadingExampleState = {
-        loadingColumn: 1,
-    };
+const renderCell = (rowIndex: number, columnIndex: number) => {
+    const bigSpaceRock = bigSpaceRocks[rowIndex];
+    return <Cell>{bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}</Cell>;
+};
 
-    private handleLoadingColumnChange = handleNumberChange(loadingColumn =>
-        this.setState({ loadingColumn }),
+export const ColumnLoadingExample: React.FC<ExampleProps> = props => {
+    const [loadingColumn, setLoadingColumn] = useState(1);
+
+    const handleLoadingColumnChange = handleNumberChange(setLoadingColumn);
+
+    const loadingOptions = useCallback(
+        (columnIndex: number) =>
+            columnIndex === loadingColumn
+                ? [ColumnLoadingOption.HEADER, ColumnLoadingOption.CELLS]
+                : undefined,
+        [loadingColumn],
     );
 
-    public render() {
-        return (
-            <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table>
-            </Example>
-        );
-    }
-
-    protected renderOptions() {
-        const firstSpaceRock = bigSpaceRocks[0];
-        const numColumns = Object.keys(firstSpaceRock).length;
-        const options: React.JSX.Element[] = [];
-        for (let i = 0; i < numColumns; i++) {
-            const label = this.formatColumnName(Object.keys(firstSpaceRock)[i]);
-            options.push(<option key={i} value={i} label={label} />);
-        }
-        return (
+    const options = useMemo(
+        () => (
             <FormGroup label="Loading column">
-                <HTMLSelect
-                    value={this.state.loadingColumn}
-                    onChange={this.handleLoadingColumnChange}
-                >
-                    {options}
+                <HTMLSelect value={loadingColumn} onChange={handleLoadingColumnChange}>
+                    {Object.keys(bigSpaceRocks[0]).map((columnName, index) => (
+                        <option key={index} value={index} label={formatColumnName(columnName)} />
+                    ))}
                 </HTMLSelect>
             </FormGroup>
-        );
-    }
+        ),
+        [loadingColumn, handleLoadingColumnChange],
+    );
 
-    private renderColumns() {
-        const columns: React.JSX.Element[] = [];
-
-        Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
-            columns.push(
+    const columns = useMemo(
+        () =>
+            Array.from({ length: Object.keys(bigSpaceRocks[0]).length }, (_, index) => (
                 <Column
                     key={index}
-                    loadingOptions={this.loadingOptions(index)}
-                    name={this.formatColumnName(columnName)}
-                    cellRenderer={this.renderCell}
-                />,
-            );
-        });
+                    loadingOptions={loadingOptions(index)}
+                    name={formatColumnName(Object.keys(bigSpaceRocks[0])[index])}
+                    cellRenderer={renderCell}
+                />
+            )),
+        [loadingOptions],
+    );
 
-        return columns;
-    }
-
-    private renderCell = (rowIndex: number, columnIndex: number) => {
-        const bigSpaceRock = bigSpaceRocks[rowIndex];
-        return <Cell>{bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}</Cell>;
-    };
-
-    private formatColumnName = (columnName: string) => {
-        return columnName
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-    };
-
-    private loadingOptions = (columnIndex: number) => {
-        return columnIndex === this.state.loadingColumn
-            ? [ColumnLoadingOption.HEADER, ColumnLoadingOption.CELLS]
-            : undefined;
-    };
-}
+    return (
+        <Example options={options} showOptionsBelowExample={true} {...props}>
+            <Table numRows={bigSpaceRocks.length}>{columns}</Table>
+        </Example>
+    );
+};
