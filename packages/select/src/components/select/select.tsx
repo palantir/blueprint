@@ -308,7 +308,11 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
         const target = event?.target as HTMLElement;
-        const menuItem = target?.closest(`.${CoreClasses.MENU_ITEM}`);
+        // For click events the target is (or is inside) the menu item anchor, so we can walk up
+        // the DOM to find it. For keyboard Enter events the target is the popover content wrapper,
+        // not the menu item, so we fall back to querying the active element via QueryList.
+        const menuItem =
+            target?.closest(`.${CoreClasses.MENU_ITEM}`) ?? this.queryList?.getActiveElement() ?? null;
         const menuItemDismiss = menuItem?.matches(`.${CoreClasses.POPOVER_DISMISS}`);
         const shouldDismiss = menuItemDismiss ?? true;
 
