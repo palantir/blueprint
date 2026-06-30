@@ -3,7 +3,7 @@
  */
 
 import classNames from "classnames";
-import { Children, cloneElement, createElement, forwardRef, useCallback } from "react";
+import { Children, cloneElement, createElement, forwardRef, useCallback, useMemo } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
 import { PopoverInteractionKind } from "../popover/popoverProps";
@@ -37,7 +37,17 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     const tagName = fill ? "div" : targetTagName;
     const { isOpen } = floatingData;
 
-    const ref = mergeRefs(floatingData.refs.setReference, targetRef);
+    // Memoize the merged ref callback so its identity is stable across re-renders.
+    // Without memoization, a new callback is created on every render, causing React to
+    // call the old ref with null and the new ref with the DOM node on each cycle. This
+    // triggers a floating-ui state update → re-render → new ref → infinite loop.
+    // Blueprint's mergeRefs JSDoc warns: "If using in a functional component, would
+    // recommend using useMemo to preserve function identity."
+    const ref = useMemo(
+        () => mergeRefs(floatingData.refs.setReference, targetRef),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [floatingData.refs.setReference, targetRef],
+    );
 
     // Custom keyboard click handler for the reference element. Floating UI's useClick hook
     // has its keyboardHandlers disabled because it calls `preventDefault()` on Space keydown,
