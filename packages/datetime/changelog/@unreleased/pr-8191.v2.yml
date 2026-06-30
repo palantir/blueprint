@@ -1,0 +1,6 @@
+type: fix
+fix:
+  description: "fix(datetime): ensure DateRangePicker time-picker changes emit chronologically ordered date ranges"
+  links:
+    - href: https://github.com/palantir/blueprint/pull/8191
+      text: "8191"
