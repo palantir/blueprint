@@ -267,12 +267,8 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
 
-        // Ensure chronological order: the day-click path normalizes via boundary swap logic, but
-        // the time-picker path skips it. If adjusting the start time pushes it past the end (or
-        // vice versa), swap the boundaries so the range is always [earlier, later].
         const [start, end] = newDateRange;
-        const orderedDateRange: DateRange =
-            start != null && end != null && start > end ? [end, start] : newDateRange;
+        const orderedDateRange: DateRange = start != null && end != null && start > end ? [end, start] : newDateRange;
 
         this.props.onChange?.(orderedDateRange);
         this.setState({ time: newTimeRange, value: orderedDateRange });
