@@ -267,8 +267,11 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
 
-        this.props.onChange?.(newDateRange);
-        this.setState({ time: newTimeRange, value: newDateRange });
+        const [start, end] = newDateRange;
+        const orderedDateRange: DateRange = start != null && end != null && start > end ? [end, start] : newDateRange;
+
+        this.props.onChange?.(orderedDateRange);
+        this.setState({ time: newTimeRange, value: orderedDateRange });
     };
 
     // When a user sets the time value before choosing a date, we need to pick a date for them
