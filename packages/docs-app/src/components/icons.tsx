@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
@@ -23,84 +23,13 @@ import { DocsIcon, type DocsIconProps as Icon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
 
-export interface IconsState {
-    filter: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const DEFAULT_ICONS: Icon[] = require("@blueprintjs/icons/icons.json");
 
 export interface IconsProps {
     iconFilter?: (query: string, icon: Icon) => boolean;
     iconRenderer?: (icon: Icon, index: number) => React.JSX.Element;
     icons?: Icon[];
-}
-
-export class Icons extends PureComponent<IconsProps, IconsState> {
-    public static defaultProps: IconsProps = {
-        iconFilter: isIconFiltered,
-        iconRenderer: renderIcon,
-        icons: require("@blueprintjs/icons/icons.json"),
-    };
-
-    public state: IconsState = {
-        filter: "",
-    };
-
-    private iconGroups = initIconGroups(this.props.icons);
-
-    public render() {
-        const groupElements = Object.keys(this.iconGroups)
-            .sort()
-            .map(this.maybeRenderIconGroup, this)
-            .filter(group => group != null);
-        return (
-            <div className="docs-icons">
-                <InputGroup
-                    autoFocus={true}
-                    className={Classes.FILL}
-                    leftIcon="search"
-                    onValueChange={this.handleFilterChange}
-                    placeholder="Search for icons..."
-                    size="large"
-                    type="search"
-                    value={this.state.filter}
-                />
-                {groupElements.length > 0 ? groupElements : this.renderZeroState()}
-            </div>
-        );
-    }
-
-    private maybeRenderIconGroup = (groupName: string, index: number) => {
-        const { iconRenderer } = this.props;
-        const iconElements = this.getFilteredIcons(groupName).map(iconRenderer);
-        if (iconElements.length === 0) {
-            return null;
-        }
-
-        let padIndex = iconElements.length;
-        while (iconElements.length % ICONS_PER_ROW > 0) {
-            iconElements.push(<div className="docs-icon-spacer" key={`pad-${padIndex++}`} />);
-        }
-        return (
-            <div className="docs-icon-group" key={index}>
-                <H3>{groupName}</H3>
-                {iconElements}
-            </div>
-        );
-    };
-
-    private renderZeroState() {
-        return <NonIdealState className={Classes.TEXT_MUTED} icon="zoom-out" description="No icons found" />;
-    }
-
-    private getFilteredIcons(groupName: string) {
-        const icons = this.iconGroups[groupName];
-        if (this.state.filter === "") {
-            return icons;
-        }
-        const { iconFilter } = this.props;
-        return icons.filter(icon => iconFilter(this.state.filter, icon));
-    }
-
-    private handleFilterChange = (filter: string) => this.setState({ filter });
 }
 
 function isIconFiltered(query: string, icon: Icon) {
@@ -126,3 +55,67 @@ function initIconGroups(icons: Icon[]) {
     }
     return groups;
 }
+
+export const Icons: React.FC<IconsProps> = ({
+    iconFilter = isIconFiltered,
+    iconRenderer = renderIcon,
+    icons = DEFAULT_ICONS,
+}) => {
+    const [filter, setFilter] = useState("");
+
+    const iconGroups = useMemo(() => initIconGroups(icons), [icons]);
+
+    const getFilteredIcons = useCallback(
+        (groupName: string) => {
+            const groupIcons = iconGroups[groupName];
+            if (filter === "") {
+                return groupIcons;
+            }
+            return groupIcons.filter(icon => iconFilter(filter, icon));
+        },
+        [iconGroups, filter, iconFilter],
+    );
+
+    const groupElements = useMemo(() => {
+        return Object.keys(iconGroups)
+            .sort()
+            .map((groupName, index) => {
+                const iconElements = getFilteredIcons(groupName).map(iconRenderer);
+                if (iconElements.length === 0) {
+                    return null;
+                }
+
+                let padIndex = iconElements.length;
+                while (iconElements.length % ICONS_PER_ROW > 0) {
+                    iconElements.push(<div className="docs-icon-spacer" key={`pad-${padIndex++}`} />);
+                }
+                return (
+                    <div className="docs-icon-group" key={index}>
+                        <H3>{groupName}</H3>
+                        {iconElements}
+                    </div>
+                );
+            })
+            .filter(group => group != null);
+    }, [iconGroups, getFilteredIcons, iconRenderer]);
+
+    return (
+        <div className="docs-icons">
+            <InputGroup
+                autoFocus={true}
+                className={Classes.FILL}
+                leftIcon="search"
+                onValueChange={setFilter}
+                placeholder="Search for icons..."
+                size="large"
+                type="search"
+                value={filter}
+            />
+            {groupElements.length > 0 ? (
+                groupElements
+            ) : (
+                <NonIdealState className={Classes.TEXT_MUTED} icon="zoom-out" description="No icons found" />
+            )}
+        </div>
+    );
+};
