@@ -3,4 +3,4 @@ fix:
   description: "fix(select): add missing aria-controls and aria-activedescendant ARIA attributes to Select combobox"
   links:
     - href: https://github.com/palantir/blueprint/pull/8193
-      text: "8193"
+      text: 8193
