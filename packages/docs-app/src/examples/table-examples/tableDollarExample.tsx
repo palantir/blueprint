@@ -14,39 +14,29 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
-
 import { Classes } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, ColumnHeaderCell, Table } from "@blueprintjs/table";
 
-// this will obviously get outdated, it's valid only as of August 2021
-const USD_TO_EURO_CONVERSION = 0.85;
+// this will obviously get outdated, it's valid only as of June 2026
+const USD_TO_EURO_CONVERSION = 0.87;
 
-export class TableDollarExample extends PureComponent<ExampleProps> {
-    public render() {
-        const dollarCellRenderer = (rowIndex: number) => (
-            <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
-        );
-        const euroCellRenderer = (rowIndex: number) => (
-            <Cell>{`€${(rowIndex * 10 * USD_TO_EURO_CONVERSION).toFixed(2)}`}</Cell>
-        );
-        return (
-            <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={20} enableGhostCells={true} enableFocusedCell={true}>
-                    <Column
-                        cellRenderer={dollarCellRenderer}
-                        columnHeaderCellRenderer={renderColumnHeader}
-                    />
-                    <Column
-                        cellRenderer={euroCellRenderer}
-                        columnHeaderCellRenderer={renderColumnHeader}
-                    />
-                </Table>
-            </Example>
-        );
-    }
-}
+const dollarCellRenderer = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
+const euroCellRenderer = (rowIndex: number) => (
+    <Cell>{`€${(rowIndex * 10 * USD_TO_EURO_CONVERSION).toFixed(2)}`}</Cell>
+);
+
+export const TableDollarExample: React.FC<ExampleProps> = props => (
+    <Example options={false} showOptionsBelowExample={true} {...props}>
+        <Table numRows={20} enableGhostCells={true} enableFocusedCell={true}>
+            <Column
+                cellRenderer={dollarCellRenderer}
+                columnHeaderCellRenderer={renderColumnHeader}
+            />
+            <Column cellRenderer={euroCellRenderer} columnHeaderCellRenderer={renderColumnHeader} />
+        </Table>
+    </Example>
+);
 
 function renderColumnHeader(index: number) {
     const name = ["Dollars", "Euros"][index]!;
