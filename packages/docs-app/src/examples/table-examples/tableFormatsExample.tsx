@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
-
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "@blueprintjs/table";
 
@@ -27,7 +25,7 @@ interface Timezone {
 
 const LOCAL_TIMEZONE_OFFSET_MSEC = new Date().getTimezoneOffset() * 60 * 1000;
 
-// TODO(adahiya): import timezones from datetime package
+// TODO: import timezones from datetime package
 const TIME_ZONES: Timezone[] = (
     [
         ["-12:00", -12.0, "Etc/GMT+12"],
@@ -78,50 +76,44 @@ const TIME_ZONES: Timezone[] = (
     };
 });
 
-export class TableFormatsExample extends PureComponent<ExampleProps> {
-    private data = TIME_ZONES;
+const EXAMPLE_DATE = new Date();
 
-    private date = new Date();
+const renderTimezone = (row: number) => <Cell>{TIME_ZONES[row].name}</Cell>;
 
-    public render() {
-        return (
-            <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table enableRowResizing={true} numRows={this.data.length}>
-                    <Column name="Timezone" cellRenderer={this.renderTimezone} />
-                    <Column name="UTC Offset" cellRenderer={this.renderOffset} />
-                    <Column name="Local Time" cellRenderer={this.renderLocalTime} />
-                    <Column name="Timezone JSON" cellRenderer={this.renderJSON} />
-                </Table>
-            </Example>
-        );
-    }
+const renderOffset = (row: number) => <Cell>{TIME_ZONES[row].offsetString}</Cell>;
 
-    private renderTimezone = (row: number) => <Cell>{this.data[row].name}</Cell>;
-
-    private renderOffset = (row: number) => <Cell>{this.data[row].offsetString}</Cell>;
-
-    private renderLocalTime = (row: number) => {
-        const localDateTime = new Date(this.date);
-        localDateTime.setTime(localDateTime.getTime() + this.data[row].offsetMsec);
-        const formattedDateTime = localDateTime.toLocaleString("en-US", {
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-            month: "long",
-            second: "2-digit",
-            weekday: "long",
-            year: "numeric",
-        });
-        return (
-            <Cell>
-                <TruncatedFormat detectTruncation={true}>{formattedDateTime}</TruncatedFormat>
-            </Cell>
-        );
-    };
-
-    private renderJSON = (row: number) => (
+const renderLocalTime = (row: number) => {
+    const localDateTime = new Date(EXAMPLE_DATE);
+    localDateTime.setTime(localDateTime.getTime() + TIME_ZONES[row].offsetMsec);
+    const formattedDateTime = localDateTime.toLocaleString("en-US", {
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        month: "long",
+        second: "2-digit",
+        weekday: "long",
+        year: "numeric",
+    });
+    return (
         <Cell>
-            <JSONFormat detectTruncation={true}>{this.data[row]}</JSONFormat>
+            <TruncatedFormat detectTruncation={true}>{formattedDateTime}</TruncatedFormat>
         </Cell>
     );
-}
+};
+
+const renderJSON = (row: number) => (
+    <Cell>
+        <JSONFormat detectTruncation={true}>{TIME_ZONES[row]}</JSONFormat>
+    </Cell>
+);
+
+export const TableFormatsExample: React.FC<ExampleProps> = props => (
+    <Example options={false} showOptionsBelowExample={true} {...props}>
+        <Table enableRowResizing={true} numRows={TIME_ZONES.length}>
+            <Column name="Timezone" cellRenderer={renderTimezone} />
+            <Column name="UTC Offset" cellRenderer={renderOffset} />
+            <Column name="Local Time" cellRenderer={renderLocalTime} />
+            <Column name="Timezone JSON" cellRenderer={renderJSON} />
+        </Table>
+    </Example>
+);
