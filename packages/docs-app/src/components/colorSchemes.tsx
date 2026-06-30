@@ -16,7 +16,7 @@
 
 import chroma from "chroma-js";
 import classNames from "classnames";
-import { PureComponent } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Classes, RadioGroup } from "@blueprintjs/core";
 import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs-theme";
@@ -77,145 +77,122 @@ export interface ColorSchemeProps {
     steps?: number;
 }
 
-export interface ColorSchemeState {
-    activePalette?: number;
-    activeSchema?: number;
-    steps?: number;
+function generateColorPalette(basePalette: string[], diverging: boolean | undefined, steps: number) {
+    if (diverging) {
+        // Split the basePalette into left and right, including the middle color in both.
+        // Create individual bezier scales for each side. We'll choose which to use later.
+        const leftColors = chroma.bezier(basePalette.slice(0, 3)).scale().mode("lab").correctLightness(true);
+        const rightColors = chroma.bezier(basePalette.slice(2, 5)).scale().mode("lab").correctLightness(true);
+
+        const result: string[] = [];
+        for (let i = 0; i < steps; i++) {
+            // Calculate the position of the step as a value between 0 and 1.
+            // If it's below 0.5 use the left color scale, otherwise use right scale.
+            const t = i / (steps - 1);
+            result.push(t < 0.5 ? leftColors(t * 2).hex() : rightColors(t * 2 - 1).hex());
+        }
+        return result;
+    } else {
+        return chroma.bezier(basePalette).scale().correctLightness(true).colors(steps);
+    }
 }
 
-export class ColorScheme extends PureComponent<ColorSchemeProps, ColorSchemeState> {
-    public state: ColorSchemeState = {
-        activePalette: 0,
-        activeSchema: 0,
-        steps: this.props.steps || 5,
-    };
+export const ColorScheme: React.FC<ColorSchemeProps> = ({ schemes, steps: initialSteps = 5 }) => {
+    const [activePalette, setActivePalette] = useState(0);
+    const [activeSchema, setActiveSchema] = useState(0);
+    const [steps, setSteps] = useState(initialSteps);
 
-    private handleStepChange = handleNumberChange(steps => {
-        this.setState({
-            steps: Math.max(MIN_STEPS, Math.min(MAX_STEPS, steps)),
-        });
+    const handleStepChange = handleNumberChange((value: number) => {
+        setSteps(Math.max(MIN_STEPS, Math.min(MAX_STEPS, value)));
     });
 
-    private handleSchemaChange = handleNumberChange(activeSchema =>
-        this.setState({
-            activePalette: 0,
-            activeSchema,
-        }),
+    const handleSchemaChange = handleNumberChange((schemaIndex: number) => {
+        setActivePalette(0);
+        setActiveSchema(schemaIndex);
+    });
+
+    const handlePaletteChange = useCallback((key: number) => {
+        setActivePalette(key);
+    }, []);
+
+    const schema = schemes[activeSchema];
+    const currentPalettes = useMemo(
+        () =>
+            schema.palettes.map((palette, index) => {
+                const colors = generateColorPalette(palette, schema.diverging, 5);
+                const swatches = colors.map((hex: string, i: number) => (
+                    <div className="docs-color-swatch" key={i} style={{ backgroundColor: hex }} />
+                ));
+
+                const classes = classNames("docs-color-palette", {
+                    selected: index === activePalette,
+                });
+                const clickHandler = () => handlePaletteChange(index);
+                const keyDownHandler = createKeyEventHandler(
+                    {
+                        Enter: clickHandler,
+                        Space: clickHandler,
+                    },
+                    true,
+                );
+
+                return (
+                    <div className={classes} key={index} onClick={clickHandler} onKeyDown={keyDownHandler} tabIndex={0}>
+                        {swatches}
+                    </div>
+                );
+            }),
+        [activePalette, handlePaletteChange, schema.palettes, schema.diverging],
     );
 
-    public render() {
-        const schema = this.props.schemes[this.state.activeSchema];
-        const currentPalettes = schema.palettes.map((palette, index) => {
-            return this.renderPalette(palette, index, schema.diverging);
-        });
+    const generatedColors = generateColorPalette(schema.palettes[activePalette], schema.diverging, steps);
 
-        const generatedColors = this.generateColorPalette(schema.palettes[this.state.activePalette], schema.diverging);
-
-        return (
-            <div className="docs-color-scheme">
-                {this.renderRadioGroup()}
-                <div className="docs-color-book">{currentPalettes}</div>
-                <label className={classNames(Classes.LABEL, Classes.INLINE, "docs-color-scheme-label")}>
-                    Step count
-                    <input
-                        className={Classes.INPUT}
-                        type="number"
-                        dir="auto"
-                        value={this.state.steps.toString()}
-                        onChange={this.handleStepChange}
-                        min={MIN_STEPS}
-                        max={MAX_STEPS}
-                    />
-                </label>
-                <ColorBar colors={generatedColors} />
-            </div>
-        );
-    }
-
-    private handlePaletteChange = (key: number) => {
-        this.setState({ activePalette: key });
-    };
-
-    private renderRadioGroup() {
-        if (this.props.schemes.length === 1) {
-            return undefined;
-        }
-
-        const OPTIONS = this.props.schemes.map((scheme, index) => {
-            return { label: scheme.label, value: index.toString() };
-        });
-
-        return (
-            <RadioGroup
-                key="activeSchema"
-                name="activeSchema"
-                className="docs-color-scheme-radios"
-                inline={true}
-                label="Select a color scheme"
-                options={OPTIONS}
-                onChange={this.handleSchemaChange}
-                selectedValue={this.state.activeSchema.toString()}
-            />
-        );
-    }
-
-    private generateColorPalette = (basePalette: string[], diverging?: boolean, steps = this.state.steps) => {
-        if (diverging) {
-            // Split the basePalette into left and right, including the middle color in both.
-            // Create individual bezier scales for each side. We'll choose which to use later.
-            const leftColors = chroma.bezier(basePalette.slice(0, 3)).scale().mode("lab").correctLightness(true);
-            const rightColors = chroma.bezier(basePalette.slice(2, 5)).scale().mode("lab").correctLightness(true);
-
-            const result: string[] = [];
-            for (let i = 0; i < steps; i++) {
-                // Calculate the position of the step as a value between 0 and 1.
-                // If it's below 0.5 use the left color scale, otherwise use right scale.
-                const t = i / (steps - 1);
-                result.push(t < 0.5 ? leftColors(t * 2).hex() : rightColors(t * 2 - 1).hex());
-            }
-            return result;
-        } else {
-            return chroma.bezier(basePalette).scale().correctLightness(true).colors(steps);
-        }
-    };
-
-    private renderPalette(palette: string[], key: number, diverging?: boolean) {
-        const colors = this.generateColorPalette(palette, diverging, 5);
-        const swatches = colors.map((hex: string, i: number) => (
-            <div className="docs-color-swatch" key={i} style={{ backgroundColor: hex }} />
-        ));
-
-        const classes = classNames("docs-color-palette", {
-            selected: key === this.state.activePalette,
-        });
-        const clickHandler = this.handlePaletteChange.bind(this, key);
-        const keyDownHandler = createKeyEventHandler(
-            {
-                Enter: clickHandler,
-                Space: clickHandler,
-            },
-            true,
-        );
-
-        return (
-            <div className={classes} key={key} onClick={clickHandler} onKeyDown={keyDownHandler} tabIndex={0}>
-                {swatches}
-            </div>
-        );
-    }
-}
+    return (
+        <div className="docs-color-scheme">
+            {schemes.length === 1 ? undefined : (
+                <RadioGroup
+                    key="activeSchema"
+                    name="activeSchema"
+                    className="docs-color-scheme-radios"
+                    inline={true}
+                    label="Select a color scheme"
+                    options={schemes.map((scheme, index) => ({
+                        label: scheme.label,
+                        value: index.toString(),
+                    }))}
+                    onChange={handleSchemaChange}
+                    selectedValue={activeSchema.toString()}
+                />
+            )}
+            <div className="docs-color-book">{currentPalettes}</div>
+            <label className={classNames(Classes.LABEL, Classes.INLINE, "docs-color-scheme-label")}>
+                Step count
+                <input
+                    className={Classes.INPUT}
+                    type="number"
+                    dir="auto"
+                    value={steps.toString()}
+                    onChange={handleStepChange}
+                    min={MIN_STEPS}
+                    max={MAX_STEPS}
+                />
+            </label>
+            <ColorBar colors={generatedColors} />
+        </div>
+    );
+};
 
 export const QualitativeSchemePalette: React.FC = () => <ColorBar colors={QUALITATIVE} />;
 
 export const SequentialSchemePalette: React.FC = () => {
-    const schemes = [
+    const schemeList = [
         { label: "Single hue", palettes: SINGLE_HUE },
         { label: "Multi-hue", palettes: SEQUENTIAL },
     ];
-    return <ColorScheme schemes={schemes} />;
+    return <ColorScheme schemes={schemeList} />;
 };
 
 export const DivergingSchemePalette: React.FC = () => {
-    const schemes = [{ diverging: true, label: "Diverging", palettes: DIVERGING }];
-    return <ColorScheme schemes={schemes} />;
+    const schemeList = [{ diverging: true, label: "Diverging", palettes: DIVERGING }];
+    return <ColorScheme schemes={schemeList} />;
 };
