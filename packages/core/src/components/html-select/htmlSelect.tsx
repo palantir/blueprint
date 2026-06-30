@@ -82,8 +82,6 @@ export interface HTMLSelectProps
     placeholder?: string;
 }
 
-// this component is simple enough that tests would be purely tautological.
-/* istanbul ignore next */
 /**
  * HTML select component
  *
