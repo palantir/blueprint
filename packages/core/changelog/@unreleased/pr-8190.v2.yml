@@ -1,6 +1,0 @@
-type: fix
-fix:
-  description: "fix(popover-next): memoize mergeRefs in PopoverTarget to prevent infinite re-render loop"
-  links:
-    - href: https://github.com/palantir/blueprint/pull/8190
-      text: "8190"
