@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
+import { useMemo, useState } from "react";
 
 import { Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -27,92 +27,72 @@ interface BigSpaceRock {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bigSpaceRocks: BigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
-export interface TableLoadingExampleState {
-    cellsLoading?: boolean;
-    columnHeadersLoading?: boolean;
-    rowHeadersLoading?: boolean;
+function formatColumnName(columnName: string) {
+    return columnName
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
 }
 
-export class TableLoadingExample extends PureComponent<ExampleProps, TableLoadingExampleState> {
-    public state: TableLoadingExampleState = {
-        cellsLoading: true,
-        columnHeadersLoading: true,
-        rowHeadersLoading: true,
-    };
+const renderCell = (rowIndex: number, columnIndex: number) => {
+    const bigSpaceRock = bigSpaceRocks[rowIndex];
+    return <Cell>{bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}</Cell>;
+};
 
-    private handleCellsLoading = handleBooleanChange(cellsLoading =>
-        this.setState({ cellsLoading }),
-    );
+export const TableLoadingExample: React.FC<ExampleProps> = props => {
+    const [cellsLoading, setCellsLoading] = useState(true);
+    const [columnHeadersLoading, setColumnHeadersLoading] = useState(true);
+    const [rowHeadersLoading, setRowHeadersLoading] = useState(true);
 
-    private handleColumnHeadersLoading = handleBooleanChange(columnHeadersLoading => {
-        this.setState({ columnHeadersLoading });
-    });
+    const loadingOptions = useMemo(() => {
+        const result: TableLoadingOption[] = [];
+        if (cellsLoading) {
+            result.push(TableLoadingOption.CELLS);
+        }
+        if (columnHeadersLoading) {
+            result.push(TableLoadingOption.COLUMN_HEADERS);
+        }
+        if (rowHeadersLoading) {
+            result.push(TableLoadingOption.ROW_HEADERS);
+        }
+        return result;
+    }, [cellsLoading, columnHeadersLoading, rowHeadersLoading]);
 
-    private handleRowHeadersLoading = handleBooleanChange(rowHeadersLoading =>
-        this.setState({ rowHeadersLoading }),
-    );
-
-    public render() {
-        const columns = Object.keys(bigSpaceRocks[0]).map((columnName, index) => (
-            <Column
-                key={index}
-                name={this.formatColumnName(columnName)}
-                cellRenderer={this.renderCell}
-            />
-        ));
-        return (
-            <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={bigSpaceRocks.length} loadingOptions={this.getLoadingOptions()}>
-                    {columns}
-                </Table>
-            </Example>
-        );
-    }
-
-    protected renderOptions() {
-        return (
+    const options = useMemo(
+        () => (
             <>
                 <Switch
-                    checked={this.state.cellsLoading}
+                    checked={cellsLoading}
                     label="Cells"
-                    onChange={this.handleCellsLoading}
+                    onChange={handleBooleanChange(setCellsLoading)}
                 />
                 <Switch
-                    checked={this.state.columnHeadersLoading}
+                    checked={columnHeadersLoading}
                     label="Column headers"
-                    onChange={this.handleColumnHeadersLoading}
+                    onChange={handleBooleanChange(setColumnHeadersLoading)}
                 />
                 <Switch
-                    checked={this.state.rowHeadersLoading}
+                    checked={rowHeadersLoading}
                     label="Row headers"
-                    onChange={this.handleRowHeadersLoading}
+                    onChange={handleBooleanChange(setRowHeadersLoading)}
                 />
             </>
-        );
-    }
+        ),
+        [cellsLoading, columnHeadersLoading, rowHeadersLoading],
+    );
 
-    private renderCell = (rowIndex: number, columnIndex: number) => {
-        const bigSpaceRock = bigSpaceRocks[rowIndex];
-        return <Cell>{bigSpaceRock[Object.keys(bigSpaceRock)[columnIndex]]}</Cell>;
-    };
+    const columns = useMemo(
+        () =>
+            Object.keys(bigSpaceRocks[0]).map((columnName, index) => (
+                <Column key={index} name={formatColumnName(columnName)} cellRenderer={renderCell} />
+            )),
+        [],
+    );
 
-    private formatColumnName = (columnName: string) => {
-        return columnName
-            .replace(/([A-Z])/g, " $1")
-            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-    };
-
-    private getLoadingOptions() {
-        const loadingOptions: TableLoadingOption[] = [];
-        if (this.state.cellsLoading) {
-            loadingOptions.push(TableLoadingOption.CELLS);
-        }
-        if (this.state.columnHeadersLoading) {
-            loadingOptions.push(TableLoadingOption.COLUMN_HEADERS);
-        }
-        if (this.state.rowHeadersLoading) {
-            loadingOptions.push(TableLoadingOption.ROW_HEADERS);
-        }
-        return loadingOptions;
-    }
-}
+    return (
+        <Example options={options} showOptionsBelowExample={true} {...props}>
+            <Table numRows={bigSpaceRocks.length} loadingOptions={loadingOptions}>
+                {columns}
+            </Table>
+        </Example>
+    );
+};
