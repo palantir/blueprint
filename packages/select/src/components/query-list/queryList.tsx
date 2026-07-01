@@ -450,7 +450,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         return null;
     };
 
-    private getActiveElement() {
+    public getActiveElement(): HTMLElement | undefined {
         const { activeItem } = this.state;
         if (this.itemsParentRef != null) {
             if (isCreateNewItem(activeItem)) {
