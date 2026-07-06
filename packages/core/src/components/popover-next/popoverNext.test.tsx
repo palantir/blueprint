@@ -4,7 +4,7 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createRef } from "react";
+import { createRef, useState } from "react";
 
 import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
@@ -1723,6 +1723,36 @@ describe("<PopoverNext>", () => {
 
             expect(renderTarget).toHaveBeenCalled();
             expect(renderTarget.mock.calls[0][0].onClick).toBeUndefined();
+        });
+    });
+
+    // Regression test for https://github.com/palantir/blueprint/issues/7857
+    describe("ref stability", () => {
+        it("passes an identity-stable ref to the target across parent re-renders", async () => {
+            const seenRefs = new Set<unknown>();
+
+            function Wrapper() {
+                const [count, setCount] = useState(0);
+                return (
+                    <>
+                        <button data-testid="rerender" onClick={() => setCount(c => c + 1)}>
+                            {count}
+                        </button>
+                        <PopoverNext
+                            content="content"
+                            renderTarget={({ isOpen: _isOpen, ref, ...targetProps }) => {
+                                seenRefs.add(ref);
+                                return <button ref={ref} {...targetProps} />;
+                            }}
+                        />
+                    </>
+                );
+            }
+
+            render(<Wrapper />);
+            await userEvent.click(screen.getByTestId("rerender"));
+
+            expect(seenRefs.size).toBe(1);
         });
     });
 });
