@@ -2,10 +2,11 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import { useMergeRefs } from "@floating-ui/react";
 import classNames from "classnames";
 import { Children, cloneElement, createElement, forwardRef, useCallback } from "react";
 
-import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import { PopoverInteractionKind } from "../popover/popoverProps";
 import type { PopoverClickTargetHandlers, PopoverHoverTargetHandlers } from "../popover/popoverSharedProps";
 
@@ -37,7 +38,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     const tagName = fill ? "div" : targetTagName;
     const { isOpen } = floatingData;
 
-    const ref = mergeRefs(floatingData.refs.setReference, targetRef);
+    const ref = useMergeRefs([floatingData.refs.setReference, targetRef]);
 
     // Custom keyboard click handler for the reference element. Floating UI's useClick hook
     // has its keyboardHandlers disabled because it calls `preventDefault()` on Space keydown,
