@@ -19,7 +19,7 @@
  */
 
 import classNames from "classnames";
-import { PureComponent } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { Button, Classes, Code, H3, H5, Intent, Overlay, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -29,176 +29,110 @@ import type { BlueprintExampleData } from "../../tags/types";
 const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 const OVERLAY_TALL_CLASS = "docs-overlay-example-tall";
 
-export interface OverlayExampleState {
-    autoFocus: boolean;
-    canEscapeKeyClose: boolean;
-    canOutsideClickClose: boolean;
-    enforceFocus: boolean;
-    hasBackdrop: boolean;
-    isOpen: boolean;
-    usePortal: boolean;
-    useTallContent: boolean;
-}
+export const OverlayExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
+    const [autoFocus, setAutoFocus] = useState(true);
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
+    const [canOutsideClickClose, setCanOutsideClickClose] = useState(true);
+    const [enforceFocus, setEnforceFocus] = useState(true);
+    const [hasBackdrop, setHasBackdrop] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [usePortal, setUsePortal] = useState(true);
+    const [useTallContent, setUseTallContent] = useState(false);
 
-export class OverlayExample extends PureComponent<
-    ExampleProps<BlueprintExampleData>,
-    OverlayExampleState
-> {
-    public state: OverlayExampleState = {
-        autoFocus: true,
-        canEscapeKeyClose: true,
-        canOutsideClickClose: true,
-        enforceFocus: true,
-        hasBackdrop: true,
-        isOpen: false,
-        usePortal: true,
-        useTallContent: false,
-    };
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
-    private button: HTMLButtonElement;
+    const handleOpen = useCallback(() => setIsOpen(true), []);
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+        setUseTallContent(false);
+    }, []);
+    const focusButton = useCallback(() => buttonRef.current?.focus(), []);
+    const toggleScrollButton = useCallback(() => setUseTallContent(prev => !prev), []);
 
-    private refHandlers = {
-        button: (ref: HTMLButtonElement) => (this.button = ref),
-    };
-
-    private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
-
-    private handleBackdropChange = handleBooleanChange(hasBackdrop =>
-        this.setState({ hasBackdrop }),
+    const classes = classNames(
+        Classes.CARD,
+        Classes.ELEVATION_4,
+        OVERLAY_EXAMPLE_CLASS,
+        props.data.themeName,
+        { [OVERLAY_TALL_CLASS]: useTallContent },
     );
 
-    private handleEnforceFocusChange = handleBooleanChange(enforceFocus =>
-        this.setState({ enforceFocus }),
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
+            <Switch checked={enforceFocus} label="Enforce focus" onChange={handleBooleanChange(setEnforceFocus)} />
+            <Switch checked={usePortal} onChange={handleBooleanChange(setUsePortal)}>
+                Use <Code>Portal</Code>
+            </Switch>
+            <Switch
+                checked={canOutsideClickClose}
+                label="Click outside to close"
+                onChange={handleBooleanChange(setCanOutsideClickClose)}
+            />
+            <Switch
+                checked={canEscapeKeyClose}
+                label="Escape key to close"
+                onChange={handleBooleanChange(setCanEscapeKeyClose)}
+            />
+            <Switch checked={hasBackdrop} label="Has backdrop" onChange={handleBooleanChange(setHasBackdrop)} />
+        </>
     );
 
-    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose =>
-        this.setState({ canEscapeKeyClose }),
-    );
-
-    private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
-
-    private handleOutsideClickChange = handleBooleanChange(val =>
-        this.setState({ canOutsideClickClose: val }),
-    );
-
-    public render() {
-        const classes = classNames(
-            Classes.CARD,
-            Classes.ELEVATION_4,
-            OVERLAY_EXAMPLE_CLASS,
-            this.props.data.themeName,
-            { [OVERLAY_TALL_CLASS]: this.state.useTallContent },
-        );
-
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <Button
-                    ref={this.refHandlers.button}
-                    onClick={this.handleOpen}
-                    text="Show overlay"
-                />
-                {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
-                <Overlay
-                    onClose={this.handleClose}
-                    className={Classes.OVERLAY_SCROLL_CONTAINER}
-                    {...this.state}
-                >
-                    <div className={classes}>
-                        <H3>I'm an Overlay!</H3>
-                        <p>
-                            This is a simple container with some inline styles to position it on the
-                            screen. Its CSS transitions are customized for this example only to
-                            demonstrate how easily custom transitions can be implemented.
-                        </p>
-                        <p>
-                            Click the "Focus button" below to transfer focus to the "Show overlay"
-                            trigger button outside of this overlay. If persistent focus is enabled,
-                            focus will be constrained to the overlay. Use the <Code>tab</Code> key
-                            to move to the next focusable element to illustrate this effect.
-                        </p>
-                        <p>
-                            Click the "Make me scroll" button below to make this overlay's content
-                            really tall, which will make the overlay's container (but not the page)
-                            scrollable
-                        </p>
-                        <br />
-                        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                            <Button
-                                intent={Intent.DANGER}
-                                onClick={this.handleClose}
-                                style={{ margin: "" }}
-                            >
-                                Close
-                            </Button>
-                            <Button onClick={this.focusButton} style={{ margin: "" }}>
-                                Focus button
-                            </Button>
-                            <Button
-                                onClick={this.toggleScrollButton}
-                                icon="double-chevron-down"
-                                endIcon="double-chevron-down"
-                                active={this.state.useTallContent}
-                                style={{ margin: "" }}
-                            >
-                                Make me scroll
-                            </Button>
-                        </div>
+    return (
+        <Example options={options} {...props}>
+            <Button ref={buttonRef} onClick={handleOpen} text="Show overlay" />
+            {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
+            <Overlay
+                onClose={handleClose}
+                className={Classes.OVERLAY_SCROLL_CONTAINER}
+                {...{
+                    autoFocus,
+                    canEscapeKeyClose,
+                    canOutsideClickClose,
+                    enforceFocus,
+                    hasBackdrop,
+                    isOpen,
+                    usePortal,
+                    useTallContent,
+                }}
+            >
+                <div className={classes}>
+                    <H3>I'm an Overlay!</H3>
+                    <p>
+                        This is a simple container with some inline styles to position it on the screen. Its CSS
+                        transitions are customized for this example only to demonstrate how easily custom transitions
+                        can be implemented.
+                    </p>
+                    <p>
+                        Click the "Focus button" below to transfer focus to the "Show overlay" trigger button outside
+                        of this overlay. If persistent focus is enabled, focus will be constrained to the overlay. Use
+                        the <Code>tab</Code> key to move to the next focusable element to illustrate this effect.
+                    </p>
+                    <p>
+                        Click the "Make me scroll" button below to make this overlay's content really tall, which will
+                        make the overlay's container (but not the page) scrollable
+                    </p>
+                    <br />
+                    <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+                        <Button intent={Intent.DANGER} onClick={handleClose} style={{ margin: "" }}>
+                            Close
+                        </Button>
+                        <Button onClick={focusButton} style={{ margin: "" }}>
+                            Focus button
+                        </Button>
+                        <Button
+                            onClick={toggleScrollButton}
+                            icon="double-chevron-down"
+                            endIcon="double-chevron-down"
+                            active={useTallContent}
+                            style={{ margin: "" }}
+                        >
+                            Make me scroll
+                        </Button>
                     </div>
-                </Overlay>
-            </Example>
-        );
-    }
-
-    private renderOptions() {
-        const {
-            autoFocus,
-            enforceFocus,
-            canEscapeKeyClose,
-            canOutsideClickClose,
-            hasBackdrop,
-            usePortal,
-        } = this.state;
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch
-                    checked={autoFocus}
-                    label="Auto focus"
-                    onChange={this.handleAutoFocusChange}
-                />
-                <Switch
-                    checked={enforceFocus}
-                    label="Enforce focus"
-                    onChange={this.handleEnforceFocusChange}
-                />
-                <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
-                    Use <Code>Portal</Code>
-                </Switch>
-                <Switch
-                    checked={canOutsideClickClose}
-                    label="Click outside to close"
-                    onChange={this.handleOutsideClickChange}
-                />
-                <Switch
-                    checked={canEscapeKeyClose}
-                    label="Escape key to close"
-                    onChange={this.handleEscapeKeyChange}
-                />
-                <Switch
-                    checked={hasBackdrop}
-                    label="Has backdrop"
-                    onChange={this.handleBackdropChange}
-                />
-            </>
-        );
-    }
-
-    private handleOpen = () => this.setState({ isOpen: true });
-
-    private handleClose = () => this.setState({ isOpen: false, useTallContent: false });
-
-    private focusButton = () => this.button.focus();
-
-    private toggleScrollButton = () =>
-        this.setState({ useTallContent: !this.state.useTallContent });
-}
+                </div>
+            </Overlay>
+        </Example>
+    );
+};

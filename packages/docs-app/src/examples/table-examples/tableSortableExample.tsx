@@ -16,7 +16,7 @@
 
 /* eslint-disable max-classes-per-file */
 
-import { PureComponent } from "react";
+import { useCallback, useState } from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -196,70 +196,71 @@ class RecordSortableColumn extends AbstractSortableColumn {
     };
 }
 
-export class TableSortableExample extends PureComponent<ExampleProps> {
-    public state = {
-        columns: [
-            new TextSortableColumn("Rikishi", 0),
-            new RankSortableColumn("Rank - Hatsu Basho", 1),
-            new RecordSortableColumn("Record - Hatsu Basho", 2),
-            new RankSortableColumn("Rank - Haru Basho", 3),
-            new RecordSortableColumn("Record - Haru Basho", 4),
-            new RankSortableColumn("Rank - Natsu Basho", 5),
-            new RecordSortableColumn("Record - Natsu Basho", 6),
-            new RankSortableColumn("Rank - Nagoya Basho", 7),
-            new RecordSortableColumn("Record - Nagoya Basho", 8),
-            new RankSortableColumn("Rank - Aki Basho", 9),
-            new RecordSortableColumn("Record - Aki Basho", 10),
-            new RankSortableColumn("Rank - Kyūshū Basho", 11),
-            new RecordSortableColumn("Record - Kyūshū Basho", 12),
-        ] as SortableColumn[],
-        data: sumo,
-        sortedIndexMap: [] as number[],
-    };
+const SORTABLE_COLUMNS: SortableColumn[] = [
+    new TextSortableColumn("Rikishi", 0),
+    new RankSortableColumn("Rank - Hatsu Basho", 1),
+    new RecordSortableColumn("Record - Hatsu Basho", 2),
+    new RankSortableColumn("Rank - Haru Basho", 3),
+    new RecordSortableColumn("Record - Haru Basho", 4),
+    new RankSortableColumn("Rank - Natsu Basho", 5),
+    new RecordSortableColumn("Record - Natsu Basho", 6),
+    new RankSortableColumn("Rank - Nagoya Basho", 7),
+    new RecordSortableColumn("Record - Nagoya Basho", 8),
+    new RankSortableColumn("Rank - Aki Basho", 9),
+    new RecordSortableColumn("Record - Aki Basho", 10),
+    new RankSortableColumn("Rank - Kyūshū Basho", 11),
+    new RecordSortableColumn("Record - Kyūshū Basho", 12),
+];
 
-    public render() {
-        const numRows = this.state.data.length;
-        const columns = this.state.columns.map(col =>
-            col.getColumn(this.getCellData, this.sortColumn),
-        );
-        return (
-            <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table
-                    bodyContextMenuRenderer={this.renderBodyContextMenu}
-                    numRows={numRows}
-                    selectionModes={SelectionModes.COLUMNS_AND_CELLS}
-                    getCellClipboardData={this.getCellData}
-                    cellRendererDependencies={[this.state.sortedIndexMap]}
-                    enableFocusedCell={true}
-                >
-                    {columns}
-                </Table>
-            </Example>
-        );
-    }
+export const TableSortableExample: React.FC<ExampleProps> = props => {
+    const [data] = useState(sumo);
+    const [sortedIndexMap, setSortedIndexMap] = useState<number[]>([]);
 
-    private getCellData = (rowIndex: number, columnIndex: number) => {
-        const sortedRowIndex = this.state.sortedIndexMap[rowIndex];
-        if (sortedRowIndex != null) {
-            rowIndex = sortedRowIndex;
-        }
-        return this.state.data[rowIndex][columnIndex];
-    };
+    const getCellData = useCallback(
+        (rowIndex: number, columnIndex: number) => {
+            const sortedRowIndex = sortedIndexMap[rowIndex];
+            if (sortedRowIndex != null) {
+                rowIndex = sortedRowIndex;
+            }
+            return data[rowIndex][columnIndex];
+        },
+        [data, sortedIndexMap],
+    );
 
-    private renderBodyContextMenu = (context: MenuContext) => {
-        return (
+    const sortColumn = useCallback(
+        (columnIndex: number, comparator: (a: any, b: any) => number) => {
+            const nextSortedIndexMap = Utils.times(data.length, (i: number) => i);
+            nextSortedIndexMap.sort((a: number, b: number) => {
+                return comparator(data[a][columnIndex], data[b][columnIndex]);
+            });
+            setSortedIndexMap(nextSortedIndexMap);
+        },
+        [data],
+    );
+
+    const renderBodyContextMenu = useCallback(
+        (context: MenuContext) => (
             <Menu>
-                <CopyCellsMenuItem context={context} getCellData={this.getCellData} text="Copy" />
+                <CopyCellsMenuItem context={context} getCellData={getCellData} text="Copy" />
             </Menu>
-        );
-    };
+        ),
+        [getCellData],
+    );
 
-    private sortColumn = (columnIndex: number, comparator: (a: any, b: any) => number) => {
-        const { data } = this.state;
-        const sortedIndexMap = Utils.times(data.length, (i: number) => i);
-        sortedIndexMap.sort((a: number, b: number) => {
-            return comparator(data[a][columnIndex], data[b][columnIndex]);
-        });
-        this.setState({ sortedIndexMap });
-    };
-}
+    const columns = SORTABLE_COLUMNS.map(col => col.getColumn(getCellData, sortColumn));
+
+    return (
+        <Example options={false} showOptionsBelowExample={true} {...props}>
+            <Table
+                bodyContextMenuRenderer={renderBodyContextMenu}
+                numRows={data.length}
+                selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+                getCellClipboardData={getCellData}
+                cellRendererDependencies={[sortedIndexMap]}
+                enableFocusedCell={true}
+            >
+                {columns}
+            </Table>
+        </Example>
+    );
+};

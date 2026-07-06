@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { PureComponent } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import {
     Button,
@@ -26,7 +26,6 @@ import {
     Intent,
     NumericInput,
     OverlayToaster,
-    type OverlayToasterProps,
     Position,
     ProgressBar,
     Switch,
@@ -54,50 +53,31 @@ const POSITIONS = [
     Position.BOTTOM_RIGHT,
 ];
 
-export class ToastExample extends PureComponent<
-    ExampleProps<BlueprintExampleData>,
-    OverlayToasterProps
-> {
-    public state: OverlayToasterProps = {
-        autoFocus: false,
-        canEscapeKeyClear: true,
-        position: Position.TOP,
-        usePortal: true,
-    };
+export const ToastExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
+    const [autoFocus, setAutoFocus] = useState(false);
+    const [canEscapeKeyClear, setCanEscapeKeyClear] = useState(true);
+    const [position, setPosition] = useState<ToasterPosition>(Position.TOP);
+    const [usePortal, setUsePortal] = useState(true);
+    const [maxToasts, setMaxToasts] = useState<number | undefined>(undefined);
 
-    private TOAST_BUILDERS: ToastDemo[] = [
-        {
-            action: {
-                href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
-                target: "_blank",
-                text: <strong>Yum.</strong>,
-            },
-            button: "Procure toast",
-            intent: Intent.PRIMARY,
-            message: (
-                <>
-                    One toast created. <em>Toasty.</em>
-                </>
-            ),
+    const toasterRef = useRef<Toaster | null>(null);
+    const progressToastIntervalRef = useRef<number | undefined>(undefined);
+
+    const themeName = props.data.themeName;
+
+    const addToast = useCallback(
+        (toast: ToastProps) => {
+            toast.className = themeName;
+            toast.timeout = 5000;
+            toasterRef.current?.show(toast);
         },
-        {
+        [themeName],
+    );
+
+    const toastBuilders = useMemo((): ToastDemo[] => {
+        const deleteRoot: ToastDemo = {
             action: {
-                onClick: () =>
-                    this.addToast({
-                        icon: "ban-circle",
-                        intent: Intent.DANGER,
-                        message: "You cannot undo the past.",
-                    }),
-                text: "Undo",
-            },
-            button: "Move files",
-            icon: "tick",
-            intent: Intent.SUCCESS,
-            message: "Moved 6 files.",
-        },
-        {
-            action: {
-                onClick: () => this.addToast(this.TOAST_BUILDERS[2]),
+                onClick: () => addToast(deleteRoot),
                 text: "Retry",
             },
             button: "Delete root",
@@ -106,112 +86,71 @@ export class ToastExample extends PureComponent<
             message:
                 "You do not have permissions to perform this action. \
     Please contact your system administrator to request the appropriate access rights.",
-        },
-        {
-            action: {
-                onClick: () =>
-                    this.addToast({ message: "Isn't parting just the sweetest sorrow?" }),
-                text: "Adieu",
+        };
+
+        return [
+            {
+                action: {
+                    href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
+                    target: "_blank",
+                    text: <strong>Yum.</strong>,
+                },
+                button: "Procure toast",
+                intent: Intent.PRIMARY,
+                message: (
+                    <>
+                        One toast created. <em>Toasty.</em>
+                    </>
+                ),
             },
-            button: "Log out",
-            icon: "hand",
-            intent: Intent.WARNING,
-            message: "Goodbye, old friend.",
-        },
-        {
-            action: {
-                onClick: () =>
-                    this.addToast({
-                        icon: "ban-circle",
-                        intent: Intent.DANGER,
-                        message: "You can't cancel what's been done!",
-                    }),
-                text: "Cancel",
+            {
+                action: {
+                    onClick: () =>
+                        addToast({
+                            icon: "ban-circle",
+                            intent: Intent.DANGER,
+                            message: "You cannot undo the past.",
+                        }),
+                    text: "Undo",
+                },
+                button: "Move files",
+                icon: "tick",
+                intent: Intent.SUCCESS,
+                message: "Moved 6 files.",
             },
-            button: "Start loading",
-            icon: "hand",
-            intent: Intent.PRIMARY,
-            isCloseButtonShown: false,
-            message: "Loading...",
-        },
-    ];
+            deleteRoot,
+            {
+                action: {
+                    onClick: () => addToast({ message: "Isn't parting just the sweetest sorrow?" }),
+                    text: "Adieu",
+                },
+                button: "Log out",
+                icon: "hand",
+                intent: Intent.WARNING,
+                message: "Goodbye, old friend.",
+            },
+            {
+                action: {
+                    onClick: () =>
+                        addToast({
+                            icon: "ban-circle",
+                            intent: Intent.DANGER,
+                            message: "You can't cancel what's been done!",
+                        }),
+                    text: "Cancel",
+                },
+                button: "Start loading",
+                icon: "hand",
+                intent: Intent.PRIMARY,
+                isCloseButtonShown: false,
+                message: "Loading...",
+            },
+        ];
+    }, [addToast]);
 
-    private toaster: Toaster;
-
-    private refHandlers = {
-        toaster: (ref: Toaster) => (this.toaster = ref),
-    };
-
-    private progressToastInterval?: number;
-
-    private handlePositionChange = handleValueChange((position: ToasterPosition) =>
-        this.setState({ position }),
-    );
-
-    private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
-
-    private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear =>
-        this.setState({ canEscapeKeyClear }),
-    );
-
-    private toggleUsePortal = handleBooleanChange(usePortal => this.setState({ usePortal }));
-
-    public render() {
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                {this.TOAST_BUILDERS.map(this.renderToastDemo, this)}
-                <Button onClick={this.handleProgressToast} text="Upload file" />
-                <OverlayToaster {...this.state} ref={this.refHandlers.toaster} />
-            </Example>
-        );
-    }
-
-    protected renderOptions() {
-        const { autoFocus, canEscapeKeyClear, position, maxToasts, usePortal } = this.state;
-        return (
-            <>
-                <H5>Props</H5>
-                <FormGroup label="Position">
-                    <HTMLSelect
-                        value={position}
-                        onChange={this.handlePositionChange}
-                        options={POSITIONS}
-                    />
-                </FormGroup>
-                <FormGroup label="Maximum active toasts">
-                    <NumericInput
-                        allowNumericCharactersOnly={true}
-                        placeholder="No maximum!"
-                        min={1}
-                        value={maxToasts}
-                        onValueChange={this.handleValueChange}
-                    />
-                </FormGroup>
-                <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
-                <Switch
-                    label="Can escape key clear"
-                    checked={canEscapeKeyClear}
-                    onChange={this.toggleEscapeKey}
-                />
-                <Switch label="Use portal" checked={usePortal} onChange={this.toggleUsePortal} />
-            </>
-        );
-    }
-
-    private renderToastDemo = (toast: ToastDemo, index: number) => {
-        return (
-            <Button
-                intent={toast.intent}
-                key={index}
-                text={toast.button}
-                onClick={() => this.addToast(toast)}
-            />
-        );
-    };
-
-    private renderProgress(amount: number): ToastProps {
-        return {
-            className: this.props.data.themeName,
+    const renderProgress = useCallback(
+        (amount: number): ToastProps => ({
+            className: themeName,
             icon: "cloud-upload",
             message: (
                 <ProgressBar
@@ -225,37 +164,85 @@ export class ToastExample extends PureComponent<
             onDismiss: (didTimeoutExpire: boolean) => {
                 if (!didTimeoutExpire) {
                     // user dismissed toast with click
-                    window.clearInterval(this.progressToastInterval);
+                    window.clearInterval(progressToastIntervalRef.current);
                 }
             },
             timeout: amount < 100 ? 0 : 2000,
-        };
-    }
+        }),
+        [themeName],
+    );
 
-    private addToast(toast: ToastProps) {
-        toast.className = this.props.data.themeName;
-        toast.timeout = 5000;
-        this.toaster.show(toast);
-    }
-
-    private handleProgressToast = () => {
+    const handleProgressToast = useCallback(() => {
         let progress = 0;
-        const key = this.toaster.show(this.renderProgress(0));
-        this.progressToastInterval = window.setInterval(() => {
-            if (this.toaster == null || progress > 100) {
-                window.clearInterval(this.progressToastInterval);
+        const key = toasterRef.current!.show(renderProgress(0));
+        progressToastIntervalRef.current = window.setInterval(() => {
+            if (toasterRef.current == null || progress > 100) {
+                window.clearInterval(progressToastIntervalRef.current);
             } else {
                 progress += 10 + Math.random() * 20;
-                this.toaster.show(this.renderProgress(progress), key);
+                toasterRef.current.show(renderProgress(progress), key);
             }
         }, 1000);
-    };
+    }, [renderProgress]);
 
-    private handleValueChange = (value: number) => {
+    const handleMaxToastsChange = useCallback((value: number) => {
         if (value) {
-            this.setState({ maxToasts: Math.max(1, value) });
+            setMaxToasts(Math.max(1, value));
         } else {
-            this.setState({ maxToasts: undefined });
+            setMaxToasts(undefined);
         }
-    };
-}
+    }, []);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <FormGroup label="Position">
+                <HTMLSelect
+                    value={position}
+                    onChange={handleValueChange(setPosition)}
+                    options={POSITIONS}
+                />
+            </FormGroup>
+            <FormGroup label="Maximum active toasts">
+                <NumericInput
+                    allowNumericCharactersOnly={true}
+                    placeholder="No maximum!"
+                    min={1}
+                    value={maxToasts}
+                    onValueChange={handleMaxToastsChange}
+                />
+            </FormGroup>
+            <Switch label="Auto focus" checked={autoFocus} onChange={handleBooleanChange(setAutoFocus)} />
+            <Switch
+                label="Can escape key clear"
+                checked={canEscapeKeyClear}
+                onChange={handleBooleanChange(setCanEscapeKeyClear)}
+            />
+            <Switch label="Use portal" checked={usePortal} onChange={handleBooleanChange(setUsePortal)} />
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            {toastBuilders.map((toast, index) => (
+                <Button
+                    intent={toast.intent}
+                    key={index}
+                    text={toast.button}
+                    onClick={() => addToast(toast)}
+                />
+            ))}
+            <Button onClick={handleProgressToast} text="Upload file" />
+            <OverlayToaster
+                autoFocus={autoFocus}
+                canEscapeKeyClear={canEscapeKeyClear}
+                position={position}
+                usePortal={usePortal}
+                maxToasts={maxToasts}
+                ref={ref => {
+                    toasterRef.current = ref;
+                }}
+            />
+        </Example>
+    );
+};

@@ -14,132 +14,119 @@
  * limitations under the License.
  */
 
-import { PureComponent } from "react";
+import { useCallback, useState } from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "@blueprintjs/table";
 
-export interface TableEditableExampleState {
-    columnNames?: string[];
-    sparseCellData?: { [key: string]: string };
-    sparseCellIntent?: { [key: string]: Intent };
-    sparseColumnIntents?: Intent[];
+function dataKey(rowIndex: number, columnIndex: number) {
+    return `${rowIndex}-${columnIndex}`;
 }
 
-export class TableEditableExample extends PureComponent<ExampleProps, TableEditableExampleState> {
-    public static dataKey = (rowIndex: number, columnIndex: number) => {
-        return `${rowIndex}-${columnIndex}`;
-    };
+function isValidValue(value: string) {
+    return /^[a-zA-Z]*$/.test(value);
+}
 
-    public state: TableEditableExampleState = {
-        columnNames: ["Please", "Rename", "Me"],
-        sparseCellData: {
-            "1-1": "editable",
-            "3-1": "validation 123",
-        },
-        sparseCellIntent: {
-            "3-1": Intent.DANGER,
-        },
-        sparseColumnIntents: [],
-    };
+const TableEditableExampleComponent: React.FC<ExampleProps> = props => {
+    const [columnNames, setColumnNames] = useState(["Please", "Rename", "Me"]);
+    const [sparseCellData, setSparseCellData] = useState<{ [key: string]: string }>({
+        "1-1": "editable",
+        "3-1": "validation 123",
+    });
+    const [sparseCellIntent, setSparseCellIntent] = useState<{ [key: string]: Intent | null }>({
+        "3-1": Intent.DANGER,
+    });
+    const [sparseColumnIntents, setSparseColumnIntents] = useState<Array<Intent | null>>([]);
 
-    public render() {
-        const columns = this.state.columnNames.map((_: string, index: number) => {
+    const nameValidator = useCallback(
+        (index: number) => (name: string) => {
+            const intent = isValidValue(name) ? null : Intent.DANGER;
+            setSparseColumnIntents(prev => {
+                const values = prev.slice();
+                values[index] = intent;
+                return values;
+            });
+            setColumnNames(prev => {
+                const values = prev.slice();
+                values[index] = name;
+                return values;
+            });
+        },
+        [],
+    );
+
+    const nameSetter = useCallback(
+        (index: number) => (name: string) => {
+            setColumnNames(prev => {
+                const values = prev.slice();
+                values[index] = name;
+                return values;
+            });
+        },
+        [],
+    );
+
+    const cellValidator = useCallback((rowIndex: number, columnIndex: number) => {
+        const key = dataKey(rowIndex, columnIndex);
+        return (value: string) => {
+            const intent = isValidValue(value) ? null : Intent.DANGER;
+            setSparseCellIntent(prev => ({ ...prev, [key]: intent }));
+            setSparseCellData(prev => ({ ...prev, [key]: value }));
+        };
+    }, []);
+
+    const cellSetter = useCallback((rowIndex: number, columnIndex: number) => {
+        const key = dataKey(rowIndex, columnIndex);
+        return (value: string) => {
+            const intent = isValidValue(value) ? null : Intent.DANGER;
+            setSparseCellData(prev => ({ ...prev, [key]: value }));
+            setSparseCellIntent(prev => ({ ...prev, [key]: intent }));
+        };
+    }, []);
+
+    const renderCell = useCallback(
+        (rowIndex: number, columnIndex: number) => {
+            const key = dataKey(rowIndex, columnIndex);
+            const value = sparseCellData[key];
             return (
-                <Column
-                    key={index}
-                    cellRenderer={this.renderCell}
-                    columnHeaderCellRenderer={this.renderColumnHeader}
+                <EditableCell
+                    value={value == null ? "" : value}
+                    intent={sparseCellIntent[key] ?? undefined}
+                    onCancel={cellValidator(rowIndex, columnIndex)}
+                    onChange={cellValidator(rowIndex, columnIndex)}
+                    onConfirm={cellSetter(rowIndex, columnIndex)}
                 />
             );
-        });
-        return (
-            <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={7}>{columns}</Table>
-            </Example>
-        );
-    }
+        },
+        [sparseCellData, sparseCellIntent, cellValidator, cellSetter],
+    );
 
-    public renderCell = (rowIndex: number, columnIndex: number) => {
-        const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
-        const value = this.state.sparseCellData[dataKey];
-        return (
-            <EditableCell
-                value={value == null ? "" : value}
-                intent={this.state.sparseCellIntent[dataKey]}
-                onCancel={this.cellValidator(rowIndex, columnIndex)}
-                onChange={this.cellValidator(rowIndex, columnIndex)}
-                onConfirm={this.cellSetter(rowIndex, columnIndex)}
-            />
-        );
-    };
-
-    public renderColumnHeader = (columnIndex: number) => {
-        const nameRenderer = (name: string) => {
-            return (
+    const renderColumnHeader = useCallback(
+        (columnIndex: number) => {
+            const nameRenderer = (name: string) => (
                 <EditableName
                     name={name}
-                    intent={this.state.sparseColumnIntents[columnIndex]}
-                    onChange={this.nameValidator(columnIndex)}
-                    onCancel={this.nameValidator(columnIndex)}
-                    onConfirm={this.nameSetter(columnIndex)}
+                    intent={sparseColumnIntents[columnIndex] ?? undefined}
+                    onChange={nameValidator(columnIndex)}
+                    onCancel={nameValidator(columnIndex)}
+                    onConfirm={nameSetter(columnIndex)}
                 />
             );
-        };
-        return (
-            <ColumnHeaderCell
-                name={this.state.columnNames[columnIndex]}
-                nameRenderer={nameRenderer}
-            />
-        );
-    };
+            return <ColumnHeaderCell name={columnNames[columnIndex]} nameRenderer={nameRenderer} />;
+        },
+        [columnNames, sparseColumnIntents, nameValidator, nameSetter],
+    );
 
-    private isValidValue(value: string) {
-        return /^[a-zA-Z]*$/.test(value);
-    }
+    const columns = columnNames.map((_, index) => (
+        <Column key={index} cellRenderer={renderCell} columnHeaderCellRenderer={renderColumnHeader} />
+    ));
 
-    private nameValidator = (index: number) => {
-        return (name: string) => {
-            const intent = this.isValidValue(name) ? null : Intent.DANGER;
-            this.setArrayState("sparseColumnIntents", index, intent);
-            this.setArrayState("columnNames", index, name);
-        };
-    };
+    return (
+        <Example options={false} showOptionsBelowExample={true} {...props}>
+            <Table numRows={7}>{columns}</Table>
+        </Example>
+    );
+};
 
-    private nameSetter = (index: number) => {
-        return (name: string) => {
-            this.setArrayState("columnNames", index, name);
-        };
-    };
-
-    private cellValidator = (rowIndex: number, columnIndex: number) => {
-        const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
-        return (value: string) => {
-            const intent = this.isValidValue(value) ? null : Intent.DANGER;
-            this.setSparseState("sparseCellIntent", dataKey, intent);
-            this.setSparseState("sparseCellData", dataKey, value);
-        };
-    };
-
-    private cellSetter = (rowIndex: number, columnIndex: number) => {
-        const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
-        return (value: string) => {
-            const intent = this.isValidValue(value) ? null : Intent.DANGER;
-            this.setSparseState("sparseCellData", dataKey, value);
-            this.setSparseState("sparseCellIntent", dataKey, intent);
-        };
-    };
-
-    private setArrayState<T>(key: string, index: number, value: T) {
-        const values = (this.state as any)[key].slice() as T[];
-        values[index] = value;
-        this.setState({ [key]: values });
-    }
-
-    private setSparseState<T>(stateKey: string, dataKey: string, value: T) {
-        const stateData = (this.state as any)[stateKey] as { [key: string]: T };
-        const values = { ...stateData, [dataKey]: value };
-        this.setState({ [stateKey]: values });
-    }
-}
+export const TableEditableExample = Object.assign(TableEditableExampleComponent, { dataKey });

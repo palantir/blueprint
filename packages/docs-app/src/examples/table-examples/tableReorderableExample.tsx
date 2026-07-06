@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-import { Children, cloneElement, PureComponent } from "react";
+import { Children, cloneElement, useCallback, useEffect, useRef, useState } from "react";
 
 import { Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
 
-export interface TableReorderableExampleState {
-    columns?: React.JSX.Element[];
-    data?: any[];
-    enableColumnInteractionBar?: boolean;
-}
+type ReorderableRow = { animal: string; city: string; country: string; fruit: string; letter: string };
 
-const REORDERABLE_TABLE_DATA = [
+const REORDERABLE_TABLE_DATA: ReorderableRow[] = [
     ["A", "Apple", "Ape", "Albania", "Anchorage"],
     ["B", "Banana", "Boa", "Brazil", "Boston"],
     ["C", "Cranberry", "Cougar", "Croatia", "Chicago"],
@@ -34,80 +30,70 @@ const REORDERABLE_TABLE_DATA = [
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
 ].map(([letter, fruit, animal, country, city]) => ({ animal, city, country, fruit, letter }));
 
-export class TableReorderableExample extends PureComponent<
-    ExampleProps,
-    TableReorderableExampleState
-> {
-    public state: TableReorderableExampleState = {
-        columns: [
-            // these cellRenderers are only created once and then cloned on updates
-            <Column key="1" name="Letter" cellRenderer={this.getCellRenderer("letter")} />,
-            <Column key="2" name="Fruit" cellRenderer={this.getCellRenderer("fruit")} />,
-            <Column key="3" name="Animal" cellRenderer={this.getCellRenderer("animal")} />,
-            <Column key="4" name="Country" cellRenderer={this.getCellRenderer("country")} />,
-            <Column key="5" name="City" cellRenderer={this.getCellRenderer("city")} />,
-        ],
-        data: REORDERABLE_TABLE_DATA,
-        enableColumnInteractionBar: false,
-    };
+export const TableReorderableExample: React.FC<ExampleProps> = props => {
+    const dataRef = useRef(REORDERABLE_TABLE_DATA);
+    const [data, setData] = useState(REORDERABLE_TABLE_DATA);
+    const [enableColumnInteractionBar, setEnableColumnInteractionBar] = useState(false);
 
-    private toggleUseInteractionBar = handleBooleanChange(enableColumnInteractionBar =>
-        this.setState({ enableColumnInteractionBar }),
+    dataRef.current = data;
+
+    const getCellRenderer = useCallback(
+        (key: keyof ReorderableRow) => (row: number) => <Cell>{dataRef.current[row][key]}</Cell>,
+        [],
     );
 
-    public componentDidUpdate(_nextProps: ExampleProps, nextState: TableReorderableExampleState) {
-        const { enableColumnInteractionBar } = this.state;
-        if (nextState.enableColumnInteractionBar !== enableColumnInteractionBar) {
-            const nextColumns = Children.map(this.state.columns, (column: React.JSX.Element) => {
-                return cloneElement(column, { enableColumnInteractionBar });
-            });
-            this.setState({ columns: nextColumns });
-        }
-    }
+    const [columns, setColumns] = useState(() => [
+        <Column key="1" name="Letter" cellRenderer={getCellRenderer("letter")} />,
+        <Column key="2" name="Fruit" cellRenderer={getCellRenderer("fruit")} />,
+        <Column key="3" name="Animal" cellRenderer={getCellRenderer("animal")} />,
+        <Column key="4" name="Country" cellRenderer={getCellRenderer("country")} />,
+        <Column key="5" name="City" cellRenderer={getCellRenderer("city")} />,
+    ]);
 
-    public render() {
-        const { enableColumnInteractionBar } = this.state;
-        const options = (
-            <Switch
-                checked={enableColumnInteractionBar}
-                label="Interaction bar"
-                onChange={this.toggleUseInteractionBar}
-            />
+    useEffect(() => {
+        setColumns(prev =>
+            Children.map(prev, (column: React.JSX.Element) =>
+                cloneElement(column, { enableColumnInteractionBar }),
+            ) ?? [],
         );
-        return (
-            <Example options={options} showOptionsBelowExample={true} {...this.props}>
-                <Table
-                    enableColumnReordering={true}
-                    enableColumnResizing={false}
-                    enableRowReordering={true}
-                    enableRowResizing={false}
-                    numRows={this.state.data.length}
-                    onColumnsReordered={this.handleColumnsReordered}
-                    onRowsReordered={this.handleRowsReordered}
-                    enableColumnInteractionBar={enableColumnInteractionBar}
-                >
-                    {this.state.columns}
-                </Table>
-            </Example>
-        );
-    }
+    }, [enableColumnInteractionBar]);
 
-    private getCellRenderer(key: string) {
-        return (row: number) => <Cell>{this.state.data[row][key]}</Cell>;
-    }
-
-    private handleColumnsReordered = (oldIndex: number, newIndex: number, length: number) => {
+    const handleColumnsReordered = useCallback((oldIndex: number, newIndex: number, length: number) => {
         if (oldIndex === newIndex) {
             return;
         }
-        const nextChildren = Utils.reorderArray(this.state.columns, oldIndex, newIndex, length);
-        this.setState({ columns: nextChildren });
-    };
+        setColumns(prev => Utils.reorderArray(prev, oldIndex, newIndex, length));
+    }, []);
 
-    private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
+    const handleRowsReordered = useCallback((oldIndex: number, newIndex: number, length: number) => {
         if (oldIndex === newIndex) {
             return;
         }
-        this.setState({ data: Utils.reorderArray(this.state.data, oldIndex, newIndex, length) });
-    };
-}
+        setData(prev => Utils.reorderArray(prev, oldIndex, newIndex, length));
+    }, []);
+
+    const options = (
+        <Switch
+            checked={enableColumnInteractionBar}
+            label="Interaction bar"
+            onChange={handleBooleanChange(setEnableColumnInteractionBar)}
+        />
+    );
+
+    return (
+        <Example options={options} showOptionsBelowExample={true} {...props}>
+            <Table
+                enableColumnReordering={true}
+                enableColumnResizing={false}
+                enableRowReordering={true}
+                enableRowResizing={false}
+                numRows={data.length}
+                onColumnsReordered={handleColumnsReordered}
+                onRowsReordered={handleRowsReordered}
+                enableColumnInteractionBar={enableColumnInteractionBar}
+            >
+                {columns}
+            </Table>
+        </Example>
+    );
+};

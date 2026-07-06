@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { Component } from "react";
+import { useCallback, useState } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
 import { type DocsCompleteData, type HeadingNode, npmData, type PageNode, SECTIONS } from "@blueprintjs/docs-data";
@@ -57,6 +57,7 @@ export function getTheme(): string {
 export function setTheme(themeName: string) {
     localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
 }
+
 export interface BlueprintDocsProps {
     docs: DocsCompleteData;
     defaultPageId: DocumentationProps["defaultPageId"];
@@ -65,85 +66,87 @@ export interface BlueprintDocsProps {
     useNextVersion: boolean;
 }
 
-export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
-    public state = { themeName: getTheme() };
+function getNpmPackage(packageName: string) {
+    return npmData[packageName];
+}
 
-    public render() {
-        const banner = (
-            <Banner href="https://blueprintjs.com/docs/versions/5">
-                Blueprint v6.x is now in stable release. Still using v5.x? Click here to view the legacy docs &rarr;
-            </Banner>
-        );
-        const footer = (
-            <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
-                &copy; {new Date().getFullYear()}
-                <svg className={Classes.ICON} viewBox="0 0 18 23" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.718 16.653L9 20.013l-7.718-3.36L0 19.133 9 23l9-3.868-1.282-2.48zM9 14.738c-3.297 0-5.97-2.696-5.97-6.02C3.03 5.39 5.703 2.695 9 2.695c3.297 0 5.97 2.696 5.97 6.02 0 3.326-2.673 6.022-5.97 6.022zM9 0C4.23 0 .366 3.9.366 8.708c0 4.81 3.865 8.71 8.634 8.71 4.77 0 8.635-3.9 8.635-8.71C17.635 3.898 13.77 0 9 0z" />
-                </svg>
-                <a href="https://www.palantir.com/" target="_blank">
-                    Palantir
-                </a>
-            </small>
-        );
-        const header = (
-            <NavHeader
-                onToggleDark={this.handleToggleDark}
-                useDarkTheme={this.state.themeName === DARK_THEME}
-                useNextVersion={this.props.useNextVersion}
-                packageInfo={this.getNpmPackage("@blueprintjs/core")}
-            />
-        );
-        const themeContextValue = {
-            isDarkTheme: this.state.themeName === DARK_THEME,
-            toggleTheme: this.handleToggleDark,
-        };
+export const BlueprintDocs: React.FC<BlueprintDocsProps> = ({ docs, useNextVersion, ...documentationProps }) => {
+    const [themeName, setThemeName] = useState(getTheme);
 
-        return (
-            <BlueprintProvider>
-                <ThemeProvider value={themeContextValue}>
-                    <Documentation
-                        {...this.props}
-                        className={this.state.themeName}
-                        banner={banner}
-                        footer={footer}
-                        header={header}
-                        navigatorExclude={isNavSection}
-                        onComponentUpdate={this.handleComponentUpdate}
-                        renderNavMenuItem={this.renderNavMenuItem}
-                        renderPageActions={this.renderPageActions}
-                        renderViewSourceLinkText={this.renderViewSourceLinkText}
-                    />
-                </ThemeProvider>
-            </BlueprintProvider>
-        );
-    }
+    const maybeRenderPageTag = useCallback(
+        (reference: string) => {
+            const tag = docs.pages[reference].metadata.tag;
 
-    private renderNavMenuItem = (props: NavMenuItemProps) => {
-        const { route, title } = props.section;
-        if (isNavSection(props.section)) {
-            // non-interactive header that expands its menu
-            return <div className="docs-nav-section docs-nav-expanded">{title}</div>;
-        }
-        if (isPageNode(props.section)) {
-            if (props.section.level === 1) {
-                return (
-                    <div className={classNames("docs-nav-package", props.className)} data-route={route}>
-                        <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
-                            <NavIcon route={route} />
-                            <span>{title}</span>
-                        </a>
-                        {this.maybeRenderPackageLink(`@blueprintjs/${route}`)}
-                    </div>
-                );
-            } else {
-                // pages can define `tag: message` in metadata to appear next to nav item.
-                return <NavMenuItem {...props}>{this.maybeRenderPageTag(props.section.reference)}</NavMenuItem>;
+            if (tag == null) {
+                return null;
             }
-        }
-        return <NavMenuItem {...props} />;
-    };
 
-    private renderPageActions = (page: { sourcePath: string }) => {
+            let intent: Intent = "none";
+            switch (tag) {
+                case "new":
+                    intent = "success";
+                    break;
+                case "deprecated":
+                    intent = "danger";
+                    break;
+                default:
+                    break;
+            }
+
+            return (
+                <Tag className="docs-nav-tag" minimal={true} intent={intent}>
+                    {tag}
+                </Tag>
+            );
+        },
+        [docs.pages],
+    );
+
+    const maybeRenderPackageLink = useCallback(
+        (packageName: string) => {
+            const pkg = getNpmPackage(packageName);
+            if (pkg == null) {
+                return null;
+            }
+            const version = useNextVersion && pkg.nextVersion ? pkg.nextVersion : pkg.version;
+            return (
+                <a className={Classes.TEXT_MUTED} href={`${NPM_URL}/${pkg.name}`} target="_blank">
+                    <small>{version}</small>
+                </a>
+            );
+        },
+        [useNextVersion],
+    );
+
+    const renderNavMenuItem = useCallback(
+        (props: NavMenuItemProps) => {
+            const { route, title } = props.section;
+            if (isNavSection(props.section)) {
+                // non-interactive header that expands its menu
+                return <div className="docs-nav-section docs-nav-expanded">{title}</div>;
+            }
+            if (isPageNode(props.section)) {
+                if (props.section.level === 1) {
+                    return (
+                        <div className={classNames("docs-nav-package", props.className)} data-route={route}>
+                            <a className={Classes.MENU_ITEM} href={props.href} onClick={props.onClick}>
+                                <NavIcon route={route} />
+                                <span>{title}</span>
+                            </a>
+                            {maybeRenderPackageLink(`@blueprintjs/${route}`)}
+                        </div>
+                    );
+                } else {
+                    // pages can define `tag: message` in metadata to appear next to nav item.
+                    return <NavMenuItem {...props}>{maybeRenderPageTag(props.section.reference)}</NavMenuItem>;
+                }
+            }
+            return <NavMenuItem {...props} />;
+        },
+        [maybeRenderPackageLink, maybeRenderPageTag],
+    );
+
+    const renderPageActions = useCallback((page: { sourcePath: string }) => {
         return (
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
@@ -153,58 +156,15 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                 variant="minimal"
             />
         );
-    };
+    }, []);
 
-    private maybeRenderPageTag(reference: string) {
-        const tag = this.props.docs.pages[reference].metadata.tag;
-
-        if (tag == null) {
-            return null;
-        }
-
-        let intent: Intent = "none";
-        switch (tag) {
-            case "new":
-                intent = "success";
-                break;
-            case "deprecated":
-                intent = "danger";
-                break;
-            default:
-                break;
-        }
-
-        return (
-            <Tag className="docs-nav-tag" minimal={true} intent={intent}>
-                {tag}
-            </Tag>
-        );
-    }
-
-    private renderViewSourceLinkText = (entry: { fileName?: string }) => {
-        return `@blueprintjs/${entry.fileName.split("/", 2)[1]}`;
-    };
-
-    private maybeRenderPackageLink(packageName: string) {
-        const pkg = this.getNpmPackage(packageName);
-        if (pkg == null) {
-            return null;
-        }
-        const version = this.props.useNextVersion && pkg.nextVersion ? pkg.nextVersion : pkg.version;
-        return (
-            <a className={Classes.TEXT_MUTED} href={`${NPM_URL}/${pkg.name}`} target="_blank">
-                <small>{version}</small>
-            </a>
-        );
-    }
-
-    private getNpmPackage(packageName: string) {
-        return npmData[packageName];
-    }
+    const renderViewSourceLinkText = useCallback((entry: { fileName?: string }) => {
+        return `@blueprintjs/${entry.fileName!.split("/", 2)[1]}`;
+    }, []);
 
     // This function is called whenever the documentation page changes and should be used to
     // run non-React code on the newly rendered sections.
-    private handleComponentUpdate = async () => {
+    const handleComponentUpdate = useCallback(async () => {
         // indeterminate checkbox styles must be applied via JavaScript.
         Array.from(document.querySelectorAll<HTMLInputElement>(`.${Classes.CHECKBOX} input[indeterminate]`)).forEach(
             (el: HTMLInputElement) => (el.indeterminate = true),
@@ -212,14 +172,63 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
 
         await highlightCodeBlocks();
         addCopyButtonsToImportBlocks();
-    };
+    }, []);
 
-    private handleToggleDark = async (useDark: boolean) => {
+    const handleToggleDark = useCallback(async (useDark: boolean) => {
         const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
         setTheme(nextThemeName);
-        this.setState({ themeName: nextThemeName });
+        setThemeName(nextThemeName);
 
         await highlightCodeBlocks();
         addCopyButtonsToImportBlocks();
+    }, []);
+
+    const banner = (
+        <Banner href="https://blueprintjs.com/docs/versions/5">
+            Blueprint v6.x is now in stable release. Still using v5.x? Click here to view the legacy docs &rarr;
+        </Banner>
+    );
+    const footer = (
+        <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
+            &copy; {new Date().getFullYear()}
+            <svg className={Classes.ICON} viewBox="0 0 18 23" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.718 16.653L9 20.013l-7.718-3.36L0 19.133 9 23l9-3.868-1.282-2.48zM9 14.738c-3.297 0-5.97-2.696-5.97-6.02C3.03 5.39 5.703 2.695 9 2.695c3.297 0 5.97 2.696 5.97 6.02 0 3.326-2.673 6.022-5.97 6.022zM9 0C4.23 0 .366 3.9.366 8.708c0 4.81 3.865 8.71 8.634 8.71 4.77 0 8.635-3.9 8.635-8.71C17.635 3.898 13.77 0 9 0z" />
+            </svg>
+            <a href="https://www.palantir.com/" target="_blank">
+                Palantir
+            </a>
+        </small>
+    );
+    const header = (
+        <NavHeader
+            onToggleDark={handleToggleDark}
+            useDarkTheme={themeName === DARK_THEME}
+            useNextVersion={useNextVersion}
+            packageInfo={getNpmPackage("@blueprintjs/core")}
+        />
+    );
+    const themeContextValue = {
+        isDarkTheme: themeName === DARK_THEME,
+        toggleTheme: handleToggleDark,
     };
-}
+
+    return (
+        <BlueprintProvider>
+            <ThemeProvider value={themeContextValue}>
+                <Documentation
+                    {...documentationProps}
+                    docs={docs}
+                    className={themeName}
+                    banner={banner}
+                    footer={footer}
+                    header={header}
+                    navigatorExclude={isNavSection}
+                    onComponentUpdate={handleComponentUpdate}
+                    renderNavMenuItem={renderNavMenuItem}
+                    renderPageActions={renderPageActions}
+                    renderViewSourceLinkText={renderViewSourceLinkText}
+                />
+            </ThemeProvider>
+        </BlueprintProvider>
+    );
+};
