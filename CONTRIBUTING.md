@@ -49,6 +49,8 @@ A typical contributor workflow looks like this:
     - Linting is best handled by your editor for real-time feedback (see [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run `pnpm lint` to be 100% safe.
     - TypeScript lint errors can often be automatically fixed by ESLint. Run lint fixes with `pnpm lint-fix`.
     - Code formatting is enforced using [Prettier](https://prettier.io/). These errors can be fixed in your editor through the Prettier extension (make sure you have set up the editor integrations linked above). **Formatting checks will not run** during the `pnpm lint` package script. Instead, when using the CLI or in a CI environment you should run the `pnpm format` script to fix all formatting issues across the Blueprint monorepo.
+    - A pre-commit hook runs `lint-staged` to auto-fix formatting and lint issues on staged files before commit.
+    - If you need to bypass hooks temporarily, use `git commit --no-verify`
 6. Submit a Pull Request on GitHub and fill out the template.
     - ⚠️ **DO NOT enable CircleCI for your fork of Blueprint.** When you open a PR, your branch will be checked out and built in palantir's CI pipeline automatically. There is no need to enable the CI build for your fork's pipeline. If you do, this may cause problems in the CI build.
         - If you have already opened a PR where CircleCI built the code in your own personal or organization pipeline, you will likely have to disable the project from building at app.circleci.com/settings/project/github/\<your-username\>/website and open a new PR.
