@@ -16,7 +16,7 @@
 // @ts-check
 
 import { pascalCase } from "change-case";
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 import { getIconNamesInDirectory, iconResourcesDir, readIconsManifestFile, repoRelative, repoRoot } from "./common.mjs";
@@ -25,9 +25,11 @@ import { validateIconsNextManifest } from "./iconsNextManifestValidation.mjs";
 
 const outlinedResourcesDir = join(iconResourcesDir, "next/outlined");
 const filledResourcesDir = join(iconResourcesDir, "next/filled");
+const legacyResourcesDir = join(iconResourcesDir, "16px");
 const generatedNextDir = resolve(import.meta.dirname, "../src/next/generated");
 const generatedNextComponentsDir = join(generatedNextDir, "components");
 const iconsNextManifestPath = resolve(import.meta.dirname, "../icons-next.json");
+const iconNameMapPath = resolve(import.meta.dirname, "../icons-name-map.json");
 
 /**
  * @typedef {Object} IconsNextManifestEntry
@@ -121,11 +123,78 @@ for (const iconName of outlinedIconNames) {
 
 writeFileSync(join(generatedNextComponentsDir, "index.ts"), `${componentIndexLines.join("\n")}\n`);
 
+// Legacy icon-name aliases: emit one renamed re-export per legacy icon so consumers can migrate from
+// `@blueprintjs/icons` to `@blueprintjs/icons/next` by changing only the import path. Every legacy name
+// maps to the *outlined* next component (the default style in the new set); see icons-name-map.json.
+const rawIconNameMap = readFileSync(iconNameMapPath, "utf8");
+/** @type {Record<string, string>} */
+const iconNameMap = JSON.parse(rawIconNameMap);
+const legacyIconNameSet = getIconNamesInDirectory(legacyResourcesDir);
+
+// Every component name the next barrel already exports, so we can detect legacy aliases that would
+// collide with a canonical next icon of a *different* glyph (e.g. legacy `align-left` vs next `align-left`).
+const canonicalNextExportNames = new Set([
+    ...[...outlinedIconNameSet].map(name => `${pascalCase(name)}Icon`),
+    ...[...filledIconNameSet].map(name => `${pascalCase(name)}FilledIcon`),
+]);
+
+/** @type {string[]} */
+const aliasLines = [];
+/** @type {string[]} */
+const collisionSkipped = [];
+for (const legacyName of [...legacyIconNameSet].sort()) {
+    const nextName = iconNameMap[legacyName];
+    if (nextName == null) {
+        // Coverage (every legacy icon has a mapping) is enforced by validateIconNameMap; skip defensively.
+        continue;
+    }
+    const target = `${pascalCase(nextName)}Icon`;
+    const aliasName = `${pascalCase(legacyName)}Icon`;
+
+    // Identity: the next barrel already exports this exact name; the import-path swap already works.
+    if (aliasName === target) {
+        continue;
+    }
+    // Collision: the alias name already belongs to a different canonical next icon. Let the next
+    // canonical export win; the migration codemod rewrites these legacy names to `target` specially.
+    if (canonicalNextExportNames.has(aliasName)) {
+        collisionSkipped.push(`${aliasName} (legacy "${legacyName}" → ${target})`);
+        continue;
+    }
+    aliasLines.push(`export { ${target} as ${aliasName} } from "./components";`);
+}
+
+writeFileSync(
+    join(generatedNextDir, "legacyAliases.ts"),
+    [
+        "/*",
+        " * Copyright 2026 Palantir Technologies, Inc. All rights reserved.",
+        ' * Licensed under the Apache License, Version 2.0 (the "License");',
+        " */",
+        "",
+        "// Legacy icon-name aliases for `@blueprintjs/icons/next`: each is a renamed re-export of the",
+        "// outlined next-generation component, so consumers can migrate from `@blueprintjs/icons` by",
+        "// changing only the import path. Generated from icons-name-map.json.",
+        "",
+        ...aliasLines,
+        "",
+    ].join("\n"),
+);
+
+console.info(`Generated ${aliasLines.length} legacy icon-name aliases.`);
+if (collisionSkipped.length > 0) {
+    console.info(
+        `Skipped ${collisionSkipped.length} legacy alias(es) that collide with a canonical next icon (next name wins):\n` +
+            collisionSkipped.map(entry => `  - ${entry}`).join("\n"),
+    );
+}
+
 writeFileSync(
     join(generatedNextDir, "index.ts"),
     [
         `export * from "../../index";`,
         `export * from "./components";`,
+        `export * from "./legacyAliases";`,
         `export { nextIconManifest, type BlueprintIconsNext, type IconNextName, type NextIconManifestEntry } from "./manifest";`,
         `export { SvgIconContainerNext, type SvgIconContainerNextComponent, type SvgIconContainerNextProps } from "../svgIconContainerNext";`,
         "",
