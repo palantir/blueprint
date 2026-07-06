@@ -8,6 +8,7 @@ policy:
   approval:
     - or:
         # Blueprint team members - trusted
+        - blueprint team member self-approval
         - blueprint team member approved by one admin
         - blueprint team member approved by two admins (contributor allowed)
         # External contributors - stricter
@@ -27,6 +28,21 @@ approval_rules:
   # ============================================
   # BLUEPRINT TEAM MEMBERS (trusted)
   # ============================================
+
+  - name: blueprint team member self-approval
+    description: >
+      For PRs authored by Blueprint team members. Allows the author to approve
+      their own PR (self-approval).
+    options:
+      allow_contributor: true
+      invalidate_on_push: false
+      ignore_edited_comments: true
+    if:
+      has_author_in:
+        teams: ["palantir/blueprint"]
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
 
   - name: blueprint team member approved by one admin
     description: >
