@@ -171,7 +171,7 @@ $control-group-stack: (
 @mixin pt-input-large() {
   font-size: var(--bp-typography-size-body-large);
   height: calc(var(--bp-surface-spacing) * 10);
-  line-height: calc(var(--bp-typography-line-height-default) * 10);
+  line-height: calc(var(--bp-surface-spacing) * 10);
 
   &[type="search"],
   &.#{$ns}-round {
