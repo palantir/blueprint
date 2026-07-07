@@ -1,0 +1,408 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:list";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "common/variables-next" as *;
+@use "common/variables-extended-next" as *;
+@use "common/mixins-next" as *;
+@use "common/color-aliases-next" as *;
+@use "common/typography-colors-next" as *;
+
+@include pt-typography-colors;
+
+// Dark-free heading styles. The shared `heading-typography` mixin in mixins-next carries a
+// `.#{$ns}-dark` color override; in BP7 dark colors resolve through the semantic tokens, so
+// this local variant drops the dark rules.
+@mixin heading-typography-next() {
+  color: $pt-heading-color;
+  font-weight: 600;
+
+  &.#{$ns}-text-muted {
+    color: $pt-text-color-muted;
+  }
+}
+
+/*
+Headings
+
+Markup:
+<div>
+  <h1 class="@ns-heading {{.modifier}}">H1 heading</h1>
+  <h2 class="@ns-heading {{.modifier}}">H2 heading</h2>
+  <h3 class="@ns-heading {{.modifier}}">H3 heading</h3>
+  <h4 class="@ns-heading {{.modifier}}">H4 heading</h4>
+  <h5 class="@ns-heading {{.modifier}}">H5 heading</h5>
+  <h6 class="@ns-heading {{.modifier}}">H6 heading</h6>
+</div>
+
+.#{$ns}-text-muted - Change text color to a gentler gray.
+
+Styleguide headings
+*/
+
+.#{$ns}-heading {
+  @include heading-typography-next;
+  margin: 0 0 ($pt-spacing * 3);
+  padding: 0;
+}
+
+// tag: (font-size, line-height)
+$headings: (
+  "h1": (
+    36px,
+    40px,
+  ),
+  "h2": (
+    28px,
+    32px,
+  ),
+  "h3": (
+    22px,
+    25px,
+  ),
+  "h4": (
+    18px,
+    21px,
+  ),
+  "h5": (
+    16px,
+    19px,
+  ),
+  "h6": (
+    14px,
+    16px,
+  ),
+) !default;
+
+@each $tag, $props in $headings {
+  %#{$tag} {
+    font-size: list.nth($props, 1);
+    line-height: list.nth($props, 2);
+  }
+
+  #{$tag}.#{$ns}-heading {
+    @extend %#{$tag};
+  }
+}
+
+/*
+UI text
+
+Markup:
+<div class="{{.modifier}}">
+  More than a decade ago, we set out to create products that would transform
+  the way organizations use their data. Today, our products are deployed at
+  the most critical government, commercial, and non-profit institutions in
+  the world to solve problems we hadn’t even dreamed of back then.
+</div>
+
+.#{$ns}-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
+.#{$ns}-monospace-text - Use a monospace font (ideal for code).
+.#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
+.#{$ns}-text-large - Use a larger font size.
+.#{$ns}-text-small - Use a smaller font size.
+.#{$ns}-text-muted - Change text color to a gentler gray. This text color meets [minimum contrast standards of WCAG 2.1](https://www.w3.org/TR/WCAG21/#contrast-minimum) for $white through $light-gray4 in light theme, and $black through $dark-gray4 in dark theme.
+.#{$ns}-text-disabled - Change text color to a transparent, faded gray. This text color will not meet minimum contrast standards and should only be used on "incidental" text as defined by [WCAG 2.1 Contrast Minimum](https://www.w3.org/TR/WCAG21/#contrast-minimum), either purely decorative, or text of a disabled UI element.
+.#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
+
+Styleguide ui-text
+*/
+
+.#{$ns}-ui-text {
+  @include base-typography;
+}
+
+.#{$ns}-monospace-text {
+  @include monospace-typography;
+}
+
+// NOTE: .#{$ns}-text-large defined below after .#{$ns}-running-text
+
+.#{$ns}-text-overflow-ellipsis {
+  @include overflow-ellipsis;
+}
+
+/*
+Running text
+
+Markup:
+<div class="@ns-running-text {{.modifier}}">
+  <p>
+    We build products that make people better at their most important
+    work — the kind of work you read about on the front page of the
+    newspaper, not just the technology section.
+  </p>
+  <ul>
+    <li>Item the <code>first</code>.</li>
+    <li>Item the <strong>second</strong>.</li>
+    <li>Item the <a href="#core/typography.running-text">third</a>.</li>
+  </ul>
+  <h3>Scale, Speed, Agility</h3>
+  <p>
+    A successful data transformation requires the whole organization — users, the IT shop, and
+    leadership — to operate in lockstep. With Foundry, the enterprise comes together to
+    transform the organization and turn data into a competitive advantage.
+  </p>
+</div>
+
+.#{$ns}-text-large - Use larger font size.
+
+Styleguide running-text
+*/
+
+.#{$ns}-running-text {
+  @include running-typography;
+
+  @each $tag, $props in $headings {
+    #{$tag} {
+      @extend %#{$tag};
+      @include heading-typography-next;
+      margin-bottom: $pt-spacing * 5;
+      margin-top: $pt-spacing * 10;
+    }
+  }
+
+  hr {
+    border: none;
+    border-bottom: 1px solid $pt-divider-black;
+    margin: ($pt-spacing * 5) 0;
+  }
+
+  p {
+    margin: 0 0 ($pt-spacing * 3);
+    padding: 0;
+  }
+
+  blockquote {
+    @extend %blockquote;
+  }
+
+  code {
+    @extend %code;
+  }
+
+  kbd {
+    @extend %keyboard;
+  }
+
+  pre {
+    @extend %code-block;
+  }
+
+  table {
+    // %html-table is defined in the html-table component (not yet migrated to a -next
+    // module). Use !optional so this resolves when html-table is compiled alongside, and
+    // no-ops otherwise instead of failing the build.
+    @extend %html-table !optional;
+  }
+
+  ul,
+  ol {
+    @extend %list;
+  }
+}
+
+// NOTE: these must be defined after .@ns-running-text in order to override font-size.
+.#{$ns}-text-large {
+  font-size: $pt-font-size-large;
+  // line-height comes from .@ns-(ui|running)-text
+}
+
+.#{$ns}-text-small {
+  font-size: $pt-font-size-small;
+  // line-height comes from .@ns-(ui|running)-text
+}
+
+/*
+Links
+
+Simply use an `<a href="">` tag as you normally would. No class is necessary for Blueprint styles.
+Links are underlined only when hovered.
+
+Putting an icon inside a link will cause it to inherit the link's text color.
+
+Styleguide typography.links
+*/
+
+a {
+  text-decoration: none;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+/*
+Preformatted text
+
+Markup:
+<div>
+  <p>Use the <code class="@ns-code">&lt;code></code> tag for snippets of code.</p>
+  <pre class="@ns-code-block">Use the &lt;pre> tag for blocks of code.</pre>
+  <pre class="@ns-code-block"><code>// code sample
+export function hasModifier(
+  modifiers: ts.ModifiersArray,
+  ...modifierKinds: ts.SyntaxKind[],
+) {
+  if (modifiers == null || modifierKinds == null) {
+    return false;
+  }
+  return modifiers.some(m => modifierKinds.some(k => m.kind === k));
+}</code></pre>
+</div>
+
+Styleguide preformatted
+*/
+
+%code {
+  @include monospace-typography;
+  border-radius: $pt-border-radius;
+  font-size: smaller;
+  padding: ($pt-spacing * 0.5) $pt-spacing;
+}
+
+%code-block {
+  @include monospace-typography;
+  border-radius: $pt-border-radius;
+  display: block;
+  font-size: $pt-font-size - 1px;
+  line-height: 1.4;
+  margin: ($pt-spacing * 2) 0;
+  padding: ($pt-spacing * 3) ($pt-spacing * 4);
+  word-break: break-all;
+  word-wrap: break-word;
+
+  > code {
+    font-size: inherit;
+    padding: 0;
+  }
+}
+
+.#{$ns}-code {
+  @extend %code;
+}
+
+.#{$ns}-code-block {
+  @extend %code-block;
+}
+
+%keyboard {
+  align-items: center;
+  border-radius: $pt-border-radius;
+  display: inline-flex;
+  font-family: inherit;
+  font-size: $pt-font-size-small;
+  height: $pt-button-height-small;
+  justify-content: center;
+  line-height: $pt-button-height-small;
+  min-width: $pt-button-height-small;
+  padding: ($pt-spacing * 0.5) $pt-spacing;
+  vertical-align: middle;
+
+  #{$icon-classes} {
+    margin-right: $pt-spacing;
+  }
+}
+
+.#{$ns}-key {
+  @extend %keyboard;
+}
+
+/*
+Block quotes
+
+Markup:
+<blockquote class="@ns-blockquote">
+  Premium Aerotec is a key supplier for Airbus, producing 30 million parts per year,
+  which is huge complexity. Skywise helps us manage all the production steps.
+  It gives Airbus much better visibility into where the product is in the supply chain,
+  and it lets us immediately see our weak points so we can react on the spot.
+</blockquote>
+
+Styleguide blockquote
+*/
+
+%blockquote {
+  border-left: solid $pt-spacing rgba($gray4, 0.5);
+  margin: 0 0 ($pt-spacing * 2);
+  padding: 0 ($pt-spacing * 5);
+}
+
+.#{$ns}-blockquote {
+  @extend %blockquote;
+}
+
+/*
+Lists
+
+Markup:
+<ol class="{{.modifier}}">
+  <li>Item the first</li>
+  <li>Item the second</li>
+  <li>
+    Item the third
+    <ul class="{{.modifier}}">
+      <li>Item the fourth</li>
+      <li>Item the fifth</li>
+    </ul>
+  </li>
+</ol>
+
+.#{$ns}-list - Add a little spacing between items for readability.
+.#{$ns}-list-unstyled - Remove all list styling (including indicators) so you can add your own.
+
+Styleguide lists
+*/
+
+%list {
+  margin: ($pt-spacing * 2) 0;
+  padding-left: $pt-spacing * 7.5;
+
+  li:not(:last-child) {
+    margin-bottom: $pt-spacing;
+  }
+
+  // nested lists
+  ol,
+  ul {
+    margin-top: $pt-spacing;
+  }
+}
+
+.#{$ns}-list {
+  @extend %list;
+}
+
+.#{$ns}-list-unstyled {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    padding: 0;
+  }
+}
+
+/*
+Right-to-left text
+
+Markup:
+<h5 class="@ns-heading">Arabic:</h5>
+<p class="@ns-rtl">
+  لكل لأداء بمحاولة من. مدينة الواقعة يبق أي, وإعلان وقوعها، حول كل, حدى عجّل مشروط الخاسرة قد.
+  من الذود تكبّد بين, و لها واحدة الأراضي. عل الصفحة والروسية يتم, أي للحكومة استعملت شيء. أم وصل زهاء اليا
+</p>
+<h5 class="@ns-heading">Hebrew:</h5>
+<p class="@ns-rtl">
+  כדי על עזרה יידיש הבהרה, מלא באגים טכניים דת. תנך או ברית ביולי. כתב בה הטבע למנוע, דת כלים פיסיקה החופשית זכר.
+  מתן החלל מאמרשיחהצפה ב. הספרות אנציקלופדיה אם זכר, על שימושי שימושיים תאולוגיה עזה
+</p>
+
+Styleguide rtl
+*/
+
+.#{$ns}-rtl {
+  text-align: right;
+}

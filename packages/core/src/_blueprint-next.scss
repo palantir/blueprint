@@ -1,0 +1,19 @@
+/*
+
+Copyright 2021-present Palantir Technologies, Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0.
+
+*/
+
+// Entry point for the BP7 "next" styles that have been migrated to the Sass module
+// system (@use/@forward). Emitting these via @use here (rather than a nested @import in
+// blueprint.scss) keeps the module graph isolated from the legacy global @import scope,
+// which otherwise collides on shared palette variables such as $black.
+//
+// The modules below already namespace their selectors with `$ns: bp-next`
+// (e.g. `.bp-next-button`), so their emitted CSS is scoped without a wrapping selector.
+
+@forward "typography-next";
+
+@forward "components/button/button-next";
+@forward "components/button/button-group-next";
