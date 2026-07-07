@@ -19,6 +19,7 @@ import type { IconName } from "@blueprintjs/icons";
 import type { Intent } from "./intent";
 
 export const DISPLAYNAME_PREFIX = "Blueprint6";
+export const DISPLAYNAME_NEXT_PREFIX = "BlueprintNext";
 
 /**
  * Alias for all valid HTML props for `<div>` element.

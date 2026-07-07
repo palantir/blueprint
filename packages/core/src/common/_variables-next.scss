@@ -71,6 +71,10 @@ $pt-line-height: 1.28581 !default;
 // equivalent to: $pt-spacing
 $pt-border-radius: 4px !default;
 
+// Intents
+
+$pt-intents: ("primary", "success", "warning", "danger", "default");
+
 // Buttons
 $pt-button-height: $pt-spacing * 7.5 !default;
 $pt-button-height-small: $pt-spacing * 6 !default;

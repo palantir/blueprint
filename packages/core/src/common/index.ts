@@ -43,6 +43,7 @@ export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } fro
 export { Size, type NonSmallSize } from "./size";
 
 import * as Classes from "./classes";
+import * as ClassesNext from "./classesNext";
 import * as Utils from "./utils";
-export { Classes, Utils };
+export { Classes, ClassesNext, Utils };
 // NOTE: Errors is not exported in public API
