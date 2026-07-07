@@ -64,7 +64,7 @@ $control-group-stack: (
 ) {
   @if $focus {
     @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 #{$outer-shadow-focus-width} oklch(from $color l c h / 0.752);
+      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
   } @else {
     @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
   }
@@ -77,7 +77,7 @@ $control-group-stack: (
 ) {
   @if $focus {
     @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 #{$outer-shadow-focus-width} oklch(from $color l c h / 0.752);
+      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
   } @else {
     @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
   }
