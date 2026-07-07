@@ -5,6 +5,12 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
+// BP7 "next" styles migrated to the Sass module system. @forward must be at the top level
+// (Sass forbids it inside a selector) and precede the legacy @import rules below. The
+// forwarded modules (typography, buttons, button group) already namespace their selectors
+// with `$ns: bp-next` (e.g. `.bp-next-button`), so their CSS is scoped without a wrapper.
+@forward "blueprint-next";
+
 // Import files in the same order that they are documented in the docs
 @import "design-tokens/build/tokens";
 @import "design-tokens/build/tokens-dark";
@@ -18,3 +24,16 @@ Licensed under the Apache License, Version 2.0.
 @import "accessibility/focus-states";
 @import "dark-theme";
 @import "components/index";
+
+// The `.bp-next` block's legacy @import contents depend on the global palette / variables
+// loaded above, so it must come after them.
+
+@import "design-tokens/build/tokens-next";
+@import "design-tokens/build/tokens-dark-next";
+
+.bp-next {
+  @import "reset";
+  @import "accessibility/focus-states";
+  @import "dark-theme";
+  @import "components/index-next";
+}

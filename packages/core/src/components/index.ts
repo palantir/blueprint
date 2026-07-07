@@ -18,6 +18,7 @@ export { Alert, type AlertProps } from "./alert/alert";
 export { Breadcrumb, type BreadcrumbProps } from "./breadcrumbs/breadcrumb";
 export { Breadcrumbs, type BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
 export { AnchorButton, Button } from "./button/buttons";
+export { AnchorButtonNext, ButtonNext } from "./button/buttonsNext";
 export type {
     AnchorButtonProps,
     ButtonProps,
@@ -77,6 +78,8 @@ export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./ov
 export { Overlay2, type Overlay2Props } from "./overlay2/overlay2";
 export type { OverlayInstance } from "./overlay2/overlayInstance";
 export { Text, type TextProps } from "./text/text";
+export { TextNext } from "./text/textNext";
+
 // eslint-disable-next-line @typescript-eslint/no-deprecated
 export { PanelStack, type PanelStackProps, PanelStack2, type PanelStack2Props } from "./panel-stack/panelStack";
 export type { Panel, PanelProps } from "./panel-stack/panelTypes";

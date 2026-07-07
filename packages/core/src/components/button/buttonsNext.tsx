@@ -1,0 +1,151 @@
+/*
+ * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import classNames from "classnames";
+import { forwardRef } from "react";
+
+import {
+    useInteractiveAttributes,
+    type UseInteractiveAttributesOptions,
+} from "../../accessibility/useInteractiveAttributes";
+import { ClassesNext, Utils } from "../../common";
+import { DISPLAYNAME_NEXT_PREFIX, removeNonHTMLProps } from "../../common/props";
+import { Icon } from "../icon/icon";
+import { Spinner, SpinnerSize } from "../spinner/spinner";
+import { Text } from "../text/text";
+
+import type { AnchorButtonProps, ButtonProps } from "./buttonProps";
+
+/**
+ * Button component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button
+ */
+export const ButtonNext: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+    const commonAttributes = useSharedButtonAttributes(props, ref);
+
+    return (
+        <button type="button" {...removeNonHTMLProps(props)} {...commonAttributes}>
+            {renderButtonContents(props)}
+        </button>
+    );
+});
+ButtonNext.displayName = `${DISPLAYNAME_NEXT_PREFIX}.Button`;
+
+/**
+ * AnchorButton component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/button
+ */
+export const AnchorButtonNext: React.FC<AnchorButtonProps> = forwardRef<HTMLAnchorElement, AnchorButtonProps>(
+    (props, ref) => {
+        const { href } = props;
+        const commonProps = useSharedButtonAttributes(props, ref, {
+            defaultTabIndex: 0,
+            disabledTabIndex: -1,
+        });
+
+        return (
+            <a
+                role="button"
+                {...removeNonHTMLProps(props)}
+                {...commonProps}
+                aria-disabled={commonProps.disabled}
+                href={commonProps.disabled ? undefined : href}
+            >
+                {renderButtonContents(props)}
+            </a>
+        );
+    },
+);
+AnchorButtonNext.displayName = `${DISPLAYNAME_NEXT_PREFIX}.AnchorButton`;
+
+/**
+ * Most of the button logic lives in this shared hook.
+ */
+function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonElement>(
+    props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
+    ref: React.Ref<E>,
+    options?: UseInteractiveAttributesOptions,
+) {
+    const {
+        alignText,
+        fill,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        large,
+        loading = false,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        minimal,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        outlined,
+        size = "medium",
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        small,
+        variant = "solid",
+    } = props;
+    const disabled = props.disabled || loading;
+
+    const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
+
+    const className = classNames(
+        ClassesNext.BUTTON,
+        {
+            [ClassesNext.ACTIVE]: active,
+            [ClassesNext.DISABLED]: disabled,
+            [ClassesNext.FILL]: fill,
+            [ClassesNext.LOADING]: loading,
+        },
+        ClassesNext.alignmentClass(alignText),
+        ClassesNext.intentClass(props.intent),
+        ClassesNext.sizeClass(size, { large, small }),
+        ClassesNext.variantClass(variant, { minimal, outlined }),
+        props.className,
+    );
+
+    return {
+        ...interactiveProps,
+        className,
+        disabled,
+    };
+}
+
+/**
+ * Shared rendering code for button contents.
+ */
+function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
+    props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
+) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    const { children, ellipsizeText, endIcon, icon, loading, rightIcon, text, textClassName } = props;
+    const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
+    return (
+        <>
+            {loading && <Spinner className={ClassesNext.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
+            <Icon icon={icon} />
+            {hasTextContent && (
+                <Text
+                    className={classNames(ClassesNext.BUTTON_TEXT, textClassName)}
+                    ellipsize={ellipsizeText}
+                    tagName="span"
+                >
+                    {text}
+                    {children}
+                </Text>
+            )}
+            <Icon icon={endIcon ?? rightIcon} />
+        </>
+    );
+}
