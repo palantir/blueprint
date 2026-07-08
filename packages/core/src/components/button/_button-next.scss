@@ -3,11 +3,11 @@
 
 @import "../../common/variables";
 @import "../../common/variables-extended";
-@import "./common";
+@import "./common-next";
 // @use "../../common/flex-next" as *;
 // @use "../icon/icon-mixins-next" as *;
 
-.bp-next & .#{$ns}-button {
+.#{$ns}-button {
   @include pt-button-layout;
   min-height: calc(var(--bp-surface-spacing) * 7.5);
   min-width: calc(var(--bp-surface-spacing) * 7.5);
