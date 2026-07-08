@@ -165,33 +165,16 @@ const THEMES: readonly ThemeConfig[] = [
         destination: "tokens-dark.css",
     },
     {
-        name: "light-transition",
-        include: ["src/design-tokens/tokens/transition/palette.tokens.json"],
-        sources: ["src/design-tokens/tokens/transition/*.tokens.next.json"],
-        selector: ":root",
-        destination: "tokens-transition.css",
-    },
-    {
-        name: "dark-transition",
-        include: [
-            "src/design-tokens/tokens/transition/palette.tokens.json",
-            "src/design-tokens/tokens/transition/*.tokens.next.json",
-        ],
-        sources: ["src/design-tokens/tokens/transition/*.dark.tokens.json"],
-        selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
-        destination: "tokens-transition-dark.css",
-    },
-    {
         name: "light-next",
         sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
-        selector: ":root",
+        selector: ".bp-next",
         destination: "tokens-next.css",
     },
     {
         name: "dark-next",
         include: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
         sources: ["src/design-tokens/tokens/next/**/*.bp7.dark.tokens.json"],
-        selector: '[data-bp-color-scheme=\"dark\"],\n.bp7-dark',
+        selector: '.bp-next & [data-bp-color-scheme=\"dark\"]',
         destination: "tokens-dark-next.css",
     },
 ];
