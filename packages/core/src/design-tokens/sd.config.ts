@@ -167,6 +167,19 @@ const THEMES: readonly ThemeConfig[] = [
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
+    {
+        name: "light-next",
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        selector: ".bp-next",
+        destination: "tokens-next.css",
+    },
+    {
+        name: "dark-next",
+        include: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.dark.tokens.json"],
+        selector: '.bp-next[data-bp-color-scheme=\"dark\"],\n.bp-next [data-bp-color-scheme=\"dark\"]',
+        destination: "tokens-dark-next.css",
+    },
 ];
 
 // -- Parsers ------------------------------------------------------------------
