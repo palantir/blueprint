@@ -3,7 +3,7 @@
 
 @use "sass:map";
 @import "../../common/variables";
-@import "./common";
+@import "./common-next";
 
 // z-index values for button stacking order (derived from $control-group-stack in forms/_common.scss)
 $button-group-z-index: (
