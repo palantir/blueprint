@@ -20,7 +20,7 @@ import { GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 import { afterEach, beforeAll, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Intent } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Intent } from "../../common";
 
 import { Icon, type IconProps } from "./icon";
 
@@ -99,6 +99,54 @@ describe("<Icon>", () => {
     it("element icon's own color takes precedence over the <Icon> color", async () =>
         // non-regression: the element's explicit color wins over the forwarded one
         assertIconColor(<Icon icon={<GraphIcon color="blue" />} color="red" />, "blue"));
+
+    // A non-Blueprint element used as an icon: it renders its own <svg> reflecting only the props it
+    // receives, so the assertions below can prove that size/color were NOT forwarded onto it.
+    function CustomIcon(elementProps: { className?: string; color?: string; size?: number }) {
+        return (
+            <svg
+                className={elementProps.className}
+                fill={elementProps.color}
+                height={elementProps.size}
+                width={elementProps.size}
+            />
+        );
+    }
+    CustomIcon.displayName = "CustomIcon";
+
+    it("does not forward size/color onto a non-Blueprint element icon, but merges className and intent", () => {
+        const wrapper = mount(
+            <Icon icon={<CustomIcon />} size={IconSize.LARGE} color="red" className="custom" intent={Intent.DANGER} />,
+        );
+        wrapper.update();
+        const svg = wrapper.find("svg");
+        // gated: size/color are not forwarded onto a non-Blueprint element
+        expect(svg.prop("width")).toBeUndefined();
+        expect(svg.prop("height")).toBeUndefined();
+        expect(svg.prop("fill")).toBeUndefined();
+        // className + intent class are still merged onto element icons of any type (issue #8080)
+        expect(svg.hasClass("custom")).toBe(true);
+        expect(svg.hasClass(Classes.INTENT_DANGER)).toBe(true);
+    });
+
+    it("does not forward size/color onto a host-element icon, but merges className and intent", () => {
+        const wrapper = mount(
+            <Icon icon={<article />} size={IconSize.LARGE} color="red" className="custom" intent={Intent.DANGER} />,
+        );
+        wrapper.update();
+        const article = wrapper.find("article");
+        expect(article.prop("size")).toBeUndefined();
+        expect(article.prop("color")).toBeUndefined();
+        expect(article.hasClass("custom")).toBe(true);
+        expect(article.hasClass(Classes.INTENT_DANGER)).toBe(true);
+    });
+
+    it("generated icon components carry the displayName prefix that size/color gating relies on", () => {
+        // Guards against core's DISPLAYNAME_PREFIX and the @blueprintjs/icons generators drifting apart,
+        // which would silently disable size/color forwarding onto element icons.
+        expect(GraphIcon.displayName).toBeDefined();
+        expect(GraphIcon.displayName!.startsWith(`${DISPLAYNAME_PREFIX}.Icon.`)).toBe(true);
+    });
 
     it("unknown icon name renders blank icon", async () => {
         const wrapper = mount(<Icon icon={"unknown" as any} />);
