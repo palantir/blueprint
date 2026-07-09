@@ -37,18 +37,18 @@
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-button-next() {
-  background-color: var(--bp-surface-background-color-default-rest);
-  box-shadow: var(--bp-surface-shadow-0);
-  color: var(--bp-typography-color-base);
+  background-color: var(--bp-surface-layer-color-neutral-rest);
+  box-shadow: inset var(--bp-surface-shadow-0);
+  color: var(--bp-intent-neutral-foreground);
 
   &:hover {
     background-clip: padding-box;
-    background-color: var(--bp-surface-background-color-default-hover);
+    background-color: var(--bp-surface-layer-color-neutral-hover);
   }
 
   &:active,
   &.#{$ns}-active {
-    background-color: var(--bp-surface-background-color-default-active);
+    background-color: var(--bp-surface-layer-color-neutral-active);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
@@ -59,7 +59,7 @@
   &:disabled,
   &.#{$ns}-disabled {
     background-color: oklch(
-      from var(--bp-surface-background-color-default-rest) l c h /
+      from var(--bp-surface-background-color-neutral-rest) l c h /
         var(--bp-emphasis-disabled-opacity)
     );
     box-shadow: none;
@@ -75,9 +75,8 @@
 
 @mixin pt-button-intent-variant-next($intent) {
   background-color: var(--bp-surface-background-color-#{$intent}-rest);
-  box-shadow: var(--bp-surface-shadow-0);
-  // color: var(--bp-typography-color-base);
-  color: var(--bp-palette-white-1000);
+  box-shadow: inset var(--bp-surface-shadow-0);
+  color: var(--bp-intent-#{$intent}-foreground);
 
   &:hover,
   &:active,
@@ -125,12 +124,12 @@
   // .#{$ns}-button-spinner .#{$ns}-spinner-head {
   //   background: color-mix(
   //     in srgb,
-  //     var(--bp-intent-default-rest) 20%,
+  //     var(--bp-intent-neutral-rest) 20%,
   //     var(--bp-palette-black)
   //   ); //$dark-progress-track-color;
   //   stroke: color-mix(
   //     in srgb,
-  //     var(--bp-intent-default-rest) 68%,
+  //     var(--bp-intent-neutral-rest) 68%,
   //     var(--bp-palette-white)
   //   ); //$dark-progress-head-color;
   // }

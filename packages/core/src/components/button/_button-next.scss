@@ -105,7 +105,7 @@
   }
 
   .#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
-    color: var(--bp-typography-color-intent-base);
+    color: var(--bp-intent-neutral-foreground);
   }
 
   // button with SVG icon only (no text or children)
@@ -118,47 +118,6 @@
         -1 * calc(calc(var(--bp-surface-spacing) * 7.5) - calc(var(--bp-surface-spacing) * 4)) * 0.5
       );
   }
-
-  // dark theme
-  // .#{$ns}-dark &,
-  // [data-bp-color-scheme="dark"] & {
-  //   &:not([class*="#{$ns}-intent-"]) {
-  //     @include pt-dark-button-next;
-
-  //     &[class*="#{$ns}-icon-"]::before {
-  //       color: var(--bp-typography-color-default-rest);
-  //     }
-
-  //     #{$icon-classes} {
-  //       &:not([class*="#{$ns}-intent-"]) {
-  //         color: var(--bp-typography-color-default-rest);
-  //       }
-  //     }
-  //   }
-
-  //   &[class*="#{$ns}-intent-"] {
-  //     box-shadow: var(--bp-surface-shadow-0);
-
-  //     &:hover {
-  //       box-shadow: var(--bp-surface-shadow-0);
-  //     }
-
-  //     &:active,
-  //     &.#{$ns}-active {
-  //       box-shadow: var(--bp-surface-shadow-0);
-  //     }
-
-  //     &:disabled,
-  //     &.#{$ns}-disabled {
-  //       box-shadow: none;
-  //       color: color-mix(in oklch, var(--bp-intent-default-foreground) 30%, transparent);
-  //     }
-
-  //     .#{$ns}-button-spinner .#{$ns}-spinner-head {
-  //       stroke: var(--bp-typography-color-default-hover);
-  //     }
-  //   }
-  // }
 
   // disabled and intent button icon should use same color as text
   &:disabled,
@@ -192,11 +151,13 @@ a.#{$ns}-button {
   &:hover,
   &:active {
     // override global 'a' styles
-    color: var(--bp-typography-color-default-rest);
+    color: var(--bp-intent-neutral-foreground);
   }
 
   &.#{$ns}-disabled {
-    color: var(--bp-typography-color-default-disabled);
+    color: oklch(
+      from var(--bp-intent-neutral-foreground) l c h / var(--bp-emphasis-disabled-opacity)
+    );
   }
 }
 

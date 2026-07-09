@@ -26,52 +26,6 @@ $button-group-z-index: (
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: map.get($button-group-z-index, "button-default");
-
-    // the ordering of these z-index CSS rules is particular because of CSS
-    // selector specificity. specifically, disabled styles should have
-    // precedence over hover and active styles to prevent mouse interactions on
-    // disabled buttons from reordering elements in the stack.
-
-    &:focus {
-      z-index: map.get($button-group-z-index, "button-focus");
-    }
-
-    &:hover {
-      z-index: map.get($button-group-z-index, "button-hover");
-    }
-
-    &:active,
-    &.#{$ns}-active {
-      z-index: map.get($button-group-z-index, "button-active");
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      z-index: map.get($button-group-z-index, "button-disabled");
-    }
-
-    &[class*="#{$ns}-intent-"] {
-      z-index: map.get($button-group-z-index, "intent-button-default");
-
-      &:focus {
-        z-index: map.get($button-group-z-index, "intent-button-focus");
-      }
-
-      &:hover {
-        z-index: map.get($button-group-z-index, "intent-button-hover");
-      }
-
-      &:active,
-      &.#{$ns}-active {
-        z-index: map.get($button-group-z-index, "intent-button-active");
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        z-index: map.get($button-group-z-index, "intent-button-disabled");
-      }
-    }
   }
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
