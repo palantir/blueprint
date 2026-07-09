@@ -21,12 +21,12 @@
         },
         "border-color": {
             "$type": "color",
-            "$description": "Dark-mode borders use the raw intent (.500); light mode lightens to the .200 tint.",
-            "neutral": { "$value": "{intent.neutral}" },
-            "primary": { "$value": "{intent.primary}" },
-            "success": { "$value": "{intent.success}" },
-            "warning": { "$value": "{intent.warning}" },
-            "danger": { "$value": "{intent.danger}" }
+            "$description": "Dark borders reference the intent's .500 ramp step — exact palette landing, follows the intent.",
+            "neutral": { "$value": "{intent.neutral.500}" },
+            "primary": { "$value": "{intent.primary.500}" },
+            "success": { "$value": "{intent.success.500}" },
+            "warning": { "$value": "{intent.warning.500}" },
+            "danger": { "$value": "{intent.danger.500}" }
         },
         "layer-opacity": {
             "$type": "number",
@@ -40,109 +40,78 @@
         },
         "layer-color": {
             "$type": "color",
-            "$description": "Intent tint at the layer opacity. rest = raw intent; hover/active derived from it.",
+            "$description": "Intent tint at the layer opacity. Color references an exact intent ramp step; only alpha is derived.",
             "base": {
-                "$value": "{intent.primary}",
-                "$extensions": {
-                    "com.blueprint.derive": {
-                        "lightnessOffset": 0.307,
-                        "chromaOffset": -0.062,
-                        "alpha": "{surface.layer-opacity.base}"
-                    }
-                }
+                "$value": "{intent.primary.200}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.base}" } }
             },
             "neutral": {
                 "rest": {
-                    "$value": "{intent.neutral}",
+                    "$value": "{intent.neutral.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
-                    "$value": "{intent.neutral}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessOffset": 0.1,
-                            "alpha": "{surface.layer-opacity.intent.hover}"
-                        }
-                    }
+                    "$value": "{intent.neutral.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.neutral}",
+                    "$value": "{intent.neutral.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "primary": {
                 "rest": {
-                    "$value": "{intent.primary}",
+                    "$value": "{intent.primary.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
-                    "$value": "{intent.primary}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessOffset": 0.1,
-                            "alpha": "{surface.layer-opacity.intent.hover}"
-                        }
-                    }
+                    "$value": "{intent.primary.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.primary}",
+                    "$value": "{intent.primary.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "success": {
                 "rest": {
-                    "$value": "{intent.success}",
+                    "$value": "{intent.success.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
-                    "$value": "{intent.success}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessOffset": 0.1,
-                            "alpha": "{surface.layer-opacity.intent.hover}"
-                        }
-                    }
+                    "$value": "{intent.success.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.success}",
+                    "$value": "{intent.success.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "warning": {
                 "rest": {
-                    "$value": "{intent.warning}",
+                    "$value": "{intent.warning.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
-                    "$value": "{intent.warning}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessOffset": 0.1,
-                            "alpha": "{surface.layer-opacity.intent.hover}"
-                        }
-                    }
+                    "$value": "{intent.warning.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.warning}",
+                    "$value": "{intent.warning.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "danger": {
                 "rest": {
-                    "$value": "{intent.danger}",
+                    "$value": "{intent.danger.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
-                    "$value": "{intent.danger}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessOffset": 0.1,
-                            "alpha": "{surface.layer-opacity.intent.hover}"
-                        }
-                    }
+                    "$value": "{intent.danger.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.danger}",
+                    "$value": "{intent.danger.default}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             }
@@ -366,13 +335,13 @@
             },
             "neutral": {
                 "rest": {
-                    "$value": "{intent.neutral}",
+                    "$value": "{intent.neutral.default}",
                     "$extensions": {
                         "com.blueprint.derive": { "lightnessScale": 0.362, "chromaScale": 0.308, "hueOffset": -1.44 }
                     }
                 },
                 "hover": {
-                    "$value": "{intent.neutral}",
+                    "$value": "{intent.neutral.default}",
                     "$extensions": {
                         "com.blueprint.derive": {
                             "lightnessScale": 0.615,
@@ -382,7 +351,7 @@
                     }
                 },
                 "active": {
-                    "$value": "{intent.neutral}",
+                    "$value": "{intent.neutral.default}",
                     "$extensions": {
                         "com.blueprint.derive": {
                             "lightnessScale": 0.782,
@@ -393,36 +362,24 @@
                 }
             },
             "primary": {
-                "rest": { "$value": "{intent.primary}" },
-                "hover": {
-                    "$value": "{intent.primary}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
-                },
-                "active": { "$value": "{intent.primary}" }
+                "rest": { "$value": "{intent.primary.default}" },
+                "hover": { "$value": "{intent.primary.400}" },
+                "active": { "$value": "{intent.primary.default}" }
             },
             "success": {
-                "rest": { "$value": "{intent.success}" },
-                "hover": {
-                    "$value": "{intent.success}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
-                },
-                "active": { "$value": "{intent.success}" }
+                "rest": { "$value": "{intent.success.default}" },
+                "hover": { "$value": "{intent.success.400}" },
+                "active": { "$value": "{intent.success.default}" }
             },
             "warning": {
-                "rest": { "$value": "{intent.warning}" },
-                "hover": {
-                    "$value": "{intent.warning}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
-                },
-                "active": { "$value": "{intent.warning}" }
+                "rest": { "$value": "{intent.warning.default}" },
+                "hover": { "$value": "{intent.warning.400}" },
+                "active": { "$value": "{intent.warning.default}" }
             },
             "danger": {
-                "rest": { "$value": "{intent.danger}" },
-                "hover": {
-                    "$value": "{intent.danger}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
-                },
-                "active": { "$value": "{intent.danger}" }
+                "rest": { "$value": "{intent.danger.default}" },
+                "hover": { "$value": "{intent.danger.400}" },
+                "active": { "$value": "{intent.danger.default}" }
             }
         }
     }

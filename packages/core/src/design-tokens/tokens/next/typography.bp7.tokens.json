@@ -132,29 +132,14 @@
         },
         "color": {
             "$type": "color",
-            "$description": "base is the near-black body text (palette grey.1000); intent text colors derive one stop darker (.600) from the global intent tokens.",
+            "$description": "base is the near-black body text (palette grey.1000); intent text references the intent's .600 ramp step.",
             "base": { "$value": "{palette.grey.1000}" },
             "intent": {
-                "neutral": {
-                    "$value": "{intent.neutral}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
-                },
-                "primary": {
-                    "$value": "{intent.primary}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
-                },
-                "success": {
-                    "$value": "{intent.success}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
-                },
-                "warning": {
-                    "$value": "{intent.warning}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
-                },
-                "danger": {
-                    "$value": "{intent.danger}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.09 } }
-                }
+                "neutral": { "$value": "{intent.neutral.600}" },
+                "primary": { "$value": "{intent.primary.600}" },
+                "success": { "$value": "{intent.success.600}" },
+                "warning": { "$value": "{intent.warning.600}" },
+                "danger": { "$value": "{intent.danger.600}" }
             }
         }
     }

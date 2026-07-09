@@ -2,29 +2,14 @@
     "typography": {
         "color": {
             "$type": "color",
-            "$description": "Dark-mode text. base is near-white body text (grey.100); intent text resolves one stop lighter (.200) from the global intent tokens.",
+            "$description": "Dark-mode text. base is near-white body text (grey.100); intent text references the intent's .200 ramp step.",
             "base": { "$value": "{palette.grey.100}" },
             "intent": {
-                "neutral": {
-                    "$value": "{intent.neutral}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.277 } }
-                },
-                "primary": {
-                    "$value": "{intent.primary}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
-                },
-                "success": {
-                    "$value": "{intent.success}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
-                },
-                "warning": {
-                    "$value": "{intent.warning}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
-                },
-                "danger": {
-                    "$value": "{intent.danger}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.262, "chromaOffset": -0.066 } }
-                }
+                "neutral": { "$value": "{intent.neutral.200}" },
+                "primary": { "$value": "{intent.primary.200}" },
+                "success": { "$value": "{intent.success.200}" },
+                "warning": { "$value": "{intent.warning.200}" },
+                "danger": { "$value": "{intent.danger.200}" }
             }
         }
     }
