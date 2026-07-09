@@ -136,6 +136,22 @@ describe("<Select>", () => {
         expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
+    it.each(["Enter", " "] as const)("opens Popover from the focused button target's %s keyup click", key => {
+        // override isOpen in defaultProps
+        const wrapper = select({ filterable: false, popoverProps: { usePortal: false } });
+        // should be closed to start
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+        const targetButton = findTargetButton(wrapper);
+
+        targetButton.simulate("keydown", { key });
+        // Native clickable targets handle keyboard activation themselves, so Select should not open on keydown.
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+
+        targetButton.simulate("keyup", { key });
+        // ...and should open after Button synthesizes its keyup click
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+    });
+
     it("invokes onItemSelect when clicking first MenuItem", () => {
         const wrapper = select();
         // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM

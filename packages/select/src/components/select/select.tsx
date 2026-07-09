@@ -301,7 +301,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
             this.setState({ isOpen: true });
-        } else if (Utils.isKeyboardClick(event)) {
+        } else if (Utils.isKeyboardClick(event) && !isKeyboardClickHandledByTarget(event)) {
             this.setState({ isOpen: true });
         }
     };
@@ -364,4 +364,14 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     };
 
     private resetQuery = () => this.queryList && this.queryList.setQuery("", true);
+}
+
+function isKeyboardClickHandledByTarget(event: React.KeyboardEvent<HTMLElement>) {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+        return false;
+    }
+
+    const selector = event.key === " " ? "button, [role='button']" : "button, a, [role='button']";
+    return target.closest(selector) != null;
 }
