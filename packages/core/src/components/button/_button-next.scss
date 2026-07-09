@@ -8,7 +8,7 @@
 // @use "../icon/icon-mixins-next" as *;
 
 .#{$ns}-button {
-  @include pt-button-layout;
+  @include pt-button-layout-next;
   min-height: calc(var(--bp-surface-spacing) * 7.5);
   min-width: calc(var(--bp-surface-spacing) * 7.5);
 
@@ -40,13 +40,13 @@
 
   // default styles
   &:not([class*="#{$ns}-intent-"]) {
-    @include pt-button;
+    @include pt-button-next;
   }
 
   // intents
   @each $intent in $pt-intents {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-intent-variant($intent);
+      @include pt-button-intent-variant-next($intent);
     }
   }
 
@@ -123,7 +123,7 @@
   // .#{$ns}-dark &,
   // [data-bp-color-scheme="dark"] & {
   //   &:not([class*="#{$ns}-intent-"]) {
-  //     @include pt-dark-button;
+  //     @include pt-dark-button-next;
 
   //     &[class*="#{$ns}-icon-"]::before {
   //       color: var(--bp-typography-color-default-rest);
@@ -173,13 +173,13 @@
 
   // minimal must come last to override all default styles
   &.#{$ns}-minimal {
-    @include pt-button-minimal;
+    @include pt-button-minimal-next;
   }
 
   // outline is based on the styles of minimal
   &.#{$ns}-outlined {
-    @include pt-button-minimal;
-    @include pt-button-outlined;
+    @include pt-button-minimal-next;
+    @include pt-button-outlined-next;
   }
 }
 

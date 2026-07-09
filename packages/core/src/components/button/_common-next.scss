@@ -10,7 +10,7 @@
 // @use "../../common/flex-next" as *;
 // @import "../progress-bar/common";
 
-@mixin pt-button-layout() {
+@mixin pt-button-layout-next() {
   @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2), $inline: inline);
   align-items: center;
   border: none;
@@ -23,20 +23,20 @@
   vertical-align: middle;
 }
 
-@mixin pt-button-height-default() {
+@mixin pt-button-height-default-next() {
   min-height: calc(var(--bp-surface-spacing) * 7.5);
   min-width: calc(var(--bp-surface-spacing) * 7.5);
   padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
 }
 
-@mixin pt-button-height-small() {
+@mixin pt-button-height-small-next() {
   min-height: calc(var(--bp-surface-spacing) * 6);
   min-width: calc(var(--bp-surface-spacing) * 6);
   padding: 0 calc(var(--bp-surface-spacing) * 2);
 }
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
-@mixin pt-button() {
+@mixin pt-button-next() {
   background-color: var(--bp-surface-background-color-default-rest);
   box-shadow: var(--bp-surface-shadow-0);
   color: var(--bp-typography-color-base);
@@ -73,7 +73,7 @@
   }
 }
 
-@mixin pt-button-intent-variant($intent) {
+@mixin pt-button-intent-variant-next($intent) {
   background-color: var(--bp-surface-background-color-#{$intent}-rest);
   box-shadow: var(--bp-surface-shadow-0);
   // color: var(--bp-typography-color-base);
@@ -121,7 +121,7 @@
   }
 }
 
-@mixin pt-dark-button() {
+@mixin pt-dark-button-next() {
   // .#{$ns}-button-spinner .#{$ns}-spinner-head {
   //   background: color-mix(
   //     in srgb,
@@ -136,19 +136,19 @@
   // }
 }
 
-@mixin pt-dark-button-default-colors() {
+@mixin pt-dark-button-default-colors-next() {
 }
 
-@mixin pt-dark-button-hover() {
+@mixin pt-dark-button-hover-next() {
 }
 
-@mixin pt-dark-button-active() {
+@mixin pt-dark-button-active-next() {
 }
 
-@mixin pt-dark-button-disabled() {
+@mixin pt-dark-button-disabled-next() {
 }
 
-@mixin pt-button-minimal() {
+@mixin pt-button-minimal-next() {
   background: none;
   box-shadow: none;
   color: var(--bp-typography-color-neutral);
@@ -179,12 +179,12 @@
 
   @each $intent in $pt-intents {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-minimal-intent($intent);
+      @include pt-button-minimal-intent-next($intent);
     }
   }
 }
 
-@mixin pt-button-minimal-intent($intent) {
+@mixin pt-button-minimal-intent-next($intent) {
   color: var(--bp-typography-color-intent-#{$intent});
 
   &:hover,
@@ -223,7 +223,7 @@
   }
 }
 
-@mixin pt-button-outlined() {
+@mixin pt-button-outlined-next() {
   border: var(--bp-surface-border-width) solid;
   border-color: var(--bp-surface-border-color-neutral);
   box-sizing: border-box;

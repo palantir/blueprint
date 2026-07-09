@@ -103,7 +103,7 @@ $button-group-z-index: (
   &.#{$ns}-minimal,
   &.#{$ns}-outlined {
     .#{$ns}-button {
-      @include pt-button-minimal;
+      @include pt-button-minimal-next;
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -127,7 +127,7 @@ $button-group-z-index: (
   &.#{$ns}-outlined {
     > .#{$ns}-button,
     > .#{$ns}-popover-target > .#{$ns}-button {
-      @include pt-button-outlined;
+      @include pt-button-outlined-next;
     }
 
     &:not(.#{$ns}-vertical) {
