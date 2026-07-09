@@ -36,6 +36,7 @@ import {
 import { CrossIcon, SearchIcon } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -301,7 +302,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
             this.setState({ isOpen: true });
-        } else if (Utils.isKeyboardClick(event) && !isKeyboardClickHandledByTarget(event)) {
+        } else if (Utils.isKeyboardClick(event) && !targetSelfActivatesOnKeyUp(event)) {
             this.setState({ isOpen: true });
         }
     };
@@ -364,14 +365,4 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     };
 
     private resetQuery = () => this.queryList && this.queryList.setQuery("", true);
-}
-
-function isKeyboardClickHandledByTarget(event: React.KeyboardEvent<HTMLElement>) {
-    const target = event.target;
-    if (!(target instanceof Element)) {
-        return false;
-    }
-
-    const selector = event.key === " " ? "button, [role='button']" : "button, a, [role='button']";
-    return target.closest(selector) != null;
 }
