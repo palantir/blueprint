@@ -116,8 +116,9 @@ export const ColorExample: Story = {
 /**
  * The `icon` prop accepts either a string icon name or a React element (typically an icon
  * component from `@blueprintjs/icons`). When an element is provided, `<Icon>` clones it and
- * merges the parent-provided `className` and intent class onto its root. It also forwards the
- * `color` and `size` props onto it (the element's own props take precedence).
+ * merges the parent-provided `className` and intent class onto its root. For recognized
+ * `@blueprintjs/icons` elements, it also forwards the `color` and `size` props (the element's
+ * own props take precedence).
  */
 export const ElementIcon: Story = {
     name: "Element icon",
