@@ -35,6 +35,7 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common";
+import { isBlueprintIconElement } from "../../common/utils";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { type IconName, IconSize };
@@ -98,25 +99,6 @@ export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProp
  */
 export interface IconComponent extends React.FC<IconProps<Element>> {
     <T extends Element = Element>(props: IconProps<T>): React.ReactNode;
-}
-
-/** `displayName` prefix shared by every generated `@blueprintjs/icons` component (legacy and next). */
-const BLUEPRINT_ICON_DISPLAYNAME_PREFIX = `${DISPLAYNAME_PREFIX}.Icon.`;
-
-/**
- * Type guard for elements that are Blueprint icon components (from `@blueprintjs/icons`, legacy or
- * next). Such components accept the full `SVGIconProps` interface, so it is safe to forward `size`/
- * `color` onto them. Recognition is by `displayName` prefix, consistent with `isElementOfType`, which
- * tolerates multiple minor versions of `@blueprintjs/icons` coexisting in one bundle. The trailing dot
- * excludes `<Icon>` itself (`Blueprint6.Icon`) and the SVG containers.
- */
-function isBlueprintIconElement(icon: React.ReactElement): icon is React.ReactElement<SVGIconProps> {
-    const { type } = icon;
-    if (typeof type === "string") {
-        return false;
-    }
-    const { displayName } = type as { displayName?: unknown };
-    return typeof displayName === "string" && displayName.startsWith(BLUEPRINT_ICON_DISPLAYNAME_PREFIX);
 }
 
 /**

@@ -16,6 +16,7 @@
 
 import { Fragment } from "react/jsx-runtime";
 
+import { GraphIcon } from "@blueprintjs/icons";
 import { beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import * as Utils from "./utils";
@@ -38,6 +39,22 @@ describe("Utils", () => {
         expect(Utils.isReactNodeEmpty("text"), "text").toBe(false);
         expect(Utils.isReactNodeEmpty(<div />), "<div />").toBe(false);
         expect(Utils.isReactNodeEmpty([null, <div key="div" />]), "array").toBe(false);
+    });
+
+    it("isBlueprintIconElement", () => {
+        function NotAnIcon() {
+            return <svg />;
+        }
+        NotAnIcon.displayName = "NotAnIcon";
+
+        // a real @blueprintjs/icons element is recognized
+        expect(Utils.isBlueprintIconElement(<GraphIcon />), "<GraphIcon />").toBe(true);
+        // other elements are not, even Blueprint components with a different displayName namespace
+        expect(Utils.isBlueprintIconElement(<NotAnIcon />), "<NotAnIcon />").toBe(false);
+        expect(Utils.isBlueprintIconElement(<div />), "<div />").toBe(false);
+        // non-elements are not
+        expect(Utils.isBlueprintIconElement("graph"), '"graph"').toBe(false);
+        expect(Utils.isBlueprintIconElement(undefined), "undefined").toBe(false);
     });
 
     it("elementIsOrContains", () => {
