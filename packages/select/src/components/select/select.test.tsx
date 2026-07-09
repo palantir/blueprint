@@ -152,6 +152,46 @@ describe("<Select>", () => {
         expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
+    it.each(["Enter", " "] as const)(
+        "opens Popover on %s keydown for a non-native role='button' target (no keyup click to defer to)",
+        key => {
+            const wrapper = selectWithTarget(
+                <div data-testid="target" role="button" tabIndex={0}>
+                    Target
+                </div>,
+            );
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+            // A plain role="button" element does not synthesize its own click, so Select must open itself.
+            wrapper.find("[data-testid='target']").hostNodes().simulate("keydown", { key });
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+        },
+    );
+
+    it.each(["Enter", " "] as const)("opens Popover on %s keydown for a disabled Button target", key => {
+        const wrapper = selectWithTarget(<Button data-testid="target-button" disabled={true} text="Target" />);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+        // A disabled button never fires its own click, so Select must open itself rather than defer.
+        findTargetButton(wrapper).simulate("keydown", { key });
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+    });
+
+    it.each(["Enter", " "] as const)(
+        "opens Popover on %s keydown when the target is nested inside a clickable ancestor",
+        key => {
+            const wrapper = selectWithTarget(<span data-testid="target">Target</span>, {
+                wrap: children => (
+                    <span data-testid="ancestor" role="button" tabIndex={0}>
+                        {children}
+                    </span>
+                ),
+            });
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+            // The outer role="button" ancestor must not suppress Select's own keyboard-open.
+            wrapper.find("[data-testid='target']").hostNodes().simulate("keydown", { key });
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+        },
+    );
+
     it("invokes onItemSelect when clicking first MenuItem", () => {
         const wrapper = select();
         // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM
@@ -227,6 +267,22 @@ describe("<Select>", () => {
 
     function findTargetButton(wrapper: ReactWrapper): ReactWrapper<HTMLAttributes> {
         return wrapper.find("[data-testid='target-button']").hostNodes();
+    }
+
+    // Mount a closed, non-filterable Select with an arbitrary target child (optionally wrapped in an
+    // ancestor element), for exercising keyboard-open behavior across different target shapes.
+    function selectWithTarget(
+        target: React.ReactNode,
+        { wrap }: { wrap?: (children: React.ReactNode) => React.ReactNode } = {},
+    ) {
+        const wrapper = mount(
+            <Select<Film> {...defaultProps} {...handlers} filterable={false} popoverProps={{ usePortal: false }}>
+                {wrap ? wrap(target) : target}
+            </Select>,
+            { attachTo: containerElement },
+        );
+        mountedWrappers.push(wrapper);
+        return wrapper;
     }
 });
 
