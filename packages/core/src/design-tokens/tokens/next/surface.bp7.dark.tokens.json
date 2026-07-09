@@ -360,9 +360,9 @@
             "$type": "color",
             "$description": "Dark mode base backgrounds: black → dark-gray on interaction",
             "base": {
-                "rest": { "$value": "{palette.black.1000}" },
-                "hover": { "$value": "{palette.black.1000}" },
-                "active": { "$value": "{palette.black.1000}" }
+                "rest": { "$value": "{palette.grey.800}" },
+                "hover": { "$value": "{palette.grey.800}" },
+                "active": { "$value": "{palette.grey.800}" }
             },
             "neutral": {
                 "rest": {
@@ -390,13 +390,39 @@
                             "hueOffset": -1.58
                         }
                     }
-                },
-                "disabled": {
-                    "$value": "{intent.neutral}",
-                    "$extensions": {
-                        "com.blueprint.derive": { "lightnessScale": 0.279, "chromaScale": 0.377, "hueOffset": -2.74 }
-                    }
                 }
+            },
+            "primary": {
+                "rest": { "$value": "{intent.primary}" },
+                "hover": {
+                    "$value": "{intent.primary}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
+                },
+                "active": { "$value": "{intent.primary}" }
+            },
+            "success": {
+                "rest": { "$value": "{intent.success}" },
+                "hover": {
+                    "$value": "{intent.success}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
+                },
+                "active": { "$value": "{intent.success}" }
+            },
+            "warning": {
+                "rest": { "$value": "{intent.warning}" },
+                "hover": {
+                    "$value": "{intent.warning}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
+                },
+                "active": { "$value": "{intent.warning}" }
+            },
+            "danger": {
+                "rest": { "$value": "{intent.danger}" },
+                "hover": {
+                    "$value": "{intent.danger}",
+                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.098 } }
+                },
+                "active": { "$value": "{intent.danger}" }
             }
         }
     }
