@@ -59,13 +59,13 @@ export interface IconOwnProps {
      *   will render a blank icon to occupy space.
      * - If given a `React.JSX.Element`, that element is cloned with the
      *   parent-provided `className` and intent class merged onto its root. If the
-     *   element is a Blueprint icon component (from `@blueprintjs/icons`), the
-     *   `color` and `size` props are also forwarded onto it, with the element's
-     *   own `color`/`size` taking precedence; for any other element type they are
-     *   not forwarded. Other props on this component are ignored. This type is
-     *   supported to simplify icon support in other Blueprint components. As a
-     *   consumer, you should avoid using `<Icon icon={<Element />}` directly;
-     *   simply render `<Element />` instead.
+     *   element is a Blueprint icon component (from `@blueprintjs/icons`), DOM
+     *   attributes and the `color` and `size` props are also forwarded onto it,
+     *   with the element's own `color`/`size` taking precedence; for any other
+     *   element type they are not forwarded. Other props on this component are
+     *   ignored. This type is supported to simplify icon support in other
+     *   Blueprint components. As a consumer, you should avoid using
+     *   `<Icon icon={<Element />}` directly; simply render `<Element />` instead.
      */
     icon: IconName | MaybeElement;
 
@@ -166,12 +166,13 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
             // `className` + intent class are merged onto every element icon
             const mergedClassName = classNames(icon.props.className, className, Classes.intentClass(intent));
 
-            // `size`/`color` are forwarded only onto recognized Blueprint icon components, which accept
-            // them; forwarding onto an arbitrary element could inject props it does not understand. The
-            // element's own `size`/`color` win, and a key is omitted entirely when its resolved value is
+            // DOM attributes and `size`/`color` are forwarded only onto recognized Blueprint icon components,
+            // which accept them; forwarding onto an arbitrary element could inject props it does not understand.
+            // The element's own `size`/`color` win, and a key is omitted entirely when its resolved value is
             // nullish, so we never write `size`/`color` as `undefined`.
             if (isBlueprintIconElement(icon)) {
-                const iconElementProps: Pick<SVGIconProps, "className" | "color" | "size"> = {
+                const iconElementProps: SVGIconProps = {
+                    ...removeNonHTMLProps(htmlProps),
                     className: mergedClassName,
                 };
                 const resolvedSize = icon.props.size ?? props.size;
