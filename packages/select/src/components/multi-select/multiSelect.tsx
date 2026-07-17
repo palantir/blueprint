@@ -39,7 +39,7 @@ import {
 import { CrossIcon } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
-import { targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
+import { SPACE_KEY, targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -436,7 +436,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     // Skip opening on keydown when the custom target activates itself on keyup, otherwise
                     // its synthesized click would toggle the popover back closed. See targetSelfActivatesOnKeyUp.
                     if (!targetSelfActivatesOnKeyUp(e)) {
-                        if (e.key === " ") {
+                        if (e.key === SPACE_KEY) {
                             e.preventDefault();
                             this.setState({ isOpen: true });
                         } else if (e.key === "Enter") {

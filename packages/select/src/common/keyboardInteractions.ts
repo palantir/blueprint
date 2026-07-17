@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License atx
+ * You may obtain a copy of the License at
  *
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -15,6 +15,9 @@
  */
 
 import { Classes } from "@blueprintjs/core";
+
+/** `KeyboardEvent.key` value for the spacebar. */
+export const SPACE_KEY = " ";
 
 /**
  * Returns whether the focused target of an Enter/Space key event will fire its own click on keyup.
@@ -40,7 +43,7 @@ export function targetSelfActivatesOnKeyUp(event: React.KeyboardEvent<HTMLElemen
         return false;
     }
 
-    const selector = event.key === " " ? `button, .${Classes.BUTTON}` : `button, a[href], .${Classes.BUTTON}`;
+    const selector = event.key === SPACE_KEY ? `button, .${Classes.BUTTON}` : `button, a[href], .${Classes.BUTTON}`;
     const match = target.closest(selector);
     if (match == null || !event.currentTarget.contains(match)) {
         return false;
