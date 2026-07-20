@@ -36,6 +36,7 @@ import {
 import { CrossIcon, SearchIcon } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -301,7 +302,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
             this.setState({ isOpen: true });
-        } else if (Utils.isKeyboardClick(event)) {
+        } else if (Utils.isKeyboardClick(event) && !targetSelfActivatesOnKeyUp(event)) {
             this.setState({ isOpen: true });
         }
     };
