@@ -1,6 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+/* stylelint-disable alpha-value-notation */
+
 @import "../../common/variables";
 @import "../button/common";
 @import "../../common/mixins";
@@ -49,19 +51,19 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     &:focus + .#{$ns}-file-upload-input {
       box-shadow:
         inset 0 0 0 1px
-          #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)"},
+          oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
         0 0 0 1px
-          #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752)"},
-        inset 0 1px 1px #{"oklch(from var(--bp-palette-black) l c h / 0.2)"};
+          oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
+        inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.2);
 
       .#{$ns}-dark & {
         box-shadow:
           inset 0 0 0 1px
-            #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)"},
+            oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752),
           0 0 0 1px
-            #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752)"},
-          inset 0 0 0 1px #{oklch(from var(--bp-palette-white) l c h / 0.2)},
-          inset 0 -1px 1px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)};
+            oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752),
+          inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
+          inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
       }
     }
   }
@@ -72,7 +74,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     }
 
     .#{$ns}-dark & .#{$ns}-file-upload-input {
-      color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h)"};
+      color: oklch(from var(--bp-typography-color-default-rest) calc(l + 0.731) calc(c - 0.011) h);
     }
   }
 
@@ -98,7 +100,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 .#{$ns}-file-upload-input {
   @include pt-input;
   @include overflow-ellipsis;
-  color: #{oklch(from var(--bp-typography-color-muted) l c h / 0.6)};
+  color: oklch(from var(--bp-typography-color-muted) l c h / 0.6);
   left: 0;
   padding-right: calc($file-input-button-width + calc(var(--bp-surface-spacing) * 2));
   position: absolute;
@@ -157,7 +159,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   .#{$ns}-dark & {
     @include pt-dark-input;
-    color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h / 0.6)"};
+    color: oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h / 0.6);
 
     &::after {
       @include pt-dark-button-default-colors;
@@ -178,6 +180,6 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 /* stylelint-disable-next-line no-duplicate-selectors */
 .#{$ns}-file-upload-input::after {
   box-shadow:
-    inset 0 0 0 1px #{oklch(from var(--bp-palette-black) l c h / 0.2)},
-    0 1px 2px #{oklch(from var(--bp-palette-black) l c h / 0.1)};
+    inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.2),
+    0 1px 2px oklch(from var(--bp-palette-black) l c h / 0.1);
 }

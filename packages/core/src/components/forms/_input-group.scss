@@ -97,7 +97,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       // same goes for dark
       /* stylelint-disable-next-line selector-max-compound-selectors */
       .#{$ns}-dark & {
-        color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)"};
+        color: oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h);
       }
 
       #{$icon-classes} {
@@ -196,7 +196,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   .#{$ns}-dark & {
     .#{$ns}-icon {
-      color: #{"oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h)"};
+      color: oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h);
     }
 
     &.#{$ns}-disabled .#{$ns}-icon {
@@ -210,7 +210,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
       .#{$ns}-dark & {
         @include pt-dark-input-intent(
-          #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)"}
+          oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)
         );
       }
     }
@@ -219,7 +219,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       color: var(--bp-intent-primary-hover);
 
       .#{$ns}-dark & {
-        color: #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"};
+        color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
       }
     }
   }
@@ -230,7 +230,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
       .#{$ns}-dark & {
         @include pt-dark-input-intent(
-          #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)"}
+          oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)
         );
       }
     }
@@ -239,7 +239,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       color: var(--bp-intent-success-hover);
 
       .#{$ns}-dark & {
-        color: #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"};
+        color: oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h);
       }
     }
   }
@@ -250,7 +250,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
       .#{$ns}-dark & {
         @include pt-dark-input-intent(
-          #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)"}
+          oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)
         );
       }
     }
@@ -259,7 +259,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       color: var(--bp-intent-warning-hover);
 
       .#{$ns}-dark & {
-        color: #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"};
+        color: oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h);
       }
     }
   }
@@ -270,7 +270,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
       .#{$ns}-dark & {
         @include pt-dark-input-intent(
-          #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)"}
+          oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)
         );
       }
     }
@@ -279,7 +279,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
       color: var(--bp-intent-danger-hover);
 
       .#{$ns}-dark & {
-        color: #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"};
+        color: oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h);
       }
     }
   }
