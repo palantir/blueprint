@@ -24,13 +24,19 @@ import type { PopoverNextProps } from "./popoverNextProps";
  * - `flip` → `flip`
  * - `preventOverflow` → `shift` (Floating UI's equivalent "keep within boundary" concept)
  * - `offset` → `offset` (tuple `[skidding, distance]` is converted to `{ crossAxis, mainAxis }`)
- * - `arrow` → `arrow`
+ * - `arrow` → `arrow` (only the `element` / `padding` positioning options; see the note on disabling below)
  * - `hide` → `hide`
  * - `computeStyles`, `eventListeners`, `popperOffsets` are not mapped (handled internally by Floating UI)
  *
  * **Note on offset:** If the Popper.js `offset` option is a function, it cannot be automatically
  * converted and will be omitted with a console warning. Migrate it manually to a
  * `{ mainAxis, crossAxis }` object in the `middleware` prop.
+ *
+ * **Note on disabling the arrow:** `{ arrow: { enabled: false } }` has no middleware equivalent —
+ * Floating UI's `arrow` middleware only positions the arrow, it does not control whether the arrow
+ * renders. `PopoverNext` gates arrow visibility on the `arrow` prop, so this function ignores the
+ * `enabled` flag; pass `arrow={false}` to `PopoverNext` to hide the arrow. {@link popoverPropsToNextProps}
+ * maps the disable onto `arrow` automatically.
  *
  * @example
  * // Before (Popover)
@@ -122,6 +128,8 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
  * - `placement` ?? `position` → `placement`, mirroring legacy `Popover`'s resolution
  *   (`placement ?? positionToPlacement(position)`). When `placement` is defined it always wins.
  * - `modifiers` → `middleware` (via {@link popperModifiersToNextMiddleware}).
+ * - `modifiers.arrow.enabled: false` → `arrow: false` (PopoverNext hides the arrow via the `arrow`
+ *   prop, which has no middleware equivalent, so the disable cannot ride along in `middleware`).
  * - `minimal: true` → `animation: "minimal"` and `arrow: false` (legacy `minimal` disables the arrow).
  * - `boundary: "clippingParents"` → `"clippingAncestors"` (the Floating UI equivalent).
  *
@@ -190,6 +198,12 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
 
     if (modifiers !== undefined) {
         nextProps.middleware = popperModifiersToNextMiddleware(modifiers);
+
+        // `{ arrow: { enabled: false } }` is the Popover way to hide the arrow, but PopoverNext controls
+        // arrow visibility through the `arrow` prop rather than middleware, so translate it here.
+        if (modifiers.arrow?.enabled === false) {
+            nextProps.arrow ??= false;
+        }
     }
 
     if (minimal === true) {
