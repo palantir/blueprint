@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 
 import { GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
@@ -100,6 +102,17 @@ describe("<Icon>", () => {
         // non-regression: the element's explicit color wins over the forwarded one
         assertIconColor(<Icon icon={<GraphIcon color="blue" />} color="red" />, "blue"));
 
+    it("forwards DOM attributes onto a Blueprint element icon", async () => {
+        const user = userEvent.setup();
+        const onClick = vi.fn();
+        render(<Icon aria-label="graph" icon={<GraphIcon />} onClick={onClick} tabIndex={0} />);
+
+        const icon = screen.getByLabelText("graph");
+        expect(icon.getAttribute("tabindex")).toBe("0");
+        await user.click(icon);
+        expect(onClick).toHaveBeenCalledOnce();
+    });
+
     // A non-Blueprint element used as an icon: it renders its own <svg> reflecting only the props it
     // receives, so the assertions below can prove that size/color were NOT forwarded onto it.
     function CustomIcon(elementProps: { className?: string; color?: string; size?: number }) {
@@ -113,6 +126,15 @@ describe("<Icon>", () => {
         );
     }
     CustomIcon.displayName = "CustomIcon";
+
+    it("does not forward DOM attributes onto a non-Blueprint element icon", async () => {
+        const user = userEvent.setup();
+        const onClick = vi.fn();
+        const { container } = render(<Icon icon={<CustomIcon />} onClick={onClick} />);
+
+        await user.click(container.querySelector("svg")!);
+        expect(onClick).not.toHaveBeenCalled();
+    });
 
     it("does not forward size/color onto a non-Blueprint element icon, but merges className and intent", () => {
         const wrapper = mount(
