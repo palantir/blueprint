@@ -122,7 +122,7 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
  * - `placement` ?? `position` → `placement`, mirroring legacy `Popover`'s resolution
  *   (`placement ?? positionToPlacement(position)`). When `placement` is defined it always wins.
  * - `modifiers` → `middleware` (via {@link popperModifiersToNextMiddleware}).
- * - `minimal: true` → `animation: "minimal"` and `arrow: false` (legacy `minimal` disables the arrow).
+ * - `minimal` → the equivalent explicit `animation` and `arrow` values.
  * - `boundary: "clippingParents"` → `"clippingAncestors"` (the Floating UI equivalent).
  *
  * Dropped (with dev-only `console.warn`):
@@ -192,9 +192,9 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         nextProps.middleware = popperModifiersToNextMiddleware(modifiers);
     }
 
-    if (minimal === true) {
-        nextProps.animation ??= "minimal";
-        nextProps.arrow ??= false;
+    if (minimal !== undefined) {
+        nextProps.animation ??= minimal ? "minimal" : "scale";
+        nextProps.arrow ??= !minimal;
     }
 
     if (onClose !== undefined) {

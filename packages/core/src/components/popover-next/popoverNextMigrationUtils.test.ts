@@ -418,10 +418,18 @@ describe("popoverPropsToNextProps", () => {
             expect(result.arrow).to.equal(false);
         });
 
-        it("should not set animation or arrow when minimal is false", () => {
+        it("should map minimal: false to animation: 'scale' and arrow: true", () => {
             const result = popoverPropsToNextProps({ minimal: false });
-            expect(result.animation).to.be.undefined;
-            expect(result.arrow).to.be.undefined;
+            expect(result.animation).to.equal("scale");
+            expect(result.arrow).to.equal(true);
+        });
+
+        it("should preserve minimal: false as an override of wrapper defaults", () => {
+            const wrapperDefaults = { animation: "minimal" as const, arrow: false };
+            const result = { ...wrapperDefaults, ...popoverPropsToNextProps({ minimal: false }) };
+
+            expect(result.animation).to.equal("scale");
+            expect(result.arrow).to.equal(true);
         });
     });
 
