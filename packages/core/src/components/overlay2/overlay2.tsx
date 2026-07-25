@@ -51,6 +51,7 @@ import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
 
+import { hideSiblingNodes, unhideSiblingNodes } from "./overlayA11y";
 import type { OverlayInstance } from "./overlayInstance";
 
 export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
@@ -113,6 +114,8 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
     const [hasEverOpened, setHasEverOpened] = useState(false);
     const [shouldFocusOnContainerMount, setShouldFocusOnContainerMount] = useState(false);
     const lastActiveElementBeforeOpened = useRef<Element>(null);
+    /** Whether this overlay instance is the one that hid its siblings (for correct cleanup) */
+    const didHideSiblingNodes = useRef(false);
 
     /** Ref for container element, containing all children and the backdrop */
     const containerElement = useRef<HTMLDivElement>(null);
@@ -165,8 +168,19 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                 setIsAutoFocusing(true);
                 bringFocusInsideOverlay(node);
             }
+
+            // Hide background content from assistive technology per the WAI-ARIA APG dialog pattern,
+            // once the Portal's container has actually mounted to the DOM. (Note: `containerElement.current`
+            // is not yet set when `overlayWillOpen` runs, due to Portal's two-phase mount — see Portal.tsx.)
+            if (node != null && usePortal && hasBackdrop && !didHideSiblingNodes.current) {
+                const portalElement = node.parentElement;
+                if (portalElement != null) {
+                    hideSiblingNodes(portalElement);
+                    didHideSiblingNodes.current = true;
+                }
+            }
         },
-        [bringFocusInsideOverlay, shouldFocusOnContainerMount],
+        [bringFocusInsideOverlay, shouldFocusOnContainerMount, usePortal, hasBackdrop],
     );
 
     /**
@@ -327,6 +341,11 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                     document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
                 }
             }
+        }
+
+        if (didHideSiblingNodes.current) {
+            unhideSiblingNodes();
+            didHideSiblingNodes.current = false;
         }
     }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown, id]);
 
