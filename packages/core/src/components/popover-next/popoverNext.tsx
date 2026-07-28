@@ -11,7 +11,12 @@ import { POPOVER_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import { PopoverInteractionKind } from "../popover/popoverProps";
 
 import { convertMiddlewareConfigToArray } from "./floatingUtils";
-import type { MiddlewareConfig, PopoverNextProps } from "./popoverNextProps";
+import {
+    type MiddlewareConfig,
+    POPOVER_NEXT_DEFAULT_ANIMATION,
+    POPOVER_NEXT_DEFAULT_ARROW,
+    type PopoverNextProps,
+} from "./popoverNextProps";
 import { PopoverPopup } from "./popoverPopup";
 import { PopoverTarget } from "./popoverTarget";
 import { usePopover } from "./usePopover";
@@ -22,9 +27,9 @@ export interface PopoverNextRef {
 
 export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
     const {
-        animation = "scale",
+        animation = POPOVER_NEXT_DEFAULT_ANIMATION,
         autoUpdateOptions,
-        arrow = true,
+        arrow = POPOVER_NEXT_DEFAULT_ARROW,
         boundary = "clippingAncestors",
         children,
         content,
