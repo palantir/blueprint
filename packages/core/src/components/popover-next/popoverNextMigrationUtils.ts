@@ -9,11 +9,11 @@ import { isNodeEnv } from "../../common/utils";
 import { POPOVER_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import { positionToPlacement } from "../popover/popoverPlacementUtils";
 import { type PopoverPosition } from "../popover/popoverPosition";
-import type { PopoverProps } from "../popover/popoverProps";
+import { PopoverAnimation, type PopoverProps } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 import type { MiddlewareConfig, PopoverNextBoundary, PopoverNextPlacement } from "./middlewareTypes";
-import type { PopoverNextProps } from "./popoverNextProps";
+import { POPOVER_NEXT_DEFAULT_ANIMATION, POPOVER_NEXT_DEFAULT_ARROW, type PopoverNextProps } from "./popoverNextProps";
 
 /**
  * Converts Popper.js v2 `modifiers` (used by `Popover`) to a Floating UI `MiddlewareConfig` (used by `PopoverNext`).
@@ -192,9 +192,9 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         nextProps.middleware = popperModifiersToNextMiddleware(modifiers);
     }
 
-    if (minimal !== undefined) {
-        nextProps.animation ??= minimal ? "minimal" : "scale";
-        nextProps.arrow ??= !minimal;
+    if (minimal != null) {
+        nextProps.animation ??= minimal ? PopoverAnimation.MINIMAL : POPOVER_NEXT_DEFAULT_ANIMATION;
+        nextProps.arrow ??= minimal ? false : POPOVER_NEXT_DEFAULT_ARROW;
     }
 
     if (onClose !== undefined) {

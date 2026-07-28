@@ -12,12 +12,12 @@ import { PopoverArrow } from "../popover/popoverArrow";
 import { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import { getBasePlacement, getTransformOrigin } from "../popover/popperUtils";
 
-import type { PopoverPopupProps } from "./popoverNextProps";
+import { POPOVER_NEXT_DEFAULT_ANIMATION, POPOVER_NEXT_DEFAULT_ARROW, type PopoverPopupProps } from "./popoverNextProps";
 
 export function PopoverPopup(props: PopoverPopupProps) {
     const {
-        animation = PopoverAnimation.SCALE,
-        arrow = true,
+        animation = POPOVER_NEXT_DEFAULT_ANIMATION,
+        arrow = POPOVER_NEXT_DEFAULT_ARROW,
         arrowRef,
         autoFocus,
         backdropProps,

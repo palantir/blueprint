@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import type { MiddlewareConfig } from "../..";
 import { PopoverPosition } from "../popover/popoverPosition";
-import type { PopoverProps } from "../popover/popoverProps";
+import { PopoverAnimation, type PopoverProps } from "../popover/popoverProps";
 import type { PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 import {
@@ -15,6 +15,7 @@ import {
     popoverPropsToNextProps,
     popperModifiersToNextMiddleware,
 } from "./popoverNextMigrationUtils";
+import { POPOVER_NEXT_DEFAULT_ANIMATION, POPOVER_NEXT_DEFAULT_ARROW } from "./popoverNextProps";
 
 describe("popoverPositionToNextPlacement", () => {
     it("should convert top-left to top-start", () => {
@@ -412,24 +413,16 @@ describe("popoverPropsToNextProps", () => {
     });
 
     describe("minimal", () => {
-        it("should map minimal: true to animation: 'minimal' and arrow: false", () => {
+        it("should map minimal: true to the minimal animation and no arrow", () => {
             const result = popoverPropsToNextProps({ minimal: true });
-            expect(result.animation).to.equal("minimal");
+            expect(result.animation).to.equal(PopoverAnimation.MINIMAL);
             expect(result.arrow).to.equal(false);
         });
 
-        it("should map minimal: false to animation: 'scale' and arrow: true", () => {
+        it("should map minimal: false to PopoverNext's animation and arrow defaults", () => {
             const result = popoverPropsToNextProps({ minimal: false });
-            expect(result.animation).to.equal("scale");
-            expect(result.arrow).to.equal(true);
-        });
-
-        it("should preserve minimal: false as an override of wrapper defaults", () => {
-            const wrapperDefaults = { animation: "minimal" as const, arrow: false };
-            const result = { ...wrapperDefaults, ...popoverPropsToNextProps({ minimal: false }) };
-
-            expect(result.animation).to.equal("scale");
-            expect(result.arrow).to.equal(true);
+            expect(result.animation).to.equal(POPOVER_NEXT_DEFAULT_ANIMATION);
+            expect(result.arrow).to.equal(POPOVER_NEXT_DEFAULT_ARROW);
         });
     });
 

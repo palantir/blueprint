@@ -2,7 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import type { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
+import { PopoverAnimation, type PopoverInteractionKind } from "../popover/popoverProps";
 import type {
     DefaultPopoverTargetHTMLProps,
     PopoverClickTargetHandlers,
@@ -76,6 +76,10 @@ export interface PopoverNextAutoUpdateOptions {
      */
     animationFrame?: boolean;
 }
+
+export const POPOVER_NEXT_DEFAULT_ANIMATION: PopoverAnimation = PopoverAnimation.SCALE;
+
+export const POPOVER_NEXT_DEFAULT_ARROW = true;
 
 /**
  * Props interface for PopoverNext component.
