@@ -126,6 +126,10 @@ describe("showContextMenu() + hideContextMenu()", () => {
                         requestAnimationFrame(() => {
                             hideContextMenu();
                             assertMenuState(false);
+                            assert.isNull(
+                                document.querySelector(`.${Classes.CONTEXT_MENU}`),
+                                "Expected context menu container element to be removed from the DOM",
+                            );
                             done();
                         }),
                 });

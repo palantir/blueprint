@@ -114,6 +114,7 @@ const defaultDomRenderer: ShowContextMenuDOMRenderer = (element, container) => {
 
 export function hideContextMenu() {
     contextMenuState?.unmount();
+    contextMenuState?.element.remove();
     contextMenuState = undefined;
 }
 
