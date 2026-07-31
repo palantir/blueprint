@@ -153,6 +153,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
 
         const clonedTarget = cloneElement(childTarget, {
             ...childTargetProps,
+            "aria-describedby": mergeAriaDescribedBy(childTarget.props["aria-describedby"], targetAriaDescribedBy),
             className: classNames(childTarget.props.className, targetModifierClasses),
             disabled: (isOpen && isTooltipElement(childTarget)) || childTarget.props.disabled,
             tabIndex: childTarget.props.tabIndex ?? targetTabIndex,

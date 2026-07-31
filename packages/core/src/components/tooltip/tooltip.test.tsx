@@ -126,6 +126,19 @@ describe("<Tooltip>", () => {
 
             expect(target).toHaveAttribute("aria-describedby", `external-description ${tooltip?.id}`);
         });
+
+        it("preserves aria-describedby values on the child target", () => {
+            const { container } = render(
+                <Tooltip content="content" hoverOpenDelay={0} isOpen={true} usePortal={false}>
+                    <Button aria-describedby="child-description" text="target" />
+                </Tooltip>,
+            );
+
+            const childTarget = container.querySelector(`.${Classes.BUTTON}`);
+            const tooltip = container.querySelector(`.${Classes.TOOLTIP}`);
+
+            expect(childTarget).toHaveAttribute("aria-describedby", `child-description ${tooltip?.id}`);
+        });
     });
 
     describe("basic functionality", () => {
