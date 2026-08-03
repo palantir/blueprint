@@ -495,6 +495,12 @@ describe("<NumericInput>", () => {
             expect(warnSpy).not.toHaveBeenCalled();
         });
 
+        it("does not warn when a controlled value is within all constraints", () => {
+            // Control case: a valid value must remain warning-free as well.
+            render(<NumericInput value={20} min={0} max={100} stepSize={10} />);
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
         describe("if no bounds are defined", () => {
             it("enforces no minimum bound", async () => {
                 const user = userEvent.setup();
