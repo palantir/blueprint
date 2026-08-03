@@ -476,6 +476,25 @@ describe("<NumericInput>", () => {
         afterEach(() => warnSpy.mockClear());
         afterAll(() => warnSpy.mockRestore());
 
+        // A free-text input can legitimately hold an out-of-range or off-step value while the user
+        // is typing, so these are not developer misconfigurations worth warning about.
+        // Regression test for https://github.com/palantir/blueprint/issues/7370.
+        it("does not warn when a controlled value is outside the min/max bounds", () => {
+            render(<NumericInput value={150} min={0} max={100} />);
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
+        it("does not warn when a controlled value is not a multiple of stepSize", () => {
+            render(<NumericInput value={7} stepSize={10} />);
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
+        it("does not warn when a controlled value moves out of bounds on re-render", () => {
+            const { rerender } = render(<NumericInput value={50} min={0} max={100} />);
+            rerender(<NumericInput value={150} min={0} max={100} />);
+            expect(warnSpy).not.toHaveBeenCalled();
+        });
+
         describe("if no bounds are defined", () => {
             it("enforces no minimum bound", async () => {
                 const user = userEvent.setup();
