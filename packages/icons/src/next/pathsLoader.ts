@@ -36,9 +36,5 @@ export const defaultNextIconPathsLoader: NextIconPathsLoader = async (name, vari
     const filledKey = `${outlinedKey}Filled`;
     const key = variant === "filled" && filledKey in pathsRecord ? filledKey : outlinedKey;
 
-    if (process.env.NODE_ENV !== "production" && variant === "filled" && !(filledKey in pathsRecord)) {
-        console.warn(`[Blueprint] Icon "${name}" does not have a filled variant. Falling back to outlined.`);
-    }
-
     return pathsRecord[key];
 };

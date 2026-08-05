@@ -31,8 +31,9 @@ import { IconNext } from "@blueprintjs/core";
 ```
 
 `IconNext` renders an icon from the **@blueprintjs/icons/next** set as an inline `<svg>`. Give it an
-icon name and it loads that icon's SVG paths on demand via a dynamic import, so an app only ships the
-icons it actually renders. You can also pass a JSX element directly, in which case it is rendered as-is.
+icon name and it loads the shared next-icon paths module on demand via a dynamic import. The first dynamic
+icon loads one lazy chunk containing all next-icon paths; this keeps those paths out of the initial bundle,
+but does not create a separate chunk for each icon. You can also pass a JSX element directly.
 
 Many Blueprint components provide an `icon` prop which accepts an icon name or a JSX element to use as
 the icon. Pass an `<IconNext>` element to use a next-generation icon in those slots.
@@ -65,6 +66,40 @@ import { IconNextNames, IconSize } from "@blueprintjs/icons/next";
 
 // you can also pass all valid HTML props
 <IconNext icon="plus" onClick={handleAdd} onKeyDown={handleAddKeys} />
+```
+
+### Migrating dynamic icon names
+
+`IconNext` itself accepts next-generation icon names and does not implicitly reinterpret legacy names. For
+dynamic values that may already use either naming scheme, normalize the value with `iconNameToIconNextName`.
+This helper uses **next-first** precedence, which makes it safe to apply broadly to mixed or already-migrated
+values:
+
+```tsx
+import { IconNext } from "@blueprintjs/core";
+import { iconNameToIconNextName } from "@blueprintjs/icons/next";
+
+const nextIconName = iconNameToIconNextName(savedIconName);
+
+return nextIconName === undefined ? null : <IconNext icon={nextIconName} />;
+```
+
+```ts
+iconNameToIconNextName("house"); // "house" (already a next name)
+iconNameToIconNextName("home"); // "house" (renamed legacy icon)
+iconNameToIconNextName("user"); // "user" (ambiguous name; next meaning wins)
+iconNameToIconNextName("unknown"); // undefined
+```
+
+When the source is known to contain legacy names, use `legacyIconNameToIconNextName` instead. It always
+interprets its input using the legacy mapping, including names that also exist in the next set:
+
+```ts
+import { legacyIconNameToIconNextName } from "@blueprintjs/icons/next";
+
+legacyIconNameToIconNextName("home"); // "house"
+legacyIconNameToIconNextName("user"); // "user-circle" (legacy meaning wins)
+legacyIconNameToIconNextName("house"); // undefined (not a legacy name)
 ```
 
 Custom sizes are supported. The following React element:

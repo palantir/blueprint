@@ -217,7 +217,7 @@ writeFileSync(
         `export { nextIconManifest, type BlueprintIconsNext, type NextIconManifestEntry } from "./manifest";`,
         `export { IconNextNames, IconNextNamesSet, type IconNextName } from "../iconNextNames";`,
         `export { IconsNext, type NextIconVariant, type NextIconLoaderOptions } from "../iconLoaderNext";`,
-        `export { type NextIconPathsLoader } from "../pathsLoader";`,
+        `export { defaultNextIconPathsLoader, type NextIconPathsLoader } from "../pathsLoader";`,
         `export { SvgIconContainerNext, type SvgIconContainerNextComponent, type SvgIconContainerNextProps } from "../svgIconContainerNext";`,
         "",
     ].join("\n"),

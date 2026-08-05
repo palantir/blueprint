@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { createElement, forwardRef, useEffect, useState } from "react";
+import { cloneElement, forwardRef, isValidElement, useEffect, useState } from "react";
 
 import {
     type DefaultSVGIconProps,
@@ -28,7 +28,21 @@ import {
     type SVGIconProps,
 } from "@blueprintjs/icons/next";
 
-import { Classes, DISPLAYNAME_PREFIX, type IntentProps, type MaybeElement, type Props } from "../../common";
+import {
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
+    removeNonHTMLProps,
+} from "../../common";
+import { isBlueprintIconElement } from "../../common/utils";
+
+interface LoadedIconPaths {
+    icon: IconNextName;
+    paths: IconPaths;
+    variant: NextIconVariant;
+}
 
 export interface IconNextOwnProps {
     /**
@@ -43,7 +57,10 @@ export interface IconNextOwnProps {
      *
      * - If `null` or `undefined` or `false`, this component will render nothing.
      * - If given a `IconNextName` string, that icon will be rendered as an `<svg>` with `<path>` tags.
-     * - If given a `React.JSX.Element`, that element will be rendered and all other props are ignored.
+     * - If given a `React.JSX.Element`, that element is cloned with the parent-provided `className` and intent class
+     *   merged onto its root. If the element is a Blueprint icon component, DOM attributes and the `color` and
+     *   `size` props are also forwarded onto it, with the element's own `color`/`size` taking precedence. For any
+     *   other element type, other props on this component are ignored.
      */
     icon: IconNextName | MaybeElement;
 
@@ -93,9 +110,13 @@ export const IconNext: IconNextComponent = forwardRef(
             ...htmlProps
         } = props;
 
-        const [iconPaths, setIconPaths] = useState<IconPaths | undefined>(() =>
-            typeof icon === "string" ? IconsNext.getPaths(icon, variant) : undefined,
-        );
+        const [loadedIconPaths, setLoadedIconPaths] = useState<LoadedIconPaths | undefined>(() => {
+            if (typeof icon !== "string") {
+                return undefined;
+            }
+            const paths = IconsNext.getPaths(icon, variant);
+            return paths === undefined ? undefined : { icon, paths, variant };
+        });
 
         useEffect(() => {
             let cancelled = false;
@@ -103,16 +124,24 @@ export const IconNext: IconNextComponent = forwardRef(
                 const cached = IconsNext.getPaths(icon, variant);
 
                 if (cached !== undefined) {
-                    setIconPaths(cached);
+                    setLoadedIconPaths({ icon, paths: cached, variant });
                 } else if (autoLoad) {
                     IconsNext.load(icon, variant)
                         .then(() => {
                             if (!cancelled) {
-                                setIconPaths(IconsNext.getPaths(icon, variant));
+                                const paths = IconsNext.getPaths(icon, variant);
+                                if (paths !== undefined) {
+                                    setLoadedIconPaths({ icon, paths, variant });
+                                }
                             }
                         })
                         .catch(reason => {
-                            console.error(`[Blueprint] Next icon '${icon}' (${variant}) could not be loaded.`, reason);
+                            if (!cancelled) {
+                                console.error(
+                                    `[Blueprint] Next icon '${icon}' (${variant}) could not be loaded.`,
+                                    reason,
+                                );
+                            }
                         });
                 } else {
                     console.error(
@@ -129,21 +158,35 @@ export const IconNext: IconNextComponent = forwardRef(
         if (icon == null || typeof icon === "boolean") {
             return null;
         } else if (typeof icon !== "string") {
+            if (isValidElement<Pick<SVGIconProps, "className">>(icon)) {
+                const mergedClassName = classNames(icon.props.className, className, Classes.intentClass(intent));
+
+                if (isBlueprintIconElement(icon)) {
+                    const iconElementProps: SVGIconProps = {
+                        ...removeNonHTMLProps(htmlProps),
+                        className: mergedClassName,
+                    };
+                    const resolvedSize = icon.props.size ?? props.size;
+                    if (resolvedSize != null) {
+                        iconElementProps.size = resolvedSize;
+                    }
+                    const resolvedColor = icon.props.color ?? color;
+                    if (resolvedColor != null) {
+                        iconElementProps.color = resolvedColor;
+                    }
+                    return cloneElement(icon, iconElementProps);
+                }
+
+                return cloneElement(icon, { className: mergedClassName });
+            }
             return icon;
         }
 
-        if (iconPaths == null) {
-            // Render an empty wrapper while loading to avoid layout shift
-            return createElement(tagName || "span", {
-                "aria-hidden": true,
-                className: classNames(Classes.ICON, Classes.iconClass(icon), Classes.intentClass(intent), className),
-                "data-icon": icon,
-                ref,
-                title: htmlTitle,
-            });
-        }
-
-        const pathElements = iconPaths.map((d, i) => <path d={d} key={i} />);
+        const cachedIconPaths = IconsNext.getPaths(icon, variant);
+        const iconPaths =
+            cachedIconPaths ??
+            (loadedIconPaths?.icon === icon && loadedIconPaths.variant === variant ? loadedIconPaths.paths : undefined);
+        const pathElements = iconPaths?.map((d, i) => <path d={d} key={i} />) ?? [];
 
         return (
             <SvgIconContainerNext<any>
@@ -157,7 +200,7 @@ export const IconNext: IconNextComponent = forwardRef(
                 svgProps={svgProps}
                 tagName={tagName}
                 title={title}
-                {...htmlProps}
+                {...removeNonHTMLProps(htmlProps)}
             />
         );
     },

@@ -41,6 +41,10 @@ console.info(`Generating legacy→next icon name map (${Object.keys(iconNameMap)
 const entries = Object.keys(iconNameMap)
     .sort()
     .map(name => `    ${JSON.stringify(name)}: ${JSON.stringify(iconNameMap[name])},`);
+const legacyIconNameUnion = Object.keys(iconNameMap)
+    .sort()
+    .map(name => `    | ${JSON.stringify(name)}`)
+    .join("\n");
 
 mkdirSync(generatedSrcDir, { recursive: true });
 writeFileSync(
@@ -51,14 +55,19 @@ writeFileSync(
         ' * Licensed under the Apache License, Version 2.0 (the "License");',
         " */",
         "",
-        'import type { IconName } from "../iconNames";',
         'import type { IconNextName } from "../next/iconNextNames";',
         "",
+        "/** Every legacy icon name recorded in the durable legacy-to-next mapping ledger. */",
+        "export type LegacyIconName =",
+        legacyIconNameUnion,
+        ";",
+        "",
         "/**",
-        ' * Maps legacy ("current") Blueprint icon names to their next-generation',
-        " * (`@blueprintjs/icons/next`) equivalents. Generated from `icons-name-map.json`.",
+        " * Maps names from the durable legacy Blueprint icon ledger to their next-generation",
+        " * (`@blueprintjs/icons/next`) equivalents. Generated from `icons-name-map.json`; entries may",
+        " * outlive the legacy SVGs they describe.",
         " */",
-        "export const LegacyToIconNextNameMap: Record<IconName, IconNextName> = {",
+        "export const LegacyToIconNextNameMap: Readonly<Record<LegacyIconName, IconNextName>> = {",
         ...entries,
         "};",
         "",

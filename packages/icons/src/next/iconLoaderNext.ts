@@ -46,6 +46,9 @@ export class IconsNext {
     /** Cache keyed by "iconName:variant". */
     private static cache: Map<string, IconPaths> = new Map();
 
+    /** Icons for which the missing-filled-variant warning has already been emitted. */
+    private static warnedAboutMissingFilledVariant: Set<string> = new Set();
+
     /** Configurable loader function. */
     private static loader: NextIconPathsLoader = defaultNextIconPathsLoader;
 
@@ -62,10 +65,17 @@ export class IconsNext {
      * Load one or more next icons for use in Blueprint components.
      */
     public static async load(icons: IconNextName | IconNextName[], variant: NextIconVariant = "outlined") {
-        if (!Array.isArray(icons)) {
-            icons = [icons];
+        const iconNames = Array.isArray(icons) ? icons : [icons];
+
+        // Validate the whole request before starting any loads so a malformed runtime value cannot
+        // leave a partially populated cache.
+        for (const icon of iconNames) {
+            if (!this.isValidIconName(icon)) {
+                throw new Error(`[Blueprint] Unknown next icon '${icon}'`);
+            }
         }
-        await Promise.all(icons.map(icon => this.loadImpl(icon, variant)));
+
+        await Promise.all(iconNames.map(icon => this.loadImpl(icon, variant)));
     }
 
     /**
@@ -104,11 +114,6 @@ export class IconsNext {
     }
 
     private static async loadImpl(icon: IconNextName, variant: NextIconVariant) {
-        if (!this.isValidIconName(icon)) {
-            console.error(`[Blueprint] Unknown next icon '${icon}'`);
-            return;
-        }
-
         const resolvedVariant = this.resolveVariant(icon, variant);
         const key = this.cacheKey(icon, resolvedVariant);
 
@@ -116,16 +121,28 @@ export class IconsNext {
             return;
         }
 
-        try {
-            const paths = await this.loader(icon, resolvedVariant);
-            this.cache.set(key, paths);
-        } catch (e) {
-            console.error(`[Blueprint] Unable to load next icon '${icon}' (${resolvedVariant})`, e);
-        }
+        const paths = await this.loader(icon, resolvedVariant);
+        this.cache.set(key, paths);
     }
 
     private static resolveVariant(icon: IconNextName, variant: NextIconVariant): NextIconVariant {
-        return variant === "filled" && this.filledSet.has(icon) ? "filled" : "outlined";
+        if (variant !== "filled") {
+            return "outlined";
+        }
+        if (this.filledSet.has(icon)) {
+            return "filled";
+        }
+
+        if (
+            process.env.NODE_ENV !== "production" &&
+            this.validSet.has(icon) &&
+            !this.warnedAboutMissingFilledVariant.has(icon)
+        ) {
+            this.warnedAboutMissingFilledVariant.add(icon);
+            console.warn(`[Blueprint] Icon "${icon}" does not have a filled variant. Falling back to outlined.`);
+        }
+
+        return "outlined";
     }
 
     private static cacheKey(icon: IconNextName, variant: NextIconVariant): string {

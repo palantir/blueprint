@@ -21,6 +21,11 @@ export { Icons, type IconLoaderOptions, type IconPathsLoader } from "./iconLoade
 export type { DefaultSVGIconAttributes, DefaultSVGIconProps, SVGIconAttributes, SVGIconProps } from "./svgIconProps";
 export { SVGIconContainer, type SVGIconContainerComponent, type SVGIconContainerProps } from "./svgIconContainer";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
-export { LegacyToIconNextNameMap } from "./iconNameConversion";
+export {
+    iconNameToIconNextName,
+    legacyIconNameToIconNextName,
+    LegacyToIconNextNameMap,
+    type LegacyIconName,
+} from "./iconNameConversion";
 export { type IconName, IconNames } from "./iconNames";
 export { IconSize, type IconPaths } from "./iconTypes";
