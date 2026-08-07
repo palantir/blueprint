@@ -19,4 +19,5 @@
 export * from "../components/colorPalettes";
 export * from "../components/colorSchemes";
 export * from "../components/icons";
+export * from "../components/installSnippet";
 export * from "../components/welcome";
