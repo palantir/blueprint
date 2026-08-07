@@ -47,7 +47,7 @@
             },
             "neutral": {
                 "rest": {
-                    "$value": "{intent.neutral.default}",
+                    "$value": "{intent.neutral.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -55,13 +55,13 @@
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.neutral.default}",
+                    "$value": "{intent.neutral.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "primary": {
                 "rest": {
-                    "$value": "{intent.primary.default}",
+                    "$value": "{intent.primary.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -69,13 +69,13 @@
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.primary.default}",
+                    "$value": "{intent.primary.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "success": {
                 "rest": {
-                    "$value": "{intent.success.default}",
+                    "$value": "{intent.success.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -83,13 +83,13 @@
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.success.default}",
+                    "$value": "{intent.success.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "warning": {
                 "rest": {
-                    "$value": "{intent.warning.default}",
+                    "$value": "{intent.warning.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -97,13 +97,13 @@
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.warning.default}",
+                    "$value": "{intent.warning.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             },
             "danger": {
                 "rest": {
-                    "$value": "{intent.danger.default}",
+                    "$value": "{intent.danger.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -111,7 +111,7 @@
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
                 },
                 "active": {
-                    "$value": "{intent.danger.default}",
+                    "$value": "{intent.danger.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
                 }
             }
@@ -334,52 +334,29 @@
                 "active": { "$value": "{palette.grey.800}" }
             },
             "neutral": {
-                "rest": {
-                    "$value": "{intent.neutral.default}",
-                    "$extensions": {
-                        "com.blueprint.derive": { "lightnessScale": 0.362, "chromaScale": 0.308, "hueOffset": -1.44 }
-                    }
-                },
-                "hover": {
-                    "$value": "{intent.neutral.default}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessScale": 0.615,
-                            "chromaScale": 0.597,
-                            "hueOffset": -5.29
-                        }
-                    }
-                },
-                "active": {
-                    "$value": "{intent.neutral.default}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessScale": 0.782,
-                            "chromaScale": 0.84,
-                            "hueOffset": -1.58
-                        }
-                    }
-                }
+                "rest": { "$value": "{intent.neutral.500}" },
+                "hover": { "$value": "{intent.neutral.400}" },
+                "active": { "$value": "{intent.neutral.500}" }
             },
             "primary": {
-                "rest": { "$value": "{intent.primary.default}" },
+                "rest": { "$value": "{intent.primary.500}" },
                 "hover": { "$value": "{intent.primary.400}" },
-                "active": { "$value": "{intent.primary.default}" }
+                "active": { "$value": "{intent.primary.500}" }
             },
             "success": {
-                "rest": { "$value": "{intent.success.default}" },
+                "rest": { "$value": "{intent.success.500}" },
                 "hover": { "$value": "{intent.success.400}" },
-                "active": { "$value": "{intent.success.default}" }
+                "active": { "$value": "{intent.success.500}" }
             },
             "warning": {
-                "rest": { "$value": "{intent.warning.default}" },
+                "rest": { "$value": "{intent.warning.500}" },
                 "hover": { "$value": "{intent.warning.400}" },
-                "active": { "$value": "{intent.warning.default}" }
+                "active": { "$value": "{intent.warning.500}" }
             },
             "danger": {
-                "rest": { "$value": "{intent.danger.default}" },
+                "rest": { "$value": "{intent.danger.500}" },
                 "hover": { "$value": "{intent.danger.400}" },
-                "active": { "$value": "{intent.danger.default}" }
+                "active": { "$value": "{intent.danger.500}" }
             }
         }
     }

@@ -199,7 +199,7 @@
             },
             "neutral": {
                 "rest": {
-                    "$value": "{intent.neutral.default}",
+                    "$value": "{intent.neutral.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -213,7 +213,7 @@
             },
             "primary": {
                 "rest": {
-                    "$value": "{intent.primary.default}",
+                    "$value": "{intent.primary.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -227,7 +227,7 @@
             },
             "success": {
                 "rest": {
-                    "$value": "{intent.success.default}",
+                    "$value": "{intent.success.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -241,7 +241,7 @@
             },
             "warning": {
                 "rest": {
-                    "$value": "{intent.warning.default}",
+                    "$value": "{intent.warning.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -255,7 +255,7 @@
             },
             "danger": {
                 "rest": {
-                    "$value": "{intent.danger.default}",
+                    "$value": "{intent.danger.500}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
                 },
                 "hover": {
@@ -356,40 +356,27 @@
                 "active": { "$value": "{palette.white.1000}" }
             },
             "neutral": {
-                "rest": {
-                    "$value": "{intent.neutral.default}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessScale": 1.909, "chromaScale": 0 } }
-                },
-                "hover": {
-                    "$value": "{intent.neutral.default}",
-                    "$extensions": {
-                        "com.blueprint.derive": { "lightnessOffset": 0.577, "chromaOffset": -0.02, "hueOffset": 6.2 }
-                    }
-                },
-                "active": {
-                    "$value": "{intent.neutral.default}",
-                    "$extensions": {
-                        "com.blueprint.derive": { "lightnessOffset": 0.59, "chromaOffset": -0.013, "hueOffset": 0 }
-                    }
-                }
+                "rest": { "$value": "{intent.neutral.500}" },
+                "hover": { "$value": "{intent.neutral.600}" },
+                "active": { "$value": "{intent.neutral.700}" }
             },
             "primary": {
-                "rest": { "$value": "{intent.primary.default}" },
+                "rest": { "$value": "{intent.primary.500}" },
                 "hover": { "$value": "{intent.primary.600}" },
                 "active": { "$value": "{intent.primary.700}" }
             },
             "success": {
-                "rest": { "$value": "{intent.success.default}" },
+                "rest": { "$value": "{intent.success.500}" },
                 "hover": { "$value": "{intent.success.600}" },
                 "active": { "$value": "{intent.success.700}" }
             },
             "warning": {
-                "rest": { "$value": "{intent.warning.default}" },
+                "rest": { "$value": "{intent.warning.500}" },
                 "hover": { "$value": "{intent.warning.600}" },
                 "active": { "$value": "{intent.warning.700}" }
             },
             "danger": {
-                "rest": { "$value": "{intent.danger.default}" },
+                "rest": { "$value": "{intent.danger.500}" },
                 "hover": { "$value": "{intent.danger.600}" },
                 "active": { "$value": "{intent.danger.700}" }
             }

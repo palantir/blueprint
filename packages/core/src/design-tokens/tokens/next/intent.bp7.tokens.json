@@ -3,7 +3,6 @@
         "$type": "color",
         "$description": "Semantic layer: each intent is a palette family exposed as its full 100-1000 ramp (aliases) plus `default` (the .500 base) and `foreground`. Surface/typography reference a step (e.g. {intent.primary.200}) so they land exactly on a palette value and re-theme with the intent.",
         "neutral": {
-            "default": { "$value": "{palette.grey.500}" },
             "foreground": { "$value": "{palette.white.1000}" },
             "100": { "$value": "{palette.grey.100}" },
             "200": { "$value": "{palette.grey.200}" },
@@ -17,7 +16,6 @@
             "1000": { "$value": "{palette.grey.1000}" }
         },
         "primary": {
-            "default": { "$value": "{palette.blue.500}" },
             "foreground": { "$value": "{palette.white.1000}" },
             "100": { "$value": "{palette.blue.100}" },
             "200": { "$value": "{palette.blue.200}" },
@@ -31,7 +29,6 @@
             "1000": { "$value": "{palette.blue.1000}" }
         },
         "success": {
-            "default": { "$value": "{palette.green.500}" },
             "foreground": { "$value": "{palette.white.1000}" },
             "100": { "$value": "{palette.green.100}" },
             "200": { "$value": "{palette.green.200}" },
@@ -45,7 +42,6 @@
             "1000": { "$value": "{palette.green.1000}" }
         },
         "warning": {
-            "default": { "$value": "{palette.orange.500}" },
             "foreground": { "$value": "{palette.black.1000}" },
             "100": { "$value": "{palette.orange.100}" },
             "200": { "$value": "{palette.orange.200}" },
@@ -59,7 +55,6 @@
             "1000": { "$value": "{palette.orange.1000}" }
         },
         "danger": {
-            "default": { "$value": "{palette.red.500}" },
             "foreground": { "$value": "{palette.white.1000}" },
             "100": { "$value": "{palette.red.100}" },
             "200": { "$value": "{palette.red.200}" },
