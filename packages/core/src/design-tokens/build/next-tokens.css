@@ -317,19 +317,17 @@
   --bp-typography-family-heading: var(--bp-typography-family-body); /** Aliases the body family; kept as its own slot so a distinct heading face can be supplied without touching body. */
   --bp-typography-family-display: var(--bp-typography-family-body); /** Placeholder display face: aliases the body family for now; swap in a dedicated display stack when one is supplied. */
   --bp-typography-family-mono: monospace;
-  --bp-typography-size-body-x-small: 9px;
-  --bp-typography-size-body-small: 11px;
-  --bp-typography-size-body-medium: 13px;
-  --bp-typography-size-body-large: 15px;
-  --bp-typography-size-heading-small: 16px;
-  --bp-typography-size-heading-medium: 20px;
-  --bp-typography-size-heading-large: 24px;
-  --bp-typography-size-heading-x-large: 28px;
-  --bp-typography-size-display: 48px;
-  --bp-typography-size-code-x-small: 9px;
-  --bp-typography-size-code-small: 10px;
-  --bp-typography-size-code-medium: 11px;
-  --bp-typography-size-code-large: 14px;
+  --bp-typography-size-2xs: 9px;
+  --bp-typography-size-xs: 10px;
+  --bp-typography-size-sm: 11px;
+  --bp-typography-size-md: 13px;
+  --bp-typography-size-lg: 14px;
+  --bp-typography-size-xl: 15px;
+  --bp-typography-size-2xl: 16px;
+  --bp-typography-size-3xl: 20px;
+  --bp-typography-size-4xl: 24px;
+  --bp-typography-size-5xl: 28px;
+  --bp-typography-size-6xl: 48px;
   --bp-typography-weight-default: 400;
   --bp-typography-weight-strong: 500;
   --bp-typography-line-height-running-factor: 1.105; /** Multiplier applied to a style's standard line-height for multi-line running/body text (midpoint of the former per-size running ratios). Components/users stack their own line-height scaling on top. */
