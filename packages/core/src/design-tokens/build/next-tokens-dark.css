@@ -174,19 +174,19 @@
   --bp-surface-layer-color-base: #8dbaf708; /* blue/200 at 3% */
   --bp-surface-layer-color-neutral-rest: #5b61691a; /* grey/500 at 10% */
   --bp-surface-layer-color-neutral-hover: #79808833; /* grey/400 at 20% */
-  --bp-surface-layer-color-neutral-active: #5b61691a; /* grey/500 at 10% */
+  --bp-surface-layer-color-neutral-active: #40454d1a; /* grey/600 at 10% */
   --bp-surface-layer-color-primary-rest: #0a58b41a; /* blue/500 at 10% */
   --bp-surface-layer-color-primary-hover: #3476d333; /* blue/400 at 20% */
-  --bp-surface-layer-color-primary-active: #0a58b41a; /* blue/500 at 10% */
+  --bp-surface-layer-color-primary-active: #003b8f1a; /* blue/600 at 10% */
   --bp-surface-layer-color-success-rest: #0073311a; /* green/500 at 10% */
   --bp-surface-layer-color-success-hover: #0f924f33; /* green/400 at 20% */
-  --bp-surface-layer-color-success-active: #0073311a; /* green/500 at 10% */
+  --bp-surface-layer-color-success-active: #0056191a; /* green/600 at 10% */
   --bp-surface-layer-color-warning-rest: #9a37001a; /* orange/500 at 10% */
   --bp-surface-layer-color-warning-hover: #bb571e33; /* orange/400 at 20% */
-  --bp-surface-layer-color-warning-active: #9a37001a; /* orange/500 at 10% */
+  --bp-surface-layer-color-warning-active: #771c001a; /* orange/600 at 10% */
   --bp-surface-layer-color-danger-rest: #9e2c311a; /* red/500 at 10% */
   --bp-surface-layer-color-danger-hover: #bf4d4d33; /* red/400 at 20% */
-  --bp-surface-layer-color-danger-active: #9e2c311a; /* red/500 at 10% */
+  --bp-surface-layer-color-danger-active: #7b0e1a1a; /* red/600 at 10% */
   --bp-surface-layer-base: linear-gradient(var(--bp-surface-layer-color-base) 0 0);
   --bp-surface-layer-neutral-rest: linear-gradient(var(--bp-surface-layer-color-neutral-rest) 0 0);
   --bp-surface-layer-neutral-hover: linear-gradient(var(--bp-surface-layer-color-neutral-hover) 0 0);
@@ -208,19 +208,19 @@
   --bp-surface-background-color-base-active: var(--bp-palette-grey-800);
   --bp-surface-background-color-neutral-rest: var(--bp-intent-neutral-500);
   --bp-surface-background-color-neutral-hover: var(--bp-intent-neutral-400);
-  --bp-surface-background-color-neutral-active: var(--bp-intent-neutral-500);
+  --bp-surface-background-color-neutral-active: var(--bp-intent-neutral-600);
   --bp-surface-background-color-primary-rest: var(--bp-intent-primary-500);
   --bp-surface-background-color-primary-hover: var(--bp-intent-primary-400);
-  --bp-surface-background-color-primary-active: var(--bp-intent-primary-500);
+  --bp-surface-background-color-primary-active: var(--bp-intent-primary-600);
   --bp-surface-background-color-success-rest: var(--bp-intent-success-500);
   --bp-surface-background-color-success-hover: var(--bp-intent-success-400);
-  --bp-surface-background-color-success-active: var(--bp-intent-success-500);
+  --bp-surface-background-color-success-active: var(--bp-intent-success-600);
   --bp-surface-background-color-warning-rest: var(--bp-intent-warning-500);
   --bp-surface-background-color-warning-hover: var(--bp-intent-warning-400);
-  --bp-surface-background-color-warning-active: var(--bp-intent-warning-500);
+  --bp-surface-background-color-warning-active: var(--bp-intent-warning-600);
   --bp-surface-background-color-danger-rest: var(--bp-intent-danger-500);
   --bp-surface-background-color-danger-hover: var(--bp-intent-danger-400);
-  --bp-surface-background-color-danger-active: var(--bp-intent-danger-500);
+  --bp-surface-background-color-danger-active: var(--bp-intent-danger-600);
   --bp-typography-color-base: var(--bp-palette-grey-100);
   --bp-typography-color-intent-neutral: var(--bp-intent-neutral-200);
   --bp-typography-color-intent-primary: var(--bp-intent-primary-200);
@@ -238,18 +238,18 @@
     --bp-surface-layer-color-base: oklch(from var(--bp-intent-primary-200) l c h / var(--bp-surface-layer-opacity-base));
     --bp-surface-layer-color-neutral-rest: oklch(from var(--bp-intent-neutral-500) l c h / var(--bp-surface-layer-opacity-intent-rest));
     --bp-surface-layer-color-neutral-hover: oklch(from var(--bp-intent-neutral-400) l c h / var(--bp-surface-layer-opacity-intent-hover));
-    --bp-surface-layer-color-neutral-active: oklch(from var(--bp-intent-neutral-500) l c h / var(--bp-surface-layer-opacity-intent-active));
+    --bp-surface-layer-color-neutral-active: oklch(from var(--bp-intent-neutral-600) l c h / var(--bp-surface-layer-opacity-intent-active));
     --bp-surface-layer-color-primary-rest: oklch(from var(--bp-intent-primary-500) l c h / var(--bp-surface-layer-opacity-intent-rest));
     --bp-surface-layer-color-primary-hover: oklch(from var(--bp-intent-primary-400) l c h / var(--bp-surface-layer-opacity-intent-hover));
-    --bp-surface-layer-color-primary-active: oklch(from var(--bp-intent-primary-500) l c h / var(--bp-surface-layer-opacity-intent-active));
+    --bp-surface-layer-color-primary-active: oklch(from var(--bp-intent-primary-600) l c h / var(--bp-surface-layer-opacity-intent-active));
     --bp-surface-layer-color-success-rest: oklch(from var(--bp-intent-success-500) l c h / var(--bp-surface-layer-opacity-intent-rest));
     --bp-surface-layer-color-success-hover: oklch(from var(--bp-intent-success-400) l c h / var(--bp-surface-layer-opacity-intent-hover));
-    --bp-surface-layer-color-success-active: oklch(from var(--bp-intent-success-500) l c h / var(--bp-surface-layer-opacity-intent-active));
+    --bp-surface-layer-color-success-active: oklch(from var(--bp-intent-success-600) l c h / var(--bp-surface-layer-opacity-intent-active));
     --bp-surface-layer-color-warning-rest: oklch(from var(--bp-intent-warning-500) l c h / var(--bp-surface-layer-opacity-intent-rest));
     --bp-surface-layer-color-warning-hover: oklch(from var(--bp-intent-warning-400) l c h / var(--bp-surface-layer-opacity-intent-hover));
-    --bp-surface-layer-color-warning-active: oklch(from var(--bp-intent-warning-500) l c h / var(--bp-surface-layer-opacity-intent-active));
+    --bp-surface-layer-color-warning-active: oklch(from var(--bp-intent-warning-600) l c h / var(--bp-surface-layer-opacity-intent-active));
     --bp-surface-layer-color-danger-rest: oklch(from var(--bp-intent-danger-500) l c h / var(--bp-surface-layer-opacity-intent-rest));
     --bp-surface-layer-color-danger-hover: oklch(from var(--bp-intent-danger-400) l c h / var(--bp-surface-layer-opacity-intent-hover));
-    --bp-surface-layer-color-danger-active: oklch(from var(--bp-intent-danger-500) l c h / var(--bp-surface-layer-opacity-intent-active));
+    --bp-surface-layer-color-danger-active: oklch(from var(--bp-intent-danger-600) l c h / var(--bp-surface-layer-opacity-intent-active));
   }
 }
