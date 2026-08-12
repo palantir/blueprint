@@ -20,13 +20,23 @@ import type { Config, TransformedToken } from "style-dictionary/types";
 // -- Types --------------------------------------------------------------------
 
 /**
+ * A single color channel. `"none"` marks the channel as missing, which matters for an
+ * achromatic color's hue: a stated hue is a real value during polar interpolation, so
+ * `oklch(1 0 0)` in a `color-mix(in oklch, ...)` drags the result toward hue 0 instead of
+ * carrying the other operand's hue. `"none"` is powerless and renders as 0.
+ *
+ * @see https://www.w3.org/TR/css-color-4/#missing
+ */
+type ColorComponent = number | "none";
+
+/**
  * A DTCG-format color value with a color space, component channels, and optional alpha/hex.
  *
  * @see https://tr.designtokens.org/format/#color
  */
 type DTCGColor = {
     readonly colorSpace: "oklch" | "srgb";
-    readonly components: readonly [number, number, number];
+    readonly components: readonly [ColorComponent, ColorComponent, ColorComponent];
     readonly alpha?: number;
     readonly hex?: string;
 };
@@ -177,6 +187,12 @@ const parseNumberTuple = (value: unknown): readonly number[] | undefined =>
 const parseStringTuple = (value: unknown): readonly string[] | undefined =>
     Array.isArray(value) && value.every(v => typeof v === "string") ? value : undefined;
 
+/** Validates that a value is an array of color channels, each a number or the `"none"` keyword. */
+const parseColorComponentTuple = (value: unknown): readonly ColorComponent[] | undefined =>
+    Array.isArray(value) && value.every(v => typeof v === "number" || v === "none")
+        ? value
+        : undefined;
+
 /** Parses a raw DTCG color object, validating colorSpace, components, and optional alpha/hex. */
 const parseDTCGColor = (value: unknown): DTCGColor | undefined => {
     const obj = parseObject(value);
@@ -185,7 +201,7 @@ const parseDTCGColor = (value: unknown): DTCGColor | undefined => {
     const colorSpace = obj.colorSpace;
     if (colorSpace !== "oklch" && colorSpace !== "srgb") return undefined;
 
-    const components = parseNumberTuple(obj.components);
+    const components = parseColorComponentTuple(obj.components);
     if (components === undefined || components.length !== 3) return undefined;
 
     const alpha = obj.alpha;
@@ -337,7 +353,9 @@ const formatOklchToCss = (color: DTCGColor): string => {
 
 /** Formats a DTCG sRGB color as a CSS `rgb()`/`rgba()` function string. */
 const formatSrgbToCss = (color: DTCGColor): string => {
-    const [r, g, b] = color.components.map(comp => Math.round(comp * 255));
+    // A missing channel renders as 0 per CSS Color 4; only a hue benefits from staying absent.
+    const toByte = (comp: ColorComponent): number => Math.round((comp === "none" ? 0 : comp) * 255);
+    const [r, g, b] = color.components.map(toByte);
     return color.alpha !== undefined && color.alpha < 1
         ? `rgba(${r}, ${g}, ${b}, ${color.alpha})`
         : `rgb(${r}, ${g}, ${b})`;
