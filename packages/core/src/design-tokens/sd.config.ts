@@ -835,16 +835,20 @@ const nameTransformConfig: Parameters<typeof StyleDictionary.registerTransform>[
     transform: token => "bp-" + token.path.join("-"),
 };
 
-/** All standard DTCG type transforms registered via {@link makeTransformConfig}. */
-const standardTransforms = [
-    colorTransform,
-    dimensionTransform,
-    durationTransform,
-    fontFamilyTransform,
-    fontWeightTransform,
-    numberTransform,
-    cubicBezierTransform,
-] as const;
+/**
+ * Converted here rather than at the registration site: `TValue` is both produced by `parse` and
+ * consumed by `format`, so no single `TValue` satisfies a union of {@link TransformDefinition}s.
+ * Converting each element while its type is still concrete keeps every call monomorphic.
+ */
+const standardTransformConfigs: ReadonlyArray<Parameters<typeof StyleDictionary.registerTransform>[0]> = [
+    makeTransformConfig(colorTransform),
+    makeTransformConfig(dimensionTransform),
+    makeTransformConfig(durationTransform),
+    makeTransformConfig(fontFamilyTransform),
+    makeTransformConfig(fontWeightTransform),
+    makeTransformConfig(numberTransform),
+    makeTransformConfig(cubicBezierTransform),
+];
 
 // -- Format Definition --------------------------------------------------------
 
@@ -1000,7 +1004,7 @@ const formatProgressiveEnhancementCss = (
 const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     register(sd);
 
-    standardTransforms.forEach(def => sd.registerTransform(makeTransformConfig(def)));
+    standardTransformConfigs.forEach(config => sd.registerTransform(config));
     sd.registerTransform(shadowTransformConfig);
     sd.registerTransform(deriveTransformConfig);
     sd.registerTransform(nameTransformConfig);
