@@ -93,6 +93,7 @@ module.exports = tseslint.config([
         files: ["**/packages/stylelint-plugin/src/rules/*.ts"],
         rules: {
             "import/no-default-export": "off",
+            "no-duplicate-imports": "off",
         },
     },
     {
