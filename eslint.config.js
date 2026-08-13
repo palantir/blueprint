@@ -89,6 +89,41 @@ module.exports = tseslint.config([
         },
     },
     {
+        // Stylelint rules are consumed as default-exported plugin modules.
+        files: ["**/packages/stylelint-plugin/src/rules/*.ts"],
+        rules: {
+            "import/no-default-export": "off",
+        },
+    },
+    {
+        // These mapped type utilities are copied from type-fest and retain their upstream style.
+        files: ["**/packages/icons/src/type-utils/*.ts"],
+        rules: {
+            "@typescript-eslint/no-shadow": "off",
+            "header/header": "off",
+            "import/order": "off",
+            "jsdoc/check-alignment": "off",
+        },
+    },
+    {
+        // Documentation examples include legacy APIs and favor concise, copyable component snippets.
+        files: ["**/packages/docs-app/src/examples/**/*.{ts,tsx}"],
+        rules: {
+            "@typescript-eslint/no-deprecated": "off",
+            "header/header": "off",
+            "import/no-default-export": "off",
+            "no-console": "off",
+            "react/display-name": "off",
+            "react/jsx-no-bind": "off",
+        },
+    },
+    {
+        files: ["**/packages/docs-app/src/components/colorPalettes.tsx"],
+        rules: {
+            "react/display-name": "off",
+        },
+    },
+    {
         ignores: [
             "**/node_modules",
             "**/dist",

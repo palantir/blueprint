@@ -15,8 +15,7 @@
 
 import type { Root } from "postcss";
 import selectorParser from "postcss-selector-parser";
-import stylelint from "stylelint";
-import type { PostcssResult, RuleContext } from "stylelint";
+import stylelint, { type PostcssResult, type RuleContext } from "stylelint";
 
 import { checkImportExists } from "../utils/checkImportExists";
 import {
