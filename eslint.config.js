@@ -39,7 +39,7 @@ module.exports = tseslint.config([
             "**/test/**/*.{ts,tsx,js,mjs}",
             "**/test/isotest.mjs",
             "**/vitest.setup.{ts,js,mts,mjs}",
-            "**/*.test.{ts,tsx}",
+            "**/*.test.{ts,tsx,js,mjs}",
             "**/*TestUtils*.{ts,tsx}",
         ],
         languageOptions: {
@@ -79,8 +79,8 @@ module.exports = tseslint.config([
         files: ["**/*.stories.{ts,tsx}"],
         languageOptions: {
             parserOptions: {
-                projectService: false,
                 project: `${__dirname}/.storybook/tsconfig.json`,
+                projectService: false,
             },
         },
         rules: {
