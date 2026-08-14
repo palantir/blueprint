@@ -206,7 +206,7 @@ function matchesFilter(filter: string, icon: NextIconManifestEntry) {
     if (filter === "") {
         return true;
     }
-    return smartSearch(filter, icon.name, ...icon.tags);
+    return smartSearch(filter, kebabToPascal(icon.name), icon.name, ...icon.tags);
 }
 
 function kebabToPascal(value: string) {
