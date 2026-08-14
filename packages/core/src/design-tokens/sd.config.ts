@@ -189,9 +189,7 @@ const parseStringTuple = (value: unknown): readonly string[] | undefined =>
 
 /** Validates that a value is an array of color channels, each a number or the `"none"` keyword. */
 const parseColorComponentTuple = (value: unknown): readonly ColorComponent[] | undefined =>
-    Array.isArray(value) && value.every(v => typeof v === "number" || v === "none")
-        ? value
-        : undefined;
+    Array.isArray(value) && value.every(v => typeof v === "number" || v === "none") ? value : undefined;
 
 /** Parses a raw DTCG color object, validating colorSpace, components, and optional alpha/hex. */
 const parseDTCGColor = (value: unknown): DTCGColor | undefined => {
