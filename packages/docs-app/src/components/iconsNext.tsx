@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { memo, useCallback, useMemo, useState } from "react";
+import { memo, useCallback, useId, useMemo, useState } from "react";
 
 import { Classes, Code, Dialog, DialogBody, H5, InputGroup, NonIdealState, Radio, RadioGroup } from "@blueprintjs/core";
 import { CopyToClipboardButton, smartSearch, useTheme } from "@blueprintjs/docs-theme";
@@ -31,6 +31,7 @@ const SAMPLE_SIZES = [16, 24, 32, 48, 64];
 const HERO_BACKGROUNDS = ["default", "primary", "dark"] as const;
 
 export function IconsNext() {
+    const variantLabelId = useId();
     const [filter, setFilter] = useState("");
     const [variant, setVariant] = useState<IconVariant>("outlined");
     const [selectedIcon, setSelectedIcon] = useState<NextIconManifestEntry | undefined>(undefined);
@@ -75,8 +76,8 @@ export function IconsNext() {
             />
             <div className="docs-icons-next-body">
                 <div className="docs-icons-next-filter">
-                    <H5>Filter by style</H5>
-                    <RadioGroup onChange={handleVariantChange} selectedValue={variant}>
+                    <H5 id={variantLabelId}>Filter by style</H5>
+                    <RadioGroup aria-labelledby={variantLabelId} onChange={handleVariantChange} selectedValue={variant}>
                         <Radio label="Outlined" value="outlined" />
                         <Radio label="Filled" value="filled" />
                     </RadioGroup>
