@@ -34,25 +34,31 @@ export function IconsNext() {
     const [filter, setFilter] = useState("");
     const [variant, setVariant] = useState<IconVariant>("outlined");
     const [selectedIcon, setSelectedIcon] = useState<NextIconManifestEntry | undefined>(undefined);
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     const filteredIcons = useMemo(
         () => icons.filter(icon => matchesVariant(variant, icon) && matchesFilter(filter, icon)),
         [filter, variant],
     );
 
+    const handleCardClick = useCallback((icon: NextIconManifestEntry) => {
+        setSelectedIcon(icon);
+        setIsDialogOpen(true);
+    }, []);
+
     const iconCards = useMemo(
         () =>
             filteredIcons.map(icon => (
-                <IconCard icon={icon} key={icon.name} onClick={setSelectedIcon} variant={variant} />
+                <IconCard icon={icon} key={icon.name} onClick={handleCardClick} variant={variant} />
             )),
-        [filteredIcons, variant],
+        [filteredIcons, handleCardClick, variant],
     );
 
     const handleVariantChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setVariant(event.currentTarget.value as IconVariant);
     }, []);
 
-    const handleDialogClose = useCallback(() => setSelectedIcon(undefined), []);
+    const handleDialogClose = useCallback(() => setIsDialogOpen(false), []);
 
     return (
         <div className="docs-icons-next">
@@ -86,7 +92,7 @@ export function IconsNext() {
                     )}
                 </div>
             </div>
-            <IconDialog icon={selectedIcon} onClose={handleDialogClose} variant={variant} />
+            <IconDialog icon={selectedIcon} isOpen={isDialogOpen} onClose={handleDialogClose} variant={variant} />
         </div>
     );
 }
@@ -117,11 +123,12 @@ const IconCard = memo(function IconCard({ icon, onClick, variant }: IconCardProp
 
 interface IconDialogProps {
     icon: NextIconManifestEntry | undefined;
+    isOpen: boolean;
     variant: IconVariant;
     onClose: () => void;
 }
 
-function IconDialog({ icon, onClose, variant }: IconDialogProps) {
+function IconDialog({ icon, isOpen, onClose, variant }: IconDialogProps) {
     const { isDarkTheme } = useTheme();
 
     if (icon == null) {
@@ -138,7 +145,7 @@ function IconDialog({ icon, onClose, variant }: IconDialogProps) {
     return (
         <Dialog
             className="docs-icons-next-dialog"
-            isOpen={true}
+            isOpen={isOpen}
             onClose={onClose}
             portalClassName={isDarkTheme ? Classes.DARK : undefined}
             title={displayName}
