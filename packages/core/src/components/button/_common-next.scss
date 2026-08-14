@@ -39,16 +39,16 @@
 @mixin pt-button-next() {
   background-color: var(--bp-surface-layer-color-neutral-rest);
   box-shadow: inset var(--bp-surface-shadow-0);
-  color: var(--bp-intent-neutral-foreground);
+  color: var(--bp-typography-color-base);
 
   &:hover {
     background-clip: padding-box;
-    background-color: var(--bp-surface-layer-color-neutral-hover);
+    background-color: var(--bp-surface-layer-neutral-hover);
   }
 
   &:active,
   &.#{$ns}-active {
-    background-color: var(--bp-surface-layer-color-neutral-active);
+    background-color: var(--bp-surface-layer-neutral-active);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
@@ -120,32 +120,32 @@
   }
 }
 
-@mixin pt-dark-button-next() {
-  // .#{$ns}-button-spinner .#{$ns}-spinner-head {
-  //   background: color-mix(
-  //     in srgb,
-  //     var(--bp-intent-neutral-rest) 20%,
-  //     var(--bp-palette-black)
-  //   ); //$dark-progress-track-color;
-  //   stroke: color-mix(
-  //     in srgb,
-  //     var(--bp-intent-neutral-rest) 68%,
-  //     var(--bp-palette-white)
-  //   ); //$dark-progress-head-color;
-  // }
-}
+// @mixin pt-dark-button-next() {
+//   // .#{$ns}-button-spinner .#{$ns}-spinner-head {
+//   //   background: color-mix(
+//   //     in srgb,
+//   //     var(--bp-intent-neutral-rest) 20%,
+//   //     var(--bp-palette-black)
+//   //   ); //$dark-progress-track-color;
+//   //   stroke: color-mix(
+//   //     in srgb,
+//   //     var(--bp-intent-neutral-rest) 68%,
+//   //     var(--bp-palette-white)
+//   //   ); //$dark-progress-head-color;
+//   // }
+// }
 
-@mixin pt-dark-button-default-colors-next() {
-}
+// @mixin pt-dark-button-default-colors-next() {
+// }
 
-@mixin pt-dark-button-hover-next() {
-}
+// @mixin pt-dark-button-hover-next() {
+// }
 
-@mixin pt-dark-button-active-next() {
-}
+// @mixin pt-dark-button-active-next() {
+// }
 
-@mixin pt-dark-button-disabled-next() {
-}
+// @mixin pt-dark-button-disabled-next() {
+// }
 
 @mixin pt-button-minimal-next() {
   background: none;

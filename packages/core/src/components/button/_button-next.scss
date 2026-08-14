@@ -94,7 +94,7 @@
   &[class*="#{$ns}-icon-"] {
     &::before {
       @include pt-icon;
-      color: var(--bp-typography-color-intent-base);
+      color: var(--bp-typography-color-base);
     }
   }
 
@@ -105,7 +105,7 @@
   }
 
   .#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
-    color: var(--bp-intent-neutral-foreground);
+    color: var(--bp-typography-color-base);
   }
 
   // button with SVG icon only (no text or children)
@@ -151,13 +151,11 @@ a.#{$ns}-button {
   &:hover,
   &:active {
     // override global 'a' styles
-    color: var(--bp-intent-neutral-foreground);
+    color: var(--bp-typography-color-base);
   }
 
   &.#{$ns}-disabled {
-    color: oklch(
-      from var(--bp-intent-neutral-foreground) l c h / var(--bp-emphasis-disabled-opacity)
-    );
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
   }
 }
 
