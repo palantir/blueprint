@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "Text only updates the overflow title when it changes, avoiding React 19 maximum-update-depth crashes in dense ellipsized menus and tables"
+  links:
+  - https://github.com/palantir/blueprint/pull/8234
