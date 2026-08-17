@@ -56,7 +56,7 @@
   --bp-intent-warning-800: var(--bp-palette-orange-800);
   --bp-intent-warning-900: var(--bp-palette-orange-900);
   --bp-intent-warning-1000: var(--bp-palette-orange-1000);
-  --bp-intent-warning-foreground: var(--bp-palette-black-1000);
+  --bp-intent-warning-foreground: var(--bp-palette-white-1000);
   --bp-intent-danger-100: var(--bp-palette-red-100);
   --bp-intent-danger-200: var(--bp-palette-red-200);
   --bp-intent-danger-300: var(--bp-palette-red-300);

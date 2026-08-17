@@ -42,7 +42,7 @@
             "1000": { "$value": "{palette.green.1000}" }
         },
         "warning": {
-            "foreground": { "$value": "{palette.black.1000}" },
+            "foreground": { "$value": "{palette.white.1000}" },
             "100": { "$value": "{palette.orange.100}" },
             "200": { "$value": "{palette.orange.200}" },
             "300": { "$value": "{palette.orange.300}" },
