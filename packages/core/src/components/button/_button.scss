@@ -5,7 +5,7 @@
 @import "../../common/variables-extended";
 @import "./common";
 
-.#{$ns}-button:not(.bp-next .#{$ns}-button) {
+.#{$ns}-button:not(:where(.bp-next .#{$ns}-button)) {
   @include pt-button-layout;
   min-height: calc(var(--bp-surface-spacing) * 7.5);
   min-width: calc(var(--bp-surface-spacing) * 7.5);

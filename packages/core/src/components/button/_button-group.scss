@@ -20,7 +20,7 @@ $button-group-z-index: (
   "intent-button-active": 12,
 );
 
-.#{$ns}-button-group:not(.bp-next .#{$ns}-button-group) {
+.#{$ns}-button-group:not(:where(.bp-next .#{$ns}-button-group)) {
   display: inline-flex;
 
   .#{$ns}-button {
