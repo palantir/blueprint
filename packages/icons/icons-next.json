@@ -10329,6 +10329,23 @@
         ]
     },
     {
+        "name": "robot",
+        "hasFilled": true,
+        "tags": [
+            "bot",
+            "android",
+            "droid",
+            "machine",
+            "automation",
+            "agent",
+            "assistant",
+            "ai",
+            "artificial",
+            "intelligence",
+            "interface"
+        ]
+    },
+    {
         "name": "rocket",
         "hasFilled": true,
         "tags": [
