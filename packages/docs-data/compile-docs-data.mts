@@ -55,12 +55,6 @@ try {
 console.info(`[docs-data] successfully generated docs.json`);
 
 async function generateDocumentalistData(): Promise<void> {
-    // HACKHACK: documentalist's YAML frontmatter regex only matches LF line endings, so in a CRLF
-    // (Windows) checkout every page silently loses its `reference` metadata and falls back to its
-    // filename, which makes all five `index.mdx` files collide on the "index" key.
-    // see https://github.com/palantir/documentalist/issues/98
-    const markdownPlugin = new MarkdownPlugin({ navPage: "_nav" });
-
     const documentalist = new Documentalist({
         markdown: {
             hooks,
@@ -71,13 +65,7 @@ async function generateDocumentalistData(): Promise<void> {
         sourceBaseDir: monorepoRootDir,
     })
         // TODO: once documentalist is fully removed, stop generating nav via documentalist
-        .use(".mdx", {
-            compile: (files, compiler) =>
-                markdownPlugin.compile(
-                    files.map(file => ({ ...file, read: () => file.read().replace(/\r\n/g, "\n") })),
-                    compiler,
-                ),
-        })
+        .use(".mdx", createMarkdownPlugin())
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
@@ -112,6 +100,26 @@ async function generateDocumentalistData(): Promise<void> {
         `module.exports.SECTIONS = ${JSON.stringify(SECTIONS)};`,
     ].join("\n");
     writeFileSync(join(generatedSrcDir, "nav-constants.js"), navConstants);
+}
+
+/**
+ * Creates the markdown plugin, wrapped so that file contents are read with CRLF line endings
+ * normalized to LF.
+ *
+ * HACKHACK: documentalist's YAML frontmatter regex only matches LF line endings, so in a CRLF
+ * (Windows) checkout every page silently loses its `reference` metadata and falls back to its
+ * filename, which makes all five `index.mdx` files collide on the "index" key.
+ * see https://github.com/palantir/documentalist/issues/98
+ */
+export function createMarkdownPlugin(): { compile: MarkdownPlugin["compile"] } {
+    const markdownPlugin = new MarkdownPlugin({ navPage: "_nav" });
+    return {
+        compile: (files, compiler) =>
+            markdownPlugin.compile(
+                files.map(file => ({ ...file, read: () => file.read().replace(/\r\n/g, "\n") })),
+                compiler,
+            ),
+    };
 }
 
 export function transformDocumentalistData(key: string, value: any): any {
