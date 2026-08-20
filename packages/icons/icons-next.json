@@ -4631,6 +4631,26 @@
         ]
     },
     {
+        "name": "compass-needle",
+        "hasFilled": false,
+        "tags": [
+            "needle",
+            "navigate",
+            "navigation",
+            "direction",
+            "orientation",
+            "bearing",
+            "heading",
+            "north",
+            "pointer",
+            "arrow",
+            "magnetic",
+            "map",
+            "geo",
+            "interface"
+        ]
+    },
+    {
         "name": "copy",
         "hasFilled": true,
         "tags": [
