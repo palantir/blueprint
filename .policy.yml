@@ -1,19 +1,13 @@
 # Policy for palantir/blueprint
 #
-# This policy splits approval rules by author type:
-# - Blueprint team members: trusted, approvals NOT invalidated on push
-# - External contributors: stricter, approvals invalidated on push (except update merges)
+# Blueprint team members are trusted: their approvals survive new pushes.
+# External contributors are stricter: approvals are invalidated on push.
 
 policy:
   approval:
     - or:
-        # Blueprint team members - trusted
-        - blueprint team member approved by one admin
-        - blueprint team member approved by two admins (contributor allowed)
-        # External contributors - stricter
-        - external contributor approved by one admin
-        - external contributor approved by two admins (contributor allowed)
-        # Special cases
+        - blueprint team member authored
+        - external contributor authored
         - changelog only and contributor approval
         - fixing excavator
         - excavator only touched changelog or circle files
@@ -24,16 +18,12 @@ policy:
       organizations: ["palantir"]
 
 approval_rules:
-  # ============================================
-  # BLUEPRINT TEAM MEMBERS (trusted)
-  # ============================================
-
-  - name: blueprint team member approved by one admin
+  - name: blueprint team member authored
     description: >
-      For PRs authored by Blueprint team members. Approvals are not invalidated
-      when new commits are pushed, as team members are trusted.
+      PRs by Blueprint team members. Approvals are not invalidated on push, and
+      an admin author may self-approve.
     options:
-      allow_contributor: false
+      allow_contributor: true
       invalidate_on_push: false
       ignore_edited_comments: true
     if:
@@ -43,29 +33,9 @@ approval_rules:
       count: 1
       permissions: ["admin", "maintain"]
 
-  - name: blueprint team member approved by two admins (contributor allowed)
+  - name: external contributor authored
     description: >
-      Alternative for Blueprint team members: allows the PR author to count as an
-      approver (useful when a maintainer pushes fixes to someone's PR).
-    options:
-      allow_contributor: true
-      invalidate_on_push: false
-      ignore_edited_comments: true
-    if:
-      has_author_in:
-        teams: ["palantir/blueprint"]
-    requires:
-      count: 2
-      permissions: ["admin", "maintain"]
-
-  # ============================================
-  # EXTERNAL CONTRIBUTORS (stricter rules)
-  # ============================================
-
-  - name: external contributor approved by one admin
-    description: >
-      For PRs from external contributors. Approvals are invalidated when new
-      commits are pushed.
+      PRs from external contributors. Approvals are invalidated on push.
     options:
       allow_contributor: false
       invalidate_on_push: true
@@ -75,22 +45,7 @@ approval_rules:
       count: 1
       permissions: ["admin", "maintain"]
 
-  - name: external contributor approved by two admins (contributor allowed)
-    description: >
-      Alternative for external contributors: allows contributors to count as
-      approvers.
-    options:
-      allow_contributor: true
-      invalidate_on_push: true
-      ignore_update_merges: false
-      ignore_edited_comments: true
-    requires:
-      count: 2
-      permissions: ["admin", "maintain"]
-
-  # ============================================
-  # SPECIAL CASES (for all authors)
-  # ============================================
+  # Special cases (all authors)
 
   - name: changelog only and contributor approval
     options:

@@ -23,8 +23,10 @@ import {
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
     mergeRefs,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverNext,
+    type PopoverNextRef,
+    popoverPropsToNextProps,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -34,9 +36,10 @@ import {
     type TagInputProps,
     Utils,
 } from "@blueprintjs/core";
-import { Cross } from "@blueprintjs/icons";
+import { CrossIcon } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { SPACE_KEY, targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -168,7 +171,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
-        popover: React.RefObject<Popover>;
+        popover: React.RefObject<PopoverNextRef>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
@@ -217,14 +220,14 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverNext
                 autoFocus={false}
                 canEscapeKeyClose={true}
                 disabled={disabled}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
-                {...popoverProps}
+                {...popoverPropsToNextProps(popoverProps)}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div
@@ -314,7 +317,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 <Button
                     aria-label="Clear selected items"
                     disabled={disabled}
-                    icon={<Cross />}
+                    icon={<CrossIcon />}
                     onClick={this.handleClearButtonClick}
                     title="Clear selected items"
                     variant="minimal"
@@ -430,11 +433,15 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             } else if (!(e.key === "Backspace" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
                 // Custom target might not be an input, so certain keystrokes might have other effects (space pushing the scrollview down)
                 if (this.props.customTarget != null) {
-                    if (e.key === " ") {
-                        e.preventDefault();
-                        this.setState({ isOpen: true });
-                    } else if (e.key === "Enter") {
-                        this.setState({ isOpen: true });
+                    // Skip opening on keydown when the custom target activates itself on keyup, otherwise
+                    // its synthesized click would toggle the popover back closed. See targetSelfActivatesOnKeyUp.
+                    if (!targetSelfActivatesOnKeyUp(e)) {
+                        if (e.key === SPACE_KEY) {
+                            e.preventDefault();
+                            this.setState({ isOpen: true });
+                        } else if (e.key === "Enter") {
+                            this.setState({ isOpen: true });
+                        }
                     }
                 } else {
                     this.setState({ isOpen: true });

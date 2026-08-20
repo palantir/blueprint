@@ -3,24 +3,33 @@
  */
 
 /**
+ * All supported placement values for PopoverNext, in a stable order.
+ * Based on Floating UI's placement system.
+ *
+ * @see https://floating-ui.com/docs/computePosition#placement
+ */
+export const POPOVER_NEXT_PLACEMENTS = [
+    "top",
+    "top-start",
+    "top-end",
+    "right",
+    "right-start",
+    "right-end",
+    "bottom",
+    "bottom-start",
+    "bottom-end",
+    "left",
+    "left-start",
+    "left-end",
+] as const;
+
+/**
  * Supported placement values for PopoverNext.
  * Based on Floating UI's placement system.
  *
  * @see https://floating-ui.com/docs/computePosition#placement
  */
-export type PopoverNextPlacement =
-    | "top"
-    | "top-start"
-    | "top-end"
-    | "right"
-    | "right-start"
-    | "right-end"
-    | "bottom"
-    | "bottom-start"
-    | "bottom-end"
-    | "left"
-    | "left-start"
-    | "left-end";
+export type PopoverNextPlacement = (typeof POPOVER_NEXT_PLACEMENTS)[number];
 
 /**
  * Boundary element for overflow detection.

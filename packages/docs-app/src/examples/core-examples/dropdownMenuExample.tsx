@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-import { Alignment, Button, Card, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
+import {
+    Alignment,
+    Button,
+    Card,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    PopoverNext,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -22,7 +30,7 @@ export const DropdownMenuExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={false} {...props}>
             <Card style={{ width: 250 }}>
-                <Popover content={<ExampleMenu />} fill={true} placement="bottom">
+                <PopoverNext content={<ExampleMenu />} fill={true} placement="bottom">
                     <Button
                         alignText={Alignment.START}
                         endIcon={IconNames.CARET_DOWN}
@@ -30,7 +38,7 @@ export const DropdownMenuExample: React.FC<ExampleProps> = props => {
                         icon={IconNames.APPLICATION}
                         text="Open with..."
                     />
-                </Popover>
+                </PopoverNext>
             </Card>
         </Example>
     );

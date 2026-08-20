@@ -8,7 +8,7 @@ import { StoryLabel } from "@storybook-common";
 import { Flex } from "@blueprintjs/labs";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
-import { Popover } from "../popover/popover";
+import { PopoverNext } from "../popover-next/popoverNext";
 
 import { ButtonGroup } from "./buttonGroup";
 import { Button } from "./buttons";
@@ -273,13 +273,13 @@ export const WithPopover: Story = {
                         <StoryLabel title={variant} />
                         <ButtonGroup {...args} variant={variant}>
                             {BUTTONS.map(({ icon, label }) => (
-                                <Popover
+                                <PopoverNext
                                     key={icon}
                                     content={<span style={{ padding: 10 }}>{label}</span>}
                                     placement="bottom"
                                 >
                                     <Button icon={icon} aria-label={label} />
-                                </Popover>
+                                </PopoverNext>
                             ))}
                         </ButtonGroup>
                     </Flex>

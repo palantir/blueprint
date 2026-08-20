@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-config",
-    "version": "6.1.2",
+    "version": "6.2.1",
     "description": "ESLint configuration for @blueprintjs packages",
     "dependencies": {
         "@blueprintjs/eslint-plugin": "workspace:^",

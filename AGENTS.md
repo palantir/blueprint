@@ -8,6 +8,7 @@
 - **Distribute**: `pnpm dist`, `pnpm nx dist @blueprintjs/core` (single package)
 - **Lint**: `pnpm lint`, `pnpm lint-fix` (auto-fix), `pnpm nx lint @blueprintjs/core` (single package)
 - **Format**: `pnpm format`, `pnpm format-check`
+- **Pre-commit hook**: `pnpm exec lint-staged` (via `.husky/pre-commit`)
 - **Verify all**: `pnpm verify` (compile + dist + test + lint + format-check)
 
 ## Architecture

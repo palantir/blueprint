@@ -2,21 +2,22 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import { useMergeRefs } from "@floating-ui/react";
 import classNames from "classnames";
 import { useRef } from "react";
 
-import { Classes, type HTMLDivProps, mergeRefs, Utils } from "../../common";
+import { Classes, type HTMLDivProps, Utils } from "../../common";
 import { Overlay2 } from "../overlay2/overlay2";
 import { PopoverArrow } from "../popover/popoverArrow";
 import { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import { getBasePlacement, getTransformOrigin } from "../popover/popperUtils";
 
-import type { PopoverPopupProps } from "./popoverNextProps";
+import { POPOVER_NEXT_DEFAULT_ANIMATION, POPOVER_NEXT_DEFAULT_ARROW, type PopoverPopupProps } from "./popoverNextProps";
 
 export function PopoverPopup(props: PopoverPopupProps) {
     const {
-        animation = PopoverAnimation.SCALE,
-        arrow = true,
+        animation = POPOVER_NEXT_DEFAULT_ANIMATION,
+        arrow = POPOVER_NEXT_DEFAULT_ARROW,
         arrowRef,
         autoFocus,
         backdropProps,
@@ -109,6 +110,8 @@ export function PopoverPopup(props: PopoverPopupProps) {
         ? false
         : isClosingViaEscapeKeypress || props.shouldReturnFocusOnClose;
 
+    const ref = useMergeRefs([floatingData.refs.setFloating, transitionContainerElement]);
+
     return (
         <Overlay2
             // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -137,7 +140,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
             <div
                 className={Classes.POPOVER_TRANSITION_CONTAINER}
                 style={floatingData.floatingStyles}
-                ref={mergeRefs(floatingData.refs.setFloating, transitionContainerElement)}
+                ref={ref}
                 {...popoverHandlers}
             >
                 <div className={popoverClasses} ref={popoverRef} style={{ transformOrigin }}>

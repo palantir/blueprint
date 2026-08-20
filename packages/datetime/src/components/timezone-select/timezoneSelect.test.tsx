@@ -23,7 +23,7 @@ import {
     InputGroup,
     type InputGroupProps,
     MenuItem,
-    Popover,
+    PopoverNext,
     type PopoverProps,
 } from "@blueprintjs/core";
 import { QueryList, Select } from "@blueprintjs/select";
@@ -60,13 +60,13 @@ describe("<TimezoneSelect>", () => {
         const timezoneSelect = mountTS({ popoverProps: { usePortal: false } });
         timezoneSelect.find(Button).simulate("click");
 
-        expect(timezoneSelect.find(Popover).prop("isOpen")).toBe(true);
+        expect(timezoneSelect.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
     it("should not open popover when clicking on button target if disabled=true", () => {
         const timezoneSelect = mountTS({ disabled: true, popoverProps: { usePortal: false } });
         timezoneSelect.find(Button).simulate("click");
-        expect(timezoneSelect.find(Popover).prop("isOpen")).toBe(false);
+        expect(timezoneSelect.find(PopoverNext).prop("isOpen")).toBe(false);
     });
 
     it("should show initial items if query is empty", () => {
@@ -192,7 +192,7 @@ describe("<TimezoneSelect>", () => {
     }
 
     function findPopover(timezoneSelect: ReactWrapper<TimezoneSelect>) {
-        return findQueryList(timezoneSelect).find(Popover);
+        return findQueryList(timezoneSelect).find(PopoverNext);
     }
 
     function findInputGroup(timezoneSelect: ReactWrapper<TimezoneSelect>) {

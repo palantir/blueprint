@@ -35,6 +35,7 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common";
+import { isBlueprintIconElement } from "../../common/utils";
 
 // re-export for convenience, since some users won't be importing from or have a direct dependency on the icons package
 export { type IconName, IconSize };
@@ -56,12 +57,15 @@ export interface IconOwnProps {
      * - If given an `IconName` (a string literal union of all icon names), that
      *   icon will be rendered as an `<svg>` with `<path>` tags. Unknown strings
      *   will render a blank icon to occupy space.
-     * - If given a `React.JSX.Element`, that element will be rendered with the
-     *   parent-provided `className` and intent class merged onto its root. All
-     *   other props on this component are ignored. This type is supported to
-     *   simplify icon support in other Blueprint components. As a consumer, you
-     *   should avoid using `<Icon icon={<Element />}` directly; simply render
-     *   `<Element />` instead.
+     * - If given a `React.JSX.Element`, that element is cloned with the
+     *   parent-provided `className` and intent class merged onto its root. If the
+     *   element is a Blueprint icon component (from `@blueprintjs/icons`), DOM
+     *   attributes and the `color` and `size` props are also forwarded onto it,
+     *   with the element's own `color`/`size` taking precedence; for any other
+     *   element type they are not forwarded. Other props on this component are
+     *   ignored. This type is supported to simplify icon support in other
+     *   Blueprint components. As a consumer, you should avoid using
+     *   `<Icon icon={<Element />}` directly; simply render `<Element />` instead.
      */
     icon: IconName | MaybeElement;
 
@@ -158,10 +162,31 @@ export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconPro
     if (icon == null || typeof icon === "boolean") {
         return null;
     } else if (typeof icon !== "string") {
-        if (isValidElement<{ className?: string }>(icon)) {
-            return cloneElement(icon, {
-                className: classNames(icon.props.className, className, Classes.intentClass(intent)),
-            });
+        if (isValidElement<Pick<SVGIconProps, "className">>(icon)) {
+            // `className` + intent class are merged onto every element icon
+            const mergedClassName = classNames(icon.props.className, className, Classes.intentClass(intent));
+
+            // DOM attributes and `size`/`color` are forwarded only onto recognized Blueprint icon components,
+            // which accept them; forwarding onto an arbitrary element could inject props it does not understand.
+            // The element's own `size`/`color` win, and a key is omitted entirely when its resolved value is
+            // nullish, so we never write `size`/`color` as `undefined`.
+            if (isBlueprintIconElement(icon)) {
+                const iconElementProps: SVGIconProps = {
+                    ...removeNonHTMLProps(htmlProps),
+                    className: mergedClassName,
+                };
+                const resolvedSize = icon.props.size ?? props.size;
+                if (resolvedSize != null) {
+                    iconElementProps.size = resolvedSize;
+                }
+                const resolvedColor = icon.props.color ?? color;
+                if (resolvedColor != null) {
+                    iconElementProps.color = resolvedColor;
+                }
+                return cloneElement(icon, iconElementProps);
+            }
+
+            return cloneElement(icon, { className: mergedClassName });
         }
         return icon;
     }

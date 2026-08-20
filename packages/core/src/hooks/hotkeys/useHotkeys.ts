@@ -33,11 +33,13 @@ export interface UseHotkeysOptions {
     document?: Document;
 
     /**
-     * The key combo which will trigger the hotkeys dialog to open.
+     * The key combo which will trigger the hotkeys dialog to open. Pass `false`
+     * to disable the built-in trigger entirely; the dialog can still be opened
+     * programmatically via {@link HotkeysContext}.
      *
      * @default "?"
      */
-    showDialogKeyCombo?: string;
+    showDialogKeyCombo?: string | false;
 }
 
 export interface UseHotkeysReturnValue {
@@ -120,14 +122,16 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
 
     const handleGlobalKeyDown = useCallback(
         (e: KeyboardEvent) => {
-            // special case for global keydown: if '?' is pressed, open the hotkeys dialog
             const combo = getKeyCombo(e);
-            const isTextInput = elementIsTextInput(e.target as HTMLElement);
-            if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
-                dispatch({ type: "OPEN_DIALOG" });
-            } else {
-                invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyDown", e);
+            // special case for global keydown: if the dialog combo is pressed, open the hotkeys dialog
+            if (showDialogKeyCombo !== false) {
+                const isTextInput = elementIsTextInput(e.target as HTMLElement);
+                if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
+                    dispatch({ type: "OPEN_DIALOG" });
+                    return;
+                }
             }
+            invokeNamedCallbackIfComboRecognized(true, combo, "onKeyDown", e);
         },
         [dispatch, invokeNamedCallbackIfComboRecognized, showDialogKeyCombo],
     );

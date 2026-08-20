@@ -24,17 +24,19 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     type InputGroupProps,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverNext,
+    popoverPropsToNextProps,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
     setRef,
     Utils,
 } from "@blueprintjs/core";
-import { Cross, Search } from "@blueprintjs/icons";
+import { CrossIcon, SearchIcon } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -179,7 +181,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 aria-activedescendant={listProps.activeItemId}
                 aria-autocomplete="list"
                 aria-expanded={this.state.isOpen}
-                leftIcon={<Search />}
+                leftIcon={<SearchIcon />}
                 placeholder={placeholder}
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 role="combobox"
@@ -194,13 +196,13 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         // N.B. no need to set `fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverNext
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 disabled={disabled}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
-                {...popoverProps}
+                {...popoverPropsToNextProps(popoverProps)}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
@@ -266,7 +268,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         return query.length > 0 ? (
             <Button
                 aria-label="Clear filter query"
-                icon={<Cross />}
+                icon={<CrossIcon />}
                 onClick={this.resetQuery}
                 title="Clear filter query"
                 variant="minimal"
@@ -300,7 +302,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         if (event.key === "ArrowUp" || event.key === "ArrowDown") {
             event.preventDefault();
             this.setState({ isOpen: true });
-        } else if (Utils.isKeyboardClick(event)) {
+        } else if (Utils.isKeyboardClick(event) && !targetSelfActivatesOnKeyUp(event)) {
             this.setState({ isOpen: true });
         }
     };

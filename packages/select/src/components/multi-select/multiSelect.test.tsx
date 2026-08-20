@@ -18,7 +18,7 @@ import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
 
-import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, PopoverNext, Tag } from "@blueprintjs/core";
 import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
@@ -115,11 +115,30 @@ describe("<MultiSelect>", () => {
             popoverProps: { usePortal: false },
         });
 
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(false);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
         findTargetButton(wrapper).simulate("click");
 
-        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
+
+    it.each(["Enter", " "] as const)(
+        "opens popover from a button custom target's %s keyup click, not on keydown",
+        key => {
+            const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
+            const wrapper = multiselect({ customTarget, popoverProps: { usePortal: false } });
+
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+            const targetButton = findTargetButton(wrapper);
+
+            targetButton.simulate("keydown", { key });
+            // The button activates itself on keyup, so MultiSelect should not open early on keydown.
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+
+            targetButton.simulate("keyup", { key });
+            // ...and should open once after the button synthesizes its keyup click.
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+        },
+    );
 
     it("allows searching within popover content when custom target provided", async () => {
         // Mount to document for this test to check from input focus

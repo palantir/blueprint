@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DefaultPopoverTargetHTMLProps, Popover, PopoverProps } from "@blueprintjs/core";
+import type { PopoverNextRef, PopoverProps } from "@blueprintjs/core";
 
 /**
  * Reusable collection of props for components in this package which render a `Popover`
@@ -39,13 +39,13 @@ export interface SelectPopoverProps {
     popoverProps?: Partial<Omit<PopoverProps, "content" | "defaultIsOpen" | "fill" | "renderTarget">>;
 
     /**
-     * Optional ref for the Popover component instance.
-     * This is sometimes useful to reposition the popover.
+     * Optional ref to the popover. `popoverRef.current?.reposition()` re-runs position
+     * calculation — useful when the target moves in a way the popover doesn't observe
+     * automatically (e.g. a parent layout change that doesn't trigger a resize).
      *
-     * Note that this is defined as a specific kind of Popover instance which should be compatible with
-     * most use cases, since it uses the default target props interface.
+     * For a ref to the popover's floating DOM element, use `popoverProps.popoverRef`.
      */
-    popoverRef?: React.RefObject<Popover<DefaultPopoverTargetHTMLProps>>;
+    popoverRef?: React.RefObject<PopoverNextRef>;
 
     /**
      * HTML attributes to add to the popover target element.

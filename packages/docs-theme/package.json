@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-theme",
-    "version": "6.0.23",
+    "version": "6.2.4",
     "description": "Blueprint theme for documentalist",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -43,9 +43,9 @@
         "tslib": "catalog:"
     },
     "peerDependencies": {
-        "@types/react": "18",
-        "react": "18",
-        "react-dom": "18"
+        "@types/react": "18 || 19",
+        "react": "18 || 19",
+        "react-dom": "18 || 19"
     },
     "peerDependenciesMeta": {
         "@types/react": {

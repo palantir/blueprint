@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 
-import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
+import { GraphIcon, type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 import { afterEach, beforeAll, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Intent } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Intent } from "../../common";
 
 import { Icon, type IconProps } from "./icon";
 
@@ -62,6 +64,19 @@ describe("<Icon>", () => {
     it("size=20 renders large size", async () =>
         assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
 
+    it("forwards size onto an element icon", async () =>
+        assertIconSize(<Icon icon={<GraphIcon />} size={IconSize.LARGE} />, IconSize.LARGE));
+
+    it("forwards a custom size onto an element icon", async () =>
+        assertIconSize(<Icon icon={<GraphIcon />} size={128} />, 128));
+
+    it("element icon's own size takes precedence over the <Icon> size", async () =>
+        // non-regression: the element's explicit size wins over the forwarded one
+        assertIconSize(<Icon icon={<GraphIcon size={IconSize.STANDARD} />} size={128} />, IconSize.STANDARD));
+
+    it("element icon without a size falls back to the default size", async () =>
+        assertIconSize(<Icon icon={<GraphIcon />} />, IconSize.STANDARD));
+
     it("renders intent class", async () => {
         const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);
         expect(wrapper.find(`.${Classes.INTENT_DANGER}`).exists()).toBe(true);
@@ -77,6 +92,82 @@ describe("<Icon>", () => {
 
     it("renders icon color", async () => {
         assertIconColor(<Icon icon="add" color="red" />, "red");
+    });
+
+    it("forwards color onto an element icon", async () => {
+        assertIconColor(<Icon icon={<GraphIcon />} color="red" />, "red");
+    });
+
+    it("element icon's own color takes precedence over the <Icon> color", async () =>
+        // non-regression: the element's explicit color wins over the forwarded one
+        assertIconColor(<Icon icon={<GraphIcon color="blue" />} color="red" />, "blue"));
+
+    it("forwards DOM attributes onto a Blueprint element icon", async () => {
+        const user = userEvent.setup();
+        const onClick = vi.fn();
+        render(<Icon aria-label="graph" icon={<GraphIcon />} onClick={onClick} tabIndex={0} />);
+
+        const icon = screen.getByLabelText("graph");
+        expect(icon.getAttribute("tabindex")).toBe("0");
+        await user.click(icon);
+        expect(onClick).toHaveBeenCalledOnce();
+    });
+
+    // A non-Blueprint element used as an icon: it renders its own <svg> reflecting only the props it
+    // receives, so the assertions below can prove that size/color were NOT forwarded onto it.
+    function CustomIcon(elementProps: { className?: string; color?: string; size?: number }) {
+        return (
+            <svg
+                className={elementProps.className}
+                fill={elementProps.color}
+                height={elementProps.size}
+                width={elementProps.size}
+            />
+        );
+    }
+    CustomIcon.displayName = "CustomIcon";
+
+    it("does not forward DOM attributes onto a non-Blueprint element icon", async () => {
+        const user = userEvent.setup();
+        const onClick = vi.fn();
+        const { container } = render(<Icon icon={<CustomIcon />} onClick={onClick} />);
+
+        await user.click(container.querySelector("svg")!);
+        expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it("does not forward size/color onto a non-Blueprint element icon, but merges className and intent", () => {
+        const wrapper = mount(
+            <Icon icon={<CustomIcon />} size={IconSize.LARGE} color="red" className="custom" intent={Intent.DANGER} />,
+        );
+        wrapper.update();
+        const svg = wrapper.find("svg");
+        // gated: size/color are not forwarded onto a non-Blueprint element
+        expect(svg.prop("width")).toBeUndefined();
+        expect(svg.prop("height")).toBeUndefined();
+        expect(svg.prop("fill")).toBeUndefined();
+        // className + intent class are still merged onto element icons of any type (issue #8080)
+        expect(svg.hasClass("custom")).toBe(true);
+        expect(svg.hasClass(Classes.INTENT_DANGER)).toBe(true);
+    });
+
+    it("does not forward size/color onto a host-element icon, but merges className and intent", () => {
+        const wrapper = mount(
+            <Icon icon={<article />} size={IconSize.LARGE} color="red" className="custom" intent={Intent.DANGER} />,
+        );
+        wrapper.update();
+        const article = wrapper.find("article");
+        expect(article.prop("size")).toBeUndefined();
+        expect(article.prop("color")).toBeUndefined();
+        expect(article.hasClass("custom")).toBe(true);
+        expect(article.hasClass(Classes.INTENT_DANGER)).toBe(true);
+    });
+
+    it("generated icon components carry the displayName prefix that size/color gating relies on", () => {
+        // Guards against core's DISPLAYNAME_PREFIX and the @blueprintjs/icons generators drifting apart,
+        // which would silently disable size/color forwarding onto element icons.
+        expect(GraphIcon.displayName).toBeDefined();
+        expect(GraphIcon.displayName!.startsWith(`${DISPLAYNAME_PREFIX}.Icon.`)).toBe(true);
     });
 
     it("unknown icon name renders blank icon", async () => {
@@ -99,6 +190,8 @@ describe("<Icon>", () => {
         wrapper.update();
         expect(wrapper.childAt(0).is("article")).toBe(true);
         expect(wrapper.find("article").prop("onClick")).toBe(onClick);
+        // a forwarded `size` should not leak onto a non-icon element when none is provided
+        expect(wrapper.find("article").prop("size")).toBeUndefined();
     });
 
     it("icon=undefined renders nothing", async () => {

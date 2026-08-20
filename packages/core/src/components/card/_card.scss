@@ -1,6 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+/* stylelint-disable alpha-value-notation */
+
 @import "./card-variables";
 
 .#{$ns}-card {
@@ -15,7 +17,7 @@
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     // stylelint-disable-next-line function-no-unknown
-    background-color: #{oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h)};
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h);
     box-shadow: var(--bp-surface-shadow-0);
   }
 
@@ -41,9 +43,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-1),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -58,9 +59,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-2),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -75,9 +75,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-3),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -92,9 +91,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-4),
-      // stylelint-disable-next-line alpha-value-notation
-      inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-      inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -115,25 +113,21 @@
     .#{$ns}-dark & {
       box-shadow:
         var(--bp-surface-shadow-3),
-        // stylelint-disable-next-line alpha-value-notation
-        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
     }
   }
 
   &.#{$ns}-selected {
     box-shadow:
-      // stylelint-disable-next-line alpha-value-notation
-      0 0 0 3px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h / 0.2)},
-      0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)};
+      0 0 0 3px oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h / 0.2),
+      0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h);
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
       box-shadow:
-        // stylelint-disable-next-line alpha-value-notation
-        0 0 0 3px
-          #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4)},
-        0 0 0 1px #{oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h)};
+        0 0 0 3px oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4),
+        0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h);
     }
   }
 
@@ -145,9 +139,8 @@
     .#{$ns}-dark & {
       box-shadow:
         var(--bp-surface-shadow-1),
-        // stylelint-disable-next-line alpha-value-notation
-        inset 0 0 0.5px 0 #{oklch(from var(--bp-palette-white) l c h / 0.3)},
-        inset 0 0.5px 0 0 #{oklch(from var(--bp-palette-white) l c h / 0.08)};
+        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
     }
   }
 }

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "6.13.0",
+    "version": "6.18.0",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -60,9 +60,9 @@
         "tslib": "catalog:"
     },
     "peerDependencies": {
-        "@types/react": "18",
-        "react": "18",
-        "react-dom": "18"
+        "@types/react": "18 || 19",
+        "react": "18 || 19",
+        "react-dom": "18 || 19"
     },
     "peerDependenciesMeta": {
         "@types/react": {

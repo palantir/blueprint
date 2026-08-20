@@ -16,7 +16,16 @@
 
 import { PureComponent } from "react";
 
-import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import {
+    Classes,
+    HotkeysTarget,
+    type Intent,
+    Menu,
+    MenuItem,
+    NavbarHeading,
+    PopoverNext,
+    Tag,
+} from "@blueprintjs/core";
 import type { NpmPackageInfo } from "@blueprintjs/docs-data";
 import { NavButton } from "@blueprintjs/docs-theme";
 
@@ -106,7 +115,7 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
                 return <MenuItem href={href} intent={intent} key={v} text={v} />;
             });
         return (
-            <Popover
+            <PopoverNext
                 content={
                     <Menu aria-label="docs version" className="docs-version-list" id={VERSION_MENU_ID}>
                         {releaseItems}
@@ -125,7 +134,7 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
                 >
                     v{major(currentVersion)}
                 </Tag>
-            </Popover>
+            </PopoverNext>
         );
     }
 

@@ -17,14 +17,16 @@
 import classNames from "classnames";
 import { createElement, forwardRef } from "react";
 
-import { CaretRight, SmallTick } from "@blueprintjs/icons";
+import { CaretRightIcon, SmallTickIcon } from "@blueprintjs/icons";
 
 import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover } from "../popover/popover";
 import type { PopoverProps } from "../popover/popoverProps";
+import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
+import { PopoverNext } from "../popover-next/popoverNext";
+import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -262,7 +264,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             ...(disabled ? DISABLED_PROPS : {}),
             className: anchorClasses,
         },
-        isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
+        isSelected ? <SmallTickIcon className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
             // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
             // so that we always render this class and hide it from a screen reader
@@ -274,16 +276,17 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             {text}
         </Text>,
         maybeLabel,
-        hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" /> : undefined,
+        hasSubmenu ? <CaretRightIcon className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" /> : undefined,
     );
 
     const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
+    const nextPopoverProps = popoverPropsToNextProps(popoverProps);
     return (
         <li className={liClasses} ref={ref} role={liRole} aria-selected={ariaSelected}>
             {children == null ? (
                 target
             ) : (
-                <Popover
+                <PopoverNext
                     // eslint-disable-next-line jsx-a11y/no-autofocus -- intentionally disabled
                     autoFocus={false}
                     captureDismiss={false}
@@ -291,29 +294,35 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     enforceFocus={false}
                     hoverCloseDelay={0}
                     interactionKind="hover"
-                    modifiers={SUBMENU_POPOVER_MODIFIERS}
                     targetProps={{ role: targetRole, tabIndex: 0 }}
                     placement="right-start"
                     usePortal={false}
-                    {...popoverProps}
+                    {...nextPopoverProps}
+                    // Merge per-key so a consumer that customizes one middleware (e.g. `flip`) doesn't
+                    // wipe out the submenu's positioning baseline; consumer-supplied keys still win.
+                    middleware={{
+                        ...SUBMENU_POPOVER_MIDDLEWARE,
+                        ...nextPopoverProps.middleware,
+                    }}
                     content={<Menu {...submenuProps}>{children}</Menu>}
-                    minimal={true}
+                    animation="minimal"
+                    arrow={false}
                     popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 >
                     {target}
-                </Popover>
+                </PopoverNext>
             )}
         </li>
     );
 });
 MenuItem.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
-const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
+const SUBMENU_POPOVER_MIDDLEWARE: MiddlewareConfig = {
     // 20px padding - scrollbar width + a bit
-    flip: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
+    flip: { padding: 20, rootBoundary: "viewport" },
     // shift popover up 5px so MenuItems align
-    offset: { enabled: true, options: { offset: [-5, 0] } },
-    preventOverflow: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
+    offset: { crossAxis: -5 },
+    shift: { padding: 20, rootBoundary: "viewport" },
 };
 
 // props to ignore when disabled

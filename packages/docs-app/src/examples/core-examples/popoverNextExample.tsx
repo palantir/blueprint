@@ -29,6 +29,7 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
+    POPOVER_NEXT_PLACEMENTS,
     PopoverAnimation,
     PopoverInteractionKind,
     PopoverNext,
@@ -56,21 +57,6 @@ const INTERACTION_KINDS = [
     { label: "Click (target only)", value: "click-target" },
     { label: "Hover", value: "hover" },
     { label: "Hover (target only)", value: "hover-target" },
-];
-
-const PLACEMENTS: PopoverNextPlacement[] = [
-    "top",
-    "top-start",
-    "top-end",
-    "right",
-    "right-start",
-    "right-end",
-    "bottom",
-    "bottom-start",
-    "bottom-end",
-    "left",
-    "left-start",
-    "left-end",
 ];
 
 export const PopoverNextExample: React.FC<ExampleProps> = props => {
@@ -138,7 +124,7 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
             >
                 <HTMLSelect onChange={handleValueChange(setPlacement)} value={placement ?? "auto"}>
                     <option value="auto">auto (use autoPlacement)</option>
-                    {PLACEMENTS.map(p => (
+                    {POPOVER_NEXT_PLACEMENTS.map(p => (
                         <option key={p} value={p}>
                             {p}
                         </option>

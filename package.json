@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "pnpm@10.33.0",
+    "packageManager": "pnpm@11.3.0",
     "workspaces": [
         "packages/*"
     ],
@@ -35,7 +35,8 @@
         "verify": "npm-run-all -s compile dist -p test lint format-check",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build --stats-json",
-        "chromatic": "chromatic"
+        "chromatic": "chromatic",
+        "prepare": "husky"
     },
     "dependencies": {
         "@lerna-lite/cli": "^3.11.0",
@@ -67,23 +68,8 @@
         "vitest": "catalog:",
         "yargs": "^17.7.2"
     },
-    "pnpm": {
-        "overrides": {
-            "@types/react": "18.3.12",
-            "cheerio": "0.22.0"
-        },
-        "ignoredBuiltDependencies": [
-            "@parcel/watcher",
-            "@swc/core",
-            "core-js",
-            "core-js-pure",
-            "esbuild",
-            "nx",
-            "ttf2woff2"
-        ]
-    },
     "engines": {
-        "pnpm": "10.33.0",
+        "pnpm": "11.3.0",
         "node": ">=24.14.1"
     },
     "repository": {
@@ -92,6 +78,11 @@
     },
     "author": "Palantir Technologies",
     "license": "Apache-2.0",
+    "lint-staged": {
+        "*.{ts,tsx,mts,mjs,js,json,yaml,yml,scss,md}": "prettier --write --ignore-unknown",
+        "*.{ts,tsx}": "eslint --fix --max-warnings 0",
+        "*.scss": "stylelint --fix --custom-syntax postcss-scss"
+    },
     "devDependencies": {
         "@storybook/addon-a11y": "^10.2.14",
         "@storybook/addon-docs": "^10.2.14",
@@ -99,6 +90,8 @@
         "@storybook/react-dom-shim": "^10.2.14",
         "@storybook/react-vite": "^10.2.14",
         "chromatic": "^16.0.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^17.0.8",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "storybook": "^10.2.14",
