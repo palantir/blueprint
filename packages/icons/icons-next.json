@@ -1,5 +1,21 @@
 [
     {
+        "name": "agent",
+        "hasFilled": false,
+        "tags": [
+            "ai",
+            "agent",
+            "assistant",
+            "automation",
+            "intelligence",
+            "bot",
+            "magic",
+            "sparkles",
+            "generative",
+            "action"
+        ]
+    },
+    {
         "name": "airplane",
         "hasFilled": true,
         "tags": [
@@ -89,6 +105,24 @@
             "bars",
             "biplane",
             "editor"
+        ]
+    },
+    {
+        "name": "ambulance",
+        "hasFilled": true,
+        "tags": [
+            "emergency",
+            "medical",
+            "hospital",
+            "healthcare",
+            "paramedic",
+            "rescue",
+            "first-aid",
+            "vehicle",
+            "transport",
+            "siren",
+            "urgent",
+            "interface"
         ]
     },
     {
@@ -1847,6 +1881,23 @@
         ]
     },
     {
+        "name": "bed",
+        "hasFilled": true,
+        "tags": [
+            "sleep",
+            "bed",
+            "bedroom",
+            "hotel",
+            "rest",
+            "furniture",
+            "accommodation",
+            "lodging",
+            "mattress",
+            "room",
+            "night"
+        ]
+    },
+    {
         "name": "bell",
         "hasFilled": true,
         "tags": [
@@ -1901,6 +1952,24 @@
             "bell",
             "plus",
             "notifications",
+            "interface"
+        ]
+    },
+    {
+        "name": "bell-ringing",
+        "hasFilled": true,
+        "tags": [
+            "notification",
+            "alert",
+            "alarm",
+            "ringing",
+            "sound",
+            "reminder",
+            "active",
+            "attention",
+            "bell",
+            "notice",
+            "warning",
             "interface"
         ]
     },
@@ -2241,6 +2310,22 @@
         ]
     },
     {
+        "name": "buildings",
+        "hasFilled": true,
+        "tags": [
+            "city",
+            "skyline",
+            "offices",
+            "architecture",
+            "urban",
+            "company",
+            "business",
+            "headquarters",
+            "location",
+            "real-estate"
+        ]
+    },
+    {
         "name": "bullseye",
         "hasFilled": false,
         "tags": [
@@ -2260,6 +2345,22 @@
             "reference",
             "point",
             "miscellaneous"
+        ]
+    },
+    {
+        "name": "bus",
+        "hasFilled": true,
+        "tags": [
+            "transport",
+            "transit",
+            "travel",
+            "public",
+            "vehicle",
+            "commute",
+            "coach",
+            "shuttle",
+            "road",
+            "station"
         ]
     },
     {
@@ -2338,6 +2439,24 @@
             "diary",
             "day",
             "week",
+            "interface"
+        ]
+    },
+    {
+        "name": "calendar-lightning",
+        "hasFilled": true,
+        "tags": [
+            "calendar",
+            "date",
+            "schedule",
+            "event",
+            "urgent",
+            "fast",
+            "lightning",
+            "deadline",
+            "instant",
+            "priority",
+            "appointment",
             "interface"
         ]
     },
@@ -2432,6 +2551,23 @@
             "missing",
             "mystery",
             "mark",
+            "interface"
+        ]
+    },
+    {
+        "name": "cards-stack",
+        "hasFilled": true,
+        "tags": [
+            "cards",
+            "stack",
+            "layers",
+            "multiple",
+            "collection",
+            "deck",
+            "group",
+            "pile",
+            "queue",
+            "items",
             "interface"
         ]
     },
@@ -3152,6 +3288,22 @@
             "agree",
             "verify",
             "correct",
+            "action"
+        ]
+    },
+    {
+        "name": "checks",
+        "hasFilled": false,
+        "tags": [
+            "double-check",
+            "ticks",
+            "confirm",
+            "done",
+            "success",
+            "approve",
+            "complete",
+            "verified",
+            "mark",
             "action"
         ]
     },
@@ -4021,6 +4173,24 @@
         ]
     },
     {
+        "name": "clock-dotted",
+        "hasFilled": false,
+        "tags": [
+            "time",
+            "clock",
+            "pending",
+            "progress",
+            "loading",
+            "duration",
+            "wait",
+            "schedule",
+            "timer",
+            "incomplete",
+            "status",
+            "interface"
+        ]
+    },
+    {
         "name": "clock-location-pin",
         "hasFilled": true,
         "tags": [
@@ -4457,6 +4627,26 @@
             "magnetic",
             "poles",
             "navigation",
+            "interface"
+        ]
+    },
+    {
+        "name": "compass-needle",
+        "hasFilled": false,
+        "tags": [
+            "needle",
+            "navigate",
+            "navigation",
+            "direction",
+            "orientation",
+            "bearing",
+            "heading",
+            "north",
+            "pointer",
+            "arrow",
+            "magnetic",
+            "map",
+            "geo",
             "interface"
         ]
     },
@@ -4906,6 +5096,24 @@
             "org",
             "relationship",
             "reference",
+            "data"
+        ]
+    },
+    {
+        "name": "diagram-tree-view",
+        "hasFilled": true,
+        "tags": [
+            "hierarchy",
+            "tree",
+            "diagram",
+            "structure",
+            "nodes",
+            "branches",
+            "organization",
+            "chart",
+            "relationships",
+            "sitemap",
+            "outline",
             "data"
         ]
     },
@@ -6561,6 +6769,25 @@
         ]
     },
     {
+        "name": "globe-navigation-arrow",
+        "hasFilled": false,
+        "tags": [
+            "world",
+            "earth",
+            "global",
+            "navigate",
+            "navigation",
+            "location",
+            "cursor",
+            "gps",
+            "map",
+            "travel",
+            "geography",
+            "internet",
+            "interface"
+        ]
+    },
+    {
         "name": "globe-plus",
         "hasFilled": false,
         "tags": [
@@ -7034,6 +7261,42 @@
             "highlighter",
             "select",
             "action"
+        ]
+    },
+    {
+        "name": "horse",
+        "hasFilled": true,
+        "tags": [
+            "animal",
+            "equine",
+            "equestrian",
+            "riding",
+            "stable",
+            "race",
+            "farm",
+            "ranch",
+            "pony",
+            "knight",
+            "chess",
+            "miscellaneous"
+        ]
+    },
+    {
+        "name": "hospital",
+        "hasFilled": true,
+        "tags": [
+            "hospital",
+            "medical",
+            "healthcare",
+            "clinic",
+            "building",
+            "emergency",
+            "doctor",
+            "treatment",
+            "patient",
+            "cross",
+            "location",
+            "miscellaneous"
         ]
     },
     {
@@ -8604,6 +8867,23 @@
         ]
     },
     {
+        "name": "microscope",
+        "hasFilled": true,
+        "tags": [
+            "science",
+            "laboratory",
+            "research",
+            "biology",
+            "chemistry",
+            "experiment",
+            "medical",
+            "analysis",
+            "magnify",
+            "discovery",
+            "interface"
+        ]
+    },
+    {
         "name": "minus",
         "hasFilled": false,
         "tags": [
@@ -8770,6 +9050,24 @@
             "location",
             "aircraft",
             "plane",
+            "interface"
+        ]
+    },
+    {
+        "name": "navigation-arrow-top-left",
+        "hasFilled": true,
+        "tags": [
+            "navigation",
+            "arrow",
+            "top-left",
+            "up-left",
+            "northwest",
+            "diagonal",
+            "navigate",
+            "direction",
+            "cursor",
+            "pointer",
+            "location",
             "interface"
         ]
     },
@@ -10732,6 +11030,11 @@
             "blocks",
             "interface"
         ]
+    },
+    {
+        "name": "share",
+        "hasFilled": true,
+        "tags": ["forward", "send", "export", "arrow", "link", "distribute", "social", "open", "action"]
     },
     {
         "name": "shield",
