@@ -12706,11 +12706,6 @@
         ]
     },
     {
-        "name": "toggle",
-        "hasFilled": true,
-        "tags": ["switch", "control", "boolean", "on", "off", "enable", "disable", "setting", "option", "interface"]
-    },
-    {
         "name": "tractor",
         "hasFilled": true,
         "tags": [
