@@ -55,10 +55,11 @@
   &:disabled,
   &.#{$ns}-disabled {
     background-color: oklch(
-      var(--bp-surface-background-color-neutral-rest) / var(--bp-emphasis-disabled-opacity)
+      from var(--bp-surface-background-color-neutral-rest) l c h /
+        var(--bp-emphasis-disabled-opacity)
     );
     box-shadow: none;
-    color: oklch(var(--bp-typography-color-base) / var(--bp-emphasis-disabled-opacity));
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
     cursor: not-allowed;
     outline: none;
   }
@@ -72,7 +73,7 @@
 @mixin pt-button-intent-variant-next($intent: "neutral") {
   background-color: var(--bp-surface-background-color-#{$intent}-rest);
   box-shadow: inset var(--bp-surface-shadow-0);
-  color: var(--bp-intent-#{intent}-foreground);
+  color: var(--bp-intent-#{$intent}-foreground);
 
   &:hover {
     background-color: var(--bp-surface-background-color-#{$intent}-hover);
@@ -86,11 +87,14 @@
   &:disabled,
   &.#{$ns}-disabled {
     background-color: oklch(
-      var(--bp-surface-background-color-#{$intent}-rest) / var(--bp-emphasis-disabled-opacity)
+      from var(--bp-surface-background-color-#{$intent}-rest) l c h /
+        var(--bp-emphasis-disabled-opacity)
     );
     border-color: transparent;
     box-shadow: none;
-    color: oklch(var(--bp-intent-#{intent}-foreground) / var(--bp-emphasis-disabled-opacity));
+    color: oklch(
+      from var(--bp-intent-#{$intent}-foreground) l c h / var(--bp-emphasis-disabled-opacity)
+    );
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
@@ -104,7 +108,7 @@
     background:
       var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
       var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest);
-    stroke: var(--bp-surface-background-color-neutral-rest);
+    stroke: var(--bp-intent-#{$intent}-foreground);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -114,7 +118,7 @@
   }
 }
 
-@mixin pt-button-minimal() {
+@mixin pt-button-minimal-next() {
   background: none;
   box-shadow: none;
   color: var(--bp-typography-color-base);
@@ -138,12 +142,12 @@
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
     background: none;
-    color: oklch(var(--bp-typography-color-base) / var(--bp-emphasis-disabled-opacity));
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
     cursor: not-allowed;
 
     &.#{$ns}-active {
       background-color: oklch(
-        var(--bp-surface-layer-neutral-hover) / var(--bp-emphasis-disabled-opacity)
+        from var(--bp-surface-layer-neutral-hover) l c h / var(--bp-emphasis-disabled-opacity)
       );
     }
   }
@@ -177,12 +181,13 @@
   &:disabled,
   &.#{$ns}-disabled {
     background: oklch(
-      var(--bp-surface-layer-color-#{$intent}-rest) / var(--bp-emphasis-disabled-opacity)
+      from var(--bp-surface-layer-color-#{$intent}-rest) l c h / var(--bp-emphasis-disabled-opacity)
     );
 
     &.#{$ns}-active {
       background: oklch(
-        var(--bp-surface-layer-color-#{$intent}-active) / var(--bp-emphasis-disabled-opacity)
+        from var(--bp-surface-layer-color-#{$intent}-active) l c h /
+          var(--bp-emphasis-disabled-opacity)
       );
     }
   }
@@ -201,7 +206,7 @@
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
     border-color: oklch(
-      var(--bp-surface-border-color-neutral) / var(--bp-emphasis-disabled-opacity)
+      from var(--bp-surface-border-color-neutral) l c h / var(--bp-emphasis-disabled-opacity)
     );
   }
 
@@ -212,7 +217,7 @@
       &:disabled,
       &.#{$ns}-disabled {
         border-color: oklch(
-          var(--bp-surface-border-color-#{$intent}) / var(--bp-emphasis-disabled-opacity)
+          from var(--bp-surface-border-color-#{$intent}) l c h / var(--bp-emphasis-disabled-opacity)
         );
       }
     }
