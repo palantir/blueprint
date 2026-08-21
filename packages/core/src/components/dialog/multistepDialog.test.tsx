@@ -41,8 +41,8 @@ describe("<MultistepDialog>", () => {
         const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
         assert.lengthOf(steps.at(0).find(`.${Classes.ACTIVE}`), 0);
         assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 1);
-        assert.lengthOf(dialog.find(`.${Classes.DIALOG_FOOTER}`), 0);
-        assert.strictEqual(dialog.find(`.${Classes.MULTISTEP_DIALOG_RIGHT_PANEL}`).text(), "second panel");
+        assert.lengthOf(dialog.find(`.${Classes.DIALOG_FOOTER}`), 1);
+        assert.strictEqual(dialog.find("strong").text(), "second panel");
         dialog.unmount();
     });
 
@@ -62,10 +62,32 @@ describe("<MultistepDialog>", () => {
 
         dialog.find(`.${Classes.DIALOG_STEP}`).at(0).simulate("click");
         assert.deepEqual(change, ["one", "two"]);
-        assert.strictEqual(dialog.find(`.${Classes.MULTISTEP_DIALOG_RIGHT_PANEL}`).text(), "second panel");
+        assert.strictEqual(dialog.find("strong").text(), "second panel");
 
         dialog.setProps({ selectedStepId: "one" });
-        assert.strictEqual(dialog.find(`.${Classes.MULTISTEP_DIALOG_RIGHT_PANEL}`).text(), "first panel");
+        assert.strictEqual(dialog.find("strong").text(), "first panel");
+        dialog.unmount();
+    });
+
+    it("allows controlled mode to override the next button click handler", () => {
+        let selectedStepId = "one";
+        const handleNext = () => (selectedStepId = "two");
+        const dialog = mount(
+            <MultistepDialog
+                isOpen={true}
+                nextButtonProps={{ onClick: handleNext }}
+                selectedStepId={selectedStepId}
+                usePortal={false}
+            >
+                <DialogStep id="one" title="Step 1" panel={<strong>first panel</strong>} />
+                <DialogStep id="two" title="Step 2" panel={<strong>second panel</strong>} />
+            </MultistepDialog>,
+        );
+
+        findButtonWithText(dialog, "Next").simulate("click");
+        dialog.setProps({ selectedStepId });
+
+        assert.strictEqual(dialog.find("strong").text(), "second panel");
         dialog.unmount();
     });
 
