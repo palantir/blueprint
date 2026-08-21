@@ -2,7 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { withThemeByClassName } from "@storybook/addon-themes";
+import { withThemeByClassName, withThemeByDataAttribute } from "@storybook/addon-themes";
 import type { Preview } from "@storybook/react-vite";
 
 import { BlueprintProvider, Classes, Colors, FocusStyleManager } from "@blueprintjs/core";
@@ -60,6 +60,7 @@ const preview: Preview = {
             if (typeof document !== "undefined" && document.body) {
                 // Setting dark background based on class
                 document.body.style.backgroundColor = isDark ? Colors.BLACK : Colors.WHITE;
+                document.body.setAttribute("data-bp-color-scheme", isDark ? "dark" : "light");
             }
             return (
                 <BlueprintProvider>
