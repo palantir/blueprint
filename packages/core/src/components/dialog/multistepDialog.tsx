@@ -32,6 +32,12 @@ export type MultistepDialogNavPosition = typeof Position.TOP | typeof Position.L
 
 export interface MultistepDialogProps extends DialogProps {
     /**
+     * Selected step ID, for controlled usage.
+     * Providing this prop puts the dialog in controlled mode.
+     */
+    selectedStepId?: DialogStepId;
+
+    /**
      * Props for the back button.
      */
     backButtonProps?: DialogStepButtonProps;
@@ -215,12 +221,14 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
         );
     }
 
-    private renderFooter() {
-        const { closeButtonProps, showCloseButtonInFooter, onClose } = this.props;
+    private maybeRenderFooter() {
+        const { closeButtonProps, showCloseButtonInFooter, onClose, activeStepIndex } = this.props;
         const maybeCloseButton = !showCloseButtonInFooter ? undefined : (
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
-        return <DialogFooter actions={this.renderButtons()}>{maybeCloseButton}</DialogFooter>;
+        if (activeStepIndex !== undefined) {
+            return null;
+        }
     }
 
     private renderButtons() {

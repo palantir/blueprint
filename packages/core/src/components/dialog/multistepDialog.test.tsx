@@ -30,6 +30,21 @@ import { MultistepDialog } from "./multistepDialog";
 const findButtonWithText = (wrapper: ReactWrapper, text: string) => wrapper.find(AnchorButton).find(`[text='${text}']`);
 
 describe("<MultistepDialog>", () => {
+    it("renders the selected step in controlled mode", () => {
+        const dialog = mount(
+            <MultistepDialog isOpen={true} selectedStepId="two" usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<strong>first panel</strong>} />
+                <DialogStep id="two" title="Step 2" panel={<strong>second panel</strong>} />
+            </MultistepDialog>,
+        );
+
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        assert.lengthOf(steps.at(0).find(`.${Classes.ACTIVE}`), 0);
+        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 1);
+        assert.strictEqual(dialog.find(`.${Classes.MULTISTEP_DIALOG_RIGHT_PANEL}`).text(), "second panel");
+        dialog.unmount();
+    });
+
     it("renders its content correctly", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
