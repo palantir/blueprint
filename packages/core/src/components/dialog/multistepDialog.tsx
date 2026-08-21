@@ -188,7 +188,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
     private renderLeftPanel() {
         return (
             <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL} role="tablist" aria-label="steps">
-                {getDialogStepChildren(this.props).filter(isDialogStepElement).map(this.renderDialogStep)}
+                {getDialogStepChildren(this.props).map(this.renderDialogStep)}
             </div>
         );
     }
