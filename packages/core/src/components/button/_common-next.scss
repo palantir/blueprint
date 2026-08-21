@@ -192,27 +192,17 @@
   }
 }
 
-@mixin pt-button-outlined() {
-  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-strong);
+@mixin pt-button-outlined-next() {
+  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-neutral);
   box-sizing: border-box;
 
   &:disabled,
   &:disabled:hover,
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
-    border-color: var(--bp-surface-border-color-default);
-  }
-
-  .#{$ns}-dark &,
-  [data-bp-color-scheme="dark"] & {
-    border-color: var(--bp-surface-border-color-strong);
-
-    &:disabled,
-    &:disabled:hover,
-    &.#{$ns}-disabled,
-    &.#{$ns}-disabled:hover {
-      border-color: var(--bp-surface-border-color-default);
-    }
+    border-color: oklch(
+      var(--bp-surface-border-color-neutral) / var(--bp-emphasis-disabled-opacity)
+    );
   }
 
   @each $intent, $colors in $button-intent-states {
@@ -220,26 +210,14 @@
     $dark-text-color: map.get($button-dark-intent-text-colors, $intent);
 
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-outlined-intent($text-color, $dark-text-color);
-    }
-  }
-}
+      border-color: var(--bp-surface-border-color-#{$intent});
 
-@mixin pt-button-outlined-intent($text-color, $dark-text-color) {
-  border-color: color-mix(in oklch, $text-color 60%, transparent);
-
-  &:disabled,
-  &.#{$ns}-disabled {
-    border-color: color-mix(in oklch, $text-color 20%, transparent);
-  }
-
-  .#{$ns}-dark &,
-  [data-bp-color-scheme="dark"] & {
-    border-color: color-mix(in oklch, $dark-text-color 60%, transparent);
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      border-color: color-mix(in oklch, $dark-text-color 20%, transparent);
+      &:disabled,
+      &.#{$ns}-disabled {
+        border-color: oklch(
+          var(--bp-surface-border-color-#{$intent}) / var(--bp-emphasis-disabled-opacity)
+        );
+      }
     }
   }
 }
