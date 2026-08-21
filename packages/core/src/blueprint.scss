@@ -19,6 +19,9 @@ Licensed under the Apache License, Version 2.0.
 @import "dark-theme";
 @import "components/index";
 
+@import "design-tokens/build/tokens-next";
+@import "design-tokens/build/tokens-dark-next";
+
 .bp-next {
   // TODO: Remove stylelint disable once -next is fully incorporated
   /* stylelint-disable-next-line no-invalid-position-at-import-rule */
