@@ -125,11 +125,30 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
         showCloseButtonInFooter: false,
     };
 
+    public static getDerivedStateFromProps(props: MultistepDialogProps, state: MultistepDialogState) {
+        if (props.selectedStepId !== undefined) {
+            const selectedIndex = getDialogStepChildren(props).findIndex(
+                step => step.props.id === props.selectedStepId,
+            );
+            return {
+                lastViewedIndex: Math.max(state.lastViewedIndex, selectedIndex),
+                selectedIndex,
+            };
+        }
+        return null;
+    }
+
     public state: MultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
-        const { className, navigationPosition, showCloseButtonInFooter, isCloseButtonShown, ...otherProps } =
-            this.props;
+        const {
+            className,
+            navigationPosition,
+            selectedStepId: _selectedStepId,
+            showCloseButtonInFooter,
+            isCloseButtonShown,
+            ...otherProps
+        } = this.props;
 
         return (
             <Dialog
@@ -208,7 +227,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
 
     private maybeRenderRightPanel() {
         const steps = this.getDialogStepChildren();
-        if (steps.length <= this.state.selectedIndex) {
+        if (this.state.selectedIndex < 0 || steps.length <= this.state.selectedIndex) {
             return null;
         }
 
@@ -221,14 +240,13 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
         );
     }
 
-    private maybeRenderFooter() {
-        const { closeButtonProps, showCloseButtonInFooter, onClose, activeStepIndex } = this.props;
+    private renderFooter() {
+        const { closeButtonProps, showCloseButtonInFooter, onClose } = this.props;
         const maybeCloseButton = !showCloseButtonInFooter ? undefined : (
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
-        if (activeStepIndex !== undefined) {
-            return null;
-        }
+
+        return <DialogFooter actions={this.renderButtons()}>{maybeCloseButton}</DialogFooter>;
     }
 
     private renderButtons() {
@@ -272,20 +290,22 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
         return (event: React.MouseEvent<HTMLElement>) => {
             if (this.props.onChange !== undefined) {
                 const steps = this.getDialogStepChildren();
-                const prevStepId = steps[this.state.selectedIndex].props.id;
+                const prevStepId = steps[this.state.selectedIndex]?.props.id;
                 const newStepId = steps[index].props.id;
                 this.props.onChange(newStepId, prevStepId, event);
             }
-            this.setState({
-                lastViewedIndex: Math.max(this.state.lastViewedIndex, index),
-                selectedIndex: index,
-            });
+            if (this.props.selectedStepId === undefined) {
+                this.setState({
+                    lastViewedIndex: Math.max(this.state.lastViewedIndex, index),
+                    selectedIndex: index,
+                });
+            }
         };
     }
 
     /** Filters children to only `<DialogStep>`s */
     private getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode } = this.props) {
-        return Children.toArray(props.children).filter(isDialogStepElement);
+        return getDialogStepChildren(props);
     }
 
     private getInitialIndexFromProps(props: MultistepDialogProps) {
@@ -305,6 +325,10 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
             };
         }
     }
+}
+
+function getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode }) {
+    return Children.toArray(props.children).filter(isDialogStepElement);
 }
 
 function isDialogStepElement(child: any): child is DialogStepElement {
