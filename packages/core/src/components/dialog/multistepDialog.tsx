@@ -322,6 +322,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
     }
 }
 
+/** Filters children to only `<DialogStep>`s */
 function getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode }) {
     return Children.toArray(props.children).filter(isDialogStepElement);
 }
