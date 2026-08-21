@@ -148,7 +148,7 @@
     }
   }
 
-  @each $intent, $colors in $button-intent-states {
+  @each $intent in $pt-intents {
     &.#{$ns}-intent-#{$intent} {
       @include pt-button-minimal-intent-next($intent);
     }
@@ -205,10 +205,7 @@
     );
   }
 
-  @each $intent, $colors in $button-intent-states {
-    $text-color: map.get($button-minimal-intent-text-colors, $intent);
-    $dark-text-color: map.get($button-dark-intent-text-colors, $intent);
-
+  @each $intent in $pt-intents {
     &.#{$ns}-intent-#{$intent} {
       border-color: var(--bp-surface-border-color-#{$intent});
 
