@@ -51,7 +51,7 @@
         "@types/yargs": "~17.0.32",
         "@vitejs/plugin-react": "catalog:",
         "dedent": "^1.5.1",
-        "eslint": "^9.20.0",
+        "eslint": "^10.2.0",
         "gh-pages": "^6.3.0",
         "globals": "^15.14.0",
         "http-server": "^14.1.1",
@@ -64,7 +64,7 @@
         "stylelint-config-palantir": "^7.6.0",
         "stylelint-scss": "^6.12.1",
         "typescript": "~5.9.3",
-        "typescript-eslint": "^8.56.1",
+        "typescript-eslint": "^8.57.1",
         "vitest": "catalog:",
         "yargs": "^17.7.2"
     },

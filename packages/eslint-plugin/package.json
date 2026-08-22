@@ -11,16 +11,16 @@
         "test": "vitest run"
     },
     "dependencies": {
-        "@typescript-eslint/utils": "^8.56.1",
+        "@typescript-eslint/utils": "^8.57.1",
         "tslib": "catalog:"
     },
     "peerDependencies": {
-        "eslint": "^8.57 || ^9.0.0"
+        "eslint": "^8.57 || ^9.0.0 || ^10.0.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@types/dedent": "~0.7.2",
-        "@typescript-eslint/rule-tester": "^8.56.1",
+        "@typescript-eslint/rule-tester": "^8.57.1",
         "dedent": "^1.5.1",
         "vitest": "catalog:",
         "typescript": "~5.9.3"
