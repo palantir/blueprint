@@ -33,7 +33,9 @@
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-button-next() {
-  background-color: var(--bp-surface-background-color-base-rest);
+  background:
+    var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
+    var(--bp-surface-background-color-base-rest);
   box-shadow: inset var(--bp-surface-shadow-0);
   color: var(--bp-typography-color-base);
 
@@ -147,7 +149,7 @@
 
     &.#{$ns}-active {
       background-color: oklch(
-        from var(--bp-surface-layer-neutral-hover) l c h / var(--bp-emphasis-disabled-opacity)
+        from var(--bp-surface-layer-neutral-active) l c h / var(--bp-emphasis-disabled-opacity)
       );
     }
   }
@@ -180,9 +182,11 @@
 
   &:disabled,
   &.#{$ns}-disabled {
-    background: oklch(
+    background: none;
+    color: oklch(
       from var(--bp-surface-layer-color-#{$intent}-rest) l c h / var(--bp-emphasis-disabled-opacity)
     );
+    cursor: not-allowed;
 
     &.#{$ns}-active {
       background: oklch(
