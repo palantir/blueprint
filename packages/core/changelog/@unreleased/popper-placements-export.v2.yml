@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Export PopperPlacements without relying on a named placements re-export from popperjs
+  links:
+    - https://github.com/palantir/blueprint/issues/8187
