@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Animate the dismissed OverlayToaster toast instead of a sibling
+  links:
+    - https://github.com/palantir/blueprint/issues/8121

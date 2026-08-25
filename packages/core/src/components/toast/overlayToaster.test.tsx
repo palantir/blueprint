@@ -132,6 +132,43 @@ describe("OverlayToaster", () => {
             );
         });
 
+        it("animates the dismissed toast instead of a sibling when an older toast is closed", async () => {
+            toaster.show({ message: "oldest-toast", timeout: 0 });
+            toaster.show({ message: "middle-toast", timeout: 0 });
+            toaster.show({ message: "newest-toast", timeout: 0 });
+            await waitFor(() => assert.lengthOf(toaster.getToasts(), 3), {
+                timeout: 3 * OVERLAY_TOASTER_DELAY_MS,
+            });
+
+            const toastByMessage = (message: string) => {
+                const node = Array.from(containerElement.querySelectorAll<HTMLElement>(`.${Classes.TOAST}`)).find(
+                    el => el.querySelector(`.${Classes.TOAST_MESSAGE}`)?.textContent === message,
+                );
+                assert.isDefined(node, `expected toast with message ${message}`);
+                return node!;
+            };
+
+            const newest = toastByMessage("newest-toast");
+            const oldest = toastByMessage("oldest-toast");
+            const oldestKey = toaster.getToasts().find(t => t.message === "oldest-toast")!.key!;
+            toaster.dismiss(oldestKey);
+
+            await waitFor(() => {
+                assert.isTrue(
+                    oldest.className.includes(`${Classes.TOAST}-exit`),
+                    `expected oldest toast to receive exit class, got: ${oldest.className}`,
+                );
+                assert.isFalse(
+                    newest.className.includes(`${Classes.TOAST}-exit`),
+                    `newest toast should not animate out, got: ${newest.className}`,
+                );
+                assert.isTrue(containerElement.contains(newest), "newest toast should remain mounted");
+            });
+
+            toaster.clear();
+            await waitFor(() => assert.lengthOf(toaster.getToasts(), 0));
+        });
+
         it("dismiss() removes just the toast in question", async () => {
             toaster.show({ message: "one" });
             const key = toaster.show({ message: "two" });
