@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -65,6 +65,47 @@ describe("<Text>", () => {
                 expect(element!).toHaveAttribute("title", textContent);
             });
 
+            it("adds the title attribute after a resize causes overflow", () => {
+                const callbacks: ResizeObserverCallback[] = [];
+                stubResizeObserver(callbacks);
+
+                const { container } = render(<Text ellipsize={true}>Long text</Text>);
+                const element = container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`) as HTMLElement;
+                expect(element).not.toHaveAttribute("title");
+
+                mockOverflow(element, true);
+                act(() => {
+                    for (const callback of callbacks) {
+                        callback([] as unknown as ResizeObserverEntry[], {} as ResizeObserver);
+                    }
+                });
+
+                expect(element).toHaveAttribute("title", "Long text");
+            });
+
+            it("removes the title attribute after a resize clears overflow", () => {
+                const callbacks: ResizeObserverCallback[] = [];
+                stubResizeObserver(callbacks);
+
+                const { container } = render(<Text ellipsize={true}>Long text</Text>);
+                const element = container.querySelector(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`) as HTMLElement;
+                mockOverflow(element, true);
+                act(() => {
+                    for (const callback of callbacks) {
+                        callback([] as unknown as ResizeObserverEntry[], {} as ResizeObserver);
+                    }
+                });
+                expect(element).toHaveAttribute("title", "Long text");
+
+                mockOverflow(element, false);
+                act(() => {
+                    for (const callback of callbacks) {
+                        callback([] as unknown as ResizeObserverEntry[], {} as ResizeObserver);
+                    }
+                });
+                expect(element).not.toHaveAttribute("title");
+            });
+
             it("does not add the title attribute when text does not overflow", () => {
                 render(<Text ellipsize={true}>Foo</Text>);
                 expect(screen.getByText("Foo")).not.toHaveAttribute("title");
@@ -89,4 +130,35 @@ describe("<Text>", () => {
             expect(screen.getByText("Foo")).not.toHaveClass(Classes.TEXT_OVERFLOW_ELLIPSIS);
         });
     });
+});
+
+function mockOverflow(element: HTMLElement, overflowing: boolean) {
+    Object.defineProperty(element, "scrollWidth", { configurable: true, value: overflowing ? 200 : 50 });
+    Object.defineProperty(element, "clientWidth", { configurable: true, value: 50 });
+}
+
+function stubResizeObserver(callbacks: ResizeObserverCallback[]) {
+    class MockResizeObserver {
+        public constructor(callback: ResizeObserverCallback) {
+            callbacks.push(callback);
+        }
+
+        public observe() {
+            return;
+        }
+
+        public unobserve() {
+            return;
+        }
+
+        public disconnect() {
+            return;
+        }
+    }
+
+    vi.stubGlobal("ResizeObserver", MockResizeObserver);
+}
+
+afterEach(() => {
+    vi.unstubAllGlobals();
 });
