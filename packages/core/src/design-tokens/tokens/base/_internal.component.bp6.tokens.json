@@ -39,8 +39,7 @@
                             "hover": { "$value": "{intent.success.hover}" },
                             "active": { "$value": "{intent.success.active}" },
                             "disabled": {
-                                "$value": "{intent.success.rest}",
-                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                                "$value": "#23855180"
                             }
                         },
                         "warning": {
@@ -84,8 +83,7 @@
                             "hover": { "$value": "{intent.danger.hover}" },
                             "active": { "$value": "{intent.danger.active}" },
                             "disabled": {
-                                "$value": "{intent.danger.rest}",
-                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                                "$value": "#cd424680"
                             }
                         }
                     }

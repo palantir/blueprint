@@ -2,7 +2,7 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-.bp8 {
+.bp-next {
   --bp-private-component-button-background-default-rest: var(--bp-palette-grey-100);
   --bp-private-component-button-background-default-hover: var(--bp-palette-grey-200);
   --bp-private-component-button-background-default-active: var(--bp-palette-grey-300);
@@ -402,7 +402,7 @@
 }
 
 @supports (color: oklch(from var(--any-color) l c h)) {
-  .bp8 {
+  .bp-next {
     --bp-private-component-button-background-default-disabled: oklch(from var(--bp-palette-grey-100) l c h / 0.5);
     --bp-private-component-button-background-default-active-disabled: oklch(from var(--bp-palette-grey-300) l c h / 0.7);
     --bp-private-component-button-background-intent-primary-disabled: oklch(from var(--bp-intent-primary-500) l c h / 0.5);

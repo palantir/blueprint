@@ -413,9 +413,9 @@ export const AllIntentsAllVariants: Story = {
     ),
 };
 
-/** Proves that BP7 can consume component tokens without changing BP6 pixels, then previews BP8 values. */
+/** Proves that BP6-compatible component tokens preserve current pixels, then previews the original BP7 proposal. */
 export const TokenCompatibility: Story = {
-    name: "BP6 → BP7 tokens → BP8",
+    name: "BP6 literals → BP6 tokens → BP7 proposal",
     parameters: {
         layout: "padded",
     },
@@ -424,34 +424,36 @@ export const TokenCompatibility: Story = {
             {renderButtonTokenComparison({
                 args,
                 id: "button-comparison-bp6",
-                label: "BP6: component token fallbacks",
+                label: "BP6 literals: current component CSS",
                 className: "token-compatibility-legacy",
             })}
             {renderButtonTokenComparison({
                 args,
                 id: "button-comparison-bp7",
-                label: "BP7: same values through tokens",
-                className: "token-compatibility-bp7",
+                label: "BP6 tokens: same values through aliases",
+                className: "token-compatibility-bp6-tokens",
             })}
             {renderButtonTokenComparison({
                 args,
-                id: "button-comparison-bp8",
-                label: "BP8: new token values",
-                className: "bp8 token-compatibility-bp8",
+                id: "button-comparison-bp7-proposal",
+                label: "BP7 proposal: original PR values",
+                className: "bp-next token-compatibility-bp7-proposal",
             })}
         </Flex>
     ),
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const legacyButtons = within(canvas.getByRole("region", { name: /BP6:/ })).getAllByRole("button");
-        const bp7Buttons = within(canvas.getByRole("region", { name: /BP7:/ })).getAllByRole("button");
-        const bp8Buttons = within(canvas.getByRole("region", { name: /BP8:/ })).getAllByRole("button");
+        const legacyButtons = within(canvas.getByRole("region", { name: /BP6 literals:/ })).getAllByRole("button");
+        const bp6TokenButtons = within(canvas.getByRole("region", { name: /BP6 tokens:/ })).getAllByRole("button");
+        const proposedButtons = within(canvas.getByRole("region", { name: /BP7 proposal:/ })).getAllByRole("button");
 
-        await expect(bp7Buttons).toHaveLength(legacyButtons.length);
-        await expect(bp8Buttons).toHaveLength(bp7Buttons.length);
+        await expect(bp6TokenButtons).toHaveLength(legacyButtons.length);
+        await expect(proposedButtons).toHaveLength(bp6TokenButtons.length);
         await waitFor(() => {
             expect(
-                [...legacyButtons, ...bp7Buttons, ...bp8Buttons].every(button => button.querySelector("svg") !== null),
+                [...legacyButtons, ...bp6TokenButtons, ...proposedButtons].every(
+                    button => button.querySelector("svg") !== null,
+                ),
             ).toBe(true);
         });
 
@@ -491,14 +493,16 @@ export const TokenCompatibility: Story = {
         await expect(checkedWarningStates).toBeGreaterThanOrEqual(2);
 
         for (const [index, legacyButton] of legacyButtons.entries()) {
-            if (!legacyButton.matches(":hover") && !bp7Buttons[index].matches(":hover")) {
-                await expect(getButtonVisualStyle(bp7Buttons[index])).toEqual(getButtonVisualStyle(legacyButton));
+            if (!legacyButton.matches(":hover") && !bp6TokenButtons[index].matches(":hover")) {
+                await expect(getButtonVisualStyle(bp6TokenButtons[index])).toEqual(getButtonVisualStyle(legacyButton));
             }
         }
 
         await expect(
-            bp8Buttons.some((button, index) => {
-                return getButtonVisualStyle(button).join("|") !== getButtonVisualStyle(bp7Buttons[index]).join("|");
+            proposedButtons.some((button, index) => {
+                return (
+                    getButtonVisualStyle(button).join("|") !== getButtonVisualStyle(bp6TokenButtons[index]).join("|")
+                );
             }),
         ).toBe(true);
     },

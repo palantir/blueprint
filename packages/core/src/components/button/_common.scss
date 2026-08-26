@@ -69,7 +69,7 @@ $button-outlined-border-intent-opacity: 0.6 !default;
 $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
 // Exact BP6 warning-button rest color, retained only as the fallback for the private
-// component token below. BP8 supplies its own scoped component-token value.
+// component token below. The opt-in BP7 proposal supplies its own scoped component-token value.
 :root {
   --bp6-button-warning-rest: var(--bp-palette-orange-5); //#fbb360;
 }

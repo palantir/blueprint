@@ -277,9 +277,9 @@ const renderInputTokenComparison = ({ id, label, className }: { id: string; labe
     </section>
 );
 
-/** Proves that BP7 can consume input tokens without changing BP6 pixels, then previews BP8 values. */
+/** Proves that BP6-compatible input tokens preserve current pixels, then previews the original BP7 proposal. */
 export const TokenCompatibility: Story = {
-    name: "BP6 → BP7 tokens → BP8",
+    name: "BP6 literals → BP6 tokens → BP7 proposal",
     parameters: {
         layout: "padded",
     },
@@ -287,43 +287,43 @@ export const TokenCompatibility: Story = {
         <Flex alignItems="flex-start" gap={6}>
             {renderInputTokenComparison({
                 id: "input-comparison-bp6",
-                label: "BP6: component token fallbacks",
+                label: "BP6 literals: current component CSS",
                 className: "token-compatibility-legacy",
             })}
             {renderInputTokenComparison({
                 id: "input-comparison-bp7",
-                label: "BP7: same values through tokens",
-                className: "token-compatibility-bp7",
+                label: "BP6 tokens: same values through aliases",
+                className: "token-compatibility-bp6-tokens",
             })}
             {renderInputTokenComparison({
-                id: "input-comparison-bp8",
-                label: "BP8: new token values",
-                className: "bp8 token-compatibility-bp8",
+                id: "input-comparison-bp7-proposal",
+                label: "BP7 proposal: original PR values",
+                className: "bp-next token-compatibility-bp7-proposal",
             })}
         </Flex>
     ),
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const legacyRegion = canvas.getByRole("region", { name: /BP6:/ });
-        const bp7Region = canvas.getByRole("region", { name: /BP7:/ });
-        const bp8Region = canvas.getByRole("region", { name: /BP8:/ });
+        const legacyRegion = canvas.getByRole("region", { name: /BP6 literals:/ });
+        const bp6TokenRegion = canvas.getByRole("region", { name: /BP6 tokens:/ });
+        const proposedRegion = canvas.getByRole("region", { name: /BP7 proposal:/ });
         const legacyInputs = within(legacyRegion).getAllByRole("textbox");
-        const bp7Inputs = within(bp7Region).getAllByRole("textbox");
-        const bp8Inputs = within(bp8Region).getAllByRole("textbox");
+        const bp6TokenInputs = within(bp6TokenRegion).getAllByRole("textbox");
+        const proposedInputs = within(proposedRegion).getAllByRole("textbox");
 
         await expect(
-            getComputedStyle(bp7Region).getPropertyValue("--bp-private-component-input-background-rest").trim(),
+            getComputedStyle(bp6TokenRegion).getPropertyValue("--bp-private-component-input-background-rest").trim(),
         ).not.toBe("");
-        await expect(bp7Inputs).toHaveLength(legacyInputs.length);
-        await expect(bp8Inputs).toHaveLength(bp7Inputs.length);
+        await expect(bp6TokenInputs).toHaveLength(legacyInputs.length);
+        await expect(proposedInputs).toHaveLength(bp6TokenInputs.length);
 
         for (const [index, legacyInput] of legacyInputs.entries()) {
-            await expect(getInputVisualStyle(bp7Inputs[index])).toEqual(getInputVisualStyle(legacyInput));
+            await expect(getInputVisualStyle(bp6TokenInputs[index])).toEqual(getInputVisualStyle(legacyInput));
         }
 
         await expect(
-            bp8Inputs.some((input, index) => {
-                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(bp7Inputs[index]).join("|");
+            proposedInputs.some((input, index) => {
+                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(bp6TokenInputs[index]).join("|");
             }),
         ).toBe(true);
     },

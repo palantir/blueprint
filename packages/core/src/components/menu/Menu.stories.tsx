@@ -532,34 +532,34 @@ const renderMenuPopoverTokenComparison = (label: string, className: string) => (
     </section>
 );
 
-/** Proves that BP7 can consume menu and popover tokens without changing BP6 pixels, then previews BP8 values. */
+/** Proves that BP6-compatible menu tokens preserve current pixels, then previews the original BP7 proposal. */
 export const TokenCompatibility: Story = {
-    name: "BP6 → BP7 tokens → BP8",
+    name: "BP6 literals → BP6 tokens → BP7 proposal",
     parameters: {
         layout: "padded",
     },
     render: () => (
         <Flex alignItems="flex-start" gap={12}>
-            {renderMenuPopoverTokenComparison("BP6", "token-compatibility-legacy")}
-            {renderMenuPopoverTokenComparison("BP7", "token-compatibility-bp7")}
-            {renderMenuPopoverTokenComparison("BP8", "bp8 token-compatibility-bp8")}
+            {renderMenuPopoverTokenComparison("BP6 literals", "token-compatibility-legacy")}
+            {renderMenuPopoverTokenComparison("BP6 tokens", "token-compatibility-bp6-tokens")}
+            {renderMenuPopoverTokenComparison("BP7 proposal", "bp-next token-compatibility-bp7-proposal")}
         </Flex>
     ),
     play: async () => {
-        await waitFor(() => expect(screen.getByRole("menu", { name: "BP6 menu" })).toBeVisible());
+        await waitFor(() => expect(screen.getByRole("menu", { name: "BP6 literals menu" })).toBeVisible());
 
-        const legacyMenu = screen.getByRole("menu", { name: "BP6 menu" });
-        const bp7Menu = screen.getByRole("menu", { name: "BP7 menu" });
-        const bp8Menu = screen.getByRole("menu", { name: "BP8 menu" });
+        const legacyMenu = screen.getByRole("menu", { name: "BP6 literals menu" });
+        const bp6TokenMenu = screen.getByRole("menu", { name: "BP6 tokens menu" });
+        const proposedMenu = screen.getByRole("menu", { name: "BP7 proposal menu" });
 
         await expect(
-            getComputedStyle(bp7Menu).getPropertyValue("--bp-private-component-menu-background").trim(),
+            getComputedStyle(bp6TokenMenu).getPropertyValue("--bp-private-component-menu-background").trim(),
         ).not.toBe("");
-        await expect(getMenuPopoverVisualStyle(bp7Menu)).toEqual(getMenuPopoverVisualStyle(legacyMenu));
-        await expect(getMenuPopoverVisualStyle(bp8Menu)).not.toEqual(getMenuPopoverVisualStyle(bp7Menu));
+        await expect(getMenuPopoverVisualStyle(bp6TokenMenu)).toEqual(getMenuPopoverVisualStyle(legacyMenu));
+        await expect(getMenuPopoverVisualStyle(proposedMenu)).not.toEqual(getMenuPopoverVisualStyle(bp6TokenMenu));
         await expectActiveMenuItemIconToMatchText(legacyMenu);
-        await expectActiveMenuItemIconToMatchText(bp7Menu);
-        await expectActiveMenuItemIconToMatchText(bp8Menu);
+        await expectActiveMenuItemIconToMatchText(bp6TokenMenu);
+        await expectActiveMenuItemIconToMatchText(proposedMenu);
     },
 };
 

@@ -1,7 +1,7 @@
 {
     "palette": {
         "$type": "color",
-        "$description": "BP7 palette PREVIEW (not built — current BP6 palette is active). 100=lightest, 1000=darkest. Light mode.",
+        "$description": "BP7 palette proposal, emitted only under the opt-in .bp-next scope. 100=lightest, 1000=darkest. Light mode.",
         "orange": {
             "100": {
                 "$value": {

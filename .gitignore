@@ -28,8 +28,8 @@ lerna-debug.log
 build/
 !packages/core/src/design-tokens/build/
 packages/core/src/design-tokens/build/*
-!packages/core/src/design-tokens/build/bp8-tokens.css
-!packages/core/src/design-tokens/build/bp8-tokens-dark.css
+!packages/core/src/design-tokens/build/next-tokens.css
+!packages/core/src/design-tokens/build/next-tokens-dark.css
 dist/
 lib/
 generated/
@@ -46,3 +46,4 @@ site/docs/*
 !site/docs/
 !site/docs/versions/
 site/docs/versions/**/*.d.ts
+.playwright-cli/

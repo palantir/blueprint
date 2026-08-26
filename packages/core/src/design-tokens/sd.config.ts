@@ -168,23 +168,23 @@ const THEMES: readonly ThemeConfig[] = [
         destination: "tokens-dark.css",
     },
     {
-        name: "bp8-light",
-        sources: ["src/design-tokens/tokens/next/*.bp8.tokens.json"],
-        // BP8 changes token values, so it remains opt-in while BP7 ships the BP6-compatible values.
-        selector: ".bp8",
-        destination: "bp8-tokens.css",
+        name: "next-light",
+        sources: ["src/design-tokens/tokens/next/*.bp7.tokens.json"],
+        // Keep the original BP7 proposal opt-in while testing BP6-compatible values as the migration baseline.
+        selector: ".bp-next",
+        destination: "next-tokens.css",
     },
     {
-        name: "bp8-dark",
-        include: ["src/design-tokens/tokens/next/*.bp8.tokens.json"],
-        sources: ["src/design-tokens/tokens/next/*.bp8.dark.tokens.json"],
+        name: "next-dark",
+        include: ["src/design-tokens/tokens/next/*.bp7.tokens.json"],
+        sources: ["src/design-tokens/tokens/next/*.bp7.dark.tokens.json"],
         // Portals may receive the color-scheme class on either an ancestor or their own root.
         selector:
-            '[data-bp-color-scheme=\"dark\"] .bp8,\n' +
-            '.bp8[data-bp-color-scheme=\"dark\"],\n' +
-            ".bp6-dark .bp8,\n" +
-            ".bp8.bp6-dark",
-        destination: "bp8-tokens-dark.css",
+            '[data-bp-color-scheme=\"dark\"] .bp-next,\n' +
+            '.bp-next[data-bp-color-scheme=\"dark\"],\n' +
+            ".bp6-dark .bp-next,\n" +
+            ".bp-next.bp6-dark",
+        destination: "next-tokens-dark.css",
     },
 ];
 

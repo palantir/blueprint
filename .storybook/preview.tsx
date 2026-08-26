@@ -25,9 +25,9 @@ import "@blueprintjs/labs/lib/css/blueprint-labs.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 import "@blueprintjs/table/lib/css/table.css";
 
-// BP8 changes are scoped so Storybook can compare them against BP7's BP6-compatible values.
-import "../packages/core/src/design-tokens/build/bp8-tokens.css";
-import "../packages/core/src/design-tokens/build/bp8-tokens-dark.css";
+// The original BP7 proposal remains opt-in so Storybook can compare it with BP7's BP6-compatible values.
+import "../packages/core/src/design-tokens/build/next-tokens.css";
+import "../packages/core/src/design-tokens/build/next-tokens-dark.css";
 import "./token-compatibility.scss";
 
 const preview: Preview = {
