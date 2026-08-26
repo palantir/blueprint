@@ -1,0 +1,18 @@
+{
+    "_internal": {
+        "component": {
+            "input": {
+                "background": {
+                    "$type": "color",
+                    "rest": { "$value": "{palette.grey.800}" },
+                    "disabled": { "$value": "{palette.grey.900}" }
+                },
+                "foreground": {
+                    "$type": "color",
+                    "disabled": { "$value": "{palette.grey.300}" },
+                    "placeholder": { "$value": "{palette.grey.300}" }
+                }
+            }
+        }
+    }
+}

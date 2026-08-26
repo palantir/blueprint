@@ -1,0 +1,91 @@
+{
+    "_internal": {
+        "component": {
+            "button": {
+                "background": {
+                    "$type": "color",
+                    "default": {
+                        "rest": { "$value": "{palette.grey.800}" },
+                        "hover": { "$value": "{palette.grey.700}" },
+                        "active": { "$value": "{palette.grey.900}" },
+                        "disabled": {
+                            "$value": "{palette.grey.800}",
+                            "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                        },
+                        "active-disabled": {
+                            "$value": "{palette.grey.900}",
+                            "$extensions": { "com.blueprint.derive": { "alpha": 0.7 } }
+                        }
+                    },
+                    "intent": {
+                        "primary": {
+                            "hover": { "$value": "{intent.primary.400}" },
+                            "active": { "$value": "{intent.primary.600}" },
+                            "disabled": {
+                                "$value": "{intent.primary.500}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        },
+                        "success": {
+                            "rest": { "$value": "{intent.success.500}" },
+                            "hover": { "$value": "{intent.success.400}" },
+                            "active": { "$value": "{intent.success.600}" },
+                            "disabled": {
+                                "$value": "{intent.success.500}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        },
+                        "warning": {
+                            "hover": { "$value": "{intent.warning.400}" },
+                            "active": { "$value": "{intent.warning.600}" },
+                            "disabled": {
+                                "$value": "{intent.warning.500}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        },
+                        "danger": {
+                            "hover": { "$value": "{intent.danger.400}" },
+                            "active": { "$value": "{intent.danger.600}" },
+                            "disabled": {
+                                "$value": "{intent.danger.500}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        }
+                    }
+                },
+                "foreground": {
+                    "$type": "color",
+                    "default": {
+                        "disabled": { "$value": "{palette.grey.300}" }
+                    },
+                    "intent": {
+                        "primary": {
+                            "disabled": {
+                                "$value": "{intent.primary.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                            }
+                        },
+                        "success": {
+                            "disabled": {
+                                "$value": "{intent.success.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                            }
+                        },
+                        "warning": {
+                            "disabled": {
+                                "$value": "{intent.warning.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                            }
+                        },
+                        "danger": {
+                            "disabled": {
+                                "$value": "{intent.danger.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "_internal": {
+        "component": {
+            "menu": {
+                "background": { "$type": "color", "$value": "{surface.background-color.base.rest}" },
+                "foreground": { "$type": "color", "$value": "{typography.color.base}" },
+                "item": {
+                    "background": {
+                        "$type": "color",
+                        "hover": { "$value": "{surface.layer-color.neutral.hover}" },
+                        "pressed": { "$value": "{surface.layer-color.neutral.active}" },
+                        "active": { "$value": "{surface.layer-color.primary.active}" }
+                    },
+                    "foreground": {
+                        "$type": "color",
+                        "active": { "$value": "{typography.color.intent.primary}" }
+                    }
+                },
+                "divider-color": { "$type": "color", "$value": "{surface.divider-color.default}" }
+            },
+            "popover": {
+                "background": { "$type": "color", "$value": "{surface.background-color.base.rest}" },
+                "shadow": { "$type": "shadow", "$value": "{surface.shadow.3}" }
+            }
+        }
+    }
+}

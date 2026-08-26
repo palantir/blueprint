@@ -3,13 +3,15 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { storybookLayoutDecorator } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
+import { expect, within } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { Intent, Size } from "../../common";
+import { Classes, Intent, Size } from "../../common";
 import { Button } from "../button/buttons";
+import { H5 } from "../html/html";
 import { Tag } from "../tag/tag";
 
 import { InputGroup } from "./inputGroup";
@@ -232,6 +234,99 @@ export const FocusedExample: Story = {
         await userEvent.click(input);
     },
     render: args => <InputGroup {...args} placeholder="Click to focus..." />,
+};
+
+const inputVisualProperties = ["backgroundColor", "color", "boxShadow", "borderRadius", "fontSize", "height"] as const;
+
+const getInputVisualStyle = (input: HTMLElement) => {
+    const style = getComputedStyle(input);
+    const placeholderStyle = getComputedStyle(input, "::placeholder");
+    return [...inputVisualProperties.map(property => style[property]), placeholderStyle.color];
+};
+
+const inputCompatibilityStates = [
+    { label: "Rest", inputProps: {} },
+    { label: "Focused", inputProps: { inputClassName: Classes.ACTIVE } },
+    { label: "Readonly", inputProps: { defaultValue: "Readonly value", readOnly: true } },
+    { label: "Disabled", inputProps: { disabled: true } },
+] as const;
+
+const renderInputTokenComparison = ({ id, label, className }: { id: string; label: string; className: string }) => (
+    <section aria-labelledby={id} className={className}>
+        <H5 id={id}>{label}</H5>
+        <Flex flexDirection="column" gap={3}>
+            {inputCompatibilityStates.map(({ label: stateLabel, inputProps }) => (
+                <Flex key={stateLabel} flexDirection="column" gap={1}>
+                    <StoryLabel title={stateLabel} />
+                    {Object.values(Intent).map(intent => {
+                        const accessibleLabel = `${intent} ${stateLabel.toLowerCase()} input`;
+                        return (
+                            <InputGroup
+                                key={intent}
+                                {...inputProps}
+                                aria-label={accessibleLabel}
+                                intent={intent}
+                                leftIcon="edit"
+                                placeholder={accessibleLabel}
+                            />
+                        );
+                    })}
+                </Flex>
+            ))}
+        </Flex>
+    </section>
+);
+
+/** Proves that BP7 can consume input tokens without changing BP6 pixels, then previews BP8 values. */
+export const TokenCompatibility: Story = {
+    name: "BP6 → BP7 tokens → BP8",
+    parameters: {
+        layout: "padded",
+    },
+    render: () => (
+        <Flex alignItems="flex-start" gap={6}>
+            {renderInputTokenComparison({
+                id: "input-comparison-bp6",
+                label: "BP6: component token fallbacks",
+                className: "token-compatibility-legacy",
+            })}
+            {renderInputTokenComparison({
+                id: "input-comparison-bp7",
+                label: "BP7: same values through tokens",
+                className: "token-compatibility-bp7",
+            })}
+            {renderInputTokenComparison({
+                id: "input-comparison-bp8",
+                label: "BP8: new token values",
+                className: "bp8 token-compatibility-bp8",
+            })}
+        </Flex>
+    ),
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const legacyRegion = canvas.getByRole("region", { name: /BP6:/ });
+        const bp7Region = canvas.getByRole("region", { name: /BP7:/ });
+        const bp8Region = canvas.getByRole("region", { name: /BP8:/ });
+        const legacyInputs = within(legacyRegion).getAllByRole("textbox");
+        const bp7Inputs = within(bp7Region).getAllByRole("textbox");
+        const bp8Inputs = within(bp8Region).getAllByRole("textbox");
+
+        await expect(
+            getComputedStyle(bp7Region).getPropertyValue("--bp-private-component-input-background-rest").trim(),
+        ).not.toBe("");
+        await expect(bp7Inputs).toHaveLength(legacyInputs.length);
+        await expect(bp8Inputs).toHaveLength(bp7Inputs.length);
+
+        for (const [index, legacyInput] of legacyInputs.entries()) {
+            await expect(getInputVisualStyle(bp7Inputs[index])).toEqual(getInputVisualStyle(legacyInput));
+        }
+
+        await expect(
+            bp8Inputs.some((input, index) => {
+                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(bp7Inputs[index]).join("|");
+            }),
+        ).toBe(true);
+    },
 };
 
 /**

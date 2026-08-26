@@ -135,35 +135,55 @@
     }
 
     &[class*="#{$ns}-intent-"] {
-      box-shadow:
-        inset 0 0 0 var(--bp-surface-border-width)
-          color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+      box-shadow: var(
+        --bp-private-component-button-shadow-rest,
+        inset 0 0 0 1px rgba($white, 10%),
+        0 1px 2px rgba($black, 20%)
+      );
 
       &:hover {
-        box-shadow:
-          inset 0 0 0 var(--bp-surface-border-width)
-            color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+        box-shadow: var(
+          --bp-private-component-button-shadow-rest,
+          inset 0 0 0 1px rgba($white, 10%),
+          0 1px 2px rgba($black, 20%)
+        );
       }
 
       &:active,
       &.#{$ns}-active {
-        box-shadow:
-          inset 0 0 0 var(--bp-surface-border-width)
-            color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
-          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+        box-shadow: var(
+          --bp-private-component-button-shadow-active,
+          inset 0 0 0 1px rgba($white, 10%),
+          0 1px 2px rgba($black, 40%)
+        );
       }
 
       &:disabled,
       &.#{$ns}-disabled {
         box-shadow: none;
-        color: color-mix(in oklch, var(--bp-intent-default-foreground) 30%, transparent);
       }
 
       .#{$ns}-button-spinner .#{$ns}-spinner-head {
         stroke: var(--bp-typography-color-default-hover);
       }
+    }
+
+    @each $intent in ("primary", "success", "danger") {
+      &.#{$ns}-intent-#{$intent}:disabled,
+      &.#{$ns}-intent-#{$intent}.#{$ns}-disabled {
+        color: var(
+          --bp-private-component-button-foreground-intent-#{$intent}-disabled,
+          rgba($white, 30%)
+        );
+      }
+    }
+
+    &.#{$ns}-intent-warning:disabled,
+    &.#{$ns}-intent-warning.#{$ns}-disabled {
+      color: var(
+        --bp-private-component-button-foreground-intent-warning-disabled,
+        color-mix(in oklch, var(--bp-intent-warning-foreground) 50%, transparent)
+      );
     }
   }
 
@@ -189,43 +209,18 @@
     @include pt-button-outlined;
   }
 
-  // special case override: use dark text for warning intent
+  // BP6 warning buttons intentionally use darker icon and disabled colors than other intents.
   &.#{$ns}-intent-warning {
     &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
       fill: color-mix(in oklch, var(--bp-intent-warning-foreground) 70%, transparent);
     }
 
     &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
-      &:hover {
-        background: color-mix(
-          in oklch,
-          var(--bp6-button-warning-rest) 77%,
-          var(--bp-intent-warning-hover)
-        );
-      }
-
       &:active,
       &.#{$ns}-active {
-        background: color-mix(
-          in oklch,
-          var(--bp6-button-warning-rest) 46%,
-          var(--bp-intent-warning-active)
-        );
-
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
-          // Windows High Contrast dark theme
           background: highlight;
         }
-      }
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background-color: color-mix(in oklch, var(--bp-intent-warning-rest) 40%, transparent);
-
-      .#{$ns}-dark &,
-      [data-bp-color-scheme="dark"] & {
-        color: color-mix(in oklch, var(--bp-intent-warning-foreground) 50%, transparent);
       }
     }
 
@@ -233,7 +228,6 @@
     &.#{$ns}-outlined {
       background: none;
 
-      // Mute disabled text — orange is perceptually brighter than other intents
       &:disabled,
       &.#{$ns}-disabled {
         color: color-mix(in oklch, var(--bp-intent-warning-hover) 40%, transparent);

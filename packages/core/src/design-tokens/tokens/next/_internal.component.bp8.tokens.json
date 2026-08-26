@@ -1,0 +1,104 @@
+{
+    "_internal": {
+        "component": {
+            "button": {
+                "background": {
+                    "$type": "color",
+                    "default": {
+                        "rest": { "$value": "{palette.grey.100}" },
+                        "hover": { "$value": "{palette.grey.200}" },
+                        "active": { "$value": "{palette.grey.300}" },
+                        "disabled": {
+                            "$value": "{palette.grey.100}",
+                            "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                        },
+                        "active-disabled": {
+                            "$value": "{palette.grey.300}",
+                            "$extensions": { "com.blueprint.derive": { "alpha": 0.7 } }
+                        }
+                    },
+                    "intent": {
+                        "primary": {
+                            "rest": { "$value": "{intent.primary.500}" },
+                            "hover": { "$value": "{intent.primary.600}" },
+                            "active": { "$value": "{intent.primary.700}" },
+                            "disabled": {
+                                "$value": "{intent.primary.500}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        },
+                        "success": {
+                            "rest": { "$value": "{intent.success.600}" },
+                            "hover": { "$value": "{intent.success.700}" },
+                            "active": { "$value": "{intent.success.800}" },
+                            "disabled": {
+                                "$value": "{intent.success.600}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        },
+                        "warning": {
+                            "rest": { "$value": "{intent.warning.500}" },
+                            "hover": { "$value": "{intent.warning.600}" },
+                            "active": { "$value": "{intent.warning.700}" },
+                            "disabled": {
+                                "$value": "{intent.warning.500}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        },
+                        "danger": {
+                            "rest": { "$value": "{intent.danger.500}" },
+                            "hover": { "$value": "{intent.danger.600}" },
+                            "active": { "$value": "{intent.danger.700}" },
+                            "disabled": {
+                                "$value": "{intent.danger.500}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                            }
+                        }
+                    }
+                },
+                "foreground": {
+                    "$type": "color",
+                    "default": {
+                        "rest": { "$value": "{typography.color.base}" },
+                        "disabled": { "$value": "{palette.grey.600}" }
+                    },
+                    "intent": {
+                        "primary": {
+                            "rest": { "$value": "{intent.primary.foreground}" },
+                            "disabled": {
+                                "$value": "{intent.primary.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                            }
+                        },
+                        "success": {
+                            "rest": { "$value": "{intent.success.foreground}" },
+                            "disabled": {
+                                "$value": "{intent.success.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                            }
+                        },
+                        "warning": {
+                            "rest": { "$value": "{intent.warning.foreground}" },
+                            "disabled": {
+                                "$value": "{intent.warning.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                            }
+                        },
+                        "danger": {
+                            "rest": { "$value": "{intent.danger.foreground}" },
+                            "disabled": {
+                                "$value": "{intent.danger.foreground}",
+                                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                            }
+                        }
+                    }
+                },
+                "shadow": {
+                    "$type": "shadow",
+                    "rest": { "$value": "{surface.shadow.1}" },
+                    "active": { "$value": "{surface.shadow.0}" }
+                }
+            }
+        }
+    }
+}

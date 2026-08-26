@@ -4,10 +4,12 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { expect, waitFor, within } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
 import { Alignment, ButtonVariant, Intent, Size } from "../../common";
+import { H5 } from "../html/html";
 
 import { Button } from "./buttons";
 
@@ -21,6 +23,95 @@ const disabledArgs = [
     "type",
     "children",
 ] as const satisfies ReadonlyArray<keyof React.ComponentProps<typeof Button>>;
+
+const visualRegressionIntents = Object.values(Intent);
+const visualRegressionVariants = Object.values(ButtonVariant);
+const visualRegressionStates = [
+    { label: "Rest", buttonProps: {} },
+    { label: "Active", buttonProps: { active: true } },
+    { label: "Disabled", buttonProps: { disabled: true } },
+] as const satisfies ReadonlyArray<{
+    label: string;
+    buttonProps: Pick<React.ComponentProps<typeof Button>, "active" | "disabled">;
+}>;
+
+const renderButtonVisualRegressionMatrix = (args: React.ComponentProps<typeof Button>) => (
+    <Flex flexDirection="column" gap={2}>
+        {visualRegressionVariants.map(variant => (
+            <Flex key={variant} data-button-variant={variant} flexDirection="column" gap={2}>
+                <StoryLabel title={variant} />
+                {visualRegressionStates.map(({ label, buttonProps }) => (
+                    <Flex key={label} flexDirection="column" gap={1}>
+                        <StoryLabel title={label} />
+                        <Flex gap={2}>
+                            {visualRegressionIntents.map(intent => (
+                                <Button
+                                    key={intent}
+                                    {...args}
+                                    {...buttonProps}
+                                    aria-label={`${variant} ${intent} ${label.toLowerCase()}`}
+                                    icon={args.icon ?? "style"}
+                                    intent={intent}
+                                    text={intent}
+                                    variant={variant}
+                                />
+                            ))}
+                        </Flex>
+                    </Flex>
+                ))}
+            </Flex>
+        ))}
+    </Flex>
+);
+
+const buttonVisualProperties = ["boxShadow", "borderRadius", "fontSize", "minHeight"] as const;
+
+const colorToRgbaBytes = (color: string) => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    const context = canvas.getContext("2d", { willReadFrequently: true });
+    if (context === null) {
+        throw new Error("Expected the browser to provide a 2D canvas context");
+    }
+
+    context.fillStyle = color;
+    context.fillRect(0, 0, 1, 1);
+    return Array.from(context.getImageData(0, 0, 1, 1).data);
+};
+
+const getButtonVisualStyle = (button: HTMLElement) => {
+    const style = getComputedStyle(button);
+    const icon = button.querySelector("svg");
+    if (!(icon instanceof SVGElement)) {
+        throw new Error("Expected every compatibility button to render an icon");
+    }
+    const iconStyle = getComputedStyle(icon);
+    return [
+        colorToRgbaBytes(style.backgroundColor),
+        colorToRgbaBytes(style.color),
+        colorToRgbaBytes(iconStyle.fill),
+        colorToRgbaBytes(iconStyle.color),
+        ...buttonVisualProperties.map(property => style[property]),
+    ];
+};
+
+const renderButtonTokenComparison = ({
+    args,
+    id,
+    label,
+    className,
+}: {
+    args: React.ComponentProps<typeof Button>;
+    id: string;
+    label: string;
+    className: string;
+}) => (
+    <section aria-labelledby={id} className={className}>
+        <H5 id={id}>{label}</H5>
+        {renderButtonVisualRegressionMatrix(args)}
+    </section>
+);
 
 const meta: Meta<typeof Button> = {
     title: "Core/Button/Button",
@@ -320,6 +411,97 @@ export const AllIntentsAllVariants: Story = {
             ))}
         </Flex>
     ),
+};
+
+/** Proves that BP7 can consume component tokens without changing BP6 pixels, then previews BP8 values. */
+export const TokenCompatibility: Story = {
+    name: "BP6 → BP7 tokens → BP8",
+    parameters: {
+        layout: "padded",
+    },
+    render: args => (
+        <Flex alignItems="flex-start" gap={6}>
+            {renderButtonTokenComparison({
+                args,
+                id: "button-comparison-bp6",
+                label: "BP6: component token fallbacks",
+                className: "token-compatibility-legacy",
+            })}
+            {renderButtonTokenComparison({
+                args,
+                id: "button-comparison-bp7",
+                label: "BP7: same values through tokens",
+                className: "token-compatibility-bp7",
+            })}
+            {renderButtonTokenComparison({
+                args,
+                id: "button-comparison-bp8",
+                label: "BP8: new token values",
+                className: "bp8 token-compatibility-bp8",
+            })}
+        </Flex>
+    ),
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const legacyButtons = within(canvas.getByRole("region", { name: /BP6:/ })).getAllByRole("button");
+        const bp7Buttons = within(canvas.getByRole("region", { name: /BP7:/ })).getAllByRole("button");
+        const bp8Buttons = within(canvas.getByRole("region", { name: /BP8:/ })).getAllByRole("button");
+
+        await expect(bp7Buttons).toHaveLength(legacyButtons.length);
+        await expect(bp8Buttons).toHaveLength(bp7Buttons.length);
+        await waitFor(() => {
+            expect(
+                [...legacyButtons, ...bp7Buttons, ...bp8Buttons].every(button => button.querySelector("svg") !== null),
+            ).toBe(true);
+        });
+
+        const legacyWarningButtons = legacyButtons.filter(button => button.ariaLabel?.startsWith("solid warning"));
+        const bp6WarningColors = new Map<string, readonly [readonly number[], readonly number[]]>([
+            [
+                "solid warning rest",
+                [
+                    [251, 179, 96, 255],
+                    [17, 20, 24, 255],
+                ],
+            ],
+            [
+                "solid warning active",
+                [
+                    [178, 117, 52, 255],
+                    [17, 20, 24, 255],
+                ],
+            ],
+            [
+                "solid warning disabled",
+                [
+                    [200, 117, 25, 102],
+                    [23, 18, 20, 153],
+                ],
+            ],
+        ]);
+        let checkedWarningStates = 0;
+        for (const button of legacyWarningButtons) {
+            if (!button.matches(":hover")) {
+                const expectedColors = bp6WarningColors.get(button.ariaLabel ?? "");
+                await expect(expectedColors).toBeDefined();
+                await expect(getButtonVisualStyle(button).slice(0, 2)).toEqual(expectedColors);
+                checkedWarningStates++;
+            }
+        }
+        await expect(checkedWarningStates).toBeGreaterThanOrEqual(2);
+
+        for (const [index, legacyButton] of legacyButtons.entries()) {
+            if (!legacyButton.matches(":hover") && !bp7Buttons[index].matches(":hover")) {
+                await expect(getButtonVisualStyle(bp7Buttons[index])).toEqual(getButtonVisualStyle(legacyButton));
+            }
+        }
+
+        await expect(
+            bp8Buttons.some((button, index) => {
+                return getButtonVisualStyle(button).join("|") !== getButtonVisualStyle(bp7Buttons[index]).join("|");
+            }),
+        ).toBe(true);
+    },
 };
 
 /**

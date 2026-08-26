@@ -15,14 +15,14 @@ $input-color: $pt-text-color !default;
 $input-color-disabled: $button-color-disabled !default;
 $input-placeholder-color: $pt-text-color-muted !default;
 $input-background-color: $white !default;
-$input-background-color-disabled: rgba($light-gray1, 0.5) !default;
+$input-background-color-disabled: rgba($light-gray1, 50%) !default;
 $input-shadow-color-focus: $pt-focus-indicator-color;
 
 $dark-input-color: $pt-dark-text-color !default;
 $dark-input-color-disabled: $dark-button-color-disabled !default;
 $dark-input-placeholder-color: $pt-dark-text-color-muted !default;
-$dark-input-background-color: rgba($black, 0.3) !default;
-$dark-input-background-color-disabled: rgba($dark-gray5, 0.5) !default;
+$dark-input-background-color: rgba($black, 30%) !default;
+$dark-input-background-color-disabled: rgba($dark-gray5, 50%) !default;
 $dark-input-shadow-color-focus: $pt-dark-focus-indicator-color;
 
 $control-indicator-size: $pt-icon-size-standard !default;
@@ -63,10 +63,10 @@ $control-group-stack: (
   $outer-shadow-focus-width: 1px
 ) {
   @if $focus {
-    @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
+    @return inset 0 0 0 1px oklch(from $color l c h / 75.2%),
+      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 75.2%);
   } @else {
-    @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
+    @return 0 0 0 0 oklch(from $color l c h / 0%), 0 0 0 0 oklch(from $color l c h / 0%);
   }
 }
 
@@ -76,25 +76,27 @@ $control-group-stack: (
   $outer-shadow-focus-width: 1px
 ) {
   @if $focus {
-    @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
+    @return inset 0 0 0 1px oklch(from $color l c h / 75.2%),
+      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 75.2%);
   } @else {
-    @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
+    @return 0 0 0 0 oklch(from $color l c h / 0%), 0 0 0 0 oklch(from $color l c h / 0%);
   }
 }
 
 @mixin pt-input() {
   @include pt-input-placeholder;
   appearance: none;
-  background: var(--bp-surface-background-color-default-rest);
+  background-color: var(--bp-private-component-input-background-rest, $white);
   border: none;
   border-radius: var(--bp-surface-border-radius);
-  box-shadow:
-    inset 0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0),
-    0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0),
-    inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.2),
-    inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.3);
-  color: var(--bp-typography-color-default-rest);
+  box-shadow: var(
+    --bp-private-component-input-shadow-rest,
+    0 0 0 0 rgba($blue2, 0%),
+    0 0 0 0 rgba($blue2, 0%),
+    inset 0 0 0 1px rgba($black, 20%),
+    inset 0 1px 1px rgba($black, 30%)
+  );
+  color: var(--bp-private-component-input-foreground-rest, $dark-gray1);
   font-size: var(--bp-typography-size-body-medium);
   font-weight: var(--bp-typography-weight-default);
   height: calc(var(--bp-surface-spacing) * 7.5);
@@ -107,11 +109,12 @@ $control-group-stack: (
 
   &:focus,
   &.#{$ns}-active {
-    box-shadow:
-      inset 0 0 0 1px
-        oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
-      0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
-      inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.2);
+    box-shadow: var(
+      --bp-private-component-input-shadow-focus,
+      inset 0 0 0 1px rgba($blue2, 75.2%),
+      0 0 0 1px rgba($blue2, 75.2%),
+      inset 0 1px 1px rgba($black, 20%)
+    );
   }
 
   &[type="search"],
@@ -123,16 +126,19 @@ $control-group-stack: (
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px var(--bp-surface-border-color-default);
+    box-shadow: var(
+      --bp-private-component-input-shadow-readonly,
+      inset 0 0 0 1px rgba($black, 15%)
+    );
 
-    &:focus {
-      box-shadow:
-        inset 0 0 0 1px
-          oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
-        0 0 0 1px
-          oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
-        inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.2),
-        inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.3);
+    &:focus,
+    &.#{$ns}-active {
+      box-shadow: var(
+        --bp-private-component-input-shadow-focus,
+        inset 0 0 0 1px rgba($blue2, 75.2%),
+        0 0 0 1px rgba($blue2, 75.2%),
+        inset 0 1px 1px rgba($black, 20%)
+      );
     }
   }
 
@@ -148,21 +154,21 @@ $control-group-stack: (
 
 @mixin pt-input-placeholder() {
   &::placeholder {
-    color: var(--bp-typography-color-muted);
+    color: var(--bp-private-component-input-foreground-placeholder, $gray1);
     // normalize.css sets an opacity less than 1, we don't want this
     opacity: 1;
   }
 }
 
 @mixin pt-input-disabled() {
-  background: oklch(from var(--bp-intent-default-disabled) calc(l + 0.2) calc(c - 0.015) h / 0.5);
+  background-color: var(--bp-private-component-input-background-disabled, rgba($light-gray1, 50%));
   box-shadow: none;
-  color: var(--bp-typography-color-default-disabled);
+  color: var(--bp-private-component-input-foreground-disabled, rgba($gray1, 60%));
   cursor: not-allowed;
   resize: none;
 
   &::placeholder {
-    color: var(--bp-typography-color-default-disabled);
+    color: var(--bp-private-component-input-foreground-disabled, rgba($gray1, 60%));
   }
 }
 
@@ -191,44 +197,51 @@ $control-group-stack: (
 }
 
 @mixin pt-dark-input-disabled() {
-  background: oklch(from var(--bp-intent-default-hover) l c h / 0.5);
+  background-color: var(--bp-private-component-input-background-disabled, rgba($dark-gray5, 50%));
   box-shadow: none;
-  color: var(--bp-typography-color-default-disabled);
+  color: var(--bp-private-component-input-foreground-disabled, rgba($gray4, 60%));
 }
 
 @mixin pt-dark-input-placeholder() {
   &::placeholder {
-    color: oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h);
+    color: var(--bp-private-component-input-foreground-placeholder, $gray4);
   }
 }
 
 @mixin pt-dark-input() {
   @include pt-dark-input-placeholder;
-  background: oklch(from var(--bp-palette-black) l c h / 0.3);
+  background-color: var(--bp-private-component-input-background-rest, rgba($black, 30%));
+  box-shadow: var(
+    --bp-private-component-input-shadow-rest,
+    0 0 0 0 rgba($blue5, 0%),
+    0 0 0 0 rgba($blue5, 0%),
+    inset 0 0 0 1px rgba($white, 20%),
+    inset 0 -1px 1px 0 rgba($white, 30%)
+  );
+  color: var(--bp-private-component-input-foreground-rest, $light-gray5);
 
-  box-shadow:
-    inset 0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0),
-    0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0),
-    inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
-    inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
-  color: oklch(from var(--bp-typography-color-default-rest) calc(l + 0.239) calc(c - 0.011) h);
-
-  &:focus {
-    box-shadow:
-      inset 0 0 0 1px
-        oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752),
-      0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752);
+  &:focus,
+  &.#{$ns}-active {
+    box-shadow: var(
+      --bp-private-component-input-shadow-focus,
+      inset 0 0 0 1px rgba($blue5, 75.2%),
+      0 0 0 1px rgba($blue5, 75.2%)
+    );
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.4);
+    box-shadow: var(
+      --bp-private-component-input-shadow-readonly,
+      inset 0 0 0 1px rgba($black, 40%)
+    );
 
-    &:focus {
-      box-shadow:
-        inset 0 0 0 1px
-          oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752),
-        0 0 0 1px
-          oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752);
+    &:focus,
+    &.#{$ns}-active {
+      box-shadow: var(
+        --bp-private-component-input-shadow-focus,
+        inset 0 0 0 1px rgba($blue5, 75.2%),
+        0 0 0 1px rgba($blue5, 75.2%)
+      );
     }
   }
 
@@ -238,22 +251,30 @@ $control-group-stack: (
   }
 }
 
-@mixin pt-input-intent($color) {
-  box-shadow:
-    inset 0 0 0 0 oklch(from $color l c h / 0),
-    0 0 0 0 oklch(from $color l c h / 0),
+@mixin pt-input-intent($intent, $color) {
+  box-shadow: var(
+    --bp-private-component-input-shadow-intent-#{$intent}-rest,
+    0 0 0 0 rgba($color, 0%),
+    0 0 0 0 rgba($color, 0%),
     inset 0 0 0 1px $color,
-    inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.3);
+    inset 0 1px 1px rgba($black, 30%)
+  );
 
-  &:focus {
-    box-shadow:
-      inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 calc(var(--bp-surface-spacing) * 0.5) oklch(from $color l c h / 0.752),
-      inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.2);
+  &:focus,
+  &.#{$ns}-active {
+    box-shadow: var(
+      --bp-private-component-input-shadow-intent-#{$intent}-focus,
+      inset 0 0 0 1px rgba($color, 75.2%),
+      0 0 0 2px rgba($color, 75.2%),
+      inset 0 1px 1px rgba($black, 20%)
+    );
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color;
+    box-shadow: var(
+      --bp-private-component-input-shadow-intent-#{$intent}-readonly,
+      inset 0 0 0 1px $color
+    );
   }
 
   &:disabled,
@@ -262,24 +283,32 @@ $control-group-stack: (
   }
 }
 
-@mixin pt-dark-input-intent($color) {
-  box-shadow:
-    inset 0 0 0 0 oklch(from $color l c h / 0),
-    0 0 0 0 oklch(from $color l c h / 0),
+@mixin pt-dark-input-intent($intent, $color) {
+  box-shadow: var(
+    --bp-private-component-input-shadow-intent-#{$intent}-rest,
+    0 0 0 0 rgba($color, 0%),
+    0 0 0 0 rgba($color, 0%),
     inset 0 0 0 1px $color,
-    inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
-    inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
+    inset 0 0 0 1px rgba($white, 20%),
+    inset 0 -1px 1px 0 rgba($white, 30%)
+  );
 
-  &:focus {
-    box-shadow:
-      inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 calc(var(--bp-surface-spacing) * 0.5) oklch(from $color l c h / 0.752),
-      inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
-      inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
+  &:focus,
+  &.#{$ns}-active {
+    box-shadow: var(
+      --bp-private-component-input-shadow-intent-#{$intent}-focus,
+      inset 0 0 0 1px rgba($color, 75.2%),
+      0 0 0 2px rgba($color, 75.2%),
+      inset 0 0 0 1px rgba($white, 20%),
+      inset 0 -1px 1px 0 rgba($white, 30%)
+    );
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color;
+    box-shadow: var(
+      --bp-private-component-input-shadow-intent-#{$intent}-readonly,
+      inset 0 0 0 1px $color
+    );
   }
 
   &:disabled,

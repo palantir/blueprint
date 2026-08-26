@@ -32,8 +32,8 @@ $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray3 !default;
 
-$menu-item-color-hover: rgba($gray3, 0.15) !default;
-$menu-item-color-active: rgba($gray3, 0.3) !default;
+$menu-item-color-hover: rgba($gray3, 15%) !default;
+$menu-item-color-active: rgba($gray3, 30%) !default;
 
 $menu-item-intent-colors: (
   "primary": (
@@ -126,7 +126,7 @@ $dark-menu-item-intent-colors: (
   // The latter is often used to indicate keyboard navigation, and it's helpful to distinguish between keyboard
   // and mouse interactions.
   &:active {
-    background-color: $menu-item-color-active;
+    background-color: var(--bp-private-component-menu-item-background-pressed, rgba($gray3, 30%));
 
     .#{$ns}-menu-item-label {
       color: $pt-text-color;
@@ -193,7 +193,7 @@ $dark-menu-item-intent-colors: (
   // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
   &:active {
     // we can use the same color as light theme due to transparency
-    background-color: $menu-item-color-active;
+    background-color: var(--bp-private-component-menu-item-background-pressed, rgba($gray3, 30%));
 
     .#{$ns}-menu-item-label {
       color: $pt-dark-text-color;
@@ -223,7 +223,7 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-item-hover() {
-  background-color: $menu-item-color-hover;
+  background-color: var(--bp-private-component-menu-item-background-hover, rgba($gray3, 15%));
   color: inherit;
   cursor: pointer;
   text-decoration: none;
@@ -246,20 +246,25 @@ $dark-menu-item-intent-colors: (
   @if $is-dark {
     $intent-colors: $dark-menu-item-intent-colors;
     $background-alpha: 0.2;
+    background-color: var(--bp-private-component-menu-item-background-active, rgba($blue3, 20%));
+    color: var(--bp-private-component-menu-item-foreground-active, $blue5);
   } @else {
+    background-color: var(--bp-private-component-menu-item-background-active, rgba($blue3, 10%));
+    color: var(--bp-private-component-menu-item-foreground-active, $blue2);
+
     .#{$ns}-menu-item-label {
       color: inherit;
     }
   }
 
-  background-color: rgba(list.nth(map.get($intent-colors, "primary"), 1), $background-alpha);
-  color: list.nth(map.get($intent-colors, "primary"), 2);
-
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: list.nth(map.get($intent-colors, "primary"), 2);
+    color: var(
+      --bp-private-component-menu-item-foreground-active,
+      list.nth(map.get($intent-colors, "primary"), 2)
+    );
   }
 
   @each $intent in ("success", "warning", "danger") {
@@ -295,18 +300,18 @@ $dark-menu-item-intent-colors: (
 
     &:hover {
       @if $is-dark {
-        background-color: rgba($bg-color, 0.2);
+        background-color: rgba($bg-color, 20%);
       } @else {
-        background-color: rgba($bg-color, 0.1);
+        background-color: rgba($bg-color, 10%);
       }
     }
 
     &:active,
     &.#{$ns}-active {
       @if $is-dark {
-        background-color: rgba($bg-color, 0.3);
+        background-color: rgba($bg-color, 30%);
       } @else {
-        background-color: rgba($bg-color, 0.2);
+        background-color: rgba($bg-color, 20%);
       }
       color: $fg-color-active;
     }
@@ -340,13 +345,13 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-divider() {
-  border-top: 1px solid $pt-divider-black;
+  border-top: 1px solid var(--bp-private-component-menu-divider-color, rgba($black, 15%));
   display: block;
   // use negative margin to make dividers take up full menu width
   margin: $pt-spacing (-$pt-spacing);
 
   .#{$ns}-dark & {
-    border-top-color: $pt-dark-divider-white;
+    border-top-color: var(--bp-private-component-menu-divider-color, rgba($white, 20%));
   }
 }
 

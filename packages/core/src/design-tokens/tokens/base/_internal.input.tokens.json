@@ -1,0 +1,71 @@
+{
+    "_internal": {
+        "component": {
+            "input": {
+                "background": {
+                    "$type": "color",
+                    "rest": { "$value": "{palette.white}" },
+                    "disabled": {
+                        "$value": { "colorSpace": "srgb", "components": [0.8275, 0.8471, 0.8706], "alpha": 0.5 }
+                    }
+                },
+                "foreground": {
+                    "$type": "color",
+                    "rest": { "$value": "{palette.dark-gray.1}" },
+                    "disabled": {
+                        "$value": { "colorSpace": "srgb", "components": [0.3725, 0.4196, 0.4863], "alpha": 0.6 }
+                    },
+                    "placeholder": { "$value": "{palette.gray.1}" }
+                },
+                "shadow": {
+                    "$type": "string",
+                    "rest": {
+                        "$value": "0 0 0 0 rgba(33, 93, 176, 0), 0 0 0 0 rgba(33, 93, 176, 0), inset 0 0 0 1px rgba(17, 20, 24, 0.2), inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                    },
+                    "focus": {
+                        "$value": "inset 0 0 0 1px rgba(33, 93, 176, 0.752), 0 0 0 1px rgba(33, 93, 176, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                    },
+                    "readonly": { "$value": "inset 0 0 0 1px rgba(17, 20, 24, 0.15)" },
+                    "intent": {
+                        "primary": {
+                            "rest": {
+                                "$value": "0 0 0 0 rgba(45, 114, 210, 0), 0 0 0 0 rgba(45, 114, 210, 0), inset 0 0 0 1px #2d72d2, inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px rgba(45, 114, 210, 0.752), 0 0 0 2px rgba(45, 114, 210, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px #2d72d2" }
+                        },
+                        "success": {
+                            "rest": {
+                                "$value": "0 0 0 0 rgba(35, 133, 81, 0), 0 0 0 0 rgba(35, 133, 81, 0), inset 0 0 0 1px #238551, inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px rgba(35, 133, 81, 0.752), 0 0 0 2px rgba(35, 133, 81, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px #238551" }
+                        },
+                        "warning": {
+                            "rest": {
+                                "$value": "0 0 0 0 rgba(200, 118, 25, 0), 0 0 0 0 rgba(200, 118, 25, 0), inset 0 0 0 1px #c87619, inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px rgba(200, 118, 25, 0.752), 0 0 0 2px rgba(200, 118, 25, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px #c87619" }
+                        },
+                        "danger": {
+                            "rest": {
+                                "$value": "0 0 0 0 rgba(205, 66, 70, 0), 0 0 0 0 rgba(205, 66, 70, 0), inset 0 0 0 1px #cd4246, inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px rgba(205, 66, 70, 0.752), 0 0 0 2px rgba(205, 66, 70, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px #cd4246" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

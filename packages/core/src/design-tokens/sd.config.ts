@@ -152,7 +152,7 @@ type BuildPlan = {
 /** CSS `@supports` query for relative color syntax, used for progressive enhancement. */
 const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l c h))";
 
-/** All theme configurations to build. Light is the base; dark overrides via `include`. */
+/** All theme configurations to build. Each dark theme overrides its corresponding light theme via `include`. */
 const THEMES: readonly ThemeConfig[] = [
     {
         name: "light",
@@ -166,6 +166,25 @@ const THEMES: readonly ThemeConfig[] = [
         sources: ["src/design-tokens/tokens/themes/dark/**/*.tokens.json"],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
+    },
+    {
+        name: "bp8-light",
+        sources: ["src/design-tokens/tokens/next/*.bp8.tokens.json"],
+        // BP8 changes token values, so it remains opt-in while BP7 ships the BP6-compatible values.
+        selector: ".bp8",
+        destination: "bp8-tokens.css",
+    },
+    {
+        name: "bp8-dark",
+        include: ["src/design-tokens/tokens/next/*.bp8.tokens.json"],
+        sources: ["src/design-tokens/tokens/next/*.bp8.dark.tokens.json"],
+        // Portals may receive the color-scheme class on either an ancestor or their own root.
+        selector:
+            '[data-bp-color-scheme=\"dark\"] .bp8,\n' +
+            '.bp8[data-bp-color-scheme=\"dark\"],\n' +
+            ".bp6-dark .bp8,\n" +
+            ".bp8.bp6-dark",
+        destination: "bp8-tokens-dark.css",
     },
 ];
 
@@ -409,10 +428,14 @@ const formatChannelModification = (channel: string, mod: ChannelModification | u
     }
 };
 
+/** Maps public paths to `--bp-*` and private `_internal.*` paths to `--bp-private-*`. */
+const tokenPathToCssName = (path: readonly string[]): string =>
+    path[0] === "_internal" ? `bp-private-${path.slice(1).join("-")}` : `bp-${path.join("-")}`;
+
 /** Converts a DTCG token reference (e.g. `"{color.primary}"`) to a CSS `var()` expression. */
 const tokenReferenceToVar = (ref: string): string => {
     const path = ref.slice(1, -1).split(".");
-    return `var(--bp-${path.join("-")})`;
+    return `var(--${tokenPathToCssName(path)})`;
 };
 
 /** Formats an alpha value as a CSS string — either a literal number or a resolved `var()` reference. */
@@ -822,17 +845,17 @@ const deriveTransformConfig: Parameters<typeof StyleDictionary.registerTransform
         }
 
         const refPath = tokenRef.slice(1, -1).split(".");
-        const baseVar = `var(--bp-${refPath.join("-")})`;
+        const baseVar = `var(--${tokenPathToCssName(refPath)})`;
 
         return formatDerivedColorToCss(baseVar, derivation);
     },
 };
 
-/** Name transform that prefixes all token CSS custom properties with `--bp-` and kebab-cases the path. */
+/** Name transform that keeps private component aliases out of the public `--bp-*` namespace. */
 const nameTransformConfig: Parameters<typeof StyleDictionary.registerTransform>[0] = {
     name: "name/bp/kebab",
     type: "name",
-    transform: token => "bp-" + token.path.join("-"),
+    transform: token => tokenPathToCssName(token.path),
 };
 
 /**

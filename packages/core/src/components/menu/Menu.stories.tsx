@@ -4,11 +4,11 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
-import { expect, screen, waitFor } from "storybook/test";
+import { expect, screen, waitFor, within } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { Intent, Size } from "../../common";
+import { Classes, Intent, Size } from "../../common";
 import { Button } from "../button/buttons";
 import { PopoverNext } from "../popover-next/popoverNext";
 
@@ -451,6 +451,115 @@ export const MenuDividerExample: Story = {
                 </Flex>
             </Flex>
         );
+    },
+};
+
+const getMenuPopoverVisualStyle = (menu: HTMLElement) => {
+    const popover = menu.closest(`.${Classes.POPOVER}`);
+    if (!(popover instanceof HTMLElement)) {
+        throw new Error("Expected the menu to be rendered inside a popover");
+    }
+
+    const activeItem = within(menu).getByRole("menuitem", { name: "Active item" });
+    const activeItemIcon = activeItem.querySelector(`.${Classes.MENU_ITEM_ICON}`);
+    const divider = within(menu).getByRole("separator");
+    const arrow = popover.querySelector(`.${Classes.POPOVER_ARROW}`);
+    const arrowFill = arrow?.querySelector(`.${Classes.POPOVER_ARROW}-fill`);
+    const arrowBorder = arrow?.querySelector(`.${Classes.POPOVER_ARROW}-border`);
+    if (!(activeItemIcon instanceof HTMLElement)) {
+        throw new Error("Expected the active menu item to render its icon");
+    }
+    if (!(arrow instanceof HTMLElement) || !(arrowFill instanceof SVGElement) || !(arrowBorder instanceof SVGElement)) {
+        throw new Error("Expected the popover to render its arrow");
+    }
+
+    const menuStyle = getComputedStyle(menu);
+    const activeItemStyle = getComputedStyle(activeItem);
+    const activeItemIconStyle = getComputedStyle(activeItemIcon);
+    const dividerStyle = getComputedStyle(divider);
+    const popoverStyle = getComputedStyle(popover);
+    const arrowStyle = getComputedStyle(arrow, "::before");
+    const arrowFillStyle = getComputedStyle(arrowFill);
+    const arrowBorderStyle = getComputedStyle(arrowBorder);
+
+    return [
+        menuStyle.backgroundColor,
+        menuStyle.color,
+        menuStyle.borderRadius,
+        activeItemStyle.backgroundColor,
+        activeItemStyle.color,
+        activeItemIconStyle.color,
+        activeItemStyle.borderRadius,
+        dividerStyle.borderTopColor,
+        popoverStyle.boxShadow,
+        popoverStyle.borderRadius,
+        arrowStyle.boxShadow,
+        arrowFillStyle.fill,
+        arrowBorderStyle.fill,
+        arrowBorderStyle.fillOpacity,
+    ];
+};
+
+const expectActiveMenuItemIconToMatchText = async (menu: HTMLElement) => {
+    const activeItem = within(menu).getByRole("menuitem", { name: "Active item" });
+    const icon = activeItem.querySelector(`.${Classes.MENU_ITEM_ICON}`);
+    if (!(icon instanceof HTMLElement)) {
+        throw new Error("Expected the active menu item to render its icon");
+    }
+
+    await expect(getComputedStyle(icon).color).toBe(getComputedStyle(activeItem).color);
+};
+
+const renderMenuPopoverTokenComparison = (label: string, className: string) => (
+    <section className={className}>
+        <StoryLabel title={label} />
+        <PopoverNext
+            content={
+                <Menu aria-label={`${label} menu`}>
+                    <MenuItem icon="document" text="Default item" />
+                    <MenuItem active={true} icon="walk" text="Active item" />
+                    <MenuDivider />
+                    <MenuItem disabled={true} icon="lock" text="Disabled item" />
+                </Menu>
+            }
+            isOpen={true}
+            placement="bottom"
+            portalClassName={className}
+            transitionDuration={0}
+        >
+            <Button icon="caret-down" text={`Open ${label} menu`} />
+        </PopoverNext>
+    </section>
+);
+
+/** Proves that BP7 can consume menu and popover tokens without changing BP6 pixels, then previews BP8 values. */
+export const TokenCompatibility: Story = {
+    name: "BP6 → BP7 tokens → BP8",
+    parameters: {
+        layout: "padded",
+    },
+    render: () => (
+        <Flex alignItems="flex-start" gap={12}>
+            {renderMenuPopoverTokenComparison("BP6", "token-compatibility-legacy")}
+            {renderMenuPopoverTokenComparison("BP7", "token-compatibility-bp7")}
+            {renderMenuPopoverTokenComparison("BP8", "bp8 token-compatibility-bp8")}
+        </Flex>
+    ),
+    play: async () => {
+        await waitFor(() => expect(screen.getByRole("menu", { name: "BP6 menu" })).toBeVisible());
+
+        const legacyMenu = screen.getByRole("menu", { name: "BP6 menu" });
+        const bp7Menu = screen.getByRole("menu", { name: "BP7 menu" });
+        const bp8Menu = screen.getByRole("menu", { name: "BP8 menu" });
+
+        await expect(
+            getComputedStyle(bp7Menu).getPropertyValue("--bp-private-component-menu-background").trim(),
+        ).not.toBe("");
+        await expect(getMenuPopoverVisualStyle(bp7Menu)).toEqual(getMenuPopoverVisualStyle(legacyMenu));
+        await expect(getMenuPopoverVisualStyle(bp8Menu)).not.toEqual(getMenuPopoverVisualStyle(bp7Menu));
+        await expectActiveMenuItemIconToMatchText(legacyMenu);
+        await expectActiveMenuItemIconToMatchText(bp7Menu);
+        await expectActiveMenuItemIconToMatchText(bp8Menu);
     },
 };
 

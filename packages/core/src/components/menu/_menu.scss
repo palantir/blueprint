@@ -9,9 +9,9 @@
 @import "./submenu";
 
 .#{$ns}-menu {
-  background: $menu-background-color;
+  background-color: var(--bp-private-component-menu-background, $white);
   border-radius: $pt-border-radius;
-  color: $pt-text-color;
+  color: var(--bp-private-component-menu-foreground, $dark-gray1);
   list-style: none;
   margin: 0;
   min-width: $menu-min-width;
@@ -68,8 +68,8 @@ button.#{$ns}-menu-item {
 // dark theme
 .#{$ns}-dark {
   .#{$ns}-menu {
-    background: $dark-menu-background-color;
-    color: $pt-dark-text-color;
+    background-color: var(--bp-private-component-menu-background, $dark-gray3);
+    color: var(--bp-private-component-menu-foreground, $light-gray5);
   }
 
   .#{$ns}-menu-item {
@@ -82,7 +82,7 @@ button.#{$ns}-menu-item {
 
   .#{$ns}-menu-divider,
   .#{$ns}-menu-header {
-    border-color: $pt-dark-divider-white;
+    border-color: var(--bp-private-component-menu-divider-color, rgba($white, 20%));
   }
 
   .#{$ns}-menu-header > h6 {

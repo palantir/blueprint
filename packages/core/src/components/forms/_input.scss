@@ -24,42 +24,34 @@
   }
 
   &.#{$ns}-intent-primary {
-    @include pt-input-intent(var(--bp-intent-primary-rest));
+    @include pt-input-intent(primary, $blue3);
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)
-      );
+      @include pt-dark-input-intent(primary, $blue4);
     }
   }
 
   &.#{$ns}-intent-success {
-    @include pt-input-intent(var(--bp-intent-success-rest));
+    @include pt-input-intent(success, $green3);
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)
-      );
+      @include pt-dark-input-intent(success, $green4);
     }
   }
 
   &.#{$ns}-intent-warning {
-    @include pt-input-intent(var(--bp-intent-warning-rest));
+    @include pt-input-intent(warning, $orange3);
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)
-      );
+      @include pt-dark-input-intent(warning, $orange4);
     }
   }
 
   &.#{$ns}-intent-danger {
-    @include pt-input-intent(var(--bp-intent-danger-rest));
+    @include pt-input-intent(danger, $red3);
 
     .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)
-      );
+      @include pt-dark-input-intent(danger, $red4);
     }
   }
 
@@ -75,10 +67,16 @@
     &:disabled,
     &.#{$ns}-disabled {
       opacity: 1;
-      -webkit-text-fill-color: var(--bp-typography-color-default-disabled);
+      -webkit-text-fill-color: var(
+        --bp-private-component-input-foreground-disabled,
+        rgba($gray1, 60%)
+      );
 
       .#{$ns}-dark & {
-        -webkit-text-fill-color: var(--bp-typography-color-default-disabled);
+        -webkit-text-fill-color: var(
+          --bp-private-component-input-foreground-disabled,
+          rgba($gray4, 60%)
+        );
       }
     }
   }

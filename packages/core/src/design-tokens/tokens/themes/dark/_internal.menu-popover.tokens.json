@@ -1,0 +1,86 @@
+{
+    "_internal": {
+        "component": {
+            "menu": {
+                "background": { "$type": "color", "$value": "{palette.dark-gray.3}" },
+                "foreground": { "$type": "color", "$value": "{palette.light-gray.5}" },
+                "item": {
+                    "background": {
+                        "$type": "color",
+                        "active": {
+                            "$value": { "colorSpace": "srgb", "components": [0.1765, 0.4471, 0.8235], "alpha": 0.2 }
+                        }
+                    },
+                    "foreground": {
+                        "$type": "color",
+                        "active": { "$value": "{palette.blue.5}" }
+                    }
+                },
+                "divider-color": {
+                    "$type": "color",
+                    "$value": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                }
+            },
+            "popover": {
+                "background": { "$type": "color", "$value": "{palette.dark-gray.3}" },
+                "shadow": {
+                    "$type": "shadow",
+                    "$value": [
+                        {
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" },
+                            "color": { "colorSpace": "srgb", "components": [0.3686, 0.3765, 0.3922], "alpha": 1 }
+                        },
+                        {
+                            "inset": true,
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" },
+                            "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                        },
+                        {
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 20, "unit": "px" },
+                            "blur": { "value": 25, "unit": "px" },
+                            "spread": { "value": -5, "unit": "px" },
+                            "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
+                        },
+                        {
+                            "inset": true,
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0.5, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" },
+                            "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.3 }
+                        },
+                        {
+                            "inset": true,
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0.5, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" },
+                            "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.08 }
+                        },
+                        {
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 10, "unit": "px" },
+                            "blur": { "value": 30, "unit": "px" },
+                            "spread": { "value": -5, "unit": "px" },
+                            "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
+                        }
+                    ]
+                },
+                "arrow": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 1px hsl(215, 3%, 48%), 1px 1px 6px rgba(17, 20, 24, 0.4)"
+                    },
+                    "border-opacity": { "$type": "number", "$value": 0.2 }
+                }
+            }
+        }
+    }
+}

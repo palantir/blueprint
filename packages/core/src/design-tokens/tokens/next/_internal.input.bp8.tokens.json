@@ -1,0 +1,67 @@
+{
+    "_internal": {
+        "component": {
+            "input": {
+                "background": {
+                    "$type": "color",
+                    "rest": { "$value": "{palette.grey.100}" },
+                    "disabled": { "$value": "{palette.grey.200}" }
+                },
+                "foreground": {
+                    "$type": "color",
+                    "rest": { "$value": "{typography.color.base}" },
+                    "disabled": { "$value": "{palette.grey.600}" },
+                    "placeholder": { "$value": "{palette.grey.600}" }
+                },
+                "shadow": {
+                    "$type": "string",
+                    "rest": {
+                        "$value": "inset 0 0 0 1px var(--bp-surface-border-color-neutral), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                    },
+                    "focus": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-primary-500), 0 0 0 2px var(--bp-surface-border-color-primary)"
+                    },
+                    "readonly": { "$value": "inset 0 0 0 1px var(--bp-surface-border-color-neutral)" },
+                    "intent": {
+                        "primary": {
+                            "rest": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-primary-500), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-primary-500), 0 0 0 2px var(--bp-surface-border-color-primary)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px var(--bp-intent-primary-500)" }
+                        },
+                        "success": {
+                            "rest": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-success-600), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-success-600), 0 0 0 2px var(--bp-surface-border-color-success)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px var(--bp-intent-success-600)" }
+                        },
+                        "warning": {
+                            "rest": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-warning-500), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-warning-500), 0 0 0 2px var(--bp-surface-border-color-warning)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px var(--bp-intent-warning-500)" }
+                        },
+                        "danger": {
+                            "rest": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-danger-500), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                            },
+                            "focus": {
+                                "$value": "inset 0 0 0 1px var(--bp-intent-danger-500), 0 0 0 2px var(--bp-surface-border-color-danger)"
+                            },
+                            "readonly": { "$value": "inset 0 0 0 1px var(--bp-intent-danger-500)" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
