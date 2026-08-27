@@ -14,12 +14,36 @@ type Theme = {
     readonly tokens: TokenTree;
 };
 
-type ResolvedColor =
+type ResolvedColor = {
+    readonly hex: string;
+    readonly path: string;
+};
+
+type ColorResolutionError =
+    | { readonly cycle: readonly string[]; readonly tag: "circular-reference" }
+    | { readonly path: string; readonly tag: "invalid-color" }
+    | { readonly path: string; readonly tag: "missing-token" };
+
+type ColorResolution =
     | { readonly hex: string; readonly tag: "resolved" }
-    | { readonly reason: string; readonly tag: "unresolved" };
+    | { readonly error: ColorResolutionError; readonly tag: "unresolved" };
+
+type ContrastFailure =
+    | {
+          readonly error: ColorResolutionError;
+          readonly tag: "unresolved-color";
+          readonly theme: Theme["name"];
+      }
+    | {
+          readonly foreground: ResolvedColor;
+          readonly ratio: number;
+          readonly surface: ResolvedColor;
+          readonly tag: "insufficient-contrast";
+          readonly theme: Theme["name"];
+      };
 
 type ContrastAudit = {
-    readonly failures: readonly string[];
+    readonly failures: readonly ContrastFailure[];
     readonly pairCount: number;
 };
 
@@ -60,13 +84,13 @@ const getValueAtPath = (tokens: TokenTree, path: string): unknown =>
 const parseTokenReference = (value: unknown): string | undefined =>
     typeof value === "string" ? value.match(TOKEN_REFERENCE_PATTERN)?.[1] : undefined;
 
-const resolveColorHex = (tokens: TokenTree, path: string, visited: readonly string[] = []): ResolvedColor => {
+const resolveColorHex = (tokens: TokenTree, path: string, visited: readonly string[] = []): ColorResolution => {
     if (visited.includes(path)) {
-        return { reason: `Circular token reference: ${[...visited, path].join(" -> ")}`, tag: "unresolved" };
+        return { error: { cycle: [...visited, path], tag: "circular-reference" }, tag: "unresolved" };
     }
 
     const token = parseObject(getValueAtPath(tokens, path));
-    if (token === undefined) return { reason: `Missing token: ${path}`, tag: "unresolved" };
+    if (token === undefined) return { error: { path, tag: "missing-token" }, tag: "unresolved" };
 
     const value = token.$value;
     const reference = parseTokenReference(value);
@@ -76,7 +100,7 @@ const resolveColorHex = (tokens: TokenTree, path: string, visited: readonly stri
     const hex = color?.hex;
     return typeof hex === "string"
         ? { hex, tag: "resolved" }
-        : { reason: `Token does not resolve to a color with a hex fallback: ${path}`, tag: "unresolved" };
+        : { error: { path, tag: "invalid-color" }, tag: "unresolved" };
 };
 
 const findSolidSurfacePairs = (
@@ -96,25 +120,61 @@ const findSolidSurfacePairs = (
     });
 };
 
+const checkPairContrast = (
+    theme: Theme,
+    pair: { readonly foreground: string; readonly surface: string },
+): readonly ContrastFailure[] => {
+    const foreground = resolveColorHex(theme.tokens, pair.foreground);
+    const surface = resolveColorHex(theme.tokens, pair.surface);
+
+    if (foreground.tag === "unresolved") {
+        return [{ error: foreground.error, tag: "unresolved-color", theme: theme.name }];
+    }
+    if (surface.tag === "unresolved") {
+        return [{ error: surface.error, tag: "unresolved-color", theme: theme.name }];
+    }
+
+    const ratio = wcagContrast(foreground.hex, surface.hex);
+    return ratio < MINIMUM_TEXT_CONTRAST
+        ? [
+              {
+                  foreground: { hex: foreground.hex, path: pair.foreground },
+                  ratio,
+                  surface: { hex: surface.hex, path: pair.surface },
+                  tag: "insufficient-contrast",
+                  theme: theme.name,
+              },
+          ]
+        : [];
+};
+
 const auditThemeContrast = (theme: Theme): ContrastAudit => {
     const pairs = findSolidSurfacePairs(theme.tokens);
-    const failures = pairs.flatMap(({ foreground, surface }) => {
-        const resolvedForeground = resolveColorHex(theme.tokens, foreground);
-        const resolvedSurface = resolveColorHex(theme.tokens, surface);
-
-        if (resolvedForeground.tag === "unresolved") return [`${theme.name}: ${resolvedForeground.reason}`];
-        if (resolvedSurface.tag === "unresolved") return [`${theme.name}: ${resolvedSurface.reason}`];
-
-        const contrast = wcagContrast(resolvedForeground.hex, resolvedSurface.hex);
-        return contrast < MINIMUM_TEXT_CONTRAST
-            ? [
-                  `${theme.name} ${surface} (${resolvedSurface.hex}) with ${foreground} ` +
-                      `(${resolvedForeground.hex}): ${contrast.toFixed(2)}:1`,
-              ]
-            : [];
-    });
+    const failures = pairs.flatMap(pair => checkPairContrast(theme, pair));
 
     return { failures, pairCount: pairs.length };
+};
+
+const formatColorResolutionError = (error: ColorResolutionError): string => {
+    switch (error.tag) {
+        case "circular-reference":
+            return `Circular token reference: ${error.cycle.join(" -> ")}`;
+        case "invalid-color":
+            return `Token does not resolve to a color with a hex fallback: ${error.path}`;
+        case "missing-token":
+            return `Missing token: ${error.path}`;
+    }
+};
+
+const formatContrastFailure = (failure: ContrastFailure): string => {
+    if (failure.tag === "unresolved-color") {
+        return `${failure.theme}: ${formatColorResolutionError(failure.error)}`;
+    }
+
+    return (
+        `${failure.theme} ${failure.surface.path} (${failure.surface.hex}) with ` +
+        `${failure.foreground.path} (${failure.foreground.hex}): ${failure.ratio.toFixed(2)}:1`
+    );
 };
 
 const lightTokens = [
@@ -138,6 +198,6 @@ describe("BP7 solid intent surface contrast", () => {
         const audit = auditThemeContrast(theme);
 
         expect(audit.pairCount).toBe(EXPECTED_SOLID_SURFACE_PAIR_COUNT);
-        expect(audit.failures).toEqual([]);
+        expect(audit.failures.map(formatContrastFailure)).toEqual([]);
     });
 });
