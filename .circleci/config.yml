@@ -78,6 +78,7 @@ jobs:
           paths:
             - packages/*/lib
             - packages/*/src/generated
+            - packages/*/src/next/generated
 
   format-check:
     docker: *docker-node-image
