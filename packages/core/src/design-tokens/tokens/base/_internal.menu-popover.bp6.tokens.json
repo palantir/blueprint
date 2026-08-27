@@ -1,60 +1,7 @@
 {
     "_internal": {
         "component": {
-            "menu": {
-                "background": { "$type": "color", "$value": "{palette.white}" },
-                "foreground": { "$type": "color", "$value": "{palette.dark-gray.1}" },
-                "item": {
-                    "background": {
-                        "$type": "color",
-                        "hover": {
-                            "$value": { "colorSpace": "srgb", "components": [0.5608, 0.6, 0.6588], "alpha": 0.15 }
-                        },
-                        "pressed": {
-                            "$value": { "colorSpace": "srgb", "components": [0.5608, 0.6, 0.6588], "alpha": 0.3 }
-                        },
-                        "active": {
-                            "$value": { "colorSpace": "srgb", "components": [0.1765, 0.4471, 0.8235], "alpha": 0.1 }
-                        }
-                    },
-                    "foreground": {
-                        "$type": "color",
-                        "active": { "$value": "{palette.blue.2}" }
-                    }
-                },
-                "divider-color": {
-                    "$type": "color",
-                    "$value": { "colorSpace": "srgb", "components": [0.0667, 0.0784, 0.0941], "alpha": 0.15 }
-                }
-            },
             "popover": {
-                "background": { "$type": "color", "$value": "{palette.white}" },
-                "shadow": {
-                    "$type": "shadow",
-                    "$value": [
-                        {
-                            "offsetX": { "value": 0, "unit": "px" },
-                            "offsetY": { "value": 0, "unit": "px" },
-                            "blur": { "value": 0, "unit": "px" },
-                            "spread": { "value": 1, "unit": "px" },
-                            "color": { "colorSpace": "srgb", "components": [0.0667, 0.0784, 0.0941], "alpha": 0.1 }
-                        },
-                        {
-                            "offsetX": { "value": 0, "unit": "px" },
-                            "offsetY": { "value": 20, "unit": "px" },
-                            "blur": { "value": 25, "unit": "px" },
-                            "spread": { "value": -5, "unit": "px" },
-                            "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
-                        },
-                        {
-                            "offsetX": { "value": 0, "unit": "px" },
-                            "offsetY": { "value": 10, "unit": "px" },
-                            "blur": { "value": 15, "unit": "px" },
-                            "spread": { "value": -3, "unit": "px" },
-                            "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.1 }
-                        }
-                    ]
-                },
                 "arrow": {
                     "shadow": { "$type": "string", "$value": "1px 1px 6px rgba(17, 20, 24, 0.2)" },
                     "border-opacity": { "$type": "number", "$value": 0.1 }

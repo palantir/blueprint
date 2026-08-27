@@ -170,7 +170,7 @@ const THEMES: readonly ThemeConfig[] = [
     {
         name: "next-light",
         sources: ["src/design-tokens/tokens/next/*.bp7.tokens.json"],
-        // Keep the original BP7 proposal opt-in while testing BP6-compatible values as the migration baseline.
+        // Keep BP7 opt-in while testing its token graph against the unscoped BP6 baseline.
         selector: ".bp-next",
         destination: "next-tokens.css",
     },

@@ -1,7 +1,7 @@
 {
     "intent": {
         "$type": "color",
-        "$description": "Semantic layer: each intent is a palette family exposed as its full 100-1000 ramp (aliases) plus `default` (the .500 base) and `foreground`. Surface/typography reference a step (e.g. {intent.primary.200}) so they land exactly on a palette value and re-theme with the intent.",
+        "$description": "Semantic layer: each intent exposes its full 100-1000 palette ramp, named interaction states, and foreground color.",
         "neutral": {
             "foreground": { "$value": "{palette.white.1000}" },
             "100": { "$value": "{palette.grey.100}" },
@@ -17,6 +17,9 @@
         },
         "primary": {
             "foreground": { "$value": "{palette.white.1000}" },
+            "rest": { "$value": "{intent.primary.500}" },
+            "hover": { "$value": "{intent.primary.600}" },
+            "active": { "$value": "{intent.primary.700}" },
             "100": { "$value": "{palette.blue.100}" },
             "200": { "$value": "{palette.blue.200}" },
             "300": { "$value": "{palette.blue.300}" },
@@ -30,6 +33,9 @@
         },
         "success": {
             "foreground": { "$value": "{palette.white.1000}" },
+            "rest": { "$value": "{intent.success.600}" },
+            "hover": { "$value": "{intent.success.700}" },
+            "active": { "$value": "{intent.success.800}" },
             "100": { "$value": "{palette.green.100}" },
             "200": { "$value": "{palette.green.200}" },
             "300": { "$value": "{palette.green.300}" },
@@ -43,6 +49,9 @@
         },
         "warning": {
             "foreground": { "$value": "{palette.white.1000}" },
+            "rest": { "$value": "{intent.warning.500}" },
+            "hover": { "$value": "{intent.warning.600}" },
+            "active": { "$value": "{intent.warning.700}" },
             "100": { "$value": "{palette.orange.100}" },
             "200": { "$value": "{palette.orange.200}" },
             "300": { "$value": "{palette.orange.300}" },
@@ -56,6 +65,9 @@
         },
         "danger": {
             "foreground": { "$value": "{palette.white.1000}" },
+            "rest": { "$value": "{intent.danger.500}" },
+            "hover": { "$value": "{intent.danger.600}" },
+            "active": { "$value": "{intent.danger.700}" },
             "100": { "$value": "{palette.red.100}" },
             "200": { "$value": "{palette.red.200}" },
             "300": { "$value": "{palette.red.300}" },

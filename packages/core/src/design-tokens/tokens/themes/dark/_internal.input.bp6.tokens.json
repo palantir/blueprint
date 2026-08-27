@@ -2,23 +2,6 @@
     "_internal": {
         "component": {
             "input": {
-                "background": {
-                    "$type": "color",
-                    "rest": {
-                        "$value": { "colorSpace": "srgb", "components": [0.0667, 0.0784, 0.0941], "alpha": 0.3 }
-                    },
-                    "disabled": {
-                        "$value": { "colorSpace": "srgb", "components": [0.251, 0.2824, 0.3294], "alpha": 0.5 }
-                    }
-                },
-                "foreground": {
-                    "$type": "color",
-                    "rest": { "$value": "{palette.light-gray.5}" },
-                    "disabled": {
-                        "$value": { "colorSpace": "srgb", "components": [0.6706, 0.702, 0.749], "alpha": 0.6 }
-                    },
-                    "placeholder": { "$value": "{palette.gray.4}" }
-                },
                 "shadow": {
                     "$type": "string",
                     "rest": {

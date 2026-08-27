@@ -64,7 +64,7 @@ const renderButtonVisualRegressionMatrix = (args: React.ComponentProps<typeof Bu
     </Flex>
 );
 
-const buttonVisualProperties = ["boxShadow", "borderRadius", "fontSize", "minHeight"] as const;
+const buttonVisualProperties = ["boxShadow", "borderRadius", "fontFamily", "fontSize", "minHeight"] as const;
 
 const colorToRgbaBytes = (color: string) => {
     const canvas = document.createElement("canvas");
@@ -110,6 +110,54 @@ const renderButtonTokenComparison = ({
     <section aria-labelledby={id} className={className}>
         <H5 id={id}>{label}</H5>
         {renderButtonVisualRegressionMatrix(args)}
+    </section>
+);
+
+const nhsdButtonTypes = [
+    { type: "primary", label: "Take primary action" },
+    { type: "secondary", label: "Take secondary action" },
+    { type: "tertiary", label: "Take tertiary action" },
+    { type: "start", label: "Start" },
+    { type: "cancel", label: "Cancel" },
+] as const;
+const nhsdButtonStates = ["default", "hover", "focus", "active", "disabled"] as const;
+
+const renderNhsDigitalButtonComponentOverrides = () => (
+    <section
+        aria-labelledby="button-comparison-nhsd-component-overrides"
+        className="bp-next token-compatibility-nhsd-theme token-compatibility-nhsd-component-overrides"
+    >
+        <H5 id="button-comparison-nhsd-component-overrides">NHS Digital theme overrides</H5>
+        <p>
+            Public tokens provide the palette and font family. Component-level CSS adds the dimensions, typography,
+            variants, and states which BP7 public tokens cannot currently express.
+        </p>
+        <Flex flexDirection="column" gap={3}>
+            {nhsdButtonTypes.map(({ type, label }) => (
+                <Flex
+                    key={type}
+                    className={`token-compatibility-nhsd-button-row token-compatibility-nhsd-button-row-${type}`}
+                    flexDirection="column"
+                    gap={1}
+                >
+                    <StoryLabel title={type} />
+                    <Flex alignItems="flex-start" flexWrap="wrap" gap={2}>
+                        {nhsdButtonStates.map(state => (
+                            <Flex key={state} flexDirection="column" gap={1}>
+                                <StoryLabel title={state} />
+                                <Button
+                                    active={state === "active"}
+                                    aria-label={`NHS Digital ${type} ${state}`}
+                                    className={`token-compatibility-nhsd-button token-compatibility-nhsd-button-${type} token-compatibility-nhsd-button-state-${state}`}
+                                    disabled={state === "disabled"}
+                                    text={<span className="token-compatibility-nhsd-button-label">{label}</span>}
+                                />
+                            </Flex>
+                        ))}
+                    </Flex>
+                </Flex>
+            ))}
+        </Flex>
     </section>
 );
 
@@ -413,9 +461,9 @@ export const AllIntentsAllVariants: Story = {
     ),
 };
 
-/** Proves that BP6-compatible component tokens preserve current pixels, then previews the original BP7 proposal. */
+/** Compares the BP6 baseline with BP7's defaults and a complete NHS Digital Button theme. */
 export const TokenCompatibility: Story = {
-    name: "BP6 literals → BP6 tokens → BP7 proposal",
+    name: "BP6 baseline → BP7 defaults → NHS Digital theme",
     parameters: {
         layout: "padded",
     },
@@ -424,40 +472,31 @@ export const TokenCompatibility: Story = {
             {renderButtonTokenComparison({
                 args,
                 id: "button-comparison-bp6",
-                label: "BP6 literals: current component CSS",
-                className: "token-compatibility-legacy",
+                label: "BP6 baseline",
+                className: "token-compatibility-baseline",
             })}
             {renderButtonTokenComparison({
                 args,
                 id: "button-comparison-bp7",
-                label: "BP6 tokens: same values through aliases",
-                className: "token-compatibility-bp6-tokens",
+                label: "BP7 defaults: new palette",
+                className: "bp-next token-compatibility-bp7-defaults",
             })}
-            {renderButtonTokenComparison({
-                args,
-                id: "button-comparison-bp7-proposal",
-                label: "BP7 proposal: original PR values",
-                className: "bp-next token-compatibility-bp7-proposal",
-            })}
+            {renderNhsDigitalButtonComponentOverrides()}
         </Flex>
     ),
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const legacyButtons = within(canvas.getByRole("region", { name: /BP6 literals:/ })).getAllByRole("button");
-        const bp6TokenButtons = within(canvas.getByRole("region", { name: /BP6 tokens:/ })).getAllByRole("button");
-        const proposedButtons = within(canvas.getByRole("region", { name: /BP7 proposal:/ })).getAllByRole("button");
+        const baselineButtons = within(canvas.getByRole("region", { name: "BP6 baseline" })).getAllByRole("button");
+        const defaultButtons = within(canvas.getByRole("region", { name: /BP7 defaults:/ })).getAllByRole("button");
 
-        await expect(bp6TokenButtons).toHaveLength(legacyButtons.length);
-        await expect(proposedButtons).toHaveLength(bp6TokenButtons.length);
+        await expect(defaultButtons).toHaveLength(baselineButtons.length);
         await waitFor(() => {
-            expect(
-                [...legacyButtons, ...bp6TokenButtons, ...proposedButtons].every(
-                    button => button.querySelector("svg") !== null,
-                ),
-            ).toBe(true);
+            expect([...baselineButtons, ...defaultButtons].every(button => button.querySelector("svg") !== null)).toBe(
+                true,
+            );
         });
 
-        const legacyWarningButtons = legacyButtons.filter(button => button.ariaLabel?.startsWith("solid warning"));
+        const baselineWarningButtons = baselineButtons.filter(button => button.ariaLabel?.startsWith("solid warning"));
         const bp6WarningColors = new Map<string, readonly [readonly number[], readonly number[]]>([
             [
                 "solid warning rest",
@@ -469,7 +508,7 @@ export const TokenCompatibility: Story = {
             [
                 "solid warning active",
                 [
-                    [178, 117, 52, 255],
+                    [119, 69, 13, 255],
                     [17, 20, 24, 255],
                 ],
             ],
@@ -482,7 +521,7 @@ export const TokenCompatibility: Story = {
             ],
         ]);
         let checkedWarningStates = 0;
-        for (const button of legacyWarningButtons) {
+        for (const button of baselineWarningButtons) {
             if (!button.matches(":hover")) {
                 const expectedColors = bp6WarningColors.get(button.ariaLabel ?? "");
                 await expect(expectedColors).toBeDefined();
@@ -492,19 +531,51 @@ export const TokenCompatibility: Story = {
         }
         await expect(checkedWarningStates).toBeGreaterThanOrEqual(2);
 
-        for (const [index, legacyButton] of legacyButtons.entries()) {
-            if (!legacyButton.matches(":hover") && !bp6TokenButtons[index].matches(":hover")) {
-                await expect(getButtonVisualStyle(bp6TokenButtons[index])).toEqual(getButtonVisualStyle(legacyButton));
-            }
-        }
-
         await expect(
-            proposedButtons.some((button, index) => {
+            defaultButtons.some((button, index) => {
                 return (
-                    getButtonVisualStyle(button).join("|") !== getButtonVisualStyle(bp6TokenButtons[index]).join("|")
+                    getButtonVisualStyle(button).join("|") !== getButtonVisualStyle(baselineButtons[index]).join("|")
                 );
             }),
         ).toBe(true);
+
+        const nhsdButtons = within(canvas.getByRole("region", { name: "NHS Digital theme overrides" }));
+        const getButton = (type: (typeof nhsdButtonTypes)[number]["type"], state: (typeof nhsdButtonStates)[number]) =>
+            nhsdButtons.getByRole("button", { name: `NHS Digital ${type} ${state}` });
+
+        await expect(nhsdButtons.getAllByRole("button")).toHaveLength(nhsdButtonTypes.length * nhsdButtonStates.length);
+
+        const primaryDefault = getComputedStyle(getButton("primary", "default"));
+        await expect(primaryDefault.backgroundColor).toBe("rgb(0, 91, 187)");
+        await expect(primaryDefault.color).toBe("rgb(255, 255, 255)");
+        await expect(primaryDefault.fontSize).toBe("14.04px");
+        await expect(primaryDefault.fontWeight).toBe("600");
+        await expect(primaryDefault.borderRadius).toBe("21.96px");
+        await expect(getButton("primary", "default").getBoundingClientRect().height).toBe(44);
+
+        await expect(getComputedStyle(getButton("primary", "hover")).backgroundColor).toBe("rgb(0, 48, 135)");
+
+        const secondaryDefault = getComputedStyle(getButton("secondary", "default"));
+        await expect(secondaryDefault.backgroundColor).toBe("rgb(255, 255, 255)");
+        await expect(secondaryDefault.borderColor).toBe("rgb(0, 91, 187)");
+        await expect(secondaryDefault.color).toBe("rgb(0, 91, 187)");
+
+        await expect(getComputedStyle(getButton("tertiary", "default")).backgroundColor).toBe("rgb(255, 255, 255)");
+        await expect(getComputedStyle(getButton("start", "default")).backgroundColor).toBe("rgb(0, 102, 70)");
+        await expect(getComputedStyle(getButton("cancel", "default")).backgroundColor).toBe("rgb(179, 15, 15)");
+
+        const focusedButton = getComputedStyle(getButton("primary", "focus"));
+        await expect(focusedButton.backgroundColor).toBe("rgb(0, 48, 135)");
+        await expect(focusedButton.boxShadow).toContain("rgb(250, 225, 0)");
+
+        const activeButton = getComputedStyle(getButton("primary", "active"));
+        await expect(activeButton.backgroundColor).toBe("rgb(0, 91, 187)");
+        await expect(activeButton.transform).not.toBe("none");
+
+        const disabledButton = getComputedStyle(getButton("primary", "disabled"));
+        await expect(disabledButton.backgroundColor).toBe("rgb(213, 218, 222)");
+        await expect(disabledButton.color).toBe("rgb(63, 82, 95)");
+        await expect(disabledButton.boxShadow).toBe("none");
     },
 };
 

@@ -5,9 +5,6 @@
                 "background": {
                     "$type": "color",
                     "default": {
-                        "rest": { "$value": "{palette.dark-gray.3}" },
-                        "hover": { "$value": "{palette.dark-gray.2}" },
-                        "active": { "$value": "{palette.dark-gray.1}" },
                         "disabled": {
                             "$value": { "colorSpace": "srgb", "components": [0.1843, 0.2039, 0.2353], "alpha": 0.15 }
                         },
@@ -19,7 +16,6 @@
                 "foreground": {
                     "$type": "color",
                     "default": {
-                        "rest": { "$value": "{palette.light-gray.5}" },
                         "disabled": {
                             "$value": { "colorSpace": "srgb", "components": [0.6706, 0.702, 0.749], "alpha": 0.6 }
                         }

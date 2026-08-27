@@ -1,43 +1,23 @@
-/* The legacy column deliberately invalidates private component tokens so each declaration uses its BP6 fallback. */
-.token-compatibility-legacy {
-  --bp-private-component-button-background-default-rest: initial;
-  --bp-private-component-button-background-default-hover: initial;
-  --bp-private-component-button-background-default-active: initial;
+// This standalone Storybook stylesheet is compiled separately from Blueprint's legacy global Sass variables.
+$ns: bp6;
+/* stylelint-disable-next-line @blueprintjs/no-color-literal -- Bootstrap the local alias used below. */
+$white: #ffffff;
+
+/* The baseline column invalidates private mechanics so component declarations use their BP6 fallbacks. */
+.token-compatibility-baseline {
   --bp-private-component-button-background-default-disabled: initial;
   --bp-private-component-button-background-default-active-disabled: initial;
-  --bp-private-component-button-background-intent-primary-rest: initial;
-  --bp-private-component-button-background-intent-primary-hover: initial;
-  --bp-private-component-button-background-intent-primary-active: initial;
   --bp-private-component-button-background-intent-primary-disabled: initial;
-  --bp-private-component-button-background-intent-success-rest: initial;
-  --bp-private-component-button-background-intent-success-hover: initial;
-  --bp-private-component-button-background-intent-success-active: initial;
   --bp-private-component-button-background-intent-success-disabled: initial;
-  --bp-private-component-button-background-intent-warning-rest: initial;
-  --bp-private-component-button-background-intent-warning-hover: initial;
-  --bp-private-component-button-background-intent-warning-active: initial;
   --bp-private-component-button-background-intent-warning-disabled: initial;
-  --bp-private-component-button-background-intent-danger-rest: initial;
-  --bp-private-component-button-background-intent-danger-hover: initial;
-  --bp-private-component-button-background-intent-danger-active: initial;
   --bp-private-component-button-background-intent-danger-disabled: initial;
-  --bp-private-component-button-foreground-default-rest: initial;
   --bp-private-component-button-foreground-default-disabled: initial;
-  --bp-private-component-button-foreground-intent-primary-rest: initial;
   --bp-private-component-button-foreground-intent-primary-disabled: initial;
-  --bp-private-component-button-foreground-intent-success-rest: initial;
   --bp-private-component-button-foreground-intent-success-disabled: initial;
-  --bp-private-component-button-foreground-intent-warning-rest: initial;
   --bp-private-component-button-foreground-intent-warning-disabled: initial;
-  --bp-private-component-button-foreground-intent-danger-rest: initial;
   --bp-private-component-button-foreground-intent-danger-disabled: initial;
   --bp-private-component-button-shadow-rest: initial;
   --bp-private-component-button-shadow-active: initial;
-  --bp-private-component-input-background-rest: initial;
-  --bp-private-component-input-background-disabled: initial;
-  --bp-private-component-input-foreground-rest: initial;
-  --bp-private-component-input-foreground-disabled: initial;
-  --bp-private-component-input-foreground-placeholder: initial;
   --bp-private-component-input-shadow-rest: initial;
   --bp-private-component-input-shadow-focus: initial;
   --bp-private-component-input-shadow-readonly: initial;
@@ -53,15 +33,521 @@
   --bp-private-component-input-shadow-intent-danger-rest: initial;
   --bp-private-component-input-shadow-intent-danger-focus: initial;
   --bp-private-component-input-shadow-intent-danger-readonly: initial;
-  --bp-private-component-menu-background: initial;
-  --bp-private-component-menu-foreground: initial;
-  --bp-private-component-menu-item-background-hover: initial;
-  --bp-private-component-menu-item-background-pressed: initial;
-  --bp-private-component-menu-item-background-active: initial;
-  --bp-private-component-menu-item-foreground-active: initial;
-  --bp-private-component-menu-divider-color: initial;
-  --bp-private-component-popover-background: initial;
-  --bp-private-component-popover-shadow: initial;
   --bp-private-component-popover-arrow-shadow: initial;
   --bp-private-component-popover-arrow-border-opacity: initial;
+}
+
+/*
+ * Public values shared by the complete NHS Digital component reproductions below.
+ * Component-scoped rules are still required because BP7 does not expose metrics such as control padding and radius.
+ */
+.bp-next.token-compatibility-nhsd-theme {
+  --bp-palette-grey-100: #f6f8f8;
+  --bp-palette-grey-200: #edf1f1;
+  --bp-palette-grey-300: #e8edee;
+  --bp-palette-grey-400: #d5dade;
+  --bp-palette-grey-500: #768692;
+  --bp-palette-grey-600: #4e5a62;
+  --bp-palette-grey-700: #3f525f;
+  --bp-palette-grey-800: #231f20;
+  --bp-palette-grey-900: #231f20;
+  --bp-palette-grey-1000: #231f20;
+  --bp-intent-primary-rest: #005bbb;
+  --bp-intent-primary-hover: #003087;
+  --bp-intent-primary-active: #005bbb;
+  --bp-intent-primary-foreground: var(--bp-palette-white-1000);
+  --bp-intent-success-rest: #006646;
+  --bp-intent-success-hover: #006646;
+  --bp-intent-success-active: #006646;
+  --bp-intent-success-foreground: var(--bp-palette-white-1000);
+
+  /* NHS Digital has no warning Button; keep BP7's accessible warning tokens instead of mapping its accent orange. */
+  --bp-intent-danger-rest: #b30f0f;
+  --bp-intent-danger-hover: #b30f0f;
+  --bp-intent-danger-active: #b30f0f;
+  --bp-intent-danger-foreground: var(--bp-palette-white-1000);
+  --bp-surface-background-color-base-rest: var(--bp-palette-white-1000);
+  --bp-surface-border-color-neutral: #d5dade;
+  --bp-surface-border-color-primary: #005bbb;
+  --bp-surface-border-color-success: #006646;
+  --bp-surface-border-color-danger: #b30f0f;
+  --bp-surface-divider-color-default: #e8edee;
+  --bp-surface-layer-color-neutral-hover: color-mix(in srgb, #3f525f 6%, transparent);
+  --bp-surface-layer-color-neutral-active: color-mix(in srgb, #3f525f 12%, transparent);
+  --bp-surface-layer-color-primary-hover: color-mix(in srgb, #003087 6%, transparent);
+  --bp-surface-layer-color-primary-active: color-mix(in srgb, #005bbb 12%, transparent);
+  --bp-surface-layer-color-success-hover: color-mix(in srgb, #006646 6%, transparent);
+  --bp-surface-layer-color-success-active: color-mix(in srgb, #006646 12%, transparent);
+  --bp-surface-layer-color-danger-hover: color-mix(in srgb, #b30f0f 6%, transparent);
+  --bp-surface-layer-color-danger-active: color-mix(in srgb, #b30f0f 12%, transparent);
+  --bp-surface-shadow-3: 1.9998px 6.0012px 12.0006px oklch(0% 0 0deg / 10%);
+  --bp-emphasis-transition-duration: 150ms;
+  --bp-emphasis-focus-color: #fae100;
+  --bp-emphasis-focus-width: 3.006px;
+  --bp-emphasis-focus-offset: 0;
+  --bp-typography-family-body: "Frutiger W01", "Arial", sans-serif;
+  --bp-typography-family-heading: var(--bp-typography-family-body);
+  --bp-typography-family-display: var(--bp-typography-family-body);
+  --bp-typography-size-sm: 15.984px;
+  --bp-typography-size-md: 18px;
+  --bp-typography-size-lg: 18px;
+  --bp-typography-weight-default: 400;
+  --bp-typography-weight-strong: 600;
+  --bp-typography-line-height-running-factor: 1.6;
+  --bp-typography-color-base: #231f20;
+  --bp-typography-color-muted: #3f525f;
+  --bp-typography-color-disabled: #768692;
+  --bp-typography-color-intent-primary: #005bbb;
+  --bp-typography-color-intent-success: #006646;
+  --bp-typography-color-intent-danger: #b30f0f;
+
+  /* NHS Digital publishes a light theme only, so its comparison column stays light in either Storybook scheme. */
+  background-color: $white;
+  color: #231f20;
+  font-family: var(--bp-typography-family-body);
+}
+
+/*
+ * The NHS form token has component metrics and state mechanics which are not represented by BP7 public tokens.
+ * The values below reproduce the default form input; Blueprint-only intent and disabled states extend that contract.
+ */
+.token-compatibility-search-control {
+  .token-compatibility-search-label,
+  .token-compatibility-search-hint {
+    display: block;
+  }
+
+  .token-compatibility-search-label {
+    font-weight: 600;
+  }
+
+  .token-compatibility-search-hint {
+    color: var(--bp-typography-color-muted);
+    margin-block-end: 4px;
+  }
+}
+
+.bp-next.token-compatibility-nhsd-input-overrides {
+  padding: 16px;
+
+  .token-compatibility-search-label {
+    color: #231f20;
+    font-family: var(--bp-typography-family-body);
+    font-size: 25.992px;
+    font-weight: 600;
+    line-height: 30.9999px;
+    margin-block-end: 10px;
+  }
+
+  .token-compatibility-search-hint {
+    color: #3f525f;
+    font-family: var(--bp-typography-family-body);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28.8px;
+    margin-block-end: 0;
+  }
+
+  .#{$ns}-input-group > .#{$ns}-icon {
+    color: #3f525f;
+    inset-inline-start: 20px;
+  }
+
+  .#{$ns}-input:not(:last-child) {
+    padding-inline-end: 62px;
+  }
+
+  .#{$ns}-input-action {
+    align-items: center;
+    block-size: 63.984px;
+    display: flex;
+    inset-inline-end: 15px;
+  }
+
+  .#{$ns}-input-action > .#{$ns}-button.#{$ns}-minimal {
+    background-color: transparent;
+    background-image: none;
+    block-size: 32px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3.006px transparent;
+    color: #231f20;
+    inline-size: 32px;
+    margin: 0;
+    min-block-size: 32px;
+    min-inline-size: 32px;
+    padding: 5px;
+
+    .#{$ns}-icon {
+      color: inherit;
+    }
+
+    &:hover,
+    &:focus {
+      background-color: #003087;
+      border-color: #003087;
+      box-shadow: 0 0 0 3.006px #fae100;
+      color: $white;
+    }
+
+    &:active {
+      background-color: transparent;
+      border-color: transparent;
+      box-shadow: 0 0 0 3.006px transparent;
+      color: #231f20;
+      transform: translateY(1.998px);
+    }
+  }
+
+  .#{$ns}-input {
+    --token-compatibility-nhsd-input-border-color: #231f20;
+
+    background-color: $white;
+    background-image: none;
+    block-size: 63.984px;
+    border-color: var(--token-compatibility-nhsd-input-border-color);
+    border-radius: 5.994px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow:
+      0 0 0 3.006px transparent,
+      inset 0 0 0 1px transparent;
+    color: #231f20;
+    font-family: var(--bp-typography-family-body);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: normal;
+    padding-block: 20px;
+    padding-inline: 20px;
+    transition-duration: 150ms;
+    transition-property: background-color, box-shadow, border-color;
+
+    &::placeholder {
+      color: #3f525f;
+      opacity: 1;
+    }
+
+    &:not(:first-child) {
+      padding-inline-start: 50px;
+    }
+
+    &:focus,
+    &.#{$ns}-active {
+      box-shadow:
+        0 0 0 3.006px #fae100,
+        inset 0 0 0 1px var(--token-compatibility-nhsd-input-border-color);
+    }
+
+    &:disabled {
+      --token-compatibility-nhsd-input-border-color: #d5dade;
+
+      background-color: #edf1f1;
+      color: #3f525f;
+      cursor: not-allowed;
+      opacity: 1;
+
+      &::placeholder {
+        color: #768692;
+      }
+    }
+  }
+
+  .#{$ns}-input-group.#{$ns}-intent-primary .#{$ns}-input:not(:disabled) {
+    --token-compatibility-nhsd-input-border-color: #005bbb;
+  }
+
+  .#{$ns}-input-group.#{$ns}-intent-success .#{$ns}-input:not(:disabled) {
+    --token-compatibility-nhsd-input-border-color: #006646;
+  }
+
+  .#{$ns}-input-group.#{$ns}-intent-warning .#{$ns}-input:not(:disabled) {
+    --token-compatibility-nhsd-input-border-color: var(--bp-intent-warning-rest);
+  }
+
+  .#{$ns}-input-group.#{$ns}-intent-danger .#{$ns}-input:not(:disabled) {
+    border-color: #231f20;
+    box-shadow: inset 0 0 0 0.999px #b30f0f;
+    color: #b30f0f;
+
+    &:focus,
+    &.#{$ns}-active {
+      box-shadow: inset 0 0 0 0.999px #b30f0f;
+    }
+  }
+}
+
+/*
+ * NHS Digital's Dropdown is the closest contract for Blueprint's Menu inside a Popover.
+ * It has no arrow, uses a 500px menu surface, and treats active items like hovered dropdown options.
+ */
+.bp-next.token-compatibility-nhsd-menu-popover-overrides {
+  --token-compatibility-nhsd-button-focus-ring: 3.006px;
+
+  &.#{$ns}-portal {
+    background-color: transparent;
+  }
+
+  &.#{$ns}-portal .#{$ns}-popover {
+    border-radius: 5.994px;
+    box-shadow: 1.9998px 6.0012px 12.0006px oklch(0% 0 0deg / 10%);
+    min-inline-size: 500px;
+  }
+
+  &.#{$ns}-portal .#{$ns}-popover-arrow {
+    display: none;
+  }
+
+  &.#{$ns}-portal .#{$ns}-popover-content {
+    background-color: $white;
+    border-color: #e8edee;
+    border-radius: 5.994px;
+    border-style: solid;
+    border-width: 1px;
+    overflow: hidden;
+  }
+
+  &.#{$ns}-portal .#{$ns}-menu {
+    background-color: transparent;
+    border-radius: 0;
+    color: #231f20;
+    font-family: var(--bp-typography-family-body);
+    font-size: 18px;
+    line-height: 28.8px;
+    min-inline-size: 0;
+    padding-block: 10px;
+    padding-inline: 0;
+  }
+
+  &.#{$ns}-portal .#{$ns}-menu > li:not(:first-child, .#{$ns}-menu-divider) {
+    border-block-start: 1px solid #f6f8f8;
+  }
+
+  &.#{$ns}-portal .#{$ns}-menu-divider {
+    display: none;
+  }
+
+  &.#{$ns}-portal .#{$ns}-menu-item {
+    background-color: transparent;
+    border-radius: 0;
+    box-sizing: border-box;
+    color: #231f20;
+    font-family: var(--bp-typography-family-body);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24.0012px;
+    min-block-size: 44px;
+    padding-block: 10px;
+    padding-inline: 20px;
+    transition-duration: 150ms;
+    transition-property: background-color, color;
+
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-icon {
+      color: inherit;
+    }
+
+    &:not(.#{$ns}-disabled):hover,
+    &:not(.#{$ns}-disabled):focus,
+    &:not(.#{$ns}-disabled).#{$ns}-active {
+      background-color: #005bbb;
+      color: $white;
+    }
+
+    &.#{$ns}-disabled {
+      background-color: transparent;
+      color: #768692;
+      opacity: 1;
+    }
+  }
+}
+
+section.bp-next.token-compatibility-nhsd-menu-popover-overrides {
+  flex: 0 0 500px;
+  padding: 16px;
+
+  > .#{$ns}-popover-target .#{$ns}-button {
+    background-color: #005bbb;
+    background-image: none;
+    border-color: #005bbb;
+    border-radius: 21.96px;
+    border-style: solid;
+    border-width: 2px;
+    box-shadow: 0 0 0 var(--token-compatibility-nhsd-button-focus-ring) transparent;
+    color: $white;
+    font-family: var(--bp-typography-family-body);
+    font-size: 14.04px;
+    font-weight: 600;
+    line-height: 15.5844px;
+    min-block-size: 44px;
+    padding-block: 10px;
+    padding-inline: 20px;
+    transition-duration: 150ms;
+    transition-property: background-color, box-shadow, border-color;
+
+    &:hover,
+    &:focus {
+      background-color: #003087;
+      background-image: none;
+      border-color: #003087;
+      box-shadow: 0 0 0 var(--token-compatibility-nhsd-button-focus-ring) #fae100;
+      color: $white;
+    }
+  }
+}
+
+/*
+ * Component-level overrides required to reproduce the NHS Digital Button.
+ * These pair with the public values above because BP7 has no public Button tokens for these metrics.
+ */
+.bp-next.token-compatibility-nhsd-component-overrides {
+  --token-compatibility-nhsd-button-active-offset: 1.998px;
+  --token-compatibility-nhsd-button-focus-ring: 3.006px;
+  --token-compatibility-nhsd-button-focus-ring-color: #fae100;
+
+  background-color: rgb(255, 255, 255);
+  color: #231f20;
+  padding: 16px;
+
+  .token-compatibility-nhsd-button-row {
+    padding-block-end: 8px;
+  }
+
+  .token-compatibility-nhsd-button-row-tertiary {
+    background-color: #003087;
+    color: rgb(255, 255, 255);
+    padding: 16px;
+  }
+
+  .token-compatibility-nhsd-button {
+    align-items: center;
+    background-color: var(--token-compatibility-nhsd-button-background-rest);
+    background-image: none;
+    border-color: var(--token-compatibility-nhsd-button-border-rest);
+    border-radius: 21.96px;
+    border-style: solid;
+    border-width: 2px;
+    box-shadow: 0 0 0 var(--token-compatibility-nhsd-button-focus-ring) transparent;
+    box-sizing: border-box;
+    color: var(--token-compatibility-nhsd-button-foreground-rest);
+    font-family: "Frutiger W01", "Arial", sans-serif;
+    font-size: 14.04px;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 15.5844px;
+    margin-block-end: 32.04px;
+    max-width: 279.9px;
+    min-height: 0;
+    outline: 0;
+    padding-block: 10px;
+    padding-inline: 20px;
+    transform: none;
+    transition-duration: 150ms;
+    transition-property: background-color, box-shadow, border-color;
+
+    &:hover,
+    &:focus,
+    &.token-compatibility-nhsd-button-state-hover,
+    &.token-compatibility-nhsd-button-state-focus {
+      background-color: var(--token-compatibility-nhsd-button-background-interaction);
+      background-image: none;
+      border-color: var(--token-compatibility-nhsd-button-border-interaction);
+      box-shadow: 0 0 0 var(--token-compatibility-nhsd-button-focus-ring)
+        var(--token-compatibility-nhsd-button-focus-ring-color);
+      color: var(--token-compatibility-nhsd-button-foreground-interaction);
+    }
+
+    &:active,
+    &.token-compatibility-nhsd-button-state-active {
+      background-color: var(--token-compatibility-nhsd-button-background-active);
+      background-image: none;
+      border-color: var(--token-compatibility-nhsd-button-border-active);
+      box-shadow: 0 0 0 var(--token-compatibility-nhsd-button-focus-ring) transparent;
+      color: var(--token-compatibility-nhsd-button-foreground-active);
+      transform: translateY(var(--token-compatibility-nhsd-button-active-offset));
+      transition-property: none;
+    }
+
+    &:disabled,
+    &.token-compatibility-nhsd-button-state-disabled {
+      background-color: #d5dade;
+      background-image: none;
+      border-color: #d5dade;
+      box-shadow: none;
+      color: #3f525f;
+      cursor: not-allowed;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .token-compatibility-nhsd-button-label {
+    box-sizing: border-box;
+    display: block;
+    line-height: 19px;
+    min-height: 20px;
+    overflow: hidden;
+    padding-block-start: 1px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .token-compatibility-nhsd-button-primary {
+    --token-compatibility-nhsd-button-background-rest: #005bbb;
+    --token-compatibility-nhsd-button-background-interaction: #003087;
+    --token-compatibility-nhsd-button-background-active: #005bbb;
+    --token-compatibility-nhsd-button-border-rest: #005bbb;
+    --token-compatibility-nhsd-button-border-interaction: #003087;
+    --token-compatibility-nhsd-button-border-active: #005bbb;
+    --token-compatibility-nhsd-button-foreground-rest: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-foreground-interaction: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-foreground-active: rgb(255, 255, 255);
+  }
+
+  .token-compatibility-nhsd-button-secondary {
+    --token-compatibility-nhsd-button-background-rest: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-background-interaction: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-background-active: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-border-rest: #005bbb;
+    --token-compatibility-nhsd-button-border-interaction: #231f20;
+    --token-compatibility-nhsd-button-border-active: #005bbb;
+    --token-compatibility-nhsd-button-foreground-rest: #005bbb;
+    --token-compatibility-nhsd-button-foreground-interaction: #005bbb;
+    --token-compatibility-nhsd-button-foreground-active: #005bbb;
+  }
+
+  .token-compatibility-nhsd-button-tertiary {
+    --token-compatibility-nhsd-button-background-rest: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-background-interaction: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-background-active: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-border-rest: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-border-interaction: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-border-active: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-foreground-rest: #005bbb;
+    --token-compatibility-nhsd-button-foreground-interaction: #005bbb;
+    --token-compatibility-nhsd-button-foreground-active: #005bbb;
+  }
+
+  .token-compatibility-nhsd-button-start {
+    --token-compatibility-nhsd-button-background-rest: #006646;
+    --token-compatibility-nhsd-button-background-interaction: #006646;
+    --token-compatibility-nhsd-button-background-active: #006646;
+    --token-compatibility-nhsd-button-border-rest: #006646;
+    --token-compatibility-nhsd-button-border-interaction: #006646;
+    --token-compatibility-nhsd-button-border-active: #006646;
+    --token-compatibility-nhsd-button-foreground-rest: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-foreground-interaction: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-foreground-active: rgb(255, 255, 255);
+  }
+
+  .token-compatibility-nhsd-button-cancel {
+    --token-compatibility-nhsd-button-background-rest: #b30f0f;
+    --token-compatibility-nhsd-button-background-interaction: #b30f0f;
+    --token-compatibility-nhsd-button-background-active: #b30f0f;
+    --token-compatibility-nhsd-button-border-rest: #b30f0f;
+    --token-compatibility-nhsd-button-border-interaction: #b30f0f;
+    --token-compatibility-nhsd-button-border-active: #b30f0f;
+    --token-compatibility-nhsd-button-foreground-rest: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-foreground-interaction: rgb(255, 255, 255);
+    --token-compatibility-nhsd-button-foreground-active: rgb(255, 255, 255);
+  }
 }

@@ -236,7 +236,15 @@ export const FocusedExample: Story = {
     render: args => <InputGroup {...args} placeholder="Click to focus..." />,
 };
 
-const inputVisualProperties = ["backgroundColor", "color", "boxShadow", "borderRadius", "fontSize", "height"] as const;
+const inputVisualProperties = [
+    "backgroundColor",
+    "color",
+    "boxShadow",
+    "borderRadius",
+    "fontFamily",
+    "fontSize",
+    "height",
+] as const;
 
 const getInputVisualStyle = (input: HTMLElement) => {
     const style = getComputedStyle(input);
@@ -247,39 +255,67 @@ const getInputVisualStyle = (input: HTMLElement) => {
 const inputCompatibilityStates = [
     { label: "Rest", inputProps: {} },
     { label: "Focused", inputProps: { inputClassName: Classes.ACTIVE } },
-    { label: "Readonly", inputProps: { defaultValue: "Readonly value", readOnly: true } },
+    { label: "Readonly", inputProps: { readOnly: true } },
     { label: "Disabled", inputProps: { disabled: true } },
 ] as const;
 
-const renderInputTokenComparison = ({ id, label, className }: { id: string; label: string; className: string }) => (
-    <section aria-labelledby={id} className={className}>
-        <H5 id={id}>{label}</H5>
-        <Flex flexDirection="column" gap={3}>
-            {inputCompatibilityStates.map(({ label: stateLabel, inputProps }) => (
-                <Flex key={stateLabel} flexDirection="column" gap={1}>
-                    <StoryLabel title={stateLabel} />
-                    {Object.values(Intent).map(intent => {
-                        const accessibleLabel = `${intent} ${stateLabel.toLowerCase()} input`;
-                        return (
-                            <InputGroup
-                                key={intent}
-                                {...inputProps}
-                                aria-label={accessibleLabel}
-                                intent={intent}
-                                leftIcon="edit"
-                                placeholder={accessibleLabel}
-                            />
-                        );
-                    })}
-                </Flex>
-            ))}
-        </Flex>
-    </section>
-);
+const renderInputTokenComparison = ({ id, label, className }: { id: string; label: string; className: string }) => {
+    const searchInputId = `${id}-search`;
+    const searchHintId = `${searchInputId}-hint`;
 
-/** Proves that BP6-compatible input tokens preserve current pixels, then previews the original BP7 proposal. */
+    return (
+        <section aria-labelledby={id} className={className} style={{ flex: "0 0 300px" }}>
+            <H5 id={id}>{label}</H5>
+            <Flex flexDirection="column" gap={3}>
+                <div className="token-compatibility-search-control">
+                    <label className="token-compatibility-search-label" htmlFor={searchInputId}>
+                        Search
+                    </label>
+                    <span className="token-compatibility-search-hint" id={searchHintId}>
+                        Enter a keyword to find results
+                    </span>
+                    <InputGroup
+                        aria-describedby={searchHintId}
+                        id={searchInputId}
+                        rightElement={
+                            <Button
+                                aria-label="Submit search"
+                                icon="search"
+                                size="small"
+                                type="button"
+                                variant="minimal"
+                            />
+                        }
+                    />
+                </div>
+                {inputCompatibilityStates.map(({ label: stateLabel, inputProps }) => (
+                    <Flex key={stateLabel} flexDirection="column" gap={1}>
+                        <StoryLabel title={stateLabel} />
+                        <InputGroup
+                            {...inputProps}
+                            aria-label={`${stateLabel} search input`}
+                            defaultValue="Search query"
+                            rightElement={
+                                <Button
+                                    aria-label={`Submit ${stateLabel.toLowerCase()} search`}
+                                    disabled={"disabled" in inputProps && inputProps.disabled}
+                                    icon="search"
+                                    size="small"
+                                    type="button"
+                                    variant="minimal"
+                                />
+                            }
+                        />
+                    </Flex>
+                ))}
+            </Flex>
+        </section>
+    );
+};
+
+/** Compares the BP6 baseline with BP7's defaults and a complete NHS Digital form-input theme. */
 export const TokenCompatibility: Story = {
-    name: "BP6 literals → BP6 tokens → BP7 proposal",
+    name: "BP6 baseline → BP7 defaults → NHS Digital theme",
     parameters: {
         layout: "padded",
     },
@@ -287,45 +323,68 @@ export const TokenCompatibility: Story = {
         <Flex alignItems="flex-start" gap={6}>
             {renderInputTokenComparison({
                 id: "input-comparison-bp6",
-                label: "BP6 literals: current component CSS",
-                className: "token-compatibility-legacy",
+                label: "BP6 baseline",
+                className: "token-compatibility-baseline",
             })}
             {renderInputTokenComparison({
                 id: "input-comparison-bp7",
-                label: "BP6 tokens: same values through aliases",
-                className: "token-compatibility-bp6-tokens",
+                label: "BP7 defaults: new palette",
+                className: "bp-next token-compatibility-bp7-defaults",
             })}
             {renderInputTokenComparison({
-                id: "input-comparison-bp7-proposal",
-                label: "BP7 proposal: original PR values",
-                className: "bp-next token-compatibility-bp7-proposal",
+                id: "input-comparison-nhsd-theme",
+                label: "NHS Digital theme",
+                className: "bp-next token-compatibility-nhsd-theme token-compatibility-nhsd-input-overrides",
             })}
         </Flex>
     ),
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const legacyRegion = canvas.getByRole("region", { name: /BP6 literals:/ });
-        const bp6TokenRegion = canvas.getByRole("region", { name: /BP6 tokens:/ });
-        const proposedRegion = canvas.getByRole("region", { name: /BP7 proposal:/ });
-        const legacyInputs = within(legacyRegion).getAllByRole("textbox");
-        const bp6TokenInputs = within(bp6TokenRegion).getAllByRole("textbox");
-        const proposedInputs = within(proposedRegion).getAllByRole("textbox");
+        const baselineRegion = canvas.getByRole("region", { name: "BP6 baseline" });
+        const defaultRegion = canvas.getByRole("region", { name: /BP7 defaults:/ });
+        const nhsdRegion = canvas.getByRole("region", { name: "NHS Digital theme" });
+        const baselineInputs = within(baselineRegion).getAllByRole("textbox");
+        const defaultInputs = within(defaultRegion).getAllByRole("textbox");
+        const nhsdInputs = within(nhsdRegion).getAllByRole("textbox");
+        const baselineSearchButtons = within(baselineRegion).getAllByRole("button", { name: /^Submit / });
+        const defaultSearchButtons = within(defaultRegion).getAllByRole("button", { name: /^Submit / });
+        const nhsdSearchButtons = within(nhsdRegion).getAllByRole("button", { name: /^Submit / });
+
+        await expect(defaultInputs).toHaveLength(baselineInputs.length);
+        await expect(nhsdInputs).toHaveLength(defaultInputs.length);
+        await expect(baselineSearchButtons).toHaveLength(baselineInputs.length);
+        await expect(defaultSearchButtons).toHaveLength(defaultInputs.length);
+        await expect(nhsdSearchButtons).toHaveLength(nhsdInputs.length);
 
         await expect(
-            getComputedStyle(bp6TokenRegion).getPropertyValue("--bp-private-component-input-background-rest").trim(),
-        ).not.toBe("");
-        await expect(bp6TokenInputs).toHaveLength(legacyInputs.length);
-        await expect(proposedInputs).toHaveLength(bp6TokenInputs.length);
-
-        for (const [index, legacyInput] of legacyInputs.entries()) {
-            await expect(getInputVisualStyle(bp6TokenInputs[index])).toEqual(getInputVisualStyle(legacyInput));
-        }
-
-        await expect(
-            proposedInputs.some((input, index) => {
-                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(bp6TokenInputs[index]).join("|");
+            defaultInputs.some((input, index) => {
+                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(baselineInputs[index]).join("|");
             }),
         ).toBe(true);
+        await expect(
+            nhsdInputs.some((input, index) => {
+                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(defaultInputs[index]).join("|");
+            }),
+        ).toBe(true);
+
+        const nhsdRestInput = within(nhsdRegion).getByRole("textbox", { name: "Rest search input" });
+        const nhsdRestStyle = getComputedStyle(nhsdRestInput);
+        await expect(nhsdRestInput.getBoundingClientRect().height).toBeCloseTo(63.984, 1);
+        await expect(nhsdRestStyle.backgroundColor).toBe("rgb(255, 255, 255)");
+        await expect(nhsdRestStyle.borderRadius).toBe("5.994px");
+        await expect(nhsdRestStyle.fontFamily).toContain("Frutiger W01");
+        await expect(nhsdRestStyle.fontSize).toBe("18px");
+
+        const nhsdSearchInput = within(nhsdRegion).getByRole("textbox", { name: "Search" });
+        const nhsdSearchButton = within(nhsdRegion).getByRole("button", { name: "Submit search" });
+        await expect(nhsdSearchInput.getBoundingClientRect().height).toBeCloseTo(63.984, 1);
+        await expect(nhsdSearchButton).toBeVisible();
+
+        const nhsdFocusedInput = within(nhsdRegion).getByRole("textbox", { name: "Focused search input" });
+        await expect(getComputedStyle(nhsdFocusedInput).boxShadow).toContain("rgb(250, 225, 0)");
+
+        const nhsdDisabledSearchButton = within(nhsdRegion).getByRole("button", { name: "Submit disabled search" });
+        await expect(nhsdDisabledSearchButton).toBeDisabled();
     },
 };
 

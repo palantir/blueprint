@@ -27,10 +27,10 @@ $dark-popover-arrow-box-shadow:
     $arrow-target-offset: -$pt-spacing
   );
   @include popover-appearance(
-    var(--bp-private-component-popover-background, $white),
+    var(--bp-surface-background-color-base-rest, $white),
     inherit,
     var(
-      --bp-private-component-popover-shadow,
+      --bp-surface-shadow-3,
       0 0 0 1px rgba($black, 10%),
       0 20px 25px -5px rgba(0, 0, 0, 10%),
       0 10px 15px -3px rgba(0, 0, 0, 10%)
@@ -41,6 +41,8 @@ $dark-popover-arrow-box-shadow:
   @include scale-transition;
   border-radius: $pt-border-radius;
   display: inline-block;
+  font-family: var(--bp-typography-family-body, inherit);
+  font-size: var(--bp-typography-size-md, inherit);
   z-index: $pt-z-index-overlay;
 
   .#{$ns}-popover-content {
@@ -95,10 +97,10 @@ $dark-popover-arrow-box-shadow:
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover-appearance(
-      var(--bp-private-component-popover-background, $dark-gray3),
+      var(--bp-surface-background-color-base-rest, $dark-gray3),
       inherit,
       var(
-        --bp-private-component-popover-shadow,
+        --bp-surface-shadow-3,
         0 0 0 1px hsl(215deg, 3%, 38%),
         inset 0 0 0 1px rgba($white, 20%),
         0 20px 25px -5px rgba(0, 0, 0, 30%),

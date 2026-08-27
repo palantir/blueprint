@@ -6,33 +6,28 @@
 .bp-next[data-bp-color-scheme="dark"],
 .bp6-dark .bp-next,
 .bp-next.bp6-dark {
-  --bp-private-component-button-background-default-rest: var(--bp-palette-grey-800);
-  --bp-private-component-button-background-default-hover: var(--bp-palette-grey-700);
-  --bp-private-component-button-background-default-active: var(--bp-palette-grey-900);
   --bp-private-component-button-background-default-disabled: #11151b80; /* grey/800 at 50% */
   --bp-private-component-button-background-default-active-disabled: #070a10b3; /* grey/900 at 70% */
-  --bp-private-component-button-background-intent-primary-hover: var(--bp-intent-primary-400);
-  --bp-private-component-button-background-intent-primary-active: var(--bp-intent-primary-600);
   --bp-private-component-button-background-intent-primary-disabled: #0a58b480; /* blue/500 at 50% */
-  --bp-private-component-button-background-intent-success-rest: var(--bp-intent-success-500);
-  --bp-private-component-button-background-intent-success-hover: var(--bp-intent-success-400);
-  --bp-private-component-button-background-intent-success-active: var(--bp-intent-success-600);
   --bp-private-component-button-background-intent-success-disabled: #00733180; /* green/500 at 50% */
-  --bp-private-component-button-background-intent-warning-hover: var(--bp-intent-warning-400);
-  --bp-private-component-button-background-intent-warning-active: var(--bp-intent-warning-600);
   --bp-private-component-button-background-intent-warning-disabled: #9a370080; /* orange/500 at 50% */
-  --bp-private-component-button-background-intent-danger-hover: var(--bp-intent-danger-400);
-  --bp-private-component-button-background-intent-danger-active: var(--bp-intent-danger-600);
   --bp-private-component-button-background-intent-danger-disabled: #9e2c3180; /* red/500 at 50% */
   --bp-private-component-button-foreground-default-disabled: var(--bp-palette-grey-300);
   --bp-private-component-button-foreground-intent-primary-disabled: #ffffff66; /* white/1000 at 40% */
   --bp-private-component-button-foreground-intent-success-disabled: #ffffff66; /* white/1000 at 40% */
   --bp-private-component-button-foreground-intent-warning-disabled: #ffffff66; /* white/1000 at 40% */
   --bp-private-component-button-foreground-intent-danger-disabled: #ffffff66; /* white/1000 at 40% */
-  --bp-private-component-input-background-rest: var(--bp-palette-grey-800);
-  --bp-private-component-input-background-disabled: var(--bp-palette-grey-900);
-  --bp-private-component-input-foreground-disabled: var(--bp-palette-grey-300);
-  --bp-private-component-input-foreground-placeholder: var(--bp-palette-grey-300);
+  --bp-private-component-button-shadow-rest: var(--bp-surface-shadow-1);
+  --bp-private-component-button-shadow-active: var(--bp-surface-shadow-0);
+  --bp-intent-primary-hover: var(--bp-intent-primary-400);
+  --bp-intent-primary-active: var(--bp-intent-primary-600);
+  --bp-intent-success-rest: var(--bp-intent-success-500);
+  --bp-intent-success-hover: var(--bp-intent-success-400);
+  --bp-intent-success-active: var(--bp-intent-success-600);
+  --bp-intent-warning-hover: var(--bp-intent-warning-400);
+  --bp-intent-warning-active: var(--bp-intent-warning-600);
+  --bp-intent-danger-hover: var(--bp-intent-danger-400);
+  --bp-intent-danger-active: var(--bp-intent-danger-600);
   --bp-palette-orange-100: oklch(0.8886 0.0492 47.64); /* #f7d1bf */
   --bp-palette-orange-200: oklch(0.7812 0.0987 47.58); /* #eca480 */
   --bp-palette-orange-300: oklch(0.6748 0.1304 46.68); /* #d77b4c */
@@ -251,6 +246,8 @@
   --bp-surface-background-color-danger-hover: var(--bp-intent-danger-400);
   --bp-surface-background-color-danger-active: var(--bp-intent-danger-600);
   --bp-typography-color-base: var(--bp-palette-grey-100);
+  --bp-typography-color-muted: var(--bp-palette-grey-300);
+  --bp-typography-color-disabled: var(--bp-palette-grey-300);
   --bp-typography-color-intent-neutral: var(--bp-intent-neutral-200);
   --bp-typography-color-intent-primary: var(--bp-intent-primary-200);
   --bp-typography-color-intent-success: var(--bp-intent-success-200);
@@ -265,10 +262,10 @@
 .bp-next.bp6-dark {
     --bp-private-component-button-background-default-disabled: oklch(from var(--bp-palette-grey-800) l c h / 0.5);
     --bp-private-component-button-background-default-active-disabled: oklch(from var(--bp-palette-grey-900) l c h / 0.7);
-    --bp-private-component-button-background-intent-primary-disabled: oklch(from var(--bp-intent-primary-500) l c h / 0.5);
-    --bp-private-component-button-background-intent-success-disabled: oklch(from var(--bp-intent-success-500) l c h / 0.5);
-    --bp-private-component-button-background-intent-warning-disabled: oklch(from var(--bp-intent-warning-500) l c h / 0.5);
-    --bp-private-component-button-background-intent-danger-disabled: oklch(from var(--bp-intent-danger-500) l c h / 0.5);
+    --bp-private-component-button-background-intent-primary-disabled: oklch(from var(--bp-intent-primary-rest) l c h / 0.5);
+    --bp-private-component-button-background-intent-success-disabled: oklch(from var(--bp-intent-success-rest) l c h / 0.5);
+    --bp-private-component-button-background-intent-warning-disabled: oklch(from var(--bp-intent-warning-rest) l c h / 0.5);
+    --bp-private-component-button-background-intent-danger-disabled: oklch(from var(--bp-intent-danger-rest) l c h / 0.5);
     --bp-private-component-button-foreground-intent-primary-disabled: oklch(from var(--bp-intent-primary-foreground) l c h / 0.4);
     --bp-private-component-button-foreground-intent-success-disabled: oklch(from var(--bp-intent-success-foreground) l c h / 0.4);
     --bp-private-component-button-foreground-intent-warning-disabled: oklch(from var(--bp-intent-warning-foreground) l c h / 0.4);

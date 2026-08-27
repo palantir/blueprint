@@ -108,10 +108,16 @@ $input-button-height-small: $pt-button-height-smaller !default;
     &.#{$ns}-minimal:disabled {
       // override more specific selector above
       /* stylelint-disable declaration-no-important */
-      color: var(--bp-typography-color-default-disabled) !important;
+      color: var(
+        --bp-typography-color-disabled,
+        var(--bp-typography-color-default-disabled)
+      ) !important;
 
       #{$icon-classes} {
-        color: var(--bp-typography-color-default-disabled) !important;
+        color: var(
+          --bp-typography-color-disabled,
+          var(--bp-typography-color-default-disabled)
+        ) !important;
       }
     }
   }
@@ -122,7 +128,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
     cursor: not-allowed;
 
     .#{$ns}-icon {
-      color: var(--bp-typography-color-default-disabled);
+      color: var(--bp-typography-color-disabled, var(--bp-typography-color-default-disabled));
     }
   }
 
@@ -200,7 +206,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
     }
 
     &.#{$ns}-disabled .#{$ns}-icon {
-      color: var(--bp-typography-color-default-disabled);
+      color: var(--bp-typography-color-disabled, var(--bp-typography-color-default-disabled));
     }
   }
 

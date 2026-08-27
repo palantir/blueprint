@@ -4,6 +4,8 @@
             "$type": "color",
             "$description": "Dark-mode text. base is near-white body text (grey.100); intent text references the intent's .200 ramp step.",
             "base": { "$value": "{palette.grey.100}" },
+            "muted": { "$value": "{palette.grey.300}" },
+            "disabled": { "$value": "{palette.grey.300}" },
             "intent": {
                 "neutral": { "$value": "{intent.neutral.200}" },
                 "primary": { "$value": "{intent.primary.200}" },

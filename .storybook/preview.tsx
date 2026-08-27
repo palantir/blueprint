@@ -25,7 +25,7 @@ import "@blueprintjs/labs/lib/css/blueprint-labs.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 import "@blueprintjs/table/lib/css/table.css";
 
-// The original BP7 proposal remains opt-in so Storybook can compare it with BP7's BP6-compatible values.
+// BP7 remains opt-in so Storybook can compare its new palette with the unscoped BP6 baseline.
 import "../packages/core/src/design-tokens/build/next-tokens.css";
 import "../packages/core/src/design-tokens/build/next-tokens-dark.css";
 import "./token-compatibility.scss";
@@ -65,6 +65,7 @@ const preview: Preview = {
             if (typeof document !== "undefined" && document.body) {
                 // Setting dark background based on class
                 document.body.style.backgroundColor = isDark ? Colors.BLACK : Colors.WHITE;
+                document.body.dataset.tokenCompatibilityColorScheme = isDark ? "dark" : "light";
             }
             return (
                 <BlueprintProvider>

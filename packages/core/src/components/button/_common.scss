@@ -68,8 +68,7 @@ $button-outlined-width: 1px !default;
 $button-outlined-border-intent-opacity: 0.6 !default;
 $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
-// Exact BP6 warning-button rest color, retained only as the fallback for the private
-// component token below. The opt-in BP7 proposal supplies its own scoped component-token value.
+// Exact BP6 warning-button rest color. BP7 remaps this helper to the public semantic token below.
 :root {
   --bp6-button-warning-rest: var(--bp-palette-orange-5); //#fbb360;
 }
@@ -80,6 +79,12 @@ $button-outlined-border-disabled-intent-opacity: 0.2 !default;
       from var(--bp-intent-warning-rest) calc(l + 0.177) calc(c - 0.01) calc(h + 6.26)
     );
   }
+}
+
+// BP6 intentionally uses a lighter warning fill. BP7's opt-in scope uses the
+// semantic warning token directly, like the other intents.
+.bp-next {
+  --bp6-button-warning-rest: var(--bp-intent-warning-rest);
 }
 
 // TODO(bp7): Replace with $button-intent-states
@@ -109,50 +114,41 @@ $button-intents: (
 // Intent at each state
 $button-intent-states: (
   "primary": (
-    var(--bp-private-component-button-background-intent-primary-rest, $blue3),
-    var(--bp-private-component-button-background-intent-primary-hover, $blue2),
-    var(--bp-private-component-button-background-intent-primary-active, $blue1),
+    var(--bp-intent-primary-rest, $blue3),
+    var(--bp-intent-primary-hover, $blue2),
+    var(--bp-intent-primary-active, $blue1),
     var(--bp-private-component-button-background-intent-primary-disabled, rgba($blue3, 50%)),
-    var(--bp-private-component-button-foreground-intent-primary-rest, $white),
+    var(--bp-intent-primary-foreground, $white),
     var(--bp-private-component-button-foreground-intent-primary-disabled, rgba($white, 60%)),
   ),
   "success": (
-    var(--bp-private-component-button-background-intent-success-rest, $green3),
-    var(--bp-private-component-button-background-intent-success-hover, $green2),
-    var(--bp-private-component-button-background-intent-success-active, $green1),
+    var(--bp-intent-success-rest, $green3),
+    var(--bp-intent-success-hover, $green2),
+    var(--bp-intent-success-active, $green1),
     var(--bp-private-component-button-background-intent-success-disabled, rgba($green3, 50%)),
-    var(--bp-private-component-button-foreground-intent-success-rest, $white),
+    var(--bp-intent-success-foreground, $white),
     var(--bp-private-component-button-foreground-intent-success-disabled, rgba($white, 60%)),
   ),
   "warning": (
-    var(
-      --bp-private-component-button-background-intent-warning-rest,
-      var(--bp6-button-warning-rest)
-    ),
-    var(
-      --bp-private-component-button-background-intent-warning-hover,
-      color-mix(in oklch, var(--bp6-button-warning-rest) 77%, var(--bp-intent-warning-hover))
-    ),
-    var(
-      --bp-private-component-button-background-intent-warning-active,
-      color-mix(in oklch, var(--bp6-button-warning-rest) 46%, var(--bp-intent-warning-active))
-    ),
+    var(--bp6-button-warning-rest),
+    var(--bp-intent-warning-hover, $orange2),
+    var(--bp-intent-warning-active, $orange1),
     var(
       --bp-private-component-button-background-intent-warning-disabled,
       color-mix(in oklch, var(--bp-intent-warning-rest) 40%, transparent)
     ),
-    var(--bp-private-component-button-foreground-intent-warning-rest, $black),
+    var(--bp-intent-warning-foreground, $black),
     var(
       --bp-private-component-button-foreground-intent-warning-disabled,
       color-mix(in oklch, var(--bp-intent-warning-foreground) 60%, transparent)
     ),
   ),
   "danger": (
-    var(--bp-private-component-button-background-intent-danger-rest, $red3),
-    var(--bp-private-component-button-background-intent-danger-hover, $red2),
-    var(--bp-private-component-button-background-intent-danger-active, $red1),
+    var(--bp-intent-danger-rest, $red3),
+    var(--bp-intent-danger-hover, $red2),
+    var(--bp-intent-danger-active, $red1),
     var(--bp-private-component-button-background-intent-danger-disabled, rgba($red3, 50%)),
-    var(--bp-private-component-button-foreground-intent-danger-rest, $white),
+    var(--bp-intent-danger-foreground, $white),
     var(--bp-private-component-button-foreground-intent-danger-disabled, rgba($white, 60%)),
   ),
 ) !default;
@@ -161,12 +157,9 @@ $button-intent-states: (
 $button-intent-colors: (
   "primary": var(--bp-intent-primary-rest),
   "success": var(--bp-intent-success-rest),
-  "warning": var(
-      --bp-private-component-button-background-intent-warning-rest,
-      var(--bp6-button-warning-rest)
-    ),
+  "warning": var(--bp6-button-warning-rest),
   "danger": var(--bp-intent-danger-rest),
-  "default": var(--bp-intent-default-rest),
+  "default": var(--bp-intent-neutral-rest, var(--bp-intent-default-rest)),
 ) !default;
 
 $button-minimal-intent-text-colors: (
@@ -174,7 +167,7 @@ $button-minimal-intent-text-colors: (
   "success": var(--bp-intent-success-hover),
   "warning": var(--bp-intent-warning-hover),
   "danger": var(--bp-intent-danger-hover),
-  "default": var(--bp-intent-default-hover),
+  "default": var(--bp-intent-neutral-hover, var(--bp-intent-default-hover)),
 ) !default;
 
 $button-intent-active-text-colors: (
@@ -182,16 +175,28 @@ $button-intent-active-text-colors: (
   "success": var(--bp-intent-success-active),
   "warning": var(--bp-intent-warning-active),
   "danger": var(--bp-intent-danger-active),
-  "default": var(--bp-intent-default-active),
+  "default": var(--bp-intent-neutral-active, var(--bp-intent-default-active)),
 ) !default;
 
 $button-dark-intent-text-colors: (
-  "primary": color-mix(in oklch, var(--bp-intent-primary-rest) 51%, var(--bp-palette-white)),
-  "success": color-mix(in oklch, var(--bp-intent-success-rest) 54%, var(--bp-palette-white)),
-  "warning": color-mix(in oklch, var(--bp-intent-warning-rest) 53%, var(--bp-palette-white)),
-  "danger": color-mix(in oklch, var(--bp-intent-danger-rest) 53%, var(--bp-palette-white)),
+  "primary": var(
+      --bp-typography-color-intent-primary,
+      color-mix(in oklch, var(--bp-intent-primary-rest) 51%, var(--bp-palette-white))
+    ),
+  "success": var(
+      --bp-typography-color-intent-success,
+      color-mix(in oklch, var(--bp-intent-success-rest) 54%, var(--bp-palette-white))
+    ),
+  "warning": var(
+      --bp-typography-color-intent-warning,
+      color-mix(in oklch, var(--bp-intent-warning-rest) 53%, var(--bp-palette-white))
+    ),
+  "danger": var(
+      --bp-typography-color-intent-danger,
+      color-mix(in oklch, var(--bp-intent-danger-rest) 53%, var(--bp-palette-white))
+    ),
   // Use srgb for default intent to avoid hue shift with near-neutral gray
-  "default": color-mix(in srgb, var(--bp-intent-default-rest) 46%, var(--bp-palette-white)),
+  "default": var(--bp-typography-color-base, var(--bp-intent-default-foreground)),
 ) !default;
 
 $button-dark-minimal-hover-text-colors: (
@@ -218,7 +223,8 @@ $button-dark-minimal-active-text-colors: (
   border: none;
   border-radius: var(--bp-surface-border-radius);
   cursor: pointer;
-  font-size: var(--bp-typography-size-body-medium);
+  font-family: var(--bp-typography-family-body, inherit);
+  font-size: var(--bp-typography-size-md, var(--bp-typography-size-body-medium));
   justify-content: center;
   padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
   text-align: left;
@@ -275,18 +281,18 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-default-colors() {
-  background-color: var(--bp-private-component-button-background-default-rest, $light-gray5);
+  background-color: var(--bp-palette-grey-100, $light-gray5);
   box-shadow: var(
     --bp-private-component-button-shadow-rest,
     inset 0 0 0 1px rgba($black, 20%),
     0 1px 2px rgba($black, 10%)
   );
-  color: var(--bp-private-component-button-foreground-default-rest, $dark-gray1);
+  color: var(--bp-typography-color-base, $dark-gray1);
 }
 
 @mixin pt-button-hover() {
   background-clip: padding-box;
-  background-color: var(--bp-private-component-button-background-default-hover, $light-gray4);
+  background-color: var(--bp-palette-grey-200, $light-gray4);
   box-shadow: var(
     --bp-private-component-button-shadow-active,
     inset 0 0 0 1px rgba($black, 20%),
@@ -295,7 +301,7 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-active() {
-  background-color: var(--bp-private-component-button-background-default-active, $light-gray2);
+  background-color: var(--bp-palette-grey-300, $light-gray2);
   box-shadow: var(
     --bp-private-component-button-shadow-active,
     inset 0 0 0 1px rgba($black, 20%),
@@ -388,7 +394,7 @@ $button-dark-minimal-active-text-colors: (
   &:hover,
   &:active,
   &.#{$ns}-active {
-    color: var(--bp-private-component-button-foreground-default-rest, $light-gray5);
+    color: var(--bp-typography-color-base, $light-gray5);
   }
 
   &:hover {
@@ -428,17 +434,17 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-dark-button-default-colors() {
-  background-color: var(--bp-private-component-button-background-default-rest, $dark-gray3);
+  background-color: var(--bp-palette-grey-800, $dark-gray3);
   box-shadow: var(
     --bp-private-component-button-shadow-rest,
     inset 0 0 0 1px rgba($white, 10%),
     0 1px 2px rgba($black, 20%)
   );
-  color: var(--bp-private-component-button-foreground-default-rest, $light-gray5);
+  color: var(--bp-typography-color-base, $light-gray5);
 }
 
 @mixin pt-dark-button-hover() {
-  background-color: var(--bp-private-component-button-background-default-hover, $dark-gray2);
+  background-color: var(--bp-palette-grey-700, $dark-gray2);
   box-shadow: var(
     --bp-private-component-button-shadow-active,
     inset 0 0 0 1px rgba($white, 10%),
@@ -447,7 +453,7 @@ $button-dark-minimal-active-text-colors: (
 }
 
 @mixin pt-dark-button-active() {
-  background-color: var(--bp-private-component-button-background-default-active, $dark-gray1);
+  background-color: var(--bp-palette-grey-900, $dark-gray1);
   box-shadow: var(
     --bp-private-component-button-shadow-active,
     inset 0 0 0 1px rgba($white, 10%),
@@ -469,19 +475,23 @@ $button-dark-minimal-active-text-colors: (
   box-shadow: none;
 
   &:hover {
-    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background-color: color-mix(in srgb, var(--bp-intent-default-hover) 8%, transparent);
+    background-color: var(
+      --bp-surface-layer-color-neutral-hover,
+      color-mix(in srgb, var(--bp-intent-default-hover) 8%, transparent)
+    );
     box-shadow: none;
-    color: var(--bp-typography-color-default-rest);
+    color: var(--bp-typography-color-base, var(--bp-typography-color-default-rest));
     text-decoration: none;
   }
 
   &:active,
   &.#{$ns}-active {
-    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background-color: color-mix(in srgb, var(--bp-intent-default-active) 16%, transparent);
+    background-color: var(
+      --bp-surface-layer-color-neutral-active,
+      color-mix(in srgb, var(--bp-intent-default-active) 16%, transparent)
+    );
     box-shadow: none;
-    color: var(--bp-typography-color-default-rest);
+    color: var(--bp-typography-color-base, var(--bp-typography-color-default-rest));
   }
 
   &:disabled,
@@ -489,7 +499,7 @@ $button-dark-minimal-active-text-colors: (
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
     background: none;
-    color: var(--bp-typography-color-default-disabled);
+    color: var(--bp-typography-color-disabled, var(--bp-typography-color-default-disabled));
     cursor: not-allowed;
 
     &.#{$ns}-active {
@@ -501,27 +511,29 @@ $button-dark-minimal-active-text-colors: (
   [data-bp-color-scheme="dark"] & {
     background: none;
     box-shadow: none;
-    color: var(--bp-intent-default-foreground);
+    color: var(--bp-typography-color-base, var(--bp-intent-default-foreground));
 
     &:hover,
     &:active,
     &.#{$ns}-active {
       background: none;
       box-shadow: none;
-      color: var(--bp-intent-default-foreground);
+      color: var(--bp-typography-color-base, var(--bp-intent-default-foreground));
     }
 
     &:hover {
-      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // TODO(BP7): Update this semantic token to use `--bp-intent-default-hover`
-      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent);
+      background-color: var(
+        --bp-surface-layer-color-neutral-hover,
+        color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent)
+      );
     }
 
     &:active,
     &.#{$ns}-active {
-      // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-      // TODO(BP7): Update this semantic token to use `--bp-intent-default-active`
-      background-color: color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent);
+      background-color: var(
+        --bp-surface-layer-color-neutral-active,
+        color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent)
+      );
     }
 
     &:disabled,
@@ -529,7 +541,7 @@ $button-dark-minimal-active-text-colors: (
     &.#{$ns}-disabled,
     &.#{$ns}-disabled:hover {
       background: none;
-      color: var(--bp-typography-color-default-disabled);
+      color: var(--bp-typography-color-disabled, var(--bp-typography-color-default-disabled));
       cursor: not-allowed;
 
       &.#{$ns}-active {
@@ -564,13 +576,19 @@ $button-dark-minimal-active-text-colors: (
   }
 
   &:hover {
-    background-color: color-mix(in oklch, $intent-color 15%, transparent);
+    background-color: var(
+      --bp-surface-layer-color-#{$intent}-hover,
+      color-mix(in oklch, $intent-color 15%, transparent)
+    );
     color: $text-color;
   }
 
   &:active,
   &.#{$ns}-active {
-    background-color: color-mix(in oklch, $intent-color 30%, transparent);
+    background-color: var(
+      --bp-surface-layer-color-#{$intent}-active,
+      color-mix(in oklch, $intent-color 30%, transparent)
+    );
     color: $active-text-color;
   }
 
@@ -593,13 +611,19 @@ $button-dark-minimal-active-text-colors: (
     color: $dark-text-color;
 
     &:hover {
-      background-color: color-mix(in oklch, $intent-color 20%, transparent);
+      background-color: var(
+        --bp-surface-layer-color-#{$intent}-hover,
+        color-mix(in oklch, $intent-color 20%, transparent)
+      );
       color: $dark-hover-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      background-color: color-mix(in oklch, $intent-color 30%, transparent);
+      background-color: var(
+        --bp-surface-layer-color-#{$intent}-active,
+        color-mix(in oklch, $intent-color 30%, transparent)
+      );
       color: $dark-active-text-color;
     }
 

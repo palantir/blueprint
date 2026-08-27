@@ -68,14 +68,14 @@
     &.#{$ns}-disabled {
       opacity: 1;
       -webkit-text-fill-color: var(
-        --bp-private-component-input-foreground-disabled,
-        rgba($gray1, 60%)
+        --bp-typography-color-disabled,
+        var(--bp-typography-color-default-disabled)
       );
 
       .#{$ns}-dark & {
         -webkit-text-fill-color: var(
-          --bp-private-component-input-foreground-disabled,
-          rgba($gray4, 60%)
+          --bp-typography-color-disabled,
+          var(--bp-typography-color-default-disabled)
         );
       }
     }

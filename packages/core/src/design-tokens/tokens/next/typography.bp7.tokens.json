@@ -60,6 +60,8 @@
             "$type": "color",
             "$description": "base is the near-black body text (palette grey.1000); intent text references the intent's .600 ramp step.",
             "base": { "$value": "{palette.grey.1000}" },
+            "muted": { "$value": "{palette.grey.600}" },
+            "disabled": { "$value": "{palette.grey.600}" },
             "intent": {
                 "neutral": { "$value": "{intent.neutral.600}" },
                 "primary": { "$value": "{intent.primary.600}" },

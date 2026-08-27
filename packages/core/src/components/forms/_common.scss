@@ -86,7 +86,7 @@ $control-group-stack: (
 @mixin pt-input() {
   @include pt-input-placeholder;
   appearance: none;
-  background-color: var(--bp-private-component-input-background-rest, $white);
+  background-color: var(--bp-palette-grey-100, $white);
   border: none;
   border-radius: var(--bp-surface-border-radius);
   box-shadow: var(
@@ -96,8 +96,9 @@ $control-group-stack: (
     inset 0 0 0 1px rgba($black, 20%),
     inset 0 1px 1px rgba($black, 30%)
   );
-  color: var(--bp-private-component-input-foreground-rest, $dark-gray1);
-  font-size: var(--bp-typography-size-body-medium);
+  color: var(--bp-typography-color-base, $dark-gray1);
+  font-family: var(--bp-typography-family-body, inherit);
+  font-size: var(--bp-typography-size-md, var(--bp-typography-size-body-medium));
   font-weight: var(--bp-typography-weight-default);
   height: calc(var(--bp-surface-spacing) * 7.5);
   line-height: calc(var(--bp-surface-spacing) * 7.5);
@@ -154,26 +155,26 @@ $control-group-stack: (
 
 @mixin pt-input-placeholder() {
   &::placeholder {
-    color: var(--bp-private-component-input-foreground-placeholder, $gray1);
+    color: var(--bp-typography-color-muted, $gray1);
     // normalize.css sets an opacity less than 1, we don't want this
     opacity: 1;
   }
 }
 
 @mixin pt-input-disabled() {
-  background-color: var(--bp-private-component-input-background-disabled, rgba($light-gray1, 50%));
+  background-color: var(--bp-palette-grey-200, rgba($light-gray1, 50%));
   box-shadow: none;
-  color: var(--bp-private-component-input-foreground-disabled, rgba($gray1, 60%));
+  color: var(--bp-typography-color-disabled, rgba($gray1, 60%));
   cursor: not-allowed;
   resize: none;
 
   &::placeholder {
-    color: var(--bp-private-component-input-foreground-disabled, rgba($gray1, 60%));
+    color: var(--bp-typography-color-disabled, rgba($gray1, 60%));
   }
 }
 
 @mixin pt-input-large() {
-  font-size: var(--bp-typography-size-body-large);
+  font-size: var(--bp-typography-size-xl, var(--bp-typography-size-body-large));
   height: calc(var(--bp-surface-spacing) * 10);
   line-height: calc(var(--bp-surface-spacing) * 10);
 
@@ -184,7 +185,7 @@ $control-group-stack: (
 }
 
 @mixin pt-input-small() {
-  font-size: var(--bp-typography-size-body-small);
+  font-size: var(--bp-typography-size-sm, var(--bp-typography-size-body-small));
   height: calc(var(--bp-surface-spacing) * 6);
   line-height: calc(var(--bp-surface-spacing) * 6);
   padding-left: calc(var(--bp-surface-spacing) * 2);
@@ -197,20 +198,20 @@ $control-group-stack: (
 }
 
 @mixin pt-dark-input-disabled() {
-  background-color: var(--bp-private-component-input-background-disabled, rgba($dark-gray5, 50%));
+  background-color: var(--bp-palette-grey-900, rgba($dark-gray5, 50%));
   box-shadow: none;
-  color: var(--bp-private-component-input-foreground-disabled, rgba($gray4, 60%));
+  color: var(--bp-typography-color-disabled, rgba($gray4, 60%));
 }
 
 @mixin pt-dark-input-placeholder() {
   &::placeholder {
-    color: var(--bp-private-component-input-foreground-placeholder, $gray4);
+    color: var(--bp-typography-color-muted, $gray4);
   }
 }
 
 @mixin pt-dark-input() {
   @include pt-dark-input-placeholder;
-  background-color: var(--bp-private-component-input-background-rest, rgba($black, 30%));
+  background-color: var(--bp-palette-grey-800, rgba($black, 30%));
   box-shadow: var(
     --bp-private-component-input-shadow-rest,
     0 0 0 0 rgba($blue5, 0%),
@@ -218,7 +219,7 @@ $control-group-stack: (
     inset 0 0 0 1px rgba($white, 20%),
     inset 0 -1px 1px 0 rgba($white, 30%)
   );
-  color: var(--bp-private-component-input-foreground-rest, $light-gray5);
+  color: var(--bp-typography-color-base, $light-gray5);
 
   &:focus,
   &.#{$ns}-active {

@@ -3,68 +3,34 @@
  */
 
 .bp-next {
-  --bp-private-component-button-background-default-rest: var(--bp-palette-grey-100);
-  --bp-private-component-button-background-default-hover: var(--bp-palette-grey-200);
-  --bp-private-component-button-background-default-active: var(--bp-palette-grey-300);
   --bp-private-component-button-background-default-disabled: #e9f0f980; /* grey/100 at 50% */
   --bp-private-component-button-background-default-active-disabled: #aeb5bdb3; /* grey/300 at 70% */
-  --bp-private-component-button-background-intent-primary-rest: var(--bp-intent-primary-500);
-  --bp-private-component-button-background-intent-primary-hover: var(--bp-intent-primary-600);
-  --bp-private-component-button-background-intent-primary-active: var(--bp-intent-primary-700);
   --bp-private-component-button-background-intent-primary-disabled: #3475d080; /* blue/500 at 50% */
-  --bp-private-component-button-background-intent-success-rest: var(--bp-intent-success-600);
-  --bp-private-component-button-background-intent-success-hover: var(--bp-intent-success-700);
-  --bp-private-component-button-background-intent-success-active: var(--bp-intent-success-800);
   --bp-private-component-button-background-intent-success-disabled: #00743180; /* green/600 at 50% */
-  --bp-private-component-button-background-intent-warning-rest: var(--bp-intent-warning-500);
-  --bp-private-component-button-background-intent-warning-hover: var(--bp-intent-warning-600);
-  --bp-private-component-button-background-intent-warning-active: var(--bp-intent-warning-700);
   --bp-private-component-button-background-intent-warning-disabled: #bd520080; /* orange/500 at 50% */
-  --bp-private-component-button-background-intent-danger-rest: var(--bp-intent-danger-500);
-  --bp-private-component-button-background-intent-danger-hover: var(--bp-intent-danger-600);
-  --bp-private-component-button-background-intent-danger-active: var(--bp-intent-danger-700);
   --bp-private-component-button-background-intent-danger-disabled: #c1484980; /* red/500 at 50% */
-  --bp-private-component-button-foreground-default-rest: var(--bp-typography-color-base);
   --bp-private-component-button-foreground-default-disabled: var(--bp-palette-grey-600);
-  --bp-private-component-button-foreground-intent-primary-rest: var(--bp-intent-primary-foreground);
   --bp-private-component-button-foreground-intent-primary-disabled: #ffffff99; /* white/1000 at 60% */
-  --bp-private-component-button-foreground-intent-success-rest: var(--bp-intent-success-foreground);
   --bp-private-component-button-foreground-intent-success-disabled: #ffffff99; /* white/1000 at 60% */
-  --bp-private-component-button-foreground-intent-warning-rest: var(--bp-intent-warning-foreground);
   --bp-private-component-button-foreground-intent-warning-disabled: #ffffff99; /* white/1000 at 60% */
-  --bp-private-component-button-foreground-intent-danger-rest: var(--bp-intent-danger-foreground);
   --bp-private-component-button-foreground-intent-danger-disabled: #ffffff99; /* white/1000 at 60% */
   --bp-private-component-button-shadow-rest: var(--bp-surface-shadow-1);
   --bp-private-component-button-shadow-active: var(--bp-surface-shadow-0);
-  --bp-private-component-input-background-rest: var(--bp-palette-grey-100);
-  --bp-private-component-input-background-disabled: var(--bp-palette-grey-200);
-  --bp-private-component-input-foreground-rest: var(--bp-typography-color-base);
-  --bp-private-component-input-foreground-disabled: var(--bp-palette-grey-600);
-  --bp-private-component-input-foreground-placeholder: var(--bp-palette-grey-600);
   --bp-private-component-input-shadow-rest: inset 0 0 0 1px var(--bp-surface-border-color-neutral), 0 1px 2px rgba(13, 18, 25, 0.12);
-  --bp-private-component-input-shadow-focus: inset 0 0 0 1px var(--bp-intent-primary-500), 0 0 0 2px var(--bp-surface-border-color-primary);
+  --bp-private-component-input-shadow-focus: inset 0 0 0 1px var(--bp-intent-primary-rest), 0 0 0 2px var(--bp-surface-border-color-primary);
   --bp-private-component-input-shadow-readonly: inset 0 0 0 1px var(--bp-surface-border-color-neutral);
-  --bp-private-component-input-shadow-intent-primary-rest: inset 0 0 0 1px var(--bp-intent-primary-500), 0 1px 2px rgba(13, 18, 25, 0.12);
-  --bp-private-component-input-shadow-intent-primary-focus: inset 0 0 0 1px var(--bp-intent-primary-500), 0 0 0 2px var(--bp-surface-border-color-primary);
-  --bp-private-component-input-shadow-intent-primary-readonly: inset 0 0 0 1px var(--bp-intent-primary-500);
-  --bp-private-component-input-shadow-intent-success-rest: inset 0 0 0 1px var(--bp-intent-success-600), 0 1px 2px rgba(13, 18, 25, 0.12);
-  --bp-private-component-input-shadow-intent-success-focus: inset 0 0 0 1px var(--bp-intent-success-600), 0 0 0 2px var(--bp-surface-border-color-success);
-  --bp-private-component-input-shadow-intent-success-readonly: inset 0 0 0 1px var(--bp-intent-success-600);
-  --bp-private-component-input-shadow-intent-warning-rest: inset 0 0 0 1px var(--bp-intent-warning-500), 0 1px 2px rgba(13, 18, 25, 0.12);
-  --bp-private-component-input-shadow-intent-warning-focus: inset 0 0 0 1px var(--bp-intent-warning-500), 0 0 0 2px var(--bp-surface-border-color-warning);
-  --bp-private-component-input-shadow-intent-warning-readonly: inset 0 0 0 1px var(--bp-intent-warning-500);
-  --bp-private-component-input-shadow-intent-danger-rest: inset 0 0 0 1px var(--bp-intent-danger-500), 0 1px 2px rgba(13, 18, 25, 0.12);
-  --bp-private-component-input-shadow-intent-danger-focus: inset 0 0 0 1px var(--bp-intent-danger-500), 0 0 0 2px var(--bp-surface-border-color-danger);
-  --bp-private-component-input-shadow-intent-danger-readonly: inset 0 0 0 1px var(--bp-intent-danger-500);
-  --bp-private-component-menu-background: var(--bp-surface-background-color-base-rest);
-  --bp-private-component-menu-foreground: var(--bp-typography-color-base);
-  --bp-private-component-menu-item-background-hover: var(--bp-surface-layer-color-neutral-hover);
-  --bp-private-component-menu-item-background-pressed: var(--bp-surface-layer-color-neutral-active);
-  --bp-private-component-menu-item-background-active: var(--bp-surface-layer-color-primary-active);
-  --bp-private-component-menu-item-foreground-active: var(--bp-typography-color-intent-primary);
-  --bp-private-component-menu-divider-color: var(--bp-surface-divider-color-default);
-  --bp-private-component-popover-background: var(--bp-surface-background-color-base-rest);
-  --bp-private-component-popover-shadow: var(--bp-surface-shadow-3);
+  --bp-private-component-input-shadow-intent-primary-rest: inset 0 0 0 1px var(--bp-intent-primary-rest), 0 1px 2px rgba(13, 18, 25, 0.12);
+  --bp-private-component-input-shadow-intent-primary-focus: inset 0 0 0 1px var(--bp-intent-primary-rest), 0 0 0 2px var(--bp-surface-border-color-primary);
+  --bp-private-component-input-shadow-intent-primary-readonly: inset 0 0 0 1px var(--bp-intent-primary-rest);
+  --bp-private-component-input-shadow-intent-success-rest: inset 0 0 0 1px var(--bp-intent-success-rest), 0 1px 2px rgba(13, 18, 25, 0.12);
+  --bp-private-component-input-shadow-intent-success-focus: inset 0 0 0 1px var(--bp-intent-success-rest), 0 0 0 2px var(--bp-surface-border-color-success);
+  --bp-private-component-input-shadow-intent-success-readonly: inset 0 0 0 1px var(--bp-intent-success-rest);
+  --bp-private-component-input-shadow-intent-warning-rest: inset 0 0 0 1px var(--bp-intent-warning-rest), 0 1px 2px rgba(13, 18, 25, 0.12);
+  --bp-private-component-input-shadow-intent-warning-focus: inset 0 0 0 1px var(--bp-intent-warning-rest), 0 0 0 2px var(--bp-surface-border-color-warning);
+  --bp-private-component-input-shadow-intent-warning-readonly: inset 0 0 0 1px var(--bp-intent-warning-rest);
+  --bp-private-component-input-shadow-intent-danger-rest: inset 0 0 0 1px var(--bp-intent-danger-rest), 0 1px 2px rgba(13, 18, 25, 0.12);
+  --bp-private-component-input-shadow-intent-danger-focus: inset 0 0 0 1px var(--bp-intent-danger-rest), 0 0 0 2px var(--bp-surface-border-color-danger);
+  --bp-private-component-input-shadow-intent-danger-readonly: inset 0 0 0 1px var(--bp-intent-danger-rest);
   --bp-emphasis-transition-duration: 100ms;
   --bp-emphasis-ease-default: cubic-bezier(0.4, 1, 0.75, 0.9);
   --bp-emphasis-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11);
@@ -97,6 +63,9 @@
   --bp-intent-primary-900: var(--bp-palette-blue-900);
   --bp-intent-primary-1000: var(--bp-palette-blue-1000);
   --bp-intent-primary-foreground: var(--bp-palette-white-1000);
+  --bp-intent-primary-rest: var(--bp-intent-primary-500);
+  --bp-intent-primary-hover: var(--bp-intent-primary-600);
+  --bp-intent-primary-active: var(--bp-intent-primary-700);
   --bp-intent-success-100: var(--bp-palette-green-100);
   --bp-intent-success-200: var(--bp-palette-green-200);
   --bp-intent-success-300: var(--bp-palette-green-300);
@@ -108,6 +77,9 @@
   --bp-intent-success-900: var(--bp-palette-green-900);
   --bp-intent-success-1000: var(--bp-palette-green-1000);
   --bp-intent-success-foreground: var(--bp-palette-white-1000);
+  --bp-intent-success-rest: var(--bp-intent-success-600);
+  --bp-intent-success-hover: var(--bp-intent-success-700);
+  --bp-intent-success-active: var(--bp-intent-success-800);
   --bp-intent-warning-100: var(--bp-palette-orange-100);
   --bp-intent-warning-200: var(--bp-palette-orange-200);
   --bp-intent-warning-300: var(--bp-palette-orange-300);
@@ -119,6 +91,9 @@
   --bp-intent-warning-900: var(--bp-palette-orange-900);
   --bp-intent-warning-1000: var(--bp-palette-orange-1000);
   --bp-intent-warning-foreground: var(--bp-palette-white-1000);
+  --bp-intent-warning-rest: var(--bp-intent-warning-500);
+  --bp-intent-warning-hover: var(--bp-intent-warning-600);
+  --bp-intent-warning-active: var(--bp-intent-warning-700);
   --bp-intent-danger-100: var(--bp-palette-red-100);
   --bp-intent-danger-200: var(--bp-palette-red-200);
   --bp-intent-danger-300: var(--bp-palette-red-300);
@@ -130,6 +105,9 @@
   --bp-intent-danger-900: var(--bp-palette-red-900);
   --bp-intent-danger-1000: var(--bp-palette-red-1000);
   --bp-intent-danger-foreground: var(--bp-palette-white-1000);
+  --bp-intent-danger-rest: var(--bp-intent-danger-500);
+  --bp-intent-danger-hover: var(--bp-intent-danger-600);
+  --bp-intent-danger-active: var(--bp-intent-danger-700);
   --bp-palette-orange-100: oklch(0.9147 0.0427 47.48); /* #fcdbcb */
   --bp-palette-orange-200: oklch(0.8297 0.0891 47.62); /* #f8b695 */
   --bp-palette-orange-300: oklch(0.7426 0.1236 47.04); /* #eb9265 */
@@ -394,6 +372,8 @@
   --bp-typography-weight-strong: 500;
   --bp-typography-line-height-running-factor: 1.105; /** Multiplier applied to a style's standard line-height for multi-line running/body text (midpoint of the former per-size running ratios). Components/users stack their own line-height scaling on top. */
   --bp-typography-color-base: var(--bp-palette-grey-1000);
+  --bp-typography-color-muted: var(--bp-palette-grey-600);
+  --bp-typography-color-disabled: var(--bp-palette-grey-600);
   --bp-typography-color-intent-neutral: var(--bp-intent-neutral-600);
   --bp-typography-color-intent-primary: var(--bp-intent-primary-600);
   --bp-typography-color-intent-success: var(--bp-intent-success-600);
@@ -405,10 +385,10 @@
   .bp-next {
     --bp-private-component-button-background-default-disabled: oklch(from var(--bp-palette-grey-100) l c h / 0.5);
     --bp-private-component-button-background-default-active-disabled: oklch(from var(--bp-palette-grey-300) l c h / 0.7);
-    --bp-private-component-button-background-intent-primary-disabled: oklch(from var(--bp-intent-primary-500) l c h / 0.5);
-    --bp-private-component-button-background-intent-success-disabled: oklch(from var(--bp-intent-success-600) l c h / 0.5);
-    --bp-private-component-button-background-intent-warning-disabled: oklch(from var(--bp-intent-warning-500) l c h / 0.5);
-    --bp-private-component-button-background-intent-danger-disabled: oklch(from var(--bp-intent-danger-500) l c h / 0.5);
+    --bp-private-component-button-background-intent-primary-disabled: oklch(from var(--bp-intent-primary-rest) l c h / 0.5);
+    --bp-private-component-button-background-intent-success-disabled: oklch(from var(--bp-intent-success-rest) l c h / 0.5);
+    --bp-private-component-button-background-intent-warning-disabled: oklch(from var(--bp-intent-warning-rest) l c h / 0.5);
+    --bp-private-component-button-background-intent-danger-disabled: oklch(from var(--bp-intent-danger-rest) l c h / 0.5);
     --bp-private-component-button-foreground-intent-primary-disabled: oklch(from var(--bp-intent-primary-foreground) l c h / 0.6);
     --bp-private-component-button-foreground-intent-success-disabled: oklch(from var(--bp-intent-success-foreground) l c h / 0.6);
     --bp-private-component-button-foreground-intent-warning-disabled: oklch(from var(--bp-intent-warning-foreground) l c h / 0.6);

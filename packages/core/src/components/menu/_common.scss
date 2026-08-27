@@ -103,14 +103,14 @@ $dark-menu-item-intent-colors: (
   }
 
   .#{$ns}-menu-item-label {
-    color: $pt-text-color-muted;
+    color: var(--bp-typography-color-muted, $pt-text-color-muted);
   }
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-icon-color;
+    color: var(--bp-typography-color-muted, $pt-icon-color);
   }
 
   &::before,
@@ -126,7 +126,7 @@ $dark-menu-item-intent-colors: (
   // The latter is often used to indicate keyboard navigation, and it's helpful to distinguish between keyboard
   // and mouse interactions.
   &:active {
-    background-color: var(--bp-private-component-menu-item-background-pressed, rgba($gray3, 30%));
+    background-color: var(--bp-surface-layer-color-neutral-active, rgba($gray3, 30%));
 
     .#{$ns}-menu-item-label {
       color: $pt-text-color;
@@ -154,7 +154,7 @@ $dark-menu-item-intent-colors: (
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
     background-color: inherit !important;
-    color: $pt-text-color-disabled !important;
+    color: var(--bp-typography-color-disabled, $pt-text-color-disabled) !important;
     cursor: not-allowed !important;
     // override global a:focus styles
     outline: none !important;
@@ -162,11 +162,11 @@ $dark-menu-item-intent-colors: (
     &::before,
     .#{$ns}-menu-item-icon,
     .#{$ns}-submenu-icon {
-      color: $pt-icon-color-disabled !important;
+      color: var(--bp-typography-color-disabled, $pt-icon-color-disabled) !important;
     }
 
     .#{$ns}-menu-item-label {
-      color: $pt-text-color-disabled !important;
+      color: var(--bp-typography-color-disabled, $pt-text-color-disabled) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
@@ -176,14 +176,14 @@ $dark-menu-item-intent-colors: (
   color: inherit;
 
   .#{$ns}-menu-item-label {
-    color: $pt-dark-text-color-muted;
+    color: var(--bp-typography-color-muted, $pt-dark-text-color-muted);
   }
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-dark-icon-color;
+    color: var(--bp-typography-color-muted, $pt-dark-icon-color);
   }
 
   &:hover {
@@ -193,7 +193,7 @@ $dark-menu-item-intent-colors: (
   // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
   &:active {
     // we can use the same color as light theme due to transparency
-    background-color: var(--bp-private-component-menu-item-background-pressed, rgba($gray3, 30%));
+    background-color: var(--bp-surface-layer-color-neutral-active, rgba($gray3, 30%));
 
     .#{$ns}-menu-item-label {
       color: $pt-dark-text-color;
@@ -207,23 +207,23 @@ $dark-menu-item-intent-colors: (
   // pt-disable always overrides over styles
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
-    color: $pt-dark-text-color-disabled !important;
+    color: var(--bp-typography-color-disabled, $pt-dark-text-color-disabled) !important;
 
     &::before,
     .#{$ns}-menu-item-icon,
     .#{$ns}-submenu-icon {
-      color: $pt-dark-icon-color-disabled !important;
+      color: var(--bp-typography-color-disabled, $pt-dark-icon-color-disabled) !important;
     }
 
     .#{$ns}-menu-item-label {
-      color: $pt-dark-text-color-disabled !important;
+      color: var(--bp-typography-color-disabled, $pt-dark-text-color-disabled) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
 }
 
 @mixin menu-item-hover() {
-  background-color: var(--bp-private-component-menu-item-background-hover, rgba($gray3, 15%));
+  background-color: var(--bp-surface-layer-color-neutral-hover, rgba($gray3, 15%));
   color: inherit;
   cursor: pointer;
   text-decoration: none;
@@ -235,7 +235,7 @@ $dark-menu-item-intent-colors: (
   // need to override typography styles here
   .#{$ns}-menu-item-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-dark-icon-color;
+    color: var(--bp-typography-color-muted, $pt-dark-icon-color);
   }
 }
 
@@ -246,11 +246,11 @@ $dark-menu-item-intent-colors: (
   @if $is-dark {
     $intent-colors: $dark-menu-item-intent-colors;
     $background-alpha: 0.2;
-    background-color: var(--bp-private-component-menu-item-background-active, rgba($blue3, 20%));
-    color: var(--bp-private-component-menu-item-foreground-active, $blue5);
+    background-color: var(--bp-surface-layer-color-primary-active, rgba($blue3, 20%));
+    color: var(--bp-typography-color-intent-primary, $blue5);
   } @else {
-    background-color: var(--bp-private-component-menu-item-background-active, rgba($blue3, 10%));
-    color: var(--bp-private-component-menu-item-foreground-active, $blue2);
+    background-color: var(--bp-surface-layer-color-primary-active, rgba($blue3, 10%));
+    color: var(--bp-typography-color-intent-primary, $blue2);
 
     .#{$ns}-menu-item-label {
       color: inherit;
@@ -262,15 +262,21 @@ $dark-menu-item-intent-colors: (
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
     color: var(
-      --bp-private-component-menu-item-foreground-active,
+      --bp-typography-color-intent-primary,
       list.nth(map.get($intent-colors, "primary"), 2)
     );
   }
 
   @each $intent in ("success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba(list.nth(map.get($intent-colors, $intent), 1), $background-alpha);
-      color: list.nth(map.get($intent-colors, $intent), 2);
+      background-color: var(
+        --bp-surface-layer-color-#{$intent}-active,
+        rgba(list.nth(map.get($intent-colors, $intent), 1), $background-alpha)
+      );
+      color: var(
+        --bp-typography-color-intent-#{$intent},
+        list.nth(map.get($intent-colors, $intent), 2)
+      );
 
       &::before,
       .#{$ns}-menu-item-icon,
@@ -288,7 +294,7 @@ $dark-menu-item-intent-colors: (
 
 @mixin menu-item-intent($intent, $is-dark, $bg-color, $fg-color, $fg-color-active) {
   &.#{$ns}-intent-#{$intent} {
-    color: $fg-color;
+    color: var(--bp-typography-color-intent-#{$intent}, $fg-color);
 
     &::before,
     .#{$ns}-menu-item-icon,
@@ -300,20 +306,20 @@ $dark-menu-item-intent-colors: (
 
     &:hover {
       @if $is-dark {
-        background-color: rgba($bg-color, 20%);
+        background-color: var(--bp-surface-layer-color-#{$intent}-hover, rgba($bg-color, 20%));
       } @else {
-        background-color: rgba($bg-color, 10%);
+        background-color: var(--bp-surface-layer-color-#{$intent}-hover, rgba($bg-color, 10%));
       }
     }
 
     &:active,
     &.#{$ns}-active {
       @if $is-dark {
-        background-color: rgba($bg-color, 30%);
+        background-color: var(--bp-surface-layer-color-#{$intent}-active, rgba($bg-color, 30%));
       } @else {
-        background-color: rgba($bg-color, 20%);
+        background-color: var(--bp-surface-layer-color-#{$intent}-active, rgba($bg-color, 20%));
       }
-      color: $fg-color-active;
+      color: var(--bp-typography-color-intent-#{$intent}, $fg-color-active);
     }
   }
 }
@@ -345,13 +351,13 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-divider() {
-  border-top: 1px solid var(--bp-private-component-menu-divider-color, rgba($black, 15%));
+  border-top: 1px solid var(--bp-surface-divider-color-default, rgba($black, 15%));
   display: block;
   // use negative margin to make dividers take up full menu width
   margin: $pt-spacing (-$pt-spacing);
 
   .#{$ns}-dark & {
-    border-top-color: var(--bp-private-component-menu-divider-color, rgba($white, 20%));
+    border-top-color: var(--bp-surface-divider-color-default, rgba($white, 20%));
   }
 }
 
