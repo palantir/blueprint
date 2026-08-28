@@ -32,8 +32,8 @@ $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2
 $menu-background-color: $white !default;
 $dark-menu-background-color: $dark-gray3 !default;
 
-$menu-item-color-hover: rgba($gray3, 15%) !default;
-$menu-item-color-active: rgba($gray3, 30%) !default;
+$menu-item-color-hover: rgba($gray3, 0.15) !default;
+$menu-item-color-active: rgba($gray3, 0.3) !default;
 
 $menu-item-intent-colors: (
   "primary": (

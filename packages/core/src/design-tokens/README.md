@@ -72,8 +72,24 @@ Dimension tokens preserve their authored CSS units. For example, the recipe abov
 convert it to pixels or modify the document root font size. Consequently, the same `rem` value may have different
 computed pixel sizes in a host application and a widget iframe when those documents use different root font sizes.
 
-`--bp-private-*` values are not a theming API. Button, InputGroup, Menu, and Popover do not require them for supported
-appearance overrides, including compound shadows and Popover arrow styling.
+### Heading recipes
+
+Blueprint H1-H6 styles consume a public semantic recipe for each heading level. Each default font-size token aliases the
+shared typography scale, while line height and letter spacing can be changed without altering unrelated text styles.
+Heading block margins are shared because Blueprint applies the same spacing to all six heading components:
+
+```css
+.bp-next.product-theme {
+    --bp-typography-heading-margin-block-start: 0;
+    --bp-typography-heading-margin-block-end: 1.25rem;
+    --bp-typography-heading-h1-font-size: 3rem;
+    --bp-typography-heading-h1-line-height: 1.2;
+    --bp-typography-heading-h1-letter-spacing: -0.125rem;
+}
+```
+
+Responsive themes can override the same recipe tokens inside media queries. Blueprint does not change the document root
+font size, so `rem` values continue to resolve against the host document.
 
 ## Development
 

@@ -428,14 +428,10 @@ const formatChannelModification = (channel: string, mod: ChannelModification | u
     }
 };
 
-/** Maps public paths to `--bp-*` and private `_internal.*` paths to `--bp-private-*`. */
-const tokenPathToCssName = (path: readonly string[]): string =>
-    path[0] === "_internal" ? `bp-private-${path.slice(1).join("-")}` : `bp-${path.join("-")}`;
-
 /** Converts a DTCG token reference (e.g. `"{color.primary}"`) to a CSS `var()` expression. */
 const tokenReferenceToVar = (ref: string): string => {
     const path = ref.slice(1, -1).split(".");
-    return `var(--${tokenPathToCssName(path)})`;
+    return `var(--bp-${path.join("-")})`;
 };
 
 /** Formats an alpha value as a CSS string — either a literal number or a resolved `var()` reference. */
@@ -845,17 +841,17 @@ const deriveTransformConfig: Parameters<typeof StyleDictionary.registerTransform
         }
 
         const refPath = tokenRef.slice(1, -1).split(".");
-        const baseVar = `var(--${tokenPathToCssName(refPath)})`;
+        const baseVar = `var(--bp-${refPath.join("-")})`;
 
         return formatDerivedColorToCss(baseVar, derivation);
     },
 };
 
-/** Name transform that keeps private component aliases out of the public `--bp-*` namespace. */
+/** Name transform that prefixes all token CSS custom properties with `--bp-` and kebab-cases the path. */
 const nameTransformConfig: Parameters<typeof StyleDictionary.registerTransform>[0] = {
     name: "name/bp/kebab",
     type: "name",
-    transform: token => tokenPathToCssName(token.path),
+    transform: token => "bp-" + token.path.join("-"),
 };
 
 /**

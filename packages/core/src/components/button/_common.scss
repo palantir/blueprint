@@ -28,41 +28,41 @@ CSS `border` property issues:
 `box-shadow` doesn't have these issues, we're using it instead of `border`.
 */
 $button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($black, 20%),
-  0 1px 2px rgba($black, 10%) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.2),
+  0 1px 2px rgba($black, 0.1) !default;
 $button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($black, 20%),
-  0 1px 2px rgba($black, 20%) !default;
+  inset 0 0 0 $button-border-width rgba($black, 0.2),
+  0 1px 2px rgba($black, 0.2) !default;
 
 $dark-button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($white, 10%),
-  0 1px 2px rgba($black, 20%) !default;
+  inset 0 0 0 $button-border-width rgba($white, 0.1),
+  0 1px 2px rgba($black, 0.2) !default;
 $dark-button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($white, 10%),
-  0 1px 2px rgba($black, 40%) !default;
+  inset 0 0 0 $button-border-width rgba($white, 0.1),
+  0 1px 2px rgba($black, 0.4) !default;
 
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
 $button-background-color-hover: $light-gray4 !default;
 $button-background-color-active: $light-gray2 !default;
-$button-background-color-disabled: rgba($light-gray1, 50%) !default;
-$button-background-color-active-disabled: rgba($light-gray1, 70%) !default;
-$button-intent-color-disabled: rgba($white, 60%);
+$button-background-color-disabled: rgba($light-gray1, 0.5) !default;
+$button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
+$button-intent-color-disabled: rgba($white, 0.6);
 $dark-button-color-disabled: $pt-dark-text-color-disabled !default;
 $dark-button-background-color: $dark-gray3 !default;
 $dark-button-background-color-hover: $dark-gray2 !default;
 $dark-button-background-color-active: $dark-gray1 !default;
-$dark-button-background-color-disabled: rgba($dark-gray3, 15%) !default;
-$dark-button-background-color-active-disabled: rgba($dark-gray3, 70%) !default;
-$dark-button-intent-color-disabled: rgba($white, 30%);
+$dark-button-background-color-disabled: rgba($dark-gray3, 0.15) !default;
+$dark-button-background-color-active-disabled: rgba($dark-gray3, 0.7) !default;
+$dark-button-intent-color-disabled: rgba($white, 0.3);
 
 $minimal-button-divider-width: 1px !default;
 $minimal-button-background-color: none !default;
-$minimal-button-background-color-hover: rgba($gray3, 15%) !default;
-$minimal-button-background-color-active: rgba($gray3, 30%) !default;
+$minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
+$minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 $dark-minimal-button-background-color: none !default;
-$dark-minimal-button-background-color-hover: rgba($gray3, 15%) !default;
-$dark-minimal-button-background-color-active: rgba($gray3, 30%) !default;
+$dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
+$dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 
 $button-outlined-width: 1px !default;
 $button-outlined-border-intent-opacity: 0.6 !default;

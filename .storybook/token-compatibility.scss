@@ -43,10 +43,28 @@ $white: #ffffff;
   --bp-emphasis-focus-offset: 0;
   --bp-typography-family-body: "Frutiger W01", "Arial", sans-serif;
   --bp-typography-family-heading: var(--bp-typography-family-body);
-  --bp-typography-family-display: var(--bp-typography-family-body);
+  --bp-typography-heading-margin-block-start: 0;
+  --bp-typography-heading-margin-block-end: 1.25rem;
+  --bp-typography-heading-h1-font-size: 3rem;
+  --bp-typography-heading-h1-line-height: 1.2;
+  --bp-typography-heading-h1-letter-spacing: -0.125rem;
+  --bp-typography-heading-h2-font-size: 2.25rem;
+  --bp-typography-heading-h2-line-height: 1.1667;
+  --bp-typography-heading-h2-letter-spacing: -0.063rem;
+  --bp-typography-heading-h3-font-size: 1.875rem;
+  --bp-typography-heading-h3-line-height: 1.20048;
+  --bp-typography-heading-h3-letter-spacing: -0.063rem;
+  --bp-typography-heading-h4-font-size: 1.625rem;
+  --bp-typography-heading-h4-line-height: 1.19267;
+  --bp-typography-heading-h4-letter-spacing: -0.0277rem;
+  --bp-typography-heading-h5-font-size: 1.375rem;
+  --bp-typography-heading-h5-line-height: 1.3125;
+  --bp-typography-heading-h5-letter-spacing: -0.0277rem;
+  --bp-typography-heading-h6-font-size: 1.125rem;
+  --bp-typography-heading-h6-line-height: 1.3125;
+  --bp-typography-heading-h6-letter-spacing: -0.0277rem;
   --bp-typography-size-sm: 1rem;
   --bp-typography-size-md: 1.125rem;
-  --bp-typography-size-lg: 1.125rem;
   --bp-typography-weight-default: 400;
   --bp-typography-weight-strong: 600;
   --bp-typography-line-height-running-factor: 1.6;
@@ -164,6 +182,33 @@ $white: #ffffff;
   background-color: $white;
   color: #231f20;
   font-family: var(--bp-typography-family-body);
+}
+
+@media (width <= 63.999rem) {
+  .bp-next.token-compatibility-nhsd-theme {
+    --bp-typography-heading-margin-block-end: 0.9375rem;
+    --bp-typography-heading-h1-font-size: 2.25rem;
+    --bp-typography-heading-h1-line-height: 1.1665;
+    --bp-typography-heading-h1-letter-spacing: -0.0277rem;
+    --bp-typography-heading-h2-font-size: 1.875rem;
+    --bp-typography-heading-h2-line-height: 1.1337;
+    --bp-typography-heading-h2-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h3-font-size: 1.625rem;
+    --bp-typography-heading-h3-line-height: 1.19267;
+    --bp-typography-heading-h3-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h4-font-size: 1.375rem;
+    --bp-typography-heading-h4-line-height: 1.22749;
+    --bp-typography-heading-h4-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h5-font-size: 1.125rem;
+    --bp-typography-heading-h5-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h6-font-size: 1rem;
+    --bp-typography-heading-h6-letter-spacing: -0.01666rem;
+  }
+}
+
+.token-compatibility-heading-column {
+  inline-size: 24rem;
+  max-inline-size: 100%;
 }
 
 /* Story content surrounding InputGroup; this does not target Blueprint component selectors. */

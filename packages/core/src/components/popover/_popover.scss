@@ -130,7 +130,7 @@ $dark-popover-arrow-box-shadow:
 }
 
 .#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
-  background-color: rgba($white, 0%);
+  background: rgba($white, 0);
 }
 
 .#{$ns}-popover-transition-container {

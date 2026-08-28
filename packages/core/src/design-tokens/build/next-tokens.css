@@ -439,7 +439,7 @@
   --bp-surface-background-color-danger-active: var(--bp-intent-danger-700);
   --bp-typography-family-body: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", blueprint-icons-16, sans-serif;
   --bp-typography-family-heading: var(--bp-typography-family-body); /** Aliases the body family; kept as its own slot so a distinct heading face can be supplied without touching body. */
-  --bp-typography-family-display: "Alliance No.2", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bp-typography-family-display: var(--bp-typography-family-body); /** Placeholder display face: aliases the body family for now; swap in a dedicated display stack when one is supplied. */
   --bp-typography-family-mono: "JetBrains Mono", monospace;
   --bp-typography-size-2xs: 9px;
   --bp-typography-size-xs: 10px;
@@ -454,6 +454,26 @@
   --bp-typography-size-6xl: 48px;
   --bp-typography-weight-default: 400;
   --bp-typography-weight-strong: 500;
+  --bp-typography-heading-margin-block-start: 0px;
+  --bp-typography-heading-margin-block-end: 12px;
+  --bp-typography-heading-h1-font-size: var(--bp-typography-size-6xl);
+  --bp-typography-heading-h1-line-height: 40px;
+  --bp-typography-heading-h1-letter-spacing: 0px;
+  --bp-typography-heading-h2-font-size: var(--bp-typography-size-5xl);
+  --bp-typography-heading-h2-line-height: 32px;
+  --bp-typography-heading-h2-letter-spacing: 0px;
+  --bp-typography-heading-h3-font-size: var(--bp-typography-size-4xl);
+  --bp-typography-heading-h3-line-height: 25px;
+  --bp-typography-heading-h3-letter-spacing: 0px;
+  --bp-typography-heading-h4-font-size: var(--bp-typography-size-3xl);
+  --bp-typography-heading-h4-line-height: 21px;
+  --bp-typography-heading-h4-letter-spacing: 0px;
+  --bp-typography-heading-h5-font-size: var(--bp-typography-size-2xl);
+  --bp-typography-heading-h5-line-height: 19px;
+  --bp-typography-heading-h5-letter-spacing: 0px;
+  --bp-typography-heading-h6-font-size: var(--bp-typography-size-lg);
+  --bp-typography-heading-h6-line-height: 16px;
+  --bp-typography-heading-h6-letter-spacing: 0px;
   --bp-typography-line-height-running-factor: 1.105; /** Multiplier applied to a style's standard line-height for multi-line running/body text (midpoint of the former per-size running ratios). Components/users stack their own line-height scaling on top. */
   --bp-typography-color-base: var(--bp-palette-grey-1000);
   --bp-typography-color-muted: var(--bp-palette-grey-600);
