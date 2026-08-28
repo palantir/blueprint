@@ -1,0 +1,90 @@
+{
+    "button": {
+        "background": {
+            "$type": "color",
+            "default": {
+                "rest": { "$value": "{intent.neutral.800}" },
+                "hover": { "$value": "{intent.neutral.700}" },
+                "active": { "$value": "{intent.neutral.900}" },
+                "disabled": {
+                    "$value": "{intent.neutral.800}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.5 } }
+                },
+                "active-disabled": {
+                    "$value": "{intent.neutral.900}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.7 } }
+                }
+            }
+        },
+        "icon": {
+            "foreground": {
+                "$type": "color",
+                "default": {
+                    "rest": { "$value": "{typography.color.base}" }
+                }
+            }
+        },
+        "foreground": {
+            "$type": "color",
+            "default": {
+                "rest": { "$value": "{typography.color.base}" },
+                "disabled": { "$value": "{typography.color.disabled}" }
+            },
+            "intent": {
+                "primary": {
+                    "disabled": {
+                        "$value": "{intent.primary.foreground}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                    }
+                },
+                "success": {
+                    "disabled": {
+                        "$value": "{intent.success.foreground}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                    }
+                },
+                "warning": {
+                    "disabled": {
+                        "$value": "{intent.warning.foreground}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                    }
+                },
+                "danger": {
+                    "disabled": {
+                        "$value": "{intent.danger.foreground}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.4 } }
+                    }
+                }
+            },
+            "minimal": {
+                "intent": {
+                    "default": {
+                        "rest": { "$value": "{button.foreground.default.rest}" },
+                        "hover": { "$value": "{button.foreground.default.rest}" },
+                        "active": { "$value": "{button.foreground.default.rest}" }
+                    },
+                    "primary": {
+                        "rest": { "$value": "{typography.color.intent.primary}" },
+                        "hover": { "$value": "{typography.color.intent.primary}" },
+                        "active": { "$value": "{typography.color.intent.primary}" }
+                    },
+                    "success": {
+                        "rest": { "$value": "{typography.color.intent.success}" },
+                        "hover": { "$value": "{typography.color.intent.success}" },
+                        "active": { "$value": "{typography.color.intent.success}" }
+                    },
+                    "warning": {
+                        "rest": { "$value": "{typography.color.intent.warning}" },
+                        "hover": { "$value": "{typography.color.intent.warning}" },
+                        "active": { "$value": "{typography.color.intent.warning}" }
+                    },
+                    "danger": {
+                        "rest": { "$value": "{typography.color.intent.danger}" },
+                        "hover": { "$value": "{typography.color.intent.danger}" },
+                        "active": { "$value": "{typography.color.intent.danger}" }
+                    }
+                }
+            }
+        }
+    }
+}

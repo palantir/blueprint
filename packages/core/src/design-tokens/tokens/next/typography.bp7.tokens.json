@@ -4,6 +4,7 @@
             "$type": "fontFamily",
             "body": {
                 "$value": [
+                    "Inter",
                     "-apple-system",
                     "BlinkMacSystemFont",
                     "Segoe UI",
@@ -26,7 +27,7 @@
                 "$value": "{typography.family.body}"
             },
             "mono": {
-                "$value": ["monospace"]
+                "$value": ["JetBrains Mono", "monospace"]
             }
         },
         "size": {
@@ -49,6 +50,42 @@
             "default": { "$value": 400 },
             "strong": { "$value": 500 }
         },
+        "heading": {
+            "$type": "dimension",
+            "$description": "Semantic recipes for Blueprint H1-H6. Font sizes alias the shared type scale; line height and tracking remain independently themeable per heading level.",
+            "margin-block-start": { "$value": { "value": 0, "unit": "px" } },
+            "margin-block-end": { "$value": { "value": 12, "unit": "px" } },
+            "h1": {
+                "font-size": { "$value": "{typography.size.6xl}" },
+                "line-height": { "$value": { "value": 40, "unit": "px" } },
+                "letter-spacing": { "$value": { "value": 0, "unit": "px" } }
+            },
+            "h2": {
+                "font-size": { "$value": "{typography.size.5xl}" },
+                "line-height": { "$value": { "value": 32, "unit": "px" } },
+                "letter-spacing": { "$value": { "value": 0, "unit": "px" } }
+            },
+            "h3": {
+                "font-size": { "$value": "{typography.size.4xl}" },
+                "line-height": { "$value": { "value": 25, "unit": "px" } },
+                "letter-spacing": { "$value": { "value": 0, "unit": "px" } }
+            },
+            "h4": {
+                "font-size": { "$value": "{typography.size.3xl}" },
+                "line-height": { "$value": { "value": 21, "unit": "px" } },
+                "letter-spacing": { "$value": { "value": 0, "unit": "px" } }
+            },
+            "h5": {
+                "font-size": { "$value": "{typography.size.2xl}" },
+                "line-height": { "$value": { "value": 19, "unit": "px" } },
+                "letter-spacing": { "$value": { "value": 0, "unit": "px" } }
+            },
+            "h6": {
+                "font-size": { "$value": "{typography.size.lg}" },
+                "line-height": { "$value": { "value": 16, "unit": "px" } },
+                "letter-spacing": { "$value": { "value": 0, "unit": "px" } }
+            }
+        },
         "line-height": {
             "$type": "number",
             "running-factor": {
@@ -60,6 +97,8 @@
             "$type": "color",
             "$description": "base is the near-black body text (palette grey.1000); intent text references the intent's .600 ramp step.",
             "base": { "$value": "{palette.grey.1000}" },
+            "muted": { "$value": "{palette.grey.600}" },
+            "disabled": { "$value": "{palette.grey.600}" },
             "intent": {
                 "neutral": { "$value": "{intent.neutral.600}" },
                 "primary": { "$value": "{intent.primary.600}" },

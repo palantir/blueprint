@@ -1,0 +1,229 @@
+// This standalone Storybook stylesheet is compiled separately from Blueprint's legacy global Sass variables.
+/* stylelint-disable-next-line @blueprintjs/no-color-literal -- Bootstrap the local alias used below. */
+$white: #ffffff;
+
+/*
+ * The NHS comparison is intentionally expressed only through Blueprint's public tokens.
+ * Differences which tokens cannot represent remain visible until BlueprintThemeProvider supplies structured component
+ * overrides; theme authors should not need to write Blueprint selectors.
+ */
+.bp-next.token-compatibility-nhsd-theme {
+  --bp-intent-primary-rest: #005bbb;
+  --bp-intent-primary-hover: #003087;
+  --bp-intent-primary-active: #005bbb;
+  --bp-intent-primary-foreground: #{$white};
+  --bp-intent-success-rest: #006646;
+  --bp-intent-success-hover: #006646;
+  --bp-intent-success-active: #006646;
+  --bp-intent-success-foreground: #{$white};
+
+  /* NHS Digital has no warning Button; keep BP7's accessible warning tokens instead of mapping its accent orange. */
+  --bp-intent-danger-rest: #b30f0f;
+  --bp-intent-danger-hover: #b30f0f;
+  --bp-intent-danger-active: #b30f0f;
+  --bp-intent-danger-foreground: #{$white};
+  --bp-surface-background-color-base-rest: #{$white};
+  --bp-surface-border-color-neutral: #d5dade;
+  --bp-surface-border-color-primary: #005bbb;
+  --bp-surface-border-color-success: #006646;
+  --bp-surface-border-color-danger: #b30f0f;
+  --bp-surface-divider-color-default: #e8edee;
+  --bp-surface-layer-color-neutral-hover: color-mix(in srgb, #3f525f 6%, transparent);
+  --bp-surface-layer-color-neutral-active: color-mix(in srgb, #3f525f 12%, transparent);
+  --bp-surface-layer-color-primary-hover: color-mix(in srgb, #003087 6%, transparent);
+  --bp-surface-layer-color-primary-active: color-mix(in srgb, #005bbb 12%, transparent);
+  --bp-surface-layer-color-success-hover: color-mix(in srgb, #006646 6%, transparent);
+  --bp-surface-layer-color-success-active: color-mix(in srgb, #006646 12%, transparent);
+  --bp-surface-layer-color-danger-hover: color-mix(in srgb, #b30f0f 6%, transparent);
+  --bp-surface-layer-color-danger-active: color-mix(in srgb, #b30f0f 12%, transparent);
+  --bp-surface-shadow-3: 0.125rem 0.375rem 0.75rem oklch(0% 0 0deg / 10%);
+  --bp-emphasis-transition-duration: 150ms;
+  --bp-emphasis-focus-color: #fae100;
+  --bp-emphasis-focus-width: 0.1875rem;
+  --bp-emphasis-focus-offset: 0;
+  --bp-typography-family-body: "Frutiger W01", "Arial", sans-serif;
+  --bp-typography-family-heading: var(--bp-typography-family-body);
+  --bp-typography-heading-margin-block-start: 0;
+  --bp-typography-heading-margin-block-end: 1.25rem;
+  --bp-typography-heading-h1-font-size: 3rem;
+  --bp-typography-heading-h1-line-height: 1.2;
+  --bp-typography-heading-h1-letter-spacing: -0.125rem;
+  --bp-typography-heading-h2-font-size: 2.25rem;
+  --bp-typography-heading-h2-line-height: 1.1667;
+  --bp-typography-heading-h2-letter-spacing: -0.063rem;
+  --bp-typography-heading-h3-font-size: 1.875rem;
+  --bp-typography-heading-h3-line-height: 1.20048;
+  --bp-typography-heading-h3-letter-spacing: -0.063rem;
+  --bp-typography-heading-h4-font-size: 1.625rem;
+  --bp-typography-heading-h4-line-height: 1.19267;
+  --bp-typography-heading-h4-letter-spacing: -0.0277rem;
+  --bp-typography-heading-h5-font-size: 1.375rem;
+  --bp-typography-heading-h5-line-height: 1.3125;
+  --bp-typography-heading-h5-letter-spacing: -0.0277rem;
+  --bp-typography-heading-h6-font-size: 1.125rem;
+  --bp-typography-heading-h6-line-height: 1.3125;
+  --bp-typography-heading-h6-letter-spacing: -0.0277rem;
+  --bp-typography-size-sm: 1rem;
+  --bp-typography-size-md: 1.125rem;
+  --bp-typography-weight-default: 400;
+  --bp-typography-weight-strong: 600;
+  --bp-typography-line-height-running-factor: 1.6;
+  --bp-typography-color-base: #231f20;
+  --bp-typography-color-muted: #3f525f;
+  --bp-typography-color-disabled: #768692;
+  --bp-typography-color-intent-primary: #005bbb;
+  --bp-typography-color-intent-success: #006646;
+  --bp-typography-color-intent-danger: #b30f0f;
+
+  /* Button */
+  --bp-button-min-block-size: 2.75rem;
+  --bp-button-padding-block: 0.625rem;
+  --bp-button-padding-inline: 1.25rem;
+  --bp-button-border-radius: 9999px;
+  --bp-button-border-width-solid: 2px;
+  --bp-button-border-width-outlined: 2px;
+  --bp-button-font-family: var(--bp-typography-family-body);
+  --bp-button-font-size: 0.875rem;
+  --bp-button-font-weight: 600;
+  --bp-button-line-height: 1.25rem;
+  --bp-button-background-default-rest: #005bbb;
+  --bp-button-background-default-hover: #003087;
+  --bp-button-background-default-active: #005bbb;
+  --bp-button-background-default-disabled: #d5dade;
+  --bp-button-background-default-active-disabled: #d5dade;
+  --bp-button-background-intent-primary-rest: #005bbb;
+  --bp-button-background-intent-primary-hover: #003087;
+  --bp-button-background-intent-primary-active: #005bbb;
+  --bp-button-background-intent-primary-disabled: #d5dade;
+  --bp-button-background-intent-success-rest: #006646;
+  --bp-button-background-intent-success-hover: #006646;
+  --bp-button-background-intent-success-active: #006646;
+  --bp-button-background-intent-success-disabled: #d5dade;
+  --bp-button-background-intent-danger-rest: #b30f0f;
+  --bp-button-background-intent-danger-hover: #b30f0f;
+  --bp-button-background-intent-danger-active: #b30f0f;
+  --bp-button-background-intent-danger-disabled: #d5dade;
+  --bp-button-foreground-default-rest: #{$white};
+  --bp-button-foreground-default-disabled: #3f525f;
+  --bp-button-foreground-intent-primary-rest: #{$white};
+  --bp-button-foreground-intent-primary-disabled: #3f525f;
+  --bp-button-foreground-intent-success-rest: #{$white};
+  --bp-button-foreground-intent-success-disabled: #3f525f;
+  --bp-button-foreground-intent-danger-rest: #{$white};
+  --bp-button-foreground-intent-danger-disabled: #3f525f;
+  --bp-button-icon-foreground-default-rest: #{$white};
+  --bp-button-foreground-minimal-intent-default-rest: #005bbb;
+  --bp-button-foreground-minimal-intent-default-hover: #003087;
+  --bp-button-foreground-minimal-intent-default-active: #005bbb;
+  --bp-button-foreground-minimal-intent-primary-rest: #005bbb;
+  --bp-button-foreground-minimal-intent-primary-hover: #003087;
+  --bp-button-foreground-minimal-intent-primary-active: #005bbb;
+  --bp-button-foreground-minimal-intent-success-rest: #006646;
+  --bp-button-foreground-minimal-intent-success-hover: #006646;
+  --bp-button-foreground-minimal-intent-success-active: #006646;
+  --bp-button-foreground-minimal-intent-danger-rest: #b30f0f;
+  --bp-button-foreground-minimal-intent-danger-hover: #b30f0f;
+  --bp-button-foreground-minimal-intent-danger-active: #b30f0f;
+  --bp-button-shadow-rest: none;
+  --bp-button-shadow-active: none;
+
+  /* Shared text-input appearance */
+  --bp-input-background-rest: #{$white};
+  --bp-input-background-disabled: #edf1f1;
+  --bp-input-foreground-rest: #231f20;
+  --bp-input-foreground-disabled: #3f525f;
+  --bp-input-foreground-placeholder: #3f525f;
+  --bp-input-shadow-rest: inset 0 0 0 1px #231f20;
+  --bp-input-shadow-focus: 0 0 0 0.1875rem #fae100, inset 0 0 0 1px #231f20;
+  --bp-input-shadow-readonly: inset 0 0 0 1px #231f20;
+  --bp-input-shadow-intent-primary-rest: inset 0 0 0 1px #005bbb;
+  --bp-input-shadow-intent-primary-focus: 0 0 0 0.1875rem #fae100, inset 0 0 0 1px #005bbb;
+  --bp-input-shadow-intent-primary-readonly: inset 0 0 0 1px #005bbb;
+  --bp-input-shadow-intent-success-rest: inset 0 0 0 1px #006646;
+  --bp-input-shadow-intent-success-focus: 0 0 0 0.1875rem #fae100, inset 0 0 0 1px #006646;
+  --bp-input-shadow-intent-success-readonly: inset 0 0 0 1px #006646;
+  --bp-input-shadow-intent-danger-rest: inset 0 0 0 1px #b30f0f;
+  --bp-input-shadow-intent-danger-focus: 0 0 0 0.1875rem #fae100, inset 0 0 0 1px #b30f0f;
+  --bp-input-shadow-intent-danger-readonly: inset 0 0 0 1px #b30f0f;
+
+  /* Menu */
+  --bp-menu-background-rest: #{$white};
+  --bp-menu-foreground-rest: #231f20;
+  --bp-menu-foreground-muted: #3f525f;
+  --bp-menu-foreground-disabled: #768692;
+  --bp-menu-border-radius: 0.375rem;
+  --bp-menu-font-family: var(--bp-typography-family-body);
+  --bp-menu-font-size: 1.125rem;
+  --bp-menu-divider-color: #e8edee;
+  --bp-menu-item-border-radius: 0;
+  --bp-menu-item-background-hover: #e8edee;
+  --bp-menu-item-background-active: #d5dade;
+  --bp-menu-item-background-intent-primary-hover: #003087;
+  --bp-menu-item-background-intent-primary-active: #005bbb;
+  --bp-menu-item-background-intent-success-hover: #006646;
+  --bp-menu-item-background-intent-success-active: #006646;
+  --bp-menu-item-background-intent-danger-hover: #b30f0f;
+  --bp-menu-item-background-intent-danger-active: #b30f0f;
+  --bp-menu-item-foreground-intent-primary: #{$white};
+  --bp-menu-item-foreground-intent-success: #{$white};
+  --bp-menu-item-foreground-intent-danger: #{$white};
+
+  /* Popover */
+  --bp-popover-background-rest: #{$white};
+  --bp-popover-foreground-rest: #231f20;
+  --bp-popover-shadow: 0.125rem 0.375rem 0.75rem oklch(0% 0 0deg / 10%);
+  --bp-popover-border-radius: 0.375rem;
+  --bp-popover-font-family: var(--bp-typography-family-body);
+  --bp-popover-font-size: 1.125rem;
+  --bp-popover-arrow-shadow: 1px 1px 6px oklch(0% 0 0deg / 20%);
+  --bp-popover-arrow-border-opacity: 10%;
+
+  /* NHS Digital publishes a light theme only, so its comparison column stays light in either Storybook scheme. */
+  background-color: $white;
+  color: #231f20;
+  font-family: var(--bp-typography-family-body);
+}
+
+@media (width <= 63.999rem) {
+  .bp-next.token-compatibility-nhsd-theme {
+    --bp-typography-heading-margin-block-end: 0.9375rem;
+    --bp-typography-heading-h1-font-size: 2.25rem;
+    --bp-typography-heading-h1-line-height: 1.1665;
+    --bp-typography-heading-h1-letter-spacing: -0.0277rem;
+    --bp-typography-heading-h2-font-size: 1.875rem;
+    --bp-typography-heading-h2-line-height: 1.1337;
+    --bp-typography-heading-h2-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h3-font-size: 1.625rem;
+    --bp-typography-heading-h3-line-height: 1.19267;
+    --bp-typography-heading-h3-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h4-font-size: 1.375rem;
+    --bp-typography-heading-h4-line-height: 1.22749;
+    --bp-typography-heading-h4-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h5-font-size: 1.125rem;
+    --bp-typography-heading-h5-letter-spacing: -0.01666rem;
+    --bp-typography-heading-h6-font-size: 1rem;
+    --bp-typography-heading-h6-letter-spacing: -0.01666rem;
+  }
+}
+
+.token-compatibility-heading-column {
+  inline-size: 24rem;
+  max-inline-size: 100%;
+}
+
+/* Story content surrounding InputGroup; this does not target Blueprint component selectors. */
+.token-compatibility-search-control {
+  .token-compatibility-search-label,
+  .token-compatibility-search-hint {
+    display: block;
+  }
+
+  .token-compatibility-search-label {
+    font-weight: 600;
+  }
+
+  .token-compatibility-search-hint {
+    color: var(--bp-typography-color-muted);
+    margin-block-end: 4px;
+  }
+}

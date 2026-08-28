@@ -97,7 +97,9 @@ $button-group-z-index: (
     > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
     > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
-      margin-right: calc(-1 * var(--bp-surface-border-width));
+      margin-right: calc(
+        -1 * max(var(--bp-surface-border-width), var(--bp-button-border-width-solid, 0px))
+      );
     }
   }
 
@@ -177,13 +179,15 @@ $button-group-z-index: (
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-popover-target:first-child > .#{$ns}-button,
       > .#{$ns}-button:first-child {
-        border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
+        border-radius: var(--bp-button-border-radius, var(--bp-surface-border-radius))
+          var(--bp-button-border-radius, var(--bp-surface-border-radius)) 0 0;
       }
 
       > .#{$ns}-popover-wrapper:last-child .#{$ns}-button,
       > .#{$ns}-popover-target:last-child > .#{$ns}-button,
       > .#{$ns}-button:last-child {
-        border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
+        border-radius: 0 0 var(--bp-button-border-radius, var(--bp-surface-border-radius))
+          var(--bp-button-border-radius, var(--bp-surface-border-radius));
       }
     }
 
@@ -191,7 +195,9 @@ $button-group-z-index: (
       > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
-        margin-bottom: calc(-1 * var(--bp-surface-border-width));
+        margin-bottom: calc(
+          -1 * max(var(--bp-surface-border-width), var(--bp-button-border-width-solid, 0px))
+        );
       }
     }
 

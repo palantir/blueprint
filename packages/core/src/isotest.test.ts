@@ -31,6 +31,9 @@ const config: Record<string, IsomorphicTestConfig> = {
     BlueprintProvider: {
         className: false,
     },
+    BlueprintThemeProvider: {
+        className: false,
+    },
     Breadcrumbs: {
         props: { items: [] },
     },

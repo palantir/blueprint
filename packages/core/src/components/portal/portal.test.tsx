@@ -14,18 +14,33 @@
  * limitations under the License.
  */
 
+import { render } from "@testing-library/react";
 import { mount, type ReactWrapper } from "enzyme";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { PortalProvider } from "../../context/portal/portalProvider";
+import { type BlueprintThemeColorScheme, BlueprintThemeProvider } from "../../theme/blueprintThemeProvider";
 
 import { Portal, type PortalProps } from "./portal";
 
+interface ThemedPortalProps {
+    colorScheme: BlueprintThemeColorScheme;
+}
+
+const ThemedPortal = ({ colorScheme }: ThemedPortalProps) => (
+    <BlueprintThemeProvider colorScheme={colorScheme}>
+        <Portal>
+            <p>themed portal</p>
+        </Portal>
+    </BlueprintThemeProvider>
+);
+
 describe("<Portal>", () => {
     let rootElement: HTMLElement | undefined;
-    let portal: ReactWrapper<PortalProps>;
+    let portal: ReactWrapper<PortalProps> | undefined;
+    let unmountThemedPortal: (() => void) | undefined;
 
     beforeEach(() => {
         rootElement = document.createElement("div");
@@ -33,6 +48,9 @@ describe("<Portal>", () => {
     });
     afterEach(() => {
         portal?.unmount();
+        portal = undefined;
+        unmountThemedPortal?.();
+        unmountThemedPortal = undefined;
         rootElement?.remove();
     });
 
@@ -99,6 +117,70 @@ describe("<Portal>", () => {
 
         const portalElement = document.querySelector(`.${CLASS_TO_TEST.replace(" ", ".")}`);
         assert.isTrue(portalElement?.classList.contains(Classes.PORTAL));
+    });
+
+    it("preserves the nearest Blueprint theme scope and updates its scheme without replacing the portal root", () => {
+        document.body.classList.add(Classes.DARK);
+        try {
+            const { rerender, unmount } = render(<ThemedPortal colorScheme="dark" />, { container: rootElement });
+            unmountThemedPortal = unmount;
+
+            const providerElement = rootElement?.querySelector<HTMLElement>("[data-bp-theme]");
+            const portalElement = document.body.querySelector<HTMLElement>(`.${Classes.PORTAL}[data-bp-theme]`);
+            const scopeId = providerElement?.dataset.bpTheme;
+
+            assert.isDefined(scopeId);
+            assert.equal(portalElement?.dataset.bpTheme, scopeId);
+            assert.equal(portalElement?.dataset.bpColorScheme, "dark");
+            assert.isFalse(portalElement?.classList.contains("bp-next"));
+            assert.isTrue(portalElement?.classList.contains(Classes.DARK));
+
+            rerender(<ThemedPortal colorScheme="light" />);
+
+            const updatedProviderElement = rootElement?.querySelector<HTMLElement>("[data-bp-theme]");
+            const updatedPortalElement = document.body.querySelector<HTMLElement>(`.${Classes.PORTAL}[data-bp-theme]`);
+            assert.strictEqual(updatedPortalElement, portalElement);
+            assert.equal(updatedProviderElement?.dataset.bpColorScheme, "light");
+            assert.isFalse(updatedProviderElement?.classList.contains(Classes.DARK));
+            assert.equal(updatedPortalElement?.dataset.bpTheme, scopeId);
+            assert.equal(updatedPortalElement?.dataset.bpColorScheme, "light");
+            assert.isFalse(updatedPortalElement?.classList.contains(Classes.DARK));
+        } finally {
+            document.body.classList.remove(Classes.DARK);
+        }
+    });
+
+    it("preserves caller-owned bp-next classes while the provider scheme changes", () => {
+        const { rerender, unmount } = render(
+            <BlueprintThemeProvider colorScheme="dark">
+                <Portal className="bp-next portal-class-source">
+                    <p>portal class source</p>
+                </Portal>
+                <PortalProvider portalClassName="bp-next provider-class-source">
+                    <Portal>
+                        <p>provider class source</p>
+                    </Portal>
+                </PortalProvider>
+            </BlueprintThemeProvider>,
+            { container: rootElement },
+        );
+        unmountThemedPortal = unmount;
+
+        rerender(
+            <BlueprintThemeProvider colorScheme="light">
+                <Portal className="bp-next portal-class-source">
+                    <p>portal class source</p>
+                </Portal>
+                <PortalProvider portalClassName="bp-next provider-class-source">
+                    <Portal>
+                        <p>provider class source</p>
+                    </Portal>
+                </PortalProvider>
+            </BlueprintThemeProvider>,
+        );
+
+        assert.isTrue(document.body.querySelector(".portal-class-source")?.classList.contains("bp-next"));
+        assert.isTrue(document.body.querySelector(".provider-class-source")?.classList.contains("bp-next"));
     });
 
     it("does not crash when removing multiple classes from className", () => {

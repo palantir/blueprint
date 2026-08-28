@@ -1,0 +1,8 @@
+{
+    "input": {
+        "background": {
+            "$type": "color",
+            "disabled": { "$value": "{intent.neutral.900}" }
+        }
+    }
+}

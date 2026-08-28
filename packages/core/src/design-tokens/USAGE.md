@@ -106,47 +106,55 @@ The Button component (`src/components/button/`) demonstrates how surface and int
 > [!NOTE]
 > The Button component in dark mode currently derives the `active` and `hover` states for minimal and outline buttons from the `rest` token. This is expected to be updated with an updated palette.
 
-### Surface tokens in Button
+### Button recipe tokens
 
-Surface tokens control the button's dimensions and structural properties:
+Public Button tokens define the default-size component recipe. Their default values alias the shared surface and
+typography roles where those roles match, while allowing a component theme to change Button decisions independently:
 
 ```scss
-// Layout — spacing token used as a multiplier base
-height: calc(var(--bp-surface-spacing) * 7.5); // 30px default height
-padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2); // 4px 8px
-border-radius: var(--bp-surface-border-radius); // 4px
-
-// Box shadow — two layers: inset border + depth shadow
-box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+box-sizing: border-box;
+min-block-size: var(--bp-button-min-block-size);
+padding-block: var(--bp-button-padding-block);
+padding-inline: var(--bp-button-padding-inline);
+border-radius: var(--bp-button-border-radius);
+font-family: var(--bp-button-font-family);
+font-size: var(--bp-button-font-size);
+font-weight: var(--bp-button-font-weight);
+line-height: var(--bp-button-line-height);
+box-shadow: var(--bp-button-shadow-rest);
 ```
 
-The button's box-shadow has two layers that use tokens differently:
+`min-block-size` is a floor rather than a fixed height, so padding, borders, and line height can define the normal size
+without clipping larger content. Solid and outlined variants have separate border-width tokens. Small and large Button
+geometry remains spacing-based until size-specific recipe tokens are introduced.
 
-- **Inset border layer**: Simulates a 1px border using `--bp-surface-border-width`. In light mode, `--bp-surface-border-color-strong` is mixed 90% with `--bp-palette-black` to darken the gray token toward black for sufficient contrast. In dark mode, `--bp-surface-border-color-default` is scaled to 50% with `transparent` to halve the token's built-in 20% alpha down to 10%.
-- **Depth shadow layer**: Uses `--bp-palette-black` at varying opacity (`10%` at rest, `20%` on hover/active) for a consistent drop shadow across themes.
-
-The large button variant simply scales the multiplier: `calc(var(--bp-surface-spacing) * 10)` for height and `calc(var(--bp-surface-spacing) * 4)` for horizontal padding.
+Dimension tokens retain their authored units. A theme may use values such as `0.875rem`; Blueprint emits and consumes
+that value without converting it to pixels. As with ordinary CSS, `rem` resolves against the current document's root font
+size.
 
 ### Intent tokens in Button
 
-Intent tokens drive the button's color across every interaction state. For non-default intents (primary, success, warning, danger), a Sass map wires each intent to its tokens:
+Button component tokens are the CSS consumption points for every interaction state. Their defaults alias the global
+intent roles, so a semantic intent override still propagates while a component theme can override Button alone:
 
 ```scss
 $button-intent-states: (
     "primary": (
-        var(--bp-intent-primary-rest),
+        var(--bp-button-background-intent-primary-rest),
         // background
-        var(--bp-intent-primary-hover),
+        var(--bp-button-background-intent-primary-hover),
         // background on hover
-        var(--bp-intent-primary-active),
+        var(--bp-button-background-intent-primary-active),
         // background on active
-        var(--bp-intent-primary-foreground),
+        var(--bp-button-background-intent-primary-disabled),
+        // disabled background
+        var(--bp-button-foreground-intent-primary-rest),
         // text color
+        var(--bp-button-foreground-intent-primary-disabled),
+        // disabled text color
     ), // success, warning, danger follow the same pattern
 );
 ```
 
-Disabled states reference `--bp-intent-default-disabled` at reduced opacity, and minimal/outlined variants use `--bp-surface-border-color-strong` for their borders.
+Minimal variants consume their own `--bp-button-foreground-minimal-intent-*` state tokens. Intent outlined borders derive
+from those foreground values; the non-intent outlined border defaults to the shared surface border color.

@@ -1,7 +1,7 @@
 {
     "palette": {
         "$type": "color",
-        "$description": "BP7 palette PREVIEW dark-mode override, CIECAM02 contrast-compensated (#ffffff to #000000, Yb=15). white/black are mode-independent and intentionally omitted (they fall back to the light/base values).",
+        "$description": "BP7 palette proposal under the opt-in .bp-next scope. This dark-mode override is CIECAM02 contrast-compensated (#ffffff to #000000, Yb=15); white/black fall back to mode-independent base values.",
         "orange": {
             "100": {
                 "$value": {

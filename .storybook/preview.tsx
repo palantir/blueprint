@@ -25,6 +25,11 @@ import "@blueprintjs/labs/lib/css/blueprint-labs.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
 import "@blueprintjs/table/lib/css/table.css";
 
+// BP7 remains opt-in so Storybook can compare its new palette with the unscoped BP6 baseline.
+import "../packages/core/src/design-tokens/build/next-tokens.css";
+import "../packages/core/src/design-tokens/build/next-tokens-dark.css";
+import "./token-compatibility.scss";
+
 const preview: Preview = {
     parameters: {
         backgrounds: { disable: true },

@@ -3,13 +3,15 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { storybookLayoutDecorator } from "@storybook-common";
+import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
+import { expect, within } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { Intent, Size } from "../../common";
+import { Classes, Intent, Size } from "../../common";
 import { Button } from "../button/buttons";
+import { H5 } from "../html/html";
 import { Tag } from "../tag/tag";
 
 import { InputGroup } from "./inputGroup";
@@ -232,6 +234,162 @@ export const FocusedExample: Story = {
         await userEvent.click(input);
     },
     render: args => <InputGroup {...args} placeholder="Click to focus..." />,
+};
+
+const inputVisualProperties = [
+    "backgroundColor",
+    "color",
+    "boxShadow",
+    "borderRadius",
+    "fontFamily",
+    "fontSize",
+    "height",
+] as const;
+
+const getInputVisualStyle = (input: HTMLElement) => {
+    const style = getComputedStyle(input);
+    const placeholderStyle = getComputedStyle(input, "::placeholder");
+    return [...inputVisualProperties.map(property => style[property]), placeholderStyle.color];
+};
+
+const inputCompatibilityStates = [
+    { label: "Rest", inputProps: {} },
+    { label: "Focused", inputProps: { inputClassName: Classes.ACTIVE } },
+    { label: "Readonly", inputProps: { readOnly: true } },
+    { label: "Disabled", inputProps: { disabled: true } },
+] as const;
+
+const renderInputTokenComparison = ({ id, label, className }: { id: string; label: string; className: string }) => {
+    const searchInputId = `${id}-search`;
+    const searchHintId = `${searchInputId}-hint`;
+
+    return (
+        <section aria-labelledby={id} className={className} style={{ flex: "0 0 300px" }}>
+            <H5 id={id}>{label}</H5>
+            <Flex flexDirection="column" gap={3}>
+                <div className="token-compatibility-search-control">
+                    <label className="token-compatibility-search-label" htmlFor={searchInputId}>
+                        Search
+                    </label>
+                    <span className="token-compatibility-search-hint" id={searchHintId}>
+                        Enter a keyword to find results
+                    </span>
+                    <InputGroup
+                        aria-describedby={searchHintId}
+                        id={searchInputId}
+                        rightElement={
+                            <Button
+                                aria-label="Submit search"
+                                icon="search"
+                                size="small"
+                                type="button"
+                                variant="minimal"
+                            />
+                        }
+                    />
+                </div>
+                {inputCompatibilityStates.map(({ label: stateLabel, inputProps }) => (
+                    <Flex key={stateLabel} flexDirection="column" gap={1}>
+                        <StoryLabel title={stateLabel} />
+                        <InputGroup
+                            {...inputProps}
+                            aria-label={`${stateLabel} search input`}
+                            defaultValue="Search query"
+                            rightElement={
+                                <Button
+                                    aria-label={`Submit ${stateLabel.toLowerCase()} search`}
+                                    disabled={"disabled" in inputProps && inputProps.disabled}
+                                    icon="search"
+                                    size="small"
+                                    type="button"
+                                    variant="minimal"
+                                />
+                            }
+                        />
+                    </Flex>
+                ))}
+            </Flex>
+        </section>
+    );
+};
+
+/** Shows which parts of an NHS Digital form-input theme can be expressed using public Blueprint tokens alone. */
+export const TokenCompatibility: Story = {
+    name: "BP6 baseline → BP7 defaults → NHS public-token theme",
+    parameters: {
+        layout: "padded",
+    },
+    render: () => (
+        <Flex alignItems="flex-start" gap={6}>
+            {renderInputTokenComparison({
+                id: "input-comparison-bp6",
+                label: "BP6 baseline",
+                className: "token-compatibility-baseline",
+            })}
+            {renderInputTokenComparison({
+                id: "input-comparison-bp7",
+                label: "BP7 defaults: new palette",
+                className: "bp-next token-compatibility-bp7-defaults",
+            })}
+            {renderInputTokenComparison({
+                id: "input-comparison-nhsd-theme",
+                label: "NHS public-token theme",
+                className: "bp-next token-compatibility-nhsd-theme",
+            })}
+        </Flex>
+    ),
+    play: async ({ canvasElement }) => {
+        const canvas = within(canvasElement);
+        const baselineRegion = canvas.getByRole("region", { name: "BP6 baseline" });
+        const defaultRegion = canvas.getByRole("region", { name: /BP7 defaults:/ });
+        const nhsdRegion = canvas.getByRole("region", { name: "NHS public-token theme" });
+        const baselineInputs = within(baselineRegion).getAllByRole("textbox");
+        const defaultInputs = within(defaultRegion).getAllByRole("textbox");
+        const nhsdInputs = within(nhsdRegion).getAllByRole("textbox");
+        const baselineSearchButtons = within(baselineRegion).getAllByRole("button", { name: /^Submit / });
+        const defaultSearchButtons = within(defaultRegion).getAllByRole("button", { name: /^Submit / });
+        const nhsdSearchButtons = within(nhsdRegion).getAllByRole("button", { name: /^Submit / });
+
+        await expect(getComputedStyle(baselineRegion).getPropertyValue("--bp-input-background-rest")).not.toBe("");
+        await expect(getComputedStyle(defaultRegion).getPropertyValue("--bp-input-background-rest")).not.toBe("");
+        await expect(getComputedStyle(nhsdRegion).getPropertyValue("--bp-input-background-rest").trim()).toBe(
+            "#ffffff",
+        );
+
+        await expect(defaultInputs).toHaveLength(baselineInputs.length);
+        await expect(nhsdInputs).toHaveLength(defaultInputs.length);
+        await expect(baselineSearchButtons).toHaveLength(baselineInputs.length);
+        await expect(defaultSearchButtons).toHaveLength(defaultInputs.length);
+        await expect(nhsdSearchButtons).toHaveLength(nhsdInputs.length);
+
+        await expect(
+            defaultInputs.some((input, index) => {
+                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(baselineInputs[index]).join("|");
+            }),
+        ).toBe(true);
+        await expect(
+            nhsdInputs.some((input, index) => {
+                return getInputVisualStyle(input).join("|") !== getInputVisualStyle(defaultInputs[index]).join("|");
+            }),
+        ).toBe(true);
+
+        const nhsdRestInput = within(nhsdRegion).getByRole("textbox", { name: "Rest search input" });
+        const nhsdRestStyle = getComputedStyle(nhsdRestInput);
+        await expect(nhsdRestStyle.backgroundColor).toBe("rgb(255, 255, 255)");
+        await expect(nhsdRestStyle.fontFamily).toContain("Frutiger W01");
+        await expect(nhsdRestStyle.fontSize).toBe("18px");
+
+        const nhsdSearchInput = within(nhsdRegion).getByRole("textbox", { name: "Search" });
+        const nhsdSearchButton = within(nhsdRegion).getByRole("button", { name: "Submit search" });
+        await expect(nhsdSearchInput).toBeVisible();
+        await expect(nhsdSearchButton).toBeVisible();
+
+        const nhsdFocusedInput = within(nhsdRegion).getByRole("textbox", { name: "Focused search input" });
+        await expect(getComputedStyle(nhsdFocusedInput).boxShadow).toContain("rgb(250, 225, 0)");
+
+        const nhsdDisabledSearchButton = within(nhsdRegion).getByRole("button", { name: "Submit disabled search" });
+        await expect(nhsdDisabledSearchButton).toBeDisabled();
+    },
 };
 
 /**

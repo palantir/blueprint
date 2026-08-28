@@ -1,0 +1,26 @@
+{
+    "popover": {
+        "background": {
+            "$type": "color",
+            "rest": { "$value": "{surface.background-color.default.rest}" }
+        },
+        "foreground": {
+            "$type": "color",
+            "rest": { "$value": "{typography.color-default.rest}" }
+        },
+        "shadow": {
+            "$type": "shadow",
+            "$value": "{surface.shadow.3}"
+        },
+        "arrow": {
+            "shadow": {
+                "$type": "string",
+                "$value": "0 0 0 1px hsl(215, 3%, 48%), 1px 1px 6px rgba(17, 20, 24, 0.4)"
+            },
+            "border-opacity": {
+                "$type": "number",
+                "$value": 0.2
+            }
+        }
+    }
+}

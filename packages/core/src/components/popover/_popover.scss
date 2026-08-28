@@ -19,25 +19,34 @@ $dark-popover-arrow-box-shadow:
   1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-popover {
+  // Raw pure-black and HSL values below are the exact BP6 compound-shadow fallbacks;
+  // Blueprint's palette does not contain equivalent named colors for them.
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 7.5,
     $arrow-offset: $pt-spacing,
     $arrow-target-offset: -$pt-spacing
   );
   @include popover-appearance(
-    $pt-popover-background-color,
-    inherit,
-    $pt-popover-box-shadow,
-    $popover-arrow-box-shadow,
-    $pt-border-shadow-opacity
+    var(--bp-popover-background-rest, $white),
+    var(--bp-popover-foreground-rest, inherit),
+    var(
+      --bp-popover-shadow,
+      0 0 0 1px rgba($black, 10%),
+      0 20px 25px -5px rgba(0, 0, 0, 10%),
+      0 10px 15px -3px rgba(0, 0, 0, 10%)
+    ),
+    var(--bp-popover-arrow-shadow, 1px 1px 6px rgba($black, 20%)),
+    var(--bp-popover-arrow-border-opacity, 10%)
   );
   @include scale-transition;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-popover-border-radius, $pt-border-radius);
   display: inline-block;
+  font-family: var(--bp-popover-font-family, var(--bp-typography-family-body, inherit));
+  font-size: var(--bp-popover-font-size, var(--bp-typography-size-md, inherit));
   z-index: $pt-z-index-overlay;
 
   .#{$ns}-popover-content {
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-popover-border-radius, $pt-border-radius);
     position: relative;
   }
 
@@ -88,11 +97,19 @@ $dark-popover-arrow-box-shadow:
   &.#{$ns}-dark,
   .#{$ns}-dark & {
     @include popover-appearance(
-      $pt-dark-popover-background-color,
-      inherit,
-      $pt-dark-popover-box-shadow,
-      $dark-popover-arrow-box-shadow,
-      $pt-dark-border-shadow-opacity
+      var(--bp-popover-background-rest, $dark-gray3),
+      var(--bp-popover-foreground-rest, inherit),
+      var(
+        --bp-popover-shadow,
+        0 0 0 1px hsl(215deg, 3%, 38%),
+        inset 0 0 0 1px rgba($white, 20%),
+        0 20px 25px -5px rgba(0, 0, 0, 30%),
+        inset 0 0 0.5px 0 rgba($white, 30%),
+        inset 0 0.5px 0 0 rgba($white, 8%),
+        0 10px 30px -5px rgba(0, 0, 0, 30%)
+      ),
+      var(--bp-popover-arrow-shadow, 0 0 0 1px hsl(215deg, 3%, 48%), 1px 1px 6px rgba($black, 40%)),
+      var(--bp-popover-arrow-border-opacity, 20%)
     );
   }
 

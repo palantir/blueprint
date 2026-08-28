@@ -29,41 +29,50 @@ Styleguide headings
 
 .#{$ns}-heading {
   @include heading-typography;
-  margin: 0 0 ($pt-spacing * 3);
+  margin-block: var(--bp-typography-heading-margin-block-start, 0)
+    var(--bp-typography-heading-margin-block-end, #{$pt-spacing * 3});
+  margin-inline: 0;
   padding: 0;
 }
 
-// tag: (font-size, line-height)
+// tag: (font-size, line-height, letter-spacing)
 $headings: (
   "h1": (
-    36px,
-    40px,
+    var(--bp-typography-heading-h1-font-size, 36px),
+    var(--bp-typography-heading-h1-line-height, 40px),
+    var(--bp-typography-heading-h1-letter-spacing, inherit),
   ),
   "h2": (
-    28px,
-    32px,
+    var(--bp-typography-heading-h2-font-size, 28px),
+    var(--bp-typography-heading-h2-line-height, 32px),
+    var(--bp-typography-heading-h2-letter-spacing, inherit),
   ),
   "h3": (
-    22px,
-    25px,
+    var(--bp-typography-heading-h3-font-size, 22px),
+    var(--bp-typography-heading-h3-line-height, 25px),
+    var(--bp-typography-heading-h3-letter-spacing, inherit),
   ),
   "h4": (
-    18px,
-    21px,
+    var(--bp-typography-heading-h4-font-size, 18px),
+    var(--bp-typography-heading-h4-line-height, 21px),
+    var(--bp-typography-heading-h4-letter-spacing, inherit),
   ),
   "h5": (
-    16px,
-    19px,
+    var(--bp-typography-heading-h5-font-size, 16px),
+    var(--bp-typography-heading-h5-line-height, 19px),
+    var(--bp-typography-heading-h5-letter-spacing, inherit),
   ),
   "h6": (
-    14px,
-    16px,
+    var(--bp-typography-heading-h6-font-size, 14px),
+    var(--bp-typography-heading-h6-line-height, 16px),
+    var(--bp-typography-heading-h6-letter-spacing, inherit),
   ),
 ) !default;
 
 @each $tag, $props in $headings {
   %#{$tag} {
     font-size: list.nth($props, 1);
+    letter-spacing: list.nth($props, 3);
     line-height: list.nth($props, 2);
   }
 

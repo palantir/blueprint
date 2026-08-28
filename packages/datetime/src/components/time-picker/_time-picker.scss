@@ -85,10 +85,13 @@ $timepicker-control-width: $pt-spacing * 8 !default;
 
     @each $intent, $color in $pt-intent-colors {
       &.#{$ns}-intent-#{$intent} {
-        @include pt-input-intent($color);
+        @include pt-input-intent($intent, $color);
 
         .#{$ns}-dark & {
-          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
+          @include pt-dark-input-intent(
+            $intent,
+            map.get($pt-dark-input-intent-box-shadow-colors, $intent)
+          );
         }
       }
     }

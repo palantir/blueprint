@@ -1,0 +1,39 @@
+{
+    "popover": {
+        "$description": "Public Popover appearance tokens. Defaults reference semantic tokens so global theme changes continue to propagate.",
+        "background": {
+            "$type": "color",
+            "rest": { "$value": "{surface.background-color.base.rest}" }
+        },
+        "foreground": {
+            "$type": "color",
+            "rest": { "$value": "{typography.color.base}" }
+        },
+        "shadow": {
+            "$type": "shadow",
+            "$value": "{surface.shadow.3}"
+        },
+        "border-radius": {
+            "$type": "dimension",
+            "$value": "{surface.border-radius}"
+        },
+        "font-family": {
+            "$type": "fontFamily",
+            "$value": "{typography.family.body}"
+        },
+        "font-size": {
+            "$type": "dimension",
+            "$value": "{typography.size.md}"
+        },
+        "arrow": {
+            "shadow": {
+                "$type": "string",
+                "$value": "1px 1px 6px rgba(17, 20, 24, 0.2)"
+            },
+            "border-opacity": {
+                "$type": "number",
+                "$value": 0.1
+            }
+        }
+    }
+}

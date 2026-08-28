@@ -26,9 +26,16 @@ lerna-debug.log
 
 # Blueprint
 build/
+!packages/core/src/design-tokens/build/
+packages/core/src/design-tokens/build/*
+!packages/core/src/design-tokens/build/next-tokens.css
+!packages/core/src/design-tokens/build/next-tokens-dark.css
 dist/
 lib/
 generated/
+!packages/core/src/theme/generated/
+!packages/core/src/theme/generated/defaultThemeTokensLight.ts
+!packages/core/src/theme/generated/defaultThemeTokensDark.ts
 coverage/
 /docs
 docs-static/**/*.d.ts
@@ -42,3 +49,4 @@ site/docs/*
 !site/docs/
 !site/docs/versions/
 site/docs/versions/**/*.d.ts
+.playwright-cli/

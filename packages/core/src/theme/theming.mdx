@@ -1,0 +1,93 @@
+---
+title: JSON themes
+reference: json-themes
+---
+
+# JSON themes
+
+`BlueprintThemeProvider` applies a validated Blueprint V1 theme to one React subtree. It scopes token, component,
+font, and color-scheme overrides to that subtree and to Blueprint portals created from it. Sibling content is not
+affected.
+
+Import the standard Blueprint CSS before rendering the provider. Themes are partial overrides over the stable BP6
+defaults. To opt into the complete BP7 token preset instead, pass the exported `BLUEPRINT_BP7_THEME` document. The
+stylesheet's `.bp-next` class remains available to CSS-only consumers, but the provider does not enable it.
+
+```tsx
+import {
+    BLUEPRINT_BP7_THEME,
+    BLUEPRINT_THEME_V1_SCHEMA_URL,
+    BlueprintThemeProvider,
+    type BlueprintThemeV1,
+} from "@blueprintjs/core";
+
+const theme = {
+    $schema: BLUEPRINT_THEME_V1_SCHEMA_URL,
+    tokens: {
+        "--bp-button-font-size": "0.875rem",
+        "--bp-theme-brand": { light: "#005eb8", dark: "#41a7f5" },
+        "--bp-button-background-intent-primary-rest": "var(--bp-theme-brand)",
+    },
+    components: {
+        button: {
+            base: {
+                textTransform: "none",
+            },
+            "intent:primary": {
+                borderRadius: "0",
+                ":hover": { filter: "brightness(0.9)" },
+            },
+        },
+        input: {
+            base: { borderRadius: "0" },
+        },
+    },
+} satisfies BlueprintThemeV1;
+
+export function ThemedContent() {
+    return <BlueprintThemeProvider theme={theme}>{/* Blueprint content */}</BlueprintThemeProvider>;
+}
+
+export function BlueprintSevenContent() {
+    return <BlueprintThemeProvider theme={BLUEPRINT_BP7_THEME}>{/* Blueprint content */}</BlueprintThemeProvider>;
+}
+```
+
+Set `colorScheme="dark"` to select named dark token values and Blueprint's dark component defaults. A theme may be a
+typed object, an unknown decoded value, or a JSON string. Invalid updates keep the provider's last valid compiled theme.
+Use `parseBlueprintTheme` when an editor needs structured validation errors before rendering.
+
+## V1 document
+
+Every document contains exactly three root properties:
+
+- `$schema` must equal `BLUEPRINT_THEME_V1_SCHEMA_URL`.
+- `tokens` maps public lowercase `--bp-*` token names and theme-owned `--bp-theme-*` variables to CSS strings. A value
+  may instead be an object containing exactly `light` and `dark` CSS strings.
+- `components` maps the targets below to documented modifiers and camel-case CSS declarations.
+
+Authored CSS strings are preserved, including `rem` values. The provider does not change the document root font size.
+Private `--bp-private-*` tokens, selectors, at-rules, unsupported modifiers or pseudo-classes, declaration terminators,
+CSS comments, control characters, and style-tag text are rejected.
+
+The bundled `BLUEPRINT_THEME_V1_SCHEMA` describes the same JSON contract. `BLUEPRINT_BP7_THEME_TOKENS` contains the
+generated public BP7 token manifest, and `BLUEPRINT_BP7_THEME` exposes it as a complete theme document.
+
+## Component targets
+
+Public tokens are the normal appearance API. Component declarations cover selector-specific geometry and layout that
+cannot be expressed through those tokens; theme authors do not write Blueprint selectors.
+
+| Component                | Targets                                                                                                                                                | Modifiers                                                                                                                  |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| Button                   | `button`, `button-text`                                                                                                                                | `base`, `intent:primary`, `intent:success`, `intent:warning`, `intent:danger`, `minimal`, `outlined`, `active`, `disabled` |
+| InputGroup               | `input-group`, `input`, `input-with-left-element`, `input-with-action`, `input-placeholder`, `input-left-container`, `input-left-icon`, `input-action` | `base`, `intent:primary`, `intent:success`, `intent:warning`, `intent:danger`, `active`, `disabled`                        |
+| InputGroup action Button | `input-action-button`                                                                                                                                  | `base`, `intent:primary`, `intent:success`, `intent:warning`, `intent:danger`, `minimal`, `outlined`, `disabled`           |
+| Menu                     | `menu`, `menu-divider`, `menu-item-separator`                                                                                                          | `base`                                                                                                                     |
+| MenuItem                 | `menu-item`, `menu-item-label`, `menu-item-icon`                                                                                                       | `base`, `intent:primary`, `intent:success`, `intent:warning`, `intent:danger`, `active`, `disabled`, `selected`            |
+| Popover                  | `popover`, `popover-content`, `popover-arrow`                                                                                                          | `base`, `minimal`                                                                                                          |
+
+Each modifier accepts camel-case CSS property names and `--bp-theme-*` variables. It may also contain the interactions
+listed for that target in `BLUEPRINT_THEME_TARGET_MANIFEST`. Focusable owner targets include `:focus`; part targets expose
+only interactions which compile to valid selectors, and `input-placeholder` accepts declarations only. Use the manifest
+to inspect the machine-readable target, modifier, and interaction vocabulary.

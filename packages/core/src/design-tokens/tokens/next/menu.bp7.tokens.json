@@ -1,0 +1,69 @@
+{
+    "menu": {
+        "$description": "Public Menu appearance tokens. Defaults reference semantic tokens so global theme changes continue to propagate.",
+        "background": {
+            "$type": "color",
+            "rest": { "$value": "{surface.background-color.base.rest}" }
+        },
+        "foreground": {
+            "$type": "color",
+            "rest": { "$value": "{typography.color.base}" },
+            "muted": { "$value": "{typography.color.muted}" },
+            "disabled": { "$value": "{typography.color.disabled}" }
+        },
+        "border-radius": {
+            "$type": "dimension",
+            "$value": "{surface.border-radius}"
+        },
+        "font-family": {
+            "$type": "fontFamily",
+            "$value": "{typography.family.body}"
+        },
+        "font-size": {
+            "$type": "dimension",
+            "$value": "{typography.size.md}"
+        },
+        "divider-color": {
+            "$type": "color",
+            "$value": "{surface.divider-color.default}"
+        },
+        "item": {
+            "border-radius": {
+                "$type": "dimension",
+                "$value": "{surface.border-radius}"
+            },
+            "background": {
+                "$type": "color",
+                "hover": { "$value": "{surface.layer-color.neutral.hover}" },
+                "active": { "$value": "{surface.layer-color.neutral.active}" },
+                "intent": {
+                    "primary": {
+                        "hover": { "$value": "{surface.layer-color.primary.hover}" },
+                        "active": { "$value": "{surface.layer-color.primary.active}" }
+                    },
+                    "success": {
+                        "hover": { "$value": "{surface.layer-color.success.hover}" },
+                        "active": { "$value": "{surface.layer-color.success.active}" }
+                    },
+                    "warning": {
+                        "hover": { "$value": "{surface.layer-color.warning.hover}" },
+                        "active": { "$value": "{surface.layer-color.warning.active}" }
+                    },
+                    "danger": {
+                        "hover": { "$value": "{surface.layer-color.danger.hover}" },
+                        "active": { "$value": "{surface.layer-color.danger.active}" }
+                    }
+                }
+            },
+            "foreground": {
+                "$type": "color",
+                "intent": {
+                    "primary": { "$value": "{typography.color.intent.primary}" },
+                    "success": { "$value": "{typography.color.intent.success}" },
+                    "warning": { "$value": "{typography.color.intent.warning}" },
+                    "danger": { "$value": "{typography.color.intent.danger}" }
+                }
+            }
+        }
+    }
+}

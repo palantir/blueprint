@@ -4,11 +4,11 @@
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
-import { expect, screen, waitFor } from "storybook/test";
+import { expect, screen, waitFor, within } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { Intent, Size } from "../../common";
+import { Classes, Intent, Size } from "../../common";
 import { Button } from "../button/buttons";
 import { PopoverNext } from "../popover-next/popoverNext";
 
@@ -451,6 +451,167 @@ export const MenuDividerExample: Story = {
                 </Flex>
             </Flex>
         );
+    },
+};
+
+const getMenuPopoverVisualStyle = (menu: HTMLElement) => {
+    const popover = menu.closest(`.${Classes.POPOVER}`);
+    if (!(popover instanceof HTMLElement)) {
+        throw new Error("Expected the menu to be rendered inside a popover");
+    }
+
+    const activeItem = within(menu).getByRole("menuitem", { name: "Active primary" });
+    const activeItemIcon = activeItem.querySelector(`.${Classes.MENU_ITEM_ICON}`);
+    const divider = menu.querySelector(`.${Classes.MENU_DIVIDER}`);
+    const arrow = popover.querySelector(`.${Classes.POPOVER_ARROW}`);
+    const arrowFill = arrow?.querySelector(`.${Classes.POPOVER_ARROW}-fill`);
+    const arrowBorder = arrow?.querySelector(`.${Classes.POPOVER_ARROW}-border`);
+    if (!(activeItemIcon instanceof HTMLElement)) {
+        throw new Error("Expected the active menu item to render its icon");
+    }
+    if (!(divider instanceof HTMLElement)) {
+        throw new Error("Expected the menu to render its divider");
+    }
+    if (!(arrow instanceof HTMLElement) || !(arrowFill instanceof SVGElement) || !(arrowBorder instanceof SVGElement)) {
+        throw new Error("Expected the popover to render its arrow");
+    }
+
+    const menuStyle = getComputedStyle(menu);
+    const activeItemStyle = getComputedStyle(activeItem);
+    const activeItemIconStyle = getComputedStyle(activeItemIcon);
+    const dividerStyle = getComputedStyle(divider);
+    const popoverStyle = getComputedStyle(popover);
+    const arrowStyle = getComputedStyle(arrow, "::before");
+    const arrowFillStyle = getComputedStyle(arrowFill);
+    const arrowBorderStyle = getComputedStyle(arrowBorder);
+
+    return [
+        menuStyle.backgroundColor,
+        menuStyle.color,
+        menuStyle.borderRadius,
+        menuStyle.fontFamily,
+        menuStyle.fontSize,
+        activeItemStyle.backgroundColor,
+        activeItemStyle.color,
+        activeItemIconStyle.color,
+        activeItemStyle.borderRadius,
+        dividerStyle.borderTopColor,
+        popoverStyle.boxShadow,
+        popoverStyle.borderRadius,
+        arrowStyle.boxShadow,
+        arrowFillStyle.fill,
+        arrowBorderStyle.fill,
+        arrowBorderStyle.fillOpacity,
+    ];
+};
+
+const expectActiveMenuItemIconToMatchText = async (menu: HTMLElement) => {
+    const activeItem = within(menu).getByRole("menuitem", { name: "Active primary" });
+    const icon = activeItem.querySelector(`.${Classes.MENU_ITEM_ICON}`);
+    if (!(icon instanceof HTMLElement)) {
+        throw new Error("Expected the active menu item to render its icon");
+    }
+
+    await expect(getComputedStyle(icon).color).toBe(getComputedStyle(activeItem).color);
+};
+
+const renderMenuPopoverTokenComparison = ({ label, className }: { label: string; className: string }) => (
+    <section aria-label={label} className={className} style={{ flex: "0 0 300px" }}>
+        <StoryLabel title={label} />
+        <PopoverNext
+            content={
+                <Menu aria-label={`${label} menu`}>
+                    <MenuItem icon="document" text="Default item" />
+                    <MenuItem active={true} icon="walk" intent="primary" text="Active primary" />
+                    <MenuItem active={true} icon="tick" intent="success" text="Active success" />
+                    <MenuItem active={true} icon="warning-sign" intent="warning" text="Active warning" />
+                    <MenuItem active={true} icon="trash" intent="danger" text="Active danger" />
+                    <MenuDivider />
+                    <MenuItem disabled={true} icon="lock" text="Disabled item" />
+                </Menu>
+            }
+            isOpen={true}
+            placement="bottom"
+            portalClassName={className}
+            transitionDuration={0}
+        >
+            <Button endIcon="caret-down" text={`Open ${label} menu`} />
+        </PopoverNext>
+    </section>
+);
+
+/** Shows which parts of an NHS Digital Dropdown theme public tokens can apply to a portaled Menu and Popover. */
+export const TokenCompatibility: Story = {
+    name: "BP6 baseline → BP7 defaults → NHS public-token theme",
+    parameters: {
+        layout: "padded",
+    },
+    render: () => (
+        <Flex alignItems="flex-start" gap={12}>
+            {renderMenuPopoverTokenComparison({
+                label: "BP6 baseline",
+                className: "token-compatibility-baseline",
+            })}
+            {renderMenuPopoverTokenComparison({
+                label: "BP7 defaults",
+                className: "bp-next token-compatibility-bp7-defaults",
+            })}
+            {renderMenuPopoverTokenComparison({
+                label: "NHS public-token theme",
+                className: "bp-next token-compatibility-nhsd-theme",
+            })}
+        </Flex>
+    ),
+    play: async () => {
+        await waitFor(() => expect(screen.getByRole("menu", { name: "BP6 baseline menu" })).toBeVisible());
+
+        const baselineMenu = screen.getByRole("menu", { name: "BP6 baseline menu" });
+        const defaultMenu = screen.getByRole("menu", { name: "BP7 defaults menu" });
+        const nhsdMenu = screen.getByRole("menu", { name: "NHS public-token theme menu" });
+
+        await expect(getComputedStyle(baselineMenu).getPropertyValue("--bp-menu-background-rest")).not.toBe("");
+        await expect(getComputedStyle(defaultMenu).getPropertyValue("--bp-menu-background-rest")).not.toBe("");
+        await expect(getComputedStyle(baselineMenu).getPropertyValue("--bp-popover-background-rest")).not.toBe("");
+        await expect(getComputedStyle(defaultMenu).getPropertyValue("--bp-popover-background-rest")).not.toBe("");
+        await expect(getComputedStyle(nhsdMenu).getPropertyValue("--bp-menu-background-rest").trim()).toBe("#ffffff");
+        await expect(getComputedStyle(nhsdMenu).getPropertyValue("--bp-popover-background-rest").trim()).toBe(
+            "#ffffff",
+        );
+
+        await expect(getMenuPopoverVisualStyle(defaultMenu)).not.toEqual(getMenuPopoverVisualStyle(baselineMenu));
+        await expect(getMenuPopoverVisualStyle(nhsdMenu)).not.toEqual(getMenuPopoverVisualStyle(defaultMenu));
+        await expectActiveMenuItemIconToMatchText(baselineMenu);
+        await expectActiveMenuItemIconToMatchText(defaultMenu);
+        await expectActiveMenuItemIconToMatchText(nhsdMenu);
+
+        const nhsdMenuStyle = getComputedStyle(nhsdMenu);
+        await expect(nhsdMenuStyle.fontFamily).toContain("Frutiger W01");
+        await expect(nhsdMenuStyle.fontSize).toBe("18px");
+
+        const nhsdActiveItem = within(nhsdMenu).getByRole("menuitem", { name: "Active primary" });
+        await expect(getComputedStyle(nhsdActiveItem).backgroundColor).toBe("rgb(0, 91, 187)");
+        await expect(getComputedStyle(nhsdActiveItem).color).toBe("rgb(255, 255, 255)");
+
+        const nhsdPopover = nhsdMenu.closest(`.${Classes.POPOVER}`);
+        if (!(nhsdPopover instanceof HTMLElement)) {
+            throw new Error("Expected the NHS Digital Menu to render inside a Popover");
+        }
+        const nhsdPopoverStyle = getComputedStyle(nhsdPopover);
+        await expect(nhsdPopoverStyle.getPropertyValue("--bp-popover-shadow").trim()).toBe(
+            "0.125rem 0.375rem 0.75rem oklch(0% 0 0deg / 10%)",
+        );
+        await expect(nhsdPopoverStyle.borderRadius).toBe("6px");
+
+        const nhsdArrow = nhsdPopover.querySelector(`.${Classes.POPOVER_ARROW}`);
+        if (!(nhsdArrow instanceof HTMLElement)) {
+            throw new Error("Expected the NHS Digital Popover to render an arrow node");
+        }
+        await expect(getComputedStyle(nhsdArrow).display).not.toBe("none");
+
+        const nhsdSection = screen.getByRole("region", { name: "NHS public-token theme" });
+        const nhsdTrigger = within(nhsdSection).getByRole("button", { name: "Open NHS public-token theme menu" });
+        const nhsdTriggerStyle = getComputedStyle(nhsdTrigger);
+        await expect(nhsdTriggerStyle.backgroundColor).toBe("rgb(0, 91, 187)");
     },
 };
 

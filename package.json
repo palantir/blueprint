@@ -80,7 +80,7 @@
     "license": "Apache-2.0",
     "lint-staged": {
         "*.{ts,tsx,mts,mjs,js,json,yaml,yml,scss,md}": "prettier --write --ignore-unknown",
-        "*.{ts,tsx}": "eslint --fix --max-warnings 0",
+        "*.{ts,tsx}": "eslint --fix --max-warnings 0 --no-warn-ignored",
         "*.scss": "stylelint --fix --custom-syntax postcss-scss"
     },
     "devDependencies": {

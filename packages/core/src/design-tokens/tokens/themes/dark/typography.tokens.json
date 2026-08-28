@@ -1,5 +1,9 @@
 {
     "typography": {
+        "color-muted": {
+            "$type": "color",
+            "$value": "{palette.gray.4}"
+        },
         "color-default": {
             "$type": "color",
             "rest": {

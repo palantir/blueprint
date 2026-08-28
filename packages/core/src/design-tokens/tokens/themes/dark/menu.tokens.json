@@ -1,0 +1,55 @@
+{
+    "menu": {
+        "background": {
+            "$type": "color",
+            "rest": { "$value": "{surface.background-color.default.rest}" }
+        },
+        "foreground": {
+            "$type": "color",
+            "rest": { "$value": "{typography.color-default.rest}" },
+            "muted": { "$value": "{typography.color-muted}" },
+            "disabled": {
+                "$value": "{typography.color-muted}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+            }
+        },
+        "divider-color": {
+            "$type": "color",
+            "$value": "{surface.border-color.default}"
+        },
+        "item": {
+            "background": {
+                "$type": "color",
+                "hover": { "$value": "{surface.layer-color.default}" },
+                "active": { "$value": "{surface.layer-color.default}" },
+                "intent": {
+                    "primary": {
+                        "hover": { "$value": "{surface.layer-color.primary}" },
+                        "active": { "$value": "{surface.layer-color.primary}" }
+                    },
+                    "success": {
+                        "hover": { "$value": "{surface.layer-color.success}" },
+                        "active": { "$value": "{surface.layer-color.success}" }
+                    },
+                    "warning": {
+                        "hover": { "$value": "{surface.layer-color.warning}" },
+                        "active": { "$value": "{surface.layer-color.warning}" }
+                    },
+                    "danger": {
+                        "hover": { "$value": "{surface.layer-color.danger}" },
+                        "active": { "$value": "{surface.layer-color.danger}" }
+                    }
+                }
+            },
+            "foreground": {
+                "$type": "color",
+                "intent": {
+                    "primary": { "$value": "{intent.primary.disabled}" },
+                    "success": { "$value": "{intent.success.disabled}" },
+                    "warning": { "$value": "{intent.warning.disabled}" },
+                    "danger": { "$value": "{intent.danger.disabled}" }
+                }
+            }
+        }
+    }
+}

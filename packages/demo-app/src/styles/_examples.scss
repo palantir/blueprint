@@ -11,9 +11,20 @@ $dark-intent-warning-text: $orange5;
 $dark-intent-danger-text: $red5;
 
 .examples-root {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   flex-direction: row;
+}
+
+.examples-theme-pane {
+  flex: 1 1 50%;
+  min-width: 0;
+
+  > [data-bp-theme],
+  > .examples-theme-scope {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .examples-container {
@@ -23,8 +34,25 @@ $dark-intent-danger-text: $red5;
   padding: $pt-spacing * 2;
   width: 100%;
 
-  &.#{$ns}-dark {
+  .#{$ns}-dark & {
     background-color: $pt-dark-app-background-color;
+  }
+}
+
+.theme-controls {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: $pt-spacing * 4;
+}
+
+.theme-control {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $pt-spacing;
+  margin-right: $pt-spacing * 2;
+
+  > strong {
+    margin-bottom: $pt-spacing;
   }
 }
 

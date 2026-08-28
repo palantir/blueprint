@@ -58,18 +58,19 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin heading-typography() {
-  color: $pt-heading-color;
-  font-weight: 600;
+  color: var(--bp-typography-color-base, #{$pt-heading-color});
+  font-family: var(--bp-typography-family-heading, inherit);
+  font-weight: var(--bp-typography-weight-strong, 600);
 
   .#{$ns}-dark & {
-    color: $pt-dark-heading-color;
+    color: var(--bp-typography-color-base, #{$pt-dark-heading-color});
   }
 
   &.#{$ns}-text-muted {
-    color: $pt-text-color-muted;
+    color: var(--bp-typography-color-muted, #{$pt-text-color-muted});
 
     .#{$ns}-dark & {
-      color: $pt-dark-text-color-muted;
+      color: var(--bp-typography-color-muted, #{$pt-dark-text-color-muted});
     }
   }
 }

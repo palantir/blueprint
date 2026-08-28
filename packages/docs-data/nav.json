@@ -5,7 +5,7 @@
     },
     {
         "package": "core",
-        "pages": ["accessibility", "classes", "colors", "typography", "variables"],
+        "pages": ["accessibility", "classes", "colors", "json-themes", "typography", "variables"],
         "sections": [
             {
                 "section": "components",

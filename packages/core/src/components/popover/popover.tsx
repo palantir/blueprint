@@ -41,6 +41,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
+import { BlueprintThemeContext } from "../../theme/blueprintThemeContext";
 import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 
@@ -75,6 +76,9 @@ export class Popover<
     T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps,
 > extends AbstractPureComponent<PopoverProps<T>, PopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
+    public static contextType = BlueprintThemeContext;
+
+    declare public context: React.ContextType<typeof BlueprintThemeContext>;
 
     public static defaultProps: PopoverProps = {
         boundary: "clippingParents",
@@ -421,10 +425,14 @@ export class Popover<
         }
 
         const basePlacement = getBasePlacement(popperProps.placement);
+        // Theme-scoped portals already carry the dark class. Adding it again here would redeclare default tokens on
+        // the Popover itself and override the provider tokens inherited from the portal root.
+        const shouldAddDarkClass =
+            this.context === undefined && this.props.inheritDarkTheme && this.state.hasDarkParent;
         const popoverClasses = classNames(
             Classes.POPOVER,
             {
-                [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
+                [Classes.DARK]: shouldAddDarkClass,
                 [Classes.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
                 [Classes.POPOVER_MATCH_TARGET_WIDTH]: this.props.matchTargetWidth,

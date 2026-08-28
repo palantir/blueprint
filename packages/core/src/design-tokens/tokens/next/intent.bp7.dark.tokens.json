@@ -1,0 +1,22 @@
+{
+    "intent": {
+        "$type": "color",
+        "primary": {
+            "hover": { "$value": "{intent.primary.400}" },
+            "active": { "$value": "{intent.primary.600}" }
+        },
+        "success": {
+            "rest": { "$value": "{intent.success.500}" },
+            "hover": { "$value": "{intent.success.400}" },
+            "active": { "$value": "{intent.success.600}" }
+        },
+        "warning": {
+            "hover": { "$value": "{intent.warning.400}" },
+            "active": { "$value": "{intent.warning.600}" }
+        },
+        "danger": {
+            "hover": { "$value": "{intent.danger.400}" },
+            "active": { "$value": "{intent.danger.600}" }
+        }
+    }
+}
