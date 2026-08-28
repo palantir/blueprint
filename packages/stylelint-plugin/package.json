@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
-        "postcss": "^8.5.8",
+        "postcss": "^8.5.23",
         "postcss-selector-parser": "^7.0.0",
         "postcss-value-parser": "^4.2.0"
     },
