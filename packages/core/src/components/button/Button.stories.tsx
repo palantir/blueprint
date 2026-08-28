@@ -113,54 +113,6 @@ const renderButtonTokenComparison = ({
     </section>
 );
 
-const nhsdButtonTypes = [
-    { type: "primary", label: "Take primary action" },
-    { type: "secondary", label: "Take secondary action" },
-    { type: "tertiary", label: "Take tertiary action" },
-    { type: "start", label: "Start" },
-    { type: "cancel", label: "Cancel" },
-] as const;
-const nhsdButtonStates = ["default", "hover", "focus", "active", "disabled"] as const;
-
-const renderNhsDigitalButtonComponentOverrides = () => (
-    <section
-        aria-labelledby="button-comparison-nhsd-component-overrides"
-        className="bp-next token-compatibility-nhsd-theme token-compatibility-nhsd-component-overrides"
-    >
-        <H5 id="button-comparison-nhsd-component-overrides">NHS Digital theme overrides</H5>
-        <p>
-            Public tokens provide the palette and font family. Component-level CSS adds the dimensions, typography,
-            variants, and states which BP7 public tokens cannot currently express.
-        </p>
-        <Flex flexDirection="column" gap={3}>
-            {nhsdButtonTypes.map(({ type, label }) => (
-                <Flex
-                    key={type}
-                    className={`token-compatibility-nhsd-button-row token-compatibility-nhsd-button-row-${type}`}
-                    flexDirection="column"
-                    gap={1}
-                >
-                    <StoryLabel title={type} />
-                    <Flex alignItems="flex-start" flexWrap="wrap" gap={2}>
-                        {nhsdButtonStates.map(state => (
-                            <Flex key={state} flexDirection="column" gap={1}>
-                                <StoryLabel title={state} />
-                                <Button
-                                    active={state === "active"}
-                                    aria-label={`NHS Digital ${type} ${state}`}
-                                    className={`token-compatibility-nhsd-button token-compatibility-nhsd-button-${type} token-compatibility-nhsd-button-state-${state}`}
-                                    disabled={state === "disabled"}
-                                    text={<span className="token-compatibility-nhsd-button-label">{label}</span>}
-                                />
-                            </Flex>
-                        ))}
-                    </Flex>
-                </Flex>
-            ))}
-        </Flex>
-    </section>
-);
-
 const meta: Meta<typeof Button> = {
     title: "Core/Button/Button",
     component: Button,
@@ -461,9 +413,9 @@ export const AllIntentsAllVariants: Story = {
     ),
 };
 
-/** Compares the BP6 baseline with BP7's defaults and a complete NHS Digital Button theme. */
+/** Shows which parts of an NHS Digital theme can be expressed using public Blueprint tokens alone. */
 export const TokenCompatibility: Story = {
-    name: "BP6 baseline → BP7 defaults → NHS Digital theme",
+    name: "BP6 baseline → BP7 defaults → NHS public-token theme",
     parameters: {
         layout: "padded",
     },
@@ -481,19 +433,82 @@ export const TokenCompatibility: Story = {
                 label: "BP7 defaults: new palette",
                 className: "bp-next token-compatibility-bp7-defaults",
             })}
-            {renderNhsDigitalButtonComponentOverrides()}
+            {renderButtonTokenComparison({
+                args,
+                id: "button-comparison-nhsd",
+                label: "NHS public-token theme",
+                className: "bp-next token-compatibility-nhsd-theme",
+            })}
         </Flex>
     ),
     play: async ({ canvasElement }) => {
         const canvas = within(canvasElement);
-        const baselineButtons = within(canvas.getByRole("region", { name: "BP6 baseline" })).getAllByRole("button");
-        const defaultButtons = within(canvas.getByRole("region", { name: /BP7 defaults:/ })).getAllByRole("button");
+        const baselineRegion = canvas.getByRole("region", { name: "BP6 baseline" });
+        const defaultRegion = canvas.getByRole("region", { name: /BP7 defaults:/ });
+        const nhsdRegion = canvas.getByRole("region", { name: "NHS public-token theme" });
+        const baselineButtons = within(baselineRegion).getAllByRole("button");
+        const defaultButtons = within(defaultRegion).getAllByRole("button");
+        const nhsdButtons = within(nhsdRegion).getAllByRole("button");
+
+        await expect(getComputedStyle(baselineRegion).getPropertyValue("--bp-button-background-default-rest")).not.toBe(
+            "",
+        );
+        await expect(getComputedStyle(defaultRegion).getPropertyValue("--bp-button-background-default-rest")).not.toBe(
+            "",
+        );
+        await expect(
+            getComputedStyle(nhsdRegion).getPropertyValue("--bp-button-background-intent-primary-rest").trim(),
+        ).toBe("#005bbb");
+        await expect(getComputedStyle(nhsdRegion).getPropertyValue("--bp-button-min-block-size").trim()).toBe(
+            "2.75rem",
+        );
+        await expect(getComputedStyle(nhsdRegion).getPropertyValue("--bp-button-padding-inline").trim()).toBe(
+            "1.25rem",
+        );
+        await expect(getComputedStyle(nhsdRegion).getPropertyValue("--bp-button-font-size").trim()).toBe("0.875rem");
+
+        const nhsdSolidButton = within(nhsdRegion).getByRole("button", { name: "solid none rest" });
+        const nhsdSolid = getComputedStyle(nhsdSolidButton);
+        await expect(nhsdSolid.blockSize).toBe("44px");
+        await expect(nhsdSolid.fontSize).toBe("14px");
+        await expect(nhsdSolid.fontWeight).toBe("600");
+        await expect(nhsdSolid.lineHeight).toBe("20px");
+        await expect(
+            getComputedStyle(within(nhsdRegion).getByRole("button", { name: "minimal none rest" })).blockSize,
+        ).toBe("44px");
+        await expect(
+            getComputedStyle(within(nhsdRegion).getByRole("button", { name: "outlined none rest" })).blockSize,
+        ).toBe("44px");
+
+        nhsdSolidButton.style.setProperty("--bp-button-line-height", "1.75rem");
+        await expect(getComputedStyle(nhsdSolidButton).blockSize).toBe("52px");
+        nhsdSolidButton.style.removeProperty("--bp-button-line-height");
+
+        for (const region of [baselineRegion, defaultRegion]) {
+            const regionQueries = within(region);
+            const solid = getComputedStyle(regionQueries.getByRole("button", { name: "solid none rest" }));
+            const minimal = getComputedStyle(regionQueries.getByRole("button", { name: "minimal none rest" }));
+            const outlined = getComputedStyle(regionQueries.getByRole("button", { name: "outlined none rest" }));
+
+            for (const style of [solid, minimal, outlined]) {
+                await expect(style.minHeight).toBe("30px");
+                await expect(style.paddingBlockStart).toBe("4px");
+                await expect(style.paddingInlineStart).toBe("8px");
+                await expect(style.borderRadius).toBe("4px");
+            }
+            await expect(solid.borderTopWidth).toBe("0px");
+            await expect(minimal.borderTopWidth).toBe("0px");
+            await expect(outlined.borderTopWidth).toBe("1px");
+        }
 
         await expect(defaultButtons).toHaveLength(baselineButtons.length);
+        await expect(nhsdButtons).toHaveLength(defaultButtons.length);
         await waitFor(() => {
-            expect([...baselineButtons, ...defaultButtons].every(button => button.querySelector("svg") !== null)).toBe(
-                true,
-            );
+            expect(
+                [...baselineButtons, ...defaultButtons, ...nhsdButtons].every(
+                    button => button.querySelector("svg") !== null,
+                ),
+            ).toBe(true);
         });
 
         const baselineWarningButtons = baselineButtons.filter(button => button.ariaLabel?.startsWith("solid warning"));
@@ -538,44 +553,29 @@ export const TokenCompatibility: Story = {
                 );
             }),
         ).toBe(true);
+        await expect(
+            nhsdButtons.some((button, index) => {
+                return getButtonVisualStyle(button).join("|") !== getButtonVisualStyle(defaultButtons[index]).join("|");
+            }),
+        ).toBe(true);
 
-        const nhsdButtons = within(canvas.getByRole("region", { name: "NHS Digital theme overrides" }));
-        const getButton = (type: (typeof nhsdButtonTypes)[number]["type"], state: (typeof nhsdButtonStates)[number]) =>
-            nhsdButtons.getByRole("button", { name: `NHS Digital ${type} ${state}` });
+        const nhsdPrimaryRest = within(nhsdRegion).getByRole("button", { name: "solid primary rest" });
+        const nhsdPrimaryRestStyle = getComputedStyle(nhsdPrimaryRest);
+        await expect(nhsdPrimaryRestStyle.backgroundColor).toBe("rgb(0, 91, 187)");
+        await expect(nhsdPrimaryRestStyle.borderRadius).toBe("9999px");
+        await expect(nhsdPrimaryRestStyle.borderTopColor).toBe("rgb(0, 91, 187)");
+        await expect(nhsdPrimaryRestStyle.borderTopWidth).toBe("2px");
+        await expect(nhsdPrimaryRestStyle.color).toBe("rgb(255, 255, 255)");
+        await expect(nhsdPrimaryRestStyle.fontFamily).toContain("Frutiger W01");
+        await expect(nhsdPrimaryRestStyle.minBlockSize).toBe("44px");
+        await expect(nhsdPrimaryRestStyle.paddingBlockStart).toBe("10px");
+        await expect(nhsdPrimaryRestStyle.paddingInlineStart).toBe("20px");
+        await expect(getComputedStyle(nhsdPrimaryRest.querySelector("svg")!).color).toBe(nhsdPrimaryRestStyle.color);
 
-        await expect(nhsdButtons.getAllByRole("button")).toHaveLength(nhsdButtonTypes.length * nhsdButtonStates.length);
-
-        const primaryDefault = getComputedStyle(getButton("primary", "default"));
-        await expect(primaryDefault.backgroundColor).toBe("rgb(0, 91, 187)");
-        await expect(primaryDefault.color).toBe("rgb(255, 255, 255)");
-        await expect(primaryDefault.fontSize).toBe("14.04px");
-        await expect(primaryDefault.fontWeight).toBe("600");
-        await expect(primaryDefault.borderRadius).toBe("21.96px");
-        await expect(getButton("primary", "default").getBoundingClientRect().height).toBe(44);
-
-        await expect(getComputedStyle(getButton("primary", "hover")).backgroundColor).toBe("rgb(0, 48, 135)");
-
-        const secondaryDefault = getComputedStyle(getButton("secondary", "default"));
-        await expect(secondaryDefault.backgroundColor).toBe("rgb(255, 255, 255)");
-        await expect(secondaryDefault.borderColor).toBe("rgb(0, 91, 187)");
-        await expect(secondaryDefault.color).toBe("rgb(0, 91, 187)");
-
-        await expect(getComputedStyle(getButton("tertiary", "default")).backgroundColor).toBe("rgb(255, 255, 255)");
-        await expect(getComputedStyle(getButton("start", "default")).backgroundColor).toBe("rgb(0, 102, 70)");
-        await expect(getComputedStyle(getButton("cancel", "default")).backgroundColor).toBe("rgb(179, 15, 15)");
-
-        const focusedButton = getComputedStyle(getButton("primary", "focus"));
-        await expect(focusedButton.backgroundColor).toBe("rgb(0, 48, 135)");
-        await expect(focusedButton.boxShadow).toContain("rgb(250, 225, 0)");
-
-        const activeButton = getComputedStyle(getButton("primary", "active"));
-        await expect(activeButton.backgroundColor).toBe("rgb(0, 91, 187)");
-        await expect(activeButton.transform).not.toBe("none");
-
-        const disabledButton = getComputedStyle(getButton("primary", "disabled"));
-        await expect(disabledButton.backgroundColor).toBe("rgb(213, 218, 222)");
-        await expect(disabledButton.color).toBe("rgb(63, 82, 95)");
-        await expect(disabledButton.boxShadow).toBe("none");
+        const nhsdPrimaryOutlined = within(nhsdRegion).getByRole("button", { name: "outlined primary rest" });
+        const nhsdPrimaryMinimal = within(nhsdRegion).getByRole("button", { name: "minimal primary rest" });
+        await expect(getComputedStyle(nhsdPrimaryOutlined).borderTopWidth).toBe("2px");
+        await expect(getComputedStyle(nhsdPrimaryMinimal).borderTopWidth).toBe("0px");
     },
 };
 

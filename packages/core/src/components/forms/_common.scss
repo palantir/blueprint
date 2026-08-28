@@ -86,17 +86,17 @@ $control-group-stack: (
 @mixin pt-input() {
   @include pt-input-placeholder;
   appearance: none;
-  background-color: var(--bp-palette-grey-100, $white);
+  background-color: var(--bp-input-background-rest, $white);
   border: none;
   border-radius: var(--bp-surface-border-radius);
   box-shadow: var(
-    --bp-private-component-input-shadow-rest,
+    --bp-input-shadow-rest,
     0 0 0 0 rgba($blue2, 0%),
     0 0 0 0 rgba($blue2, 0%),
     inset 0 0 0 1px rgba($black, 20%),
     inset 0 1px 1px rgba($black, 30%)
   );
-  color: var(--bp-typography-color-base, $dark-gray1);
+  color: var(--bp-input-foreground-rest, var(--bp-typography-color-base, $dark-gray1));
   font-family: var(--bp-typography-family-body, inherit);
   font-size: var(--bp-typography-size-md, var(--bp-typography-size-body-medium));
   font-weight: var(--bp-typography-weight-default);
@@ -111,7 +111,7 @@ $control-group-stack: (
   &:focus,
   &.#{$ns}-active {
     box-shadow: var(
-      --bp-private-component-input-shadow-focus,
+      --bp-input-shadow-focus,
       inset 0 0 0 1px rgba($blue2, 75.2%),
       0 0 0 1px rgba($blue2, 75.2%),
       inset 0 1px 1px rgba($black, 20%)
@@ -127,15 +127,12 @@ $control-group-stack: (
   }
 
   &[readonly] {
-    box-shadow: var(
-      --bp-private-component-input-shadow-readonly,
-      inset 0 0 0 1px rgba($black, 15%)
-    );
+    box-shadow: var(--bp-input-shadow-readonly, inset 0 0 0 1px rgba($black, 15%));
 
     &:focus,
     &.#{$ns}-active {
       box-shadow: var(
-        --bp-private-component-input-shadow-focus,
+        --bp-input-shadow-focus,
         inset 0 0 0 1px rgba($blue2, 75.2%),
         0 0 0 1px rgba($blue2, 75.2%),
         inset 0 1px 1px rgba($black, 20%)
@@ -155,21 +152,27 @@ $control-group-stack: (
 
 @mixin pt-input-placeholder() {
   &::placeholder {
-    color: var(--bp-typography-color-muted, $gray1);
+    color: var(--bp-input-foreground-placeholder, var(--bp-typography-color-muted, $gray1));
     // normalize.css sets an opacity less than 1, we don't want this
     opacity: 1;
   }
 }
 
 @mixin pt-input-disabled() {
-  background-color: var(--bp-palette-grey-200, rgba($light-gray1, 50%));
+  background-color: var(--bp-input-background-disabled, rgba($light-gray1, 50%));
   box-shadow: none;
-  color: var(--bp-typography-color-disabled, rgba($gray1, 60%));
+  color: var(
+    --bp-input-foreground-disabled,
+    var(--bp-typography-color-disabled, rgba($gray1, 60%))
+  );
   cursor: not-allowed;
   resize: none;
 
   &::placeholder {
-    color: var(--bp-typography-color-disabled, rgba($gray1, 60%));
+    color: var(
+      --bp-input-foreground-disabled,
+      var(--bp-typography-color-disabled, rgba($gray1, 60%))
+    );
   }
 }
 
@@ -198,48 +201,48 @@ $control-group-stack: (
 }
 
 @mixin pt-dark-input-disabled() {
-  background-color: var(--bp-palette-grey-900, rgba($dark-gray5, 50%));
+  background-color: var(--bp-input-background-disabled, rgba($dark-gray5, 50%));
   box-shadow: none;
-  color: var(--bp-typography-color-disabled, rgba($gray4, 60%));
+  color: var(
+    --bp-input-foreground-disabled,
+    var(--bp-typography-color-disabled, rgba($gray4, 60%))
+  );
 }
 
 @mixin pt-dark-input-placeholder() {
   &::placeholder {
-    color: var(--bp-typography-color-muted, $gray4);
+    color: var(--bp-input-foreground-placeholder, var(--bp-typography-color-muted, $gray4));
   }
 }
 
 @mixin pt-dark-input() {
   @include pt-dark-input-placeholder;
-  background-color: var(--bp-palette-grey-800, rgba($black, 30%));
+  background-color: var(--bp-input-background-rest, rgba($black, 30%));
   box-shadow: var(
-    --bp-private-component-input-shadow-rest,
+    --bp-input-shadow-rest,
     0 0 0 0 rgba($blue5, 0%),
     0 0 0 0 rgba($blue5, 0%),
     inset 0 0 0 1px rgba($white, 20%),
     inset 0 -1px 1px 0 rgba($white, 30%)
   );
-  color: var(--bp-typography-color-base, $light-gray5);
+  color: var(--bp-input-foreground-rest, var(--bp-typography-color-base, $light-gray5));
 
   &:focus,
   &.#{$ns}-active {
     box-shadow: var(
-      --bp-private-component-input-shadow-focus,
+      --bp-input-shadow-focus,
       inset 0 0 0 1px rgba($blue5, 75.2%),
       0 0 0 1px rgba($blue5, 75.2%)
     );
   }
 
   &[readonly] {
-    box-shadow: var(
-      --bp-private-component-input-shadow-readonly,
-      inset 0 0 0 1px rgba($black, 40%)
-    );
+    box-shadow: var(--bp-input-shadow-readonly, inset 0 0 0 1px rgba($black, 40%));
 
     &:focus,
     &.#{$ns}-active {
       box-shadow: var(
-        --bp-private-component-input-shadow-focus,
+        --bp-input-shadow-focus,
         inset 0 0 0 1px rgba($blue5, 75.2%),
         0 0 0 1px rgba($blue5, 75.2%)
       );
@@ -254,7 +257,7 @@ $control-group-stack: (
 
 @mixin pt-input-intent($intent, $color) {
   box-shadow: var(
-    --bp-private-component-input-shadow-intent-#{$intent}-rest,
+    --bp-input-shadow-intent-#{$intent}-rest,
     0 0 0 0 rgba($color, 0%),
     0 0 0 0 rgba($color, 0%),
     inset 0 0 0 1px $color,
@@ -264,7 +267,7 @@ $control-group-stack: (
   &:focus,
   &.#{$ns}-active {
     box-shadow: var(
-      --bp-private-component-input-shadow-intent-#{$intent}-focus,
+      --bp-input-shadow-intent-#{$intent}-focus,
       inset 0 0 0 1px rgba($color, 75.2%),
       0 0 0 2px rgba($color, 75.2%),
       inset 0 1px 1px rgba($black, 20%)
@@ -272,10 +275,7 @@ $control-group-stack: (
   }
 
   &[readonly] {
-    box-shadow: var(
-      --bp-private-component-input-shadow-intent-#{$intent}-readonly,
-      inset 0 0 0 1px $color
-    );
+    box-shadow: var(--bp-input-shadow-intent-#{$intent}-readonly, inset 0 0 0 1px $color);
   }
 
   &:disabled,
@@ -286,7 +286,7 @@ $control-group-stack: (
 
 @mixin pt-dark-input-intent($intent, $color) {
   box-shadow: var(
-    --bp-private-component-input-shadow-intent-#{$intent}-rest,
+    --bp-input-shadow-intent-#{$intent}-rest,
     0 0 0 0 rgba($color, 0%),
     0 0 0 0 rgba($color, 0%),
     inset 0 0 0 1px $color,
@@ -297,7 +297,7 @@ $control-group-stack: (
   &:focus,
   &.#{$ns}-active {
     box-shadow: var(
-      --bp-private-component-input-shadow-intent-#{$intent}-focus,
+      --bp-input-shadow-intent-#{$intent}-focus,
       inset 0 0 0 1px rgba($color, 75.2%),
       0 0 0 2px rgba($color, 75.2%),
       inset 0 0 0 1px rgba($white, 20%),
@@ -306,10 +306,7 @@ $control-group-stack: (
   }
 
   &[readonly] {
-    box-shadow: var(
-      --bp-private-component-input-shadow-intent-#{$intent}-readonly,
-      inset 0 0 0 1px $color
-    );
+    box-shadow: var(--bp-input-shadow-intent-#{$intent}-readonly, inset 0 0 0 1px $color);
   }
 
   &:disabled,

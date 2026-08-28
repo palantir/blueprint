@@ -1,0 +1,74 @@
+{
+    "input": {
+        "$description": "Public text-input appearance tokens. Defaults reference semantic tokens so global theme changes continue to propagate.",
+        "background": {
+            "$type": "color",
+            "rest": { "$value": "{surface.background-color.base.rest}" },
+            "disabled": { "$value": "{intent.neutral.200}" }
+        },
+        "foreground": {
+            "$type": "color",
+            "rest": { "$value": "{typography.color.base}" },
+            "disabled": { "$value": "{typography.color.disabled}" },
+            "placeholder": { "$value": "{typography.color.muted}" }
+        },
+        "shadow": {
+            "$type": "string",
+            "rest": {
+                "$value": "inset 0 0 0 1px var(--bp-surface-border-color-neutral), 0 1px 2px rgba(13, 18, 25, 0.12)"
+            },
+            "focus": {
+                "$value": "inset 0 0 0 1px var(--bp-intent-primary-rest), 0 0 0 2px var(--bp-surface-border-color-primary)"
+            },
+            "readonly": {
+                "$value": "inset 0 0 0 1px var(--bp-surface-border-color-neutral)"
+            },
+            "intent": {
+                "primary": {
+                    "rest": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-primary-rest), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                    },
+                    "focus": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-primary-rest), 0 0 0 2px var(--bp-surface-border-color-primary)"
+                    },
+                    "readonly": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-primary-rest)"
+                    }
+                },
+                "success": {
+                    "rest": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-success-rest), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                    },
+                    "focus": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-success-rest), 0 0 0 2px var(--bp-surface-border-color-success)"
+                    },
+                    "readonly": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-success-rest)"
+                    }
+                },
+                "warning": {
+                    "rest": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-warning-rest), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                    },
+                    "focus": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-warning-rest), 0 0 0 2px var(--bp-surface-border-color-warning)"
+                    },
+                    "readonly": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-warning-rest)"
+                    }
+                },
+                "danger": {
+                    "rest": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-danger-rest), 0 1px 2px rgba(13, 18, 25, 0.12)"
+                    },
+                    "focus": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-danger-rest), 0 0 0 2px var(--bp-surface-border-color-danger)"
+                    },
+                    "readonly": {
+                        "$value": "inset 0 0 0 1px var(--bp-intent-danger-rest)"
+                    }
+                }
+            }
+        }
+    }
+}

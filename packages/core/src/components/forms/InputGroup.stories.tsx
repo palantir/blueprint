@@ -313,9 +313,9 @@ const renderInputTokenComparison = ({ id, label, className }: { id: string; labe
     );
 };
 
-/** Compares the BP6 baseline with BP7's defaults and a complete NHS Digital form-input theme. */
+/** Shows which parts of an NHS Digital form-input theme can be expressed using public Blueprint tokens alone. */
 export const TokenCompatibility: Story = {
-    name: "BP6 baseline → BP7 defaults → NHS Digital theme",
+    name: "BP6 baseline → BP7 defaults → NHS public-token theme",
     parameters: {
         layout: "padded",
     },
@@ -333,8 +333,8 @@ export const TokenCompatibility: Story = {
             })}
             {renderInputTokenComparison({
                 id: "input-comparison-nhsd-theme",
-                label: "NHS Digital theme",
-                className: "bp-next token-compatibility-nhsd-theme token-compatibility-nhsd-input-overrides",
+                label: "NHS public-token theme",
+                className: "bp-next token-compatibility-nhsd-theme",
             })}
         </Flex>
     ),
@@ -342,13 +342,19 @@ export const TokenCompatibility: Story = {
         const canvas = within(canvasElement);
         const baselineRegion = canvas.getByRole("region", { name: "BP6 baseline" });
         const defaultRegion = canvas.getByRole("region", { name: /BP7 defaults:/ });
-        const nhsdRegion = canvas.getByRole("region", { name: "NHS Digital theme" });
+        const nhsdRegion = canvas.getByRole("region", { name: "NHS public-token theme" });
         const baselineInputs = within(baselineRegion).getAllByRole("textbox");
         const defaultInputs = within(defaultRegion).getAllByRole("textbox");
         const nhsdInputs = within(nhsdRegion).getAllByRole("textbox");
         const baselineSearchButtons = within(baselineRegion).getAllByRole("button", { name: /^Submit / });
         const defaultSearchButtons = within(defaultRegion).getAllByRole("button", { name: /^Submit / });
         const nhsdSearchButtons = within(nhsdRegion).getAllByRole("button", { name: /^Submit / });
+
+        await expect(getComputedStyle(baselineRegion).getPropertyValue("--bp-input-background-rest")).not.toBe("");
+        await expect(getComputedStyle(defaultRegion).getPropertyValue("--bp-input-background-rest")).not.toBe("");
+        await expect(getComputedStyle(nhsdRegion).getPropertyValue("--bp-input-background-rest").trim()).toBe(
+            "#ffffff",
+        );
 
         await expect(defaultInputs).toHaveLength(baselineInputs.length);
         await expect(nhsdInputs).toHaveLength(defaultInputs.length);
@@ -369,15 +375,13 @@ export const TokenCompatibility: Story = {
 
         const nhsdRestInput = within(nhsdRegion).getByRole("textbox", { name: "Rest search input" });
         const nhsdRestStyle = getComputedStyle(nhsdRestInput);
-        await expect(nhsdRestInput.getBoundingClientRect().height).toBeCloseTo(63.984, 1);
         await expect(nhsdRestStyle.backgroundColor).toBe("rgb(255, 255, 255)");
-        await expect(nhsdRestStyle.borderRadius).toBe("5.994px");
         await expect(nhsdRestStyle.fontFamily).toContain("Frutiger W01");
         await expect(nhsdRestStyle.fontSize).toBe("18px");
 
         const nhsdSearchInput = within(nhsdRegion).getByRole("textbox", { name: "Search" });
         const nhsdSearchButton = within(nhsdRegion).getByRole("button", { name: "Submit search" });
-        await expect(nhsdSearchInput.getBoundingClientRect().height).toBeCloseTo(63.984, 1);
+        await expect(nhsdSearchInput).toBeVisible();
         await expect(nhsdSearchButton).toBeVisible();
 
         const nhsdFocusedInput = within(nhsdRegion).getByRole("textbox", { name: "Focused search input" });

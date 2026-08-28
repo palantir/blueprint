@@ -1,0 +1,14 @@
+{
+    "popover": {
+        "arrow": {
+            "shadow": {
+                "$type": "string",
+                "$value": "0 0 0 1px hsl(215, 3%, 48%), 1px 1px 6px rgba(17, 20, 24, 0.4)"
+            },
+            "border-opacity": {
+                "$type": "number",
+                "$value": 0.2
+            }
+        }
+    }
+}

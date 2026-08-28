@@ -17,14 +17,63 @@ Tokens are available as CSS custom properties on `:root`:
 
 ## Token Categories
 
-| Category    | Prefix               | Description                                         |
-| ----------- | -------------------- | --------------------------------------------------- |
-| Palette     | `--bp-palette-*`     | Raw color values (gray, blue, green, etc.)          |
-| Intent      | `--bp-intent-*`      | Semantic colors (primary, success, warning, danger) |
-| Surface     | `--bp-surface-*`     | Backgrounds, borders, shadows, spacing, z-index     |
-| Typography  | `--bp-typography-*`  | Font families, sizes, weights, line heights, colors |
-| Iconography | `--bp-iconography-*` | Icon sizes and colors                               |
-| Emphasis    | `--bp-emphasis-*`    | Focus rings, transitions, easing                    |
+| Category    | Prefix                                                           | Description                                         |
+| ----------- | ---------------------------------------------------------------- | --------------------------------------------------- |
+| Palette     | `--bp-palette-*`                                                 | Raw color values (gray, blue, green, etc.)          |
+| Intent      | `--bp-intent-*`                                                  | Semantic colors (primary, success, warning, danger) |
+| Surface     | `--bp-surface-*`                                                 | Backgrounds, borders, shadows, spacing, z-index     |
+| Typography  | `--bp-typography-*`                                              | Font families, sizes, weights, line heights, colors |
+| Iconography | `--bp-iconography-*`                                             | Icon sizes and colors                               |
+| Emphasis    | `--bp-emphasis-*`                                                | Focus rings, transitions, easing                    |
+| Component   | `--bp-button-*`, `--bp-input-*`, `--bp-menu-*`, `--bp-popover-*` | Public overrides for one component                  |
+
+Raw palette tokens are inputs to semantic tokens; supported component styles do not consume `--bp-palette-*` directly.
+Components consume their public component tokens, whose defaults reference intent, surface, and typography tokens. Apply
+semantic overrides on the same token scope (`.bp-next` for BP7) so those aliases resolve against the override:
+
+```css
+.bp-next.product-theme {
+    /* Changes every component which uses the primary semantic role. */
+    --bp-intent-primary-rest: #005bbb;
+
+    /* Changes only solid primary Buttons. */
+    --bp-button-background-intent-primary-rest: #005bbb;
+}
+```
+
+Default-size Button geometry and typography form a component recipe because the global spacing and body typography
+tokens cannot express independent component decisions:
+
+```css
+.bp-next.product-theme {
+    --bp-button-min-block-size: 2.75rem;
+    --bp-button-padding-block: 0.625rem;
+    --bp-button-padding-inline: 1.25rem;
+    --bp-button-border-radius: 9999px;
+    --bp-button-border-width-solid: 2px;
+    --bp-button-border-width-outlined: 2px;
+    --bp-button-font-family: var(--bp-typography-family-body);
+    --bp-button-font-size: 0.875rem;
+    --bp-button-font-weight: 600;
+    --bp-button-line-height: 1.25rem;
+}
+```
+
+`--bp-surface-spacing` remains the global base unit used across components. A single value cannot produce a 44px Button
+height and 20px inline padding from Button's existing `7.5 × spacing` and `2 × spacing` ratios, and changing it also
+resizes unrelated components. Component geometry tokens avoid that coupling. As a consequence, an existing theme which
+changes only `--bp-surface-spacing` must also set the new default-size Button height and padding tokens to keep scaling
+those properties. Small and large Button sizes retain their existing size-specific geometry in this initial API.
+`min-block-size` is intentionally a floor rather than a fixed height: with the example recipe, the 20px line box, two
+10px paddings, and two 2px borders naturally produce 44px, while larger content can still expand. The default minimum
+width and icon-only centering calculation remain spacing-based and are not covered by these initial tokens.
+
+Dimension tokens preserve their authored CSS units. For example, the recipe above stays in `rem`; Blueprint does not
+convert it to pixels or modify the document root font size. Consequently, the same `rem` value may have different
+computed pixel sizes in a host application and a widget iframe when those documents use different root font sizes.
+
+`--bp-private-*` values are not a theming API. Button, InputGroup, Menu, and Popover do not require them for supported
+appearance overrides, including compound shadows and Popover arrow styling.
 
 ## Development
 
@@ -36,16 +85,17 @@ pnpm run build:tokens  # Generate tokens
 
 ### Token Structure
 
-Tokens follow the [DTCG](https://tr.designtokens.org/format/) specification. Source files live in `tokens/base/` (5 files: palette, intent, surface, typography, emphasis) with theme overrides in `tokens/themes/` (which currently includes only dark tokens).
+Tokens follow the [DTCG](https://tr.designtokens.org/format/) specification. Source files live in `tokens/base/`, with
+BP7 sources in `tokens/next/` and dark overrides in `tokens/themes/dark/`.
 
 Each token uses these standard DTCG properties:
 
-| Property       | Purpose                                                                                                    |
-| -------------- | ---------------------------------------------------------------------------------------------------------- |
-| `$type`        | Data type: `color`, `dimension`, `shadow`, `fontFamily`, `fontWeight`, `number`, `duration`, `cubicBezier` |
-| `$value`       | The token value — a literal, a reference like `"{palette.blue.3}"`, or a complex object                    |
-| `$description` | Human-readable explanation                                                                                 |
-| `$extensions`  | Custom Blueprint metadata                                                                                  |
+| Property       | Purpose                                                                                                              |
+| -------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `$type`        | Data type: `color`, `dimension`, `shadow`, `string`, `fontFamily`, `fontWeight`, `number`, `duration`, `cubicBezier` |
+| `$value`       | The token value — a literal, a reference like `"{palette.blue.3}"`, or a complex object                              |
+| `$description` | Human-readable explanation                                                                                           |
+| `$extensions`  | Custom Blueprint metadata                                                                                            |
 
 #### Custom extensions
 

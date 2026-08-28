@@ -516,7 +516,7 @@ const expectActiveMenuItemIconToMatchText = async (menu: HTMLElement) => {
 };
 
 const renderMenuPopoverTokenComparison = ({ label, className }: { label: string; className: string }) => (
-    <section aria-label={label} className={className}>
+    <section aria-label={label} className={className} style={{ flex: "0 0 300px" }}>
         <StoryLabel title={label} />
         <PopoverNext
             content={
@@ -540,9 +540,9 @@ const renderMenuPopoverTokenComparison = ({ label, className }: { label: string;
     </section>
 );
 
-/** Compares BP6 and BP7 with a complete NHS Digital Dropdown theme applied to a portaled Menu and Popover. */
+/** Shows which parts of an NHS Digital Dropdown theme public tokens can apply to a portaled Menu and Popover. */
 export const TokenCompatibility: Story = {
-    name: "BP6 baseline → BP7 defaults → NHS Digital theme",
+    name: "BP6 baseline → BP7 defaults → NHS public-token theme",
     parameters: {
         layout: "padded",
     },
@@ -557,8 +557,8 @@ export const TokenCompatibility: Story = {
                 className: "bp-next token-compatibility-bp7-defaults",
             })}
             {renderMenuPopoverTokenComparison({
-                label: "NHS Digital theme",
-                className: "bp-next token-compatibility-nhsd-theme token-compatibility-nhsd-menu-popover-overrides",
+                label: "NHS public-token theme",
+                className: "bp-next token-compatibility-nhsd-theme",
             })}
         </Flex>
     ),
@@ -567,7 +567,16 @@ export const TokenCompatibility: Story = {
 
         const baselineMenu = screen.getByRole("menu", { name: "BP6 baseline menu" });
         const defaultMenu = screen.getByRole("menu", { name: "BP7 defaults menu" });
-        const nhsdMenu = screen.getByRole("menu", { name: "NHS Digital theme menu" });
+        const nhsdMenu = screen.getByRole("menu", { name: "NHS public-token theme menu" });
+
+        await expect(getComputedStyle(baselineMenu).getPropertyValue("--bp-menu-background-rest")).not.toBe("");
+        await expect(getComputedStyle(defaultMenu).getPropertyValue("--bp-menu-background-rest")).not.toBe("");
+        await expect(getComputedStyle(baselineMenu).getPropertyValue("--bp-popover-background-rest")).not.toBe("");
+        await expect(getComputedStyle(defaultMenu).getPropertyValue("--bp-popover-background-rest")).not.toBe("");
+        await expect(getComputedStyle(nhsdMenu).getPropertyValue("--bp-menu-background-rest").trim()).toBe("#ffffff");
+        await expect(getComputedStyle(nhsdMenu).getPropertyValue("--bp-popover-background-rest").trim()).toBe(
+            "#ffffff",
+        );
 
         await expect(getMenuPopoverVisualStyle(defaultMenu)).not.toEqual(getMenuPopoverVisualStyle(baselineMenu));
         await expect(getMenuPopoverVisualStyle(nhsdMenu)).not.toEqual(getMenuPopoverVisualStyle(defaultMenu));
@@ -579,11 +588,6 @@ export const TokenCompatibility: Story = {
         await expect(nhsdMenuStyle.fontFamily).toContain("Frutiger W01");
         await expect(nhsdMenuStyle.fontSize).toBe("18px");
 
-        const nhsdDefaultItem = within(nhsdMenu).getByRole("menuitem", { name: "Default item" });
-        const nhsdDefaultItemStyle = getComputedStyle(nhsdDefaultItem);
-        await expect(nhsdDefaultItemStyle.height).toBe("44px");
-        await expect(nhsdDefaultItemStyle.padding).toBe("10px 20px");
-
         const nhsdActiveItem = within(nhsdMenu).getByRole("menuitem", { name: "Active primary" });
         await expect(getComputedStyle(nhsdActiveItem).backgroundColor).toBe("rgb(0, 91, 187)");
         await expect(getComputedStyle(nhsdActiveItem).color).toBe("rgb(255, 255, 255)");
@@ -593,20 +597,21 @@ export const TokenCompatibility: Story = {
             throw new Error("Expected the NHS Digital Menu to render inside a Popover");
         }
         const nhsdPopoverStyle = getComputedStyle(nhsdPopover);
-        await expect(nhsdPopoverStyle.width).toBe("500px");
-        await expect(nhsdPopoverStyle.borderRadius).toBe("5.994px");
+        await expect(nhsdPopoverStyle.getPropertyValue("--bp-popover-shadow").trim()).toBe(
+            "0.125rem 0.375rem 0.75rem oklch(0% 0 0deg / 10%)",
+        );
+        await expect(nhsdPopoverStyle.borderRadius).toBe("6px");
 
         const nhsdArrow = nhsdPopover.querySelector(`.${Classes.POPOVER_ARROW}`);
         if (!(nhsdArrow instanceof HTMLElement)) {
             throw new Error("Expected the NHS Digital Popover to render an arrow node");
         }
-        await expect(getComputedStyle(nhsdArrow).display).toBe("none");
+        await expect(getComputedStyle(nhsdArrow).display).not.toBe("none");
 
-        const nhsdSection = screen.getByRole("region", { name: "NHS Digital theme" });
-        const nhsdTrigger = within(nhsdSection).getByRole("button", { name: "Open NHS Digital theme menu" });
+        const nhsdSection = screen.getByRole("region", { name: "NHS public-token theme" });
+        const nhsdTrigger = within(nhsdSection).getByRole("button", { name: "Open NHS public-token theme menu" });
         const nhsdTriggerStyle = getComputedStyle(nhsdTrigger);
-        await expect(nhsdTriggerStyle.height).toBe("44px");
-        await expect(nhsdTriggerStyle.borderRadius).toBe("21.96px");
+        await expect(nhsdTriggerStyle.backgroundColor).toBe("rgb(0, 91, 187)");
     },
 };
 

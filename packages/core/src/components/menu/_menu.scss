@@ -9,11 +9,11 @@
 @import "./submenu";
 
 .#{$ns}-menu {
-  background-color: var(--bp-surface-background-color-base-rest, $white);
-  border-radius: $pt-border-radius;
-  color: var(--bp-typography-color-base, $dark-gray1);
-  font-family: var(--bp-typography-family-body, inherit);
-  font-size: var(--bp-typography-size-md, inherit);
+  background-color: var(--bp-menu-background-rest, $white);
+  border-radius: var(--bp-menu-border-radius, $pt-border-radius);
+  color: var(--bp-menu-foreground-rest, var(--bp-typography-color-base, $dark-gray1));
+  font-family: var(--bp-menu-font-family, var(--bp-typography-family-body, inherit));
+  font-size: var(--bp-menu-font-size, var(--bp-typography-size-md, inherit));
   list-style: none;
   margin: 0;
   min-width: $menu-min-width;
@@ -70,8 +70,8 @@ button.#{$ns}-menu-item {
 // dark theme
 .#{$ns}-dark {
   .#{$ns}-menu {
-    background-color: var(--bp-surface-background-color-base-rest, $dark-gray3);
-    color: var(--bp-typography-color-base, $light-gray5);
+    background-color: var(--bp-menu-background-rest, $dark-gray3);
+    color: var(--bp-menu-foreground-rest, var(--bp-typography-color-base, $light-gray5));
   }
 
   .#{$ns}-menu-item {
@@ -84,7 +84,7 @@ button.#{$ns}-menu-item {
 
   .#{$ns}-menu-divider,
   .#{$ns}-menu-header {
-    border-color: var(--bp-surface-divider-color-default, rgba($white, 20%));
+    border-color: var(--bp-menu-divider-color, rgba($white, 20%));
   }
 
   .#{$ns}-menu-header > h6 {

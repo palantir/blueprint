@@ -6,19 +6,34 @@
 .bp-next[data-bp-color-scheme="dark"],
 .bp6-dark .bp-next,
 .bp-next.bp6-dark {
-  --bp-private-component-button-background-default-disabled: #11151b80; /* grey/800 at 50% */
-  --bp-private-component-button-background-default-active-disabled: #070a10b3; /* grey/900 at 70% */
-  --bp-private-component-button-background-intent-primary-disabled: #0a58b480; /* blue/500 at 50% */
-  --bp-private-component-button-background-intent-success-disabled: #00733180; /* green/500 at 50% */
-  --bp-private-component-button-background-intent-warning-disabled: #9a370080; /* orange/500 at 50% */
-  --bp-private-component-button-background-intent-danger-disabled: #9e2c3180; /* red/500 at 50% */
-  --bp-private-component-button-foreground-default-disabled: var(--bp-palette-grey-300);
-  --bp-private-component-button-foreground-intent-primary-disabled: #ffffff66; /* white/1000 at 40% */
-  --bp-private-component-button-foreground-intent-success-disabled: #ffffff66; /* white/1000 at 40% */
-  --bp-private-component-button-foreground-intent-warning-disabled: #ffffff66; /* white/1000 at 40% */
-  --bp-private-component-button-foreground-intent-danger-disabled: #ffffff66; /* white/1000 at 40% */
-  --bp-private-component-button-shadow-rest: var(--bp-surface-shadow-1);
-  --bp-private-component-button-shadow-active: var(--bp-surface-shadow-0);
+  --bp-button-icon-foreground-default-rest: var(--bp-typography-color-base);
+  --bp-button-background-default-rest: var(--bp-intent-neutral-800);
+  --bp-button-background-default-hover: var(--bp-intent-neutral-700);
+  --bp-button-background-default-active: var(--bp-intent-neutral-900);
+  --bp-button-background-default-disabled: #11151b80; /* grey/800 at 50% */
+  --bp-button-background-default-active-disabled: #070a10b3; /* grey/900 at 70% */
+  --bp-button-foreground-default-rest: var(--bp-typography-color-base);
+  --bp-button-foreground-default-disabled: var(--bp-typography-color-disabled);
+  --bp-button-foreground-intent-primary-disabled: #ffffff66; /* white/1000 at 40% */
+  --bp-button-foreground-intent-success-disabled: #ffffff66; /* white/1000 at 40% */
+  --bp-button-foreground-intent-warning-disabled: #ffffff66; /* white/1000 at 40% */
+  --bp-button-foreground-intent-danger-disabled: #ffffff66; /* white/1000 at 40% */
+  --bp-button-foreground-minimal-intent-default-rest: var(--bp-button-foreground-default-rest);
+  --bp-button-foreground-minimal-intent-default-hover: var(--bp-button-foreground-default-rest);
+  --bp-button-foreground-minimal-intent-default-active: var(--bp-button-foreground-default-rest);
+  --bp-button-foreground-minimal-intent-primary-rest: var(--bp-typography-color-intent-primary);
+  --bp-button-foreground-minimal-intent-primary-hover: var(--bp-typography-color-intent-primary);
+  --bp-button-foreground-minimal-intent-primary-active: var(--bp-typography-color-intent-primary);
+  --bp-button-foreground-minimal-intent-success-rest: var(--bp-typography-color-intent-success);
+  --bp-button-foreground-minimal-intent-success-hover: var(--bp-typography-color-intent-success);
+  --bp-button-foreground-minimal-intent-success-active: var(--bp-typography-color-intent-success);
+  --bp-button-foreground-minimal-intent-warning-rest: var(--bp-typography-color-intent-warning);
+  --bp-button-foreground-minimal-intent-warning-hover: var(--bp-typography-color-intent-warning);
+  --bp-button-foreground-minimal-intent-warning-active: var(--bp-typography-color-intent-warning);
+  --bp-button-foreground-minimal-intent-danger-rest: var(--bp-typography-color-intent-danger);
+  --bp-button-foreground-minimal-intent-danger-hover: var(--bp-typography-color-intent-danger);
+  --bp-button-foreground-minimal-intent-danger-active: var(--bp-typography-color-intent-danger);
+  --bp-input-background-disabled: var(--bp-intent-neutral-900);
   --bp-intent-primary-hover: var(--bp-intent-primary-400);
   --bp-intent-primary-active: var(--bp-intent-primary-600);
   --bp-intent-success-rest: var(--bp-intent-success-500);
@@ -178,6 +193,8 @@
   --bp-palette-grey-800: oklch(0.1954 0.0137 259.34); /* #11151b */
   --bp-palette-grey-900: oklch(0.1457 0.0137 259.36); /* #070a10 */
   --bp-palette-grey-1000: oklch(0.1035 0.0124 256.43); /* #020407 */
+  --bp-popover-arrow-shadow: 0 0 0 1px hsl(215, 3%, 48%), 1px 1px 6px rgba(17, 20, 24, 0.4);
+  --bp-popover-arrow-border-opacity: 0.2;
   --bp-surface-divider-color-default: #ffffff1f; /* white/1000 at 12% */
   --bp-surface-divider-color-strong: #ffffff33; /* white/1000 at 20% */
   --bp-surface-border-color-neutral: var(--bp-intent-neutral-500);
@@ -260,16 +277,12 @@
 .bp-next[data-bp-color-scheme="dark"],
 .bp6-dark .bp-next,
 .bp-next.bp6-dark {
-    --bp-private-component-button-background-default-disabled: oklch(from var(--bp-palette-grey-800) l c h / 0.5);
-    --bp-private-component-button-background-default-active-disabled: oklch(from var(--bp-palette-grey-900) l c h / 0.7);
-    --bp-private-component-button-background-intent-primary-disabled: oklch(from var(--bp-intent-primary-rest) l c h / 0.5);
-    --bp-private-component-button-background-intent-success-disabled: oklch(from var(--bp-intent-success-rest) l c h / 0.5);
-    --bp-private-component-button-background-intent-warning-disabled: oklch(from var(--bp-intent-warning-rest) l c h / 0.5);
-    --bp-private-component-button-background-intent-danger-disabled: oklch(from var(--bp-intent-danger-rest) l c h / 0.5);
-    --bp-private-component-button-foreground-intent-primary-disabled: oklch(from var(--bp-intent-primary-foreground) l c h / 0.4);
-    --bp-private-component-button-foreground-intent-success-disabled: oklch(from var(--bp-intent-success-foreground) l c h / 0.4);
-    --bp-private-component-button-foreground-intent-warning-disabled: oklch(from var(--bp-intent-warning-foreground) l c h / 0.4);
-    --bp-private-component-button-foreground-intent-danger-disabled: oklch(from var(--bp-intent-danger-foreground) l c h / 0.4);
+    --bp-button-background-default-disabled: oklch(from var(--bp-intent-neutral-800) l c h / 0.5);
+    --bp-button-background-default-active-disabled: oklch(from var(--bp-intent-neutral-900) l c h / 0.7);
+    --bp-button-foreground-intent-primary-disabled: oklch(from var(--bp-intent-primary-foreground) l c h / 0.4);
+    --bp-button-foreground-intent-success-disabled: oklch(from var(--bp-intent-success-foreground) l c h / 0.4);
+    --bp-button-foreground-intent-warning-disabled: oklch(from var(--bp-intent-warning-foreground) l c h / 0.4);
+    --bp-button-foreground-intent-danger-disabled: oklch(from var(--bp-intent-danger-foreground) l c h / 0.4);
     --bp-surface-divider-color-default: oklch(from var(--bp-palette-white-1000) l c h / 0.12);
     --bp-surface-divider-color-strong: oklch(from var(--bp-palette-white-1000) l c h / 0.2);
     --bp-surface-color-code: oklch(from var(--bp-palette-black-1000) l c h / 0.3);
