@@ -17,7 +17,6 @@
 import { fireEvent, render } from "@testing-library/react";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import { act } from "react";
-import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
@@ -1942,8 +1941,7 @@ describe("<Table>", () => {
         }
     });
 
-    // HACKHACK: https://github.com/palantir/blueprint/issues/6107
-    describe.skip("Hotkey: shift + arrow keys", () => {
+    describe("Hotkey: shift + arrow keys", () => {
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
 
@@ -1958,7 +1956,7 @@ describe("<Table>", () => {
             });
             const tableContainerEl = component.find(`.${Classes.TABLE_CONTAINER}`).getDOMNode();
 
-            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
+            fireEvent.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
             expect(onSelection.callCount).to.equal(1, "should expand rightward");
             expect(onSelection.firstCall.args).to.deep.equal([
                 [Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL, SELECTED_CELL_ROW, SELECTED_CELL_COL + 1)],
@@ -1988,7 +1986,7 @@ describe("<Table>", () => {
             ];
 
             // should expand rightward
-            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
+            fireEvent.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
             expect(onSelection.callCount).to.equal(1, "should expand rightward");
             expect(onSelection.firstCall.args).to.deep.equal([expectedSelectedRegions]);
             onSelection.resetHistory();
@@ -1997,7 +1995,7 @@ describe("<Table>", () => {
             component.setProps({ selectedRegions: expectedSelectedRegions });
 
             // should undo the expansion
-            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowLeft", shiftKey: true });
+            fireEvent.keyDown(tableContainerEl, { key: "ArrowLeft", shiftKey: true });
             expect(onSelection.callCount).to.equal(1, "should contract selection leftward");
             expect(onSelection.firstCall.args).to.deep.equal([selectedRegions]);
         });
@@ -2010,7 +2008,7 @@ describe("<Table>", () => {
             });
             const tableContainerEl = component.find(`.${Classes.TABLE_CONTAINER}`).getDOMNode();
 
-            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
+            fireEvent.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
             expect(onSelection.callCount).to.equal(0, "should not change selection");
         });
     });
