@@ -19,3 +19,27 @@ export * from "./common";
 export * from "./components";
 export * from "./context";
 export * from "./hooks";
+export {
+    BLUEPRINT_THEME_INTERACTIONS,
+    BLUEPRINT_THEME_TARGET_MANIFEST,
+    BLUEPRINT_THEME_V1_SCHEMA_URL,
+    parseBlueprintTheme,
+    type BlueprintThemeDeclaration,
+    type BlueprintThemeInteraction,
+    type BlueprintThemeInteractionDeclaration,
+    type BlueprintThemeModifier,
+    type BlueprintThemeTarget,
+    type BlueprintThemeTargetOverrides,
+    type BlueprintThemeTokenValue,
+    type BlueprintThemeV1,
+    type BlueprintThemeValidationError,
+    type BlueprintThemeValidationResult,
+} from "./theme/blueprintTheme";
+export {
+    BlueprintThemeProvider,
+    type BlueprintThemeColorScheme,
+    type BlueprintThemeProviderProps,
+} from "./theme/blueprintThemeProvider";
+export { compileBlueprintTheme, type CompileBlueprintThemeOptions } from "./theme/compileBlueprintTheme";
+export { BLUEPRINT_BP7_THEME, BLUEPRINT_BP7_THEME_TOKENS } from "./theme/bp7Theme";
+export { BLUEPRINT_THEME_V1_SCHEMA } from "./theme/themeV1Schema";

@@ -19,6 +19,8 @@ import { createPortal } from "react-dom";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { PortalContext } from "../../context/portal/portalProvider";
+import { useIsomorphicLayoutEffect } from "../../hooks/useIsomorphicLayoutEffect";
+import { BlueprintThemeContext } from "../../theme/blueprintThemeContext";
 
 export interface PortalProps extends Props {
     /** Contents to send through the portal. */
@@ -61,6 +63,7 @@ export function Portal(
     { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
 ) {
     const context = useContext(PortalContext);
+    const themeContext = useContext(BlueprintThemeContext);
 
     const portalContainer =
         container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
@@ -116,6 +119,23 @@ export function Portal(
         return undefined;
     }, [portalElement, stopPropagationEvents]);
 
+    useIsomorphicLayoutEffect(
+        function updatePortalTheme() {
+            if (portalElement == null) {
+                return;
+            }
+            const options = {
+                className,
+                portalClassName: context.portalClassName,
+                portalElement,
+                themeContext,
+            };
+            applyPortalTheme(options);
+            return () => removePortalTheme(options);
+        },
+        [className, context.portalClassName, portalElement, themeContext],
+    );
+
     // Only render `children` once this component has mounted in a browser environment, so they are
     // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
     // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
@@ -150,4 +170,36 @@ function removeStopPropagationListeners(portalElement: HTMLElement, events?: Arr
 
 function handleStopProgation(e: Event) {
     e.stopPropagation();
+}
+
+interface PortalThemeOptions {
+    readonly portalElement: HTMLElement;
+    readonly themeContext: React.ContextType<typeof BlueprintThemeContext>;
+    readonly className?: string;
+    readonly portalClassName?: string;
+}
+
+function applyPortalTheme({ portalElement, themeContext, className, portalClassName }: PortalThemeOptions): void {
+    if (themeContext === undefined) {
+        return;
+    }
+    portalElement.dataset.bpTheme = themeContext.scopeId;
+    portalElement.dataset.bpColorScheme = themeContext.colorScheme;
+    if (themeContext.colorScheme === "dark") {
+        portalElement.classList.add(Classes.DARK);
+    } else if (!hasClassName(className, Classes.DARK) && !hasClassName(portalClassName, Classes.DARK)) {
+        portalElement.classList.remove(Classes.DARK);
+    }
+}
+
+function removePortalTheme({ portalElement, className, portalClassName }: PortalThemeOptions): void {
+    delete portalElement.dataset.bpTheme;
+    delete portalElement.dataset.bpColorScheme;
+    if (!hasClassName(className, Classes.DARK) && !hasClassName(portalClassName, Classes.DARK)) {
+        portalElement.classList.remove(Classes.DARK);
+    }
+}
+
+function hasClassName(classNames: string | undefined, expectedClassName: string): boolean {
+    return classNames?.split(" ").includes(expectedClassName) ?? false;
 }

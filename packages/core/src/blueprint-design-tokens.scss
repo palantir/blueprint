@@ -5,3 +5,9 @@
 
 @import "design-tokens/build/tokens";
 @import "design-tokens/build/tokens-dark";
+@import "design-tokens/build/next-tokens";
+@import "design-tokens/build/next-tokens-dark";
+
+.my-own-class {
+  --bp-radius: 4px;
+}

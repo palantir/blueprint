@@ -2,10 +2,10 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-[data-bp-color-scheme="dark"] .bp-next,
+[data-bp-color-scheme="dark"] .bp-next:where(:not([data-bp-color-scheme="light"])),
 .bp-next[data-bp-color-scheme="dark"],
-.bp6-dark .bp-next,
-.bp-next.bp6-dark {
+.bp6-dark .bp-next:where(:not([data-bp-color-scheme="light"])),
+.bp-next.bp6-dark:where(:not([data-bp-color-scheme="light"])) {
   --bp-button-icon-foreground-default-rest: var(--bp-typography-color-base);
   --bp-button-background-default-rest: var(--bp-intent-neutral-800);
   --bp-button-background-default-hover: var(--bp-intent-neutral-700);
@@ -273,10 +273,10 @@
 }
 
 @supports (color: oklch(from var(--any-color) l c h)) {
-  [data-bp-color-scheme="dark"] .bp-next,
+  [data-bp-color-scheme="dark"] .bp-next:where(:not([data-bp-color-scheme="light"])),
 .bp-next[data-bp-color-scheme="dark"],
-.bp6-dark .bp-next,
-.bp-next.bp6-dark {
+.bp6-dark .bp-next:where(:not([data-bp-color-scheme="light"])),
+.bp-next.bp6-dark:where(:not([data-bp-color-scheme="light"])) {
     --bp-button-background-default-disabled: oklch(from var(--bp-intent-neutral-800) l c h / 0.5);
     --bp-button-background-default-active-disabled: oklch(from var(--bp-intent-neutral-900) l c h / 0.7);
     --bp-button-foreground-intent-primary-disabled: oklch(from var(--bp-intent-primary-foreground) l c h / 0.4);

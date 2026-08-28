@@ -35,6 +35,7 @@ import { Button, PopupKind, Tooltip } from "..";
 import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import * as Utils from "../../common/utils";
+import { BlueprintThemeProvider } from "../../theme/blueprintThemeProvider";
 
 import { Popover } from "./popover";
 import { type PopoverInteractionKind } from "./popoverProps";
@@ -334,6 +335,23 @@ describe("<Popover>", () => {
     });
 
     describe("basic functionality", () => {
+        it("inherits a dark Blueprint theme from its portal root without creating a nested dark scope", () => {
+            const { baseElement } = render(
+                <BlueprintThemeProvider colorScheme="dark">
+                    <Popover content="content" inheritDarkTheme={true} isOpen={true}>
+                        <Button text="target" />
+                    </Popover>
+                </BlueprintThemeProvider>,
+            );
+
+            const portalElement = baseElement.querySelector(`.${Classes.PORTAL}[data-bp-theme]`);
+            const popoverElement = portalElement?.querySelector(`.${Classes.POPOVER}`);
+
+            expect(portalElement).toHaveClass(Classes.DARK);
+            expect(popoverElement).to.exist;
+            expect(popoverElement).not.toHaveClass(Classes.DARK);
+        });
+
         it.skip("inherits dark theme from trigger ancestor", () => {
             const { baseElement } = render(
                 <div className={Classes.DARK}>

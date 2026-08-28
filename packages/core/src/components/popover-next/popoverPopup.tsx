@@ -4,9 +4,10 @@
 
 import { useMergeRefs } from "@floating-ui/react";
 import classNames from "classnames";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 
 import { Classes, type HTMLDivProps, Utils } from "../../common";
+import { BlueprintThemeContext } from "../../theme/blueprintThemeContext";
 import { Overlay2 } from "../overlay2/overlay2";
 import { PopoverArrow } from "../popover/popoverArrow";
 import { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
@@ -50,6 +51,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         usePortal = true,
     } = props;
 
+    const themeContext = useContext(BlueprintThemeContext);
     const transitionContainerElement = useRef<HTMLDivElement>(null);
 
     const arrowStyle: React.CSSProperties = {
@@ -86,10 +88,13 @@ export function PopoverPopup(props: PopoverPopupProps) {
     }
 
     const basePlacement = getBasePlacement(floatingData.placement);
+    // Theme-scoped portals already carry the dark class. Adding it again here would redeclare default tokens on
+    // the Popover itself and override the provider tokens inherited from the portal root.
+    const shouldAddDarkClass = themeContext === undefined && inheritDarkTheme && hasDarkParent;
     const popoverClasses = classNames(
         Classes.POPOVER,
         {
-            [Classes.DARK]: inheritDarkTheme && hasDarkParent,
+            [Classes.DARK]: shouldAddDarkClass,
             [Classes.POPOVER_MINIMAL_ANIMATION]: animation === PopoverAnimation.MINIMAL,
             [Classes.POPOVER_CAPTURING_DISMISS]: captureDismiss,
             [Classes.POPOVER_MATCH_TARGET_WIDTH]: matchTargetWidth,
