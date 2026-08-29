@@ -1086,7 +1086,7 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.06,
                     "hex": "#ffffff0f"
                 }
@@ -1094,7 +1094,7 @@
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.12,
                     "hex": "#ffffff1f"
                 }
@@ -1102,7 +1102,7 @@
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.2,
                     "hex": "#ffffff33"
                 }
@@ -1110,7 +1110,7 @@
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.3,
                     "hex": "#ffffff4d"
                 }
@@ -1118,7 +1118,7 @@
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.5,
                     "hex": "#ffffff80"
                 }
@@ -1126,7 +1126,7 @@
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.8,
                     "hex": "#ffffffcc"
                 }
@@ -1134,7 +1134,7 @@
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.85,
                     "hex": "#ffffffd9"
                 }
@@ -1142,7 +1142,7 @@
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.9,
                     "hex": "#ffffffe6"
                 }
@@ -1150,7 +1150,7 @@
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "alpha": 0.95,
                     "hex": "#fffffff2"
                 }
@@ -1158,7 +1158,7 @@
             "1000": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [1, 0, 0],
+                    "components": [1, 0, "none"],
                     "hex": "#ffffff"
                 }
             }
