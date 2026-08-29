@@ -341,14 +341,14 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
   $switch-indicator-text-font-size: 0.7em;
 
-  $switch-text-color: $pt-text-color !default;
+  $switch-text-color: $white !default;
   $switch-text-color-disabled: $pt-text-color-disabled !default;
   $switch-checked-text-color: $white !default;
   $switch-checked-text-color-disabled: rgba($white, 0.6) !default;
-  $switch-background-color: rgba($gray3, 0.3) !default;
-  $switch-background-color-hover: rgba($gray3, 0.4) !default;
-  $switch-background-color-active: rgba($gray3, 0.5) !default;
-  $switch-background-color-disabled: rgba($gray3, 0.15) !default;
+  $switch-background-color: $gray2 !default;
+  $switch-background-color-hover: $gray1 !default;
+  $switch-background-color-active: $dark-gray5 !default;
+  $switch-background-color-disabled: rgba($gray1, 0.15) !default;
   $switch-checked-background-color: $control-checked-background-color !default;
   $switch-checked-background-color-hover: $control-checked-background-color-hover !default;
   $switch-checked-background-color-active: $control-checked-background-color-active !default;
