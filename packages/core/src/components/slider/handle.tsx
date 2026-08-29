@@ -34,6 +34,7 @@ export interface InternalHandleProps extends HandleProps {
     tickSize: number;
     tickSizeRatio: number;
     vertical: boolean;
+    ensureParentOverflowVisible?: boolean;
 }
 
 export interface HandleState {
@@ -53,9 +54,21 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
     };
 
     private handleElement: HTMLElement | null = null;
+    private sliderElement: HTMLElement | null = null;
+    private modifiedElements: Array<{ element: HTMLElement; originalOverflow: string }> = [];
 
     private refHandlers = {
-        handle: (el: HTMLSpanElement) => (this.handleElement = el),
+        handle: (el: HTMLSpanElement) => {
+            this.handleElement = el;
+            // Find the slider parent when handle mounts
+            if (el && !this.sliderElement) {
+                this.sliderElement = el.closest(`.${Classes.SLIDER}`) as HTMLElement;
+                if (this.sliderElement && this.props.ensureParentOverflowVisible) {
+                    // Use setTimeout to ensure DOM is fully ready
+                    setTimeout(() => this.setParentOverflow(), 0);
+                }
+            }
+        },
     };
 
     public componentDidMount() {
@@ -91,8 +104,19 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
         );
     }
 
+    public componentDidUpdate(prevProps: InternalHandleProps) {
+        if (this.props.ensureParentOverflowVisible && !prevProps.ensureParentOverflowVisible) {
+            this.setParentOverflow();
+        } else if (!this.props.ensureParentOverflowVisible && prevProps.ensureParentOverflowVisible) {
+            this.restoreParentOverflow();
+        }
+    }
+
     public componentWillUnmount() {
         this.removeDocumentEventListeners();
+        if (this.props.ensureParentOverflowVisible) {
+            this.restoreParentOverflow();
+        }
     }
 
     /** Convert client pixel to value between min and max. */
@@ -267,4 +291,40 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
         document.removeEventListener("touchend", this.endHandleTouchMovement);
         document.removeEventListener("touchcancel", this.endHandleTouchMovement);
     }
+
+    private setParentOverflow = () => {
+        if (!this.sliderElement) {
+            return;
+        }
+
+        // Walk up the DOM tree and find all ancestors with overflow hidden/auto/scroll
+        let element: HTMLElement | null = this.sliderElement.parentElement;
+        while (element && element !== document.body) {
+            const computedStyle = window.getComputedStyle(element);
+            const currentOverflow = computedStyle.overflow;
+
+            // Check if this element clips overflow
+            if (currentOverflow === "hidden" || currentOverflow === "auto" || currentOverflow === "scroll") {
+                // Store original value
+                const originalOverflow = element.style.overflow || currentOverflow;
+                this.modifiedElements.push({ element, originalOverflow });
+                // Set to visible
+                element.style.overflow = "visible";
+            }
+
+            element = element.parentElement;
+        }
+    };
+
+    private restoreParentOverflow = () => {
+        // Restore all modified elements
+        for (const { element, originalOverflow } of this.modifiedElements) {
+            if (originalOverflow === "hidden" || originalOverflow === "auto" || originalOverflow === "scroll") {
+                element.style.overflow = originalOverflow;
+            } else {
+                element.style.removeProperty("overflow");
+            }
+        }
+        this.modifiedElements = [];
+    };
 }
