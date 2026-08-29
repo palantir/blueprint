@@ -1,0 +1,6 @@
+type: fix
+fix:
+  description: Remove duplicate variables which overrides new dark theme secondary
+    and elevated colors with old values.
+  links:
+  - https://github.com/palantir/blueprint/pull/7085
