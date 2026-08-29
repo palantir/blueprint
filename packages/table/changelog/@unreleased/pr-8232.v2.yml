@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Clear EditableCell content when its value becomes undefined
+  links:
+    - https://github.com/palantir/blueprint/pull/8232
