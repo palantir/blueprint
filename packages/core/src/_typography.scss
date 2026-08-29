@@ -198,26 +198,6 @@ Styleguide running-text
 }
 
 /*
-Links
-
-Simply use an `<a href="">` tag as you normally would. No class is necessary for Blueprint styles.
-Links are underlined only when hovered.
-
-Putting an icon inside a link will cause it to inherit the link's text color.
-
-Styleguide typography.links
-*/
-
-a {
-  text-decoration: none;
-
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-}
-
-/*
 Preformatted text
 
 Markup:
