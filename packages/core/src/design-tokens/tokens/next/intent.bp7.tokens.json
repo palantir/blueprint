@@ -1,0 +1,71 @@
+{
+    "intent": {
+        "$type": "color",
+        "$description": "Semantic layer: each intent is a palette family exposed as its full 100-1000 ramp (aliases) plus `default` (the .500 base) and `foreground`. Surface/typography reference a step (e.g. {intent.primary.200}) so they land exactly on a palette value and re-theme with the intent.",
+        "neutral": {
+            "foreground": { "$value": "{palette.white.1000}" },
+            "100": { "$value": "{palette.grey.100}" },
+            "200": { "$value": "{palette.grey.200}" },
+            "300": { "$value": "{palette.grey.300}" },
+            "400": { "$value": "{palette.grey.400}" },
+            "500": { "$value": "{palette.grey.500}" },
+            "600": { "$value": "{palette.grey.600}" },
+            "700": { "$value": "{palette.grey.700}" },
+            "800": { "$value": "{palette.grey.800}" },
+            "900": { "$value": "{palette.grey.900}" },
+            "1000": { "$value": "{palette.grey.1000}" }
+        },
+        "primary": {
+            "foreground": { "$value": "{palette.white.1000}" },
+            "100": { "$value": "{palette.blue.100}" },
+            "200": { "$value": "{palette.blue.200}" },
+            "300": { "$value": "{palette.blue.300}" },
+            "400": { "$value": "{palette.blue.400}" },
+            "500": { "$value": "{palette.blue.500}" },
+            "600": { "$value": "{palette.blue.600}" },
+            "700": { "$value": "{palette.blue.700}" },
+            "800": { "$value": "{palette.blue.800}" },
+            "900": { "$value": "{palette.blue.900}" },
+            "1000": { "$value": "{palette.blue.1000}" }
+        },
+        "success": {
+            "foreground": { "$value": "{palette.white.1000}" },
+            "100": { "$value": "{palette.green.100}" },
+            "200": { "$value": "{palette.green.200}" },
+            "300": { "$value": "{palette.green.300}" },
+            "400": { "$value": "{palette.green.400}" },
+            "500": { "$value": "{palette.green.500}" },
+            "600": { "$value": "{palette.green.600}" },
+            "700": { "$value": "{palette.green.700}" },
+            "800": { "$value": "{palette.green.800}" },
+            "900": { "$value": "{palette.green.900}" },
+            "1000": { "$value": "{palette.green.1000}" }
+        },
+        "warning": {
+            "foreground": { "$value": "{palette.white.1000}" },
+            "100": { "$value": "{palette.orange.100}" },
+            "200": { "$value": "{palette.orange.200}" },
+            "300": { "$value": "{palette.orange.300}" },
+            "400": { "$value": "{palette.orange.400}" },
+            "500": { "$value": "{palette.orange.500}" },
+            "600": { "$value": "{palette.orange.600}" },
+            "700": { "$value": "{palette.orange.700}" },
+            "800": { "$value": "{palette.orange.800}" },
+            "900": { "$value": "{palette.orange.900}" },
+            "1000": { "$value": "{palette.orange.1000}" }
+        },
+        "danger": {
+            "foreground": { "$value": "{palette.white.1000}" },
+            "100": { "$value": "{palette.red.100}" },
+            "200": { "$value": "{palette.red.200}" },
+            "300": { "$value": "{palette.red.300}" },
+            "400": { "$value": "{palette.red.400}" },
+            "500": { "$value": "{palette.red.500}" },
+            "600": { "$value": "{palette.red.600}" },
+            "700": { "$value": "{palette.red.700}" },
+            "800": { "$value": "{palette.red.800}" },
+            "900": { "$value": "{palette.red.900}" },
+            "1000": { "$value": "{palette.red.1000}" }
+        }
+    }
+}

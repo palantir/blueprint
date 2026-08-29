@@ -20,13 +20,23 @@ import type { Config, TransformedToken } from "style-dictionary/types";
 // -- Types --------------------------------------------------------------------
 
 /**
+ * A single color channel. `"none"` marks the channel as missing, which matters for an
+ * achromatic color's hue: a stated hue is a real value during polar interpolation, so
+ * `oklch(1 0 0)` in a `color-mix(in oklch, ...)` drags the result toward hue 0 instead of
+ * carrying the other operand's hue. `"none"` is powerless and renders as 0.
+ *
+ * @see https://www.w3.org/TR/css-color-4/#missing
+ */
+type ColorComponent = number | "none";
+
+/**
  * A DTCG-format color value with a color space, component channels, and optional alpha/hex.
  *
  * @see https://tr.designtokens.org/format/#color
  */
 type DTCGColor = {
     readonly colorSpace: "oklch" | "srgb";
-    readonly components: readonly [number, number, number];
+    readonly components: readonly [ColorComponent, ColorComponent, ColorComponent];
     readonly alpha?: number;
     readonly hex?: string;
 };
@@ -157,6 +167,19 @@ const THEMES: readonly ThemeConfig[] = [
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
+    {
+        name: "light-next",
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        selector: ".bp-next",
+        destination: "tokens-next.css",
+    },
+    {
+        name: "dark-next",
+        include: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.dark.tokens.json"],
+        selector: '.bp-next[data-bp-color-scheme=\"dark\"],\n.bp-next [data-bp-color-scheme=\"dark\"]',
+        destination: "tokens-dark-next.css",
+    },
 ];
 
 // -- Parsers ------------------------------------------------------------------
@@ -177,6 +200,10 @@ const parseNumberTuple = (value: unknown): readonly number[] | undefined =>
 const parseStringTuple = (value: unknown): readonly string[] | undefined =>
     Array.isArray(value) && value.every(v => typeof v === "string") ? value : undefined;
 
+/** Validates that a value is an array of color channels, each a number or the `"none"` keyword. */
+const parseColorComponentTuple = (value: unknown): readonly ColorComponent[] | undefined =>
+    Array.isArray(value) && value.every(v => typeof v === "number" || v === "none") ? value : undefined;
+
 /** Parses a raw DTCG color object, validating colorSpace, components, and optional alpha/hex. */
 const parseDTCGColor = (value: unknown): DTCGColor | undefined => {
     const obj = parseObject(value);
@@ -185,7 +212,7 @@ const parseDTCGColor = (value: unknown): DTCGColor | undefined => {
     const colorSpace = obj.colorSpace;
     if (colorSpace !== "oklch" && colorSpace !== "srgb") return undefined;
 
-    const components = parseNumberTuple(obj.components);
+    const components = parseColorComponentTuple(obj.components);
     if (components === undefined || components.length !== 3) return undefined;
 
     const alpha = obj.alpha;
@@ -337,7 +364,9 @@ const formatOklchToCss = (color: DTCGColor): string => {
 
 /** Formats a DTCG sRGB color as a CSS `rgb()`/`rgba()` function string. */
 const formatSrgbToCss = (color: DTCGColor): string => {
-    const [r, g, b] = color.components.map(comp => Math.round(comp * 255));
+    // A missing channel renders as 0 per CSS Color 4; only a hue benefits from staying absent.
+    const toByte = (comp: ColorComponent): number => Math.round((comp === "none" ? 0 : comp) * 255);
+    const [r, g, b] = color.components.map(toByte);
     return color.alpha !== undefined && color.alpha < 1
         ? `rgba(${r}, ${g}, ${b}, ${color.alpha})`
         : `rgb(${r}, ${g}, ${b})`;
@@ -422,6 +451,17 @@ const formatOklchToHex = (color: OklchColor): string => {
     const hasAlpha = color.alpha !== undefined && color.alpha < 1;
     const formatter = hasAlpha ? formatHex8 : formatHex;
     return formatter(color) ?? formatHex({ mode: "rgb", r: 0, g: 0, b: 0 });
+};
+
+/**
+ * Returns the hex equivalent of an absolute `oklch(...)` value, for an inline readability
+ * comment. Returns `undefined` for relative `oklch(from ...)` syntax, whose resolved value
+ * depends on a runtime variable, and for any non-OKLCH value.
+ */
+const hexForOklchValue = (value: string): string | undefined => {
+    if (!value.startsWith("oklch(") || value.startsWith("oklch(from")) return undefined;
+    const parsed = parseColorToOklch(value);
+    return parsed !== undefined ? formatOklchToHex(parsed) : undefined;
 };
 
 // -- Token Accessors ----------------------------------------------------------
@@ -610,10 +650,39 @@ const makeFallbackMap = (
 };
 
 /**
- * Classifies a token for progressive enhancement output. Tokens with a fallback get
- * the hex value as `fallbackValue` and the relative color syntax as `modernValue`.
+ * If a token's value is a pure alias (`{...}` reference with no `com.blueprint.derive`), returns
+ * the `var(--bp-...)` reference to emit — before role wrapping — instead of the resolved value.
+ * Returns `undefined` otherwise.
+ *
+ * Emitting the reference rather than a resolved value is load-bearing for theming: a dark build
+ * omits the aliased target (it is include-only under `onlySourceTokens`), so the `var()` resolves
+ * through the `:root` cascade down to the palette, and the palette is redefined per mode — so the
+ * value follows the active theme instead of freezing the light one.
+ */
+const pureAliasVar = (token: TransformedToken): string | undefined => {
+    if (hasDeriveExtension(token)) return undefined;
+    const original = token.original ?? {};
+    const ref = parseTokenReference(original.$value ?? original.value);
+    return ref !== undefined ? tokenReferenceToVar(ref) : undefined;
+};
+
+/**
+ * Classifies a token for progressive-enhancement output as one of three cases: a pure alias
+ * emits a `var(...)` reference (no `@supports` needed); a derived token gets the hex
+ * `fallbackValue` plus the relative-color `modernValue`; any other token passes its resolved
+ * value through as `fallbackValue`.
  */
 const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
+    const aliasVar = pureAliasVar(token);
+    if (aliasVar !== undefined) {
+        return {
+            name: token.name,
+            fallbackValue: aliasVar,
+            modernValue: undefined,
+            description: token.$description,
+        };
+    }
+
     const tokenPath = token.path.join(".");
     const currentValue = getTokenValueAsString(token);
     const fallback = fallbackMap.get(tokenPath);
@@ -779,16 +848,20 @@ const nameTransformConfig: Parameters<typeof StyleDictionary.registerTransform>[
     transform: token => "bp-" + token.path.join("-"),
 };
 
-/** All standard DTCG type transforms registered via {@link makeTransformConfig}. */
-const standardTransforms = [
-    colorTransform,
-    dimensionTransform,
-    durationTransform,
-    fontFamilyTransform,
-    fontWeightTransform,
-    numberTransform,
-    cubicBezierTransform,
-] as const;
+/**
+ * Converted here rather than at the registration site: `TValue` is both produced by `parse` and
+ * consumed by `format`, so no single `TValue` satisfies a union of {@link TransformDefinition}s.
+ * Converting each element while its type is still concrete keeps every call monomorphic.
+ */
+const standardTransformConfigs: ReadonlyArray<Parameters<typeof StyleDictionary.registerTransform>[0]> = [
+    makeTransformConfig(colorTransform),
+    makeTransformConfig(dimensionTransform),
+    makeTransformConfig(durationTransform),
+    makeTransformConfig(fontFamilyTransform),
+    makeTransformConfig(fontWeightTransform),
+    makeTransformConfig(numberTransform),
+    makeTransformConfig(cubicBezierTransform),
+];
 
 // -- Format Definition --------------------------------------------------------
 
@@ -828,11 +901,58 @@ const applyRoleToValue = (value: string, token: TransformedToken): string => {
     return role !== undefined ? applyRoleForCss(value, role) : value;
 };
 
+/** Reads the alpha byte of an 8-digit hex color as a rounded percentage. */
+const alphaPercentFromHex8 = (hex8: string): number => Math.round((parseInt(hex8.slice(7, 9), 16) / 255) * 100);
+
+/**
+ * Follows a token's original `{...}` reference chain until it reaches a `palette.*` token,
+ * returning a `family/step` label (e.g. `"blue/600"`). Returns `undefined` if the chain does
+ * not resolve to a palette token.
+ */
+const resolvePaletteLabel = (
+    token: TransformedToken,
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+): string | undefined => {
+    let current: TransformedToken | undefined = token;
+    for (let hops = 0; current !== undefined && hops < 8; hops++) {
+        const original = current.original ?? {};
+        const ref = parseTokenReference(original.$value ?? original.value);
+        if (ref === undefined) return undefined;
+        const path = ref.slice(1, -1);
+        if (path.startsWith("palette.")) return path.split(".").slice(1).join("/");
+        current = tokenMap.get(path);
+    }
+    return undefined;
+};
+
+/**
+ * For a token whose fallback bakes alpha into a hex (layer/divider/color-code tints), returns a
+ * `family/step at N%` note describing the palette color and opacity it composites. Returns
+ * `undefined` when the value carries no alpha or does not resolve to a palette step.
+ */
+const paletteAtAlphaComment = (
+    token: TransformedToken,
+    value: string,
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+): string | undefined => {
+    if (!/^#[0-9a-fA-F]{8}$/.test(value)) return undefined;
+    const label = resolvePaletteLabel(token, tokenMap);
+    return label !== undefined ? `${label} at ${alphaPercentFromHex8(value)}%` : undefined;
+};
+
 /** Formats a CSS custom property declaration for the base (fallback) block. */
-const formatBaseDeclaration = (classification: TokenClassification, token: TransformedToken): string => {
+const formatBaseDeclaration = (
+    classification: TokenClassification,
+    token: TransformedToken,
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+): string => {
     const finalValue = applyRoleToValue(classification.fallbackValue, token);
-    const comment = classification.description !== undefined ? ` /** ${classification.description} */` : "";
-    return `  --${classification.name}: ${finalValue};${comment}`;
+    const hex = hexForOklchValue(classification.fallbackValue);
+    const alphaNote = paletteAtAlphaComment(token, classification.fallbackValue, tokenMap);
+    const note = hex ?? alphaNote;
+    const noteComment = note !== undefined ? ` /* ${note} */` : "";
+    const descComment = classification.description !== undefined ? ` /** ${classification.description} */` : "";
+    return `  --${classification.name}: ${finalValue};${noteComment}${descComment}`;
 };
 
 /** Formats a CSS custom property declaration for the `@supports` enhanced block. */
@@ -864,7 +984,7 @@ const formatProgressiveEnhancementCss = (
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
-        formatBaseDeclaration(classification, outputTokens[index]),
+        formatBaseDeclaration(classification, outputTokens[index], tokenMap),
     );
 
     const enhancedTokens = classifications
@@ -897,7 +1017,7 @@ const formatProgressiveEnhancementCss = (
 const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     register(sd);
 
-    standardTransforms.forEach(def => sd.registerTransform(makeTransformConfig(def)));
+    standardTransformConfigs.forEach(config => sd.registerTransform(config));
     sd.registerTransform(shadowTransformConfig);
     sd.registerTransform(deriveTransformConfig);
     sd.registerTransform(nameTransformConfig);
