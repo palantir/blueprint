@@ -221,6 +221,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
             <PopoverNext
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 canEscapeKeyClose={true}
                 disabled={disabled}
@@ -230,6 +231,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 {...popoverPropsToNextProps(popoverProps)}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
+                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
                     <div
                         // In the case where customTarget is supplied and the TagInput is rendered within the Popover,
                         // without matchTargetWidth there is no width defined in any of TagInput's

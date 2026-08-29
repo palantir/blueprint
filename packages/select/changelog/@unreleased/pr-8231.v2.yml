@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Apply the repository ESLint rules during Select package lint
+  links:
+    - https://github.com/palantir/blueprint/pull/8231
