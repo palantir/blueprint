@@ -45,14 +45,18 @@ export function getOppositePlacement(side: BasePlacement) {
     }
 }
 
-/** Returns the CSS alignment keyword corresponding to given placement. */
-export function getAlignment(placement: Placement) {
+/**
+ * Returns the CSS alignment keyword corresponding to given placement, along the given axis.
+ * The `"y"` axis is needed for left/right placements, where popper aligns the popover along
+ * the vertical edge of the target and `left`/`right` would be invalid keywords.
+ */
+export function getAlignment(placement: Placement, axis: "x" | "y" = "x") {
     const align = placement.split("-")[1] as "start" | "end" | undefined;
     switch (align) {
         case "start":
-            return "left";
+            return axis === "x" ? "left" : "top";
         case "end":
-            return "right";
+            return axis === "x" ? "right" : "bottom";
         default:
             return "center";
     }
@@ -65,9 +69,11 @@ export function getAlignment(placement: Placement) {
 export function getTransformOrigin(placement: Placement, arrowStyles: { left: string; top: string } | undefined) {
     const basePlacement = getBasePlacement(placement);
     if (arrowStyles === undefined) {
+        // N.B. alignment must be read from the full `placement`, not `basePlacement`, which has
+        // already had its `-start`/`-end` suffix stripped.
         return isVerticalPlacement(basePlacement)
-            ? `${getOppositePlacement(basePlacement)} ${getAlignment(basePlacement)}`
-            : `${getAlignment(basePlacement)} ${getOppositePlacement(basePlacement)}`;
+            ? `${getOppositePlacement(basePlacement)} ${getAlignment(placement, "y")}`
+            : `${getAlignment(placement, "x")} ${getOppositePlacement(basePlacement)}`;
     } else {
         // const arrowSizeShift = state.elements.arrow.clientHeight / 2;
         const arrowSizeShift = 30 / 2;
