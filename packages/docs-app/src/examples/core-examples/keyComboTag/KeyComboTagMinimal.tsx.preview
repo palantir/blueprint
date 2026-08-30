@@ -1,0 +1,3 @@
+<KeyComboTag combo="cmd + s" minimal={true} />
+<KeyComboTag combo="ctrl + shift + z" minimal={true} />
+<KeyComboTag combo="enter" minimal={true} />
