@@ -191,6 +191,10 @@ export class DragReorderable extends PureComponent<DragReorderableProps> {
         const oldIndex = this.selectedRegionStartIndex;
         const guideIndex = this.props.locateDrag(event, coords);
         if (oldIndex === undefined || guideIndex === undefined) {
+            // Reset reordering state when drag ends outside a valid drop target.
+            this.props.onReordered(0, 0, 0);
+            this.selectedRegionStartIndex = undefined;
+            this.selectedRegionLength = 0;
             return;
         }
         const length = this.selectedRegionLength;
