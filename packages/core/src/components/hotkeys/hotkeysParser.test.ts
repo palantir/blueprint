@@ -132,6 +132,15 @@ describe("HotkeysParser", () => {
             verifyCombos(tests);
         });
 
+        it("handles numpad plus key", () => {
+            const tests = [] as ComboTest[];
+            tests.push(
+                makeComboTest("numadd", { code: "NumpadAdd", key: "+" }),
+                makeComboTest("ctrl + numadd", { code: "NumpadAdd", ctrlKey: true, key: "+" }),
+            );
+            verifyCombos(tests);
+        });
+
         it("handles alt modifier key", () => {
             const tests = [] as ComboTest[];
             tests.push(makeComboTest("alt + a", { altKey: true, code: "KeyA", key: "a" }));
@@ -223,6 +232,7 @@ describe("HotkeysParser", () => {
         it("handles 'plus' key identifier", () => {
             expect(() => parseKeyCombo("ctrl + +")).to.throw(/failed to parse/i);
             expect(comboMatches(parseKeyCombo("cmd + plus"), parseKeyCombo("meta + plus"))).to.be.true;
+            expect(comboMatches(parseKeyCombo("plus"), parseKeyCombo("numadd"))).to.be.false;
         });
 
         it("applies aliases", () => {
