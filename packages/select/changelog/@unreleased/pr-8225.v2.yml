@@ -1,0 +1,6 @@
+type: fix
+fix:
+  description: "[select] `Select` popover target is once again `role=\"combobox\"` when `filterable` is true"
+  links:
+    - href: https://github.com/palantir/blueprint/pull/8225
+      text: 8225
