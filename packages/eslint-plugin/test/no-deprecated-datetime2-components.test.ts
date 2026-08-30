@@ -65,6 +65,23 @@ ruleTester.run("no-deprecated-datetime2-components", noDeprecatedDatetime2Compon
                 },
             ],
         },
+        // aliased import should still be detected (#6408)
+        {
+            code: dedent`
+                import { DateInput2 as MyDateInput } from "@blueprintjs/datetime2";
+
+                return <MyDateInput />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: {
+                        deprecatedComponentName: "DateInput2",
+                        newComponentName: "DateInput",
+                    },
+                },
+            ],
+        },
     ],
     valid: [
         {
