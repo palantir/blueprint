@@ -29,7 +29,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:palantir/blueprint.git",
+        "url": "git+https://github.com/palantir/blueprint.git",
         "directory": "packages/stylelint-plugin"
     },
     "author": "Palantir Technologies",
