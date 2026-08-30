@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "[KeyComboTag] Display the `alt` key as 'option' on macOS"
+  links:
+  - https://github.com/palantir/blueprint/pull/8157
