@@ -1,12 +1,12 @@
 {
     "surface": {
-        "border-color": {
+        "divider-color": {
             "$type": "color",
             "default": {
                 "$value": "{palette.white}",
                 "$extensions": {
                     "com.blueprint.derive": {
-                        "alpha": 0.2
+                        "alpha": 0.1
                     }
                 }
             },
@@ -14,9 +14,22 @@
                 "$value": "{palette.white}",
                 "$extensions": {
                     "com.blueprint.derive": {
-                        "alpha": 0.3
+                        "alpha": 0.2
                     }
                 }
+            }
+        },
+        "layer-opacity": {
+            "$type": "number",
+            "app": {
+                "rest": { "$value": 0.03 },
+                "hover": { "$value": 0.03 },
+                "active": { "$value": 0.03 }
+            },
+            "intent": {
+                "rest": { "$value": 0.1 },
+                "hover": { "$value": 0.1 },
+                "active": { "$value": 0.1 }
             }
         },
         "shadow": {
@@ -152,15 +165,20 @@
         "background-color": {
             "$type": "color",
             "$description": "Dark mode app backgrounds: black → dark-gray on interaction",
+            "app": {
+                "rest": { "$value": "{palette.black}" },
+                "hover": { "$value": "{palette.black}" },
+                "active": { "$value": "{palette.black}" }
+            },
             "default": {
                 "rest": {
-                    "$value": "{intent.default.rest}",
+                    "$value": "{intent.default}",
                     "$extensions": {
                         "com.blueprint.derive": { "lightnessScale": 0.362, "chromaScale": 0.308, "hueOffset": -1.44 }
                     }
                 },
                 "hover": {
-                    "$value": "{intent.default.hover}",
+                    "$value": "{intent.default}",
                     "$extensions": {
                         "com.blueprint.derive": {
                             "lightnessOffset": null,
@@ -172,7 +190,7 @@
                     }
                 },
                 "active": {
-                    "$value": "{intent.default.active}",
+                    "$value": "{intent.default}",
                     "$extensions": {
                         "com.blueprint.derive": {
                             "lightnessOffset": null,
@@ -184,7 +202,7 @@
                     }
                 },
                 "disabled": {
-                    "$value": "{intent.default.disabled}",
+                    "$value": "{intent.default}",
                     "$extensions": {
                         "com.blueprint.derive": { "lightnessScale": 0.279, "chromaScale": 0.377, "hueOffset": -2.74 }
                     }

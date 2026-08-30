@@ -18,7 +18,7 @@
         },
         "focus-color": {
             "$type": "color",
-            "$value": "{intent.primary.rest}"
+            "$value": "{intent.primary}"
         },
         "focus-width": {
             "$type": "dimension",
