@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "[core] Fix inaccurate `modifiersCustom` migration warning emitted by `popoverPropsToNextProps`"
+  links:
+  - https://github.com/palantir/blueprint/pull/8151
