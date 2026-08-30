@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "[TimePicker] Add an accessible name to the AM/PM selector"
+  links:
+  - https://github.com/palantir/blueprint/pull/8156

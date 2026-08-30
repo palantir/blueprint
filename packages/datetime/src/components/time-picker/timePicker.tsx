@@ -213,6 +213,7 @@ export class TimePicker extends Component<TimePickerProps, TimePickerState> {
         }
         return (
             <HTMLSelect
+                aria-label="AM/PM"
                 className={Classes.TIMEPICKER_AMPM_SELECT}
                 disabled={this.props.disabled}
                 onChange={this.handleAmPmChange}
