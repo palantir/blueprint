@@ -84,8 +84,9 @@ $dialog-header-padding: $pt-spacing;
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
+    align-self: center;
     flex: 0 0 auto;
-    margin-left: -$pt-spacing;
+    line-height: 0;
     margin-right: $dialog-padding * 0.5;
 
     // only apply light color to icons that are not intent-specific
