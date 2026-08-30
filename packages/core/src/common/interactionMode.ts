@@ -36,7 +36,11 @@ export class InteractionModeEngine {
 
     /** Enable behavior which applies the given className when in mouse mode. */
     public start() {
-        this.container.addEventListener("mousedown", this.handleMouseDown);
+        // start in mouse mode so the className is applied immediately and focus styles stay hidden
+        // until the user presses Tab. This also attaches the keydown listener, so the first Tab still
+        // reveals focus styles. Without this, focus styles render on the initially focused element
+        // (for example an autofocused Overlay2) until the first mouse interaction occurs.
+        this.handleMouseDown();
         this.isRunning = true;
     }
 
