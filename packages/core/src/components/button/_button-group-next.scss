@@ -1,10 +1,6 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
-// Licensed under the Apache License, Version 2.0.
-
 @use "sass:map";
 @import "../../common/variables";
-@import "../forms/common";
-@import "./common";
+@import "./common-next";
 
 // z-index values for button stacking order (derived from $control-group-stack in forms/_common.scss)
 $button-group-z-index: (
@@ -20,59 +16,13 @@ $button-group-z-index: (
   "intent-button-active": 12,
 );
 
-.#{$ns}-button-group:not(.bp-next .#{$ns}-button-group) {
+.#{$ns}-button-group {
   display: inline-flex;
 
   .#{$ns}-button {
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: map.get($button-group-z-index, "button-default");
-
-    // the ordering of these z-index CSS rules is particular because of CSS
-    // selector specificity. specifically, disabled styles should have
-    // precedence over hover and active styles to prevent mouse interactions on
-    // disabled buttons from reordering elements in the stack.
-
-    &:focus {
-      z-index: map.get($button-group-z-index, "button-focus");
-    }
-
-    &:hover {
-      z-index: map.get($button-group-z-index, "button-hover");
-    }
-
-    &:active,
-    &.#{$ns}-active {
-      z-index: map.get($button-group-z-index, "button-active");
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      z-index: map.get($button-group-z-index, "button-disabled");
-    }
-
-    &[class*="#{$ns}-intent-"] {
-      z-index: map.get($button-group-z-index, "intent-button-default");
-
-      &:focus {
-        z-index: map.get($button-group-z-index, "intent-button-focus");
-      }
-
-      &:hover {
-        z-index: map.get($button-group-z-index, "intent-button-hover");
-      }
-
-      &:active,
-      &.#{$ns}-active {
-        z-index: map.get($button-group-z-index, "intent-button-active");
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        z-index: map.get($button-group-z-index, "intent-button-disabled");
-      }
-    }
   }
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
@@ -104,7 +54,7 @@ $button-group-z-index: (
   &.#{$ns}-minimal,
   &.#{$ns}-outlined {
     .#{$ns}-button {
-      @include pt-button-minimal;
+      @include pt-button-minimal-next;
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -128,7 +78,7 @@ $button-group-z-index: (
   &.#{$ns}-outlined {
     > .#{$ns}-button,
     > .#{$ns}-popover-target > .#{$ns}-button {
-      @include pt-button-outlined;
+      @include pt-button-outlined-next;
     }
 
     &:not(.#{$ns}-vertical) {
