@@ -14,9 +14,16 @@
  * limitations under the License.
  */
 
+import { Documentalist } from "@documentalist/compiler";
+
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { interpolateClassNamespace, sortMajorVersions, transformDocumentalistData } from "./compile-docs-data.mts";
+import {
+    createMarkdownPlugin,
+    interpolateClassNamespace,
+    sortMajorVersions,
+    transformDocumentalistData,
+} from "./compile-docs-data.mts";
 
 describe("interpolateClassNamespace", () => {
     it("replaces #{$ns} and @ns with the default class namespace", () => {
@@ -54,5 +61,36 @@ describe("transformDocumentalistData", () => {
         const obj = { foo: "bar" };
         expect(transformDocumentalistData("someKey", obj)).toBe(obj);
         expect(transformDocumentalistData("count", 42)).toBe(42);
+    });
+});
+
+describe("createMarkdownPlugin", () => {
+    const CORE_PAGE = ["---", "title: Core", "reference: core", "---", "", "# Core", "", "Core body.", ""].join("\n");
+    const NAV_PAGE = "<!-- nav root, real hierarchy lives in nav.json -->\n";
+
+    /** Compiles a minimal two page docs set whose sources use the given line ending. */
+    async function compilePages(lineEnding: string) {
+        const withLineEndings = (contents: string) => contents.replace(/\n/g, lineEnding);
+        const files = [
+            { path: "/packages/docs-app/src/_nav.mdx", read: () => withLineEndings(NAV_PAGE) },
+            { path: "/packages/core/src/docs/index.mdx", read: () => withLineEndings(CORE_PAGE) },
+        ];
+        const { pages } = await new Documentalist().use(".mdx", createMarkdownPlugin()).documentFiles(files);
+        return pages;
+    }
+
+    it("keys pages by their `reference` metadata when sources use LF line endings", async () => {
+        const pages = await compilePages("\n");
+        expect(pages.core?.title).toBe("Core");
+        expect(pages.index).toBeUndefined();
+    });
+
+    // Regression test for https://github.com/palantir/blueprint/issues/8220. Without line ending
+    // normalization, documentalist fails to parse the frontmatter and falls back to keying the page
+    // by its filename, so every package's index.mdx collides on the "index" key.
+    it("keys pages by their `reference` metadata when sources use CRLF line endings", async () => {
+        const pages = await compilePages("\r\n");
+        expect(pages.core?.title).toBe("Core");
+        expect(pages.index).toBeUndefined();
     });
 });

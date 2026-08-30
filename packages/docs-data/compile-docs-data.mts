@@ -64,14 +64,8 @@ async function generateDocumentalistData(): Promise<void> {
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
         sourceBaseDir: monorepoRootDir,
     })
-        .use(".mdx", {
-            compile: files =>
-                // HACKHACK: special case for Windows environment
-                // see https://github.com/palantir/documentalist/issues/98
-                process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
-        })
         // TODO: once documentalist is fully removed, stop generating nav via documentalist
-        .use(".mdx", new MarkdownPlugin({ navPage: "_nav" }))
+        .use(".mdx", createMarkdownPlugin())
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
@@ -106,6 +100,26 @@ async function generateDocumentalistData(): Promise<void> {
         `module.exports.SECTIONS = ${JSON.stringify(SECTIONS)};`,
     ].join("\n");
     writeFileSync(join(generatedSrcDir, "nav-constants.js"), navConstants);
+}
+
+/**
+ * Creates the markdown plugin, wrapped so that file contents are read with CRLF line endings
+ * normalized to LF.
+ *
+ * HACKHACK: documentalist's YAML frontmatter regex only matches LF line endings, so in a CRLF
+ * (Windows) checkout every page silently loses its `reference` metadata and falls back to its
+ * filename, which makes all five `index.mdx` files collide on the "index" key.
+ * see https://github.com/palantir/documentalist/issues/98
+ */
+export function createMarkdownPlugin(): { compile: MarkdownPlugin["compile"] } {
+    const markdownPlugin = new MarkdownPlugin({ navPage: "_nav" });
+    return {
+        compile: (files, compiler) =>
+            markdownPlugin.compile(
+                files.map(file => ({ ...file, read: () => file.read().replace(/\r\n/g, "\n") })),
+                compiler,
+            ),
+    };
 }
 
 export function transformDocumentalistData(key: string, value: any): any {

@@ -1,0 +1,3 @@
+# Check out text files with LF line endings on every platform. Several build steps
+# (notably @blueprintjs/docs-data's YAML frontmatter parsing) assume LF.
+* text=auto eol=lf
