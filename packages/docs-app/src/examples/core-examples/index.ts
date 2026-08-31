@@ -46,6 +46,7 @@ export * from "./dropdownMenuExample";
 export * from "./editableTextExamples";
 export * from "./editableTextPlaygroundExample";
 export * from "./entityTitleExample";
+export * from "./entityTitleExamples";
 export * from "./fileInputExample";
 export * from "./focusExample";
 export * from "./formGroupExample";
