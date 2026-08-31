@@ -34,6 +34,7 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {
+    bordered: boolean;
     collapsible: boolean;
     defaultIsOpen: boolean;
     elevation: SectionElevation;
@@ -55,6 +56,7 @@ const BASIL_DESCRIPTION_TEXT = dedent`
 `;
 
 export const SectionExample: React.FC<ExampleProps> = props => {
+    const [bordered, setBordered] = useState(true);
     const [collapsible, setCollapsible] = useState(false);
     const [defaultIsOpen, setDefaultIsOpen] = useState(true);
     const [elevation, setElevation] = useState<SectionElevation>(Elevation.ZERO);
@@ -82,6 +84,11 @@ export const SectionExample: React.FC<ExampleProps> = props => {
         <>
             <div>
                 <H5>Section Props</H5>
+                <Switch
+                    checked={bordered}
+                    label="Bordered"
+                    onChange={handleBooleanChange(setBordered)}
+                />
                 <Switch
                     checked={isCompact}
                     label="Compact"
@@ -164,6 +171,7 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                 // the local state in the `Collapse` component is not
                 // updated.
                 key={String(defaultIsOpen)}
+                bordered={bordered}
                 collapsible={collapsible}
                 collapseProps={collapseProps}
                 compact={isCompact}
