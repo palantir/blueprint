@@ -1,0 +1,46 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-menu-item.#{$ns}-intent-primary {
+  color: var(--bp-typography-color-intent-primary);
+
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon,
+  .#{$ns}-menu-item-label {
+    color: inherit;
+  }
+
+  &:hover {
+    background: var(--bp-surface-layer-primary-hover);
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    background: var(--bp-surface-layer-primary-active);
+    color: var(--bp-typography-color-intent-primary);
+  }
+}
+
+// TODO: This feels wrong: mentioning popover-open but ok for POC
+.#{$ns}-submenu
+  .#{$ns}-popover-target.#{$ns}-popover-open
+  > .#{$ns}-menu-item.#{$ns}-intent-primary {
+  background: var(--bp-surface-layer-primary-hover);
+  color: var(--bp-typography-color-intent-primary);
+
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon,
+  .#{$ns}-menu-item-label {
+    color: inherit;
+  }
+
+  &:active {
+    background: var(--bp-surface-layer-primary-active);
+  }
+}
