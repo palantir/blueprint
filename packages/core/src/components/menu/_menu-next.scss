@@ -3,6 +3,18 @@
 
 @import "../../common/variables";
 
+.#{$ns}-menu-item {
+  &:hover {
+    background: var(--bp-surface-layer-primary-hover);
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    background: var(--bp-surface-layer-primary-active);
+    color: var(--bp-typography-color-intent-primary);
+  }
+}
+
 .#{$ns}-menu-item.#{$ns}-intent-primary {
   color: var(--bp-typography-color-intent-primary);
 
