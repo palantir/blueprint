@@ -139,6 +139,7 @@ type ThemeConfig = {
     readonly sources: readonly [string, ...string[]];
     readonly selector: string;
     readonly destination: string;
+    readonly generateTokenSchema?: boolean;
 };
 
 /** A resolved build plan pairing a theme name with its Style Dictionary {@link Config}. */
@@ -166,6 +167,20 @@ const THEMES: readonly ThemeConfig[] = [
         sources: ["src/design-tokens/tokens/themes/dark/**/*.tokens.json"],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
+    },
+    {
+        name: "light-next",
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        selector: ".bp-next",
+        destination: "tokens-next.css",
+        generateTokenSchema: true,
+    },
+    {
+        name: "dark-next",
+        include: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.dark.tokens.json"],
+        selector: '.bp-next[data-bp-color-scheme=\"dark\"],\n.bp-next [data-bp-color-scheme=\"dark\"]',
+        destination: "tokens-dark-next.css",
     },
 ];
 
@@ -995,6 +1010,40 @@ const formatProgressiveEnhancementCss = (
     return baseBlock + "\n" + supportsBlock + "\n";
 };
 
+/** Generates the Monaco-compatible JSON Schema exported by Core for BP7 light token maps. */
+const formatBlueprintTokenSchema = (tokens: readonly TransformedToken[]): string => {
+    const tokenMap = buildTokenMap(tokens);
+    const fallbackMap = makeFallbackMap(tokens, tokenMap);
+    const properties = Object.fromEntries(
+        tokens
+            .map(token => {
+                const classification = classifyToken(token, fallbackMap);
+                const currentValue = classification.modernValue ?? classification.fallbackValue;
+                const propertySchema = {
+                    default: applyRoleToValue(currentValue, token),
+                    ...(classification.description === undefined ? {} : { description: classification.description }),
+                    type: "string",
+                };
+                return [`--${classification.name}`, propertySchema] satisfies readonly [string, object];
+            })
+            .sort(([leftName], [rightName]) => leftName.localeCompare(rightName)),
+    );
+    const schema = {
+        $schema: "http://json-schema.org/draft-07/schema#",
+        additionalProperties: false,
+        patternProperties: {
+            "^--bp-.*$": { type: "string" },
+        },
+        properties,
+        title: "Blueprint BP7 light tokens",
+        type: "object",
+    };
+
+    const fileHeader = `/* !\n * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.\n */`;
+    const generatedNotice = `/**\n * Do not edit directly, this file was auto-generated.\n */`;
+    return `${fileHeader}\n\n${generatedNotice}\n\nexport const BLUEPRINT_TOKEN_SCHEMA = ${JSON.stringify(schema, undefined, 4)};\n`;
+};
+
 // -- Initialization -----------------------------------------------------------
 
 /**
@@ -1033,6 +1082,10 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
             return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens);
         },
     });
+    sd.registerFormat({
+        name: "bp/typescript/token-schema",
+        format: ({ dictionary }) => formatBlueprintTokenSchema(dictionary.allTokens),
+    });
 };
 
 // -- Theme Configuration ------------------------------------------------------
@@ -1058,6 +1111,20 @@ const makeThemeConfig = (theme: ThemeConfig): Config => ({
                 },
             ],
         },
+        ...(theme.generateTokenSchema === true
+            ? {
+                  schema: {
+                      transformGroup: "bp/css",
+                      buildPath: "src/design-tokens/",
+                      files: [
+                          {
+                              destination: "blueprintTokenSchema.ts",
+                              format: "bp/typescript/token-schema",
+                          },
+                      ],
+                  },
+              }
+            : {}),
     },
 });
 

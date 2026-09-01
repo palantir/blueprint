@@ -1,10 +1,10 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:map";
 @import "../../common/variables";
 @import "../forms/common";
-@import "./common";
+@import "./common-next";
 
 // z-index values for button stacking order (derived from $control-group-stack in forms/_common.scss)
 $button-group-z-index: (
@@ -20,7 +20,7 @@ $button-group-z-index: (
   "intent-button-active": 12,
 );
 
-.#{$ns}-button-group:not(:where(.bp-next .#{$ns}-button-group)) {
+.#{$ns}-button-group {
   display: inline-flex;
 
   .#{$ns}-button {
