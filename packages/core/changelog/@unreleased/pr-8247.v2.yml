@@ -3,3 +3,4 @@ fix:
   description: Link Tooltip targets to their tooltip content with aria-describedby
   links:
     - https://github.com/palantir/blueprint/issues/7672
+    - https://github.com/palantir/blueprint/pull/8247
