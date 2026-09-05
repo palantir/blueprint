@@ -31,7 +31,7 @@ import type { ToastProps } from "./toastProps";
 
 export interface OverlayToasterState {
     toasts: ToastOptions[];
-    toastRefs: Record<string, React.RefObject<HTMLElement>>;
+    toastRefs: Record<string, React.RefObject<HTMLDivElement>>;
 }
 
 export interface OverlayToasterCreateOptions {
@@ -150,12 +150,11 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     // auto-incrementing identifier for un-keyed toasts
     private toastId = 0;
 
-    private toastRefs: Record<string, React.RefObject<HTMLElement>> = {};
-
-    /** Compute a new collection of toast refs (usually after updating toasts) */
-    private getToastRefs = (toasts: ToastOptions[]) => {
-        return toasts.reduce<typeof this.toastRefs>((refs, toast) => {
-            refs[toast.key!] = createRef<HTMLElement>();
+    /** Compute toast refs, reusing existing ones so Overlay2/CSSTransition keep stable nodeRefs. */
+    private getToastRefs = (toasts: ToastOptions[], prevRefs: Record<string, React.RefObject<HTMLDivElement>> = {}) => {
+        return toasts.reduce<Record<string, React.RefObject<HTMLDivElement>>>((refs, toast) => {
+            const key = toast.key!;
+            refs[key] = prevRefs[key] ?? createRef<HTMLDivElement>();
             return refs;
         }, {});
     };
@@ -227,7 +226,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     private updateToastsInState(getNewToasts: (toasts: ToastOptions[]) => ToastOptions[]) {
         this.setState(prevState => {
             const toasts = getNewToasts(prevState.toasts);
-            return { toastRefs: this.getToastRefs(toasts), toasts };
+            return { toastRefs: this.getToastRefs(toasts, prevState.toastRefs), toasts };
         });
     }
 
@@ -240,7 +239,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 }
                 return !matchesKey;
             });
-            return { toastRefs: this.getToastRefs(toasts), toasts };
+            return { toastRefs: this.getToastRefs(toasts, prevState.toastRefs), toasts };
         });
     }
 
@@ -264,7 +263,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 canEscapeKeyClose={this.props.canEscapeKeyClear}
                 canOutsideClickClose={false}
                 className={classes}
-                childRefs={this.toastRefs}
+                childRefs={this.state.toastRefs as Record<string, React.RefObject<HTMLElement>>}
                 enforceFocus={false}
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || Children.count(this.props.children) > 0}
@@ -297,7 +296,14 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
     private renderToast = (toast: ToastOptions) => {
         const { key, ...toastProps } = toast;
-        return <Toast key={key} {...toastProps} onDismiss={this.getDismissHandler(toast)} />;
+        return (
+            <Toast
+                key={key}
+                {...toastProps}
+                onDismiss={this.getDismissHandler(toast)}
+                ref={this.state.toastRefs[key!]}
+            />
+        );
     };
 
     private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {
