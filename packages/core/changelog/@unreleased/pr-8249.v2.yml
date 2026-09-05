@@ -3,3 +3,4 @@ improvement:
   description: Document OverflowList item key requirements
   links:
     - https://github.com/palantir/blueprint/issues/7746
+    - https://github.com/palantir/blueprint/pull/8249
