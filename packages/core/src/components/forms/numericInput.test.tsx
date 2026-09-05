@@ -472,9 +472,11 @@ describe("<NumericInput>", () => {
     });
 
     describe("Held-button continuous change cleanup", () => {
-        // N.B. these mirror the private NumericInput.CONTINUOUS_CHANGE_* constants
-        const CONTINUOUS_CHANGE_DELAY = 300;
-        const CONTINUOUS_CHANGE_INTERVAL = 100;
+        // N.B. read the runtime values of the private NumericInput.CONTINUOUS_CHANGE_* constants
+        const { CONTINUOUS_CHANGE_DELAY, CONTINUOUS_CHANGE_INTERVAL } = NumericInput as unknown as {
+            CONTINUOUS_CHANGE_DELAY: number;
+            CONTINUOUS_CHANGE_INTERVAL: number;
+        };
 
         beforeEach(() => {
             vi.useFakeTimers();
