@@ -3,3 +3,4 @@ fix:
   description: Prevent the native context menu from opening on a ContextMenu backdrop
   links:
     - https://github.com/palantir/blueprint/issues/6469
+    - https://github.com/palantir/blueprint/pull/8248
