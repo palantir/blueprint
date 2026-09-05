@@ -3,3 +3,4 @@ fix:
   description: Animate the dismissed OverlayToaster toast instead of a sibling
   links:
     - https://github.com/palantir/blueprint/issues/8121
+    - https://github.com/palantir/blueprint/pull/8246
