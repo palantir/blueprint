@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Keep Text ellipsis title in sync when the container resizes
+  links:
+    - https://github.com/palantir/blueprint/issues/7559
