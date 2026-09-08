@@ -6,3 +6,4 @@ dist/
 pnpm-lock.yaml
 changelog/
 .claude/
+packages/core/src/design-tokens/blueprintTokenSchema.ts

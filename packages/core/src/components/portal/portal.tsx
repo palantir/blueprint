@@ -18,7 +18,13 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import {
+    BLUEPRINT_NEXT_CLASS,
+    BlueprintThemeContext,
+    type BlueprintTokenMap,
+} from "../../context/blueprintThemeContext";
 import { PortalContext } from "../../context/portal/portalProvider";
+import { useIsomorphicLayoutEffect } from "../../hooks/useIsomorphicLayoutEffect";
 
 export interface PortalProps extends Props {
     /** Contents to send through the portal. */
@@ -61,6 +67,7 @@ export function Portal(
     { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
 ) {
     const context = useContext(PortalContext);
+    const blueprintTokens = useContext(BlueprintThemeContext);
 
     const portalContainer =
         container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
@@ -100,7 +107,7 @@ export function Portal(
         }
     }, [portalElement, onChildrenMount]);
 
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         if (portalElement != null) {
             maybeAddClass(portalElement.classList, className);
             return () => maybeRemoveClass(portalElement.classList, className);
@@ -115,6 +122,26 @@ export function Portal(
         }
         return undefined;
     }, [portalElement, stopPropagationEvents]);
+
+    useIsomorphicLayoutEffect(() => {
+        if (portalElement == null || blueprintTokens === undefined) {
+            return;
+        }
+
+        // Portal content is attached outside the provider wrapper, so mirror its class and inherited token values.
+        portalElement.classList.add(BLUEPRINT_NEXT_CLASS);
+        applyBlueprintTokens(portalElement, blueprintTokens);
+
+        return () => {
+            removeBlueprintTokens(portalElement, blueprintTokens);
+            if (
+                !hasClassName(className, BLUEPRINT_NEXT_CLASS) &&
+                !hasClassName(context.portalClassName, BLUEPRINT_NEXT_CLASS)
+            ) {
+                portalElement.classList.remove(BLUEPRINT_NEXT_CLASS);
+            }
+        };
+    }, [blueprintTokens, className, context.portalClassName, portalElement]);
 
     // Only render `children` once this component has mounted in a browser environment, so they are
     // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
@@ -150,4 +177,16 @@ function removeStopPropagationListeners(portalElement: HTMLElement, events?: Arr
 
 function handleStopProgation(e: Event) {
     e.stopPropagation();
+}
+
+function applyBlueprintTokens(portalElement: HTMLElement, tokens: BlueprintTokenMap): void {
+    Object.entries(tokens).forEach(([name, value]) => portalElement.style.setProperty(name, value));
+}
+
+function removeBlueprintTokens(portalElement: HTMLElement, tokens: BlueprintTokenMap): void {
+    Object.keys(tokens).forEach(name => portalElement.style.removeProperty(name));
+}
+
+function hasClassName(classNames: string | undefined, expectedClassName: string): boolean {
+    return classNames?.split(/\s+/).includes(expectedClassName) ?? false;
 }

@@ -15,6 +15,8 @@
  */
 
 export { BlueprintProvider, type BlueprintProviderProps } from "./blueprintProvider";
+export { BlueprintThemeProvider, type BlueprintThemeProviderProps } from "./blueprintThemeProvider";
+export { type BlueprintTokenMap } from "./blueprintThemeContext";
 export {
     HotkeysContext,
     type HotkeysContextInstance,

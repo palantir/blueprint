@@ -35,6 +35,7 @@ docs-static/**/*.d.ts
 
 # Storybook
 storybook-static
+.playwright-cli/
 
 # exclude site except for site/docs/versions
 site/*
