@@ -78,64 +78,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9152, 0.0416, 255.01],
-                    "hex": "#d1e5ff"
+                    "components": [0.8953, 0.0437, 257.97],
+                    "hex": "#cbdefa"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8298, 0.0858, 256.19],
-                    "hex": "#a3caff"
+                    "components": [0.8131, 0.0896, 257.95],
+                    "hex": "#9ec4fc"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.745, 0.1224, 257.51],
-                    "hex": "#7aaef9"
+                    "components": [0.7293, 0.123, 257.52],
+                    "hex": "#75a9f4"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6561, 0.1448, 257.73],
-                    "hex": "#5591e8"
+                    "components": [0.6431, 0.1457, 257.47],
+                    "hex": "#508de4"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5678, 0.1553, 257.52],
-                    "hex": "#3475d0"
+                    "components": [0.5557, 0.1571, 257.76],
+                    "hex": "#3071cd"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.476, 0.1544, 257.66],
-                    "hex": "#1759b1"
+                    "components": [0.467, 0.1561, 257.84],
+                    "hex": "#1356af"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3847, 0.1418, 257.9],
-                    "hex": "#003f8d"
+                    "components": [0.3785, 0.1417, 258.25],
+                    "hex": "#003d8b"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2947, 0.1145, 259.06],
-                    "hex": "#002864"
+                    "components": [0.289, 0.1158, 259.67],
+                    "hex": "#002663"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1991, 0.0778, 259.16],
-                    "hex": "#001338"
+                    "components": [0.194, 0.0808, 260.38],
+                    "hex": "#001138"
                 }
             },
             "1000": {
@@ -150,64 +150,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.923, 0.0407, 153.1],
-                    "hex": "#d2eed9"
+                    "components": [0.8664, 0.0399, 151.03],
+                    "hex": "#c1dbc6"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8372, 0.0835, 152.92],
-                    "hex": "#a0dab0"
+                    "components": [0.7863, 0.0825, 151.47],
+                    "hex": "#92c99f"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7515, 0.1177, 152.65],
-                    "hex": "#70c48a"
+                    "components": [0.7046, 0.1131, 151.66],
+                    "hex": "#66b47c"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6634, 0.1379, 152.81],
-                    "hex": "#42ab69"
+                    "components": [0.6219, 0.1338, 151.49],
+                    "hex": "#3b9d5c"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5727, 0.148, 152.83],
-                    "hex": "#00904b"
+                    "components": [0.5369, 0.1429, 151.47],
+                    "hex": "#008440"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4882, 0.1363, 149.44],
-                    "hex": "#007431"
+                    "components": [0.4574, 0.1316, 148.23],
+                    "hex": "#006a28"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3983, 0.1159, 147.78],
-                    "hex": "#00571e"
+                    "components": [0.3721, 0.1132, 146.14],
+                    "hex": "#004f15"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3034, 0.0915, 146.46],
-                    "hex": "#003a0e"
+                    "components": [0.2859, 0.0898, 145.06],
+                    "hex": "#003508"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.208, 0.0654, 144.99],
-                    "hex": "#001f03"
+                    "components": [0.193, 0.0615, 144.56],
+                    "hex": "#001b02"
                 }
             },
             "1000": {
@@ -222,64 +222,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9133, 0.0428, 23.3],
-                    "hex": "#fed8d5"
+                    "components": [0.9185, 0.0416, 23.42],
+                    "hex": "#ffdad7"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8283, 0.0897, 22.54],
-                    "hex": "#fcb0ac"
+                    "components": [0.8345, 0.0896, 22.52],
+                    "hex": "#feb2ae"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7422, 0.1225, 22.88],
-                    "hex": "#ef8b87"
+                    "components": [0.7494, 0.1236, 23.45],
+                    "hex": "#f28d88"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6548, 0.145, 22.88],
-                    "hex": "#db6866"
+                    "components": [0.6607, 0.1471, 22.9],
+                    "hex": "#de6967"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5667, 0.1557, 23.02],
-                    "hex": "#c14849"
+                    "components": [0.5713, 0.1567, 23.01],
+                    "hex": "#c3494a"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4771, 0.1549, 23.18],
-                    "hex": "#a22b30"
+                    "components": [0.4801, 0.1549, 23.09],
+                    "hex": "#a32c31"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3839, 0.1416, 22.86],
-                    "hex": "#7e111c"
+                    "components": [0.3886, 0.1429, 23.25],
+                    "hex": "#80121c"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2913, 0.1164, 23.21],
-                    "hex": "#58010c"
+                    "components": [0.2937, 0.1173, 22.8],
+                    "hex": "#59010d"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1977, 0.0797, 22.61],
-                    "hex": "#310004"
+                    "components": [0.2001, 0.0808, 22.84],
+                    "hex": "#320004"
                 }
             },
             "1000": {
@@ -294,36 +294,36 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9167, 0.0437, 35.56],
-                    "hex": "#ffdad0"
+                    "components": [0.917, 0.0432, 33.91],
+                    "hex": "#ffdad1"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8311, 0.0896, 34.37],
-                    "hex": "#fcb3a1"
+                    "components": [0.8341, 0.0895, 34.36],
+                    "hex": "#fdb4a2"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7438, 0.1232, 34.21],
-                    "hex": "#ef8e77"
+                    "components": [0.7479, 0.1246, 34.63],
+                    "hex": "#f18f77"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6571, 0.1451, 34.41],
-                    "hex": "#db6c52"
+                    "components": [0.6585, 0.1462, 34.32],
+                    "hex": "#dc6c52"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5683, 0.1562, 34.4],
-                    "hex": "#c14c31"
+                    "components": [0.5699, 0.1573, 34.33],
+                    "hex": "#c24c31"
                 }
             },
             "600": {
@@ -336,15 +336,15 @@
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3859, 0.1407, 33.45],
-                    "hex": "#7e1700"
+                    "components": [0.387, 0.1424, 33.11],
+                    "hex": "#7f1600"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2923, 0.1156, 30.49],
-                    "hex": "#580400"
+                    "components": [0.2946, 0.1166, 30.46],
+                    "hex": "#590400"
                 }
             },
             "900": {
@@ -366,57 +366,57 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9163, 0.0435, 3.75],
-                    "hex": "#fed8e0"
+                    "components": [0.9215, 0.0423, 3.33],
+                    "hex": "#ffdae2"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.83, 0.0902, 3.46],
-                    "hex": "#faafc1"
+                    "components": [0.8376, 0.0883, 4.91],
+                    "hex": "#fcb2c2"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7437, 0.1247, 3.85],
-                    "hex": "#ed89a3"
+                    "components": [0.7502, 0.1218, 4.01],
+                    "hex": "#ee8ca5"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6559, 0.1464, 3.72],
-                    "hex": "#d86687"
+                    "components": [0.6618, 0.1459, 4.19],
+                    "hex": "#da6888"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5678, 0.1571, 3.99],
-                    "hex": "#be466c"
+                    "components": [0.5721, 0.1557, 4.17],
+                    "hex": "#bf486d"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4779, 0.1563, 3.87],
-                    "hex": "#9f2953"
+                    "components": [0.4799, 0.1541, 4.27],
+                    "hex": "#9f2b53"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3858, 0.1435, 3.98],
-                    "hex": "#7c0f3b"
+                    "components": [0.388, 0.1414, 3.77],
+                    "hex": "#7c123c"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2918, 0.1174, 3.97],
-                    "hex": "#560025"
+                    "components": [0.2948, 0.1172, 4.61],
+                    "hex": "#570125"
                 }
             },
             "900": {
@@ -438,64 +438,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.914, 0.0436, 327.11],
-                    "hex": "#f3d9f2"
+                    "components": [0.9228, 0.0425, 328.32],
+                    "hex": "#f6dcf4"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8293, 0.089, 327.59],
-                    "hex": "#e7b3e5"
+                    "components": [0.8364, 0.0895, 328.2],
+                    "hex": "#eab5e7"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7443, 0.1217, 327.2],
-                    "hex": "#d590d4"
+                    "components": [0.75, 0.124, 327.69],
+                    "hex": "#d891d6"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6557, 0.1452, 327.51],
-                    "hex": "#bf6ebe"
+                    "components": [0.6621, 0.145, 327.5],
+                    "hex": "#c170c0"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5675, 0.1555, 327.38],
-                    "hex": "#a550a5"
+                    "components": [0.572, 0.1561, 327.81],
+                    "hex": "#a751a6"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.477, 0.1539, 327.66],
-                    "hex": "#883588"
+                    "components": [0.4817, 0.1545, 328.12],
+                    "hex": "#8a3689"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3857, 0.1413, 327.89],
-                    "hex": "#691e69"
+                    "components": [0.3889, 0.1414, 327.88],
+                    "hex": "#6a1f6a"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2924, 0.1173, 327.35],
-                    "hex": "#480c49"
+                    "components": [0.295, 0.1167, 328.04],
+                    "hex": "#490d49"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1967, 0.0808, 328.12],
-                    "hex": "#270327"
+                    "components": [0.1975, 0.0818, 326.99],
+                    "hex": "#270328"
                 }
             },
             "1000": {
@@ -510,64 +510,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9151, 0.0434, 288.38],
-                    "hex": "#e1dfff"
+                    "components": [0.912, 0.0434, 288.37],
+                    "hex": "#e0defe"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.831, 0.0891, 287.87],
-                    "hex": "#c4bfff"
+                    "components": [0.8286, 0.0892, 288.58],
+                    "hex": "#c4befe"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7449, 0.124, 288.27],
-                    "hex": "#a99ff6"
+                    "components": [0.7421, 0.1227, 288.9],
+                    "hex": "#a99ef4"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6568, 0.1457, 288.61],
-                    "hex": "#8f80e4"
+                    "components": [0.6536, 0.1458, 288.58],
+                    "hex": "#8e7fe3"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.568, 0.1565, 288.26],
-                    "hex": "#7563cc"
+                    "components": [0.5656, 0.1566, 288.7],
+                    "hex": "#7562cb"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4773, 0.1546, 288.21],
-                    "hex": "#5c48ad"
+                    "components": [0.4756, 0.156, 288.49],
+                    "hex": "#5c47ad"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3859, 0.1412, 288.29],
-                    "hex": "#443089"
+                    "components": [0.3843, 0.1425, 288.57],
+                    "hex": "#442f89"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2916, 0.117, 288.04],
-                    "hex": "#2c1b61"
+                    "components": [0.291, 0.1183, 289.19],
+                    "hex": "#2d1a61"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1984, 0.0807, 288.23],
-                    "hex": "#160b37"
+                    "components": [0.1967, 0.0822, 288.73],
+                    "hex": "#160a37"
                 }
             },
             "1000": {
@@ -582,71 +582,71 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9279, 0.038, 242.12],
-                    "hex": "#d2ebff"
+                    "components": [0.8861, 0.0377, 243.27],
+                    "hex": "#c5ddf1"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8424, 0.08, 243.25],
-                    "hex": "#9ed2fc"
+                    "components": [0.8036, 0.0779, 244.22],
+                    "hex": "#94c5ee"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7564, 0.1098, 242.75],
-                    "hex": "#6eb8f0"
+                    "components": [0.7208, 0.1084, 244.25],
+                    "hex": "#66ace4"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6664, 0.1299, 242.89],
-                    "hex": "#3f9cdd"
+                    "components": [0.6365, 0.1268, 244.16],
+                    "hex": "#3b92d2"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5762, 0.1392, 242.96],
-                    "hex": "#0080c4"
+                    "components": [0.5494, 0.1372, 244.6],
+                    "hex": "#0077bb"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4906, 0.1308, 247.59],
-                    "hex": "#0064a6"
+                    "components": [0.4684, 0.1282, 248.68],
+                    "hex": "#005d9e"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3992, 0.1129, 249.96],
-                    "hex": "#004981"
+                    "components": [0.3806, 0.1132, 251.81],
+                    "hex": "#00437c"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3042, 0.0918, 252.3],
-                    "hex": "#002f5b"
+                    "components": [0.2905, 0.0912, 253.59],
+                    "hex": "#002b57"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2051, 0.0637, 253.21],
-                    "hex": "#001733"
+                    "components": [0.1976, 0.0634, 254.23],
+                    "hex": "#001531"
                 }
             },
             "1000": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1041, 0.028, 247.9],
-                    "hex": "#00040c"
+                    "components": [0.0966, 0.0291, 252.27],
+                    "hex": "#00030b"
                 }
             }
         },
@@ -654,71 +654,71 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9281, 0.0291, 183.33],
-                    "hex": "#d3eee9"
+                    "components": [0.8725, 0.0262, 184.65],
+                    "hex": "#c3dbd7"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8417, 0.058, 183.74],
-                    "hex": "#a1d8cf"
+                    "components": [0.7913, 0.0548, 182.81],
+                    "hex": "#94c7be"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7538, 0.08, 184.32],
-                    "hex": "#71c0b5"
+                    "components": [0.7094, 0.0754, 183.44],
+                    "hex": "#68b1a6"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6662, 0.095, 184.43],
-                    "hex": "#42a79b"
+                    "components": [0.6269, 0.0903, 182.73],
+                    "hex": "#3c9a8d"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5753, 0.1016, 184.33],
-                    "hex": "#018c80"
+                    "components": [0.5415, 0.0966, 182.68],
+                    "hex": "#008174"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4895, 0.0871, 183.14],
-                    "hex": "#007065"
+                    "components": [0.4607, 0.0829, 181.22],
+                    "hex": "#00675b"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4002, 0.0715, 182.57],
-                    "hex": "#00544b"
+                    "components": [0.3766, 0.0682, 180.32],
+                    "hex": "#004d43"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3056, 0.0549, 181.54],
-                    "hex": "#003831"
+                    "components": [0.2878, 0.052, 180.59],
+                    "hex": "#00332c"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2071, 0.037, 182.42],
-                    "hex": "#001d19"
+                    "components": [0.1949, 0.0357, 178.5],
+                    "hex": "#001a15"
                 }
             },
             "1000": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1032, 0.0184, 182.95],
-                    "hex": "#000504"
+                    "components": [0.0956, 0.0173, 179.94],
+                    "hex": "#000403"
                 }
             }
         },
@@ -726,64 +726,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9147, 0.0437, 144.16],
-                    "hex": "#d2ebd1"
+                    "components": [0.8667, 0.0426, 144.11],
+                    "hex": "#c3dbc2"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8299, 0.0892, 144.25],
-                    "hex": "#a4d7a3"
+                    "components": [0.787, 0.0895, 143.73],
+                    "hex": "#97c995"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7429, 0.1232, 144.21],
-                    "hex": "#79c079"
+                    "components": [0.7051, 0.1242, 144.12],
+                    "hex": "#6db46d"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6577, 0.1471, 143.89],
-                    "hex": "#52a853"
+                    "components": [0.623, 0.1464, 143.98],
+                    "hex": "#479d49"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5674, 0.1567, 144.05],
-                    "hex": "#2c8d32"
+                    "components": [0.5381, 0.1571, 144.01],
+                    "hex": "#208428"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4762, 0.1546, 143.96],
-                    "hex": "#007113"
+                    "components": [0.4545, 0.1523, 142.96],
+                    "hex": "#006a06"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3895, 0.1325, 142.5],
-                    "hex": "#005500"
+                    "components": [0.3705, 0.1261, 142.5],
+                    "hex": "#004f00"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2986, 0.1016, 142.5],
-                    "hex": "#003900"
+                    "components": [0.285, 0.097, 142.5],
+                    "hex": "#003500"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2036, 0.0693, 142.5],
-                    "hex": "#001e00"
+                    "components": [0.1925, 0.0655, 142.5],
+                    "hex": "#001b00"
                 }
             },
             "1000": {
@@ -798,64 +798,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9152, 0.0391, 124.67],
-                    "hex": "#dde8cc"
+                    "components": [0.8758, 0.0382, 125.28],
+                    "hex": "#d0dbc0"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8304, 0.0808, 124.3],
-                    "hex": "#bcd197"
+                    "components": [0.7944, 0.0775, 124.37],
+                    "hex": "#b1c58e"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7458, 0.1128, 124.51],
-                    "hex": "#9db967"
+                    "components": [0.7124, 0.1075, 124.87],
+                    "hex": "#93ae61"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6581, 0.1329, 124.48],
-                    "hex": "#809f3a"
+                    "components": [0.6277, 0.1265, 124.4],
+                    "hex": "#789536"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5684, 0.1419, 124.44],
-                    "hex": "#658400"
+                    "components": [0.5429, 0.136, 124.73],
+                    "hex": "#5e7c00"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4799, 0.1225, 126.2],
-                    "hex": "#4c6900"
+                    "components": [0.4574, 0.1165, 126.06],
+                    "hex": "#476200"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3867, 0.0993, 126.69],
-                    "hex": "#364d00"
+                    "components": [0.3694, 0.0951, 126.85],
+                    "hex": "#324800"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.295, 0.0762, 127.16],
-                    "hex": "#223300"
+                    "components": [0.2803, 0.0725, 127.2],
+                    "hex": "#1f2f00"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1996, 0.0521, 127.85],
-                    "hex": "#0f1a00"
+                    "components": [0.1911, 0.0504, 128.58],
+                    "hex": "#0d1800"
                 }
             },
             "1000": {
@@ -870,71 +870,71 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.917, 0.033, 74.78],
-                    "hex": "#f1e1cc"
+                    "components": [0.8988, 0.0332, 74.78],
+                    "hex": "#ebdbc6"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.833, 0.0679, 76.25],
-                    "hex": "#e2c397"
+                    "components": [0.8146, 0.0671, 75.64],
+                    "hex": "#dcbd92"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7456, 0.0942, 77.26],
-                    "hex": "#cea566"
+                    "components": [0.7311, 0.0931, 75.76],
+                    "hex": "#caa063"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6589, 0.1109, 76.66],
-                    "hex": "#b8883a"
+                    "components": [0.6442, 0.1092, 75.02],
+                    "hex": "#b48338"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5691, 0.1192, 76.81],
-                    "hex": "#9e6c00"
+                    "components": [0.5574, 0.1175, 75.26],
+                    "hex": "#9b6800"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4812, 0.1037, 70.85],
-                    "hex": "#825200"
+                    "components": [0.4692, 0.1024, 68.88],
+                    "hex": "#7f4e00"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3887, 0.0844, 69.6],
-                    "hex": "#613b00"
+                    "components": [0.381, 0.0844, 66.66],
+                    "hex": "#603800"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2956, 0.0654, 66.82],
-                    "hex": "#422500"
+                    "components": [0.2896, 0.0652, 64.49],
+                    "hex": "#412300"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1985, 0.0458, 61.82],
-                    "hex": "#241000"
+                    "components": [0.1963, 0.0464, 59.25],
+                    "hex": "#240f00"
                 }
             },
             "1000": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1042, 0.0219, 75.86],
-                    "hex": "#070300"
+                    "components": [0.0977, 0.0227, 60.92],
+                    "hex": "#070200"
                 }
             }
         },
@@ -942,64 +942,64 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9191, 0.0376, 59.54],
-                    "hex": "#f8dfcc"
+                    "components": [0.9069, 0.0377, 59.53],
+                    "hex": "#f4dbc8"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8349, 0.0776, 58.12],
-                    "hex": "#f0bd97"
+                    "components": [0.8228, 0.0771, 57.37],
+                    "hex": "#ecb994"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.7477, 0.1075, 58.59],
-                    "hex": "#e09c66"
+                    "components": [0.7373, 0.1061, 58.48],
+                    "hex": "#dc9964"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6589, 0.1274, 57.94],
-                    "hex": "#cb7c39"
+                    "components": [0.6514, 0.1261, 57.88],
+                    "hex": "#c87a38"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5701, 0.1364, 58.06],
-                    "hex": "#b15f00"
+                    "components": [0.5625, 0.1348, 57.87],
+                    "hex": "#ae5d00"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4805, 0.1254, 50.95],
-                    "hex": "#934400"
+                    "components": [0.4758, 0.1241, 50.96],
+                    "hex": "#914300"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3897, 0.1037, 49.55],
-                    "hex": "#6f3000"
+                    "components": [0.383, 0.1032, 48.71],
+                    "hex": "#6d2e00"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.295, 0.0821, 46.65],
-                    "hex": "#4c1c00"
+                    "components": [0.2915, 0.0818, 46.09],
+                    "hex": "#4b1b00"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2002, 0.0596, 42.68],
-                    "hex": "#2b0a00"
+                    "components": [0.1963, 0.0595, 41.82],
+                    "hex": "#2a0900"
                 }
             },
             "1000": {
@@ -1014,71 +1014,71 @@
             "100": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.9525, 0.0142, 254.61],
-                    "hex": "#e9f0f9"
+                    "components": [0.92, 0.0138, 258.35],
+                    "hex": "#dfe5ee"
                 }
             },
             "200": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.8611, 0.0146, 254.62],
-                    "hex": "#cbd2db"
+                    "components": [0.8301, 0.0148, 254.62],
+                    "hex": "#c1c8d1"
                 }
             },
             "300": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.77, 0.0138, 251.59],
-                    "hex": "#aeb5bd"
+                    "components": [0.7381, 0.014, 251.6],
+                    "hex": "#a4abb3"
                 }
             },
             "400": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.6773, 0.0137, 255.54],
-                    "hex": "#9298a0"
+                    "components": [0.6447, 0.0151, 258.36],
+                    "hex": "#888e97"
                 }
             },
             "500": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.5839, 0.0142, 255.55],
-                    "hex": "#767c84"
+                    "components": [0.5531, 0.0144, 255.56],
+                    "hex": "#6d737b"
                 }
             },
             "600": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.4902, 0.0148, 255.57],
-                    "hex": "#5b6169"
+                    "components": [0.4579, 0.0151, 255.58],
+                    "hex": "#525860"
                 }
             },
             "700": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.3954, 0.0157, 255.6],
-                    "hex": "#41474f"
+                    "components": [0.3648, 0.0145, 252.28],
+                    "hex": "#393f46"
                 }
             },
             "800": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2916, 0.0163, 259.79],
-                    "hex": "#272c34"
+                    "components": [0.2598, 0.0162, 264.24],
+                    "hex": "#20242c"
                 }
             },
             "900": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.2336, 0.0172, 259.75],
-                    "hex": "#191e26"
+                    "components": [0.2028, 0.016, 256.82],
+                    "hex": "#12171e"
                 }
             },
             "1000": {
                 "$value": {
                     "colorSpace": "oklch",
-                    "components": [0.1804, 0.0165, 256.84],
-                    "hex": "#0d1219"
+                    "components": [0.1487, 0.0168, 259.92],
+                    "hex": "#070b12"
                 }
             }
         },
