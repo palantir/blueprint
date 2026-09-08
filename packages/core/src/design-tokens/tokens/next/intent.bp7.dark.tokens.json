@@ -1,0 +1,9 @@
+{
+    "intent": {
+        "$type": "color",
+        "$description": "Semantic layer: each intent is a palette family exposed as its full 100-1000 ramp (aliases) plus `default` (the .500 base) and `foreground`. Surface/typography reference a step (e.g. {intent.primary.200}) so they land exactly on a palette value and re-theme with the intent.",
+        "neutral": {
+            "foreground": { "$value": "{palette.white.1000}" }
+        }
+    }
+}
