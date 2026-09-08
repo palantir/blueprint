@@ -1,0 +1,95 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/mixins";
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+.#{$ns}-dialog-container {
+  $transition-props: (
+    opacity: (
+      0,
+      1,
+    ),
+    transform: (
+      scale(0.5),
+      scale(1),
+    ),
+  );
+
+  @include react-transition(
+    "#{$ns}-overlay",
+    $transition-props,
+    var(--bp-emphasis-transition-duration),
+    var(--bp-emphasis-ease-bounce),
+    $before: "&",
+    $after: "> .#{$ns}-dialog"
+  );
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
+  pointer-events: none;
+  user-select: none;
+  width: 100%;
+}
+
+.#{$ns}-dialog {
+  background: var(--bp-surface-background-color-base-rest);
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: var(--bp-surface-shadow-4);
+  color: var(--bp-typography-color-base);
+  display: flex;
+  flex-direction: column;
+  margin: calc(var(--bp-surface-spacing) * 8) 0;
+  pointer-events: all;
+  user-select: text;
+  width: calc(var(--bp-surface-spacing) * 125);
+
+  &:focus {
+    outline: 0;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid CanvasText;
+  }
+}
+
+.#{$ns}-dialog-header {
+  align-items: center;
+  background: var(--bp-surface-background-color-base-rest);
+  border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
+  box-shadow: 0 var(--bp-surface-border-width) 0 var(--bp-surface-divider-color-default);
+  display: flex;
+  flex: 0 0 auto;
+  min-height: calc(var(--bp-surface-spacing) * 9);
+  padding: var(--bp-surface-spacing);
+  padding-left: calc(var(--bp-surface-spacing) * 4);
+  z-index: 0;
+
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
+    flex: 0 0 auto;
+    margin-left: calc(-1 * var(--bp-surface-spacing));
+    margin-right: calc(var(--bp-surface-spacing) * 2);
+    &:not([class*="#{$ns}-intent"]) {
+      color: var(--bp-typography-color-base);
+    }
+  }
+
+  .#{$ns}-heading {
+    @include overflow-ellipsis;
+    flex: 1 1 auto;
+    font-size: var(--bp-typography-size-md);
+    line-height: inherit;
+    margin: 0;
+
+    &:last-child {
+      margin-right: calc(var(--bp-surface-spacing) * 4);
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border-bottom: var(--bp-surface-border-width) solid CanvasText;
+  }
+}

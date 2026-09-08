@@ -1,0 +1,124 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-entity-title {
+  align-items: center;
+  display: flex;
+  gap: calc(var(--bp-surface-spacing) * 2);
+  min-width: 0;
+
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+
+  &-icon-container {
+    &.#{$ns}-entity-title-has-subtitle {
+      align-self: flex-start;
+    }
+
+    &:not(.#{$ns}-entity-title-has-subtitle) {
+      align-items: center;
+      display: flex;
+    }
+  }
+
+  &-text {
+    display: flex;
+    flex-direction: column;
+
+    .#{$ns}-fill & {
+      flex-grow: 1;
+    }
+  }
+
+  &-title-and-tags {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: var(--bp-surface-spacing);
+  }
+
+  &-tags-container {
+    display: flex;
+    gap: calc(var(--bp-surface-spacing) * 0.5);
+    margin-left: var(--bp-surface-spacing);
+  }
+
+  &-title {
+    margin-bottom: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+
+    .#{$ns}-fill & {
+      flex-grow: 1;
+    }
+  }
+
+  &-subtitle {
+    font-size: var(--bp-typography-size-sm);
+    margin-top: calc(var(--bp-surface-spacing) * 0.5);
+  }
+
+  &-ellipsize,
+  &-ellipsize &-text {
+    overflow: hidden;
+  }
+
+  &-heading-h1 .#{$ns}-icon-container {
+    align-items: center;
+    display: flex;
+    height: calc(var(--bp-surface-spacing) * 10);
+  }
+
+  &-heading-h2 .#{$ns}-icon-container {
+    align-items: center;
+    display: flex;
+    height: calc(var(--bp-surface-spacing) * 8);
+  }
+
+  &-heading-h3 .#{$ns}-icon-container {
+    align-items: center;
+    display: flex;
+    height: calc(var(--bp-surface-spacing) * 6.25);
+  }
+
+  &-heading-h4 .#{$ns}-icon-container {
+    align-items: center;
+    display: flex;
+    height: calc(var(--bp-surface-spacing) * 5.25);
+  }
+
+  &-heading-h5 .#{$ns}-icon-container {
+    align-items: center;
+    display: flex;
+    height: calc(var(--bp-surface-spacing) * 4.75);
+  }
+
+  &-heading-h6 .#{$ns}-icon-container {
+    align-items: center;
+    display: flex;
+    height: calc(var(--bp-surface-spacing) * 4);
+  }
+
+  &-heading-h1,
+  &-heading-h2,
+  &-heading-h3 {
+    gap: calc(var(--bp-surface-spacing) * 4);
+
+    .#{$ns}-entity-title-subtitle {
+      font-size: var(--bp-typography-size-md);
+    }
+  }
+
+  &-heading-h4,
+  &-heading-h5,
+  &-heading-h6 {
+    gap: calc(var(--bp-surface-spacing) * 2);
+
+    .#{$ns}-entity-title-subtitle {
+      font-size: var(--bp-typography-size-sm);
+    }
+  }
+}

@@ -3,7 +3,7 @@
 
 @import "./common";
 
-.#{$ns}-tree-node-secondary-label {
+.#{$ns}-tree-node-secondary-label:not(:where(.bp-next .#{$ns}-tree-node-secondary-label)) {
   .#{$ns}-popover-target {
     align-items: center;
     display: flex;

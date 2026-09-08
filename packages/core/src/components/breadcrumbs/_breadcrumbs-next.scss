@@ -1,0 +1,105 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/icons/lib/scss/variables";
+@import "../../common/variables";
+
+.#{$ns}-breadcrumbs {
+  align-items: center;
+  cursor: default;
+  display: flex;
+  flex-wrap: wrap;
+  height: calc(var(--bp-surface-spacing) * 7.5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    align-items: center;
+    display: flex;
+
+    &::after {
+      background-color: var(--bp-typography-color-intent-neutral);
+      content: "";
+      display: block;
+      height: calc(var(--bp-surface-spacing) * 4);
+      margin: 0 var(--bp-surface-spacing);
+      mask: svg-icon("16px/chevron-right.svg", ()) center / contain no-repeat;
+      width: calc(var(--bp-surface-spacing) * 4);
+    }
+
+    &:last-of-type::after {
+      display: none;
+    }
+  }
+}
+
+.#{$ns}-breadcrumb,
+.#{$ns}-breadcrumb-current,
+.#{$ns}-breadcrumbs-collapsed {
+  align-items: center;
+  display: inline-flex;
+  font-size: var(--bp-typography-size-xl);
+}
+
+.#{$ns}-breadcrumb,
+.#{$ns}-breadcrumbs-collapsed {
+  color: var(--bp-typography-color-intent-neutral);
+}
+
+.#{$ns}-breadcrumb {
+  &:hover {
+    text-decoration: none;
+  }
+
+  &.#{$ns}-disabled {
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+    cursor: not-allowed;
+  }
+
+  .#{$ns}-icon {
+    margin-right: var(--bp-surface-spacing);
+  }
+}
+
+.#{$ns}-breadcrumb-current {
+  color: inherit;
+  font-weight: var(--bp-typography-weight-strong);
+
+  .#{$ns}-input {
+    font-size: inherit;
+    font-weight: inherit;
+    vertical-align: baseline;
+  }
+}
+
+.#{$ns}-breadcrumbs-collapsed {
+  background-color: var(--bp-surface-layer-color-neutral-rest);
+  border: none;
+  border-radius: var(--bp-surface-border-radius);
+  color: var(--bp-typography-color-intent-neutral);
+  cursor: pointer;
+  margin-right: calc(var(--bp-surface-spacing) * 0.5);
+  padding-block: var(--bp-surface-border-width);
+  padding-inline: var(--bp-surface-spacing);
+  vertical-align: text-bottom;
+
+  &::before {
+    background-color: var(--bp-typography-color-intent-neutral);
+    content: "";
+    display: block;
+    height: calc(var(--bp-surface-spacing) * 4);
+    mask: svg-icon("16px/more.svg", ()) center / contain no-repeat;
+    width: calc(var(--bp-surface-spacing) * 4);
+  }
+
+  &:hover {
+    background-color: var(--bp-surface-layer-color-neutral-hover);
+    color: var(--bp-typography-color-base);
+    text-decoration: none;
+
+    &::before {
+      background-color: var(--bp-typography-color-base);
+    }
+  }
+}

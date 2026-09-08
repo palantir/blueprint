@@ -3,7 +3,7 @@
 
 @import "../../common/variables";
 
-.#{$ns}-input {
+.#{$ns}-input:not(:where(.bp-next .#{$ns}-input)) {
   @include pt-input;
 
   &.#{$ns}-large {
@@ -71,7 +71,7 @@
 // for iOS support
 @supports (-webkit-touch-callout: none) {
   // only html input elements require a fix on iOS
-  input.#{$ns}-input {
+  input.#{$ns}-input:not(:where(.bp-next .#{$ns}-input)) {
     &:disabled,
     &.#{$ns}-disabled {
       opacity: 1;
@@ -85,7 +85,7 @@
 }
 
 /* stylelint-disable-next-line selector-no-qualifying-type */
-textarea.#{$ns}-input {
+textarea.#{$ns}-input:not(:where(.bp-next .#{$ns}-input)) {
   max-width: 100%;
   padding: calc(var(--bp-surface-spacing) * 2);
 
@@ -103,7 +103,7 @@ textarea.#{$ns}-input {
   }
 }
 
-.#{$ns}-text-area {
+.#{$ns}-text-area:not(:where(.bp-next .#{$ns}-text-area)) {
   &.#{$ns}-text-area-auto-resize {
     // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
     resize: horizontal;

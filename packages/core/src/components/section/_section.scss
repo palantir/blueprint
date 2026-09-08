@@ -11,113 +11,109 @@ $section-padding-compact-vertical: $pt-spacing * 2 !default;
 $section-padding-compact-horizontal: $pt-spacing * 4 !default;
 $section-card-padding-compact: $pt-spacing * 4 !default;
 
-.#{$ns}-section {
+.#{$ns}-section:not(:where(.bp-next .#{$ns}-section)),
+.#{$ns}-section.#{$ns}-compact:not(:where(.bp-next .#{$ns}-section)) {
+  // Override Card compact styles here.
   overflow: hidden;
+  padding: 0;
+  width: 100%;
+}
+
+.#{$ns}-section-header:not(:where(.bp-next .#{$ns}-section-header)) {
+  align-items: center;
+  border-bottom: 1px solid $pt-divider-black;
+  display: flex;
+  gap: $pt-spacing * 5;
+  justify-content: space-between;
+  min-height: $section-min-height;
+  padding: 0 $section-padding-horizontal;
+  position: relative;
   width: 100%;
 
-  &,
-  &.#{$ns}-compact {
-    // override Card compact styles here
-    padding: 0;
+  &.#{$ns}-dark,
+  .#{$ns}-dark & {
+    border-color: $pt-dark-divider-white;
   }
 
-  &-header {
-    align-items: center;
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+      background: $light-gray5;
+
+      &.#{$ns}-dark,
+      .#{$ns}-dark & {
+        background: $dark-gray4;
+      }
+    }
+  }
+}
+
+.#{$ns}-section-header-left:not(:where(.bp-next .#{$ns}-section-header-left)) {
+  align-items: center;
+  display: flex;
+  gap: $pt-spacing * 2;
+  padding: $section-padding-vertical 0;
+}
+
+.#{$ns}-section-header-title:not(:where(.bp-next .#{$ns}-section-header-title)) {
+  margin-bottom: 0;
+}
+
+.#{$ns}-section-header-sub-title:not(:where(.bp-next .#{$ns}-section-header-sub-title)) {
+  margin-top: $pt-spacing * 0.5;
+}
+
+.#{$ns}-section-header-right:not(:where(.bp-next .#{$ns}-section-header-right)) {
+  align-items: center;
+  display: flex;
+  gap: $pt-spacing * 2;
+  margin-left: auto;
+}
+
+.#{$ns}-section-header-collapse-caret:not(:where(.bp-next .#{$ns}-section-header-collapse-caret)) {
+  display: inline-flex;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.#{$ns}-section-header-divider:not(:where(.bp-next .#{$ns}-section-header-divider)) {
+  align-self: stretch;
+  margin: $pt-spacing * 4 0;
+}
+
+.#{$ns}-section-card:not(:where(.bp-next .#{$ns}-section-card)) {
+  &.#{$ns}-padded {
+    padding: $section-card-padding;
+  }
+
+  &:not(:last-child) {
     border-bottom: 1px solid $pt-divider-black;
-    display: flex;
-    gap: $pt-spacing * 5;
-    justify-content: space-between;
-    min-height: $section-min-height;
-    padding: 0 $section-padding-horizontal;
-    position: relative;
-    width: 100%;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
       border-color: $pt-dark-divider-white;
     }
+  }
+}
 
-    &-left {
-      align-items: center;
-      display: flex;
-      gap: $pt-spacing * 2;
-      padding: $section-padding-vertical 0;
-    }
+.#{$ns}-section.#{$ns}-section-collapsed:not(:where(.bp-next .#{$ns}-section))
+  .#{$ns}-section-header:not(:where(.bp-next .#{$ns}-section-header)) {
+  border: none;
+}
 
-    &-title {
-      margin-bottom: 0;
-    }
-
-    &-sub-title {
-      margin-top: $pt-spacing * 0.5;
-    }
-
-    &-right {
-      align-items: center;
-      display: flex;
-      gap: $pt-spacing * 2;
-      margin-left: auto;
-    }
-
-    &-collapse-caret {
-      display: inline-flex;
-      justify-content: center;
-      vertical-align: middle;
-    }
-
-    &-divider {
-      align-self: stretch;
-      margin: $pt-spacing * 4 0;
-    }
-
-    &.#{$ns}-interactive {
-      cursor: pointer;
-
-      &:hover,
-      &:active {
-        background: $light-gray5;
-
-        &.#{$ns}-dark,
-        .#{$ns}-dark & {
-          background: $dark-gray4;
-        }
-      }
-    }
+.#{$ns}-section.#{$ns}-compact:not(:where(.bp-next .#{$ns}-section)) {
+  .#{$ns}-section-header:not(:where(.bp-next .#{$ns}-section-header)) {
+    min-height: $section-min-height-compact;
+    padding: 0 $section-padding-compact-horizontal;
   }
 
-  &-card {
-    &.#{$ns}-padded {
-      padding: $section-card-padding;
-    }
-
-    &:not(:last-child) {
-      border-bottom: 1px solid $pt-divider-black;
-
-      &.#{$ns}-dark,
-      .#{$ns}-dark & {
-        border-color: $pt-dark-divider-white;
-      }
-    }
+  .#{$ns}-section-header-left:not(:where(.bp-next .#{$ns}-section-header-left)) {
+    padding: $section-padding-compact-vertical 0;
   }
 
-  &.#{$ns}-section-collapsed {
-    .#{$ns}-section-header {
-      border: none;
-    }
-  }
-
-  &.#{$ns}-compact {
-    .#{$ns}-section-header {
-      min-height: $section-min-height-compact;
-      padding: 0 $section-padding-compact-horizontal;
-
-      &-left {
-        padding: $section-padding-compact-vertical 0;
-      }
-    }
-
-    .#{$ns}-section-card.#{$ns}-padded {
-      padding: $section-card-padding-compact;
-    }
+  .#{$ns}-section-card.#{$ns}-padded:not(:where(.bp-next .#{$ns}-section-card)) {
+    padding: $section-card-padding-compact;
   }
 }

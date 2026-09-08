@@ -1,0 +1,72 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+@keyframes linear-progress-bar-stripes-next {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: calc(var(--bp-surface-spacing) * 7.5) 0;
+  }
+}
+
+.#{$ns}-progress-bar {
+  background: var(--bp-surface-layer-neutral-rest);
+  border-radius: calc(var(--bp-surface-spacing) * 10);
+  display: block;
+  height: calc(var(--bp-surface-spacing) * 2);
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+
+  .#{$ns}-progress-meter {
+    background-color: var(--bp-surface-background-color-neutral-rest);
+    background-image: linear-gradient(
+      -45deg,
+      oklch(
+          from var(--bp-surface-background-color-base-rest) l c h /
+            var(--bp-surface-layer-opacity-intent-hover)
+        )
+        25%,
+      transparent 25%,
+      transparent 50%,
+      oklch(
+          from var(--bp-surface-background-color-base-rest) l c h /
+            var(--bp-surface-layer-opacity-intent-hover)
+        )
+        50%,
+      oklch(
+          from var(--bp-surface-background-color-base-rest) l c h /
+            var(--bp-surface-layer-opacity-intent-hover)
+        )
+        75%,
+      transparent 75%
+    );
+    background-size: calc(var(--bp-surface-spacing) * 7.5) calc(var(--bp-surface-spacing) * 7.5);
+    border-radius: calc(var(--bp-surface-spacing) * 10);
+    height: 100%;
+    position: absolute;
+    transition: width calc(var(--bp-emphasis-transition-duration) * 2)
+      var(--bp-emphasis-ease-default);
+    // Initial state is a full bar, a la "indeterminate".
+    width: 100%;
+  }
+
+  &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {
+    animation: linear-progress-bar-stripes-next calc(var(--bp-emphasis-transition-duration) * 3)
+      linear infinite reverse;
+  }
+
+  &.#{$ns}-no-stripes .#{$ns}-progress-meter {
+    background-image: none;
+  }
+}
+
+@each $intent in $pt-intents {
+  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
+    background-color: var(--bp-surface-background-color-#{$intent}-rest);
+  }
+}

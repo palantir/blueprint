@@ -1,0 +1,333 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+/* stylelint-disable declaration-no-important -- matches required legacy precedence. */
+
+@import "../../common/variables";
+
+@mixin control-checked-colors-next($selector: ":checked") {
+  input#{$selector} ~ .#{$ns}-control-indicator {
+    background: var(--bp-surface-background-color-primary-rest);
+    box-shadow: inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-primary);
+    color: var(--bp-intent-primary-foreground);
+  }
+  &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+    background: var(--bp-surface-background-color-primary-hover);
+  }
+  input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+    background: var(--bp-surface-background-color-primary-active);
+  }
+  input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+    background: oklch(
+      from var(--bp-surface-background-color-primary-rest) l c h /
+        var(--bp-emphasis-disabled-opacity)
+    );
+    box-shadow: none;
+    color: oklch(
+      from var(--bp-intent-primary-foreground) l c h / var(--bp-emphasis-disabled-opacity)
+    );
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    input#{$selector} ~ .#{$ns}-control-indicator {
+      background: Highlight;
+      border: var(--bp-surface-border-width) solid Highlight;
+    }
+    input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+      background: GrayText;
+      border-color: GrayText;
+    }
+  }
+}
+
+@mixin indicator-position-next($size) {
+  $padding: calc($size + calc(var(--bp-surface-spacing) * 2));
+  &:not(.#{$ns}-align-right) {
+    padding-inline-start: $padding;
+    .#{$ns}-control-indicator {
+      margin-inline-start: calc($padding * -1);
+    }
+  }
+  &.#{$ns}-align-right {
+    padding-right: $padding;
+    .#{$ns}-control-indicator {
+      margin-right: calc($padding * -1);
+    }
+  }
+  [dir="rtl"] &.#{$ns}-align-left {
+    padding-inline-start: 0;
+    padding-left: $padding;
+    .#{$ns}-control-indicator {
+      margin-left: calc($padding * -1);
+    }
+  }
+}
+
+.#{$ns}-control {
+  @include control-checked-colors-next;
+  @include indicator-position-next(calc(var(--bp-surface-spacing) * 5));
+  color: var(--bp-typography-color-base);
+  cursor: pointer;
+  display: block;
+  margin-bottom: calc(var(--bp-surface-spacing) * 2);
+  position: relative;
+  text-transform: none;
+  &.#{$ns}-disabled {
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+    cursor: not-allowed;
+  }
+  &.#{$ns}-inline {
+    display: inline-block;
+    margin-inline-end: calc(var(--bp-surface-spacing) * 5);
+  }
+  .#{$ns}-control-input {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    z-index: -1;
+  }
+  .#{$ns}-control-indicator {
+    background: var(--bp-surface-background-color-base-rest);
+    background-clip: padding-box;
+    border: 0;
+    box-shadow: inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-neutral);
+    cursor: pointer;
+    display: inline-block;
+    font-size: calc(var(--bp-surface-spacing) * 5);
+    height: 1em;
+    margin-inline-end: calc(var(--bp-surface-spacing) * 2);
+    margin-top: calc(var(--bp-surface-spacing) * -0.75);
+    position: relative;
+    user-select: none;
+    vertical-align: middle;
+    width: 1em;
+
+    &::before {
+      content: "";
+      display: block;
+      height: 1em;
+      width: 1em;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: var(--bp-surface-border-width) solid ButtonText;
+
+      &::before {
+        margin-left: calc(-1 * var(--bp-surface-border-width));
+        margin-top: calc(-1 * var(--bp-surface-border-width));
+      }
+    }
+  }
+  &:hover .#{$ns}-control-indicator {
+    background: var(--bp-surface-layer-neutral-hover);
+  }
+  input:not(:disabled):active ~ .#{$ns}-control-indicator {
+    background: var(--bp-surface-layer-neutral-active);
+  }
+  input:disabled ~ .#{$ns}-control-indicator {
+    background: oklch(
+      from var(--bp-surface-background-color-base-rest) l c h / var(--bp-emphasis-disabled-opacity)
+    );
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+  input:focus ~ .#{$ns}-control-indicator {
+    outline: var(--bp-emphasis-focus-width) solid var(--bp-emphasis-focus-color);
+    outline-offset: var(--bp-emphasis-focus-offset);
+  }
+  &.#{$ns}-align-right .#{$ns}-control-indicator {
+    float: right;
+    margin-left: calc(var(--bp-surface-spacing) * 2);
+    margin-top: var(--bp-surface-border-width);
+  }
+  [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+    float: left;
+    margin-top: var(--bp-surface-border-width);
+  }
+  &.#{$ns}-large {
+    @include indicator-position-next(calc(var(--bp-surface-spacing) * 6));
+    font-size: var(--bp-typography-size-xl);
+    .#{$ns}-control-indicator {
+      font-size: calc(var(--bp-surface-spacing) * 6);
+    }
+    &.#{$ns}-align-right .#{$ns}-control-indicator,
+    [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+      margin-top: 0;
+    }
+  }
+  &.#{$ns}-checkbox {
+    @include control-checked-colors-next(":indeterminate");
+    .#{$ns}-control-indicator {
+      border-radius: var(--bp-surface-border-radius);
+    }
+    input:checked ~ .#{$ns}-control-indicator::before {
+      background-color: var(--bp-intent-primary-foreground);
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='m6.2 11.5-3.7-3.7 1.4-1.4 2.3 2.3 5.8-5.8 1.4 1.4z'/%3E%3C/svg%3E")
+        center / contain no-repeat;
+    }
+    input:indeterminate ~ .#{$ns}-control-indicator::before {
+      background: center / contain no-repeat
+        linear-gradient(var(--bp-intent-primary-foreground) 0 0);
+      transform: scale(0.5);
+    }
+    input:disabled ~ .#{$ns}-control-indicator::before {
+      opacity: var(--bp-emphasis-disabled-opacity);
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:checked:not(:disabled) ~ .#{$ns}-control-indicator::before,
+      input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator::before {
+        background: HighlightText;
+      }
+
+      input:checked:disabled ~ .#{$ns}-control-indicator::before,
+      input:indeterminate:disabled ~ .#{$ns}-control-indicator::before {
+        background: GrayText;
+      }
+
+      input:disabled ~ .#{$ns}-control-indicator {
+        border-color: GrayText;
+      }
+    }
+  }
+  &.#{$ns}-radio {
+    .#{$ns}-control-indicator {
+      border-radius: 50%;
+    }
+    input:checked ~ .#{$ns}-control-indicator::before {
+      background: radial-gradient(
+        var(--bp-intent-primary-foreground),
+        var(--bp-intent-primary-foreground) 28%,
+        transparent 32%
+      );
+    }
+    input:checked:disabled ~ .#{$ns}-control-indicator::before {
+      opacity: var(--bp-emphasis-disabled-opacity);
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:checked:not(:disabled) ~ .#{$ns}-control-indicator::before {
+        background: Highlight;
+        height: calc(1em - var(--bp-surface-spacing));
+        margin-inline-start: var(--bp-surface-border-width);
+        margin-top: var(--bp-surface-border-width);
+        width: calc(1em - var(--bp-surface-spacing));
+      }
+
+      input:checked:disabled ~ .#{$ns}-control-indicator::before {
+        background: GrayText;
+      }
+
+      input:disabled ~ .#{$ns}-control-indicator {
+        border-color: GrayText;
+      }
+    }
+  }
+  &.#{$ns}-switch {
+    @include indicator-position-next(calc(var(--bp-surface-spacing) * 8.75));
+    .#{$ns}-control-indicator {
+      background: var(--bp-surface-layer-neutral-rest);
+      border-radius: 1.75em;
+      box-shadow: none !important;
+      min-width: 1.75em;
+      transition: background-color var(--bp-emphasis-transition-duration)
+        var(--bp-emphasis-ease-default);
+      width: auto;
+
+      &::before {
+        background: var(--bp-surface-background-color-base-rest);
+        border-radius: 50%;
+        box-shadow: var(--bp-surface-shadow-0);
+        height: calc(1em - calc(var(--bp-surface-spacing) * 1));
+        left: calc(var(--bp-surface-spacing) * 0.5);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: left var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
+        width: calc(1em - calc(var(--bp-surface-spacing) * 1));
+      }
+    }
+    input:checked ~ .#{$ns}-control-indicator {
+      background: var(--bp-surface-background-color-primary-rest);
+      color: var(--bp-intent-primary-foreground);
+    }
+    &:hover input:checked ~ .#{$ns}-control-indicator {
+      background: var(--bp-surface-background-color-primary-hover);
+    }
+    input:checked:not(:disabled):active ~ .#{$ns}-control-indicator {
+      background: var(--bp-surface-background-color-primary-active);
+    }
+    input:checked ~ .#{$ns}-control-indicator::before {
+      left: calc(var(--bp-surface-spacing) * 0.5 + 100% - 1em);
+    }
+    input:disabled ~ .#{$ns}-control-indicator {
+      color: oklch(
+        from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+      );
+    }
+    input:disabled ~ .#{$ns}-control-indicator::before {
+      background: oklch(
+        from var(--bp-surface-background-color-base-rest) l c h /
+          var(--bp-emphasis-disabled-opacity)
+      );
+      box-shadow: none;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      .#{$ns}-control-indicator {
+        border: var(--bp-surface-border-width) solid ButtonBorder;
+
+        &::before {
+          border: var(--bp-surface-border-width) solid ButtonBorder;
+          margin-top: calc(var(--bp-surface-spacing) * 0.5 - var(--bp-surface-border-width));
+        }
+      }
+
+      input:checked ~ .#{$ns}-control-indicator,
+      &:hover input:checked ~ .#{$ns}-control-indicator {
+        background: Highlight;
+      }
+
+      input:checked:disabled ~ .#{$ns}-control-indicator {
+        background-color: GrayText;
+      }
+
+      input:not(:checked):disabled ~ .#{$ns}-control-indicator {
+        border-color: GrayText;
+
+        &::before {
+          border-color: GrayText;
+        }
+      }
+    }
+
+    &.#{$ns}-large {
+      @include indicator-position-next(calc(var(--bp-surface-spacing) * 10.5));
+    }
+    .#{$ns}-switch-inner-text {
+      font-size: 0.7em;
+      text-align: center;
+    }
+    .#{$ns}-control-indicator-child:first-child {
+      line-height: 0;
+      margin-left: 0.5em;
+      margin-right: 1.2em;
+      visibility: hidden;
+    }
+    .#{$ns}-control-indicator-child:last-child {
+      line-height: 1em;
+      margin-left: 1.2em;
+      margin-right: 0.5em;
+      visibility: visible;
+    }
+    input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child:first-child {
+      line-height: 1em;
+      visibility: visible;
+    }
+    input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child:last-child {
+      line-height: 0;
+      visibility: hidden;
+    }
+  }
+}

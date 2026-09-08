@@ -3,7 +3,7 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-.#{$ns}-key-combo {
+.#{$ns}-key-combo:not(:where(.bp-next .#{$ns}-key-combo)) {
   align-items: center;
 
   &:not(.#{$ns}-minimal) {
@@ -15,7 +15,7 @@
   }
 }
 
-.#{$ns}-hotkey-dialog {
+.#{$ns}-hotkey-dialog:not(:where(.bp-next .#{$ns}-hotkey-dialog)) {
   padding-bottom: 0;
   top: $pt-spacing * 10;
 
@@ -29,7 +29,7 @@
   }
 }
 
-.#{$ns}-hotkey-column {
+.#{$ns}-hotkey-column:not(:where(.bp-next .#{$ns}-hotkey-column)) {
   margin: auto;
   padding: $pt-spacing * 7.5;
 
@@ -42,7 +42,7 @@
   }
 }
 
-.#{$ns}-hotkey {
+.#{$ns}-hotkey:not(:where(.bp-next .#{$ns}-hotkey)) {
   align-items: center;
   display: flex;
   justify-content: space-between;

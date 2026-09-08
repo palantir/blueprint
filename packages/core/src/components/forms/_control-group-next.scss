@@ -1,0 +1,121 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-control-group {
+  align-items: stretch;
+  display: flex;
+  isolation: isolate;
+  .#{$ns}-button,
+  .#{$ns}-html-select,
+  .#{$ns}-input,
+  .#{$ns}-select {
+    position: relative;
+  }
+  .#{$ns}-input {
+    z-index: 2;
+
+    &:focus {
+      z-index: 5;
+    }
+    &[class*="#{$ns}-intent"] {
+      z-index: 4;
+
+      &:focus {
+        z-index: 6;
+      }
+    }
+    &[readonly],
+    &:disabled,
+    &.#{$ns}-disabled {
+      z-index: 1;
+    }
+  }
+  .#{$ns}-input-group[class*="#{$ns}-intent"] .#{$ns}-input {
+    z-index: 4;
+
+    &:focus {
+      z-index: 6;
+    }
+  }
+  .#{$ns}-button,
+  .#{$ns}-html-select select,
+  .#{$ns}-select select {
+    z-index: 3;
+
+    &:focus {
+      z-index: 5;
+    }
+
+    &:hover {
+      z-index: 6;
+    }
+
+    &:active {
+      z-index: 7;
+    }
+    &[readonly],
+    &:disabled,
+    &.#{$ns}-disabled {
+      z-index: 1;
+    }
+    &[class*="#{$ns}-intent"] {
+      z-index: 9;
+
+      &:focus {
+        z-index: 10;
+      }
+
+      &:hover {
+        z-index: 11;
+      }
+
+      &:active {
+        z-index: 12;
+      }
+      &[readonly],
+      &:disabled,
+      &.#{$ns}-disabled {
+        z-index: 8;
+      }
+    }
+  }
+  .#{$ns}-input-group > .#{$ns}-icon,
+  .#{$ns}-input-group > .#{$ns}-button,
+  .#{$ns}-input-group > .#{$ns}-input-left-container,
+  .#{$ns}-input-group > .#{$ns}-input-action {
+    z-index: 7;
+  }
+  .#{$ns}-select::after,
+  .#{$ns}-html-select::after,
+  .#{$ns}-select > .#{$ns}-icon,
+  .#{$ns}-html-select > .#{$ns}-icon {
+    z-index: 8;
+  }
+  .#{$ns}-html-select:focus-within,
+  .#{$ns}-select:focus-within {
+    z-index: 5;
+  }
+  &:not(.#{$ns}-vertical) > :not(:last-child) {
+    margin-right: calc(var(--bp-surface-spacing) * 0.5);
+  }
+  .#{$ns}-numeric-input:not(:first-child) .#{$ns}-input-group {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+  > .#{$ns}-fill,
+  &.#{$ns}-fill > *:not(.#{$ns}-fixed) {
+    flex: 1 1 auto;
+  }
+  &.#{$ns}-vertical {
+    flex-direction: column;
+
+    > :not(:last-child) {
+      margin-bottom: calc(var(--bp-surface-spacing) * 0.5);
+    }
+  }
+}

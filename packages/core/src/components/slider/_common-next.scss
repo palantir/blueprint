@@ -1,0 +1,39 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@mixin slider-orientation-next($size, $vertical: false) {
+  @if $vertical == false {
+    height: $size;
+    min-width: calc(var(--bp-surface-spacing) * 37.5);
+    width: 100%;
+  } @else {
+    height: calc(var(--bp-surface-spacing) * 37.5);
+    min-width: $size;
+    width: $size;
+  }
+}
+
+@mixin slider-track-orientation-next($handle-size, $track-size, $vertical: false) {
+  $offset: calc(($handle-size - $track-size) * 0.5);
+
+  @if $vertical == false {
+    height: $track-size;
+    left: 0;
+    right: 0;
+    top: $offset;
+  } @else {
+    bottom: 0;
+    height: auto;
+    left: $offset;
+    top: 0;
+    width: $track-size;
+  }
+}
+
+@mixin slider-label-orientation-next($offset, $vertical: false) {
+  @if $vertical == false {
+    transform: translate(-50%, $offset);
+  } @else {
+    transform: translate($offset, 50%);
+  }
+}

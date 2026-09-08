@@ -12,7 +12,7 @@ $dialog-border-radius: $pt-border-radius !default;
 $dialog-margin: ($pt-spacing * 8) 0 !default;
 $dialog-padding: $pt-spacing * 4 !default;
 
-.#{$ns}-dialog-container {
+.#{$ns}-dialog-container:not(:where(.bp-next .#{$ns}-dialog-container)) {
   $dialog-transition-props: (
     opacity: (
       0,
@@ -41,7 +41,7 @@ $dialog-padding: $pt-spacing * 4 !default;
   width: 100%;
 }
 
-.#{$ns}-dialog {
+.#{$ns}-dialog:not(:where(.bp-next .#{$ns}-dialog)) {
   background: $dialog-background-color;
   border-radius: $dialog-border-radius;
   box-shadow: $pt-dialog-box-shadow;
@@ -70,7 +70,7 @@ $dialog-padding: $pt-spacing * 4 !default;
 
 $dialog-header-padding: $pt-spacing;
 
-.#{$ns}-dialog-header {
+.#{$ns}-dialog-header:not(:where(.bp-next .#{$ns}-dialog-header)) {
   align-items: center;
   background: $white;
   border-radius: $dialog-border-radius $dialog-border-radius 0 0;

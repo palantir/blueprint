@@ -1,0 +1,30 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@mixin pt-select-next() {
+  appearance: none;
+  background: var(--bp-surface-background-color-base-rest);
+  border: 0;
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: var(--bp-surface-shadow-0);
+  color: var(--bp-typography-color-base);
+  font-size: var(--bp-typography-size-md);
+  height: calc(var(--bp-surface-spacing) * 7.5);
+  padding: 0 calc(var(--bp-surface-spacing) * 6) 0 calc(var(--bp-surface-spacing) * 2);
+  width: 100%;
+
+  &:hover {
+    background: var(--bp-surface-layer-neutral-hover);
+  }
+
+  &:focus {
+    box-shadow:
+      0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color),
+      inset 0 0 0 var(--bp-surface-border-width) var(--bp-emphasis-focus-color);
+    outline: none;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid ButtonBorder;
+  }
+}

@@ -1,0 +1,16 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+.#{$ns}-submenu {
+  .#{$ns}-popover-target {
+    display: block;
+  }
+  &.#{$ns}-popover {
+    box-shadow: none;
+    padding: 0 var(--bp-surface-spacing);
+    > .#{$ns}-popover-content {
+      box-shadow: var(--bp-surface-shadow-3);
+    }
+  }
+}

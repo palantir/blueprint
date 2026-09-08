@@ -1,7 +1,7 @@
 @import "../../common/variables";
 @import "../tag/common";
 
-.#{$ns}-resizable-input-span {
+.#{$ns}-resizable-input-span:not(:where(.bp-next .#{$ns}-resizable-input-span)) {
   max-height: 0;
   max-width: 100%;
   min-width: calc(var(--bp-surface-spacing) * 20);

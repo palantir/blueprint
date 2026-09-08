@@ -1,0 +1,44 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-navbar {
+  background-color: var(--bp-surface-background-color-base-rest);
+  box-shadow: var(--bp-surface-shadow-1);
+  height: calc(var(--bp-surface-spacing) * 12.5);
+  padding: 0 calc(var(--bp-surface-spacing) * 4);
+  position: relative;
+  width: 100%;
+  z-index: var(--bp-surface-z-index-0);
+  &.#{$ns}-fixed-top {
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid CanvasText;
+  }
+}
+.#{$ns}-navbar-heading {
+  font-size: var(--bp-typography-size-lg);
+  margin-right: calc(var(--bp-surface-spacing) * 4);
+}
+.#{$ns}-navbar-group {
+  align-items: center;
+  display: flex;
+  height: calc(var(--bp-surface-spacing) * 12.5);
+  &.#{$ns}-align-left {
+    float: left;
+  }
+  &.#{$ns}-align-right {
+    float: right;
+  }
+}
+.#{$ns}-navbar-divider {
+  border-left: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+  height: calc(var(--bp-surface-spacing) * 5);
+  margin: 0 calc(var(--bp-surface-spacing) * 2);
+}

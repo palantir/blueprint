@@ -3,7 +3,7 @@
 
 @import "./common";
 
-label.#{$ns}-label {
+label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
   .#{$ns}-popover-target {
     display: block;
     margin-top: $pt-spacing;

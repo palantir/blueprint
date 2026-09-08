@@ -10,7 +10,7 @@ body.#{$ns}-overlay-open {
   overflow: hidden;
 }
 
-.#{$ns}-overlay {
+.#{$ns}-overlay:not(:where(.bp-next .#{$ns}-overlay)) {
   // 0-out all positions so page won't jump when position changes (0s already there)
   @include position-all(static, 0);
   z-index: $pt-z-index-overlay;
@@ -58,7 +58,7 @@ body.#{$ns}-overlay-open {
 
 // this class is added to each Overlay child so that users won't need to
 // explicitly manage the position mode for inline and non-inline rendering.
-.#{$ns}-overlay-content {
+.#{$ns}-overlay-content:not(:where(.bp-next .#{$ns}-overlay-content)) {
   // default fixed pulls it out of the flow and makes it viewport-relative
   position: fixed;
   z-index: $pt-z-index-overlay;
@@ -72,7 +72,7 @@ body.#{$ns}-overlay-open {
 }
 
 // fixed position so the backdrop forecefully covers the whole screen
-.#{$ns}-overlay-backdrop {
+.#{$ns}-overlay-backdrop:not(:where(.bp-next .#{$ns}-overlay-backdrop)) {
   @include position-all(fixed, 0);
   @include react-transition(
     "#{$ns}-overlay",

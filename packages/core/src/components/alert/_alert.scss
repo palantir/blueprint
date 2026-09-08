@@ -3,12 +3,12 @@
 
 @import "../../common/variables";
 
-.#{$ns}-alert {
+.#{$ns}-alert:not(:where(.bp-next .#{$ns}-alert)) {
   max-width: $pt-spacing * 100;
   padding: $pt-spacing * 5;
 }
 
-.#{$ns}-alert-body {
+.#{$ns}-alert-body:not(:where(.bp-next .#{$ns}-alert-body)) {
   display: flex;
 
   .#{$ns}-icon {
@@ -18,11 +18,11 @@
   }
 }
 
-.#{$ns}-alert-contents {
+.#{$ns}-alert-contents:not(:where(.bp-next .#{$ns}-alert-contents)) {
   word-break: break-word;
 }
 
-.#{$ns}-alert-footer {
+.#{$ns}-alert-footer:not(:where(.bp-next .#{$ns}-alert-footer)) {
   display: flex;
   flex-direction: row-reverse;
   margin-top: $pt-spacing * 3;

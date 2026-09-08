@@ -5,7 +5,7 @@
 @import "../../common/variables";
 @import "../../common/variables-extended";
 
-.#{$ns}-entity-title {
+.#{$ns}-entity-title:not(:where(.bp-next .#{$ns}-entity-title)) {
   align-items: center;
   display: flex;
   gap: $pt-spacing * 2;
@@ -14,86 +14,88 @@
   &.#{$ns}-fill {
     width: 100%;
   }
+}
 
-  &-icon-container {
-    &.#{$ns}-entity-title-has-subtitle {
-      align-self: flex-start;
-    }
-
-    &:not(.#{$ns}-entity-title-has-subtitle) {
-      align-items: center;
-      display: flex;
-    }
+.#{$ns}-entity-title-icon-container:not(:where(.bp-next .#{$ns}-entity-title-icon-container)) {
+  &.#{$ns}-entity-title-has-subtitle {
+    align-self: flex-start;
   }
 
-  &-text {
-    display: flex;
-    flex-direction: column;
-
-    .#{$ns}-fill & {
-      flex-grow: 1;
-    }
-  }
-
-  &-title-and-tags {
+  &:not(.#{$ns}-entity-title-has-subtitle) {
     align-items: center;
     display: flex;
-    flex-direction: row;
-    gap: $pt-spacing;
   }
+}
 
-  &-tags-container {
+.#{$ns}-entity-title-text:not(:where(.bp-next .#{$ns}-entity-title-text)) {
+  display: flex;
+  flex-direction: column;
+}
+
+.#{$ns}-fill .#{$ns}-entity-title-text:not(:where(.bp-next .#{$ns}-entity-title-text)) {
+  flex-grow: 1;
+}
+
+.#{$ns}-entity-title-title-and-tags:not(:where(.bp-next .#{$ns}-entity-title-title-and-tags)) {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: $pt-spacing;
+}
+
+.#{$ns}-entity-title-tags-container:not(:where(.bp-next .#{$ns}-entity-title-tags-container)) {
+  display: flex;
+  gap: $pt-spacing * 0.5;
+  margin-left: $pt-spacing;
+}
+
+.#{$ns}-entity-title-title:not(:where(.bp-next .#{$ns}-entity-title-title)) {
+  margin-bottom: 0;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.#{$ns}-fill .#{$ns}-entity-title-title:not(:where(.bp-next .#{$ns}-entity-title-title)) {
+  flex-grow: 1;
+}
+
+.#{$ns}-entity-title-subtitle:not(:where(.bp-next .#{$ns}-entity-title-subtitle)) {
+  font-size: $pt-font-size-small;
+  margin-top: $pt-spacing * 0.5;
+}
+
+.#{$ns}-entity-title-ellipsize:not(:where(.bp-next .#{$ns}-entity-title-ellipsize)),
+.#{$ns}-entity-title-ellipsize:not(:where(.bp-next .#{$ns}-entity-title-ellipsize))
+  .#{$ns}-entity-title-text:not(:where(.bp-next .#{$ns}-entity-title-text)) {
+  overflow: hidden;
+}
+
+@each $tag, $props in $headings {
+  .#{$ns}-entity-title-heading-#{$tag}:not(:where(.bp-next .#{$ns}-entity-title-heading-#{$tag}))
+    .#{$ns}-icon-container {
+    align-items: center;
     display: flex;
-    gap: $pt-spacing * 0.5;
-    margin-left: $pt-spacing;
+    // Aligning icon which has unknown dimensions on the title size.
+    height: list.nth($props, 2);
   }
+}
 
-  &-title {
-    margin-bottom: 0;
-    min-width: 0;
-    overflow-wrap: break-word;
+.#{$ns}-entity-title-heading-h1:not(:where(.bp-next .#{$ns}-entity-title-heading-h1)),
+.#{$ns}-entity-title-heading-h2:not(:where(.bp-next .#{$ns}-entity-title-heading-h2)),
+.#{$ns}-entity-title-heading-h3:not(:where(.bp-next .#{$ns}-entity-title-heading-h3)) {
+  gap: $pt-spacing * 4;
 
-    .#{$ns}-fill & {
-      flex-grow: 1;
-    }
+  .#{$ns}-entity-title-subtitle {
+    font-size: $pt-font-size;
   }
+}
 
-  &-subtitle {
+.#{$ns}-entity-title-heading-h4:not(:where(.bp-next .#{$ns}-entity-title-heading-h4)),
+.#{$ns}-entity-title-heading-h5:not(:where(.bp-next .#{$ns}-entity-title-heading-h5)),
+.#{$ns}-entity-title-heading-h6:not(:where(.bp-next .#{$ns}-entity-title-heading-h6)) {
+  gap: $pt-spacing * 2;
+
+  .#{$ns}-entity-title-subtitle {
     font-size: $pt-font-size-small;
-    margin-top: $pt-spacing * 0.5;
-  }
-
-  &-ellipsize,
-  &-ellipsize &-text {
-    overflow: hidden;
-  }
-
-  @each $tag, $props in $headings {
-    &-heading-#{$tag} .#{$ns}-icon-container {
-      align-items: center;
-      display: flex;
-      // Aligning icon which has unknown dimensions on the title size
-      height: list.nth($props, 2);
-    }
-  }
-
-  &-heading-h1,
-  &-heading-h2,
-  &-heading-h3 {
-    gap: $pt-spacing * 4;
-
-    .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size;
-    }
-  }
-
-  &-heading-h4,
-  &-heading-h5,
-  &-heading-h6 {
-    gap: $pt-spacing * 2;
-
-    .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size-small;
-    }
   }
 }

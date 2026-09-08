@@ -126,7 +126,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   }
 }
 
-.#{$ns}-control {
+.#{$ns}-control:not(:where(.bp-next .#{$ns}-control)) {
   @include control-checked-colors;
   @include indicator-position($control-indicator-size);
   cursor: pointer;

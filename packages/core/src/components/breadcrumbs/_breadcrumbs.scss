@@ -4,7 +4,7 @@
 @import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 
-.#{$ns}-breadcrumbs {
+.#{$ns}-breadcrumbs:not(:where(.bp-next .#{$ns}-breadcrumbs)) {
   align-items: center;
   cursor: default;
   display: flex;
@@ -42,20 +42,20 @@
   }
 }
 
-.#{$ns}-breadcrumb,
-.#{$ns}-breadcrumb-current,
-.#{$ns}-breadcrumbs-collapsed {
+.#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)),
+.#{$ns}-breadcrumb-current:not(:where(.bp-next .#{$ns}-breadcrumb-current)),
+.#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
   align-items: center;
   display: inline-flex;
   font-size: $pt-font-size-large;
 }
 
-.#{$ns}-breadcrumb,
-.#{$ns}-breadcrumbs-collapsed {
+.#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)),
+.#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
   color: $pt-text-color-muted;
 }
 
-.#{$ns}-breadcrumb {
+.#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)) {
   &:hover {
     text-decoration: none;
   }
@@ -70,7 +70,7 @@
   }
 }
 
-.#{$ns}-breadcrumb-current {
+.#{$ns}-breadcrumb-current:not(:where(.bp-next .#{$ns}-breadcrumb-current)) {
   color: inherit;
   font-weight: 600;
 
@@ -81,7 +81,7 @@
   }
 }
 
-.#{$ns}-breadcrumbs-collapsed {
+.#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
   background: rgba($gray3, 0.15);
   border: none;
   border-radius: $pt-border-radius;
@@ -114,12 +114,12 @@
 }
 
 .#{$ns}-dark {
-  .#{$ns}-breadcrumb,
-  .#{$ns}-breadcrumbs-collapsed {
+  .#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)),
+  .#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
     color: $pt-dark-text-color-muted;
   }
 
-  .#{$ns}-breadcrumbs > li::after {
+  .#{$ns}-breadcrumbs:not(:where(.bp-next .#{$ns}-breadcrumbs)) > li::after {
     background: svg-icon(
       "16px/chevron-right.svg",
       (
@@ -131,15 +131,15 @@
     color: $pt-dark-icon-color;
   }
 
-  .#{$ns}-breadcrumb.#{$ns}-disabled {
+  .#{$ns}-breadcrumb.#{$ns}-disabled:not(:where(.bp-next .#{$ns}-breadcrumb)) {
     color: $pt-dark-text-color-disabled;
   }
 
-  .#{$ns}-breadcrumb-current {
+  .#{$ns}-breadcrumb-current:not(:where(.bp-next .#{$ns}-breadcrumb-current)) {
     color: $pt-dark-text-color;
   }
 
-  .#{$ns}-breadcrumbs-collapsed {
+  .#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
     background: rgba($gray3, 0.2);
 
     &::before {

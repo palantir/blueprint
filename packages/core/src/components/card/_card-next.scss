@@ -1,0 +1,49 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-card {
+  background-color: var(--bp-surface-background-color-base-rest);
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: var(--bp-surface-shadow-0);
+  padding: calc(var(--bp-surface-spacing) * 5);
+  transition:
+    transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default),
+    box-shadow calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid buttonborder;
+    box-shadow: none;
+  }
+}
+
+@each $elevation in 0, 1, 2, 3, 4 {
+  .#{$ns}-elevation-#{$elevation} {
+    box-shadow: var(--bp-surface-shadow-#{$elevation});
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: var(--bp-surface-border-width) solid buttonborder;
+    }
+  }
+}
+
+.#{$ns}-card.#{$ns}-compact {
+  padding: calc(var(--bp-surface-spacing) * 4);
+}
+
+.#{$ns}-card.#{$ns}-interactive {
+  &:hover {
+    box-shadow: var(--bp-surface-shadow-3);
+    cursor: pointer;
+  }
+
+  &.#{$ns}-selected {
+    box-shadow: 0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color);
+  }
+
+  &:active {
+    box-shadow: var(--bp-surface-shadow-1);
+    transition-duration: 0;
+  }
+}

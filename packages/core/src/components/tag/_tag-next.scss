@@ -1,0 +1,40 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "./common-next";
+
+.#{$ns}-tag {
+  @include pt-tag-next;
+
+  &.#{$ns}-large,
+  .#{$ns}-large & {
+    @include pt-tag-large-next;
+  }
+
+  @each $intent in $tag-intents-next {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-tag-intent-next($intent);
+    }
+  }
+
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+
+  &.#{$ns}-minimal {
+    @include pt-tag-minimal-next;
+
+    @each $intent in $tag-intents-next {
+      &.#{$ns}-intent-#{$intent} {
+        @include pt-tag-minimal-next($intent);
+      }
+    }
+  }
+}
+
+.#{$ns}-tag-remove {
+  @include pt-tag-remove-next;
+}

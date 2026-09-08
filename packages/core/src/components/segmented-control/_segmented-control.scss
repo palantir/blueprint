@@ -1,7 +1,7 @@
 @use "sass:math";
 @import "../../common/variables";
 
-.#{$ns}-segmented-control {
+.#{$ns}-segmented-control:not(:where(.bp-next .#{$ns}-segmented-control)) {
   background-color: $light-gray5;
   border-radius: $pt-border-radius;
   display: flex;

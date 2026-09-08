@@ -1,0 +1,208 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/mixins";
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+.#{$ns}-drawer {
+  background: var(--bp-surface-background-color-base-rest);
+  box-shadow: var(--bp-surface-shadow-4);
+  color: var(--bp-typography-color-base);
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &.#{$ns}-position-top {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (
+        transform: (
+          translateY(-100%),
+          translateY(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (
+        transform: (
+          translateY(-100%),
+          translateY(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    height: 50%;
+    left: 0;
+    right: 0;
+    top: 0;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-bottom: var(--bp-surface-border-width) solid CanvasText;
+    }
+  }
+  &.#{$ns}-position-bottom {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (
+        transform: (
+          translateY(100%),
+          translateY(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (
+        transform: (
+          translateY(100%),
+          translateY(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    bottom: 0;
+    height: 50%;
+    left: 0;
+    right: 0;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-top: var(--bp-surface-border-width) solid CanvasText;
+    }
+  }
+  &.#{$ns}-position-left {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (
+        transform: (
+          translateX(-100%),
+          translateX(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (
+        transform: (
+          translateX(-100%),
+          translateX(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    bottom: 0;
+    left: 0;
+    top: 0;
+    width: 50%;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-right: var(--bp-surface-border-width) solid CanvasText;
+    }
+  }
+  &.#{$ns}-position-right {
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "enter",
+      (
+        transform: (
+          translateX(100%),
+          translateX(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    @include react-transition-phase(
+      "#{$ns}-overlay",
+      "exit",
+      (
+        transform: (
+          translateX(100%),
+          translateX(0),
+        ),
+      ),
+      var(--bp-emphasis-transition-duration),
+      var(--bp-emphasis-ease-default),
+      $before: "&"
+    );
+    bottom: 0;
+    right: 0;
+    top: 0;
+    width: 50%;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border-left: var(--bp-surface-border-width) solid CanvasText;
+    }
+  }
+}
+
+.#{$ns}-drawer-header {
+  align-items: center;
+  border-radius: 0;
+  box-shadow: 0 var(--bp-surface-border-width) 0 var(--bp-surface-divider-color-default);
+  display: flex;
+  flex: 0 0 auto;
+  min-height: calc(var(--bp-surface-spacing) * 9);
+  padding: calc(var(--bp-surface-spacing) * 1.25);
+  padding-left: calc(var(--bp-surface-spacing) * 5);
+  position: relative;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border-bottom: var(--bp-surface-border-width) solid CanvasText;
+  }
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
+    color: var(--bp-typography-color-base);
+    flex: 0 0 auto;
+    margin-right: calc(var(--bp-surface-spacing) * 2.5);
+  }
+  .#{$ns}-heading {
+    @include overflow-ellipsis;
+    flex: 1 1 auto;
+    line-height: inherit;
+    margin: 0;
+
+    &:last-child {
+      margin-right: calc(var(--bp-surface-spacing) * 5);
+    }
+  }
+}
+.#{$ns}-drawer-body {
+  flex: 1 1 auto;
+  line-height: calc(var(--bp-surface-spacing) * 4.5);
+  overflow: auto;
+}
+.#{$ns}-drawer-footer {
+  box-shadow: inset 0 var(--bp-surface-border-width) 0 var(--bp-surface-divider-color-default);
+  flex: 0 0 auto;
+  padding: calc(var(--bp-surface-spacing) * 2.5) calc(var(--bp-surface-spacing) * 5);
+  position: relative;
+}

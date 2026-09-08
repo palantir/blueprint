@@ -1,0 +1,19 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-numeric-input {
+  .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+    flex: 1 1 calc(var(--bp-surface-spacing) * 2.75);
+    min-height: 0;
+    padding: 0;
+    width: calc(var(--bp-surface-spacing) * 6);
+  }
+  &.#{$ns}-large .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+    width: calc(var(--bp-surface-spacing) * 10);
+  }
+  &.#{$ns}-small .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+    width: calc(var(--bp-surface-spacing) * 6);
+  }
+}

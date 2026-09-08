@@ -20,7 +20,7 @@ $tree-intent-icon-colors: (
   "danger": $red5,
 ) !default;
 
-.#{$ns}-tree {
+.#{$ns}-tree:not(:where(.bp-next .#{$ns}-tree)) {
   #{$icon-classes} {
     color: $pt-icon-color;
 
@@ -32,13 +32,13 @@ $tree-intent-icon-colors: (
   }
 }
 
-.#{$ns}-tree-node-list {
+.#{$ns}-tree-node-list:not(:where(.bp-next .#{$ns}-tree-node-list)) {
   list-style: none;
   margin: 0;
   padding-left: 0;
 }
 
-.#{$ns}-tree-root {
+.#{$ns}-tree-root:not(:where(.bp-next .#{$ns}-tree-root)) {
   background-color: transparent;
   cursor: default;
   padding-left: 0;
@@ -47,12 +47,12 @@ $tree-intent-icon-colors: (
 }
 
 @for $i from 0 through 20 {
-  .#{$ns}-tree-node-content-#{$i} {
+  .#{$ns}-tree-node-content-#{$i}:not(:where(.bp-next .#{$ns}-tree-node-content-#{$i})) {
     padding-left: ($tree-row-height - $tree-icon-spacing) * $i;
   }
 }
 
-.#{$ns}-tree-node-content {
+.#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
   align-items: center;
   background: none;
   display: flex;
@@ -69,12 +69,12 @@ $tree-intent-icon-colors: (
   }
 }
 
-.#{$ns}-tree-node-caret,
-.#{$ns}-tree-node-caret-none {
+.#{$ns}-tree-node-caret:not(:where(.bp-next .#{$ns}-tree-node-caret)),
+.#{$ns}-tree-node-caret-none:not(:where(.bp-next .#{$ns}-tree-node-caret-none)) {
   min-width: $tree-row-height;
 }
 
-.#{$ns}-tree-node-caret {
+.#{$ns}-tree-node-caret:not(:where(.bp-next .#{$ns}-tree-node-caret)) {
   @include pt-icon-colors;
   cursor: pointer;
   padding: $tree-icon-spacing;
@@ -95,12 +95,12 @@ $tree-intent-icon-colors: (
   }
 }
 
-.#{$ns}-tree-node-icon {
+.#{$ns}-tree-node-icon:not(:where(.bp-next .#{$ns}-tree-node-icon)) {
   margin-right: $tree-icon-spacing;
   position: relative;
 }
 
-.#{$ns}-tree-node-label {
+.#{$ns}-tree-node-label:not(:where(.bp-next .#{$ns}-tree-node-label)) {
   @include overflow-ellipsis;
   flex: 1 1 auto;
   position: relative;
@@ -112,7 +112,7 @@ $tree-intent-icon-colors: (
   }
 }
 
-.#{$ns}-tree-node-secondary-label {
+.#{$ns}-tree-node-secondary-label:not(:where(.bp-next .#{$ns}-tree-node-secondary-label)) {
   padding: 0 $pt-spacing;
   user-select: none;
 
@@ -123,8 +123,8 @@ $tree-intent-icon-colors: (
   }
 }
 
-.#{$ns}-tree-node.#{$ns}-disabled {
-  .#{$ns}-tree-node-content {
+.#{$ns}-tree-node.#{$ns}-disabled:not(:where(.bp-next .#{$ns}-tree-node)) {
+  .#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
     background-color: inherit;
     color: $pt-text-color-disabled;
     cursor: not-allowed;
@@ -137,7 +137,8 @@ $tree-intent-icon-colors: (
   }
 }
 
-.#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
+.#{$ns}-tree-node.#{$ns}-tree-node-selected:not(:where(.bp-next .#{$ns}-tree-node))
+  > .#{$ns}-tree-node-content {
   background-color: $pt-intent-primary;
 
   &,
@@ -157,8 +158,8 @@ $tree-intent-icon-colors: (
 }
 
 // Variant: compact
-.#{$ns}-tree.#{$ns}-compact {
-  .#{$ns}-tree-node-content {
+.#{$ns}-tree.#{$ns}-compact:not(:where(.bp-next .#{$ns}-tree)) {
+  .#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
     height: $tree-row-height-compact;
   }
 
@@ -171,13 +172,13 @@ $tree-intent-icon-colors: (
 
 // Variant: dark theme
 .#{$ns}-dark {
-  .#{$ns}-tree-node-content {
+  .#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
     &:hover {
       background-color: rgba($gray1, 0.3);
     }
   }
 
-  .#{$ns}-tree {
+  .#{$ns}-tree:not(:where(.bp-next .#{$ns}-tree)) {
     #{$icon-classes} {
       color: $pt-dark-icon-color;
 
@@ -189,7 +190,7 @@ $tree-intent-icon-colors: (
     }
   }
 
-  .#{$ns}-tree-node {
+  .#{$ns}-tree-node:not(:where(.bp-next .#{$ns}-tree-node)) {
     &:not(.#{$ns}-disabled) {
       .#{$ns}-tree-node-caret:hover {
         color: $pt-dark-text-color;

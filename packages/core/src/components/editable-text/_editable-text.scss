@@ -4,7 +4,7 @@
 @import "../../common/variables";
 @import "../forms/common";
 
-.#{$ns}-editable-text {
+.#{$ns}-editable-text:not(:where(.bp-next .#{$ns}-editable-text)) {
   cursor: text;
   display: inline-block;
   max-width: 100%;
@@ -42,7 +42,7 @@
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-editable-text-content,
-      .#{$ns}-editable-text-input,
+      .#{$ns}-editable-text-input:not(:where(.bp-next .#{$ns}-editable-text-input)),
       .#{$ns}-editable-text-input::placeholder {
         color: $color;
       }
@@ -79,7 +79,7 @@
     @each $intent, $color in $pt-dark-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
         .#{$ns}-editable-text-content,
-        .#{$ns}-editable-text-input,
+        .#{$ns}-editable-text-input:not(:where(.bp-next .#{$ns}-editable-text-input)),
         .#{$ns}-editable-text-input::placeholder {
           color: $color;
         }
@@ -104,8 +104,8 @@
   }
 }
 
-.#{$ns}-editable-text-input,
-.#{$ns}-editable-text-content {
+.#{$ns}-editable-text-input:not(:where(.bp-next .#{$ns}-editable-text-input)),
+.#{$ns}-editable-text-content:not(:where(.bp-next .#{$ns}-editable-text-content)) {
   color: inherit;
   display: inherit;
   font: inherit;
@@ -120,7 +120,7 @@
   vertical-align: top;
 }
 
-.#{$ns}-editable-text-input {
+.#{$ns}-editable-text-input:not(:where(.bp-next .#{$ns}-editable-text-input)) {
   @include pt-input-placeholder;
   background: none;
   // reset browser input styles (we're using an input solely because you can type in it)
@@ -140,7 +140,7 @@
   }
 }
 
-.#{$ns}-editable-text-content {
+.#{$ns}-editable-text-content:not(:where(.bp-next .#{$ns}-editable-text-content)) {
   overflow: hidden;
   // magical number to account for slight increase in input width for cursor bar
   padding-right: $pt-spacing * 0.5;
@@ -163,10 +163,10 @@
   }
 }
 
-.#{$ns}-editable-text.#{$ns}-multiline {
+.#{$ns}-editable-text.#{$ns}-multiline:not(:where(.bp-next .#{$ns}-editable-text)) {
   display: block;
 
-  .#{$ns}-editable-text-content {
+  .#{$ns}-editable-text-content:not(:where(.bp-next .#{$ns}-editable-text-content)) {
     overflow: auto;
     white-space: pre-wrap;
     word-wrap: break-word;

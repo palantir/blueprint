@@ -8,7 +8,7 @@ $callout-padding: $pt-spacing * 4;
 $callout-header-margin-top: $pt-spacing * 0.5;
 $callout-padding-compact: $pt-spacing * 2;
 
-.#{$ns}-callout {
+.#{$ns}-callout:not(:where(.bp-next .#{$ns}-callout)) {
   @include running-typography;
   border-radius: $pt-border-radius;
   padding: $callout-padding;

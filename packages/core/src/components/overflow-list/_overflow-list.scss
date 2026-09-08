@@ -1,13 +1,13 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-.#{$ns}-overflow-list {
+.#{$ns}-overflow-list:not(:where(.bp-next .#{$ns}-overflow-list)) {
   display: flex;
   flex-wrap: nowrap;
   min-width: 0;
 }
 
-.#{$ns}-overflow-list-spacer {
+.#{$ns}-overflow-list-spacer:not(:where(.bp-next .#{$ns}-overflow-list-spacer)) {
   flex-shrink: 1;
   width: 1px;
 }

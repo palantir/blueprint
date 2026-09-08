@@ -1,7 +1,7 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-.#{$ns}-dialog-footer {
+.#{$ns}-dialog-footer:not(:where(.bp-next .#{$ns}-dialog-footer)) {
   flex: 0 0 auto;
   // We'd like to use padding instead of margin here to be consistent with the -dialog-footer-fixed class,
   // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
@@ -9,7 +9,7 @@
   margin: $dialog-padding;
 }
 
-.#{$ns}-dialog-footer-fixed {
+.#{$ns}-dialog-footer-fixed:not(:where(.bp-next .#{$ns}-dialog-footer-fixed)) {
   align-items: center;
   background-color: $white;
   border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
@@ -26,11 +26,11 @@
   }
 }
 
-.#{$ns}-dialog-footer-main-section {
+.#{$ns}-dialog-footer-main-section:not(:where(.bp-next .#{$ns}-dialog-footer-main-section)) {
   flex: 1 1 auto;
 }
 
-.#{$ns}-dialog-footer-actions {
+.#{$ns}-dialog-footer-actions:not(:where(.bp-next .#{$ns}-dialog-footer-actions)) {
   display: flex;
   justify-content: flex-end;
 

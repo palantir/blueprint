@@ -1,0 +1,202 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/mixins";
+@import "../../common/variables";
+@import "../../common/variables-extended";
+
+@mixin menu-item-next() {
+  @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2));
+  align-items: flex-start;
+  border-radius: var(--bp-surface-border-radius);
+  color: inherit;
+  line-height: calc(var(--bp-surface-spacing) * 5.5);
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
+  text-decoration: none;
+  user-select: none;
+  > .#{$ns}-fill {
+    word-break: break-word;
+  }
+  .#{$ns}-menu-item-icon {
+    display: flex;
+    flex-direction: column;
+    height: calc(var(--bp-surface-spacing) * 5.5);
+    justify-content: center;
+  }
+  .#{$ns}-menu-item-label {
+    color: oklch(
+      from var(--bp-typography-color-base) l c h / var(--bp-emphasis-translucence-opacity)
+    );
+  }
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon {
+    color: var(--bp-typography-color-base);
+  }
+  &::before,
+  .#{$ns}-submenu-icon {
+    margin-top: calc(var(--bp-surface-spacing) * 0.75);
+  }
+
+  &:hover {
+    @include menu-item-hover-next;
+  }
+
+  &:active {
+    background: var(--bp-surface-layer-neutral-active);
+    .#{$ns}-menu-item-label {
+      color: var(--bp-typography-color-base);
+    }
+  }
+  &.#{$ns}-active {
+    @include menu-item-active-next;
+  }
+  &.#{$ns}-menu-item-is-selectable {
+    padding-left: calc(var(--bp-surface-spacing) * 5);
+    &.#{$ns}-selected {
+      padding-left: 0;
+    }
+    .#{$ns}-menu-item-selected-icon {
+      align-self: center;
+      margin: 0 calc(var(--bp-surface-spacing) * 0.5);
+    }
+  }
+  /* stylelint-disable declaration-no-important */
+  &.#{$ns}-disabled {
+    background-color: inherit !important;
+    color: oklch(
+      from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+    ) !important;
+    cursor: not-allowed !important;
+    outline: none !important;
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
+      color: oklch(
+        from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+      ) !important;
+    }
+    .#{$ns}-menu-item-label {
+      color: oklch(
+        from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+      ) !important;
+    }
+  }
+  /* stylelint-enable declaration-no-important */
+}
+
+@mixin menu-item-hover-next() {
+  background: var(--bp-surface-layer-neutral-hover);
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@mixin menu-item-active-next() {
+  background: var(--bp-surface-layer-primary-active);
+  color: var(--bp-typography-color-intent-primary);
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon {
+    color: inherit;
+  }
+
+  @each $intent in $pt-intents {
+    &.#{$ns}-intent-#{$intent} {
+      background: var(--bp-surface-layer-#{$intent}-active);
+      color: var(--bp-typography-color-intent-#{$intent});
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    background: Highlight;
+  }
+}
+
+@mixin menu-item-intent-next($intent) {
+  &.#{$ns}-intent-#{$intent} {
+    color: var(--bp-typography-color-intent-#{$intent});
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-menu-item-selected-icon,
+    .#{$ns}-submenu-icon,
+    .#{$ns}-menu-item-label {
+      color: inherit;
+    }
+
+    &:hover {
+      background: var(--bp-surface-layer-#{$intent}-hover);
+    }
+    &:active,
+    &.#{$ns}-active {
+      background: var(--bp-surface-layer-#{$intent}-active);
+    }
+  }
+}
+
+@mixin menu-item-large-next() {
+  font-size: var(--bp-typography-size-lg);
+  padding-bottom: calc(var(--bp-surface-spacing) * 2.25);
+  padding-top: calc(var(--bp-surface-spacing) * 2.25);
+  .#{$ns}-menu-item-icon {
+    height: calc(var(--bp-surface-spacing) * 5.5);
+  }
+  &::before,
+  .#{$ns}-submenu-icon {
+    margin-top: calc(var(--bp-surface-spacing) * 0.75);
+  }
+}
+
+@mixin menu-item-small-next() {
+  line-height: calc(var(--bp-surface-spacing) * 5);
+  padding-bottom: calc(var(--bp-surface-spacing) * 0.5);
+  padding-top: calc(var(--bp-surface-spacing) * 0.5);
+  .#{$ns}-menu-item-icon {
+    height: calc(var(--bp-surface-spacing) * 5);
+  }
+}
+
+@mixin menu-divider-next() {
+  border-top: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+  display: block;
+  margin: var(--bp-surface-spacing) calc(-1 * var(--bp-surface-spacing));
+}
+
+@mixin menu-header-next($heading-selector: null) {
+  @include menu-divider-next;
+  cursor: default;
+  padding-left: var(--bp-surface-spacing);
+
+  @if $heading-selector != null {
+    &:first-of-type {
+      border-top: none;
+    }
+    #{$heading-selector} {
+      @include menu-heading-next;
+    }
+    &:first-of-type #{$heading-selector} {
+      padding-top: 0;
+    }
+  }
+}
+
+@mixin menu-heading-next() {
+  @include heading-typography;
+  @include overflow-ellipsis;
+  line-height: calc(var(--bp-surface-spacing) * 4.25);
+  margin: 0;
+  padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 2) 0;
+}
+
+@mixin menu-header-large-next($heading-selector) {
+  #{$heading-selector} {
+    font-size: var(--bp-typography-size-lg);
+    padding-bottom: var(--bp-surface-spacing);
+    padding-top: calc(var(--bp-surface-spacing) * 4);
+  }
+  &:first-of-type #{$heading-selector} {
+    padding-top: 0;
+  }
+}

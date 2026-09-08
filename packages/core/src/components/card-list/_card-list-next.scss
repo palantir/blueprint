@@ -1,0 +1,60 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-card-list {
+  overflow: auto;
+  padding: 0;
+  width: 100%;
+
+  > .#{$ns}-card {
+    align-items: center;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    min-height: calc(var(--bp-surface-spacing) * 12 - var(--bp-surface-border-width));
+    padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 5);
+
+    &.#{$ns}-interactive:hover,
+    &.#{$ns}-interactive:active {
+      background: var(--bp-surface-layer-neutral-hover);
+      box-shadow: none;
+    }
+
+    &.#{$ns}-selected {
+      background: var(--bp-surface-layer-neutral-active);
+      box-shadow: none;
+    }
+
+    &:not(:last-child) {
+      border-bottom: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+    }
+  }
+
+  &.#{$ns}-compact {
+    padding: 0;
+
+    > .#{$ns}-card {
+      min-height: calc(var(--bp-surface-spacing) * 12 - var(--bp-surface-border-width));
+      padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 4);
+    }
+  }
+
+  &:not(.#{$ns}-card-list-bordered) {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  &.#{$ns}-card-list-bordered {
+    > .#{$ns}-card:first-child {
+      border-top-left-radius: var(--bp-surface-border-radius);
+      border-top-right-radius: var(--bp-surface-border-radius);
+    }
+
+    > .#{$ns}-card:last-child {
+      border-bottom-left-radius: var(--bp-surface-border-radius);
+      border-bottom-right-radius: var(--bp-surface-border-radius);
+    }
+  }
+}

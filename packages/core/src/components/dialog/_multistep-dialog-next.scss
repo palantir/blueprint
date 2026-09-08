@@ -1,0 +1,134 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-multistep-dialog-panels {
+  display: flex;
+
+  &:first-child {
+    .#{$ns}-dialog-step-container:first-child {
+      border-radius: var(--bp-surface-border-radius) 0 0 0;
+    }
+    .#{$ns}-multistep-dialog-right-panel {
+      border-top-right-radius: var(--bp-surface-border-radius);
+    }
+  }
+  .#{$ns}-multistep-dialog-nav-top & {
+    flex-direction: column;
+
+    &:first-child {
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: var(--bp-surface-border-radius) 0 0 0;
+      }
+      .#{$ns}-dialog-step-container:last-child {
+        border-radius: 0 var(--bp-surface-border-radius) 0 0;
+      }
+    }
+    .#{$ns}-multistep-dialog-left-panel {
+      flex-direction: row;
+    }
+    .#{$ns}-dialog-step-container {
+      flex-grow: 1;
+
+      &:not(:first-child) {
+        border-left: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+      }
+    }
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+    }
+    .#{$ns}-multistep-dialog-right-panel,
+    .#{$ns}-multistep-dialog-footer {
+      border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
+    }
+  }
+  .#{$ns}-multistep-dialog-nav-right & {
+    flex-direction: row-reverse;
+
+    &:first-child {
+      .#{$ns}-multistep-dialog-right-panel {
+        border-radius: var(--bp-surface-border-radius) 0 0 var(--bp-surface-border-radius);
+      }
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: 0 var(--bp-surface-border-radius) 0 0;
+      }
+    }
+    .#{$ns}-multistep-dialog-left-panel {
+      border-radius: 0 0 var(--bp-surface-border-radius);
+    }
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+      border-radius: var(--bp-surface-border-radius) 0 0 var(--bp-surface-border-radius);
+      border-right: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+    }
+    .#{$ns}-dialog-footer {
+      border-bottom-left-radius: 0;
+    }
+  }
+}
+.#{$ns}-multistep-dialog-left-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.#{$ns}-multistep-dialog-right-panel {
+  background-color: var(--bp-surface-background-color-base-rest);
+  border-left: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+  border-radius: 0 0 var(--bp-surface-border-radius);
+  flex: 3;
+  min-width: 0;
+}
+.#{$ns}-dialog-step-container {
+  background-color: var(--bp-surface-background-color-base-rest);
+  border-bottom: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+  &.#{$ns}-dialog-step-viewed {
+    background-color: var(--bp-surface-background-color-neutral-rest);
+  }
+}
+.#{$ns}-dialog-step {
+  align-items: center;
+  border-radius: var(--bp-surface-border-radius);
+  cursor: not-allowed;
+  display: flex;
+  margin: var(--bp-surface-spacing);
+  padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 3.5);
+  .#{$ns}-dialog-step-viewed & {
+    background-color: var(--bp-surface-background-color-neutral-rest);
+    cursor: pointer;
+  }
+
+  &:hover {
+    background: var(--bp-surface-layer-neutral-hover);
+  }
+}
+.#{$ns}-dialog-step-icon {
+  align-items: center;
+  background-color: var(--bp-typography-color-intent-neutral);
+  background-color: oklch(
+    from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+  );
+  border-radius: 50%;
+  color: var(--bp-surface-background-color-base-rest);
+  display: flex;
+  height: calc(var(--bp-surface-spacing) * 6);
+  justify-content: center;
+  width: calc(var(--bp-surface-spacing) * 6);
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
+    background-color: var(--bp-surface-background-color-primary-rest);
+  }
+  .#{$ns}-dialog-step-viewed & {
+    background-color: var(--bp-surface-background-color-neutral-rest);
+  }
+}
+.#{$ns}-dialog-step-title {
+  color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+  flex: 1;
+  padding-left: calc(var(--bp-surface-spacing) * 2);
+  .#{$ns}-active.#{$ns}-dialog-step-viewed & {
+    color: var(--bp-typography-color-intent-primary);
+  }
+  .#{$ns}-dialog-step-viewed:not(.#{$ns}-active) & {
+    color: var(--bp-typography-color-base);
+  }
+}

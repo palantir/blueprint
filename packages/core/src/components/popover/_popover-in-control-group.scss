@@ -3,7 +3,7 @@
 
 @import "./common";
 
-.#{$ns}-control-group {
+.#{$ns}-control-group:not(:where(.bp-next .#{$ns}-control-group)) {
   // Add border radius inheritance to support components wrapped in a popover
   .#{$ns}-popover-target {
     border-radius: inherit;

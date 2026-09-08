@@ -5,7 +5,7 @@
 @import "@blueprintjs/icons/lib/scss/variables";
 @import "./common";
 
-.#{$ns}-submenu {
+.#{$ns}-submenu:not(:where(.bp-next .#{$ns}-submenu)) {
   > .#{$ns}-popover-wrapper {
     display: block;
   }

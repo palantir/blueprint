@@ -36,7 +36,7 @@ Styleguide skeleton
 // This class hides content with a glowing, rounded rectangle.
 // CSS properties that should always override consumer values use the "!important" rule.
 /* stylelint-disable declaration-no-important */
-.#{$ns}-skeleton {
+.#{$ns}-skeleton:not(:where(.bp-next .#{$ns}-skeleton)) {
   animation: $skeleton-animation;
 
   // do not !important this for Firefox support

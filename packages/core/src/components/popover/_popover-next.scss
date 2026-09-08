@@ -1,0 +1,93 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "./common-next";
+@import "./popover-in-button-group-next";
+@import "./popover-in-control-group-next";
+@import "./popover-in-label-next";
+@import "./popover-in-submenu-next";
+@import "./popover-in-tree-next";
+
+.#{$ns}-popover {
+  @include popover-sizing-next(calc(var(--bp-surface-spacing) * 7.5));
+  @include popover-appearance-next(
+    var(--bp-surface-background-color-base-rest),
+    var(--bp-typography-color-base),
+    var(--bp-surface-shadow-3)
+  );
+  @include scale-transition-next;
+  border-radius: var(--bp-surface-border-radius);
+  display: inline-block;
+  z-index: var(--bp-surface-z-index-3);
+  .#{$ns}-popover-content {
+    border-radius: var(--bp-surface-border-radius);
+    position: relative;
+  }
+  &.#{$ns}-popover-content-sizing {
+    .#{$ns}-popover-content {
+      max-width: calc(var(--bp-surface-spacing) * 87.5);
+      padding: calc(var(--bp-surface-spacing) * 5);
+    }
+    .#{$ns}-popover-target + .#{$ns}-overlay & {
+      width: calc(var(--bp-surface-spacing) * 87.5);
+    }
+  }
+  &.#{$ns}-minimal {
+    margin: 0 !important; /* stylelint-disable-line declaration-no-important */
+    .#{$ns}-popover-arrow {
+      display: none;
+    }
+  }
+  &.#{$ns}-minimal,
+  &.#{$ns}-popover-minimal-animation {
+    &.#{$ns}-popover {
+      @include react-transition(
+        "#{$ns}-popover",
+        (
+          transform: scale(1) scale(1),
+        ),
+        var(--bp-emphasis-transition-duration),
+        var(--bp-emphasis-ease-default),
+        $after: "> &"
+      );
+    }
+  }
+  &.#{$ns}-popover-match-target-width {
+    width: 100%;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid CanvasText;
+    box-shadow: none;
+  }
+}
+.#{$ns}-popover-arrow::before {
+  border-radius: var(--bp-surface-border-width);
+  content: "";
+  display: block;
+  position: absolute;
+  transform: rotate(45deg);
+}
+.#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
+  background: none;
+}
+.#{$ns}-popover-transition-container {
+  @include fade-transition-next;
+  display: flex;
+  z-index: var(--bp-surface-z-index-3);
+
+  &:focus {
+    outline: none;
+  }
+  &.#{$ns}-popover-leave .#{$ns}-popover-content {
+    pointer-events: none;
+  }
+}
+span.#{$ns}-popover-target {
+  display: inline-block;
+}
+.#{$ns}-popover-target {
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+}

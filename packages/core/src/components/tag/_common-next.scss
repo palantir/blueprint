@@ -1,0 +1,249 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:map";
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "../icon/icon-mixins-next";
+
+$tag-intents-next: ("primary", "success", "warning", "danger");
+
+@mixin pt-tag-next() {
+  @include pt-flex-container(row, var(--bp-surface-spacing), inline);
+  align-items: center;
+  background-color: var(--bp-surface-background-color-neutral-rest);
+  border: none;
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: none;
+  color: var(--bp-intent-neutral-foreground);
+  font-size: var(--bp-typography-size-sm);
+  line-height: calc(var(--bp-surface-spacing) * 4);
+  max-width: 100%;
+  min-height: calc(var(--bp-surface-spacing) * 5);
+  min-width: calc(var(--bp-surface-spacing) * 5);
+  padding-block: calc(var(--bp-surface-spacing) * 0.5);
+  padding-inline: calc(var(--bp-surface-spacing) * 1.5);
+  position: relative;
+
+  &:not(.#{$ns}-fill) > .#{$ns}-fill:only-child {
+    text-align: center;
+  }
+
+  &:focus {
+    @include focus-outline(0);
+  }
+
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--bp-surface-background-color-neutral-hover);
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background-color: var(--bp-surface-background-color-neutral-active);
+    }
+  }
+
+  &.#{$ns}-round {
+    border-radius: calc(var(--bp-surface-spacing) * 7.5);
+    padding-inline: calc(var(--bp-surface-spacing) * 2);
+  }
+
+  > #{$icon-classes} {
+    fill: var(--bp-intent-neutral-foreground);
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid $pt-high-contrast-mode-border-color;
+  }
+}
+
+@mixin pt-tag-large-next() {
+  @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+  font-size: var(--bp-typography-size-md);
+  line-height: calc(var(--bp-surface-spacing) * 4.5);
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
+  padding-block: calc(var(--bp-surface-spacing) * 1.5);
+  padding-inline: calc(var(--bp-surface-spacing) * 2);
+
+  &.#{$ns}-round {
+    padding-inline: calc(var(--bp-surface-spacing) * 2.5);
+  }
+}
+
+@mixin pt-tag-intent-next($intent) {
+  background-color: var(--bp-surface-background-color-#{$intent}-rest);
+  color: var(--bp-intent-#{$intent}-foreground);
+
+  > #{$icon-classes} {
+    fill: var(--bp-intent-#{$intent}-foreground);
+  }
+
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: var(--bp-surface-background-color-#{$intent}-hover);
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background-color: var(--bp-surface-background-color-#{$intent}-active);
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    color: oklch(
+      from var(--bp-intent-#{$intent}-foreground) l c h / var(--bp-emphasis-translucence-opacity)
+    );
+
+    &:hover,
+    &:active {
+      color: var(--bp-intent-#{$intent}-foreground);
+    }
+  }
+}
+
+@mixin pt-tag-minimal-next($intent: "neutral") {
+  background-color: var(--bp-surface-layer-color-#{$intent}-rest);
+  color: var(--bp-typography-color-intent-#{$intent});
+
+  > #{$icon-classes} {
+    fill: var(--bp-typography-color-intent-#{$intent});
+  }
+
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: var(--bp-surface-layer-color-#{$intent}-hover);
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background-color: var(--bp-surface-layer-color-#{$intent}-active);
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    color: oklch(
+      from var(--bp-typography-color-intent-#{$intent}) l c h /
+        var(--bp-emphasis-translucence-opacity)
+    );
+
+    &:hover,
+    &:active {
+      color: var(--bp-typography-color-intent-#{$intent});
+    }
+  }
+}
+
+@mixin pt-tag-remove-next() {
+  background: none;
+  border: none;
+  color: inherit;
+  color: oklch(
+    from var(--bp-intent-neutral-foreground) l c h / var(--bp-emphasis-translucence-opacity)
+  );
+  cursor: pointer;
+  display: flex;
+  margin-block: calc(var(--bp-surface-spacing) * -0.5);
+  /* stylelint-disable-next-line declaration-no-important */
+  margin-inline-end: calc(var(--bp-surface-spacing) * -1.5) !important;
+  padding-block: calc(var(--bp-surface-spacing) * 0.5);
+  padding-inline: 0 calc(var(--bp-surface-spacing) * 0.5);
+
+  &:hover {
+    background: none;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .#{$ns}-icon:first-child {
+    color: inherit;
+  }
+
+  &:hover,
+  &:active {
+    color: var(--bp-intent-neutral-foreground);
+  }
+
+  &:empty::before {
+    @include pt-icon-next(calc(var(--bp-surface-spacing) * 4), 16);
+    content: map.get($blueprint-icon-codepoints, "small-cross");
+  }
+
+  .#{$ns}-large & {
+    /* stylelint-disable-next-line declaration-no-important */
+    margin-inline-end: calc(var(--bp-surface-spacing) * -2) !important;
+    padding-block: 0;
+    padding-inline: 0 var(--bp-surface-spacing);
+
+    &:empty::before {
+      @include pt-icon-sized-next(calc(var(--bp-surface-spacing) * 5), 20);
+    }
+  }
+}
+
+@mixin compound-tag-colors-next($intent: "neutral") {
+  background: none;
+
+  .#{$ns}-compound-tag-left {
+    background-color: var(--bp-surface-background-color-#{$intent}-active);
+  }
+
+  .#{$ns}-compound-tag-right {
+    background-color: var(--bp-surface-background-color-#{$intent}-rest);
+  }
+
+  &.#{$ns}-interactive {
+    &:hover {
+      .#{$ns}-compound-tag-left {
+        background-color: var(--bp-surface-background-color-#{$intent}-active);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: var(--bp-surface-background-color-#{$intent}-hover);
+      }
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      .#{$ns}-compound-tag-left,
+      .#{$ns}-compound-tag-right {
+        background-color: var(--bp-surface-background-color-#{$intent}-active);
+      }
+    }
+  }
+}
+
+@mixin minimal-compound-tag-colors-next($intent: "neutral") {
+  background: none;
+
+  .#{$ns}-compound-tag-left {
+    background-color: var(--bp-surface-layer-color-#{$intent}-hover);
+  }
+
+  .#{$ns}-compound-tag-right {
+    background-color: var(--bp-surface-layer-color-#{$intent}-rest);
+  }
+
+  &.#{$ns}-interactive {
+    &:hover {
+      .#{$ns}-compound-tag-left {
+        background-color: var(--bp-surface-layer-color-#{$intent}-active);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: var(--bp-surface-layer-color-#{$intent}-hover);
+      }
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      .#{$ns}-compound-tag-left,
+      .#{$ns}-compound-tag-right {
+        background-color: var(--bp-surface-layer-color-#{$intent}-active);
+      }
+    }
+  }
+}

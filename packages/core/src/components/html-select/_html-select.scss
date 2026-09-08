@@ -5,8 +5,8 @@
 @import "../popover/common";
 @import "./common";
 
-.#{$ns}-html-select,
-.#{$ns}-select {
+.#{$ns}-html-select:not(:where(.bp-next .#{$ns}-html-select)),
+.#{$ns}-select:not(:where(.bp-next .#{$ns}-select)) {
   display: inline-block;
   letter-spacing: normal;
   position: relative;

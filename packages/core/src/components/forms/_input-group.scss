@@ -12,7 +12,7 @@ $input-button-height-large: $pt-button-height !default;
 // 1px space between regular button and small input
 $input-button-height-small: $pt-button-height-smaller !default;
 
-.#{$ns}-input-group {
+.#{$ns}-input-group:not(:where(.bp-next .#{$ns}-input-group)) {
   display: block;
   position: relative;
 

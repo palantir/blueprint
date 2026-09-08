@@ -47,7 +47,7 @@ $compound-tag-left-intent-colors: (
   ),
 ) !default;
 
-.#{$ns}-compound-tag {
+.#{$ns}-compound-tag:not(:where(.bp-next .#{$ns}-compound-tag)) {
   // Variants: default & interactive
   @include compound-tag-colors(
     $compound-tag-left-default-colors,

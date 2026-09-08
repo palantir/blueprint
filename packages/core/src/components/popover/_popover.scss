@@ -18,7 +18,7 @@ $dark-popover-arrow-box-shadow:
   0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
   1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
-.#{$ns}-popover {
+.#{$ns}-popover:not(:where(.bp-next .#{$ns}-popover)) {
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 7.5,
     $arrow-offset: $pt-spacing,
@@ -104,7 +104,7 @@ $dark-popover-arrow-box-shadow:
 }
 
 // the box-shadow under the arrow SVG paths
-.#{$ns}-popover-arrow::before {
+.#{$ns}-popover-arrow:not(:where(.bp-next .#{$ns}-popover-arrow))::before {
   border-radius: 1px;
   content: "";
   display: block;
@@ -112,11 +112,11 @@ $dark-popover-arrow-box-shadow:
   transform: rotate(45deg);
 }
 
-.#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
+.#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop:not(:where(.bp-next .#{$ns}-overlay-backdrop)) {
   background: rgba($white, 0);
 }
 
-.#{$ns}-popover-transition-container {
+.#{$ns}-popover-transition-container:not(:where(.bp-next .#{$ns}-popover-transition-container)) {
   @include fade-transition;
 
   // ensure element size exactly equals its children, no edge-case 4px spacing!
@@ -139,7 +139,7 @@ $dark-popover-arrow-box-shadow:
   // }
 }
 
-span.#{$ns}-popover-target {
+span.#{$ns}-popover-target:not(:where(.bp-next .#{$ns}-popover-target)) {
   // avoid `inline` elements as they won't account for padding etc
   display: inline-block;
 
@@ -147,7 +147,7 @@ span.#{$ns}-popover-target {
   // div tag can be used for display: block, which works fine.
 }
 
-.#{$ns}-popover-target {
+.#{$ns}-popover-target:not(:where(.bp-next .#{$ns}-popover-target)) {
   &.#{$ns}-fill {
     width: 100%;
   }

@@ -60,7 +60,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
   /* stylelint-enable selector-max-compound-selectors */
 }
 
-table.#{$ns}-html-table {
+table.#{$ns}-html-table:not(:where(.bp-next table.#{$ns}-html-table)) {
   @extend %html-table;
 
   &.#{$ns}-compact {

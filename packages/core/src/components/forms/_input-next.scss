@@ -1,0 +1,52 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "./common-next";
+
+.#{$ns}-input {
+  @include pt-input-next;
+  &.#{$ns}-large {
+    @include pt-input-size-next(large);
+  }
+  &.#{$ns}-small {
+    @include pt-input-size-next(small);
+  }
+  &.#{$ns}-fill {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  @each $intent in primary, success, warning, danger {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-input-intent-next($intent);
+    }
+  }
+
+  &::-ms-clear {
+    display: none;
+  }
+}
+
+@supports (-webkit-touch-callout: none) {
+  input.#{$ns}-input:disabled,
+  input.#{$ns}-input.#{$ns}-disabled {
+    opacity: 1;
+    -webkit-text-fill-color: oklch(
+      from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+    );
+  }
+}
+textarea.#{$ns}-input {
+  max-width: 100%;
+  padding: calc(var(--bp-surface-spacing) * 2);
+  &,
+  &.#{$ns}-large,
+  &.#{$ns}-small {
+    height: auto;
+    line-height: inherit;
+  }
+}
+.#{$ns}-text-area.#{$ns}-text-area-auto-resize {
+  resize: horizontal;
+}

@@ -2,7 +2,7 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-:root {
+.bp-next {
   --bp-emphasis-transition-duration: 100ms;
   --bp-emphasis-ease-default: cubic-bezier(0.4, 1, 0.75, 0.9);
   --bp-emphasis-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11);
@@ -340,7 +340,7 @@
 }
 
 @supports (color: oklch(from var(--any-color) l c h)) {
-  :root {
+  .bp-next {
     --bp-surface-divider-color-default: oklch(from var(--bp-palette-black-1000) l c h / 0.09);
     --bp-surface-divider-color-strong: oklch(from var(--bp-palette-black-1000) l c h / 0.12);
     --bp-surface-color-code: oklch(from var(--bp-palette-white-1000) l c h / 0.7);

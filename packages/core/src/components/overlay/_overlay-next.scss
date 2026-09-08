@@ -1,0 +1,65 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+.#{$ns}-overlay {
+  @include position-all(static, 0);
+  z-index: var(--bp-surface-z-index-3);
+  &:not(.#{$ns}-overlay-open) {
+    pointer-events: none;
+  }
+  &.#{$ns}-overlay-container {
+    overflow: hidden;
+    position: fixed;
+    &.#{$ns}-overlay-inline {
+      position: absolute;
+    }
+  }
+  &.#{$ns}-overlay-scroll-container {
+    overflow: auto;
+    position: fixed;
+    &.#{$ns}-overlay-inline {
+      position: absolute;
+    }
+  }
+  &.#{$ns}-overlay-inline {
+    display: inline;
+    overflow: visible;
+  }
+}
+.#{$ns}-overlay-content {
+  position: fixed;
+  z-index: var(--bp-surface-z-index-3);
+  .#{$ns}-overlay-inline &,
+  .#{$ns}-overlay-scroll-container & {
+    position: absolute;
+  }
+}
+.#{$ns}-overlay-backdrop {
+  @include position-all(fixed, 0);
+  @include react-transition(
+    "#{$ns}-overlay",
+    (
+      opacity: 0 1,
+    ),
+    var(--bp-emphasis-transition-duration),
+    var(--bp-emphasis-ease-default),
+    $before: "&"
+  );
+  background: var(--bp-intent-neutral-1000);
+  background: oklch(
+    from var(--bp-intent-neutral-1000) l c h / var(--bp-emphasis-translucence-opacity)
+  );
+  overflow: auto;
+  user-select: none;
+  z-index: var(--bp-surface-z-index-3);
+
+  &:focus {
+    outline: none;
+  }
+  .#{$ns}-overlay-inline & {
+    position: absolute;
+  }
+}

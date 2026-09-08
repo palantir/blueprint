@@ -12,7 +12,7 @@ $tag-input-padding: $pt-spacing !default;
 $tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
 $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;
 
-.#{$ns}-tag-input {
+.#{$ns}-tag-input:not(:where(.bp-next .#{$ns}-tag-input)) {
   @include pt-flex-container(row, $fill: ".#{$ns}-tag-input-values");
   align-items: flex-start;
   cursor: text;
@@ -45,11 +45,11 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     // use the larger, conventional input padding when there are no tags and no left icon present.
     // see: https://github.com/palantir/blueprint/issues/2872
     &:first-child {
-      .#{$ns}-tag ~ .#{$ns}-input-ghost {
+      .#{$ns}-tag ~ .#{$ns}-input-ghost:not(:where(.bp-next .#{$ns}-input-ghost)) {
         padding-left: 0;
       }
 
-      .#{$ns}-input-ghost {
+      .#{$ns}-input-ghost:not(:where(.bp-next .#{$ns}-input-ghost)) {
         // some padding-left is already applied on the root component, so we should subtract that
         padding-left: var(--bp-surface-spacing);
       }
@@ -70,7 +70,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     }
   }
 
-  .#{$ns}-input-ghost {
+  .#{$ns}-input-ghost:not(:where(.bp-next .#{$ns}-input-ghost)) {
     // input fills remaining line
     flex: 1 1 auto;
     line-height: calc(var(--bp-surface-spacing) * 5);
@@ -103,7 +103,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
       margin-top: calc(var(--bp-surface-spacing) * 2.5);
     }
 
-    .#{$ns}-input-ghost {
+    .#{$ns}-input-ghost:not(:where(.bp-next .#{$ns}-input-ghost)) {
       line-height: calc(var(--bp-surface-spacing) * 7.5);
     }
 
@@ -158,7 +158,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
       color: var(--bp-typography-color-muted);
     }
 
-    .#{$ns}-input-ghost {
+    .#{$ns}-input-ghost:not(:where(.bp-next .#{$ns}-input-ghost)) {
       @include pt-dark-input-placeholder;
 
       color: var(--bp-typography-color-default-rest);
@@ -202,7 +202,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 }
 
 // TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
-.#{$ns}-input-ghost {
+.#{$ns}-input-ghost:not(:where(.bp-next .#{$ns}-input-ghost)) {
   @include pt-input-placeholder;
   background: none;
 

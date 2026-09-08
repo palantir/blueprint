@@ -1,0 +1,33 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "./common-next";
+
+.#{$ns}-submenu {
+  > .#{$ns}-popover-wrapper {
+    display: block;
+  }
+  .#{$ns}-popover-target {
+    display: block;
+    &.#{$ns}-popover-open > .#{$ns}-menu-item {
+      &:not([class*="#{$ns}-intent-"]) {
+        @include menu-item-hover-next;
+      }
+      &[class*="#{$ns}-intent-"] {
+        &,
+        &:hover,
+        &:active {
+          @include menu-item-active-next;
+        }
+      }
+    }
+  }
+  &.#{$ns}-popover {
+    box-shadow: none;
+    padding: 0 var(--bp-surface-spacing);
+    > .#{$ns}-popover-content {
+      box-shadow: var(--bp-surface-shadow-3);
+    }
+  }
+}

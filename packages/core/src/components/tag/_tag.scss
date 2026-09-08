@@ -5,7 +5,7 @@
 @import "../../common/variables-extended";
 @import "./common";
 
-.#{$ns}-tag {
+.#{$ns}-tag:not(:where(.bp-next .#{$ns}-tag)) {
   @include pt-tag;
 
   &.#{$ns}-large,
@@ -44,6 +44,6 @@
   }
 }
 
-.#{$ns}-tag-remove {
+.#{$ns}-tag-remove:not(:where(.bp-next .#{$ns}-tag-remove)) {
   @include pt-tag-remove;
 }

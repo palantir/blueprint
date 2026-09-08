@@ -4,7 +4,7 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-.#{$ns}-non-ideal-state {
+.#{$ns}-non-ideal-state:not(:where(.bp-next .#{$ns}-non-ideal-state)) {
   @include pt-flex-container(column, $pt-spacing * 5);
   align-items: center;
   color: $pt-text-color-muted;
@@ -48,6 +48,6 @@
   }
 }
 
-.#{$ns}-non-ideal-state-visual {
+.#{$ns}-non-ideal-state-visual:not(:where(.bp-next .#{$ns}-non-ideal-state-visual)) {
   color: $gray3;
 }

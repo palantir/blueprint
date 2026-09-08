@@ -1,0 +1,71 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/react-transition";
+@import "../../common/variables";
+
+@mixin popover-sizing-next($arrow-square-size) {
+  .#{$ns}-popover-arrow {
+    height: $arrow-square-size;
+    position: absolute;
+    width: $arrow-square-size;
+
+    &::before {
+      height: calc($arrow-square-size / 1.41421356 - var(--bp-surface-border-width));
+      margin: calc(($arrow-square-size - $arrow-square-size / 1.41421356) / 2);
+      width: calc($arrow-square-size / 1.41421356 - var(--bp-surface-border-width));
+    }
+  }
+}
+
+@mixin popover-appearance-next($background-color, $text-color, $shadow) {
+  box-shadow: $shadow;
+  .#{$ns}-popover-content {
+    background: $background-color;
+  }
+  .#{$ns}-popover-content,
+  .#{$ns}-heading {
+    color: $text-color;
+  }
+  .#{$ns}-popover-arrow::before {
+    box-shadow: $shadow;
+  }
+  .#{$ns}-popover-arrow-border {
+    fill: var(--bp-surface-divider-color-strong);
+  }
+  .#{$ns}-popover-arrow-fill {
+    fill: $background-color;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      fill: CanvasText;
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid CanvasText;
+  }
+}
+
+@mixin fade-transition-next() {
+  @include react-transition(
+    "#{$ns}-popover",
+    (
+      opacity: 0 1,
+    ),
+    var(--bp-emphasis-transition-duration),
+    var(--bp-emphasis-ease-default),
+    $before: "&"
+  );
+}
+
+@mixin scale-transition-next() {
+  @include react-transition(
+    "#{$ns}-popover",
+    (
+      transform: scale(0.3) scale(1),
+    ),
+    var(--bp-emphasis-transition-duration),
+    var(--bp-emphasis-ease-bounce),
+    $after: "> &"
+  );
+}

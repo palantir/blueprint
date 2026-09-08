@@ -4,7 +4,7 @@
 
 @import "../../common/variables";
 
-.#{$ns}-link {
+.#{$ns}-link:not(:where(.bp-next .#{$ns}-link)) {
   cursor: pointer;
   display: inline-flex;
   gap: $pt-spacing;

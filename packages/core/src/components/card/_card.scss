@@ -5,7 +5,7 @@
 
 @import "./card-variables";
 
-.#{$ns}-card {
+.#{$ns}-card:not(:where(.bp-next .#{$ns}-card)) {
   background-color: var(--bp-surface-background-color-default-rest);
   border-radius: var(--bp-surface-border-radius);
   box-shadow: var(--bp-surface-shadow-0);
@@ -28,7 +28,7 @@
   }
 }
 
-.#{$ns}-elevation-0 {
+.#{$ns}-elevation-0:not(:where(.bp-next .#{$ns}-elevation-0)) {
   box-shadow: var(--bp-surface-shadow-0);
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -36,7 +36,7 @@
   }
 }
 
-.#{$ns}-elevation-1 {
+.#{$ns}-elevation-1:not(:where(.bp-next .#{$ns}-elevation-1)) {
   box-shadow: var(--bp-surface-shadow-1);
 
   &.#{$ns}-dark,
@@ -52,7 +52,7 @@
   }
 }
 
-.#{$ns}-elevation-2 {
+.#{$ns}-elevation-2:not(:where(.bp-next .#{$ns}-elevation-2)) {
   box-shadow: var(--bp-surface-shadow-2);
 
   &.#{$ns}-dark,
@@ -68,7 +68,7 @@
   }
 }
 
-.#{$ns}-elevation-3 {
+.#{$ns}-elevation-3:not(:where(.bp-next .#{$ns}-elevation-3)) {
   box-shadow: var(--bp-surface-shadow-3);
 
   &.#{$ns}-dark,
@@ -84,7 +84,7 @@
   }
 }
 
-.#{$ns}-elevation-4 {
+.#{$ns}-elevation-4:not(:where(.bp-next .#{$ns}-elevation-4)) {
   box-shadow: var(--bp-surface-shadow-4);
 
   &.#{$ns}-dark,
@@ -100,11 +100,11 @@
   }
 }
 
-.#{$ns}-card.#{$ns}-compact {
+.#{$ns}-card.#{$ns}-compact:not(:where(.bp-next .#{$ns}-card)) {
   padding: calc(var(--bp-surface-spacing) * 4);
 }
 
-.#{$ns}-card.#{$ns}-interactive {
+.#{$ns}-card.#{$ns}-interactive:not(:where(.bp-next .#{$ns}-card)) {
   &:hover {
     box-shadow: var(--bp-surface-shadow-3);
     cursor: pointer;

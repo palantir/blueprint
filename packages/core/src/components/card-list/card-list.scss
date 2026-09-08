@@ -3,7 +3,7 @@
 
 @import "../card/card-variables";
 
-.#{$ns}-card-list {
+.#{$ns}-card-list:not(:where(.bp-next .#{$ns}-card-list)) {
   overflow: auto;
   padding: 0;
   width: 100%;

@@ -1,0 +1,7 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+$tooltip-padding-vertical-next: calc(var(--bp-surface-spacing) * 2);
+$tooltip-padding-horizontal-next: calc(var(--bp-surface-spacing) * 3);

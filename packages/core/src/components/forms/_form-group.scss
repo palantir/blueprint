@@ -5,7 +5,7 @@
 @import "../../common/mixins";
 @import "common";
 
-.#{$ns}-form-group {
+.#{$ns}-form-group:not(:where(.bp-next .#{$ns}-form-group)) {
   display: flex;
   flex-direction: column;
   margin: 0 0 calc(var(--bp-surface-spacing) * 4);

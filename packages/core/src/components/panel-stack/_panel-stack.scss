@@ -5,12 +5,12 @@
 @import "../../common/react-transition";
 @import "../card/card-variables";
 
-.#{$ns}-panel-stack2 {
+.#{$ns}-panel-stack2:not(:where(.bp-next .#{$ns}-panel-stack2)) {
   overflow: hidden;
   position: relative;
 }
 
-.#{$ns}-panel-stack2-header {
+.#{$ns}-panel-stack2-header:not(:where(.bp-next .#{$ns}-panel-stack2-header)) {
   align-items: center;
   box-shadow: 0 1px $pt-divider-black;
   display: flex;
@@ -34,7 +34,9 @@
   }
 }
 
-.#{$ns}-button.#{$ns}-panel-stack2-header-back {
+.#{$ns}-button.#{$ns}-panel-stack2-header-back:not(
+    :where(.bp-next .#{$ns}-panel-stack2-header-back)
+  ) {
   margin-left: $pt-spacing;
   padding-left: 0;
   white-space: nowrap;
@@ -45,7 +47,7 @@
   }
 }
 
-.#{$ns}-panel-stack2-view {
+.#{$ns}-panel-stack2-view:not(:where(.bp-next .#{$ns}-panel-stack2-view)) {
   @include position-all(absolute, 0);
 
   background-color: $card-background-color;
@@ -68,7 +70,7 @@
 }
 
 // PUSH transition: enter from right (100%), existing panel moves off left.
-.#{$ns}-panel-stack2-push {
+.#{$ns}-panel-stack2-push:not(:where(.bp-next .#{$ns}-panel-stack2-push)) {
   @include react-transition-phase(
     "#{$ns}-panel-stack2",
     "enter",
@@ -92,7 +94,7 @@
 }
 
 // POP transition: enter from left (-50%), existing panel moves off right.
-.#{$ns}-panel-stack2-pop {
+.#{$ns}-panel-stack2-pop:not(:where(.bp-next .#{$ns}-panel-stack2-pop)) {
   @include react-transition-phase(
     "#{$ns}-panel-stack2",
     "enter",

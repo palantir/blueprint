@@ -68,7 +68,7 @@
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid buttonborder;
+    border: var(--bp-surface-border-width) solid buttonborder;
   }
 }
 
@@ -115,7 +115,7 @@
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid buttonborder;
+    border: var(--bp-surface-border-width) solid buttonborder;
     box-shadow: none;
   }
 }

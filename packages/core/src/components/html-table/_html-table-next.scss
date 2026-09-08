@@ -1,0 +1,117 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+// placeholder for extending inside running-text (see typography)
+%html-table-next {
+  border-spacing: 0;
+  font-size: var(--bp-typography-size-md);
+
+  th,
+  td {
+    padding: calc(var(--bp-surface-spacing) * 2.75);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    color: var(--bp-typography-color-base);
+    font-weight: var(--bp-typography-weight-strong);
+  }
+
+  td {
+    color: var(--bp-typography-color-base);
+  }
+
+  tbody tr:first-child,
+  tfoot tr:first-child {
+    th,
+    td {
+      box-shadow: inset 0 var(--bp-surface-border-width) 0 0 var(--bp-surface-divider-color-default);
+    }
+  }
+}
+
+table.#{$ns}-html-table {
+  @extend %html-table-next;
+
+  &.#{$ns}-compact {
+    th,
+    td {
+      padding-bottom: calc(var(--bp-surface-spacing) * 1.5);
+      padding-top: calc(var(--bp-surface-spacing) * 1.5);
+    }
+  }
+
+  &.#{$ns}-html-table-striped {
+    tbody tr:nth-child(odd) td {
+      background-color: var(--bp-surface-layer-color-neutral-rest);
+    }
+  }
+
+  // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+  &.#{$ns}-html-table-bordered {
+    th:not(:first-child) {
+      box-shadow: inset var(--bp-surface-border-width) 0 0 0 var(--bp-surface-divider-color-default);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border-inline-start: var(--bp-surface-border-width) solid
+          $pt-high-contrast-mode-border-color;
+      }
+    }
+
+    tbody tr td,
+    tfoot tr td {
+      box-shadow: inset 0 var(--bp-surface-border-width) 0 0 var(--bp-surface-divider-color-default);
+
+      &:not(:first-child) {
+        box-shadow: inset var(--bp-surface-border-width) var(--bp-surface-border-width) 0 0
+          var(--bp-surface-divider-color-default);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          border-block-start: var(--bp-surface-border-width) solid
+            $pt-high-contrast-mode-border-color;
+          border-inline-start: var(--bp-surface-border-width) solid
+            $pt-high-contrast-mode-border-color;
+        }
+      }
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border-block-start: var(--bp-surface-border-width) solid $pt-high-contrast-mode-border-color;
+      }
+    }
+
+    &.#{$ns}-html-table-striped {
+      tbody tr:not(:first-child) td {
+        box-shadow: none;
+
+        &:not(:first-child) {
+          box-shadow: inset var(--bp-surface-border-width) 0 0 0
+            var(--bp-surface-divider-color-default);
+        }
+      }
+    }
+  }
+
+  &.#{$ns}-interactive {
+    tbody tr {
+      &:hover td {
+        background-color: var(--bp-surface-layer-color-neutral-hover);
+        cursor: pointer;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
+      }
+
+      &:active td {
+        background-color: var(--bp-surface-layer-color-neutral-active);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
+      }
+    }
+  }
+}

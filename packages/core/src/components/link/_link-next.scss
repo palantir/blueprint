@@ -1,0 +1,42 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-link {
+  cursor: pointer;
+  display: inline-flex;
+  gap: var(--bp-surface-spacing);
+  text-underline-offset: 17.5%;
+  text-underline-position: from-font;
+
+  &.#{$ns}-link-underline-always {
+    text-decoration-line: underline;
+  }
+
+  &.#{$ns}-link-underline-hover {
+    text-decoration-line: none;
+
+    &:hover {
+      text-decoration-line: underline;
+    }
+  }
+
+  &.#{$ns}-link-underline-none {
+    text-decoration-line: none;
+
+    &:hover {
+      text-decoration-line: none;
+    }
+  }
+
+  &.#{$ns}-link-color-inherit {
+    color: inherit;
+  }
+
+  @each $intent in $pt-intents {
+    &.#{$ns}-intent-#{$intent} {
+      color: var(--bp-typography-color-intent-#{$intent});
+    }
+  }
+}

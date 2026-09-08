@@ -30,7 +30,7 @@ $progress-bar-gradient: linear-gradient(
   }
 }
 
-.#{$ns}-progress-bar {
+.#{$ns}-progress-bar:not(:where(.bp-next .#{$ns}-progress-bar)) {
   background: $progress-track-color;
   border-radius: $progress-bar-border-radius;
   display: block;
@@ -60,7 +60,7 @@ $progress-bar-gradient: linear-gradient(
   }
 }
 
-.#{$ns}-dark .#{$ns}-progress-bar {
+.#{$ns}-dark .#{$ns}-progress-bar:not(:where(.bp-next .#{$ns}-progress-bar)) {
   background: $dark-progress-track-color;
 
   .#{$ns}-progress-meter {
@@ -69,7 +69,8 @@ $progress-bar-gradient: linear-gradient(
 }
 
 @each $intent, $color in $pt-intent-colors {
-  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
+  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent}:not(:where(.bp-next .#{$ns}-progress-bar))
+    .#{$ns}-progress-meter {
     background-color: $color;
   }
 }

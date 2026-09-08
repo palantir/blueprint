@@ -1,0 +1,20 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+.#{$ns}-collapse {
+  height: 0;
+  overflow-y: hidden;
+  transition-duration: calc(var(--bp-emphasis-transition-duration) * 2);
+  transition-property: height;
+  transition-timing-function: var(--bp-emphasis-ease-default);
+
+  .#{$ns}-collapse-body {
+    transition-duration: calc(var(--bp-emphasis-transition-duration) * 2);
+    transition-property: transform;
+    transition-timing-function: var(--bp-emphasis-ease-default);
+
+    &[aria-hidden="true"] {
+      display: none;
+    }
+  }
+}

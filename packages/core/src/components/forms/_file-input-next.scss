@@ -1,0 +1,125 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "./common-next";
+
+.#{$ns}-file-input {
+  cursor: pointer;
+  display: inline-block;
+  height: calc(var(--bp-surface-spacing) * 7.5);
+  position: relative;
+
+  input {
+    margin: 0;
+    min-width: calc(var(--bp-surface-spacing) * 50);
+    opacity: 0;
+    &:disabled + .#{$ns}-file-upload-input,
+    &.#{$ns}-disabled + .#{$ns}-file-upload-input {
+      background: oklch(
+        from var(--bp-surface-background-color-base-rest) l c h /
+          var(--bp-emphasis-disabled-opacity)
+      );
+      box-shadow: none;
+      color: oklch(
+        from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+      );
+
+      &::after {
+        background: oklch(
+          from var(--bp-surface-background-color-neutral-rest) l c h /
+            var(--bp-emphasis-disabled-opacity)
+        );
+        box-shadow: none;
+        color: oklch(
+          from var(--bp-intent-neutral-foreground) l c h / var(--bp-emphasis-disabled-opacity)
+        );
+      }
+    }
+    &:focus + .#{$ns}-file-upload-input {
+      box-shadow:
+        inset 0 0 0 var(--bp-surface-border-width) var(--bp-emphasis-focus-color),
+        0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color);
+    }
+  }
+  &.#{$ns}-file-input-has-selection .#{$ns}-file-upload-input {
+    color: var(--bp-typography-color-base);
+  }
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+  &.#{$ns}-large,
+  .#{$ns}-large & {
+    height: calc(var(--bp-surface-spacing) * 10);
+  }
+  &.#{$ns}-small,
+  .#{$ns}-small & {
+    height: calc(var(--bp-surface-spacing) * 6);
+  }
+  .#{$ns}-file-upload-input-custom-text::after {
+    content: attr(#{$ns}-button-text);
+  }
+}
+.#{$ns}-file-upload-input {
+  @include pt-input-next;
+  color: oklch(from var(--bp-typography-color-intent-neutral) l c h / 60%);
+  left: 0;
+  overflow: hidden;
+  padding-right: calc(calc(var(--bp-surface-spacing) * 17.5) + calc(var(--bp-surface-spacing) * 2));
+  position: absolute;
+  right: 0;
+  text-overflow: ellipsis;
+  top: 0;
+  user-select: none;
+  white-space: nowrap;
+
+  &::after {
+    background: var(--bp-surface-background-color-neutral-rest);
+    border-radius: var(--bp-surface-border-radius);
+    box-shadow: var(--bp-surface-shadow-0);
+    color: var(--bp-intent-neutral-foreground);
+    content: "Browse";
+    line-height: calc(var(--bp-surface-spacing) * 6);
+    margin: calc(var(--bp-surface-spacing) * 0.75);
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-overflow: ellipsis;
+    top: 0;
+    white-space: nowrap;
+    width: calc(var(--bp-surface-spacing) * 17.5);
+  }
+
+  &:hover::after {
+    background: var(--bp-surface-background-color-neutral-hover);
+  }
+
+  &:active::after {
+    background: var(--bp-surface-background-color-neutral-active);
+  }
+  .#{$ns}-large & {
+    @include pt-input-size-next(large);
+    padding-right: calc(
+      calc(var(--bp-surface-spacing) * 21.25) + calc(var(--bp-surface-spacing) * 2)
+    );
+
+    &::after {
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+      margin: calc(var(--bp-surface-spacing) * 1.25);
+      width: calc(var(--bp-surface-spacing) * 21.25);
+    }
+  }
+  .#{$ns}-small & {
+    @include pt-input-size-next(small);
+    padding-right: calc(
+      calc(var(--bp-surface-spacing) * 13.75) + calc(var(--bp-surface-spacing) * 2)
+    );
+
+    &::after {
+      line-height: calc(var(--bp-surface-spacing) * 5);
+      margin: calc(var(--bp-surface-spacing) * 0.5);
+      width: calc(var(--bp-surface-spacing) * 13.75);
+    }
+  }
+}

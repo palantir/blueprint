@@ -1,0 +1,47 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+@keyframes skeleton-glow-next {
+  from {
+    background: var(--bp-surface-layer-neutral-rest);
+    border-color: var(--bp-surface-layer-color-neutral-rest);
+  }
+
+  to {
+    background: var(--bp-surface-layer-neutral-hover);
+    border-color: var(--bp-surface-layer-color-neutral-hover);
+  }
+}
+
+// This class hides content with a glowing, rounded rectangle.
+// CSS properties that should always override consumer values use the "!important" rule.
+/* stylelint-disable declaration-no-important */
+.#{$ns}-skeleton {
+  animation: skeleton-glow-next calc(var(--bp-emphasis-transition-duration) * 10) linear infinite
+    alternate;
+
+  // Do not !important this for Firefox support.
+  background: var(--bp-surface-layer-neutral-rest);
+
+  // Prevent background color from extending to the border and overlapping.
+  background-clip: padding-box !important;
+  border-color: var(--bp-surface-layer-color-neutral-rest) !important;
+  border-radius: calc(var(--bp-surface-spacing) * 0.5);
+  box-shadow: none !important;
+
+  // Transparent text will occupy space but be invisible to the user.
+  color: transparent !important;
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+
+  // Make pseudo-elements (CSS icons) and children invisible.
+  &::before,
+  &::after,
+  * {
+    visibility: hidden !important;
+  }
+}
+/* stylelint-enable declaration-no-important */

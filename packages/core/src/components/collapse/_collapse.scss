@@ -5,7 +5,7 @@
 
 $collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default;
 
-.#{$ns}-collapse {
+.#{$ns}-collapse:not(:where(.bp-next .#{$ns}-collapse)) {
   height: 0;
   overflow-y: hidden;
   transition: height $collapse-transition;

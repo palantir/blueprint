@@ -4,7 +4,7 @@
 @import "./common";
 @import "../button/common";
 
-.#{$ns}-button-group {
+.#{$ns}-button-group:not(:where(.bp-next .#{$ns}-button-group)) {
   // support wrapping buttons in a tooltip, which adds a wrapper element
   &:not(.#{$ns}-minimal) {
     > .#{$ns}-popover-target:not(:first-child) .#{$ns}-button {

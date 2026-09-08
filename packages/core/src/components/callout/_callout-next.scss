@@ -1,0 +1,103 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "../icon/icon-mixins-next";
+
+.#{$ns}-callout {
+  border-radius: var(--bp-surface-border-radius);
+  color: var(--bp-typography-color-base);
+  font-size: var(--bp-typography-size-md);
+  line-height: var(--bp-typography-line-height-running-factor);
+  padding: calc(var(--bp-surface-spacing) * 4);
+  position: relative;
+  width: 100%;
+
+  &:not(.#{$ns}-minimal) {
+    background: var(--bp-surface-layer-neutral-rest);
+  }
+
+  &[class*="#{$ns}-icon-"] {
+    padding-left: calc(var(--bp-surface-spacing) * 10);
+
+    &::before {
+      @include pt-icon-next(calc(var(--bp-surface-spacing) * 4), 16);
+      color: var(--bp-typography-color-intent-neutral);
+      left: calc(var(--bp-surface-spacing) * 4);
+      position: absolute;
+      top: calc(var(--bp-surface-spacing) * 4.5);
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid buttonborder;
+  }
+
+  &.#{$ns}-callout-icon {
+    padding-left: calc(var(--bp-surface-spacing) * 10);
+
+    > .#{$ns}-icon:first-child {
+      color: var(--bp-typography-color-intent-neutral);
+      left: calc(var(--bp-surface-spacing) * 4);
+      position: absolute;
+      top: calc(var(--bp-surface-spacing) * 4.5);
+    }
+  }
+
+  .#{$ns}-heading {
+    line-height: calc(var(--bp-surface-spacing) * 4);
+    margin-bottom: 0;
+    margin-top: calc(var(--bp-surface-spacing) * 0.5);
+  }
+
+  &.#{$ns}-callout-has-body-content .#{$ns}-heading {
+    margin-bottom: var(--bp-surface-spacing);
+  }
+
+  &.#{$ns}-compact {
+    padding: calc(var(--bp-surface-spacing) * 2);
+
+    &.#{$ns}-callout-icon {
+      padding-left: calc(var(--bp-surface-spacing) * 8);
+
+      > .#{$ns}-icon:first-child {
+        left: calc(var(--bp-surface-spacing) * 2);
+        top: calc(var(--bp-surface-spacing) * 2.5);
+      }
+    }
+  }
+
+  @each $intent in $pt-intents {
+    &.#{$ns}-intent-#{$intent} {
+      color: var(--bp-typography-color-intent-#{$intent});
+
+      &:not(.#{$ns}-minimal) {
+        background: var(--bp-surface-layer-#{$intent}-rest);
+      }
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border: var(--bp-surface-border-width) solid buttonborder;
+      }
+
+      &[class*="#{$ns}-icon-"]::before,
+      > .#{$ns}-icon:first-child,
+      .#{$ns}-heading {
+        color: var(--bp-typography-color-intent-#{$intent});
+      }
+    }
+  }
+
+  &.#{$ns}-intent-primary {
+    a {
+      text-decoration: underline;
+
+      &:hover {
+        color: var(--bp-typography-color-intent-primary);
+      }
+    }
+  }
+
+  .#{$ns}-running-text & {
+    margin: calc(var(--bp-surface-spacing) * 5) 0;
+  }
+}

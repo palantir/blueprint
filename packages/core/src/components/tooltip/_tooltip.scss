@@ -12,7 +12,7 @@ $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-op
 $tooltip-padding-compact-vertical: $pt-spacing !default;
 $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
-.#{$ns}-tooltip {
+.#{$ns}-tooltip:not(:where(.bp-next .#{$ns}-tooltip)) {
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 5.5,
     $arrow-offset: $pt-spacing * 0.75,
@@ -102,7 +102,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
   }
 }
 
-.#{$ns}-tooltip-indicator {
+.#{$ns}-tooltip-indicator:not(:where(.bp-next .#{$ns}-tooltip-indicator)) {
   border-bottom: dotted 1px;
   cursor: help;
 }

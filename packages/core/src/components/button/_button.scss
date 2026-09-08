@@ -249,7 +249,7 @@
   }
 }
 
-a.#{$ns}-button {
+a.#{$ns}-button:not(:where(.bp-next a.#{$ns}-button)) {
   text-align: center;
   text-decoration: none;
   transition: none;
@@ -266,14 +266,14 @@ a.#{$ns}-button {
   }
 }
 
-.#{$ns}-button-text {
+.#{$ns}-button-text:not(:where(.bp-next .#{$ns}-button-text)) {
   // default: don't grow to fill but allow shrinking as necessary
   flex: 0 1 auto;
 }
 
 // when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
-.#{$ns}-button,
-.#{$ns}-button-group {
+.#{$ns}-button:not(:where(.bp-next .#{$ns}-button)),
+.#{$ns}-button-group:not(:where(.bp-next .#{$ns}-button-group)) {
   &.#{$ns}-align-left,
   &.#{$ns}-align-right {
     .#{$ns}-button-text {

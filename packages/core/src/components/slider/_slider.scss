@@ -24,7 +24,7 @@ $handle-box-shadow-active:
 $handle-height: $handle-size !default;
 $track-height: $track-size !default;
 
-.#{$ns}-slider {
+.#{$ns}-slider:not(:where(.bp-next .#{$ns}-slider)) {
   @include slider-orientation($pt-input-height-large, $vertical: false);
   cursor: default;
   outline: none;
@@ -49,18 +49,18 @@ $track-height: $track-size !default;
   }
 }
 
-.#{$ns}-slider-track,
-.#{$ns}-slider-progress {
+.#{$ns}-slider-track:not(:where(.bp-next .#{$ns}-slider-track)),
+.#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
   @include slider-track-orientation($handle-size, $track-size, $vertical: false);
   position: absolute;
 }
 
-.#{$ns}-slider-track {
+.#{$ns}-slider-track:not(:where(.bp-next .#{$ns}-slider-track)) {
   border-radius: $pt-border-radius;
   overflow: hidden;
 }
 
-.#{$ns}-slider-progress {
+.#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
   background: rgba($gray1, 0.2);
 
   .#{$ns}-dark & {
@@ -78,7 +78,7 @@ $track-height: $track-size !default;
   }
 }
 
-.#{$ns}-slider-handle {
+.#{$ns}-slider-handle:not(:where(.bp-next .#{$ns}-slider-handle)) {
   @include pt-button;
   border-radius: $pt-border-radius;
   box-shadow: $handle-box-shadow;
@@ -138,7 +138,7 @@ $track-height: $track-size !default;
     box-shadow: none;
   }
 
-  .#{$ns}-slider-label {
+  .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
     background: $tooltip-background-color;
     border-radius: $pt-border-radius;
     box-shadow: $pt-tooltip-box-shadow;
@@ -171,13 +171,13 @@ $track-height: $track-size !default;
     border-top-left-radius: 0;
     margin-left: $handle-size * 0.5;
 
-    .#{$ns}-slider-label {
+    .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
       margin-left: 0;
     }
   }
 }
 
-.#{$ns}-slider-label {
+.#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
   @include slider-label-orientation($label-offset);
   display: inline-block;
   font-size: $pt-font-size-small;
@@ -187,26 +187,26 @@ $track-height: $track-size !default;
   vertical-align: top;
 }
 
-.#{$ns}-slider.#{$ns}-vertical {
+.#{$ns}-slider.#{$ns}-vertical:not(:where(.bp-next .#{$ns}-slider)) {
   @include slider-orientation($pt-input-height-large, $vertical: true);
 
   .#{$ns}-slider-track,
-  .#{$ns}-slider-progress {
+  .#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
     @include slider-track-orientation($handle-size, $track-size, $vertical: true);
   }
 
-  .#{$ns}-slider-progress {
+  .#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
     top: auto;
   }
 
-  .#{$ns}-slider-label {
+  .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
     @include slider-label-orientation($label-offset, $vertical: true);
   }
 
-  .#{$ns}-slider-handle {
+  .#{$ns}-slider-handle:not(:where(.bp-next .#{$ns}-slider-handle)) {
     top: auto;
 
-    .#{$ns}-slider-label {
+    .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
       margin-left: 0;
       margin-top: -$handle-size * 0.5;
     }
@@ -222,7 +222,7 @@ $track-height: $track-size !default;
       border-bottom-right-radius: $pt-border-radius;
       border-top-left-radius: 0;
 
-      .#{$ns}-slider-label {
+      .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
         transform: translate($label-offset);
       }
     }

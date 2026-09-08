@@ -1,0 +1,137 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-editable-text {
+  cursor: text;
+  display: inline-block;
+  max-width: 100%;
+  position: relative;
+  vertical-align: top;
+  white-space: nowrap;
+
+  &::before {
+    border-radius: var(--bp-surface-border-radius);
+    content: "";
+    inset: calc(var(--bp-surface-spacing) * -0.5);
+    position: absolute;
+    transition:
+      background-color var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default),
+      box-shadow var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
+  }
+
+  &:hover::before {
+    box-shadow: inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-neutral);
+    box-shadow:
+      0 0 0 var(--bp-emphasis-focus-width) oklch(from var(--bp-emphasis-focus-color) l c h / 0%),
+      inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-neutral);
+  }
+  &.#{$ns}-editable-text-editing::before {
+    background: var(--bp-surface-background-color-base-rest);
+    box-shadow:
+      0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color),
+      inset 0 0 0 var(--bp-surface-border-width) var(--bp-emphasis-focus-color);
+  }
+
+  @each $intent in primary, success, warning, danger {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-editable-text-content,
+      .#{$ns}-editable-text-input,
+      .#{$ns}-editable-text-input::placeholder {
+        color: var(--bp-typography-color-intent-#{$intent});
+      }
+
+      &:hover::before {
+        box-shadow: inset
+          0
+          0
+          0
+          var(--bp-surface-border-width)
+          var(--bp-surface-border-color-#{$intent});
+        box-shadow:
+          0
+            0
+            0
+            var(--bp-emphasis-focus-width)
+            oklch(from var(--bp-surface-background-color-#{$intent}-rest) l c h / 0%),
+          inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-#{$intent});
+      }
+      &.#{$ns}-editable-text-editing::before {
+        box-shadow:
+          0 0 0 var(--bp-emphasis-focus-width) var(--bp-surface-background-color-#{$intent}-rest),
+          inset
+            0
+            0
+            0
+            var(--bp-surface-border-width)
+            var(--bp-surface-background-color-#{$intent}-rest);
+      }
+    }
+  }
+  &.#{$ns}-disabled::before {
+    box-shadow: none;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    &:not(.#{$ns}-disabled)::before {
+      border: var(--bp-surface-border-width) solid ButtonText;
+    }
+  }
+}
+.#{$ns}-editable-text-input,
+.#{$ns}-editable-text-content {
+  color: inherit;
+  display: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  max-width: inherit;
+  min-width: inherit;
+  position: relative;
+  resize: none;
+  text-transform: inherit;
+  vertical-align: top;
+}
+.#{$ns}-editable-text-input {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  white-space: pre-wrap;
+  width: 100%;
+
+  &::placeholder {
+    color: var(--bp-typography-color-intent-neutral);
+    opacity: 1;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-ms-clear {
+    display: none;
+  }
+}
+.#{$ns}-editable-text-content {
+  overflow: hidden;
+  padding-right: calc(var(--bp-surface-spacing) * 0.5);
+  text-overflow: ellipsis;
+  white-space: pre;
+  .#{$ns}-editable-text-editing > & {
+    left: 0;
+    position: absolute;
+    visibility: hidden;
+  }
+  .#{$ns}-editable-text-placeholder > & {
+    color: var(--bp-typography-color-intent-neutral);
+  }
+}
+.#{$ns}-editable-text.#{$ns}-multiline {
+  display: block;
+  .#{$ns}-editable-text-content {
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+}

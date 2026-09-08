@@ -1,0 +1,61 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+@keyframes pt-spinner-animation-next {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.#{$ns}-spinner {
+  align-items: center;
+  // Center animation container inside parent element to isolate layout.
+  display: flex;
+  justify-content: center;
+
+  // Allow paths to overflow container -- critical for edges of circles.
+  overflow: visible;
+  vertical-align: middle;
+
+  svg {
+    display: block;
+  }
+
+  path {
+    fill-opacity: 0;
+  }
+
+  .#{$ns}-spinner-head {
+    stroke: var(--bp-typography-color-intent-neutral);
+    stroke-linecap: round;
+    transform-origin: center;
+    transition: stroke-dashoffset calc(var(--bp-emphasis-transition-duration) * 2)
+      var(--bp-emphasis-ease-default);
+  }
+
+  .#{$ns}-spinner-track {
+    stroke: var(--bp-surface-layer-color-neutral-rest);
+  }
+}
+
+// Put the animation on a child HTML element to isolate it from display of parent.
+.#{$ns}-spinner-animation {
+  animation: pt-spinner-animation-next calc(var(--bp-emphasis-transition-duration) * 5) linear
+    infinite;
+
+  .#{$ns}-no-spin > & {
+    animation: none;
+  }
+}
+
+@each $intent in $pt-intents {
+  .#{$ns}-spinner.#{$ns}-intent-#{$intent} .#{$ns}-spinner-head {
+    stroke: var(--bp-typography-color-intent-#{$intent});
+  }
+}

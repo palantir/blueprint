@@ -3,7 +3,7 @@
 
 @import "../../common/variables-extended";
 
-label.#{$ns}-label {
+label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
   display: block;
   margin-bottom: calc(var(--bp-surface-spacing) * 4);
   margin-top: 0;

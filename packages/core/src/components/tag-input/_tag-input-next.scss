@@ -1,0 +1,135 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+
+.#{$ns}-tag-input {
+  align-items: flex-start;
+  cursor: text;
+  display: flex;
+  height: auto;
+  line-height: inherit;
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  padding-left: calc(var(--bp-surface-spacing) * 1.5);
+  padding-right: 0;
+  .#{$ns}-tag-input-icon {
+    color: var(--bp-typography-color-intent-neutral);
+    margin: calc(var(--bp-surface-spacing) * 1.75) calc(var(--bp-surface-spacing) * 1.75) 0
+      calc(var(--bp-surface-spacing) * 0.75);
+  }
+  .#{$ns}-tag-input-values {
+    align-items: center;
+    align-self: stretch;
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    gap: var(--bp-surface-spacing);
+    margin-right: var(--bp-surface-spacing);
+    margin-top: var(--bp-surface-spacing);
+    min-width: 0;
+    position: relative;
+    &:first-child .#{$ns}-input-ghost {
+      padding-left: var(--bp-surface-spacing);
+    }
+    &:first-child .#{$ns}-tag ~ .#{$ns}-input-ghost {
+      padding-left: 0;
+    }
+
+    > * {
+      margin-bottom: var(--bp-surface-spacing);
+    }
+  }
+  .#{$ns}-tag {
+    overflow-wrap: break-word;
+    &.#{$ns}-active {
+      outline: var(--bp-emphasis-focus-width) solid var(--bp-emphasis-focus-color);
+      outline-offset: 0;
+    }
+  }
+  .#{$ns}-input-ghost {
+    background: none;
+    border: 0;
+    box-shadow: none;
+    flex: 1 1 auto;
+    line-height: calc(var(--bp-surface-spacing) * 5);
+    padding: 0;
+    width: calc(var(--bp-surface-spacing) * 20);
+    &:disabled,
+    &.#{$ns}-disabled {
+      cursor: not-allowed;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &::placeholder {
+      color: var(--bp-typography-color-intent-neutral);
+      opacity: 1;
+    }
+  }
+  .#{$ns}-button,
+  .#{$ns}-spinner {
+    margin: calc(var(--bp-surface-spacing) * 0.75);
+    margin-left: 0;
+  }
+  .#{$ns}-button {
+    min-height: calc(var(--bp-surface-spacing) * 6);
+    min-width: calc(var(--bp-surface-spacing) * 6);
+    padding: 0 calc(var(--bp-surface-spacing) * 2);
+  }
+  &.#{$ns}-large {
+    min-height: calc(var(--bp-surface-spacing) * 10);
+    .#{$ns}-tag-input-icon {
+      margin-left: calc(var(--bp-surface-spacing) * 1.5);
+      margin-top: calc(var(--bp-surface-spacing) * 2.5);
+    }
+    .#{$ns}-input-ghost {
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+    }
+    .#{$ns}-button {
+      margin: calc(var(--bp-surface-spacing) * 1.25);
+      margin-left: 0;
+      min-height: calc(var(--bp-surface-spacing) * 7.5);
+      min-width: calc(var(--bp-surface-spacing) * 7.5);
+    }
+    .#{$ns}-spinner {
+      margin: calc(var(--bp-surface-spacing) * 2);
+      margin-left: 0;
+    }
+  }
+  &.#{$ns}-active {
+    background: var(--bp-surface-background-color-base-rest);
+    box-shadow:
+      0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color),
+      inset 0 0 0 var(--bp-surface-border-width) var(--bp-emphasis-focus-color);
+
+    @each $intent in primary, success, warning, danger {
+      &.#{$ns}-intent-#{$intent} {
+        box-shadow:
+          0 0 0 var(--bp-emphasis-focus-width) var(--bp-surface-background-color-#{$intent}-rest),
+          inset
+            0
+            0
+            0
+            var(--bp-surface-border-width)
+            var(--bp-surface-background-color-#{$intent}-rest);
+      }
+    }
+  }
+}
+.#{$ns}-input-ghost {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--bp-typography-color-intent-neutral);
+    opacity: 1;
+  }
+}

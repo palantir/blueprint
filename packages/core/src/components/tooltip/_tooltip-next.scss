@@ -1,0 +1,69 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/react-transition";
+@import "../../common/variables";
+@import "../popover/common-next";
+@import "./common-next";
+
+.#{$ns}-tooltip {
+  @include popover-sizing-next(calc(var(--bp-surface-spacing) * 5.5));
+  @include popover-appearance-next(
+    var(--bp-surface-background-color-neutral-rest),
+    var(--bp-intent-neutral-foreground),
+    var(--bp-surface-shadow-3)
+  );
+  @include react-transition(
+    "#{$ns}-popover",
+    (
+      transform: scale(0.8) scale(1),
+    ),
+    var(--bp-emphasis-transition-duration),
+    var(--bp-emphasis-ease-default),
+    $after: "> &"
+  );
+  .#{$ns}-popover-content {
+    padding: $tooltip-padding-vertical-next $tooltip-padding-horizontal-next;
+  }
+  &.#{$ns}-compact {
+    .#{$ns}-popover-content {
+      line-height: 1rem;
+      padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
+    }
+    .#{$ns}-code {
+      vertical-align: text-bottom;
+    }
+  }
+  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
+    transform: translateY(calc(-1 * calc(var(--bp-surface-spacing) * 0.75)));
+  }
+  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
+    transform: translateX(calc(-1 * calc(var(--bp-surface-spacing) * 0.75)));
+  }
+  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
+    transform: translateY(calc(var(--bp-surface-spacing) * 0.75));
+  }
+  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
+    transform: translateX(calc(var(--bp-surface-spacing) * 0.75));
+  }
+
+  @each $intent in $pt-intents {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-popover-content {
+        background: var(--bp-surface-background-color-#{$intent}-rest);
+        color: var(--bp-intent-#{$intent}-foreground);
+      }
+      .#{$ns}-popover-arrow-fill {
+        fill: var(--bp-surface-background-color-#{$intent}-rest);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          fill: CanvasText;
+        }
+      }
+    }
+  }
+}
+.#{$ns}-tooltip-indicator {
+  border-bottom: dotted var(--bp-surface-border-width);
+  cursor: help;
+}

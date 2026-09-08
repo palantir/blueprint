@@ -1,0 +1,77 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@mixin pt-input-next($intent: "neutral") {
+  appearance: none;
+  background: var(--bp-surface-background-color-base-rest);
+  border: 0;
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-#{$intent});
+  color: var(--bp-typography-color-base);
+  font-size: var(--bp-typography-size-md);
+  font-weight: var(--bp-typography-weight-default);
+  height: calc(var(--bp-surface-spacing) * 7.5);
+  line-height: calc(var(--bp-surface-spacing) * 7.5);
+  outline: none;
+  padding: 0 calc(var(--bp-surface-spacing) * 2);
+  transition: box-shadow var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
+  vertical-align: middle;
+
+  &::placeholder {
+    color: var(--bp-typography-color-intent-neutral);
+    opacity: 1;
+  }
+  &:focus,
+  &.#{$ns}-active {
+    box-shadow:
+      inset 0 0 0 var(--bp-surface-border-width) var(--bp-emphasis-focus-color),
+      0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color);
+  }
+  &[type="search"],
+  &.#{$ns}-round {
+    border-radius: calc(var(--bp-surface-spacing) * 7.5);
+    box-sizing: border-box;
+    padding-left: calc(var(--bp-surface-spacing) * 2);
+  }
+
+  &[readonly] {
+    box-shadow: inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-#{$intent});
+  }
+  &:disabled,
+  &.#{$ns}-disabled {
+    background: oklch(
+      from var(--bp-surface-background-color-base-rest) l c h / var(--bp-emphasis-disabled-opacity)
+    );
+    box-shadow: none;
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+    cursor: not-allowed;
+    resize: none;
+
+    &::placeholder {
+      color: oklch(
+        from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
+      );
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: var(--bp-surface-border-width) solid ButtonText;
+  }
+}
+
+@mixin pt-input-size-next($size) {
+  @if $size == large {
+    font-size: var(--bp-typography-size-xl);
+    height: calc(var(--bp-surface-spacing) * 10);
+    line-height: calc(var(--bp-surface-spacing) * 10);
+  } @else {
+    font-size: var(--bp-typography-size-sm);
+    height: calc(var(--bp-surface-spacing) * 6);
+    line-height: calc(var(--bp-surface-spacing) * 6);
+    padding-inline: calc(var(--bp-surface-spacing) * 2);
+  }
+}
+
+@mixin pt-input-intent-next($intent) {
+  @include pt-input-next($intent);
+}

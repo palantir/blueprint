@@ -25,14 +25,7 @@ const disabledArgs = [
 const meta: Meta<typeof Button> = {
     title: "NextStyles/Core/Button/Button",
     component: Button,
-    decorators: [
-        Story => (
-            <div className="bp-next">
-                <Story />
-            </div>
-        ),
-        storybookLayoutDecorator,
-    ],
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         text: "Button",

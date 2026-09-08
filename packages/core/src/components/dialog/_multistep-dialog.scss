@@ -9,7 +9,7 @@
 $dialog-border-radius: $pt-border-radius !default;
 $step-radius: $pt-border-radius !default;
 
-.#{$ns}-multistep-dialog-panels {
+.#{$ns}-multistep-dialog-panels:not(:where(.bp-next .#{$ns}-multistep-dialog-panels)) {
   display: flex;
 
   // If title doesn't exist, this element will be the first child and top
@@ -98,7 +98,7 @@ $step-radius: $pt-border-radius !default;
   }
 }
 
-.#{$ns}-multistep-dialog-left-panel {
+.#{$ns}-multistep-dialog-left-panel:not(:where(.bp-next .#{$ns}-multistep-dialog-left-panel)) {
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -111,7 +111,7 @@ $step-radius: $pt-border-radius !default;
   }
 }
 
-.#{$ns}-multistep-dialog-right-panel {
+.#{$ns}-multistep-dialog-right-panel:not(:where(.bp-next .#{$ns}-multistep-dialog-right-panel)) {
   background-color: $light-gray5;
   border-left: 1px solid $pt-divider-black;
   border-radius: 0 0 $dialog-border-radius;
@@ -127,11 +127,11 @@ $step-radius: $pt-border-radius !default;
   }
 }
 
-.#{$ns}-multistep-dialog-footer {
+.#{$ns}-multistep-dialog-footer:not(:where(.bp-next .#{$ns}-multistep-dialog-footer)) {
   // Deprecating
 }
 
-.#{$ns}-dialog-step-container {
+.#{$ns}-dialog-step-container:not(:where(.bp-next .#{$ns}-dialog-step-container)) {
   background-color: $light-gray5;
   border-bottom: 1px solid $pt-divider-black;
 
@@ -148,7 +148,7 @@ $step-radius: $pt-border-radius !default;
   }
 }
 
-.#{$ns}-dialog-step {
+.#{$ns}-dialog-step:not(:where(.bp-next .#{$ns}-dialog-step)) {
   align-items: center;
   border-radius: $step-radius;
   cursor: not-allowed;
@@ -179,7 +179,7 @@ $step-radius: $pt-border-radius !default;
   }
 }
 
-.#{$ns}-dialog-step-icon {
+.#{$ns}-dialog-step-icon:not(:where(.bp-next .#{$ns}-dialog-step-icon)) {
   align-items: center;
   background-color: $pt-text-color-disabled;
   border-radius: 50%;
@@ -202,7 +202,7 @@ $step-radius: $pt-border-radius !default;
   }
 }
 
-.#{$ns}-dialog-step-title {
+.#{$ns}-dialog-step-title:not(:where(.bp-next .#{$ns}-dialog-step-title)) {
   color: $pt-text-color-disabled;
   flex: 1;
   padding-left: $pt-spacing * 2;

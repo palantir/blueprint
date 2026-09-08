@@ -1,7 +1,7 @@
 @import "../../common/variables";
 @import "./common";
 
-.#{$ns}-numeric-input {
+.#{$ns}-numeric-input:not(:where(.bp-next .#{$ns}-numeric-input)) {
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
   .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     // let the buttons shrink to equal heights

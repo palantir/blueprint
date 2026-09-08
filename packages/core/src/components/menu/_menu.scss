@@ -8,7 +8,7 @@
 @import "./common";
 @import "./submenu";
 
-.#{$ns}-menu {
+.#{$ns}-menu:not(:where(.bp-next .#{$ns}-menu)) {
   background: $menu-background-color;
   border-radius: $pt-border-radius;
   color: $pt-text-color;
@@ -19,11 +19,11 @@
   text-align: left;
 }
 
-.#{$ns}-menu-divider {
+.#{$ns}-menu-divider:not(:where(.bp-next .#{$ns}-menu-divider)) {
   @include menu-divider;
 }
 
-.#{$ns}-menu-item {
+.#{$ns}-menu-item:not(:where(.bp-next .#{$ns}-menu-item)) {
   @include menu-item;
 
   @each $intent, $colors in $menu-item-intent-colors {
@@ -50,14 +50,14 @@
   }
 }
 
-button.#{$ns}-menu-item {
+button.#{$ns}-menu-item:not(:where(.bp-next .#{$ns}-menu-item)) {
   background: none;
   border: none;
   text-align: left;
   width: 100%;
 }
 
-.#{$ns}-menu-header {
+.#{$ns}-menu-header:not(:where(.bp-next .#{$ns}-menu-header)) {
   @include menu-header($heading-selector: "> h6");
 
   .#{$ns}-large & {
@@ -67,12 +67,12 @@ button.#{$ns}-menu-item {
 
 // dark theme
 .#{$ns}-dark {
-  .#{$ns}-menu {
+  .#{$ns}-menu:not(:where(.bp-next .#{$ns}-menu)) {
     background: $dark-menu-background-color;
     color: $pt-dark-text-color;
   }
 
-  .#{$ns}-menu-item {
+  .#{$ns}-menu-item:not(:where(.bp-next .#{$ns}-menu-item)) {
     @include dark-menu-item;
 
     @each $intent, $colors in $dark-menu-item-intent-colors {
@@ -80,17 +80,17 @@ button.#{$ns}-menu-item {
     }
   }
 
-  .#{$ns}-menu-divider,
-  .#{$ns}-menu-header {
+  .#{$ns}-menu-divider:not(:where(.bp-next .#{$ns}-menu-divider)),
+  .#{$ns}-menu-header:not(:where(.bp-next .#{$ns}-menu-header)) {
     border-color: $pt-dark-divider-white;
   }
 
-  .#{$ns}-menu-header > h6 {
+  .#{$ns}-menu-header:not(:where(.bp-next .#{$ns}-menu-header)) > h6 {
     color: $pt-dark-heading-color;
   }
 }
 
 // #402 support menu inside label
-.#{$ns}-label .#{$ns}-menu {
+.#{$ns}-label .#{$ns}-menu:not(:where(.bp-next .#{$ns}-menu)) {
   margin-top: $pt-spacing;
 }

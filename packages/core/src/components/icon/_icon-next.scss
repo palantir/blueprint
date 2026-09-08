@@ -1,0 +1,103 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/icons/lib/scss/variables";
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "icon-mixins-next";
+
+// the icon class which will contain an SVG icon
+.#{$ns}-icon {
+  // ensure icons sit inline with text & isolate svg from surrounding elements
+  // (vertical alignment in flow is usually off due to svg - not an issue with flex.)
+  display: inline-block;
+  // respect dimensions exactly
+  flex: 0 0 auto;
+  // sit nicely with inline text
+  vertical-align: text-bottom;
+
+  &:not(:empty)::before {
+    // clear font icon when there's an <svg> image
+    /* stylelint-disable */
+    content: "" !important; // fallback for IE11
+    content: unset !important;
+    /* stylelint-enable */
+  }
+
+  // TOOD: move to SVGIconContainer styles in @blueprintjs/icons in v6.0
+  > svg {
+    // prevent extra vertical whitespace
+    display: block;
+
+    // inherit text color unless explicit fill is set
+    &:not([fill]) {
+      fill: currentcolor;
+    }
+  }
+
+  // muted icon style used by NonIdealState
+  &.#{$ns}-icon-muted svg {
+    fill: var(--bp-surface-layer-color-neutral-active);
+    fill-opacity: 1;
+    // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
+    overflow: visible;
+
+    path {
+      stroke: var(--bp-surface-divider-color-strong);
+      stroke-opacity: 1;
+      stroke-width: calc(var(--bp-surface-border-width) * 0.5);
+    }
+  }
+}
+
+// Override legacy typography colors so intent icons respond to BP7 token customization.
+#{$icon-classes} {
+  @each $intent in $pt-intents {
+    &.#{$ns}-intent-#{$intent} {
+      color: var(--bp-typography-color-intent-#{$intent});
+    }
+  }
+}
+
+//
+// Icon font styles
+//
+// TOOD: move to @blueprintjs/icons in v6.0
+//
+
+span.#{$ns}-icon-standard {
+  @include pt-icon-next(calc(var(--bp-surface-spacing) * 4), 16);
+  display: inline-block;
+}
+
+span.#{$ns}-icon-large {
+  @include pt-icon-next(calc(var(--bp-surface-spacing) * 5), 20);
+  display: inline-block;
+}
+
+// only apply icon font styles when <svg> image is not present
+span.#{$ns}-icon:empty {
+  font-family: $blueprint-icons-20-font;
+  font-size: inherit;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+
+  &::before {
+    @include pt-icon-font-smoothing;
+  }
+
+  &.#{$ns}-icon-standard {
+    font-size: calc(var(--bp-surface-spacing) * 4);
+  }
+
+  &.#{$ns}-icon-large {
+    font-size: calc(var(--bp-surface-spacing) * 5);
+  }
+}
+
+@each $name, $codepoint in $blueprint-icon-codepoints {
+  .#{$ns}-icon-#{$name}::before {
+    content: $codepoint;
+  }
+}

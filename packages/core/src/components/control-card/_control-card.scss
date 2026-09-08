@@ -4,7 +4,7 @@
 @import "../card/card-variables";
 
 // use an extra selector to increase specificity
-.#{$ns}-card.#{$ns}-control-card {
+.#{$ns}-card.#{$ns}-control-card:not(:where(.bp-next .#{$ns}-control-card)) {
   &,
   .#{$ns}-card-list > & {
     // min-height & padding will be set on the label element so that it can take up the full size of the card and
@@ -14,7 +14,7 @@
   }
 }
 
-.#{$ns}-control-card {
+.#{$ns}-control-card:not(:where(.bp-next .#{$ns}-control-card)) {
   // need a lot of specificity here to override control styles for (switch, checkbox, etc.) and (align-left, align-right)
   // N.B. this is more space-efficient (in terms of generated CSS) than listing multiple compound selectors
   .#{$ns}-control.#{$ns}-control.#{$ns}-control {

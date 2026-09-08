@@ -14,7 +14,7 @@
   }
 }
 
-.#{$ns}-spinner {
+.#{$ns}-spinner:not(:where(.bp-next .#{$ns}-spinner)) {
   align-items: center;
   // center animation container inside parent element to isolate layout
   display: flex;
@@ -45,7 +45,7 @@
 }
 
 // put the animation on a child HTML element to isolate it from display of parent
-.#{$ns}-spinner-animation {
+.#{$ns}-spinner-animation:not(:where(.bp-next .#{$ns}-spinner-animation)) {
   animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
 
   .#{$ns}-no-spin > & {
@@ -53,7 +53,7 @@
   }
 }
 
-.#{$ns}-dark .#{$ns}-spinner {
+.#{$ns}-dark .#{$ns}-spinner:not(:where(.bp-next .#{$ns}-spinner)) {
   .#{$ns}-spinner-head {
     stroke: $dark-progress-head-color;
   }
@@ -64,7 +64,8 @@
 }
 
 @each $intent, $color in $pt-intent-colors {
-  .#{$ns}-spinner.#{$ns}-intent-#{$intent} .#{$ns}-spinner-head {
+  .#{$ns}-spinner.#{$ns}-intent-#{$intent}:not(:where(.bp-next .#{$ns}-spinner))
+    .#{$ns}-spinner-head {
     stroke: $color;
   }
 }

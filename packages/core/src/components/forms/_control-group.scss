@@ -7,7 +7,7 @@
 @import "./common";
 @import "../divider/divider";
 
-.#{$ns}-control-group {
+.#{$ns}-control-group:not(:where(.bp-next .#{$ns}-control-group)) {
   // create a new stacking context to isolate all the z-indices
   @include new-render-layer;
   @include pt-flex-container(row);

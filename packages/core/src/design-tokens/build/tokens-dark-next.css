@@ -2,8 +2,8 @@
  * Do not edit directly, this file was auto-generated.
  */
 
-[data-bp-color-scheme="dark"],
-.bp6-dark {
+.bp-next[data-bp-color-scheme="dark"],
+.bp-next [data-bp-color-scheme="dark"] {
   --bp-palette-orange-100: oklch(0.8886 0.0492 47.64); /* #f7d1bf */
   --bp-palette-orange-200: oklch(0.7812 0.0987 47.58); /* #eca480 */
   --bp-palette-orange-300: oklch(0.6748 0.1304 46.68); /* #d77b4c */
@@ -230,8 +230,8 @@
 }
 
 @supports (color: oklch(from var(--any-color) l c h)) {
-  [data-bp-color-scheme="dark"],
-.bp6-dark {
+  .bp-next[data-bp-color-scheme="dark"],
+.bp-next [data-bp-color-scheme="dark"] {
     --bp-surface-divider-color-default: oklch(from var(--bp-palette-white-1000) l c h / 0.12);
     --bp-surface-divider-color-strong: oklch(from var(--bp-palette-white-1000) l c h / 0.2);
     --bp-surface-color-code: oklch(from var(--bp-palette-black-1000) l c h / 0.3);

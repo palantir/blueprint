@@ -3,6 +3,6 @@
 
 @import "../../common/variables";
 
-.#{$ns}-context-menu-virtual-target {
+.#{$ns}-context-menu-virtual-target:not(:where(.bp-next .#{$ns}-context-menu-virtual-target)) {
   position: fixed;
 }
