@@ -1,0 +1,20 @@
+diff --git a/packages/core/src/components/popover/_popover-in-control-group.scss b/packages/core/src/components/popover/_popover-in-control-group-next.scss
+index c5d44b492..2a93d9b7a 100644
+--- a/packages/core/src/components/popover/_popover-in-control-group.scss
++++ b/packages/core/src/components/popover/_popover-in-control-group-next.scss
+@@ -1,11 +1,7 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "./common";
+-
+-.#{$ns}-control-group:not(:where(.bp-next .#{$ns}-control-group)) {
+-  // Add border radius inheritance to support components wrapped in a popover
+-  .#{$ns}-popover-target {
+-    border-radius: inherit;
+-  }
++@import "../../common/variables";
++.#{$ns}-control-group .#{$ns}-popover-target {
++  border-radius: inherit;
+ }

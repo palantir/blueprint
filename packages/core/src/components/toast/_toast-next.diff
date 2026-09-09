@@ -1,0 +1,357 @@
+diff --git a/packages/core/src/components/toast/_toast.scss b/packages/core/src/components/toast/_toast-next.scss
+index b2facfe5f..72ec18fc7 100644
+--- a/packages/core/src/components/toast/_toast.scss
++++ b/packages/core/src/components/toast/_toast-next.scss
+@@ -1,255 +1,182 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "../../common/variables";
+ @import "../../common/react-transition";
++@import "../../common/variables";
+ 
+-$toast-height: $pt-button-height-large !default;
+-$toast-min-width: $pt-spacing * 75 !default;
+-$toast-max-width: $pt-spacing * 125 !default;
+-$toast-margin: $pt-spacing * 5 !default;
++$toast-enter-translate-next: (
++  transform: translateY(calc(-1 * calc(var(--bp-surface-spacing) * 10))) translateY(0),
++);
++$toast-leave-blur-next: (
++  opacity: 0 1,
++  filter: blur(calc(var(--bp-surface-spacing) * 2)) blur(0),
++);
+ 
+-$toast-intent-colors: (
+-  "primary": (
+-    $pt-intent-primary,
+-    $white,
+-    $blue2,
+-    $blue1,
+-  ),
+-  "success": (
+-    $pt-intent-success,
+-    $white,
+-    $green2,
+-    $green1,
+-  ),
+-  "warning": (
+-    $orange5,
+-    $dark-gray1,
+-    $orange4,
+-    $orange3,
+-  ),
+-  "danger": (
+-    $pt-intent-danger,
+-    $white,
+-    $red2,
+-    $red1,
+-  ),
+-) !default;
++@mixin pt-toast-intent-next($intent) {
++  background-color: var(--bp-surface-background-color-#{$intent}-rest);
++  color: var(--bp-intent-#{$intent}-foreground);
+ 
+-@mixin pt-toast-intent(
+-  $background-color,
+-  $text-and-focus-color,
+-  $button-hover-color,
+-  $button-active-color
+-) {
+-  background-color: $background-color;
+-  color: $text-and-focus-color;
++  a {
++    color: var(--bp-intent-#{$intent}-foreground);
++    color: oklch(
++      from var(--bp-intent-#{$intent}-foreground) l c h / var(--bp-emphasis-translucence-opacity)
++    );
+ 
+-  .#{$ns}-icon:first-child {
+-    color: rgba($text-and-focus-color, 0.7);
++    &:hover {
++      color: var(--bp-intent-#{$intent}-foreground);
++    }
+   }
+ 
+-  // HACKHACK custom colors for buttons on intent background so they always show up nice
++  .#{$ns}-icon:first-child {
++    color: oklch(
++      from var(--bp-intent-#{$intent}-foreground) l c h / var(--bp-emphasis-translucence-opacity)
++    );
++  }
+   /* stylelint-disable declaration-no-important */
+   .#{$ns}-button {
+-    background-color: $background-color !important;
+-    color: $text-and-focus-color !important;
++    background-color: var(--bp-surface-background-color-#{$intent}-rest) !important;
++    color: var(--bp-intent-#{$intent}-foreground) !important;
+ 
+     &:hover {
+-      background-color: $button-hover-color !important;
+-      color: $text-and-focus-color !important;
++      background-color: var(--bp-surface-background-color-#{$intent}-hover) !important;
++      color: var(--bp-intent-#{$intent}-foreground) !important;
+     }
+ 
+     &:active {
+-      background-color: $button-active-color !important;
+-      color: $text-and-focus-color !important;
++      background-color: var(--bp-surface-background-color-#{$intent}-active) !important;
++      color: var(--bp-intent-#{$intent}-foreground) !important;
+     }
+ 
+     &:focus {
+-      // blue outline color shows poorly on colored bg
+-      outline-color: rgba($text-and-focus-color, 0.75);
++      outline-color: oklch(
++        from var(--bp-intent-#{$intent}-foreground) l c h / var(--bp-emphasis-translucence-opacity)
++      );
+     }
+-
+     &:last-child > .#{$ns}-icon-cross {
+-      color: rgba($text-and-focus-color, 0.7) !important;
++      color: oklch(
++        from var(--bp-intent-#{$intent}-foreground) l c h / var(--bp-emphasis-translucence-opacity)
++      ) !important;
+     }
+   }
+   /* stylelint-enable declaration-no-important */
+ }
+ 
+-.#{$ns}-toast:not(:where(.bp-next .#{$ns}-toast)) {
+-  // toast transition properties
+-  $enter-translate: (
+-    transform: translateY(-$toast-height) translateY(0),
+-  );
+-  $leave-blur: (
+-    opacity: 0 1,
+-    filter: blur($pt-spacing * 2) blur(0),
+-  );
+-
+-  // new toasts slide in from the top
+-  @include react-transition-phase(
+-    "#{$ns}-toast",
+-    "enter",
+-    $enter-translate,
+-    $duration: $pt-transition-duration * 3,
+-    $easing: $pt-transition-ease-bounce,
+-    $before: "&"
+-  );
+-  @include react-transition-phase(
+-    "#{$ns}-toast",
+-    "enter",
+-    $enter-translate,
+-    $duration: $pt-transition-duration * 3,
+-    $easing: $pt-transition-ease-bounce,
+-    $before: "&",
+-    $after: "~ &"
+-  );
+-  // leaving toasts simply fade away
+-  @include react-transition-phase(
+-    "#{$ns}-toast",
+-    "exit",
+-    $leave-blur,
+-    $duration: $pt-transition-duration * 3,
+-    $before: "&"
+-  );
+-  // younger siblings of leaving toasts wait a moment before moving to fill gap
+-  @include react-transition-phase(
+-    "#{$ns}-toast",
+-    "exit",
+-    $enter-translate,
+-    $delay: $pt-transition-duration * 0.5,
+-    $before: "&",
+-    $after: "~ &"
+-  );
++// Preserve the legacy defaults: 300ms enter/fade and 100ms sibling movement after a 50ms delay.
++// These run at the `.bp-next` scope so sibling selectors do not interpolate `.bp-next` between the two toasts.
++@include react-transition-phase(
++  "#{$ns}-toast",
++  "enter",
++  $toast-enter-translate-next,
++  calc(var(--bp-emphasis-transition-duration) * 3),
++  var(--bp-emphasis-ease-bounce),
++  $before: ".#{$ns}-toast"
++);
++@include react-transition-phase(
++  "#{$ns}-toast",
++  "enter",
++  $toast-enter-translate-next,
++  calc(var(--bp-emphasis-transition-duration) * 3),
++  var(--bp-emphasis-ease-bounce),
++  $before: ".#{$ns}-toast",
++  $after: "~ .#{$ns}-toast"
++);
++@include react-transition-phase(
++  "#{$ns}-toast",
++  "exit",
++  $toast-leave-blur-next,
++  calc(var(--bp-emphasis-transition-duration) * 3),
++  var(--bp-emphasis-ease-default),
++  $before: ".#{$ns}-toast"
++);
++@include react-transition-phase(
++  "#{$ns}-toast",
++  "exit",
++  $toast-enter-translate-next,
++  var(--bp-emphasis-transition-duration),
++  var(--bp-emphasis-ease-default),
++  calc(var(--bp-emphasis-transition-duration) * 0.5),
++  $before: ".#{$ns}-toast",
++  $after: "~ .#{$ns}-toast"
++);
++
++.#{$ns}-toast {
+   align-items: flex-start;
+-  background-color: $white;
+-  border-radius: $pt-border-radius;
+-  box-shadow: $pt-toast-box-shadow;
++  background-color: var(--bp-surface-background-color-base-rest);
++  border-radius: var(--bp-surface-border-radius);
++  box-shadow: var(--bp-surface-shadow-3);
++  color: var(--bp-typography-color-base);
+   display: flex;
+-  margin: $toast-margin 0 0;
+-  max-width: min($toast-max-width, 100%);
+-  min-width: min($toast-min-width, 100%);
+-
+-  // toast is interactive even though container isn't
++  margin: calc(var(--bp-surface-spacing) * 5) 0 0;
++  max-width: min(calc(var(--bp-surface-spacing) * 125), 100%);
++  min-width: min(calc(var(--bp-surface-spacing) * 75), 100%);
+   pointer-events: all;
+-
+-  // override inline styles (#367): toasts rely on relative positioning for stacking.
+   /* stylelint-disable-next-line declaration-no-important */
+   position: relative !important;
+-
+   .#{$ns}-button-group {
+     flex: 0 0 auto;
+-    padding: ($toast-height - $pt-button-height) * 0.5;
++    padding: calc(var(--bp-surface-spacing) * 1.5);
+     padding-left: 0;
+   }
+-
+   > .#{$ns}-icon {
+-    color: $pt-icon-color;
+-    margin: ($toast-height - $pt-icon-size-standard) * 0.5;
++    color: var(--bp-typography-color-base);
++    margin: calc(var(--bp-surface-spacing) * 3);
+     margin-right: 0;
+   }
+-
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    background-color: $dark-gray4;
+-    box-shadow: $pt-dark-toast-box-shadow;
+-
+-    > .#{$ns}-icon {
+-      color: $pt-dark-icon-color;
+-    }
+-
+-    // increase contrast for default intent in dark mode
+-    .#{$ns}-button .#{$ns}-icon {
+-      color: rgba($white, 0.7);
+-    }
+-  }
+-
+   &[class*="#{$ns}-intent-"] {
+-    a {
+-      color: rgba($white, 0.7);
+-
+-      &:hover {
+-        color: $white;
+-      }
+-    }
+-
+     > .#{$ns}-icon {
+-      color: $white;
++      color: inherit;
+     }
+   }
+ 
+-  @each $intent, $colors in $toast-intent-colors {
++  @each $intent in $pt-intents {
+     &.#{$ns}-intent-#{$intent} {
+-      @include pt-toast-intent($colors...);
++      @include pt-toast-intent-next($intent);
+     }
+   }
+ }
+-
+-.#{$ns}-toast-message:not(:where(.bp-next .#{$ns}-toast-message)) {
++.#{$ns}-toast-message {
+   flex: 1 1 auto;
+-  padding: centered-text($toast-height);
++  padding: calc((calc(var(--bp-surface-spacing) * 10) - 1em) * 0.5) 0;
+   word-break: break-word;
+ }
+-
+-.#{$ns}-toast-container:not(:where(.bp-next .#{$ns}-toast-container)) {
+-  align-items: center;
+-  // override inline overlay styles (#2626)
+-  /* stylelint-disable-next-line declaration-no-important */
++.#{$ns}-toast-container {
++  align-items: center; /* stylelint-disable-next-line declaration-no-important */
+   display: flex !important;
+   flex-direction: column;
+   left: 0;
+-  // toasts have margin-top so omit it on container
+-
+-  // prevent container from scrolling as new toasts enter (from bottom)
+   overflow: hidden;
+-
+-  // ensure there's enough space for full box-shadow
+-  padding: 0 $toast-margin $toast-margin;
+-
+-  // container will not block clicks on elements behind it
++  padding: 0 calc(var(--bp-surface-spacing) * 5) calc(var(--bp-surface-spacing) * 5);
+   pointer-events: none;
+-
+   right: 0;
+-
+-  // #975 ensure toasts are on top of everything (esp dialogs)
+-  z-index: $pt-z-index-overlay * 2;
+-
++  z-index: var(--bp-surface-z-index-4);
+   &.#{$ns}-toast-container-in-portal {
+     position: fixed;
+   }
+-
+   &.#{$ns}-toast-container-inline {
+     position: absolute;
+   }
+-
+   &.#{$ns}-toast-container-top {
+     top: 0;
+   }
+-
+   &.#{$ns}-toast-container-bottom {
+     bottom: 0;
+     flex-direction: column-reverse;
+     top: auto;
+   }
+-
+   &.#{$ns}-toast-container-left {
+     align-items: flex-start;
+   }
+-
+   &.#{$ns}-toast-container-right {
+     align-items: flex-end;
+   }
+ }
+-
+-.#{$ns}-toast-container-bottom .#{$ns}-toast:not(:where(.bp-next .#{$ns}-toast)) {
+-  // minimal diff in react-transition styles so we can avoid calling those mixins again
++.#{$ns}-toast-container-bottom .#{$ns}-toast {
+   &.#{$ns}-toast-enter:not(.#{$ns}-toast-enter-active),
+   &.#{$ns}-toast-enter:not(.#{$ns}-toast-enter-active) ~ .#{$ns}-toast,
+   &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active),
+   &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active) ~ .#{$ns}-toast,
+   &.#{$ns}-toast-exit-active ~ .#{$ns}-toast,
+   &.#{$ns}-toast-leave-active ~ .#{$ns}-toast {
+-    transform: translateY($toast-margin + $toast-height);
++    transform: translateY(calc(var(--bp-surface-spacing) * 15));
+   }
+ }

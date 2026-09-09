@@ -1,19 +1,20 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@import "card-variables-next";
 
 .#{$ns}-card {
   background-color: var(--bp-surface-background-color-base-rest);
   border-radius: var(--bp-surface-border-radius);
   box-shadow: var(--bp-surface-shadow-0);
-  padding: calc(var(--bp-surface-spacing) * 5);
+  padding: $card-padding-next;
   transition:
     transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default),
     box-shadow calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
 
+  // High contrast mode hides box-shadows, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: var(--bp-surface-border-width) solid buttonborder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
     box-shadow: none;
   }
 }
@@ -23,13 +24,13 @@
     box-shadow: var(--bp-surface-shadow-#{$elevation});
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border: var(--bp-surface-border-width) solid buttonborder;
+      border: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
 }
 
 .#{$ns}-card.#{$ns}-compact {
-  padding: calc(var(--bp-surface-spacing) * 4);
+  padding: $card-padding-compact-next;
 }
 
 .#{$ns}-card.#{$ns}-interactive {

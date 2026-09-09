@@ -8,6 +8,25 @@
 @import "./popover-in-submenu-next";
 @import "./popover-in-tree-next";
 
+@include popover-scale-transition-phases-next(
+  ".#{$ns}-popover",
+  scale(0.3),
+  var(--bp-emphasis-transition-duration),
+  var(--bp-emphasis-ease-bounce)
+);
+@include popover-scale-transition-phases-next(
+  ".#{$ns}-popover.#{$ns}-minimal",
+  scale(1),
+  var(--bp-emphasis-transition-duration),
+  var(--bp-emphasis-ease-default)
+);
+@include popover-scale-transition-phases-next(
+  ".#{$ns}-popover.#{$ns}-popover-minimal-animation",
+  scale(1),
+  var(--bp-emphasis-transition-duration),
+  var(--bp-emphasis-ease-default)
+);
+
 .#{$ns}-popover {
   @include popover-sizing-next(calc(var(--bp-surface-spacing) * 7.5));
   @include popover-appearance-next(
@@ -15,9 +34,9 @@
     var(--bp-typography-color-base),
     var(--bp-surface-shadow-3)
   );
-  @include scale-transition-next;
   border-radius: var(--bp-surface-border-radius);
   display: inline-block;
+  transform: scale(1);
   z-index: var(--bp-surface-z-index-3);
   .#{$ns}-popover-content {
     border-radius: var(--bp-surface-border-radius);
@@ -41,15 +60,7 @@
   &.#{$ns}-minimal,
   &.#{$ns}-popover-minimal-animation {
     &.#{$ns}-popover {
-      @include react-transition(
-        "#{$ns}-popover",
-        (
-          transform: scale(1) scale(1),
-        ),
-        var(--bp-emphasis-transition-duration),
-        var(--bp-emphasis-ease-default),
-        $after: "> &"
-      );
+      transform: scale(1);
     }
   }
   &.#{$ns}-popover-match-target-width {

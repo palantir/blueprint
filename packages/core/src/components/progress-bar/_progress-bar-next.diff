@@ -1,0 +1,120 @@
+diff --git a/packages/core/src/components/progress-bar/_progress-bar.scss b/packages/core/src/components/progress-bar/_progress-bar-next.scss
+index 95b5372a3..af658f069 100644
+--- a/packages/core/src/components/progress-bar/_progress-bar.scss
++++ b/packages/core/src/components/progress-bar/_progress-bar-next.scss
+@@ -1,58 +1,63 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+ @import "../../common/variables";
+-@import "common";
+ 
+-$progress-bar-stripes-color: rgba($white, 0.2) !default;
+-
+-$progress-bar-height: $pt-spacing * 2 !default;
+-$progress-bar-stripes-size: $pt-spacing * 7.5 !default;
+-$progress-bar-border-radius: $pt-spacing * 10 !default;
+-
+-$progress-bar-gradient: linear-gradient(
+-  -45deg,
+-  $progress-bar-stripes-color 25%,
+-  transparent 25%,
+-  transparent 50%,
+-  $progress-bar-stripes-color 50%,
+-  $progress-bar-stripes-color 75%,
+-  transparent 75%
+-) !default;
+-
+-@keyframes linear-progress-bar-stripes {
++@keyframes linear-progress-bar-stripes-next {
+   from {
+     background-position: 0 0;
+   }
+ 
+   to {
+-    background-position: $progress-bar-stripes-size 0;
++    background-position: calc(var(--bp-surface-spacing) * 7.5) 0;
+   }
+ }
+ 
+-.#{$ns}-progress-bar:not(:where(.bp-next .#{$ns}-progress-bar)) {
+-  background: $progress-track-color;
+-  border-radius: $progress-bar-border-radius;
++.#{$ns}-progress-bar {
++  background: var(--bp-surface-layer-neutral-rest);
++  border-radius: calc(var(--bp-surface-spacing) * 10);
+   display: block;
+-  height: $progress-bar-height;
++  height: calc(var(--bp-surface-spacing) * 2);
+   overflow: hidden;
+   position: relative;
+   width: 100%;
+ 
+   .#{$ns}-progress-meter {
+-    background: $progress-bar-gradient;
+-    background-color: $progress-head-color;
+-    background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
+-    border-radius: $progress-bar-border-radius;
++    background-color: var(--bp-surface-background-color-neutral-rest);
++    background-image: linear-gradient(
++      -45deg,
++      oklch(
++          from var(--bp-surface-background-color-base-rest) l c h /
++            var(--bp-surface-layer-opacity-intent-hover)
++        )
++        25%,
++      transparent 25%,
++      transparent 50%,
++      oklch(
++          from var(--bp-surface-background-color-base-rest) l c h /
++            var(--bp-surface-layer-opacity-intent-hover)
++        )
++        50%,
++      oklch(
++          from var(--bp-surface-background-color-base-rest) l c h /
++            var(--bp-surface-layer-opacity-intent-hover)
++        )
++        75%,
++      transparent 75%
++    );
++    background-size: calc(var(--bp-surface-spacing) * 7.5) calc(var(--bp-surface-spacing) * 7.5);
++    border-radius: calc(var(--bp-surface-spacing) * 10);
+     height: 100%;
+     position: absolute;
+-    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
+-    // initial state is a full bar, a la "indeterminate"
++    transition: width calc(var(--bp-emphasis-transition-duration) * 2)
++      var(--bp-emphasis-ease-default);
++    // Initial state is a full bar, a la "indeterminate".
+     width: 100%;
+   }
+ 
+   &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {
+-    animation: linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse;
++    animation: linear-progress-bar-stripes-next calc(var(--bp-emphasis-transition-duration) * 3)
++      linear infinite reverse;
+   }
+ 
+   &.#{$ns}-no-stripes .#{$ns}-progress-meter {
+@@ -60,17 +65,8 @@ $progress-bar-gradient: linear-gradient(
+   }
+ }
+ 
+-.#{$ns}-dark .#{$ns}-progress-bar:not(:where(.bp-next .#{$ns}-progress-bar)) {
+-  background: $dark-progress-track-color;
+-
+-  .#{$ns}-progress-meter {
+-    background-color: $dark-progress-head-color;
+-  }
+-}
+-
+-@each $intent, $color in $pt-intent-colors {
+-  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent}:not(:where(.bp-next .#{$ns}-progress-bar))
+-    .#{$ns}-progress-meter {
+-    background-color: $color;
++@each $intent in $pt-intents {
++  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
++    background-color: var(--bp-surface-background-color-#{$intent}-rest);
+   }
+ }

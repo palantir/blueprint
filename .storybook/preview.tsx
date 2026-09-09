@@ -121,7 +121,7 @@ const preview: Preview = {
             toolbar: {
                 icon: "paintbrush",
                 items: [
-                    { title: "Legacy", value: "legacy" },
+                    { title: "BP6", value: "bp6" },
                     { title: "BP7", value: "next" },
                     { title: "BP7 custom intent", value: "next-custom-intent" },
                 ],
@@ -130,7 +130,7 @@ const preview: Preview = {
     },
 
     initialGlobals: {
-        blueprintStyles: "legacy",
+        blueprintStyles: "bp6",
         theme: "light",
     },
 };

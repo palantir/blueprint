@@ -1,0 +1,69 @@
+diff --git a/packages/core/src/components/overlay/_overlay.scss b/packages/core/src/components/overlay/_overlay-next.scss
+index a97ca9a30..90fc20e54 100644
+--- a/packages/core/src/components/overlay/_overlay.scss
++++ b/packages/core/src/components/overlay/_overlay-next.scss
+@@ -1,19 +1,15 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "../../common/variables";
++@import "../../common/react-transition";
++@import "../../common/variables-next";
+ 
+-$overlay-background-color: rgba($black, 0.7) !default;
++$overlay-background-color-next: oklch(from var(--bp-intent-neutral-1000) l c h / 70%) !default;
+ 
+-// restricts scrolling of underlying content while the overlay is open
+-body.#{$ns}-overlay-open {
+-  overflow: hidden;
+-}
+-
+-.#{$ns}-overlay:not(:where(.bp-next .#{$ns}-overlay)) {
++.#{$ns}-overlay {
+   // 0-out all positions so page won't jump when position changes (0s already there)
+   @include position-all(static, 0);
+-  z-index: $pt-z-index-overlay;
++  z-index: $pt-z-index-overlay-next;
+ 
+   &:not(.#{$ns}-overlay-open) {
+     // because of the 0-position covering the viewport,
+@@ -58,10 +54,10 @@ body.#{$ns}-overlay-open {
+ 
+ // this class is added to each Overlay child so that users won't need to
+ // explicitly manage the position mode for inline and non-inline rendering.
+-.#{$ns}-overlay-content:not(:where(.bp-next .#{$ns}-overlay-content)) {
++.#{$ns}-overlay-content {
+   // default fixed pulls it out of the flow and makes it viewport-relative
+   position: fixed;
+-  z-index: $pt-z-index-overlay;
++  z-index: $pt-z-index-overlay-next;
+ 
+   .#{$ns}-overlay-inline &,
+   .#{$ns}-overlay-scroll-container & {
+@@ -72,20 +68,21 @@ body.#{$ns}-overlay-open {
+ }
+ 
+ // fixed position so the backdrop forecefully covers the whole screen
+-.#{$ns}-overlay-backdrop:not(:where(.bp-next .#{$ns}-overlay-backdrop)) {
++.#{$ns}-overlay-backdrop {
+   @include position-all(fixed, 0);
+   @include react-transition(
+     "#{$ns}-overlay",
+     (
+       opacity: 0 1,
+     ),
+-    $pt-transition-duration * 2,
++    calc(var(--bp-emphasis-transition-duration) * 2),
++    var(--bp-emphasis-ease-default),
+     $before: "&"
+   );
+-  background-color: $overlay-background-color;
++  background-color: $overlay-background-color-next;
+   overflow: auto;
+   user-select: none;
+-  z-index: $pt-z-index-overlay;
++  z-index: $pt-z-index-overlay-next;
+ 
+   &:focus {
+     outline: none;

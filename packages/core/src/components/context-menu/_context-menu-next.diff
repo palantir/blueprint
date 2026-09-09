@@ -1,0 +1,15 @@
+diff --git a/packages/core/src/components/context-menu/_context-menu.scss b/packages/core/src/components/context-menu/_context-menu-next.scss
+index 7c12f12ad..eab5ba068 100644
+--- a/packages/core/src/components/context-menu/_context-menu.scss
++++ b/packages/core/src/components/context-menu/_context-menu-next.scss
+@@ -1,8 +1,8 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+ @import "../../common/variables";
+ 
+-.#{$ns}-context-menu-virtual-target:not(:where(.bp-next .#{$ns}-context-menu-virtual-target)) {
++.#{$ns}-context-menu-virtual-target {
+   position: fixed;
+ }

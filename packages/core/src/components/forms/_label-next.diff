@@ -1,0 +1,95 @@
+diff --git a/packages/core/src/components/forms/_label.scss b/packages/core/src/components/forms/_label-next.scss
+index 64798cb67..845c5b6f0 100644
+--- a/packages/core/src/components/forms/_label.scss
++++ b/packages/core/src/components/forms/_label-next.scss
+@@ -1,13 +1,12 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "../../common/variables-extended";
++@import "common-next";
+ 
+-label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
++label.#{$ns}-label {
+   display: block;
+   margin-bottom: calc(var(--bp-surface-spacing) * 4);
+   margin-top: 0;
+-
+   .#{$ns}-html-select,
+   .#{$ns}-input,
+   .#{$ns}-select,
+@@ -17,21 +16,17 @@ label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
+     margin-top: var(--bp-surface-spacing);
+     text-transform: none;
+   }
+-
+   .#{$ns}-button-group {
+     margin-top: var(--bp-surface-spacing);
+   }
+-
+   .#{$ns}-select select,
+   .#{$ns}-html-select select {
+-    font-weight: 400;
++    font-weight: var(--bp-typography-weight-default);
+     vertical-align: top;
+     width: 100%;
+   }
+-
+   .#{$ns}-control-group {
+     margin-top: var(--bp-surface-spacing);
+-
+     > .#{$ns}-button-group,
+     > .#{$ns}-html-select,
+     > .#{$ns}-input,
+@@ -41,17 +36,14 @@ label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
+       margin-top: 0;
+     }
+   }
+-
+   &.#{$ns}-disabled {
+     &,
+     .#{$ns}-text-muted {
+-      color: var(--bp-typography-color-default-disabled);
++      color: $input-color-disabled-next;
+     }
+   }
+-
+   &.#{$ns}-inline {
+     line-height: calc(var(--bp-surface-spacing) * 7.5);
+-
+     .#{$ns}-html-select,
+     .#{$ns}-input,
+     .#{$ns}-input-group,
+@@ -65,11 +57,9 @@ label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
+     .#{$ns}-button-group {
+       margin: 0 0 0 var(--bp-surface-spacing);
+     }
+-
+     .#{$ns}-input-group .#{$ns}-input {
+       margin-left: 0;
+     }
+-
+     &.#{$ns}-large {
+       line-height: calc(var(--bp-surface-spacing) * 10);
+     }
+@@ -87,19 +77,7 @@ label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
+       }
+     }
+   }
+-
+   &:not(.#{$ns}-inline) .#{$ns}-popover-target {
+     display: block;
+   }
+-
+-  .#{$ns}-dark & {
+-    color: oklch(from var(--bp-intent-default-rest) calc(l + 0.452) calc(c + -0.028) calc(h + 6.2));
+-
+-    &.#{$ns}-disabled {
+-      &,
+-      .#{$ns}-text-muted {
+-        color: var(--bp-typography-color-default-disabled);
+-      }
+-    }
+-  }
+ }

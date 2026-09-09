@@ -1,0 +1,71 @@
+diff --git a/packages/core/src/components/menu/_submenu.scss b/packages/core/src/components/menu/_submenu-next.scss
+index 4fc06c879..a5e1506bb 100644
+--- a/packages/core/src/components/menu/_submenu.scss
++++ b/packages/core/src/components/menu/_submenu-next.scss
+@@ -1,59 +1,33 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+ @import "../../common/variables";
+-@import "@blueprintjs/icons/lib/scss/variables";
+-@import "./common";
++@import "./common-next";
+ 
+-.#{$ns}-submenu:not(:where(.bp-next .#{$ns}-submenu)) {
++.#{$ns}-submenu {
+   > .#{$ns}-popover-wrapper {
+     display: block;
+   }
+-
+   .#{$ns}-popover-target {
+     display: block;
+-
+     &.#{$ns}-popover-open > .#{$ns}-menu-item {
+-      // keep a trail of hovered items as submenus are opened
+-      /* stylelint-disable scss/at-extend-no-missing-placeholder */
+       &:not([class*="#{$ns}-intent-"]) {
+-        @include menu-item-hover;
+-        .#{$ns}-dark & {
+-          @include dark-menu-item-hover;
+-        }
++        @include menu-item-hover-next;
+       }
+-
+       &[class*="#{$ns}-intent-"] {
+         &,
+         &:hover,
+         &:active {
+-          @include menu-item-active(false);
+-
+-          .#{$ns}-dark & {
+-            @include menu-item-active(true);
+-          }
++          @include menu-item-active-next;
+         }
+       }
+-      /* stylelint-enable scss/at-extend-no-missing-placeholder */
+     }
+   }
+-
+   &.#{$ns}-popover {
+     box-shadow: none;
+-    // horizontal padding leaves some space from parent menu item, and extends mouse zone
+-    padding: 0 $pt-spacing;
+-
++    padding: 0 var(--bp-surface-spacing);
+     > .#{$ns}-popover-content {
+-      box-shadow: $pt-popover-box-shadow;
+-    }
+-
+-    .#{$ns}-dark &,
+-    &.#{$ns}-dark {
+-      box-shadow: none;
+-
+-      > .#{$ns}-popover-content {
+-        box-shadow: $pt-dark-popover-box-shadow;
+-      }
++      box-shadow: var(--bp-surface-shadow-3);
+     }
+   }
+ }

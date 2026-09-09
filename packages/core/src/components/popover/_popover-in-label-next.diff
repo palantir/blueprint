@@ -1,0 +1,23 @@
+diff --git a/packages/core/src/components/popover/_popover-in-label.scss b/packages/core/src/components/popover/_popover-in-label-next.scss
+index 1c855955d..557ff7297 100644
+--- a/packages/core/src/components/popover/_popover-in-label.scss
++++ b/packages/core/src/components/popover/_popover-in-label-next.scss
+@@ -1,12 +1,9 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "./common";
+-
+-label.#{$ns}-label:not(:where(.bp-next .#{$ns}-label)) {
+-  .#{$ns}-popover-target {
+-    display: block;
+-    margin-top: $pt-spacing;
+-    text-transform: none;
+-  }
++@import "../../common/variables";
++label.#{$ns}-label .#{$ns}-popover-target {
++  display: block;
++  margin-top: var(--bp-surface-spacing);
++  text-transform: none;
+ }

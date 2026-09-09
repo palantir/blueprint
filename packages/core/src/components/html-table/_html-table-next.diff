@@ -1,0 +1,219 @@
+diff --git a/packages/core/src/components/html-table/_html-table.scss b/packages/core/src/components/html-table/_html-table-next.scss
+index d9bd1f5aa..601f6be05 100644
+--- a/packages/core/src/components/html-table/_html-table.scss
++++ b/packages/core/src/components/html-table/_html-table-next.scss
+@@ -3,107 +3,82 @@
+ 
+ @import "../../common/variables";
+ 
+-$table-row-height: $pt-spacing * 10 !default;
+-$table-row-height-small: $pt-spacing * 7.5 !default;
+-$table-border-width: 1px !default;
+-$table-border-color: $pt-divider-black !default;
+-$dark-table-border-color: $pt-dark-divider-white !default;
+-
+ // placeholder for extending inside running-text (see typography)
+-%html-table {
++%html-table-next {
+   border-spacing: 0;
+-  font-size: $pt-font-size;
++  font-size: var(--bp-typography-size-md);
+ 
+   th,
+   td {
+-    padding: centered-text($table-row-height);
++    padding: calc(var(--bp-surface-spacing) * 2.75);
+     text-align: left;
+     vertical-align: top;
+   }
+ 
+   th {
+-    color: $pt-heading-color;
+-    font-weight: 600;
++    color: var(--bp-typography-color-base);
++    font-weight: var(--bp-typography-weight-strong);
+   }
+ 
+   td {
+-    color: $pt-text-color;
++    color: var(--bp-typography-color-base);
+   }
+ 
+   tbody tr:first-child,
+   tfoot tr:first-child {
+     th,
+     td {
+-      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
++      box-shadow: inset 0 var(--bp-surface-border-width) 0 0 var(--bp-surface-divider-color-default);
+     }
+   }
+-
+-  // a bunch of deep compound selectors ahead, but there's not really a better way to do this right now
+-  /* stylelint-disable selector-max-compound-selectors */
+-  .#{$ns}-dark & {
+-    th {
+-      color: $pt-dark-heading-color;
+-    }
+-
+-    td {
+-      color: $pt-dark-text-color;
+-    }
+-
+-    tbody tr:first-child,
+-    tfoot tr:first-child {
+-      th,
+-      td {
+-        box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+-      }
+-    }
+-  }
+-  /* stylelint-enable selector-max-compound-selectors */
+ }
+ 
+-table.#{$ns}-html-table:not(:where(.bp-next table.#{$ns}-html-table)) {
+-  @extend %html-table;
++table.#{$ns}-html-table {
++  @extend %html-table-next;
+ 
+   &.#{$ns}-compact {
+-    $small-vertical-padding: centered-text($table-row-height-small);
+-
+     th,
+     td {
+-      padding-bottom: $small-vertical-padding;
+-      padding-top: $small-vertical-padding;
++      padding-bottom: calc(var(--bp-surface-spacing) * 1.5);
++      padding-top: calc(var(--bp-surface-spacing) * 1.5);
+     }
+   }
+ 
+   &.#{$ns}-html-table-striped {
+     tbody tr:nth-child(odd) td {
+-      background: rgba($gray3, 0.15);
++      background-color: var(--bp-surface-layer-color-neutral-rest);
+     }
+   }
+ 
+   // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+   &.#{$ns}-html-table-bordered {
+     th:not(:first-child) {
+-      box-shadow: inset $table-border-width 0 0 0 $table-border-color;
++      box-shadow: inset var(--bp-surface-border-width) 0 0 0 var(--bp-surface-divider-color-default);
+ 
+       @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-        border-left: 1px solid $pt-high-contrast-mode-border-color;
++        border-inline-start: var(--bp-surface-border-width) solid
++          $pt-high-contrast-mode-border-color;
+       }
+     }
+ 
+     tbody tr td,
+     tfoot tr td {
+-      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
++      box-shadow: inset 0 var(--bp-surface-border-width) 0 0 var(--bp-surface-divider-color-default);
+ 
+       &:not(:first-child) {
+-        box-shadow: inset $table-border-width $table-border-width 0 0 $table-border-color;
++        box-shadow: inset var(--bp-surface-border-width) var(--bp-surface-border-width) 0 0
++          var(--bp-surface-divider-color-default);
+ 
+         @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-          border-left: 1px solid $pt-high-contrast-mode-border-color;
+-          border-top: 1px solid $pt-high-contrast-mode-border-color;
++          border-block-start: var(--bp-surface-border-width) solid
++            $pt-high-contrast-mode-border-color;
++          border-inline-start: var(--bp-surface-border-width) solid
++            $pt-high-contrast-mode-border-color;
+         }
+       }
+ 
+       @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-        border-top: 1px solid $pt-high-contrast-mode-border-color;
++        border-block-start: var(--bp-surface-border-width) solid $pt-high-contrast-mode-border-color;
+       }
+     }
+ 
+@@ -112,7 +87,8 @@ table.#{$ns}-html-table:not(:where(.bp-next table.#{$ns}-html-table)) {
+         box-shadow: none;
+ 
+         &:not(:first-child) {
+-          box-shadow: inset $table-border-width 0 0 0 $table-border-color;
++          box-shadow: inset var(--bp-surface-border-width) 0 0 0
++            var(--bp-surface-divider-color-default);
+         }
+       }
+     }
+@@ -121,7 +97,7 @@ table.#{$ns}-html-table:not(:where(.bp-next table.#{$ns}-html-table)) {
+   &.#{$ns}-interactive {
+     tbody tr {
+       &:hover td {
+-        background-color: rgba($gray3, 0.3);
++        background-color: var(--bp-surface-layer-color-neutral-hover);
+         cursor: pointer;
+ 
+         @media (forced-colors: active) and (prefers-color-scheme: dark) {
+@@ -130,7 +106,7 @@ table.#{$ns}-html-table:not(:where(.bp-next table.#{$ns}-html-table)) {
+       }
+ 
+       &:active td {
+-        background-color: rgba($gray3, 0.35);
++        background-color: var(--bp-surface-layer-color-neutral-active);
+ 
+         @media (forced-colors: active) and (prefers-color-scheme: dark) {
+           background-color: $pt-high-contrast-mode-active-background-color;
+@@ -138,55 +114,4 @@ table.#{$ns}-html-table:not(:where(.bp-next table.#{$ns}-html-table)) {
+       }
+     }
+   }
+-
+-  .#{$ns}-dark & {
+-    /* stylelint-disable selector-max-compound-selectors */
+-    &.#{$ns}-html-table-striped {
+-      tbody tr:nth-child(odd) td {
+-        background: rgba($gray1, 0.15);
+-      }
+-    }
+-
+-    // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+-    &.#{$ns}-html-table-bordered {
+-      th:not(:first-child) {
+-        box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
+-      }
+-
+-      tbody tr td,
+-      tfoot tr td {
+-        box-shadow: inset 0 $table-border-width 0 0 $dark-table-border-color;
+-
+-        &:not(:first-child) {
+-          box-shadow: inset $table-border-width $table-border-width 0 0 $dark-table-border-color;
+-        }
+-      }
+-
+-      &.#{$ns}-html-table-striped {
+-        tbody tr:not(:first-child) td {
+-          box-shadow: inset $table-border-width 0 0 0 $dark-table-border-color;
+-
+-          // easier than the alternative...
+-          /* stylelint-disable max-nesting-depth */
+-          &:first-child {
+-            box-shadow: none;
+-          }
+-        }
+-      }
+-    }
+-
+-    &.#{$ns}-interactive {
+-      tbody tr {
+-        &:hover td {
+-          background-color: rgba($gray1, 0.3);
+-          cursor: pointer;
+-        }
+-
+-        &:active td {
+-          background-color: rgba($gray1, 0.4);
+-        }
+-      }
+-    }
+-    /* stylelint-enable selector-max-compound-selectors */
+-  }
+ }

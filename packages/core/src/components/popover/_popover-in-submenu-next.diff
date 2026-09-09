@@ -1,0 +1,40 @@
+diff --git a/packages/core/src/components/popover/_popover-in-submenu.scss b/packages/core/src/components/popover/_popover-in-submenu-next.scss
+index 0ba252867..4525fc2af 100644
+--- a/packages/core/src/components/popover/_popover-in-submenu.scss
++++ b/packages/core/src/components/popover/_popover-in-submenu-next.scss
+@@ -1,30 +1,16 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "./common";
+-@import "../menu/common";
+-
+-.#{$ns}-submenu:not(:where(.bp-next .#{$ns}-submenu)) {
++@import "../../common/variables";
++.#{$ns}-submenu {
+   .#{$ns}-popover-target {
+     display: block;
+   }
+-
+   &.#{$ns}-popover {
+     box-shadow: none;
+-    // horizontal padding leaves some space from parent menu item, and extends mouse zone
+-    padding: 0 $pt-spacing;
+-
++    padding: 0 var(--bp-surface-spacing);
+     > .#{$ns}-popover-content {
+-      box-shadow: $pt-popover-box-shadow;
+-    }
+-
+-    .#{$ns}-dark &,
+-    &.#{$ns}-dark {
+-      box-shadow: none;
+-
+-      > .#{$ns}-popover-content {
+-        box-shadow: $pt-dark-popover-box-shadow;
+-      }
++      box-shadow: var(--bp-surface-shadow-3);
+     }
+   }
+ }

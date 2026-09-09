@@ -1,0 +1,91 @@
+diff --git a/packages/core/src/components/html-select/_html-select.scss b/packages/core/src/components/html-select/_html-select-next.scss
+index ce950a8f2..b4dda6cee 100644
+--- a/packages/core/src/components/html-select/_html-select.scss
++++ b/packages/core/src/components/html-select/_html-select-next.scss
+@@ -1,46 +1,38 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "../../common/variables";
+-@import "../popover/common";
+-@import "./common";
++@import "./common-next";
+ 
+-.#{$ns}-html-select:not(:where(.bp-next .#{$ns}-html-select)),
+-.#{$ns}-select:not(:where(.bp-next .#{$ns}-select)) {
++.#{$ns}-html-select,
++.#{$ns}-select {
+   display: inline-block;
+   letter-spacing: normal;
+   position: relative;
+   vertical-align: middle;
+ 
+   select {
+-    @extend %pt-select;
++    @include pt-select-next;
+ 
+     &:disabled {
+-      @extend %pt-select-disabled;
++      @include pt-select-disabled-next;
+     }
+   }
+-
+   .#{$ns}-icon {
+-    @extend %pt-select-icon;
+-    @include pt-icon-colors;
++    @include pt-select-icon-next;
+   }
+-
+   &.#{$ns}-minimal select {
+-    @extend %pt-select-minimal;
++    @include pt-select-minimal-next;
+   }
+-
+   &.#{$ns}-large {
+     select {
+-      @extend %pt-select-large;
++      @include pt-select-large-next;
+     }
+-
+     &::after, // CSS support
+     .#{$ns}-icon {
+-      right: $pt-spacing * 3;
+-      top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
++      right: calc(var(--bp-surface-spacing) * 3);
++      top: calc(($pt-input-height-large-next - $pt-icon-size-standard-next) * 0.5);
+     }
+   }
+-
+   &.#{$ns}-fill {
+     &,
+     select {
+@@ -48,22 +40,12 @@
+     }
+   }
+ 
+-  .#{$ns}-dark & {
+-    select {
+-      @extend %pt-dark-select;
+-    }
+-
+-    option {
+-      background-color: $pt-dark-popover-background-color;
+-      color: $pt-dark-text-color;
+-    }
+-
+-    option:disabled {
+-      color: $pt-dark-text-color-disabled;
+-    }
++  option {
++    background-color: var(--bp-surface-background-color-base-rest);
++    color: var(--bp-typography-color-base);
++  }
+ 
+-    &::after {
+-      color: $pt-dark-icon-color;
+-    }
++  option:disabled {
++    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+   }
+ }

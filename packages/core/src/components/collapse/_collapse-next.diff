@@ -1,0 +1,25 @@
+diff --git a/packages/core/src/components/collapse/_collapse.scss b/packages/core/src/components/collapse/_collapse-next.scss
+index 7b458d815..2fed680b1 100644
+--- a/packages/core/src/components/collapse/_collapse.scss
++++ b/packages/core/src/components/collapse/_collapse-next.scss
+@@ -3,15 +3,16 @@
+ 
+ @import "../../common/variables";
+ 
+-$collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default;
++$collapse-transition-next: calc(var(--bp-emphasis-transition-duration) * 2)
++  var(--bp-emphasis-ease-default);
+ 
+-.#{$ns}-collapse:not(:where(.bp-next .#{$ns}-collapse)) {
++.#{$ns}-collapse {
+   height: 0;
+   overflow-y: hidden;
+-  transition: height $collapse-transition;
++  transition: height $collapse-transition-next;
+ 
+   .#{$ns}-collapse-body {
+-    transition: transform $collapse-transition;
++    transition: transform $collapse-transition-next;
+ 
+     &[aria-hidden="true"] {
+       display: none;

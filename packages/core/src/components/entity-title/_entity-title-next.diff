@@ -1,0 +1,143 @@
+diff --git a/packages/core/src/components/entity-title/_entity-title.scss b/packages/core/src/components/entity-title/_entity-title-next.scss
+index 28280faf1..5340ec605 100644
+--- a/packages/core/src/components/entity-title/_entity-title.scss
++++ b/packages/core/src/components/entity-title/_entity-title-next.scss
+@@ -1,14 +1,21 @@
+-// Copyright 2024 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@use "sass:list";
+ @import "../../common/variables";
+-@import "../../common/variables-extended";
+ 
+-.#{$ns}-entity-title:not(:where(.bp-next .#{$ns}-entity-title)) {
++$entity-title-heading-heights-next: (
++  "h1": calc(var(--bp-surface-spacing) * 10),
++  "h2": calc(var(--bp-surface-spacing) * 8),
++  "h3": calc(var(--bp-surface-spacing) * 6.25),
++  "h4": calc(var(--bp-surface-spacing) * 5.25),
++  "h5": calc(var(--bp-surface-spacing) * 4.75),
++  "h6": calc(var(--bp-surface-spacing) * 4),
++);
++
++.#{$ns}-entity-title {
+   align-items: center;
+   display: flex;
+-  gap: $pt-spacing * 2;
++  gap: calc(var(--bp-surface-spacing) * 2);
+   min-width: 0;
+ 
+   &.#{$ns}-fill {
+@@ -16,7 +23,7 @@
+   }
+ }
+ 
+-.#{$ns}-entity-title-icon-container:not(:where(.bp-next .#{$ns}-entity-title-icon-container)) {
++.#{$ns}-entity-title-icon-container {
+   &.#{$ns}-entity-title-has-subtitle {
+     align-self: flex-start;
+   }
+@@ -27,75 +34,73 @@
+   }
+ }
+ 
+-.#{$ns}-entity-title-text:not(:where(.bp-next .#{$ns}-entity-title-text)) {
++.#{$ns}-entity-title-text {
+   display: flex;
+   flex-direction: column;
+ }
+ 
+-.#{$ns}-fill .#{$ns}-entity-title-text:not(:where(.bp-next .#{$ns}-entity-title-text)) {
++.#{$ns}-fill .#{$ns}-entity-title-text {
+   flex-grow: 1;
+ }
+ 
+-.#{$ns}-entity-title-title-and-tags:not(:where(.bp-next .#{$ns}-entity-title-title-and-tags)) {
++.#{$ns}-entity-title-title-and-tags {
+   align-items: center;
+   display: flex;
+   flex-direction: row;
+-  gap: $pt-spacing;
++  gap: var(--bp-surface-spacing);
+ }
+ 
+-.#{$ns}-entity-title-tags-container:not(:where(.bp-next .#{$ns}-entity-title-tags-container)) {
++.#{$ns}-entity-title-tags-container {
+   display: flex;
+-  gap: $pt-spacing * 0.5;
+-  margin-left: $pt-spacing;
++  gap: calc(var(--bp-surface-spacing) * 0.5);
++  margin-left: var(--bp-surface-spacing);
+ }
+ 
+-.#{$ns}-entity-title-title:not(:where(.bp-next .#{$ns}-entity-title-title)) {
++.#{$ns}-entity-title-title {
+   margin-bottom: 0;
+   min-width: 0;
+   overflow-wrap: break-word;
+ }
+ 
+-.#{$ns}-fill .#{$ns}-entity-title-title:not(:where(.bp-next .#{$ns}-entity-title-title)) {
++.#{$ns}-fill .#{$ns}-entity-title-title {
+   flex-grow: 1;
+ }
+ 
+-.#{$ns}-entity-title-subtitle:not(:where(.bp-next .#{$ns}-entity-title-subtitle)) {
+-  font-size: $pt-font-size-small;
+-  margin-top: $pt-spacing * 0.5;
++.#{$ns}-entity-title-subtitle {
++  font-size: var(--bp-typography-size-sm);
++  margin-top: calc(var(--bp-surface-spacing) * 0.5);
+ }
+ 
+-.#{$ns}-entity-title-ellipsize:not(:where(.bp-next .#{$ns}-entity-title-ellipsize)),
+-.#{$ns}-entity-title-ellipsize:not(:where(.bp-next .#{$ns}-entity-title-ellipsize))
+-  .#{$ns}-entity-title-text:not(:where(.bp-next .#{$ns}-entity-title-text)) {
++.#{$ns}-entity-title-ellipsize,
++.#{$ns}-entity-title-ellipsize .#{$ns}-entity-title-text {
+   overflow: hidden;
+ }
+ 
+-@each $tag, $props in $headings {
+-  .#{$ns}-entity-title-heading-#{$tag}:not(:where(.bp-next .#{$ns}-entity-title-heading-#{$tag}))
+-    .#{$ns}-icon-container {
++@each $tag, $height in $entity-title-heading-heights-next {
++  .#{$ns}-entity-title-heading-#{$tag} .#{$ns}-icon-container {
+     align-items: center;
+     display: flex;
+     // Aligning icon which has unknown dimensions on the title size.
+-    height: list.nth($props, 2);
++    height: $height;
+   }
+ }
+ 
+-.#{$ns}-entity-title-heading-h1:not(:where(.bp-next .#{$ns}-entity-title-heading-h1)),
+-.#{$ns}-entity-title-heading-h2:not(:where(.bp-next .#{$ns}-entity-title-heading-h2)),
+-.#{$ns}-entity-title-heading-h3:not(:where(.bp-next .#{$ns}-entity-title-heading-h3)) {
+-  gap: $pt-spacing * 4;
++.#{$ns}-entity-title-heading-h1,
++.#{$ns}-entity-title-heading-h2,
++.#{$ns}-entity-title-heading-h3 {
++  gap: calc(var(--bp-surface-spacing) * 4);
+ 
+   .#{$ns}-entity-title-subtitle {
+-    font-size: $pt-font-size;
++    font-size: var(--bp-typography-size-md);
+   }
+ }
+ 
+-.#{$ns}-entity-title-heading-h4:not(:where(.bp-next .#{$ns}-entity-title-heading-h4)),
+-.#{$ns}-entity-title-heading-h5:not(:where(.bp-next .#{$ns}-entity-title-heading-h5)),
+-.#{$ns}-entity-title-heading-h6:not(:where(.bp-next .#{$ns}-entity-title-heading-h6)) {
+-  gap: $pt-spacing * 2;
++.#{$ns}-entity-title-heading-h4,
++.#{$ns}-entity-title-heading-h5,
++.#{$ns}-entity-title-heading-h6 {
++  gap: calc(var(--bp-surface-spacing) * 2);
+ 
+   .#{$ns}-entity-title-subtitle {
+-    font-size: $pt-font-size-small;
++    font-size: var(--bp-typography-size-sm);
+   }
+ }

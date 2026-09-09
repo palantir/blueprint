@@ -5,15 +5,27 @@
 
 @import "../../common/variables";
 @import "../../common/variables-extended";
+@import "../button/common-next";
+@import "../icon/icon-mixins-next";
 @import "./common-next";
+
+// 3px space between small button and regular input
+$input-button-height-next: $pt-input-height-small-next;
+// 5px space between regular button and large input
+$input-button-height-large-next: $pt-input-height-next;
+// 1px space between regular button and small input
+$input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
 
 .#{$ns}-input-group {
   display: block;
   position: relative;
+
   .#{$ns}-input {
+    // explicit position prevents shadow clipping https://github.com/palantir/blueprint/pull/490#issuecomment-273342170
     position: relative;
     width: 100%;
 
+    // add space if there's something before or after the input
     &:not(:first-child) {
       padding-left: calc(var(--bp-surface-spacing) * 7.5);
     }
@@ -38,25 +50,34 @@
     }
   }
   .#{$ns}-button {
+    @include pt-button-height-next($input-button-height-next);
     margin: calc(var(--bp-surface-spacing) * 0.75);
     padding: 0 calc(var(--bp-surface-spacing) * 2);
 
+    // icons CSS API support
     &:empty {
       padding: 0;
     }
   }
+
+  // bump icon or left content up so it sits above input
   > .#{$ns}-input-left-container,
   > .#{$ns}-icon {
     z-index: 1;
   }
+
+  // direct descendant to exclude icons in buttons
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon {
     color: var(--bp-typography-color-intent-neutral);
 
     &:empty {
-      font-size: calc(var(--bp-surface-spacing) * 5);
+      @include pt-icon-next($pt-icon-size-standard-next, 16);
     }
   }
+
+  // adjusting the margin of spinners in input groups
+  // we have to avoid targetting buttons that contain a spinner
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon,
   .#{$ns}-input-action > .#{$ns}-spinner {
@@ -65,6 +86,9 @@
   .#{$ns}-tag {
     margin: calc(var(--bp-surface-spacing) * 1.25);
   }
+
+  // all buttons go gray in default state and assume their native colors only when hovered
+  // or when input is focused. this prevents distracting colors in the UI.
   .#{$ns}-input:not(:focus) + .#{$ns}-button.#{$ns}-minimal:not(:hover):not(:focus),
   .#{$ns}-input:not(:focus)
     + .#{$ns}-input-action
@@ -76,23 +100,24 @@
   }
   .#{$ns}-input:not(:focus) + .#{$ns}-button.#{$ns}-minimal:disabled,
   .#{$ns}-input:not(:focus) + .#{$ns}-input-action .#{$ns}-button.#{$ns}-minimal:disabled {
-    color: oklch(
-      from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
-    ) !important;
+    // override more specific selector above
+    color: $input-color-disabled-next !important;
     #{$icon-classes} {
       color: inherit !important;
     }
   }
+
+  // this class echoes `input:disabled` on the child input, but each action must individually be disabled
   &.#{$ns}-disabled {
+    // note that enabled buttons inside this input group are still clickable
     cursor: not-allowed;
     .#{$ns}-icon {
-      color: oklch(
-        from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
-      );
+      color: $input-color-disabled-next;
     }
   }
   &.#{$ns}-large {
     .#{$ns}-button {
+      @include pt-button-height-next($input-button-height-large-next);
       margin: calc(var(--bp-surface-spacing) * 1.25);
     }
     > .#{$ns}-input-left-container > .#{$ns}-icon,
@@ -101,7 +126,7 @@
       margin: calc(var(--bp-surface-spacing) * 3);
     }
     .#{$ns}-input {
-      @include pt-input-size-next(large);
+      @include pt-input-large-next;
 
       &:not(:first-child) {
         padding-left: calc(var(--bp-surface-spacing) * 10);
@@ -113,10 +138,14 @@
     }
   }
   &.#{$ns}-small {
-    .#{$ns}-button,
-    .#{$ns}-tag {
+    .#{$ns}-button {
+      @include pt-button-height-next($input-button-height-small-next);
       margin: calc(var(--bp-surface-spacing) * 0.5);
-      min-height: calc(var(--bp-surface-spacing) * 5);
+    }
+
+    .#{$ns}-tag {
+      @include pt-button-height-next($input-button-height-small-next);
+      margin: calc(var(--bp-surface-spacing) * 0.5);
     }
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
@@ -124,7 +153,7 @@
       margin: var(--bp-surface-spacing);
     }
     .#{$ns}-input {
-      @include pt-input-size-next(small);
+      @include pt-input-small-next;
 
       &:not(:first-child) {
         padding-left: calc(var(--bp-surface-spacing) * 6);
@@ -139,10 +168,12 @@
     flex: 1 1 auto;
     width: 100%;
   }
-  &.#{$ns}-round .#{$ns}-button,
-  &.#{$ns}-round .#{$ns}-input,
-  &.#{$ns}-round .#{$ns}-tag {
-    border-radius: calc(var(--bp-surface-spacing) * 7.5);
+  &.#{$ns}-round {
+    .#{$ns}-button,
+    .#{$ns}-input,
+    .#{$ns}-tag {
+      border-radius: $pt-input-height-next;
+    }
   }
 
   @each $intent in primary, success, warning, danger {

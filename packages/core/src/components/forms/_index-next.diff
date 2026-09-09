@@ -1,0 +1,34 @@
+diff --git a/packages/core/src/components/forms/_index.scss b/packages/core/src/components/forms/_index-next.scss
+index b265ebf6f..75aefc02a 100644
+--- a/packages/core/src/components/forms/_index.scss
++++ b/packages/core/src/components/forms/_index-next.scss
+@@ -1,19 +1,18 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+ // NOTE: this partial file is imported once here so form components can just use it.
+ // multiple @imports of shared/forms from different files causes placeholder @extends to
+ // output CSS multiple times which breaks textbox padding.
+-@import "./common";
+-
+-@import "./control-group";
+-@import "./controls";
+-@import "./file-input";
+-@import "./form-group";
+-@import "./input-group";
+-@import "./input";
+-@import "./label";
+-@import "./numeric-input";
++@import "./common-next";
++@import "./control-group-next";
++@import "./controls-next";
++@import "./file-input-next";
++@import "./form-group-next";
++@import "./input-group-next";
++@import "./input-next";
++@import "./label-next";
++@import "./numeric-input-next";
+ 
+ form {
+   display: block;

@@ -1,21 +1,22 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@mixin pt-select-next() {
-  appearance: none;
-  background: var(--bp-surface-background-color-base-rest);
-  border: 0;
-  border-radius: var(--bp-surface-border-radius);
-  box-shadow: var(--bp-surface-shadow-0);
-  color: var(--bp-typography-color-base);
-  font-size: var(--bp-typography-size-md);
-  height: calc(var(--bp-surface-spacing) * 7.5);
-  padding: 0 calc(var(--bp-surface-spacing) * 6) 0 calc(var(--bp-surface-spacing) * 2);
-  width: 100%;
+@import "../button/common-next";
+@import "../forms/common-next";
+@import "../icon/icon-mixins-next";
 
-  &:hover {
-    background: var(--bp-surface-layer-neutral-hover);
-  }
+@mixin pt-select-next() {
+  @include pt-button-layout-next;
+  @include pt-button-next;
+
+  /* stylelint-disable property-no-vendor-prefix */
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  height: $pt-input-height-next;
+  padding: 0 calc($input-padding-horizontal-next * 3) 0 $input-padding-horizontal-next;
+  // fill parent container
+  width: 100%;
+  /* stylelint-enable property-no-vendor-prefix */
 
   &:focus {
     box-shadow:
@@ -25,6 +26,34 @@
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: var(--bp-surface-border-width) solid ButtonBorder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
+}
+
+@mixin pt-select-minimal-next() {
+  @include pt-button-minimal-next;
+}
+
+@mixin pt-select-large-next() {
+  font-size: var(--bp-typography-size-xl);
+  height: $pt-input-height-large-next;
+  padding-right: calc($input-padding-horizontal-next * 3.5);
+}
+
+@mixin pt-select-disabled-next() {
+  @include pt-input-disabled-next;
+}
+
+@mixin pt-select-icon-next() {
+  @include pt-icon-colors-next;
+  pointer-events: none;
+  position: absolute;
+  // N.B. it's more important for the icon to vertically align with button end icons rather than
+  // input right padding, see https://github.com/palantir/blueprint/issues/6184
+  right: $input-padding-horizontal-next;
+  top: calc(($pt-input-height-next - $pt-icon-size-standard-next) * 0.5);
+
+  &.#{$ns}-disabled {
+    color: $pt-text-color-disabled-next;
   }
 }

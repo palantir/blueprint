@@ -1,6 +1,9 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+// NOTE: this partial file is imported once here so form components can just use it.
+// multiple @imports of shared/forms from different files causes placeholder @extends to
+// output CSS multiple times which breaks textbox padding.
 @import "./common-next";
 @import "./control-group-next";
 @import "./controls-next";
@@ -10,3 +13,7 @@
 @import "./input-next";
 @import "./label-next";
 @import "./numeric-input-next";
+
+form {
+  display: block;
+}

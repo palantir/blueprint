@@ -1,0 +1,151 @@
+diff --git a/packages/core/src/components/popover/_common.scss b/packages/core/src/components/popover/_common-next.scss
+index 946f48413..f4c78f6f8 100644
+--- a/packages/core/src/components/popover/_common.scss
++++ b/packages/core/src/components/popover/_common-next.scss
+@@ -1,110 +1,84 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@use "sass:math";
+-@import "../../common/variables";
+ @import "../../common/react-transition";
++@import "../../common/variables";
+ 
+-$pt-popover-background-color: $white !default;
+-$pt-dark-popover-background-color: $dark-gray3 !default;
+-
+-// $arrow-offset: amount to shift arrow along edge of popover
+-// $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
+-
+-@mixin popover-sizing($arrow-square-size, $arrow-offset, $arrow-target-offset) {
+-  // since this is a 45-45-90 triangle, half hypotenuse === side * sqrt(2) / 2 === side / sqrt(2)
+-  // fun fact: there's no built-in square root function in SASS
+-  $arrow-diagonal-half-size: math.div($arrow-square-size, 1.41421356);
+-  // we want the margin to be the size of the part of the arrow that is showing plus
+-  // a little extra space.
+-  $content-margin: math.floor($arrow-diagonal-half-size + $arrow-target-offset);
+-  // we want to move the arrow out from where it's positioned by the gap amount
+-  // plus the extra amount of width that is added by its 45 deg rotation.
+-  $arrow-position: -$arrow-square-size * 0.5 + $arrow-offset;
+-  // because the 45 deg rotation will make out div stick out a little bit further,
+-  // we have to slide it over by that amount first and then by the set offset value
+-  $computed-arrow-offset: ($arrow-diagonal-half-size - $arrow-square-size) * 0.5 + $arrow-offset;
+-
++@mixin popover-sizing-next($arrow-square-size) {
+   .#{$ns}-popover-arrow {
+     height: $arrow-square-size;
+     position: absolute;
+     width: $arrow-square-size;
+ 
+     &::before {
+-      height: math.floor($arrow-diagonal-half-size - 1);
+-      margin: math.ceil(($arrow-square-size - $arrow-diagonal-half-size) * 0.5);
+-      // - 1 to compenstate for transparent pixel border shadow
+-      width: math.floor($arrow-diagonal-half-size - 1);
++      height: calc($arrow-square-size / 1.41421356 - var(--bp-surface-border-width));
++      margin: calc(($arrow-square-size - $arrow-square-size / 1.41421356) / 2);
++      width: calc($arrow-square-size / 1.41421356 - var(--bp-surface-border-width));
+     }
+   }
+ }
+ 
+-// set background and text colors. also set box-shadow if provided (so modifier styles don't have to
+-// reassign default shadows).
+-
+-@mixin popover-appearance(
+-  $background-color,
+-  $text-color,
+-  $shadows,
+-  $arrow-box-shadow,
+-  $arrow-border-fill-opacity
+-) {
+-  box-shadow: $shadows;
+-
++@mixin popover-appearance-next($background-color, $text-color, $shadow) {
++  box-shadow: $shadow;
+   .#{$ns}-popover-content {
+     background: $background-color;
+   }
+-
+-  // Some popovers (like tooltips) invert their foreground/background colors relative
+-  // to what we expect for the theme. In those cases, we need to override global typography
+-  // styles to get the right colors.
+   .#{$ns}-popover-content,
+   .#{$ns}-heading {
+     color: $text-color;
+   }
+-
+   .#{$ns}-popover-arrow::before {
+-    box-shadow: $arrow-box-shadow;
++    box-shadow: $shadow;
+   }
+-
+   .#{$ns}-popover-arrow-border {
+-    fill: $black;
+-    fill-opacity: $arrow-border-fill-opacity;
++    fill: var(--bp-surface-divider-color-strong);
+   }
+-
+   .#{$ns}-popover-arrow-fill {
+     fill: $background-color;
+ 
+     @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-      // Windows High Contrast dark theme
+-      fill: $pt-high-contrast-mode-border-color;
++      fill: CanvasText;
+     }
+   }
+ 
+   @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    // Windows High Contrast dark theme
+-    border: 1px solid $pt-high-contrast-mode-border-color;
++    border: var(--bp-surface-border-width) solid CanvasText;
+   }
+ }
+ 
+-@mixin fade-transition() {
++@mixin fade-transition-next() {
+   @include react-transition(
+     "#{$ns}-popover",
+     (
+       opacity: 0 1,
+     ),
++    var(--bp-emphasis-transition-duration),
++    var(--bp-emphasis-ease-default),
+     $before: "&"
+   );
+ }
+ 
+-@mixin scale-transition() {
+-  @include react-transition(
++@mixin popover-scale-transition-phases-next($target, $initial-transform, $duration, $easing) {
++  $properties: (
++    transform: $initial-transform scale(1),
++  );
++
++  // Invoke the shared phase generator from the `.bp-next` scope so the transition container and child stay siblings
++  // within that scope instead of interpolating `.bp-next` after the child combinator.
++  @include react-transition-phase(
+     "#{$ns}-popover",
+-    (
+-      transform: scale(0.3) scale(1),
+-    ),
+-    $duration: $pt-transition-duration * 3,
+-    $easing: $pt-transition-ease-bounce,
+-    $after: "> &"
++    "enter",
++    $properties,
++    $duration,
++    $easing,
++    $after: "> #{$target}"
++  );
++  @include react-transition-phase(
++    "#{$ns}-popover",
++    "exit",
++    $properties,
++    $duration,
++    $easing,
++    $after: "> #{$target}"
+   );
+ }

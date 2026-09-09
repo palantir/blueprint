@@ -1,0 +1,96 @@
+diff --git a/packages/core/src/components/navbar/_navbar.scss b/packages/core/src/components/navbar/_navbar-next.scss
+index f6e4268f5..74c40546c 100644
+--- a/packages/core/src/components/navbar/_navbar.scss
++++ b/packages/core/src/components/navbar/_navbar-next.scss
+@@ -1,38 +1,16 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+ @import "../../common/variables";
+-@import "../card/card-variables";
+ 
+-$navbar-padding: $pt-spacing * 4 !default;
+-
+-$navbar-background-color: $card-background-color !default;
+-$dark-navbar-background-color: $dark-card-background-color !default;
+-
+-.#{$ns}-navbar:not(:where(.bp-next .#{$ns}-navbar)) {
+-  background-color: $navbar-background-color;
+-  box-shadow: $pt-elevation-shadow-1;
+-  height: $pt-navbar-height;
+-  padding: 0 $navbar-padding;
++.#{$ns}-navbar {
++  background-color: var(--bp-surface-background-color-base-rest);
++  box-shadow: var(--bp-surface-shadow-1);
++  height: calc(var(--bp-surface-spacing) * 12.5);
++  padding: 0 calc(var(--bp-surface-spacing) * 4);
+   position: relative;
+   width: 100%;
+-  z-index: $pt-z-index-content;
+-
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    background-color: $dark-navbar-background-color;
+-  }
+-
+-  // shadow for dark navbar in light theme apps
+-  &.#{$ns}-dark {
+-    box-shadow: inset $pt-dark-elevation-shadow-1;
+-  }
+-
+-  // shadow for dark navbar in dark theme apps
+-  .#{$ns}-dark & {
+-    box-shadow: $pt-dark-elevation-shadow-1;
+-  }
+-
++  z-index: var(--bp-surface-z-index-0);
+   &.#{$ns}-fixed-top {
+     left: 0;
+     position: fixed;
+@@ -41,35 +19,26 @@ $dark-navbar-background-color: $dark-card-background-color !default;
+   }
+ 
+   @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    border: 1px solid $pt-high-contrast-mode-border-color;
++    border: var(--bp-surface-border-width) solid CanvasText;
+   }
+ }
+-
+-.#{$ns}-navbar-heading:not(:where(.bp-next .#{$ns}-navbar-heading)) {
+-  font-size: $pt-font-size-large;
+-  margin-right: $navbar-padding;
++.#{$ns}-navbar-heading {
++  font-size: var(--bp-typography-size-lg);
++  margin-right: calc(var(--bp-surface-spacing) * 4);
+ }
+-
+-.#{$ns}-navbar-group:not(:where(.bp-next .#{$ns}-navbar-group)) {
++.#{$ns}-navbar-group {
+   align-items: center;
+   display: flex;
+-  height: $pt-navbar-height;
+-
++  height: calc(var(--bp-surface-spacing) * 12.5);
+   &.#{$ns}-align-left {
+     float: left;
+   }
+-
+   &.#{$ns}-align-right {
+     float: right;
+   }
+ }
+-
+-.#{$ns}-navbar-divider:not(:where(.bp-next .#{$ns}-navbar-divider)) {
+-  border-left: 1px solid $pt-divider-black;
+-  height: $pt-navbar-height - $pt-spacing * 7.5;
+-  margin: 0 ($pt-spacing * 2);
+-
+-  .#{$ns}-dark & {
+-    border-left-color: $pt-dark-divider-white;
+-  }
++.#{$ns}-navbar-divider {
++  border-left: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
++  height: calc(var(--bp-surface-spacing) * 5);
++  margin: 0 calc(var(--bp-surface-spacing) * 2);
+ }

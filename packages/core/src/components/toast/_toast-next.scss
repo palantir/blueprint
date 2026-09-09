@@ -4,6 +4,14 @@
 @import "../../common/react-transition";
 @import "../../common/variables";
 
+$toast-enter-translate-next: (
+  transform: translateY(calc(-1 * calc(var(--bp-surface-spacing) * 10))) translateY(0),
+);
+$toast-leave-blur-next: (
+  opacity: 0 1,
+  filter: blur(calc(var(--bp-surface-spacing) * 2)) blur(0),
+);
+
 @mixin pt-toast-intent-next($intent) {
   background-color: var(--bp-surface-background-color-#{$intent}-rest);
   color: var(--bp-intent-#{$intent}-foreground);
@@ -53,50 +61,45 @@
   /* stylelint-enable declaration-no-important */
 }
 
-.#{$ns}-toast {
-  $enter-translate: (
-    transform: translateY(calc(-1 * calc(var(--bp-surface-spacing) * 10))) translateY(0),
-  );
-  $leave-blur: (
-    opacity: 0 1,
-    filter: blur(calc(var(--bp-surface-spacing) * 2)) blur(0),
-  );
+// Preserve the legacy defaults: 300ms enter/fade and 100ms sibling movement after a 50ms delay.
+// These run at the `.bp-next` scope so sibling selectors do not interpolate `.bp-next` between the two toasts.
+@include react-transition-phase(
+  "#{$ns}-toast",
+  "enter",
+  $toast-enter-translate-next,
+  calc(var(--bp-emphasis-transition-duration) * 3),
+  var(--bp-emphasis-ease-bounce),
+  $before: ".#{$ns}-toast"
+);
+@include react-transition-phase(
+  "#{$ns}-toast",
+  "enter",
+  $toast-enter-translate-next,
+  calc(var(--bp-emphasis-transition-duration) * 3),
+  var(--bp-emphasis-ease-bounce),
+  $before: ".#{$ns}-toast",
+  $after: "~ .#{$ns}-toast"
+);
+@include react-transition-phase(
+  "#{$ns}-toast",
+  "exit",
+  $toast-leave-blur-next,
+  calc(var(--bp-emphasis-transition-duration) * 3),
+  var(--bp-emphasis-ease-default),
+  $before: ".#{$ns}-toast"
+);
+@include react-transition-phase(
+  "#{$ns}-toast",
+  "exit",
+  $toast-enter-translate-next,
+  var(--bp-emphasis-transition-duration),
+  var(--bp-emphasis-ease-default),
+  calc(var(--bp-emphasis-transition-duration) * 0.5),
+  $before: ".#{$ns}-toast",
+  $after: "~ .#{$ns}-toast"
+);
 
-  @include react-transition-phase(
-    "#{$ns}-toast",
-    "enter",
-    $enter-translate,
-    var(--bp-emphasis-transition-duration),
-    var(--bp-emphasis-ease-bounce),
-    $before: "&"
-  );
-  @include react-transition-phase(
-    "#{$ns}-toast",
-    "enter",
-    $enter-translate,
-    var(--bp-emphasis-transition-duration),
-    var(--bp-emphasis-ease-bounce),
-    $before: "&",
-    $after: "~ &"
-  );
-  @include react-transition-phase(
-    "#{$ns}-toast",
-    "exit",
-    $leave-blur,
-    var(--bp-emphasis-transition-duration),
-    var(--bp-emphasis-ease-default),
-    $before: "&"
-  );
-  @include react-transition-phase(
-    "#{$ns}-toast",
-    "exit",
-    $enter-translate,
-    var(--bp-emphasis-transition-duration),
-    var(--bp-emphasis-ease-default),
-    var(--bp-emphasis-transition-duration),
-    $before: "&",
-    $after: "~ &"
-  );
+.#{$ns}-toast {
   align-items: flex-start;
   background-color: var(--bp-surface-background-color-base-rest);
   border-radius: var(--bp-surface-border-radius);

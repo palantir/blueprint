@@ -1,0 +1,207 @@
+diff --git a/packages/core/src/components/breadcrumbs/_breadcrumbs.scss b/packages/core/src/components/breadcrumbs/_breadcrumbs-next.scss
+index 5adc1fced..8577eb13d 100644
+--- a/packages/core/src/components/breadcrumbs/_breadcrumbs.scss
++++ b/packages/core/src/components/breadcrumbs/_breadcrumbs-next.scss
+@@ -1,15 +1,17 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+ @import "@blueprintjs/icons/lib/scss/variables";
+-@import "../../common/variables";
++@import "../../common/variables-next";
+ 
+-.#{$ns}-breadcrumbs:not(:where(.bp-next .#{$ns}-breadcrumbs)) {
++.#{$ns}-breadcrumbs {
+   align-items: center;
++  // The current breadcrumb inherits this color; runtime color schemes only update token values.
++  color: var(--bp-typography-color-base);
+   cursor: default;
+   display: flex;
+   flex-wrap: wrap;
+-  height: $pt-input-height;
++  height: $pt-input-height-next;
+   list-style: none;
+   // unstyled inline list reset
+   margin: 0;
+@@ -21,19 +23,18 @@
+     display: flex;
+ 
+     &::after {
+-      background: svg-icon(
+-        "16px/chevron-right.svg",
+-        (
+-          path: (
+-            fill: $pt-icon-color,
+-          ),
+-        )
+-      );
++      background-color: var(--bp-typography-color-intent-neutral);
+       content: "";
+       display: block;
+-      height: $pt-icon-size-standard;
+-      margin: 0 $pt-spacing;
+-      width: $pt-icon-size-standard;
++      height: $pt-icon-size-standard-next;
++      margin: 0 var(--bp-surface-spacing);
++      mask: svg-icon("16px/chevron-right.svg", ()) center / contain no-repeat;
++      width: $pt-icon-size-standard-next;
++
++      // Without an explicit high-contrast color, the masked icon can become indistinguishable from its background.
++      @media (forced-colors: active) {
++        background-color: $pt-high-contrast-mode-icon-color;
++      }
+     }
+ 
+     &:last-of-type::after {
+@@ -42,37 +43,37 @@
+   }
+ }
+ 
+-.#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)),
+-.#{$ns}-breadcrumb-current:not(:where(.bp-next .#{$ns}-breadcrumb-current)),
+-.#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
++.#{$ns}-breadcrumb,
++.#{$ns}-breadcrumb-current,
++.#{$ns}-breadcrumbs-collapsed {
+   align-items: center;
+   display: inline-flex;
+-  font-size: $pt-font-size-large;
++  font-size: var(--bp-typography-size-xl);
+ }
+ 
+-.#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)),
+-.#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
+-  color: $pt-text-color-muted;
++.#{$ns}-breadcrumb,
++.#{$ns}-breadcrumbs-collapsed {
++  color: var(--bp-typography-color-intent-neutral);
+ }
+ 
+-.#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)) {
++.#{$ns}-breadcrumb {
+   &:hover {
+     text-decoration: none;
+   }
+ 
+   &.#{$ns}-disabled {
+-    color: $pt-text-color-disabled;
++    color: $pt-text-color-disabled-next;
+     cursor: not-allowed;
+   }
+ 
+   .#{$ns}-icon {
+-    margin-right: $pt-spacing;
++    margin-right: var(--bp-surface-spacing);
+   }
+ }
+ 
+-.#{$ns}-breadcrumb-current:not(:where(.bp-next .#{$ns}-breadcrumb-current)) {
++.#{$ns}-breadcrumb-current {
+   color: inherit;
+-  font-weight: 600;
++  font-weight: var(--bp-typography-weight-strong);
+ 
+   .#{$ns}-input {
+     font-size: inherit;
+@@ -81,82 +82,39 @@
+   }
+ }
+ 
+-.#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
+-  background: rgba($gray3, 0.15);
++.#{$ns}-breadcrumbs-collapsed {
++  background-color: var(--bp-surface-layer-color-neutral-rest);
+   border: none;
+-  border-radius: $pt-border-radius;
++  border-radius: var(--bp-surface-border-radius);
+   cursor: pointer;
+-  margin-right: $pt-spacing * 0.5;
+-  padding: 1px $pt-spacing;
++  margin-right: calc(var(--bp-surface-spacing) * 0.5);
++  padding: 1px var(--bp-surface-spacing);
+   vertical-align: text-bottom;
+ 
+   &::before {
+-    background: svg-icon(
+-        "16px/more.svg",
+-        (
+-          path: (
+-            fill: $pt-icon-color,
+-          ),
+-        )
+-      )
+-      center no-repeat;
++    background-color: var(--bp-typography-color-intent-neutral);
+     content: "";
+     display: block;
+-    height: $pt-icon-size-standard;
+-    width: $pt-icon-size-standard;
++    height: $pt-icon-size-standard-next;
++    mask: svg-icon("16px/more.svg", ()) center / contain no-repeat;
++    width: $pt-icon-size-standard-next;
+   }
+ 
+   &:hover {
+-    background: rgba($gray3, 0.3);
+-    color: $pt-text-color;
++    background-color: var(--bp-surface-layer-color-neutral-hover);
++    color: var(--bp-typography-color-base);
+     text-decoration: none;
+-  }
+-}
+-
+-.#{$ns}-dark {
+-  .#{$ns}-breadcrumb:not(:where(.bp-next .#{$ns}-breadcrumb)),
+-  .#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
+-    color: $pt-dark-text-color-muted;
+-  }
+-
+-  .#{$ns}-breadcrumbs:not(:where(.bp-next .#{$ns}-breadcrumbs)) > li::after {
+-    background: svg-icon(
+-      "16px/chevron-right.svg",
+-      (
+-        path: (
+-          fill: $pt-dark-icon-color,
+-        ),
+-      )
+-    );
+-    color: $pt-dark-icon-color;
+-  }
+-
+-  .#{$ns}-breadcrumb.#{$ns}-disabled:not(:where(.bp-next .#{$ns}-breadcrumb)) {
+-    color: $pt-dark-text-color-disabled;
+-  }
+-
+-  .#{$ns}-breadcrumb-current:not(:where(.bp-next .#{$ns}-breadcrumb-current)) {
+-    color: $pt-dark-text-color;
+-  }
+-
+-  .#{$ns}-breadcrumbs-collapsed:not(:where(.bp-next .#{$ns}-breadcrumbs-collapsed)) {
+-    background: rgba($gray3, 0.2);
+ 
+     &::before {
+-      background: svg-icon(
+-          "16px/more.svg",
+-          (
+-            path: (
+-              fill: $pt-dark-icon-color,
+-            ),
+-          )
+-        )
+-        center no-repeat;
++      background-color: var(--bp-typography-color-base);
+     }
++  }
+ 
+-    &:hover {
+-      background: rgba($gray3, 0.3);
+-      color: $pt-dark-text-color;
++  // Without an explicit high-contrast color, the masked icon can become indistinguishable from its background.
++  @media (forced-colors: active) {
++    &::before,
++    &:hover::before {
++      background-color: $pt-high-contrast-mode-icon-color;
+     }
+   }
+ }

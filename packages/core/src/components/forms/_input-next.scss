@@ -6,12 +6,15 @@
 
 .#{$ns}-input {
   @include pt-input-next;
+
   &.#{$ns}-large {
-    @include pt-input-size-next(large);
+    @include pt-input-large-next;
   }
+
   &.#{$ns}-small {
-    @include pt-input-size-next(small);
+    @include pt-input-small-next;
   }
+
   &.#{$ns}-fill {
     flex: 1 1 auto;
     width: 100%;
@@ -28,15 +31,18 @@
   }
 }
 
+// for iOS support
 @supports (-webkit-touch-callout: none) {
+  // only html input elements require a fix on iOS
   input.#{$ns}-input:disabled,
   input.#{$ns}-input.#{$ns}-disabled {
     opacity: 1;
-    -webkit-text-fill-color: oklch(
-      from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
-    );
+    -webkit-text-fill-color: $input-color-disabled-next;
   }
 }
+
+// override input styles for these modifiers.
+// line-height is needed to center text on <input> but not on multiline <textarea>
 textarea.#{$ns}-input {
   max-width: 100%;
   padding: calc(var(--bp-surface-spacing) * 2);
@@ -47,6 +53,8 @@ textarea.#{$ns}-input {
     line-height: inherit;
   }
 }
+
 .#{$ns}-text-area.#{$ns}-text-area-auto-resize {
+  // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
   resize: horizontal;
 }

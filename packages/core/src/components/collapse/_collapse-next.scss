@@ -1,17 +1,18 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@import "../../common/variables";
+
+$collapse-transition-next: calc(var(--bp-emphasis-transition-duration) * 2)
+  var(--bp-emphasis-ease-default);
+
 .#{$ns}-collapse {
   height: 0;
   overflow-y: hidden;
-  transition-duration: calc(var(--bp-emphasis-transition-duration) * 2);
-  transition-property: height;
-  transition-timing-function: var(--bp-emphasis-ease-default);
+  transition: height $collapse-transition-next;
 
   .#{$ns}-collapse-body {
-    transition-duration: calc(var(--bp-emphasis-transition-duration) * 2);
-    transition-property: transform;
-    transition-timing-function: var(--bp-emphasis-ease-default);
+    transition: transform $collapse-transition-next;
 
     &[aria-hidden="true"] {
       display: none;

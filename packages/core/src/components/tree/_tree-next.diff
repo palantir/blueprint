@@ -1,0 +1,243 @@
+diff --git a/packages/core/src/components/tree/_tree.scss b/packages/core/src/components/tree/_tree-next.scss
+index 5325f2891..779cf4c5c 100644
+--- a/packages/core/src/components/tree/_tree.scss
++++ b/packages/core/src/components/tree/_tree-next.scss
+@@ -6,39 +6,27 @@
+ @import "../../common/variables";
+ @import "../../common/variables-extended";
+ @import "../../common/mixins";
++@import "../icon/icon-mixins-next";
+ 
+-$tree-row-height: $pt-spacing * 7.5 !default;
+-$tree-icon-spacing: $pt-spacing * 2 !default;
+-
+-$tree-row-height-compact: $pt-spacing * 6 !default;
+-$tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
+-
+-$tree-intent-icon-colors: (
+-  "primary": $blue5,
+-  "success": $green5,
+-  "warning": $orange5,
+-  "danger": $red5,
+-) !default;
+-
+-.#{$ns}-tree:not(:where(.bp-next .#{$ns}-tree)) {
++.#{$ns}-tree {
+   #{$icon-classes} {
+-    color: $pt-icon-color;
++    color: var(--bp-typography-color-intent-neutral);
+ 
+-    @each $intent, $colors in $pt-intent-colors {
++    @each $intent in ("primary", "success", "warning", "danger") {
+       &.#{$ns}-intent-#{$intent} {
+-        @include intent-color($intent);
++        color: var(--bp-typography-color-intent-#{$intent});
+       }
+     }
+   }
+ }
+ 
+-.#{$ns}-tree-node-list:not(:where(.bp-next .#{$ns}-tree-node-list)) {
++.#{$ns}-tree-node-list {
+   list-style: none;
+   margin: 0;
+   padding-left: 0;
+ }
+ 
+-.#{$ns}-tree-root:not(:where(.bp-next .#{$ns}-tree-root)) {
++.#{$ns}-tree-root {
+   background-color: transparent;
+   cursor: default;
+   padding-left: 0;
+@@ -47,42 +35,44 @@ $tree-intent-icon-colors: (
+ }
+ 
+ @for $i from 0 through 20 {
+-  .#{$ns}-tree-node-content-#{$i}:not(:where(.bp-next .#{$ns}-tree-node-content-#{$i})) {
+-    padding-left: ($tree-row-height - $tree-icon-spacing) * $i;
++  .#{$ns}-tree-node-content-#{$i} {
++    padding-inline-start: calc(var(--bp-surface-spacing) * 5.5 * $i);
+   }
+ }
+ 
+-.#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
++.#{$ns}-tree-node-content {
+   align-items: center;
+   background: none;
+   display: flex;
+-  height: $tree-row-height;
+-  padding-right: $pt-spacing;
++  height: calc(var(--bp-surface-spacing) * 7.5);
++  padding-inline-end: var(--bp-surface-spacing);
+   width: 100%;
+ 
+   &:hover {
+-    background-color: rgba($gray3, 0.15);
++    background-color: var(--bp-surface-layer-color-neutral-rest);
+   }
+ 
+   &:active {
+-    background-color: rgba($gray3, 0.3);
++    background-color: var(--bp-surface-layer-color-neutral-hover);
+   }
+ }
+ 
+-.#{$ns}-tree-node-caret:not(:where(.bp-next .#{$ns}-tree-node-caret)),
+-.#{$ns}-tree-node-caret-none:not(:where(.bp-next .#{$ns}-tree-node-caret-none)) {
+-  min-width: $tree-row-height;
++.#{$ns}-tree-node-caret,
++.#{$ns}-tree-node-caret-none {
++  min-width: calc(var(--bp-surface-spacing) * 7.5);
+ }
+ 
+-.#{$ns}-tree-node-caret:not(:where(.bp-next .#{$ns}-tree-node-caret)) {
+-  @include pt-icon-colors;
++.#{$ns}-tree-node-caret {
++  @include pt-icon-colors-next;
+   cursor: pointer;
+-  padding: $tree-icon-spacing;
++  padding: calc(var(--bp-surface-spacing) * 2);
+   transform: rotate(0deg);
+-  transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
++  transition-duration: calc(var(--bp-emphasis-transition-duration) * 2);
++  transition-property: transform;
++  transition-timing-function: var(--bp-emphasis-ease-default);
+ 
+   &:hover {
+-    color: $pt-text-color;
++    color: var(--bp-typography-color-base);
+   }
+ 
+   &.#{$ns}-tree-node-caret-open {
+@@ -95,12 +85,12 @@ $tree-intent-icon-colors: (
+   }
+ }
+ 
+-.#{$ns}-tree-node-icon:not(:where(.bp-next .#{$ns}-tree-node-icon)) {
+-  margin-right: $tree-icon-spacing;
++.#{$ns}-tree-node-icon {
++  margin-inline-end: calc(var(--bp-surface-spacing) * 2);
+   position: relative;
+ }
+ 
+-.#{$ns}-tree-node-label:not(:where(.bp-next .#{$ns}-tree-node-label)) {
++.#{$ns}-tree-node-label {
+   @include overflow-ellipsis;
+   flex: 1 1 auto;
+   position: relative;
+@@ -112,8 +102,9 @@ $tree-intent-icon-colors: (
+   }
+ }
+ 
+-.#{$ns}-tree-node-secondary-label:not(:where(.bp-next .#{$ns}-tree-node-secondary-label)) {
+-  padding: 0 $pt-spacing;
++.#{$ns}-tree-node-secondary-label {
++  padding-block: 0;
++  padding-inline: var(--bp-surface-spacing);
+   user-select: none;
+ 
+   .#{$ns}-popover-wrapper,
+@@ -123,86 +114,52 @@ $tree-intent-icon-colors: (
+   }
+ }
+ 
+-.#{$ns}-tree-node.#{$ns}-disabled:not(:where(.bp-next .#{$ns}-tree-node)) {
+-  .#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
++.#{$ns}-tree-node.#{$ns}-disabled {
++  .#{$ns}-tree-node-content {
+     background-color: inherit;
+-    color: $pt-text-color-disabled;
++    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+     cursor: not-allowed;
+   }
+ 
+   .#{$ns}-tree-node-caret,
+   .#{$ns}-tree-node-icon {
+-    color: $pt-text-color-disabled;
++    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+     cursor: not-allowed;
+   }
+ }
+ 
+-.#{$ns}-tree-node.#{$ns}-tree-node-selected:not(:where(.bp-next .#{$ns}-tree-node))
+-  > .#{$ns}-tree-node-content {
+-  background-color: $pt-intent-primary;
++.#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
++  background-color: var(--bp-surface-background-color-primary-rest);
+ 
+   &,
+   #{$icon-classes} {
+-    color: $white;
++    color: var(--bp-intent-primary-foreground);
+   }
+ 
+   .#{$ns}-tree-node-caret {
+     &::before {
+-      color: rgba($white, 0.7);
++      color: oklch(
++        from var(--bp-intent-primary-foreground) l c h / var(--bp-emphasis-translucence-opacity)
++      );
+     }
+ 
+     &:hover::before {
+-      color: $white;
++      color: var(--bp-intent-primary-foreground);
+     }
+   }
+ }
+ 
+ // Variant: compact
+-.#{$ns}-tree.#{$ns}-compact:not(:where(.bp-next .#{$ns}-tree)) {
+-  .#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
+-    height: $tree-row-height-compact;
++.#{$ns}-tree.#{$ns}-compact {
++  .#{$ns}-tree-node-content {
++    height: calc(var(--bp-surface-spacing) * 6);
+   }
+ 
+   .#{$ns}-tree-node-caret {
+-    margin-right: $pt-spacing * 0.75;
+-    min-width: $tree-row-height-compact;
+-    padding: $tree-icon-spacing-compact;
++    margin-inline-end: calc(var(--bp-surface-spacing) * 0.75);
++    min-width: calc(var(--bp-surface-spacing) * 6);
++    padding: var(--bp-surface-spacing);
+   }
+ }
+ 
+ // Variant: dark theme
+-.#{$ns}-dark {
+-  .#{$ns}-tree-node-content:not(:where(.bp-next .#{$ns}-tree-node-content)) {
+-    &:hover {
+-      background-color: rgba($gray1, 0.3);
+-    }
+-  }
+-
+-  .#{$ns}-tree:not(:where(.bp-next .#{$ns}-tree)) {
+-    #{$icon-classes} {
+-      color: $pt-dark-icon-color;
+-
+-      @each $intent, $color in $tree-intent-icon-colors {
+-        &.#{$ns}-intent-#{$intent} {
+-          color: $color;
+-        }
+-      }
+-    }
+-  }
+-
+-  .#{$ns}-tree-node:not(:where(.bp-next .#{$ns}-tree-node)) {
+-    &:not(.#{$ns}-disabled) {
+-      .#{$ns}-tree-node-caret:hover {
+-        color: $pt-dark-text-color;
+-      }
+-    }
+-
+-    &.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
+-      background-color: $pt-intent-primary;
+-
+-      #{$icon-classes} {
+-        color: $white;
+-      }
+-    }
+-  }
+-}

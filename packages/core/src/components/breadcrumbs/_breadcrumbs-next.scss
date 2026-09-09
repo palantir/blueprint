@@ -2,18 +2,22 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/variables";
+@import "../../common/variables-next";
 
 .#{$ns}-breadcrumbs {
   align-items: center;
+  // The current breadcrumb inherits this color; runtime color schemes only update token values.
+  color: var(--bp-typography-color-base);
   cursor: default;
   display: flex;
   flex-wrap: wrap;
-  height: calc(var(--bp-surface-spacing) * 7.5);
+  height: $pt-input-height-next;
   list-style: none;
+  // unstyled inline list reset
   margin: 0;
   padding: 0;
 
+  // descendant selector because nothing should come between ol and li
   > li {
     align-items: center;
     display: flex;
@@ -22,10 +26,15 @@
       background-color: var(--bp-typography-color-intent-neutral);
       content: "";
       display: block;
-      height: calc(var(--bp-surface-spacing) * 4);
+      height: $pt-icon-size-standard-next;
       margin: 0 var(--bp-surface-spacing);
       mask: svg-icon("16px/chevron-right.svg", ()) center / contain no-repeat;
-      width: calc(var(--bp-surface-spacing) * 4);
+      width: $pt-icon-size-standard-next;
+
+      // Without an explicit high-contrast color, the masked icon can become indistinguishable from its background.
+      @media (forced-colors: active) {
+        background-color: $pt-high-contrast-mode-icon-color;
+      }
     }
 
     &:last-of-type::after {
@@ -53,7 +62,7 @@
   }
 
   &.#{$ns}-disabled {
-    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+    color: $pt-text-color-disabled-next;
     cursor: not-allowed;
   }
 
@@ -77,20 +86,18 @@
   background-color: var(--bp-surface-layer-color-neutral-rest);
   border: none;
   border-radius: var(--bp-surface-border-radius);
-  color: var(--bp-typography-color-intent-neutral);
   cursor: pointer;
   margin-right: calc(var(--bp-surface-spacing) * 0.5);
-  padding-block: var(--bp-surface-border-width);
-  padding-inline: var(--bp-surface-spacing);
+  padding: 1px var(--bp-surface-spacing);
   vertical-align: text-bottom;
 
   &::before {
     background-color: var(--bp-typography-color-intent-neutral);
     content: "";
     display: block;
-    height: calc(var(--bp-surface-spacing) * 4);
+    height: $pt-icon-size-standard-next;
     mask: svg-icon("16px/more.svg", ()) center / contain no-repeat;
-    width: calc(var(--bp-surface-spacing) * 4);
+    width: $pt-icon-size-standard-next;
   }
 
   &:hover {
@@ -100,6 +107,14 @@
 
     &::before {
       background-color: var(--bp-typography-color-base);
+    }
+  }
+
+  // Without an explicit high-contrast color, the masked icon can become indistinguishable from its background.
+  @media (forced-colors: active) {
+    &::before,
+    &:hover::before {
+      background-color: $pt-high-contrast-mode-icon-color;
     }
   }
 }

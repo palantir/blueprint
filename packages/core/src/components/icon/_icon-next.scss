@@ -50,6 +50,7 @@
   }
 }
 
+// intent colors for both SVG and font icons are overridden below so they respond to BP7 token customization
 // Override legacy typography colors so intent icons respond to BP7 token customization.
 #{$icon-classes} {
   @each $intent in $pt-intents {
@@ -66,12 +67,12 @@
 //
 
 span.#{$ns}-icon-standard {
-  @include pt-icon-next(calc(var(--bp-surface-spacing) * 4), 16);
+  @include pt-icon-next($pt-icon-size-standard-next, 16);
   display: inline-block;
 }
 
 span.#{$ns}-icon-large {
-  @include pt-icon-next(calc(var(--bp-surface-spacing) * 5), 20);
+  @include pt-icon-next($pt-icon-size-large-next, 20);
   display: inline-block;
 }
 
@@ -88,11 +89,11 @@ span.#{$ns}-icon:empty {
   }
 
   &.#{$ns}-icon-standard {
-    font-size: calc(var(--bp-surface-spacing) * 4);
+    font-size: $pt-icon-size-standard-next;
   }
 
   &.#{$ns}-icon-large {
-    font-size: calc(var(--bp-surface-spacing) * 5);
+    font-size: $pt-icon-size-large-next;
   }
 }
 

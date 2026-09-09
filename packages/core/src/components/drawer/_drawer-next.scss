@@ -3,10 +3,10 @@
 
 @import "../../common/mixins";
 @import "../../common/react-transition";
-@import "../../common/variables";
+@import "drawer-variables-next";
 
 .#{$ns}-drawer {
-  background: var(--bp-surface-background-color-base-rest);
+  background: $drawer-background-color-next;
   box-shadow: var(--bp-surface-shadow-4);
   color: var(--bp-typography-color-base);
   display: flex;
@@ -18,6 +18,7 @@
     outline: 0;
   }
 
+  // Preserve the legacy defaults: 200ms enter and 100ms exit from every edge.
   &.#{$ns}-position-top {
     @include react-transition-phase(
       "#{$ns}-overlay",
@@ -28,7 +29,7 @@
           translateY(0),
         ),
       ),
-      var(--bp-emphasis-transition-duration),
+      calc(var(--bp-emphasis-transition-duration) * 2),
       var(--bp-emphasis-ease-default),
       $before: "&"
     );
@@ -45,13 +46,13 @@
       var(--bp-emphasis-ease-default),
       $before: "&"
     );
-    height: 50%;
+    height: $drawer-default-size-next;
     left: 0;
     right: 0;
     top: 0;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-bottom: var(--bp-surface-border-width) solid CanvasText;
+      border-bottom: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
   &.#{$ns}-position-bottom {
@@ -64,7 +65,7 @@
           translateY(0),
         ),
       ),
-      var(--bp-emphasis-transition-duration),
+      calc(var(--bp-emphasis-transition-duration) * 2),
       var(--bp-emphasis-ease-default),
       $before: "&"
     );
@@ -82,12 +83,12 @@
       $before: "&"
     );
     bottom: 0;
-    height: 50%;
+    height: $drawer-default-size-next;
     left: 0;
     right: 0;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-top: var(--bp-surface-border-width) solid CanvasText;
+      border-top: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
   &.#{$ns}-position-left {
@@ -100,7 +101,7 @@
           translateX(0),
         ),
       ),
-      var(--bp-emphasis-transition-duration),
+      calc(var(--bp-emphasis-transition-duration) * 2),
       var(--bp-emphasis-ease-default),
       $before: "&"
     );
@@ -120,10 +121,10 @@
     bottom: 0;
     left: 0;
     top: 0;
-    width: 50%;
+    width: $drawer-default-size-next;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-right: var(--bp-surface-border-width) solid CanvasText;
+      border-right: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
   &.#{$ns}-position-right {
@@ -136,7 +137,7 @@
           translateX(0),
         ),
       ),
-      var(--bp-emphasis-transition-duration),
+      calc(var(--bp-emphasis-transition-duration) * 2),
       var(--bp-emphasis-ease-default),
       $before: "&"
     );
@@ -156,10 +157,10 @@
     bottom: 0;
     right: 0;
     top: 0;
-    width: 50%;
+    width: $drawer-default-size-next;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-left: var(--bp-surface-border-width) solid CanvasText;
+      border-left: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
 }
@@ -170,19 +171,19 @@
   box-shadow: 0 var(--bp-surface-border-width) 0 var(--bp-surface-divider-color-default);
   display: flex;
   flex: 0 0 auto;
-  min-height: calc(var(--bp-surface-spacing) * 9);
-  padding: calc(var(--bp-surface-spacing) * 1.25);
-  padding-left: calc(var(--bp-surface-spacing) * 5);
+  min-height: calc($pt-icon-size-large-next + $drawer-padding-next);
+  padding: calc($drawer-padding-next * 0.25);
+  padding-left: $drawer-padding-next;
   position: relative;
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border-bottom: var(--bp-surface-border-width) solid CanvasText;
+    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
   }
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     color: var(--bp-typography-color-base);
     flex: 0 0 auto;
-    margin-right: calc(var(--bp-surface-spacing) * 2.5);
+    margin-right: calc($drawer-padding-next * 0.5);
   }
   .#{$ns}-heading {
     @include overflow-ellipsis;
@@ -191,7 +192,7 @@
     margin: 0;
 
     &:last-child {
-      margin-right: calc(var(--bp-surface-spacing) * 5);
+      margin-right: $drawer-padding-next;
     }
   }
 }
@@ -203,6 +204,6 @@
 .#{$ns}-drawer-footer {
   box-shadow: inset 0 var(--bp-surface-border-width) 0 var(--bp-surface-divider-color-default);
   flex: 0 0 auto;
-  padding: calc(var(--bp-surface-spacing) * 2.5) calc(var(--bp-surface-spacing) * 5);
+  padding: calc($drawer-padding-next * 0.5) $drawer-padding-next;
   position: relative;
 }

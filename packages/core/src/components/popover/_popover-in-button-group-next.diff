@@ -1,0 +1,60 @@
+diff --git a/packages/core/src/components/popover/_popover-in-button-group.scss b/packages/core/src/components/popover/_popover-in-button-group-next.scss
+index 473c311c1..2303c1225 100644
+--- a/packages/core/src/components/popover/_popover-in-button-group.scss
++++ b/packages/core/src/components/popover/_popover-in-button-group-next.scss
+@@ -1,42 +1,33 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "./common";
+-@import "../button/common";
++@import "../../common/variables";
+ 
+-.#{$ns}-button-group:not(:where(.bp-next .#{$ns}-button-group)) {
+-  // support wrapping buttons in a tooltip, which adds a wrapper element
++.#{$ns}-button-group {
+   &:not(.#{$ns}-minimal) {
+     > .#{$ns}-popover-target:not(:first-child) .#{$ns}-button {
+       border-bottom-left-radius: 0;
+       border-top-left-radius: 0;
+     }
+-
+     > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
+       border-bottom-right-radius: 0;
+       border-top-right-radius: 0;
+-      margin-right: -$button-border-width;
++      margin-right: calc(-1 * var(--bp-surface-border-width));
+     }
+   }
+-
+   .#{$ns}-popover-target {
+     display: flex;
+     flex: 1 1 auto;
+   }
+-
+-  &.#{$ns}-vertical {
+-    &:not(.#{$ns}-minimal) {
+-      > .#{$ns}-popover-target:first-child .#{$ns}-button {
+-        border-radius: $pt-border-radius $pt-border-radius 0 0;
+-      }
+-
+-      > .#{$ns}-popover-target:last-child .#{$ns}-button {
+-        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+-      }
+-
+-      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
+-        margin-bottom: -$button-border-width;
+-      }
++  &.#{$ns}-vertical:not(.#{$ns}-minimal) {
++    > .#{$ns}-popover-target:first-child .#{$ns}-button {
++      border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
++    }
++    > .#{$ns}-popover-target:last-child .#{$ns}-button {
++      border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
++    }
++    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
++      margin-bottom: calc(-1 * var(--bp-surface-border-width));
+     }
+   }
+ }

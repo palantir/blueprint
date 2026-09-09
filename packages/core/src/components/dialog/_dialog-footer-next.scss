@@ -1,30 +1,35 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-
 .#{$ns}-dialog-footer {
   flex: 0 0 auto;
-  margin: calc(var(--bp-surface-spacing) * 4);
+  // We'd like to use padding instead of margin here to be consistent with the -dialog-footer-fixed class,
+  // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
+  // TODO(adahiya): migrate from margin to padding style (CSS breaking change)
+  margin: $dialog-padding-next;
 }
+
 .#{$ns}-dialog-footer-fixed {
   align-items: center;
-  background-color: var(--bp-surface-background-color-base-rest);
-  border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
-  border-top: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+  background-color: $dialog-background-color-next;
+  border-radius: 0 0 $dialog-border-radius-next $dialog-border-radius-next;
+  border-top: 1px solid var(--bp-surface-divider-color-default);
   display: flex;
-  gap: calc(var(--bp-surface-spacing) * 4);
+  gap: $dialog-padding-next;
   justify-content: space-between;
   margin: 0;
   padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 2)
-    calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 4);
+    calc(var(--bp-surface-spacing) * 2) $dialog-padding-next;
 }
+
 .#{$ns}-dialog-footer-main-section {
   flex: 1 1 auto;
 }
+
 .#{$ns}-dialog-footer-actions {
   display: flex;
   justify-content: flex-end;
+
   .#{$ns}-button {
     margin-left: calc(var(--bp-surface-spacing) * 2);
   }

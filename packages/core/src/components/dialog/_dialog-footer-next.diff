@@ -1,0 +1,58 @@
+diff --git a/packages/core/src/components/dialog/_dialog-footer.scss b/packages/core/src/components/dialog/_dialog-footer-next.scss
+index 4fe85c171..c0a608690 100644
+--- a/packages/core/src/components/dialog/_dialog-footer.scss
++++ b/packages/core/src/components/dialog/_dialog-footer-next.scss
+@@ -1,40 +1,36 @@
+-// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-.#{$ns}-dialog-footer:not(:where(.bp-next .#{$ns}-dialog-footer)) {
++.#{$ns}-dialog-footer {
+   flex: 0 0 auto;
+   // We'd like to use padding instead of margin here to be consistent with the -dialog-footer-fixed class,
+   // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
+   // TODO(adahiya): migrate from margin to padding style (CSS breaking change)
+-  margin: $dialog-padding;
++  margin: $dialog-padding-next;
+ }
+ 
+-.#{$ns}-dialog-footer-fixed:not(:where(.bp-next .#{$ns}-dialog-footer-fixed)) {
++.#{$ns}-dialog-footer-fixed {
+   align-items: center;
+-  background-color: $white;
+-  border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
+-  border-top: 1px solid $pt-divider-black;
++  background-color: $dialog-background-color-next;
++  border-radius: 0 0 $dialog-border-radius-next $dialog-border-radius-next;
++  border-top: 1px solid var(--bp-surface-divider-color-default);
+   display: flex;
+-  gap: $dialog-padding;
++  gap: $dialog-padding-next;
+   justify-content: space-between;
+   margin: 0;
+-  padding: ($pt-spacing * 2) ($pt-spacing * 2) ($pt-spacing * 2) $dialog-padding;
+-
+-  .#{$ns}-dark & {
+-    background: $dark-gray4;
+-    border-top: 1px solid $pt-dark-divider-white;
+-  }
++  padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 2)
++    calc(var(--bp-surface-spacing) * 2) $dialog-padding-next;
+ }
+ 
+-.#{$ns}-dialog-footer-main-section:not(:where(.bp-next .#{$ns}-dialog-footer-main-section)) {
++.#{$ns}-dialog-footer-main-section {
+   flex: 1 1 auto;
+ }
+ 
+-.#{$ns}-dialog-footer-actions:not(:where(.bp-next .#{$ns}-dialog-footer-actions)) {
++.#{$ns}-dialog-footer-actions {
+   display: flex;
+   justify-content: flex-end;
+ 
+   .#{$ns}-button {
+-    margin-left: $pt-spacing * 2;
++    margin-left: calc(var(--bp-surface-spacing) * 2);
+   }
+ }

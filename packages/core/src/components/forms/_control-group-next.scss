@@ -1,116 +1,157 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@import "../../common/mixins-next";
 @import "../../common/variables";
+@import "common-next";
 
 .#{$ns}-control-group {
+  // create a new stacking context to isolate all the z-indices
+  @include new-render-layer-next;
+  @include pt-flex-container(row);
+  // each child is full height
   align-items: stretch;
-  display: flex;
-  isolation: isolate;
+
+  // similarly to button groups, elements in control groups are stacked in a
+  // very particular order for best visual results. in each level of selector
+  // specificity, we define disabled styles last so that they override all other
+  // equally-specific styles (e.g. we don't want mouse interactions or focus
+  // changes to change the z-index of a disabled element).
+
   .#{$ns}-button,
   .#{$ns}-html-select,
   .#{$ns}-input,
   .#{$ns}-select {
+    // create a new stacking context
     position: relative;
   }
+
   .#{$ns}-input {
-    z-index: 2;
+    z-index: list.index($control-group-stack-next, "input-default");
 
     &:focus {
-      z-index: 5;
+      z-index: list.index($control-group-stack-next, "input-focus");
     }
+
     &[class*="#{$ns}-intent"] {
-      z-index: 4;
+      z-index: list.index($control-group-stack-next, "intent-input-default");
 
       &:focus {
-        z-index: 6;
+        z-index: list.index($control-group-stack-next, "intent-input-focus");
       }
     }
+
     &[readonly],
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: 1;
+      z-index: list.index($control-group-stack-next, "input-disabled");
     }
   }
+
   .#{$ns}-input-group[class*="#{$ns}-intent"] .#{$ns}-input {
-    z-index: 4;
+    z-index: list.index($control-group-stack-next, "intent-input-default");
 
     &:focus {
-      z-index: 6;
+      z-index: list.index($control-group-stack-next, "intent-input-focus");
     }
   }
+
   .#{$ns}-button,
   .#{$ns}-html-select select,
   .#{$ns}-select select {
-    z-index: 3;
+    @include new-render-layer-next;
+    z-index: list.index($control-group-stack-next, "button-default");
 
     &:focus {
-      z-index: 5;
+      z-index: list.index($control-group-stack-next, "button-focus");
     }
 
     &:hover {
-      z-index: 6;
+      z-index: list.index($control-group-stack-next, "button-hover");
     }
 
     &:active {
-      z-index: 7;
+      z-index: list.index($control-group-stack-next, "button-active");
     }
+
     &[readonly],
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: 1;
+      z-index: list.index($control-group-stack-next, "button-disabled");
     }
+
     &[class*="#{$ns}-intent"] {
-      z-index: 9;
+      z-index: list.index($control-group-stack-next, "intent-button-default");
 
       &:focus {
-        z-index: 10;
+        z-index: list.index($control-group-stack-next, "intent-button-focus");
       }
 
       &:hover {
-        z-index: 11;
+        z-index: list.index($control-group-stack-next, "intent-button-hover");
       }
 
       &:active {
-        z-index: 12;
+        z-index: list.index($control-group-stack-next, "intent-button-active");
       }
+
       &[readonly],
       &:disabled,
       &.#{$ns}-disabled {
-        z-index: 8;
+        z-index: list.index($control-group-stack-next, "intent-button-disabled");
       }
     }
   }
+
+  // input group contents appear above input always
   .#{$ns}-input-group > .#{$ns}-icon,
   .#{$ns}-input-group > .#{$ns}-button,
   .#{$ns}-input-group > .#{$ns}-input-left-container,
   .#{$ns}-input-group > .#{$ns}-input-action {
-    z-index: 7;
+    z-index: list.index($control-group-stack-next, "input-group-children");
   }
+
+  // keep the select-menu carets on top of everything always (particularly when
+  // .#{$ns}-selects are focused).
   .#{$ns}-select::after,
   .#{$ns}-html-select::after,
   .#{$ns}-select > .#{$ns}-icon,
   .#{$ns}-html-select > .#{$ns}-icon {
-    z-index: 8;
+    z-index: list.index($control-group-stack-next, "select-caret");
   }
+
+  // select container does not get focus directly (its <select> does), and it
+  // sometimes needs to compete with adjacent container elements
   .#{$ns}-html-select:focus-within,
   .#{$ns}-select:focus-within {
-    z-index: 5;
+    z-index: list.index($control-group-stack-next, "button-focus");
   }
-  &:not(.#{$ns}-vertical) > :not(:last-child) {
-    margin-right: calc(var(--bp-surface-spacing) * 0.5);
+
+  &:not(.#{$ns}-vertical) {
+    > :not(:last-child) {
+      margin-right: calc(var(--bp-surface-spacing) * 0.5);
+    }
   }
+
+  // special handling of numeric input, which is a nested control group itself
   .#{$ns}-numeric-input:not(:first-child) .#{$ns}-input-group {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
   }
+
   &.#{$ns}-fill {
     width: 100%;
   }
-  > .#{$ns}-fill,
+
+  > .#{$ns}-fill {
+    flex: 1 1 auto;
+  }
+
   &.#{$ns}-fill > *:not(.#{$ns}-fixed) {
     flex: 1 1 auto;
   }
+
   &.#{$ns}-vertical {
     flex-direction: column;
 

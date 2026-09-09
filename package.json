@@ -22,6 +22,7 @@
         "dev:select": "nx run-many -t dev -p @blueprintjs/select @blueprintjs/docs-app",
         "dev:table": "nx run-many -t dev -p @blueprintjs/table @blueprintjs/table-dev-app",
         "dev:demo": "nx run @blueprintjs/demo-app:dev",
+        "diff:next-styles": "node ./scripts/diff-next-styles.mjs",
         "dist": "nx run-many -t dist",
         "docs-data": "nx compile @blueprintjs/docs-data",
         "format": "prettier --write \"./**/*.{ts,tsx,mts,mjs,js,json,yaml,yml,scss,md}\"",

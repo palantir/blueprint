@@ -1,0 +1,71 @@
+diff --git a/packages/core/src/components/segmented-control/_segmented-control.scss b/packages/core/src/components/segmented-control/_segmented-control-next.scss
+index 2b00eb10c..b794365d0 100644
+--- a/packages/core/src/components/segmented-control/_segmented-control.scss
++++ b/packages/core/src/components/segmented-control/_segmented-control-next.scss
+@@ -1,52 +1,33 @@
+-@use "sass:math";
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
++// Licensed under the Apache License, Version 2.0.
++
+ @import "../../common/variables";
+ 
+-.#{$ns}-segmented-control:not(:where(.bp-next .#{$ns}-segmented-control)) {
+-  background-color: $light-gray5;
+-  border-radius: $pt-border-radius;
++.#{$ns}-segmented-control {
++  background: var(--bp-surface-layer-neutral-rest);
++  border-radius: var(--bp-surface-border-radius);
+   display: flex;
+-  gap: $pt-spacing * 0.5;
+-  padding: $pt-spacing * 0.5;
++  gap: calc(var(--bp-surface-spacing) * 0.5);
++  padding: calc(var(--bp-surface-spacing) * 0.5);
+ 
+   &.#{$ns}-inline {
+     display: inline-flex;
+   }
+-
+   &.#{$ns}-fill {
+     width: 100%;
+-
+     > .#{$ns}-button {
+       flex-grow: 1;
+     }
+   }
+-
+-  > .#{$ns}-button:not(.#{$ns}-minimal) {
+-    &:not(.#{$ns}-intent-primary) {
+-      background-color: $white;
+-
+-      .#{$ns}-dark & {
+-        background-color: $dark-gray5;
+-      }
+-    }
++  > .#{$ns}-button:not(.#{$ns}-minimal):not([class*="#{$ns}-intent-"]) {
++    background: var(--bp-surface-background-color-base-rest);
+   }
+-
+   > .#{$ns}-button.#{$ns}-minimal {
+-    color: $pt-text-color-muted;
+-
+-    .#{$ns}-dark & {
+-      color: $pt-dark-text-color-muted;
+-    }
++    color: var(--bp-typography-color-intent-neutral);
+   }
+-
+   > .#{$ns}-button.#{$ns}-minimal:disabled {
+-    color: $pt-text-color-disabled;
+-
+-    .#{$ns}-dark & {
+-      color: $pt-dark-text-color-disabled;
+-    }
+-  }
+-
+-  .#{$ns}-dark & {
+-    background-color: $dark-gray2;
++    color: oklch(
++      from var(--bp-typography-color-intent-neutral) l c h / var(--bp-emphasis-disabled-opacity)
++    );
+   }
+ }

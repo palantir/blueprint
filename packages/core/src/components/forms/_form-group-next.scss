@@ -3,7 +3,7 @@
 
 /* stylelint-disable declaration-no-important -- matches required legacy precedence. */
 
-@import "../../common/variables";
+@import "common-next";
 
 .#{$ns}-form-group {
   display: flex;
@@ -50,8 +50,7 @@
   &.#{$ns}-disabled .#{$ns}-text-muted,
   &.#{$ns}-disabled .#{$ns}-form-group-sub-label,
   &.#{$ns}-disabled .#{$ns}-form-helper-text {
-    color: oklch(
-      from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
-    ) !important;
+    // disabled state always overrides over styles
+    color: $input-color-disabled-next !important;
   }
 }

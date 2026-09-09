@@ -3,6 +3,15 @@
 
 @import "../../common/variables";
 
+$entity-title-heading-heights-next: (
+  "h1": calc(var(--bp-surface-spacing) * 10),
+  "h2": calc(var(--bp-surface-spacing) * 8),
+  "h3": calc(var(--bp-surface-spacing) * 6.25),
+  "h4": calc(var(--bp-surface-spacing) * 5.25),
+  "h5": calc(var(--bp-surface-spacing) * 4.75),
+  "h6": calc(var(--bp-surface-spacing) * 4),
+);
+
 .#{$ns}-entity-title {
   align-items: center;
   display: flex;
@@ -12,113 +21,86 @@
   &.#{$ns}-fill {
     width: 100%;
   }
+}
 
-  &-icon-container {
-    &.#{$ns}-entity-title-has-subtitle {
-      align-self: flex-start;
-    }
-
-    &:not(.#{$ns}-entity-title-has-subtitle) {
-      align-items: center;
-      display: flex;
-    }
+.#{$ns}-entity-title-icon-container {
+  &.#{$ns}-entity-title-has-subtitle {
+    align-self: flex-start;
   }
 
-  &-text {
-    display: flex;
-    flex-direction: column;
-
-    .#{$ns}-fill & {
-      flex-grow: 1;
-    }
-  }
-
-  &-title-and-tags {
+  &:not(.#{$ns}-entity-title-has-subtitle) {
     align-items: center;
     display: flex;
-    flex-direction: row;
-    gap: var(--bp-surface-spacing);
   }
+}
 
-  &-tags-container {
+.#{$ns}-entity-title-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.#{$ns}-fill .#{$ns}-entity-title-text {
+  flex-grow: 1;
+}
+
+.#{$ns}-entity-title-title-and-tags {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: var(--bp-surface-spacing);
+}
+
+.#{$ns}-entity-title-tags-container {
+  display: flex;
+  gap: calc(var(--bp-surface-spacing) * 0.5);
+  margin-left: var(--bp-surface-spacing);
+}
+
+.#{$ns}-entity-title-title {
+  margin-bottom: 0;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.#{$ns}-fill .#{$ns}-entity-title-title {
+  flex-grow: 1;
+}
+
+.#{$ns}-entity-title-subtitle {
+  font-size: var(--bp-typography-size-sm);
+  margin-top: calc(var(--bp-surface-spacing) * 0.5);
+}
+
+.#{$ns}-entity-title-ellipsize,
+.#{$ns}-entity-title-ellipsize .#{$ns}-entity-title-text {
+  overflow: hidden;
+}
+
+@each $tag, $height in $entity-title-heading-heights-next {
+  .#{$ns}-entity-title-heading-#{$tag} .#{$ns}-icon-container {
+    align-items: center;
     display: flex;
-    gap: calc(var(--bp-surface-spacing) * 0.5);
-    margin-left: var(--bp-surface-spacing);
+    // Aligning icon which has unknown dimensions on the title size.
+    height: $height;
   }
+}
 
-  &-title {
-    margin-bottom: 0;
-    min-width: 0;
-    overflow-wrap: break-word;
+.#{$ns}-entity-title-heading-h1,
+.#{$ns}-entity-title-heading-h2,
+.#{$ns}-entity-title-heading-h3 {
+  gap: calc(var(--bp-surface-spacing) * 4);
 
-    .#{$ns}-fill & {
-      flex-grow: 1;
-    }
+  .#{$ns}-entity-title-subtitle {
+    font-size: var(--bp-typography-size-md);
   }
+}
 
-  &-subtitle {
+.#{$ns}-entity-title-heading-h4,
+.#{$ns}-entity-title-heading-h5,
+.#{$ns}-entity-title-heading-h6 {
+  gap: calc(var(--bp-surface-spacing) * 2);
+
+  .#{$ns}-entity-title-subtitle {
     font-size: var(--bp-typography-size-sm);
-    margin-top: calc(var(--bp-surface-spacing) * 0.5);
-  }
-
-  &-ellipsize,
-  &-ellipsize &-text {
-    overflow: hidden;
-  }
-
-  &-heading-h1 .#{$ns}-icon-container {
-    align-items: center;
-    display: flex;
-    height: calc(var(--bp-surface-spacing) * 10);
-  }
-
-  &-heading-h2 .#{$ns}-icon-container {
-    align-items: center;
-    display: flex;
-    height: calc(var(--bp-surface-spacing) * 8);
-  }
-
-  &-heading-h3 .#{$ns}-icon-container {
-    align-items: center;
-    display: flex;
-    height: calc(var(--bp-surface-spacing) * 6.25);
-  }
-
-  &-heading-h4 .#{$ns}-icon-container {
-    align-items: center;
-    display: flex;
-    height: calc(var(--bp-surface-spacing) * 5.25);
-  }
-
-  &-heading-h5 .#{$ns}-icon-container {
-    align-items: center;
-    display: flex;
-    height: calc(var(--bp-surface-spacing) * 4.75);
-  }
-
-  &-heading-h6 .#{$ns}-icon-container {
-    align-items: center;
-    display: flex;
-    height: calc(var(--bp-surface-spacing) * 4);
-  }
-
-  &-heading-h1,
-  &-heading-h2,
-  &-heading-h3 {
-    gap: calc(var(--bp-surface-spacing) * 4);
-
-    .#{$ns}-entity-title-subtitle {
-      font-size: var(--bp-typography-size-md);
-    }
-  }
-
-  &-heading-h4,
-  &-heading-h5,
-  &-heading-h6 {
-    gap: calc(var(--bp-surface-spacing) * 2);
-
-    .#{$ns}-entity-title-subtitle {
-      font-size: var(--bp-typography-size-sm);
-    }
   }
 }

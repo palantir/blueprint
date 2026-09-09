@@ -1,0 +1,198 @@
+diff --git a/packages/core/src/components/section/_section.scss b/packages/core/src/components/section/_section-next.scss
+index 8b96f9023..57b2bedc9 100644
+--- a/packages/core/src/components/section/_section.scss
++++ b/packages/core/src/components/section/_section-next.scss
+@@ -1,119 +1,101 @@
+-@use "sass:math";
+-@import "../../common/variables";
+-
+-$section-min-height: $pt-spacing * 12.5 !default;
+-$section-padding-vertical: $pt-spacing * 2 !default;
+-$section-padding-horizontal: $pt-spacing * 5 !default;
+-$section-card-padding: $pt-spacing * 5 !default;
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
++// Licensed under the Apache License, Version 2.0.
+ 
+-$section-min-height-compact: $pt-spacing * 10 !default;
+-$section-padding-compact-vertical: $pt-spacing * 2 !default;
+-$section-padding-compact-horizontal: $pt-spacing * 4 !default;
+-$section-card-padding-compact: $pt-spacing * 4 !default;
++@import "../../common/variables";
+ 
+-.#{$ns}-section:not(:where(.bp-next .#{$ns}-section)),
+-.#{$ns}-section.#{$ns}-compact:not(:where(.bp-next .#{$ns}-section)) {
+-  // Override Card compact styles here.
++.#{$ns}-section {
+   overflow: hidden;
+-  padding: 0;
+   width: 100%;
+-}
+ 
+-.#{$ns}-section-header:not(:where(.bp-next .#{$ns}-section-header)) {
+-  align-items: center;
+-  border-bottom: 1px solid $pt-divider-black;
+-  display: flex;
+-  gap: $pt-spacing * 5;
+-  justify-content: space-between;
+-  min-height: $section-min-height;
+-  padding: 0 $section-padding-horizontal;
+-  position: relative;
+-  width: 100%;
+-
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    border-color: $pt-dark-divider-white;
++  &,
++  &.#{$ns}-compact {
++    // Override Card compact styles here.
++    padding: 0;
+   }
+ 
+-  &.#{$ns}-interactive {
+-    cursor: pointer;
+-
+-    &:hover,
+-    &:active {
+-      background: $light-gray5;
++  &-header {
++    align-items: center;
++    border-bottom: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
++    display: flex;
++    gap: calc(var(--bp-surface-spacing) * 5);
++    justify-content: space-between;
++    min-height: calc(var(--bp-surface-spacing) * 12.5);
++    padding: 0 calc(var(--bp-surface-spacing) * 5);
++    position: relative;
++    width: 100%;
++
++    &-left {
++      align-items: center;
++      display: flex;
++      gap: calc(var(--bp-surface-spacing) * 2);
++      padding: calc(var(--bp-surface-spacing) * 2) 0;
++    }
+ 
+-      &.#{$ns}-dark,
+-      .#{$ns}-dark & {
+-        background: $dark-gray4;
+-      }
++    &-title {
++      margin-bottom: 0;
+     }
+-  }
+-}
+ 
+-.#{$ns}-section-header-left:not(:where(.bp-next .#{$ns}-section-header-left)) {
+-  align-items: center;
+-  display: flex;
+-  gap: $pt-spacing * 2;
+-  padding: $section-padding-vertical 0;
+-}
++    &-sub-title {
++      margin-top: calc(var(--bp-surface-spacing) * 0.5);
++    }
+ 
+-.#{$ns}-section-header-title:not(:where(.bp-next .#{$ns}-section-header-title)) {
+-  margin-bottom: 0;
+-}
++    &-right {
++      align-items: center;
++      display: flex;
++      gap: calc(var(--bp-surface-spacing) * 2);
++      margin-left: auto;
++    }
+ 
+-.#{$ns}-section-header-sub-title:not(:where(.bp-next .#{$ns}-section-header-sub-title)) {
+-  margin-top: $pt-spacing * 0.5;
+-}
++    &-collapse-caret {
++      display: inline-flex;
++      justify-content: center;
++      vertical-align: middle;
++    }
+ 
+-.#{$ns}-section-header-right:not(:where(.bp-next .#{$ns}-section-header-right)) {
+-  align-items: center;
+-  display: flex;
+-  gap: $pt-spacing * 2;
+-  margin-left: auto;
+-}
++    &-divider {
++      align-self: stretch;
++      margin: calc(var(--bp-surface-spacing) * 4) 0;
++    }
+ 
+-.#{$ns}-section-header-collapse-caret:not(:where(.bp-next .#{$ns}-section-header-collapse-caret)) {
+-  display: inline-flex;
+-  justify-content: center;
+-  vertical-align: middle;
+-}
++    &.#{$ns}-interactive {
++      cursor: pointer;
+ 
+-.#{$ns}-section-header-divider:not(:where(.bp-next .#{$ns}-section-header-divider)) {
+-  align-self: stretch;
+-  margin: $pt-spacing * 4 0;
+-}
++      &:hover {
++        background: var(--bp-surface-layer-neutral-hover);
++      }
+ 
+-.#{$ns}-section-card:not(:where(.bp-next .#{$ns}-section-card)) {
+-  &.#{$ns}-padded {
+-    padding: $section-card-padding;
++      &:active {
++        background: var(--bp-surface-layer-neutral-active);
++      }
++    }
+   }
+ 
+-  &:not(:last-child) {
+-    border-bottom: 1px solid $pt-divider-black;
++  &-card {
++    &.#{$ns}-padded {
++      padding: calc(var(--bp-surface-spacing) * 5);
++    }
+ 
+-    &.#{$ns}-dark,
+-    .#{$ns}-dark & {
+-      border-color: $pt-dark-divider-white;
++    &:not(:last-child) {
++      border-bottom: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+     }
+   }
+-}
+-
+-.#{$ns}-section.#{$ns}-section-collapsed:not(:where(.bp-next .#{$ns}-section))
+-  .#{$ns}-section-header:not(:where(.bp-next .#{$ns}-section-header)) {
+-  border: none;
+-}
+ 
+-.#{$ns}-section.#{$ns}-compact:not(:where(.bp-next .#{$ns}-section)) {
+-  .#{$ns}-section-header:not(:where(.bp-next .#{$ns}-section-header)) {
+-    min-height: $section-min-height-compact;
+-    padding: 0 $section-padding-compact-horizontal;
++  &.#{$ns}-section-collapsed .#{$ns}-section-header {
++    border: none;
+   }
+ 
+-  .#{$ns}-section-header-left:not(:where(.bp-next .#{$ns}-section-header-left)) {
+-    padding: $section-padding-compact-vertical 0;
+-  }
++  &.#{$ns}-compact {
++    .#{$ns}-section-header {
++      min-height: calc(var(--bp-surface-spacing) * 10);
++      padding: 0 calc(var(--bp-surface-spacing) * 4);
+ 
+-  .#{$ns}-section-card.#{$ns}-padded:not(:where(.bp-next .#{$ns}-section-card)) {
+-    padding: $section-card-padding-compact;
++      &-left {
++        padding: calc(var(--bp-surface-spacing) * 2) 0;
++      }
++    }
++
++    .#{$ns}-section-card.#{$ns}-padded {
++      padding: calc(var(--bp-surface-spacing) * 4);
++    }
+   }
+ }

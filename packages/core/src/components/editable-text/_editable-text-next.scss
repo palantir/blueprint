@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
+@import "../forms/common-next";
 
 .#{$ns}-editable-text {
   cursor: text;
@@ -11,24 +12,23 @@
   vertical-align: top;
   white-space: nowrap;
 
+  // input styles on the ::before
   &::before {
+    @include position-all(absolute, calc(var(--bp-surface-spacing) * -0.5));
     border-radius: var(--bp-surface-border-radius);
     content: "";
-    inset: calc(var(--bp-surface-spacing) * -0.5);
-    position: absolute;
     transition:
       background-color var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default),
       box-shadow var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
   }
 
   &:hover::before {
-    box-shadow: inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-neutral);
     box-shadow:
       0 0 0 var(--bp-emphasis-focus-width) oklch(from var(--bp-emphasis-focus-color) l c h / 0%),
       inset 0 0 0 var(--bp-surface-border-width) var(--bp-surface-border-color-neutral);
   }
   &.#{$ns}-editable-text-editing::before {
-    background: var(--bp-surface-background-color-base-rest);
+    background-color: var(--bp-surface-background-color-base-rest);
     box-shadow:
       0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color),
       inset 0 0 0 var(--bp-surface-border-width) var(--bp-emphasis-focus-color);
@@ -43,12 +43,6 @@
       }
 
       &:hover::before {
-        box-shadow: inset
-          0
-          0
-          0
-          var(--bp-surface-border-width)
-          var(--bp-surface-border-color-#{$intent});
         box-shadow:
           0
             0
@@ -70,12 +64,13 @@
     }
   }
   &.#{$ns}-disabled::before {
+    // override intent selectors
     box-shadow: none;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     &:not(.#{$ns}-disabled)::before {
-      border: var(--bp-surface-border-width) solid ButtonText;
+      border: 1px solid $pt-high-contrast-mode-border-color;
     }
   }
 }
@@ -86,24 +81,24 @@
   font: inherit;
   letter-spacing: inherit;
   max-width: inherit;
+  // inherit and respect parent bounds and text styles
   min-width: inherit;
   position: relative;
+  // prevent user resizing of textarea
   resize: none;
   text-transform: inherit;
   vertical-align: top;
 }
 .#{$ns}-editable-text-input {
+  @include pt-input-placeholder-next;
   background: none;
+  // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
   box-shadow: none;
   padding: 0;
+  // IE11's textarea will otherwise inherit the white-space property from its direct parent
   white-space: pre-wrap;
   width: 100%;
-
-  &::placeholder {
-    color: var(--bp-typography-color-intent-neutral);
-    opacity: 1;
-  }
 
   &:focus {
     outline: none;
@@ -115,8 +110,10 @@
 }
 .#{$ns}-editable-text-content {
   overflow: hidden;
+  // magical number to account for slight increase in input width for cursor bar
   padding-right: calc(var(--bp-surface-spacing) * 0.5);
   text-overflow: ellipsis;
+  // preserve so trailing whitespace is included in scrollWidth
   white-space: pre;
   .#{$ns}-editable-text-editing > & {
     left: 0;

@@ -1,0 +1,99 @@
+diff --git a/packages/core/src/components/icon/_icon.scss b/packages/core/src/components/icon/_icon-next.scss
+index d3d6e7dde..8e97051c7 100644
+--- a/packages/core/src/components/icon/_icon.scss
++++ b/packages/core/src/components/icon/_icon-next.scss
+@@ -4,10 +4,10 @@
+ @import "@blueprintjs/icons/lib/scss/variables";
+ @import "../../common/variables";
+ @import "../../common/variables-extended";
+-@import "icon-mixins";
++@import "icon-mixins-next";
+ 
+ // the icon class which will contain an SVG icon
+-.#{$ns}-icon:not(:where(.bp-next .#{$ns}-icon)) {
++.#{$ns}-icon {
+   // ensure icons sit inline with text & isolate svg from surrounding elements
+   // (vertical alignment in flow is usually off due to svg - not an issue with flex.)
+   display: inline-block;
+@@ -37,44 +37,47 @@
+ 
+   // muted icon style used by NonIdealState
+   &.#{$ns}-icon-muted svg {
+-    fill-opacity: 0.15;
++    fill: var(--bp-surface-layer-color-neutral-active);
++    fill-opacity: 1;
+     // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
+     overflow: visible;
+ 
+     path {
+-      stroke: $gray3;
+-      stroke-opacity: 0.5;
+-      stroke-width: 0.5px;
++      stroke: var(--bp-surface-divider-color-strong);
++      stroke-opacity: 1;
++      stroke-width: calc(var(--bp-surface-border-width) * 0.5);
+     }
+   }
++}
+ 
+-  .#{$ns}-dark & {
+-    .#{$ns}-icon-muted svg {
+-      fill-opacity: 0.2;
++// intent colors for both SVG and font icons are overridden below so they respond to BP7 token customization
++// Override legacy typography colors so intent icons respond to BP7 token customization.
++#{$icon-classes} {
++  @each $intent in $pt-intents {
++    &.#{$ns}-intent-#{$intent} {
++      color: var(--bp-typography-color-intent-#{$intent});
+     }
+   }
+ }
+ 
+-// intent colors for both SVG and font icons are set in _typography-colors.scss
+-
+ //
+ // Icon font styles
+ //
+ // TOOD: move to @blueprintjs/icons in v6.0
+ //
+ 
+-span.#{$ns}-icon-standard:not(:where(.bp-next span.#{$ns}-icon-standard)) {
+-  @include pt-icon($pt-icon-size-standard);
++span.#{$ns}-icon-standard {
++  @include pt-icon-next($pt-icon-size-standard-next, 16);
+   display: inline-block;
+ }
+ 
+-span.#{$ns}-icon-large:not(:where(.bp-next span.#{$ns}-icon-large)) {
+-  @include pt-icon($pt-icon-size-large);
++span.#{$ns}-icon-large {
++  @include pt-icon-next($pt-icon-size-large-next, 20);
+   display: inline-block;
+ }
+ 
+ // only apply icon font styles when <svg> image is not present
+-span.#{$ns}-icon:empty:not(:where(.bp-next span.#{$ns}-icon:empty)) {
++span.#{$ns}-icon:empty {
+   font-family: $blueprint-icons-20-font;
+   font-size: inherit;
+   font-style: normal;
+@@ -86,16 +89,16 @@ span.#{$ns}-icon:empty:not(:where(.bp-next span.#{$ns}-icon:empty)) {
+   }
+ 
+   &.#{$ns}-icon-standard {
+-    font-size: $pt-icon-size-standard;
++    font-size: $pt-icon-size-standard-next;
+   }
+ 
+   &.#{$ns}-icon-large {
+-    font-size: $pt-icon-size-large;
++    font-size: $pt-icon-size-large-next;
+   }
+ }
+ 
+ @each $name, $codepoint in $blueprint-icon-codepoints {
+-  .#{$ns}-icon-#{$name}:not(:where(.bp-next .#{$ns}-icon-#{$name}))::before {
++  .#{$ns}-icon-#{$name}::before {
+     content: $codepoint;
+   }
+ }

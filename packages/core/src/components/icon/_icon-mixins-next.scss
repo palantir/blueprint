@@ -2,13 +2,17 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "@blueprintjs/colors/lib/scss/colors";
+@import "../../common/variables-next";
 
 @mixin pt-icon-font-smoothing() {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
 }
 
-@mixin pt-icon-sized-next($font-size, $font-family-size) {
+@mixin pt-icon-sized-next(
+  $font-size: $pt-icon-size-standard-next,
+  $font-family-size: 16
+) {
   font-family: "blueprint-icons-#{$font-family-size}", sans-serif;
   font-size: $font-size;
   font-style: normal;
@@ -29,7 +33,7 @@
   }
 }
 
-@mixin pt-icon-next($font-size, $font-family-size) {
+@mixin pt-icon-next($font-size: $pt-icon-size-standard-next, $font-family-size: 16) {
   @include pt-icon-sized-next($font-size, $font-family-size);
   @include pt-icon-font-smoothing;
 }

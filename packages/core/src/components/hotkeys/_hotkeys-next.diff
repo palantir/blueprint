@@ -1,0 +1,64 @@
+diff --git a/packages/core/src/components/hotkeys/_hotkeys.scss b/packages/core/src/components/hotkeys/_hotkeys-next.scss
+index 7b30e2909..56030f908 100644
+--- a/packages/core/src/components/hotkeys/_hotkeys.scss
++++ b/packages/core/src/components/hotkeys/_hotkeys-next.scss
+@@ -3,11 +3,11 @@
+ @import "../../common/variables";
+ @import "../../common/mixins";
+ 
+-.#{$ns}-key-combo:not(:where(.bp-next .#{$ns}-key-combo)) {
++.#{$ns}-key-combo {
+   align-items: center;
+ 
+   &:not(.#{$ns}-minimal) {
+-    @include pt-flex-container(row, $pt-spacing);
++    @include pt-flex-container(row, var(--bp-surface-spacing));
+   }
+ 
+   &.#{$ns}-minimal {
+@@ -15,9 +15,9 @@
+   }
+ }
+ 
+-.#{$ns}-hotkey-dialog:not(:where(.bp-next .#{$ns}-hotkey-dialog)) {
++.#{$ns}-hotkey-dialog {
+   padding-bottom: 0;
+-  top: $pt-spacing * 10;
++  top: calc(var(--bp-surface-spacing) * 10);
+ 
+   .#{$ns}-dialog-body {
+     margin: 0;
+@@ -29,20 +29,20 @@
+   }
+ }
+ 
+-.#{$ns}-hotkey-column:not(:where(.bp-next .#{$ns}-hotkey-column)) {
++.#{$ns}-hotkey-column {
+   margin: auto;
+-  padding: $pt-spacing * 7.5;
++  padding: calc(var(--bp-surface-spacing) * 7.5);
+ 
+   .#{$ns}-heading {
+-    margin-bottom: $pt-spacing * 5;
++    margin-bottom: calc(var(--bp-surface-spacing) * 5);
+ 
+     &:not(:first-child) {
+-      margin-top: $pt-spacing * 10;
++      margin-top: calc(var(--bp-surface-spacing) * 10);
+     }
+   }
+ }
+ 
+-.#{$ns}-hotkey:not(:where(.bp-next .#{$ns}-hotkey)) {
++.#{$ns}-hotkey {
+   align-items: center;
+   display: flex;
+   justify-content: space-between;
+@@ -50,6 +50,6 @@
+   margin-right: 0;
+ 
+   &:not(:last-child) {
+-    margin-bottom: $pt-spacing * 2;
++    margin-bottom: calc(var(--bp-surface-spacing) * 2);
+   }
+ }

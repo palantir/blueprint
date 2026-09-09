@@ -1,0 +1,53 @@
+diff --git a/packages/core/src/components/icon/_icon-mixins.scss b/packages/core/src/components/icon/_icon-mixins-next.scss
+index b6672e541..b62be0b21 100644
+--- a/packages/core/src/components/icon/_icon-mixins.scss
++++ b/packages/core/src/components/icon/_icon-mixins-next.scss
+@@ -2,15 +2,16 @@
+ // Licensed under the Apache License, Version 2.0.
+ 
+ @import "@blueprintjs/colors/lib/scss/colors";
++@import "../../common/variables-next";
+ 
+ @mixin pt-icon-font-smoothing() {
+   -moz-osx-font-smoothing: grayscale;
+   -webkit-font-smoothing: antialiased;
+ }
+ 
+-@mixin pt-icon-sized(
+-  $font-size: $pt-icon-size-standard,
+-  $font-family-size: strip-unit($font-size)
++@mixin pt-icon-sized-next(
++  $font-size: $pt-icon-size-standard-next,
++  $font-family-size: 16
+ ) {
+   font-family: "blueprint-icons-#{$font-family-size}", sans-serif;
+   font-size: $font-size;
+@@ -24,23 +25,15 @@
+   width: $font-size;
+ }
+ 
+-@mixin pt-icon-colors() {
+-  color: $pt-icon-color;
++@mixin pt-icon-colors-next() {
++  color: var(--bp-typography-color-intent-neutral);
+ 
+   &:hover {
+-    color: $pt-icon-color-hover;
+-  }
+-
+-  .#{$ns}-dark & {
+-    color: $pt-dark-icon-color;
+-
+-    &:hover {
+-      color: $pt-dark-icon-color-hover;
+-    }
++    color: var(--bp-typography-color-base);
+   }
+ }
+ 
+-@mixin pt-icon($font-size: $pt-icon-size-standard, $font-family-size: strip-unit($font-size)) {
+-  @include pt-icon-sized($font-size, $font-family-size);
++@mixin pt-icon-next($font-size: $pt-icon-size-standard-next, $font-family-size: 16) {
++  @include pt-icon-sized-next($font-size, $font-family-size);
+   @include pt-icon-font-smoothing;
+ }

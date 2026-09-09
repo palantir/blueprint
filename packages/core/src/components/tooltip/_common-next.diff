@@ -1,0 +1,20 @@
+diff --git a/packages/core/src/components/tooltip/_common.scss b/packages/core/src/components/tooltip/_common-next.scss
+index 11597be5e..109f8f16a 100644
+--- a/packages/core/src/components/tooltip/_common.scss
++++ b/packages/core/src/components/tooltip/_common-next.scss
+@@ -1,11 +1,7 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-$tooltip-background-color: $dark-gray5 !default;
+-$tooltip-text-color: $light-gray5 !default;
++@import "../../common/variables";
+ 
+-$dark-tooltip-background-color: $light-gray3 !default;
+-$dark-tooltip-text-color: $dark-gray5 !default;
+-
+-$tooltip-padding-vertical: $pt-spacing * 2 !default;
+-$tooltip-padding-horizontal: $pt-spacing * 3 !default;
++$tooltip-padding-vertical-next: calc(var(--bp-surface-spacing) * 2);
++$tooltip-padding-horizontal-next: calc(var(--bp-surface-spacing) * 3);

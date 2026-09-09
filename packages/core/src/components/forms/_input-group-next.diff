@@ -1,0 +1,299 @@
+diff --git a/packages/core/src/components/forms/_input-group.scss b/packages/core/src/components/forms/_input-group-next.scss
+index bae8ce2ab..03f050131 100644
+--- a/packages/core/src/components/forms/_input-group.scss
++++ b/packages/core/src/components/forms/_input-group-next.scss
+@@ -1,18 +1,22 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
++/* stylelint-disable declaration-no-important -- matches required legacy precedence. */
++
+ @import "../../common/variables";
+ @import "../../common/variables-extended";
+-@import "../button/common";
++@import "../button/common-next";
++@import "../icon/icon-mixins-next";
++@import "./common-next";
+ 
+ // 3px space between small button and regular input
+-$input-button-height: $pt-button-height-small !default;
++$input-button-height-next: $pt-input-height-small-next;
+ // 5px space between regular button and large input
+-$input-button-height-large: $pt-button-height !default;
++$input-button-height-large-next: $pt-input-height-next;
+ // 1px space between regular button and small input
+-$input-button-height-small: $pt-button-height-smaller !default;
++$input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
+ 
+-.#{$ns}-input-group:not(:where(.bp-next .#{$ns}-input-group)) {
++.#{$ns}-input-group {
+   display: block;
+   position: relative;
+ 
+@@ -30,7 +34,6 @@ $input-button-height-small: $pt-button-height-smaller !default;
+       padding-right: calc(var(--bp-surface-spacing) * 7.5);
+     }
+   }
+-
+   .#{$ns}-input-action,
+   > .#{$ns}-input-left-container,
+   > .#{$ns}-button,
+@@ -38,7 +41,6 @@ $input-button-height-small: $pt-button-height-smaller !default;
+     position: absolute;
+     top: 0;
+ 
+-    // glue it to the end it appears on
+     &:first-child {
+       left: 0;
+     }
+@@ -47,9 +49,8 @@ $input-button-height-small: $pt-button-height-smaller !default;
+       right: 0;
+     }
+   }
+-
+   .#{$ns}-button {
+-    @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
++    @include pt-button-height-next($input-button-height-next);
+     margin: calc(var(--bp-surface-spacing) * 0.75);
+     padding: 0 calc(var(--bp-surface-spacing) * 2);
+ 
+@@ -68,10 +69,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
+   // direct descendant to exclude icons in buttons
+   > .#{$ns}-input-left-container > .#{$ns}-icon,
+   > .#{$ns}-icon {
+-    color: var(--bp-typography-color-muted);
++    color: var(--bp-typography-color-intent-neutral);
+ 
+     &:empty {
+-      @include pt-icon($pt-icon-size-standard);
++      @include pt-icon-next($pt-icon-size-standard-next, 16);
+     }
+   }
+ 
+@@ -82,37 +83,27 @@ $input-button-height-small: $pt-button-height-smaller !default;
+   .#{$ns}-input-action > .#{$ns}-spinner {
+     margin: calc(var(--bp-surface-spacing) * 1.75);
+   }
+-
+   .#{$ns}-tag {
+     margin: calc(var(--bp-surface-spacing) * 1.25);
+   }
+ 
+   // all buttons go gray in default state and assume their native colors only when hovered
+   // or when input is focused. this prevents distracting colors in the UI.
+-  .#{$ns}-input:not(:focus) + .#{$ns}-button,
+-  .#{$ns}-input:not(:focus) + .#{$ns}-input-action .#{$ns}-button {
+-    &.#{$ns}-minimal:not(:hover):not(:focus) {
+-      color: var(--bp-typography-color-muted);
+-
+-      // same goes for dark
+-      /* stylelint-disable-next-line selector-max-compound-selectors */
+-      .#{$ns}-dark & {
+-        color: oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h);
+-      }
+-
+-      #{$icon-classes} {
+-        color: var(--bp-typography-color-muted);
+-      }
++  .#{$ns}-input:not(:focus) + .#{$ns}-button.#{$ns}-minimal:not(:hover):not(:focus),
++  .#{$ns}-input:not(:focus)
++    + .#{$ns}-input-action
++    .#{$ns}-button.#{$ns}-minimal:not(:hover):not(:focus) {
++    color: var(--bp-typography-color-intent-neutral);
++    #{$icon-classes} {
++      color: var(--bp-typography-color-intent-neutral);
+     }
+-
+-    &.#{$ns}-minimal:disabled {
+-      // override more specific selector above
+-      /* stylelint-disable declaration-no-important */
+-      color: var(--bp-typography-color-default-disabled) !important;
+-
+-      #{$icon-classes} {
+-        color: var(--bp-typography-color-default-disabled) !important;
+-      }
++  }
++  .#{$ns}-input:not(:focus) + .#{$ns}-button.#{$ns}-minimal:disabled,
++  .#{$ns}-input:not(:focus) + .#{$ns}-input-action .#{$ns}-button.#{$ns}-minimal:disabled {
++    // override more specific selector above
++    color: $input-color-disabled-next !important;
++    #{$icon-classes} {
++      color: inherit !important;
+     }
+   }
+ 
+@@ -120,26 +111,22 @@ $input-button-height-small: $pt-button-height-smaller !default;
+   &.#{$ns}-disabled {
+     // note that enabled buttons inside this input group are still clickable
+     cursor: not-allowed;
+-
+     .#{$ns}-icon {
+-      color: var(--bp-typography-color-default-disabled);
++      color: $input-color-disabled-next;
+     }
+   }
+-
+   &.#{$ns}-large {
+     .#{$ns}-button {
+-      @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
++      @include pt-button-height-next($input-button-height-large-next);
+       margin: calc(var(--bp-surface-spacing) * 1.25);
+     }
+-
+     > .#{$ns}-input-left-container > .#{$ns}-icon,
+     > .#{$ns}-icon,
+     .#{$ns}-input-action > .#{$ns}-spinner {
+       margin: calc(var(--bp-surface-spacing) * 3);
+     }
+-
+     .#{$ns}-input {
+-      @include pt-input-large;
++      @include pt-input-large-next;
+ 
+       &:not(:first-child) {
+         padding-left: calc(var(--bp-surface-spacing) * 10);
+@@ -150,26 +137,23 @@ $input-button-height-small: $pt-button-height-smaller !default;
+       }
+     }
+   }
+-
+   &.#{$ns}-small {
+     .#{$ns}-button {
+-      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
++      @include pt-button-height-next($input-button-height-small-next);
+       margin: calc(var(--bp-surface-spacing) * 0.5);
+     }
+ 
+     .#{$ns}-tag {
+-      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
++      @include pt-button-height-next($input-button-height-small-next);
+       margin: calc(var(--bp-surface-spacing) * 0.5);
+     }
+-
+     > .#{$ns}-input-left-container > .#{$ns}-icon,
+     > .#{$ns}-icon,
+     .#{$ns}-input-action > .#{$ns}-spinner {
+       margin: var(--bp-surface-spacing);
+     }
+-
+     .#{$ns}-input {
+-      @include pt-input-small;
++      @include pt-input-small-next;
+ 
+       &:not(:first-child) {
+         padding-left: calc(var(--bp-surface-spacing) * 6);
+@@ -180,106 +164,25 @@ $input-button-height-small: $pt-button-height-smaller !default;
+       }
+     }
+   }
+-
+   &.#{$ns}-fill {
+     flex: 1 1 auto;
+     width: 100%;
+   }
+-
+   &.#{$ns}-round {
+     .#{$ns}-button,
+     .#{$ns}-input,
+     .#{$ns}-tag {
+-      border-radius: calc(var(--bp-surface-spacing) * 7.5);
+-    }
+-  }
+-
+-  .#{$ns}-dark & {
+-    .#{$ns}-icon {
+-      color: oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h);
+-    }
+-
+-    &.#{$ns}-disabled .#{$ns}-icon {
+-      color: var(--bp-typography-color-default-disabled);
+-    }
+-  }
+-
+-  &.#{$ns}-intent-primary {
+-    .#{$ns}-input {
+-      @include pt-input-intent(var(--bp-intent-primary-rest));
+-
+-      .#{$ns}-dark & {
+-        @include pt-dark-input-intent(
+-          oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)
+-        );
+-      }
+-    }
+-
+-    > .#{$ns}-icon {
+-      color: var(--bp-intent-primary-hover);
+-
+-      .#{$ns}-dark & {
+-        color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
+-      }
++      border-radius: $pt-input-height-next;
+     }
+   }
+ 
+-  &.#{$ns}-intent-success {
+-    .#{$ns}-input {
+-      @include pt-input-intent(var(--bp-intent-success-rest));
+-
+-      .#{$ns}-dark & {
+-        @include pt-dark-input-intent(
+-          oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)
+-        );
++  @each $intent in primary, success, warning, danger {
++    &.#{$ns}-intent-#{$intent} {
++      .#{$ns}-input {
++        @include pt-input-intent-next($intent);
+       }
+-    }
+-
+-    > .#{$ns}-icon {
+-      color: var(--bp-intent-success-hover);
+-
+-      .#{$ns}-dark & {
+-        color: oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h);
+-      }
+-    }
+-  }
+-
+-  &.#{$ns}-intent-warning {
+-    .#{$ns}-input {
+-      @include pt-input-intent(var(--bp-intent-warning-rest));
+-
+-      .#{$ns}-dark & {
+-        @include pt-dark-input-intent(
+-          oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)
+-        );
+-      }
+-    }
+-
+-    > .#{$ns}-icon {
+-      color: var(--bp-intent-warning-hover);
+-
+-      .#{$ns}-dark & {
+-        color: oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h);
+-      }
+-    }
+-  }
+-
+-  &.#{$ns}-intent-danger {
+-    .#{$ns}-input {
+-      @include pt-input-intent(var(--bp-intent-danger-rest));
+-
+-      .#{$ns}-dark & {
+-        @include pt-dark-input-intent(
+-          oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)
+-        );
+-      }
+-    }
+-
+-    > .#{$ns}-icon {
+-      color: var(--bp-intent-danger-hover);
+-
+-      .#{$ns}-dark & {
+-        color: oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h);
++      > .#{$ns}-icon {
++        color: var(--bp-typography-color-intent-#{$intent});
+       }
+     }
+   }

@@ -6,6 +6,13 @@
 @import "../popover/common-next";
 @import "./common-next";
 
+@include popover-scale-transition-phases-next(
+  ".#{$ns}-tooltip",
+  scale(0.8),
+  var(--bp-emphasis-transition-duration),
+  var(--bp-emphasis-ease-default)
+);
+
 .#{$ns}-tooltip {
   @include popover-sizing-next(calc(var(--bp-surface-spacing) * 5.5));
   @include popover-appearance-next(
@@ -13,15 +20,7 @@
     var(--bp-intent-neutral-foreground),
     var(--bp-surface-shadow-3)
   );
-  @include react-transition(
-    "#{$ns}-popover",
-    (
-      transform: scale(0.8) scale(1),
-    ),
-    var(--bp-emphasis-transition-duration),
-    var(--bp-emphasis-ease-default),
-    $after: "> &"
-  );
+  transform: scale(1);
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical-next $tooltip-padding-horizontal-next;
   }

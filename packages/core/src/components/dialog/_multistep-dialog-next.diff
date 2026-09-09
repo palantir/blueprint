@@ -1,0 +1,277 @@
+diff --git a/packages/core/src/components/dialog/_multistep-dialog.scss b/packages/core/src/components/dialog/_multistep-dialog-next.scss
+index a394ffde3..8cd6fe4c0 100644
+--- a/packages/core/src/components/dialog/_multistep-dialog.scss
++++ b/packages/core/src/components/dialog/_multistep-dialog-next.scss
+@@ -1,230 +1,142 @@
+-// Copyright 2020 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "@blueprintjs/icons/lib/scss/variables";
+-@import "../../common/mixins";
+-@import "../../common/react-transition";
+-@import "../../common/variables";
++$step-radius-next: var(--bp-surface-border-radius);
+ 
+-$dialog-border-radius: $pt-border-radius !default;
+-$step-radius: $pt-border-radius !default;
+-
+-.#{$ns}-multistep-dialog-panels:not(:where(.bp-next .#{$ns}-multistep-dialog-panels)) {
++.#{$ns}-multistep-dialog-panels {
+   display: flex;
+ 
+   // If title doesn't exist, this element will be the first child and top
+   // borders needs to be rounded.
+   &:first-child {
+     .#{$ns}-dialog-step-container:first-child {
+-      border-radius: $dialog-border-radius 0 0 0;
++      border-radius: $dialog-border-radius-next 0 0 0;
+     }
+-
+     .#{$ns}-multistep-dialog-right-panel {
+-      border-top-right-radius: $dialog-border-radius;
++      border-top-right-radius: $dialog-border-radius-next;
+     }
+   }
+-
+   .#{$ns}-multistep-dialog-nav-top & {
+     flex-direction: column;
+ 
+     // Handle case where title it not rendered.
+     &:first-child {
+       .#{$ns}-dialog-step-container:first-child {
+-        border-radius: $dialog-border-radius 0 0 0;
++        border-radius: $dialog-border-radius-next 0 0 0;
+       }
+-
+       .#{$ns}-dialog-step-container:last-child {
+-        border-radius: 0 $dialog-border-radius 0 0;
++        border-radius: 0 $dialog-border-radius-next 0 0;
+       }
+     }
+-
+     .#{$ns}-multistep-dialog-left-panel {
+       flex-direction: row;
+     }
+-
+     .#{$ns}-dialog-step-container {
+       flex-grow: 1;
+ 
+       &:not(:first-child) {
+-        border-left: 1px solid $pt-divider-black;
+-      }
+-
+-      .#{$ns}-dark & {
+-        border-color: $pt-dark-divider-black;
++        border-left: 1px solid var(--bp-surface-divider-color-default);
+       }
+     }
+-
+     .#{$ns}-multistep-dialog-right-panel {
+       border-left: none;
+     }
+-
+     .#{$ns}-multistep-dialog-right-panel,
+     .#{$ns}-multistep-dialog-footer {
+-      border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
++      border-radius: 0 0 $dialog-border-radius-next $dialog-border-radius-next;
+     }
+   }
+-
+   .#{$ns}-multistep-dialog-nav-right & {
+     flex-direction: row-reverse;
+ 
+     // Handle case where title it not rendered.
+     &:first-child {
+       .#{$ns}-multistep-dialog-right-panel {
+-        border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
++        border-radius: $dialog-border-radius-next 0 0 $dialog-border-radius-next;
+       }
+-
+       .#{$ns}-dialog-step-container:first-child {
+-        border-radius: 0 $dialog-border-radius 0 0;
++        border-radius: 0 $dialog-border-radius-next 0 0;
+       }
+     }
+-
+     .#{$ns}-multistep-dialog-left-panel {
+-      border-radius: 0 0 $dialog-border-radius;
++      border-radius: 0 0 $dialog-border-radius-next;
+     }
+-
+     .#{$ns}-multistep-dialog-right-panel {
+       border-left: none;
+-      border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+-      border-right: 1px solid $pt-divider-black;
+-
+-      .#{$ns}-dark & {
+-        border-color: $pt-dark-divider-black;
+-      }
++      border-radius: $dialog-border-radius-next 0 0 $dialog-border-radius-next;
++      border-right: 1px solid var(--bp-surface-divider-color-default);
+     }
+-
+     .#{$ns}-dialog-footer {
+       border-bottom-left-radius: 0;
+     }
+   }
+ }
+-
+-.#{$ns}-multistep-dialog-left-panel:not(:where(.bp-next .#{$ns}-multistep-dialog-left-panel)) {
++.#{$ns}-multistep-dialog-left-panel {
+   display: flex;
+   flex: 1;
+   flex-direction: column;
+-
+-  .#{$ns}-dark & {
+-    background: $dark-gray2;
+-    border-bottom: 1px solid $pt-dark-divider-white;
+-    border-bottom-left-radius: $dialog-border-radius;
+-    border-left: 1px solid $pt-dark-divider-white;
+-  }
+ }
+-
+-.#{$ns}-multistep-dialog-right-panel:not(:where(.bp-next .#{$ns}-multistep-dialog-right-panel)) {
+-  background-color: $light-gray5;
+-  border-left: 1px solid $pt-divider-black;
+-  border-radius: 0 0 $dialog-border-radius;
++.#{$ns}-multistep-dialog-right-panel {
++  background-color: $dialog-background-color-next;
++  border-left: 1px solid var(--bp-surface-divider-color-default);
++  border-radius: 0 0 $dialog-border-radius-next;
+   flex: 3;
+   min-width: 0;
+-
+-  .#{$ns}-dark & {
+-    background-color: $dark-gray3;
+-    border-bottom: 1px solid $pt-dark-divider-white;
+-    border-bottom-right-radius: $dialog-border-radius;
+-    border-left: 1px solid $pt-dark-divider-white;
+-    border-right: 1px solid $pt-dark-divider-white;
+-  }
+ }
+ 
+-.#{$ns}-multistep-dialog-footer:not(:where(.bp-next .#{$ns}-multistep-dialog-footer)) {
++.#{$ns}-multistep-dialog-footer {
+   // Deprecating
+ }
+ 
+-.#{$ns}-dialog-step-container:not(:where(.bp-next .#{$ns}-dialog-step-container)) {
+-  background-color: $light-gray5;
+-  border-bottom: 1px solid $pt-divider-black;
+-
+-  .#{$ns}-dark & {
+-    background: $dark-gray3;
+-    border-bottom: 1px solid $pt-dark-divider-white;
+-  }
+-
++.#{$ns}-dialog-step-container {
++  background-color: $dialog-background-color-next;
++  border-bottom: 1px solid var(--bp-surface-divider-color-default);
+   &.#{$ns}-dialog-step-viewed {
+-    background-color: $white;
+-    .#{$ns}-dark & {
+-      background: $dark-gray4;
+-    }
++    background-color: var(--bp-surface-background-color-neutral-rest);
+   }
+ }
+-
+-.#{$ns}-dialog-step:not(:where(.bp-next .#{$ns}-dialog-step)) {
++.#{$ns}-dialog-step {
+   align-items: center;
+-  border-radius: $step-radius;
++  border-radius: $step-radius-next;
+   cursor: not-allowed;
+   display: flex;
+-  margin: $pt-spacing;
+-  padding: ($pt-spacing * 1.5) ($pt-spacing * 3.5);
+-
+-  .#{$ns}-dark & {
+-    background: $dark-gray3;
+-  }
+-
++  margin: var(--bp-surface-spacing);
++  padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 3.5);
+   // by default, steps are inactive until they are visited
+   .#{$ns}-dialog-step-viewed & {
+-    background-color: $white;
++    background-color: var(--bp-surface-background-color-neutral-rest);
+     cursor: pointer;
+-
+-    .#{$ns}-dark & {
+-      background: $dark-gray4;
+-    }
+   }
+ 
+   &:hover {
+-    background-color: $light-gray5;
+-
+-    .#{$ns}-dark & {
+-      background: $dark-gray3;
+-    }
++    background-color: var(--bp-surface-layer-neutral-hover);
+   }
+ }
+-
+-.#{$ns}-dialog-step-icon:not(:where(.bp-next .#{$ns}-dialog-step-icon)) {
++.#{$ns}-dialog-step-icon {
+   align-items: center;
+-  background-color: $pt-text-color-disabled;
++  background-color: $pt-text-color-disabled-next;
+   border-radius: 50%;
+-  color: $white;
++  color: var(--bp-intent-neutral-foreground);
+   display: flex;
+-  height: $pt-spacing * 6;
++  height: calc(var(--bp-surface-spacing) * 6);
+   justify-content: center;
+-  width: $pt-spacing * 6;
+-
+-  .#{$ns}-dark & {
+-    background-color: $pt-dark-icon-color-disabled;
+-  }
+-
++  width: calc(var(--bp-surface-spacing) * 6);
+   .#{$ns}-active.#{$ns}-dialog-step-viewed & {
+-    background-color: $blue3;
++    background-color: var(--bp-surface-background-color-primary-rest);
+   }
+-
+   .#{$ns}-dialog-step-viewed & {
+-    background-color: $gray3;
++    background-color: var(--bp-surface-background-color-neutral-rest);
+   }
+ }
+-
+-.#{$ns}-dialog-step-title:not(:where(.bp-next .#{$ns}-dialog-step-title)) {
+-  color: $pt-text-color-disabled;
++.#{$ns}-dialog-step-title {
++  color: $pt-text-color-disabled-next;
+   flex: 1;
+-  padding-left: $pt-spacing * 2;
+-
+-  .#{$ns}-dark & {
+-    color: $pt-dark-text-color-disabled;
+-  }
+-
++  padding-left: calc(var(--bp-surface-spacing) * 2);
+   // step title is active only when the step is selected
+   .#{$ns}-active.#{$ns}-dialog-step-viewed & {
+-    color: $blue3;
+-
+-    .#{$ns}-dark & {
+-      color: $blue5;
+-    }
++    color: var(--bp-typography-color-intent-primary);
+   }
+-
+   .#{$ns}-dialog-step-viewed:not(.#{$ns}-active) & {
+-    color: $pt-text-color;
+-
+-    .#{$ns}-dark & {
+-      color: $pt-dark-text-color;
+-    }
++    color: var(--bp-typography-color-base);
+   }
+ }

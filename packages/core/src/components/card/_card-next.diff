@@ -1,0 +1,167 @@
+diff --git a/packages/core/src/components/card/_card.scss b/packages/core/src/components/card/_card-next.scss
+index 087e38f6b..2e2c70bae 100644
+--- a/packages/core/src/components/card/_card.scss
++++ b/packages/core/src/components/card/_card-next.scss
+@@ -1,146 +1,50 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-/* stylelint-disable alpha-value-notation */
++@import "card-variables-next";
+ 
+-@import "./card-variables";
+-
+-.#{$ns}-card:not(:where(.bp-next .#{$ns}-card)) {
+-  background-color: var(--bp-surface-background-color-default-rest);
++.#{$ns}-card {
++  background-color: var(--bp-surface-background-color-base-rest);
+   border-radius: var(--bp-surface-border-radius);
+   box-shadow: var(--bp-surface-shadow-0);
+-  padding: calc(var(--bp-surface-spacing) * 5);
++  padding: $card-padding-next;
+   transition:
+     transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default),
+     box-shadow calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
+ 
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    // stylelint-disable-next-line function-no-unknown
+-    background-color: oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h);
+-    box-shadow: var(--bp-surface-shadow-0);
+-  }
+-
+   // High contrast mode hides box-shadows, so we need to use a border instead
+   @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    border: 1px solid buttonborder;
++    border: 1px solid $pt-high-contrast-mode-border-color;
+     box-shadow: none;
+   }
+ }
+ 
+-.#{$ns}-elevation-0:not(:where(.bp-next .#{$ns}-elevation-0)) {
+-  box-shadow: var(--bp-surface-shadow-0);
+-
+-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    border: 1px solid buttonborder;
+-  }
+-}
+-
+-.#{$ns}-elevation-1:not(:where(.bp-next .#{$ns}-elevation-1)) {
+-  box-shadow: var(--bp-surface-shadow-1);
+-
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    box-shadow:
+-      var(--bp-surface-shadow-1),
+-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+-  }
+-
+-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    border: 1px solid buttonborder;
+-  }
+-}
+-
+-.#{$ns}-elevation-2:not(:where(.bp-next .#{$ns}-elevation-2)) {
+-  box-shadow: var(--bp-surface-shadow-2);
+-
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    box-shadow:
+-      var(--bp-surface-shadow-2),
+-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+-  }
+-
+-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    border: 1px solid buttonborder;
+-  }
+-}
+-
+-.#{$ns}-elevation-3:not(:where(.bp-next .#{$ns}-elevation-3)) {
+-  box-shadow: var(--bp-surface-shadow-3);
+-
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    box-shadow:
+-      var(--bp-surface-shadow-3),
+-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+-  }
+-
+-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    border: 1px solid buttonborder;
+-  }
+-}
+-
+-.#{$ns}-elevation-4:not(:where(.bp-next .#{$ns}-elevation-4)) {
+-  box-shadow: var(--bp-surface-shadow-4);
++@each $elevation in 0, 1, 2, 3, 4 {
++  .#{$ns}-elevation-#{$elevation} {
++    box-shadow: var(--bp-surface-shadow-#{$elevation});
+ 
+-  &.#{$ns}-dark,
+-  .#{$ns}-dark & {
+-    box-shadow:
+-      var(--bp-surface-shadow-4),
+-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+-  }
+-
+-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+-    border: 1px solid buttonborder;
++    @media (forced-colors: active) and (prefers-color-scheme: dark) {
++      border: 1px solid $pt-high-contrast-mode-border-color;
++    }
+   }
+ }
+ 
+-.#{$ns}-card.#{$ns}-compact:not(:where(.bp-next .#{$ns}-card)) {
+-  padding: calc(var(--bp-surface-spacing) * 4);
++.#{$ns}-card.#{$ns}-compact {
++  padding: $card-padding-compact-next;
+ }
+ 
+-.#{$ns}-card.#{$ns}-interactive:not(:where(.bp-next .#{$ns}-card)) {
++.#{$ns}-card.#{$ns}-interactive {
+   &:hover {
+     box-shadow: var(--bp-surface-shadow-3);
+     cursor: pointer;
+-
+-    &.#{$ns}-dark,
+-    .#{$ns}-dark & {
+-      box-shadow:
+-        var(--bp-surface-shadow-3),
+-        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+-        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+-    }
+   }
+ 
+   &.#{$ns}-selected {
+-    box-shadow:
+-      0 0 0 3px oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h / 0.2),
+-      0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h);
+-
+-    &.#{$ns}-dark,
+-    .#{$ns}-dark & {
+-      box-shadow:
+-        0 0 0 3px oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4),
+-        0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h);
+-    }
++    box-shadow: 0 0 0 var(--bp-emphasis-focus-width) var(--bp-emphasis-focus-color);
+   }
+ 
+   &:active {
+     box-shadow: var(--bp-surface-shadow-1);
+     transition-duration: 0;
+-
+-    &.#{$ns}-dark,
+-    .#{$ns}-dark & {
+-      box-shadow:
+-        var(--bp-surface-shadow-1),
+-        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
+-        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+-    }
+   }
+ }

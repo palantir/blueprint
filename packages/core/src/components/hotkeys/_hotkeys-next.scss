@@ -46,7 +46,8 @@
   align-items: center;
   display: flex;
   justify-content: space-between;
-  margin-inline: 0;
+  margin-left: 0;
+  margin-right: 0;
 
   &:not(:last-child) {
     margin-bottom: calc(var(--bp-surface-spacing) * 2);

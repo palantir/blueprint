@@ -1,0 +1,133 @@
+diff --git a/packages/core/src/components/menu/_menu.scss b/packages/core/src/components/menu/_menu-next.scss
+index 3f141c48a..2b3b30861 100644
+--- a/packages/core/src/components/menu/_menu.scss
++++ b/packages/core/src/components/menu/_menu-next.scss
+@@ -1,96 +1,63 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "../../common/variables";
+-@import "@blueprintjs/icons/lib/scss/variables";
+ @import "../../common/mixins";
+-
+-@import "./common";
+-@import "./submenu";
+-
+-.#{$ns}-menu:not(:where(.bp-next .#{$ns}-menu)) {
+-  background: $menu-background-color;
+-  border-radius: $pt-border-radius;
+-  color: $pt-text-color;
++@import "../../common/variables";
++@import "../icon/icon-mixins-next";
++@import "./common-next";
++@import "./submenu-next";
++
++.#{$ns}-menu {
++  background: var(--bp-surface-background-color-base-rest);
++  border-radius: var(--bp-surface-border-radius);
++  color: var(--bp-typography-color-base);
+   list-style: none;
+   margin: 0;
+-  min-width: $menu-min-width;
+-  padding: $pt-spacing;
++  min-width: calc(var(--bp-surface-spacing) * 45);
++  padding: var(--bp-surface-spacing);
+   text-align: left;
+ }
+-
+-.#{$ns}-menu-divider:not(:where(.bp-next .#{$ns}-menu-divider)) {
+-  @include menu-divider;
++.#{$ns}-menu-divider {
++  @include menu-divider-next;
+ }
++.#{$ns}-menu-item {
++  @include menu-item-next;
+ 
+-.#{$ns}-menu-item:not(:where(.bp-next .#{$ns}-menu-item)) {
+-  @include menu-item;
+-
+-  @each $intent, $colors in $menu-item-intent-colors {
+-    @include menu-item-intent($intent, false, $colors...);
++  @each $intent in $pt-intents {
++    @include menu-item-intent-next($intent);
+   }
+ 
+   &::before {
+-    // support pt-icon-* classes directly on this element
+-    @include pt-icon;
+-    margin-right: $menu-item-padding;
++    @include pt-icon-next(calc(var(--bp-surface-spacing) * 4), 16);
++    margin-inline-end: calc(var(--bp-surface-spacing) * 2);
+   }
+-
+   .#{$ns}-large & {
+-    @include menu-item-large;
++    @include menu-item-large-next;
+ 
+     &::before {
+-      @include pt-icon($pt-icon-size-large);
+-      margin-right: $menu-item-padding-large;
++      @include pt-icon-next(calc(var(--bp-surface-spacing) * 5), 20);
++      margin-inline-end: calc(var(--bp-surface-spacing) * 2);
+     }
+   }
+-
+   .#{$ns}-small & {
+-    @include menu-item-small;
++    @include menu-item-small-next;
+   }
+ }
+-
+-button.#{$ns}-menu-item:not(:where(.bp-next .#{$ns}-menu-item)) {
++button.#{$ns}-menu-item {
+   background: none;
+   border: none;
+   text-align: left;
+   width: 100%;
+ }
+-
+-.#{$ns}-menu-header:not(:where(.bp-next .#{$ns}-menu-header)) {
+-  @include menu-header($heading-selector: "> h6");
+-
++.#{$ns}-menu-header {
++  @include menu-header-next($heading-selector: "> h6");
+   .#{$ns}-large & {
+-    @include menu-header-large($heading-selector: "> h6");
++    @include menu-header-large-next($heading-selector: "> h6");
+   }
+ }
+-
+-// dark theme
+-.#{$ns}-dark {
+-  .#{$ns}-menu:not(:where(.bp-next .#{$ns}-menu)) {
+-    background: $dark-menu-background-color;
+-    color: $pt-dark-text-color;
+-  }
+-
+-  .#{$ns}-menu-item:not(:where(.bp-next .#{$ns}-menu-item)) {
+-    @include dark-menu-item;
+-
+-    @each $intent, $colors in $dark-menu-item-intent-colors {
+-      @include menu-item-intent($intent, true, $colors...);
+-    }
+-  }
+-
+-  .#{$ns}-menu-divider:not(:where(.bp-next .#{$ns}-menu-divider)),
+-  .#{$ns}-menu-header:not(:where(.bp-next .#{$ns}-menu-header)) {
+-    border-color: $pt-dark-divider-white;
+-  }
+-
+-  .#{$ns}-menu-header:not(:where(.bp-next .#{$ns}-menu-header)) > h6 {
+-    color: $pt-dark-heading-color;
+-  }
++.#{$ns}-menu-header > h6 {
++  color: var(--bp-typography-color-base);
+ }
+-
+-// #402 support menu inside label
+-.#{$ns}-label .#{$ns}-menu:not(:where(.bp-next .#{$ns}-menu)) {
+-  margin-top: $pt-spacing;
++.#{$ns}-label .#{$ns}-menu {
++  margin-top: var(--bp-surface-spacing);
+ }

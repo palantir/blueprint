@@ -1,0 +1,181 @@
+diff --git a/packages/core/src/components/callout/_callout.scss b/packages/core/src/components/callout/_callout-next.scss
+index 8450c86eb..230284151 100644
+--- a/packages/core/src/components/callout/_callout.scss
++++ b/packages/core/src/components/callout/_callout-next.scss
+@@ -1,34 +1,38 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@use "sass:map";
+-@import "../../common/variables-extended";
++@import "../../common/mixins-next";
++@import "../../common/variables-next";
++@import "../icon/icon-mixins-next";
+ 
+-$callout-padding: $pt-spacing * 4;
+-$callout-header-margin-top: $pt-spacing * 0.5;
+-$callout-padding-compact: $pt-spacing * 2;
++$callout-padding-next: calc(var(--bp-surface-spacing) * 4);
++$callout-header-margin-top-next: calc(var(--bp-surface-spacing) * 0.5);
++$callout-padding-compact-next: calc(var(--bp-surface-spacing) * 2);
+ 
+-.#{$ns}-callout:not(:where(.bp-next .#{$ns}-callout)) {
+-  @include running-typography;
+-  border-radius: $pt-border-radius;
+-  padding: $callout-padding;
++.#{$ns}-callout {
++  @include running-typography-next;
++  border-radius: var(--bp-surface-border-radius);
++  color: var(--bp-typography-color-base);
++  padding: $callout-padding-next;
+   position: relative;
+   width: 100%;
+ 
+   &:not(.#{$ns}-minimal) {
+-    background-color: rgba($gray3, 0.15);
++    background-color: var(--bp-surface-layer-neutral-rest);
+   }
+ 
+   // CSS API support
+   &[class*="#{$ns}-icon-"] {
+-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
++    padding-left: calc(
++      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
++    );
+ 
+     &::before {
+-      @include pt-icon($pt-icon-size-standard);
+-      color: $pt-icon-color;
+-      left: $callout-padding;
++      @include pt-icon-next($pt-icon-size-standard-next, 16);
++      color: var(--bp-typography-color-intent-neutral);
++      left: $callout-padding-next;
+       position: absolute;
+-      top: $callout-padding + $callout-header-margin-top;
++      top: calc($callout-padding-next + $callout-header-margin-top-next);
+     }
+   }
+ 
+@@ -38,58 +42,52 @@ $callout-padding-compact: $pt-spacing * 2;
+   }
+ 
+   &.#{$ns}-callout-icon {
+-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
++    padding-left: calc(
++      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
++    );
+ 
+     > .#{$ns}-icon:first-child {
+-      color: $pt-icon-color;
+-      left: $callout-padding;
++      color: var(--bp-typography-color-intent-neutral);
++      left: $callout-padding-next;
+       position: absolute;
+-      top: $callout-padding + $callout-header-margin-top;
++      top: calc($callout-padding-next + $callout-header-margin-top-next);
+     }
+   }
+ 
+   .#{$ns}-heading {
+-    line-height: $pt-icon-size-standard;
++    line-height: $pt-icon-size-standard-next;
+     margin-bottom: 0;
+-    margin-top: $callout-header-margin-top;
++    margin-top: $callout-header-margin-top-next;
+   }
+ 
+   &.#{$ns}-callout-has-body-content {
+     .#{$ns}-heading {
+-      margin-bottom: $pt-spacing;
++      margin-bottom: var(--bp-surface-spacing);
+     }
+   }
+ 
+   &.#{$ns}-compact {
+-    padding: $callout-padding-compact;
++    padding: $callout-padding-compact-next;
+ 
+     &.#{$ns}-callout-icon {
+-      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-spacing * 2);
++      padding-left: calc(
++        $callout-padding-compact-next + $pt-icon-size-standard-next +
++          (var(--bp-surface-spacing) * 2)
++      );
+ 
+       > .#{$ns}-icon:first-child {
+-        left: $callout-padding-compact;
+-        top: $callout-padding-compact + $callout-header-margin-top;
++        left: $callout-padding-compact-next;
++        top: calc($callout-padding-compact-next + $callout-header-margin-top-next);
+       }
+     }
+   }
+ 
+-  .#{$ns}-dark & {
+-    &:not(.#{$ns}-minimal) {
+-      background-color: rgba($gray3, 0.2);
+-    }
+-
+-    &[class*="#{$ns}-icon-"]::before,
+-    &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
+-      color: $pt-dark-icon-color;
+-    }
+-  }
+-
+-  @each $intent, $color in $pt-intent-colors {
++  @each $intent in $pt-intents {
+     &.#{$ns}-intent-#{$intent} {
+-      color: map.get($pt-intent-text-colors, $intent);
++      color: var(--bp-typography-color-intent-#{$intent});
+ 
+       &:not(.#{$ns}-minimal) {
+-        background-color: rgba($color, 0.1);
++        background-color: var(--bp-surface-layer-#{$intent}-rest);
+       }
+ 
+       @media (forced-colors: active) and (prefers-color-scheme: dark) {
+@@ -99,21 +97,7 @@ $callout-padding-compact: $pt-spacing * 2;
+       &[class*="#{$ns}-icon-"]::before,
+       > .#{$ns}-icon:first-child,
+       .#{$ns}-heading {
+-        color: map.get($pt-intent-text-colors, $intent);
+-      }
+-
+-      .#{$ns}-dark & {
+-        color: map.get($pt-dark-intent-text-colors, $intent);
+-
+-        &:not(.#{$ns}-minimal) {
+-          background-color: rgba($color, 0.2);
+-        }
+-
+-        &[class*="#{$ns}-icon-"]::before,
+-        > .#{$ns}-icon:first-child,
+-        .#{$ns}-heading {
+-          color: map.get($pt-dark-intent-text-colors, $intent);
+-        }
++        color: var(--bp-typography-color-intent-#{$intent});
+       }
+     }
+   }
+@@ -125,18 +109,12 @@ $callout-padding-compact: $pt-spacing * 2;
+       text-decoration: underline;
+ 
+       &:hover {
+-        color: $blue1;
+-      }
+-    }
+-
+-    .#{$ns}-dark & {
+-      a:hover {
+-        color: $blue6;
++        color: var(--bp-typography-color-intent-primary);
+       }
+     }
+   }
+ 
+   .#{$ns}-running-text & {
+-    margin: ($pt-spacing * 5) 0;
++    margin: calc(var(--bp-surface-spacing) * 5) 0;
+   }
+ }

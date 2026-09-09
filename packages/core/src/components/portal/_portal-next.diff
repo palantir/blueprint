@@ -1,0 +1,24 @@
+diff --git a/packages/core/src/components/portal/_portal.scss b/packages/core/src/components/portal/_portal-next.scss
+index dfc22e70b..6d8f05a83 100644
+--- a/packages/core/src/components/portal/_portal.scss
++++ b/packages/core/src/components/portal/_portal-next.scss
+@@ -1,15 +1,11 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-.#{$ns}-portal:not(:where(.bp-next .#{$ns}-portal)) {
++@import "../../common/variables";
++
++.#{$ns}-portal {
+   left: 0;
+-  // take the portal out of the document flow to prevent browsers from autoscrolling to the bottom
+-  // of the document (where portals are appended) when programmatically focusing within a portal
+-  // child element. also, don't use `fixed`, because then Tether'd elements won't reposition
+-  // themselves properly as the document scrolls.
+   position: absolute;
+-  // ensure content won't be horizontally scrunched
+   right: 0;
+-  // ensure content still offsets from the top of the document
+   top: 0;
+ }

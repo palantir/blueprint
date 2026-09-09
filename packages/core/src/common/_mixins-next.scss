@@ -1,0 +1,21 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@mixin running-typography-next() {
+  font-size: var(--bp-typography-size-md);
+  // TODO: Decide whether BP7 needs a complete running-line-height token; the current running-factor token is only a multiplier.
+  line-height: 1.5;
+}
+
+@mixin new-render-layer-next() {
+  isolation: isolate;
+}
+
+@mixin focus-outline-next($offset: var(--bp-emphasis-focus-offset)) {
+  outline: var(--bp-emphasis-focus-width) solid var(--bp-emphasis-focus-color);
+  outline-offset: $offset;
+}
+
+@function centered-text-next($height, $line-height: calc(var(--bp-surface-spacing) * 4.5)) {
+  @return calc(($height - $line-height) * 0.5);
+}

@@ -42,3 +42,4 @@ site/docs/*
 !site/docs/
 !site/docs/versions/
 site/docs/versions/**/*.d.ts
+.playwright-cli/*

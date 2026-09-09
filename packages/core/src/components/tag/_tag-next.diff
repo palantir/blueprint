@@ -1,0 +1,61 @@
+diff --git a/packages/core/src/components/tag/_tag.scss b/packages/core/src/components/tag/_tag-next.scss
+index 62ec9c84a..f2f39c2af 100644
+--- a/packages/core/src/components/tag/_tag.scss
++++ b/packages/core/src/components/tag/_tag-next.scss
+@@ -3,19 +3,19 @@
+ 
+ @import "../../common/variables";
+ @import "../../common/variables-extended";
+-@import "./common";
++@import "./common-next";
+ 
+-.#{$ns}-tag:not(:where(.bp-next .#{$ns}-tag)) {
+-  @include pt-tag;
++.#{$ns}-tag {
++  @include pt-tag-next;
+ 
+   &.#{$ns}-large,
+   .#{$ns}-large & {
+-    @include pt-tag-large;
++    @include pt-tag-large-next;
+   }
+ 
+-  @each $intent, $colors in $tag-intent-colors {
++  @each $intent in $tag-intents-next {
+     &.#{$ns}-intent-#{$intent} {
+-      @include pt-tag-intent($colors...);
++      @include pt-tag-intent-next($intent);
+     }
+   }
+ 
+@@ -25,25 +25,16 @@
+   }
+ 
+   &.#{$ns}-minimal {
+-    @include pt-tag-minimal;
++    @include pt-tag-minimal-next;
+ 
+-    @each $intent, $colors in $minimal-tag-intent-colors {
++    @each $intent in $tag-intents-next {
+       &.#{$ns}-intent-#{$intent} {
+-        @include pt-tag-minimal-intent($colors...);
+-      }
+-    }
+-
+-    @each $intent, $colors in $minimal-dark-tag-intent-colors {
+-      &.#{$ns}-intent-#{$intent} {
+-        .#{$ns}-dark &,
+-        [data-bp-color-scheme="dark"] & {
+-          @include pt-tag-minimal-dark-intent($colors...);
+-        }
++        @include pt-tag-minimal-next($intent);
+       }
+     }
+   }
+ }
+ 
+-.#{$ns}-tag-remove:not(:where(.bp-next .#{$ns}-tag-remove)) {
+-  @include pt-tag-remove;
++.#{$ns}-tag-remove {
++  @include pt-tag-remove-next;
+ }

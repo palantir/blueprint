@@ -7,12 +7,12 @@ import { Colors } from "@blueprintjs/core";
 export const modes = {
     dark: {
         backgrounds: { value: Colors.BLACK },
-        blueprintStyles: "legacy",
+        blueprintStyles: "bp6",
         theme: "dark",
     },
     light: {
         backgrounds: { value: Colors.WHITE },
-        blueprintStyles: "legacy",
+        blueprintStyles: "bp6",
         theme: "light",
     },
     nextDark: {

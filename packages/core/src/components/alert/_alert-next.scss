@@ -1,7 +1,7 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@import "../../common/variables-next";
 
 .#{$ns}-alert {
   max-width: calc(var(--bp-surface-spacing) * 100);
@@ -12,7 +12,7 @@
   display: flex;
 
   .#{$ns}-icon {
-    font-size: calc(var(--bp-surface-spacing) * 10);
+    font-size: calc($pt-icon-size-large-next * 2);
     margin-right: calc(var(--bp-surface-spacing) * 5);
     margin-top: 0;
   }

@@ -1,0 +1,329 @@
+diff --git a/packages/core/src/components/slider/_slider.scss b/packages/core/src/components/slider/_slider-next.scss
+index 8acc1b2ef..70eaabe3c 100644
+--- a/packages/core/src/components/slider/_slider.scss
++++ b/packages/core/src/components/slider/_slider-next.scss
+@@ -1,31 +1,15 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "../tooltip/tooltip";
+-@import "./common";
++@import "../../common/variables";
++@import "./common-next";
+ 
+-$handle-size: $pt-icon-size-standard !default;
+-$track-size: $handle-size - ($pt-spacing * 2.5) !default;
+-$label-offset: $handle-size + $pt-spacing !default;
++$handle-size: calc(var(--bp-surface-spacing) * 5);
++$track-size: calc(var(--bp-surface-spacing) * 2.5);
++$label-offset: calc(var(--bp-surface-spacing) * 6);
+ 
+-$handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
+-$handle-box-shadow:
+-  $handle-border-shadow,
+-  0 1px 1px rgba($black, 0.5) !default;
+-$handle-box-shadow-hover:
+-  $handle-border-shadow,
+-  0 1px 2px rgba($black, 0.6) !default;
+-$handle-box-shadow-active:
+-  inset 0 1px 1px rgba($black, 0.1),
+-  $handle-border-shadow,
+-  0 1px 2px rgba($black, 0.2) !default;
+-
+-// retain legacy variable aliases so as to not break consumers
+-$handle-height: $handle-size !default;
+-$track-height: $track-size !default;
+-
+-.#{$ns}-slider:not(:where(.bp-next .#{$ns}-slider)) {
+-  @include slider-orientation($pt-input-height-large, $vertical: false);
++.#{$ns}-slider {
++  @include slider-orientation-next(calc(var(--bp-surface-spacing) * 10));
+   cursor: default;
+   outline: none;
+   position: relative;
+@@ -38,38 +22,64 @@ $track-height: $track-size !default;
+   &:active {
+     cursor: grabbing;
+   }
+-
+   &.#{$ns}-disabled {
+     cursor: not-allowed;
+-    opacity: 0.5;
+-  }
+ 
++    .#{$ns}-slider-progress {
++      background-color: oklch(
++        from var(--bp-surface-background-color-neutral-rest) l c h /
++          var(--bp-emphasis-disabled-opacity)
++      );
++
++      @each $intent in primary, success, warning, danger {
++        &.#{$ns}-intent-#{$intent} {
++          background-color: oklch(
++            from var(--bp-surface-background-color-#{$intent}-rest)
++              l
++              c
++              h /
++              var(--bp-emphasis-disabled-opacity)
++          );
++        }
++      }
++    }
++
++    .#{$ns}-slider-label {
++      color: oklch(
++        from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
++      );
++    }
++
++    .#{$ns}-slider-handle .#{$ns}-slider-label {
++      background-color: oklch(
++        from var(--bp-surface-background-color-neutral-rest) l c h /
++          var(--bp-emphasis-disabled-opacity)
++      );
++      box-shadow: none;
++      color: oklch(
++        from var(--bp-intent-neutral-foreground) l c h / var(--bp-emphasis-disabled-opacity)
++      );
++    }
++  }
+   &.#{$ns}-slider-unlabeled {
+     height: $handle-size;
+   }
+ }
+-
+-.#{$ns}-slider-track:not(:where(.bp-next .#{$ns}-slider-track)),
+-.#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
+-  @include slider-track-orientation($handle-size, $track-size, $vertical: false);
++.#{$ns}-slider-track,
++.#{$ns}-slider-progress {
++  @include slider-track-orientation-next($handle-size, $track-size);
+   position: absolute;
+ }
+-
+-.#{$ns}-slider-track:not(:where(.bp-next .#{$ns}-slider-track)) {
+-  border-radius: $pt-border-radius;
++.#{$ns}-slider-track {
++  border-radius: var(--bp-surface-border-radius);
+   overflow: hidden;
+ }
++.#{$ns}-slider-progress {
++  background: var(--bp-surface-layer-neutral-rest);
+ 
+-.#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
+-  background: rgba($gray1, 0.2);
+-
+-  .#{$ns}-dark & {
+-    background: rgba($black, 0.5);
+-  }
+-
+-  @each $intent, $color in $pt-intent-colors {
++  @each $intent in primary, success, warning, danger {
+     &.#{$ns}-intent-#{$intent} {
+-      background-color: $color;
++      background: var(--bp-surface-background-color-#{$intent}-rest);
+     }
+   }
+ 
+@@ -77,11 +87,11 @@ $track-height: $track-size !default;
+     background: ButtonText;
+   }
+ }
+-
+-.#{$ns}-slider-handle:not(:where(.bp-next .#{$ns}-slider-handle)) {
+-  @include pt-button;
+-  border-radius: $pt-border-radius;
+-  box-shadow: $handle-box-shadow;
++.#{$ns}-slider-handle {
++  background: var(--bp-surface-background-color-base-rest);
++  border: 0;
++  border-radius: var(--bp-surface-border-radius);
++  box-shadow: var(--bp-surface-shadow-0);
+   cursor: pointer;
+   height: $handle-size;
+   left: 0;
+@@ -89,149 +99,98 @@ $track-height: $track-size !default;
+   top: 0;
+   width: $handle-size;
+ 
+-  // ensure target handle's label always covers neighbors
+   &:focus {
+     z-index: 1;
+   }
+ 
+   &:hover {
+-    @include pt-button-hover;
+-    box-shadow: $handle-box-shadow-hover;
++    background: var(--bp-surface-layer-neutral-hover);
+     cursor: grab;
+     z-index: 2;
+   }
+-
+   &.#{$ns}-active {
+-    @include pt-button-active;
+-    box-shadow: $handle-box-shadow-active;
++    background: var(--bp-surface-layer-neutral-active);
+     cursor: grabbing;
+   }
+-
+   .#{$ns}-disabled & {
+-    background: $gray5;
++    background: oklch(
++      from var(--bp-surface-background-color-base-rest) l c h / var(--bp-emphasis-disabled-opacity)
++    );
+     box-shadow: none;
+-    // easy way to avoid lots of special cases to ignore mouse states when disabled:
+     pointer-events: none;
+   }
+-
+-  .#{$ns}-dark & {
+-    // don't use pt-dark-button() here, since we want to appear more like a light theme button
+-    background-color: $gray4;
+-    box-shadow: $dark-button-box-shadow;
+-
+-    &:hover {
+-      background-color: $gray3;
+-      box-shadow: $dark-button-box-shadow-active;
+-    }
+-
+-    &.#{$ns}-active {
+-      background-color: $gray2;
+-      box-shadow:
+-        inset 0 1px 1px rgba($black, 0.1),
+-        $dark-button-box-shadow-active;
+-    }
++  .#{$ns}-slider-label {
++    background: var(--bp-surface-background-color-neutral-rest);
++    border-radius: var(--bp-surface-border-radius);
++    box-shadow: var(--bp-surface-shadow-1);
++    color: var(--bp-intent-neutral-foreground);
++    margin-left: calc($handle-size * 0.5);
+   }
+-
+-  .#{$ns}-dark .#{$ns}-disabled & {
+-    background: $gray1;
+-    border-color: $gray1;
++  .#{$ns}-disabled & .#{$ns}-slider-label {
+     box-shadow: none;
+   }
+-
+-  .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
+-    background: $tooltip-background-color;
+-    border-radius: $pt-border-radius;
+-    box-shadow: $pt-tooltip-box-shadow;
+-    color: $tooltip-text-color;
+-    margin-left: $handle-size * 0.5;
+-
+-    .#{$ns}-dark & {
+-      background: $dark-tooltip-background-color;
+-      box-shadow: $pt-dark-tooltip-box-shadow;
+-      color: $dark-tooltip-text-color;
+-    }
+-
+-    .#{$ns}-disabled & {
+-      box-shadow: none;
+-    }
+-  }
+-
+   &.#{$ns}-start,
+   &.#{$ns}-end {
+-    width: $handle-size * 0.5;
++    width: calc($handle-size * 0.5);
+   }
+-
+   &.#{$ns}-start {
+     border-bottom-right-radius: 0;
+     border-top-right-radius: 0;
+   }
+-
+   &.#{$ns}-end {
+     border-bottom-left-radius: 0;
+     border-top-left-radius: 0;
+-    margin-left: $handle-size * 0.5;
+-
+-    .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
++    margin-left: calc($handle-size * 0.5);
++    .#{$ns}-slider-label {
+       margin-left: 0;
+     }
+   }
+ }
+-
+-.#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
+-  @include slider-label-orientation($label-offset);
++.#{$ns}-slider-label {
++  @include slider-label-orientation-next($label-offset);
+   display: inline-block;
+-  font-size: $pt-font-size-small;
++  font-size: var(--bp-typography-size-sm);
+   line-height: 1;
+-  padding: ($pt-spacing * 0.5) $pt-spacing;
++  padding: calc(var(--bp-surface-spacing) * 0.5) var(--bp-surface-spacing);
+   position: absolute;
+   vertical-align: top;
+ }
+-
+-.#{$ns}-slider.#{$ns}-vertical:not(:where(.bp-next .#{$ns}-slider)) {
+-  @include slider-orientation($pt-input-height-large, $vertical: true);
+-
++.#{$ns}-slider.#{$ns}-vertical {
++  @include slider-orientation-next(calc(var(--bp-surface-spacing) * 10), true);
+   .#{$ns}-slider-track,
+-  .#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
+-    @include slider-track-orientation($handle-size, $track-size, $vertical: true);
++  .#{$ns}-slider-progress {
++    @include slider-track-orientation-next($handle-size, $track-size, true);
+   }
+-
+-  .#{$ns}-slider-progress:not(:where(.bp-next .#{$ns}-slider-progress)) {
++  .#{$ns}-slider-progress {
+     top: auto;
+   }
+-
+-  .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
+-    @include slider-label-orientation($label-offset, $vertical: true);
++  .#{$ns}-slider-label {
++    @include slider-label-orientation-next($label-offset, true);
+   }
+-
+-  .#{$ns}-slider-handle:not(:where(.bp-next .#{$ns}-slider-handle)) {
++  .#{$ns}-slider-handle {
+     top: auto;
+-
+-    .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
++    .#{$ns}-slider-label {
+       margin-left: 0;
+-      margin-top: -$handle-size * 0.5;
++      margin-top: calc($handle-size * -0.5);
+     }
+-
+     &.#{$ns}-end,
+     &.#{$ns}-start {
+-      height: $handle-size * 0.5;
++      height: calc($handle-size * 0.5);
+       margin-left: 0;
+       width: $handle-size;
+     }
+-
+     &.#{$ns}-start {
+-      border-bottom-right-radius: $pt-border-radius;
++      border-bottom-right-radius: var(--bp-surface-border-radius);
+       border-top-left-radius: 0;
+-
+-      .#{$ns}-slider-label:not(:where(.bp-next .#{$ns}-slider-label)) {
++      .#{$ns}-slider-label {
+         transform: translate($label-offset);
+       }
+     }
+-
+     &.#{$ns}-end {
+       border-bottom-left-radius: 0;
+       border-bottom-right-radius: 0;
+-      border-top-left-radius: $pt-border-radius;
+-      margin-bottom: $handle-size * 0.5;
++      border-top-left-radius: var(--bp-surface-border-radius);
++      margin-bottom: calc($handle-size * 0.5);
+     }
+   }
+ }

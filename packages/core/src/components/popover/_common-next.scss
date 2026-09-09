@@ -58,14 +58,27 @@
   );
 }
 
-@mixin scale-transition-next() {
-  @include react-transition(
+@mixin popover-scale-transition-phases-next($target, $initial-transform, $duration, $easing) {
+  $properties: (
+    transform: $initial-transform scale(1),
+  );
+
+  // Invoke the shared phase generator from the `.bp-next` scope so the transition container and child stay siblings
+  // within that scope instead of interpolating `.bp-next` after the child combinator.
+  @include react-transition-phase(
     "#{$ns}-popover",
-    (
-      transform: scale(0.3) scale(1),
-    ),
-    var(--bp-emphasis-transition-duration),
-    var(--bp-emphasis-ease-bounce),
-    $after: "> &"
+    "enter",
+    $properties,
+    $duration,
+    $easing,
+    $after: "> #{$target}"
+  );
+  @include react-transition-phase(
+    "#{$ns}-popover",
+    "exit",
+    $properties,
+    $duration,
+    $easing,
+    $after: "> #{$target}"
   );
 }

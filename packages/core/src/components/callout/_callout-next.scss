@@ -1,68 +1,83 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@import "../../common/mixins-next";
+@import "../../common/variables-next";
 @import "../icon/icon-mixins-next";
 
+$callout-padding-next: calc(var(--bp-surface-spacing) * 4);
+$callout-header-margin-top-next: calc(var(--bp-surface-spacing) * 0.5);
+$callout-padding-compact-next: calc(var(--bp-surface-spacing) * 2);
+
 .#{$ns}-callout {
+  @include running-typography-next;
   border-radius: var(--bp-surface-border-radius);
   color: var(--bp-typography-color-base);
-  font-size: var(--bp-typography-size-md);
-  line-height: var(--bp-typography-line-height-running-factor);
-  padding: calc(var(--bp-surface-spacing) * 4);
+  padding: $callout-padding-next;
   position: relative;
   width: 100%;
 
   &:not(.#{$ns}-minimal) {
-    background: var(--bp-surface-layer-neutral-rest);
+    background-color: var(--bp-surface-layer-neutral-rest);
   }
 
+  // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: calc(var(--bp-surface-spacing) * 10);
+    padding-left: calc(
+      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
+    );
 
     &::before {
-      @include pt-icon-next(calc(var(--bp-surface-spacing) * 4), 16);
+      @include pt-icon-next($pt-icon-size-standard-next, 16);
       color: var(--bp-typography-color-intent-neutral);
-      left: calc(var(--bp-surface-spacing) * 4);
+      left: $callout-padding-next;
       position: absolute;
-      top: calc(var(--bp-surface-spacing) * 4.5);
+      top: calc($callout-padding-next + $callout-header-margin-top-next);
     }
   }
 
+  // High contrast mode hides backgrounds, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: var(--bp-surface-border-width) solid buttonborder;
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: calc(var(--bp-surface-spacing) * 10);
+    padding-left: calc(
+      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
+    );
 
     > .#{$ns}-icon:first-child {
       color: var(--bp-typography-color-intent-neutral);
-      left: calc(var(--bp-surface-spacing) * 4);
+      left: $callout-padding-next;
       position: absolute;
-      top: calc(var(--bp-surface-spacing) * 4.5);
+      top: calc($callout-padding-next + $callout-header-margin-top-next);
     }
   }
 
   .#{$ns}-heading {
-    line-height: calc(var(--bp-surface-spacing) * 4);
+    line-height: $pt-icon-size-standard-next;
     margin-bottom: 0;
-    margin-top: calc(var(--bp-surface-spacing) * 0.5);
+    margin-top: $callout-header-margin-top-next;
   }
 
-  &.#{$ns}-callout-has-body-content .#{$ns}-heading {
-    margin-bottom: var(--bp-surface-spacing);
+  &.#{$ns}-callout-has-body-content {
+    .#{$ns}-heading {
+      margin-bottom: var(--bp-surface-spacing);
+    }
   }
 
   &.#{$ns}-compact {
-    padding: calc(var(--bp-surface-spacing) * 2);
+    padding: $callout-padding-compact-next;
 
     &.#{$ns}-callout-icon {
-      padding-left: calc(var(--bp-surface-spacing) * 8);
+      padding-left: calc(
+        $callout-padding-compact-next + $pt-icon-size-standard-next +
+          (var(--bp-surface-spacing) * 2)
+      );
 
       > .#{$ns}-icon:first-child {
-        left: calc(var(--bp-surface-spacing) * 2);
-        top: calc(var(--bp-surface-spacing) * 2.5);
+        left: $callout-padding-compact-next;
+        top: calc($callout-padding-compact-next + $callout-header-margin-top-next);
       }
     }
   }
@@ -72,11 +87,11 @@
       color: var(--bp-typography-color-intent-#{$intent});
 
       &:not(.#{$ns}-minimal) {
-        background: var(--bp-surface-layer-#{$intent}-rest);
+        background-color: var(--bp-surface-layer-#{$intent}-rest);
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        border: var(--bp-surface-border-width) solid buttonborder;
+        border: 1px solid $pt-high-contrast-mode-border-color;
       }
 
       &[class*="#{$ns}-icon-"]::before,
@@ -88,6 +103,8 @@
   }
 
   &.#{$ns}-intent-primary {
+    // special case for links inside primary intent callouts, which would otherwise not have any indication
+    // that they are clickable links; see https://github.com/palantir/blueprint/issues/5853
     a {
       text-decoration: underline;
 

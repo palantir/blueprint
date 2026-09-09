@@ -1,0 +1,21 @@
+diff --git a/packages/core/src/components/popover/_popover-in-tree.scss b/packages/core/src/components/popover/_popover-in-tree-next.scss
+index f23d81c3d..086468fdf 100644
+--- a/packages/core/src/components/popover/_popover-in-tree.scss
++++ b/packages/core/src/components/popover/_popover-in-tree-next.scss
+@@ -1,11 +1,8 @@
+-// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "./common";
+-
+-.#{$ns}-tree-node-secondary-label:not(:where(.bp-next .#{$ns}-tree-node-secondary-label)) {
+-  .#{$ns}-popover-target {
+-    align-items: center;
+-    display: flex;
+-  }
++@import "../../common/variables";
++.#{$ns}-tree-node-secondary-label .#{$ns}-popover-target {
++  align-items: center;
++  display: flex;
+ }

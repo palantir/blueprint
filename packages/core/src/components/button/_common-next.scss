@@ -31,11 +31,41 @@
   padding: 0 calc(var(--bp-surface-spacing) * 2);
 }
 
+@mixin pt-button-height-next($height) {
+  min-height: $height;
+  min-width: $height;
+}
+
+@mixin pt-button-default-colors-next() {
+  background-color: var(--bp-surface-background-color-neutral-rest);
+  box-shadow: var(--bp-surface-shadow-0);
+  color: var(--bp-intent-neutral-foreground);
+}
+
+@mixin pt-button-hover-next() {
+  background-color: var(--bp-surface-background-color-neutral-hover);
+}
+
+@mixin pt-button-active-next() {
+  background-color: var(--bp-surface-background-color-neutral-active);
+}
+
+@mixin pt-button-disabled-next() {
+  background-color: oklch(
+    from var(--bp-surface-background-color-neutral-rest) l c h / var(--bp-emphasis-disabled-opacity)
+  );
+  box-shadow: none;
+  color: oklch(
+    from var(--bp-intent-neutral-foreground) l c h / var(--bp-emphasis-disabled-opacity)
+  );
+}
+
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-button-next() {
   background:
     var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
     var(--bp-surface-background-color-base-rest);
+
   box-shadow: inset var(--bp-surface-shadow-0);
   color: var(--bp-typography-color-base);
 
@@ -50,7 +80,7 @@
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background: highlight;
+      background: highlight;WindowsHighContrastdarkthemebackgroundWindowsHighContrastdarkthemebackground
     }
   }
 
@@ -68,7 +98,7 @@
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: var(--bp-surface-border-width) solid buttonborder;
+    border: var(--bp-surface-border-width) solid buttonborder;WindowsHighContrastdarkthemeborderWindowsHighContrastdarkthemeborder
   }
 }
 
@@ -100,8 +130,8 @@
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      border-color: graytext;
-      color: graytext;
+      border-color: graytext;WindowsHighContrastdarkthemeborder-colorWindowsHighContrastdarkthemeborder-color
+      color: graytext;color
     }
   }
 
@@ -109,14 +139,14 @@
     // Use srgb to avoid hue shift with near-neutral gray
     background:
       var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
-      var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest);
-    stroke: var(--bp-intent-#{$intent}-foreground);
+      var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest);Usesrgbtoavoidhueshiftwithnear-neutralgraybackgroundUsesrgbtoavoidhueshiftwithnear-neutralgraybackground
+    stroke: var(--bp-intent-#{$intent}-foreground);stroke
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: var(--bp-surface-border-width) solid buttonborder;
-    box-shadow: none;
+    border: var(--bp-surface-border-width) solid buttonborder;WindowsHighContrastdarkthemeborderWindowsHighContrastdarkthemeborder
+    box-shadow: none;box-shadow
   }
 }
 
@@ -127,16 +157,16 @@
 
   &:hover {
     // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background: var(--bp-surface-layer-neutral-hover);
-    box-shadow: none;
+    background: var(--bp-surface-layer-neutral-hover);Usesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackgroundUsesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackground
+    box-shadow: none;box-shadow
     text-decoration: none;
   }
 
   &:active,
   &.#{$ns}-active {
     // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background: var(--bp-surface-layer-neutral-active);
-    box-shadow: none;
+    background: var(--bp-surface-layer-neutral-active);Usesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackgroundUsesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackground
+    box-shadow: none;box-shadow
   }
 
   &:disabled,

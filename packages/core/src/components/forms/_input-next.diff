@@ -1,0 +1,131 @@
+diff --git a/packages/core/src/components/forms/_input.scss b/packages/core/src/components/forms/_input-next.scss
+index 69b9794a8..da4944bfe 100644
+--- a/packages/core/src/components/forms/_input.scss
++++ b/packages/core/src/components/forms/_input-next.scss
+@@ -1,17 +1,18 @@
+-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+ @import "../../common/variables";
++@import "./common-next";
+ 
+-.#{$ns}-input:not(:where(.bp-next .#{$ns}-input)) {
+-  @include pt-input;
++.#{$ns}-input {
++  @include pt-input-next;
+ 
+   &.#{$ns}-large {
+-    @include pt-input-large;
++    @include pt-input-large-next;
+   }
+ 
+   &.#{$ns}-small {
+-    @include pt-input-small;
++    @include pt-input-small-next;
+   }
+ 
+   &.#{$ns}-fill {
+@@ -19,47 +20,9 @@
+     width: 100%;
+   }
+ 
+-  .#{$ns}-dark & {
+-    @include pt-dark-input;
+-  }
+-
+-  &.#{$ns}-intent-primary {
+-    @include pt-input-intent(var(--bp-intent-primary-rest));
+-
+-    .#{$ns}-dark & {
+-      @include pt-dark-input-intent(
+-        oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)
+-      );
+-    }
+-  }
+-
+-  &.#{$ns}-intent-success {
+-    @include pt-input-intent(var(--bp-intent-success-rest));
+-
+-    .#{$ns}-dark & {
+-      @include pt-dark-input-intent(
+-        oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)
+-      );
+-    }
+-  }
+-
+-  &.#{$ns}-intent-warning {
+-    @include pt-input-intent(var(--bp-intent-warning-rest));
+-
+-    .#{$ns}-dark & {
+-      @include pt-dark-input-intent(
+-        oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)
+-      );
+-    }
+-  }
+-
+-  &.#{$ns}-intent-danger {
+-    @include pt-input-intent(var(--bp-intent-danger-rest));
+-
+-    .#{$ns}-dark & {
+-      @include pt-dark-input-intent(
+-        oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)
+-      );
++  @each $intent in primary, success, warning, danger {
++    &.#{$ns}-intent-#{$intent} {
++      @include pt-input-intent-next($intent);
+     }
+   }
+ 
+@@ -71,41 +34,27 @@
+ // for iOS support
+ @supports (-webkit-touch-callout: none) {
+   // only html input elements require a fix on iOS
+-  input.#{$ns}-input:not(:where(.bp-next .#{$ns}-input)) {
+-    &:disabled,
+-    &.#{$ns}-disabled {
+-      opacity: 1;
+-      -webkit-text-fill-color: var(--bp-typography-color-default-disabled);
+-
+-      .#{$ns}-dark & {
+-        -webkit-text-fill-color: var(--bp-typography-color-default-disabled);
+-      }
+-    }
++  input.#{$ns}-input:disabled,
++  input.#{$ns}-input.#{$ns}-disabled {
++    opacity: 1;
++    -webkit-text-fill-color: $input-color-disabled-next;
+   }
+ }
+ 
+-/* stylelint-disable-next-line selector-no-qualifying-type */
+-textarea.#{$ns}-input:not(:where(.bp-next .#{$ns}-input)) {
++// override input styles for these modifiers.
++// line-height is needed to center text on <input> but not on multiline <textarea>
++textarea.#{$ns}-input {
+   max-width: 100%;
+   padding: calc(var(--bp-surface-spacing) * 2);
+-
+   &,
+   &.#{$ns}-large,
+   &.#{$ns}-small {
+-    // override input styles for these modifiers.
+-    // line-height is needed to center text on <input> but not on multiline <textarea>
+     height: auto;
+     line-height: inherit;
+   }
+-
+-  &.#{$ns}-small {
+-    padding: calc(var(--bp-surface-spacing) * 2);
+-  }
+ }
+ 
+-.#{$ns}-text-area:not(:where(.bp-next .#{$ns}-text-area)) {
+-  &.#{$ns}-text-area-auto-resize {
+-    // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
+-    resize: horizontal;
+-  }
++.#{$ns}-text-area.#{$ns}-text-area-auto-resize {
++  // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
++  resize: horizontal;
+ }

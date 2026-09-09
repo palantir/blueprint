@@ -1,0 +1,50 @@
+diff --git a/packages/core/src/components/alert/_alert.scss b/packages/core/src/components/alert/_alert-next.scss
+index 2f9f3c0fd..9b8678a59 100644
+--- a/packages/core/src/components/alert/_alert.scss
++++ b/packages/core/src/components/alert/_alert-next.scss
+@@ -1,33 +1,33 @@
+-// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ // Licensed under the Apache License, Version 2.0.
+ 
+-@import "../../common/variables";
++@import "../../common/variables-next";
+ 
+-.#{$ns}-alert:not(:where(.bp-next .#{$ns}-alert)) {
+-  max-width: $pt-spacing * 100;
+-  padding: $pt-spacing * 5;
++.#{$ns}-alert {
++  max-width: calc(var(--bp-surface-spacing) * 100);
++  padding: calc(var(--bp-surface-spacing) * 5);
+ }
+ 
+-.#{$ns}-alert-body:not(:where(.bp-next .#{$ns}-alert-body)) {
++.#{$ns}-alert-body {
+   display: flex;
+ 
+   .#{$ns}-icon {
+-    font-size: $pt-icon-size-large * 2;
+-    margin-right: $pt-spacing * 5;
++    font-size: calc($pt-icon-size-large-next * 2);
++    margin-right: calc(var(--bp-surface-spacing) * 5);
+     margin-top: 0;
+   }
+ }
+ 
+-.#{$ns}-alert-contents:not(:where(.bp-next .#{$ns}-alert-contents)) {
++.#{$ns}-alert-contents {
+   word-break: break-word;
+ }
+ 
+-.#{$ns}-alert-footer:not(:where(.bp-next .#{$ns}-alert-footer)) {
++.#{$ns}-alert-footer {
+   display: flex;
+   flex-direction: row-reverse;
+-  margin-top: $pt-spacing * 3;
++  margin-top: calc(var(--bp-surface-spacing) * 3);
+ 
+   .#{$ns}-button {
+-    margin-left: $pt-spacing * 2;
++    margin-left: calc(var(--bp-surface-spacing) * 2);
+   }
+ }

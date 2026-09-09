@@ -1,0 +1,28 @@
+diff --git a/packages/core/src/components/forms/_numeric-input.scss b/packages/core/src/components/forms/_numeric-input-next.scss
+index acfec3da0..a41365e47 100644
+--- a/packages/core/src/components/forms/_numeric-input.scss
++++ b/packages/core/src/components/forms/_numeric-input-next.scss
+@@ -1,7 +1,9 @@
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
++// Licensed under the Apache License, Version 2.0.
++
+ @import "../../common/variables";
+-@import "./common";
+ 
+-.#{$ns}-numeric-input:not(:where(.bp-next .#{$ns}-numeric-input)) {
++.#{$ns}-numeric-input {
+   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
+   .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+     // let the buttons shrink to equal heights
+@@ -10,11 +12,9 @@
+     padding: 0;
+     width: calc(var(--bp-surface-spacing) * 6);
+   }
+-
+   &.#{$ns}-large .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+     width: calc(var(--bp-surface-spacing) * 10);
+   }
+-
+   &.#{$ns}-small .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+     width: calc(var(--bp-surface-spacing) * 6);
+   }

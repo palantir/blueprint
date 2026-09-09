@@ -3,10 +3,17 @@
 
 @import "../../common/mixins";
 @import "../../common/react-transition";
-@import "../../common/variables";
+@import "../../common/variables-next";
+
+// These component-local aliases remain here, as in BP6. The dialog partials imported after this file reuse them while their
+// CSS custom-property values remain runtime-configurable.
+$dialog-background-color-next: var(--bp-surface-background-color-base-rest);
+$dialog-border-radius-next: var(--bp-surface-border-radius);
+$dialog-margin-next: calc(var(--bp-surface-spacing) * 8) 0;
+$dialog-padding-next: calc(var(--bp-surface-spacing) * 4);
 
 .#{$ns}-dialog-container {
-  $transition-props: (
+  $dialog-transition-props-next: (
     opacity: (
       0,
       1,
@@ -17,10 +24,11 @@
     ),
   );
 
+  // Preserve BP6's three-times-base dialog transition duration.
   @include react-transition(
     "#{$ns}-overlay",
-    $transition-props,
-    var(--bp-emphasis-transition-duration),
+    $dialog-transition-props-next,
+    calc(var(--bp-emphasis-transition-duration) * 3),
     var(--bp-emphasis-ease-bounce),
     $before: "&",
     $after: "> .#{$ns}-dialog"
@@ -35,13 +43,13 @@
 }
 
 .#{$ns}-dialog {
-  background: var(--bp-surface-background-color-base-rest);
-  border-radius: var(--bp-surface-border-radius);
-  box-shadow: var(--bp-surface-shadow-4);
+  background: $dialog-background-color-next;
+  border-radius: $dialog-border-radius-next;
+  box-shadow: var(--bp-surface-shadow-3);
   color: var(--bp-typography-color-base);
   display: flex;
   flex-direction: column;
-  margin: calc(var(--bp-surface-spacing) * 8) 0;
+  margin: $dialog-margin-next;
   pointer-events: all;
   user-select: text;
   width: calc(var(--bp-surface-spacing) * 125);
@@ -51,45 +59,50 @@
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: var(--bp-surface-border-width) solid CanvasText;
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
+
+$dialog-header-padding-next: var(--bp-surface-spacing);
 
 .#{$ns}-dialog-header {
   align-items: center;
   background: var(--bp-surface-background-color-base-rest);
-  border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
-  box-shadow: 0 var(--bp-surface-border-width) 0 var(--bp-surface-divider-color-default);
+  border-radius: $dialog-border-radius-next $dialog-border-radius-next 0 0;
+  box-shadow: 0 1px 0 var(--bp-surface-divider-color-default);
   display: flex;
   flex: 0 0 auto;
-  min-height: calc(var(--bp-surface-spacing) * 9);
-  padding: var(--bp-surface-spacing);
-  padding-left: calc(var(--bp-surface-spacing) * 4);
+  min-height: calc($pt-input-height-next + ($dialog-header-padding-next * 2));
+  padding: $dialog-header-padding-next;
+  padding-left: $dialog-padding-next;
   z-index: 0;
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     flex: 0 0 auto;
     margin-left: calc(-1 * var(--bp-surface-spacing));
-    margin-right: calc(var(--bp-surface-spacing) * 2);
+    margin-right: calc($dialog-padding-next * 0.5);
+
+    // only apply the neutral color to icons that are not intent-specific
     &:not([class*="#{$ns}-intent"]) {
-      color: var(--bp-typography-color-base);
+      // BP6's default icon color was the muted text color; the neutral typography role is its BP7 counterpart.
+      color: var(--bp-typography-color-intent-neutral);
     }
   }
 
   .#{$ns}-heading {
     @include overflow-ellipsis;
     flex: 1 1 auto;
-    font-size: var(--bp-typography-size-md);
+    font-size: var(--bp-typography-size-lg);
     line-height: inherit;
     margin: 0;
 
     &:last-child {
-      margin-right: calc(var(--bp-surface-spacing) * 4);
+      margin-right: $dialog-padding-next;
     }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border-bottom: var(--bp-surface-border-width) solid CanvasText;
+    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
   }
 }

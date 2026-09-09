@@ -1,0 +1,47 @@
+diff --git a/packages/core/src/components/link/_link.scss b/packages/core/src/components/link/_link-next.scss
+index 0776789d5..67dfbfdd9 100644
+--- a/packages/core/src/components/link/_link.scss
++++ b/packages/core/src/components/link/_link-next.scss
+@@ -1,13 +1,12 @@
+-/* !
+- * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+- */
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
++// Licensed under the Apache License, Version 2.0.
+ 
+ @import "../../common/variables";
+ 
+-.#{$ns}-link:not(:where(.bp-next .#{$ns}-link)) {
++.#{$ns}-link {
+   cursor: pointer;
+   display: inline-flex;
+-  gap: $pt-spacing;
++  gap: var(--bp-surface-spacing);
+   text-underline-offset: 17.5%;
+   text-underline-position: from-font;
+ 
+@@ -35,22 +34,9 @@
+     color: inherit;
+   }
+ 
+-  @each $intent, $color in $pt-intent-text-colors {
++  @each $intent in $pt-intents {
+     &.#{$ns}-intent-#{$intent} {
+-      color: $color;
+-    }
+-  }
+-
+-  // Dark theme
+-  .#{$ns}-dark & {
+-    &.#{$ns}-link-color-inherit {
+-      color: inherit;
+-    }
+-
+-    @each $intent, $color in $pt-dark-intent-text-colors {
+-      &.#{$ns}-intent-#{$intent} {
+-        color: $color;
+-      }
++      color: var(--bp-typography-color-intent-#{$intent});
+     }
+   }
+ }

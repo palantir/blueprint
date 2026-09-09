@@ -1,28 +1,31 @@
 // Copyright 2026 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+$step-radius-next: var(--bp-surface-border-radius);
 
 .#{$ns}-multistep-dialog-panels {
   display: flex;
 
+  // If title doesn't exist, this element will be the first child and top
+  // borders needs to be rounded.
   &:first-child {
     .#{$ns}-dialog-step-container:first-child {
-      border-radius: var(--bp-surface-border-radius) 0 0 0;
+      border-radius: $dialog-border-radius-next 0 0 0;
     }
     .#{$ns}-multistep-dialog-right-panel {
-      border-top-right-radius: var(--bp-surface-border-radius);
+      border-top-right-radius: $dialog-border-radius-next;
     }
   }
   .#{$ns}-multistep-dialog-nav-top & {
     flex-direction: column;
 
+    // Handle case where title it not rendered.
     &:first-child {
       .#{$ns}-dialog-step-container:first-child {
-        border-radius: var(--bp-surface-border-radius) 0 0 0;
+        border-radius: $dialog-border-radius-next 0 0 0;
       }
       .#{$ns}-dialog-step-container:last-child {
-        border-radius: 0 var(--bp-surface-border-radius) 0 0;
+        border-radius: 0 $dialog-border-radius-next 0 0;
       }
     }
     .#{$ns}-multistep-dialog-left-panel {
@@ -32,7 +35,7 @@
       flex-grow: 1;
 
       &:not(:first-child) {
-        border-left: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+        border-left: 1px solid var(--bp-surface-divider-color-default);
       }
     }
     .#{$ns}-multistep-dialog-right-panel {
@@ -40,27 +43,28 @@
     }
     .#{$ns}-multistep-dialog-right-panel,
     .#{$ns}-multistep-dialog-footer {
-      border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
+      border-radius: 0 0 $dialog-border-radius-next $dialog-border-radius-next;
     }
   }
   .#{$ns}-multistep-dialog-nav-right & {
     flex-direction: row-reverse;
 
+    // Handle case where title it not rendered.
     &:first-child {
       .#{$ns}-multistep-dialog-right-panel {
-        border-radius: var(--bp-surface-border-radius) 0 0 var(--bp-surface-border-radius);
+        border-radius: $dialog-border-radius-next 0 0 $dialog-border-radius-next;
       }
       .#{$ns}-dialog-step-container:first-child {
-        border-radius: 0 var(--bp-surface-border-radius) 0 0;
+        border-radius: 0 $dialog-border-radius-next 0 0;
       }
     }
     .#{$ns}-multistep-dialog-left-panel {
-      border-radius: 0 0 var(--bp-surface-border-radius);
+      border-radius: 0 0 $dialog-border-radius-next;
     }
     .#{$ns}-multistep-dialog-right-panel {
       border-left: none;
-      border-radius: var(--bp-surface-border-radius) 0 0 var(--bp-surface-border-radius);
-      border-right: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+      border-radius: $dialog-border-radius-next 0 0 $dialog-border-radius-next;
+      border-right: 1px solid var(--bp-surface-divider-color-default);
     }
     .#{$ns}-dialog-footer {
       border-bottom-left-radius: 0;
@@ -73,43 +77,46 @@
   flex-direction: column;
 }
 .#{$ns}-multistep-dialog-right-panel {
-  background-color: var(--bp-surface-background-color-base-rest);
-  border-left: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
-  border-radius: 0 0 var(--bp-surface-border-radius);
+  background-color: $dialog-background-color-next;
+  border-left: 1px solid var(--bp-surface-divider-color-default);
+  border-radius: 0 0 $dialog-border-radius-next;
   flex: 3;
   min-width: 0;
 }
+
+.#{$ns}-multistep-dialog-footer {
+  // Deprecating
+}
+
 .#{$ns}-dialog-step-container {
-  background-color: var(--bp-surface-background-color-base-rest);
-  border-bottom: var(--bp-surface-border-width) solid var(--bp-surface-divider-color-default);
+  background-color: $dialog-background-color-next;
+  border-bottom: 1px solid var(--bp-surface-divider-color-default);
   &.#{$ns}-dialog-step-viewed {
     background-color: var(--bp-surface-background-color-neutral-rest);
   }
 }
 .#{$ns}-dialog-step {
   align-items: center;
-  border-radius: var(--bp-surface-border-radius);
+  border-radius: $step-radius-next;
   cursor: not-allowed;
   display: flex;
   margin: var(--bp-surface-spacing);
   padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 3.5);
+  // by default, steps are inactive until they are visited
   .#{$ns}-dialog-step-viewed & {
     background-color: var(--bp-surface-background-color-neutral-rest);
     cursor: pointer;
   }
 
   &:hover {
-    background: var(--bp-surface-layer-neutral-hover);
+    background-color: var(--bp-surface-layer-neutral-hover);
   }
 }
 .#{$ns}-dialog-step-icon {
   align-items: center;
-  background-color: var(--bp-typography-color-intent-neutral);
-  background-color: oklch(
-    from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
-  );
+  background-color: $pt-text-color-disabled-next;
   border-radius: 50%;
-  color: var(--bp-surface-background-color-base-rest);
+  color: var(--bp-intent-neutral-foreground);
   display: flex;
   height: calc(var(--bp-surface-spacing) * 6);
   justify-content: center;
@@ -122,9 +129,10 @@
   }
 }
 .#{$ns}-dialog-step-title {
-  color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+  color: $pt-text-color-disabled-next;
   flex: 1;
   padding-left: calc(var(--bp-surface-spacing) * 2);
+  // step title is active only when the step is selected
   .#{$ns}-active.#{$ns}-dialog-step-viewed & {
     color: var(--bp-typography-color-intent-primary);
   }

@@ -1,0 +1,16 @@
+diff --git a/packages/core/src/components/tag-input/_resizable-input.scss b/packages/core/src/components/tag-input/_resizable-input-next.scss
+index 39b8cb5e3..a9cd2f540 100644
+--- a/packages/core/src/components/tag-input/_resizable-input.scss
++++ b/packages/core/src/components/tag-input/_resizable-input-next.scss
+@@ -1,7 +1,9 @@
++// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
++// Licensed under the Apache License, Version 2.0.
++
+ @import "../../common/variables";
+-@import "../tag/common";
+ 
+-.#{$ns}-resizable-input-span:not(:where(.bp-next .#{$ns}-resizable-input-span)) {
++.#{$ns}-resizable-input-span {
+   max-height: 0;
+   max-width: 100%;
+   min-width: calc(var(--bp-surface-spacing) * 20);
