@@ -5,17 +5,9 @@ parameters:
     type: boolean
     default: false
 
-orbs:
-  browser-tools: circleci/browser-tools@2.4.0
-
 aliases:
   - &docker-node-image
     - image: cimg/node:24.14.1
-
-  - &docker-node-browsers-image
-    - image: cimg/node:24.14.1-browsers
-      environment:
-        CHROME_BIN: "/usr/bin/google-chrome"
 
   - &restore-pnpm-cache
     name: Restore pnpm store cache
@@ -60,9 +52,8 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-pnpm-cache
+      - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: pnpm install --frozen-lockfile
       - run: pnpm dedupe --check
 
   compile:
@@ -72,12 +63,28 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: pnpm compile --parallel=7
+      - run: pnpm compile --parallel=7 --exclude @blueprintjs/docs-data
       - persist_to_workspace:
           root: "."
           paths:
             - packages/*/lib
-            - packages/*/src/generated
+            - packages/icons/src/generated
+            - packages/icons/src/next/generated
+
+  compile-docs:
+    docker: *docker-node-image
+    resource_class: xlarge
+    steps:
+      - checkout
+      - attach_workspace: { at: "." }
+      - run: sudo corepack enable
+      # Library compilation is supplied by the current workflow's workspace.
+      # The combined docs task fetches live npm metadata and must run uncached.
+      - run: pnpm nx compile @blueprintjs/docs-data --excludeTaskDependencies
+      - persist_to_workspace:
+          root: "."
+          paths:
+            - packages/docs-data/src/generated
 
   format-check:
     docker: *docker-node-image
@@ -147,7 +154,7 @@ jobs:
       - store_artifacts: { path: ./reports }
 
   test-react-18: &test-react
-    docker: *docker-node-browsers-image
+    docker: *docker-node-image
     resource_class: xlarge
     environment:
       JUNIT_REPORT_PATH: reports
@@ -156,26 +163,27 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - browser-tools/install_chrome
-      - browser-tools/install_chromedriver
-      - run:
-          name: Verify Chrome browser installed
-          command: |
-            google-chrome --version
-            chromedriver --version
       - run: mkdir -p ./reports
       - run:
           # split vitest tests into containers because they can take up a lot of memory
-          # Orginally did this while tests were still running on Karma because running
+          # Originally did this while tests were still running on Karma because running
           # them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
+          # Task dependencies are already compiled in this workflow's workspace.
           command: |
-            case $CIRCLE_NODE_INDEX in \
-            0) pnpm nx run-many -t test:typeCheck ;; \
-            1) pnpm nx test:vitest:run @blueprintjs/core ;; \
-            2) pnpm nx test:vitest:run @blueprintjs/datetime ;; \
-            4) pnpm nx test:vitest:run @blueprintjs/select ;; \
-            5) pnpm nx test:vitest:run @blueprintjs/table
+            case $CIRCLE_NODE_INDEX in
+            0) pnpm nx run-many -t test:typeCheck --excludeTaskDependencies ;;
+            1) pnpm nx test:vitest:run @blueprintjs/core ;;
+            2) pnpm nx test:vitest:run @blueprintjs/datetime ;;
+            3)
+              pnpm nx test:vitest:run @blueprintjs/icons \
+                --reporter=default --reporter=junit --outputFile=../../reports/icons.xml &&
+              pnpm nx test @blueprintjs/labs --excludeTaskDependencies \
+                --reporter=default --reporter=junit --outputFile=../../reports/labs.xml
+              ;;
+            4) pnpm nx test:vitest:run @blueprintjs/select ;;
+            5) pnpm nx test:vitest:run @blueprintjs/table ;;
+            *) echo "Unexpected test shard: $CIRCLE_NODE_INDEX" >&2; exit 1 ;;
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -258,8 +266,10 @@ workflows:
           requires: [checkout-code]
       - lint:
           requires: [compile]
-      - dist:
+      - compile-docs:
           requires: [compile]
+      - dist:
+          requires: [compile, compile-docs]
       - test-node-libs:
           requires: [compile]
       - test-react-18:
@@ -289,7 +299,9 @@ workflows:
       - checkout-code
       - compile:
           requires: [checkout-code]
-      - dist:
+      - compile-docs:
           requires: [compile]
+      - dist:
+          requires: [compile, compile-docs]
       - chromatic:
           requires: [dist]

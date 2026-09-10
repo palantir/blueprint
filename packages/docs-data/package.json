@@ -14,6 +14,7 @@
     "nx": {
         "targets": {
             "compile": {
+                "cache": false,
                 "inputs": [
                     "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
                     "{workspaceRoot}/packages/*/package.json",
