@@ -4,7 +4,8 @@
 
 import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Preview } from "@storybook/react-vite";
-import { type CSSProperties, type ReactNode, useState } from "react";
+// eslint-disable-next-line import/no-extraneous-dependencies -- Storybook runs from the root dev dependencies.
+import { type ReactNode, useState } from "react";
 
 import { BlueprintProvider, Classes, Colors, FocusStyleManager } from "@blueprintjs/core";
 
@@ -19,40 +20,23 @@ Icons.setLoaderOptions({ loader: "all" });
 // optionally, load the icons up-front so that future usage does not trigger a network request
 await Icons.loadAll();
 
-const customPrimaryIntentStyle = {
-    "--bp-intent-primary-100": "var(--bp-palette-turquoise-100)",
-    "--bp-intent-primary-200": "var(--bp-palette-turquoise-200)",
-    "--bp-intent-primary-300": "var(--bp-palette-turquoise-300)",
-    "--bp-intent-primary-400": "var(--bp-palette-turquoise-400)",
-    "--bp-intent-primary-500": "var(--bp-palette-turquoise-500)",
-    "--bp-intent-primary-600": "var(--bp-palette-turquoise-600)",
-    "--bp-intent-primary-700": "var(--bp-palette-turquoise-700)",
-    "--bp-intent-primary-800": "var(--bp-palette-turquoise-800)",
-    "--bp-intent-primary-900": "var(--bp-palette-turquoise-900)",
-    "--bp-intent-primary-1000": "var(--bp-palette-turquoise-1000)",
-} as CSSProperties;
-
 interface BlueprintStoryProps {
     children: ReactNode;
     isDark: boolean;
-    useCustomIntent: boolean;
     useNextStyles: boolean;
 }
 
-function BlueprintStory({ children, isDark, useCustomIntent, useNextStyles }: BlueprintStoryProps) {
+function BlueprintStory({ children, isDark, useNextStyles }: BlueprintStoryProps) {
     const [portalContainer, setPortalContainer] = useState<HTMLDivElement | null>(null);
     const className = [isDark ? Classes.DARK : undefined, useNextStyles ? "bp-next" : undefined]
         .filter(Boolean)
         .join(" ");
 
     return (
-        <div
-            className={className}
-            data-bp-color-scheme={isDark ? "dark" : "light"}
-            ref={setPortalContainer}
-            style={useCustomIntent ? customPrimaryIntentStyle : undefined}
-        >
-            <BlueprintProvider portalContainer={portalContainer ?? undefined}>{children}</BlueprintProvider>
+        <div className={className} data-bp-color-scheme={isDark ? "dark" : "light"} ref={setPortalContainer}>
+            {portalContainer != null && (
+                <BlueprintProvider portalContainer={portalContainer}>{children}</BlueprintProvider>
+            )}
         </div>
     );
 }
@@ -73,7 +57,6 @@ const preview: Preview = {
                 light: modes.light,
                 nextDark: modes.nextDark,
                 nextLight: modes.nextLight,
-                nextCustomIntent: modes.nextCustomIntent,
             },
         },
         controls: {
@@ -100,15 +83,13 @@ const preview: Preview = {
         (Story, context) => {
             const isDark = context.globals?.theme === "dark";
             const blueprintStyles = context.globals?.blueprintStyles;
-            const useCustomIntent = blueprintStyles === "next-custom-intent";
-            const useNextStyles =
-                blueprintStyles === "next" || useCustomIntent || context.title.startsWith("NextStyles/");
+            const useNextStyles = blueprintStyles === "next" || context.title.startsWith("NextStyles/");
             if (typeof document !== "undefined" && document.body) {
                 // Setting dark background based on class
                 document.body.style.backgroundColor = isDark ? Colors.BLACK : Colors.WHITE;
             }
             return (
-                <BlueprintStory isDark={isDark} useCustomIntent={useCustomIntent} useNextStyles={useNextStyles}>
+                <BlueprintStory isDark={isDark} useNextStyles={useNextStyles}>
                     <Story />
                 </BlueprintStory>
             );
@@ -123,7 +104,6 @@ const preview: Preview = {
                 items: [
                     { title: "BP6", value: "bp6" },
                     { title: "BP7", value: "next" },
-                    { title: "BP7 custom intent", value: "next-custom-intent" },
                 ],
             },
         },

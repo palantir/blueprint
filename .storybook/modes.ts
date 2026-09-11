@@ -25,9 +25,4 @@ export const modes = {
         blueprintStyles: "next",
         theme: "light",
     },
-    nextCustomIntent: {
-        backgrounds: { value: Colors.WHITE },
-        blueprintStyles: "next-custom-intent",
-        theme: "light",
-    },
 } as const;
