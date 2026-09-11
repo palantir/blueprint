@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/callout/_callout.scss b/packages/core/src/components/callout/_callout-next.scss
-index 8450c86eb..230284151 100644
+index 8450c86eb..34f2ebb3c 100644
 --- a/packages/core/src/components/callout/_callout.scss
 +++ b/packages/core/src/components/callout/_callout-next.scss
 @@ -1,34 +1,38 @@
@@ -41,14 +41,14 @@ index 8450c86eb..230284151 100644
    &[class*="#{$ns}-icon-"] {
 -    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
 +    padding-left: calc(
-+      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
++      $callout-padding-next + var(--bp-surface-icon-size-standard) + (var(--bp-surface-spacing) * 2)
 +    );
  
      &::before {
 -      @include pt-icon($pt-icon-size-standard);
 -      color: $pt-icon-color;
 -      left: $callout-padding;
-+      @include pt-icon-next($pt-icon-size-standard-next, 16);
++      @include pt-icon-next(var(--bp-surface-icon-size-standard), 16);
 +      color: var(--bp-typography-color-intent-neutral);
 +      left: $callout-padding-next;
        position: absolute;
@@ -63,7 +63,7 @@ index 8450c86eb..230284151 100644
    &.#{$ns}-callout-icon {
 -    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
 +    padding-left: calc(
-+      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
++      $callout-padding-next + var(--bp-surface-icon-size-standard) + (var(--bp-surface-spacing) * 2)
 +    );
  
      > .#{$ns}-icon:first-child {
@@ -79,7 +79,7 @@ index 8450c86eb..230284151 100644
  
    .#{$ns}-heading {
 -    line-height: $pt-icon-size-standard;
-+    line-height: $pt-icon-size-standard-next;
++    line-height: var(--bp-surface-icon-size-standard);
      margin-bottom: 0;
 -    margin-top: $callout-header-margin-top;
 +    margin-top: $callout-header-margin-top-next;
@@ -99,7 +99,7 @@ index 8450c86eb..230284151 100644
      &.#{$ns}-callout-icon {
 -      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-spacing * 2);
 +      padding-left: calc(
-+        $callout-padding-compact-next + $pt-icon-size-standard-next +
++        $callout-padding-compact-next + var(--bp-surface-icon-size-standard) +
 +          (var(--bp-surface-spacing) * 2)
 +      );
  

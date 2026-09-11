@@ -1,8 +1,8 @@
 diff --git a/packages/core/src/components/html-select/_html-select.scss b/packages/core/src/components/html-select/_html-select-next.scss
-index ce950a8f2..b4dda6cee 100644
+index ce950a8f2..df9c7924e 100644
 --- a/packages/core/src/components/html-select/_html-select.scss
 +++ b/packages/core/src/components/html-select/_html-select-next.scss
-@@ -1,46 +1,38 @@
+@@ -1,46 +1,40 @@
 -// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 +// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  // Licensed under the Apache License, Version 2.0.
@@ -53,14 +53,16 @@ index ce950a8f2..b4dda6cee 100644
 -      right: $pt-spacing * 3;
 -      top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
 +      right: calc(var(--bp-surface-spacing) * 3);
-+      top: calc(($pt-input-height-large-next - $pt-icon-size-standard-next) * 0.5);
++      top: calc(
++        (var(--bp-surface-input-height-large) - var(--bp-surface-icon-size-standard)) * 0.5
++      );
      }
    }
 -
    &.#{$ns}-fill {
      &,
      select {
-@@ -48,22 +40,12 @@
+@@ -48,22 +42,12 @@
      }
    }
  

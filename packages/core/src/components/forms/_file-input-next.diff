@@ -1,8 +1,8 @@
 diff --git a/packages/core/src/components/forms/_file-input.scss b/packages/core/src/components/forms/_file-input-next.scss
-index f030379ec..37e07d1da 100644
+index f030379ec..7333337dd 100644
 --- a/packages/core/src/components/forms/_file-input.scss
 +++ b/packages/core/src/components/forms/_file-input-next.scss
-@@ -1,20 +1,23 @@
+@@ -1,23 +1,28 @@
 -// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 +// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  // Licensed under the Apache License, Version 2.0.
@@ -27,19 +27,25 @@ index f030379ec..37e07d1da 100644
 +$file-input-button-width-next: calc(var(--bp-surface-spacing) * 17.5);
 +$file-input-button-width-large-next: calc(var(--bp-surface-spacing) * 21.25);
 +$file-input-button-width-small-next: calc(var(--bp-surface-spacing) * 13.75);
-+$file-input-button-padding-next: calc(($pt-input-height-next - $pt-input-height-small-next) * 0.5);
++$file-input-button-padding-next: calc(
++  (var(--bp-surface-input-height-standard) - var(--bp-surface-input-height-small)) * 0.5
++);
 +$file-input-button-padding-large-next: calc(
-+  ($pt-input-height-large-next - $pt-input-height-next) * 0.5
++  (var(--bp-surface-input-height-large) - var(--bp-surface-input-height-standard)) * 0.5
 +);
 +$file-input-button-padding-small-next: calc(
-+  ($pt-input-height-small-next - (var(--bp-surface-spacing) * 5)) * 0.5
++  (var(--bp-surface-input-height-small) - (var(--bp-surface-spacing) * 5)) * 0.5
 +);
 +
 +.#{$ns}-file-input {
    cursor: pointer;
    display: inline-block;
-   height: calc(var(--bp-surface-spacing) * 7.5);
-@@ -31,155 +34,95 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
+-  height: calc(var(--bp-surface-spacing) * 7.5);
++  height: var(--bp-surface-input-height-standard);
+   position: relative;
+ 
+   input {
+@@ -31,155 +36,95 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
      // the surrounding wrapper. @see https://github.com/palantir/blueprint/issues/689
      // for gory details.
      &:disabled + .#{$ns}-file-upload-input,
@@ -105,12 +111,14 @@ index f030379ec..37e07d1da 100644
 -
    &.#{$ns}-large,
    .#{$ns}-large & {
-     height: calc(var(--bp-surface-spacing) * 10);
+-    height: calc(var(--bp-surface-spacing) * 10);
++    height: var(--bp-surface-input-height-large);
    }
 -
    &.#{$ns}-small,
    .#{$ns}-small & {
-     height: calc(var(--bp-surface-spacing) * 6);
+-    height: calc(var(--bp-surface-spacing) * 6);
++    height: var(--bp-surface-input-height-small);
    }
 -
    .#{$ns}-file-upload-input-custom-text::after {
@@ -138,12 +146,13 @@ index f030379ec..37e07d1da 100644
 -    @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
 +    // hack to force the button shadow to display since it doesn't render correctly via the full `pt-button-next` mixin
 +    @include pt-button-default-colors-next;
-+    @include pt-button-height-next($pt-input-height-small-next);
++    @include pt-button-height-next(var(--bp-surface-input-height-small));
      @include overflow-ellipsis;
      border-radius: var(--bp-surface-border-radius);
      content: "Browse";
-     line-height: calc(var(--bp-surface-spacing) * 6);
+-    line-height: calc(var(--bp-surface-spacing) * 6);
 -    margin: calc(var(--bp-surface-spacing) * 0.75);
++    line-height: var(--bp-surface-input-height-small);
 +    margin: $file-input-button-padding-next;
      position: absolute;
      right: 0;
@@ -173,10 +182,11 @@ index f030379ec..37e07d1da 100644
  
      &::after {
 -      @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
-+      @include pt-button-height-next($pt-input-height-next);
-       line-height: calc(var(--bp-surface-spacing) * 7.5);
+-      line-height: calc(var(--bp-surface-spacing) * 7.5);
 -      margin: calc(var(--bp-surface-spacing) * 1.25);
 -      width: $file-input-button-width-large;
++      @include pt-button-height-next(var(--bp-surface-input-height-standard));
++      line-height: var(--bp-surface-input-height-standard);
 +      margin: $file-input-button-padding-large-next;
 +      width: $file-input-button-width-large-next;
      }

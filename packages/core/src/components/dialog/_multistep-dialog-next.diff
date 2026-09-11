@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/dialog/_multistep-dialog.scss b/packages/core/src/components/dialog/_multistep-dialog-next.scss
-index a394ffde3..8cd6fe4c0 100644
+index a394ffde3..616ef3193 100644
 --- a/packages/core/src/components/dialog/_multistep-dialog.scss
 +++ b/packages/core/src/components/dialog/_multistep-dialog-next.scss
 @@ -1,230 +1,142 @@
@@ -218,7 +218,7 @@ index a394ffde3..8cd6fe4c0 100644
 +.#{$ns}-dialog-step-icon {
    align-items: center;
 -  background-color: $pt-text-color-disabled;
-+  background-color: $pt-text-color-disabled-next;
++  background-color: var(--bp-typography-color-disabled);
    border-radius: 50%;
 -  color: $white;
 +  color: var(--bp-intent-neutral-foreground);
@@ -247,7 +247,7 @@ index a394ffde3..8cd6fe4c0 100644
 -.#{$ns}-dialog-step-title:not(:where(.bp-next .#{$ns}-dialog-step-title)) {
 -  color: $pt-text-color-disabled;
 +.#{$ns}-dialog-step-title {
-+  color: $pt-text-color-disabled-next;
++  color: var(--bp-typography-color-disabled);
    flex: 1;
 -  padding-left: $pt-spacing * 2;
 -

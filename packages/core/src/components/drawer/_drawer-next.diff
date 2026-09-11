@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/drawer/_drawer.scss b/packages/core/src/components/drawer/_drawer-next.scss
-index 35fdb9714..3e7c37770 100644
+index 35fdb9714..8a1af160e 100644
 --- a/packages/core/src/components/drawer/_drawer.scss
 +++ b/packages/core/src/components/drawer/_drawer-next.scss
 @@ -1,22 +1,14 @@
@@ -195,7 +195,7 @@ index 35fdb9714..3e7c37770 100644
 -  min-height: $pt-icon-size-large + $drawer-padding;
 -  padding: $drawer-padding * 0.25;
 -  padding-left: $drawer-padding;
-+  min-height: calc($pt-icon-size-large-next + $drawer-padding-next);
++  min-height: calc(var(--bp-surface-icon-size-large) + $drawer-padding-next);
 +  padding: calc($drawer-padding-next * 0.25);
 +  padding-left: $drawer-padding-next;
    position: relative;

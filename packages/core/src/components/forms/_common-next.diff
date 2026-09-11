@@ -1,8 +1,8 @@
 diff --git a/packages/core/src/components/forms/_common.scss b/packages/core/src/components/forms/_common-next.scss
-index 04845ceb0..3dc2ea8a0 100644
+index 04845ceb0..85b8eb91f 100644
 --- a/packages/core/src/components/forms/_common.scss
 +++ b/packages/core/src/components/forms/_common-next.scss
-@@ -1,41 +1,29 @@
+@@ -1,41 +1,31 @@
 -// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 +// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  // Licensed under the Apache License, Version 2.0.
@@ -17,12 +17,7 @@ index 04845ceb0..3dc2ea8a0 100644
 -$input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;
 -$input-font-weight: 400 !default;
 -$input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
-+$input-padding-horizontal-next: calc(var(--bp-surface-spacing) * 2);
-+$input-small-padding-next: calc($pt-input-height-small-next - $pt-icon-size-standard-next);
-+$input-font-weight-next: var(--bp-typography-weight-default);
-+$input-transition-next: box-shadow var(--bp-emphasis-transition-duration)
-+  var(--bp-emphasis-ease-default);
- 
+-
 -$input-color: $pt-text-color !default;
 -$input-color-disabled: $button-color-disabled !default;
 -$input-placeholder-color: $pt-text-color-muted !default;
@@ -39,8 +34,16 @@ index 04845ceb0..3dc2ea8a0 100644
 -
 -$control-indicator-size: $pt-icon-size-standard !default;
 -$control-indicator-size-large: $pt-icon-size-large !default;
++$input-padding-horizontal-next: calc(var(--bp-surface-spacing) * 2);
++$input-small-padding-next: calc(
++  var(--bp-surface-input-height-small) - var(--bp-surface-icon-size-standard)
++);
++$input-font-weight-next: var(--bp-typography-weight-default);
++$input-transition-next: box-shadow var(--bp-emphasis-transition-duration)
++  var(--bp-emphasis-ease-default);
++
 +$input-color-next: var(--bp-typography-color-base);
-+$input-color-disabled-next: $pt-text-color-disabled-next;
++$input-color-disabled-next: var(--bp-typography-color-disabled);
 +$input-placeholder-color-next: var(--bp-typography-color-intent-neutral);
 +$input-background-color-next: var(--bp-surface-background-color-base-rest);
 +$input-background-color-disabled-next: oklch(
@@ -51,8 +54,8 @@ index 04845ceb0..3dc2ea8a0 100644
 -// avoids edge blurriness for light theme focused default input
 -// second box-shadow of $pt-input-box-shadow
 -$input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
-+$control-indicator-size-next: $pt-icon-size-standard-next;
-+$control-indicator-size-large-next: $pt-icon-size-large-next;
++$control-indicator-size-next: var(--bp-surface-icon-size-standard);
++$control-indicator-size-large-next: var(--bp-surface-icon-size-large);
  
  // for best visual results, button group and control group elements should be
  // stacked in the following order to ensure sharp edges in all cases and states:
@@ -62,7 +65,7 @@ index 04845ceb0..3dc2ea8a0 100644
    // lowest z-index
    "input-disabled",
    "input-default",
-@@ -56,89 +44,45 @@ $control-group-stack: (
+@@ -56,89 +46,45 @@ $control-group-stack: (
    "select-caret"
  );
  
@@ -117,8 +120,8 @@ index 04845ceb0..3dc2ea8a0 100644
 +  color: $input-color-next;
 +  font-size: var(--bp-typography-size-md);
 +  font-weight: $input-font-weight-next;
-+  height: $pt-input-height-next;
-+  line-height: $pt-input-height-next;
++  height: var(--bp-surface-input-height-standard);
++  line-height: var(--bp-surface-input-height-standard);
    outline: none;
 -  padding: 0 calc(var(--bp-surface-spacing) * 2);
 -  transition: box-shadow var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
@@ -140,7 +143,7 @@ index 04845ceb0..3dc2ea8a0 100644
    &[type="search"],
    &.#{$ns}-round {
 -    border-radius: calc(var(--bp-surface-spacing) * 7.5);
-+    border-radius: $pt-input-height-next;
++    border-radius: var(--bp-surface-input-height-standard);
      // override normalize.css
      box-sizing: border-box;
 -    padding-left: calc(var(--bp-surface-spacing) * 2);
@@ -169,7 +172,7 @@ index 04845ceb0..3dc2ea8a0 100644
    }
  
    @media (forced-colors: active) and (prefers-color-scheme: dark) {
-@@ -146,30 +90,30 @@ $control-group-stack: (
+@@ -146,30 +92,30 @@ $control-group-stack: (
    }
  }
  
@@ -205,12 +208,12 @@ index 04845ceb0..3dc2ea8a0 100644
 -  line-height: calc(var(--bp-surface-spacing) * 10);
 +@mixin pt-input-large-next() {
 +  font-size: var(--bp-typography-size-xl);
-+  height: $pt-input-height-large-next;
-+  line-height: $pt-input-height-large-next;
++  height: var(--bp-surface-input-height-large);
++  line-height: var(--bp-surface-input-height-large);
  
    &[type="search"],
    &.#{$ns}-round {
-@@ -177,12 +121,12 @@ $control-group-stack: (
+@@ -177,12 +123,12 @@ $control-group-stack: (
    }
  }
  
@@ -222,14 +225,14 @@ index 04845ceb0..3dc2ea8a0 100644
 -  padding-right: calc(var(--bp-surface-spacing) * 2);
 +@mixin pt-input-small-next() {
 +  font-size: var(--bp-typography-size-sm);
-+  height: $pt-input-height-small-next;
-+  line-height: $pt-input-height-small-next;
++  height: var(--bp-surface-input-height-small);
++  line-height: var(--bp-surface-input-height-small);
 +  padding-left: $input-small-padding-next;
 +  padding-right: $input-small-padding-next;
  
    &[type="search"],
    &.#{$ns}-round {
-@@ -190,96 +134,11 @@ $control-group-stack: (
+@@ -190,96 +136,11 @@ $control-group-stack: (
    }
  }
  

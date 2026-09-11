@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/forms/_input-group.scss b/packages/core/src/components/forms/_input-group-next.scss
-index bae8ce2ab..03f050131 100644
+index bae8ce2ab..c030e9872 100644
 --- a/packages/core/src/components/forms/_input-group.scss
 +++ b/packages/core/src/components/forms/_input-group-next.scss
 @@ -1,18 +1,22 @@
@@ -12,27 +12,41 @@ index bae8ce2ab..03f050131 100644
  @import "../../common/variables";
  @import "../../common/variables-extended";
 -@import "../button/common";
+-
+-// 3px space between small button and regular input
+-$input-button-height: $pt-button-height-small !default;
+-// 5px space between regular button and large input
+-$input-button-height-large: $pt-button-height !default;
+-// 1px space between regular button and small input
+-$input-button-height-small: $pt-button-height-smaller !default;
+-
+-.#{$ns}-input-group:not(:where(.bp-next .#{$ns}-input-group)) {
 +@import "../button/common-next";
 +@import "../icon/icon-mixins-next";
 +@import "./common-next";
- 
- // 3px space between small button and regular input
--$input-button-height: $pt-button-height-small !default;
-+$input-button-height-next: $pt-input-height-small-next;
- // 5px space between regular button and large input
--$input-button-height-large: $pt-button-height !default;
-+$input-button-height-large-next: $pt-input-height-next;
- // 1px space between regular button and small input
--$input-button-height-small: $pt-button-height-smaller !default;
++
++// Regular inputs use a small input-height button.
++$input-button-height-next: var(--bp-surface-input-height-small);
++// Large inputs use a standard input-height button.
++$input-button-height-large-next: var(--bp-surface-input-height-standard);
++// Small inputs keep their compact button size tied to spacing.
 +$input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
- 
--.#{$ns}-input-group:not(:where(.bp-next .#{$ns}-input-group)) {
++
 +.#{$ns}-input-group {
    display: block;
    position: relative;
  
-@@ -30,7 +34,6 @@ $input-button-height-small: $pt-button-height-smaller !default;
-       padding-right: calc(var(--bp-surface-spacing) * 7.5);
+@@ -23,14 +27,13 @@ $input-button-height-small: $pt-button-height-smaller !default;
+ 
+     // add space if there's something before or after the input
+     &:not(:first-child) {
+-      padding-left: calc(var(--bp-surface-spacing) * 7.5);
++      padding-left: var(--bp-surface-input-height-standard);
+     }
+ 
+     &:not(:last-child) {
+-      padding-right: calc(var(--bp-surface-spacing) * 7.5);
++      padding-right: var(--bp-surface-input-height-standard);
      }
    }
 -
@@ -47,18 +61,21 @@ index bae8ce2ab..03f050131 100644
      &:first-child {
        left: 0;
      }
-@@ -47,9 +49,8 @@ $input-button-height-small: $pt-button-height-smaller !default;
+@@ -47,10 +49,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
        right: 0;
      }
    }
 -
    .#{$ns}-button {
 -    @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
+-    margin: calc(var(--bp-surface-spacing) * 0.75);
 +    @include pt-button-height-next($input-button-height-next);
-     margin: calc(var(--bp-surface-spacing) * 0.75);
++    // Derive the inset so custom input heights keep the button centered.
++    margin: calc((var(--bp-surface-input-height-standard) - $input-button-height-next) * 0.5);
      padding: 0 calc(var(--bp-surface-spacing) * 2);
  
-@@ -68,10 +69,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
+     // icons CSS API support
+@@ -68,10 +70,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
    // direct descendant to exclude icons in buttons
    > .#{$ns}-input-left-container > .#{$ns}-icon,
    > .#{$ns}-icon {
@@ -67,13 +84,19 @@ index bae8ce2ab..03f050131 100644
  
      &:empty {
 -      @include pt-icon($pt-icon-size-standard);
-+      @include pt-icon-next($pt-icon-size-standard-next, 16);
++      @include pt-icon-next(var(--bp-surface-icon-size-standard), 16);
      }
    }
  
-@@ -82,37 +83,27 @@ $input-button-height-small: $pt-button-height-smaller !default;
+@@ -80,39 +82,32 @@ $input-button-height-small: $pt-button-height-smaller !default;
+   > .#{$ns}-input-left-container > .#{$ns}-icon,
+   > .#{$ns}-icon,
    .#{$ns}-input-action > .#{$ns}-spinner {
-     margin: calc(var(--bp-surface-spacing) * 1.75);
+-    margin: calc(var(--bp-surface-spacing) * 1.75);
++    // Match the outer height and icon size when either token is overridden.
++    margin: calc(
++      (var(--bp-surface-input-height-standard) - var(--bp-surface-icon-size-standard)) * 0.5
++    );
    }
 -
    .#{$ns}-tag {
@@ -123,7 +146,7 @@ index bae8ce2ab..03f050131 100644
      }
    }
  
-@@ -120,26 +111,22 @@ $input-button-height-small: $pt-button-height-smaller !default;
+@@ -120,166 +115,82 @@ $input-button-height-small: $pt-button-height-smaller !default;
    &.#{$ns}-disabled {
      // note that enabled buttons inside this input group are still clickable
      cursor: not-allowed;
@@ -137,14 +160,18 @@ index bae8ce2ab..03f050131 100644
    &.#{$ns}-large {
      .#{$ns}-button {
 -      @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
+-      margin: calc(var(--bp-surface-spacing) * 1.25);
 +      @include pt-button-height-next($input-button-height-large-next);
-       margin: calc(var(--bp-surface-spacing) * 1.25);
++      margin: calc((var(--bp-surface-input-height-large) - $input-button-height-large-next) * 0.5);
      }
 -
      > .#{$ns}-input-left-container > .#{$ns}-icon,
      > .#{$ns}-icon,
      .#{$ns}-input-action > .#{$ns}-spinner {
-       margin: calc(var(--bp-surface-spacing) * 3);
+-      margin: calc(var(--bp-surface-spacing) * 3);
++      margin: calc(
++        (var(--bp-surface-input-height-large) - var(--bp-surface-icon-size-standard)) * 0.5
++      );
      }
 -
      .#{$ns}-input {
@@ -152,8 +179,13 @@ index bae8ce2ab..03f050131 100644
 +      @include pt-input-large-next;
  
        &:not(:first-child) {
-         padding-left: calc(var(--bp-surface-spacing) * 10);
-@@ -150,26 +137,23 @@ $input-button-height-small: $pt-button-height-smaller !default;
+-        padding-left: calc(var(--bp-surface-spacing) * 10);
++        padding-left: var(--bp-surface-input-height-large);
+       }
+ 
+       &:not(:last-child) {
+-        padding-right: calc(var(--bp-surface-spacing) * 10);
++        padding-right: var(--bp-surface-input-height-large);
        }
      }
    }
@@ -161,20 +193,25 @@ index bae8ce2ab..03f050131 100644
    &.#{$ns}-small {
      .#{$ns}-button {
 -      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
+-      margin: calc(var(--bp-surface-spacing) * 0.5);
 +      @include pt-button-height-next($input-button-height-small-next);
-       margin: calc(var(--bp-surface-spacing) * 0.5);
++      margin: calc((var(--bp-surface-input-height-small) - $input-button-height-small-next) * 0.5);
      }
  
      .#{$ns}-tag {
 -      @include pt-button-height(calc(var(--bp-surface-spacing) * 5));
+-      margin: calc(var(--bp-surface-spacing) * 0.5);
 +      @include pt-button-height-next($input-button-height-small-next);
-       margin: calc(var(--bp-surface-spacing) * 0.5);
++      margin: calc((var(--bp-surface-input-height-small) - $input-button-height-small-next) * 0.5);
      }
 -
      > .#{$ns}-input-left-container > .#{$ns}-icon,
      > .#{$ns}-icon,
      .#{$ns}-input-action > .#{$ns}-spinner {
-       margin: var(--bp-surface-spacing);
+-      margin: var(--bp-surface-spacing);
++      margin: calc(
++        (var(--bp-surface-input-height-small) - var(--bp-surface-icon-size-standard)) * 0.5
++      );
      }
 -
      .#{$ns}-input {
@@ -182,8 +219,13 @@ index bae8ce2ab..03f050131 100644
 +      @include pt-input-small-next;
  
        &:not(:first-child) {
-         padding-left: calc(var(--bp-surface-spacing) * 6);
-@@ -180,106 +164,25 @@ $input-button-height-small: $pt-button-height-smaller !default;
+-        padding-left: calc(var(--bp-surface-spacing) * 6);
++        padding-left: var(--bp-surface-input-height-small);
+       }
+ 
+       &:not(:last-child) {
+-        padding-right: calc(var(--bp-surface-spacing) * 6);
++        padding-right: var(--bp-surface-input-height-small);
        }
      }
    }
@@ -228,10 +270,9 @@ index bae8ce2ab..03f050131 100644
 -      .#{$ns}-dark & {
 -        color: oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h);
 -      }
-+      border-radius: $pt-input-height-next;
-     }
-   }
- 
+-    }
+-  }
+-
 -  &.#{$ns}-intent-success {
 -    .#{$ns}-input {
 -      @include pt-input-intent(var(--bp-intent-success-rest));
@@ -240,11 +281,7 @@ index bae8ce2ab..03f050131 100644
 -        @include pt-dark-input-intent(
 -          oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)
 -        );
-+  @each $intent in primary, success, warning, danger {
-+    &.#{$ns}-intent-#{$intent} {
-+      .#{$ns}-input {
-+        @include pt-input-intent-next($intent);
-       }
+-      }
 -    }
 -
 -    > .#{$ns}-icon {
@@ -273,9 +310,10 @@ index bae8ce2ab..03f050131 100644
 -      .#{$ns}-dark & {
 -        color: oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h);
 -      }
--    }
--  }
--
++      border-radius: var(--bp-surface-input-height-standard);
+     }
+   }
+ 
 -  &.#{$ns}-intent-danger {
 -    .#{$ns}-input {
 -      @include pt-input-intent(var(--bp-intent-danger-rest));
@@ -284,7 +322,11 @@ index bae8ce2ab..03f050131 100644
 -        @include pt-dark-input-intent(
 -          oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)
 -        );
--      }
++  @each $intent in primary, success, warning, danger {
++    &.#{$ns}-intent-#{$intent} {
++      .#{$ns}-input {
++        @include pt-input-intent-next($intent);
+       }
 -    }
 -
 -    > .#{$ns}-icon {

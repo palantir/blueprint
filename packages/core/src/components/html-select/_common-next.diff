@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/html-select/_common.scss b/packages/core/src/components/html-select/_common-next.scss
-index b19073912..995c42cd2 100644
+index b19073912..9420e7ba3 100644
 --- a/packages/core/src/components/html-select/_common.scss
 +++ b/packages/core/src/components/html-select/_common-next.scss
 @@ -1,54 +1,59 @@
@@ -25,7 +25,7 @@ index b19073912..995c42cd2 100644
 -  border-radius: $pt-border-radius;
 -  height: $pt-button-height;
 -  padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
-+  height: $pt-input-height-next;
++  height: var(--bp-surface-input-height-standard);
 +  padding: 0 calc($input-padding-horizontal-next * 3) 0 $input-padding-horizontal-next;
    // fill parent container
    width: 100%;
@@ -58,7 +58,7 @@ index b19073912..995c42cd2 100644
 -  @include pt-dark-button;
 +@mixin pt-select-large-next() {
 +  font-size: var(--bp-typography-size-xl);
-+  height: $pt-input-height-large-next;
++  height: var(--bp-surface-input-height-large);
 +  padding-right: calc($input-padding-horizontal-next * 3.5);
  }
  
@@ -82,10 +82,10 @@ index b19073912..995c42cd2 100644
 -  right: $pt-spacing * 2;
 -  top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
 +  right: $input-padding-horizontal-next;
-+  top: calc(($pt-input-height-next - $pt-icon-size-standard-next) * 0.5);
++  top: calc((var(--bp-surface-input-height-standard) - var(--bp-surface-icon-size-standard)) * 0.5);
  
    &.#{$ns}-disabled {
 -    color: $pt-icon-color-disabled;
-+    color: $pt-text-color-disabled-next;
++    color: var(--bp-typography-color-disabled);
    }
  }

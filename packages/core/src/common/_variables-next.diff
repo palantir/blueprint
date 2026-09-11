@@ -1,8 +1,8 @@
 diff --git a/packages/core/src/common/_variables.scss b/packages/core/src/common/_variables-next.scss
-index 9a85f4477..846243939 100644
+index 9a85f4477..608a55437 100644
 --- a/packages/core/src/common/_variables.scss
 +++ b/packages/core/src/common/_variables-next.scss
-@@ -1,205 +1,19 @@
+@@ -1,205 +1,4 @@
 -// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 +// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  // Licensed under the Apache License, Version 2.0.
@@ -210,18 +210,3 @@ index 9a85f4477..846243939 100644
 -$pt-high-contrast-mode-disabled-text-color: graytext;
 -$pt-high-contrast-mode-disabled-background-color: graytext;
 +@import "variables";
-+
-+$pt-icon-size-standard-next: calc(var(--bp-surface-spacing) * 4);
-+$pt-icon-size-large-next: calc(var(--bp-surface-spacing) * 5);
-+$pt-input-height-next: calc(var(--bp-surface-spacing) * 7.5);
-+$pt-input-height-large-next: calc(var(--bp-surface-spacing) * 10);
-+$pt-input-height-small-next: calc(var(--bp-surface-spacing) * 6);
-+$pt-z-index-base-next: var(--bp-surface-z-index-0);
-+$pt-z-index-content-next: var(--bp-surface-z-index-1);
-+$pt-z-index-overlay-next: var(--bp-surface-z-index-2);
-+$pt-z-index-dialog-header-next: var(--bp-surface-z-index-3);
-+$pt-high-contrast-mode-icon-color: canvastext;
-+$pt-high-contrast-mode-active-foreground-color: highlighttext;
-+$pt-text-color-disabled-next: oklch(
-+  from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity)
-+);

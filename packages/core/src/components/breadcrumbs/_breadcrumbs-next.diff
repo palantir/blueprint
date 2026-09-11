@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/breadcrumbs/_breadcrumbs.scss b/packages/core/src/components/breadcrumbs/_breadcrumbs-next.scss
-index 5adc1fced..8577eb13d 100644
+index 5adc1fced..21b7eced0 100644
 --- a/packages/core/src/components/breadcrumbs/_breadcrumbs.scss
 +++ b/packages/core/src/components/breadcrumbs/_breadcrumbs-next.scss
 @@ -1,15 +1,17 @@
@@ -20,7 +20,7 @@ index 5adc1fced..8577eb13d 100644
    display: flex;
    flex-wrap: wrap;
 -  height: $pt-input-height;
-+  height: $pt-input-height-next;
++  height: var(--bp-surface-input-height-standard);
    list-style: none;
    // unstyled inline list reset
    margin: 0;
@@ -42,14 +42,14 @@ index 5adc1fced..8577eb13d 100644
 -      height: $pt-icon-size-standard;
 -      margin: 0 $pt-spacing;
 -      width: $pt-icon-size-standard;
-+      height: $pt-icon-size-standard-next;
++      height: var(--bp-surface-icon-size-standard);
 +      margin: 0 var(--bp-surface-spacing);
 +      mask: svg-icon("16px/chevron-right.svg", ()) center / contain no-repeat;
-+      width: $pt-icon-size-standard-next;
++      width: var(--bp-surface-icon-size-standard);
 +
 +      // Without an explicit high-contrast color, the masked icon can become indistinguishable from its background.
 +      @media (forced-colors: active) {
-+        background-color: $pt-high-contrast-mode-icon-color;
++        background-color: canvastext;
 +      }
      }
  
@@ -86,7 +86,7 @@ index 5adc1fced..8577eb13d 100644
  
    &.#{$ns}-disabled {
 -    color: $pt-text-color-disabled;
-+    color: $pt-text-color-disabled-next;
++    color: var(--bp-typography-color-disabled);
      cursor: not-allowed;
    }
  
@@ -137,9 +137,9 @@ index 5adc1fced..8577eb13d 100644
      display: block;
 -    height: $pt-icon-size-standard;
 -    width: $pt-icon-size-standard;
-+    height: $pt-icon-size-standard-next;
++    height: var(--bp-surface-icon-size-standard);
 +    mask: svg-icon("16px/more.svg", ()) center / contain no-repeat;
-+    width: $pt-icon-size-standard-next;
++    width: var(--bp-surface-icon-size-standard);
    }
  
    &:hover {
@@ -201,7 +201,7 @@ index 5adc1fced..8577eb13d 100644
 +  @media (forced-colors: active) {
 +    &::before,
 +    &:hover::before {
-+      background-color: $pt-high-contrast-mode-icon-color;
++      background-color: canvastext;
      }
    }
  }

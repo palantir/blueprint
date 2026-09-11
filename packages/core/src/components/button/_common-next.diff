@@ -1,8 +1,8 @@
 diff --git a/packages/core/src/components/button/_common.scss b/packages/core/src/components/button/_common-next.scss
-index a5562059f..c6f0e3a61 100644
+index a5562059f..de50d8e29 100644
 --- a/packages/core/src/components/button/_common.scss
 +++ b/packages/core/src/components/button/_common-next.scss
-@@ -1,496 +1,171 @@
+@@ -1,496 +1,172 @@
 -// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 +// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  // Licensed under the Apache License, Version 2.0.
@@ -374,17 +374,17 @@ index a5562059f..c6f0e3a61 100644
 -      color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
 -    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
 -  color: $text-color;
--
--  &:hover,
--  &:active,
--  &.#{$ns}-active {
--    color: $text-color;
--  }
 +// N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 +@mixin pt-button-next() {
 +  background:
 +    var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
 +    var(--bp-surface-background-color-base-rest);
+ 
+-  &:hover,
+-  &:active,
+-  &.#{$ns}-active {
+-    color: $text-color;
+-  }
 +  box-shadow: inset var(--bp-surface-shadow-0);
 +  color: var(--bp-typography-color-base);
  
@@ -579,7 +579,7 @@ index a5562059f..c6f0e3a61 100644
    }
  
    &:disabled,
-@@ -498,180 +173,86 @@ $button-dark-minimal-active-text-colors: (
+@@ -498,180 +174,86 @@ $button-dark-minimal-active-text-colors: (
    &.#{$ns}-disabled,
    &.#{$ns}-disabled:hover {
      background: none;

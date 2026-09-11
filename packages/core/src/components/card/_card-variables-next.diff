@@ -1,8 +1,8 @@
 diff --git a/packages/core/src/components/card/_card-variables.scss b/packages/core/src/components/card/_card-variables-next.scss
-index b7aa3d536..7d0991704 100644
+index b7aa3d536..7c3bbd045 100644
 --- a/packages/core/src/components/card/_card-variables.scss
 +++ b/packages/core/src/components/card/_card-variables-next.scss
-@@ -1,24 +1,25 @@
+@@ -1,24 +1,26 @@
 -// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 +// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  // Licensed under the Apache License, Version 2.0.
@@ -30,7 +30,8 @@ index b7aa3d536..7d0991704 100644
 +// We need to add the border width to account for the bottom border.
 +$card-list-item-padding-vertical-next: calc(var(--bp-surface-spacing) * 2);
 +$card-list-item-min-height-next: calc(
-+  $pt-input-height-next + ($card-list-item-padding-vertical-next * 2) + $card-list-border-width-next
++  var(--bp-surface-input-height-standard) + ($card-list-item-padding-vertical-next * 2) +
++    $card-list-border-width-next
 +);
 +$card-list-item-padding-next: $card-list-item-padding-vertical-next $card-padding-next;
  
@@ -40,7 +41,7 @@ index b7aa3d536..7d0991704 100644
 -$card-list-item-padding-compact: $card-list-item-padding-vertical-compact $card-padding-compact !default;
 +$card-list-item-padding-vertical-compact-next: calc(var(--bp-surface-spacing) * 2);
 +$card-list-item-min-height-compact-next: calc(
-+  $pt-input-height-next + ($card-list-item-padding-vertical-compact-next * 2) +
++  var(--bp-surface-input-height-standard) + ($card-list-item-padding-vertical-compact-next * 2) +
 +    $card-list-border-width-next
 +);
 +$card-list-item-padding-compact-next: $card-list-item-padding-vertical-compact-next

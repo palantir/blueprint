@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/overlay/_overlay.scss b/packages/core/src/components/overlay/_overlay-next.scss
-index a97ca9a30..90fc20e54 100644
+index a97ca9a30..53e35a417 100644
 --- a/packages/core/src/components/overlay/_overlay.scss
 +++ b/packages/core/src/components/overlay/_overlay-next.scss
 @@ -1,19 +1,15 @@
@@ -24,7 +24,7 @@ index a97ca9a30..90fc20e54 100644
    // 0-out all positions so page won't jump when position changes (0s already there)
    @include position-all(static, 0);
 -  z-index: $pt-z-index-overlay;
-+  z-index: $pt-z-index-overlay-next;
++  z-index: var(--bp-surface-z-index-2);
  
    &:not(.#{$ns}-overlay-open) {
      // because of the 0-position covering the viewport,
@@ -37,7 +37,7 @@ index a97ca9a30..90fc20e54 100644
    // default fixed pulls it out of the flow and makes it viewport-relative
    position: fixed;
 -  z-index: $pt-z-index-overlay;
-+  z-index: $pt-z-index-overlay-next;
++  z-index: var(--bp-surface-z-index-2);
  
    .#{$ns}-overlay-inline &,
    .#{$ns}-overlay-scroll-container & {
@@ -63,7 +63,7 @@ index a97ca9a30..90fc20e54 100644
    overflow: auto;
    user-select: none;
 -  z-index: $pt-z-index-overlay;
-+  z-index: $pt-z-index-overlay-next;
++  z-index: var(--bp-surface-z-index-2);
  
    &:focus {
      outline: none;

@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/icon/_icon.scss b/packages/core/src/components/icon/_icon-next.scss
-index d3d6e7dde..8e97051c7 100644
+index d3d6e7dde..4b4b1630d 100644
 --- a/packages/core/src/components/icon/_icon.scss
 +++ b/packages/core/src/components/icon/_icon-next.scss
 @@ -4,10 +4,10 @@
@@ -60,14 +60,14 @@ index d3d6e7dde..8e97051c7 100644
 -span.#{$ns}-icon-standard:not(:where(.bp-next span.#{$ns}-icon-standard)) {
 -  @include pt-icon($pt-icon-size-standard);
 +span.#{$ns}-icon-standard {
-+  @include pt-icon-next($pt-icon-size-standard-next, 16);
++  @include pt-icon-next(var(--bp-surface-icon-size-standard), 16);
    display: inline-block;
  }
  
 -span.#{$ns}-icon-large:not(:where(.bp-next span.#{$ns}-icon-large)) {
 -  @include pt-icon($pt-icon-size-large);
 +span.#{$ns}-icon-large {
-+  @include pt-icon-next($pt-icon-size-large-next, 20);
++  @include pt-icon-next(var(--bp-surface-icon-size-large), 20);
    display: inline-block;
  }
  
@@ -82,12 +82,12 @@ index d3d6e7dde..8e97051c7 100644
  
    &.#{$ns}-icon-standard {
 -    font-size: $pt-icon-size-standard;
-+    font-size: $pt-icon-size-standard-next;
++    font-size: var(--bp-surface-icon-size-standard);
    }
  
    &.#{$ns}-icon-large {
 -    font-size: $pt-icon-size-large;
-+    font-size: $pt-icon-size-large-next;
++    font-size: var(--bp-surface-icon-size-large);
    }
  }
  

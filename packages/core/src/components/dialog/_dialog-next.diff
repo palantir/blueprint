@@ -1,5 +1,5 @@
 diff --git a/packages/core/src/components/dialog/_dialog.scss b/packages/core/src/components/dialog/_dialog-next.scss
-index 083430d27..3cf10244f 100644
+index 083430d27..052cb1704 100644
 --- a/packages/core/src/components/dialog/_dialog.scss
 +++ b/packages/core/src/components/dialog/_dialog-next.scss
 @@ -1,19 +1,19 @@
@@ -103,7 +103,7 @@ index 083430d27..3cf10244f 100644
 -  min-height: $pt-button-height + $dialog-header-padding * 2;
 -  padding: $dialog-header-padding;
 -  padding-left: $dialog-padding;
-+  min-height: calc($pt-input-height-next + ($dialog-header-padding-next * 2));
++  min-height: calc(var(--bp-surface-input-height-standard) + ($dialog-header-padding-next * 2));
 +  padding: $dialog-header-padding-next;
 +  padding-left: $dialog-padding-next;
    z-index: 0;
