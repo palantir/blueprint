@@ -36,7 +36,7 @@ pnpm run build:tokens  # Generate tokens
 
 ### Token Structure
 
-Tokens follow the [DTCG](https://tr.designtokens.org/format/) specification. Source files live in `tokens/base/` (5 files: palette, intent, surface, typography, emphasis) with theme overrides in `tokens/themes/` (which currently includes only dark tokens).
+Tokens use the [DTCG](https://tr.designtokens.org/format/) structure, with the Blueprint-specific exception below. Source files live in `tokens/base/` (5 files: palette, intent, surface, typography, emphasis) with theme overrides in `tokens/themes/` (which currently includes only dark tokens).
 
 Each token uses these standard DTCG properties:
 
@@ -47,7 +47,13 @@ Each token uses these standard DTCG properties:
 | `$description` | Human-readable explanation                                                                                 |
 | `$extensions`  | Custom Blueprint metadata                                                                                  |
 
+**CSS expression exception:** The next `surface.icon-size.*` and `surface.input-height.*` values use raw CSS `calc(var(--bp-surface-spacing) * ...)` strings to retain runtime spacing defaults. Blueprint's CSS generator passes these strings through. They are not standard DTCG dimension values and require adaptation for tools that expect portable dimension objects.
+
+The next `--bp-surface-input-height-standard`, `--bp-surface-input-height-large`, and `--bp-surface-input-height-small` tokens default to 7.5, 10, and 6 spacing units, respectively. They also drive existing shared layout dimensions such as breadcrumb height, CardList minimum heights, and dialog header minimum height. Like the icon-size tokens, they resolve spacing where they are declared; overriding spacing only on a descendant does not recompute inherited heights. Override the height tokens directly to customize those sizes independently.
+
 #### Custom extensions
+
+The next `--bp-typography-color-disabled` token derives the base text color at `--bp-emphasis-disabled-opacity` using the extension below. It is declared in both light and dark next scopes so nested dark themes recompute it from their own base color. Descendant-only base-color or opacity overrides do not recompute the inherited disabled color; override the disabled-color token directly in that scope.
 
 **`com.blueprint.derive`** — derives a new color from the referenced `$value` using OKLCH color space transforms:
 

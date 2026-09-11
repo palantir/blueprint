@@ -114,7 +114,7 @@ $step-radius-next: var(--bp-surface-border-radius);
 }
 .#{$ns}-dialog-step-icon {
   align-items: center;
-  background-color: $pt-text-color-disabled-next;
+  background-color: var(--bp-typography-color-disabled);
   border-radius: 50%;
   color: var(--bp-intent-neutral-foreground);
   display: flex;
@@ -129,7 +129,7 @@ $step-radius-next: var(--bp-surface-border-radius);
   }
 }
 .#{$ns}-dialog-step-title {
-  color: $pt-text-color-disabled-next;
+  color: var(--bp-typography-color-disabled);
   flex: 1;
   padding-left: calc(var(--bp-surface-spacing) * 2);
   // step title is active only when the step is selected

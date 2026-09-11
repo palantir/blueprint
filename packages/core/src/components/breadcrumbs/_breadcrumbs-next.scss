@@ -11,7 +11,7 @@
   cursor: default;
   display: flex;
   flex-wrap: wrap;
-  height: $pt-input-height-next;
+  height: var(--bp-surface-input-height-standard);
   list-style: none;
   // unstyled inline list reset
   margin: 0;
@@ -26,14 +26,14 @@
       background-color: var(--bp-typography-color-intent-neutral);
       content: "";
       display: block;
-      height: $pt-icon-size-standard-next;
+      height: var(--bp-surface-icon-size-standard);
       margin: 0 var(--bp-surface-spacing);
       mask: svg-icon("16px/chevron-right.svg", ()) center / contain no-repeat;
-      width: $pt-icon-size-standard-next;
+      width: var(--bp-surface-icon-size-standard);
 
       // Without an explicit high-contrast color, the masked icon can become indistinguishable from its background.
       @media (forced-colors: active) {
-        background-color: $pt-high-contrast-mode-icon-color;
+        background-color: canvastext;
       }
     }
 
@@ -62,7 +62,7 @@
   }
 
   &.#{$ns}-disabled {
-    color: $pt-text-color-disabled-next;
+    color: var(--bp-typography-color-disabled);
     cursor: not-allowed;
   }
 
@@ -95,9 +95,9 @@
     background-color: var(--bp-typography-color-intent-neutral);
     content: "";
     display: block;
-    height: $pt-icon-size-standard-next;
+    height: var(--bp-surface-icon-size-standard);
     mask: svg-icon("16px/more.svg", ()) center / contain no-repeat;
-    width: $pt-icon-size-standard-next;
+    width: var(--bp-surface-icon-size-standard);
   }
 
   &:hover {
@@ -114,7 +114,7 @@
   @media (forced-colors: active) {
     &::before,
     &:hover::before {
-      background-color: $pt-high-contrast-mode-icon-color;
+      background-color: canvastext;
     }
   }
 }

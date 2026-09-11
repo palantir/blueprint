@@ -9,7 +9,7 @@ $overlay-background-color-next: oklch(from var(--bp-intent-neutral-1000) l c h /
 .#{$ns}-overlay {
   // 0-out all positions so page won't jump when position changes (0s already there)
   @include position-all(static, 0);
-  z-index: $pt-z-index-overlay-next;
+  z-index: var(--bp-surface-z-index-2);
 
   &:not(.#{$ns}-overlay-open) {
     // because of the 0-position covering the viewport,
@@ -57,7 +57,7 @@ $overlay-background-color-next: oklch(from var(--bp-intent-neutral-1000) l c h /
 .#{$ns}-overlay-content {
   // default fixed pulls it out of the flow and makes it viewport-relative
   position: fixed;
-  z-index: $pt-z-index-overlay-next;
+  z-index: var(--bp-surface-z-index-2);
 
   .#{$ns}-overlay-inline &,
   .#{$ns}-overlay-scroll-container & {
@@ -82,7 +82,7 @@ $overlay-background-color-next: oklch(from var(--bp-intent-neutral-1000) l c h /
   background-color: $overlay-background-color-next;
   overflow: auto;
   user-select: none;
-  z-index: $pt-z-index-overlay-next;
+  z-index: var(--bp-surface-z-index-2);
 
   &:focus {
     outline: none;

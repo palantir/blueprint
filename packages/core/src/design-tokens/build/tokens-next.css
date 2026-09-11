@@ -253,6 +253,11 @@
   --bp-surface-shadow-3: 0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 15px -3px rgba(0, 0, 0, 0.1); /** Level 3 - popover/dialog elevation */
   --bp-surface-shadow-4: 0px 0px 0px 1px rgba(0, 0, 0, 0.1), 0px 25px 50px -12px rgba(0, 0, 0, 0.3); /** Level 4 - maximum elevation */
   --bp-surface-spacing: 4px; /** Base spacing unit — components multiply this */
+  --bp-surface-icon-size-standard: calc(var(--bp-surface-spacing) * 4); /** Standard icon size — defaults to four spacing units */
+  --bp-surface-icon-size-large: calc(var(--bp-surface-spacing) * 5); /** Large icon size — defaults to five spacing units */
+  --bp-surface-input-height-standard: calc(var(--bp-surface-spacing) * 7.5); /** Standard input height — defaults to 7.5 spacing units */
+  --bp-surface-input-height-large: calc(var(--bp-surface-spacing) * 10); /** Large input height — defaults to ten spacing units */
+  --bp-surface-input-height-small: calc(var(--bp-surface-spacing) * 6); /** Small input height — defaults to six spacing units */
   --bp-surface-z-index-0: 0;
   --bp-surface-z-index-1: 10;
   --bp-surface-z-index-2: 20;
@@ -332,6 +337,7 @@
   --bp-typography-weight-strong: 500;
   --bp-typography-line-height-running-factor: 1.105; /** Multiplier applied to a style's standard line-height for multi-line running/body text (midpoint of the former per-size running ratios). Components/users stack their own line-height scaling on top. */
   --bp-typography-color-base: var(--bp-palette-grey-1000);
+  --bp-typography-color-disabled: #0d121966; /* grey/1000 at 40% */ /** Disabled text color — follows the base text color and disabled opacity */
   --bp-typography-color-intent-neutral: var(--bp-intent-neutral-600);
   --bp-typography-color-intent-primary: var(--bp-intent-primary-600);
   --bp-typography-color-intent-success: var(--bp-intent-success-600);
@@ -360,5 +366,6 @@
     --bp-surface-layer-color-danger-rest: oklch(from var(--bp-intent-danger-500) l c h / var(--bp-surface-layer-opacity-intent-rest));
     --bp-surface-layer-color-danger-hover: oklch(from var(--bp-intent-danger-600) l c h / var(--bp-surface-layer-opacity-intent-hover));
     --bp-surface-layer-color-danger-active: oklch(from var(--bp-intent-danger-600) l c h / var(--bp-surface-layer-opacity-intent-active));
+    --bp-typography-color-disabled: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
   }
 }

@@ -167,6 +167,32 @@
             "$value": { "value": 4, "unit": "px" },
             "$description": "Base spacing unit — components multiply this"
         },
+        "icon-size": {
+            "$type": "dimension",
+            "standard": {
+                "$value": "calc(var(--bp-surface-spacing) * 4)",
+                "$description": "Standard icon size — defaults to four spacing units"
+            },
+            "large": {
+                "$value": "calc(var(--bp-surface-spacing) * 5)",
+                "$description": "Large icon size — defaults to five spacing units"
+            }
+        },
+        "input-height": {
+            "$type": "dimension",
+            "standard": {
+                "$value": "calc(var(--bp-surface-spacing) * 7.5)",
+                "$description": "Standard input height — defaults to 7.5 spacing units"
+            },
+            "large": {
+                "$value": "calc(var(--bp-surface-spacing) * 10)",
+                "$description": "Large input height — defaults to ten spacing units"
+            },
+            "small": {
+                "$value": "calc(var(--bp-surface-spacing) * 6)",
+                "$description": "Small input height — defaults to six spacing units"
+            }
+        },
         "z-index": {
             "$type": "number",
             "0": { "$value": 0 },

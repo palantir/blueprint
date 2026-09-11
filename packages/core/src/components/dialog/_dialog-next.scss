@@ -72,7 +72,7 @@ $dialog-header-padding-next: var(--bp-surface-spacing);
   box-shadow: 0 1px 0 var(--bp-surface-divider-color-default);
   display: flex;
   flex: 0 0 auto;
-  min-height: calc($pt-input-height-next + ($dialog-header-padding-next * 2));
+  min-height: calc(var(--bp-surface-input-height-standard) + ($dialog-header-padding-next * 2));
   padding: $dialog-header-padding-next;
   padding-left: $dialog-padding-next;
   z-index: 0;

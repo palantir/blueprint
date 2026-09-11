@@ -12,7 +12,7 @@
   display: flex;
 
   .#{$ns}-icon {
-    font-size: calc($pt-icon-size-large-next * 2);
+    font-size: calc(var(--bp-surface-icon-size-large) * 2);
     margin-right: calc(var(--bp-surface-spacing) * 5);
     margin-top: 0;
   }

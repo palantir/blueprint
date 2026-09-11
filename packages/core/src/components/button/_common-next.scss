@@ -80,7 +80,7 @@
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background: highlight;WindowsHighContrastdarkthemebackgroundWindowsHighContrastdarkthemebackground
+      background: highlight;
     }
   }
 
@@ -98,7 +98,7 @@
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: var(--bp-surface-border-width) solid buttonborder;WindowsHighContrastdarkthemeborderWindowsHighContrastdarkthemeborder
+    border: var(--bp-surface-border-width) solid buttonborder;
   }
 }
 
@@ -130,8 +130,8 @@
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      border-color: graytext;WindowsHighContrastdarkthemeborder-colorWindowsHighContrastdarkthemeborder-color
-      color: graytext;color
+      border-color: graytext;
+      color: graytext;
     }
   }
 
@@ -139,14 +139,14 @@
     // Use srgb to avoid hue shift with near-neutral gray
     background:
       var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
-      var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest);Usesrgbtoavoidhueshiftwithnear-neutralgraybackgroundUsesrgbtoavoidhueshiftwithnear-neutralgraybackground
-    stroke: var(--bp-intent-#{$intent}-foreground);stroke
+      var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest);
+    stroke: var(--bp-intent-#{$intent}-foreground);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: var(--bp-surface-border-width) solid buttonborder;WindowsHighContrastdarkthemeborderWindowsHighContrastdarkthemeborder
-    box-shadow: none;box-shadow
+    border: var(--bp-surface-border-width) solid buttonborder;
+    box-shadow: none;
   }
 }
 
@@ -157,16 +157,16 @@
 
   &:hover {
     // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background: var(--bp-surface-layer-neutral-hover);Usesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackgroundUsesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackground
-    box-shadow: none;box-shadow
+    background: var(--bp-surface-layer-neutral-hover);
+    box-shadow: none;
     text-decoration: none;
   }
 
   &:active,
   &.#{$ns}-active {
     // Use srgb instead of oklch to avoid hue shift with near-neutral colors
-    background: var(--bp-surface-layer-neutral-active);Usesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackgroundUsesrgbinsteadofoklchtoavoidhueshiftwithnear-neutralcolorsbackground
-    box-shadow: none;box-shadow
+    background: var(--bp-surface-layer-neutral-active);
+    box-shadow: none;
   }
 
   &:disabled,

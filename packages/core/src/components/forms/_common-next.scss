@@ -4,13 +4,15 @@
 @import "../../common/variables-next";
 
 $input-padding-horizontal-next: calc(var(--bp-surface-spacing) * 2);
-$input-small-padding-next: calc($pt-input-height-small-next - $pt-icon-size-standard-next);
+$input-small-padding-next: calc(
+  var(--bp-surface-input-height-small) - var(--bp-surface-icon-size-standard)
+);
 $input-font-weight-next: var(--bp-typography-weight-default);
 $input-transition-next: box-shadow var(--bp-emphasis-transition-duration)
   var(--bp-emphasis-ease-default);
 
 $input-color-next: var(--bp-typography-color-base);
-$input-color-disabled-next: $pt-text-color-disabled-next;
+$input-color-disabled-next: var(--bp-typography-color-disabled);
 $input-placeholder-color-next: var(--bp-typography-color-intent-neutral);
 $input-background-color-next: var(--bp-surface-background-color-base-rest);
 $input-background-color-disabled-next: oklch(
@@ -18,8 +20,8 @@ $input-background-color-disabled-next: oklch(
 );
 $input-shadow-color-focus-next: var(--bp-emphasis-focus-color);
 
-$control-indicator-size-next: $pt-icon-size-standard-next;
-$control-indicator-size-large-next: $pt-icon-size-large-next;
+$control-indicator-size-next: var(--bp-surface-icon-size-standard);
+$control-indicator-size-large-next: var(--bp-surface-icon-size-large);
 
 // for best visual results, button group and control group elements should be
 // stacked in the following order to ensure sharp edges in all cases and states:
@@ -54,8 +56,8 @@ $control-group-stack-next: (
   color: $input-color-next;
   font-size: var(--bp-typography-size-md);
   font-weight: $input-font-weight-next;
-  height: $pt-input-height-next;
-  line-height: $pt-input-height-next;
+  height: var(--bp-surface-input-height-standard);
+  line-height: var(--bp-surface-input-height-standard);
   outline: none;
   padding: 0 $input-padding-horizontal-next;
   transition: $input-transition-next;
@@ -70,7 +72,7 @@ $control-group-stack-next: (
 
   &[type="search"],
   &.#{$ns}-round {
-    border-radius: $pt-input-height-next;
+    border-radius: var(--bp-surface-input-height-standard);
     // override normalize.css
     box-sizing: border-box;
     padding-left: $input-padding-horizontal-next;
@@ -112,8 +114,8 @@ $control-group-stack-next: (
 
 @mixin pt-input-large-next() {
   font-size: var(--bp-typography-size-xl);
-  height: $pt-input-height-large-next;
-  line-height: $pt-input-height-large-next;
+  height: var(--bp-surface-input-height-large);
+  line-height: var(--bp-surface-input-height-large);
 
   &[type="search"],
   &.#{$ns}-round {
@@ -123,8 +125,8 @@ $control-group-stack-next: (
 
 @mixin pt-input-small-next() {
   font-size: var(--bp-typography-size-sm);
-  height: $pt-input-height-small-next;
-  line-height: $pt-input-height-small-next;
+  height: var(--bp-surface-input-height-small);
+  line-height: var(--bp-surface-input-height-small);
   padding-left: $input-small-padding-next;
   padding-right: $input-small-padding-next;
 

@@ -12,7 +12,7 @@
   /* stylelint-disable property-no-vendor-prefix */
   -moz-appearance: none;
   -webkit-appearance: none;
-  height: $pt-input-height-next;
+  height: var(--bp-surface-input-height-standard);
   padding: 0 calc($input-padding-horizontal-next * 3) 0 $input-padding-horizontal-next;
   // fill parent container
   width: 100%;
@@ -36,7 +36,7 @@
 
 @mixin pt-select-large-next() {
   font-size: var(--bp-typography-size-xl);
-  height: $pt-input-height-large-next;
+  height: var(--bp-surface-input-height-large);
   padding-right: calc($input-padding-horizontal-next * 3.5);
 }
 
@@ -51,9 +51,9 @@
   // N.B. it's more important for the icon to vertically align with button end icons rather than
   // input right padding, see https://github.com/palantir/blueprint/issues/6184
   right: $input-padding-horizontal-next;
-  top: calc(($pt-input-height-next - $pt-icon-size-standard-next) * 0.5);
+  top: calc((var(--bp-surface-input-height-standard) - var(--bp-surface-icon-size-standard)) * 0.5);
 
   &.#{$ns}-disabled {
-    color: $pt-text-color-disabled-next;
+    color: var(--bp-typography-color-disabled);
   }
 }

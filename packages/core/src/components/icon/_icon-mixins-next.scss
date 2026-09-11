@@ -9,10 +9,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-@mixin pt-icon-sized-next(
-  $font-size: $pt-icon-size-standard-next,
-  $font-family-size: 16
-) {
+@mixin pt-icon-sized-next($font-size: var(--bp-surface-icon-size-standard), $font-family-size: 16) {
   font-family: "blueprint-icons-#{$font-family-size}", sans-serif;
   font-size: $font-size;
   font-style: normal;
@@ -33,7 +30,7 @@
   }
 }
 
-@mixin pt-icon-next($font-size: $pt-icon-size-standard-next, $font-family-size: 16) {
+@mixin pt-icon-next($font-size: var(--bp-surface-icon-size-standard), $font-family-size: 16) {
   @include pt-icon-sized-next($font-size, $font-family-size);
   @include pt-icon-font-smoothing;
 }

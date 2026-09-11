@@ -12,13 +12,14 @@ $card-list-border-width-next: var(--bp-surface-border-width);
 // We need to add the border width to account for the bottom border.
 $card-list-item-padding-vertical-next: calc(var(--bp-surface-spacing) * 2);
 $card-list-item-min-height-next: calc(
-  $pt-input-height-next + ($card-list-item-padding-vertical-next * 2) + $card-list-border-width-next
+  var(--bp-surface-input-height-standard) + ($card-list-item-padding-vertical-next * 2) +
+    $card-list-border-width-next
 );
 $card-list-item-padding-next: $card-list-item-padding-vertical-next $card-padding-next;
 
 $card-list-item-padding-vertical-compact-next: calc(var(--bp-surface-spacing) * 2);
 $card-list-item-min-height-compact-next: calc(
-  $pt-input-height-next + ($card-list-item-padding-vertical-compact-next * 2) +
+  var(--bp-surface-input-height-standard) + ($card-list-item-padding-vertical-compact-next * 2) +
     $card-list-border-width-next
 );
 $card-list-item-padding-compact-next: $card-list-item-padding-vertical-compact-next

@@ -60,6 +60,13 @@
             "$type": "color",
             "$description": "base is the near-black body text (palette grey.1000); intent text references the intent's .600 ramp step.",
             "base": { "$value": "{palette.grey.1000}" },
+            "disabled": {
+                "$value": "{typography.color.base}",
+                "$description": "Disabled text color — follows the base text color and disabled opacity",
+                "$extensions": {
+                    "com.blueprint.derive": { "alpha": "{emphasis.disabled-opacity}" }
+                }
+            },
             "intent": {
                 "neutral": { "$value": "{intent.neutral.600}" },
                 "primary": { "$value": "{intent.primary.600}" },

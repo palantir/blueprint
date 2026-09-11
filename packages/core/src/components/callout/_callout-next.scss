@@ -24,11 +24,11 @@ $callout-padding-compact-next: calc(var(--bp-surface-spacing) * 2);
   // CSS API support
   &[class*="#{$ns}-icon-"] {
     padding-left: calc(
-      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
+      $callout-padding-next + var(--bp-surface-icon-size-standard) + (var(--bp-surface-spacing) * 2)
     );
 
     &::before {
-      @include pt-icon-next($pt-icon-size-standard-next, 16);
+      @include pt-icon-next(var(--bp-surface-icon-size-standard), 16);
       color: var(--bp-typography-color-intent-neutral);
       left: $callout-padding-next;
       position: absolute;
@@ -43,7 +43,7 @@ $callout-padding-compact-next: calc(var(--bp-surface-spacing) * 2);
 
   &.#{$ns}-callout-icon {
     padding-left: calc(
-      $callout-padding-next + $pt-icon-size-standard-next + (var(--bp-surface-spacing) * 2)
+      $callout-padding-next + var(--bp-surface-icon-size-standard) + (var(--bp-surface-spacing) * 2)
     );
 
     > .#{$ns}-icon:first-child {
@@ -55,7 +55,7 @@ $callout-padding-compact-next: calc(var(--bp-surface-spacing) * 2);
   }
 
   .#{$ns}-heading {
-    line-height: $pt-icon-size-standard-next;
+    line-height: var(--bp-surface-icon-size-standard);
     margin-bottom: 0;
     margin-top: $callout-header-margin-top-next;
   }
@@ -71,7 +71,7 @@ $callout-padding-compact-next: calc(var(--bp-surface-spacing) * 2);
 
     &.#{$ns}-callout-icon {
       padding-left: calc(
-        $callout-padding-compact-next + $pt-icon-size-standard-next +
+        $callout-padding-compact-next + var(--bp-surface-icon-size-standard) +
           (var(--bp-surface-spacing) * 2)
       );
 

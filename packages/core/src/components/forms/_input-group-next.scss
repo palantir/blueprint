@@ -9,11 +9,11 @@
 @import "../icon/icon-mixins-next";
 @import "./common-next";
 
-// 3px space between small button and regular input
-$input-button-height-next: $pt-input-height-small-next;
-// 5px space between regular button and large input
-$input-button-height-large-next: $pt-input-height-next;
-// 1px space between regular button and small input
+// Regular inputs use a small input-height button.
+$input-button-height-next: var(--bp-surface-input-height-small);
+// Large inputs use a standard input-height button.
+$input-button-height-large-next: var(--bp-surface-input-height-standard);
+// Small inputs keep their compact button size tied to spacing.
 $input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
 
 .#{$ns}-input-group {
@@ -27,11 +27,11 @@ $input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
 
     // add space if there's something before or after the input
     &:not(:first-child) {
-      padding-left: calc(var(--bp-surface-spacing) * 7.5);
+      padding-left: var(--bp-surface-input-height-standard);
     }
 
     &:not(:last-child) {
-      padding-right: calc(var(--bp-surface-spacing) * 7.5);
+      padding-right: var(--bp-surface-input-height-standard);
     }
   }
   .#{$ns}-input-action,
@@ -51,7 +51,8 @@ $input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
   }
   .#{$ns}-button {
     @include pt-button-height-next($input-button-height-next);
-    margin: calc(var(--bp-surface-spacing) * 0.75);
+    // Derive the inset so custom input heights keep the button centered.
+    margin: calc((var(--bp-surface-input-height-standard) - $input-button-height-next) * 0.5);
     padding: 0 calc(var(--bp-surface-spacing) * 2);
 
     // icons CSS API support
@@ -72,7 +73,7 @@ $input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
     color: var(--bp-typography-color-intent-neutral);
 
     &:empty {
-      @include pt-icon-next($pt-icon-size-standard-next, 16);
+      @include pt-icon-next(var(--bp-surface-icon-size-standard), 16);
     }
   }
 
@@ -81,7 +82,10 @@ $input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon,
   .#{$ns}-input-action > .#{$ns}-spinner {
-    margin: calc(var(--bp-surface-spacing) * 1.75);
+    // Match the outer height and icon size when either token is overridden.
+    margin: calc(
+      (var(--bp-surface-input-height-standard) - var(--bp-surface-icon-size-standard)) * 0.5
+    );
   }
   .#{$ns}-tag {
     margin: calc(var(--bp-surface-spacing) * 1.25);
@@ -118,49 +122,53 @@ $input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
   &.#{$ns}-large {
     .#{$ns}-button {
       @include pt-button-height-next($input-button-height-large-next);
-      margin: calc(var(--bp-surface-spacing) * 1.25);
+      margin: calc((var(--bp-surface-input-height-large) - $input-button-height-large-next) * 0.5);
     }
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: calc(var(--bp-surface-spacing) * 3);
+      margin: calc(
+        (var(--bp-surface-input-height-large) - var(--bp-surface-icon-size-standard)) * 0.5
+      );
     }
     .#{$ns}-input {
       @include pt-input-large-next;
 
       &:not(:first-child) {
-        padding-left: calc(var(--bp-surface-spacing) * 10);
+        padding-left: var(--bp-surface-input-height-large);
       }
 
       &:not(:last-child) {
-        padding-right: calc(var(--bp-surface-spacing) * 10);
+        padding-right: var(--bp-surface-input-height-large);
       }
     }
   }
   &.#{$ns}-small {
     .#{$ns}-button {
       @include pt-button-height-next($input-button-height-small-next);
-      margin: calc(var(--bp-surface-spacing) * 0.5);
+      margin: calc((var(--bp-surface-input-height-small) - $input-button-height-small-next) * 0.5);
     }
 
     .#{$ns}-tag {
       @include pt-button-height-next($input-button-height-small-next);
-      margin: calc(var(--bp-surface-spacing) * 0.5);
+      margin: calc((var(--bp-surface-input-height-small) - $input-button-height-small-next) * 0.5);
     }
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: var(--bp-surface-spacing);
+      margin: calc(
+        (var(--bp-surface-input-height-small) - var(--bp-surface-icon-size-standard)) * 0.5
+      );
     }
     .#{$ns}-input {
       @include pt-input-small-next;
 
       &:not(:first-child) {
-        padding-left: calc(var(--bp-surface-spacing) * 6);
+        padding-left: var(--bp-surface-input-height-small);
       }
 
       &:not(:last-child) {
-        padding-right: calc(var(--bp-surface-spacing) * 6);
+        padding-right: var(--bp-surface-input-height-small);
       }
     }
   }
@@ -172,7 +180,7 @@ $input-button-height-small-next: calc(var(--bp-surface-spacing) * 5);
     .#{$ns}-button,
     .#{$ns}-input,
     .#{$ns}-tag {
-      border-radius: $pt-input-height-next;
+      border-radius: var(--bp-surface-input-height-standard);
     }
   }
 

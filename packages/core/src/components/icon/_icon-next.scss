@@ -67,12 +67,12 @@
 //
 
 span.#{$ns}-icon-standard {
-  @include pt-icon-next($pt-icon-size-standard-next, 16);
+  @include pt-icon-next(var(--bp-surface-icon-size-standard), 16);
   display: inline-block;
 }
 
 span.#{$ns}-icon-large {
-  @include pt-icon-next($pt-icon-size-large-next, 20);
+  @include pt-icon-next(var(--bp-surface-icon-size-large), 20);
   display: inline-block;
 }
 
@@ -89,11 +89,11 @@ span.#{$ns}-icon:empty {
   }
 
   &.#{$ns}-icon-standard {
-    font-size: $pt-icon-size-standard-next;
+    font-size: var(--bp-surface-icon-size-standard);
   }
 
   &.#{$ns}-icon-large {
-    font-size: $pt-icon-size-large-next;
+    font-size: var(--bp-surface-icon-size-large);
   }
 }
 

@@ -30,7 +30,9 @@
     &::after, // CSS support
     .#{$ns}-icon {
       right: calc(var(--bp-surface-spacing) * 3);
-      top: calc(($pt-input-height-large-next - $pt-icon-size-standard-next) * 0.5);
+      top: calc(
+        (var(--bp-surface-input-height-large) - var(--bp-surface-icon-size-standard)) * 0.5
+      );
     }
   }
   &.#{$ns}-fill {

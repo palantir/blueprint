@@ -222,6 +222,7 @@
   --bp-surface-background-color-danger-hover: var(--bp-intent-danger-400);
   --bp-surface-background-color-danger-active: var(--bp-intent-danger-600);
   --bp-typography-color-base: var(--bp-palette-grey-100);
+  --bp-typography-color-disabled: #e2ebf666; /* grey/100 at 40% */ /** Disabled text color — follows the base text color and disabled opacity */
   --bp-typography-color-intent-neutral: var(--bp-intent-neutral-200);
   --bp-typography-color-intent-primary: var(--bp-intent-primary-200);
   --bp-typography-color-intent-success: var(--bp-intent-success-200);
@@ -251,5 +252,6 @@
     --bp-surface-layer-color-danger-rest: oklch(from var(--bp-intent-danger-500) l c h / var(--bp-surface-layer-opacity-intent-rest));
     --bp-surface-layer-color-danger-hover: oklch(from var(--bp-intent-danger-400) l c h / var(--bp-surface-layer-opacity-intent-hover));
     --bp-surface-layer-color-danger-active: oklch(from var(--bp-intent-danger-600) l c h / var(--bp-surface-layer-opacity-intent-active));
+    --bp-typography-color-disabled: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
   }
 }

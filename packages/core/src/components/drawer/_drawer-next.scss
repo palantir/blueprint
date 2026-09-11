@@ -171,7 +171,7 @@
   box-shadow: 0 var(--bp-surface-border-width) 0 var(--bp-surface-divider-color-default);
   display: flex;
   flex: 0 0 auto;
-  min-height: calc($pt-icon-size-large-next + $drawer-padding-next);
+  min-height: calc(var(--bp-surface-icon-size-large) + $drawer-padding-next);
   padding: calc($drawer-padding-next * 0.25);
   padding-left: $drawer-padding-next;
   position: relative;

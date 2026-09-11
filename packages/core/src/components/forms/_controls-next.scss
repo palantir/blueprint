@@ -33,7 +33,7 @@ $switch-indicator-child-inside-margin-next: 1.2em;
 $switch-indicator-text-font-size-next: 0.7em;
 
 $switch-text-color-next: var(--bp-typography-color-base);
-$switch-text-color-disabled-next: $pt-text-color-disabled-next;
+$switch-text-color-disabled-next: var(--bp-typography-color-disabled);
 $switch-checked-text-color-next: var(--bp-intent-primary-foreground);
 $switch-checked-text-color-disabled-next: oklch(
   from var(--bp-intent-primary-foreground) l c h / var(--bp-emphasis-disabled-opacity)
@@ -284,13 +284,13 @@ $switch-checked-indicator-background-color-disabled-next: $input-background-colo
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       input:checked:not(:disabled) ~ .#{$ns}-control-indicator::before,
       input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator::before {
-        background: $pt-high-contrast-mode-active-foreground-color;
+        background: highlighttext;
       }
 
       // The disabled indicator is GrayText, so its glyph needs CanvasText to preserve contrast.
       input:checked:disabled ~ .#{$ns}-control-indicator::before,
       input:indeterminate:disabled ~ .#{$ns}-control-indicator::before {
-        background: $pt-high-contrast-mode-icon-color;
+        background: canvastext;
       }
 
       input:disabled ~ .#{$ns}-control-indicator {
