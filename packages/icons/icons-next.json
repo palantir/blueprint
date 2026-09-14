@@ -4725,7 +4725,7 @@
     },
     {
         "name": "cube-cutout",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "hexagon",
             "square",
@@ -4743,7 +4743,7 @@
     },
     {
         "name": "cube-cutouts",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "duplicate",
             "copy",
