@@ -1,0 +1,6 @@
+type: feature
+feature:
+  description: '`Tab` accepts an `intent`, which colors its title, icon, tag, and selected
+    indicator'
+  links:
+  - https://github.com/palantir/blueprint/pull/8265
