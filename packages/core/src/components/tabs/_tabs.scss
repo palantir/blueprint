@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 @import "../../common/mixins";
 
@@ -229,6 +230,89 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
       background-color: $pt-high-contrast-mode-active-background-color;
+    }
+  }
+}
+
+// Intent variants.
+//
+// An explicit `intent` on a Tab colors its title, its selected indicator, and -
+// for vertical tabs - its selected background. Disabled tabs keep the disabled
+// color, so every rule here is scoped away from them.
+@each $intent, $color in $pt-intent-colors {
+  .#{$ns}-tab.#{$ns}-intent-#{$intent}:not([aria-disabled="true"]) {
+    color: map.get($pt-intent-text-colors, $intent);
+
+    &[aria-selected="true"] {
+      box-shadow: inset 0 (-$tab-indicator-width) 0 map.get($pt-intent-text-colors, $intent);
+    }
+
+    &:hover {
+      color: map.get($pt-intent-active-text-colors, $intent);
+    }
+
+    &[aria-selected="true"],
+    &:hover {
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-active-text-color;
+      }
+    }
+  }
+
+  .#{$ns}-tab-indicator-wrapper.#{$ns}-intent-#{$intent} .#{$ns}-tab-indicator {
+    background-color: map.get($pt-intent-text-colors, $intent);
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: $pt-high-contrast-mode-active-background-color;
+    }
+  }
+
+  // vertical tabs mark the selection with a tinted background instead of an
+  // underline, so the intent has to tint that instead
+  .#{$ns}-tabs.#{$ns}-vertical > .#{$ns}-tab-list {
+    .#{$ns}-tab.#{$ns}-intent-#{$intent}:not([aria-disabled="true"])[aria-selected="true"] {
+      background-color: rgba($color, 0.2);
+      box-shadow: none;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        background-color: $pt-high-contrast-mode-active-background-color;
+        color: $black;
+      }
+    }
+
+    .#{$ns}-tab-indicator-wrapper.#{$ns}-intent-#{$intent} .#{$ns}-tab-indicator {
+      background-color: rgba($color, 0.2);
+    }
+  }
+
+  .#{$ns}-dark {
+    .#{$ns}-tab.#{$ns}-intent-#{$intent}:not([aria-disabled="true"]) {
+      color: map.get($pt-dark-intent-text-colors, $intent);
+
+      &[aria-selected="true"] {
+        box-shadow: inset 0 (-$tab-indicator-width) 0 map.get($pt-dark-intent-text-colors, $intent);
+      }
+
+      &[aria-selected="true"],
+      &:hover {
+        color: map.get($pt-dark-intent-text-colors, $intent);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          color: $pt-high-contrast-mode-active-text-color;
+        }
+      }
+    }
+
+    .#{$ns}-tab-indicator-wrapper.#{$ns}-intent-#{$intent} .#{$ns}-tab-indicator {
+      background-color: map.get($pt-dark-intent-text-colors, $intent);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        background-color: $pt-high-contrast-mode-active-background-color;
+      }
     }
   }
 }
