@@ -926,6 +926,11 @@
         "tags": ["arrow", "left", "back", "previous", "navigate", "direction", "return", "backspace", "interface"]
     },
     {
+        "name": "arrow-left-from-bracket",
+        "hasFilled": false,
+        "tags": ["logout", "exit", "leave", "sign-out", "door", "previous", "sign", "auth", "authentication", "action"]
+    },
+    {
         "name": "arrow-merge",
         "hasFilled": false,
         "tags": ["merge", "converge", "fork", "git", "branch", "flow", "arrow", "right", "end", "join", "action"]
@@ -2421,6 +2426,11 @@
             "week",
             "interface"
         ]
+    },
+    {
+        "name": "calendar-arrow-up",
+        "hasFilled": false,
+        "tags": ["date", "schedule", "event", "upload", "export", "send", "move", "agenda", "planner", "interface"]
     },
     {
         "name": "calendar-dots",
@@ -8321,6 +8331,11 @@
         ]
     },
     {
+        "name": "list-magnifying-glass",
+        "hasFilled": false,
+        "tags": ["list", "search", "find", "filter", "lookup", "items", "rows", "lines", "menu", "inspection", "action"]
+    },
+    {
         "name": "list-numbers",
         "hasFilled": false,
         "tags": [
@@ -10321,6 +10336,28 @@
         ]
     },
     {
+        "name": "rectangle-arrow-cw",
+        "hasFilled": false,
+        "tags": [
+            "rotate",
+            "refresh",
+            "reload",
+            "redo",
+            "clockwise",
+            "repeat",
+            "cycle",
+            "loop",
+            "sync",
+            "update",
+            "box",
+            "frame",
+            "container",
+            "retry",
+            "again",
+            "action"
+        ]
+    },
+    {
         "name": "rectangle-dots",
         "hasFilled": false,
         "tags": [
@@ -11315,6 +11352,25 @@
             "video",
             "low",
             "silence",
+            "media"
+        ]
+    },
+    {
+        "name": "speaker-x",
+        "hasFilled": true,
+        "tags": [
+            "audio",
+            "sound",
+            "volume",
+            "mute",
+            "speaker",
+            "music",
+            "off",
+            "silence",
+            "x",
+            "close",
+            "disable",
+            "video",
             "media"
         ]
     },
