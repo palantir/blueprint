@@ -928,7 +928,7 @@
     {
         "name": "arrow-left-from-bracket",
         "hasFilled": false,
-        "tags": ["logout", "exit", "leave", "sign-out", "door", "previous", "sign", "auth", "authentication", "action"]
+        "tags": ["logout", "exit", "leave", "sign-out", "door", "previous", "back", "action"]
     },
     {
         "name": "arrow-merge",
