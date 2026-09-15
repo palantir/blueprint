@@ -158,6 +158,19 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
+  type-check-icons:
+    docker: *docker-node-image
+    resource_class: xlarge
+    steps:
+      - checkout
+      - attach_workspace: { at: "." }
+      - run: sudo corepack enable
+      # Icons type checking needs generated sources and test helpers, so it can overlap library compilation.
+      - run: pnpm nx compile @blueprintjs/test-commons
+      - run: pnpm --filter @blueprintjs/icons icons:verify
+      - run: pnpm --filter @blueprintjs/icons generate-icon-src
+      - run: pnpm --filter @blueprintjs/icons test:typeCheck
+
   test-react-18: &test-react
     docker: *docker-node-image
     resource_class: xlarge
@@ -177,7 +190,7 @@ jobs:
           # Task dependencies are already compiled in this workflow's workspace.
           command: |
             case $CIRCLE_NODE_INDEX in
-            0) pnpm nx run-many -t test:typeCheck --excludeTaskDependencies ;;
+            0) pnpm nx run-many -t test:typeCheck --exclude @blueprintjs/icons --excludeTaskDependencies ;;
             1) pnpm nx test:vitest:run @blueprintjs/core ;;
             2) pnpm nx test:vitest:run @blueprintjs/datetime ;;
             3)
@@ -261,7 +274,7 @@ workflows:
     unless: << pipeline.parameters.run-chromatic >>
     jobs:
       - circle-all:
-          requires: [dist, lint, test-node-libs, test-react-18, test-iso-react-18]
+          requires: [dist, lint, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
       - checkout-code
       - clean-lockfile:
           requires: [checkout-code]
@@ -277,6 +290,8 @@ workflows:
           requires: [compile, compile-docs]
       - test-node-libs:
           requires: [compile]
+      - type-check-icons:
+          requires: [checkout-code]
       - test-react-18:
           requires: [compile]
       - test-iso-react-18:
@@ -291,7 +306,7 @@ workflows:
       - store-packages:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-node-libs, test-react-18, test-iso-react-18]
+          requires: [dist, lint, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
           filters:
             branches:
               only:
