@@ -81,6 +81,11 @@ jobs:
       # Library compilation is supplied by the current workflow's workspace.
       # The combined docs task fetches live npm metadata and must run uncached.
       - run: pnpm nx compile @blueprintjs/docs-data --excludeTaskDependencies
+      - run: mkdir -p ./reports
+      - run: >-
+          pnpm nx test:vitest:run @blueprintjs/docs-data
+          --reporter=default --reporter=junit --outputFile=../../reports/docs-data.xml
+      - store_test_results: { path: ./reports }
       - persist_to_workspace:
           root: "."
           paths:
