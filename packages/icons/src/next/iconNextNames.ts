@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-import { pascalCase } from "change-case";
-
-import type { PascalCase } from "../type-utils";
-
-import { type BlueprintIconsNext, nextIconManifest } from "./generated/manifest";
+import type { BlueprintIconsNext } from "./generated/manifest";
+import { nextIconNames } from "./generated/names";
 
 export type IconNextName = BlueprintIconsNext;
 
-const IconNextNamesObject = {} as Record<PascalCase<BlueprintIconsNext>, BlueprintIconsNext>;
+export { IconNextNames, nextFilledIconNames, nextIconNames } from "./generated/names";
 
-for (const { name } of nextIconManifest) {
-    IconNextNamesObject[pascalCase(name) as PascalCase<BlueprintIconsNext>] = name;
-}
-
-/** Map of every next-generation icon name keyed by its PascalCase identifier (e.g. `IconNextNames.Buggy === "buggy"`). */
-export const IconNextNames = IconNextNamesObject;
-
-export const IconNextNamesSet = new Set<BlueprintIconsNext>(nextIconManifest.map(entry => entry.name));
+export const IconNextNamesSet = new Set<BlueprintIconsNext>(nextIconNames);

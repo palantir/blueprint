@@ -18,10 +18,10 @@ import classNames from "classnames";
 import { PureComponent } from "react";
 
 import { Alignment, Button, Classes, IconNext, MenuItem } from "@blueprintjs/core";
-import { type BlueprintIconsNext, nextIconManifest } from "@blueprintjs/icons/next";
+import { type BlueprintIconsNext, nextIconNames } from "@blueprintjs/icons/next";
 import { type ItemRenderer, Select } from "@blueprintjs/select";
 
-const ICON_NAMES = nextIconManifest.map(entry => entry.name);
+const ICON_NAMES = [...nextIconNames];
 
 export interface IconNextSelectProps {
     disabled?: boolean;

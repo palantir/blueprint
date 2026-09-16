@@ -16,8 +16,8 @@
 
 import type { IconPaths } from "../iconTypes";
 
-import { nextIconManifest } from "./generated/manifest";
-import type { IconNextName } from "./iconNextNames";
+import { nextFilledIconNames, nextIconNames } from "./generated/names";
+import { type IconNextName, IconNextNamesSet } from "./iconNextNames";
 import { defaultNextIconPathsLoader, type NextIconPathsLoader } from "./pathsLoader";
 
 export type NextIconVariant = "outlined" | "filled";
@@ -37,11 +37,8 @@ export interface NextIconLoaderOptions {
  */
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export class IconsNext {
-    /** Set of icon names that have filled variants, derived from the manifest. */
-    private static filledSet: Set<string> = new Set(nextIconManifest.filter(e => e.hasFilled).map(e => e.name));
-
-    /** Set of all valid next icon names, derived from the manifest. */
-    private static validSet: Set<string> = new Set(nextIconManifest.map(e => e.name));
+    /** Set of icon names that have filled variants. */
+    private static filledSet: Set<string> = new Set(nextFilledIconNames);
 
     /** Cache keyed by "iconName:variant". */
     private static cache: Map<string, IconPaths> = new Map();
@@ -82,11 +79,9 @@ export class IconsNext {
      * Load all next icons (outlined variant). Optionally also load filled variants.
      */
     public static async loadAll(options?: { includeFilled?: boolean }) {
-        const allNames = nextIconManifest.map(e => e.name);
-        await this.load(allNames, "outlined");
+        await this.load([...nextIconNames], "outlined");
         if (options?.includeFilled) {
-            const filledNames = nextIconManifest.filter(e => e.hasFilled).map(e => e.name);
-            await this.load(filledNames, "filled");
+            await this.load([...nextFilledIconNames], "filled");
         }
     }
 
@@ -110,7 +105,7 @@ export class IconsNext {
      * Returns `true` if the given string is a valid next icon name.
      */
     public static isValidIconName(name: string): name is IconNextName {
-        return this.validSet.has(name);
+        return IconNextNamesSet.has(name as IconNextName);
     }
 
     private static async loadImpl(icon: IconNextName, variant: NextIconVariant) {
@@ -135,7 +130,7 @@ export class IconsNext {
 
         if (
             process.env.NODE_ENV !== "production" &&
-            this.validSet.has(icon) &&
+            IconNextNamesSet.has(icon) &&
             !this.warnedAboutMissingFilledVariant.has(icon)
         ) {
             this.warnedAboutMissingFilledVariant.add(icon);
