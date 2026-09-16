@@ -622,7 +622,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     private isCreateItemRendered(createNewItem?: T | T[]): boolean {
         return (
             this.canCreateItems() &&
-            this.state.query !== "" &&
+            (this.props.allowCreateNewItemEmptyQuery || this.state.query !== "") &&
             // this check is unfortunately O(N) on the number of items, but
             // alas, hiding the "Create Item" option when it exactly matches an
             // existing item is much clearer.
