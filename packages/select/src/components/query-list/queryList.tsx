@@ -346,7 +346,9 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         const trimmedQuery = query.trim();
         const filteredItems = getFilteredItems(trimmedQuery, props);
         const createNewItem =
-            createNewItemFromQuery != null && trimmedQuery !== "" ? createNewItemFromQuery(trimmedQuery) : undefined;
+            createNewItemFromQuery != null && (trimmedQuery !== "" || props.allowCreateNewItemEmptyQuery)
+                ? createNewItemFromQuery(trimmedQuery)
+                : undefined;
         this.setState({ createNewItem, filteredItems, query });
 
         // always reset active item if it's now filtered or disabled
