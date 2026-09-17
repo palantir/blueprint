@@ -73,6 +73,9 @@ const config: Record<string, IsomorphicTestConfig> = {
     Icon: {
         props: { icon: "build" },
     },
+    IconNext: {
+        props: { icon: "build" },
+    },
     KeyComboTag: {
         props: { combo: "?" },
     },

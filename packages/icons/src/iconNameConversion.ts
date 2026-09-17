@@ -14,4 +14,38 @@
  * limitations under the License.
  */
 
-export { LegacyToIconNextNameMap } from "./generated/iconNameMap";
+import { type LegacyIconName, LegacyToIconNextNameMap } from "./generated/iconNameMap";
+import type { IconName } from "./iconNames";
+import { type IconNextName, IconNextNamesSet } from "./next/iconNextNames";
+
+export { LegacyToIconNextNameMap, type LegacyIconName };
+
+/**
+ * Converts a name from the legacy icon set to its next-generation equivalent.
+ *
+ * This function always interprets its argument as a legacy name. This distinction matters for names
+ * which exist in both sets but identify different glyphs, such as `"user"`.
+ */
+export function legacyIconNameToIconNextName(iconName: LegacyIconName): IconNextName;
+export function legacyIconNameToIconNextName(iconName: string): IconNextName | undefined;
+export function legacyIconNameToIconNextName(iconName: string): IconNextName | undefined {
+    return Object.prototype.hasOwnProperty.call(LegacyToIconNextNameMap, iconName)
+        ? LegacyToIconNextNameMap[iconName as LegacyIconName]
+        : undefined;
+}
+
+/**
+ * Normalizes a legacy or next-generation icon name to a next-generation icon name.
+ *
+ * Canonical next names take precedence when a string is valid in both icon sets. Use
+ * {@link legacyIconNameToIconNextName} instead when the source is known to contain legacy names.
+ */
+export function iconNameToIconNextName(iconName: IconName | IconNextName): IconNextName;
+export function iconNameToIconNextName(iconName: string): IconNextName | undefined;
+export function iconNameToIconNextName(iconName: string): IconNextName | undefined {
+    if (IconNextNamesSet.has(iconName as IconNextName)) {
+        return iconName as IconNextName;
+    }
+
+    return legacyIconNameToIconNextName(iconName);
+}

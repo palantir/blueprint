@@ -28,6 +28,7 @@ const filledResourcesDir = join(iconResourcesDir, "next/filled");
 const legacyResourcesDir = join(iconResourcesDir, "16px");
 const generatedNextDir = resolve(import.meta.dirname, "../src/next/generated");
 const generatedNextComponentsDir = join(generatedNextDir, "components");
+const generatedNextPathsDir = join(generatedNextDir, "paths");
 const iconsNextManifestPath = resolve(import.meta.dirname, "../icons-next.json");
 const iconNameMapPath = resolve(import.meta.dirname, "../icons-name-map.json");
 
@@ -86,7 +87,9 @@ export default ${exportName};
 
 console.info("Clearing existing next icon modules...");
 rmSync(generatedNextComponentsDir, { force: true, recursive: true });
+rmSync(generatedNextPathsDir, { force: true, recursive: true });
 mkdirSync(generatedNextComponentsDir, { recursive: true });
+mkdirSync(generatedNextPathsDir, { recursive: true });
 
 const outlinedIconNames = [...getIconNamesInDirectory(outlinedResourcesDir)].sort();
 const filledIconNames = [...getIconNamesInDirectory(filledResourcesDir)].sort();
@@ -98,30 +101,46 @@ console.info(
 );
 /** @type {string[]} */
 const componentIndexLines = [];
+/** @type {string[]} */
+const pathIndexLines = [];
 
 for (const iconName of outlinedIconNames) {
     const outlinedPaths = extractPathsFromSvgFile(join(outlinedResourcesDir, `${iconName}.svg`));
 
-    // Generate component module (outlined)
+    // Generate component module
+    const outlinedFileName = `${iconName}.tsx`;
     writeFileSync(
-        join(generatedNextComponentsDir, `${iconName}.tsx`),
+        join(generatedNextComponentsDir, outlinedFileName),
         generateNextComponentSource(iconName, "outlined", outlinedPaths),
     );
     componentIndexLines.push(`export { ${pascalCase(iconName)}Icon } from "./${iconName}";`);
+
+    // Generate path module (outlined)
+    writeFileSync(join(generatedNextPathsDir, `${iconName}.ts`), `export default ${JSON.stringify(outlinedPaths)};\n`);
+    pathIndexLines.push(`export { default as ${pascalCase(iconName)} } from "./${iconName}";`);
 
     if (filledIconNameSet.has(iconName)) {
         const filledPaths = extractPathsFromSvgFile(join(filledResourcesDir, `${iconName}.svg`));
 
         // Generate component module (filled)
+        const filledFileName = `${iconName}-filled.tsx`;
         writeFileSync(
-            join(generatedNextComponentsDir, `${iconName}-filled.tsx`),
+            join(generatedNextComponentsDir, filledFileName),
             generateNextComponentSource(iconName, "filled", filledPaths),
         );
         componentIndexLines.push(`export { ${pascalCase(iconName)}FilledIcon } from "./${iconName}-filled";`);
+
+        // Generate path module (filled)
+        writeFileSync(
+            join(generatedNextPathsDir, `${iconName}-filled.ts`),
+            `export default ${JSON.stringify(filledPaths)};\n`,
+        );
+        pathIndexLines.push(`export { default as ${pascalCase(iconName)}Filled } from "./${iconName}-filled";`);
     }
 }
 
 writeFileSync(join(generatedNextComponentsDir, "index.ts"), `${componentIndexLines.join("\n")}\n`);
+writeFileSync(join(generatedNextPathsDir, "index.ts"), `${pathIndexLines.join("\n")}\n`);
 
 // Legacy icon-name aliases: emit one renamed re-export per legacy icon so consumers can migrate from
 // `@blueprintjs/icons` to `@blueprintjs/icons/next` by changing only the import path. Every legacy name
@@ -195,7 +214,10 @@ writeFileSync(
         `export * from "../../index";`,
         `export * from "./components";`,
         `export * from "./legacyAliases";`,
-        `export { nextIconManifest, type BlueprintIconsNext, type IconNextName, type NextIconManifestEntry } from "./manifest";`,
+        `export { nextIconManifest, type BlueprintIconsNext, type NextIconManifestEntry } from "./manifest";`,
+        `export { IconNextNames, IconNextNamesSet, nextFilledIconNames, nextIconNames, type IconNextName } from "../iconNextNames";`,
+        `export { IconsNext, type NextIconVariant, type NextIconLoaderOptions } from "../iconLoaderNext";`,
+        `export { defaultNextIconPathsLoader, type NextIconPathsLoader } from "../pathsLoader";`,
         `export { SvgIconContainerNext, type SvgIconContainerNextComponent, type SvgIconContainerNextProps } from "../svgIconContainerNext";`,
         "",
     ].join("\n"),
@@ -228,9 +250,49 @@ writeFileSync(
         "    hasFilled: boolean;",
         "}",
         "",
-        "export type IconNextName = BlueprintIconsNext;",
-        "",
         `export const nextIconManifest = ${JSON.stringify(iconsNextManifest, null, 4)} as const satisfies readonly NextIconManifestEntry[];`,
+        "",
+    ].join("\n"),
+);
+
+// Emit the name lists and the PascalCase lookup as plain literals in their own module. Deriving them at
+// runtime instead would force every importer of any one of them to evaluate `nextIconManifest`, whose
+// search tags are an order of magnitude larger than the names and are only needed by the icon gallery.
+const nextIconNameLines = iconsNextManifest.map(entry => `    "${entry.name}",`).join("\n");
+const nextFilledIconNameLines = iconsNextManifest
+    .filter(entry => entry.hasFilled)
+    .map(entry => `    "${entry.name}",`)
+    .join("\n");
+// The `Record<PascalCase<...>, ...>` annotation makes tsc check this map for missing, misspelled, and
+// surplus keys, which the previous runtime `pascalCase()` loop could not do.
+const iconNextNamesLines = iconsNextManifest.map(entry => `    ${pascalCase(entry.name)}: "${entry.name}",`).join("\n");
+
+writeFileSync(
+    join(generatedNextDir, "names.ts"),
+    [
+        "/*",
+        " * Copyright 2026 Palantir Technologies, Inc. All rights reserved.",
+        ' * Licensed under the Apache License, Version 2.0 (the "License");',
+        " */",
+        "",
+        'import type { PascalCase } from "../../type-utils";',
+        "",
+        'import type { BlueprintIconsNext } from "./manifest";',
+        "",
+        "/** Every next-generation icon name. */",
+        "export const nextIconNames: readonly BlueprintIconsNext[] = [",
+        nextIconNameLines,
+        "];",
+        "",
+        "/** The subset of next-generation icon names which also ship a filled variant. */",
+        "export const nextFilledIconNames: readonly BlueprintIconsNext[] = [",
+        nextFilledIconNameLines,
+        "];",
+        "",
+        '/** Map of every next-generation icon name keyed by its PascalCase identifier (e.g. `IconNextNames.Buggy === "buggy"`). */',
+        "export const IconNextNames: Record<PascalCase<BlueprintIconsNext>, BlueprintIconsNext> = {",
+        iconNextNamesLines,
+        "};",
         "",
     ].join("\n"),
 );
