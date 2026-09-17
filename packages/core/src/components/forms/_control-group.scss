@@ -1,7 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:list";
 @import "../../common/variables";
 @import "../button/common";
 @import "./common";
@@ -29,32 +28,32 @@
   }
 
   .#{$ns}-input {
-    z-index: list.index($control-group-stack, "input-default");
+    z-index: $control-group-z-input-default;
 
     &:focus {
-      z-index: list.index($control-group-stack, "input-focus");
+      z-index: $control-group-z-input-focus;
     }
 
     &[class*="#{$ns}-intent"] {
-      z-index: list.index($control-group-stack, "intent-input-default");
+      z-index: $control-group-z-intent-input-default;
 
       &:focus {
-        z-index: list.index($control-group-stack, "intent-input-focus");
+        z-index: $control-group-z-intent-input-focus;
       }
     }
 
     &[readonly],
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: list.index($control-group-stack, "input-disabled");
+      z-index: $control-group-z-input-disabled;
     }
   }
 
   .#{$ns}-input-group[class*="#{$ns}-intent"] .#{$ns}-input {
-    z-index: list.index($control-group-stack, "intent-input-default");
+    z-index: $control-group-z-intent-input-default;
 
     &:focus {
-      z-index: list.index($control-group-stack, "intent-input-focus");
+      z-index: $control-group-z-intent-input-focus;
     }
   }
 
@@ -62,45 +61,45 @@
   .#{$ns}-html-select select,
   .#{$ns}-select select {
     @include new-render-layer;
-    z-index: list.index($control-group-stack, "button-default");
+    z-index: $control-group-z-button-default;
 
     &:focus {
-      z-index: list.index($control-group-stack, "button-focus");
+      z-index: $control-group-z-button-focus;
     }
 
     &:hover {
-      z-index: list.index($control-group-stack, "button-hover");
+      z-index: $control-group-z-button-hover;
     }
 
     &:active {
-      z-index: list.index($control-group-stack, "button-active");
+      z-index: $control-group-z-button-active;
     }
 
     &[readonly],
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: list.index($control-group-stack, "button-disabled");
+      z-index: $control-group-z-button-disabled;
     }
 
     &[class*="#{$ns}-intent"] {
-      z-index: list.index($control-group-stack, "intent-button-default");
+      z-index: $control-group-z-intent-button-default;
 
       &:focus {
-        z-index: list.index($control-group-stack, "intent-button-focus");
+        z-index: $control-group-z-intent-button-focus;
       }
 
       &:hover {
-        z-index: list.index($control-group-stack, "intent-button-hover");
+        z-index: $control-group-z-intent-button-hover;
       }
 
       &:active {
-        z-index: list.index($control-group-stack, "intent-button-active");
+        z-index: $control-group-z-intent-button-active;
       }
 
       &[readonly],
       &:disabled,
       &.#{$ns}-disabled {
-        z-index: list.index($control-group-stack, "intent-button-disabled");
+        z-index: $control-group-z-intent-button-disabled;
       }
     }
   }
@@ -110,7 +109,7 @@
   .#{$ns}-input-group > .#{$ns}-button,
   .#{$ns}-input-group > .#{$ns}-input-left-container,
   .#{$ns}-input-group > .#{$ns}-input-action {
-    z-index: list.index($control-group-stack, "input-group-children");
+    z-index: $control-group-z-input-group-children;
   }
 
   // keep the select-menu carets on top of everything always (particularly when
@@ -119,14 +118,14 @@
   .#{$ns}-html-select::after,
   .#{$ns}-select > .#{$ns}-icon,
   .#{$ns}-html-select > .#{$ns}-icon {
-    z-index: list.index($control-group-stack, "select-caret");
+    z-index: $control-group-z-select-caret;
   }
 
   // select container does not get focus directly (its <select> does), and it
   // sometimes needs to compete with adjacent container elements
   .#{$ns}-html-select:focus-within,
   .#{$ns}-select:focus-within {
-    z-index: list.index($control-group-stack, "button-focus");
+    z-index: $control-group-z-button-focus;
   }
 
   &:not(.#{$ns}-vertical) {
