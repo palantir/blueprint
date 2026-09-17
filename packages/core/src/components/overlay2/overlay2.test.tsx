@@ -130,6 +130,107 @@ describe("<Overlay2>", () => {
         expect(container.querySelector(BACKDROP_SELECTOR)).not.toBeInTheDocument();
     });
 
+    describe("Background content accessibility", () => {
+        function createSibling() {
+            const sibling = document.createElement("div");
+            sibling.textContent = "sibling content";
+            document.body.appendChild(sibling);
+            return sibling;
+        }
+
+        it("hides sibling content from assistive technology while a modal overlay is open", async () => {
+            const sibling = createSibling();
+
+            const { rerender } = renderWithOverlaysProvider(
+                <Overlay2 transitionDuration={0} isOpen={true} hasBackdrop={true} usePortal={true}>
+                    <span>test content</span>
+                </Overlay2>,
+            );
+
+            await waitFor(() => {
+                expect(sibling.getAttribute("aria-hidden")).to.equal("true");
+            });
+
+            rerender(
+                <Overlay2 transitionDuration={0} isOpen={false} hasBackdrop={true} usePortal={true}>
+                    <span>test content</span>
+                </Overlay2>,
+            );
+
+            await waitFor(() => {
+                expect(sibling.hasAttribute("aria-hidden")).to.be.false;
+            });
+
+            document.body.removeChild(sibling);
+        });
+
+        it("does not hide sibling content for non-modal overlays (hasBackdrop=false)", () => {
+            const sibling = createSibling();
+
+            renderWithOverlaysProvider(
+                <Overlay2 transitionDuration={0} isOpen={true} hasBackdrop={false} usePortal={true}>
+                    <span>test content</span>
+                </Overlay2>,
+            );
+
+            expect(sibling.hasAttribute("aria-hidden")).to.be.false;
+
+            document.body.removeChild(sibling);
+        });
+
+        it("does not hide sibling content when usePortal is false", () => {
+            const sibling = createSibling();
+
+            renderWithOverlaysProvider(
+                <Overlay2 transitionDuration={0} isOpen={true} hasBackdrop={true} usePortal={false}>
+                    <span>test content</span>
+                </Overlay2>,
+            );
+
+            expect(sibling.hasAttribute("aria-hidden")).to.be.false;
+
+            document.body.removeChild(sibling);
+        });
+
+        it("keeps sibling content hidden while any stacked modal overlay remains open", async () => {
+            const sibling = createSibling();
+
+            function TwoOverlays() {
+                const [firstOpen, setFirstOpen] = useState(true);
+                const [secondOpen, setSecondOpen] = useState(true);
+                return (
+                    <>
+                        <Overlay2 transitionDuration={0} isOpen={firstOpen} hasBackdrop={true} usePortal={true}>
+                            <button onClick={() => setFirstOpen(false)}>close first</button>
+                        </Overlay2>
+                        <Overlay2 transitionDuration={0} isOpen={secondOpen} hasBackdrop={true} usePortal={true}>
+                            <button onClick={() => setSecondOpen(false)}>close second</button>
+                        </Overlay2>
+                    </>
+                );
+            }
+
+            renderWithOverlaysProvider(<TwoOverlays />);
+
+            await waitFor(() => {
+                expect(sibling.getAttribute("aria-hidden")).to.equal("true");
+            });
+
+            await userEvent.click(screen.getByText("close first"));
+
+            // one overlay is still open, so sibling should remain hidden
+            expect(sibling.getAttribute("aria-hidden")).to.equal("true");
+
+            await userEvent.click(screen.getByText("close second"));
+
+            await waitFor(() => {
+                expect(sibling.hasAttribute("aria-hidden")).to.be.false;
+            });
+
+            document.body.removeChild(sibling);
+        });
+    });
+
     describe("onClose", () => {
         it("should invoke on backdrop mousedown when canOutsideClickClose=true", async () => {
             const user = userEvent.setup();
