@@ -15,7 +15,7 @@ import { globSync } from "glob";
 import { resolve } from "node:path";
 import { argv, cwd, exit } from "node:process";
 
-import { junitReportPath } from "./src/utils.mjs";
+import { getRootDir, junitReportPath } from "./src/utils.mjs";
 
 await main();
 
@@ -26,7 +26,7 @@ async function main() {
     // ESLint may fail if provided with no files, so we expand the glob before running it
     const anyFilesToLint = globSync(absoluteFileGlob);
     if (anyFilesToLint.length === 0) {
-        console.log(`[node-build-scripts/es-lint] Not running ESLint because no files match the glob "${FILES_GLOB}"`);
+        console.info(`[node-build-scripts/es-lint] Not running ESLint because no files match the glob "${FILES_GLOB}"`);
         return;
     }
 
@@ -38,7 +38,9 @@ async function main() {
     }
 
     const fix = argv.includes("--fix");
-    const eslint = new ESLint({ fix });
+    // Resolve config file patterns from the workspace root so package-level linting
+    // applies the same rules as invoking ESLint from the repository root.
+    const eslint = new ESLint({ cwd: getRootDir() ?? cwd(), fix });
     let exitCode = 0;
 
     try {
@@ -61,7 +63,7 @@ async function main() {
         if (outputReportPath !== undefined) {
             fs.outputFileSync(outputReportPath, resultText);
         } else {
-            console.log(resultText);
+            console.info(resultText);
         }
         console.info(
             `[node-build-scripts/es-lint] Done running ESLint, with ${exitCode === 0 ? "no" : "some"} errors.`,
