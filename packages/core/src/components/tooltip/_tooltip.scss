@@ -12,6 +12,8 @@ $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-op
 $tooltip-padding-compact-vertical: $pt-spacing !default;
 $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
+$tooltip-max-width: 300px !default;
+
 .#{$ns}-tooltip {
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 5.5,
@@ -39,6 +41,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+    max-width: $tooltip-max-width;
   }
 
   &.#{$ns}-compact {
