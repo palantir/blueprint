@@ -34,6 +34,12 @@ describe("<TimePicker>", () => {
         expect(screen.getByLabelText("minutes")).toBeInTheDocument();
     });
 
+    it("gives the AM/PM selector an accessible name", () => {
+        render(<TimePicker useAmPm={true} />);
+
+        expect(screen.getByLabelText("AM/PM")).toBeInTheDocument();
+    });
+
     it("should propagate class names correctly", () => {
         const { container } = render(<TimePicker className="foo" />);
         const timePicker = container.querySelector(`.${Classes.TIMEPICKER}`);
