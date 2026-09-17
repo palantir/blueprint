@@ -28,10 +28,11 @@ import {
 } from "@blueprintjs/core";
 import { type ItemListPredicate, type ItemRenderer, Select, type SelectPopoverProps } from "@blueprintjs/select";
 
-import { Classes, type TimezoneWithNames } from "../../common";
+import { Classes, type TimezoneWithNames, type TimezoneWithoutOffset } from "../../common";
 import { formatTimezone, TimezoneDisplayFormat } from "../../common/timezoneDisplayFormat";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../common/timezoneNameUtils";
+import { lookupTimezoneOffset } from "../../common/timezoneOffsetUtils";
 
 export interface TimezoneSelectProps extends Props {
     /**
@@ -85,6 +86,14 @@ export interface TimezoneSelectProps extends Props {
      * @default false
      */
     showLocalTimezone?: boolean;
+
+    /**
+     * Custom timezone options to show instead of the built-in list. Offsets and
+     * display names are derived from each IANA code using the current `date`.
+     *
+     * @default undefined
+     */
+    timezoneItems?: readonly TimezoneWithoutOffset[];
 
     /**
      * Text to show when no timezone has been selected (`value === undefined`).
@@ -146,16 +155,26 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
 
     private initialTimezoneItems: TimezoneWithNames[];
 
+    private timezoneItemsDate: number | undefined;
+
+    private timezoneItemsProp: readonly TimezoneWithoutOffset[] | undefined;
+
+    private showLocalTimezone: boolean | undefined;
+
     constructor(props: TimezoneSelectProps) {
         super(props);
 
-        const { showLocalTimezone, inputProps = {}, date } = props;
+        const { inputProps = {} } = props;
         this.state = { query: inputProps.value || "" };
-        this.timezoneItems = mapTimezonesWithNames(date, TIMEZONE_ITEMS);
-        this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone!);
+        this.timezoneItems = this.getTimezoneItems(props);
+        this.initialTimezoneItems = this.getInitialTimezoneItems(props);
+        this.timezoneItemsDate = props.date?.getTime();
+        this.timezoneItemsProp = props.timezoneItems;
+        this.showLocalTimezone = props.showLocalTimezone;
     }
 
     public render() {
+        this.refreshTimezoneItems(this.props);
         const { children, className, disabled, fill, inputProps, popoverProps } = this.props;
         const { query } = this.state;
 
@@ -187,17 +206,34 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
         );
     }
 
-    public componentDidUpdate(prevProps: TimezoneSelectProps, prevState: TimezoneSelectState) {
-        super.componentDidUpdate(prevProps, prevState);
-        const { date: nextDate } = this.props;
+    private refreshTimezoneItems(props: TimezoneSelectProps): void {
+        const date = props.date?.getTime();
+        const dateChanged = date !== this.timezoneItemsDate;
+        const customItemsChanged = props.timezoneItems !== this.timezoneItemsProp;
+        const localTimezoneChanged = props.showLocalTimezone !== this.showLocalTimezone;
 
-        if (this.props.showLocalTimezone !== prevProps.showLocalTimezone) {
-            this.initialTimezoneItems = getInitialTimezoneItems(nextDate, this.props.showLocalTimezone!);
+        if (dateChanged || customItemsChanged) {
+            this.timezoneItems = this.getTimezoneItems(props);
+            this.initialTimezoneItems = this.getInitialTimezoneItems(props);
+        } else if (localTimezoneChanged && props.timezoneItems === undefined) {
+            this.initialTimezoneItems = getInitialTimezoneItems(props.date, props.showLocalTimezone!);
         }
-        if (nextDate != null && nextDate.getTime() !== prevProps.date?.getTime()) {
-            this.initialTimezoneItems = mapTimezonesWithNames(nextDate, this.initialTimezoneItems);
-            this.timezoneItems = mapTimezonesWithNames(nextDate, this.timezoneItems);
-        }
+
+        this.timezoneItemsDate = date;
+        this.timezoneItemsProp = props.timezoneItems;
+        this.showLocalTimezone = props.showLocalTimezone;
+    }
+
+    private getTimezoneItems(props: TimezoneSelectProps): TimezoneWithNames[] {
+        const items =
+            props.timezoneItems?.map(timezone => lookupTimezoneOffset(timezone, props.date)) ?? TIMEZONE_ITEMS;
+        return mapTimezonesWithNames(props.date, items);
+    }
+
+    private getInitialTimezoneItems(props: TimezoneSelectProps): TimezoneWithNames[] {
+        return props.timezoneItems === undefined
+            ? getInitialTimezoneItems(props.date, props.showLocalTimezone!)
+            : this.getTimezoneItems(props);
     }
 
     private renderButton() {
