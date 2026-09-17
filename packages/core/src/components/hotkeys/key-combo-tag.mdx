@@ -1,0 +1,47 @@
+---
+title: Key Combo Tag
+---
+
+# Key Combo Tag
+
+**KeyComboTag** renders a keyboard shortcut combination as a styled visual element. Each key in the combo is displayed inside a `<kbd>` tag. Modifier keys display platform-aware icons on macOS (command, shift, control, option) and text labels on other platforms.
+
+## Usage
+
+```ts copy
+import { KeyComboTag } from "@blueprintjs/core";
+```
+
+```tsx
+<KeyComboTag combo="cmd + s" />
+```
+
+## Examples
+
+### Basic
+
+Pass a key combo string to the `combo` prop to render the shortcut. Each key is displayed inside a `<kbd>` tag, and modifier keys are rendered with icons on macOS.
+
+@reactCodeExample KeyComboTagBasicExample
+
+### Minimal
+
+Set `minimal={true}` to render a compact version without `<kbd>` wrapper styles. Modifier keys render as just an icon, and non-modifier keys render as plain text. This is useful when displaying key combos inline within text or in space-constrained layouts.
+
+@reactCodeExample KeyComboTagMinimalExample
+
+### Modifier keys
+
+Modifier keys like `cmd`, `ctrl`, `shift`, and `alt` display platform-specific icons on macOS. On non-Mac platforms, these render as text labels instead. The special `mod` alias resolves to `cmd` on macOS or `ctrl` on other platforms.
+
+@reactCodeExample KeyComboTagModifiersExample
+
+## Key combo tester
+
+Use the interactive tester below to press any key combination and see how it renders as both a standard and minimal KeyComboTag. See the [key combos documentation](#core/hooks/use-hotkeys.key-combos) for the full list of supported named keys, aliases, and modifier key syntax.
+
+@reactExample HotkeyTesterExample
+
+## Props interface
+
+@interface KeyComboTagProps
