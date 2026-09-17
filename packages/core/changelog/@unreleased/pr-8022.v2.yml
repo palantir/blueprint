@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Fix toast with non-finite timeout values being dismissed immediately
+  links:
+  - https://github.com/palantir/blueprint/pull/8022
