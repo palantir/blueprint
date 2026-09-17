@@ -20,7 +20,7 @@ import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
-import { Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, HotkeysProvider } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
@@ -1328,6 +1328,43 @@ describe("<Table>", () => {
                 { col: 0, focusSelectionIndex: 0, row: 0 },
                 { col: 2, focusSelectionIndex: 1, row: 2 },
             );
+
+            it.each([
+                { name: "enter", shiftKey: false },
+                { name: "shift+enter", shiftKey: true },
+            ])("does not handle $name from a textarea", ({ shiftKey }) => {
+                const selectedRegions: Region[] = [{ cols: [0, 0], rows: [0, 1] }];
+                const { getAllByRole } = render(
+                    <HotkeysProvider>
+                        <Table
+                            numRows={2}
+                            enableFocusedCell={true}
+                            focusedCell={{ col: 0, focusSelectionIndex: 0, row: 0 }}
+                            onFocusedCell={onFocusedCell}
+                            selectedRegions={selectedRegions}
+                        >
+                            <Column
+                                cellRenderer={() => (
+                                    <Cell>
+                                        <textarea aria-label="Cell editor" />
+                                    </Cell>
+                                )}
+                            />
+                        </Table>
+                    </HotkeysProvider>,
+                );
+                const event = new KeyboardEvent("keydown", {
+                    bubbles: true,
+                    cancelable: true,
+                    key: "Enter",
+                    shiftKey,
+                });
+
+                getAllByRole("textbox")[0].dispatchEvent(event);
+
+                expect(event.defaultPrevented).to.be.false;
+                expect(onFocusedCell.called).to.be.false;
+            });
         });
 
         describe("scrolls viewport to fit focused cell after moving it", () => {

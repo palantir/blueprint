@@ -175,14 +175,12 @@ function getFocusHotkeys(focusMode: FocusMode | undefined, hotkeysImpl: TableHot
                     onKeyDown: hotkeysImpl.handleFocusMoveLeftInternal,
                 },
                 {
-                    allowInInput: true,
                     combo: "enter",
                     group: "Table",
                     label: "Move focus cell enter",
                     onKeyDown: hotkeysImpl.handleFocusMoveDownInternal,
                 },
                 {
-                    allowInInput: true,
                     combo: "shift+enter",
                     group: "Table",
                     label: "Move focus cell shift enter",
