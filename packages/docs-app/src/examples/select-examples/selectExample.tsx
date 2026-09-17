@@ -195,7 +195,7 @@ const getGroup = (item: Film) => {
     return /[0-9]/.test(firstLetter) ? "0-9" : firstLetter;
 };
 
-const getGroupedItems = (filteredItems: Film[]) => {
+const getGroupedItems = (filteredItems: ReadonlyArray<Film>) => {
     return filteredItems.reduce<
         Array<{ group: string; index: number; items: Film[]; key: number }>
     >((acc, item, index) => {
@@ -212,7 +212,7 @@ const getGroupedItems = (filteredItems: Film[]) => {
     }, []);
 };
 
-const groupedItemListPredicate = (query: string, items: Film[]) => {
+const groupedItemListPredicate = (query: string, items: ReadonlyArray<Film>) => {
     return items
         .filter((item, index) => filterFilm(query, item, index))
         .sort((a, b) => getGroup(a).localeCompare(getGroup(b)));

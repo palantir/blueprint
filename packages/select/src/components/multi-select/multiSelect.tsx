@@ -47,7 +47,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * Element which triggers the multiselect popover. Providing this prop will replace the default TagInput
      * target thats rendered and move the search functionality to within the Popover.
      */
-    customTarget?: (selectedItems: T[], isOpen: boolean) => React.ReactNode;
+    customTarget?: (selectedItems: ReadonlyArray<T>, isOpen: boolean) => React.ReactNode;
 
     /**
      * Whether the component is non-interactive.
@@ -107,7 +107,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     placeholder?: string;
 
     /** Controlled selected values. */
-    selectedItems: T[];
+    selectedItems: ReadonlyArray<T>;
 
     /**
      * Props to pass to the [TagInput component](##core/components/tag-input).
