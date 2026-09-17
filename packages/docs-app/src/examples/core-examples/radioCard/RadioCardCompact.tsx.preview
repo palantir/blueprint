@@ -1,0 +1,8 @@
+<RadioGroup
+    selectedValue={selectedValue}
+    onChange={event => setSelectedValue(event.currentTarget.value)}
+>
+    <RadioCard compact={true} label="Soup" value="soup" />
+    <RadioCard compact={true} label="Salad" value="salad" />
+    <RadioCard compact={true} label="Sandwich" value="sandwich" />
+</RadioGroup>

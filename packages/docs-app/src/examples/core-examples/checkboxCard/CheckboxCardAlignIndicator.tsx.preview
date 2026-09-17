@@ -1,0 +1,2 @@
+<CheckboxCard alignIndicator="start">Start-aligned</CheckboxCard>
+<CheckboxCard alignIndicator="end">End-aligned</CheckboxCard>

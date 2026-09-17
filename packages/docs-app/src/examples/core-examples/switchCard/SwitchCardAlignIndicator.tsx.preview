@@ -1,0 +1,2 @@
+<SwitchCard alignIndicator="start">Start-aligned</SwitchCard>
+<SwitchCard alignIndicator="end">End-aligned</SwitchCard>
