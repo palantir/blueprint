@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "[eslint-plugin] Do not flag Blueprint class names inside dynamic imports or `export *` re-exports in the `classes-constants` rule"
+  links:
+  - https://github.com/palantir/blueprint/pull/8158

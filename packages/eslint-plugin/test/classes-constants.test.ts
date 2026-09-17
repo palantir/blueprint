@@ -198,6 +198,10 @@ ruleTester.run("classes-constants", classesConstantsRule, {
         'import { test } from "packagewithpt-thatshouldnterror";',
         'export { test } from "packagewithpt-thatshouldnterror";',
 
+        // don't flag strings in dynamic imports or re-exports
+        'const promise = import("packagewithpt-thatshouldnterror");',
+        'export * from "packagewithpt-thatshouldnterror";',
+
         // don't flag non applicable strings in function calls
         `myFunction("stringwithpt-thatshouldnt-error");`,
         "myFunction(`stringwithpt-thatshouldnt-error`);",
