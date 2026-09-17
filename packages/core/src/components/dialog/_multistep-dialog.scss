@@ -7,7 +7,15 @@
 @import "../../common/variables";
 
 $dialog-border-radius: $pt-border-radius !default;
+$multistep-dialog-min-width: 800px !default;
 $step-radius: $pt-border-radius !default;
+
+// Defaults previously applied via inline styles. Moved to CSS so consumers can override
+// without `!important`. Specificity is a single class, matching Dialog's own rules.
+.#{$ns}-multistep-dialog {
+  min-width: $multistep-dialog-min-width;
+  padding-bottom: 0;
+}
 
 .#{$ns}-multistep-dialog-panels {
   display: flex;
