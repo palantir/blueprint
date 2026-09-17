@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: '`Overlay2`: content now fades in and out alongside the backdrop'
+  links:
+  - https://github.com/palantir/blueprint/pull/8098
