@@ -94,7 +94,15 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     }, [dispatch, globalKeys, localKeys]);
 
     const invokeNamedCallbackIfComboRecognized = useCallback(
-        (global: boolean, combo: KeyCombo, callbackName: "onKeyDown" | "onKeyUp", e: KeyboardEvent) => {
+        (
+            global: boolean,
+            combo: KeyCombo,
+            callbackName: "onKeyDown" | "onKeyUp",
+            e: KeyboardEvent,
+            // Local hotkeys are dispatched by React, which delivers a synthetic event wrapping
+            // the native one. Stopping propagation has to happen on that wrapper; see below.
+            syntheticEvent?: React.KeyboardEvent<HTMLElement>,
+        ) => {
             const isTextInput = elementIsTextInput(e.target as HTMLElement);
             for (const key of global ? globalKeys : localKeys) {
                 const {
@@ -109,8 +117,13 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
                         e.preventDefault();
                     }
                     if (stopPropagation) {
-                        // set a flag just for unit testing. not meant to be referenced in feature work.
-                        (e as any).isPropagationStopped = true;
+                        // React attaches its listeners to the root container rather than to each
+                        // node, so by the time a local handler runs the native event has already
+                        // bubbled to the root. Calling stopPropagation() on the native event at
+                        // that point cannot stop React dispatching to ancestor components, which
+                        // left a hotkey in a nested context unable to prevent the same combo
+                        // firing again further up the tree. Stopping the synthetic event does.
+                        syntheticEvent?.stopPropagation();
                         e.stopPropagation();
                     }
                     key.config[callbackName]?.(e);
@@ -142,12 +155,12 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
 
     const handleLocalKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent),
+            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent, e),
         [invokeNamedCallbackIfComboRecognized],
     );
     const handleLocalKeyUp = useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent),
+            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent, e),
         [invokeNamedCallbackIfComboRecognized],
     );
 
