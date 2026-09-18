@@ -1,0 +1,38 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+[data-bp-color-scheme="dark"],
+.bp6-dark {
+  --bp-surface-border-color-default: #ffffff33; /* white at 20% */
+  --bp-surface-border-color-strong: #ffffff4d; /* white at 30% */
+  --bp-surface-shadow-0: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /** Level 0 - border only, inset 0 0 0 1px rgba(white, 20%), 0 0 10px 0 rgba(0,0,0, 20%) */
+  --bp-surface-shadow-1: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 1px 10px 0px rgba(0, 0, 0, 0.2), 0px 1px 10px -1px rgba(0, 0, 0, 0.2); /** Level 1 - subtle elevation with inner highlights */
+  --bp-surface-shadow-2: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 4px 6px -4px rgba(0, 0, 0, 0.5), 0px 10px 30px -5px rgba(0, 0, 0, 0.5); /** Level 2 - standard elevation */
+  --bp-surface-shadow-3: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 20px 25px -5px rgba(0, 0, 0, 0.3), 0px 10px 30px -5px rgba(0, 0, 0, 0.3); /** Level 3 - popover/dialog elevation */
+  --bp-surface-shadow-4: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 25px 60px -12px rgba(0, 0, 0, 0.85); /** Level 4 - maximum elevation */
+  --bp-surface-color-code: #1114184d; /* black at 30% */
+  --bp-surface-background-color-default-rest: #111418;
+  --bp-surface-background-color-default-hover: #1c2127;
+  --bp-surface-background-color-default-active: #252a31;
+  --bp-surface-background-color-default-disabled: #111418;
+  --bp-typography-color-default-rest: #a5aab3;
+  --bp-typography-color-default-hover: #646970;
+  --bp-typography-color-default-active: #54575d;
+}
+
+@supports (color: oklch(from var(--any-color) l c h)) {
+  [data-bp-color-scheme="dark"],
+.bp6-dark {
+    --bp-surface-border-color-default: oklch(from var(--bp-palette-white) l c h / 0.2);
+    --bp-surface-border-color-strong: oklch(from var(--bp-palette-white) l c h / 0.3);
+    --bp-surface-color-code: oklch(from var(--bp-palette-black) l c h / 0.3);
+    --bp-surface-background-color-default-rest: oklch(from var(--bp-intent-default-rest) calc(l * 0.362) calc(c * 0.308) calc(h + -1.44));
+    --bp-surface-background-color-default-hover: oklch(from var(--bp-intent-default-hover) calc(l * 0.615) calc(c * 0.597) calc(h + -5.29));
+    --bp-surface-background-color-default-active: oklch(from var(--bp-intent-default-active) calc(l * 0.782) calc(c * 0.84) calc(h + -1.58));
+    --bp-surface-background-color-default-disabled: oklch(from var(--bp-intent-default-disabled) calc(l * 0.279) calc(c * 0.377) calc(h + -2.74));
+    --bp-typography-color-default-rest: oklch(from var(--bp-intent-default-rest) calc(l + 0.212) calc(c + -0.016) calc(h + 6.2));
+    --bp-typography-color-default-hover: oklch(from var(--bp-intent-default-hover) calc(l + 0.12) calc(c + -0.01) calc(h + 0));
+    --bp-typography-color-default-active: oklch(from var(--bp-intent-default-active) calc(l + 0.095) calc(c + -0.008) calc(h + 0));
+  }
+}

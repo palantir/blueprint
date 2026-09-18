@@ -1,0 +1,175 @@
+/**
+ * Do not edit directly, this file was auto-generated.
+ */
+
+.bp-next[data-bp-color-scheme="dark"],
+.bp-next [data-bp-color-scheme="dark"] {
+  --bp-palette-orange-100: oklch(0.8886 0.0492 47.64); /* #f7d1bf */
+  --bp-palette-orange-200: oklch(0.7812 0.0987 47.58); /* #eca480 */
+  --bp-palette-orange-300: oklch(0.6748 0.1304 46.68); /* #d77b4c */
+  --bp-palette-orange-400: oklch(0.5731 0.1453 46.11); /* #bb571e */
+  --bp-palette-orange-500: oklch(0.4738 0.143 41.97); /* #9a3700 */
+  --bp-palette-orange-600: oklch(0.3781 0.1298 35.91); /* #771c00 */
+  --bp-palette-orange-700: oklch(0.2853 0.1028 33.93); /* #520c00 */
+  --bp-palette-orange-800: oklch(0.1988 0.0759 31.74); /* #300200 */
+  --bp-palette-orange-900: oklch(0.1188 0.0487 29.23); /* #140000 */
+  --bp-palette-orange-1000: oklch(0.0483 0.0197 29.35); /* #010000 */
+  --bp-palette-blue-100: oklch(0.8632 0.0517 257.55); /* #bdd4f5 */
+  --bp-palette-blue-200: oklch(0.7598 0.1032 257.69); /* #87b3f2 */
+  --bp-palette-blue-300: oklch(0.6581 0.1376 257.21); /* #5892e4 */
+  --bp-palette-blue-400: oklch(0.5575 0.1574 257.09); /* #2e72ce */
+  --bp-palette-blue-500: oklch(0.4602 0.1628 257.32); /* #0454b0 */
+  --bp-palette-blue-600: oklch(0.3697 0.1506 259.98); /* #00388d */
+  --bp-palette-blue-700: oklch(0.2821 0.1276 261.69); /* #002167 */
+  --bp-palette-blue-800: oklch(0.1978 0.0972 262.74); /* #000e40 */
+  --bp-palette-blue-900: oklch(0.1173 0.0616 263.37); /* #00031c */
+  --bp-palette-blue-1000: oklch(0.0488 0.022 261.66); /* #000002 */
+  --bp-palette-green-100: oklch(0.8268 0.0461 151.6); /* #b1cfb8 */
+  --bp-palette-green-200: oklch(0.7272 0.092 151.86); /* #7ab88a */
+  --bp-palette-green-300: oklch(0.6289 0.1213 152.07); /* #479d63 */
+  --bp-palette-green-400: oklch(0.5331 0.1374 151.99); /* #0a8242 */
+  --bp-palette-green-500: oklch(0.4463 0.1281 148.32); /* #006627 */
+  --bp-palette-green-600: oklch(0.361 0.1123 145.38); /* #004c11 */
+  --bp-palette-green-700: oklch(0.2748 0.0905 143.51); /* #003203 */
+  --bp-palette-green-800: oklch(0.194 0.066 142.5); /* #001b00 */
+  --bp-palette-green-900: oklch(0.1157 0.0394 142.5); /* #000800 */
+  --bp-palette-green-1000: oklch(0.0493 0.0157 144.72); /* #000100 */
+  --bp-palette-red-100: oklch(0.8935 0.048 23.4); /* #fad0cd */
+  --bp-palette-red-200: oklch(0.7869 0.0998 22.6); /* #f3a09c */
+  --bp-palette-red-300: oklch(0.6826 0.1321 23.56); /* #df7571 */
+  --bp-palette-red-400: oklch(0.5779 0.1498 23); /* #c24e4e */
+  --bp-palette-red-500: oklch(0.4769 0.1513 23.05); /* #a12d31 */
+  --bp-palette-red-600: oklch(0.3789 0.1407 23); /* #7c101b */
+  --bp-palette-red-700: oklch(0.2899 0.1173 24.22); /* #580009 */
+  --bp-palette-red-800: oklch(0.2051 0.0833 25.99); /* #340002 */
+  --bp-palette-red-900: oklch(0.1246 0.0507 26.74); /* #160000 */
+  --bp-palette-red-1000: oklch(0.0487 0.0196 24); /* #020000 */
+  --bp-palette-vermilion-100: oklch(0.8915 0.0499 33.99); /* #fad0c6 */
+  --bp-palette-vermilion-200: oklch(0.7866 0.0995 34.43); /* #f2a28f */
+  --bp-palette-vermilion-300: oklch(0.6811 0.1325 34.59); /* #de785f */
+  --bp-palette-vermilion-400: oklch(0.5756 0.1478 34.07); /* #c05239 */
+  --bp-palette-vermilion-500: oklch(0.4756 0.1503 33.66); /* #9f3119 */
+  --bp-palette-vermilion-600: oklch(0.3771 0.1393 32.96); /* #7b1400 */
+  --bp-palette-vermilion-700: oklch(0.2861 0.1174 29.23); /* #570000 */
+  --bp-palette-vermilion-800: oklch(0.2043 0.0838 29.23); /* #340000 */
+  --bp-palette-vermilion-900: oklch(0.1222 0.0502 29.23); /* #150000 */
+  --bp-palette-vermilion-1000: oklch(0.0483 0.0197 29.35); /* #010000 */
+  --bp-palette-rose-100: oklch(0.8972 0.0491 3.08); /* #fbd0da */
+  --bp-palette-rose-200: oklch(0.7906 0.099 4.85); /* #f1a0b2 */
+  --bp-palette-rose-300: oklch(0.6833 0.1312 4.01); /* #db7490 */
+  --bp-palette-rose-400: oklch(0.5787 0.1501 4.24); /* #bf4d6f */
+  --bp-palette-rose-500: oklch(0.4773 0.1523 4.26); /* #9d2b52 */
+  --bp-palette-rose-600: oklch(0.3783 0.142 4.39); /* #790d39 */
+  --bp-palette-rose-700: oklch(0.2896 0.1164 5.07); /* #550023 */
+  --bp-palette-rose-800: oklch(0.2063 0.0826 7.95); /* #330010 */
+  --bp-palette-rose-900: oklch(0.1236 0.0495 8.93); /* #140004 */
+  --bp-palette-rose-1000: oklch(0.0498 0.02 4.05); /* #020000 */
+  --bp-palette-violet-100: oklch(0.8987 0.0499 327.73); /* #f0d3ef */
+  --bp-palette-violet-200: oklch(0.7888 0.1021 327.82); /* #dea3dc */
+  --bp-palette-violet-300: oklch(0.6826 0.1368 327.3); /* #c579c4 */
+  --bp-palette-violet-400: oklch(0.5787 0.1538 327.08); /* #a854a8 */
+  --bp-palette-violet-500: oklch(0.477 0.1581 327.35); /* #89338a */
+  --bp-palette-violet-600: oklch(0.3799 0.1484 327.6); /* #691869 */
+  --bp-palette-violet-700: oklch(0.2864 0.1273 327.3); /* #48034a */
+  --bp-palette-violet-800: oklch(0.2015 0.0931 327.23); /* #2a002b */
+  --bp-palette-violet-900: oklch(0.1207 0.0562 325.76); /* #0f0011 */
+  --bp-palette-violet-1000: oklch(0.0487 0.0226 326.61); /* #010001 */
+  --bp-palette-indigo-100: oklch(0.8848 0.0514 287.81); /* #d6d4fa */
+  --bp-palette-indigo-200: oklch(0.7791 0.103 288.32); /* #b4adf5 */
+  --bp-palette-indigo-300: oklch(0.6733 0.1375 288.7); /* #9486e5 */
+  --bp-palette-indigo-400: oklch(0.5695 0.1575 288.4); /* #7663cd */
+  --bp-palette-indigo-500: oklch(0.4708 0.1621 288.51); /* #5b44ae */
+  --bp-palette-indigo-600: oklch(0.3749 0.1536 288.31); /* #42298b */
+  --bp-palette-indigo-700: oklch(0.2833 0.1319 288.39); /* #2b1365 */
+  --bp-palette-indigo-800: oklch(0.1967 0.1013 289); /* #17043f */
+  --bp-palette-indigo-900: oklch(0.1176 0.0638 288.53); /* #06001b */
+  --bp-palette-indigo-1000: oklch(0.0483 0.0234 285.48); /* #000002 */
+  --bp-palette-cerulean-100: oklch(0.8515 0.0445 242.89); /* #b6d2ea */
+  --bp-palette-cerulean-200: oklch(0.7479 0.0894 243.91); /* #7bb4e2 */
+  --bp-palette-cerulean-300: oklch(0.6478 0.1209 243.85); /* #4496d2 */
+  --bp-palette-cerulean-400: oklch(0.5502 0.1357 244.01); /* #0078ba */
+  --bp-palette-cerulean-500: oklch(0.4611 0.1307 250.05); /* #005a9d */
+  --bp-palette-cerulean-600: oklch(0.3736 0.1183 253.84); /* #00407d */
+  --bp-palette-cerulean-700: oklch(0.284 0.0994 256.64); /* #002859 */
+  --bp-palette-cerulean-800: oklch(0.199 0.0746 258.28); /* #001437 */
+  --bp-palette-cerulean-900: oklch(0.1199 0.047 259.22); /* #000517 */
+  --bp-palette-cerulean-1000: oklch(0.0474 0.019 259.73); /* #000002 */
+  --bp-palette-turquoise-100: oklch(0.8344 0.0308 185.02); /* #b3d0cb */
+  --bp-palette-turquoise-200: oklch(0.7331 0.0622 182.96); /* #7cb6ac */
+  --bp-palette-turquoise-300: oklch(0.6342 0.0828 183.51); /* #489b90 */
+  --bp-palette-turquoise-400: oklch(0.5384 0.0957 182.77); /* #028073 */
+  --bp-palette-turquoise-500: oklch(0.452 0.0815 180.88); /* #006458 */
+  --bp-palette-turquoise-600: oklch(0.365 0.0666 179.18); /* #004a3f */
+  --bp-palette-turquoise-700: oklch(0.2797 0.0514 178.08); /* #003129 */
+  --bp-palette-turquoise-800: oklch(0.1961 0.036 178.27); /* #001a15 */
+  --bp-palette-turquoise-900: oklch(0.1174 0.022 175.47); /* #000705 */
+  --bp-palette-turquoise-1000: oklch(0.0463 0.0087 175.49); /* #000000 */
+  --bp-palette-forest-100: oklch(0.8273 0.0491 144.69); /* #b4cfb3 */
+  --bp-palette-forest-200: oklch(0.7282 0.0992 144.14); /* #80b87f */
+  --bp-palette-forest-300: oklch(0.6297 0.1318 144.59); /* #519d54 */
+  --bp-palette-forest-400: oklch(0.5346 0.1481 144.58); /* #25822e */
+  --bp-palette-forest-500: oklch(0.4432 0.1461 143.47); /* #00660c */
+  --bp-palette-forest-600: oklch(0.3584 0.122 142.5); /* #004b00 */
+  --bp-palette-forest-700: oklch(0.2737 0.0931 142.5); /* #003200 */
+  --bp-palette-forest-800: oklch(0.1936 0.0659 142.5); /* #001b00 */
+  --bp-palette-forest-900: oklch(0.1155 0.0393 142.5); /* #000800 */
+  --bp-palette-forest-1000: oklch(0.0489 0.0166 142.5); /* #000100 */
+  --bp-palette-lime-100: oklch(0.8388 0.0439 125.92); /* #c3d0b1 */
+  --bp-palette-lime-200: oklch(0.7374 0.0853 124.71); /* #9eb478 */
+  --bp-palette-lime-300: oklch(0.6385 0.1125 125.19); /* #7c9747 */
+  --bp-palette-lime-400: oklch(0.5403 0.1246 124.76); /* #5f7a18 */
+  --bp-palette-lime-500: oklch(0.447 0.1142 126.27); /* #445f00 */
+  --bp-palette-lime-600: oklch(0.3564 0.0929 127.79); /* #2e4500 */
+  --bp-palette-lime-700: oklch(0.2685 0.071 128.76); /* #1b2c00 */
+  --bp-palette-lime-800: oklch(0.1864 0.0496 129.29); /* #0c1700 */
+  --bp-palette-lime-900: oklch(0.1123 0.0308 131.26); /* #020600 */
+  --bp-palette-lime-1000: oklch(0.0465 0.0126 130.51); /* #000000 */
+  --bp-palette-gold-100: oklch(0.8682 0.038 75.21); /* #e3d1b9 */
+  --bp-palette-gold-200: oklch(0.7624 0.074 75.64); /* #cdac7d */
+  --bp-palette-gold-300: oklch(0.661 0.0976 75.36); /* #b58a49 */
+  --bp-palette-gold-400: oklch(0.5593 0.1078 74); /* #99691c */
+  --bp-palette-gold-500: oklch(0.4629 0.1004 69.82); /* #7c4d00 */
+  --bp-palette-gold-600: oklch(0.3685 0.084 63.01); /* #5e3400 */
+  --bp-palette-gold-700: oklch(0.2797 0.0653 60.5); /* #3f2000 */
+  --bp-palette-gold-800: oklch(0.1946 0.0466 57.85); /* #240e00 */
+  --bp-palette-gold-900: oklch(0.1162 0.0301 51.4); /* #0d0300 */
+  --bp-palette-gold-1000: oklch(0.0461 0.0126 47.63); /* #010000 */
+  --bp-palette-sepia-100: oklch(0.8787 0.0433 59.8); /* #edd1bb */
+  --bp-palette-sepia-200: oklch(0.7726 0.0852 57.33); /* #dfa87f */
+  --bp-palette-sepia-300: oklch(0.6685 0.1117 58.05); /* #c8824b */
+  --bp-palette-sepia-400: oklch(0.5676 0.1254 56.74); /* #ad601c */
+  --bp-palette-sepia-500: oklch(0.4684 0.1204 52.05); /* #8d4200 */
+  --bp-palette-sepia-600: oklch(0.3753 0.1067 45.33); /* #6d2a00 */
+  --bp-palette-sepia-700: oklch(0.2816 0.0834 43.04); /* #491700 */
+  --bp-palette-sepia-800: oklch(0.1963 0.0613 40.23); /* #2b0800 */
+  --bp-palette-sepia-900: oklch(0.1163 0.0404 35.43); /* #110100 */
+  --bp-palette-sepia-1000: oklch(0.0493 0.015 41.67); /* #010000 */
+  --bp-palette-grey-100: oklch(0.8951 0.0167 257.04); /* #d6dde8 */
+  --bp-palette-grey-200: oklch(0.781 0.0171 253.57); /* #b0b9c3 */
+  --bp-palette-grey-300: oklch(0.6684 0.0156 250.66); /* #8e969e */
+  --bp-palette-grey-400: oklch(0.5587 0.0161 257.5); /* #6e757e */
+  --bp-palette-grey-500: oklch(0.4561 0.0146 254.8); /* #52585f */
+  --bp-palette-grey-600: oklch(0.3552 0.0145 254.96); /* #373c44 */
+  --bp-palette-grey-700: oklch(0.2629 0.013 251.76); /* #20252b */
+  --bp-palette-grey-800: oklch(0.1677 0.0132 263.8); /* #0c0f15 */
+  --bp-palette-grey-900: oklch(0.1208 0.0123 256.42); /* #04060a */
+  --bp-palette-grey-1000: oklch(0.0801 0.0122 259.5); /* #010204 */
+  --bp-surface-shadow-0: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 0px 10px 0px rgba(0, 0, 0, 0.2); /** Level 0 - border only, inset 0 0 0 1px rgba(white, 20%), 0 0 10px 0 rgba(0,0,0, 20%) */
+  --bp-surface-shadow-1: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 1px 10px 0px rgba(0, 0, 0, 0.2), 0px 1px 10px -1px rgba(0, 0, 0, 0.2); /** Level 1 - subtle elevation with inner highlights */
+  --bp-surface-shadow-2: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 4px 6px -4px rgba(0, 0, 0, 0.5), 0px 10px 30px -5px rgba(0, 0, 0, 0.5); /** Level 2 - standard elevation */
+  --bp-surface-shadow-3: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 20px 25px -5px rgba(0, 0, 0, 0.3), 0px 10px 30px -5px rgba(0, 0, 0, 0.3); /** Level 3 - popover/dialog elevation */
+  --bp-surface-shadow-4: inset 0px 0px 0px 1px rgba(255, 255, 255, 0.2), 0px 25px 60px -12px rgba(0, 0, 0, 0.85); /** Level 4 - maximum elevation */
+  --bp-surface-color-code: oklch(0.0696 0.0248 257.1 / 0.3); /* #0001054d */
+  --bp-surface-background-color-primary-rest: var(--bp-intent-primary-500);
+  --bp-surface-background-color-primary-hover: var(--bp-intent-primary-400);
+  --bp-surface-background-color-primary-active: var(--bp-intent-primary-600);
+  --bp-surface-background-color-success-rest: var(--bp-intent-success-500);
+  --bp-surface-background-color-success-hover: var(--bp-intent-success-400);
+  --bp-surface-background-color-success-active: var(--bp-intent-success-600);
+  --bp-surface-background-color-warning-rest: var(--bp-intent-warning-500);
+  --bp-surface-background-color-warning-hover: var(--bp-intent-warning-400);
+  --bp-surface-background-color-warning-active: var(--bp-intent-warning-600);
+  --bp-surface-background-color-danger-rest: var(--bp-intent-danger-500);
+  --bp-surface-background-color-danger-hover: var(--bp-intent-danger-400);
+  --bp-surface-background-color-danger-active: var(--bp-intent-danger-600);
+}
