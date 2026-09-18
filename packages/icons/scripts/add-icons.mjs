@@ -33,6 +33,7 @@ import { canonicalIconName, ICON_NAME_PATTERN } from "./iconNaming.mjs";
 import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 const ICONS_JSON_PATH = resolve(import.meta.dirname, "../icons.json");
+const ICONS_NEXT_JSON_PATH = resolve(import.meta.dirname, "../icons-next.json");
 
 export { ICON_NAME_PATTERN, canonicalIconName } from "./iconNaming.mjs";
 const logger = createCliLogger("icons:add");
@@ -139,6 +140,115 @@ export async function addIcons() {
 }
 
 /**
+ * @typedef {Object} AddNextIconsResult
+ * @property {string[]} newIconNames
+ * @property {Array<{path: string, iconName: string}>} optimizedFiles
+ */
+
+/**
+ * Scan `resources/icons/next`, normalize the SVGs, and append an `icons-next.json` entry for each
+ * outlined icon that does not have one yet. Mirrors {@link addIcons} for the next-generation set,
+ * which has no icon font and therefore no codepoint or group: an entry is just the name, whether a
+ * filled variant exists, and search tags.
+ *
+ * @returns {Promise<AddNextIconsResult>}
+ */
+export async function addNextIcons() {
+    const outlinedDir = join(iconResourcesDir, "next/outlined");
+    const filledDir = join(iconResourcesDir, "next/filled");
+
+    logger.header("Scanning next-generation icon resources");
+    logger.info(`outlined: ${repoRelative(outlinedDir)}`);
+    logger.info(`filled: ${repoRelative(filledDir)}`);
+    const outlinedIconNames = getIconNamesInDirectory(outlinedDir);
+    const filledIconNames = getIconNamesInDirectory(filledDir);
+
+    logger.header("Normalizing next SVGs (SVGO)");
+
+    /** @type {Array<{path: string, iconName: string}>} */
+    const optimizedFiles = [];
+    for (const dir of [outlinedDir, filledDir]) {
+        for (const iconName of [...getIconNamesInDirectory(dir)].sort()) {
+            const path = join(dir, `${iconName}.svg`);
+            const source = readFileSync(path, "utf8");
+            const optimized = optimizeSvg(source, path);
+            if (optimized !== source) {
+                writeFileSync(path, optimized);
+                optimizedFiles.push({ iconName, path });
+            }
+        }
+    }
+
+    // `readIconsManifestFile` only guarantees "a JSON array"; entry shape is enforced by
+    // `validateIconsNextManifest` in icons:verify, so its legacy return type is re-cast here.
+    const manifest = /** @type {Array<{ name: string }>} */ (
+        /** @type {unknown[]} */ (readIconsManifestFile(ICONS_NEXT_JSON_PATH))
+    );
+    const manifestNames = new Set(manifest.map(entry => entry.name));
+    const newIconNames = [...outlinedIconNames].filter(name => !manifestNames.has(name)).sort();
+
+    if (newIconNames.length > 0) {
+        const invalidNames = newIconNames.filter(
+            name => !ICON_NAME_PATTERN.test(name) || name !== canonicalIconName(name),
+        );
+        if (invalidNames.length > 0) {
+            throw new Error(
+                formatIssues(
+                    "Invalid next icon file names (use lowercase kebab-case basenames; see icons:verify)",
+                    invalidNames.map(name => `"${name}" (canonical: "${canonicalIconName(name)}")`),
+                ),
+            );
+        }
+
+        logger.header("Appending new icons to manifest");
+        logger.success(`Found ${newIconNames.length} new icon(s) not yet in icons-next.json.`);
+        logger.item(newIconNames.join(", "));
+
+        writeFileSync(
+            ICONS_NEXT_JSON_PATH,
+            insertIconsNextEntries(
+                readFileSync(ICONS_NEXT_JSON_PATH, "utf8"),
+                newIconNames.map(name => ({ hasFilled: filledIconNames.has(name), name })),
+            ),
+        );
+    }
+
+    printNextPostRunSummary({
+        filledCount: filledIconNames.size,
+        newIconNames,
+        optimizedFiles,
+        outlinedCount: outlinedIconNames.size,
+    });
+
+    return { newIconNames, optimizedFiles };
+}
+
+/**
+ * Splice new entries into `icons-next.json` as text, in sorted position
+ *
+ * @param {string} contents current file contents
+ * @param {Array<{name: string, hasFilled: boolean}>} entries sorted by name
+ * @returns {string}
+ */
+export function insertIconsNextEntries(contents, entries) {
+    let updated = contents;
+    for (const { name, hasFilled } of entries) {
+        const block = `    {\n        "name": "${name}",\n        "hasFilled": ${hasFilled},\n        "tags": []\n    }`;
+        // Anchor on the first entry that sorts after this one. Names are unique, so this matches once.
+        const successor = [...updated.matchAll(/^ {4}\{\n {8}"name": "([^"]+)",$/gm)].find(
+            match => match[1].localeCompare(name) > 0,
+        );
+        if (successor === undefined) {
+            // Sorts last: append after the final entry, which has no trailing comma.
+            updated = `${updated.replace(/\n\]\n?$/, "")},\n${block}\n]\n`;
+        } else {
+            updated = `${updated.slice(0, successor.index)}${block},\n${updated.slice(successor.index)}`;
+        }
+    }
+    return updated;
+}
+
+/**
  * @param {Set<string>} iconNames16
  * @param {Set<string>} iconNames20
  */
@@ -194,9 +304,33 @@ function printPostRunSummary({ newIconNames, pairedCount, optimizedFiles, addedM
     }
 }
 
+/**
+ * @param {{
+ *   filledCount: number;
+ *   newIconNames: string[];
+ *   optimizedFiles: Array<{ path: string; iconName: string }>;
+ *   outlinedCount: number;
+ * }} args
+ */
+function printNextPostRunSummary({ filledCount, newIconNames, optimizedFiles, outlinedCount }) {
+    logger.header("Summary (next)");
+    logger.info(`Next icons checked: ${outlinedCount} outlined, ${filledCount} filled`);
+    if (optimizedFiles.length === 0) {
+        logger.success("Normalized 0 SVG file(s) (already matched canonical SVGO output).");
+    } else {
+        logger.success(`Normalized ${optimizedFiles.length} SVG file(s).`);
+    }
+    logger.success(`Appended ${newIconNames.length} manifest entr${newIconNames.length === 1 ? "y" : "ies"}.`);
+    if (newIconNames.length > 0) {
+        logger.warn('Next step: manually add "tags" for new entries in packages/icons/icons-next.json.');
+        logger.info(`Added icon names: ${newIconNames.join(", ")}`);
+    }
+}
+
 async function main() {
     try {
         await addIcons();
+        await addNextIcons();
     } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         logger.error(message);
