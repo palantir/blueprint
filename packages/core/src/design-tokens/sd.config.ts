@@ -29,6 +29,8 @@ import type { Config, TransformedToken } from "style-dictionary/types";
  */
 type ColorComponent = number | "none";
 
+const isColorComponent = (value: unknown): value is ColorComponent => typeof value === "number" || value === "none";
+
 /**
  * A DTCG-format color value with a color space, component channels, and optional alpha/hex.
  *
@@ -167,6 +169,19 @@ const THEMES: readonly ThemeConfig[] = [
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
+    {
+        name: "light-next",
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        selector: ".bp-next",
+        destination: "tokens-next.css",
+    },
+    {
+        name: "dark-next",
+        include: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
+        sources: ["src/design-tokens/tokens/next/**/*.bp7.dark.tokens.json"],
+        selector: '.bp-next[data-bp-color-scheme=\"dark\"],\n.bp-next [data-bp-color-scheme=\"dark\"]',
+        destination: "tokens-dark-next.css",
+    },
 ];
 
 // -- Parsers ------------------------------------------------------------------
@@ -189,7 +204,7 @@ const parseStringTuple = (value: unknown): readonly string[] | undefined =>
 
 /** Validates that a value is an array of color channels, each a number or the `"none"` keyword. */
 const parseColorComponentTuple = (value: unknown): readonly ColorComponent[] | undefined =>
-    Array.isArray(value) && value.every(v => typeof v === "number" || v === "none") ? value : undefined;
+    Array.isArray(value) && value.every(isColorComponent) ? value : undefined;
 
 /** Parses a raw DTCG color object, validating colorSpace, components, and optional alpha/hex. */
 const parseDTCGColor = (value: unknown): DTCGColor | undefined => {
