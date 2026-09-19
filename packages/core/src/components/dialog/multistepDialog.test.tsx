@@ -14,24 +14,19 @@
  * limitations under the License.
  */
 
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { mount, type ReactWrapper } from "enzyme";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
-import { AnchorButton } from "../button/buttons";
 
 import { DialogStep } from "./dialogStep";
 import { MultistepDialog } from "./multistepDialog";
 
-// TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
-// need to reference AnchorButton directly
-const findButtonWithText = (wrapper: ReactWrapper, text: string) => wrapper.find(AnchorButton).find(`[text='${text}']`);
-
 describe("<MultistepDialog>", () => {
     it("renders its content correctly", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
@@ -47,157 +42,136 @@ describe("<MultistepDialog>", () => {
             Classes.DIALOG_STEP_TITLE,
             Classes.DIALOG_FOOTER_ACTIONS,
         ].forEach(className => {
-            assert.lengthOf(dialog.find(`.${className}`).hostNodes(), 1, `missing ${className}`);
+            expect(container.querySelectorAll(`.${className}`)).toHaveLength(1);
         });
-        dialog.unmount();
     });
 
     it("initially selected step is first step", () => {
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.lengthOf(steps.at(0).find(`.${Classes.ACTIVE}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 0);
-        dialog.unmount();
+        const stepContainers = container.querySelectorAll(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        expect(stepContainers[0]).toHaveClass(Classes.ACTIVE);
+        expect(stepContainers[1]).not.toHaveClass(Classes.ACTIVE);
     });
 
-    it("clicking next should move to the next step", () => {
-        const dialog = mount(
+    it("clicking next should move to the next step", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.lengthOf(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 1);
-        dialog.unmount();
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        const stepContainers = container.querySelectorAll(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        expect(stepContainers[0]).toHaveClass(Classes.DIALOG_STEP_VIEWED);
+        expect(stepContainers[1]).toHaveClass(Classes.ACTIVE);
     });
 
-    it("clicking back should move to the prev step", () => {
-        const dialog = mount(
+    it("clicking back should move to the prev step", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
 
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.lengthOf(steps.at(0).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 1);
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        const stepContainers = container.querySelectorAll(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        expect(stepContainers[0]).toHaveClass(Classes.DIALOG_STEP_VIEWED);
+        expect(stepContainers[1]).toHaveClass(Classes.ACTIVE);
 
-        findButtonWithText(dialog, "Back").simulate("click");
-        const newSteps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(newSteps.at(0).find(`.${Classes.ACTIVE}`), 1);
-        assert.lengthOf(newSteps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        dialog.unmount();
+        await user.click(screen.getByRole("button", { name: "Back" }));
+        expect(stepContainers[0]).toHaveClass(Classes.ACTIVE);
+        expect(stepContainers[1]).toHaveClass(Classes.DIALOG_STEP_VIEWED);
     });
 
-    it("footer on last step of multiple steps should contain back and submit buttons", () => {
-        const dialog = mount(
+    it("footer on last step of multiple steps should contain back and submit buttons", async () => {
+        const user = userEvent.setup();
+        render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.lengthOf(findButtonWithText(dialog, "Back"), 1);
-        assert.lengthOf(findButtonWithText(dialog, "Next"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Submit"), 1);
-        dialog.unmount();
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        expect(screen.getByRole("button", { name: "Back" })).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "Next" })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
     });
 
     it("footer on first step of multiple steps should contain next button only", () => {
-        const dialog = mount(
+        render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Back"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Next"), 1);
-        assert.lengthOf(findButtonWithText(dialog, "Submit"), 0);
-        dialog.unmount();
+        expect(screen.queryByRole("button", { name: "Back" })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "Submit" })).not.toBeInTheDocument();
     });
 
     it("footer on first step of single step should contain submit button only", () => {
-        const dialog = mount(
+        render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
             </MultistepDialog>,
         );
-
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Back"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Next"), 0);
-        assert.lengthOf(findButtonWithText(dialog, "Submit"), 1);
-        dialog.unmount();
+        expect(screen.queryByRole("button", { name: "Back" })).not.toBeInTheDocument();
+        expect(screen.queryByRole("button", { name: "Next" })).not.toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Submit" })).toBeInTheDocument();
     });
 
-    it("selecting older step should leave already viewed steps active", () => {
-        const dialog = mount(
+    it("selecting older step should leave already viewed steps active", async () => {
+        const user = userEvent.setup();
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        step.at(0).simulate("click");
-        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.lengthOf(steps.at(0).find(`.${Classes.ACTIVE}`), 1);
-        assert.lengthOf(steps.at(1).find(`.${Classes.DIALOG_STEP_VIEWED}`), 1);
-        dialog.unmount();
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        // Click on the first step in the left panel
+        const stepButtons = container.querySelectorAll<HTMLElement>(`.${Classes.DIALOG_STEP}`);
+        await user.click(stepButtons[0]);
+        const stepContainers = container.querySelectorAll(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        expect(stepContainers[0]).toHaveClass(Classes.ACTIVE);
+        expect(stepContainers[1]).toHaveClass(Classes.DIALOG_STEP_VIEWED);
     });
 
     it("pressing enter on older step takes effect", async () => {
         const user = userEvent.setup();
-        const containerElement = document.createElement("div");
-        document.documentElement.appendChild(containerElement);
-        const dialog = mount(
+        const { container } = render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
-            { attachTo: containerElement },
         );
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        (step.at(0).getDOMNode() as HTMLElement).focus();
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        const stepContainers = container.querySelectorAll(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        expect(stepContainers[1]).toHaveClass(Classes.ACTIVE);
+
+        const firstStep = container.querySelectorAll<HTMLElement>(`.${Classes.DIALOG_STEP}`)[0];
+        firstStep.focus();
         await user.keyboard("{Enter}");
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        dialog.unmount();
-        containerElement.remove();
+        expect(stepContainers[0]).toHaveClass(Classes.ACTIVE);
     });
 
     it("gets by without children", () => {
-        assert.doesNotThrow(() => {
-            const dialog = mount(<MultistepDialog isOpen={true} />);
-            dialog.unmount();
-        });
+        expect(() => {
+            render(<MultistepDialog isOpen={true} />);
+        }).not.toThrow();
     });
 
     it("supports non-existent children", () => {
-        assert.doesNotThrow(() => {
-            const dialog = mount(
+        expect(() => {
+            render(
                 <MultistepDialog>
                     {null}
                     <DialogStep id="one" panel={<Panel />} />
@@ -205,34 +179,32 @@ describe("<MultistepDialog>", () => {
                     <DialogStep id="two" panel={<Panel />} />
                 </MultistepDialog>,
             );
-            dialog.unmount();
-        });
+        }).not.toThrow();
     });
 
     it("enables next by default", () => {
-        const dialog = mount(
+        render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.isUndefined(findButtonWithText(dialog, "Next").prop("disabled"));
-        dialog.unmount();
+        expect(screen.getByRole("button", { name: "Next" })).not.toHaveAttribute("aria-disabled", "true");
     });
 
     it("disables next if disabled on nextButtonProps is set to true", () => {
-        const dialog = mount(
+        render(
             <MultistepDialog nextButtonProps={{ disabled: true }} isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.isTrue(findButtonWithText(dialog, "Next").prop("disabled"));
-        dialog.unmount();
+        expect(screen.getByRole("button", { name: "Next" })).toHaveAttribute("aria-disabled", "true");
     });
 
-    it("disables next for second step when disabled on nextButtonProps is set to true", () => {
-        const dialog = mount(
+    it("disables next for second step when disabled on nextButtonProps is set to true", async () => {
+        const user = userEvent.setup();
+        render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} nextButtonProps={{ disabled: true }} />
@@ -240,18 +212,22 @@ describe("<MultistepDialog>", () => {
             </MultistepDialog>,
         );
 
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.isUndefined(findButtonWithText(dialog, "Next").prop("disabled"));
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.isTrue(findButtonWithText(dialog, "Next").prop("disabled"));
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        dialog.unmount();
+        // Step 1: next should be enabled
+        expect(screen.getByRole("button", { name: "Next" })).not.toHaveAttribute("aria-disabled", "true");
+        await user.click(screen.getByRole("button", { name: "Next" }));
+
+        // Step 2: next should be disabled
+        expect(screen.getByRole("button", { name: "Next" })).toHaveAttribute("aria-disabled", "true");
+        await user.click(screen.getByRole("button", { name: "Next" }));
+
+        // Should still be on step 2 (next was disabled), so Back and Next still visible
+        expect(screen.getByRole("button", { name: "Back" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument();
     });
 
-    it("disables back for second step when disabled on backButtonProps is set to true", () => {
-        const dialog = mount(
+    it("disables back for second step when disabled on backButtonProps is set to true", async () => {
+        const user = userEvent.setup();
+        render(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
                 <DialogStep id="two" title="Step 2" panel={<Panel />} backButtonProps={{ disabled: true }} />
@@ -259,13 +235,15 @@ describe("<MultistepDialog>", () => {
             </MultistepDialog>,
         );
 
-        assert.strictEqual(dialog.state("selectedIndex"), 0);
-        findButtonWithText(dialog, "Next").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.isTrue(findButtonWithText(dialog, "Back").prop("disabled"));
-        findButtonWithText(dialog, "Back").simulate("click");
-        assert.strictEqual(dialog.state("selectedIndex"), 1);
-        dialog.unmount();
+        await user.click(screen.getByRole("button", { name: "Next" }));
+
+        // Step 2: back should be disabled
+        expect(screen.getByRole("button", { name: "Back" })).toHaveAttribute("aria-disabled", "true");
+        await user.click(screen.getByRole("button", { name: "Back" }));
+
+        // Should still be on step 2 (back was disabled), so Back and Next still visible
+        expect(screen.getByRole("button", { name: "Back" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Next" })).toBeInTheDocument();
     });
 });
 
