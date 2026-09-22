@@ -17,7 +17,7 @@
 import { waitFor } from "@testing-library/dom";
 
 import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
-import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
+import { createMouseEvent, dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes, Utils } from "../../common";
 import { Menu } from "../menu/menu";
@@ -92,6 +92,25 @@ describe("showContextMenu() + hideContextMenu()", () => {
                     requestAnimationFrame(() => {
                         assertMenuState(true);
                         // important: close menu for the next test
+                        dismissContextMenu();
+                        done();
+                    }),
+            });
+        }));
+
+    it("prevents the native context menu on the backdrop", () =>
+        new Promise<void>(done => {
+            showContextMenu({
+                ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
+                onOpened: () =>
+                    requestAnimationFrame(() => {
+                        const backdrop = document.querySelector<HTMLElement>(`.${Classes.CONTEXT_MENU_BACKDROP}`);
+                        assert.isNotNull(backdrop, "Expected context menu backdrop to be rendered");
+
+                        const contextMenuEvent = createMouseEvent("contextmenu");
+                        backdrop!.dispatchEvent(contextMenuEvent);
+
+                        assert.isTrue(contextMenuEvent.defaultPrevented);
                         dismissContextMenu();
                         done();
                     }),
