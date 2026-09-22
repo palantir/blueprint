@@ -1,0 +1,72 @@
+{
+    "typography": {
+        "family": {
+            "$type": "fontFamily",
+            "body": {
+                "$value": [
+                    "-apple-system",
+                    "BlinkMacSystemFont",
+                    "Segoe UI",
+                    "Roboto",
+                    "Oxygen",
+                    "Ubuntu",
+                    "Cantarell",
+                    "Open Sans",
+                    "Helvetica Neue",
+                    "blueprint-icons-16",
+                    "sans-serif"
+                ]
+            },
+            "heading": {
+                "$description": "Aliases the body family; kept as its own slot so a distinct heading face can be supplied without touching body.",
+                "$value": "{typography.family.body}"
+            },
+            "display": {
+                "$description": "Placeholder display face: aliases the body family for now; swap in a dedicated display stack when one is supplied.",
+                "$value": "{typography.family.body}"
+            },
+            "mono": {
+                "$value": ["monospace"]
+            }
+        },
+        "size": {
+            "$type": "dimension",
+            "$description": "One linear ramp shared by every style, anchored so md is the default UI text size. Styles index into it rather than owning their own scale: body uses 2xs/sm/md/xl, heading 2xl/3xl/4xl/5xl, display 6xl, code 2xs/xs/sm/lg. Code sits a step below body at the same nominal rank because mono faces render with a larger apparent x-height.",
+            "2xs": { "$value": { "value": 9, "unit": "px" } },
+            "xs": { "$value": { "value": 10, "unit": "px" } },
+            "sm": { "$value": { "value": 11, "unit": "px" } },
+            "md": { "$value": { "value": 13, "unit": "px" } },
+            "lg": { "$value": { "value": 14, "unit": "px" } },
+            "xl": { "$value": { "value": 15, "unit": "px" } },
+            "2xl": { "$value": { "value": 16, "unit": "px" } },
+            "3xl": { "$value": { "value": 20, "unit": "px" } },
+            "4xl": { "$value": { "value": 24, "unit": "px" } },
+            "5xl": { "$value": { "value": 28, "unit": "px" } },
+            "6xl": { "$value": { "value": 48, "unit": "px" } }
+        },
+        "weight": {
+            "$type": "fontWeight",
+            "default": { "$value": 400 },
+            "strong": { "$value": 500 }
+        },
+        "line-height": {
+            "$type": "number",
+            "running-factor": {
+                "$value": 1.105,
+                "$description": "Multiplier applied to a style's standard line-height for multi-line running/body text (midpoint of the former per-size running ratios). Components/users stack their own line-height scaling on top."
+            }
+        },
+        "color": {
+            "$type": "color",
+            "$description": "base is the near-black body text (palette grey.1000); intent text references the intent's .600 ramp step.",
+            "base": { "$value": "{palette.grey.1000}" },
+            "intent": {
+                "neutral": { "$value": "{intent.neutral.600}" },
+                "primary": { "$value": "{intent.primary.600}" },
+                "success": { "$value": "{intent.success.600}" },
+                "warning": { "$value": "{intent.warning.600}" },
+                "danger": { "$value": "{intent.danger.600}" }
+            }
+        }
+    }
+}
