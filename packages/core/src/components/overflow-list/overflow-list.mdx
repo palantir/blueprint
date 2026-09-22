@@ -17,6 +17,19 @@ the `observeParents` prop to watch for resizing further up in the DOM tree.
 
 [resizeobserver]: https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
 
+## Usage notes
+
+`visibleItemRenderer` is called once for each rendered item, so its returned element must include a unique `key` prop.
+This key should usually come from a stable item identifier.
+
+```tsx
+// Correct: returned elements have stable keys.
+visibleItemRenderer={item => <Tag key={item.id}>{item.name}</Tag>}
+
+// Incorrect: React will warn that each child in a list needs a unique key.
+visibleItemRenderer={item => <Tag>{item.name}</Tag>}
+```
+
 ## Import
 
 ```ts copy
