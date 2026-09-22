@@ -52,7 +52,7 @@ describe("<Callout>", () => {
     it(`should render the associated default icon when intent="primary"`, () => {
         const { container } = render(<Callout intent={Intent.PRIMARY} />);
 
-        expect(container.querySelector(`[data-icon="circle-info"]`)).to.exist;
+        expect(container.querySelector(`[data-icon="circle-info-filled"]`)).to.exist;
     });
 
     it("should remove intent icon when icon=null", () => {
