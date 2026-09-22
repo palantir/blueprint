@@ -84,7 +84,7 @@
 .#{$ns}-breadcrumbs-collapsed {
   background: rgba($gray3, 0.15);
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   cursor: pointer;
   margin-right: $pt-spacing * 0.5;
   padding: 1px $pt-spacing;

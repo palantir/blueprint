@@ -10,7 +10,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
 .#{$ns}-callout {
   @include running-typography;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   padding: $callout-padding;
   position: relative;
   width: 100%;
