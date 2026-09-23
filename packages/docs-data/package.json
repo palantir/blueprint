@@ -7,6 +7,8 @@
     "scripts": {
         "clean": "rm -rf src/generated",
         "compile": "tsx ./compile-docs-data.mts",
+        "compile:docs": "tsx ./compile-docs-data.mts docs",
+        "compile:npm-data": "tsx ./compile-docs-data.mts npm",
         "test": "vitest run",
         "test:vitest": "vitest",
         "test:vitest:run": "vitest run"
@@ -16,13 +18,34 @@
             "compile": {
                 "cache": false,
                 "inputs": [
-                    "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
+                    "{workspaceRoot}/packages/*/src/**/*.{md,mdx,ts,tsx,scss}",
                     "{workspaceRoot}/packages/*/package.json",
+                    "{workspaceRoot}/config/tsconfig*.json",
                     "{projectRoot}/*.{mjs,mts}",
+                    "{projectRoot}/typescript/**/*.{ts,json}",
                     "{projectRoot}/nav.json"
                 ],
                 "outputs": [
                     "{projectRoot}/src/generated"
+                ]
+            },
+            "compile:docs": {
+                "cache": false,
+                "dependsOn": [
+                    "^compile"
+                ],
+                "outputs": [
+                    "{projectRoot}/src/generated/docs.json",
+                    "{projectRoot}/src/generated/nav-constants.js"
+                ]
+            },
+            "compile:npm-data": {
+                "cache": false,
+                "dependsOn": [
+                    "^compile"
+                ],
+                "outputs": [
+                    "{projectRoot}/src/generated/npm-data.json"
                 ]
             }
         }

@@ -102,6 +102,8 @@ const scssLoaders = [
         loader: fileURLToPath(import.meta.resolve("sass-loader")),
         options: {
             sassOptions: {
+                // Extracted CSS modules are concatenated, so a leading BOM can end up mid-file and corrupt a selector.
+                charset: false,
                 includePaths: sassNodeModulesLoadPaths,
                 // TODO: Remove once we migrate away from @import rule
                 // See: https://github.com/palantir/blueprint/issues/7031

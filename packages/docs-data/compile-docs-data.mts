@@ -5,7 +5,7 @@
  */
 
 import { Documentalist, KssPlugin, MarkdownPlugin, TypescriptPlugin } from "@documentalist/compiler";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
 import packageJson from "package-json";
@@ -33,28 +33,38 @@ const DOCS_PACKAGE = "docs-app";
 /** Run Documentalist on Markdown files in these packages */
 const LIBRARY_AND_DOCS_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
 
-console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
+const TYPESCRIPT_LIBRARY_PACKAGES = LIBRARY_PACKAGES.filter(pkg => pkg !== "icons");
 
-// assume we are running from packages/docs-app
+// Package scripts run from packages/docs-data.
 const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
-try {
-    if (!existsSync(generatedSrcDir)) {
-        mkdirSync(generatedSrcDir);
+if (import.meta.main) {
+    const target = process.argv[2] ?? "all";
+    if (target !== "all" && target !== "docs" && target !== "npm") {
+        throw new Error(`Unknown docs-data target "${target}". Expected all, docs, or npm.`);
     }
-    await generateNpmData();
-    await generateDocumentalistData();
-} catch (err) {
-    // console.error messages get swallowed by lerna but console.log is emitted to terminal.
-    console.error(`[docs-data] ERROR when generating JSON docs data:`);
-    throw new Error(err);
+    await compileDocsData(target);
 }
 
-console.info(`[docs-data] successfully generated docs.json`);
+export async function compileDocsData(target: "all" | "docs" | "npm" = "all"): Promise<void> {
+    try {
+        mkdirSync(generatedSrcDir, { recursive: true });
+        if (target !== "docs") {
+            await generateNpmData();
+        }
+        if (target !== "npm") {
+            await generateDocumentalistData();
+        }
+    } catch (err) {
+        console.error(`[docs-data] ERROR when generating JSON docs data:`);
+        throw err;
+    }
+}
 
 async function generateDocumentalistData(): Promise<void> {
+    console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
     const documentalist = new Documentalist({
         markdown: {
             hooks,
@@ -85,7 +95,8 @@ async function generateDocumentalistData(): Promise<void> {
     const docs = await documentalist.documentGlobs(
         `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.mdx`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
-        `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
+        `../{${TYPESCRIPT_LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
+        "./typescript/icons.ts",
         `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
@@ -106,6 +117,7 @@ async function generateDocumentalistData(): Promise<void> {
         `module.exports.SECTIONS = ${JSON.stringify(SECTIONS)};`,
     ].join("\n");
     writeFileSync(join(generatedSrcDir, "nav-constants.js"), navConstants);
+    console.info(`[docs-data] successfully generated docs.json`);
 }
 
 export function transformDocumentalistData(key: string, value: any): any {
