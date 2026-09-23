@@ -987,8 +987,13 @@ const formatProgressiveEnhancementCss = (
     const tokenMap = buildTokenMap(tokens);
     const fallbackMap = makeFallbackMap(tokens, tokenMap);
 
-    // Filter to only source tokens for output when requested.
-    const outputTokens = onlySourceTokens ? tokens.filter(t => t.isSource) : tokens;
+    // Custom properties inherit computed values, not var() expressions. If a dark child overrides
+    // a palette token, an intent alias declared on its light parent still inherits the light color.
+    // Re-emit included aliases in reference-enabled themes so they resolve against the local palette.
+    // BP6 emits resolved aliases and keeps its existing source-only output.
+    const outputTokens = onlySourceTokens
+        ? tokens.filter(token => token.isSource || (outputReferences && pureAliasVar(token) !== undefined))
+        : tokens;
     const classifications = outputTokens.map(token => classifyToken(token, fallbackMap, outputReferences));
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;

@@ -4,6 +4,47 @@
 
 .bp-next[data-bp-color-scheme="dark"],
 .bp-next [data-bp-color-scheme="dark"] {
+  --bp-emphasis-focus-color: var(--bp-intent-primary-500);
+  --bp-intent-primary-100: var(--bp-palette-blue-100);
+  --bp-intent-primary-200: var(--bp-palette-blue-200);
+  --bp-intent-primary-300: var(--bp-palette-blue-300);
+  --bp-intent-primary-400: var(--bp-palette-blue-400);
+  --bp-intent-primary-500: var(--bp-palette-blue-500);
+  --bp-intent-primary-600: var(--bp-palette-blue-600);
+  --bp-intent-primary-700: var(--bp-palette-blue-700);
+  --bp-intent-primary-800: var(--bp-palette-blue-800);
+  --bp-intent-primary-900: var(--bp-palette-blue-900);
+  --bp-intent-primary-1000: var(--bp-palette-blue-1000);
+  --bp-intent-success-100: var(--bp-palette-green-100);
+  --bp-intent-success-200: var(--bp-palette-green-200);
+  --bp-intent-success-300: var(--bp-palette-green-300);
+  --bp-intent-success-400: var(--bp-palette-green-400);
+  --bp-intent-success-500: var(--bp-palette-green-500);
+  --bp-intent-success-600: var(--bp-palette-green-600);
+  --bp-intent-success-700: var(--bp-palette-green-700);
+  --bp-intent-success-800: var(--bp-palette-green-800);
+  --bp-intent-success-900: var(--bp-palette-green-900);
+  --bp-intent-success-1000: var(--bp-palette-green-1000);
+  --bp-intent-warning-100: var(--bp-palette-orange-100);
+  --bp-intent-warning-200: var(--bp-palette-orange-200);
+  --bp-intent-warning-300: var(--bp-palette-orange-300);
+  --bp-intent-warning-400: var(--bp-palette-orange-400);
+  --bp-intent-warning-500: var(--bp-palette-orange-500);
+  --bp-intent-warning-600: var(--bp-palette-orange-600);
+  --bp-intent-warning-700: var(--bp-palette-orange-700);
+  --bp-intent-warning-800: var(--bp-palette-orange-800);
+  --bp-intent-warning-900: var(--bp-palette-orange-900);
+  --bp-intent-warning-1000: var(--bp-palette-orange-1000);
+  --bp-intent-danger-100: var(--bp-palette-red-100);
+  --bp-intent-danger-200: var(--bp-palette-red-200);
+  --bp-intent-danger-300: var(--bp-palette-red-300);
+  --bp-intent-danger-400: var(--bp-palette-red-400);
+  --bp-intent-danger-500: var(--bp-palette-red-500);
+  --bp-intent-danger-600: var(--bp-palette-red-600);
+  --bp-intent-danger-700: var(--bp-palette-red-700);
+  --bp-intent-danger-800: var(--bp-palette-red-800);
+  --bp-intent-danger-900: var(--bp-palette-red-900);
+  --bp-intent-danger-1000: var(--bp-palette-red-1000);
   --bp-palette-orange-100: oklch(0.8886 0.0492 47.64); /* #f7d1bf */
   --bp-palette-orange-200: oklch(0.7812 0.0987 47.58); /* #eca480 */
   --bp-palette-orange-300: oklch(0.6748 0.1304 46.68); /* #d77b4c */
