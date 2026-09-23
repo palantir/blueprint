@@ -16,7 +16,7 @@
 
 import { useState } from "react";
 
-import { Card, H5, Slider, Switch } from "@blueprintjs/core";
+import { Card, H3, H5, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const SliderExample: React.FC<ExampleProps> = props => {
@@ -73,6 +73,63 @@ export const SliderExample: React.FC<ExampleProps> = props => {
                     vertical={vertical}
                 />
             </Card>
+
+            {/* TODO: Remove this test section before merging PR - temporary demonstration of ensureParentOverflowVisible */}
+            <div style={{ marginTop: "40px" }}>
+                <H3 style={{ marginBottom: "10px" }}>Test: Slider in overflow container</H3>
+                <p style={{ color: "#666", fontSize: "14px", marginBottom: "20px" }}>
+                    Red box has overflow:hidden. Toggle "Ensure parent overflow visible" to test if
+                    labels escape.
+                </p>
+
+                <div
+                    style={{
+                        border: "2px solid red",
+                        height: "100px",
+                        marginBottom: "20px",
+                        overflow: "hidden",
+                        padding: "40px 20px",
+                    }}
+                >
+                    <p style={{ fontSize: "12px", marginBottom: "10px" }}>
+                        Without ensureParentOverflowVisible (label will clip):
+                    </p>
+                    <Slider
+                        handleHtmlProps={{ "aria-label": "overflow test without fix" }}
+                        labelStepSize={2500}
+                        max={10000}
+                        min={0}
+                        onChange={setValue1}
+                        stepSize={100}
+                        value={value1}
+                        vertical={vertical}
+                    />
+                </div>
+
+                <div
+                    style={{
+                        border: "2px solid green",
+                        height: "100px",
+                        overflow: "hidden",
+                        padding: "40px 20px",
+                    }}
+                >
+                    <p style={{ fontSize: "12px", marginBottom: "10px" }}>
+                        With ensureParentOverflowVisible (label escapes):
+                    </p>
+                    <Slider
+                        handleHtmlProps={{ "aria-label": "overflow test with fix" }}
+                        labelStepSize={2500}
+                        max={10000}
+                        min={0}
+                        onChange={setValue1}
+                        stepSize={100}
+                        value={value1}
+                        vertical={vertical}
+                        ensureParentOverflowVisible={true}
+                    />
+                </div>
+            </div>
         </Example>
     );
 };
