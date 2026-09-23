@@ -124,7 +124,7 @@ $toast-intent-colors: (
   );
   align-items: flex-start;
   background-color: $white;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   box-shadow: $pt-toast-box-shadow;
   display: flex;
   margin: $toast-margin 0 0;

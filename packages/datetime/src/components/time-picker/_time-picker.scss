@@ -39,7 +39,7 @@ $timepicker-control-width: $pt-spacing * 8 !default;
 
   .#{$ns}-timepicker-input-row {
     background: $input-background-color;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     box-shadow: $pt-input-box-shadow;
     display: inline-block;
     height: $timepicker-input-row-height;
@@ -63,7 +63,7 @@ $timepicker-control-width: $pt-spacing * 8 !default;
     /* stylelint-enable property-no-vendor-prefix */
     background: transparent;
     border: 0;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     box-shadow: input-transition-shadow($input-shadow-color-focus);
     color: $pt-text-color;
     height: $timepicker-input-row-inner-height;

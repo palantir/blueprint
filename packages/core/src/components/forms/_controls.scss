@@ -262,7 +262,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     @include control-checked-colors(":indeterminate");
 
     .#{$ns}-control-indicator {
-      border-radius: $pt-border-radius;
+      border-radius: var(--bp-surface-border-radius);
     }
 
     input:checked ~ .#{$ns}-control-indicator {
