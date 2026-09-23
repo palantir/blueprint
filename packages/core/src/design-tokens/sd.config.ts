@@ -141,6 +141,7 @@ type ThemeConfig = {
     readonly sources: readonly [string, ...string[]];
     readonly selector: string;
     readonly destination: string;
+    readonly outputReferences: boolean;
 };
 
 /** A resolved build plan pairing a theme name with its Style Dictionary {@link Config}. */
@@ -161,6 +162,7 @@ const THEMES: readonly ThemeConfig[] = [
         sources: ["src/design-tokens/tokens/base/**/*.tokens.json"],
         selector: ":root",
         destination: "tokens.css",
+        outputReferences: false,
     },
     {
         name: "dark",
@@ -168,12 +170,14 @@ const THEMES: readonly ThemeConfig[] = [
         sources: ["src/design-tokens/tokens/themes/dark/**/*.tokens.json"],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
+        outputReferences: false,
     },
     {
         name: "light-next",
         sources: ["src/design-tokens/tokens/next/**/*.bp7.tokens.json"],
         selector: ".bp-next",
         destination: "tokens-next.css",
+        outputReferences: true,
     },
     {
         name: "dark-next",
@@ -181,6 +185,7 @@ const THEMES: readonly ThemeConfig[] = [
         sources: ["src/design-tokens/tokens/next/**/*.bp7.dark.tokens.json"],
         selector: '.bp-next[data-bp-color-scheme=\"dark\"],\n.bp-next [data-bp-color-scheme=\"dark\"]',
         destination: "tokens-dark-next.css",
+        outputReferences: true,
     },
 ];
 
@@ -656,10 +661,9 @@ const makeFallbackMap = (
  * the `var(--bp-...)` reference to emit — before role wrapping — instead of the resolved value.
  * Returns `undefined` otherwise.
  *
- * Emitting the reference rather than a resolved value is load-bearing for theming: a dark build
- * omits the aliased target (it is include-only under `onlySourceTokens`), so the `var()` resolves
- * through the `:root` cascade down to the palette, and the palette is redefined per mode — so the
- * value follows the active theme instead of freezing the light one.
+ * BP7 opts into these runtime dependencies. BP6 must keep resolved aliases so overriding a
+ * palette token does not newly change existing intent tokens. References resolve where they
+ * are declared; inheriting an alias does not re-resolve it in a descendant theme scope.
  */
 const pureAliasVar = (token: TransformedToken): string | undefined => {
     if (hasDeriveExtension(token)) return undefined;
@@ -670,12 +674,16 @@ const pureAliasVar = (token: TransformedToken): string | undefined => {
 
 /**
  * Classifies a token for progressive-enhancement output as one of three cases: a pure alias
- * emits a `var(...)` reference (no `@supports` needed); a derived token gets the hex
+ * emits a `var(...)` reference when enabled (no `@supports` needed); a derived token gets the hex
  * `fallbackValue` plus the relative-color `modernValue`; any other token passes its resolved
  * value through as `fallbackValue`.
  */
-const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
-    const aliasVar = pureAliasVar(token);
+const classifyToken = (
+    token: TransformedToken,
+    fallbackMap: ReadonlyMap<string, string>,
+    outputReferences: boolean,
+): TokenClassification => {
+    const aliasVar = outputReferences ? pureAliasVar(token) : undefined;
     if (aliasVar !== undefined) {
         return {
             name: token.name,
@@ -972,8 +980,7 @@ const formatEnhancedDeclaration = (classification: TokenClassification, token: T
  */
 const formatProgressiveEnhancementCss = (
     tokens: readonly TransformedToken[],
-    selector: string,
-    onlySourceTokens: boolean,
+    { selector, onlySourceTokens, outputReferences }: FormatOptions,
 ): string => {
     // Build the full token map and fallback map from ALL tokens (including non-source)
     // so that reference resolution and derived-color fallback computation works correctly.
@@ -982,7 +989,7 @@ const formatProgressiveEnhancementCss = (
 
     // Filter to only source tokens for output when requested.
     const outputTokens = onlySourceTokens ? tokens.filter(t => t.isSource) : tokens;
-    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap));
+    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap, outputReferences));
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
@@ -1043,10 +1050,8 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
 
     sd.registerFormat({
         name: "bp/css/variables",
-        format: ({ dictionary, options }) => {
-            const { selector, onlySourceTokens } = parseFormatOptions(options);
-            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens);
-        },
+        format: ({ dictionary, options }) =>
+            formatProgressiveEnhancementCss(dictionary.allTokens, parseFormatOptions(options)),
     });
 };
 
@@ -1066,7 +1071,7 @@ const makeThemeConfig = (theme: ThemeConfig): Config => ({
                     destination: theme.destination,
                     format: "bp/css/variables",
                     options: {
-                        outputReferences: true,
+                        outputReferences: theme.outputReferences,
                         selector: theme.selector,
                         onlySourceTokens: theme.include !== undefined,
                     },
