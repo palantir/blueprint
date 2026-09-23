@@ -1,0 +1,429 @@
+{
+    "surface": {
+        "border-width": {
+            "$type": "dimension",
+            "$value": {
+                "value": 1,
+                "unit": "px"
+            }
+        },
+        "border-radius": {
+            "$type": "dimension",
+            "$value": {
+                "value": 4,
+                "unit": "px"
+            }
+        },
+        "shadow": {
+            "0": {
+                "$description": "Level 0 - border only, 0 0 0 1px rgba(black, 15%), 0 0 5px 0 rgba(0,0,0, 2%)",
+                "$value": [
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": 1,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.15
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 5,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.02
+                        }
+                    }
+                ]
+            },
+            "1": {
+                "$description": "Level 1 - subtle elevation",
+                "$value": [
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": 1,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 1,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 3,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 1,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 2,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": -1,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    }
+                ]
+            },
+            "2": {
+                "$description": "Level 2 - standard elevation",
+                "$value": [
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": 1,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 4,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 6,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": -4,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 10,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 15,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": -3,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    }
+                ]
+            },
+            "3": {
+                "$description": "Level 3 - popover/dialog elevation",
+                "$value": [
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": 1,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 20,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 25,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": -5,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 10,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 15,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": -3,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    }
+                ]
+            },
+            "4": {
+                "$description": "Level 4 - maximum elevation",
+                "$value": [
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": 1,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.1
+                        }
+                    },
+                    {
+                        "offsetX": {
+                            "value": 0,
+                            "unit": "px"
+                        },
+                        "offsetY": {
+                            "value": 25,
+                            "unit": "px"
+                        },
+                        "blur": {
+                            "value": 50,
+                            "unit": "px"
+                        },
+                        "spread": {
+                            "value": -12,
+                            "unit": "px"
+                        },
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0, 0, 0],
+                            "alpha": 0.3
+                        }
+                    }
+                ]
+            },
+            "$type": "shadow",
+            "$description": "BP6 light mode elevation shadows (0-4)"
+        },
+        "spacing": {
+            "$type": "dimension",
+            "$value": {
+                "value": 4,
+                "unit": "px"
+            },
+            "$description": "Base spacing unit — components multiply this"
+        },
+        "z-index": {
+            "0": {
+                "$value": 0
+            },
+            "1": {
+                "$value": 10
+            },
+            "2": {
+                "$value": 20
+            },
+            "3": {
+                "$value": 30
+            },
+            "4": {
+                "$value": 40
+            },
+            "$type": "number"
+        },
+        "color-code": {
+            "$type": "color",
+            "$value": {
+                "colorSpace": "oklch",
+                "components": [1, 0, "none"],
+                "hex": "#ffffffb3",
+                "alpha": 0.7
+            }
+        },
+        "background-color": {
+            "$type": "color",
+            "$description": "Light mode base backgrounds: white → light-gray on interaction",
+            "primary": {
+                "rest": {
+                    "$value": "{intent.primary.500}"
+                },
+                "hover": {
+                    "$value": "{intent.primary.600}"
+                },
+                "active": {
+                    "$value": "{intent.primary.700}"
+                }
+            },
+            "success": {
+                "rest": {
+                    "$value": "{intent.success.500}"
+                },
+                "hover": {
+                    "$value": "{intent.success.600}"
+                },
+                "active": {
+                    "$value": "{intent.success.700}"
+                }
+            },
+            "warning": {
+                "rest": {
+                    "$value": "{intent.warning.500}"
+                },
+                "hover": {
+                    "$value": "{intent.warning.600}"
+                },
+                "active": {
+                    "$value": "{intent.warning.700}"
+                }
+            },
+            "danger": {
+                "rest": {
+                    "$value": "{intent.danger.500}"
+                },
+                "hover": {
+                    "$value": "{intent.danger.600}"
+                },
+                "active": {
+                    "$value": "{intent.danger.700}"
+                }
+            }
+        }
+    }
+}
