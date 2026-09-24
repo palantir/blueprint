@@ -4,21 +4,24 @@
 
 import {
     autoUpdate,
+    safePolygon as createSafePolygon,
     type Middleware,
     type Placement,
     useClick,
     useDismiss,
     useFloating,
+    useFloatingNodeId,
     type UseFloatingReturn,
+    useHover,
     useInteractions,
     type UseInteractionsReturn,
 } from "@floating-ui/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type { PopoverNextPositioningStrategy } from "./middlewareTypes";
-import type { PopoverNextAutoUpdateOptions } from "./popoverNextProps";
+import type { PopoverNextAutoUpdateOptions, PopoverNextProps } from "./popoverNextProps";
 
-interface PopoverOptions {
+interface PopoverOptions extends Pick<PopoverNextProps, "hoverCloseDelay" | "hoverOpenDelay" | "safePolygon"> {
     autoUpdateOptions?: PopoverNextAutoUpdateOptions;
     disabled?: boolean;
     isControlled?: boolean;
@@ -38,12 +41,15 @@ interface UsePopoverReturn extends UseFloatingReturn, UseInteractionsReturn {
 export function usePopover({
     autoUpdateOptions,
     disabled = false,
+    hoverCloseDelay,
+    hoverOpenDelay,
     isControlled = false,
     isHoverInteractionKind = false,
     isOpen = false,
     middleware,
     placement,
     positioningStrategy = "absolute",
+    safePolygon,
     onOpenChange,
 }: PopoverOptions = {}): UsePopoverReturn {
     const [isOpenState, setIsOpenState] = useState(isOpen);
@@ -84,8 +90,10 @@ export function usePopover({
         [autoUpdateOptions != null],
     );
 
+    const nodeId = useFloatingNodeId();
     const data = useFloating({
         middleware,
+        nodeId,
         onOpenChange: handleOpenChange,
         open: isOpenState,
         placement,
@@ -94,6 +102,19 @@ export function usePopover({
     });
 
     const { context } = data;
+
+    const { blockPointerEvents, buffer, requireIntent } = typeof safePolygon === "object" ? safePolygon : {};
+    const handleHoverClose = useMemo(
+        () => createSafePolygon({ blockPointerEvents, buffer, requireIntent }),
+        [blockPointerEvents, buffer, requireIntent],
+    );
+    const hover = useHover(context, {
+        delay: { close: hoverCloseDelay, open: hoverOpenDelay },
+        enabled: !disabled && safePolygon != null && safePolygon !== false,
+        handleClose: handleHoverClose,
+        // Reopening on mousemove would undo Escape and dismiss-item clicks while the pointer stays on the target.
+        move: false,
+    });
 
     const click = useClick(context, {
         enabled: !disabled && !isHoverInteractionKind,
@@ -122,7 +143,7 @@ export function usePopover({
         outsidePress: false,
     });
 
-    const interactions = useInteractions([click, dismiss]);
+    const interactions = useInteractions([click, dismiss, hover]);
 
     return useMemo(
         () => ({
