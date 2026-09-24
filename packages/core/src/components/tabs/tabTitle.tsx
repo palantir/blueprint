@@ -46,6 +46,7 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
             children,
             disabled,
             id,
+            intent,
             parentId,
             selected,
             title,
@@ -55,7 +56,9 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
             ...htmlProps
         } = this.props;
 
-        const intent = selected ? Intent.PRIMARY : Intent.NONE;
+        // an explicit intent applies whether or not the tab is selected; without
+        // one, a tab keeps the default colors and turns primary while selected
+        const contentIntent = intent ?? (selected ? Intent.PRIMARY : Intent.NONE);
         const { tabPanelId, tabTitleId } = generateTabIds(parentId, id);
 
         return (
@@ -66,20 +69,20 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
                 aria-disabled={disabled}
                 aria-expanded={selected}
                 aria-selected={selected}
-                className={classNames(Classes.TAB, className)}
+                className={classNames(Classes.TAB, Classes.intentClass(intent), className)}
                 data-tab-id={id}
                 id={tabTitleId}
                 onClick={disabled ? undefined : this.handleClick}
                 role="tab"
                 tabIndex={disabled ? undefined : selected ? 0 : -1}
             >
-                {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
+                {icon != null && <Icon icon={icon} intent={contentIntent} className={Classes.TAB_ICON} />}
                 {title}
                 {children}
                 {tagContent != null && (
                     <Tag
                         minimal={true}
-                        intent={intent}
+                        intent={contentIntent}
                         {...tagProps}
                         className={classNames(Classes.TAB_TAG, tagProps?.className)}
                     >
