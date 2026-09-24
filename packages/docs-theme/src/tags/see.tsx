@@ -22,6 +22,36 @@ import { DocumentationContext } from "../common/context";
 
 export const SeeTag: React.FC<Tag> = ({ value }) => {
     const { renderType } = useContext(DocumentationContext);
-    return <p>See: {renderType(value)}</p>;
+    return <p>See: {renderSeeTagValue(value) ?? renderType(value)}</p>;
 };
 SeeTag.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.SeeTag`;
+
+function renderSeeTagValue(value: string) {
+    const link = getSeeTagLink(value);
+    if (link == null) {
+        return undefined;
+    }
+
+    return <a href={link.href}>{link.text}</a>;
+}
+
+function getSeeTagLink(value: string) {
+    const trimmedValue = value.trim();
+    const linkTagMatch = trimmedValue.match(/^\{@link\s+([^}\s]+)(?:\s+([^}]+))?\}$/);
+    const linkValue = linkTagMatch?.[1] ?? trimmedValue;
+
+    if (!isHttpLink(linkValue)) {
+        return undefined;
+    }
+
+    return { href: linkValue, text: linkTagMatch?.[2] ?? linkValue };
+}
+
+function isHttpLink(value: string) {
+    try {
+        const url = new URL(value);
+        return url.protocol === "http:" || url.protocol === "https:";
+    } catch {
+        return false;
+    }
+}
