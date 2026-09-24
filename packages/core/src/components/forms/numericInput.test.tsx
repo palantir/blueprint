@@ -15,9 +15,9 @@
 
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type PropsWithChildren, useState } from "react";
+import { act, type PropsWithChildren, useState } from "react";
 
-import { afterAll, afterEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Position } from "../../common";
 import * as Errors from "../../common/errors";
@@ -469,6 +469,54 @@ describe("<NumericInput>", () => {
         };
 
         runInteractionSuite("Click '+'", "Click '-'", simulateIncrement, simulateDecrement);
+    });
+
+    describe("Held-button continuous change cleanup", () => {
+        // N.B. read the runtime values of the private NumericInput.CONTINUOUS_CHANGE_* constants
+        const { CONTINUOUS_CHANGE_DELAY, CONTINUOUS_CHANGE_INTERVAL } = NumericInput as unknown as {
+            CONTINUOUS_CHANGE_DELAY: number;
+            CONTINUOUS_CHANGE_INTERVAL: number;
+        };
+
+        beforeEach(() => {
+            vi.useFakeTimers();
+        });
+
+        afterEach(() => {
+            vi.useRealTimers();
+        });
+
+        it("stops invoking onButtonClick after unmount while a step button is held", () => {
+            const onButtonClickSpy = vi.fn();
+            const { unmount } = render(<NumericInput onButtonClick={onButtonClickSpy} />);
+
+            // start continuous change by pressing and holding the increment button
+            fireEvent.mouseDown(screen.getByRole("button", { name: "increment" }));
+
+            // initial click from the mousedown, then the delay elapses, the interval starts,
+            // and its first tick fires
+            expect(onButtonClickSpy).toHaveBeenCalledTimes(1);
+            act(() => {
+                vi.advanceTimersByTime(CONTINUOUS_CHANGE_DELAY + CONTINUOUS_CHANGE_INTERVAL);
+            });
+            expect(onButtonClickSpy).toHaveBeenCalledTimes(2);
+
+            // several more continuous-change intervals fire while the button is held
+            act(() => {
+                vi.advanceTimersByTime(3 * CONTINUOUS_CHANGE_INTERVAL);
+            });
+            const callsWhileHeld = onButtonClickSpy.mock.calls.length;
+            expect(callsWhileHeld).toBeGreaterThanOrEqual(4);
+
+            // unmount while the button is still held, then let several more intervals elapse
+            unmount();
+            act(() => {
+                vi.advanceTimersByTime(5 * CONTINUOUS_CHANGE_INTERVAL);
+            });
+
+            // no further callbacks may fire once the component is gone
+            expect(onButtonClickSpy).toHaveBeenCalledTimes(callsWhileHeld);
+        });
     });
 
     describe("Value bounds", () => {
