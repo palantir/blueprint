@@ -25,12 +25,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 $pt-spacing;
+    margin: 0 var(--bp-surface-spacing);
   }
 }
 
 .docs-prop-description {
-  margin-top: $pt-spacing;
+  margin-top: var(--bp-surface-spacing);
 
   p:last-child {
     margin: 0;
@@ -43,15 +43,15 @@
   }
 
   .#{$ns}-tag {
-    margin-right: $pt-spacing * 2;
-    margin-top: $pt-spacing;
+    margin-right: calc(var(--bp-surface-spacing) * 2);
+    margin-top: var(--bp-surface-spacing);
   }
 }
 
 .docs-prop-name code::after {
   @include pt-icon;
   line-height: small;
-  margin-left: $pt-spacing;
+  margin-left: var(--bp-surface-spacing);
   vertical-align: middle;
 }
 
@@ -83,7 +83,7 @@
   font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;
-  padding: ($pt-spacing * 2) 0;
+  padding: calc(var(--bp-surface-spacing) * 2) 0;
   position: relative;
 
   // optional interface description
@@ -91,7 +91,7 @@
     box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
-    margin-top: $pt-spacing * 2;
+    margin-top: calc(var(--bp-surface-spacing) * 2);
   }
 
   .#{$ns}-dark & {
@@ -110,12 +110,12 @@
 
 .docs-type-alias {
   overflow: auto;
-  padding: ($pt-spacing * 2) ($pt-spacing * 5);
+  padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 5);
 }
 
 .docs-modifiers-table {
   .docs-section & .#{$ns}-html-table {
-    margin-top: $pt-spacing * 2;
+    margin-top: calc(var(--bp-surface-spacing) * 2);
   }
 
   th:first-child,
@@ -131,5 +131,5 @@
 // modifiers table parent
 .docs-modifiers {
   margin-bottom: $heading-margin;
-  margin-top: $heading-margin * 0.5;
+  margin-top: calc($heading-margin * 0.5);
 }

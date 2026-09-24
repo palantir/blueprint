@@ -32,7 +32,7 @@
       content: "";
       display: block;
       height: $pt-icon-size-standard;
-      margin: 0 $pt-spacing;
+      margin: 0 var(--bp-surface-spacing);
       width: $pt-icon-size-standard;
     }
 
@@ -66,7 +66,7 @@
   }
 
   .#{$ns}-icon {
-    margin-right: $pt-spacing;
+    margin-right: var(--bp-surface-spacing);
   }
 }
 
@@ -86,8 +86,8 @@
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
-  margin-right: $pt-spacing * 0.5;
-  padding: 1px $pt-spacing;
+  margin-right: calc(var(--bp-surface-spacing) * 0.5);
+  padding: 1px var(--bp-surface-spacing);
   vertical-align: text-bottom;
 
   &::before {

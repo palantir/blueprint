@@ -35,7 +35,7 @@
 
     // create space between months (selector matches all but first month)
     & + & {
-      margin-left: $pt-spacing * 2;
+      margin-left: calc(var(--bp-surface-spacing) * 2);
     }
   }
 
@@ -124,11 +124,11 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: $pt-spacing;
+  gap: var(--bp-surface-spacing);
 
   > .#{$ns}-divider {
     margin: 0; // margin is already applied via flex gap
-    width: calc(100% - #{$datepicker-padding * 2});
+    width: calc(100% - $datepicker-padding * 2);
   }
 }
 
@@ -140,7 +140,7 @@
     padding-right: $pt-icon-size-standard;
 
     + .#{$ns}-icon {
-      right: $pt-spacing * 0.5;
+      right: calc(var(--bp-surface-spacing) * 0.5);
     }
   }
 }

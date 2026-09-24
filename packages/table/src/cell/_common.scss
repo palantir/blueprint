@@ -4,13 +4,13 @@
 @import "../common/variables";
 
 $cell-border-width: 1px !default;
-$frozen-cell-border-width: $pt-spacing * 0.75 !default;
+$frozen-cell-border-width: calc(var(--bp-surface-spacing) * 0.75) !default;
 
-$cell-padding-horizontal: $pt-spacing * 2 !default;
+$cell-padding-horizontal: calc(var(--bp-surface-spacing) * 2) !default;
 $cell-padding-vertical: 0 !default;
 $cell-padding: $cell-padding-vertical $cell-padding-horizontal !default;
-$cell-height: $pt-spacing * 5 !default;
-$large-cell-height: $pt-spacing * 7.5 !default;
+$cell-height: calc(var(--bp-surface-spacing) * 5) !default;
+$large-cell-height: calc(var(--bp-surface-spacing) * 7.5) !default;
 
 $cell-background-color: $white !default;
 $cell-background-color-opacity: 0.1 !default;

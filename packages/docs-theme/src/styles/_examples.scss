@@ -3,35 +3,35 @@
 
 // Base styles for all examples
 
-$example-frame-spacing: $pt-spacing * 2;
+$example-frame-spacing: calc(var(--bp-surface-spacing) * 2);
 $example-frame-border-radius: $pt-border-radius;
-$example-spacing: $pt-spacing * 10;
+$example-spacing: calc(var(--bp-surface-spacing) * 10);
 
 // full-bleed wrapper for example
 .docs-example-frame {
-  margin-top: $content-padding * 2;
+  margin-top: calc($content-padding * 2);
   position: relative;
   width: 100%;
 }
 
 // options to the right of example in same row
 .docs-example-frame-row {
-  @include pt-flex-container(row, $pt-spacing * 2, $fill: ".docs-example");
+  @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2), $fill: ".docs-example");
 
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
-    @include pt-flex-container(column, $pt-spacing * 2);
-    max-width: $pt-spacing * 75;
+    @include pt-flex-container(column, calc(var(--bp-surface-spacing) * 2));
+    max-width: calc(var(--bp-surface-spacing) * 75);
   }
 }
 
 // options below example in its own row.
 .docs-example-frame-column {
-  @include pt-flex-container(column, $pt-spacing * 2, $fill: ".docs-example");
+  @include pt-flex-container(column, calc(var(--bp-surface-spacing) * 2), $fill: ".docs-example");
 
   // option elements arranged horizontally. group controls into columns.
   .docs-example-options {
-    @include pt-flex-container(row, $pt-spacing * 10);
+    @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 10));
     justify-content: center;
     max-width: unset;
 
@@ -53,14 +53,14 @@ $example-spacing: $pt-spacing * 10;
   max-width: 100%;
   // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
   min-width: 0;
-  padding: $example-spacing * 0.5;
+  padding: calc($example-spacing * 0.5);
 
   .#{$ns}-dark & {
     background: $pt-dark-app-secondary-background-color;
   }
 
   > * {
-    margin: $example-spacing * 0.5;
+    margin: calc($example-spacing * 0.5);
   }
 }
 
@@ -68,11 +68,11 @@ $example-spacing: $pt-spacing * 10;
   background-color: $pt-app-elevated-background-color;
   border-radius: $example-frame-border-radius;
   flex: 0 0 auto;
-  padding: $pt-spacing * 5;
+  padding: calc(var(--bp-surface-spacing) * 5);
   text-align: left;
 
   .#{$ns}-heading:not(:first-child) {
-    margin-top: $pt-spacing * 2;
+    margin-top: calc(var(--bp-surface-spacing) * 2);
   }
 
   .docs-prop-description {
@@ -115,7 +115,7 @@ $example-spacing: $pt-spacing * 10;
 .docs-example-view-source {
   border-radius: $example-frame-border-radius;
   display: block;
-  margin-bottom: $pt-spacing * 10;
+  margin-bottom: calc(var(--bp-surface-spacing) * 10);
   margin-top: $example-frame-spacing;
 
   &.#{$ns}-button {

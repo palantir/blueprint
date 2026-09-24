@@ -121,7 +121,7 @@
 
   > .#{$ns}-divider {
     margin: 0; // margin is already applied via flex gap
-    width: calc(100% - #{$datepicker-padding * 2});
+    width: calc(100% - $datepicker-padding * 2);
   }
 }
 
