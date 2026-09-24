@@ -166,7 +166,7 @@ describe("<PopoverNext> safePolygon", () => {
         render(<PopoverNext {...POPOVER_PROPS} />);
         const target = screen.getByTestId("target");
         await openPopover(target);
-        fireEvent.keyDown(document, { key: "Escape", code: "Escape", keyCode: 27 });
+        fireEvent.keyDown(document, { code: "Escape", key: "Escape", keyCode: 27 });
         await advanceTimers(0);
         expect(screen.queryByTestId("content")).not.toBeInTheDocument();
         fireEvent.mouseMove(target, { clientX: 150, clientY: 110 });
@@ -174,7 +174,7 @@ describe("<PopoverNext> safePolygon", () => {
         expect(screen.queryByTestId("content")).not.toBeInTheDocument();
     });
 
-    it.each(["click", "hover-target"] satisfies PopoverNextProps["interactionKind"][])(
+    it.each(["click", "hover-target"] satisfies Array<PopoverNextProps["interactionKind"]>)(
         "ignores safePolygon for %s interactions",
         async interactionKind => {
             render(<PopoverNext {...POPOVER_PROPS} interactionKind={interactionKind} />);
@@ -222,7 +222,7 @@ describe("<PopoverNext> safePolygon", () => {
             <PopoverNext
                 {...POPOVER_PROPS}
                 renderTarget={undefined}
-                targetProps={{ onClick, onPointerEnter, role: "group", "aria-label": "Wrapped target" }}
+                targetProps={{ "aria-label": "Wrapped target", onClick, onPointerEnter, role: "group" }}
             >
                 <button>Target</button>
             </PopoverNext>,

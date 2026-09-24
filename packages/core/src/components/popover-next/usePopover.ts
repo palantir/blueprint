@@ -4,9 +4,9 @@
 
 import {
     autoUpdate,
+    safePolygon as createSafePolygon,
     type Middleware,
     type Placement,
-    safePolygon as createSafePolygon,
     useClick,
     useDismiss,
     useFloating,
