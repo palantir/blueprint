@@ -193,6 +193,13 @@ export interface ListItemsProps<T> extends Props {
     createNewItemPosition?: "first" | "last";
 
     /**
+     * Whether the `createNewItem` is rendered if the trimmed query string is empty
+     *
+     * @default false
+     */
+    allowCreateNewItemEmptyQuery?: boolean;
+
+    /**
      * Whether the active item should be reset to the first matching item _every
      * time the query changes_ (via prop or by user input).
      *

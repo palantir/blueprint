@@ -24,6 +24,7 @@ import { type Film, FilmSelect, filterFilm, TOP_100_FILMS } from "@blueprintjs/s
 export const SelectExample: React.FC<ExampleProps> = props => {
     const [allowCreate, setAllowCreate] = useState(false);
     const [createFirst, setCreateFirst] = useState(false);
+    const [createOnEmptyQuery, setCreateOnEmptyQuery] = useState(false);
     const [disableItems, setDisableItems] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [fill, setFill] = useState(false);
@@ -144,6 +145,12 @@ export const SelectExample: React.FC<ExampleProps> = props => {
                 label="Create new position: first"
                 onChange={handleBooleanChange(setCreateFirst)}
             />
+            <Switch
+                checked={createOnEmptyQuery}
+                disabled={!allowCreate}
+                label="Create new item with an empty query"
+                onChange={handleBooleanChange(setCreateOnEmptyQuery)}
+            />
             <H5>Appearance props</H5>
             <Switch
                 checked={disabled}
@@ -174,6 +181,7 @@ export const SelectExample: React.FC<ExampleProps> = props => {
             <FilmSelect
                 allowCreate={allowCreate}
                 createNewItemPosition={createFirst ? "first" : "last"}
+                allowCreateNewItemEmptyQuery={createOnEmptyQuery}
                 disabled={disabled}
                 fill={fill}
                 filterable={filterable}
