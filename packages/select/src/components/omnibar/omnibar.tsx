@@ -98,6 +98,7 @@ export class Omnibar<T> extends PureComponent<OmnibarProps<T>> {
             >
                 <div className={classNames(Classes.OMNIBAR, listProps.className)} {...handlers}>
                     <InputGroup
+                        // eslint-disable-next-line jsx-a11y/no-autofocus
                         autoFocus={true}
                         leftIcon={<SearchIcon />}
                         placeholder="Search..."
