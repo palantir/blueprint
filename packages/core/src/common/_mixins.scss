@@ -86,10 +86,10 @@ $pt-dark-intent-text-colors: (
   word-wrap: normal;
 }
 
-@mixin focus-outline($offset: $pt-spacing * 0.5) {
-  outline: $pt-focus-indicator-color solid ($pt-spacing * 0.5);
+@mixin focus-outline($offset: calc(var(--bp-surface-spacing) * 0.5)) {
+  outline: $pt-focus-indicator-color solid calc(var(--bp-surface-spacing) * 0.5);
   outline-offset: $offset;
-  -moz-outline-radius: $pt-spacing * 1.5;
+  -moz-outline-radius: calc(var(--bp-surface-spacing) * 1.5);
 
   .#{$ns}-dark & {
     outline-color: $pt-dark-focus-indicator-color;
@@ -104,6 +104,10 @@ $pt-dark-intent-text-colors: (
 // default line-height is that of base typography, 18px assuming 14px font-size.
 
 @function centered-text($height, $line-height: math.floor($pt-font-size * $pt-line-height)) {
+  @if meta.type-of($height) == "calculation" {
+    @return calc(($height - $line-height) * 0.5);
+  }
+
   @return math.floor(($height - $line-height) * 0.5);
 }
 

@@ -4,7 +4,7 @@
 @use "sass:list";
 @use "sass:map";
 
-$pkg-icon-width: $pt-spacing * 6;
+$pkg-icon-width: calc(var(--bp-surface-spacing) * 6);
 
 $package-colors: (
   "blueprint": (
@@ -100,20 +100,20 @@ $dark-package-colors: (
 }
 
 .docs-heading {
-  font-size: $pt-spacing * 5;
+  font-size: calc(var(--bp-surface-spacing) * 5);
   font-weight: 600;
-  margin-right: $pt-spacing * 2;
+  margin-right: calc(var(--bp-surface-spacing) * 2);
 
   .#{$ns}-tag {
-    margin-left: $pt-spacing;
-    padding-left: $pt-spacing * 2;
+    margin-left: var(--bp-surface-spacing);
+    padding-left: calc(var(--bp-surface-spacing) * 2);
     vertical-align: middle;
   }
 }
 
 .docs-version-list {
-  max-height: $pt-spacing * 50;
-  min-width: $pt-spacing * 30;
+  max-height: calc(var(--bp-surface-spacing) * 50);
+  min-width: calc(var(--bp-surface-spacing) * 30);
   overflow: auto;
 }
 
@@ -124,7 +124,7 @@ $dark-package-colors: (
 
 .docs-nav-package-icon {
   border-radius: 6px;
-  margin-right: $pt-spacing * 2;
+  margin-right: calc(var(--bp-surface-spacing) * 2);
 }
 
 .docs-nav-package {
@@ -189,8 +189,8 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
-    margin-bottom: $pt-spacing;
-    margin-left: $pkg-icon-width + ($pt-spacing * 2);
+    margin-bottom: var(--bp-surface-spacing);
+    margin-left: calc($pkg-icon-width + var(--bp-surface-spacing) * 2);
 
     &:empty {
       display: none;
@@ -201,8 +201,8 @@ $dark-package-colors: (
 .docs-nav-section {
   font-size: small;
   font-weight: 700;
-  margin-bottom: $pt-spacing * 2;
-  margin-top: $pt-spacing * 5;
+  margin-bottom: calc(var(--bp-surface-spacing) * 2);
+  margin-top: calc(var(--bp-surface-spacing) * 5);
   text-transform: uppercase;
 
   // dedent menu under a section title
@@ -217,7 +217,7 @@ $dark-package-colors: (
 
   svg {
     height: 1.2em;
-    padding: 0 $pt-spacing;
+    padding: 0 var(--bp-surface-spacing);
   }
 
   a:not(:hover) {

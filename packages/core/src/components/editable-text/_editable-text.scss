@@ -14,7 +14,7 @@
 
   // input styles on the ::before
   &::before {
-    @include position-all(absolute, $pt-spacing * -0.5);
+    @include position-all(absolute, calc(var(--bp-surface-spacing) * -0.5));
     border-radius: $pt-border-radius;
     content: "";
     transition:
@@ -143,7 +143,7 @@
 .#{$ns}-editable-text-content {
   overflow: hidden;
   // magical number to account for slight increase in input width for cursor bar
-  padding-right: $pt-spacing * 0.5;
+  padding-right: calc(var(--bp-surface-spacing) * 0.5);
   text-overflow: ellipsis;
   // preserve so trailing whitespace is included in scrollWidth
   white-space: pre;

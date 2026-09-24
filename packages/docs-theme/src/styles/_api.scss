@@ -14,26 +14,26 @@
 
   .docs-interface-header {
     flex: 0 0 auto;
-    padding: ($pt-spacing * 2) ($pt-spacing * 5);
+    padding: calc(var(--bp-surface-spacing) * 2) calc(var(--bp-surface-spacing) * 5);
 
     + .docs-section {
       flex-shrink: 0;
-      padding-left: $pt-spacing * 5;
-      padding-right: $pt-spacing * 5;
+      padding-left: calc(var(--bp-surface-spacing) * 5);
+      padding-right: calc(var(--bp-surface-spacing) * 5);
     }
   }
 
   .docs-modifiers-table {
     overflow: auto;
-    padding-bottom: $pt-spacing * 5;
+    padding-bottom: calc(var(--bp-surface-spacing) * 5);
 
     th:first-child,
     td:first-child {
-      padding-left: $pt-spacing * 5;
+      padding-left: calc(var(--bp-surface-spacing) * 5);
     }
 
     td:last-child {
-      padding-right: $pt-spacing * 5;
+      padding-right: calc(var(--bp-surface-spacing) * 5);
     }
   }
 }

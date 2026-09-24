@@ -25,7 +25,7 @@ body {
 }
 
 p {
-  margin-bottom: $pt-spacing * 2;
+  margin-bottom: calc(var(--bp-surface-spacing) * 2);
   margin-top: 0;
 }
 

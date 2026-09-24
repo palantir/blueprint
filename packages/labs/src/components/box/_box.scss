@@ -6,17 +6,17 @@
 
 $sizes: (
   "0": 0,
-  "0\\.5": bp.$pt-spacing * 0.5,
-  "1": bp.$pt-spacing,
-  "2": bp.$pt-spacing * 2,
-  "3": bp.$pt-spacing * 3,
-  "4": bp.$pt-spacing * 4,
-  "5": bp.$pt-spacing * 5,
-  "6": bp.$pt-spacing * 6,
-  "7": bp.$pt-spacing * 7,
-  "8": bp.$pt-spacing * 8,
-  "9": bp.$pt-spacing * 9,
-  "10": bp.$pt-spacing * 10,
+  "0\\.5": calc(var(--bp-surface-spacing) * 0.5),
+  "1": var(--bp-surface-spacing),
+  "2": calc(var(--bp-surface-spacing) * 2),
+  "3": calc(var(--bp-surface-spacing) * 3),
+  "4": calc(var(--bp-surface-spacing) * 4),
+  "5": calc(var(--bp-surface-spacing) * 5),
+  "6": calc(var(--bp-surface-spacing) * 6),
+  "7": calc(var(--bp-surface-spacing) * 7),
+  "8": calc(var(--bp-surface-spacing) * 8),
+  "9": calc(var(--bp-surface-spacing) * 9),
+  "10": calc(var(--bp-surface-spacing) * 10),
 );
 
 $relative-sizes: (

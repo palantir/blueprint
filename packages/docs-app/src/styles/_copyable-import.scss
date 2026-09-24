@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 .docs-copyable-import {
-  margin: ($pt-spacing * 2) 0;
+  margin: calc(var(--bp-surface-spacing) * 2) 0;
   position: relative;
 
   > pre {

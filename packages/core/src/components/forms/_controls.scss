@@ -29,7 +29,7 @@ $dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
-$control-indicator-spacing: $pt-spacing * 2 !default;
+$control-indicator-spacing: calc(var(--bp-surface-spacing) * 2) !default;
 
 @mixin control-checked-colors($selector: ":checked") {
   input#{$selector} ~ .#{$ns}-control-indicator {
@@ -97,13 +97,13 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 }
 
 @mixin indicator-position($size) {
-  $padding: $size + $control-indicator-spacing;
+  $padding: calc($size + $control-indicator-spacing);
 
   &:not(.#{$ns}-align-right) {
     padding-inline-start: $padding;
 
     .#{$ns}-control-indicator {
-      margin-inline-start: -$padding;
+      margin-inline-start: calc($padding * -1);
     }
   }
 
@@ -111,7 +111,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     padding-right: $padding;
 
     .#{$ns}-control-indicator {
-      margin-right: -$padding;
+      margin-right: calc($padding * -1);
     }
   }
 
@@ -121,7 +121,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     padding-left: $padding;
 
     .#{$ns}-control-indicator {
-      margin-left: -$padding;
+      margin-left: calc($padding * -1);
     }
   }
 }
@@ -132,7 +132,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   cursor: pointer;
 
   display: block;
-  margin-bottom: $pt-spacing * 2;
+  margin-bottom: calc(var(--bp-surface-spacing) * 2);
   position: relative;
   text-transform: none;
 
@@ -143,7 +143,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-inline-end: $pt-spacing * 5;
+    margin-inline-end: calc(var(--bp-surface-spacing) * 5);
   }
 
   .#{$ns}-control-input {
@@ -166,7 +166,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     font-size: $control-indicator-size;
     height: 1em;
     margin-inline-end: $control-indicator-spacing;
-    margin-top: $pt-spacing * -0.75;
+    margin-top: calc(var(--bp-surface-spacing) * -0.75);
     position: relative;
     user-select: none;
     vertical-align: middle;
@@ -304,10 +304,10 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
         // Windows High Contrast dark theme
         background: $pt-high-contrast-mode-active-background-color;
         // Subtract border on either end, and then an extra 2px for space between the border
-        height: $control-indicator-size - $pt-spacing;
+        height: calc($control-indicator-size - var(--bp-surface-spacing));
         margin-left: 1px;
         margin-top: 1px;
-        width: $control-indicator-size - $pt-spacing;
+        width: calc($control-indicator-size - var(--bp-surface-spacing));
       }
     }
 
@@ -332,8 +332,8 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
   /* stylelint-disable-next-line order/order */
   $switch-width: 1.75em !default;
-  $switch-indicator-margin: $pt-spacing * 0.5 !default;
-  $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
+  $switch-indicator-margin: calc(var(--bp-surface-spacing) * 0.5) !default;
+  $switch-indicator-size: calc(1em - $switch-indicator-margin * 2);
 
   $switch-indicator-child-height: 1em;
   $switch-indicator-child-outside-margin: 0.5em;
@@ -472,7 +472,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
           // Windows High Contrast dark theme
           border: 1px solid $pt-high-contrast-mode-border-color;
           // Because we're using a border for the outline, we need to decrease the top margin
-          margin-top: $switch-indicator-margin - 1px;
+          margin-top: calc($switch-indicator-margin - 1px);
         }
       }
 
