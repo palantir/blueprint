@@ -1,0 +1,8 @@
+<RadioGroup
+    selectedValue={selectedValue}
+    onChange={event => setSelectedValue(event.currentTarget.value)}
+>
+    <RadioCard disabled={true} label="Soup" value="soup" />
+    <RadioCard disabled={true} label="Salad" value="salad" />
+    <RadioCard disabled={true} label="Sandwich" value="sandwich" />
+</RadioGroup>
