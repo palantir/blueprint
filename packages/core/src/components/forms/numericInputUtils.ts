@@ -168,10 +168,18 @@ function convertFullWidthNumbersToAscii(value: string) {
 }
 
 /**
- * Convert full-width (Japanese) numbers to ASCII, and strip all characters that are not valid floating-point numeric characters
+ * Convert the Unicode minus sign '−' (U+2212), which some locales like "sv-SE" use for negative numbers, to ASCII '-'
+ */
+function convertMinusSignToAscii(value: string) {
+    return value.replace(/\u2212/g, "-");
+}
+
+/**
+ * Convert full-width (Japanese) numbers and the Unicode minus sign to ASCII, and strip all characters that are not
+ * valid floating-point numeric characters
  */
 export function sanitizeNumericInput(value: string, locale: string | undefined) {
-    const valueChars = convertFullWidthNumbersToAscii(value).split("");
+    const valueChars = convertMinusSignToAscii(convertFullWidthNumbersToAscii(value)).split("");
     const sanitizedValueChars = valueChars.filter(valueChar => isFloatingPointNumericCharacter(valueChar, locale));
 
     return sanitizedValueChars.join("");
