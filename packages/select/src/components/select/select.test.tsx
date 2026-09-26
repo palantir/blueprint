@@ -249,6 +249,29 @@ describe("<Select>", () => {
         expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
+    it("does not close the popover when selecting via Enter on a MenuItem with shouldDismissPopover={false}", () => {
+        const itemRenderer = (film: Film, { handleClick, handleFocus, modifiers }: any) => {
+            return (
+                <MenuItem
+                    active={modifiers.active}
+                    onClick={handleClick}
+                    onFocus={handleFocus}
+                    text={`${film.rank}. ${film.title}`}
+                    shouldDismissPopover={false}
+                />
+            );
+        };
+        const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
+
+        findTargetButton(wrapper).simulate("click");
+        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+
+        // simulate keyboard selection: Enter on the input element
+        wrapper.find("input").simulate("keydown", { key: "Enter" });
+        wrapper.find("input").simulate("keyup", { key: "Enter" });
+        expect(wrapper.find(Popover).prop("isOpen")).toBe(true);
+    });
+
     function select(props: Partial<SelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <Select<Film> {...defaultProps} {...handlers} {...props}>
