@@ -99,10 +99,6 @@ interface MultistepDialogState {
     selectedIndex: number;
 }
 
-const PADDING_BOTTOM = 0;
-
-const MIN_WIDTH = 800;
-
 /**
  * Multi-step dialog component.
  *
@@ -130,13 +126,13 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
                 isCloseButtonShown={isCloseButtonShown}
                 {...otherProps}
                 className={classNames(
+                    Classes.MULTISTEP_DIALOG,
                     {
                         [Classes.MULTISTEP_DIALOG_NAV_RIGHT]: navigationPosition === "right",
                         [Classes.MULTISTEP_DIALOG_NAV_TOP]: navigationPosition === "top",
                     },
                     className,
                 )}
-                style={this.getDialogStyle()}
             >
                 <div className={Classes.MULTISTEP_DIALOG_PANELS}>
                     {this.renderLeftPanel()}
@@ -154,10 +150,6 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
         ) {
             this.setState(this.getInitialIndexFromProps(this.props));
         }
-    }
-
-    private getDialogStyle() {
-        return { minWidth: MIN_WIDTH, paddingBottom: PADDING_BOTTOM, ...this.props.style };
     }
 
     private renderLeftPanel() {
