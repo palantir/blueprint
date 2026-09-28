@@ -5,34 +5,46 @@
 import { PureArgsTable } from "@storybook/addon-docs/blocks";
 import type { ArgTypes } from "@storybook/react-vite";
 import React, { useMemo } from "react";
-import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 
-import { getTokensByTheme, TOKEN_CONFIG, type TokenControlValue, type TokenValues } from "./tokens";
+import {
+    toCssValue,
+    TOKEN_CONFIG,
+    TOKEN_DEFAULTS_EVENT,
+    TOKEN_DEFAULTS_REQUEST_EVENT,
+    TOKEN_NAMES,
+    type TokenValues,
+} from "./tokens";
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const theme = globals.theme === "dark" ? "dark" : "light";
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
+
+    const [tokenDefaults, setTokenDefaults] = React.useState<Partial<TokenValues>>();
+    const emit = useChannel({ [TOKEN_DEFAULTS_EVENT]: setTokenDefaults });
+    // The preview publishes defaults when it loads; ask again in case it loaded before this panel mounted.
+    React.useEffect(() => emit(TOKEN_DEFAULTS_REQUEST_EVENT), [emit]);
+
     const tokenValues = useMemo(
         () =>
             Object.fromEntries(
-                Array.from(TOKEN_CONFIG, ([name, editor]) => [
-                    name,
-                    editor.toControlValue(tokenOverrides?.[name] ?? getTokensByTheme(theme, name)),
-                ]),
+                TOKEN_NAMES.map(name => {
+                    const value = tokenOverrides?.[name] ?? tokenDefaults?.[name];
+                    return [name, value === undefined ? undefined : TOKEN_CONFIG[name].toControlValue(value)];
+                }),
             ),
-        [theme, tokenOverrides],
+        [tokenDefaults, tokenOverrides],
     );
 
     const handleUpdateArgs = React.useCallback(
-        (updates: Record<string, TokenControlValue | undefined>) => {
+        (updates: Record<string, unknown>) => {
             const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            for (const [name, editor] of TOKEN_CONFIG) {
+            for (const name of TOKEN_NAMES) {
                 const value = updates[name];
                 if (value !== undefined) {
-                    overrides[name] = editor.toCssValue(value);
+                    overrides[name] = toCssValue(name, value);
                 }
             }
             updateGlobals({ tokenOverrides: overrides });
@@ -42,24 +54,24 @@ export function TokensPanel() {
 
     const rows = useMemo(
         () =>
-            Array.from(TOKEN_CONFIG).reduce<ArgTypes>((acc, [key, editor]) => {
-                acc[key] = {
-                    control: editor.control,
-                    name: key,
+            TOKEN_NAMES.reduce<ArgTypes>((acc, name) => {
+                acc[name] = {
+                    control: TOKEN_CONFIG[name].control,
+                    name,
                     table: {
-                        defaultValue: { summary: getTokensByTheme(theme, key) },
+                        defaultValue: { summary: tokenDefaults?.[name] },
                     },
                 };
                 return acc;
             }, {}),
-        [theme],
+        [tokenDefaults],
     );
 
     return (
         <PureArgsTable
             args={tokenValues}
             inAddonPanel={true}
-            isLoading={!isStoryPrepared}
+            isLoading={!isStoryPrepared || tokenDefaults === undefined}
             rows={rows}
             updateArgs={handleUpdateArgs}
         />
