@@ -949,6 +949,10 @@ const makeThemeConfig = (theme: ThemeConfig): Config => ({
                         onlySourceTokens: theme.include !== undefined,
                     },
                 },
+                {
+                    destination: `tokens-${theme.name}.json`,
+                    format: "json/flat",
+                },
             ],
         },
     },
