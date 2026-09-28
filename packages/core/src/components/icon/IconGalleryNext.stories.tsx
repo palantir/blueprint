@@ -6,7 +6,7 @@ import { type Meta, type StoryObj } from "@storybook/react-vite";
 import { StoryLabel } from "@storybook-common";
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook-only; mirrors icons package generator casing
 import { pascalCase } from "change-case";
-import React, { type ComponentType, type ReactElement, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
 import * as NextIcons from "@blueprintjs/icons/next";
 import { nextIconManifest, type NextIconManifestEntry } from "@blueprintjs/icons/next";
@@ -67,7 +67,7 @@ export const Compare: Story = {
 // -----------------------------------------------------------------------------
 // Layout
 
-function galleryLayoutDecorator(Story: ComponentType) {
+function galleryLayoutDecorator(Story: React.ComponentType) {
     return (
         <div style={{ maxWidth: GALLERY_MAX_WIDTH }}>
             <Story />
@@ -136,9 +136,9 @@ function CompareCard({ iconName, size }: { iconName: string; size: number }) {
 // -----------------------------------------------------------------------------
 // Icon rendering
 
-function renderNextIcon(iconName: string, pixelSize: number, variant: "outlined" | "filled"): ReactElement {
+function renderNextIcon(iconName: string, pixelSize: number, variant: "outlined" | "filled"): React.ReactElement {
     const exportName = variant === "outlined" ? `${pascalCase(iconName)}Icon` : `${pascalCase(iconName)}FilledIcon`;
-    const IconComponent = (NextIcons as unknown as Record<string, ComponentType<{ size?: number }>>)[exportName];
+    const IconComponent = (NextIcons as unknown as Record<string, React.ComponentType<{ size?: number }>>)[exportName];
     if (IconComponent == null) {
         return <span title={`${exportName} not found`} />;
     }

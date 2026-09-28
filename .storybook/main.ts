@@ -6,7 +6,6 @@ import type { StorybookConfig } from "@storybook/react-vite";
 import react from "@vitejs/plugin-react";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { mergeConfig } from "vite";
 
 const rootDir = resolve(dirname(fileURLToPath(import.meta.url)), "..");

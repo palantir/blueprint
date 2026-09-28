@@ -6,7 +6,6 @@ import { type Meta, type StoryObj } from "@storybook/react-vite";
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook-only; mirrors icons package generator casing
 import { pascalCase } from "change-case";
 import classNames from "classnames";
-import React, { type ComponentType, type ReactElement } from "react";
 
 import type { IconName } from "@blueprintjs/icons";
 import * as BlueprintIcons from "@blueprintjs/icons";
@@ -83,7 +82,7 @@ export const CSSIconFont: Story = {
 // -----------------------------------------------------------------------------
 // Layout (Storybook decorator + gallery shell)
 
-function galleryLayoutDecorator(Story: ComponentType) {
+function galleryLayoutDecorator(Story: React.ComponentType) {
     return (
         <div style={{ maxWidth: GALLERY_MAX_WIDTH }}>
             <Story />
@@ -91,7 +90,7 @@ function galleryLayoutDecorator(Story: ComponentType) {
     );
 }
 
-type GalleryRenderIcon = (iconName: IconName, pixelSize: number) => ReactElement;
+type GalleryRenderIcon = (iconName: IconName, pixelSize: number) => React.ReactElement;
 
 function IconGallery({ renderIcon }: { renderIcon: GalleryRenderIcon }) {
     return (
@@ -137,7 +136,7 @@ function renderCssFontGalleryIcon(iconName: IconName, pixelSize: number) {
 
 function StaticIcon({ iconName, size }: { iconName: IconName; size: number }) {
     const name = pascalCase(iconName);
-    const IconComponent = (BlueprintIcons as unknown as Record<string, ComponentType<{ size?: number }>>)[name];
+    const IconComponent = (BlueprintIcons as unknown as Record<string, React.ComponentType<{ size?: number }>>)[name];
     if (IconComponent == null) {
         return <span />;
     }

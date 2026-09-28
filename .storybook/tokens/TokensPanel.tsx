@@ -2,9 +2,11 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+/** @jsxRuntime automatic */
+
 import { PureArgsTable } from "@storybook/addon-docs/blocks";
 import type { ArgTypes } from "@storybook/react-vite";
-import React, { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 
 import {
@@ -22,10 +24,10 @@ export function TokensPanel() {
     const isStoryPrepared = useStoryPrepared(storyId);
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
 
-    const [tokenDefaults, setTokenDefaults] = React.useState<Partial<TokenValues>>();
+    const [tokenDefaults, setTokenDefaults] = useState<Partial<TokenValues>>();
     const emit = useChannel({ [TOKEN_DEFAULTS_EVENT]: setTokenDefaults });
     // The preview publishes defaults when it loads; ask again in case it loaded before this panel mounted.
-    React.useEffect(() => emit(TOKEN_DEFAULTS_REQUEST_EVENT), [emit]);
+    useEffect(() => emit(TOKEN_DEFAULTS_REQUEST_EVENT), [emit]);
 
     const tokenValues = useMemo(
         () =>
@@ -38,7 +40,7 @@ export function TokensPanel() {
         [tokenDefaults, tokenOverrides],
     );
 
-    const handleUpdateArgs = React.useCallback(
+    const handleUpdateArgs = useCallback(
         (updates: Record<string, unknown>) => {
             const overrides: Partial<TokenValues> = { ...tokenOverrides };
             for (const name of TOKEN_NAMES) {

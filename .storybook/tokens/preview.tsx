@@ -3,7 +3,7 @@
  */
 
 import type { Decorator } from "@storybook/react-vite";
-import React from "react";
+import { useEffect } from "react";
 import { addons } from "storybook/preview-api";
 
 import { TOKEN_DEFAULTS_EVENT, TOKEN_DEFAULTS_REQUEST_EVENT, TOKEN_NAMES, type TokenValues } from "./tokens";
@@ -20,9 +20,9 @@ export const withTokens: Decorator = (Story, context) => (
 );
 
 function TokenPreview({ children, tokenOverrides }: TokenPreviewProps) {
-    React.useEffect(publishTokenDefaults, []);
+    useEffect(publishTokenDefaults, []);
 
-    React.useEffect(
+    useEffect(
         function applyTokenOverrides() {
             const style = document.body.style;
             const previousValues = Object.keys(tokenOverrides).map(name => ({

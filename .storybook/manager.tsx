@@ -2,7 +2,8 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import React from "react";
+/** @jsxRuntime automatic */
+
 import { AddonPanel } from "storybook/internal/components";
 import { addons, types } from "storybook/manager-api";
 
