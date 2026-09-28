@@ -73,11 +73,11 @@ body {
   height: 100%;
   order: 1;
   overflow-y: auto;
-  padding: $pt-spacing * 4;
+  padding: calc(var(--bp-surface-spacing) * 4);
   z-index: 3;
 
   h4.#{$ns}-heading {
-    margin-top: $pt-spacing * 5;
+    margin-top: calc(var(--bp-surface-spacing) * 5);
 
     &:first-child {
       margin-top: 0;
@@ -86,21 +86,21 @@ body {
 
   h6.#{$ns}-heading {
     color: $pt-text-color-muted;
-    padding: ($pt-spacing * 2) 0 ($pt-spacing * 0.75);
+    padding: calc(var(--bp-surface-spacing) * 2) 0 calc(var(--bp-surface-spacing) * 0.75);
   }
 
   .#{$ns}-divider {
-    margin: ($pt-spacing * 4) $pt-spacing;
+    margin: calc(var(--bp-surface-spacing) * 4) var(--bp-surface-spacing);
   }
 
   .#{$ns}-label,
   .#{$ns}-control {
-    padding-left: $pt-spacing * 2;
+    padding-left: calc(var(--bp-surface-spacing) * 2);
   }
 
   .tbl-select-label {
-    margin-bottom: $pt-spacing * 2;
-    margin-top: $pt-spacing * -0.75;
+    margin-bottom: calc(var(--bp-surface-spacing) * 2);
+    margin-top: calc(var(--bp-surface-spacing) * -0.75);
 
     .#{$ns}-html-select {
       float: right;
@@ -112,7 +112,7 @@ body {
   }
 
   > .#{$ns}-button + .#{$ns}-button {
-    margin-top: $pt-spacing * 0.75;
+    margin-top: calc(var(--bp-surface-spacing) * 0.75);
   }
 
   .#{$ns}-dark & {
@@ -127,7 +127,7 @@ body {
 }
 
 .sidebar-indented-group {
-  margin-left: $pt-spacing * 2;
+  margin-left: calc(var(--bp-surface-spacing) * 2);
 }
 
 .tbl-zebra-stripe {
@@ -155,7 +155,7 @@ body {
 
 .tbl-custom-column-header {
   line-height: 1;
-  padding: ($pt-spacing * 2) 0;
+  padding: calc(var(--bp-surface-spacing) * 2) 0;
 }
 
 .tbl-custom-column-header-name {
@@ -166,7 +166,7 @@ body {
   color: $gray1;
   font-family: "Courier", monospace;
   font-size: 12px;
-  margin-top: $pt-spacing * 0.75;
+  margin-top: calc(var(--bp-surface-spacing) * 0.75);
 
   .#{$ns}-dark & {
     color: $gray5;

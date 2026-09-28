@@ -5,13 +5,13 @@
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/core/src/common/mixins";
 
-$container-width: $pt-spacing * 275;
-$container-padding: $pt-spacing;
+$container-width: calc(var(--bp-surface-spacing) * 275);
+$container-padding: var(--bp-surface-spacing);
 
-$sidebar-width: $pt-spacing * 75;
-$sidebar-padding: $pt-spacing * 4;
+$sidebar-width: calc(var(--bp-surface-spacing) * 75);
+$sidebar-padding: calc(var(--bp-surface-spacing) * 4);
 $sidebar-background-color: $white;
 $dark-sidebar-background-color: $dark-gray3;
 
-$content-width: $container-width - $sidebar-width;
-$content-padding: $pt-spacing * 5;
+$content-width: calc($container-width - $sidebar-width);
+$content-padding: calc(var(--bp-surface-spacing) * 5);

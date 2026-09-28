@@ -6,13 +6,13 @@
 @import "@blueprintjs/core/src/components/icon/icon-mixins";
 @import "../../common";
 
-$timepicker-input-row-height: $pt-spacing * 7.5 !default;
+$timepicker-input-row-height: calc(var(--bp-surface-spacing) * 7.5) !default;
 // subtract two because of inset shadow
-$timepicker-input-row-inner-height: $timepicker-input-row-height - 2 !default;
+$timepicker-input-row-inner-height: calc($timepicker-input-row-height - 2px) !default;
 // helps focus states of inputs line up correctly
 $timepicker-row-padding: 0 1px !default;
-$timepicker-divider-width: $pt-spacing * 2 !default;
-$timepicker-control-width: $pt-spacing * 8 !default;
+$timepicker-divider-width: calc(var(--bp-surface-spacing) * 2) !default;
+$timepicker-control-width: calc(var(--bp-surface-spacing) * 8) !default;
 
 .#{$ns}-timepicker {
   white-space: nowrap;
@@ -24,7 +24,7 @@ $timepicker-control-width: $pt-spacing * 8 !default;
   .#{$ns}-timepicker-arrow-button {
     @include pt-icon-colors;
     display: inline-block;
-    padding: $pt-spacing 0;
+    padding: var(--bp-surface-spacing) 0;
     text-align: center;
     width: $timepicker-control-width;
 
@@ -99,7 +99,7 @@ $timepicker-control-width: $pt-spacing * 8 !default;
   }
 
   .#{$ns}-timepicker-ampm-select {
-    margin-left: $pt-spacing;
+    margin-left: var(--bp-surface-spacing);
   }
 
   &.#{$ns}-disabled {

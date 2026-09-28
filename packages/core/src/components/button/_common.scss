@@ -12,11 +12,11 @@
 // the major version change.
 
 $button-border-width: 1px !default;
-$button-padding: $pt-spacing ($pt-spacing * 2) !default;
-$button-padding-small: 0 ($pt-spacing * 2) !default;
-$button-padding-large: $pt-spacing ($pt-spacing * 4) !default;
-$button-icon-spacing: $pt-spacing * 2 !default;
-$button-icon-spacing-large: $pt-spacing * 2 !default;
+$button-padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2) !default;
+$button-padding-small: 0 calc(var(--bp-surface-spacing) * 2) !default;
+$button-padding-large: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 4) !default;
+$button-icon-spacing: calc(var(--bp-surface-spacing) * 2) !default;
+$button-icon-spacing-large: calc(var(--bp-surface-spacing) * 2) !default;
 
 /*
 CSS `border` property issues:

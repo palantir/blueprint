@@ -6,8 +6,8 @@
 @import "../../common/react-transition";
 @import "../../common/variables";
 
-$drawer-margin: ($pt-spacing * 7.5) 0 !default;
-$drawer-padding: $pt-spacing * 5 !default;
+$drawer-margin: calc(var(--bp-surface-spacing) * 7.5) 0 !default;
+$drawer-padding: calc(var(--bp-surface-spacing) * 5) !default;
 
 $drawer-default-size: 50%;
 
@@ -188,8 +188,8 @@ $dark-drawer-background-color: $dark-gray3 !default;
   box-shadow: 0 1px 0 $pt-divider-black;
   display: flex;
   flex: 0 0 auto;
-  min-height: $pt-icon-size-large + $drawer-padding;
-  padding: $drawer-padding * 0.25;
+  min-height: calc($pt-icon-size-large + $drawer-padding);
+  padding: calc($drawer-padding * 0.25);
   padding-left: $drawer-padding;
   position: relative;
 
@@ -201,7 +201,7 @@ $dark-drawer-background-color: $dark-gray3 !default;
   .#{$ns}-icon {
     color: $pt-icon-color;
     flex: 0 0 auto;
-    margin-right: $drawer-padding * 0.5;
+    margin-right: calc($drawer-padding * 0.5);
   }
 
   .#{$ns}-heading {
@@ -227,14 +227,14 @@ $dark-drawer-background-color: $dark-gray3 !default;
 
 .#{$ns}-drawer-body {
   flex: 1 1 auto;
-  line-height: $pt-spacing * 4.5;
+  line-height: calc(var(--bp-surface-spacing) * 4.5);
   overflow: auto;
 }
 
 .#{$ns}-drawer-footer {
   box-shadow: inset 0 1px 0 $pt-divider-black;
   flex: 0 0 auto;
-  padding: $drawer-padding * 0.5 $drawer-padding;
+  padding: calc($drawer-padding * 0.5) $drawer-padding;
   position: relative;
 
   .#{$ns}-dark & {

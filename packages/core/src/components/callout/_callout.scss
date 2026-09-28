@@ -4,9 +4,9 @@
 @use "sass:map";
 @import "../../common/variables-extended";
 
-$callout-padding: $pt-spacing * 4;
-$callout-header-margin-top: $pt-spacing * 0.5;
-$callout-padding-compact: $pt-spacing * 2;
+$callout-padding: calc(var(--bp-surface-spacing) * 4);
+$callout-header-margin-top: calc(var(--bp-surface-spacing) * 0.5);
+$callout-padding-compact: calc(var(--bp-surface-spacing) * 2);
 
 .#{$ns}-callout {
   @include running-typography;
@@ -21,14 +21,14 @@ $callout-padding-compact: $pt-spacing * 2;
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
+    padding-left: calc($callout-padding + $pt-icon-size-standard + var(--bp-surface-spacing) * 2);
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
       color: $pt-icon-color;
       left: $callout-padding;
       position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
+      top: calc($callout-padding + $callout-header-margin-top);
     }
   }
 
@@ -38,13 +38,13 @@ $callout-padding-compact: $pt-spacing * 2;
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
+    padding-left: calc($callout-padding + $pt-icon-size-standard + var(--bp-surface-spacing) * 2);
 
     > .#{$ns}-icon:first-child {
       color: $pt-icon-color;
       left: $callout-padding;
       position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
+      top: calc($callout-padding + $callout-header-margin-top);
     }
   }
 
@@ -56,7 +56,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
   &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
-      margin-bottom: $pt-spacing;
+      margin-bottom: var(--bp-surface-spacing);
     }
   }
 
@@ -64,11 +64,13 @@ $callout-padding-compact: $pt-spacing * 2;
     padding: $callout-padding-compact;
 
     &.#{$ns}-callout-icon {
-      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-spacing * 2);
+      padding-left: calc(
+        $callout-padding-compact + $pt-icon-size-standard + var(--bp-surface-spacing) * 2
+      );
 
       > .#{$ns}-icon:first-child {
         left: $callout-padding-compact;
-        top: $callout-padding-compact + $callout-header-margin-top;
+        top: calc($callout-padding-compact + $callout-header-margin-top);
       }
     }
   }
@@ -137,6 +139,6 @@ $callout-padding-compact: $pt-spacing * 2;
   }
 
   .#{$ns}-running-text & {
-    margin: ($pt-spacing * 5) 0;
+    margin: calc(var(--bp-surface-spacing) * 5) 0;
   }
 }

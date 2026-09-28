@@ -6,7 +6,7 @@
 @import "../../common/variables";
 @import "../button/common";
 
-$input-padding-horizontal: $pt-spacing * 2 !default;
+$input-padding-horizontal: calc(var(--bp-surface-spacing) * 2) !default;
 $input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;
 $input-font-weight: 400 !default;
 $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;

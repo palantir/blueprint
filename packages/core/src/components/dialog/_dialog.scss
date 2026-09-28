@@ -9,8 +9,8 @@
 
 $dialog-background-color: $light-gray5 !default;
 $dialog-border-radius: $pt-border-radius !default;
-$dialog-margin: ($pt-spacing * 8) 0 !default;
-$dialog-padding: $pt-spacing * 4 !default;
+$dialog-margin: calc(var(--bp-surface-spacing) * 8) 0 !default;
+$dialog-padding: calc(var(--bp-surface-spacing) * 4) !default;
 
 .#{$ns}-dialog-container {
   $dialog-transition-props: (
@@ -50,7 +50,7 @@ $dialog-padding: $pt-spacing * 4 !default;
   margin: $dialog-margin;
   pointer-events: all;
   user-select: text;
-  width: $pt-spacing * 125;
+  width: calc(var(--bp-surface-spacing) * 125);
 
   &:focus {
     outline: 0;
@@ -68,7 +68,7 @@ $dialog-padding: $pt-spacing * 4 !default;
   }
 }
 
-$dialog-header-padding: $pt-spacing;
+$dialog-header-padding: var(--bp-surface-spacing);
 
 .#{$ns}-dialog-header {
   align-items: center;
@@ -77,7 +77,7 @@ $dialog-header-padding: $pt-spacing;
   box-shadow: 0 1px 0 $pt-divider-black;
   display: flex;
   flex: 0 0 auto;
-  min-height: $pt-button-height + $dialog-header-padding * 2;
+  min-height: calc($pt-button-height + $dialog-header-padding * 2);
   padding: $dialog-header-padding;
   padding-left: $dialog-padding;
   z-index: 0;
@@ -85,8 +85,8 @@ $dialog-header-padding: $pt-spacing;
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     flex: 0 0 auto;
-    margin-left: -$pt-spacing;
-    margin-right: $dialog-padding * 0.5;
+    margin-left: calc(var(--bp-surface-spacing) * -1);
+    margin-right: calc($dialog-padding * 0.5);
 
     // only apply light color to icons that are not intent-specific
     &:not([class*="#{$ns}-intent"]) {

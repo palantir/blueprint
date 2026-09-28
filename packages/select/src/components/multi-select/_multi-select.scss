@@ -3,10 +3,10 @@
 
 @import "../../common/variables";
 
-$select-padding: $pt-spacing;
+$select-padding: var(--bp-surface-spacing);
 
 .#{$ns}-multi-select {
-  min-width: $pt-spacing * 37.5;
+  min-width: calc(var(--bp-surface-spacing) * 37.5);
 }
 
 .#{$ns}-multi-select-popover {

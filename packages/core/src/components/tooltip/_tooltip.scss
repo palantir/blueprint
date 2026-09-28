@@ -9,8 +9,8 @@
 $tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
-$tooltip-padding-compact-vertical: $pt-spacing !default;
-$tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
+$tooltip-padding-compact-vertical: var(--bp-surface-spacing) !default;
+$tooltip-padding-compact-horizontal: calc(var(--bp-surface-spacing) * 2) !default;
 
 .#{$ns}-tooltip {
   @include popover-sizing(
@@ -58,16 +58,16 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
   // need to adjust arrow placement a little bit for tooltips
   &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
-    transform: translateY($pt-spacing * -0.75);
+    transform: translateY(calc(var(--bp-surface-spacing) * -0.75));
   }
   &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
-    transform: translateX($pt-spacing * -0.75);
+    transform: translateX(calc(var(--bp-surface-spacing) * -0.75));
   }
   &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
-    transform: translateY($pt-spacing * 0.75);
+    transform: translateY(calc(var(--bp-surface-spacing) * 0.75));
   }
   &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
-    transform: translateX($pt-spacing * 0.75);
+    transform: translateX(calc(var(--bp-surface-spacing) * 0.75));
   }
 
   &.#{$ns}-dark,

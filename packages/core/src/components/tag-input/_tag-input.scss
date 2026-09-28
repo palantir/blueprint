@@ -7,7 +7,7 @@
 @import "../forms/common";
 @import "../tag/common";
 
-$tag-input-padding: $pt-spacing !default;
+$tag-input-padding: var(--bp-surface-spacing) !default;
 
 $tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
 $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;

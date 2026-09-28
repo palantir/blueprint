@@ -100,7 +100,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   position: absolute;
   right: 0;
   top: 0;
-  width: $column-header-min-height + $pt-spacing * 5;
+  width: calc($column-header-min-height + var(--bp-surface-spacing) * 5);
 
   .#{$ns}-table-interaction-bar & {
     height: $interaction-bar-height;
@@ -165,16 +165,16 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
     width: $interaction-bar-height;
 
     .#{$ns}-icon {
-      $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) * 0.5;
+      $icon-margin: calc(($interaction-bar-height - $pt-icon-size-standard) * 0.5);
 
       margin: $icon-margin;
-      margin-left: $icon-margin + $cell-border-width;
+      margin-left: calc($icon-margin + $cell-border-width);
       vertical-align: top;
     }
   }
 
   .#{$ns}-icon {
-    $icon-offset: ($column-header-min-height - $pt-icon-size-standard) * 0.5;
+    $icon-offset: calc(($column-header-min-height - $pt-icon-size-standard) * 0.5);
     background-color: $header-background-color;
     border-radius: $pt-border-radius;
     box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
@@ -296,8 +296,8 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
     &::before {
       border-radius: 0;
       bottom: -$cell-padding-vertical;
-      left: -$cell-padding-horizontal + $cell-border-width - 2px;
-      right: -$cell-padding-horizontal + $cell-border-width - 1px;
+      left: calc($cell-padding-horizontal * -1 + $cell-border-width - 2px);
+      right: calc($cell-padding-horizontal * -1 + $cell-border-width - 1px);
       // The shorthand makes this hard to read.
       /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
       top: -$cell-padding-vertical + $cell-border-width - 2px;
@@ -311,8 +311,8 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
       &::before {
         bottom: -$cell-padding-vertical + 1px;
         cursor: $select-text-cursor;
-        left: -$cell-padding-horizontal + $cell-border-width - 1px;
-        right: -$cell-padding-horizontal + $cell-border-width;
+        left: calc($cell-padding-horizontal * -1 + $cell-border-width - 1px);
+        right: calc($cell-padding-horizontal * -1 + $cell-border-width);
         // The shorthand makes this hard to read.
         /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
         top: -$cell-padding-vertical + $cell-border-width - 1px;
@@ -352,7 +352,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 .#{$ns}-table-row-name {
   display: block;
   font-size: $pt-font-size-small;
-  padding: 0 $pt-spacing;
+  padding: 0 var(--bp-surface-spacing);
   text-align: right;
 }
 
@@ -398,7 +398,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 
   .#{$ns}-table-column-name-text {
     @include cell-content-align-vertical;
-    padding: $pt-spacing * 2;
+    padding: calc(var(--bp-surface-spacing) * 2);
 
     .#{$ns}-skeleton {
       height: $column-name-text-skeleton-height;

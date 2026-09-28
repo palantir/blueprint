@@ -11,20 +11,20 @@
 
 $tag-default-color: $gray1 !default;
 
-$tag-height: $pt-spacing * 5 !default;
+$tag-height: calc(var(--bp-surface-spacing) * 5) !default;
 $tag-line-height: $pt-icon-size-standard !default;
-$tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
-$tag-padding: $tag-padding-top * 3 !default;
-$tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
+$tag-padding-top: calc(($tag-height - $tag-line-height) * 0.5) !default;
+$tag-padding: calc($tag-padding-top * 3) !default;
+$tag-margin: calc(($pt-input-height - $tag-height) * 0.5) !default;
 
-$tag-height-large: $pt-spacing * 7.5 !default;
-$tag-line-height-large: $pt-spacing * 4.5 !default;
-$tag-padding-large: $pt-spacing * 2 !default;
+$tag-height-large: calc(var(--bp-surface-spacing) * 7.5) !default;
+$tag-line-height-large: calc(var(--bp-surface-spacing) * 4.5) !default;
+$tag-padding-large: calc(var(--bp-surface-spacing) * 2) !default;
 
-$tag-icon-spacing: $pt-spacing !default;
-$tag-icon-spacing-large: $pt-spacing * 2 !default;
+$tag-icon-spacing: var(--bp-surface-spacing) !default;
+$tag-icon-spacing-large: calc(var(--bp-surface-spacing) * 2) !default;
 
-$tag-round-adjustment: $pt-spacing * 0.5 !default;
+$tag-round-adjustment: calc(var(--bp-surface-spacing) * 0.5) !default;
 
 $tag-intent-colors: (
   "primary": (

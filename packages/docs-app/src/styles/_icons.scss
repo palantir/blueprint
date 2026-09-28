@@ -4,7 +4,7 @@
 @use "sass:math";
 @import "@blueprintjs/core/src/common/variables";
 
-$svg-icon-size: $pt-spacing * 9;
+$svg-icon-size: calc(var(--bp-surface-spacing) * 9);
 
 $hover-transition: $pt-transition-duration $pt-transition-ease;
 
@@ -12,36 +12,36 @@ $icons-per-row: 5;
 
 .docs-icons {
   .#{$ns}-input-group {
-    margin: ($pt-spacing * 12.5) 0;
+    margin: calc(var(--bp-surface-spacing) * 12.5) 0;
   }
 
   .docs-icon-group {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: $pt-spacing * 12.5;
+    margin-bottom: calc(var(--bp-surface-spacing) * 12.5);
 
     .#{$ns}-heading {
       flex: 1 1 100%;
-      margin: 0 0 $pt-spacing * 5;
+      margin: 0 0 calc(var(--bp-surface-spacing) * 5);
       text-transform: capitalize;
     }
   }
 }
 
 // Standalone styles for the next-generation icon browser.
-$docs-icon-next-rail-width: $pt-spacing * 30;
+$docs-icon-next-rail-width: calc(var(--bp-surface-spacing) * 30);
 $docs-icon-next-columns: 6;
 
 .docs-icons-next {
   .docs-icons-next-search {
-    margin: 0 0 ($pt-spacing * 8);
+    margin: 0 0 calc(var(--bp-surface-spacing) * 8);
   }
 
   .docs-icons-next-body {
     align-items: flex-start;
     display: flex;
-    gap: $pt-spacing * 8;
+    gap: calc(var(--bp-surface-spacing) * 8);
   }
 
   .docs-icons-next-filter {
@@ -49,7 +49,7 @@ $docs-icon-next-columns: 6;
     width: $docs-icon-next-rail-width;
 
     .#{$ns}-heading {
-      margin-bottom: $pt-spacing * 4;
+      margin-bottom: calc(var(--bp-surface-spacing) * 4);
     }
   }
 
@@ -60,13 +60,13 @@ $docs-icon-next-columns: 6;
 
   .docs-icons-next-count {
     font-size: $pt-font-size-small;
-    margin-bottom: $pt-spacing * 4;
+    margin-bottom: calc(var(--bp-surface-spacing) * 4);
     text-align: end;
   }
 
   .docs-icon-next-grid {
     display: grid;
-    gap: $pt-spacing * 3;
+    gap: calc(var(--bp-surface-spacing) * 3);
     grid-template-columns: repeat($docs-icon-next-columns, minmax(0, 1fr));
   }
 
@@ -80,8 +80,8 @@ $docs-icon-next-columns: 6;
     display: flex;
     flex-direction: column;
     font: inherit;
-    gap: $pt-spacing * 2;
-    padding: $pt-spacing * 3;
+    gap: calc(var(--bp-surface-spacing) * 2);
+    padding: calc(var(--bp-surface-spacing) * 3);
 
     &:hover .docs-icon-next-glyph {
       background-color: $light-gray4;
@@ -116,7 +116,7 @@ $docs-icon-next-columns: 6;
     color: $pt-icon-color;
     display: flex;
     justify-content: center;
-    padding: $pt-spacing * 4;
+    padding: calc(var(--bp-surface-spacing) * 4);
     transition: background-color $hover-transition;
 
     .#{$ns}-dark & {
@@ -145,9 +145,9 @@ $docs-icon-next-columns: 6;
 
   .docs-icons-next-dialog-heroes {
     display: grid;
-    gap: $pt-spacing * 3;
+    gap: calc(var(--bp-surface-spacing) * 3);
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin-bottom: $pt-spacing * 6;
+    margin-bottom: calc(var(--bp-surface-spacing) * 6);
   }
 
   .docs-icons-next-dialog-hero {
@@ -155,7 +155,7 @@ $docs-icon-next-columns: 6;
     border-radius: $pt-border-radius * 2;
     display: flex;
     justify-content: center;
-    padding: $pt-spacing * 8;
+    padding: calc(var(--bp-surface-spacing) * 8);
   }
 
   .docs-icons-next-dialog-hero-default {
@@ -190,14 +190,14 @@ $docs-icon-next-columns: 6;
   }
 
   .docs-icons-next-dialog-section-label {
-    margin-bottom: $pt-spacing * 3;
+    margin-bottom: calc(var(--bp-surface-spacing) * 3);
   }
 
   .docs-icons-next-dialog-sizes {
     align-items: flex-end;
     display: flex;
-    gap: $pt-spacing * 6;
-    margin-bottom: $pt-spacing * 6;
+    gap: calc(var(--bp-surface-spacing) * 6);
+    margin-bottom: calc(var(--bp-surface-spacing) * 6);
   }
 
   .docs-icons-next-dialog-size {
@@ -205,7 +205,7 @@ $docs-icon-next-columns: 6;
     color: $pt-icon-color;
     display: flex;
     flex-direction: column;
-    gap: $pt-spacing * 2;
+    gap: calc(var(--bp-surface-spacing) * 2);
 
     .#{$ns}-dark & {
       color: $pt-dark-icon-color;
@@ -217,27 +217,27 @@ $docs-icon-next-columns: 6;
   }
 
   .docs-icons-next-code + .docs-icons-next-code {
-    margin-top: $pt-spacing * 4;
+    margin-top: calc(var(--bp-surface-spacing) * 4);
   }
 
   .docs-icons-next-code-header {
     align-items: center;
     display: flex;
     justify-content: space-between;
-    margin-bottom: $pt-spacing * 1;
+    margin-bottom: calc(var(--bp-surface-spacing) * 1);
   }
 
   .docs-icons-next-code-block {
     display: block;
     overflow-x: auto;
-    padding: ($pt-spacing * 4) ($pt-spacing * 3);
+    padding: calc(var(--bp-surface-spacing) * 4) calc(var(--bp-surface-spacing) * 3);
     white-space: nowrap;
   }
 }
 
 .docs-icon-container,
 .docs-icon-spacer {
-  height: $pt-spacing * 30;
+  height: calc(var(--bp-surface-spacing) * 30);
   width: math.div(100%, $icons-per-row);
 
   // remove margin on last row of icons
@@ -305,7 +305,7 @@ $docs-icon-next-columns: 6;
   border-radius: $pt-border-radius;
   display: flex;
   flex-direction: column;
-  padding: ($pt-spacing * 5) 0;
+  padding: calc(var(--bp-surface-spacing) * 5) 0;
   transition: background-color $hover-transition;
 
   .docs-icon-svg {
@@ -333,7 +333,7 @@ $docs-icon-next-columns: 6;
 .docs-icon-name,
 .docs-icon-detail {
   font-size: $pt-font-size-small;
-  margin-top: $pt-spacing * 5;
+  margin-top: calc(var(--bp-surface-spacing) * 5);
   text-align: center;
   transform: translateY(0);
   transition:
@@ -345,7 +345,7 @@ $docs-icon-next-columns: 6;
 .docs-icon-name {
   opacity: 1;
   position: absolute;
-  top: $pt-spacing * 10;
+  top: calc(var(--bp-surface-spacing) * 10);
 }
 
 .docs-icon-detail {

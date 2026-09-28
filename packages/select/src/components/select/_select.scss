@@ -3,7 +3,7 @@
 
 @import "../../common/variables";
 
-$select-padding: $pt-spacing;
+$select-padding: var(--bp-surface-spacing);
 
 .#{$ns}-select-popover {
   .#{$ns}-popover-content {
@@ -20,8 +20,8 @@ $select-padding: $pt-spacing;
     // offset the padding added by the select componenent so menu can remain full width with padding on either side
     // this is important so menu dividers can be full width, and so that menu items can have padding to the left and right
     // for menu items
-    margin-left: -$select-padding;
-    margin-right: -$select-padding;
+    margin-left: calc($select-padding * -1);
+    margin-right: calc($select-padding * -1);
     max-height: $select-popover-max-height;
     max-width: $select-popover-max-width;
     overflow: auto;

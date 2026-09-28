@@ -3,7 +3,7 @@
 .blueprint-welcome {
   @include pt-flex-container(row, $content-padding);
   justify-content: space-between;
-  margin: ($content-padding * 2) 0;
+  margin: calc($content-padding * 2) 0;
   text-align: center;
 
   .blueprint-welcome-card {

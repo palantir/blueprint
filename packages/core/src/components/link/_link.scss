@@ -7,7 +7,7 @@
 .#{$ns}-link {
   cursor: pointer;
   display: inline-flex;
-  gap: $pt-spacing;
+  gap: var(--bp-surface-spacing);
   text-underline-offset: 17.5%;
   text-underline-position: from-font;
 

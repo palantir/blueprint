@@ -15,7 +15,7 @@
   list-style: none;
   margin: 0;
   min-width: $menu-min-width;
-  padding: $pt-spacing;
+  padding: var(--bp-surface-spacing);
   text-align: left;
 }
 
@@ -92,5 +92,5 @@ button.#{$ns}-menu-item {
 
 // #402 support menu inside label
 .#{$ns}-label .#{$ns}-menu {
-  margin-top: $pt-spacing;
+  margin-top: var(--bp-surface-spacing);
 }

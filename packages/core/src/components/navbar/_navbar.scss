@@ -4,7 +4,7 @@
 @import "../../common/variables";
 @import "../card/card-variables";
 
-$navbar-padding: $pt-spacing * 4 !default;
+$navbar-padding: calc(var(--bp-surface-spacing) * 4) !default;
 
 $navbar-background-color: $card-background-color !default;
 $dark-navbar-background-color: $dark-card-background-color !default;
@@ -66,8 +66,8 @@ $dark-navbar-background-color: $dark-card-background-color !default;
 
 .#{$ns}-navbar-divider {
   border-left: 1px solid $pt-divider-black;
-  height: $pt-navbar-height - $pt-spacing * 7.5;
-  margin: 0 ($pt-spacing * 2);
+  height: calc($pt-navbar-height - var(--bp-surface-spacing) * 7.5);
+  margin: 0 calc(var(--bp-surface-spacing) * 2);
 
   .#{$ns}-dark & {
     border-left-color: $pt-dark-divider-white;
