@@ -97,7 +97,7 @@ background-color: var(--bp-surface-background-color-default-rest);
 background-image: var(--bp-surface-layer-primary);
 ```
 
-The wrapping is triggered by the `com.blueprint.role: "stackable-layer"` annotation in the token JSON. The build system in `sd.config.ts` detects this role and applies the `linear-gradient()` wrapper during compilation.
+The wrapping is triggered by the `com.blueprint.role: "stackable-layer"` annotation in the token JSON. The `build-design-tokens` generator detects this role and applies the `linear-gradient()` wrapper during compilation.
 
 ## Example: Button component
 

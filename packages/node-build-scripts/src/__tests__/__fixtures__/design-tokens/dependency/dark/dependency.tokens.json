@@ -1,0 +1,11 @@
+{
+    "dependency": {
+        "color": {
+            "$type": "color",
+            "$value": {
+                "colorSpace": "srgb",
+                "components": [0.804, 0.259, 0.275]
+            }
+        }
+    }
+}
