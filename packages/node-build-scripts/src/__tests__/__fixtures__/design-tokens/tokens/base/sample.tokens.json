@@ -1,0 +1,43 @@
+{
+    "sample": {
+        "spacing": {
+            "$type": "dimension",
+            "$value": { "value": 4, "unit": "px" }
+        },
+        "alias": {
+            "$type": "dimension",
+            "$value": "{sample.spacing}"
+        },
+        "dependency-color": {
+            "$type": "color",
+            "$value": "{dependency.color}"
+        },
+        "derived": {
+            "$type": "color",
+            "$value": "{dependency.color}",
+            "$extensions": {
+                "com.blueprint.derive": { "alpha": 0.5 }
+            }
+        },
+        "layer": {
+            "$type": "color",
+            "$value": "{sample.derived}",
+            "$extensions": {
+                "com.blueprint.role": "stackable-layer"
+            }
+        },
+        "shadow": {
+            "$type": "shadow",
+            "$value": {
+                "color": {
+                    "colorSpace": "srgb",
+                    "components": [0, 0, 0],
+                    "alpha": 0.15
+                },
+                "offsetX": { "value": 0, "unit": "px" },
+                "offsetY": { "value": 1, "unit": "px" },
+                "blur": { "value": 2, "unit": "px" }
+            }
+        }
+    }
+}

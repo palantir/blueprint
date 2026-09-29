@@ -23,7 +23,7 @@
         "upgrade-blueprint-3.0.0-rename": "scripts/upgrade-blueprint-3.0.0-rename.sh"
     },
     "scripts": {
-        "build:tokens": "tsx src/design-tokens/build.ts",
+        "build:tokens": "build-design-tokens src/design-tokens/config.json",
         "build:sass": "sass-compile ./src",
         "clean": "rm -rf coverage lib src/design-tokens/build",
         "compile": "run-p \"compile:*\"",
@@ -77,19 +77,14 @@
         "@testing-library/jest-dom": "catalog:",
         "@testing-library/react": "catalog:",
         "@testing-library/user-event": "catalog:",
-        "@tokens-studio/sd-transforms": "^2.0.3",
-        "@types/culori": "^4.0.1",
         "@vitejs/plugin-react": "catalog:",
         "change-case": "^4.1.2",
-        "culori": "^4.0.2",
         "enzyme": "catalog:",
         "jsdom": "catalog:",
         "npm-run-all": "^4.1.5",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
-        "style-dictionary": "^5.0.3",
-        "tsx": "catalog:",
         "typescript": "~5.9.3",
         "vitest": "catalog:",
         "webpack-cli": "^5.1.4"

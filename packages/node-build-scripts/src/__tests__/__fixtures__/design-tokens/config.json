@@ -1,0 +1,11 @@
+{
+    "source": {
+        "base": ["tokens/base/**/*.tokens.json"],
+        "dark": ["tokens/dark/**/*.tokens.json"]
+    },
+    "include": {
+        "base": ["dependency/base/**/*.tokens.json"],
+        "dark": ["dependency/dark/**/*.tokens.json"]
+    },
+    "output": "build/tokens.css"
+}

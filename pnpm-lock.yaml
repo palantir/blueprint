@@ -240,21 +240,12 @@ importers:
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
-      '@tokens-studio/sd-transforms':
-        specifier: ^2.0.3
-        version: 2.0.3(style-dictionary@5.1.3)
-      '@types/culori':
-        specifier: ^4.0.1
-        version: 4.0.1
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.12.2)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.9.0))
       change-case:
         specifier: ^4.1.2
         version: 4.1.2
-      culori:
-        specifier: ^4.0.2
-        version: 4.0.2
       enzyme:
         specifier: 'catalog:'
         version: 3.11.0
@@ -273,12 +264,6 @@ importers:
       react-test-renderer:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
-      style-dictionary:
-        specifier: ^5.0.3
-        version: 5.1.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.21.0
       typescript:
         specifier: ~5.9.3
         version: 5.9.3
@@ -926,6 +911,9 @@ importers:
 
   packages/node-build-scripts:
     dependencies:
+      '@tokens-studio/sd-transforms':
+        specifier: ^2.0.3
+        version: 2.0.3(style-dictionary@5.1.3)
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.21(postcss@8.5.26)
@@ -938,6 +926,9 @@ importers:
       css-select:
         specifier: ^5.1.0
         version: 5.2.2
+      culori:
+        specifier: ^4.0.2
+        version: 4.0.2
       dom-serializer:
         specifier: ^2.0.0
         version: 2.0.0
@@ -992,6 +983,9 @@ importers:
       strip-css-comments:
         specifier: ^5.0.0
         version: 5.0.0
+      style-dictionary:
+        specifier: ^5.0.3
+        version: 5.1.3
       stylelint:
         specifier: ~16.25.0
         version: 16.25.0(typescript@5.9.3)
@@ -3054,9 +3048,6 @@ packages:
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
-
-  '@types/culori@4.0.1':
-    resolution: {integrity: sha512-43M51r/22CjhbOXyGT361GZ9vncSVQ39u62x5eJdBQFviI8zWp2X5jzqg7k4M6PVgDQAClpy2bUe2dtwEgEDVQ==}
 
   '@types/dedent@0.7.2':
     resolution: {integrity: sha512-kRiitIeUg1mPV9yH4VUJ/1uk2XjyANfeL8/7rH1tsjvHeO9PJLBHJIYsFWmAvmGj5u8rj+1TZx7PZzW2qLw3Lw==}
@@ -10482,8 +10473,6 @@ snapshots:
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 24.12.2
-
-  '@types/culori@4.0.1': {}
 
   '@types/dedent@0.7.2': {}
 
