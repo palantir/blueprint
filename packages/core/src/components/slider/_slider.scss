@@ -5,8 +5,8 @@
 @import "./common";
 
 $handle-size: $pt-icon-size-standard !default;
-$track-size: $handle-size - ($pt-spacing * 2.5) !default;
-$label-offset: $handle-size + $pt-spacing !default;
+$track-size: calc($handle-size - var(--bp-spacing) * 2.5) !default;
+$label-offset: calc($handle-size + var(--bp-spacing)) !default;
 
 $handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
 $handle-box-shadow:
@@ -56,7 +56,7 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-track {
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-border-radius);
   overflow: hidden;
 }
 
@@ -80,7 +80,7 @@ $track-height: $track-size !default;
 
 .#{$ns}-slider-handle {
   @include pt-button;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-border-radius);
   box-shadow: $handle-box-shadow;
   cursor: pointer;
   height: $handle-size;
@@ -140,7 +140,7 @@ $track-height: $track-size !default;
 
   .#{$ns}-slider-label {
     background: $tooltip-background-color;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-border-radius);
     box-shadow: $pt-tooltip-box-shadow;
     color: $tooltip-text-color;
     margin-left: $handle-size * 0.5;
@@ -182,7 +182,7 @@ $track-height: $track-size !default;
   display: inline-block;
   font-size: $pt-font-size-small;
   line-height: 1;
-  padding: ($pt-spacing * 0.5) $pt-spacing;
+  padding: calc(var(--bp-spacing) * 0.5) var(--bp-spacing);
   position: absolute;
   vertical-align: top;
 }
@@ -219,7 +219,7 @@ $track-height: $track-size !default;
     }
 
     &.#{$ns}-start {
-      border-bottom-right-radius: $pt-border-radius;
+      border-bottom-right-radius: var(--bp-border-radius);
       border-top-left-radius: 0;
 
       .#{$ns}-slider-label {
@@ -230,7 +230,7 @@ $track-height: $track-size !default;
     &.#{$ns}-end {
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      border-top-left-radius: $pt-border-radius;
+      border-top-left-radius: var(--bp-border-radius);
       margin-bottom: $handle-size * 0.5;
     }
   }

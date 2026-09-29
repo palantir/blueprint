@@ -9,7 +9,7 @@
 @import "./popover-in-submenu";
 @import "./popover-in-tree";
 
-$popover-width: $pt-spacing * 87.5 !default;
+$popover-width: calc(var(--bp-spacing) * 87.5) !default;
 $popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 // Extra border shadow added here to match the one in $pt-dark-popover-box-shadow.
 // We can't use a transparent color here because it is outset and will overlay other lines/borders underneath.
@@ -32,19 +32,19 @@ $dark-popover-arrow-box-shadow:
     $pt-border-shadow-opacity
   );
   @include scale-transition;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-border-radius);
   display: inline-block;
   z-index: $pt-z-index-overlay;
 
   .#{$ns}-popover-content {
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-border-radius);
     position: relative;
   }
 
   &.#{$ns}-popover-content-sizing {
     .#{$ns}-popover-content {
       max-width: $popover-width;
-      padding: $pt-spacing * 5;
+      padding: calc(var(--bp-spacing) * 5);
     }
 
     // only inline popovers get a width if this class is applied.

@@ -163,13 +163,13 @@
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-popover-target:first-child > .#{$ns}-button,
       > .#{$ns}-button:first-child {
-        border-radius: $pt-border-radius $pt-border-radius 0 0;
+        border-radius: var(--bp-border-radius) var(--bp-border-radius) 0 0;
       }
 
       > .#{$ns}-popover-wrapper:last-child .#{$ns}-button,
       > .#{$ns}-popover-target:last-child > .#{$ns}-button,
       > .#{$ns}-button:last-child {
-        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+        border-radius: 0 0 var(--bp-border-radius) var(--bp-border-radius);
       }
     }
 

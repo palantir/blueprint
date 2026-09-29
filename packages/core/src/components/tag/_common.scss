@@ -11,20 +11,20 @@
 
 $tag-default-color: $gray1 !default;
 
-$tag-height: $pt-spacing * 5 !default;
+$tag-height: calc(var(--bp-spacing) * 5) !default;
 $tag-line-height: $pt-icon-size-standard !default;
-$tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
-$tag-padding: $tag-padding-top * 3 !default;
-$tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
+$tag-padding-top: calc(($tag-height - $tag-line-height) * 0.5) !default;
+$tag-padding: calc($tag-padding-top * 3) !default;
+$tag-margin: calc(($pt-input-height - $tag-height) * 0.5) !default;
 
-$tag-height-large: $pt-spacing * 7.5 !default;
-$tag-line-height-large: $pt-spacing * 4.5 !default;
-$tag-padding-large: $pt-spacing * 2 !default;
+$tag-height-large: calc(var(--bp-spacing) * 7.5) !default;
+$tag-line-height-large: calc(var(--bp-spacing) * 4.5) !default;
+$tag-padding-large: calc(var(--bp-spacing) * 2) !default;
 
-$tag-icon-spacing: $pt-spacing !default;
-$tag-icon-spacing-large: $pt-spacing * 2 !default;
+$tag-icon-spacing: var(--bp-spacing) !default;
+$tag-icon-spacing-large: calc(var(--bp-spacing) * 2) !default;
 
-$tag-round-adjustment: $pt-spacing * 0.5 !default;
+$tag-round-adjustment: calc(var(--bp-spacing) * 0.5) !default;
 
 $tag-intent-colors: (
   "primary": (
@@ -107,7 +107,7 @@ $minimal-dark-tag-intent-colors: (
   align-items: center;
   background-color: $tag-default-color;
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-border-radius);
   box-shadow: none;
   color: $white;
   font-size: $pt-font-size-small;
@@ -143,9 +143,9 @@ $minimal-dark-tag-intent-colors: (
 
   &.#{$ns}-round {
     border-radius: $tag-height-large;
-    padding-left: $tag-padding + $tag-round-adjustment;
+    padding-left: calc($tag-padding + $tag-round-adjustment);
     // optical adjustment for rounded tags
-    padding-right: $tag-padding + $tag-round-adjustment;
+    padding-right: calc($tag-padding + $tag-round-adjustment);
   }
 
   > #{$icon-classes} {
@@ -164,12 +164,12 @@ $minimal-dark-tag-intent-colors: (
   line-height: $tag-line-height-large;
   min-height: $tag-height-large;
   min-width: $tag-height-large;
-  padding: ($tag-padding-large * 0.75) $tag-padding-large;
+  padding: calc($tag-padding-large * 0.75) $tag-padding-large;
 
   &.#{$ns}-round {
-    padding-left: $tag-padding-large + $tag-round-adjustment;
+    padding-left: calc($tag-padding-large + $tag-round-adjustment);
     // optical adjustment for rounded tags
-    padding-right: $tag-padding-large + $tag-round-adjustment;
+    padding-right: calc($tag-padding-large + $tag-round-adjustment);
   }
 }
 
@@ -317,12 +317,12 @@ $minimal-dark-tag-intent-colors: (
   color: rgba($white, 0.7);
   cursor: pointer;
   display: flex;
-  margin-bottom: -$tag-padding-top;
+  margin-bottom: calc($tag-padding-top * -1);
   /* stylelint-disable-next-line declaration-no-important */
-  margin-right: -$tag-padding !important;
+  margin-right: calc($tag-padding * -1) !important;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
-  margin-top: -$tag-padding-top;
+  margin-top: calc($tag-padding-top * -1);
   padding: $tag-padding-top;
   padding-left: 0;
 
@@ -349,8 +349,8 @@ $minimal-dark-tag-intent-colors: (
 
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
-    margin-right: -$tag-padding-large !important;
-    padding: 0 ($tag-padding-large * 0.5) 0 0;
+    margin-right: calc($tag-padding-large * -1) !important;
+    padding: 0 calc($tag-padding-large * 0.5) 0 0;
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);

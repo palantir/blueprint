@@ -5,7 +5,7 @@
 @import "../forms/common";
 @import "../tag/common";
 
-$tag-input-padding: $pt-spacing !default;
+$tag-input-padding: var(--bp-spacing) !default;
 
 $tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
 $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;
@@ -17,12 +17,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   height: auto;
   line-height: inherit;
   min-height: $pt-input-height;
-  padding-left: $pt-spacing * 1.5;
+  padding-left: calc(var(--bp-spacing) * 1.5);
   padding-right: 0;
 
   .#{$ns}-tag-input-icon {
     color: $pt-icon-color;
-    margin-left: $tag-input-icon-padding - $tag-input-padding;
+    margin-left: calc($tag-input-icon-padding - $tag-input-padding);
     margin-right: $tag-input-icon-padding;
     // margins to center icon in one-line input
     margin-top: $tag-input-icon-padding;
@@ -34,8 +34,8 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     // fill vertical height
     align-self: stretch;
     flex-wrap: wrap;
-    margin-right: $pt-spacing;
-    margin-top: $pt-spacing;
+    margin-right: var(--bp-spacing);
+    margin-top: var(--bp-spacing);
     // allow tags to ellipse and not overflow the container
     min-width: 0;
     position: relative;
@@ -49,12 +49,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
       .#{$ns}-input-ghost {
         // some padding-left is already applied on the root component, so we should subtract that
-        padding-left: $input-padding-horizontal - $tag-input-padding;
+        padding-left: calc($input-padding-horizontal - $tag-input-padding);
       }
     }
 
     > * {
-      margin-bottom: $pt-spacing;
+      margin-bottom: var(--bp-spacing);
     }
   }
 
@@ -73,7 +73,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     flex: 1 1 auto;
     line-height: $tag-height;
     // essentially a min-width, cuz flex allows it to grow or shrink:
-    width: $pt-spacing * 20;
+    width: calc(var(--bp-spacing) * 20);
 
     &:disabled,
     &.#{$ns}-disabled {
@@ -97,7 +97,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     min-height: $pt-input-height-large;
 
     .#{$ns}-tag-input-icon {
-      margin-left: $tag-input-icon-padding-large - $tag-input-padding;
+      margin-left: calc($tag-input-icon-padding-large - $tag-input-padding);
       margin-top: $tag-input-icon-padding-large;
     }
 
