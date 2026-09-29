@@ -8,10 +8,10 @@ $collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default
 .#{$ns}-collapse {
   height: 0;
   overflow-y: hidden;
-  transition: height $collapse-transition;
+  transition: height var(--bp-collapse-transition-duration) var(--bp-transition-ease);
 
   .#{$ns}-collapse-body {
-    transition: transform $collapse-transition;
+    transition: transform var(--bp-collapse-transition-duration) var(--bp-transition-ease);
 
     &[aria-hidden="true"] {
       display: none;

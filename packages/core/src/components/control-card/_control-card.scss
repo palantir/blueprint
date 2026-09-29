@@ -21,9 +21,9 @@
     // control indicators should be top-aligned
     align-items: flex-start;
     display: flex;
-    gap: $pt-spacing * 2;
+    gap: calc(var(--bp-spacing) * 2);
     margin: 0;
-    padding: $card-padding;
+    padding: var(--bp-card-padding);
     width: calc(100%);
 
     &.#{$ns}-align-left {
@@ -37,11 +37,11 @@
     }
 
     .#{$ns}-card-list & {
-      padding: $card-padding;
+      padding: var(--bp-card-padding);
     }
 
     .#{$ns}-card-list.#{$ns}-compact & {
-      padding: $card-padding-compact;
+      padding: var(--bp-card-padding-compact);
     }
 
     .#{$ns}-control-indicator {
@@ -50,6 +50,6 @@
   }
 
   &.#{$ns}-compact .#{$ns}-control.#{$ns}-control.#{$ns}-control {
-    padding: $card-padding-compact;
+    padding: var(--bp-card-padding-compact);
   }
 }

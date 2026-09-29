@@ -15,7 +15,7 @@
     > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
-      margin-right: -$button-border-width;
+      margin-right: calc(var(--bp-button-border-width) * -1);
     }
   }
 
@@ -27,15 +27,15 @@
   &.#{$ns}-vertical {
     &:not(.#{$ns}-minimal) {
       > .#{$ns}-popover-target:first-child .#{$ns}-button {
-        border-radius: $pt-border-radius $pt-border-radius 0 0;
+        border-radius: var(--bp-border-radius) var(--bp-border-radius) 0 0;
       }
 
       > .#{$ns}-popover-target:last-child .#{$ns}-button {
-        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+        border-radius: 0 0 var(--bp-border-radius) var(--bp-border-radius);
       }
 
       > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
-        margin-bottom: -$button-border-width;
+        margin-bottom: calc(var(--bp-button-border-width) * -1);
       }
     }
   }

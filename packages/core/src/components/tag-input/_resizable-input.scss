@@ -4,7 +4,7 @@
 .#{$ns}-resizable-input-span {
   max-height: 0;
   max-width: 100%;
-  min-width: calc(var(--bp-surface-spacing) * 20);
+  min-width: var(--bp-tag-input-ghost-min-width);
   opacity: 0;
   overflow: hidden;
   position: absolute;

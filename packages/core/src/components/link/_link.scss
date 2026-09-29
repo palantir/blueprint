@@ -7,7 +7,7 @@
 .#{$ns}-link {
   cursor: pointer;
   display: inline-flex;
-  gap: $pt-spacing;
+  gap: var(--bp-spacing);
   text-underline-offset: 17.5%;
   text-underline-position: from-font;
 
@@ -37,7 +37,7 @@
 
   @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
-      color: $color;
+      color: var(--bp-intent-#{$intent}-text-color);
     }
   }
 
@@ -49,7 +49,7 @@
 
     @each $intent, $color in $pt-dark-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
-        color: $color;
+        color: var(--bp-intent-#{$intent}-text-color);
       }
     }
   }

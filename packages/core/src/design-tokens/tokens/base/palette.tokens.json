@@ -1,7 +1,7 @@
 {
     "palette": {
         "$type": "color",
-        "$description": "BP6 color scales (1 = darkest, 5 = lightest)",
+        "$description": "BP6 color scales, including Core's extended 0 and 6 intent shades",
         "black": { "$value": "#111418" },
         "white": { "$value": "#ffffff" },
         "dark-gray": {
@@ -26,32 +26,40 @@
             "5": { "$value": "#f6f7f9" }
         },
         "blue": {
+            "0": { "$value": "#11376b" },
             "1": { "$value": "#184a90" },
             "2": { "$value": "#215db0" },
             "3": { "$value": "#2d72d2" },
             "4": { "$value": "#4c90f0" },
-            "5": { "$value": "#8abbff" }
+            "5": { "$value": "#8abbff" },
+            "6": { "$value": "#99c4ff" }
         },
         "green": {
+            "0": { "$value": "#0f3e25" },
             "1": { "$value": "#165a36" },
             "2": { "$value": "#1c6e42" },
             "3": { "$value": "#238551" },
             "4": { "$value": "#32a467" },
-            "5": { "$value": "#72ca9b" }
+            "5": { "$value": "#72ca9b" },
+            "6": { "$value": "#7cd7a2" }
         },
         "orange": {
+            "0": { "$value": "#5f380b" },
             "1": { "$value": "#77450d" },
             "2": { "$value": "#935610" },
             "3": { "$value": "#c87619" },
             "4": { "$value": "#ec9a3c" },
-            "5": { "$value": "#fbb360" }
+            "5": { "$value": "#fbb360" },
+            "6": { "$value": "#f5c186" }
         },
         "red": {
+            "0": { "$value": "#782326" },
             "1": { "$value": "#8e292c" },
             "2": { "$value": "#ac2f33" },
             "3": { "$value": "#cd4246" },
             "4": { "$value": "#e76a6e" },
-            "5": { "$value": "#fa999c" }
+            "5": { "$value": "#fa999c" },
+            "6": { "$value": "#ffa1a4" }
         },
         "vermilion": {
             "1": { "$value": "#96290d" },

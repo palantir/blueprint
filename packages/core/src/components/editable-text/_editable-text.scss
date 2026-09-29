@@ -14,85 +14,51 @@
 
   // input styles on the ::before
   &::before {
-    @include position-all(absolute, $pt-spacing * -0.5);
-    border-radius: $pt-border-radius;
+    @include position-all(absolute, calc(var(--bp-spacing) * -0.5));
+    border-radius: var(--bp-border-radius);
     content: "";
     transition:
-      background-color $pt-transition-duration $pt-transition-ease,
-      box-shadow $pt-transition-duration $pt-transition-ease;
+      background-color var(--bp-transition-duration) var(--bp-transition-ease),
+      box-shadow var(--bp-transition-duration) var(--bp-transition-ease);
   }
 
   &:hover::before {
-    box-shadow:
-      input-transition-shadow($input-shadow-color-focus),
-      inset 0 0 0 1px $pt-divider-black;
+    box-shadow: var(--bp-editable-text-box-shadow-hover);
   }
 
   &.#{$ns}-editable-text-editing::before {
-    background-color: $input-background-color;
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    background-color: var(--bp-input-background-color);
+    box-shadow: var(--bp-editable-text-box-shadow-editing);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     &:not(.#{$ns}-disabled)::before {
-      border: 1px solid $pt-high-contrast-mode-border-color;
+      border: 1px solid var(--bp-high-contrast-border-color);
     }
   }
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
+      --bp-editable-text-intent-color: var(--bp-editable-text-intent-#{$intent}-color);
+      --bp-editable-text-intent-box-shadow-hover: var(
+        --bp-editable-text-intent-#{$intent}-box-shadow-hover
+      );
+      --bp-editable-text-intent-box-shadow-editing: var(
+        --bp-editable-text-intent-#{$intent}-box-shadow-editing
+      );
+
       .#{$ns}-editable-text-content,
       .#{$ns}-editable-text-input,
       .#{$ns}-editable-text-input::placeholder {
-        color: $color;
+        color: var(--bp-editable-text-intent-color);
       }
 
       &:hover::before {
-        box-shadow:
-          input-transition-shadow($color),
-          inset border-shadow(0.4, $color, 1px);
+        box-shadow: var(--bp-editable-text-intent-box-shadow-hover);
       }
 
       &.#{$ns}-editable-text-editing::before {
-        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
-      }
-    }
-  }
-
-  .#{$ns}-dark & {
-    &:hover::before {
-      box-shadow:
-        input-transition-shadow($dark-input-shadow-color-focus),
-        inset 0 0 0 1px $pt-dark-divider-white;
-    }
-
-    &.#{$ns}-editable-text-editing::before {
-      background-color: $dark-input-background-color;
-      box-shadow:
-        input-transition-shadow($dark-input-shadow-color-focus, true), $pt-dark-input-box-shadow;
-    }
-
-    &.#{$ns}-disabled::before {
-      box-shadow: none;
-    }
-
-    @each $intent, $color in $pt-dark-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-editable-text-content,
-        .#{$ns}-editable-text-input,
-        .#{$ns}-editable-text-input::placeholder {
-          color: $color;
-        }
-
-        &:hover::before {
-          box-shadow:
-            input-transition-shadow($color),
-            inset border-shadow(0.4, $color, 1px);
-        }
-
-        &.#{$ns}-editable-text-editing::before {
-          box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
-        }
+        box-shadow: var(--bp-editable-text-intent-box-shadow-editing);
       }
     }
   }
@@ -143,7 +109,7 @@
 .#{$ns}-editable-text-content {
   overflow: hidden;
   // magical number to account for slight increase in input width for cursor bar
-  padding-right: $pt-spacing * 0.5;
+  padding-right: calc(var(--bp-spacing) * 0.5);
   text-overflow: ellipsis;
   // preserve so trailing whitespace is included in scrollWidth
   white-space: pre;
@@ -155,11 +121,7 @@
   }
 
   .#{$ns}-editable-text-placeholder > & {
-    color: $input-placeholder-color;
-
-    .#{$ns}-dark & {
-      color: $dark-input-placeholder-color;
-    }
+    color: var(--bp-input-placeholder-color);
   }
 }
 

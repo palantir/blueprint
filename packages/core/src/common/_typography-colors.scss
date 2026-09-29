@@ -10,24 +10,24 @@
   // the root, outside of any selector, but _reset.scss sets the body text color for us.
 
   .#{$ns}-text-muted {
-    color: $pt-text-color-muted;
+    color: var(--bp-text-color-muted);
   }
 
   .#{$ns}-text-disabled {
-    color: $pt-text-color-disabled;
+    color: var(--bp-text-color-disabled);
   }
 
   .#{$ns}-running-text {
     hr {
-      border-color: $pt-divider-black;
+      border-color: var(--bp-divider-color);
     }
   }
 
   a {
-    color: $pt-link-color;
+    color: var(--bp-link-color);
 
     &:hover {
-      color: $pt-link-color;
+      color: var(--bp-link-color);
     }
 
     #{$icon-classes} {
@@ -41,22 +41,22 @@
 
   .#{$ns}-code,
   .#{$ns}-running-text code {
-    background: $pt-code-background-color;
-    box-shadow: inset border-shadow(0.2);
-    color: $pt-code-text-color;
+    background: var(--bp-code-background-color);
+    box-shadow: var(--bp-code-box-shadow);
+    color: var(--bp-code-text-color);
 
     a > & {
       // <code> in links. markdown: [`code`](http://url)
       // $pt-link-color does not have good contrast with non-link <code>'s in light theme, so we use a brighter hue
-      color: $pt-intent-primary;
+      color: var(--bp-code-link-color);
     }
   }
 
   .#{$ns}-code-block,
   .#{$ns}-running-text pre {
-    background: $pt-code-background-color;
-    box-shadow: inset 0 0 0 1px $pt-divider-black;
-    color: $pt-text-color;
+    background: var(--bp-code-background-color);
+    box-shadow: var(--bp-code-box-shadow);
+    color: var(--bp-text-color);
 
     > code {
       background: none;
@@ -66,49 +66,49 @@
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      border: 1px solid $pt-high-contrast-mode-border-color;
+      border: 1px solid var(--bp-high-contrast-border-color);
       box-shadow: none;
     }
   }
 
   .#{$ns}-key,
   .#{$ns}-running-text kbd {
-    background: $white;
-    box-shadow: $pt-elevation-shadow-1;
-    color: $pt-text-color-muted;
+    background: var(--bp-key-background-color);
+    box-shadow: var(--bp-elevation-shadow-1);
+    color: var(--bp-text-color-muted);
   }
 
   #{$icon-classes} {
     @each $intent, $color in $pt-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
-        color: $color;
+        color: var(--bp-intent-#{$intent}-text-color);
       }
     }
   }
 }
 
 @mixin pt-dark-typography-colors() {
-  color: $pt-dark-text-color;
+  color: var(--bp-text-color);
 
   .#{$ns}-text-muted {
-    color: $pt-dark-text-color-muted;
+    color: var(--bp-text-color-muted);
   }
 
   .#{$ns}-text-disabled {
-    color: $pt-dark-text-color-disabled;
+    color: var(--bp-text-color-disabled);
   }
 
   .#{$ns}-running-text {
     hr {
-      border-color: $pt-dark-divider-white;
+      border-color: var(--bp-divider-color);
     }
   }
 
   a {
-    color: $pt-dark-link-color;
+    color: var(--bp-link-color);
 
     &:hover {
-      color: $pt-dark-link-color;
+      color: var(--bp-link-color);
     }
 
     #{$icon-classes} {
@@ -122,20 +122,20 @@
 
   .#{$ns}-code,
   .#{$ns}-running-text code {
-    background: $pt-dark-code-background-color;
-    box-shadow: inset border-shadow(0.2, $white);
-    color: $pt-dark-code-text-color;
+    background: var(--bp-code-background-color);
+    box-shadow: var(--bp-code-box-shadow);
+    color: var(--bp-code-text-color);
 
     a > & {
-      color: inherit;
+      color: var(--bp-code-link-color);
     }
   }
 
   .#{$ns}-code-block,
   .#{$ns}-running-text pre {
-    background: $pt-dark-code-background-color;
-    box-shadow: inset border-shadow(0.2, $white);
-    color: $pt-dark-text-color;
+    background: var(--bp-code-background-color);
+    box-shadow: var(--bp-code-box-shadow);
+    color: var(--bp-text-color);
 
     > code {
       background: none;
@@ -146,15 +146,15 @@
 
   .#{$ns}-key,
   .#{$ns}-running-text kbd {
-    background: $dark-gray3;
-    box-shadow: $pt-dark-elevation-shadow-1;
-    color: $pt-dark-text-color-muted;
+    background: var(--bp-key-background-color);
+    box-shadow: var(--bp-elevation-shadow-1);
+    color: var(--bp-text-color-muted);
   }
 
   #{$icon-classes} {
     @each $intent, $color in $pt-dark-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
-        color: $color;
+        color: var(--bp-intent-#{$intent}-text-color);
       }
     }
   }

@@ -28,74 +28,101 @@ $tag-round-adjustment: $pt-spacing * 0.5 !default;
 
 $tag-intent-colors: (
   "primary": (
-    var(--bp-intent-primary-rest),
-    var(--bp-intent-primary-hover),
-    var(--bp-intent-primary-active),
-    var(--bp-intent-primary-foreground),
+    $pt-intent-primary,
+    $blue2,
+    $blue1,
+    $white,
   ),
   "success": (
-    var(--bp-intent-success-rest),
-    var(--bp-intent-success-hover),
-    var(--bp-intent-success-active),
-    var(--bp-intent-success-foreground),
+    $pt-intent-success,
+    $green2,
+    $green1,
+    $white,
   ),
   "warning": (
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h),
-    oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h),
-    oklch(from var(--bp-intent-warning-active) calc(l + 0.2) calc(c + 0.05) h),
-    oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h),
+    $orange5,
+    $orange4,
+    $orange3,
+    $pt-text-color,
   ),
   "danger": (
-    var(--bp-intent-danger-rest),
-    var(--bp-intent-danger-hover),
-    var(--bp-intent-danger-active),
-    var(--bp-intent-danger-foreground),
+    $pt-intent-danger,
+    $red2,
+    $red1,
+    $white,
   ),
 ) !default;
 
-$minimal-tag-intent-colors: (
+$tag-runtime-intent-colors: (
   "primary": (
     var(--bp-intent-primary-rest),
     var(--bp-intent-primary-hover),
     var(--bp-intent-primary-active),
+    var(--bp-tag-intent-primary-text-color),
   ),
   "success": (
     var(--bp-intent-success-rest),
     var(--bp-intent-success-hover),
     var(--bp-intent-success-active),
+    var(--bp-tag-intent-success-text-color),
   ),
   "warning": (
-    var(--bp-intent-warning-rest),
-    var(--bp-intent-warning-hover),
-    var(--bp-intent-warning-active),
+    var(--bp-tag-intent-warning-background-color),
+    var(--bp-tag-intent-warning-background-color-hover),
+    var(--bp-tag-intent-warning-background-color-active),
+    var(--bp-tag-intent-warning-text-color),
   ),
   "danger": (
     var(--bp-intent-danger-rest),
     var(--bp-intent-danger-hover),
     var(--bp-intent-danger-active),
+    var(--bp-tag-intent-danger-text-color),
+  ),
+);
+
+$minimal-tag-intent-colors: (
+  "primary": (
+    $pt-intent-primary,
+    $blue2,
+    $blue1,
+  ),
+  "success": (
+    $pt-intent-success,
+    $green2,
+    $green1,
+  ),
+  "warning": (
+    $pt-intent-warning,
+    $orange2,
+    $orange1,
+  ),
+  "danger": (
+    $pt-intent-danger,
+    $red2,
+    $red1,
   ),
 ) !default;
 
 $minimal-dark-tag-intent-colors: (
   "primary": (
-    var(--bp-intent-primary-rest),
-    oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h),
+    $pt-intent-primary,
+    $blue5,
+    $blue6,
   ),
   "success": (
-    var(--bp-intent-success-rest),
-    oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h),
-    oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h),
+    $pt-intent-success,
+    $green5,
+    $green6,
   ),
   "warning": (
-    var(--bp-intent-warning-rest),
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h),
+    $pt-intent-warning,
+    $orange5,
+    $orange6,
   ),
   "danger": (
-    var(--bp-intent-danger-rest),
-    oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h),
+    $pt-intent-danger,
+    $red5,
+    $red6,
   ),
 ) !default;
 
@@ -103,19 +130,19 @@ $minimal-dark-tag-intent-colors: (
 // ---------------------------------------------------------------------------------------------------------------------
 
 @mixin pt-tag() {
-  @include pt-flex-container(row, var(--bp-surface-spacing), inline);
+  @include pt-flex-container(row, var(--bp-tag-icon-spacing), inline);
   align-items: center;
-  background-color: var(--bp-intent-default-rest);
+  background-color: var(--bp-tag-background-color);
   border: none;
-  border-radius: var(--bp-surface-border-radius);
+  border-radius: var(--bp-border-radius);
   box-shadow: none;
-  color: var(--bp-intent-default-foreground);
-  font-size: var(--bp-typography-size-body-small);
-  line-height: calc(var(--bp-surface-spacing) * 4);
+  color: var(--bp-tag-text-color);
+  font-size: var(--bp-font-size-small);
+  line-height: var(--bp-tag-line-height);
   max-width: 100%;
-  min-height: calc(var(--bp-surface-spacing) * 5);
-  min-width: calc(var(--bp-surface-spacing) * 5);
-  padding: calc(var(--bp-surface-spacing) * 0.5) calc(var(--bp-surface-spacing) * 1.5);
+  min-height: var(--bp-tag-height);
+  min-width: var(--bp-tag-height);
+  padding: var(--bp-tag-padding-block) var(--bp-tag-padding-inline);
   position: relative;
 
   // Center text for short content (e.g. single characters) only when the text
@@ -125,51 +152,53 @@ $minimal-dark-tag-intent-colors: (
   }
 
   &:focus {
-    @include focus-outline(0);
+    outline: var(--bp-focus-indicator-color) solid calc(var(--bp-spacing) * 0.5);
+    outline-offset: 0;
+    -moz-outline-radius: calc(var(--bp-spacing) * 1.5);
   }
 
   &.#{$ns}-interactive {
     cursor: pointer;
 
     &:hover {
-      background: var(--bp-intent-default-hover);
+      background: var(--bp-tag-background-color-hover);
     }
 
     &:active,
     &.#{$ns}-active {
-      background: var(--bp-intent-default-active);
+      background: var(--bp-tag-background-color-active);
     }
   }
 
   &.#{$ns}-round {
-    border-radius: calc(var(--bp-surface-spacing) * 7.5);
-    padding-left: calc(var(--bp-surface-spacing) * 2);
+    border-radius: var(--bp-tag-height-large);
+    padding-left: calc(var(--bp-tag-padding-inline) + var(--bp-tag-round-adjustment));
     // optical adjustment for rounded tags
-    padding-right: calc(var(--bp-surface-spacing) * 2);
+    padding-right: calc(var(--bp-tag-padding-inline) + var(--bp-tag-round-adjustment));
   }
 
   > #{$icon-classes} {
-    fill: var(--bp-intent-default-foreground);
+    fill: var(--bp-tag-text-color);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid var(--bp-high-contrast-border-color);
   }
 }
 
 @mixin pt-tag-large() {
-  @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
-  font-size: var(--bp-typography-size-body-medium);
-  line-height: calc(var(--bp-surface-spacing) * 4.5);
-  min-height: calc(var(--bp-surface-spacing) * 7.5);
-  min-width: calc(var(--bp-surface-spacing) * 7.5);
-  padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 2);
+  @include pt-flex-margin(row, var(--bp-tag-icon-spacing-large));
+  font-size: var(--bp-font-size);
+  line-height: var(--bp-tag-line-height-large);
+  min-height: var(--bp-tag-height-large);
+  min-width: var(--bp-tag-height-large);
+  padding: var(--bp-tag-padding-block-large) var(--bp-tag-padding-inline-large);
 
   &.#{$ns}-round {
-    padding-left: calc(var(--bp-surface-spacing) * 2.5);
+    padding-left: calc(var(--bp-tag-padding-inline-large) + var(--bp-tag-round-adjustment));
     // optical adjustment for rounded tags
-    padding-right: calc(var(--bp-surface-spacing) * 2.5);
+    padding-right: calc(var(--bp-tag-padding-inline-large) + var(--bp-tag-round-adjustment));
   }
 }
 
@@ -189,8 +218,7 @@ $minimal-dark-tag-intent-colors: (
   }
 
   .#{$ns}-tag-remove {
-    /* stylelint-disable-next-line alpha-value-notation */
-    color: oklch(from $text-color l c h / 0.7);
+    color: var(--bp-tag-intent-remove-color);
 
     &:hover,
     &:active {
@@ -201,46 +229,21 @@ $minimal-dark-tag-intent-colors: (
 
 @mixin pt-tag-minimal() {
   > #{$icon-classes} {
-    fill: var(--bp-typography-color-muted);
+    fill: var(--bp-icon-color);
   }
 
   &:not([class*="#{$ns}-intent-"]) {
-    @include pt-tag-minimal-interactive(
-      oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
-      var(--bp-palette-black)
-    );
+    @include pt-tag-minimal-interactive($gray3, $black);
 
-    /* stylelint-disable-next-line alpha-value-notation */
-    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
-    color: var(--bp-typography-color-default-rest);
+    background-color: var(--bp-tag-minimal-background-color);
+    color: var(--bp-text-color);
 
     .#{$ns}-tag-remove {
-      color: var(--bp-typography-color-muted);
+      color: var(--bp-tag-minimal-remove-color);
 
       &:hover,
       &:active {
-        color: var(--bp-intent-default-hover);
-      }
-    }
-
-    .#{$ns}-dark &,
-    [data-bp-color-scheme="dark"] & {
-      @include pt-tag-minimal-interactive(
-        oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
-        var(--bp-palette-white)
-      );
-
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
-      color: oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h);
-
-      .#{$ns}-tag-remove {
-        color: var(--bp-typography-color-muted);
-
-        &:hover,
-        &:active {
-          color: oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h);
-        }
+        color: var(--bp-tag-minimal-remove-color-hover);
       }
     }
   }
@@ -251,80 +254,72 @@ $minimal-dark-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
-      color: $text-color;
+      background-color: var(--bp-tag-minimal-background-color-hover);
+      color: var(--bp-tag-minimal-text-color-interactive);
     }
 
     &.#{$ns}-active,
     &:active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.35);
-      color: $text-color;
+      background-color: var(--bp-tag-minimal-background-color-active);
+      color: var(--bp-tag-minimal-text-color-interactive);
     }
   }
 }
 
 @mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: oklch(from $background-color l c h / 0.1);
-  color: $text-color;
+  background-color: var(--bp-tag-minimal-intent-background-color);
+  color: var(--bp-tag-minimal-intent-text-color);
 
   > #{$icon-classes} {
-    fill: $text-color;
+    fill: var(--bp-tag-minimal-intent-text-color);
   }
 
   &.#{$ns}-interactive {
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.2);
-      color: $hover-active-text-color;
+      background-color: var(--bp-tag-minimal-intent-background-color-hover);
+      color: var(--bp-tag-minimal-intent-text-color-interactive);
     }
 
     &:active,
     &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
-      color: $hover-active-text-color;
+      background-color: var(--bp-tag-minimal-intent-background-color-active);
+      color: var(--bp-tag-minimal-intent-text-color-interactive);
     }
   }
 
   .#{$ns}-tag-remove {
-    color: $text-color;
+    color: var(--bp-tag-minimal-intent-text-color);
 
     &:hover,
     &:active {
-      color: $hover-active-text-color;
+      color: var(--bp-tag-minimal-intent-text-color-interactive);
     }
   }
 }
 
 @mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: oklch(from $background-color l c h / 0.2);
-  color: $text-color;
+  background-color: var(--bp-tag-minimal-intent-background-color);
+  color: var(--bp-tag-minimal-intent-text-color);
 
   &.#{$ns}-interactive {
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
-      color: $hover-active-text-color;
+      background-color: var(--bp-tag-minimal-intent-background-color-hover);
+      color: var(--bp-tag-minimal-intent-text-color-interactive);
     }
 
     &:active,
     &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.35);
-      color: $hover-active-text-color;
+      background-color: var(--bp-tag-minimal-intent-background-color-active);
+      color: var(--bp-tag-minimal-intent-text-color-interactive);
     }
   }
 
   .#{$ns}-tag-remove {
-    color: $text-color;
+    color: var(--bp-tag-minimal-intent-text-color);
 
     &:hover,
     &:active {
-      color: $hover-active-text-color;
+      color: var(--bp-tag-minimal-intent-text-color-interactive);
     }
   }
 }
@@ -332,17 +327,16 @@ $minimal-dark-tag-intent-colors: (
 @mixin pt-tag-remove() {
   background: none;
   border: none;
-  /* stylelint-disable-next-line alpha-value-notation */
-  color: oklch(from var(--bp-intent-default-foreground) l c h / 0.7);
+  color: var(--bp-tag-remove-color);
   cursor: pointer;
   display: flex;
-  margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
+  margin-bottom: calc(var(--bp-tag-padding-block) * -1);
   /* stylelint-disable-next-line declaration-no-important */
-  margin-right: calc(var(--bp-surface-spacing) * -1.5) !important;
+  margin-right: calc(var(--bp-tag-padding-inline) * -1) !important;
   // top/bottom to allow for padding to enlarge click area,
   // right to tuck remove button into padding space.
-  margin-top: calc(var(--bp-surface-spacing) * -0.5);
-  padding: calc(var(--bp-surface-spacing) * 0.5);
+  margin-top: calc(var(--bp-tag-padding-block) * -1);
+  padding: var(--bp-tag-padding-block);
   padding-left: 0;
 
   &:hover {
@@ -357,23 +351,22 @@ $minimal-dark-tag-intent-colors: (
 
   &:hover,
   &:active {
-    color: var(--bp-intent-default-foreground);
+    color: var(--bp-tag-text-color);
   }
 
   // CSS API support
   &:empty::before {
-    @include pt-icon;
+    @include pt-icon(var(--bp-icon-size-standard), 16);
     content: map.get($blueprint-icon-codepoints, "small-cross");
   }
 
   .#{$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
-    margin-right: calc(var(--bp-surface-spacing) * -2) !important;
-    padding: 0 var(--bp-surface-spacing) 0 0;
+    margin-right: calc(var(--bp-tag-padding-inline-large) * -1) !important;
+    padding: 0 calc(var(--bp-tag-padding-inline-large) * 0.5) 0 0;
 
     &:empty::before {
-      // font-family name "blueprint-icons-20" requires a compile-time value for Sass string interpolation
-      @include pt-icon-sized(calc(var(--bp-surface-spacing) * 5), 20);
+      @include pt-icon-sized(var(--bp-icon-size-large), 20);
     }
   }
 }
@@ -422,35 +415,35 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin minimal-compound-tag-colors($base-color) {
-  /* stylelint-disable alpha-value-notation */
-  $left-colors: (
-    oklch(from $base-color l c h / 0.2),
-    oklch(from $base-color l c h / 0.3),
-    oklch(from $base-color l c h / 0.4)
+  $left-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.4));
+  $right-colors: (rgba($base-color, 0.1), rgba($base-color, 0.2), rgba($base-color, 0.3));
+  $runtime-left-colors: (
+    var(--bp-compound-tag-minimal-left-background-color),
+    var(--bp-compound-tag-minimal-left-background-color-hover),
+    var(--bp-compound-tag-minimal-left-background-color-active)
   );
-  $right-colors: (
-    oklch(from $base-color l c h / 0.1),
-    oklch(from $base-color l c h / 0.2),
-    oklch(from $base-color l c h / 0.3)
+  $runtime-right-colors: (
+    var(--bp-compound-tag-minimal-right-background-color),
+    var(--bp-compound-tag-minimal-right-background-color-hover),
+    var(--bp-compound-tag-minimal-right-background-color-active)
   );
-  /* stylelint-enable alpha-value-notation */
 
-  @include compound-tag-colors($left-colors, $right-colors);
+  @include compound-tag-colors($runtime-left-colors, $runtime-right-colors);
 }
 
 @mixin dark-minimal-compound-tag-colors($base-color) {
-  /* stylelint-disable alpha-value-notation */
-  $left-colors: (
-    oklch(from $base-color l c h / 0.4),
-    oklch(from $base-color l c h / 0.5),
-    oklch(from $base-color l c h / 0.55)
+  $left-colors: (rgba($base-color, 0.4), rgba($base-color, 0.5), rgba($base-color, 0.55));
+  $right-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.35));
+  $runtime-left-colors: (
+    var(--bp-compound-tag-minimal-left-background-color),
+    var(--bp-compound-tag-minimal-left-background-color-hover),
+    var(--bp-compound-tag-minimal-left-background-color-active)
   );
-  $right-colors: (
-    oklch(from $base-color l c h / 0.2),
-    oklch(from $base-color l c h / 0.3),
-    oklch(from $base-color l c h / 0.35)
+  $runtime-right-colors: (
+    var(--bp-compound-tag-minimal-right-background-color),
+    var(--bp-compound-tag-minimal-right-background-color-hover),
+    var(--bp-compound-tag-minimal-right-background-color-active)
   );
-  /* stylelint-enable alpha-value-notation */
 
-  @include compound-tag-colors($left-colors, $right-colors);
+  @include compound-tag-colors($runtime-left-colors, $runtime-right-colors);
 }

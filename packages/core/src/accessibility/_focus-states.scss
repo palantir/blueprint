@@ -2,7 +2,14 @@
 // Licensed under the Apache License, Version 2.0.
 
 :focus {
-  @include focus-outline;
+  outline: var(--bp-focus-indicator-color) solid calc(var(--bp-spacing) * 0.5);
+  outline-offset: calc(var(--bp-spacing) * 0.5);
+  -moz-outline-radius: calc(var(--bp-spacing) * 1.5);
+}
+
+.#{$ns}-dark :focus,
+[data-bp-color-scheme="dark"] :focus {
+  outline-color: var(--bp-focus-indicator-color);
 }
 
 // override any focus outline anywhere unless specifically ignored

@@ -1,7 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "./common";
+@import "../../common/variables";
 
 /*
 Skeletons
@@ -23,13 +23,13 @@ Styleguide skeleton
 
 @keyframes skeleton-glow {
   from {
-    background: $skeleton-color-start;
-    border-color: $skeleton-color-start;
+    background: var(--bp-skeleton-color-start);
+    border-color: var(--bp-skeleton-color-start);
   }
 
   to {
-    background: $skeleton-color-end;
-    border-color: $skeleton-color-end;
+    background: var(--bp-skeleton-color-end);
+    border-color: var(--bp-skeleton-color-end);
   }
 }
 
@@ -37,15 +37,15 @@ Styleguide skeleton
 // CSS properties that should always override consumer values use the "!important" rule.
 /* stylelint-disable declaration-no-important */
 .#{$ns}-skeleton {
-  animation: $skeleton-animation;
+  animation: var(--bp-skeleton-animation-duration) linear infinite alternate skeleton-glow;
 
   // do not !important this for Firefox support
-  background: $skeleton-color-start;
+  background: var(--bp-skeleton-color-start);
 
   // Prevent background color from extending to the border and overlappping
   background-clip: padding-box !important;
-  border-color: $skeleton-color-start !important;
-  border-radius: $pt-spacing * 0.5;
+  border-color: var(--bp-skeleton-color-start) !important;
+  border-radius: calc(var(--bp-spacing) * 0.5);
   box-shadow: none !important;
 
   // Transparent text will occupy space but be invisible to the user
