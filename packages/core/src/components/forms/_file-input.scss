@@ -5,9 +5,9 @@
 @import "../button/common";
 @import "../../common/mixins";
 
-$file-input-button-width: $pt-spacing * 17.5 !default;
-$file-input-button-width-large: $pt-spacing * 21.25 !default;
-$file-input-button-width-small: $pt-spacing * 13.75 !default;
+$file-input-button-width: calc(var(--bp-spacing) * 17.5) !default;
+$file-input-button-width-large: calc(var(--bp-spacing) * 21.25) !default;
+$file-input-button-width-small: calc(var(--bp-spacing) * 13.75) !default;
 $file-input-button-padding: ($pt-input-height - $pt-button-height-small) * 0.5 !default;
 $file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) * 0.5 !default;
 $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-smaller) * 0.5 !default;
@@ -20,7 +20,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   input {
     margin: 0;
-    min-width: $pt-spacing * 50;
+    min-width: calc(var(--bp-spacing) * 50);
     opacity: 0;
 
     // unlike other form controls that directly style native elements,
@@ -91,7 +91,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
   @include overflow-ellipsis;
   color: $pt-text-color-disabled;
   left: 0;
-  padding-right: $file-input-button-width + $input-padding-horizontal;
+  padding-right: calc($file-input-button-width + $input-padding-horizontal);
   position: absolute;
   right: 0;
   top: 0;
@@ -101,7 +101,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     @include pt-button-default-colors;
     @include pt-button-height($pt-button-height-small);
     @include overflow-ellipsis;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-border-radius);
     content: "Browse";
     line-height: $pt-button-height-small;
     margin: $file-input-button-padding;
@@ -124,7 +124,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   .#{$ns}-large & {
     @include pt-input-large;
-    padding-right: $file-input-button-width-large + $input-padding-horizontal;
+    padding-right: calc($file-input-button-width-large + $input-padding-horizontal);
 
     &::after {
       @include pt-button-height($pt-button-height);
@@ -136,7 +136,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   .#{$ns}-small & {
     @include pt-input-small;
-    padding-right: $file-input-button-width-small + $input-padding-horizontal;
+    padding-right: calc($file-input-button-width-small + $input-padding-horizontal);
 
     &::after {
       @include pt-button-height($pt-button-height-smaller);

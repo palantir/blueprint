@@ -1,4 +1,14 @@
 {
+    "border-radius": {
+        "$type": "dimension",
+        "$value": "{surface.border-radius}",
+        "$description": "Canonical shared corner radius"
+    },
+    "spacing": {
+        "$type": "dimension",
+        "$value": "{surface.spacing}",
+        "$description": "Canonical shared spacing unit"
+    },
     "surface": {
         "border-color": {
             "$type": "color",
