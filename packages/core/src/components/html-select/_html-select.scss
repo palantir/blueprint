@@ -22,7 +22,6 @@
 
   .#{$ns}-icon {
     @extend %pt-select-icon;
-    @include pt-icon-colors;
   }
 
   &.#{$ns}-minimal select {
@@ -36,8 +35,8 @@
 
     &::after, // CSS support
     .#{$ns}-icon {
-      right: $pt-spacing * 3;
-      top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
+      right: calc(var(--bp-spacing) * 3);
+      top: var(--bp-html-select-icon-offset-block-large);
     }
   }
 
@@ -54,16 +53,16 @@
     }
 
     option {
-      background-color: $pt-dark-popover-background-color;
-      color: $pt-dark-text-color;
+      background-color: var(--bp-popover-background-color);
+      color: var(--bp-text-color);
     }
 
     option:disabled {
-      color: $pt-dark-text-color-disabled;
+      color: var(--bp-text-color-disabled);
     }
 
     &::after {
-      color: $pt-dark-icon-color;
+      color: var(--bp-icon-color);
     }
   }
 }

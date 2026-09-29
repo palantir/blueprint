@@ -9,7 +9,7 @@
   cursor: default;
   display: flex;
   flex-wrap: wrap;
-  height: $pt-input-height;
+  height: var(--bp-control-height);
   list-style: none;
   // unstyled inline list reset
   margin: 0;
@@ -21,19 +21,21 @@
     display: flex;
 
     &::after {
-      background: svg-icon(
-        "16px/chevron-right.svg",
-        (
-          path: (
-            fill: $pt-icon-color,
-          ),
-        )
-      );
+      background-color: var(--bp-icon-color);
       content: "";
       display: block;
-      height: $pt-icon-size-standard;
-      margin: 0 $pt-spacing;
-      width: $pt-icon-size-standard;
+      height: var(--bp-icon-size-standard);
+      margin: 0 var(--bp-spacing);
+      mask: svg-icon(
+          "16px/chevron-right.svg",
+          (
+            path: (
+              fill: #000000,
+            ),
+          )
+        )
+        center / contain no-repeat;
+      width: var(--bp-icon-size-standard);
     }
 
     &:last-of-type::after {
@@ -47,12 +49,12 @@
 .#{$ns}-breadcrumbs-collapsed {
   align-items: center;
   display: inline-flex;
-  font-size: $pt-font-size-large;
+  font-size: var(--bp-font-size-large);
 }
 
 .#{$ns}-breadcrumb,
 .#{$ns}-breadcrumbs-collapsed {
-  color: $pt-text-color-muted;
+  color: var(--bp-text-color-muted);
 }
 
 .#{$ns}-breadcrumb {
@@ -61,12 +63,12 @@
   }
 
   &.#{$ns}-disabled {
-    color: $pt-text-color-disabled;
+    color: var(--bp-text-color-disabled);
     cursor: not-allowed;
   }
 
   .#{$ns}-icon {
-    margin-right: $pt-spacing;
+    margin-right: var(--bp-spacing);
   }
 }
 
@@ -82,81 +84,34 @@
 }
 
 .#{$ns}-breadcrumbs-collapsed {
-  background: rgba($gray3, 0.15);
+  background: var(--bp-breadcrumb-collapsed-background-color);
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-border-radius);
   cursor: pointer;
-  margin-right: $pt-spacing * 0.5;
-  padding: 1px $pt-spacing;
+  margin-right: calc(var(--bp-spacing) * 0.5);
+  padding: 1px var(--bp-spacing);
   vertical-align: text-bottom;
 
   &::before {
-    background: svg-icon(
+    background-color: var(--bp-icon-color);
+    content: "";
+    display: block;
+    height: var(--bp-icon-size-standard);
+    mask: svg-icon(
         "16px/more.svg",
         (
           path: (
-            fill: $pt-icon-color,
+            fill: #000000,
           ),
         )
       )
-      center no-repeat;
-    content: "";
-    display: block;
-    height: $pt-icon-size-standard;
-    width: $pt-icon-size-standard;
+      center / contain no-repeat;
+    width: var(--bp-icon-size-standard);
   }
 
   &:hover {
-    background: rgba($gray3, 0.3);
-    color: $pt-text-color;
+    background: var(--bp-breadcrumb-collapsed-background-color-hover);
+    color: var(--bp-text-color);
     text-decoration: none;
-  }
-}
-
-.#{$ns}-dark {
-  .#{$ns}-breadcrumb,
-  .#{$ns}-breadcrumbs-collapsed {
-    color: $pt-dark-text-color-muted;
-  }
-
-  .#{$ns}-breadcrumbs > li::after {
-    background: svg-icon(
-      "16px/chevron-right.svg",
-      (
-        path: (
-          fill: $pt-dark-icon-color,
-        ),
-      )
-    );
-    color: $pt-dark-icon-color;
-  }
-
-  .#{$ns}-breadcrumb.#{$ns}-disabled {
-    color: $pt-dark-text-color-disabled;
-  }
-
-  .#{$ns}-breadcrumb-current {
-    color: $pt-dark-text-color;
-  }
-
-  .#{$ns}-breadcrumbs-collapsed {
-    background: rgba($gray3, 0.2);
-
-    &::before {
-      background: svg-icon(
-          "16px/more.svg",
-          (
-            path: (
-              fill: $pt-dark-icon-color,
-            ),
-          )
-        )
-        center no-repeat;
-    }
-
-    &:hover {
-      background: rgba($gray3, 0.3);
-      color: $pt-dark-text-color;
-    }
   }
 }

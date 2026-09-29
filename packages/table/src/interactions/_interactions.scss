@@ -34,33 +34,33 @@ $reorder-handle-width: $pt-spacing * 5.5 !default;
 .#{$ns}-table-selection-enabled {
   &.#{$ns}-table-column-headers .#{$ns}-table-header {
     @include reorderable-header;
-    cursor: $select-column-cursor;
+    cursor: var(--bp-table-cursor-select-column);
   }
 
   &.#{$ns}-table-row-headers .#{$ns}-table-header {
     @include reorderable-header;
-    cursor: $select-row-cursor;
+    cursor: var(--bp-table-cursor-select-row);
   }
 
   &.#{$ns}-table-menu {
-    cursor: $select-table-cursor;
+    cursor: var(--bp-table-cursor-select-table);
   }
 
   .#{$ns}-editable-text::before,
   .#{$ns}-editable-content {
-    cursor: $select-cell-cursor;
+    cursor: var(--bp-table-cursor-select-cell);
   }
 }
 
 /* prettier-ignore */
 .#{$ns}-table-column-header-cell.#{$ns}-table-has-reorder-handle:not(.#{$ns}-table-has-interaction-bar) {
   .#{$ns}-table-column-name-text {
-    padding-left: $reorder-handle-width;
+    padding-left: var(--bp-table-interaction-reorder-handle-width);
   }
 
   // keep the editable cell input flush with the cell's left border
   .#{$ns}-table-editable-name::before {
-    left: -$reorder-handle-width;
+    left: calc(-1 * var(--bp-table-interaction-reorder-handle-width));
   }
 }
 
@@ -68,32 +68,20 @@ $reorder-handle-width: $pt-spacing * 5.5 !default;
   @include grabbable;
   align-items: center;
   bottom: 0;
-  color: $pt-text-color-disabled;
+  color: var(--bp-table-interaction-reorder-handle-color);
   display: flex;
   justify-content: center;
   left: 0;
   position: absolute;
   top: 0;
-  width: $reorder-handle-width;
+  width: var(--bp-table-interaction-reorder-handle-width);
 
   &:hover {
-    color: $pt-icon-color-hover;
+    color: var(--bp-table-interaction-reorder-handle-hover-color);
   }
 
   &:active {
-    color: $pt-intent-primary;
-  }
-
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color-disabled;
-
-    &:hover {
-      color: $pt-dark-icon-color-hover;
-    }
-
-    &:active {
-      color: $pt-intent-primary;
-    }
+    color: var(--bp-intent-primary-rest);
   }
 }
 
@@ -111,7 +99,7 @@ $reorder-handle-width: $pt-spacing * 5.5 !default;
   // Move the handle target above the following cell
   // this allows the mouse to hover the target on both
   // sides when the mouse is within the padding distance
-  z-index: $pt-z-index-overlay;
+  z-index: var(--bp-table-region-layer-z-index);
 
   &:hover,
   &.#{$ns}-table-dragging {
@@ -119,50 +107,50 @@ $reorder-handle-width: $pt-spacing * 5.5 !default;
   }
 
   &.#{$ns}-table-resize-vertical {
-    bottom: -$cell-border-width;
-    cursor: $resize-vertical-cursor;
+    bottom: calc(-1 * var(--bp-table-cell-border-width));
+    cursor: var(--bp-table-cursor-resize-vertical);
     right: 0;
     top: 0;
-    width: $resize-handle-target-width;
+    width: var(--bp-table-interaction-resize-handle-target-width);
   }
 
   &.#{$ns}-table-resize-horizontal {
     bottom: 0;
-    cursor: $resize-horizontal-cursor;
-    height: $resize-handle-target-width;
+    cursor: var(--bp-table-cursor-resize-horizontal);
+    height: var(--bp-table-interaction-resize-handle-target-width);
     left: 0;
-    right: -$cell-border-width;
+    right: calc(-1 * var(--bp-table-cell-border-width));
   }
 }
 
 .#{$ns}-table-resize-handle {
-  background-color: $resize-handle-color;
+  background-color: var(--bp-table-interaction-resize-handle-color);
   position: absolute;
-  z-index: $pt-z-index-overlay;
+  z-index: var(--bp-table-region-layer-z-index);
 
   &.#{$ns}-table-dragging {
-    background-color: $resize-handle-dragging-color;
+    background-color: var(--bp-table-interaction-resize-handle-dragging-color);
   }
 }
 
 .#{$ns}-table-resize-vertical .#{$ns}-table-resize-handle {
   bottom: 0;
-  left: $resize-handle-padding;
+  left: var(--bp-table-interaction-resize-handle-padding);
   top: 0;
-  width: $resize-handle-width;
+  width: var(--bp-table-interaction-resize-handle-width);
 }
 
 .#{$ns}-table-resize-horizontal .#{$ns}-table-resize-handle {
-  height: $resize-handle-width;
+  height: var(--bp-table-interaction-resize-handle-width);
   left: 0;
   right: 0;
-  top: $resize-handle-padding;
+  top: var(--bp-table-interaction-resize-handle-padding);
 }
 
 .#{$ns}-table-resize-guides .#{$ns}-table-horizontal-guide {
-  background-color: $resize-handle-dragging-color;
-  height: $resize-handle-width;
-  margin-top: $resize-handle-position-correction;
+  background-color: var(--bp-table-interaction-resize-handle-dragging-color);
+  height: var(--bp-table-interaction-resize-handle-width);
+  margin-top: var(--bp-table-interaction-resize-handle-position-correction);
 
   &.#{$ns}-table-horizontal-guide-flush-top {
     margin-top: 0;
@@ -170,9 +158,9 @@ $reorder-handle-width: $pt-spacing * 5.5 !default;
 }
 
 .#{$ns}-table-resize-guides .#{$ns}-table-vertical-guide {
-  background-color: $resize-handle-dragging-color;
-  margin-left: $resize-handle-position-correction;
-  width: $resize-handle-width;
+  background-color: var(--bp-table-interaction-resize-handle-dragging-color);
+  margin-left: var(--bp-table-interaction-resize-handle-position-correction);
+  width: var(--bp-table-interaction-resize-handle-width);
 
   &.#{$ns}-table-vertical-guide-flush-left {
     margin-left: 0;

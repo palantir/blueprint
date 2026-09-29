@@ -1,0 +1,7 @@
+{
+    "source": {
+        "base": ["tokens/base/**/*.tokens.json"],
+        "dark": ["tokens/themes/dark/**/*.tokens.json"]
+    },
+    "output": "build/tokens.css"
+}

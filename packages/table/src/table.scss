@@ -5,6 +5,7 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
+@import "table-design-tokens";
 @import "@blueprintjs/colors/lib/scss/colors";
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/core/src/common/mixins";
@@ -24,19 +25,17 @@ $row-z-index: $column-z-index + 1 !default;
 $menu-z-index: $row-z-index + 1 !default;
 
 .#{$ns}-table-container {
-  background-color: $table-background-color;
+  background-color: var(--bp-table-background-color);
   display: flex;
   flex-direction: column;
   height: 100%; // IE 11
   max-height: 100%;
   max-width: 100%;
-  min-height: $pt-spacing * 15; // For unit tests, we make sure at least one row is visible
+  min-height: calc(
+    var(--bp-spacing) * 15
+  ); // For unit tests, we make sure at least one row is visible
   overflow: hidden;
   will-change: transform; // forces hardware acceleration for smoother animations
-
-  .#{$ns}-dark & {
-    background-color: $dark-table-background-color;
-  }
 
   .#{$ns}-loading {
     @include table-skeleton;
@@ -57,68 +56,50 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .#{$ns}-table-bottom-container {
-  color: $cell-text-color;
+  color: var(--bp-table-cell-text-color);
   display: flex;
   flex: 1 1 auto;
   height: 100%; // IE 11
   min-height: 0%; // Must use % unit for IE11
-
-  .#{$ns}-dark & {
-    color: $dark-cell-text-color;
-  }
 }
 
 .#{$ns}-table-menu {
-  background-color: $header-background-color;
+  background-color: var(--bp-table-header-background-color);
   flex: 0 0 auto;
   // Stay above the moving table-header
   position: relative;
-  z-index: $menu-z-index;
-
-  .#{$ns}-dark & {
-    background-color: $dark-header-background-color;
-  }
+  z-index: var(--bp-table-menu-z-index);
 }
 
 .#{$ns}-table-column-headers {
-  background-color: $header-background-color;
-  color: $column-header-text-color;
+  background-color: var(--bp-table-header-background-color);
+  color: var(--bp-table-header-column-text-color);
   display: block;
 
   // allow absolute position for region overlays
   position: relative;
   // make custom header content overlap table body
-  z-index: $column-z-index;
-
-  .#{$ns}-dark & {
-    background-color: $dark-header-background-color;
-    color: $dark-column-header-text-color;
-  }
+  z-index: var(--bp-table-column-header-z-index);
 }
 
 .#{$ns}-table-row-headers {
-  background-color: $header-background-color;
-  color: $row-header-text-color;
+  background-color: var(--bp-table-header-background-color);
+  color: var(--bp-table-header-row-text-color);
   flex: 0 0 auto;
   // allow absolute position for region overlay
   position: relative;
 
   // animate width changes on scroll end
-  transition: width $pt-transition-duration $pt-transition-ease;
+  transition: width var(--bp-transition-duration) var(--bp-transition-ease);
   // make custom header content overlap table body
-  z-index: $row-z-index;
-
-  .#{$ns}-dark & {
-    background-color: $dark-header-background-color;
-    color: $dark-row-header-text-color;
-  }
+  z-index: var(--bp-table-row-header-z-index);
 }
 
 .#{$ns}-table-body {
   flex: 1 1 100%;
   overflow: scroll;
   position: relative;
-  z-index: $body-z-index;
+  z-index: var(--bp-table-body-z-index);
 }
 
 .#{$ns}-table-body-virtual-client {
@@ -126,11 +107,7 @@ $menu-z-index: $row-z-index + 1 !default;
 }
 
 .#{$ns}-table-cell-client {
-  background: $cell-background-color;
-
-  .#{$ns}-dark & {
-    background: $dark-cell-background-color;
-  }
+  background: var(--bp-table-cell-background-color);
 }
 
 .#{$ns}-table-tbody {

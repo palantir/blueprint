@@ -7,5 +7,7 @@
 import { optimize } from "svgo";
 
 export const svgOptimizer = { optimize };
+export { buildDesignTokens } from "./src/designTokens.mjs";
+export { validateSassVariableMigration } from "./src/sassVariableMigration.mjs";
 export { loadPaths as sassNodeModulesLoadPaths } from "./src/sass/sassNodeModulesLoadPaths.mjs";
 export { sassSvgInlinerFactory } from "./src/sass/sassSvgInliner.mjs";

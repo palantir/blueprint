@@ -1,0 +1,152 @@
+{
+    "datetime": {
+        "datepicker": {
+            "background-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.3}"
+            },
+            "text-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            },
+            "legacy-week-number-text-color": {
+                "$type": "color",
+                "$value": "{text-color-muted}"
+            },
+            "disabled-text-color": {
+                "$type": "color",
+                "$value": "rgba(171, 179, 191, 0.6)"
+            },
+            "current-day-border-color": {
+                "$type": "color",
+                "$value": "rgba(255, 255, 255, 0.2)"
+            },
+            "footer-border-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.4)"
+            },
+            "legacy-background-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.3}"
+            }
+        },
+        "daterangepicker": {
+            "range-background-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.2)"
+            },
+            "range-selected-background-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.2)"
+            },
+            "range-selected-hover-background-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.4)"
+            },
+            "range-text-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            },
+            "selected-hover-text-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            }
+        },
+        "timepicker": {
+            "arrow-color": {
+                "$type": "color",
+                "$value": "{palette.gray.4}"
+            },
+            "arrow-hover-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            },
+            "input-row-background-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.3)"
+            },
+            "input-row-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+            },
+            "divider-text-color": {
+                "$type": "color",
+                "$value": "{palette.gray.4}"
+            },
+            "input-text-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            },
+            "disabled-background-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.3)"
+            },
+            "disabled-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+            },
+            "disabled-text-color": {
+                "$type": "color",
+                "$value": "rgba(171, 179, 191, 0.6)"
+            },
+            "intent": {
+                "primary": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(76, 144, 240, 0), 0 0 0 0 rgba(76, 144, 240, 0), inset 0 0 0 1px #4c90f0, inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(76, 144, 240, 0.752), 0 0 0 2px rgba(76, 144, 240, 0.752), inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #4c90f0"
+                    }
+                },
+                "success": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(50, 164, 103, 0), 0 0 0 0 rgba(50, 164, 103, 0), inset 0 0 0 1px #32a467, inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(50, 164, 103, 0.752), 0 0 0 2px rgba(50, 164, 103, 0.752), inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #32a467"
+                    }
+                },
+                "warning": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(236, 154, 60, 0), 0 0 0 0 rgba(236, 154, 60, 0), inset 0 0 0 1px #ec9a3c, inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(236, 154, 60, 0.752), 0 0 0 2px rgba(236, 154, 60, 0.752), inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #ec9a3c"
+                    }
+                },
+                "danger": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(231, 106, 110, 0), 0 0 0 0 rgba(231, 106, 110, 0), inset 0 0 0 1px #e76a6e, inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(231, 106, 110, 0.752), 0 0 0 2px rgba(231, 106, 110, 0.752), inset 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 -1px 1px 0 rgba(255, 255, 255, 0.3)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #e76a6e"
+                    }
+                }
+            }
+        }
+    }
+}

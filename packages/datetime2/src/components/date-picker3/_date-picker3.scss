@@ -11,7 +11,7 @@
 .#{$ns}-datepicker {
   .rdp {
     display: inline-block;
-    min-width: $datepicker-min-width;
+    min-width: var(--bp-datetime-datepicker-min-width);
     position: relative;
     vertical-align: top;
 
@@ -23,18 +23,18 @@
   .rdp-month {
     display: flex;
     flex-direction: column;
-    margin: 0 $datepicker-padding;
+    margin: 0 var(--bp-datetime-datepicker-padding);
     user-select: none;
 
     // create space between months (selector matches all but first month)
     & + & {
-      margin-left: $pt-spacing * 2;
+      margin-left: calc(var(--bp-spacing) * 2);
     }
   }
 
   .rdp-caption {
-    border-bottom: solid 1px $pt-divider-black;
-    padding-bottom: $datepicker-padding;
+    border-bottom: solid 1px var(--bp-datetime-datepicker-caption-divider-color);
+    padding-bottom: var(--bp-datetime-datepicker-padding);
   }
 
   .rdp-table {
@@ -45,21 +45,21 @@
   .rdp-head_cell {
     font-size: inherit;
     font-weight: 600;
-    padding-top: $datepicker-padding;
+    padding-top: var(--bp-datetime-datepicker-padding);
     text-decoration: none;
     text-transform: none;
   }
 
   .rdp-weeknumber {
-    color: $pt-text-color-muted;
+    color: var(--bp-datetime-datepicker-weeknumber-text-color);
   }
 
   .rdp-day {
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-border-radius);
 
     // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
     &.rdp-day_outside {
-      color: $pt-text-color-disabled;
+      color: var(--bp-datetime-datepicker-disabled-text-color);
     }
 
     &.rdp-day_today {
@@ -71,41 +71,41 @@
     &:not([disabled], .rdp-day_selected) {
       &:hover,
       &:focus {
-        background: $datepicker-day-background-color-hover;
-        color: $pt-text-color;
+        background: var(--bp-datetime-datepicker-day-hover-background-color);
+        color: var(--bp-datetime-datepicker-text-color);
       }
 
       &:active {
-        background: $datepicker-day-background-color-active;
+        background: var(--bp-datetime-datepicker-day-active-background-color);
       }
     }
 
     &.rdp-day_disabled {
       background: none;
-      color: $pt-text-color-disabled;
+      color: var(--bp-datetime-datepicker-disabled-text-color);
       cursor: not-allowed;
     }
 
     // selected styles should override disabled styles (this can happen when single day ranges are not allowed,
     // rdp applies "disabled" to the first selection in the range)
     &.rdp-day_selected {
-      background-color: $blue3;
-      border-radius: $pt-border-radius;
-      color: $white;
+      background-color: var(--bp-datetime-datepicker-selected-day-background-color);
+      border-radius: var(--bp-border-radius);
+      color: var(--bp-datetime-datepicker-selected-day-text-color);
 
       &:hover {
-        background-color: $blue2;
-        color: $white;
+        background-color: var(--bp-datetime-datepicker-selected-day-hover-background-color);
+        color: var(--bp-datetime-datepicker-selected-day-text-color);
       }
 
       &:active {
-        background-color: $blue1;
+        background-color: var(--bp-datetime-datepicker-selected-day-active-background-color);
       }
     }
   }
 
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
-    border: 1px solid $pt-divider-black;
+    border: 1px solid var(--bp-datetime-datepicker-current-day-border-color);
   }
 
   &.#{$ns}-datepicker-reverse-month-and-year .rdp-caption_dropdowns {
@@ -113,15 +113,31 @@
   }
 }
 
+.#{$ns}-dark .#{$ns}-datepicker,
+.#{$ns}-datepicker.#{$ns}-dark,
+[data-bp-color-scheme="dark"] .#{$ns}-datepicker,
+.#{$ns}-datepicker[data-bp-color-scheme="dark"] {
+  // DateTime2 did not set a light background, so keep this declaration dark-only for rollback parity.
+  background: var(--bp-datetime-datepicker-legacy-background-color);
+}
+
+.#{$ns}-dark .#{$ns}-datepicker .rdp-week-number,
+.#{$ns}-datepicker.#{$ns}-dark .rdp-week-number,
+[data-bp-color-scheme="dark"] .#{$ns}-datepicker .rdp-week-number,
+.#{$ns}-datepicker[data-bp-color-scheme="dark"] .rdp-week-number {
+  // Preserve the legacy selector typo while allowing nested explicit light themes to reset through the token.
+  color: var(--bp-datetime-datepicker-legacy-week-number-text-color);
+}
+
 .#{$ns}-datepicker-content {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: $pt-spacing;
+  gap: var(--bp-spacing);
 
   > .#{$ns}-divider {
     margin: 0; // margin is already applied via flex gap
-    width: calc(100% - #{$datepicker-padding * 2});
+    width: calc(100% - var(--bp-datetime-datepicker-padding) * 2);
   }
 }
 
@@ -129,11 +145,11 @@
 .#{$ns}-datepicker-year-select {
   select {
     font-weight: 600;
-    padding-left: $datepicker-padding;
-    padding-right: $pt-icon-size-standard;
+    padding-left: var(--bp-datetime-datepicker-padding);
+    padding-right: var(--bp-datetime-datepicker-caption-select-padding-right);
 
     + .#{$ns}-icon {
-      right: $pt-spacing * 0.5;
+      right: calc(var(--bp-spacing) * 0.5);
     }
   }
 }
@@ -144,56 +160,11 @@
   width: 100%;
 }
 
-.#{$ns}-dark .#{$ns}-datepicker {
-  background: $dark-datepicker-background-color;
-
-  .rdp-week-number {
-    color: $pt-dark-text-color-muted;
-  }
-
-  .rdp-day {
-    &.rdp-day_outside {
-      color: $pt-dark-text-color-disabled;
-    }
-
-    // need some extra specificity here to override rdp default styles
-    &:not([disabled], .rdp-day_selected) {
-      &:hover,
-      &:focus {
-        background: $dark-datepicker-day-background-color-hover;
-        color: $white;
-      }
-
-      &:active {
-        background: $dark-datepicker-day-background-color-active;
-      }
-    }
-
-    &.rdp-day_selected {
-      background-color: $blue3;
-
-      &:hover {
-        background-color: $blue2;
-      }
-
-      &:active {
-        background-color: $blue1;
-      }
-    }
-
-    &.rdp-day_disabled {
-      background: none;
-      color: $pt-dark-text-color-disabled;
-    }
-  }
-
-  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
-    border: 1px solid $pt-dark-divider-white;
-  }
-
-  .#{$ns}-datepicker-footer {
-    border-top-color: $pt-dark-divider-black;
-  }
+.#{$ns}-dark .#{$ns}-datepicker .#{$ns}-datepicker-footer,
+.#{$ns}-datepicker.#{$ns}-dark .#{$ns}-datepicker-footer,
+[data-bp-color-scheme="dark"] .#{$ns}-datepicker .#{$ns}-datepicker-footer,
+.#{$ns}-datepicker[data-bp-color-scheme="dark"] .#{$ns}-datepicker-footer {
+  border-top-color: var(--bp-datetime-datepicker-footer-border-color);
 }
 
 .#{$ns}-datepicker-timepicker-wrapper {
@@ -203,6 +174,6 @@
 
   .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
     // when timepicker arrows are not displayed in the datepicker, we need a bit of extra margin
-    margin: $datepicker-padding 0;
+    margin: var(--bp-datetime-datepicker-padding) 0;
   }
 }

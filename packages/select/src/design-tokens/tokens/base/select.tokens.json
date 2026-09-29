@@ -1,0 +1,52 @@
+{
+    "select": {
+        "popover": {
+            "padding": {
+                "$type": "dimension",
+                "$value": { "value": 4, "unit": "px" }
+            },
+            "max-height": {
+                "$type": "dimension",
+                "$value": { "value": 300, "unit": "px" }
+            },
+            "max-width": {
+                "$type": "dimension",
+                "$value": { "value": 400, "unit": "px" }
+            }
+        },
+        "omnibar": {
+            "height": {
+                "$type": "dimension",
+                "$value": { "value": 60, "unit": "vh" }
+            },
+            "width": {
+                "$type": "dimension",
+                "$value": { "value": 500, "unit": "px" }
+            },
+            "input-height": {
+                "$type": "dimension",
+                "$value": { "value": 40, "unit": "px" }
+            },
+            "background-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            },
+            "shadow": {
+                "$type": "string",
+                "$value": "0 0 0 1px rgba(17, 20, 24, 0.1), 0 25px 50px -12px rgba(0, 0, 0, 0.3)"
+            },
+            "menu-divider-shadow": {
+                "$type": "string",
+                "$value": "inset 0 1px 0 rgba(17, 20, 24, 0.15)"
+            },
+            "z-index": {
+                "$type": "number",
+                "$value": 21
+            },
+            "backdrop-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.2)"
+            }
+        }
+    }
+}

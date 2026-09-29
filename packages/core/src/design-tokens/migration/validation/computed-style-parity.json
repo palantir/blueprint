@@ -1,0 +1,321 @@
+{
+    "artifactContracts": [
+        {
+            "actual": "1eb7489e2ecc968b19a227ca5e3e05f3fcb9fa2544e2a1bd1af662f4a6d032ab",
+            "expected": "1eb7489e2ecc968b19a227ca5e3e05f3fcb9fa2544e2a1bd1af662f4a6d032ab",
+            "name": "generated Icons CSS remains byte-for-byte unchanged",
+            "passed": true
+        }
+    ],
+    "baseline": {
+        "artifacts": {
+            "core/blueprint.css": {
+                "bytes": 495854,
+                "sha256": "4097119857928cd6a2c5993d6786e8c3fc425111c59b0953f039af8ed8f8c618"
+            },
+            "icons/blueprint-icons.css": {
+                "bytes": 1143,
+                "sha256": "1eb7489e2ecc968b19a227ca5e3e05f3fcb9fa2544e2a1bd1af662f4a6d032ab"
+            },
+            "select/blueprint-select.css": {
+                "bytes": 5832,
+                "sha256": "52a5a1adc6e96b0defd2a8ae2b2c72cb5c61ce71e14d7b238755ead00d6924dd"
+            },
+            "datetime/blueprint-datetime.css": {
+                "bytes": 30610,
+                "sha256": "555c31962321811517dc0ea4c0e35d6ab05fd776b1eabb465dc2380a716edcc4"
+            },
+            "datetime2/blueprint-datetime2.css": {
+                "bytes": 18694,
+                "sha256": "555937cd61c1a5152a9c0dc4944916f88a19a2e9b0587c9a2992377f4e0138a8"
+            },
+            "table/table.css": {
+                "bytes": 32885,
+                "sha256": "721554b400ab0303ef30a3c11ee5e6ad3006ba1fec4954b7468755b72b7a7975"
+            },
+            "docs-theme/docs-theme.css": {
+                "bytes": 20027,
+                "sha256": "5ccfb5717409412d5a4c0203c8cb7a904da47df5c8407c4136871ac9220cf096"
+            },
+            "docs-app/index.css": {
+                "bytes": 54989,
+                "sha256": "5e72839e2855bc0459fa035be951a8aaa7d0fae34fd30479f55fcb1791b54b41"
+            }
+        },
+        "label": "rollback-643ec05ce"
+    },
+    "behaviorContracts": [
+        {
+            "actual": "rgb(1, 2, 3)",
+            "expected": "rgb(1, 2, 3)",
+            "name": "scoped portal container inherits canonical popover override",
+            "passed": true
+        },
+        {
+            "actual": "17px",
+            "expected": "17px",
+            "name": "legacy radius alias works at explicit theme boundary",
+            "passed": true
+        },
+        {
+            "actual": "4px",
+            "expected": "4px",
+            "name": "legacy radius alias does not retarget an arbitrary subtree",
+            "passed": true
+        },
+        {
+            "actual": "19px",
+            "expected": "19px",
+            "name": "canonical radius token works at arbitrary subtree",
+            "passed": true
+        }
+    ],
+    "byProfile": {
+        "core": {
+            "mismatches": 0,
+            "probesWithMismatches": []
+        },
+        "datetime": {
+            "mismatches": 0,
+            "probesWithMismatches": []
+        },
+        "datetime2": {
+            "mismatches": 0,
+            "probesWithMismatches": []
+        },
+        "select": {
+            "mismatches": 0,
+            "probesWithMismatches": []
+        },
+        "table": {
+            "mismatches": 0,
+            "probesWithMismatches": []
+        },
+        "docs": {
+            "mismatches": 0,
+            "probesWithMismatches": []
+        }
+    },
+    "current": {
+        "artifacts": {
+            "core/blueprint.css": {
+                "bytes": 655247,
+                "sha256": "195066d07cb63e30499006717b45d6a79a4cf8fbecc00f4abb13d025c016f3c5"
+            },
+            "icons/blueprint-icons.css": {
+                "bytes": 1143,
+                "sha256": "1eb7489e2ecc968b19a227ca5e3e05f3fcb9fa2544e2a1bd1af662f4a6d032ab"
+            },
+            "select/blueprint-select.css": {
+                "bytes": 8708,
+                "sha256": "6a38707c39e5e1930a85d8fb873e94b481939edf4c729c9732929fc7c9af1103"
+            },
+            "datetime/blueprint-datetime.css": {
+                "bytes": 48892,
+                "sha256": "010353834b2f2d4f2da7c9e6f593bb957d2a74d737dff7cbe0f40a904944f41f"
+            },
+            "datetime2/blueprint-datetime2.css": {
+                "bytes": 40945,
+                "sha256": "c5a0e17cf1a19b9dab6b8aa54a8b8359a0feab1bd9ba3583f0f71a589347f292"
+            },
+            "table/table.css": {
+                "bytes": 51688,
+                "sha256": "e64d2a66d00610c41a528643379c9e661279e23cd398ff4417259c4bff32317b"
+            },
+            "docs-theme/docs-theme.css": {
+                "bytes": 20027,
+                "sha256": "5ccfb5717409412d5a4c0203c8cb7a904da47df5c8407c4136871ac9220cf096"
+            },
+            "docs-app/index.css": {
+                "bytes": 54989,
+                "sha256": "5e72839e2855bc0459fa035be951a8aaa7d0fae34fd30479f55fcb1791b54b41"
+            }
+        },
+        "label": "docs-sass-current"
+    },
+    "engine": {
+        "protocolVersion": "1.3",
+        "product": "Chrome/154.0.8037.58",
+        "revision": "@a654841425914cbb703a2931e07b70a83aedbafd",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+        "jsVersion": "15.4.80.11"
+    },
+    "parity": {
+        "checks": 8040,
+        "mismatches": [],
+        "missingProfiles": [],
+        "missingProbes": []
+    },
+    "passed": true,
+    "profileContracts": [
+        {
+            "actual": false,
+            "expected": false,
+            "name": "DateTime2 profile does not load DateTime component CSS",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "DateTime2 standalone profile includes DateTime token-only defaults",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "datetime profile explicitly loads the Core prerequisite",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "datetime2 profile explicitly loads the Core prerequisite",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "select profile explicitly loads the Core prerequisite",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "table profile explicitly loads the Core prerequisite",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "docs profile explicitly loads the Core prerequisite",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "datetime profile emits package-owned --bp-datetime- tokens",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "select profile emits package-owned --bp-select- tokens",
+            "passed": true
+        },
+        {
+            "actual": true,
+            "expected": true,
+            "name": "table profile emits package-owned --bp-table- tokens",
+            "passed": true
+        },
+        {
+            "actual": false,
+            "expected": false,
+            "name": "docs profile emits no docs-owned tokens",
+            "passed": true
+        }
+    ],
+    "maskContracts": [
+        {
+            "actualColor": "rgb(95, 107, 124)",
+            "checks": {
+                "color": true,
+                "height": true,
+                "maskImage": true,
+                "maskPosition": true,
+                "maskRepeat": true,
+                "maskSize": true,
+                "path": true,
+                "width": true
+            },
+            "expectedColor": "rgb(95, 107, 124)",
+            "glyph": "breadcrumb-separator",
+            "passed": true,
+            "theme": "light"
+        },
+        {
+            "actualColor": "rgb(95, 107, 124)",
+            "checks": {
+                "color": true,
+                "height": true,
+                "maskImage": true,
+                "maskPosition": true,
+                "maskRepeat": true,
+                "maskSize": true,
+                "path": true,
+                "width": true
+            },
+            "expectedColor": "rgb(95, 107, 124)",
+            "glyph": "breadcrumb-collapsed",
+            "passed": true,
+            "theme": "light"
+        },
+        {
+            "actualColor": "rgb(171, 179, 191)",
+            "checks": {
+                "color": true,
+                "height": true,
+                "maskImage": true,
+                "maskPosition": true,
+                "maskRepeat": true,
+                "maskSize": true,
+                "path": true,
+                "width": true
+            },
+            "expectedColor": "rgb(171, 179, 191)",
+            "glyph": "breadcrumb-separator",
+            "passed": true,
+            "theme": "dark"
+        },
+        {
+            "actualColor": "rgb(171, 179, 191)",
+            "checks": {
+                "color": true,
+                "height": true,
+                "maskImage": true,
+                "maskPosition": true,
+                "maskRepeat": true,
+                "maskSize": true,
+                "path": true,
+                "width": true
+            },
+            "expectedColor": "rgb(171, 179, 191)",
+            "glyph": "breadcrumb-collapsed",
+            "passed": true,
+            "theme": "dark"
+        }
+    ],
+    "themeContracts": [
+        {
+            "baselineProbe": "dark/button-rest",
+            "currentProbe": "contract-explicit-dark",
+            "mismatches": [],
+            "passed": true
+        },
+        {
+            "baselineProbe": "light/button-rest",
+            "currentProbe": "contract-nested-light",
+            "mismatches": [],
+            "passed": true
+        },
+        {
+            "baselineProbe": "light/button-rest",
+            "currentProbe": "contract-class-dark-explicit-light",
+            "mismatches": [],
+            "passed": true
+        },
+        {
+            "baselineProbe": "contract-unscoped-portal",
+            "currentProbe": "contract-unscoped-portal",
+            "mismatches": [],
+            "passed": true
+        }
+    ],
+    "tokenDefaults": {
+        "checks": 2460,
+        "mismatches": [],
+        "missing": [],
+        "rawAliasChanges": []
+    },
+    "unresolvedCurrentTokens": []
+}

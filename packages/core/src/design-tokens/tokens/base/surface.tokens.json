@@ -1,4 +1,38 @@
 {
+    "border-radius": {
+        "$type": "dimension",
+        "$value": "{surface.border-radius}",
+        "$description": "Canonical shared corner radius"
+    },
+    "spacing": {
+        "$type": "dimension",
+        "$value": "{surface.spacing}",
+        "$description": "Canonical shared spacing unit"
+    },
+    "elevation": {
+        "shadow": {
+            "0": {
+                "$type": "shadow",
+                "$value": "0 0 0 1px rgba(17, 20, 24, 0.15), 0 0 5px 0 rgba(0, 0, 0, 0.02)"
+            },
+            "1": {
+                "$type": "shadow",
+                "$value": "0 0 0 1px rgba(17, 20, 24, 0.1), 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1)"
+            },
+            "2": {
+                "$type": "shadow",
+                "$value": "0 0 0 1px rgba(17, 20, 24, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+            },
+            "3": {
+                "$type": "shadow",
+                "$value": "0 0 0 1px rgba(17, 20, 24, 0.1), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+            },
+            "4": {
+                "$type": "shadow",
+                "$value": "0 0 0 1px rgba(17, 20, 24, 0.1), 0 25px 50px -12px rgba(0, 0, 0, 0.3)"
+            }
+        }
+    },
     "surface": {
         "border-color": {
             "$type": "color",

@@ -24,15 +24,11 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 }
 
 .#{$ns}-table-quadrant {
-  background: $table-background-color;
+  background: var(--bp-table-background-color);
   left: 0;
   overflow: hidden;
   position: absolute;
   top: 0;
-
-  .#{$ns}-dark & {
-    background-color: $dark-table-background-color;
-  }
 }
 
 .#{$ns}-table-quadrant-scroll-container {
@@ -99,7 +95,7 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   top: auto;
   // the MAIN quadrant should fill the whole table so that ghost cells will be visible if enabled
   width: 100%;
-  z-index: $table-quadrant-z-index-main;
+  z-index: var(--bp-table-quadrant-z-index-main);
 
   .#{$ns}-table-quadrant-scroll-container {
     height: 100%;
@@ -109,16 +105,16 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   }
 
   .#{$ns}-table-cell-client {
-    background: $white;
+    background: var(--bp-table-cell-background-color);
   }
 }
 
 .#{$ns}-table-quadrant-top {
   right: 0;
-  z-index: $table-quadrant-z-index-top;
+  z-index: var(--bp-table-quadrant-z-index-top);
 
   .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$scroll-container-overflow-default;
+    bottom: calc(var(--bp-table-scroll-container-overflow-default) * -1);
     overflow-y: hidden;
   }
 }
@@ -127,15 +123,15 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   bottom: 0;
 
   // animate width changes on scroll end
-  transition: width $pt-transition-duration $pt-transition-ease;
-  z-index: $table-quadrant-z-index-left;
+  transition: width var(--bp-transition-duration) var(--bp-transition-ease);
+  z-index: var(--bp-table-quadrant-z-index-left);
 
   .#{$ns}-table-quadrant-scroll-container {
     bottom: 0;
     height: auto;
     overflow-x: hidden;
     position: absolute;
-    right: -$scroll-container-overflow-default;
+    right: calc(var(--bp-table-scroll-container-overflow-default) * -1);
     top: 0;
   }
 
@@ -149,13 +145,13 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 
 .#{$ns}-table-quadrant-top-left {
   // animate width changes on scroll end
-  transition: width $pt-transition-duration $pt-transition-ease;
-  z-index: $table-quadrant-z-index-top-left;
+  transition: width var(--bp-transition-duration) var(--bp-transition-ease);
+  z-index: var(--bp-table-quadrant-z-index-top-left);
 
   .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$scroll-container-overflow-default;
+    bottom: calc(var(--bp-table-scroll-container-overflow-default) * -1);
     overflow: hidden;
-    right: -$scroll-container-overflow-default;
+    right: calc(var(--bp-table-scroll-container-overflow-default) * -1);
   }
 
   // correct missing bottom-right corner in the menu-element (addresses #1444).
@@ -170,16 +166,16 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 @media (-webkit-max-device-pixel-ratio: 1.5) {
   // low dpi screen has larger scrollbars relative to quadrant dimensions
   .#{$ns}-table-quadrant-top .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$scroll-container-overflow-low-dpi;
+    bottom: calc(var(--bp-table-scroll-container-overflow-low-dpi) * -1);
   }
 
   .#{$ns}-table-quadrant-left .#{$ns}-table-quadrant-scroll-container {
-    right: -$scroll-container-overflow-low-dpi;
+    right: calc(var(--bp-table-scroll-container-overflow-low-dpi) * -1);
   }
 
   .#{$ns}-table-quadrant-top-left .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$scroll-container-overflow-low-dpi;
-    right: -$scroll-container-overflow-low-dpi;
+    bottom: calc(var(--bp-table-scroll-container-overflow-low-dpi) * -1);
+    right: calc(var(--bp-table-scroll-container-overflow-low-dpi) * -1);
   }
 }
 
@@ -187,15 +183,15 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 @media (-webkit-min-device-pixel-ratio: 2.5) {
   // high dpi screen has smaller scrollbars relative to quadrant dimensions
   .#{$ns}-table-quadrant-top .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$scroll-container-overflow-high-dpi;
+    bottom: calc(var(--bp-table-scroll-container-overflow-high-dpi) * -1);
   }
 
   .#{$ns}-table-quadrant-left .#{$ns}-table-quadrant-scroll-container {
-    right: -$scroll-container-overflow-high-dpi;
+    right: calc(var(--bp-table-scroll-container-overflow-high-dpi) * -1);
   }
 
   .#{$ns}-table-quadrant-top-left .#{$ns}-table-quadrant-scroll-container {
-    bottom: -$scroll-container-overflow-high-dpi;
-    right: -$scroll-container-overflow-high-dpi;
+    bottom: calc(var(--bp-table-scroll-container-overflow-high-dpi) * -1);
+    right: calc(var(--bp-table-scroll-container-overflow-high-dpi) * -1);
   }
 }

@@ -17,10 +17,10 @@
 @mixin table-skeleton() {
   .#{$ns}-skeleton {
     animation:
-      $cell-transition-duration linear forwards skeleton-fade-in,
-      $skeleton-animation;
-    animation-delay: 0s, $cell-transition-duration;
-    height: $pt-spacing;
+      var(--bp-table-cell-transition-duration) linear forwards skeleton-fade-in,
+      var(--bp-table-skeleton-animation);
+    animation-delay: 0s, var(--bp-table-cell-transition-duration);
+    height: var(--bp-spacing);
     opacity: 0;
   }
 }

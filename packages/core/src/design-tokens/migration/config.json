@@ -1,0 +1,1139 @@
+{
+    "baseline": "643ec05ce",
+    "ledger": "sass-variable-ledger.json",
+    "owners": [
+        {
+            "id": "core",
+            "package": "@blueprintjs/core",
+            "scopeKind": "required",
+            "roots": ["packages/core/src"]
+        },
+        {
+            "id": "icons",
+            "package": "@blueprintjs/icons",
+            "scopeKind": "required",
+            "roots": ["packages/icons/src"]
+        },
+        {
+            "id": "datetime",
+            "package": "@blueprintjs/datetime",
+            "scopeKind": "required",
+            "roots": ["packages/datetime/src"]
+        },
+        {
+            "id": "datetime2",
+            "package": "@blueprintjs/datetime2",
+            "scopeKind": "required",
+            "roots": ["packages/datetime2/src"]
+        },
+        {
+            "id": "select",
+            "package": "@blueprintjs/select",
+            "scopeKind": "required",
+            "roots": ["packages/select/src"]
+        },
+        {
+            "id": "table",
+            "package": "@blueprintjs/table",
+            "scopeKind": "required",
+            "roots": ["packages/table/src"]
+        },
+        {
+            "id": "docs-theme",
+            "package": "@blueprintjs/docs-theme",
+            "scopeKind": "supporting-app",
+            "roots": ["packages/docs-theme/src"]
+        },
+        {
+            "id": "docs-app",
+            "package": "@blueprintjs/docs-app",
+            "scopeKind": "supporting-app",
+            "roots": ["packages/docs-app/src"]
+        },
+        {
+            "id": "labs",
+            "package": "@blueprintjs/labs",
+            "scopeKind": "supporting-app",
+            "roots": ["packages/labs/src"]
+        },
+        {
+            "id": "demo-app",
+            "package": "@blueprintjs/demo-app",
+            "scopeKind": "supporting-app",
+            "roots": ["packages/demo-app/src"]
+        },
+        {
+            "id": "landing-app",
+            "package": "@blueprintjs/landing-app",
+            "scopeKind": "supporting-app",
+            "roots": ["packages/landing-app/src"]
+        },
+        {
+            "id": "table-dev-app",
+            "package": "@blueprintjs/table-dev-app",
+            "scopeKind": "supporting-app",
+            "roots": ["packages/table-dev-app/src"]
+        }
+    ],
+    "tokenConfigs": [
+        {
+            "owner": "@blueprintjs/core",
+            "config": "packages/core/src/design-tokens/config.json"
+        },
+        {
+            "owner": "@blueprintjs/datetime",
+            "config": "packages/datetime/src/design-tokens/config.json"
+        },
+        {
+            "owner": "@blueprintjs/select",
+            "config": "packages/select/src/design-tokens/config.json"
+        },
+        {
+            "owner": "@blueprintjs/table",
+            "config": "packages/table/src/design-tokens/config.json"
+        }
+    ],
+    "protectedFiles": [
+        {
+            "path": "packages/colors/src/_colors.scss",
+            "sha256": "be5de29d2d3bcb50340ee35ed2ac1da4bbf89a39666989a96563d78f802deb78"
+        },
+        {
+            "path": "packages/core/src/common/_variables.scss",
+            "sha256": "183e2997c200fd3580f331ed18430c3b3db50da95e0dcb5a68d6622e425a4423"
+        },
+        {
+            "path": "packages/core/src/common/_color-aliases.scss",
+            "sha256": "56841cc536e49843b098c11c504029fc7c8b06a3e93bfc9423e6dd6de25e7315"
+        },
+        {
+            "path": "packages/core/src/common/_mixins.scss",
+            "sha256": "c71a5345f85cb750548aa93c0658574b05e45d65a77d6caa7e041b197933232a"
+        },
+        {
+            "path": "packages/icons/src/templates/_lib_variables.scss",
+            "sha256": "041d5f49514432d887ecfa21ceaea434a816f2feb2e7947f620a3ca3ee6b3c49"
+        }
+    ],
+    "artifactFiles": [
+        {
+            "path": "packages/core/lib/scss/variables.scss",
+            "sha256": "5cd7192bfa04cd685eb738270f7b21421c9aa8f7b3194a3f482cf01ad304db9c"
+        },
+        {
+            "path": "packages/core/lib/less/variables.less",
+            "sha256": "427a8e9b5d7d003725234d4f6f89d756eb8ead5bd6a40141f6a209add0b452a8"
+        },
+        {
+            "path": "packages/colors/lib/scss/colors.scss",
+            "sha256": "9f82e5fdf55811fe87c5e305cfeb4318dadaf688d7f5aa0b745a897f9959c3e1"
+        },
+        {
+            "path": "packages/colors/lib/less/colors.less",
+            "sha256": "eb27cf6bdff39e93881fa1a7e78802671a85966fa12fb99eebd86985aa2ad17e"
+        },
+        {
+            "path": "packages/icons/lib/scss/variables.scss",
+            "sha256": "041d5f49514432d887ecfa21ceaea434a816f2feb2e7947f620a3ca3ee6b3c49"
+        },
+        {
+            "path": "packages/icons/lib/scss/blueprint-icons-16.scss",
+            "sha256": "0107024746e0e62f69b79a2cd3924c9e40c5c2f563b317a4e3ecd53aee8c713a"
+        },
+        {
+            "path": "packages/icons/lib/scss/blueprint-icons-20.scss",
+            "sha256": "74aca58e0ce4eb1a22335ec8f6bb7fd07703274f0dfd34757d191930b82a0b71"
+        }
+    ],
+    "manualMappings": {
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-divider-black:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The divider color remains directly addressable and is also embedded in exact component divider and inset-shadow tokens.",
+            "targets": [
+                "--bp-divider-black",
+                "--bp-divider-color",
+                "--bp-code-box-shadow",
+                "--bp-dialog-header-box-shadow",
+                "--bp-dialog-multistep-nav-divider-color",
+                "--bp-drawer-divider-color",
+                "--bp-editable-text-box-shadow-hover",
+                "--bp-input-box-shadow-readonly"
+            ]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-icon-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The shared icon color remains direct and supplies the Toast-specific icon semantic token.",
+            "targets": ["--bp-icon-color", "--bp-toast-icon-color"]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-text-color-disabled:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The disabled text color remains semantic text/input state and contributes to the exact disabled outlined-button border.",
+            "targets": [
+                "--bp-text-color-disabled",
+                "--bp-input-color-disabled",
+                "--bp-button-outlined-border-color-disabled"
+            ]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-text-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The base text color fans out to semantic text consumers and the exact outlined-button border derived from it.",
+            "targets": [
+                "--bp-text-color",
+                "--bp-input-color",
+                "--bp-icon-color-hover",
+                "--bp-button-minimal-text-color",
+                "--bp-button-warning-text-color",
+                "--bp-button-outlined-border-color"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-button-height-large:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The large control height remains direct and contributes to exact HTMLSelect and NumericInput dimensions.",
+            "targets": [
+                "--bp-control-height-large",
+                "--bp-html-select-icon-offset-block-large",
+                "--bp-numeric-input-button-width-large"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-button-height-small:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The small control height remains direct and contributes to exact NumericInput and TagInput dimensions.",
+            "targets": [
+                "--bp-control-height-small",
+                "--bp-numeric-input-button-flex-basis",
+                "--bp-numeric-input-button-width",
+                "--bp-numeric-input-button-width-small",
+                "--bp-tag-input-action-margin",
+                "--bp-tag-input-spinner-margin-large"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-button-height:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The standard control height remains direct and contributes to exact component offsets and dimensions.",
+            "targets": [
+                "--bp-control-height",
+                "--bp-button-divider-height",
+                "--bp-dialog-header-min-height",
+                "--bp-html-select-icon-offset-block",
+                "--bp-tag-input-action-margin-large",
+                "--bp-toast-button-group-padding"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-font-size:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The body font size remains direct while the code block token stores the exact one-pixel-smaller value.",
+            "targets": ["--bp-font-size", "--bp-code-block-font-size"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-high-contrast-mode-active-background-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The forced-colors active background is used directly and as the checked-control border color.",
+            "targets": ["--bp-high-contrast-active-background-color", "--bp-control-checked-high-contrast-border-color"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-high-contrast-mode-disabled-border-color:1": "--bp-high-contrast-disabled-border-color",
+        "core:packages/core/src/common/_variables.scss:root:pt-icon-size-standard:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The standard icon size remains direct and contributes to exact icon-alignment dimensions across components.",
+            "targets": [
+                "--bp-icon-size-standard",
+                "--bp-callout-padding-inline-start-icon",
+                "--bp-callout-padding-inline-start-icon-compact",
+                "--bp-html-select-icon-offset-block",
+                "--bp-html-select-icon-offset-block-large",
+                "--bp-input-group-icon-margin",
+                "--bp-input-group-icon-margin-large",
+                "--bp-input-group-icon-margin-small",
+                "--bp-input-group-padding-inline-small",
+                "--bp-menu-heading-line-height",
+                "--bp-menu-item-icon-offset-block",
+                "--bp-toast-icon-margin"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-input-height-large:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The large input height shares the large control default and contributes to exact InputGroup and TagInput margins.",
+            "targets": [
+                "--bp-control-height-large",
+                "--bp-input-group-button-margin-large",
+                "--bp-input-group-icon-margin-large",
+                "--bp-tag-input-action-margin-large",
+                "--bp-tag-input-spinner-margin-large"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-input-height-small:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The small input height shares the small control default and contributes to exact InputGroup margins.",
+            "targets": [
+                "--bp-control-height-small",
+                "--bp-input-group-button-margin-small",
+                "--bp-input-group-icon-margin-small"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-input-height:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The standard input height shares the standard control default and contributes to exact InputGroup and TagInput margins.",
+            "targets": [
+                "--bp-control-height",
+                "--bp-input-group-button-margin",
+                "--bp-input-group-icon-margin",
+                "--bp-tag-input-action-margin"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-input-box-shadow:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The legacy dark input inset shadow is embedded in exact dark EditableText, Input, FileInput, and TagInput default and intent shadows.",
+            "targets": [
+                "--bp-editable-text-box-shadow-editing",
+                "--bp-editable-text-intent-primary-box-shadow-editing",
+                "--bp-editable-text-intent-success-box-shadow-editing",
+                "--bp-editable-text-intent-warning-box-shadow-editing",
+                "--bp-editable-text-intent-danger-box-shadow-editing",
+                "--bp-input-box-shadow",
+                "--bp-input-intent-primary-box-shadow",
+                "--bp-input-intent-success-box-shadow",
+                "--bp-input-intent-warning-box-shadow",
+                "--bp-input-intent-danger-box-shadow",
+                "--bp-input-intent-primary-box-shadow-focus",
+                "--bp-input-intent-success-box-shadow-focus",
+                "--bp-input-intent-warning-box-shadow-focus",
+                "--bp-input-intent-danger-box-shadow-focus",
+                "--bp-file-input-box-shadow-focus",
+                "--bp-tag-input-box-shadow-focus",
+                "--bp-tag-input-intent-primary-box-shadow-focus",
+                "--bp-tag-input-intent-success-box-shadow-focus",
+                "--bp-tag-input-intent-warning-box-shadow-focus",
+                "--bp-tag-input-intent-danger-box-shadow-focus"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-input-box-shadow:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The legacy light input inset shadow is embedded in exact Input default and intent resting shadows.",
+            "targets": [
+                "--bp-input-box-shadow",
+                "--bp-input-intent-primary-box-shadow",
+                "--bp-input-intent-success-box-shadow",
+                "--bp-input-intent-warning-box-shadow",
+                "--bp-input-intent-danger-box-shadow"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-navbar-height:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The Navbar height remains direct and contributes to the exact divider height.",
+            "targets": ["--bp-navbar-height", "--bp-navbar-divider-height"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-transition-ease:1": "--bp-transition-ease",
+        "core:packages/core/src/common/_variables.scss:root:pt-transition-duration:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The shared transition duration remains direct and supplies exact component transition and animation durations.",
+            "targets": [
+                "--bp-transition-duration",
+                "--bp-progress-bar-transition-duration",
+                "--bp-progress-bar-animation-duration",
+                "--bp-spinner-transition-duration",
+                "--bp-spinner-animation-duration",
+                "--bp-tabs-transition-duration",
+                "--bp-tree-caret-transition-duration"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-z-index-overlay:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The overlay z-index remains direct while the toast container stores the exact doubled value.",
+            "targets": ["--bp-z-index-overlay", "--bp-toast-container-z-index"]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-dark-divider-black:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The strong dark divider remains direct and supplies exact dark component divider and readonly-input shadow tokens.",
+            "targets": [
+                "--bp-divider-black-strong",
+                "--bp-dialog-multistep-nav-divider-color",
+                "--bp-drawer-divider-color",
+                "--bp-input-box-shadow-readonly"
+            ]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-dark-divider-white:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark theme divider color remains direct and supplies exact dark Dialog-header and EditableText hover shadows.",
+            "targets": ["--bp-divider-color", "--bp-dialog-header-box-shadow", "--bp-editable-text-box-shadow-hover"]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-dark-icon-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark icon color supplies dark defaults for the shared icon token and Toast-specific icon token.",
+            "targets": ["--bp-icon-color", "--bp-toast-icon-color"]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-dark-text-color-disabled:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark disabled text color supplies dark defaults for shared text and Input disabled colors.",
+            "targets": ["--bp-text-color-disabled", "--bp-input-color-disabled"]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-dark-text-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark text color supplies dark defaults for shared text, Input text, and hovered icon colors.",
+            "targets": ["--bp-text-color", "--bp-input-color", "--bp-icon-color-hover"]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-divider-black-muted:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The invariant muted divider remains directly addressable and supplies the light default of the theme-aware muted divider token.",
+            "targets": ["--bp-divider-black-muted", "--bp-divider-color-muted"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-button-height-smaller:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The smallest control height remains direct and contributes to exact small InputGroup button height and margin tokens.",
+            "targets": [
+                "--bp-control-height-smaller",
+                "--bp-input-group-button-height-small",
+                "--bp-input-group-button-margin-small"
+            ]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-0:1": "--bp-elevation-shadow-0",
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-1:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Dark elevation level 1 remains direct and supplies exact dark Navbar and self-dark Navbar shadows.",
+            "targets": ["--bp-elevation-shadow-1", "--bp-navbar-box-shadow", "--bp-navbar-self-dark-box-shadow"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-2:1": "--bp-elevation-shadow-2",
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-3:1": "--bp-elevation-shadow-3",
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-4:1": "--bp-elevation-shadow-4",
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-0:1": "--bp-elevation-shadow-0",
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-1:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Elevation level 1 remains direct and supplies the exact light Navbar shadow.",
+            "targets": ["--bp-elevation-shadow-1", "--bp-navbar-box-shadow"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-2:1": "--bp-elevation-shadow-2",
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-3:1": "--bp-elevation-shadow-3",
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-4:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Elevation level 4 remains direct and supplies the exact light Drawer shadow.",
+            "targets": ["--bp-elevation-shadow-4", "--bp-drawer-box-shadow"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-dialog-box-shadow:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The legacy dark Dialog shadow supplies exact dark Dialog and Drawer component shadows.",
+            "targets": ["--bp-dialog-box-shadow", "--bp-drawer-box-shadow"]
+        },
+        "core:packages/core/src/common/_variables.scss:root:pt-icon-size-large:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The large icon size remains direct and contributes to exact Alert and Drawer dimensions.",
+            "targets": ["--bp-icon-size-large", "--bp-alert-icon-size", "--bp-drawer-header-min-height"]
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-intent-primary:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The primary intent color remains direct and supplies exact Code, Tabs, and Tree semantic tokens.",
+            "targets": [
+                "--bp-intent-primary-rest",
+                "--bp-code-link-color",
+                "--bp-tabs-vertical-selected-background-color",
+                "--bp-tree-selected-background-color"
+            ]
+        },
+        "core:packages/core/src/common/_variables-extended.scss:root:dark-elevation-shadows:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The Sass list remains for selector iteration while each indexed item is represented by its exact canonical dark elevation-shadow token; legacy surface-shadow defaults remain independent compatibility values.",
+            "targets": [
+                "--bp-elevation-shadow-0",
+                "--bp-elevation-shadow-1",
+                "--bp-elevation-shadow-2",
+                "--bp-elevation-shadow-3",
+                "--bp-elevation-shadow-4"
+            ]
+        },
+        "core:packages/core/src/common/_variables-extended.scss:root:elevation-shadows:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The Sass list remains for selector iteration while each indexed item is represented by its exact canonical light elevation-shadow token; legacy surface-shadow defaults remain independent compatibility values.",
+            "targets": [
+                "--bp-elevation-shadow-0",
+                "--bp-elevation-shadow-1",
+                "--bp-elevation-shadow-2",
+                "--bp-elevation-shadow-3",
+                "--bp-elevation-shadow-4"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-box-shadow-active:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The active shadow is represented by exact default and intent hover/active shadow tokens at each theme boundary.",
+            "targets": [
+                "--bp-button-box-shadow-active",
+                "--bp-button-box-shadow-hover",
+                "--bp-button-intent-box-shadow-active",
+                "--bp-button-intent-box-shadow-hover"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-box-shadow:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The resting shadow is represented independently for default and intent buttons.",
+            "targets": ["--bp-button-box-shadow", "--bp-button-intent-box-shadow"]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:dark-button-box-shadow-active:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark active shadow supplies the dark defaults for exact default, intent, and Slider hover/active shadow tokens.",
+            "targets": [
+                "--bp-button-box-shadow-active",
+                "--bp-button-box-shadow-hover",
+                "--bp-button-intent-box-shadow-active",
+                "--bp-slider-handle-box-shadow-hover",
+                "--bp-slider-handle-box-shadow-active"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:dark-button-box-shadow:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark resting shadow supplies the dark defaults for exact default, intent, and Slider resting/hover shadow tokens.",
+            "targets": [
+                "--bp-button-box-shadow",
+                "--bp-button-intent-box-shadow",
+                "--bp-button-intent-box-shadow-hover",
+                "--bp-slider-handle-box-shadow"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root/mixin:pt-button-minimal-divider:divider-height:1": "--bp-button-divider-height",
+        "core:packages/core/src/components/button/_common.scss:root/mixin:pt-button-minimal-intent:dark-hover-text-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The loop-local dark hover value supplies theme defaults for each intent-specific minimal-button hover text token.",
+            "targets": [
+                "--bp-button-minimal-intent-primary-text-color-hover",
+                "--bp-button-minimal-intent-success-text-color-hover",
+                "--bp-button-minimal-intent-warning-text-color-hover",
+                "--bp-button-minimal-intent-danger-text-color-hover"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root/mixin:pt-button-minimal-intent:intent-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The loop-local intent color and legacy alpha states are stored as exact hover and active background tokens for every intent.",
+            "targets": [
+                "--bp-button-minimal-intent-primary-background-color-hover",
+                "--bp-button-minimal-intent-primary-background-color-active",
+                "--bp-button-minimal-intent-success-background-color-hover",
+                "--bp-button-minimal-intent-success-background-color-active",
+                "--bp-button-minimal-intent-warning-background-color-hover",
+                "--bp-button-minimal-intent-warning-background-color-active",
+                "--bp-button-minimal-intent-danger-background-color-hover",
+                "--bp-button-minimal-intent-danger-background-color-active"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-outlined-border-disabled-intent-opacity:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The Sass opacity remains public while each intent owns an exact precomposed disabled outlined-border color.",
+            "targets": [
+                "--bp-button-outlined-intent-primary-border-color-disabled",
+                "--bp-button-outlined-intent-success-border-color-disabled",
+                "--bp-button-outlined-intent-warning-border-color-disabled",
+                "--bp-button-outlined-intent-danger-border-color-disabled"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-outlined-border-intent-opacity:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The Sass opacity remains public while each intent owns an exact precomposed outlined-border color.",
+            "targets": [
+                "--bp-button-outlined-intent-primary-border-color",
+                "--bp-button-outlined-intent-success-border-color",
+                "--bp-button-outlined-intent-warning-border-color",
+                "--bp-button-outlined-intent-danger-border-color"
+            ]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-padding-large:1": {
+            "kind": "decomposed",
+            "reconstruction": "The two-value Sass padding shorthand is represented by independent block and inline large-size tokens.",
+            "roles": {
+                "--bp-button-padding-block-large": "block-axis",
+                "--bp-button-padding-inline-large": "inline-axis"
+            },
+            "targets": ["--bp-button-padding-block-large", "--bp-button-padding-inline-large"]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-padding-small:1": {
+            "kind": "decomposed",
+            "reconstruction": "The two-value Sass padding shorthand is represented by independent block and inline small-size tokens.",
+            "roles": {
+                "--bp-button-padding-block-small": "block-axis",
+                "--bp-button-padding-inline-small": "inline-axis"
+            },
+            "targets": ["--bp-button-padding-block-small", "--bp-button-padding-inline-small"]
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-padding:1": {
+            "kind": "decomposed",
+            "reconstruction": "The two-value Sass padding shorthand is represented by independent block and inline tokens.",
+            "roles": {
+                "--bp-button-padding-block": "block-axis",
+                "--bp-button-padding-inline": "inline-axis"
+            },
+            "targets": ["--bp-button-padding-block", "--bp-button-padding-inline"]
+        },
+        "core:packages/core/src/components/callout/_callout.scss:root:callout-padding-compact:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Compact padding remains direct and contributes to exact icon inset and block-offset dimensions.",
+            "targets": [
+                "--bp-callout-padding-compact",
+                "--bp-callout-padding-inline-start-icon-compact",
+                "--bp-callout-icon-offset-block-compact"
+            ]
+        },
+        "core:packages/core/src/components/callout/_callout.scss:root:callout-padding:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Callout padding remains direct and contributes to exact icon inset and block-offset dimensions.",
+            "targets": [
+                "--bp-callout-padding",
+                "--bp-callout-padding-inline-start-icon",
+                "--bp-callout-icon-offset-block"
+            ]
+        },
+        "core:packages/core/src/components/callout/_callout.scss:root:callout-header-margin-top:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The header margin is direct; normal and compact icon offsets precompose it with their respective callout padding.",
+            "roles": {
+                "--bp-callout-header-margin-block-start": "direct",
+                "--bp-callout-icon-offset-block": "derived-normal",
+                "--bp-callout-icon-offset-block-compact": "derived-compact"
+            },
+            "targets": [
+                "--bp-callout-header-margin-block-start",
+                "--bp-callout-icon-offset-block",
+                "--bp-callout-icon-offset-block-compact"
+            ]
+        },
+        "core:packages/core/src/components/card/_card-variables.scss:root:card-list-border-width:1": "--bp-card-list-border-width",
+        "core:packages/core/src/components/collapse/_collapse.scss:root:collapse-transition:1": {
+            "kind": "decomposed",
+            "reconstruction": "The height/transform transition shorthand is rebuilt from the collapse duration and shared easing tokens.",
+            "roles": {
+                "--bp-collapse-transition-duration": "duration",
+                "--bp-transition-ease": "timing-function"
+            },
+            "targets": ["--bp-collapse-transition-duration", "--bp-transition-ease"]
+        },
+        "core:packages/core/src/components/dialog/_dialog.scss:root:dialog-padding:1": "--bp-dialog-padding",
+        "core:packages/core/src/components/dialog/_dialog.scss:root:dialog-header-padding:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Header padding remains independent while the exact minimum height precomposes twice that padding with the control height.",
+            "roles": {
+                "--bp-dialog-header-min-height": "derived-min-height",
+                "--bp-dialog-header-padding": "direct"
+            },
+            "targets": ["--bp-dialog-header-padding", "--bp-dialog-header-min-height"]
+        },
+        "core:packages/core/src/components/drawer/_drawer.scss:root:drawer-padding:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Drawer padding remains direct and contributes to exact header and footer spacing and dimensions.",
+            "targets": [
+                "--bp-drawer-padding",
+                "--bp-drawer-header-padding",
+                "--bp-drawer-header-min-height",
+                "--bp-drawer-header-icon-margin",
+                "--bp-drawer-footer-padding"
+            ]
+        },
+        "core:packages/core/src/components/forms/_common.scss:root:control-indicator-size:1": "--bp-control-indicator-size",
+        "core:packages/core/src/components/forms/_common.scss:root:dark-input-shadow-color-focus:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark focus color supplies dark defaults for the exact EditableText, Input, FileInput, and TagInput resting/focused shadows.",
+            "targets": [
+                "--bp-editable-text-box-shadow-hover",
+                "--bp-editable-text-box-shadow-editing",
+                "--bp-input-box-shadow",
+                "--bp-input-box-shadow-focus",
+                "--bp-file-input-box-shadow-focus",
+                "--bp-tag-input-box-shadow-focus"
+            ]
+        },
+        "core:packages/core/src/components/forms/_common.scss:root:input-box-shadow-focus:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The legacy focus inset shadow is embedded in exact EditableText, Input, FileInput, and TagInput default and intent focus shadows.",
+            "targets": [
+                "--bp-editable-text-box-shadow-editing",
+                "--bp-editable-text-intent-primary-box-shadow-editing",
+                "--bp-editable-text-intent-success-box-shadow-editing",
+                "--bp-editable-text-intent-warning-box-shadow-editing",
+                "--bp-editable-text-intent-danger-box-shadow-editing",
+                "--bp-input-box-shadow-focus",
+                "--bp-input-intent-primary-box-shadow-focus",
+                "--bp-input-intent-success-box-shadow-focus",
+                "--bp-input-intent-warning-box-shadow-focus",
+                "--bp-input-intent-danger-box-shadow-focus",
+                "--bp-file-input-box-shadow-focus",
+                "--bp-tag-input-box-shadow-focus",
+                "--bp-tag-input-intent-primary-box-shadow-focus",
+                "--bp-tag-input-intent-success-box-shadow-focus",
+                "--bp-tag-input-intent-warning-box-shadow-focus",
+                "--bp-tag-input-intent-danger-box-shadow-focus"
+            ]
+        },
+        "core:packages/core/src/components/forms/_common.scss:root:input-padding-horizontal:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Horizontal input padding remains direct and contributes to exact round, HTMLSelect, and TagInput padding dimensions.",
+            "targets": [
+                "--bp-input-padding-inline",
+                "--bp-input-padding-inline-round-large",
+                "--bp-html-select-padding",
+                "--bp-html-select-padding-inline-end-large",
+                "--bp-tag-input-ghost-padding-inline-start"
+            ]
+        },
+        "core:packages/core/src/components/forms/_common.scss:root:input-shadow-color-focus:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The focus color is embedded in exact EditableText, Input, FileInput, and TagInput resting/focused shadows.",
+            "targets": [
+                "--bp-editable-text-box-shadow-hover",
+                "--bp-editable-text-box-shadow-editing",
+                "--bp-input-box-shadow",
+                "--bp-input-box-shadow-focus",
+                "--bp-file-input-box-shadow-focus",
+                "--bp-tag-input-box-shadow-focus"
+            ]
+        },
+        "core:packages/core/src/components/forms/_common.scss:root:input-small-padding:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Small input padding remains direct and contributes to exact round and icon-bearing InputGroup padding.",
+            "targets": [
+                "--bp-input-padding-inline-small",
+                "--bp-input-padding-inline-round-small",
+                "--bp-input-group-padding-inline-small"
+            ]
+        },
+        "core:packages/core/src/components/forms/_common.scss:root:input-transition:1": {
+            "kind": "decomposed",
+            "reconstruction": "The box-shadow transition shorthand is rebuilt from the shared duration and easing tokens.",
+            "roles": {
+                "--bp-transition-duration": "duration",
+                "--bp-transition-ease": "timing-function"
+            },
+            "targets": ["--bp-transition-duration", "--bp-transition-ease"]
+        },
+        "core:packages/core/src/components/forms/_controls.scss:root:control-indicator-size:1": "--bp-control-indicator-size",
+        "core:packages/core/src/components/forms/_file-input.scss:root:file-input-button-width-large:1": "--bp-file-input-button-width-large",
+        "core:packages/core/src/components/forms/_file-input.scss:root:file-input-button-width-small:1": "--bp-file-input-button-width-small",
+        "core:packages/core/src/components/forms/_file-input.scss:root:file-input-button-width:1": "--bp-file-input-button-width",
+        "core:packages/core/src/components/forms/_input-group.scss:root:input-button-height-large:1": "--bp-input-group-button-height-large",
+        "core:packages/core/src/components/forms/_input-group.scss:root:input-button-height-small:1": "--bp-input-group-button-height-small",
+        "core:packages/core/src/components/forms/_input-group.scss:root:input-button-height:1": "--bp-input-group-button-height",
+        "core:packages/core/src/components/html-table/_html-table.scss:root:table-border-color:1": "--bp-html-table-border-color",
+        "core:packages/core/src/components/html-table/_html-table.scss:root:table-border-width:1": "--bp-html-table-border-width",
+        "core:packages/core/src/components/html-table/_html-table.scss:root:table-row-height:1": "--bp-html-table-row-height",
+        "core:packages/core/src/components/html-table/_html-table.scss:root/rule:table.#{$ns}-html-table/rule:&.#{$ns}-compact:small-vertical-padding:1": {
+            "kind": "reconstructed",
+            "reconstruction": "The lexical centered-text result is reconstructed from the compact row height and HTMLTable line height tokens.",
+            "roles": {
+                "--bp-html-table-line-height": "line-height-input",
+                "--bp-html-table-row-height-small": "row-height-input"
+            },
+            "targets": ["--bp-html-table-row-height-small", "--bp-html-table-line-height"]
+        },
+        "core:packages/core/src/components/menu/_common.scss:root:menu-item-line-height:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "Menu item line height remains direct and contributes to the exact icon block offset.",
+            "targets": ["--bp-menu-item-line-height", "--bp-menu-item-icon-offset-block"]
+        },
+        "core:packages/core/src/components/menu/_common.scss:root:menu-item-padding:1": "--bp-menu-item-padding",
+        "core:packages/core/src/components/menu/_common.scss:root:menu-item-padding-large:1": "--bp-menu-item-padding-large",
+        "core:packages/core/src/components/menu/_common.scss:root:menu-item-padding-vertical:1": "--bp-menu-item-padding-vertical",
+        "core:packages/core/src/components/menu/_common.scss:root/mixin:menu-item-active:intent-colors:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The selected light/dark intent map is represented by exact theme-aware hover background and text tokens for every intent.",
+            "targets": [
+                "--bp-menu-intent-primary-background-color-hover",
+                "--bp-menu-intent-primary-text-color",
+                "--bp-menu-intent-success-background-color-hover",
+                "--bp-menu-intent-success-text-color",
+                "--bp-menu-intent-warning-background-color-hover",
+                "--bp-menu-intent-warning-text-color",
+                "--bp-menu-intent-danger-background-color-hover",
+                "--bp-menu-intent-danger-text-color"
+            ]
+        },
+        "core:packages/core/src/components/progress-bar/_common.scss:root:dark-progress-head-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The theme value is repeated as independent ProgressBar and Button spinner semantic defaults.",
+            "targets": ["--bp-progress-bar-head-color", "--bp-button-spinner-head-color"]
+        },
+        "core:packages/core/src/components/progress-bar/_common.scss:root:dark-progress-track-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The theme value is repeated as independent ProgressBar and Button spinner semantic defaults.",
+            "targets": ["--bp-progress-bar-track-color", "--bp-button-spinner-track-color"]
+        },
+        "core:packages/core/src/components/progress-bar/_common.scss:root:progress-head-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The theme value is repeated as independent ProgressBar and Button spinner semantic defaults.",
+            "targets": ["--bp-progress-bar-head-color", "--bp-button-spinner-head-color"]
+        },
+        "core:packages/core/src/components/progress-bar/_common.scss:root:progress-track-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The theme value is repeated as independent ProgressBar and Button spinner semantic defaults.",
+            "targets": ["--bp-progress-bar-track-color", "--bp-button-spinner-track-color"]
+        },
+        "core:packages/core/src/components/progress-bar/_progress-bar.scss:root:progress-bar-gradient:1": {
+            "kind": "decomposed",
+            "reconstruction": "The linear-gradient angle and stops remain literal CSS geometry while the repeated stripe color consumes the token.",
+            "roles": {
+                "--bp-progress-bar-stripes-color": "repeated-stripe-color"
+            },
+            "targets": "--bp-progress-bar-stripes-color"
+        },
+        "core:packages/core/src/components/skeleton/_common.scss:root:skeleton-animation:1": {
+            "kind": "decomposed",
+            "reconstruction": "The animation shorthand keeps its timing function, iteration, direction, and name literals while its duration consumes the token.",
+            "roles": {
+                "--bp-skeleton-animation-duration": "duration"
+            },
+            "targets": "--bp-skeleton-animation-duration"
+        },
+        "core:packages/core/src/components/tabs/_tabs.scss:root:dark-tab-color-selected:1": "--bp-link-color",
+        "core:packages/core/src/components/tabs/_tabs.scss:root:tab-color-selected:1": "--bp-link-color",
+        "core:packages/core/src/components/tabs/_tabs.scss:root:tab-indicator-width:1": "--bp-tabs-indicator-width",
+        "core:packages/core/src/components/tag-input/_tag-input.scss:root:tag-input-icon-padding-large:1": {
+            "kind": "decomposed",
+            "reconstruction": "The large icon padding remains the flex spacing and block-start margin; subtracting TagInput padding reconstructs the inline-start margin.",
+            "roles": {
+                "--bp-tag-input-icon-spacing-large": "direct-flex-spacing",
+                "--bp-tag-input-icon-margin-inline-start-large": "minus-tag-input-padding",
+                "--bp-tag-input-icon-margin-block-start-large": "direct-block-start-margin"
+            },
+            "targets": [
+                "--bp-tag-input-icon-spacing-large",
+                "--bp-tag-input-icon-margin-inline-start-large",
+                "--bp-tag-input-icon-margin-block-start-large"
+            ]
+        },
+        "core:packages/core/src/components/tag-input/_tag-input.scss:root:tag-input-icon-padding:1": {
+            "kind": "decomposed",
+            "reconstruction": "The icon padding remains the inline-end and block-start margins; subtracting TagInput padding reconstructs the inline-start margin.",
+            "roles": {
+                "--bp-tag-input-icon-margin-inline-start": "minus-tag-input-padding",
+                "--bp-tag-input-icon-margin-inline-end": "direct-inline-end-margin",
+                "--bp-tag-input-icon-margin-block-start": "direct-block-start-margin"
+            },
+            "targets": [
+                "--bp-tag-input-icon-margin-inline-start",
+                "--bp-tag-input-icon-margin-inline-end",
+                "--bp-tag-input-icon-margin-block-start"
+            ]
+        },
+        "core:packages/core/src/components/tag-input/_tag-input.scss:root:tag-input-padding:1": {
+            "kind": "decomposed",
+            "reconstruction": "TagInput padding remains the flex gap, subtracts from input padding for ghost padding, and subtracts from both icon-padding sizes for inline-start margins.",
+            "roles": {
+                "--bp-tag-input-gap": "direct-flex-gap",
+                "--bp-tag-input-ghost-padding-inline-start": "subtrahend-from-input-padding",
+                "--bp-tag-input-icon-margin-inline-start": "subtrahend-from-icon-padding",
+                "--bp-tag-input-icon-margin-inline-start-large": "subtrahend-from-large-icon-padding"
+            },
+            "targets": [
+                "--bp-tag-input-gap",
+                "--bp-tag-input-ghost-padding-inline-start",
+                "--bp-tag-input-icon-margin-inline-start",
+                "--bp-tag-input-icon-margin-inline-start-large"
+            ]
+        },
+        "core:packages/core/src/components/tag/_common.scss:root:tag-padding-top:1": "--bp-tag-padding-block",
+        "core:packages/core/src/components/tag/_common.scss:root:tag-padding:1": "--bp-tag-padding-inline",
+        "core:packages/core/src/components/tag/_common.scss:root:tag-round-adjustment:1": "--bp-tag-round-adjustment",
+        "core:packages/core/src/components/tag/_common.scss:root:tag-padding-large:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The large Tag padding scalar remains the inline token and contributes proportionally to the independent block token.",
+            "roles": {
+                "--bp-tag-padding-block-large": "derived-block-axis",
+                "--bp-tag-padding-inline-large": "direct-inline-axis"
+            },
+            "targets": ["--bp-tag-padding-block-large", "--bp-tag-padding-inline-large"]
+        },
+        "core:packages/core/src/components/tag/_compound-tag.scss:root/rule:.#{$ns}-compound-tag/rule:&.#{$ns}-large/rule:&.#{$ns}-round:tag-round-horizontal-padding-large:1": {
+            "kind": "reconstructed",
+            "reconstruction": "The lexical large round padding is reconstructed from the large inline padding and round adjustment tokens.",
+            "targets": ["--bp-tag-padding-inline-large", "--bp-tag-round-adjustment"]
+        },
+        "core:packages/core/src/components/tag/_compound-tag.scss:root/rule:.#{$ns}-compound-tag/rule:&.#{$ns}-round:tag-round-horizontal-padding:1": {
+            "kind": "reconstructed",
+            "reconstruction": "The lexical round padding is reconstructed from the Tag height and round adjustment tokens.",
+            "targets": ["--bp-tag-height", "--bp-tag-round-adjustment"]
+        },
+        "core:packages/core/src/components/toast/_toast.scss:root:toast-height:1": "--bp-toast-height",
+        "core:packages/core/src/components/toast/_toast.scss:root:toast-margin:1": "--bp-toast-margin",
+        "core:packages/core/src/components/tooltip/_common.scss:root:tooltip-padding-horizontal:1": "--bp-tooltip-padding-horizontal",
+        "core:packages/core/src/components/tooltip/_common.scss:root:tooltip-padding-vertical:1": "--bp-tooltip-padding-vertical",
+        "core:packages/core/src/components/tooltip/_tooltip.scss:root:tooltip-padding-compact-horizontal:1": "--bp-tooltip-padding-compact-horizontal",
+        "core:packages/core/src/components/tooltip/_tooltip.scss:root:tooltip-padding-compact-vertical:1": "--bp-tooltip-padding-compact-vertical",
+        "core:packages/core/src/components/tree/_tree.scss:root:tree-icon-spacing:1": "--bp-tree-icon-spacing",
+        "core:packages/core/src/components/tree/_tree.scss:root:tree-row-height:1": "--bp-tree-row-height",
+        "datetime:packages/datetime/src/_common.scss:root:datepicker-padding:1": "--bp-datetime-datepicker-padding",
+        "select:packages/select/src/components/omnibar/_omnibar.scss:root:omnibar-height:1": "--bp-select-omnibar-height",
+        "table:packages/table/src/cell/_common.scss:root:cell-background-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The cell background remains direct and is mixed exactly into the striped-cell background token.",
+            "targets": ["--bp-table-cell-background-color", "--bp-table-cell-striped-background-color"]
+        },
+        "table:packages/table/src/cell/_common.scss:root:dark-cell-background-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark cell background supplies its direct dark default and the exact dark striped-cell mix.",
+            "targets": ["--bp-table-cell-background-color", "--bp-table-cell-striped-background-color"]
+        },
+        "table:packages/table/src/cell/_common.scss:root:cell-border-width:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The cell border width remains direct and contributes to the exact interaction-bar icon inline offset.",
+            "targets": ["--bp-table-cell-border-width", "--bp-table-header-interaction-bar-icon-margin-left"]
+        },
+        "table:packages/table/src/cell/_common.scss:root:cell-padding-horizontal:1": "--bp-table-cell-padding-horizontal",
+        "table:packages/table/src/cell/_common.scss:root:cell-padding-vertical:1": "--bp-table-cell-padding-vertical",
+        "table:packages/table/src/cell/_common.scss:root:cell-transition-duration:1": "--bp-table-cell-transition-duration",
+        "table:packages/table/src/cell/_common.scss:root:cell-background-color-opacity:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The Sass opacity remains public while each Table cell intent owns an exact precomposed background color.",
+            "targets": [
+                "--bp-table-cell-intent-primary-background-color",
+                "--bp-table-cell-intent-success-background-color",
+                "--bp-table-cell-intent-warning-background-color",
+                "--bp-table-cell-intent-danger-background-color"
+            ]
+        },
+        "table:packages/table/src/cell/_common.scss:root:cell-padding:1": {
+            "kind": "decomposed",
+            "reconstruction": "The two-value Table cell padding shorthand is represented by independent vertical and horizontal tokens.",
+            "roles": {
+                "--bp-table-cell-padding-horizontal": "horizontal",
+                "--bp-table-cell-padding-vertical": "vertical"
+            },
+            "targets": ["--bp-table-cell-padding-vertical", "--bp-table-cell-padding-horizontal"]
+        },
+        "table:packages/table/src/common/_variables.scss:root:cell-border-width:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The public cell border width remains direct and contributes to the exact interaction-bar icon inline offset.",
+            "targets": ["--bp-table-cell-border-width", "--bp-table-header-interaction-bar-icon-margin-left"]
+        },
+        "table:packages/table/src/common/_variables.scss:root:table-background-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The Table background remains direct and is mixed exactly into the striped-cell background token.",
+            "targets": ["--bp-table-background-color", "--bp-table-cell-striped-background-color"]
+        },
+        "table:packages/table/src/common/_variables.scss:root:dark-table-background-color:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The dark Table background supplies its direct dark default and the exact dark striped-cell mix.",
+            "targets": ["--bp-table-background-color", "--bp-table-cell-striped-background-color"]
+        },
+        "table:packages/table/src/headers/_headers.scss:root/rule:.#{$ns}-table-th-menu/rule:.#{$ns}-table-interaction-bar &/rule:.#{$ns}-icon:icon-margin:1": {
+            "kind": "precomposed-fan-out",
+            "reconstruction": "The lexical icon margin remains direct and combines with the cell border width in the exact inline-start margin token.",
+            "targets": [
+                "--bp-table-header-interaction-bar-icon-margin",
+                "--bp-table-header-interaction-bar-icon-margin-left"
+            ]
+        },
+        "table:packages/table/src/layers/_layers.scss:root:region-default-color:1": "--bp-table-region-default-color",
+        "table:packages/table/src/layers/_layers.scss:root:region-selected-color:1": "--bp-table-region-selection-color",
+        "select:packages/select/src/components/omnibar/_omnibar.scss:root:omnibar-input-height:1": "--bp-select-omnibar-input-height",
+        "core:pt-border-radius": "--bp-border-radius",
+        "core:pt-spacing": "--bp-spacing",
+        "core:pt-intent-success": "--bp-intent-success-rest",
+        "core:pt-intent-warning": "--bp-intent-warning-rest",
+        "core:pt-intent-danger": "--bp-intent-danger-rest",
+        "core:pt-dark-divider-white-muted": "--bp-divider-color-muted",
+        "core:blue0": "--bp-palette-blue-0",
+        "core:green0": "--bp-palette-green-0",
+        "core:orange0": "--bp-palette-orange-0",
+        "core:red0": "--bp-palette-red-0",
+        "core:blue6": "--bp-palette-blue-6",
+        "core:green6": "--bp-palette-green-6",
+        "core:orange6": "--bp-palette-orange-6",
+        "core:red6": "--bp-palette-red-6",
+        "core:button-outlined-width": "--bp-button-outlined-width"
+    },
+    "mixinCallRules": [
+        {
+            "name": "pt-icon",
+            "minimumArgumentCount": 2
+        },
+        {
+            "name": "pt-flex-container",
+            "forbidVariables": ["pt-spacing"]
+        },
+        {
+            "name": "focus-outline",
+            "forbid": true
+        }
+    ],
+    "compatibilityNames": {
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-0:1": ["--bp-surface-shadow-0"],
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-1:1": ["--bp-surface-shadow-1"],
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-2:1": ["--bp-surface-shadow-2"],
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-3:1": ["--bp-surface-shadow-3"],
+        "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-4:1": ["--bp-surface-shadow-4"],
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-0:1": ["--bp-surface-shadow-0"],
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-1:1": ["--bp-surface-shadow-1"],
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-2:1": ["--bp-surface-shadow-2"],
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-3:1": ["--bp-surface-shadow-3"],
+        "core:packages/core/src/common/_variables.scss:root:pt-elevation-shadow-4:1": ["--bp-surface-shadow-4"],
+        "core:packages/core/src/common/_variables-extended.scss:root:dark-elevation-shadows:1": [
+            "--bp-surface-shadow-0",
+            "--bp-surface-shadow-1",
+            "--bp-surface-shadow-2",
+            "--bp-surface-shadow-3",
+            "--bp-surface-shadow-4"
+        ],
+        "core:packages/core/src/common/_variables-extended.scss:root:elevation-shadows:1": [
+            "--bp-surface-shadow-0",
+            "--bp-surface-shadow-1",
+            "--bp-surface-shadow-2",
+            "--bp-surface-shadow-3",
+            "--bp-surface-shadow-4"
+        ],
+        "core:pt-border-radius": ["$pt-border-radius", "--bp-surface-border-radius"],
+        "core:pt-font-family": ["$pt-font-family", "--bp-typography-family-default"],
+        "core:pt-font-family-monospace": ["$pt-font-family-monospace", "--bp-typography-family-mono"],
+        "core:pt-font-size": ["$pt-font-size", "--bp-typography-size-body-medium"],
+        "core:pt-font-size-large": ["$pt-font-size-large", "--bp-typography-size-body-large"],
+        "core:pt-font-size-small": ["$pt-font-size-small", "--bp-typography-size-body-small"],
+        "core:pt-line-height": ["$pt-line-height", "--bp-typography-line-height-default"],
+        "core:pt-spacing": ["$pt-spacing", "--bp-surface-spacing"],
+        "core:pt-transition-duration": ["$pt-transition-duration", "--bp-emphasis-transition-duration"],
+        "core:pt-transition-ease": ["$pt-transition-ease", "--bp-emphasis-ease-default"],
+        "core:pt-transition-ease-bounce": ["$pt-transition-ease-bounce", "--bp-emphasis-ease-bounce"]
+    },
+    "ledgerOverrides": {
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-dark-focus-indicator-color:1": {
+            "disposition": "retained-public-api",
+            "rationale": {
+                "code": "public-mixin-compatibility",
+                "detail": "The documented focus-outline mixin remains Sass-backed for consumer-authored Sass; Blueprint runtime styles no longer include it."
+            }
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-dark-icon-color-hover:1": {
+            "disposition": "retained-public-api",
+            "rationale": {
+                "code": "public-mixin-compatibility",
+                "detail": "The consumer-facing pt-icon-colors mixin remains Sass-backed; Blueprint runtime styles no longer include it."
+            }
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-focus-indicator-color:1": {
+            "disposition": "retained-public-api",
+            "rationale": {
+                "code": "public-mixin-compatibility",
+                "detail": "The documented focus-outline mixin remains Sass-backed for consumer-authored Sass; Blueprint runtime styles no longer include it."
+            }
+        },
+        "core:packages/core/src/common/_color-aliases.scss:root:pt-icon-color-hover:1": {
+            "disposition": "retained-public-api",
+            "rationale": {
+                "code": "public-mixin-compatibility",
+                "detail": "The consumer-facing pt-icon-colors mixin remains Sass-backed; Blueprint runtime styles no longer include it."
+            }
+        },
+        "core:packages/core/src/components/slider/_slider.scss:root:handle-border-shadow:1": {
+            "disposition": "retained-compile-time",
+            "rationale": {
+                "code": "derived-token-fan-out",
+                "detail": "This private Sass shadow remains as the shared initializer for the three public handle shadow variables; their runtime declarations consume exact state-specific tokens."
+            }
+        },
+        "core:packages/core/src/common/_variables-extended.scss:root:dark-elevation-shadows:1": {
+            "disposition": "retained-compile-time",
+            "rationale": {
+                "code": "selector-generation-list",
+                "detail": "The list remains only to preserve elevation selector generation; each emitted shadow consumes its indexed canonical elevation token."
+            }
+        },
+        "core:packages/core/src/common/_variables-extended.scss:root:elevation-shadows:1": {
+            "disposition": "retained-compile-time",
+            "rationale": {
+                "code": "selector-generation-list",
+                "detail": "The list remains only to preserve elevation selector generation; each emitted shadow consumes its indexed canonical elevation token."
+            }
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-outlined-border-disabled-intent-opacity:1": {
+            "disposition": "retained-public-api",
+            "rationale": {
+                "code": "derived-token-fan-out",
+                "detail": "The Sass override hook remains compatible while exact precomposed disabled border colors are represented by per-intent tokens."
+            }
+        },
+        "core:packages/core/src/components/button/_common.scss:root:button-outlined-border-intent-opacity:1": {
+            "disposition": "retained-public-api",
+            "rationale": {
+                "code": "derived-token-fan-out",
+                "detail": "The Sass override hook remains compatible while exact precomposed border colors are represented by per-intent tokens."
+            }
+        },
+        "table:packages/table/src/cell/_common.scss:root:cell-background-color-opacity:1": {
+            "disposition": "retained-public-api",
+            "rationale": {
+                "code": "derived-token-fan-out",
+                "detail": "The Sass override hook remains compatible while exact precomposed cell backgrounds are represented by per-intent Table tokens."
+            }
+        }
+    },
+    "runtimeExceptions": [
+        {
+            "name": "pt-spacing",
+            "path": "packages/core/src/common/_mixins.scss",
+            "reason": "The public focus-outline mixin retains its Sass default; Blueprint runtime call sites no longer include it."
+        },
+        {
+            "name": "pt-icon-color",
+            "path": "packages/core/src/components/icon/_icon-mixins.scss",
+            "reason": "The consumer-facing pt-icon-colors mixin remains Sass-compatible and is not emitted by Blueprint call sites."
+        },
+        {
+            "name": "pt-icon-color-hover",
+            "path": "packages/core/src/components/icon/_icon-mixins.scss",
+            "reason": "The consumer-facing pt-icon-colors mixin remains Sass-compatible and is not emitted by Blueprint call sites."
+        },
+        {
+            "name": "pt-dark-icon-color",
+            "path": "packages/core/src/components/icon/_icon-mixins.scss",
+            "reason": "The consumer-facing pt-icon-colors mixin remains Sass-compatible and is not emitted by Blueprint call sites."
+        },
+        {
+            "name": "pt-dark-icon-color-hover",
+            "path": "packages/core/src/components/icon/_icon-mixins.scss",
+            "reason": "The consumer-facing pt-icon-colors mixin remains Sass-compatible and is not emitted by Blueprint call sites."
+        },
+        {
+            "name": "ns",
+            "path": "packages/core/src/components/forms/_file-input.scss",
+            "reason": "The namespace is interpolated into an attribute name at compile time."
+        },
+        {
+            "name": "control-group-stack",
+            "path": "packages/core/src/components/button/_button-group.scss",
+            "reason": "The map controls selector z-index ordering at compile time."
+        },
+        {
+            "name": "control-group-stack",
+            "path": "packages/core/src/components/forms/_control-group.scss",
+            "reason": "The map controls selector z-index ordering at compile time."
+        },
+        {
+            "name": "track-size",
+            "path": "packages/core/src/components/slider/_common.scss",
+            "reason": "The scanner sees a same-named mixin parameter; Blueprint call sites pass the slider track-size CSS token."
+        },
+        {
+            "name": "label-offset",
+            "path": "packages/core/src/components/slider/_common.scss",
+            "reason": "The scanner sees a same-named mixin parameter; Blueprint call sites pass the slider label-offset CSS token."
+        },
+        {
+            "id": "core:packages/core/src/components/popover/_common.scss:root/mixin:popover-sizing:arrow-diagonal-half-size:1",
+            "reason": "Popover arrow geometry remains compile-time Sass because it requires math.floor and math.ceil; its size inputs remain tokenized at call sites."
+        },
+        {
+            "id": "core:packages/core/src/components/slider/_common.scss:root/mixin:slider-track-orientation:slider-track-offset:1",
+            "reason": "The local offset composes tokenized mixin inputs into a CSS calc expression and introduces no fixed Sass runtime value."
+        },
+        {
+            "id": "table:packages/table/src/cell/_borders.scss:root/mixin:pt-table-borders-mixin:border-bottom-default:1",
+            "reason": "The local shadow shorthand composes package-token mixin arguments; the emitted value retains their CSS variable references."
+        },
+        {
+            "id": "table:packages/table/src/cell/_borders.scss:root/mixin:pt-table-borders-mixin:border-right-default:1",
+            "reason": "The local shadow shorthand composes package-token mixin arguments; the emitted value retains their CSS variable references."
+        },
+        {
+            "id": "table:packages/table/src/cell/_borders.scss:root/mixin:pt-table-borders-mixin:inset-border-bottom-default:1",
+            "reason": "The local shadow shorthand composes package-token mixin arguments; the emitted value retains their CSS variable references."
+        },
+        {
+            "id": "table:packages/table/src/cell/_borders.scss:root/mixin:pt-table-borders-mixin:inset-border-bottom-frozen:1",
+            "reason": "The local shadow shorthand composes package-token mixin arguments; the emitted value retains their CSS variable references."
+        },
+        {
+            "id": "table:packages/table/src/cell/_borders.scss:root/mixin:pt-table-borders-mixin:inset-border-right-default:1",
+            "reason": "The local shadow shorthand composes package-token mixin arguments; the emitted value retains their CSS variable references."
+        },
+        {
+            "id": "table:packages/table/src/cell/_borders.scss:root/mixin:pt-table-borders-mixin:inset-border-right-frozen:1",
+            "reason": "The local shadow shorthand composes package-token mixin arguments; the emitted value retains their CSS variable references."
+        }
+    ]
+}

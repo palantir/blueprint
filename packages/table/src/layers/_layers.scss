@@ -11,7 +11,7 @@ $region-selected-color: $pt-intent-primary !default;
   overflow: hidden;
   pointer-events: none;
   position: absolute;
-  z-index: $region-layer-z-index;
+  z-index: var(--bp-table-region-layer-z-index);
 }
 
 .#{$ns}-table-overlay {
@@ -19,18 +19,13 @@ $region-selected-color: $pt-intent-primary !default;
 }
 
 .#{$ns}-table-region {
-  background-color: rgba($region-default-color, 0.1);
-  border: $cell-border-width solid $region-default-color;
+  background-color: var(--bp-table-region-default-background-color);
+  border: var(--bp-table-cell-border-width) solid var(--bp-table-region-default-color);
 }
 
 .#{$ns}-table-selection-region {
-  background-color: rgba($region-selected-color, 0.1);
-  border: $cell-border-width solid $region-selected-color;
-
-  .#{$ns}-dark & {
-    background-color: rgba($blue4, 0.1);
-    border: $cell-border-width solid $blue4;
-  }
+  background-color: var(--bp-table-region-selection-background-color);
+  border: var(--bp-table-cell-border-width) solid var(--bp-table-region-selection-color);
 
   .#{$ns}-table-column-headers & {
     // Issue #120 - Don't actually overlay a color since it causes artifacts.
@@ -44,7 +39,7 @@ $region-selected-color: $pt-intent-primary !default;
 }
 
 .#{$ns}-table-focus-region {
-  border: ($pt-spacing * 0.5) solid $blue3;
+  border: calc(var(--bp-spacing) * 0.5) solid var(--bp-table-region-focus-color);
 }
 
 .#{$ns}-table-column-headers .#{$ns}-table-region {

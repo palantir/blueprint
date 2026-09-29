@@ -7,17 +7,19 @@
 .#{$ns}-datepicker-caption {
   @include pt-flex-container(row, $fill: ":first-child");
   justify-content: space-between;
-  margin: 0 ($pt-button-height - $datepicker-padding) $datepicker-padding;
+  margin: 0
+    calc(var(--bp-datetime-datepicker-nav-button-size) - var(--bp-datetime-datepicker-padding))
+    var(--bp-datetime-datepicker-padding);
 
   // override HTMLSelect styles for a narrower appearance
   // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
   .#{$ns}-html-select select {
     font-weight: 600;
-    padding-left: $datepicker-padding;
-    padding-right: $pt-icon-size-standard;
+    padding-left: var(--bp-datetime-datepicker-padding);
+    padding-right: var(--bp-datetime-datepicker-caption-select-padding-right);
 
     + .#{$ns}-icon {
-      right: $pt-spacing * 0.5;
+      right: calc(var(--bp-spacing) * 0.5);
     }
   }
 
@@ -35,11 +37,11 @@
   // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
   .#{$ns}-html-select select {
     font-weight: 600;
-    padding-left: $datepicker-padding;
-    padding-right: $pt-icon-size-standard;
+    padding-left: var(--bp-datetime-datepicker-padding);
+    padding-right: var(--bp-datetime-datepicker-caption-select-padding-right);
 
     + .#{$ns}-icon {
-      right: $pt-spacing * 0.5;
+      right: calc(var(--bp-spacing) * 0.5);
     }
   }
 
@@ -58,10 +60,10 @@
 
 .#{$ns}-datepicker-year-select {
   flex-shrink: 1;
-  min-width: $pt-spacing * 15;
+  min-width: calc(var(--bp-spacing) * 15);
 }
 
 .#{$ns}-datepicker-caption-measure {
   font-weight: 600;
-  padding-left: $datepicker-padding;
+  padding-left: var(--bp-datetime-datepicker-padding);
 }

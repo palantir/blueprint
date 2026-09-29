@@ -1,0 +1,283 @@
+{
+    "app-background-color": {
+        "$type": "color",
+        "$value": "{palette.light-gray.5}",
+        "$description": "Application background color"
+    },
+    "app-secondary-background-color": {
+        "$type": "color",
+        "$value": "{palette.white}",
+        "$description": "Secondary application background color"
+    },
+    "app-elevated-background-color": {
+        "$type": "color",
+        "$value": "{palette.light-gray.4}",
+        "$description": "Elevated application background color"
+    },
+    "text-color": {
+        "$type": "color",
+        "$value": "{palette.dark-gray.1}",
+        "$description": "Default text color"
+    },
+    "text-color-muted": {
+        "$type": "color",
+        "$value": "{palette.gray.1}",
+        "$description": "Muted text color"
+    },
+    "text-color-disabled": {
+        "$type": "color",
+        "$value": "rgba(95, 107, 124, 0.6)",
+        "$description": "Disabled text color"
+    },
+    "heading-color": {
+        "$type": "color",
+        "$value": "{text-color}",
+        "$description": "Heading text color"
+    },
+    "link-color": {
+        "$type": "color",
+        "$value": "{palette.blue.2}",
+        "$description": "Link text color"
+    },
+    "icon-color": {
+        "$type": "color",
+        "$value": "{text-color-muted}",
+        "$description": "Default icon color"
+    },
+    "icon-color-hover": {
+        "$type": "color",
+        "$value": "{text-color}",
+        "$description": "Hovered icon color"
+    },
+    "icon-color-disabled": {
+        "$type": "color",
+        "$value": "{text-color-disabled}",
+        "$description": "Disabled icon color"
+    },
+    "icon-color-selected": {
+        "$type": "color",
+        "$value": "{intent.primary.rest}",
+        "$description": "Selected icon color"
+    },
+    "divider-black": {
+        "$type": "color",
+        "$value": "rgba(17, 20, 24, 0.15)",
+        "$description": "Invariant translucent black divider"
+    },
+    "divider-black-muted": {
+        "$type": "color",
+        "$value": "rgba(17, 20, 24, 0.1)",
+        "$description": "Invariant muted translucent black divider"
+    },
+    "divider-black-strong": {
+        "$type": "color",
+        "$value": "rgba(17, 20, 24, 0.4)",
+        "$description": "Invariant strong translucent black divider"
+    },
+    "divider-color": {
+        "$type": "color",
+        "$value": "{divider-black}",
+        "$description": "Theme-aware divider color"
+    },
+    "divider-color-muted": {
+        "$type": "color",
+        "$value": "{divider-black-muted}",
+        "$description": "Theme-aware muted divider color"
+    },
+    "outline-color": {
+        "$type": "color",
+        "$value": "rgba(45, 114, 210, 0.6)",
+        "$description": "Legacy control outline color"
+    },
+    "focus-indicator-color": {
+        "$type": "color",
+        "$value": "rgba(33, 93, 176, 0.752)",
+        "$description": "Accessible focus indicator color"
+    },
+    "text-selection-color": {
+        "$type": "color",
+        "$value": "rgba(125, 188, 255, 0.6)",
+        "$description": "Selected text background color"
+    },
+    "intent-primary-text-color": {
+        "$type": "color",
+        "$value": "{palette.blue.2}",
+        "$description": "Primary intent text and icon color"
+    },
+    "intent-success-text-color": {
+        "$type": "color",
+        "$value": "{palette.green.2}",
+        "$description": "Success intent text and icon color"
+    },
+    "intent-warning-text-color": {
+        "$type": "color",
+        "$value": "{palette.orange.2}",
+        "$description": "Warning intent text and icon color"
+    },
+    "intent-danger-text-color": {
+        "$type": "color",
+        "$value": "{palette.red.2}",
+        "$description": "Danger intent text and icon color"
+    },
+    "code-text-color": {
+        "$type": "color",
+        "$value": "{text-color-muted}",
+        "$description": "Inline code text color"
+    },
+    "code-background-color": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.7)",
+        "$description": "Inline code background color"
+    },
+    "code-link-color": {
+        "$type": "color",
+        "$value": "{intent.primary.rest}",
+        "$description": "Code text color when nested in a link"
+    },
+    "code-box-shadow": {
+        "$type": "shadow",
+        "$value": "inset 0 0 0 1px rgba(17, 20, 24, 0.15)",
+        "$description": "Code surface inset border"
+    },
+    "key-background-color": {
+        "$type": "color",
+        "$value": "{palette.white}",
+        "$description": "Keyboard key background color"
+    },
+    "blockquote-border-color": {
+        "$type": "color",
+        "$value": "rgba(171, 179, 191, 0.5)",
+        "$description": "Blockquote border color"
+    },
+    "font-family": {
+        "$type": "fontFamily",
+        "$value": "{typography.family.default}",
+        "$description": "Default Blueprint font stack"
+    },
+    "font-family-monospace": {
+        "$type": "fontFamily",
+        "$value": "{typography.family.mono}",
+        "$description": "Monospace font stack"
+    },
+    "font-size": {
+        "$type": "dimension",
+        "$value": "{typography.size.body-medium}",
+        "$description": "Default text size"
+    },
+    "font-size-large": {
+        "$type": "dimension",
+        "$value": "{typography.size.body-large}",
+        "$description": "Large text size"
+    },
+    "font-size-small": {
+        "$type": "dimension",
+        "$value": "{typography.size.body-small}",
+        "$description": "Small text size"
+    },
+    "line-height": {
+        "$type": "number",
+        "$value": "{typography.line-height.default}",
+        "$description": "Default unitless line height"
+    },
+    "heading-1-font-size": { "$type": "dimension", "$value": { "value": 36, "unit": "px" } },
+    "heading-1-line-height": { "$type": "dimension", "$value": { "value": 40, "unit": "px" } },
+    "heading-2-font-size": { "$type": "dimension", "$value": { "value": 28, "unit": "px" } },
+    "heading-2-line-height": { "$type": "dimension", "$value": { "value": 32, "unit": "px" } },
+    "heading-3-font-size": { "$type": "dimension", "$value": { "value": 22, "unit": "px" } },
+    "heading-3-line-height": { "$type": "dimension", "$value": { "value": 25, "unit": "px" } },
+    "heading-4-font-size": { "$type": "dimension", "$value": { "value": 18, "unit": "px" } },
+    "heading-4-line-height": { "$type": "dimension", "$value": { "value": 21, "unit": "px" } },
+    "heading-5-font-size": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } },
+    "heading-5-line-height": { "$type": "dimension", "$value": { "value": 19, "unit": "px" } },
+    "heading-6-font-size": { "$type": "dimension", "$value": { "value": 14, "unit": "px" } },
+    "heading-6-line-height": { "$type": "dimension", "$value": { "value": 16, "unit": "px" } },
+    "code-block-font-size": {
+        "$type": "dimension",
+        "$value": { "value": 13, "unit": "px" },
+        "$description": "Code block font size"
+    },
+    "icon-size-standard": {
+        "$type": "dimension",
+        "$value": { "value": 16, "unit": "px" },
+        "$description": "Standard icon size"
+    },
+    "icon-size-large": {
+        "$type": "dimension",
+        "$value": { "value": 20, "unit": "px" },
+        "$description": "Large icon size"
+    },
+    "control-height": {
+        "$type": "dimension",
+        "$value": { "value": 30, "unit": "px" },
+        "$description": "Default control height"
+    },
+    "control-height-small": {
+        "$type": "dimension",
+        "$value": { "value": 24, "unit": "px" },
+        "$description": "Small control height"
+    },
+    "control-height-smaller": {
+        "$type": "dimension",
+        "$value": { "value": 20, "unit": "px" },
+        "$description": "Extra-small control height"
+    },
+    "control-height-large": {
+        "$type": "dimension",
+        "$value": { "value": 40, "unit": "px" },
+        "$description": "Large control height"
+    },
+    "navbar-height": {
+        "$type": "dimension",
+        "$value": { "value": 50, "unit": "px" },
+        "$description": "Navbar height"
+    },
+    "z-index-base": { "$type": "number", "$value": 0 },
+    "z-index-content": { "$type": "number", "$value": 10 },
+    "z-index-overlay": { "$type": "number", "$value": 20 },
+    "z-index-dialog-header": { "$type": "number", "$value": 30 },
+    "transition-duration": {
+        "$type": "duration",
+        "$value": "{emphasis.transition-duration}",
+        "$description": "Default transition duration"
+    },
+    "transition-ease": {
+        "$type": "cubicBezier",
+        "$value": "{emphasis.ease.default}",
+        "$description": "Default transition easing"
+    },
+    "transition-ease-bounce": {
+        "$type": "cubicBezier",
+        "$value": "{emphasis.ease.bounce}",
+        "$description": "Bouncy transition easing"
+    },
+    "high-contrast-border-color": {
+        "$type": "color",
+        "$value": "buttonborder",
+        "$description": "Windows high-contrast border color"
+    },
+    "high-contrast-active-background-color": {
+        "$type": "color",
+        "$value": "highlight",
+        "$description": "Windows high-contrast active background color"
+    },
+    "high-contrast-active-text-color": {
+        "$type": "color",
+        "$value": "highlight",
+        "$description": "Windows high-contrast active text color"
+    },
+    "high-contrast-disabled-border-color": {
+        "$type": "color",
+        "$value": "graytext",
+        "$description": "Windows high-contrast disabled border color"
+    },
+    "high-contrast-disabled-text-color": {
+        "$type": "color",
+        "$value": "graytext",
+        "$description": "Windows high-contrast disabled text color"
+    },
+    "high-contrast-disabled-background-color": {
+        "$type": "color",
+        "$value": "graytext",
+        "$description": "Windows high-contrast disabled background color"
+    }
+}

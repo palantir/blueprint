@@ -1,94 +1,94 @@
-# Design Tokens -- EXPERIMENTAL
+# Design tokens -- EXPERIMENTAL
 
-Blueprint design tokens generated with [Style Dictionary](https://styledictionary.com/).
+Blueprint's package-owned design tokens are authored in the
+[DTCG format](https://tr.designtokens.org/format/) and compiled to CSS custom properties by the shared
+`build-design-tokens` command from `@blueprintjs/node-build-scripts`.
 
-## Configuration
+The Blueprint 6 migration is an exact-parity layer. Runtime component tokens use the resolved sRGB, alpha, shadow,
+and dimension values produced by the existing Sass defaults. They do not use relative-color approximations.
 
-Tokens are available as CSS custom properties on `:root`:
+See [USAGE.md](./USAGE.md) for loading token-only entrypoints, scoping themes, compatibility aliases, Sass behavior,
+and portals.
+
+## Ownership
+
+Core owns shared palette, intent, typography, spacing, radius, elevation, and Core-component tokens. Addon packages
+own their package-prefixed tokens, including `--bp-datetime-*`, `--bp-select-*`, and `--bp-table-*`. Core CSS remains
+a prerequisite for addon CSS.
+
+Token sources live under `tokens/base/`, with dark overrides under `tokens/themes/dark/`. Generated files under
+`design-tokens/build/` are ignored build artifacts; edit the DTCG sources instead.
+
+## Canonical tokens
+
+Use concise shared names and component-specific names when customizing Blueprint:
 
 ```css
-.element {
-    color: var(--bp-typography-color-default-rest);
-    background: var(--bp-surface-background-color-default-rest);
-    border-radius: var(--bp-surface-border-radius);
-    padding: calc(var(--bp-surface-spacing) * 2);
+:root {
+    --bp-spacing: 5px;
+    --bp-border-radius: 6px;
+    --bp-button-background-color: #e7f0ff;
 }
 ```
 
-## Token Categories
+The earlier experimental names `--bp-surface-spacing` and `--bp-surface-border-radius` remain compatibility aliases.
+New code should use the canonical names.
 
-| Category    | Prefix               | Description                                         |
-| ----------- | -------------------- | --------------------------------------------------- |
-| Palette     | `--bp-palette-*`     | Raw color values (gray, blue, green, etc.)          |
-| Intent      | `--bp-intent-*`      | Semantic colors (primary, success, warning, danger) |
-| Surface     | `--bp-surface-*`     | Backgrounds, borders, shadows, spacing, z-index     |
-| Typography  | `--bp-typography-*`  | Font families, sizes, weights, line heights, colors |
-| Iconography | `--bp-iconography-*` | Icon sizes and colors                               |
-| Emphasis    | `--bp-emphasis-*`    | Focus rings, transitions, easing                    |
+The experimental `--bp-surface-shadow-0..4` defaults are also preserved. They differ from Blueprint 6's actual Sass
+shadows, so runtime styles use exact `--bp-elevation-shadow-0..4` tokens instead of aliasing the incompatible values.
 
-## Development
+## Token structure
 
-```bash
-pnpm run build:tokens  # Generate tokens
-```
-
-## Additional Notes
-
-### Token Structure
-
-Tokens follow the [DTCG](https://tr.designtokens.org/format/) specification. Source files live in `tokens/base/` (5 files: palette, intent, surface, typography, emphasis) with theme overrides in `tokens/themes/` (which currently includes only dark tokens).
-
-Each token uses these standard DTCG properties:
+Tokens use standard DTCG properties:
 
 | Property       | Purpose                                                                                                    |
 | -------------- | ---------------------------------------------------------------------------------------------------------- |
 | `$type`        | Data type: `color`, `dimension`, `shadow`, `fontFamily`, `fontWeight`, `number`, `duration`, `cubicBezier` |
-| `$value`       | The token value — a literal, a reference like `"{palette.blue.3}"`, or a complex object                    |
-| `$description` | Human-readable explanation                                                                                 |
-| `$extensions`  | Custom Blueprint metadata                                                                                  |
+| `$value`       | A literal, a reference such as `"{palette.blue.3}"`, or a structured DTCG value                            |
+| `$description` | Optional human-readable explanation                                                                        |
+| `$extensions`  | Blueprint-specific build metadata                                                                          |
 
-#### Custom extensions
-
-**`com.blueprint.derive`** — derives a new color from the referenced `$value` using OKLCH color space transforms:
+DTCG references remain references in generated CSS:
 
 ```json
-{
-    "$value": "{intent.default.rest}",
-    "$extensions": {
-        "com.blueprint.derive": {
-            "alpha": 0.25
-        }
-    }
+{ "$type": "color", "$value": "{palette.blue.3}" }
+```
+
+```css
+--bp-example-color: var(--bp-palette-blue-3);
+```
+
+Two extensions support the pre-existing experimental token set:
+
+- `com.blueprint.derive` creates a static fallback and a guarded relative-color value.
+- `com.blueprint.role: "stackable-layer"` wraps a color in `linear-gradient(... 0 0)` for background stacking.
+
+Parity component tokens must store exact values instead of introducing either extension.
+
+## Theme output
+
+Every generated token sheet emits selectors in this order:
+
+```css
+:root {
+    /* invariant and light defaults */
+}
+.bp6-dark {
+    /* compatibility dark overrides */
+}
+[data-bp-color-scheme="light"] {
+    /* explicit light overrides */
+}
+[data-bp-color-scheme="dark"] {
+    /* explicit dark overrides */
 }
 ```
 
-Available derivation properties: `alpha`, `lightnessScale`, `chromaScale`, `lightnessOffset`, `chromaOffset`, `hueOffset`. These are applied during build to produce both a static hex fallback and a relative color syntax expression (`oklch(from ...)`).
+Explicit color-scheme attributes therefore override `.bp6-dark` on the same element and support nested theme scopes
+in either direction.
 
-**`com.blueprint.role`** — assigns special build handling to a token. Currently one role exists:
+## Development
 
-- `"stackable-layer"` — wraps the compiled color in `linear-gradient(color 0 0)` so it can be composited as a `background-image` layer.
-
-#### Theme overrides
-
-Dark mode files in `tokens/themes/dark/` override base tokens by redefining `$value` and/or `$extensions`. For example, `surface.border-color.strong` changes from gray-based in light mode to white-based in dark mode:
-
-```json
-// base/surface.tokens.json
-"strong": { "$value": "{intent.default.rest}", "$extensions": { "com.blueprint.derive": { "alpha": 0.25 } } }
-
-// themes/dark/surface.tokens.json
-"strong": { "$value": "{palette.white}", "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } } }
+```bash
+pnpm --filter @blueprintjs/core build:tokens
 ```
-
-### Browser Compatibility
-
-Some tokens use the CSS [relative color syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors) (`oklch(from ...)`) for deriving hover, active, and alpha-modified colors. This requires:
-
-| Browser | Minimum Version |
-| ------- | --------------- |
-| Chrome  | 122+            |
-| Safari  | 18+             |
-| Firefox | 128+            |
-| Edge    | 122+            |
-
-Older browsers will ignore these property values. Within Blueprint components, there will be fallback values provided. Outside of Blueprint, you may need to provide your own fallbacks.

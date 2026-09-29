@@ -21,7 +21,7 @@ const storybookConfig: StorybookConfig = {
         options: {},
     },
 
-    stories: ["../packages/{core,datetime,labs,select,table}/src/**/*.stories.@(ts|tsx)"],
+    stories: ["./*.stories.@(ts|tsx)", "../packages/{core,datetime,labs,select,table}/src/**/*.stories.@(ts|tsx)"],
 
     async viteFinal(config) {
         return mergeConfig(config, {
@@ -38,6 +38,7 @@ const storybookConfig: StorybookConfig = {
                     { find: "@blueprintjs/core/lib", replacement: resolve(rootDir, "packages/core/lib") },
                     { find: "@blueprintjs/core", replacement: resolve(rootDir, "packages/core/src") },
                     { find: "@blueprintjs/datetime", replacement: resolve(rootDir, "packages/datetime") },
+                    { find: "@blueprintjs/datetime2", replacement: resolve(rootDir, "packages/datetime2") },
                     { find: "@blueprintjs/icons/next", replacement: resolve(rootDir, "packages/icons/next") },
                     { find: "@blueprintjs/icons", replacement: resolve(rootDir, "packages/icons") },
                     { find: "@blueprintjs/labs", replacement: resolve(rootDir, "packages/labs") },

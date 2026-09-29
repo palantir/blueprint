@@ -11,16 +11,20 @@
     },
     "bin": {
         "assert-package-layout": "./assert-package-layout.mjs",
+        "build-design-tokens": "./build-design-tokens.mjs",
         "css-dist": "./css-dist.mjs",
         "es-lint": "./es-lint.mjs",
         "generate-css-variables": "./generate-css-variables.mjs",
         "sass-compile": "./sass-compile.mjs",
-        "sass-lint": "./sass-lint.mjs"
+        "sass-lint": "./sass-lint.mjs",
+        "validate-sass-variable-migration": "./validate-sass-variable-migration.mjs"
     },
     "dependencies": {
+        "@tokens-studio/sd-transforms": "^2.0.3",
         "autoprefixer": "^10.4.17",
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
+        "culori": "^4.0.2",
         "css-select": "^5.1.0",
         "dom-serializer": "^2.0.0",
         "eslint": "^9.20.0",
@@ -40,6 +44,7 @@
         "sass": "^1.93.2",
         "source-map-js": "^1.0.2",
         "strip-css-comments": "^5.0.0",
+        "style-dictionary": "^5.0.3",
         "stylelint": "~16.25.0",
         "stylelint-junit-formatter": "^0.2.2",
         "svgo": "^4.0.1",

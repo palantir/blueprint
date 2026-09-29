@@ -59,19 +59,15 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   .#{$ns}-table-selection-enabled &:hover,
   &.#{$ns}-table-header-active {
     &::before {
-      background-color: $header-hover-background-color;
-
-      .#{$ns}-dark & {
-        background-color: $dark-header-hover-background-color;
-      }
+      background-color: var(--bp-table-header-hover-background-color);
     }
   }
 
   &.#{$ns}-table-header-selected::before {
     background-image: linear-gradient(
       90deg,
-      rgba($header-selected-background-color, 0.1),
-      rgba($header-selected-background-color, 0.1)
+      var(--bp-table-header-selected-overlay-color),
+      var(--bp-table-header-selected-overlay-color)
     );
   }
 }
@@ -80,7 +76,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   flex-shrink: 0;
   opacity: 0; // hide until header is hovered
   position: absolute;
-  right: $cell-border-width; // don't overlap box-shadow border
+  right: var(--bp-table-cell-border-width); // don't overlap box-shadow border
   text-align: right;
 
   .#{$ns}-table-header:hover &,
@@ -90,148 +86,97 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   }
 
   .#{$ns}-table-interaction-bar & {
-    line-height: $interaction-bar-height;
+    line-height: var(--bp-table-header-interaction-bar-height);
   }
 }
 
 .#{$ns}-table-th-menu-container-background {
-  height: $column-header-min-height;
+  height: var(--bp-table-header-column-min-height);
   pointer-events: none; // don't swallow clicks meant for the underlying header cell
   position: absolute;
   right: 0;
   top: 0;
-  width: $column-header-min-height + $pt-spacing * 5;
+  width: calc(var(--bp-table-header-column-min-height) + var(--bp-spacing) * 5);
 
   .#{$ns}-table-interaction-bar & {
-    height: $interaction-bar-height;
+    height: var(--bp-table-header-interaction-bar-height);
   }
 
   .#{$ns}-table-th-menu-open & {
-    background-image: $header-menu-hover-background;
-
-    .#{$ns}-dark & {
-      background-image: $dark-header-menu-hover-background;
-    }
+    background-image: var(--bp-table-header-menu-background-gradient);
   }
 
   // background doesn't change on hover when selection is disabled; match the default background
   .#{$ns}-table-header:hover &,
   .#{$ns}-table-header-active &,
   .#{$ns}-table-th-menu-open & {
-    background-image: $header-menu-hover-background;
-
-    .#{$ns}-dark & {
-      background-image: $dark-header-menu-hover-background;
-    }
+    background-image: var(--bp-table-header-menu-background-gradient);
   }
 
   // background changes on hover/select when selection is enabled; need to match the new background
   .#{$ns}-table-selection-enabled .#{$ns}-table-header:hover &,
   .#{$ns}-table-selection-enabled .#{$ns}-table-header-active & {
-    background-image: $selectable-header-menu-hover-background;
-
-    .#{$ns}-dark & {
-      background-image: $dark-selectable-header-menu-hover-background;
-    }
+    background-image: var(--bp-table-header-menu-selection-hover-background-gradient);
   }
 
   .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
-    background-image: $selectable-header-menu-selected-background;
-
-    .#{$ns}-dark & {
-      background-image: $dark-selectable-header-menu-selected-background;
-    }
+    background-image: var(--bp-table-header-menu-selection-selected-background-gradient);
   }
 
   .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected:hover & {
-    background-image: $selectable-header-menu-selected-hover-background;
-
-    .#{$ns}-dark & {
-      background-image: $dark-selectable-header-menu-selected-hover-background;
-    }
+    background-image: var(--bp-table-header-menu-selection-selected-hover-background-gradient);
   }
 }
 
 .#{$ns}-table-th-menu {
-  cursor: $action-cursor;
-  height: $column-header-min-height;
+  cursor: var(--bp-table-cursor-action);
+  height: var(--bp-table-header-column-min-height);
   position: relative;
-  width: $column-header-min-height; // create a larger, more accessible click target
+  width: var(--bp-table-header-column-min-height); // create a larger, more accessible click target
 
   .#{$ns}-table-interaction-bar & {
-    height: $interaction-bar-height;
-    right: $cell-border-width;
+    height: var(--bp-table-header-interaction-bar-height);
+    right: var(--bp-table-cell-border-width);
     text-align: center;
-    width: $interaction-bar-height;
+    width: var(--bp-table-header-interaction-bar-height);
 
     .#{$ns}-icon {
       $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) * 0.5;
 
-      margin: $icon-margin;
-      margin-left: $icon-margin + $cell-border-width;
+      margin: var(--bp-table-header-interaction-bar-icon-margin);
+      margin-left: var(--bp-table-header-interaction-bar-icon-margin-left);
       vertical-align: top;
     }
   }
 
   .#{$ns}-icon {
     $icon-offset: ($column-header-min-height - $pt-icon-size-standard) * 0.5;
-    background-color: $header-background-color;
-    border-radius: $pt-border-radius;
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
-    color: $pt-icon-color;
-    margin-right: $icon-offset;
+    background-color: var(--bp-table-header-background-color);
+    border-radius: var(--bp-border-radius);
+    box-shadow: var(--bp-table-header-menu-icon-border-shadow);
+    color: var(--bp-table-header-menu-icon-color);
+    margin-right: var(--bp-table-header-menu-icon-offset);
 
-    margin-top: $icon-offset;
-
-    // light theme
+    margin-top: var(--bp-table-header-menu-icon-offset);
 
     .#{$ns}-table-selection-enabled & {
-      background-color: $header-hover-background-color;
+      background-color: var(--bp-table-header-hover-background-color);
     }
 
     .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
-      background-color: $selectable-header-menu-selected-background;
-    }
-
-    // dark theme
-
-    .#{$ns}-dark & {
-      background-color: $dark-header-background-color;
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity);
-      color: $pt-dark-icon-color;
-    }
-
-    .#{$ns}-dark .#{$ns}-table-selection-enabled & {
-      background-color: $dark-header-hover-background-color;
-    }
-
-    /* prettier-ignore */
-    .#{$ns}-dark .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
-      // need to use a long selector here to properly scope the style
-      background-color: $dark-selectable-header-menu-selected-background;
+      background-color: var(--bp-table-header-menu-selection-selected-background-gradient);
     }
   }
 
   &:hover .#{$ns}-icon {
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 200%);
-    color: $pt-icon-color-hover;
-
-    .#{$ns}-dark & {
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 200%);
-      color: $pt-dark-icon-color-hover;
-    }
+    box-shadow: var(--bp-table-header-menu-icon-hover-border-shadow);
+    color: var(--bp-table-header-menu-icon-hover-color);
   }
 
   &.#{$ns}-popover-open .#{$ns}-icon {
-    background-color: $pt-icon-color-selected;
+    background-color: var(--bp-table-header-menu-icon-selected-background-color);
     box-shadow: none;
-    color: $white;
-
-    .#{$ns}-dark & {
-      background-color: $pt-dark-icon-color-selected;
-      box-shadow: none;
-      color: $white;
-    }
+    color: var(--bp-table-header-menu-icon-selected-color);
   }
 }
 
@@ -250,19 +195,19 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 }
 
 .#{$ns}-table-column-headers .#{$ns}-table-interaction-bar {
-  height: $interaction-bar-height;
+  height: var(--bp-table-header-interaction-bar-height);
   position: relative;
 }
 
 .#{$ns}-table-column-headers .#{$ns}-table-header {
-  line-height: $column-header-min-height;
-  min-height: $column-header-min-height;
+  line-height: var(--bp-table-header-column-min-height);
+  min-height: var(--bp-table-header-column-min-height);
   vertical-align: top;
 }
 
 .#{$ns}-table-row-headers .#{$ns}-table-header {
-  line-height: $cell-height;
-  min-width: $row-header-min-width;
+  line-height: var(--bp-table-cell-height);
+  min-width: var(--bp-table-header-row-min-width);
   // prevent text from leaking out of the cell during scroll, before the header
   // width is updated on scroll end.
   overflow: hidden;
@@ -285,7 +230,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 }
 
 .#{$ns}-table-column-name-text {
-  padding: $cell-padding;
+  padding: var(--bp-table-cell-padding-vertical) var(--bp-table-cell-padding-horizontal);
 }
 
 .#{$ns}-table-editable-name {
@@ -295,12 +240,18 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   &.#{$ns}-editable-text {
     &::before {
       border-radius: 0;
-      bottom: -$cell-padding-vertical;
-      left: -$cell-padding-horizontal + $cell-border-width - 2px;
-      right: -$cell-padding-horizontal + $cell-border-width - 1px;
+      bottom: calc(-1 * var(--bp-table-cell-padding-vertical));
+      left: calc(
+        -1 * var(--bp-table-cell-padding-horizontal) + var(--bp-table-cell-border-width) - 2px
+      );
+      right: calc(
+        -1 * var(--bp-table-cell-padding-horizontal) + var(--bp-table-cell-border-width) - 1px
+      );
       // The shorthand makes this hard to read.
       /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
-      top: -$cell-padding-vertical + $cell-border-width - 2px;
+      top: calc(
+        -1 * var(--bp-table-cell-padding-vertical) + var(--bp-table-cell-border-width) - 2px
+      );
     }
 
     &:not(.#{$ns}-editable-editing)::before {
@@ -309,19 +260,25 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 
     &.#{$ns}-editable-editing {
       &::before {
-        bottom: -$cell-padding-vertical + 1px;
-        cursor: $select-text-cursor;
-        left: -$cell-padding-horizontal + $cell-border-width - 1px;
-        right: -$cell-padding-horizontal + $cell-border-width;
+        bottom: calc(-1 * var(--bp-table-cell-padding-vertical) + 1px);
+        cursor: var(--bp-table-cursor-select-text);
+        left: calc(
+          -1 * var(--bp-table-cell-padding-horizontal) + var(--bp-table-cell-border-width) - 1px
+        );
+        right: calc(
+          -1 * var(--bp-table-cell-padding-horizontal) + var(--bp-table-cell-border-width)
+        );
         // The shorthand makes this hard to read.
         /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
-        top: -$cell-padding-vertical + $cell-border-width - 1px;
+        top: calc(
+          -1 * var(--bp-table-cell-padding-vertical) + var(--bp-table-cell-border-width) - 1px
+        );
       }
 
       &.#{$ns}-table-editable-text {
         &::before {
-          left: $cell-border-width - 1px;
-          right: $cell-border-width;
+          left: calc(var(--bp-table-cell-border-width) - 1px);
+          right: var(--bp-table-cell-border-width);
         }
       }
     }
@@ -329,35 +286,35 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 
   .#{$ns}-table-column-name &.#{$ns}-editable-text {
     &::before {
-      bottom: -$cell-padding-vertical - 1px;
+      bottom: calc(-1 * var(--bp-table-cell-padding-vertical) - 1px);
     }
 
     &.#{$ns}-editable-editing::before {
-      bottom: -$cell-padding-vertical;
+      bottom: calc(-1 * var(--bp-table-cell-padding-vertical));
     }
   }
 }
 
 .#{$ns}-table-column-name-text .#{$ns}-table-editable-name input {
-  height: $large-cell-height; // fixed height for IE11
+  height: var(--bp-table-cell-large-height); // fixed height for IE11
 }
 
 .#{$ns}-table-column-name {
   display: flex;
   flex-direction: column;
-  font-size: $pt-font-size;
+  font-size: var(--bp-font-size);
   text-align: left;
 }
 
 .#{$ns}-table-row-name {
   display: block;
-  font-size: $pt-font-size-small;
-  padding: 0 $pt-spacing;
+  font-size: var(--bp-font-size-small);
+  padding: 0 var(--bp-spacing);
   text-align: right;
 }
 
 .#{$ns}-table-header-content {
-  font-size: $pt-font-size;
+  font-size: var(--bp-font-size);
   white-space: normal;
 
   // react-select does not conform to our naming scheme
@@ -372,20 +329,20 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
       border-radius: 0;
 
       .Select-value {
-        cursor: $action-cursor;
+        cursor: var(--bp-table-cursor-action);
       }
     }
   }
 
   .Select-value {
-    right: -$cell-border-width;
+    right: calc(-1 * var(--bp-table-cell-border-width));
   }
   /* stylelint-enable selector-class-pattern */
 }
 
 .#{$ns}-table-column-name,
 .#{$ns}-table-row-name {
-  transition: color $cell-transition-duration;
+  transition: color var(--bp-table-cell-transition-duration);
 }
 
 .#{$ns}-table-header.#{$ns}-loading {
@@ -398,10 +355,10 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 
   .#{$ns}-table-column-name-text {
     @include cell-content-align-vertical;
-    padding: $pt-spacing * 2;
+    padding: calc(var(--bp-spacing) * 2);
 
     .#{$ns}-skeleton {
-      height: $column-name-text-skeleton-height;
+      height: var(--bp-table-header-column-name-skeleton-height);
     }
   }
 

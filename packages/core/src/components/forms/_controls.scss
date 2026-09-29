@@ -33,65 +33,38 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
 @mixin control-checked-colors($selector: ":checked") {
   input#{$selector} ~ .#{$ns}-control-indicator {
-    background-color: $control-checked-background-color;
-    box-shadow: $control-checked-box-shadow;
-    color: $white;
+    background-color: var(--bp-control-checked-background-color);
+    box-shadow: var(--bp-control-checked-box-shadow);
+    color: var(--bp-control-checked-text-color);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      background-color: $pt-high-contrast-mode-active-background-color;
+      background-color: var(--bp-high-contrast-active-background-color);
       // Windows High Contrast dark theme
-      border: 1px solid $pt-high-contrast-mode-active-background-color;
+      border: 1px solid var(--bp-control-checked-high-contrast-border-color);
     }
   }
 
   &:hover input#{$selector} ~ .#{$ns}-control-indicator {
-    background-color: $control-checked-background-color-hover;
+    background-color: var(--bp-control-checked-background-color-hover);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
+      background-color: var(--bp-high-contrast-active-background-color);
     }
   }
 
   input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
-    background: $control-checked-background-color-active;
+    background: var(--bp-control-checked-background-color-active);
   }
 
   input:disabled#{$selector} ~ .#{$ns}-control-indicator {
-    background: $control-checked-background-color-disabled;
+    background: var(--bp-control-checked-background-color-disabled);
     box-shadow: none;
-    color: rgba($white, 0.6);
+    color: var(--bp-control-checked-text-color-disabled);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      background-color: $pt-high-contrast-mode-disabled-border-color;
-      border-color: $pt-high-contrast-mode-disabled-border-color;
-    }
-  }
-
-  .#{$ns}-dark & {
-    input#{$selector} ~ .#{$ns}-control-indicator {
-      box-shadow: $dark-control-checked-box-shadow;
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        // Windows High Contrast dark theme
-        border: 1px solid $pt-high-contrast-mode-border-color;
-      }
-    }
-
-    &:hover input#{$selector} ~ .#{$ns}-control-indicator {
-      background-color: $control-checked-background-color-hover;
-      box-shadow: $dark-control-checked-box-shadow;
-    }
-
-    input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
-      background-color: $control-checked-background-color-active;
-      box-shadow: $dark-control-checked-box-shadow;
-    }
-
-    input:disabled#{$selector} ~ .#{$ns}-control-indicator {
-      background: $control-checked-background-color-disabled;
-      box-shadow: none;
-      color: rgba($white, 0.6);
+      background-color: var(--bp-high-contrast-disabled-background-color);
+      border-color: var(--bp-high-contrast-disabled-border-color);
     }
   }
 }
@@ -100,50 +73,51 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   $padding: $size + $control-indicator-spacing;
 
   &:not(.#{$ns}-align-right) {
-    padding-inline-start: $padding;
+    padding-inline-start: calc($size + var(--bp-control-indicator-spacing));
 
     .#{$ns}-control-indicator {
-      margin-inline-start: -$padding;
+      margin-inline-start: calc(($size + var(--bp-control-indicator-spacing)) * -1);
     }
   }
 
   &.#{$ns}-align-right {
-    padding-right: $padding;
+    padding-right: calc($size + var(--bp-control-indicator-spacing));
 
     .#{$ns}-control-indicator {
-      margin-right: -$padding;
+      margin-right: calc(($size + var(--bp-control-indicator-spacing)) * -1);
     }
   }
 
   // special handling for left-aligned indicators in RTL
   [dir="rtl"] &.#{$ns}-align-left {
     padding-inline-start: 0;
-    padding-left: $padding;
+    padding-left: calc($size + var(--bp-control-indicator-spacing));
 
     .#{$ns}-control-indicator {
-      margin-left: -$padding;
+      margin-left: calc(($size + var(--bp-control-indicator-spacing)) * -1);
     }
   }
 }
 
 .#{$ns}-control {
   @include control-checked-colors;
-  @include indicator-position($control-indicator-size);
+  @include indicator-position(var(--bp-control-indicator-size));
+  color: var(--bp-text-color);
   cursor: pointer;
 
   display: block;
-  margin-bottom: $pt-spacing * 2;
+  margin-bottom: var(--bp-control-margin-block-end);
   position: relative;
   text-transform: none;
 
   &.#{$ns}-disabled {
-    color: $pt-text-color-disabled;
+    color: var(--bp-text-color-disabled);
     cursor: not-allowed;
   }
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-inline-end: $pt-spacing * 5;
+    margin-inline-end: var(--bp-control-inline-margin-inline-end);
   }
 
   .#{$ns}-control-input {
@@ -156,17 +130,17 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
   .#{$ns}-control-indicator {
     background-clip: padding-box;
-    background-color: $control-background-color;
+    background-color: var(--bp-control-background-color);
     border: none;
-    box-shadow: $control-box-shadow;
+    box-shadow: var(--bp-control-box-shadow);
     cursor: pointer;
     display: inline-block;
     // font-size is used to size indicator for all control types,
     // to reduce property changes needed across types and sizes (large).
-    font-size: $control-indicator-size;
+    font-size: var(--bp-control-indicator-size);
     height: 1em;
-    margin-inline-end: $control-indicator-spacing;
-    margin-top: $pt-spacing * -0.75;
+    margin-inline-end: var(--bp-control-indicator-spacing);
+    margin-top: var(--bp-control-indicator-margin-block-start);
     position: relative;
     user-select: none;
     vertical-align: middle;
@@ -181,7 +155,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      border: 1px solid $pt-high-contrast-mode-border-color;
+      border: 1px solid var(--bp-high-contrast-border-color);
 
       &::before {
         // Because we're using a border in high contrast mode, we need to adjust the margins
@@ -193,28 +167,30 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   }
 
   &:hover .#{$ns}-control-indicator {
-    background-color: $control-background-color-hover;
+    background-color: var(--bp-control-background-color-hover);
   }
 
   input:not(:disabled):active ~ .#{$ns}-control-indicator {
-    background: $control-background-color-active;
-    box-shadow: $control-box-shadow;
+    background: var(--bp-control-background-color-active);
+    box-shadow: var(--bp-control-box-shadow);
   }
 
   input:disabled ~ .#{$ns}-control-indicator {
-    background: $control-background-color-disabled;
+    background: var(--bp-control-background-color-disabled);
     box-shadow: none;
     cursor: not-allowed;
   }
 
   input:focus ~ .#{$ns}-control-indicator {
-    @include focus-outline;
+    outline: var(--bp-focus-indicator-color) solid calc(var(--bp-spacing) * 0.5);
+    outline-offset: calc(var(--bp-spacing) * 0.5);
+    -moz-outline-radius: calc(var(--bp-spacing) * 1.5);
   }
 
   // right-aligned indicator is glued to the right side of the container
   &.#{$ns}-align-right .#{$ns}-control-indicator {
     float: right;
-    margin-left: $control-indicator-spacing;
+    margin-left: var(--bp-control-indicator-spacing);
     margin-top: 1px;
   }
 
@@ -224,13 +200,13 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   }
 
   &.#{$ns}-large {
-    @include indicator-position($control-indicator-size-large);
+    @include indicator-position(var(--bp-control-indicator-size-large));
     // larger text
-    font-size: $pt-font-size-large;
+    font-size: var(--bp-font-size-large);
 
     .#{$ns}-control-indicator {
       // em-based sizing
-      font-size: $control-indicator-size-large;
+      font-size: var(--bp-control-indicator-size-large);
     }
 
     &.#{$ns}-align-right .#{$ns}-control-indicator {
@@ -262,7 +238,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     @include control-checked-colors(":indeterminate");
 
     .#{$ns}-control-indicator {
-      border-radius: $pt-border-radius;
+      border-radius: var(--bp-border-radius);
     }
 
     input:checked ~ .#{$ns}-control-indicator {
@@ -287,7 +263,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
       }
 
       input:disabled ~ .#{$ns}-control-indicator {
-        border-color: $pt-high-contrast-mode-disabled-border-color;
+        border-color: var(--bp-high-contrast-disabled-border-color);
       }
     }
   }
@@ -298,16 +274,20 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      background-image: radial-gradient($white, $white 28%, transparent 32%);
+      background-image: radial-gradient(
+        var(--bp-control-checked-text-color),
+        var(--bp-control-checked-text-color) 28%,
+        transparent 32%
+      );
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
-        background: $pt-high-contrast-mode-active-background-color;
+        background: var(--bp-high-contrast-active-background-color);
         // Subtract border on either end, and then an extra 2px for space between the border
-        height: $control-indicator-size - $pt-spacing;
+        height: calc(var(--bp-control-indicator-size) - var(--bp-spacing));
         margin-left: 1px;
         margin-top: 1px;
-        width: $control-indicator-size - $pt-spacing;
+        width: calc(var(--bp-control-indicator-size) - var(--bp-spacing));
       }
     }
 
@@ -315,17 +295,17 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
       opacity: 0.5;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        background: $pt-high-contrast-mode-disabled-background-color;
+        background: var(--bp-high-contrast-disabled-background-color);
       }
     }
 
     input:focus ~ .#{$ns}-control-indicator {
-      -moz-outline-radius: $control-indicator-size;
+      -moz-outline-radius: var(--bp-control-indicator-size);
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       input:disabled ~ .#{$ns}-control-indicator {
-        border-color: $pt-high-contrast-mode-disabled-border-color;
+        border-color: var(--bp-high-contrast-disabled-border-color);
       }
     }
   }
@@ -401,210 +381,125 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
     @include indicator-colors(
       "",
-      $switch-text-color,
-      $switch-background-color,
-      $switch-background-color-hover,
-      $switch-background-color-active,
-      $switch-text-color-disabled,
-      $switch-background-color-disabled,
-      $switch-indicator-background-color-disabled
+      var(--bp-switch-text-color),
+      var(--bp-switch-background-color),
+      var(--bp-switch-background-color-hover),
+      var(--bp-switch-background-color-active),
+      var(--bp-switch-text-color-disabled),
+      var(--bp-switch-background-color-disabled),
+      var(--bp-switch-indicator-background-color-disabled)
     );
     @include indicator-colors(
       ":checked",
-      $switch-checked-text-color,
-      $switch-checked-background-color,
-      $switch-checked-background-color-hover,
-      $switch-checked-background-color-active,
-      $switch-checked-text-color-disabled,
-      $switch-checked-background-color-disabled,
-      $switch-checked-indicator-background-color-disabled
+      var(--bp-switch-checked-text-color),
+      var(--bp-switch-checked-background-color),
+      var(--bp-switch-checked-background-color-hover),
+      var(--bp-switch-checked-background-color-active),
+      var(--bp-switch-checked-text-color-disabled),
+      var(--bp-switch-checked-background-color-disabled),
+      var(--bp-switch-checked-indicator-background-color-disabled)
     );
     // convert em variable to px value
-    @include indicator-position(math.div($switch-width, 1em) * $control-indicator-size);
+    @include indicator-position(var(--bp-switch-position-size));
 
     // Add Windows high contrast mode styles
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       input:checked ~ .#{$ns}-control-indicator {
-        background: $pt-high-contrast-mode-active-background-color;
-        border: 1px solid $pt-high-contrast-mode-border-color;
+        background: var(--bp-high-contrast-active-background-color);
+        border: 1px solid var(--bp-high-contrast-border-color);
       }
 
       input:checked:disabled ~ .#{$ns}-control-indicator {
-        background-color: $pt-high-contrast-mode-disabled-background-color;
+        background-color: var(--bp-high-contrast-disabled-background-color);
       }
 
       input:not(:checked):disabled ~ .#{$ns}-control-indicator {
-        border-color: $pt-high-contrast-mode-disabled-border-color;
+        border-color: var(--bp-high-contrast-disabled-border-color);
 
         &::before {
-          border-color: $pt-high-contrast-mode-disabled-border-color;
+          border-color: var(--bp-high-contrast-disabled-border-color);
         }
       }
 
       &:hover input:checked ~ .#{$ns}-control-indicator {
-        background: $pt-high-contrast-mode-active-background-color;
+        background: var(--bp-high-contrast-active-background-color);
       }
     }
 
     .#{$ns}-control-indicator {
       border: none;
-      border-radius: $switch-width;
+      border-radius: var(--bp-switch-width);
       // override default button styles, never have a box-shadow here.
       /* stylelint-disable-next-line declaration-no-important */
       box-shadow: none !important;
-      min-width: $switch-width;
-      transition: background-color $pt-transition-duration $pt-transition-ease;
+      min-width: var(--bp-switch-width);
+      transition: background-color var(--bp-transition-duration) var(--bp-transition-ease);
       width: auto;
 
       &::before {
-        background: $white;
+        background: var(--bp-switch-indicator-background-color);
         border-radius: 50%;
-        box-shadow: $switch-indicator-box-shadow;
-        height: $switch-indicator-size;
-        left: $switch-indicator-margin;
+        box-shadow: var(--bp-switch-indicator-box-shadow);
+        height: var(--bp-switch-indicator-size);
+        left: var(--bp-switch-indicator-margin);
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        transition: left $pt-transition-duration $pt-transition-ease;
-        width: $switch-indicator-size;
+        transition: left var(--bp-transition-duration) var(--bp-transition-ease);
+        width: var(--bp-switch-indicator-size);
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
-          border: 1px solid $pt-high-contrast-mode-border-color;
+          border: 1px solid var(--bp-high-contrast-border-color);
           // Because we're using a border for the outline, we need to decrease the top margin
-          margin-top: $switch-indicator-margin - 1px;
+          margin-top: calc(var(--bp-switch-indicator-margin) - 1px);
         }
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        border: 1px solid $pt-high-contrast-mode-border-color;
+        border: 1px solid var(--bp-high-contrast-border-color);
       }
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
       // 1em is size of indicator
-      left: calc($switch-indicator-margin + 100% - 1em);
+      left: calc(var(--bp-switch-indicator-margin) + 100% - 1em);
     }
 
     &.#{$ns}-large {
-      @include indicator-position(math.div($switch-width, 1em) * $control-indicator-size-large);
-    }
-
-    .#{$ns}-dark & {
-      @include indicator-colors(
-        "",
-        $dark-switch-text-color,
-        $switch-background-color,
-        $switch-background-color-hover,
-        $switch-background-color-active,
-        $dark-switch-text-color-disabled,
-        $switch-background-color-disabled,
-        $switch-indicator-background-color-disabled
-      );
-      @include indicator-colors(
-        ":checked",
-        $dark-switch-checked-text-color,
-        $switch-checked-background-color,
-        $switch-checked-background-color-hover,
-        $switch-checked-background-color-active,
-        $dark-switch-checked-text-color-disabled,
-        $switch-checked-background-color-disabled,
-        $switch-checked-indicator-background-color-disabled
-      );
-
-      // Add Windows high contrast mode styles
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        input:checked ~ .#{$ns}-control-indicator {
-          background: $pt-high-contrast-mode-active-background-color;
-          border: 1px solid $pt-high-contrast-mode-border-color;
-        }
-
-        input:checked:disabled ~ .#{$ns}-control-indicator {
-          background-color: $pt-high-contrast-mode-disabled-background-color;
-        }
-
-        input:not(:checked):disabled ~ .#{$ns}-control-indicator {
-          border-color: $pt-high-contrast-mode-disabled-border-color;
-
-          // stylelint-disable-next-line max-nesting-depth
-          &::before {
-            border-color: $pt-high-contrast-mode-disabled-border-color;
-          }
-        }
-
-        &:hover input:checked ~ .#{$ns}-control-indicator {
-          background: $pt-high-contrast-mode-active-background-color;
-        }
-      }
+      @include indicator-position(var(--bp-switch-position-size-large));
     }
 
     .#{$ns}-switch-inner-text {
-      font-size: $switch-indicator-text-font-size;
+      font-size: var(--bp-switch-indicator-text-font-size);
       text-align: center;
     }
 
     .#{$ns}-control-indicator-child {
       &:first-child {
         line-height: 0;
-        margin-left: $switch-indicator-child-outside-margin;
-        margin-right: $switch-indicator-child-inside-margin;
+        margin-left: var(--bp-switch-indicator-child-outside-margin);
+        margin-right: var(--bp-switch-indicator-child-inside-margin);
         visibility: hidden;
       }
 
       &:last-child {
-        line-height: $switch-indicator-child-height;
-        margin-left: $switch-indicator-child-inside-margin;
-        margin-right: $switch-indicator-child-outside-margin;
+        line-height: var(--bp-switch-indicator-child-height);
+        margin-left: var(--bp-switch-indicator-child-inside-margin);
+        margin-right: var(--bp-switch-indicator-child-outside-margin);
         visibility: visible;
       }
     }
 
     input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child {
       &:first-child {
-        line-height: $switch-indicator-child-height;
+        line-height: var(--bp-switch-indicator-child-height);
         visibility: visible;
       }
 
       &:last-child {
         line-height: 0;
         visibility: hidden;
-      }
-    }
-  }
-
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color;
-
-    &.#{$ns}-disabled {
-      color: $pt-dark-text-color-disabled;
-    }
-
-    .#{$ns}-control-indicator {
-      background-color: $dark-control-background-color;
-      box-shadow: $dark-control-box-shadow;
-    }
-
-    &:hover .#{$ns}-control-indicator {
-      background-color: $dark-control-background-color-hover;
-    }
-
-    input:not(:disabled):active ~ .#{$ns}-control-indicator {
-      background: $dark-control-background-color-active;
-      box-shadow: $dark-control-box-shadow;
-    }
-
-    input:disabled ~ .#{$ns}-control-indicator {
-      background: $dark-control-background-color-disabled;
-      box-shadow: none;
-      cursor: not-allowed;
-    }
-
-    &.#{$ns}-checkbox input:disabled {
-      &:checked,
-      &:indeterminate {
-        ~ .#{$ns}-control-indicator {
-          background: $control-checked-background-color-disabled;
-        }
       }
     }
   }

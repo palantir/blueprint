@@ -19,18 +19,22 @@ html {
 // Style resets on top of Normalize.css
 
 body {
-  @include base-typography;
-  color: $pt-text-color;
-  font-family: $pt-font-family;
+  color: var(--bp-text-color);
+  font-family: var(--bp-font-family);
+  font-size: var(--bp-font-size);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: var(--bp-line-height);
+  text-transform: none;
 }
 
 p {
-  margin-bottom: $pt-spacing * 2;
+  margin-bottom: calc(var(--bp-spacing) * 2);
   margin-top: 0;
 }
 
 small {
-  font-size: $pt-font-size-small;
+  font-size: var(--bp-font-size-small);
 }
 
 strong {
@@ -39,5 +43,5 @@ strong {
 
 // consistent cross-browser text selection
 ::selection {
-  background: $pt-text-selection-color;
+  background: var(--bp-text-selection-color);
 }

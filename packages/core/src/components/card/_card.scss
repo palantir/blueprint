@@ -1,146 +1,52 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-/* stylelint-disable alpha-value-notation */
-
+@use "sass:list";
 @import "./card-variables";
 
 .#{$ns}-card {
-  background-color: var(--bp-surface-background-color-default-rest);
-  border-radius: var(--bp-surface-border-radius);
-  box-shadow: var(--bp-surface-shadow-0);
-  padding: calc(var(--bp-surface-spacing) * 5);
+  background-color: var(--bp-card-background-color);
+  border-radius: var(--bp-border-radius);
+  box-shadow: var(--bp-elevation-shadow-0);
+  padding: var(--bp-card-padding);
   transition:
-    transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default),
-    box-shadow calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
-
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    // stylelint-disable-next-line function-no-unknown
-    background-color: oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h);
-    box-shadow: var(--bp-surface-shadow-0);
-  }
+    transform calc(var(--bp-transition-duration) * 2) var(--bp-transition-ease),
+    box-shadow calc(var(--bp-transition-duration) * 2) var(--bp-transition-ease);
 
   // High contrast mode hides box-shadows, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid buttonborder;
+    border: 1px solid var(--bp-high-contrast-border-color);
     box-shadow: none;
   }
 }
 
-.#{$ns}-elevation-0 {
-  box-shadow: var(--bp-surface-shadow-0);
+@for $index from 1 through list.length($elevation-shadows) {
+  .#{$ns}-elevation-#{$index - 1} {
+    /* stylelint-disable-next-line custom-property-pattern */
+    box-shadow: var(--bp-elevation-shadow-#{$index - 1});
 
-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid buttonborder;
-  }
-}
-
-.#{$ns}-elevation-1 {
-  box-shadow: var(--bp-surface-shadow-1);
-
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    box-shadow:
-      var(--bp-surface-shadow-1),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
-  }
-
-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid buttonborder;
-  }
-}
-
-.#{$ns}-elevation-2 {
-  box-shadow: var(--bp-surface-shadow-2);
-
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    box-shadow:
-      var(--bp-surface-shadow-2),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
-  }
-
-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid buttonborder;
-  }
-}
-
-.#{$ns}-elevation-3 {
-  box-shadow: var(--bp-surface-shadow-3);
-
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    box-shadow:
-      var(--bp-surface-shadow-3),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
-  }
-
-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid buttonborder;
-  }
-}
-
-.#{$ns}-elevation-4 {
-  box-shadow: var(--bp-surface-shadow-4);
-
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    box-shadow:
-      var(--bp-surface-shadow-4),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
-  }
-
-  @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid buttonborder;
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid var(--bp-high-contrast-border-color);
+    }
   }
 }
 
 .#{$ns}-card.#{$ns}-compact {
-  padding: calc(var(--bp-surface-spacing) * 4);
+  padding: var(--bp-card-padding-compact);
 }
 
 .#{$ns}-card.#{$ns}-interactive {
   &:hover {
-    box-shadow: var(--bp-surface-shadow-3);
+    box-shadow: var(--bp-elevation-shadow-3);
     cursor: pointer;
-
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      box-shadow:
-        var(--bp-surface-shadow-3),
-        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
-    }
   }
 
   &.#{$ns}-selected {
-    box-shadow:
-      0 0 0 3px oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h / 0.2),
-      0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h);
-
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      box-shadow:
-        0 0 0 3px oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.4),
-        0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h);
-    }
+    box-shadow: var(--bp-card-selected-box-shadow);
   }
 
   &:active {
-    box-shadow: var(--bp-surface-shadow-1);
+    box-shadow: var(--bp-elevation-shadow-1);
     transition-duration: 0;
-
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      box-shadow:
-        var(--bp-surface-shadow-1),
-        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
-    }
   }
 }
