@@ -5,7 +5,6 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
-@import "docs-app-design-tokens";
 @import "normalize.css/normalize.css";
 
 // import these first because they're the base layer
@@ -34,7 +33,7 @@ Licensed under the Apache License, Version 2.0.
 
 // remove padding on left side of tables in documentation
 .docs-section .#{$ns}-running-text table {
-  margin: var(--bp-docs-theme-content-padding) 0;
+  margin: $content-padding 0;
 
   th {
     padding-top: 0;
@@ -54,7 +53,7 @@ Licensed under the Apache License, Version 2.0.
 .docs-example-options,
 .editor,
 code {
-  transition: background-color var(--bp-transition-duration) var(--bp-transition-ease);
+  transition: background-color $pt-transition-duration $pt-transition-ease;
 }
 
 .docs-root {

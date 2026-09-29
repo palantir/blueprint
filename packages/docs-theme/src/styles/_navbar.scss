@@ -15,23 +15,24 @@ $nav-divider-offset: $pt-spacing * 12.5;
 }
 
 .docs-nav-button {
-  @include pt-flex-container(row, calc(var(--bp-spacing) * 3));
+  @include pt-flex-container(row, ($pt-spacing * 2) + $pt-spacing);
   align-items: center;
   cursor: pointer;
 
-  margin-left: calc(var(--bp-docs-theme-nav-divider-offset) * -1);
-  padding: calc(var(--bp-spacing) * 2) var(--bp-docs-theme-sidebar-padding);
-  padding-left: calc(var(--bp-docs-theme-nav-divider-offset) + var(--bp-spacing));
+  margin-left: -$nav-divider-offset;
+  padding: ($pt-spacing * 2) $sidebar-padding;
+  padding-left: $nav-divider-offset + $pt-spacing;
 
   &:hover {
-    background-image: var(--bp-docs-theme-nav-button-hover-background-image);
+    @include divider-gradient($pt-app-background-color, $pt-dark-app-background-color);
     color: inherit;
   }
 }
 
 .docs-nav-divider {
-  background-image: var(--bp-docs-theme-nav-divider-background-image);
+  @include divider-gradient($pt-divider-black, $pt-dark-divider-black);
+  background-image: linear-gradient(to right, rgba($black, 0) 0%, $pt-divider-black 40%);
   height: 1px;
-  margin-left: calc(var(--bp-docs-theme-nav-divider-offset) * -1);
+  margin-left: -$nav-divider-offset;
   padding: 0;
 }

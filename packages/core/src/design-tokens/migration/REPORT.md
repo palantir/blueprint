@@ -4,6 +4,7 @@
 
 This spike audits every Sass declaration present at rollback baseline `643ec05ce` in Core, Icons, DateTime,
 DateTime2, Select, Table, docs-theme, and docs-app, plus every source-controlled Sass helper introduced by the
+migration. Docs-theme and docs-app remain Sass-backed supporting applications and are excluded from CSS-token
 migration. Labs, demo-app, landing-app, and table-dev-app are also inventoried, but only their shared spacing and
 radius conversions are in migration scope.
 
@@ -38,19 +39,18 @@ The validator accepts these dispositions:
 
 | Disposition                   | Count | Meaning                                                                                    |
 | ----------------------------- | ----: | ------------------------------------------------------------------------------------------ |
-| `migrated`                    |   409 | Blueprint runtime declarations now consume the recorded CSS token.                         |
+| `migrated`                    |   367 | Blueprint runtime declarations now consume the recorded CSS token.                         |
 | `retained-public-api`         |    81 | A documented or overrideable Sass contract remains unchanged.                              |
-| `retained-compile-time`       |    32 | Sass is required for selectors, control flow, media inputs, mixin parameters, or geometry. |
-| `retained-local`              |    57 | Lexical Sass state supports compilation and does not represent a themeable runtime value.  |
+| `retained-compile-time`       |    27 | Sass is required for selectors, control flow, media inputs, mixin parameters, or geometry. |
+| `retained-local`              |    55 | Lexical Sass state supports compilation and does not represent a themeable runtime value.  |
 | `retained-generated-metadata` |     1 | Generated icon names, font families, and codepoint maps remain build-time metadata.        |
-| `excluded`                    |    23 | The declaration belongs to an audited supporting app or does not feed an in-scope visual.  |
+| `excluded`                    |    72 | The declaration belongs to an audited supporting app or does not feed an in-scope visual.  |
 
-The ledger contains 603 declarations and 777 explicit target records: 588 declarations from the rollback baseline
+The ledger contains 603 declarations and 659 explicit target records: 588 declarations from the rollback baseline
 and 15 compile-time helpers introduced by this migration. Of the non-migrated declarations, 52 public API entries,
 three compile-time collections, and 19 retained locals still record the tokens which replace their runtime
-contribution while the Sass declaration itself remains intact. Resolution is deterministic: 158 entries use
-reviewed mappings (143 stable declaration IDs and 15 unambiguous owner/name defaults), 325 are unambiguous inferences,
-and 120 need no token resolution. Dart Sass resolves
+contribution while the Sass declaration itself remains intact. Resolution is deterministic: 143 entries use
+reviewed stable-ID mappings, 298 are unambiguous inferences, and 162 need no token resolution. Dart Sass resolves
 510 declaration values directly; 92 lexical entries are explicitly contextual, including 34 with captured execution
 observations; and the generated Icons metadata entry is explicitly not applicable to light/dark runtime values. No
 entry is unclassified or ambiguous.
@@ -63,8 +63,8 @@ entry is unclassified or ambiguous.
 | `@blueprintjs/datetime2`  |            0 |          0 |
 | `@blueprintjs/select`     |            8 |          7 |
 | `@blueprintjs/table`      |           81 |         67 |
-| `@blueprintjs/docs-theme` |           24 |         20 |
-| `@blueprintjs/docs-app`   |           29 |         22 |
+| `@blueprintjs/docs-theme` |           24 |          0 |
+| `@blueprintjs/docs-app`   |           29 |          0 |
 
 DateTime2 declares no Sass variables of its own at the rollback baseline. Its runtime uses are still migrated and
 its standalone CSS includes DateTime's token-only defaults. Icons' single tracked declaration is generated font
@@ -78,8 +78,9 @@ emitted declarations without an explicit exception.
 ## Token ownership and mapping
 
 Core owns shared palette, intent, typography, spacing, radius, elevation, and Core-component tokens. Addons own
-package-prefixed tokens such as `--bp-datetime-*`, `--bp-select-*`, and `--bp-table-*`; docs-theme and docs-app own
-their application tokens. Core CSS remains the prerequisite for addon CSS.
+package-prefixed tokens such as `--bp-datetime-*`, `--bp-select-*`, and `--bp-table-*`. Docs-theme and docs-app own no
+runtime CSS tokens; their application-specific values remain in Sass. Core CSS remains the prerequisite for addon
+CSS.
 
 Mappings favor direct semantic equivalence:
 
@@ -92,8 +93,8 @@ Mappings favor direct semantic equivalence:
 - Parity colors and shadows store exact sRGB and alpha values; they do not introduce `oklch(from ...)` or
   `color-mix()` derivations.
 
-DTCG references are preserved in generated CSS as `var()` aliases. Each package builds tokens before Sass or its app
-bundle and exposes a token-only Sass entrypoint for source-partial consumers. DateTime2 includes the DateTime token
+DTCG references are preserved in generated CSS as `var()` aliases. Each token-owning package builds tokens before
+Sass and exposes a token-only Sass entrypoint for source-partial consumers. DateTime2 includes the DateTime token
 defaults it consumes so DateTime2 does not silently require DateTime component CSS.
 
 ## Theme contract
@@ -189,11 +190,11 @@ Sass declarations are generated codepoint and font metadata.
 ## Verification contract
 
 `pnpm verify:sass-variable-migration` first compiles the packages which own protected compatibility artifacts and
-regenerates every package's ignored token output, including docs-app. Its check then regenerates the ledger facts,
-resolves generated light/dark defaults, protects Sass and LESS compatibility artifacts by hash, validates the token
-graph, and requires zero unclassified entries. It passes for all 603 declarations, and the protected Core SCSS and
-LESS export hashes match the rollback baseline. `pnpm verify` calls the check directly after its normal compile and
-dist phases so it does not rebuild those prerequisites twice.
+regenerates every token-owning package's ignored output. Its check then regenerates the ledger facts, resolves
+generated light/dark defaults, protects Sass and LESS compatibility artifacts by hash, validates the token graph,
+and requires zero unclassified entries. It passes for all 603 declarations, and the protected Core SCSS and LESS
+export hashes match the rollback baseline. `pnpm verify` calls the check directly after its normal compile and dist
+phases so it does not rebuild those prerequisites twice.
 
 The theming kitchen sink covers Core, Icons, DateTime, DateTime2, Select, and Table under global, scoped, nested,
 legacy-boundary, and scoped-portal themes. The committed browser report records 8,040 computed-style checks and

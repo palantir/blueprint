@@ -13,22 +13,22 @@ $banner-height: $pt-spacing * 10;
   @include pt-flex-container(row);
   @include overflow-ellipsis;
   align-items: center;
-  box-shadow: var(--bp-docs-theme-banner-shadow);
+  box-shadow: inset 0 -1px 0 $pt-divider-black;
   flex: 0 0 auto;
   justify-content: center;
   left: 0;
-  min-height: var(--bp-docs-theme-banner-height);
-  padding: calc(var(--bp-spacing) * 2) calc(var(--bp-spacing) * 5);
+  min-height: $banner-height;
+  padding: ($pt-spacing * 2) ($pt-spacing * 5);
 
   position: fixed;
   right: 0;
   text-align: center;
   top: 0;
-  z-index: calc(var(--bp-z-index-overlay) - 1);
+  z-index: $pt-z-index-overlay - 1;
 
   a {
     /* stylelint-disable-next-line declaration-no-important */
-    color: var(--bp-palette-white) !important;
+    color: $white !important;
 
     &:hover {
       text-decoration: none;
@@ -37,30 +37,32 @@ $banner-height: $pt-spacing * 10;
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
-      background: var(--bp-intent-#{$intent}-rest);
+      background: list.nth($colors, 1);
 
       &:hover {
-        background: var(--bp-intent-#{$intent}-hover);
+        background: list.nth($colors, 2);
       }
 
       &:active {
-        background: var(--bp-intent-#{$intent}-active);
+        background: list.nth($colors, 3);
       }
     }
   }
 
+  .#{$ns}-dark & {
+    box-shadow: 0 1px 0 $pt-divider-black;
+  }
+
   + .docs-app {
-    padding-top: var(--bp-docs-theme-banner-height);
+    padding-top: $banner-height;
 
     .docs-nav {
-      height: calc(100vh - var(--bp-docs-theme-banner-height));
+      height: calc(100vh - #{$banner-height});
     }
 
     .docs-anchor {
       // shift anchors down by $banner-height pixels
-      margin-top: calc(
-        var(--bp-docs-theme-content-padding) * -2 - var(--bp-docs-theme-banner-height)
-      );
+      margin-top: -$content-padding * 2 - $banner-height;
     }
   }
 }

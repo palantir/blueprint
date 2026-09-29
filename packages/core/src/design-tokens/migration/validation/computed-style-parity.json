@@ -123,15 +123,15 @@
                 "sha256": "e64d2a66d00610c41a528643379c9e661279e23cd398ff4417259c4bff32317b"
             },
             "docs-theme/docs-theme.css": {
-                "bytes": 27733,
-                "sha256": "f62e44fd1da342ab70c02aa1a8f79117a571bd418dec3c99e9a60ab33f6323d5"
+                "bytes": 20027,
+                "sha256": "5ccfb5717409412d5a4c0203c8cb7a904da47df5c8407c4136871ac9220cf096"
             },
             "docs-app/index.css": {
-                "bytes": 85474,
-                "sha256": "7c2ce944d8e571fbce52dedd9c37b5c3f04bf2d6ab550835768a53cb5ab02285"
+                "bytes": 54989,
+                "sha256": "5e72839e2855bc0459fa035be951a8aaa7d0fae34fd30479f55fcb1791b54b41"
             }
         },
-        "label": "css-variable-spike"
+        "label": "docs-sass-current"
     },
     "engine": {
         "protocolVersion": "1.3",
@@ -209,15 +209,9 @@
             "passed": true
         },
         {
-            "actual": true,
-            "expected": true,
-            "name": "docs profile emits package-owned --bp-docs-theme- tokens",
-            "passed": true
-        },
-        {
-            "actual": true,
-            "expected": true,
-            "name": "docs profile emits package-owned --bp-docs-app- tokens",
+            "actual": false,
+            "expected": false,
+            "name": "docs profile emits no docs-owned tokens",
             "passed": true
         }
     ],

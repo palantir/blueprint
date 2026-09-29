@@ -41,13 +41,13 @@
         {
             "id": "docs-theme",
             "package": "@blueprintjs/docs-theme",
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "roots": ["packages/docs-theme/src"]
         },
         {
             "id": "docs-app",
             "package": "@blueprintjs/docs-app",
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "roots": ["packages/docs-app/src"]
         },
         {
@@ -76,12 +76,22 @@
         }
     ],
     "tokenConfigs": [
-        { "owner": "@blueprintjs/core", "config": "packages/core/src/design-tokens/config.json" },
-        { "owner": "@blueprintjs/datetime", "config": "packages/datetime/src/design-tokens/config.json" },
-        { "owner": "@blueprintjs/select", "config": "packages/select/src/design-tokens/config.json" },
-        { "owner": "@blueprintjs/table", "config": "packages/table/src/design-tokens/config.json" },
-        { "owner": "@blueprintjs/docs-theme", "config": "packages/docs-theme/src/design-tokens/config.json" },
-        { "owner": "@blueprintjs/docs-app", "config": "packages/docs-app/src/design-tokens/config.json" }
+        {
+            "owner": "@blueprintjs/core",
+            "config": "packages/core/src/design-tokens/config.json"
+        },
+        {
+            "owner": "@blueprintjs/datetime",
+            "config": "packages/datetime/src/design-tokens/config.json"
+        },
+        {
+            "owner": "@blueprintjs/select",
+            "config": "packages/select/src/design-tokens/config.json"
+        },
+        {
+            "owner": "@blueprintjs/table",
+            "config": "packages/table/src/design-tokens/config.json"
+        }
     ],
     "protectedFiles": [
         {
@@ -748,13 +758,17 @@
         "core:packages/core/src/components/progress-bar/_progress-bar.scss:root:progress-bar-gradient:1": {
             "kind": "decomposed",
             "reconstruction": "The linear-gradient angle and stops remain literal CSS geometry while the repeated stripe color consumes the token.",
-            "roles": { "--bp-progress-bar-stripes-color": "repeated-stripe-color" },
+            "roles": {
+                "--bp-progress-bar-stripes-color": "repeated-stripe-color"
+            },
             "targets": "--bp-progress-bar-stripes-color"
         },
         "core:packages/core/src/components/skeleton/_common.scss:root:skeleton-animation:1": {
             "kind": "decomposed",
             "reconstruction": "The animation shorthand keeps its timing function, iteration, direction, and name literals while its duration consumes the token.",
-            "roles": { "--bp-skeleton-animation-duration": "duration" },
+            "roles": {
+                "--bp-skeleton-animation-duration": "duration"
+            },
             "targets": "--bp-skeleton-animation-duration"
         },
         "core:packages/core/src/components/tabs/_tabs.scss:root:dark-tab-color-selected:1": "--bp-link-color",
@@ -899,121 +913,6 @@
         "table:packages/table/src/layers/_layers.scss:root:region-default-color:1": "--bp-table-region-default-color",
         "table:packages/table/src/layers/_layers.scss:root:region-selected-color:1": "--bp-table-region-selection-color",
         "select:packages/select/src/components/omnibar/_omnibar.scss:root:omnibar-input-height:1": "--bp-select-omnibar-input-height",
-        "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:color:1": {
-            "kind": "precomposed-fan-out",
-            "reconstruction": "Each package color is stored as exact icon rest, foreground, hover, and active tokens for every package route.",
-            "targets": [
-                "--bp-docs-app-nav-package-blueprint-icon-background-color",
-                "--bp-docs-app-nav-package-blueprint-icon-color",
-                "--bp-docs-app-nav-package-blueprint-icon-background-color-hover",
-                "--bp-docs-app-nav-package-blueprint-icon-background-color-active",
-                "--bp-docs-app-nav-package-core-icon-background-color",
-                "--bp-docs-app-nav-package-core-icon-color",
-                "--bp-docs-app-nav-package-core-icon-background-color-hover",
-                "--bp-docs-app-nav-package-core-icon-background-color-active",
-                "--bp-docs-app-nav-package-datetime-icon-background-color",
-                "--bp-docs-app-nav-package-datetime-icon-color",
-                "--bp-docs-app-nav-package-datetime-icon-background-color-hover",
-                "--bp-docs-app-nav-package-datetime-icon-background-color-active",
-                "--bp-docs-app-nav-package-datetime2-icon-background-color",
-                "--bp-docs-app-nav-package-datetime2-icon-color",
-                "--bp-docs-app-nav-package-datetime2-icon-background-color-hover",
-                "--bp-docs-app-nav-package-datetime2-icon-background-color-active",
-                "--bp-docs-app-nav-package-icons-icon-background-color",
-                "--bp-docs-app-nav-package-icons-icon-color",
-                "--bp-docs-app-nav-package-icons-icon-background-color-hover",
-                "--bp-docs-app-nav-package-icons-icon-background-color-active",
-                "--bp-docs-app-nav-package-select-icon-background-color",
-                "--bp-docs-app-nav-package-select-icon-color",
-                "--bp-docs-app-nav-package-select-icon-background-color-hover",
-                "--bp-docs-app-nav-package-select-icon-background-color-active",
-                "--bp-docs-app-nav-package-table-icon-background-color",
-                "--bp-docs-app-nav-package-table-icon-color",
-                "--bp-docs-app-nav-package-table-icon-background-color-hover",
-                "--bp-docs-app-nav-package-table-icon-background-color-active",
-                "--bp-docs-app-nav-package-labs-icon-background-color",
-                "--bp-docs-app-nav-package-labs-icon-color",
-                "--bp-docs-app-nav-package-labs-icon-background-color-hover",
-                "--bp-docs-app-nav-package-labs-icon-background-color-active"
-            ]
-        },
-        "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:dark-color:1": {
-            "kind": "precomposed-fan-out",
-            "reconstruction": "Each dark package color supplies dark defaults for the exact icon rest, foreground, hover, and active route tokens.",
-            "targets": [
-                "--bp-docs-app-nav-package-blueprint-icon-background-color",
-                "--bp-docs-app-nav-package-blueprint-icon-color",
-                "--bp-docs-app-nav-package-blueprint-icon-background-color-hover",
-                "--bp-docs-app-nav-package-blueprint-icon-background-color-active",
-                "--bp-docs-app-nav-package-core-icon-background-color",
-                "--bp-docs-app-nav-package-core-icon-color",
-                "--bp-docs-app-nav-package-core-icon-background-color-hover",
-                "--bp-docs-app-nav-package-core-icon-background-color-active",
-                "--bp-docs-app-nav-package-datetime-icon-background-color",
-                "--bp-docs-app-nav-package-datetime-icon-color",
-                "--bp-docs-app-nav-package-datetime-icon-background-color-hover",
-                "--bp-docs-app-nav-package-datetime-icon-background-color-active",
-                "--bp-docs-app-nav-package-datetime2-icon-background-color",
-                "--bp-docs-app-nav-package-datetime2-icon-color",
-                "--bp-docs-app-nav-package-datetime2-icon-background-color-hover",
-                "--bp-docs-app-nav-package-datetime2-icon-background-color-active",
-                "--bp-docs-app-nav-package-icons-icon-background-color",
-                "--bp-docs-app-nav-package-icons-icon-color",
-                "--bp-docs-app-nav-package-icons-icon-background-color-hover",
-                "--bp-docs-app-nav-package-icons-icon-background-color-active",
-                "--bp-docs-app-nav-package-select-icon-background-color",
-                "--bp-docs-app-nav-package-select-icon-color",
-                "--bp-docs-app-nav-package-select-icon-background-color-hover",
-                "--bp-docs-app-nav-package-select-icon-background-color-active",
-                "--bp-docs-app-nav-package-table-icon-background-color",
-                "--bp-docs-app-nav-package-table-icon-color",
-                "--bp-docs-app-nav-package-table-icon-background-color-hover",
-                "--bp-docs-app-nav-package-table-icon-background-color-active",
-                "--bp-docs-app-nav-package-labs-icon-background-color",
-                "--bp-docs-app-nav-package-labs-icon-color",
-                "--bp-docs-app-nav-package-labs-icon-background-color-hover",
-                "--bp-docs-app-nav-package-labs-icon-background-color-active"
-            ]
-        },
-        "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:dark-text-color:1": {
-            "kind": "precomposed-fan-out",
-            "reconstruction": "Each dark package text color supplies dark defaults for every package route text token.",
-            "targets": [
-                "--bp-docs-app-nav-package-blueprint-text-color",
-                "--bp-docs-app-nav-package-core-text-color",
-                "--bp-docs-app-nav-package-datetime-text-color",
-                "--bp-docs-app-nav-package-datetime2-text-color",
-                "--bp-docs-app-nav-package-icons-text-color",
-                "--bp-docs-app-nav-package-select-text-color",
-                "--bp-docs-app-nav-package-table-text-color",
-                "--bp-docs-app-nav-package-labs-text-color"
-            ]
-        },
-        "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:text-color:1": {
-            "kind": "precomposed-fan-out",
-            "reconstruction": "Each package text color is stored as an exact theme-aware token for every package route.",
-            "targets": [
-                "--bp-docs-app-nav-package-blueprint-text-color",
-                "--bp-docs-app-nav-package-core-text-color",
-                "--bp-docs-app-nav-package-datetime-text-color",
-                "--bp-docs-app-nav-package-datetime2-text-color",
-                "--bp-docs-app-nav-package-icons-text-color",
-                "--bp-docs-app-nav-package-select-text-color",
-                "--bp-docs-app-nav-package-table-text-color",
-                "--bp-docs-app-nav-package-labs-text-color"
-            ]
-        },
-        "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:icon-size:1": "--bp-docs-app-context-menu-icon-size",
-        "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:node-border-width:1": "--bp-docs-app-context-menu-node-border-width",
-        "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:node-size:1": "--bp-docs-app-context-menu-node-size",
-        "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-overlay-example-transition:overlay-example-width:1": "--bp-docs-app-overlay-example-width",
-        "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-popover-portal-example/rule:.docs-popover-portal-example-scroll-content:assumed-height-of-target-plus-popover:1": "--bp-docs-app-popover-portal-target-plus-popover-height",
-        "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-popover-portal-example/rule:.docs-popover-portal-example-scroll-content:vertical-padding:1": "--bp-docs-app-popover-portal-vertical-padding",
-        "docs-theme:packages/docs-theme/src/styles/_banner.scss:root:banner-height:1": "--bp-docs-theme-banner-height",
-        "docs-theme:packages/docs-theme/src/styles/_layout.scss:root/rule:.docs-nav:background-shift:1": "--bp-docs-theme-nav-background-shift",
-        "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:container-padding:1": "--bp-docs-theme-container-padding",
-        "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:content-padding:1": "--bp-docs-theme-content-padding",
-        "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:sidebar-width:1": "--bp-docs-theme-sidebar-width",
         "core:pt-border-radius": "--bp-border-radius",
         "core:pt-spacing": "--bp-spacing",
         "core:pt-intent-success": "--bp-intent-success-rest",
@@ -1031,9 +930,18 @@
         "core:button-outlined-width": "--bp-button-outlined-width"
     },
     "mixinCallRules": [
-        { "name": "pt-icon", "minimumArgumentCount": 2 },
-        { "name": "pt-flex-container", "forbidVariables": ["pt-spacing", "content-padding"] },
-        { "name": "focus-outline", "forbid": true }
+        {
+            "name": "pt-icon",
+            "minimumArgumentCount": 2
+        },
+        {
+            "name": "pt-flex-container",
+            "forbidVariables": ["pt-spacing"]
+        },
+        {
+            "name": "focus-outline",
+            "forbid": true
+        }
     ],
     "compatibilityNames": {
         "core:packages/core/src/common/_variables.scss:root:pt-dark-elevation-shadow-0:1": ["--bp-surface-shadow-0"],
@@ -1136,13 +1044,6 @@
                 "detail": "The Sass override hook remains compatible while exact precomposed border colors are represented by per-intent tokens."
             }
         },
-        "docs-app:packages/docs-app/src/styles/_colors.scss:root:swatch-hover-offset:1": {
-            "disposition": "migrated",
-            "rationale": {
-                "code": "mixin-argument-token",
-                "detail": "The original value reached declarations through the position-all mixin; the expanded runtime declarations now consume the docs-app token directly."
-            }
-        },
         "table:packages/table/src/cell/_common.scss:root:cell-background-color-opacity:1": {
             "disposition": "retained-public-api",
             "rationale": {
@@ -1233,16 +1134,6 @@
         {
             "id": "table:packages/table/src/cell/_borders.scss:root/mixin:pt-table-borders-mixin:inset-border-right-frozen:1",
             "reason": "The local shadow shorthand composes package-token mixin arguments; the emitted value retains their CSS variable references."
-        },
-        {
-            "name": "swatch-hover-message",
-            "path": "packages/docs-app/src/styles/_colors.scss",
-            "reason": "Generated pseudo-element content remains a compile-time Sass string."
-        },
-        {
-            "name": "swatch-copied-message",
-            "path": "packages/docs-app/src/styles/_colors.scss",
-            "reason": "Generated pseudo-element content remains a compile-time Sass string."
         }
     ]
 }

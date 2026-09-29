@@ -43887,10 +43887,10 @@
                 "initializer": "(\n  intent-primary: $pt-intent-primary,\n  intent-success: $pt-intent-success,\n  intent-warning: $pt-intent-warning,\n  intent-danger: $pt-intent-danger,\n  app-background-color: $pt-app-background-color,\n  dark-app-background-color: $pt-dark-app-background-color,\n  text-color: $pt-text-color,\n  text-color-muted: $pt-text-color-muted,\n  text-color-disabled: $pt-text-color-disabled,\n  heading-color: $pt-heading-color,\n  link-color: $pt-link-color,\n  dark-text-color: $pt-dark-text-color,\n  dark-text-color-muted: $pt-dark-text-color-muted,\n  dark-text-color-disabled: $pt-dark-text-color-disabled,\n  dark-heading-color: $pt-dark-heading-color,\n  dark-link-color: $pt-dark-link-color,\n  text-selection-color: $pt-text-selection-color,\n  icon-color: $pt-icon-color,\n  icon-color-hover: $pt-icon-color-hover,\n  icon-color-disabled: $pt-icon-color-disabled,\n  icon-color-selected: $pt-icon-color-selected,\n  dark-icon-color: $pt-dark-icon-color,\n  dark-icon-color-hover: $pt-dark-icon-color-hover,\n  dark-icon-color-disabled: $pt-dark-icon-color-disabled,\n  dark-icon-color-selected: $pt-dark-icon-color-selected,\n  divider-black: $pt-divider-black,\n  dark-divider-black: $pt-dark-divider-black,\n  dark-divider-white: $pt-dark-divider-white,\n  code-text-color: $pt-code-text-color,\n  dark-code-text-color: $pt-dark-code-text-color,\n  code-background-color: $pt-code-background-color,\n  dark-code-background-color: $pt-dark-code-background-color,\n)",
                 "initializerKind": "map",
                 "isDefault": false,
-                "line": 237,
+                "line": 264,
                 "sha256": "90592e55ed0df86c707211b0abf6ea9fa38c605e01327d16b3ec1f73a6c54d2b"
             },
-            "disposition": "retained-compile-time",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:aliases:1",
             "introducedAfterBaseline": null,
             "line": 264,
@@ -43914,8 +43914,8 @@
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "sass-map",
-                "detail": "The map drives selector or control-flow generation at compile time."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
@@ -43989,7 +43989,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -43999,25 +43999,14 @@
                 "initializer": "$pt-spacing * 5",
                 "initializerKind": "arithmetic",
                 "isDefault": false,
-                "line": 278,
+                "line": 305,
                 "sha256": "289915a4d8bf86c0fcf275e26a221339c13ac5bfd54f21b6c158a19f3f57f7fc"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:bubble-size:1",
             "introducedAfterBaseline": null,
             "line": 305,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-bubble-size",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "20px", "light": "20px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "bubble-size",
             "original": {
                 "declarationText": "$bubble-size: $pt-spacing * 5",
@@ -44045,17 +44034,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-bubble-size"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 311,
+                    "path": "packages/docs-app/src/styles/_colors.scss",
+                    "property": "height",
+                    "value": "$bubble-size"
+                },
+                {
+                    "line": 313,
+                    "path": "packages/docs-app/src/styles/_colors.scss",
+                    "property": "width",
+                    "value": "$bubble-size"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "20px" }] },
                 "declared": {
@@ -44071,7 +44073,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44084,22 +44086,11 @@
                 "line": 9,
                 "sha256": "657f79aaf615734f039d4769702550df8f1fd46cb6464797ce08eab832a572f6"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:palette-border-radius:1",
             "introducedAfterBaseline": null,
             "line": 9,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-palette-border-radius",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "4px", "light": "4px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "palette-border-radius",
             "original": {
                 "declarationText": "$palette-border-radius: $pt-spacing",
@@ -44121,17 +44112,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-palette-border-radius"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 133,
+                    "path": "packages/docs-app/src/styles/_colors.scss",
+                    "property": "border-radius",
+                    "value": "$palette-border-radius"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "4px" }] },
                 "declared": {
@@ -44147,7 +44145,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44160,22 +44158,11 @@
                 "line": 8,
                 "sha256": "b5c1862ecc7d1aee2a4e4a29316cb5c351cea86605c4beb3aad161826186995b"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:palette-spacing:1",
             "introducedAfterBaseline": null,
             "line": 8,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-palette-spacing",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "20px", "light": "20px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "palette-spacing",
             "original": {
                 "declarationText": "$palette-spacing: $pt-spacing * 5",
@@ -44197,17 +44184,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-palette-spacing"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 124,
+                    "path": "packages/docs-app/src/styles/_colors.scss",
+                    "property": "margin-bottom",
+                    "value": "$palette-spacing"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "20px" }] },
                 "declared": {
@@ -44223,7 +44217,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44236,7 +44230,7 @@
                 "line": 15,
                 "sha256": "bf51957d36571e41b9e4128543725c2d0920548fbeeed24e0d368216d40910a9"
             },
-            "disposition": "retained-compile-time",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:swatch-copied-message:1",
             "introducedAfterBaseline": null,
             "line": 15,
@@ -44267,8 +44261,8 @@
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "compile-time-exception",
-                "detail": "The remaining value is required by documented Sass geometry or control flow."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 1,
             "remainingRuntimeUses": [
@@ -44301,7 +44295,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44314,22 +44308,11 @@
                 "line": 11,
                 "sha256": "0d554bbd1be98e55aa01cd057aeb3c054074d9f0e319e26faff52b514a1f08fb"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:swatch-height:1",
             "introducedAfterBaseline": null,
             "line": 11,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-swatch-height",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "40px", "light": "40px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "swatch-height",
             "original": {
                 "declarationText": "$swatch-height: $pt-input-height-large",
@@ -44351,17 +44334,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-swatch-height"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 155,
+                    "path": "packages/docs-app/src/styles/_colors.scss",
+                    "property": "height",
+                    "value": "$swatch-height"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "40px" }] },
                 "declared": {
@@ -44377,7 +44367,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44390,7 +44380,7 @@
                 "line": 14,
                 "sha256": "5601e756334c887079d619a38edf1a445ba52ec62a7830da3638b91b7ed090ce"
             },
-            "disposition": "retained-compile-time",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:swatch-hover-message:1",
             "introducedAfterBaseline": null,
             "line": 14,
@@ -44421,8 +44411,8 @@
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "compile-time-exception",
-                "detail": "The remaining value is required by documented Sass geometry or control flow."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 1,
             "remainingRuntimeUses": [
@@ -44455,7 +44445,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44468,22 +44458,11 @@
                 "line": 12,
                 "sha256": "23684f9935e267d48b4716832feea965769cd4e9c9cd9be35839618de7d08f9a"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_colors.scss:root:swatch-hover-offset:1",
             "introducedAfterBaseline": null,
             "line": 12,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-swatch-hover-offset",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "-4px", "light": "-4px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "swatch-hover-offset",
             "original": {
                 "declarationText": "$swatch-hover-offset: -$pt-spacing",
@@ -44498,17 +44477,17 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_colors.scss",
             "rationale": {
-                "code": "mixin-argument-token",
-                "detail": "The original value reached declarations through the position-all mixin; the expanded runtime declarations now consume the docs-app token directly."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-swatch-hover-offset"], "status": "inferred" },
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "-4px" }] },
                 "declared": {
@@ -44524,7 +44503,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44534,25 +44513,14 @@
                 "initializer": "510px",
                 "initializerKind": "number",
                 "isDefault": false,
-                "line": 297,
+                "line": 302,
                 "sha256": "c0dd5ae8a17540baee799ed72f4e5a7bea8df778281429dff40c13804a6aeade"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root:docs-hotkey-piano-height:1",
             "introducedAfterBaseline": null,
             "line": 302,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-hotkey-piano-height",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "510px", "light": "510px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "docs-hotkey-piano-height",
             "original": {
                 "declarationText": "$docs-hotkey-piano-height: 510px",
@@ -44580,17 +44548,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-hotkey-piano-height"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 305,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "min-height",
+                    "value": "$docs-hotkey-piano-height"
+                },
+                {
+                    "line": 321,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "min-height",
+                    "value": "$docs-hotkey-piano-height - ($pt-spacing * 5)"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "510px" }] },
                 "declared": {
@@ -44606,7 +44587,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -44616,25 +44597,14 @@
                 "initializer": "$pt-icon-size-standard * 2",
                 "initializerKind": "arithmetic",
                 "isDefault": false,
-                "line": 263,
+                "line": 270,
                 "sha256": "4ee162a3d1b6eb1704e9364311598fae417b560568449dc850f22b171385598b"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:icon-size:1",
             "introducedAfterBaseline": null,
             "line": 270,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-context-menu-icon-size",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "32px", "light": "32px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "icon-size",
             "original": {
                 "declarationText": "$icon-size: $pt-icon-size-standard * 2",
@@ -44662,21 +44632,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-app-context-menu-icon-size"],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:icon-size:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 285,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "left",
+                    "value": "($node-size - $icon-size) * 0.5 - $node-border-width"
+                },
+                {
+                    "line": 287,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "top",
+                    "value": "($node-size - $icon-size) * 0.5 - $node-border-width"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "contextual", "values": [{ "sassType": "number", "value": "32px" }] },
                 "declared": {
@@ -44695,7 +44674,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-context-menu-example", "rule:.docs-context-menu-node"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -44705,25 +44684,14 @@
                 "initializer": "$pt-spacing",
                 "initializerKind": "reference",
                 "isDefault": false,
-                "line": 264,
+                "line": 271,
                 "sha256": "a3f65cc763c8a05cf2d1188e796c1e03912552e2a7d572652dcf6d93a9246dd2"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:node-border-width:1",
             "introducedAfterBaseline": null,
             "line": 271,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-context-menu-node-border-width",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "4px", "light": "4px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "node-border-width",
             "original": {
                 "declarationText": "$node-border-width: $pt-spacing",
@@ -44757,21 +44725,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-app-context-menu-node-border-width"],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:node-border-width:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 274,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "border",
+                    "value": "$node-border-width solid $white"
+                },
+                {
+                    "line": 285,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "left",
+                    "value": "($node-size - $icon-size) * 0.5 - $node-border-width"
+                },
+                {
+                    "line": 287,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "top",
+                    "value": "($node-size - $icon-size) * 0.5 - $node-border-width"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "contextual", "values": [{ "sassType": "number", "value": "4px" }] },
                 "declared": {
@@ -44787,7 +44770,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-context-menu-example", "rule:.docs-context-menu-node"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -44797,25 +44780,14 @@
                 "initializer": "$pt-spacing * 20",
                 "initializerKind": "arithmetic",
                 "isDefault": false,
-                "line": 262,
+                "line": 269,
                 "sha256": "5f64a1413f0bcaf7806cb02654e319f966d51de0342351165ba11a1cb77df9a6"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:node-size:1",
             "introducedAfterBaseline": null,
             "line": 269,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-context-menu-node-size",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "80px", "light": "80px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "node-size",
             "original": {
                 "declarationText": "$node-size: $pt-spacing * 20",
@@ -44855,21 +44827,42 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 4,
                 "useCount": 4
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-app-context-menu-node-size"],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-context-menu-example/rule:.docs-context-menu-node:node-size:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 4,
+            "remainingRuntimeUses": [
+                {
+                    "line": 277,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "height",
+                    "value": "$node-size"
+                },
+                {
+                    "line": 279,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "width",
+                    "value": "$node-size"
+                },
+                {
+                    "line": 285,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "left",
+                    "value": "($node-size - $icon-size) * 0.5 - $node-border-width"
+                },
+                {
+                    "line": 287,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "top",
+                    "value": "($node-size - $icon-size) * 0.5 - $node-border-width"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "contextual", "values": [{ "sassType": "number", "value": "80px" }] },
                 "declared": {
@@ -44885,7 +44878,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-context-menu-example", "rule:.docs-context-menu-node"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -44895,10 +44888,10 @@
                 "initializer": "(\n    transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))\n  )",
                 "initializerKind": "list",
                 "isDefault": false,
-                "line": 431,
+                "line": 442,
                 "sha256": "ed23cf5c5880ab9269ceef4fdbaadf650bbb30a782714c086dc30496883265ca"
             },
-            "disposition": "retained-local",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-overlay-example-transition:enter:1",
             "introducedAfterBaseline": null,
             "line": 442,
@@ -44921,7 +44914,10 @@
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
-            "rationale": { "code": "lexical-local", "detail": "Lexical Sass state is not a runtime theme value." },
+            "rationale": {
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
+            },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
             "resolution": { "candidates": [], "status": "not-applicable" },
@@ -44961,7 +44957,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-overlay-example-transition"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -44971,10 +44967,10 @@
                 "initializer": "(\n    transform: (translateY(150vh) rotate(-20deg), translateY(0) rotate(0deg))\n  )",
                 "initializerKind": "list",
                 "isDefault": false,
-                "line": 434,
+                "line": 445,
                 "sha256": "78f0cdd7e03759913ef0d2b460bdb82f77c07757038417a24b4960390b26173e"
             },
-            "disposition": "retained-local",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-overlay-example-transition:leave:1",
             "introducedAfterBaseline": null,
             "line": 445,
@@ -44997,7 +44993,10 @@
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
-            "rationale": { "code": "lexical-local", "detail": "Lexical Sass state is not a runtime theme value." },
+            "rationale": {
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
+            },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
             "resolution": { "candidates": [], "status": "not-applicable" },
@@ -45037,7 +45036,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-overlay-example-transition"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -45047,25 +45046,14 @@
                 "initializer": "$pt-spacing * 100",
                 "initializerKind": "arithmetic",
                 "isDefault": false,
-                "line": 430,
+                "line": 441,
                 "sha256": "2150389f47fb16b5ec57f6bbcbf128d9f8b6d7b9acba09fb9a81e40568beaf4f"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-overlay-example-transition:overlay-example-width:1",
             "introducedAfterBaseline": null,
             "line": 441,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-overlay-example-width",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "400px", "light": "400px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "overlay-example-width",
             "original": {
                 "declarationText": "$overlay-example-width: $pt-spacing * 100",
@@ -45099,21 +45087,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-app-overlay-example-width"],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-overlay-example-transition:overlay-example-width:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 464,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "left",
+                    "value": "calc(50vw - #{$overlay-example-width * 0.5})"
+                },
+                {
+                    "line": 468,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "width",
+                    "value": "$overlay-example-width"
+                },
+                {
+                    "line": 471,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "left",
+                    "value": "calc(50% - #{$overlay-example-width * 0.5})"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "contextual", "values": [{ "sassType": "number", "value": "400px" }] },
                 "declared": {
@@ -45129,7 +45132,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-overlay-example-transition"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -45139,25 +45142,14 @@
                 "initializer": "$pt-spacing * 21.25",
                 "initializerKind": "arithmetic",
                 "isDefault": false,
-                "line": 647,
+                "line": 677,
                 "sha256": "ca168904c7fe70f47532e1660895c8358edc848cfdbcdbdf90c1324e090f8310"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-popover-portal-example/rule:.docs-popover-portal-example-scroll-content:assumed-height-of-target-plus-popover:1",
             "introducedAfterBaseline": null,
             "line": 677,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-popover-portal-target-plus-popover-height",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "85px", "light": "85px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "assumed-height-of-target-plus-popover",
             "original": {
                 "declarationText": "$assumed-height-of-target-plus-popover: $pt-spacing * 21.25",
@@ -45179,21 +45171,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-app-popover-portal-target-plus-popover-height"],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-popover-portal-example/rule:.docs-popover-portal-example-scroll-content:assumed-height-of-target-plus-popover:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 682,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "height",
+                    "value": "$assumed-height-of-target-plus-popover + (2 * $vertical-padding)"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "contextual", "values": [{ "sassType": "number", "value": "85px" }] },
                 "declared": {
@@ -45212,7 +45207,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-popover-portal-example", "rule:.docs-popover-portal-example-scroll-content"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -45222,25 +45217,14 @@
                 "initializer": "$pt-spacing * 5",
                 "initializerKind": "arithmetic",
                 "isDefault": false,
-                "line": 648,
+                "line": 678,
                 "sha256": "2f5ddf6d00ce05d19e0e950c7e29262ace4af7418e17dcc28d55337226747454"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-popover-portal-example/rule:.docs-popover-portal-example-scroll-content:vertical-padding:1",
             "introducedAfterBaseline": null,
             "line": 678,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-popover-portal-vertical-padding",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "20px", "light": "20px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "vertical-padding",
             "original": {
                 "declarationText": "$vertical-padding: $pt-spacing * 5",
@@ -45268,21 +45252,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-app-popover-portal-vertical-padding"],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_examples.scss:root/rule:.docs-popover-portal-example/rule:.docs-popover-portal-example-scroll-content:vertical-padding:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 682,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "height",
+                    "value": "$assumed-height-of-target-plus-popover + (2 * $vertical-padding)"
+                },
+                {
+                    "line": 684,
+                    "path": "packages/docs-app/src/styles/_examples.scss",
+                    "property": "padding-top",
+                    "value": "$vertical-padding"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "contextual", "values": [{ "sassType": "number", "value": "20px" }] },
                 "declared": {
@@ -45301,7 +45294,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-popover-portal-example", "rule:.docs-popover-portal-example-scroll-content"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -45314,22 +45307,11 @@
                 "line": 34,
                 "sha256": "9d0094cbb56327fccc058ac57840dba9ea3d26ad06b44fa9b3b9513914ea76f6"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_icons.scss:root:docs-icon-next-columns:1",
             "introducedAfterBaseline": null,
             "line": 34,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-icon-next-columns",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "6", "light": "6", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "docs-icon-next-columns",
             "original": {
                 "declarationText": "$docs-icon-next-columns: 6",
@@ -45351,17 +45333,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_icons.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-icon-next-columns"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 70,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "grid-template-columns",
+                    "value": "repeat($docs-icon-next-columns, minmax(0, 1fr))"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "6" }] },
                 "declared": {
@@ -45377,7 +45366,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45390,22 +45379,11 @@
                 "line": 33,
                 "sha256": "6460117ef133c1e7aee32786da471f930e9c9918c57e7879433545b46a0cb630"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_icons.scss:root:docs-icon-next-rail-width:1",
             "introducedAfterBaseline": null,
             "line": 33,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-icon-next-rail-width",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "120px", "light": "120px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "docs-icon-next-rail-width",
             "original": {
                 "declarationText": "$docs-icon-next-rail-width: $pt-spacing * 30",
@@ -45433,17 +45411,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_icons.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-icon-next-rail-width"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 48,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "flex",
+                    "value": "0 0 $docs-icon-next-rail-width"
+                },
+                {
+                    "line": 49,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "width",
+                    "value": "$docs-icon-next-rail-width"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "120px" }] },
                 "declared": {
@@ -45459,7 +45450,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45472,26 +45463,11 @@
                 "line": 9,
                 "sha256": "4e4ec408e3741df921ccad44ff4797dcfaeba40b43806e7c9f0fdb7a18d1b2bf"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_icons.scss:root:hover-transition:1",
             "introducedAfterBaseline": null,
             "line": 9,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-hover-transition",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "100ms cubic-bezier(0.4, 1, 0.75, 0.9)",
-                            "light": "100ms cubic-bezier(0.4, 1, 0.75, 0.9)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "hover-transition",
             "original": {
                 "declarationText": "$hover-transition: $pt-transition-duration $pt-transition-ease",
@@ -45525,17 +45501,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 4,
                 "useCount": 4
             },
             "path": "packages/docs-app/src/styles/_icons.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-hover-transition"], "status": "inferred" },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 120,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "transition",
+                    "value": "background-color $hover-transition"
+                },
+                {
+                    "line": 309,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "transition",
+                    "value": "background-color $hover-transition"
+                },
+                {
+                    "line": 339,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "transition",
+                    "value": "transform $hover-transition,\n    opacity $hover-transition"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": {
                     "status": "resolved",
@@ -45557,7 +45552,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45570,22 +45565,11 @@
                 "line": 11,
                 "sha256": "63d55eec9eb0e1ea6af301ced47c9e891ebc02579724eedba43c49f788853d99"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_icons.scss:root:icons-per-row:1",
             "introducedAfterBaseline": null,
             "line": 11,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-icons-per-row",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "5", "light": "5", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "icons-per-row",
             "original": {
                 "declarationText": "$icons-per-row: 5",
@@ -45607,17 +45591,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 1,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_icons.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-icons-per-row"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 241,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "width",
+                    "value": "math.div(100%, $icons-per-row)"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "5" }] },
                 "declared": {
@@ -45633,7 +45624,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45646,22 +45637,11 @@
                 "line": 7,
                 "sha256": "6a606a963ad6770bcc8e5cf1182a48e0e4a3894963f7b2368481e75edf8e7315"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_icons.scss:root:svg-icon-size:1",
             "introducedAfterBaseline": null,
             "line": 7,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-svg-icon-size",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "36px", "light": "36px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "svg-icon-size",
             "original": {
                 "declarationText": "$svg-icon-size: $pt-spacing * 9",
@@ -45689,17 +45669,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-app/src/styles/_icons.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-svg-icon-size"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 312,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "max-height",
+                    "value": "$svg-icon-size"
+                },
+                {
+                    "line": 313,
+                    "path": "packages/docs-app/src/styles/_icons.scss",
+                    "property": "max-width",
+                    "value": "$svg-icon-size"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "36px" }] },
                 "declared": {
@@ -45715,7 +45708,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45728,7 +45721,7 @@
                 "line": 44,
                 "sha256": "a3b3a625e8182b43662cc0e9b92d0dea3f859f8d7f6ed82ea8fa5f858f9e1d68"
             },
-            "disposition": "retained-compile-time",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_nav.scss:root:dark-package-colors:1",
             "introducedAfterBaseline": null,
             "line": 44,
@@ -45752,8 +45745,8 @@
             },
             "path": "packages/docs-app/src/styles/_nav.scss",
             "rationale": {
-                "code": "sass-map",
-                "detail": "The map drives selector or control-flow generation at compile time."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
@@ -45814,7 +45807,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45827,7 +45820,7 @@
                 "line": 9,
                 "sha256": "6f3e6dbb93432c3d582401d80a7e7c50f66a9181174c193bd2f63c8f871216d5"
             },
-            "disposition": "retained-compile-time",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_nav.scss:root:package-colors:1",
             "introducedAfterBaseline": null,
             "line": 9,
@@ -45851,8 +45844,8 @@
             },
             "path": "packages/docs-app/src/styles/_nav.scss",
             "rationale": {
-                "code": "sass-map",
-                "detail": "The map drives selector or control-flow generation at compile time."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
@@ -45913,7 +45906,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45926,22 +45919,11 @@
                 "line": 7,
                 "sha256": "96ca63b77de69b7a674d68e1e8e82192950e08aec454b1b41542ca43a3e0967a"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_nav.scss:root:pkg-icon-width:1",
             "introducedAfterBaseline": null,
             "line": 7,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-package-icon-width",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "24px", "light": "24px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "pkg-icon-width",
             "original": {
                 "declarationText": "$pkg-icon-width: $pt-spacing * 6",
@@ -45963,17 +45945,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_nav.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-app-package-icon-width"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 193,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "margin-left",
+                    "value": "$pkg-icon-width + ($pt-spacing * 2)"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "24px" }] },
                 "declared": {
@@ -45989,7 +45978,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -45999,275 +45988,14 @@
                 "initializer": "list.nth(map.get($package-colors, $package-name), 1)",
                 "initializerKind": "function",
                 "isDefault": false,
-                "line": 138,
+                "line": 142,
                 "sha256": "ce8b36f3bd05e2602d7c966f447b047f44909fce9dbcb427f896fac7e799f01b"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:color:1",
             "introducedAfterBaseline": null,
             "line": 142,
-            "migration": {
-                "kind": "precomposed-fan-out",
-                "reconstruction": "Each package color is stored as exact icon rest, foreground, hover, and active tokens for every package route.",
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(143, 153, 168, 0.15)",
-                            "light": "rgba(95, 107, 124, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#8f99a8", "light": "#5f6b7c", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(143, 153, 168, 0.8)",
-                            "light": "rgba(95, 107, 124, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#8f99a8", "light": "#5f6b7c", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(76, 144, 240, 0.15)",
-                            "light": "rgba(45, 114, 210, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#4c90f0", "light": "#2d72d2", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(76, 144, 240, 0.8)",
-                            "light": "rgba(45, 114, 210, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#4c90f0", "light": "#2d72d2", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(231, 106, 110, 0.15)",
-                            "light": "rgba(205, 66, 70, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#e76a6e", "light": "#cd4246", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(231, 106, 110, 0.8)",
-                            "light": "rgba(205, 66, 70, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#e76a6e", "light": "#cd4246", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(245, 73, 139, 0.15)",
-                            "light": "rgba(219, 44, 111, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f5498b", "light": "#db2c6f", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(245, 73, 139, 0.8)",
-                            "light": "rgba(219, 44, 111, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f5498b", "light": "#db2c6f", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(240, 183, 38, 0.15)",
-                            "light": "rgba(240, 183, 38, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f0b726", "light": "#f0b726", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(240, 183, 38, 0.8)",
-                            "light": "rgba(240, 183, 38, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f0b726", "light": "#f0b726", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(63, 166, 218, 0.15)",
-                            "light": "rgba(20, 126, 179, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#3fa6da", "light": "#147eb3", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(63, 166, 218, 0.8)",
-                            "light": "rgba(20, 126, 179, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#3fa6da", "light": "#147eb3", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(67, 191, 77, 0.15)",
-                            "light": "rgba(41, 166, 52, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#43bf4d", "light": "#29a634", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(67, 191, 77, 0.8)",
-                            "light": "rgba(41, 166, 52, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#43bf4d", "light": "#29a634", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(152, 129, 243, 0.15)",
-                            "light": "rgba(121, 97, 219, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#9881f3", "light": "#7961db", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(152, 129, 243, 0.8)",
-                            "light": "rgba(121, 97, 219, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#9881f3", "light": "#7961db", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "color",
             "original": {
                 "declarationText": "$color: list.nth(map.get($package-colors, $package-name), 1)",
@@ -46307,54 +46035,42 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 1,
+                "remainingUseCount": 8,
                 "useCount": 8
             },
             "path": "packages/docs-app/src/styles/_nav.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": [
-                    "--bp-docs-app-nav-package-blueprint-icon-background-color",
-                    "--bp-docs-app-nav-package-blueprint-icon-color",
-                    "--bp-docs-app-nav-package-blueprint-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-blueprint-icon-background-color-active",
-                    "--bp-docs-app-nav-package-core-icon-background-color",
-                    "--bp-docs-app-nav-package-core-icon-color",
-                    "--bp-docs-app-nav-package-core-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-core-icon-background-color-active",
-                    "--bp-docs-app-nav-package-datetime-icon-background-color",
-                    "--bp-docs-app-nav-package-datetime-icon-color",
-                    "--bp-docs-app-nav-package-datetime-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-datetime-icon-background-color-active",
-                    "--bp-docs-app-nav-package-datetime2-icon-background-color",
-                    "--bp-docs-app-nav-package-datetime2-icon-color",
-                    "--bp-docs-app-nav-package-datetime2-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-datetime2-icon-background-color-active",
-                    "--bp-docs-app-nav-package-icons-icon-background-color",
-                    "--bp-docs-app-nav-package-icons-icon-color",
-                    "--bp-docs-app-nav-package-icons-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-icons-icon-background-color-active",
-                    "--bp-docs-app-nav-package-select-icon-background-color",
-                    "--bp-docs-app-nav-package-select-icon-color",
-                    "--bp-docs-app-nav-package-select-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-select-icon-background-color-active",
-                    "--bp-docs-app-nav-package-table-icon-background-color",
-                    "--bp-docs-app-nav-package-table-icon-color",
-                    "--bp-docs-app-nav-package-table-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-table-icon-background-color-active",
-                    "--bp-docs-app-nav-package-labs-icon-background-color",
-                    "--bp-docs-app-nav-package-labs-icon-color",
-                    "--bp-docs-app-nav-package-labs-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-labs-icon-background-color-active"
-                ],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:color:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 4,
+            "remainingRuntimeUses": [
+                {
+                    "line": 149,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "background-color",
+                    "value": "rgba($color, 0.1)"
+                },
+                {
+                    "line": 150,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "fill",
+                    "value": "$color"
+                },
+                {
+                    "line": 171,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "background-color",
+                    "value": "rgba($color, 0.8)"
+                },
+                {
+                    "line": 180,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "background-color",
+                    "value": "$color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": {
                     "status": "contextual",
@@ -46403,7 +46119,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-nav-package", "each:1"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -46413,275 +46129,14 @@
                 "initializer": "list.nth(map.get($dark-package-colors, $package-name), 1)",
                 "initializerKind": "function",
                 "isDefault": false,
-                "line": 139,
+                "line": 143,
                 "sha256": "80206d9aa5eb0511971ef31eac782d54df485582200fe93b8b32d6837c11bbdb"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:dark-color:1",
             "introducedAfterBaseline": null,
             "line": 143,
-            "migration": {
-                "kind": "precomposed-fan-out",
-                "reconstruction": "Each dark package color supplies dark defaults for the exact icon rest, foreground, hover, and active route tokens.",
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(143, 153, 168, 0.15)",
-                            "light": "rgba(95, 107, 124, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#8f99a8", "light": "#5f6b7c", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(143, 153, 168, 0.8)",
-                            "light": "rgba(95, 107, 124, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#8f99a8", "light": "#5f6b7c", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(76, 144, 240, 0.15)",
-                            "light": "rgba(45, 114, 210, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#4c90f0", "light": "#2d72d2", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(76, 144, 240, 0.8)",
-                            "light": "rgba(45, 114, 210, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#4c90f0", "light": "#2d72d2", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(231, 106, 110, 0.15)",
-                            "light": "rgba(205, 66, 70, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#e76a6e", "light": "#cd4246", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(231, 106, 110, 0.8)",
-                            "light": "rgba(205, 66, 70, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#e76a6e", "light": "#cd4246", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(245, 73, 139, 0.15)",
-                            "light": "rgba(219, 44, 111, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f5498b", "light": "#db2c6f", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(245, 73, 139, 0.8)",
-                            "light": "rgba(219, 44, 111, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f5498b", "light": "#db2c6f", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(240, 183, 38, 0.15)",
-                            "light": "rgba(240, 183, 38, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f0b726", "light": "#f0b726", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(240, 183, 38, 0.8)",
-                            "light": "rgba(240, 183, 38, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#f0b726", "light": "#f0b726", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(63, 166, 218, 0.15)",
-                            "light": "rgba(20, 126, 179, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#3fa6da", "light": "#147eb3", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(63, 166, 218, 0.8)",
-                            "light": "rgba(20, 126, 179, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#3fa6da", "light": "#147eb3", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(67, 191, 77, 0.15)",
-                            "light": "rgba(41, 166, 52, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#43bf4d", "light": "#29a634", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(67, 191, 77, 0.8)",
-                            "light": "rgba(41, 166, 52, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#43bf4d", "light": "#29a634", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-background-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(152, 129, 243, 0.15)",
-                            "light": "rgba(121, 97, 219, 0.1)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#9881f3", "light": "#7961db", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-background-color-hover",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": {
-                            "dark": "rgba(152, 129, 243, 0.8)",
-                            "light": "rgba(121, 97, 219, 0.8)",
-                            "status": "resolved-token-default"
-                        },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-icon-background-color-active",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#9881f3", "light": "#7961db", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "dark-color",
             "original": {
                 "declarationText": "$dark-color: list.nth(map.get($dark-package-colors, $package-name), 1)",
@@ -46721,54 +46176,42 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 4,
                 "useCount": 4
             },
             "path": "packages/docs-app/src/styles/_nav.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": [
-                    "--bp-docs-app-nav-package-blueprint-icon-background-color",
-                    "--bp-docs-app-nav-package-blueprint-icon-color",
-                    "--bp-docs-app-nav-package-blueprint-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-blueprint-icon-background-color-active",
-                    "--bp-docs-app-nav-package-core-icon-background-color",
-                    "--bp-docs-app-nav-package-core-icon-color",
-                    "--bp-docs-app-nav-package-core-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-core-icon-background-color-active",
-                    "--bp-docs-app-nav-package-datetime-icon-background-color",
-                    "--bp-docs-app-nav-package-datetime-icon-color",
-                    "--bp-docs-app-nav-package-datetime-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-datetime-icon-background-color-active",
-                    "--bp-docs-app-nav-package-datetime2-icon-background-color",
-                    "--bp-docs-app-nav-package-datetime2-icon-color",
-                    "--bp-docs-app-nav-package-datetime2-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-datetime2-icon-background-color-active",
-                    "--bp-docs-app-nav-package-icons-icon-background-color",
-                    "--bp-docs-app-nav-package-icons-icon-color",
-                    "--bp-docs-app-nav-package-icons-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-icons-icon-background-color-active",
-                    "--bp-docs-app-nav-package-select-icon-background-color",
-                    "--bp-docs-app-nav-package-select-icon-color",
-                    "--bp-docs-app-nav-package-select-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-select-icon-background-color-active",
-                    "--bp-docs-app-nav-package-table-icon-background-color",
-                    "--bp-docs-app-nav-package-table-icon-color",
-                    "--bp-docs-app-nav-package-table-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-table-icon-background-color-active",
-                    "--bp-docs-app-nav-package-labs-icon-background-color",
-                    "--bp-docs-app-nav-package-labs-icon-color",
-                    "--bp-docs-app-nav-package-labs-icon-background-color-hover",
-                    "--bp-docs-app-nav-package-labs-icon-background-color-active"
-                ],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:dark-color:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 4,
+            "remainingRuntimeUses": [
+                {
+                    "line": 153,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "background-color",
+                    "value": "rgba($dark-color, 0.15)"
+                },
+                {
+                    "line": 154,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "fill",
+                    "value": "$dark-color"
+                },
+                {
+                    "line": 175,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "background-color",
+                    "value": "rgba($dark-color, 0.8)"
+                },
+                {
+                    "line": 183,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "background-color",
+                    "value": "$dark-color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": {
                     "status": "contextual",
@@ -46817,7 +46260,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-nav-package", "each:1"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -46827,67 +46270,14 @@
                 "initializer": "list.nth(map.get($dark-package-colors, $package-name), 2)",
                 "initializerKind": "function",
                 "isDefault": false,
-                "line": 141,
+                "line": 145,
                 "sha256": "55d6d4bb0634e367e75e5403dbd745d72d26fad78ef4644054ccaff98367881c"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:dark-text-color:1",
             "introducedAfterBaseline": null,
             "line": 145,
-            "migration": {
-                "kind": "precomposed-fan-out",
-                "reconstruction": "Each dark package text color supplies dark defaults for every package route text token.",
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#ffffff", "light": "#111418", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#8abbff", "light": "#215db0", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#fa999c", "light": "#ac2f33", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#ff66a1", "light": "#c22762", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#fbd065", "light": "#d1980b", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#68c1ee", "light": "#0f6894", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#62d96b", "light": "#238c2c", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#bdadff", "light": "#634dbf", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "dark-text-color",
             "original": {
                 "declarationText": "$dark-text-color: list.nth(map.get($dark-package-colors, $package-name), 2)",
@@ -46909,30 +46299,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_nav.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": [
-                    "--bp-docs-app-nav-package-blueprint-text-color",
-                    "--bp-docs-app-nav-package-core-text-color",
-                    "--bp-docs-app-nav-package-datetime-text-color",
-                    "--bp-docs-app-nav-package-datetime2-text-color",
-                    "--bp-docs-app-nav-package-icons-text-color",
-                    "--bp-docs-app-nav-package-select-text-color",
-                    "--bp-docs-app-nav-package-table-text-color",
-                    "--bp-docs-app-nav-package-labs-text-color"
-                ],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:dark-text-color:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 166,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "color",
+                    "value": "$dark-text-color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": {
                     "status": "contextual",
@@ -46981,7 +46365,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-nav-package", "each:1"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -46991,67 +46375,14 @@
                 "initializer": "list.nth(map.get($package-colors, $package-name), 2)",
                 "initializerKind": "function",
                 "isDefault": false,
-                "line": 140,
+                "line": 144,
                 "sha256": "545e1a70fca28ffcbd5e22cba4b86467452c459c6e61f0adf10445edcff69cbc"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:text-color:1",
             "introducedAfterBaseline": null,
             "line": 144,
-            "migration": {
-                "kind": "precomposed-fan-out",
-                "reconstruction": "Each package text color is stored as an exact theme-aware token for every package route.",
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-blueprint-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#ffffff", "light": "#111418", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-core-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#8abbff", "light": "#215db0", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#fa999c", "light": "#ac2f33", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-datetime2-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#ff66a1", "light": "#c22762", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-icons-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#fbd065", "light": "#d1980b", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-select-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#68c1ee", "light": "#0f6894", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-table-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#62d96b", "light": "#238c2c", "status": "resolved-token-default" },
-                        "role": null
-                    },
-                    {
-                        "cssVariable": "--bp-docs-app-nav-package-labs-text-color",
-                        "owner": "@blueprintjs/docs-app",
-                        "resolved": { "dark": "#bdadff", "light": "#634dbf", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "text-color",
             "original": {
                 "declarationText": "$text-color: list.nth(map.get($package-colors, $package-name), 2)",
@@ -47073,30 +46404,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-app/src/styles/_nav.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": [
-                    "--bp-docs-app-nav-package-blueprint-text-color",
-                    "--bp-docs-app-nav-package-core-text-color",
-                    "--bp-docs-app-nav-package-datetime-text-color",
-                    "--bp-docs-app-nav-package-datetime2-text-color",
-                    "--bp-docs-app-nav-package-icons-text-color",
-                    "--bp-docs-app-nav-package-select-text-color",
-                    "--bp-docs-app-nav-package-table-text-color",
-                    "--bp-docs-app-nav-package-labs-text-color"
-                ],
-                "configuredBy": "docs-app:packages/docs-app/src/styles/_nav.scss:root/rule:.docs-nav-package/each:1:text-color:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 163,
+                    "path": "packages/docs-app/src/styles/_nav.scss",
+                    "property": "color",
+                    "value": "$text-color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": {
                     "status": "contextual",
@@ -47145,7 +46470,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-nav-package", "each:1"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -47158,22 +46483,11 @@
                 "line": 9,
                 "sha256": "5e4cdbf154cf35dc11ea643575c8962da7536ddc28021b195791207a2bd2fd7b"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_banner.scss:root:banner-height:1",
             "introducedAfterBaseline": null,
             "line": 9,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-banner-height",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "40px", "light": "40px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "banner-height",
             "original": {
                 "declarationText": "$banner-height: $pt-spacing * 10",
@@ -47213,21 +46527,42 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 1,
+                "remainingUseCount": 5,
                 "useCount": 5
             },
             "path": "packages/docs-theme/src/styles/_banner.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-theme-banner-height"],
-                "configuredBy": "docs-theme:packages/docs-theme/src/styles/_banner.scss:root:banner-height:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 4,
+            "remainingRuntimeUses": [
+                {
+                    "line": 20,
+                    "path": "packages/docs-theme/src/styles/_banner.scss",
+                    "property": "min-height",
+                    "value": "$banner-height"
+                },
+                {
+                    "line": 57,
+                    "path": "packages/docs-theme/src/styles/_banner.scss",
+                    "property": "padding-top",
+                    "value": "$banner-height"
+                },
+                {
+                    "line": 60,
+                    "path": "packages/docs-theme/src/styles/_banner.scss",
+                    "property": "height",
+                    "value": "calc(100vh - #{$banner-height})"
+                },
+                {
+                    "line": 65,
+                    "path": "packages/docs-theme/src/styles/_banner.scss",
+                    "property": "margin-top",
+                    "value": "-$content-padding * 2 - $banner-height"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "40px" }] },
                 "declared": {
@@ -47243,7 +46578,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47256,22 +46591,11 @@
                 "line": 12,
                 "sha256": "caf82374539ab4de173e254937a10e030b9e7b45d318cc9b0f12edd9f60248b1"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_content.scss:root:attribute-modifier-color:1",
             "introducedAfterBaseline": null,
             "line": 12,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-attribute-modifier-color",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "#d69fd6", "light": "#d69fd6", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "attribute-modifier-color",
             "original": {
                 "declarationText": "$attribute-modifier-color: $violet5",
@@ -47293,17 +46617,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-theme/src/styles/_content.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-attribute-modifier-color"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 137,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "color",
+                    "value": "$attribute-modifier-color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "color", "value": "#d69fd6" }] },
                 "declared": {
@@ -47319,7 +46650,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47332,22 +46663,11 @@
                 "line": 11,
                 "sha256": "c0ededa1bd759a1a6e68bab18f8ca2d13d44f372792fe3ac2134178432aacff9"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_content.scss:root:class-modifier-color:1",
             "introducedAfterBaseline": null,
             "line": 11,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-class-modifier-color",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "#f5498b", "light": "#f5498b", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "class-modifier-color",
             "original": {
                 "declarationText": "$class-modifier-color: $rose4",
@@ -47369,17 +46689,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-theme/src/styles/_content.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-class-modifier-color"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 141,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "color",
+                    "value": "$class-modifier-color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "color", "value": "#f5498b" }] },
                 "declared": {
@@ -47395,7 +46722,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47408,22 +46735,11 @@
                 "line": 8,
                 "sha256": "1cb1f930067cf724d48f76ea5fbb2425e5f2c2df072326faff0113c04bdee428"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_content.scss:root:heading-margin:1",
             "introducedAfterBaseline": null,
             "line": 8,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-heading-margin",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "40px", "light": "40px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "heading-margin",
             "original": {
                 "declarationText": "$heading-margin: $pt-spacing * 10",
@@ -47457,17 +46773,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 4,
                 "useCount": 4
             },
             "path": "packages/docs-theme/src/styles/_content.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-heading-margin"], "status": "inferred" },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 16,
+                    "path": "packages/docs-theme/src/styles/_content.scss",
+                    "property": "margin",
+                    "value": "$heading-margin 0 ($heading-margin * 0.5)"
+                },
+                {
+                    "line": 133,
+                    "path": "packages/docs-theme/src/styles/_props.scss",
+                    "property": "margin-bottom",
+                    "value": "$heading-margin"
+                },
+                {
+                    "line": 134,
+                    "path": "packages/docs-theme/src/styles/_props.scss",
+                    "property": "margin-top",
+                    "value": "$heading-margin * 0.5"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "40px" }] },
                 "declared": {
@@ -47483,7 +46818,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47496,22 +46831,11 @@
                 "line": 9,
                 "sha256": "cad8932101e5300a059198004f00e9572188d7282a37a7bfbc9f04c4d450f054"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_content.scss:root:link-icon-padding:1",
             "introducedAfterBaseline": null,
             "line": 9,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-link-icon-padding",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "8px", "light": "8px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "link-icon-padding",
             "original": {
                 "declarationText": "$link-icon-padding: $pt-spacing * 2",
@@ -47533,17 +46857,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-theme/src/styles/_content.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-link-icon-padding"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 38,
+                    "path": "packages/docs-theme/src/styles/_content.scss",
+                    "property": "padding",
+                    "value": "$link-icon-padding"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "8px" }] },
                 "declared": {
@@ -47559,7 +46890,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47572,22 +46903,11 @@
                 "line": 7,
                 "sha256": "0608cd777f75d9a391fd3669dfb53995efac378611838ecd76cd8d9cb5347e88"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_examples.scss:root:example-frame-border-radius:1",
             "introducedAfterBaseline": null,
             "line": 7,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-example-frame-border-radius",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "4px", "light": "4px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "example-frame-border-radius",
             "original": {
                 "declarationText": "$example-frame-border-radius: $pt-border-radius",
@@ -47627,17 +46947,42 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 4,
                 "useCount": 4
             },
             "path": "packages/docs-theme/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-example-frame-border-radius"], "status": "inferred" },
+            "remainingRuntimeUseCount": 4,
+            "remainingRuntimeUses": [
+                {
+                    "line": 48,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "border-radius",
+                    "value": "$example-frame-border-radius"
+                },
+                {
+                    "line": 69,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "border-radius",
+                    "value": "$example-frame-border-radius"
+                },
+                {
+                    "line": 103,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "border-radius",
+                    "value": "$example-frame-border-radius"
+                },
+                {
+                    "line": 116,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "border-radius",
+                    "value": "$example-frame-border-radius"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "4px" }] },
                 "declared": {
@@ -47653,7 +46998,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47666,22 +47011,11 @@
                 "line": 6,
                 "sha256": "0245b76ded182434bd0014338c59de70e6a8f313a2059f6b6637a06bb06247c2"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_examples.scss:root:example-frame-spacing:1",
             "introducedAfterBaseline": null,
             "line": 6,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-example-frame-spacing",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "8px", "light": "8px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "example-frame-spacing",
             "original": {
                 "declarationText": "$example-frame-spacing: $pt-spacing * 2",
@@ -47709,17 +47043,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-theme/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-example-frame-spacing"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 98,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "margin-top",
+                    "value": "$example-frame-spacing"
+                },
+                {
+                    "line": 119,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "margin-top",
+                    "value": "$example-frame-spacing"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "8px" }] },
                 "declared": {
@@ -47735,7 +47082,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47748,22 +47095,11 @@
                 "line": 8,
                 "sha256": "3fd26f89a98da81d64bda896417a862e60c2aa1a3a9abfe487bcef5bf4e57ece"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_examples.scss:root:example-spacing:1",
             "introducedAfterBaseline": null,
             "line": 8,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-example-spacing",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "40px", "light": "40px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "example-spacing",
             "original": {
                 "declarationText": "$example-spacing: $pt-spacing * 10",
@@ -47791,17 +47127,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-theme/src/styles/_examples.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-example-spacing"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 56,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "padding",
+                    "value": "$example-spacing * 0.5"
+                },
+                {
+                    "line": 63,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "margin",
+                    "value": "$example-spacing * 0.5"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "40px" }] },
                 "declared": {
@@ -47817,7 +47166,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47854,8 +47203,8 @@
             },
             "path": "packages/docs-theme/src/styles/_layout.scss",
             "rationale": {
-                "code": "not-runtime-visual",
-                "detail": "The declaration does not feed an emitted runtime visual value."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
@@ -47884,7 +47233,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47921,8 +47270,8 @@
             },
             "path": "packages/docs-theme/src/styles/_layout.scss",
             "rationale": {
-                "code": "not-runtime-visual",
-                "detail": "The declaration does not feed an emitted runtime visual value."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
@@ -47951,7 +47300,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -47988,8 +47337,8 @@
             },
             "path": "packages/docs-theme/src/styles/_layout.scss",
             "rationale": {
-                "code": "not-runtime-visual",
-                "detail": "The declaration does not feed an emitted runtime visual value."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
@@ -48018,7 +47367,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48055,8 +47404,8 @@
             },
             "path": "packages/docs-theme/src/styles/_layout.scss",
             "rationale": {
-                "code": "not-runtime-visual",
-                "detail": "The declaration does not feed an emitted runtime visual value."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
             "remainingRuntimeUseCount": 0,
             "remainingRuntimeUses": [],
@@ -48085,7 +47434,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48098,22 +47447,11 @@
                 "line": 8,
                 "sha256": "62d00cc32681eb8241337da3ed75f5f7907e528065695fd592a694bba19a2b7b"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_layout.scss:root:nav-item-indent:1",
             "introducedAfterBaseline": null,
             "line": 8,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-nav-item-indent",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "20px", "light": "20px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "nav-item-indent",
             "original": {
                 "declarationText": "$nav-item-indent: $pt-spacing * 5",
@@ -48141,17 +47479,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-theme/src/styles/_layout.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-nav-item-indent"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 135,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding-left",
+                    "value": "$nav-item-indent * $depth"
+                },
+                {
+                    "line": 144,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "margin-left",
+                    "value": "$nav-item-indent"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "20px" }] },
                 "declared": {
@@ -48167,7 +47518,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48177,25 +47528,14 @@
                 "initializer": "999px",
                 "initializerKind": "number",
                 "isDefault": false,
-                "line": 54,
+                "line": 58,
                 "sha256": "540da68ba4cd95f43aa5f656be85c8f85b386eb8ed7ced77386f35010c81d71a"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_layout.scss:root/rule:.docs-nav:background-shift:1",
             "introducedAfterBaseline": null,
             "line": 58,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-nav-background-shift",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "999px", "light": "999px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "background-shift",
             "original": {
                 "declarationText": "$background-shift: 999px",
@@ -48229,21 +47569,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-theme/src/styles/_layout.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-theme-nav-background-shift"],
-                "configuredBy": "docs-theme:packages/docs-theme/src/styles/_layout.scss:root/rule:.docs-nav:background-shift:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 65,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "margin-left",
+                    "value": "-$background-shift"
+                },
+                {
+                    "line": 68,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding-left",
+                    "value": "$background-shift + $container-padding"
+                },
+                {
+                    "line": 71,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "width",
+                    "value": "$sidebar-width + $background-shift"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "contextual", "values": [{ "sassType": "number", "value": "999px" }] },
                 "declared": {
@@ -48259,7 +47614,7 @@
                 "status": "contextual"
             },
             "scope": ["root", "rule:.docs-nav"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private-local"
         },
         {
@@ -48272,22 +47627,11 @@
                 "line": 7,
                 "sha256": "ec0c62d1bece272918446165f13a90d628cf055e01fb0e26ab1e2d06c913417d"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_navbar.scss:root:nav-divider-offset:1",
             "introducedAfterBaseline": null,
             "line": 7,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-nav-divider-offset",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "50px", "light": "50px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "nav-divider-offset",
             "original": {
                 "declarationText": "$nav-divider-offset: $pt-spacing * 12.5",
@@ -48321,17 +47665,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-theme/src/styles/_navbar.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-nav-divider-offset"], "status": "inferred" },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 22,
+                    "path": "packages/docs-theme/src/styles/_navbar.scss",
+                    "property": "margin-left",
+                    "value": "-$nav-divider-offset"
+                },
+                {
+                    "line": 24,
+                    "path": "packages/docs-theme/src/styles/_navbar.scss",
+                    "property": "padding-left",
+                    "value": "$nav-divider-offset + $pt-spacing"
+                },
+                {
+                    "line": 36,
+                    "path": "packages/docs-theme/src/styles/_navbar.scss",
+                    "property": "margin-left",
+                    "value": "-$nav-divider-offset"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "50px" }] },
                 "declared": {
@@ -48347,7 +47710,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48360,22 +47723,11 @@
                 "line": 4,
                 "sha256": "33522c0b882d5d63e7dd85b246215e7388bb47f9f538f8d682df09a8cb5a8519"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_navigator.scss:root:navigator-width:1",
             "introducedAfterBaseline": null,
             "line": 4,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-navigator-width",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "400px", "light": "400px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "navigator-width",
             "original": {
                 "declarationText": "$navigator-width: $pt-spacing * 100",
@@ -48403,17 +47755,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-theme/src/styles/_navigator.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-navigator-width"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 7,
+                    "path": "packages/docs-theme/src/styles/_navigator.scss",
+                    "property": "left",
+                    "value": "calc(50% - #{$navigator-width * 0.5})"
+                },
+                {
+                    "line": 8,
+                    "path": "packages/docs-theme/src/styles/_navigator.scss",
+                    "property": "width",
+                    "value": "$navigator-width"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "400px" }] },
                 "declared": {
@@ -48429,7 +47794,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48442,22 +47807,11 @@
                 "line": 9,
                 "sha256": "7504b478cf19c800cb71542bcff79556e11ce4a65f1533c326bfaf62737c0e2a"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:container-padding:1",
             "introducedAfterBaseline": null,
             "line": 9,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-container-padding",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "4px", "light": "4px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "container-padding",
             "original": {
                 "declarationText": "$container-padding: $pt-spacing",
@@ -48491,21 +47845,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-theme-container-padding"],
-                "configuredBy": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:container-padding:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 68,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding-left",
+                    "value": "$background-shift + $container-padding"
+                },
+                {
+                    "line": 99,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding-right",
+                    "value": "$container-padding"
+                },
+                {
+                    "line": 108,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "top",
+                    "value": "$container-padding"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "4px" }] },
                 "declared": {
@@ -48521,7 +47890,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48534,22 +47903,11 @@
                 "line": 8,
                 "sha256": "f1eda4b294926b52a217b743c45bc00d91055a579395ab55ed9d3cd44653195d"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:container-width:1",
             "introducedAfterBaseline": null,
             "line": 8,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-container-width",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "1100px", "light": "1100px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "container-width",
             "original": {
                 "declarationText": "$container-width: $pt-spacing * 275",
@@ -48571,17 +47929,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 1,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-container-width"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 47,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "max-width",
+                    "value": "$container-width"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "1100px" }] },
                 "declared": {
@@ -48597,7 +47962,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48610,22 +47975,11 @@
                 "line": 17,
                 "sha256": "ec47bc6ed93678b138fc425a776c8860b11122362b4c32ef3ab5823cc32cc150"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:content-padding:1",
             "introducedAfterBaseline": null,
             "line": 17,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-content-padding",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "20px", "light": "20px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "content-padding",
             "original": {
                 "declarationText": "$content-padding: $pt-spacing * 5",
@@ -48677,21 +48031,54 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 6,
                 "useCount": 6
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-theme-content-padding"],
-                "configuredBy": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:content-padding:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 6,
+            "remainingRuntimeUses": [
+                {
+                    "line": 65,
+                    "path": "packages/docs-theme/src/styles/_banner.scss",
+                    "property": "margin-top",
+                    "value": "-$content-padding * 2 - $banner-height"
+                },
+                {
+                    "line": 21,
+                    "path": "packages/docs-theme/src/styles/_content.scss",
+                    "property": "margin-top",
+                    "value": "$content-padding"
+                },
+                {
+                    "line": 29,
+                    "path": "packages/docs-theme/src/styles/_content.scss",
+                    "property": "margin-top",
+                    "value": "-$content-padding * 2"
+                },
+                {
+                    "line": 12,
+                    "path": "packages/docs-theme/src/styles/_examples.scss",
+                    "property": "margin-top",
+                    "value": "$content-padding * 2"
+                },
+                {
+                    "line": 97,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding-bottom",
+                    "value": "$content-padding * 2"
+                },
+                {
+                    "line": 98,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding-left",
+                    "value": "$content-padding * 2"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "20px" }] },
                 "declared": {
@@ -48707,7 +48094,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48720,22 +48107,11 @@
                 "line": 16,
                 "sha256": "e06295ff3bc4e9b26b18497e0a700372c547595122984c11ca564a800caf88ee"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:content-width:1",
             "introducedAfterBaseline": null,
             "line": 16,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-content-width",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "800px", "light": "800px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "content-width",
             "original": {
                 "declarationText": "$content-width: $container-width - $sidebar-width",
@@ -48763,17 +48139,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 2,
                 "useCount": 2
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-content-width"], "status": "inferred" },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 87,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "flex-basis",
+                    "value": "$content-width"
+                },
+                {
+                    "line": 96,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "max-width",
+                    "value": "$content-width"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "800px" }] },
                 "declared": {
@@ -48789,7 +48178,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48802,22 +48191,11 @@
                 "line": 14,
                 "sha256": "4468f9c5e7061cdbef667f1750b3af4aa6ca2348f3cc3fceef8ad33b49132514"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:dark-sidebar-background-color:1",
             "introducedAfterBaseline": null,
             "line": 14,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-sidebar-background-color",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "#2f343c", "light": "#ffffff", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "dark-sidebar-background-color",
             "original": {
                 "declarationText": "$dark-sidebar-background-color: $dark-gray3",
@@ -48839,17 +48217,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-sidebar-background-color"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 74,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "background-color",
+                    "value": "$dark-sidebar-background-color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "color", "value": "#2f343c" }] },
                 "declared": {
@@ -48868,7 +48253,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48881,22 +48266,11 @@
                 "line": 13,
                 "sha256": "d4c1368738a174d7523badf32ece63801df8dd76c6a385de9e7051d9eebe149e"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:sidebar-background-color:1",
             "introducedAfterBaseline": null,
             "line": 13,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-sidebar-background-color",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "#2f343c", "light": "#ffffff", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "sidebar-background-color",
             "original": {
                 "declarationText": "$sidebar-background-color: $white",
@@ -48918,17 +48292,24 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 1,
                 "useCount": 1
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-sidebar-background-color"], "status": "inferred" },
+            "remainingRuntimeUseCount": 1,
+            "remainingRuntimeUses": [
+                {
+                    "line": 59,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "background-color",
+                    "value": "$sidebar-background-color"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "color", "value": "#2f343c" }] },
                 "declared": {
@@ -48947,7 +48328,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -48960,22 +48341,11 @@
                 "line": 12,
                 "sha256": "410efd93254cded2f35a6f00d6f4ef316d07cceae4368d2b89a155c4949e1d1f"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:sidebar-padding:1",
             "introducedAfterBaseline": null,
             "line": 12,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-sidebar-padding",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "16px", "light": "16px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "sidebar-padding",
             "original": {
                 "declarationText": "$sidebar-padding: $pt-spacing * 4",
@@ -49009,17 +48379,36 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 0,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": { "candidates": ["--bp-docs-theme-sidebar-padding"], "status": "inferred" },
+            "remainingRuntimeUseCount": 3,
+            "remainingRuntimeUses": [
+                {
+                    "line": 67,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding-bottom",
+                    "value": "$sidebar-padding * 2"
+                },
+                {
+                    "line": 79,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "padding",
+                    "value": "$sidebar-padding"
+                },
+                {
+                    "line": 23,
+                    "path": "packages/docs-theme/src/styles/_navbar.scss",
+                    "property": "padding",
+                    "value": "($pt-spacing * 2) $sidebar-padding"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "16px" }] },
                 "declared": {
@@ -49035,7 +48424,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {
@@ -49048,22 +48437,11 @@
                 "line": 11,
                 "sha256": "dac32fa3ebd2bd6fe723ae174f7fbafd2c686278c4293238659ede37cca1ecc7"
             },
-            "disposition": "migrated",
+            "disposition": "excluded",
             "id": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:sidebar-width:1",
             "introducedAfterBaseline": null,
             "line": 11,
-            "migration": {
-                "kind": "direct",
-                "reconstruction": null,
-                "targets": [
-                    {
-                        "cssVariable": "--bp-docs-theme-sidebar-width",
-                        "owner": "@blueprintjs/docs-theme",
-                        "resolved": { "dark": "300px", "light": "300px", "status": "resolved-token-default" },
-                        "role": null
-                    }
-                ]
-            },
+            "migration": null,
             "name": "sidebar-width",
             "original": {
                 "declarationText": "$sidebar-width: $pt-spacing * 75",
@@ -49091,21 +48469,30 @@
                 "ambiguityGroup": null,
                 "declarationCount": 1,
                 "remainingDeclarationCount": 1,
-                "remainingUseCount": 1,
+                "remainingUseCount": 3,
                 "useCount": 3
             },
             "path": "packages/docs-theme/src/styles/_variables.scss",
             "rationale": {
-                "code": "runtime-token",
-                "detail": "Runtime declarations consume the package-owned CSS token."
+                "code": "supporting-app-exclusion",
+                "detail": "Supporting applications are audited, but only their shared spacing and radius consumers are in scope."
             },
-            "remainingRuntimeUseCount": 0,
-            "remainingRuntimeUses": [],
-            "resolution": {
-                "candidates": ["--bp-docs-theme-sidebar-width"],
-                "configuredBy": "docs-theme:packages/docs-theme/src/styles/_variables.scss:root:sidebar-width:1",
-                "status": "configured"
-            },
+            "remainingRuntimeUseCount": 2,
+            "remainingRuntimeUses": [
+                {
+                    "line": 52,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "flex-basis",
+                    "value": "$sidebar-width"
+                },
+                {
+                    "line": 71,
+                    "path": "packages/docs-theme/src/styles/_layout.scss",
+                    "property": "width",
+                    "value": "$sidebar-width + $background-shift"
+                }
+            ],
+            "resolution": { "candidates": [], "status": "not-applicable" },
             "sassResolution": {
                 "dark": { "status": "resolved", "values": [{ "sassType": "number", "value": "300px" }] },
                 "declared": {
@@ -49121,7 +48508,7 @@
                 "status": "resolved"
             },
             "scope": ["root"],
-            "scopeKind": "required",
+            "scopeKind": "supporting-app",
             "visibility": "private"
         },
         {

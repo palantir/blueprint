@@ -25,12 +25,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 var(--bp-spacing);
+    margin: 0 $pt-spacing;
   }
 }
 
 .docs-prop-description {
-  margin-top: var(--bp-spacing);
+  margin-top: $pt-spacing;
 
   p:last-child {
     margin: 0;
@@ -43,20 +43,20 @@
   }
 
   .#{$ns}-tag {
-    margin-right: calc(var(--bp-spacing) * 2);
-    margin-top: var(--bp-spacing);
+    margin-right: $pt-spacing * 2;
+    margin-top: $pt-spacing;
   }
 }
 
 .docs-prop-name code::after {
-  @include pt-icon(var(--bp-icon-size-standard), 16);
+  @include pt-icon;
   line-height: small;
-  margin-left: var(--bp-spacing);
+  margin-left: $pt-spacing;
   vertical-align: middle;
 }
 
 .docs-prop-is-deprecated code {
-  color: var(--bp-palette-red-3);
+  color: $red3;
 
   &::after {
     content: map.get($blueprint-icon-codepoints, "small-cross");
@@ -64,7 +64,11 @@
 }
 
 .docs-prop-is-required code {
-  color: var(--bp-docs-theme-required-prop-color);
+  color: $green3;
+
+  .#{$ns}-dark & {
+    color: $green4;
+  }
 
   &::after {
     content: map.get($blueprint-icon-codepoints, "small-tick");
@@ -73,37 +77,45 @@
 
 .docs-interface-header {
   align-items: center;
-  box-shadow: 0 1px 0 var(--bp-divider-color);
+  box-shadow: 0 1px 0 $pt-divider-black;
   display: flex;
-  font-family: var(--bp-font-family-monospace);
-  font-size: var(--bp-font-size-large);
+  font-family: $pt-font-family-monospace;
+  font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;
-  padding: calc(var(--bp-spacing) * 2) 0;
+  padding: ($pt-spacing * 2) 0;
   position: relative;
 
   // optional interface description
   + .docs-section {
-    box-shadow: 0 1px 0 var(--bp-divider-color);
+    box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
-    margin-top: calc(var(--bp-spacing) * 2);
+    margin-top: $pt-spacing * 2;
+  }
+
+  .#{$ns}-dark & {
+    box-shadow: 0 1px 0 $pt-dark-divider-white;
+
+    + .docs-section {
+      box-shadow: 0 1px 0 $pt-dark-divider-white;
+    }
   }
 }
 
 .docs-package-name {
   // adjusts text baseline with interface name
-  margin-top: calc(var(--bp-font-size-large) - var(--bp-font-size));
+  margin-top: $pt-font-size-large - $pt-font-size;
 }
 
 .docs-type-alias {
   overflow: auto;
-  padding: calc(var(--bp-spacing) * 2) calc(var(--bp-spacing) * 5);
+  padding: ($pt-spacing * 2) ($pt-spacing * 5);
 }
 
 .docs-modifiers-table {
   .docs-section & .#{$ns}-html-table {
-    margin-top: calc(var(--bp-spacing) * 2);
+    margin-top: $pt-spacing * 2;
   }
 
   th:first-child,
@@ -118,6 +130,6 @@
 
 // modifiers table parent
 .docs-modifiers {
-  margin-bottom: var(--bp-docs-theme-heading-margin);
-  margin-top: calc(var(--bp-docs-theme-heading-margin) * 0.5);
+  margin-bottom: $heading-margin;
+  margin-top: $heading-margin * 0.5;
 }

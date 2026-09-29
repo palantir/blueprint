@@ -14,31 +14,31 @@
 
   .docs-interface-header {
     flex: 0 0 auto;
-    padding: calc(var(--bp-spacing) * 2) calc(var(--bp-spacing) * 5);
+    padding: ($pt-spacing * 2) ($pt-spacing * 5);
 
     + .docs-section {
       flex-shrink: 0;
-      padding-left: calc(var(--bp-spacing) * 5);
-      padding-right: calc(var(--bp-spacing) * 5);
+      padding-left: $pt-spacing * 5;
+      padding-right: $pt-spacing * 5;
     }
   }
 
   .docs-modifiers-table {
     overflow: auto;
-    padding-bottom: calc(var(--bp-spacing) * 5);
+    padding-bottom: $pt-spacing * 5;
 
     th:first-child,
     td:first-child {
-      padding-left: calc(var(--bp-spacing) * 5);
+      padding-left: $pt-spacing * 5;
     }
 
     td:last-child {
-      padding-right: calc(var(--bp-spacing) * 5);
+      padding-right: $pt-spacing * 5;
     }
   }
 }
 
 .docs-code {
-  font-family: var(--bp-font-family-monospace);
+  font-family: $pt-font-family-monospace;
   font-weight: 600;
 }

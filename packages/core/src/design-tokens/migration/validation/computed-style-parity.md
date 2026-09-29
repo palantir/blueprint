@@ -1,7 +1,7 @@
 # Blueprint CSS default parity
 
 - Baseline: rollback-643ec05ce
-- Current: css-variable-spike
+- Current: docs-sass-current
 - Browser: Chrome/154.0.8037.58
 - Computed-style checks: 8040
 - Computed-style mismatches: 0
@@ -12,7 +12,7 @@
 - Theme contract checks passed: 4/4
 - Customization contract checks passed: 4/4
 - Breadcrumb mask checks passed: 4/4
-- Package independence/ownership checks passed: 12/12
+- Package independence/ownership checks passed: 11/11
 - Protected artifact checks passed: 1/1
 - Unresolved current token references: 0
 - Overall: PASS
@@ -52,8 +52,7 @@
 - PASS: datetime profile emits package-owned --bp-datetime- tokens; expected `true`, got `true`
 - PASS: select profile emits package-owned --bp-select- tokens; expected `true`, got `true`
 - PASS: table profile emits package-owned --bp-table- tokens; expected `true`, got `true`
-- PASS: docs profile emits package-owned --bp-docs-theme- tokens; expected `true`, got `true`
-- PASS: docs profile emits package-owned --bp-docs-app- tokens; expected `true`, got `true`
+- PASS: docs profile emits no docs-owned tokens; expected `false`, got `false`
 - PASS: generated Icons CSS remains byte-for-byte unchanged; expected `1eb7489e2ecc968b19a227ca5e3e05f3fcb9fa2544e2a1bd1af662f4a6d032ab`, got `1eb7489e2ecc968b19a227ca5e3e05f3fcb9fa2544e2a1bd1af662f4a6d032ab`
 
 ## First 100 computed-style mismatches

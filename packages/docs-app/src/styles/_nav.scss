@@ -78,9 +78,9 @@ $dark-package-colors: (
 
 .docs-logo {
   display: block;
-  margin-right: var(--bp-docs-theme-sidebar-padding);
+  margin-right: $sidebar-padding;
   opacity: 0.8;
-  transition: opacity calc(var(--bp-transition-duration) * 2) var(--bp-transition-ease);
+  transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
     opacity: 0.9;
@@ -91,25 +91,29 @@ $dark-package-colors: (
   }
 
   svg {
-    fill: var(--bp-docs-app-logo-color);
+    fill: $dark-gray5;
+
+    .#{$ns}-dark & {
+      fill: $gray5;
+    }
   }
 }
 
 .docs-heading {
-  font-size: calc(var(--bp-spacing) * 5);
+  font-size: $pt-spacing * 5;
   font-weight: 600;
-  margin-right: calc(var(--bp-spacing) * 2);
+  margin-right: $pt-spacing * 2;
 
   .#{$ns}-tag {
-    margin-left: var(--bp-spacing);
-    padding-left: calc(var(--bp-spacing) * 2);
+    margin-left: $pt-spacing;
+    padding-left: $pt-spacing * 2;
     vertical-align: middle;
   }
 }
 
 .docs-version-list {
-  max-height: calc(var(--bp-spacing) * 50);
-  min-width: calc(var(--bp-spacing) * 30);
+  max-height: $pt-spacing * 50;
+  min-width: $pt-spacing * 30;
   overflow: auto;
 }
 
@@ -120,7 +124,7 @@ $dark-package-colors: (
 
 .docs-nav-package-icon {
   border-radius: 6px;
-  margin-right: calc(var(--bp-spacing) * 2);
+  margin-right: $pt-spacing * 2;
 }
 
 .docs-nav-package {
@@ -142,8 +146,13 @@ $dark-package-colors: (
 
     &[data-route="#{$package-name}"] {
       .docs-nav-package-icon {
-        background-color: var(--bp-docs-app-nav-package-#{$package-name}-icon-background-color);
-        fill: var(--bp-docs-app-nav-package-#{$package-name}-icon-color);
+        background-color: rgba($color, 0.1);
+        fill: $color;
+
+        .#{$ns}-dark & {
+          background-color: rgba($dark-color, 0.15);
+          fill: $dark-color;
+        }
       }
 
       /* stylelint-disable max-nesting-depth */
@@ -151,20 +160,28 @@ $dark-package-colors: (
       &.docs-nav-expanded {
         .#{$ns}-menu-item,
         + .docs-nav-menu .#{$ns}-menu-item.#{$ns}-active {
-          color: var(--bp-docs-app-nav-package-#{$package-name}-text-color);
+          color: $text-color;
+
+          .#{$ns}-dark & {
+            color: $dark-text-color;
+          }
         }
 
         .docs-nav-package-icon {
-          background-color: var(
-            --bp-docs-app-nav-package-#{$package-name}-icon-background-color-hover
-          );
-          fill: var(--bp-palette-white);
+          background-color: rgba($color, 0.8);
+          fill: $white;
+
+          .#{$ns}-dark & {
+            background-color: rgba($dark-color, 0.8);
+          }
         }
 
         &:active .docs-nav-package-icon {
-          background-color: var(
-            --bp-docs-app-nav-package-#{$package-name}-icon-background-color-active
-          );
+          background-color: $color;
+
+          .#{$ns}-dark & {
+            background-color: $dark-color;
+          }
         }
       }
       /* stylelint-enable max-nesting-depth */
@@ -172,8 +189,8 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
-    margin-bottom: var(--bp-spacing);
-    margin-left: calc(var(--bp-docs-app-package-icon-width) + var(--bp-spacing) * 2);
+    margin-bottom: $pt-spacing;
+    margin-left: $pkg-icon-width + ($pt-spacing * 2);
 
     &:empty {
       display: none;
@@ -184,8 +201,8 @@ $dark-package-colors: (
 .docs-nav-section {
   font-size: small;
   font-weight: 700;
-  margin-bottom: calc(var(--bp-spacing) * 2);
-  margin-top: calc(var(--bp-spacing) * 5);
+  margin-bottom: $pt-spacing * 2;
+  margin-top: $pt-spacing * 5;
   text-transform: uppercase;
 
   // dedent menu under a section title
@@ -200,7 +217,7 @@ $dark-package-colors: (
 
   svg {
     height: 1.2em;
-    padding: 0 var(--bp-spacing);
+    padding: 0 $pt-spacing;
   }
 
   a:not(:hover) {

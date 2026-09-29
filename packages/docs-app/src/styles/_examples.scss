@@ -26,7 +26,7 @@
 }
 
 .docs-prop-code-tooltip {
-  margin-bottom: calc(var(--bp-spacing) * 2);
+  margin-bottom: $pt-spacing * 2;
 }
 
 .docs-example .#{$ns}-form-group:last-child {
@@ -58,7 +58,7 @@
 }
 
 #{page("tree")} .#{$ns}-tree {
-  width: calc(var(--bp-spacing) * 87.5);
+  width: $pt-spacing * 87.5;
 }
 
 #{example("BreadcrumbsOverflow")} {
@@ -70,7 +70,7 @@
 #{example("ButtonPlayground")} {
   .docs-example {
     flex-direction: column;
-    gap: calc(var(--bp-spacing) * 7.5);
+    gap: $pt-spacing * 7.5;
 
     > * {
       margin: 0;
@@ -82,7 +82,7 @@
   }
 
   .docs-wiggle {
-    animation: docs-wiggle-rotate var(--bp-transition-duration) var(--bp-transition-ease) infinite;
+    animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
 
   .#{$ns}-button:not(.#{$ns}-fill) {
@@ -93,13 +93,13 @@
 .docs-code-example {
   .group {
     display: flex;
-    gap: calc(var(--bp-spacing) * 2);
+    gap: $pt-spacing * 2;
   }
 
   .stack {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--bp-spacing) * 2);
+    gap: $pt-spacing * 2;
   }
 
   .center {
@@ -110,22 +110,26 @@
 #{example("CardElevation")} {
   .docs-code-example {
     // lighten the example background in dark mode to make elevation shadows visible
-    background-color: var(--bp-docs-app-card-elevation-example-background-color);
+    .#{$ns}-dark & {
+      background-color: $dark-gray3;
+    }
   }
 
   .#{$ns}-card {
     align-items: center;
     display: flex;
-    height: calc(var(--bp-spacing) * 15);
+    height: $pt-spacing * 15;
     justify-content: center;
-    width: calc(var(--bp-spacing) * 15);
+    width: $pt-spacing * 15;
   }
 }
 
 #{example("CardListSection")} {
   .#{$ns}-section-card {
-    // need a bit of margin to account for the dark theme's inset box shadow
-    margin-bottom: var(--bp-docs-app-section-card-margin-bottom);
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
   }
 }
 
@@ -139,10 +143,13 @@
   }
 
   .docs-section-card-limited-height {
-    // need a bit of margin to account for the dark theme's inset box shadow
-    margin-bottom: var(--bp-docs-app-section-card-margin-bottom);
     max-height: 152px;
     overflow-y: auto;
+
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
   }
 
   .#{$ns}-section.#{$ns}-compact {
@@ -159,14 +166,14 @@
 
 .docs-control-card-group-row {
   display: grid;
-  gap: calc(var(--bp-spacing) * 5);
-  grid-template-columns: repeat(auto-fit, minmax(calc(var(--bp-spacing) * 25), 1fr));
+  gap: $pt-spacing * 5;
+  grid-template-columns: repeat(auto-fit, minmax($pt-spacing * 25, 1fr));
   width: 100%;
 }
 
 #{example("ControlCardList")} {
   .#{$ns}-control-card-label .#{$ns}-icon {
-    margin-right: calc(var(--bp-spacing) * 2);
+    margin-right: $pt-spacing * 2;
   }
 }
 
@@ -185,7 +192,7 @@
   }
 
   h1 {
-    margin-bottom: calc(var(--bp-spacing) * 7.5);
+    margin-bottom: $pt-spacing * 7.5;
   }
 }
 
@@ -193,7 +200,7 @@
   .docs-example .#{$ns}-card {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--bp-spacing) * 2);
+    gap: $pt-spacing * 2;
   }
 
   // this example has a "fill" prop option, which doesn't work nicely with the default margin
@@ -203,7 +210,7 @@
   }
 
   .#{$ns}-form-content {
-    min-width: calc(var(--bp-spacing) * 50);
+    min-width: $pt-spacing * 50;
   }
 }
 
@@ -211,7 +218,7 @@
   .docs-example .#{$ns}-card {
     display: flex;
     justify-content: space-around;
-    padding-inline: calc(var(--bp-spacing) * 10);
+    padding-inline: $pt-spacing * 10;
     width: 100%;
   }
 }
@@ -235,7 +242,7 @@
 }
 
 #{example("DividerVertical")} .docs-code-example > :first-child {
-  gap: calc(var(--bp-spacing) * 2);
+  gap: $pt-spacing * 2;
   max-width: 500px;
   text-align: center;
   width: 100%;
@@ -247,7 +254,7 @@
     flex-direction: column;
 
     > * {
-      margin: calc(var(--bp-spacing) * 2);
+      margin: $pt-spacing * 2;
     }
   }
 }
@@ -255,41 +262,39 @@
 .docs-context-menu-example {
   .docs-example {
     flex-direction: column;
-    height: calc(var(--bp-spacing) * 62.5);
+    height: $pt-spacing * 62.5;
   }
 
   .docs-context-menu-node {
     $node-size: $pt-spacing * 20;
     $icon-size: $pt-icon-size-standard * 2;
     $node-border-width: $pt-spacing;
-    background-color: var(--bp-docs-app-context-menu-node-background-color);
+    background-color: $blue5;
 
-    border: var(--bp-docs-app-context-menu-node-border-width) solid var(--bp-palette-white);
+    border: $node-border-width solid $white;
     border-radius: 50%;
-    box-shadow: var(--bp-elevation-shadow-2);
-    height: var(--bp-docs-app-context-menu-node-size);
+    box-shadow: $pt-elevation-shadow-2;
+    height: $node-size;
     overflow: hidden;
-    width: var(--bp-docs-app-context-menu-node-size);
+    width: $node-size;
 
     &::before {
-      @include pt-icon(var(--bp-docs-app-context-menu-icon-size), 16);
-      color: var(--bp-palette-white);
+      @include pt-icon($icon-size, 16);
+      color: $white;
       content: map.get($blueprint-icon-codepoints, "envelope");
-      left: calc(
-        (var(--bp-docs-app-context-menu-node-size) - var(--bp-docs-app-context-menu-icon-size)) *
-          0.5 - var(--bp-docs-app-context-menu-node-border-width)
-      );
+      left: ($node-size - $icon-size) * 0.5 - $node-border-width;
       position: relative;
-      top: calc(
-        (var(--bp-docs-app-context-menu-node-size) - var(--bp-docs-app-context-menu-icon-size)) *
-          0.5 - var(--bp-docs-app-context-menu-node-border-width)
-      );
+      top: ($node-size - $icon-size) * 0.5 - $node-border-width;
     }
 
     &.docs-context-menu-open {
       box-shadow:
-        var(--bp-elevation-shadow-2),
-        0 0 0 4px var(--bp-palette-orange-4);
+        $pt-elevation-shadow-2,
+        0 0 0 4px $orange4;
+    }
+
+    .#{$ns}-dark & {
+      background-color: $blue2;
     }
   }
 }
@@ -297,9 +302,9 @@
 $docs-hotkey-piano-height: 510px;
 
 .docs-hotkey-piano-example {
-  min-height: var(--bp-docs-app-hotkey-piano-height);
+  min-height: $docs-hotkey-piano-height;
   opacity: 0.5;
-  transition: opacity calc(var(--bp-transition-duration) * 2) var(--bp-transition-ease);
+  transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
     cursor: pointer;
@@ -313,12 +318,12 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-non-ideal-state {
     margin: 0;
-    min-height: calc(var(--bp-docs-app-hotkey-piano-height) - var(--bp-spacing) * 5);
-    padding: calc(var(--bp-spacing) * 5);
+    min-height: $docs-hotkey-piano-height - ($pt-spacing * 5);
+    padding: $pt-spacing * 5;
   }
 
   > :first-child {
-    margin-bottom: calc(var(--bp-spacing) * 5);
+    margin-bottom: $pt-spacing * 5;
   }
 
   .piano-key {
@@ -327,13 +332,13 @@ $docs-hotkey-piano-height: 510px;
     z-index: 1;
 
     > div {
-      background-color: var(--bp-palette-white);
-      border-bottom-left-radius: var(--bp-spacing);
-      border-bottom-right-radius: var(--bp-spacing);
-      color: var(--bp-palette-black);
-      height: calc(var(--bp-spacing) * 60);
-      margin-right: var(--bp-spacing);
-      width: calc(var(--bp-spacing) * 20);
+      background-color: $white;
+      border-bottom-left-radius: $pt-spacing;
+      border-bottom-right-radius: $pt-spacing;
+      color: $black;
+      height: $pt-spacing * 60;
+      margin-right: $pt-spacing;
+      width: $pt-spacing * 20;
     }
   }
 
@@ -344,22 +349,22 @@ $docs-hotkey-piano-height: 510px;
     z-index: 2;
 
     > div {
-      background-color: var(--bp-palette-black);
-      color: var(--bp-palette-white);
-      height: calc(var(--bp-spacing) * 40);
-      left: calc(var(--bp-spacing) * -10);
+      background-color: $black;
+      color: $white;
+      height: $pt-spacing * 40;
+      left: $pt-spacing * -10;
       position: absolute;
       top: 0;
     }
   }
 
   .piano-key-pressed > div {
-    background-color: var(--bp-intent-primary-rest);
-    color: var(--bp-palette-white);
+    background-color: $pt-intent-primary;
+    color: $white;
   }
 
   .piano-key-text {
-    bottom: var(--bp-spacing);
+    bottom: $pt-spacing;
     left: 0;
     position: absolute;
     right: 0;
@@ -373,18 +378,18 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("HotkeyTester")} {
   .docs-hotkey-tester {
-    @include pt-flex-container(column, calc(var(--bp-spacing) * 2));
+    @include pt-flex-container(column, $pt-spacing * 2);
     align-items: center;
-    background: var(--bp-docs-app-hotkey-tester-background-color);
-    border: 2px solid var(--bp-docs-app-hotkey-tester-border-color);
-    border-radius: var(--bp-border-radius);
+    background: rgba($gray3, 0.2);
+    border: 2px solid rgba($gray3, 0.8);
+    border-radius: $pt-border-radius;
     flex: 1 1;
     justify-content: space-around;
     max-width: 70%;
-    min-height: calc(var(--bp-spacing) * 30);
+    min-height: $pt-spacing * 30;
     opacity: 0.4;
-    padding: calc(var(--bp-spacing) * 5);
-    transition: all var(--bp-transition-duration) var(--bp-transition-ease);
+    padding: $pt-spacing * 5;
+    transition: all $pt-transition-duration $pt-transition-ease;
 
     &:hover {
       cursor: pointer;
@@ -392,11 +397,17 @@ $docs-hotkey-piano-height: 510px;
     }
 
     &:focus {
-      background: var(--bp-docs-app-hotkey-tester-focus-background-color);
-      border: 2px solid var(--bp-docs-app-hotkey-tester-focus-border-color);
-      color: var(--bp-docs-app-hotkey-tester-focus-text-color);
+      background: rgba($blue3, 0.1);
+      border: 2px solid rgba($blue3, 0.6);
+      color: map.get($pt-intent-text-colors, "primary");
       cursor: default;
       opacity: 1;
+
+      .#{$ns}-dark & {
+        background: rgba($blue4, 0.1);
+        border: 2px solid rgba($blue4, 0.6);
+        color: map.get($pt-dark-intent-text-colors, "primary");
+      }
     }
   }
 }
@@ -410,7 +421,7 @@ $docs-hotkey-piano-height: 510px;
 #{example("OverflowList")} {
   .#{$ns}-card {
     margin: 0;
-    min-width: calc(var(--bp-spacing) * 17.5);
+    min-width: $pt-spacing * 17.5;
   }
 
   .#{$ns}-overflow-list {
@@ -450,15 +461,15 @@ $docs-hotkey-piano-height: 510px;
     $pt-transition-duration * 5,
     $before: "&"
   );
-  left: calc(50vw - var(--bp-docs-app-overlay-example-width) * 0.5);
+  left: calc(50vw - #{$overlay-example-width * 0.5});
   margin: 10vh 0;
 
   top: 0;
-  width: var(--bp-docs-app-overlay-example-width);
+  width: $overlay-example-width;
 
   .#{$ns}-overlay-inline & {
-    left: calc(50% - var(--bp-docs-app-overlay-example-width) * 0.5);
-    margin: calc(var(--bp-spacing) * 5) 0;
+    left: calc(50% - #{$overlay-example-width * 0.5});
+    margin: ($pt-spacing * 5) 0;
   }
 }
 
@@ -486,7 +497,7 @@ $docs-hotkey-piano-height: 510px;
     width: 1600px;
 
     > p {
-      margin-top: calc(var(--bp-spacing) * 2);
+      margin-top: $pt-spacing * 2;
     }
   }
 }
@@ -501,23 +512,27 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-popover-content {
     min-width: 300px;
-    padding: calc(var(--bp-spacing) * 5);
+    padding: $pt-spacing * 5;
 
     .#{$ns}-button:not(:first-child) {
-      margin-left: calc(var(--bp-spacing) * 2);
+      margin-left: $pt-spacing * 2;
     }
 
     .#{$ns}-callout {
-      margin: calc(var(--bp-spacing) * 2) 0;
+      margin: ($pt-spacing * 2) 0;
     }
   }
 }
 
 #{example("PanelStack")} {
   .docs-panel-stack-example {
-    box-shadow: var(--bp-docs-app-panel-stack-shadow);
+    box-shadow: $pt-elevation-shadow-0;
     height: 240px;
     width: 300px;
+
+    .#{$ns}-dark & {
+      box-shadow: border-shadow(0.2, $white);
+    }
   }
 
   .docs-panel-stack-contents-example {
@@ -526,7 +541,7 @@ $docs-hotkey-piano-height: 510px;
     flex: 1 0 auto;
     flex-direction: column;
     justify-content: space-around;
-    padding: calc(var(--bp-spacing) * 2);
+    padding: $pt-spacing * 2;
   }
 
   ul {
@@ -538,7 +553,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-placement-example {
   .docs-example-grid {
     display: grid;
-    gap: calc(var(--bp-spacing) * 2);
+    gap: $pt-spacing * 2;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1fr 2fr 1fr;
     justify-content: stretch;
@@ -581,16 +596,19 @@ $docs-hotkey-piano-height: 510px;
   }
 
   em {
-    color: var(--bp-docs-app-popover-placement-muted-color);
     display: inline-block;
-    max-width: calc(var(--bp-spacing) * 62.5);
+    max-width: $pt-spacing * 62.5;
+
+    .#{$ns}-dark & {
+      color: $pt-dark-text-color-muted;
+    }
   }
 }
 
 .docs-popover-placement-example-content {
   .#{$ns}-popover-content {
     line-height: 2;
-    padding: calc(var(--bp-spacing) * 2) calc(var(--bp-spacing) * 5);
+    padding: ($pt-spacing * 2) ($pt-spacing * 5);
     text-align: center;
   }
 
@@ -600,44 +618,56 @@ $docs-hotkey-piano-height: 510px;
 }
 
 .docs-popover-placement-value-code-block {
-  font-size: var(--bp-font-size-large);
+  font-size: $pt-font-size-large;
   font-weight: 600;
   text-align: center;
 }
 
 .docs-popover-placement-label-side {
-  color: var(--bp-docs-app-popover-placement-side-color);
+  color: $cerulean3;
+
+  .#{$ns}-dark & {
+    color: $cerulean5;
+  }
 }
 
 .docs-popover-placement-label-alignment {
-  color: var(--bp-docs-app-popover-placement-alignment-color);
+  color: $forest3;
+
+  .#{$ns}-dark & {
+    color: $forest5;
+  }
 }
 
 .docs-popover-minimal-example {
   .#{$ns}-button:first-child {
-    margin-right: calc(var(--bp-spacing) * 2);
+    margin-right: $pt-spacing * 2;
   }
 }
 
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
-    font-family: var(--bp-font-family-monospace);
-    margin-right: calc(var(--bp-spacing) * 2);
+    font-family: $pt-font-family-monospace;
+    margin-right: $pt-spacing * 2;
   }
 }
 
 .docs-popover-sizing-example {
-  max-height: calc(var(--bp-spacing) * 37.5);
+  max-height: $pt-spacing * 37.5;
   overflow-y: auto;
 }
 
 .docs-popover-portal-example {
   .docs-popover-portal-example-scroll-container {
-    background: var(--bp-docs-app-popover-portal-scroll-background-color);
-    border-radius: var(--bp-border-radius);
+    background: $light-gray3;
+    border-radius: $pt-border-radius;
     flex: 1 1 auto;
     overflow: scroll hidden;
     position: relative;
+
+    .#{$ns}-dark & {
+      background: $dark-gray5;
+    }
   }
 
   .docs-popover-portal-example-scroll-content {
@@ -649,12 +679,9 @@ $docs-hotkey-piano-height: 510px;
     align-items: flex-start;
 
     display: flex;
-    height: calc(
-      var(--bp-docs-app-popover-portal-target-plus-popover-height) + 2 *
-        var(--bp-docs-app-popover-portal-vertical-padding)
-    );
+    height: $assumed-height-of-target-plus-popover + (2 * $vertical-padding);
     justify-content: center;
-    padding-top: var(--bp-docs-app-popover-portal-vertical-padding);
+    padding-top: $vertical-padding;
     // wide enough to allow scrolling, but wide enough to let the popover target
     // fully leave the viewport.
     width: 200%;
@@ -663,14 +690,14 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-portal-example-popover {
   .#{$ns}-popover-content {
-    padding: calc(var(--bp-spacing) * 2);
+    padding: $pt-spacing * 2;
     white-space: nowrap;
   }
 }
 
 .#{$ns}-progress-bar.docs-toast-progress {
   margin-bottom: 0;
-  margin-top: var(--bp-spacing);
+  margin-top: $pt-spacing;
 }
 
 #{example("Tooltip")} {
@@ -678,7 +705,7 @@ $docs-hotkey-piano-height: 510px;
     flex-direction: column;
 
     > * {
-      margin: var(--bp-spacing);
+      margin: $pt-spacing;
     }
   }
 }
@@ -702,7 +729,7 @@ $docs-hotkey-piano-height: 510px;
   .docs-example .#{$ns}-card {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--bp-spacing) * 2);
+    gap: $pt-spacing * 2;
   }
 }
 
@@ -714,7 +741,7 @@ $docs-hotkey-piano-height: 510px;
   .metadata-panel {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--bp-spacing) * 2);
+    gap: $pt-spacing * 2;
 
     > div {
       display: flex;
@@ -731,13 +758,13 @@ $docs-hotkey-piano-height: 510px;
 #{page("datetime", "^=")} {
   .docs-example {
     flex-direction: column;
-    gap: calc(var(--bp-spacing) * 2);
+    gap: $pt-spacing * 2;
     justify-content: center;
   }
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, var(--bp-spacing));
+  @include pt-flex-container(row, $pt-spacing);
   align-items: center;
 }
 
@@ -771,13 +798,17 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("DatePickerModifier")} {
   .docs-date-picker-day-odd {
-    color: var(--bp-docs-app-datepicker-odd-day-color);
+    color: $red2;
+
+    .#{$ns}-dark & {
+      color: $red4;
+    }
   }
 }
 
 #{example("DateRangeInput")} {
   .docs-example {
-    padding: calc(var(--bp-spacing) * 10) calc(var(--bp-spacing) * 5);
+    padding: ($pt-spacing * 10) ($pt-spacing * 5);
   }
 
   .#{$ns}-input-group {
@@ -811,7 +842,7 @@ $docs-hotkey-piano-height: 510px;
 #{page("table", "^=")} {
   // make all tables the same width & height
   .#{$ns}-table-container {
-    height: calc(var(--bp-spacing) * 90);
+    height: $pt-spacing * 90;
     width: 100%;
   }
 
