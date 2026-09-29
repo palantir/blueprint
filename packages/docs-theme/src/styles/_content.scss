@@ -13,12 +13,12 @@ $attribute-modifier-color: $violet5;
 
 // title of a section
 .docs-title {
-  margin: $heading-margin 0 ($heading-margin * 0.5);
+  margin: var(--bp-docs-theme-heading-margin) 0 calc(var(--bp-docs-theme-heading-margin) * 0.5);
   position: relative;
 
   // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling
   .depth-1 > & {
-    margin-top: $content-padding;
+    margin-top: var(--bp-docs-theme-content-padding);
   }
 }
 
@@ -26,19 +26,23 @@ $attribute-modifier-color: $violet5;
 // but it doesn't change the bounds of the element or interfere with interactions. (thanks React docs site!)
 // so the heading will appear _below_ the navbar (since the navbar covers the top 50px of window).
 .docs-anchor {
-  margin-top: -$content-padding * 2;
+  margin-top: calc(var(--bp-docs-theme-content-padding) * -2);
   position: absolute;
 }
 
 .docs-anchor-link {
-  @include pt-icon-colors;
+  color: var(--bp-icon-color);
   left: 0;
-  line-height: $pt-icon-size-standard;
+  line-height: var(--bp-icon-size-standard);
   opacity: 0;
-  padding: $link-icon-padding;
+  padding: var(--bp-docs-theme-link-icon-padding);
   position: absolute;
   top: 50%;
   transform: translate(-100%, -50%);
+
+  &:hover {
+    color: var(--bp-icon-color-hover);
+  }
 
   .#{$ns}-icon-standard {
     vertical-align: top;

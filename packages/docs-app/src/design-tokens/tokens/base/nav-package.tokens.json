@@ -1,0 +1,62 @@
+{
+    "docs-app": {
+        "nav-package": {
+            "blueprint": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(95, 107, 124, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.gray.1}" },
+                "text-color": { "$type": "color", "$value": "{palette.black}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(95, 107, 124, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.gray.1}" }
+            },
+            "core": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(45, 114, 210, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.blue.3}" },
+                "text-color": { "$type": "color", "$value": "{palette.blue.2}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(45, 114, 210, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.blue.3}" }
+            },
+            "datetime": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(205, 66, 70, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.red.3}" },
+                "text-color": { "$type": "color", "$value": "{palette.red.2}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(205, 66, 70, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.red.3}" }
+            },
+            "datetime2": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(219, 44, 111, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.rose.3}" },
+                "text-color": { "$type": "color", "$value": "{palette.rose.2}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(219, 44, 111, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.rose.3}" }
+            },
+            "icons": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(240, 183, 38, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.gold.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.gold.3}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(240, 183, 38, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.gold.4}" }
+            },
+            "select": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(20, 126, 179, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.cerulean.3}" },
+                "text-color": { "$type": "color", "$value": "{palette.cerulean.2}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(20, 126, 179, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.cerulean.3}" }
+            },
+            "table": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(41, 166, 52, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.forest.3}" },
+                "text-color": { "$type": "color", "$value": "{palette.forest.2}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(41, 166, 52, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.forest.3}" }
+            },
+            "labs": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(121, 97, 219, 0.1)" },
+                "icon-color": { "$type": "color", "$value": "{palette.indigo.3}" },
+                "text-color": { "$type": "color", "$value": "{palette.indigo.2}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(121, 97, 219, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.indigo.3}" }
+            }
+        }
+    }
+}

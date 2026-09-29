@@ -1,0 +1,62 @@
+{
+    "docs-app": {
+        "nav-package": {
+            "blueprint": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(143, 153, 168, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.gray.3}" },
+                "text-color": { "$type": "color", "$value": "{palette.white}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(143, 153, 168, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.gray.3}" }
+            },
+            "core": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(76, 144, 240, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.blue.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.blue.5}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(76, 144, 240, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.blue.4}" }
+            },
+            "datetime": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(231, 106, 110, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.red.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.red.5}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(231, 106, 110, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.red.4}" }
+            },
+            "datetime2": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(245, 73, 139, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.rose.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.rose.5}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(245, 73, 139, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.rose.4}" }
+            },
+            "icons": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(240, 183, 38, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.gold.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.gold.5}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(240, 183, 38, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.gold.4}" }
+            },
+            "select": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(63, 166, 218, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.cerulean.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.cerulean.5}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(63, 166, 218, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.cerulean.4}" }
+            },
+            "table": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(67, 191, 77, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.forest.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.forest.5}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(67, 191, 77, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.forest.4}" }
+            },
+            "labs": {
+                "icon-background-color": { "$type": "color", "$value": "rgba(152, 129, 243, 0.15)" },
+                "icon-color": { "$type": "color", "$value": "{palette.indigo.4}" },
+                "text-color": { "$type": "color", "$value": "{palette.indigo.5}" },
+                "icon-background-color-hover": { "$type": "color", "$value": "rgba(152, 129, 243, 0.8)" },
+                "icon-background-color-active": { "$type": "color", "$value": "{palette.indigo.4}" }
+            }
+        }
+    }
+}

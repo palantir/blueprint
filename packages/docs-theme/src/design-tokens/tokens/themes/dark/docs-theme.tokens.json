@@ -1,0 +1,32 @@
+{
+    "docs-theme": {
+        "sidebar-background-color": {
+            "$type": "color",
+            "$value": "{palette.dark-gray.3}"
+        },
+        "sidebar-divider-shadow": {
+            "$type": "shadow",
+            "$value": "1px 0 0 rgba(17, 20, 24, 0.4)"
+        },
+        "banner-shadow": {
+            "$type": "shadow",
+            "$value": "0 1px 0 rgba(17, 20, 24, 0.15)"
+        },
+        "example-segmented-control-background-color": {
+            "$type": "color",
+            "$value": "{palette.dark-gray.1}"
+        },
+        "nav-button-hover-background-image": {
+            "$type": "string",
+            "$value": "linear-gradient(to right, rgba(28, 33, 39, 0) 0%, #1c2127 40%)"
+        },
+        "nav-divider-background-image": {
+            "$type": "string",
+            "$value": "linear-gradient(to right, rgba(17, 20, 24, 0) 0%, rgba(17, 20, 24, 0.4) 40%)"
+        },
+        "required-prop-color": {
+            "$type": "color",
+            "$value": "{palette.green.4}"
+        }
+    }
+}

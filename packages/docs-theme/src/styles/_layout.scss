@@ -34,69 +34,56 @@ Page layout elements
 */
 
 .docs-root {
-  background-color: $pt-app-background-color;
-
-  &.#{$ns}-dark {
-    background-color: $pt-dark-app-background-color;
-  }
+  background-color: var(--bp-app-background-color);
 }
 
 .docs-app {
   @include pt-flex-container(row);
   margin: auto;
-  max-width: $container-width;
+  max-width: var(--bp-docs-theme-container-width);
   min-height: 100vh;
 }
 
 .docs-nav-wrapper {
-  flex-basis: $sidebar-width;
+  flex-basis: var(--bp-docs-theme-sidebar-width);
   position: relative;
-  z-index: $pt-z-index-content;
+  z-index: var(--bp-z-index-content);
 }
 
 .docs-nav {
   $background-shift: 999px;
-  background-color: $sidebar-background-color;
-  box-shadow: 1px 0 0 $pt-divider-black;
+  background-color: var(--bp-docs-theme-sidebar-background-color);
+  box-shadow: var(--bp-docs-theme-sidebar-divider-shadow);
   height: 100vh;
 
   // these rules allow the nav background-color to cover all area to the left
   /* stylelint-disable-next-line order/properties-order */
   margin-left: -$background-shift;
   overflow: hidden auto;
-  padding-bottom: $sidebar-padding * 2;
-  padding-left: $background-shift + $container-padding;
+  padding-bottom: calc(var(--bp-docs-theme-sidebar-padding) * 2);
+  padding-left: calc(#{$background-shift} + var(--bp-docs-theme-container-padding));
 
   position: fixed;
-  width: $sidebar-width + $background-shift;
-
-  .#{$ns}-dark & {
-    background-color: $dark-sidebar-background-color;
-    box-shadow: 1px 0 0 $pt-dark-divider-black;
-  }
+  width: calc(var(--bp-docs-theme-sidebar-width) + #{$background-shift});
 
   > * {
-    padding: $sidebar-padding;
+    padding: var(--bp-docs-theme-sidebar-padding);
     padding-left: 0;
   }
 }
 
 .docs-content-wrapper {
   align-items: flex-start;
-  background-color: $pt-app-background-color;
-  flex-basis: $content-width;
+  background-color: var(--bp-app-background-color);
+  flex-basis: var(--bp-docs-theme-content-width);
   outline: none;
-
-  .#{$ns}-dark & {
-    background-color: $pt-dark-app-background-color;
-  }
 }
 
 .docs-page {
-  max-width: $content-width;
-  padding-bottom: $content-padding * 2;
-  padding-left: $content-padding * 2;
-  padding-right: $container-padding;
+  max-width: var(--bp-docs-theme-content-width);
+  padding-bottom: calc(var(--bp-docs-theme-content-padding) * 2);
+  padding-left: calc(var(--bp-docs-theme-content-padding) * 2);
+  padding-right: var(--bp-docs-theme-container-padding);
   /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
   padding-top: 0;
   position: relative;
@@ -105,7 +92,7 @@ Page layout elements
 .docs-page-actions {
   position: absolute;
   right: 0;
-  top: $container-padding;
+  top: var(--bp-docs-theme-container-padding);
   // above h1 heading
   z-index: 1;
 }
@@ -118,7 +105,7 @@ Lefthand navigation menu
   .#{$ns}-menu-item {
     align-items: center;
     padding-left: 0;
-    padding-right: $pt-spacing * 2;
+    padding-right: calc(var(--bp-spacing) * 2);
     white-space: initial;
 
     &:hover,
@@ -132,7 +119,7 @@ Lefthand navigation menu
 
     @each $depth in (1, 2, 3, 4, 5) {
       &.depth-#{$depth} {
-        padding-left: $nav-item-indent * $depth;
+        padding-left: calc(var(--bp-docs-theme-nav-item-indent) * #{$depth});
       }
     }
   }
@@ -141,7 +128,7 @@ Lefthand navigation menu
     // nested menus are hidden by default
     display: none;
     // nested menus indent automatically
-    margin-left: $nav-item-indent;
+    margin-left: var(--bp-docs-theme-nav-item-indent);
   }
 
   .docs-nav-expanded + & {

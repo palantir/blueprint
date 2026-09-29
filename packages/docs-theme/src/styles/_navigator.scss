@@ -4,8 +4,8 @@
 $navigator-width: $pt-spacing * 100;
 
 .docs-navigator-menu {
-  left: calc(50% - #{$navigator-width * 0.5});
-  width: $navigator-width;
+  left: calc(50% - var(--bp-docs-theme-navigator-width) * 0.5);
+  width: var(--bp-docs-theme-navigator-width);
 
   .#{$ns}-menu-item small {
     align-items: center;

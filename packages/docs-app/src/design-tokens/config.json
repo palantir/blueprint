@@ -1,0 +1,17 @@
+{
+    "source": {
+        "base": ["tokens/base/**/*.tokens.json"],
+        "dark": ["tokens/themes/dark/**/*.tokens.json"]
+    },
+    "include": {
+        "base": [
+            "../../../core/src/design-tokens/tokens/base/**/*.tokens.json",
+            "../../../docs-theme/src/design-tokens/tokens/base/**/*.tokens.json"
+        ],
+        "dark": [
+            "../../../core/src/design-tokens/tokens/themes/dark/**/*.tokens.json",
+            "../../../docs-theme/src/design-tokens/tokens/themes/dark/**/*.tokens.json"
+        ]
+    },
+    "output": "build/tokens.css"
+}
