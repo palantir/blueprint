@@ -24,15 +24,11 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 }
 
 .#{$ns}-table-quadrant {
-  background: $table-background-color;
+  background: var(--bp-table-background-color);
   left: 0;
   overflow: hidden;
   position: absolute;
   top: 0;
-
-  .#{$ns}-dark & {
-    background-color: $dark-table-background-color;
-  }
 }
 
 .#{$ns}-table-quadrant-scroll-container {
@@ -99,7 +95,7 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   top: auto;
   // the MAIN quadrant should fill the whole table so that ghost cells will be visible if enabled
   width: 100%;
-  z-index: $table-quadrant-z-index-main;
+  z-index: var(--bp-table-quadrant-z-index-main);
 
   .#{$ns}-table-quadrant-scroll-container {
     height: 100%;
@@ -109,13 +105,13 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   }
 
   .#{$ns}-table-cell-client {
-    background: $white;
+    background: var(--bp-table-cell-background-color);
   }
 }
 
 .#{$ns}-table-quadrant-top {
   right: 0;
-  z-index: $table-quadrant-z-index-top;
+  z-index: var(--bp-table-quadrant-z-index-top);
 
   .#{$ns}-table-quadrant-scroll-container {
     bottom: -$scroll-container-overflow-default;
@@ -127,8 +123,8 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   bottom: 0;
 
   // animate width changes on scroll end
-  transition: width $pt-transition-duration $pt-transition-ease;
-  z-index: $table-quadrant-z-index-left;
+  transition: width var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
+  z-index: var(--bp-table-quadrant-z-index-left);
 
   .#{$ns}-table-quadrant-scroll-container {
     bottom: 0;
@@ -149,8 +145,8 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 
 .#{$ns}-table-quadrant-top-left {
   // animate width changes on scroll end
-  transition: width $pt-transition-duration $pt-transition-ease;
-  z-index: $table-quadrant-z-index-top-left;
+  transition: width var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
+  z-index: var(--bp-table-quadrant-z-index-top-left);
 
   .#{$ns}-table-quadrant-scroll-container {
     bottom: -$scroll-container-overflow-default;

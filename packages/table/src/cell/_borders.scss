@@ -12,10 +12,10 @@ for all borders with minimal duplication. See the bottom of this file.
 @mixin pt-table-borders-mixin($border-width, $frozen-border-width, $border-color) {
   $border-right-default: $border-width 0 0 $border-color;
   $border-bottom-default: 0 $border-width 0 $border-color;
-  $inset-border-right-default: inset (-$border-width) 0 0 $border-color;
-  $inset-border-bottom-default: inset 0 (-$border-width) 0 $border-color;
-  $inset-border-right-frozen: inset (-$frozen-border-width) 0 0 $border-color;
-  $inset-border-bottom-frozen: inset 0 (-$frozen-border-width) 0 $border-color;
+  $inset-border-right-default: inset calc(-1 * #{$border-width}) 0 0 $border-color;
+  $inset-border-bottom-default: inset 0 calc(-1 * #{$border-width}) 0 $border-color;
+  $inset-border-right-frozen: inset calc(-1 * #{$frozen-border-width}) 0 0 $border-color;
+  $inset-border-bottom-frozen: inset 0 calc(-1 * #{$frozen-border-width}) 0 $border-color;
 
   .#{$ns}-table-container {
     box-shadow: 0 0 0 $border-width $border-color;
@@ -119,12 +119,8 @@ for all borders with minimal duplication. See the bottom of this file.
   }
 }
 
-@include pt-table-borders-mixin($cell-border-width, $frozen-cell-border-width, $cell-border-color);
-
-.#{$ns}-dark {
-  @include pt-table-borders-mixin(
-    $cell-border-width,
-    $frozen-cell-border-width,
-    $dark-cell-border-color
-  );
-}
+@include pt-table-borders-mixin(
+  var(--bp-table-cell-border-width),
+  var(--bp-table-cell-frozen-border-width),
+  var(--bp-table-cell-border-color)
+);

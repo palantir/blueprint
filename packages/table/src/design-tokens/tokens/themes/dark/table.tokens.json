@@ -1,0 +1,126 @@
+{
+    "table": {
+        "background-color": {
+            "$type": "color",
+            "$value": "{palette.dark-gray.4}"
+        },
+        "cell": {
+            "background-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.3}"
+            },
+            "striped-background-color": {
+                "$type": "color",
+                "$value": "rgb(51.5, 57, 65.5)"
+            },
+            "border-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.4)"
+            },
+            "text-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            },
+            "placeholder-text-color": {
+                "$type": "color",
+                "$value": "{palette.gray.4}"
+            },
+            "intent": {
+                "primary": {
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.blue.4}"
+                    }
+                },
+                "success": {
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.green.4}"
+                    }
+                },
+                "warning": {
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.orange.4}"
+                    }
+                },
+                "danger": {
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.red.4}"
+                    }
+                }
+            }
+        },
+        "header": {
+            "background-color": {
+                "$type": "color",
+                "$value": "{table.background-color}"
+            },
+            "hover-background-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.5}"
+            },
+            "column-text-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            },
+            "row-text-color": {
+                "$type": "color",
+                "$value": "{palette.gray.4}"
+            },
+            "menu-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(56, 62, 71, 0) 0%, #383e47 50%)"
+            },
+            "menu-selection-hover-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(64, 72, 84, 0) 0%, #404854 50%)"
+            },
+            "menu-selection-selected-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(54.9, 67.2, 84.9, 0) 0%, rgb(54.9, 67.2, 84.9) 50%)"
+            },
+            "menu-selection-selected-hover-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(62.1, 76.2, 96.6, 0) 0%, rgb(62.1, 76.2, 96.6) 50%)"
+            },
+            "menu-icon-border-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(255, 255, 255, 0.2)"
+            },
+            "menu-icon-hover-border-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(255, 255, 255, 0.4)"
+            },
+            "menu-icon-color": {
+                "$type": "color",
+                "$value": "{palette.gray.4}"
+            },
+            "menu-icon-hover-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            }
+        },
+        "interaction": {
+            "reorder-handle-color": {
+                "$type": "color",
+                "$value": "rgba(171, 179, 191, 0.6)"
+            },
+            "reorder-handle-hover-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.5}"
+            }
+        },
+        "region": {
+            "selection-color": {
+                "$type": "color",
+                "$value": "{palette.blue.4}"
+            },
+            "selection-background-color": {
+                "$type": "color",
+                "$value": "rgba(76, 144, 240, 0.1)"
+            }
+        }
+    }
+}

@@ -1,6 +1,5 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@use "sass:map";
 @import "../common/variables";
 
 $cell-border-width: 1px !default;
@@ -24,44 +23,37 @@ $cell-transition-duration: $pt-transition-duration * 3;
 
 @mixin cell() {
   display: inline-block;
-  font-size: $pt-font-size-small;
-  height: $cell-height;
-  line-height: $cell-height;
-  padding: $cell-padding;
-  transition: color $cell-transition-duration;
+  font-size: var(--bp-typography-size-body-small);
+  height: var(--bp-table-cell-height);
+  line-height: var(--bp-table-cell-height);
+  padding: var(--bp-table-cell-padding-vertical) var(--bp-table-cell-padding-horizontal);
+  transition: color var(--bp-table-cell-transition-duration);
 
-  .#{$ns}-dark & {
-    &:not([class*="#{$ns}-intent-"]):not(.#{$ns}-loading) {
-      color: $dark-cell-text-color;
-    }
+  &:not([class*="#{$ns}-intent-"]):not(.#{$ns}-loading) {
+    color: var(--bp-table-cell-text-color);
   }
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba($color, $cell-background-color-opacity);
-      color: map.get($pt-intent-text-colors, $intent);
-    }
-
-    .#{$ns}-dark &.#{$ns}-intent-#{$intent} {
-      background: rgba($color, $cell-background-color-opacity);
-      color: map.get($pt-dark-intent-text-colors, $intent);
+      background-color: var(--bp-table-cell-intent-#{$intent}-background-color);
+      color: var(--bp-table-cell-intent-#{$intent}-text-color);
     }
   }
 }
 
 @mixin cell-large() {
-  font-size: $pt-font-size;
-  height: $large-cell-height;
-  line-height: $large-cell-height;
+  font-size: var(--bp-typography-size-body-medium);
+  height: var(--bp-table-cell-large-height);
+  line-height: var(--bp-table-cell-large-height);
 }
 
 @mixin cell-cursors() {
   .#{$ns}-table-editing-enabled & {
-    cursor: $select-text-cursor;
+    cursor: var(--bp-table-cursor-select-text);
   }
 
   .#{$ns}-table-selection-enabled & {
-    cursor: $select-cell-cursor;
+    cursor: var(--bp-table-cursor-select-cell);
   }
 }
 

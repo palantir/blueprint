@@ -1,6 +1,5 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@use "sass:color";
 @import "../common/loading";
 @import "../common/variables";
 @import "./common";
@@ -30,43 +29,29 @@
 }
 
 .#{$ns}-table-cell-interactive {
-  z-index: $interactive-cell-z-index;
+  z-index: var(--bp-table-interactive-cell-z-index);
 }
 
 .#{$ns}-table-striped {
   .#{$ns}-table-cell-ledger-even {
-    background-color: $cell-background-color;
+    background-color: var(--bp-table-cell-background-color);
   }
 
   .#{$ns}-table-cell-ledger-odd {
-    background-color: color.mix($table-background-color, $cell-background-color, 50%);
-  }
-
-  .#{$ns}-dark & {
-    .#{$ns}-table-cell-ledger-even {
-      background-color: $dark-cell-background-color;
-    }
-
-    .#{$ns}-table-cell-ledger-odd {
-      background-color: color.mix($dark-table-background-color, $dark-cell-background-color, 50%);
-    }
+    background-color: var(--bp-table-cell-striped-background-color);
   }
 }
 
 .#{$ns}-table-editable-name input {
-  height: $cell-height; // fixed height for IE11
+  height: var(--bp-table-cell-height); // fixed height for IE11
 }
 
 .#{$ns}-table-editable-text {
   inset: 0;
-  padding: $cell-padding;
+  padding: var(--bp-table-cell-padding-vertical) var(--bp-table-cell-padding-horizontal);
   position: absolute;
 }
 
 .#{$ns}-table-cell-text-placeholder {
-  color: $pt-text-color-muted;
-
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color-muted;
-  }
+  color: var(--bp-table-cell-placeholder-text-color);
 }

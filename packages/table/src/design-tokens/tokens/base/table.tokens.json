@@ -1,0 +1,300 @@
+{
+    "table": {
+        "background-color": {
+            "$type": "color",
+            "$value": "{palette.light-gray.5}"
+        },
+        "body-z-index": {
+            "$type": "number",
+            "$value": 10
+        },
+        "column-header-z-index": {
+            "$type": "number",
+            "$value": 11
+        },
+        "row-header-z-index": {
+            "$type": "number",
+            "$value": 12
+        },
+        "menu-z-index": {
+            "$type": "number",
+            "$value": 13
+        },
+        "region-layer-z-index": {
+            "$type": "number",
+            "$value": 20
+        },
+        "interactive-cell-z-index": {
+            "$type": "number",
+            "$value": 21
+        },
+        "quadrant-z-index": {
+            "$type": "number",
+            "main": { "$value": 0 },
+            "top": { "$value": 1 },
+            "left": { "$value": 2 },
+            "top-left": { "$value": 3 }
+        },
+        "cell": {
+            "border-width": {
+                "$type": "dimension",
+                "$value": { "value": 1, "unit": "px" }
+            },
+            "frozen-border-width": {
+                "$type": "dimension",
+                "$value": { "value": 3, "unit": "px" }
+            },
+            "padding-horizontal": {
+                "$type": "dimension",
+                "$value": { "value": 8, "unit": "px" }
+            },
+            "padding-vertical": {
+                "$type": "dimension",
+                "$value": { "value": 0, "unit": "px" }
+            },
+            "height": {
+                "$type": "dimension",
+                "$value": { "value": 20, "unit": "px" }
+            },
+            "large-height": {
+                "$type": "dimension",
+                "$value": { "value": 30, "unit": "px" }
+            },
+            "background-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            },
+            "striped-background-color": {
+                "$type": "color",
+                "$value": "rgb(250.5, 251, 252)"
+            },
+            "border-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.15)"
+            },
+            "text-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.1}"
+            },
+            "placeholder-text-color": {
+                "$type": "color",
+                "$value": "{palette.gray.1}"
+            },
+            "transition-duration": {
+                "$type": "duration",
+                "$value": { "value": 300, "unit": "ms" }
+            },
+            "intent": {
+                "primary": {
+                    "background-color": {
+                        "$type": "color",
+                        "$value": "rgba(45, 114, 210, 0.1)"
+                    },
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.blue.3}"
+                    }
+                },
+                "success": {
+                    "background-color": {
+                        "$type": "color",
+                        "$value": "rgba(35, 133, 81, 0.1)"
+                    },
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.green.3}"
+                    }
+                },
+                "warning": {
+                    "background-color": {
+                        "$type": "color",
+                        "$value": "rgba(200, 118, 25, 0.1)"
+                    },
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.orange.3}"
+                    }
+                },
+                "danger": {
+                    "background-color": {
+                        "$type": "color",
+                        "$value": "rgba(205, 66, 70, 0.1)"
+                    },
+                    "text-color": {
+                        "$type": "color",
+                        "$value": "{palette.red.3}"
+                    }
+                }
+            }
+        },
+        "null-text-color": {
+            "$type": "color",
+            "$value": "rgba(95, 107, 124, 0.6)"
+        },
+        "skeleton-animation": {
+            "$type": "string",
+            "$value": "1000ms linear infinite alternate skeleton-glow"
+        },
+        "header": {
+            "background-color": {
+                "$type": "color",
+                "$value": "{table.background-color}"
+            },
+            "hover-background-color": {
+                "$type": "color",
+                "$value": "{palette.light-gray.3}"
+            },
+            "column-text-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.1}"
+            },
+            "row-text-color": {
+                "$type": "color",
+                "$value": "{palette.gray.1}"
+            },
+            "selected-overlay-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.1)"
+            },
+            "column-min-height": {
+                "$type": "dimension",
+                "$value": { "value": 30, "unit": "px" }
+            },
+            "row-min-width": {
+                "$type": "dimension",
+                "$value": { "value": 30, "unit": "px" }
+            },
+            "column-name-skeleton-height": {
+                "$type": "dimension",
+                "$value": { "value": 8, "unit": "px" }
+            },
+            "interaction-bar-height": {
+                "$type": "dimension",
+                "$value": { "value": 20, "unit": "px" }
+            },
+            "menu-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(246, 247, 249, 0) 0%, #f6f7f9 50%)"
+            },
+            "menu-selection-hover-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(229, 232, 235, 0) 0%, #e5e8eb 50%)"
+            },
+            "menu-selection-selected-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(225.9, 233.7, 245.1, 0) 0%, rgb(225.9, 233.7, 245.1) 50%)"
+            },
+            "menu-selection-selected-hover-background-gradient": {
+                "$type": "string",
+                "$value": "linear-gradient(90deg, rgba(210.6, 220.2, 232.5, 0) 0%, rgb(210.6, 220.2, 232.5) 50%)"
+            },
+            "menu-icon-offset": {
+                "$type": "dimension",
+                "$value": { "value": 7, "unit": "px" }
+            },
+            "interaction-bar-icon-margin": {
+                "$type": "dimension",
+                "$value": { "value": 2, "unit": "px" }
+            },
+            "interaction-bar-icon-margin-left": {
+                "$type": "dimension",
+                "$value": { "value": 3, "unit": "px" }
+            },
+            "menu-icon-border-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(17, 20, 24, 0.2)"
+            },
+            "menu-icon-hover-border-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(17, 20, 24, 0.4)"
+            },
+            "menu-icon-color": {
+                "$type": "color",
+                "$value": "{palette.gray.1}"
+            },
+            "menu-icon-hover-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.1}"
+            },
+            "menu-icon-selected-background-color": {
+                "$type": "color",
+                "$value": "{palette.blue.3}"
+            },
+            "menu-icon-selected-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            }
+        },
+        "cursor": {
+            "$type": "string",
+            "select-column": { "$value": "s-resize" },
+            "select-row": { "$value": "e-resize" },
+            "select-table": { "$value": "se-resize" },
+            "select-cell": { "$value": "cell" },
+            "select-text": { "$value": "text" },
+            "resize-vertical": { "$value": "ew-resize" },
+            "resize-horizontal": { "$value": "ns-resize" },
+            "action": { "$value": "pointer" }
+        },
+        "interaction": {
+            "resize-handle-target-width": {
+                "$type": "dimension",
+                "$value": { "value": 4, "unit": "px" }
+            },
+            "resize-handle-width": {
+                "$type": "dimension",
+                "$value": { "value": 3, "unit": "px" }
+            },
+            "resize-handle-position-correction": {
+                "$type": "dimension",
+                "$value": { "value": -3, "unit": "px" }
+            },
+            "resize-handle-padding": {
+                "$type": "dimension",
+                "$value": { "value": 2, "unit": "px" }
+            },
+            "resize-handle-color": {
+                "$type": "color",
+                "$value": "{palette.blue.3}"
+            },
+            "resize-handle-dragging-color": {
+                "$type": "color",
+                "$value": "{palette.blue.3}"
+            },
+            "reorder-handle-width": {
+                "$type": "dimension",
+                "$value": { "value": 22, "unit": "px" }
+            },
+            "reorder-handle-color": {
+                "$type": "color",
+                "$value": "rgba(95, 107, 124, 0.6)"
+            },
+            "reorder-handle-hover-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.1}"
+            }
+        },
+        "region": {
+            "default-color": {
+                "$type": "color",
+                "$value": "{palette.gray.3}"
+            },
+            "default-background-color": {
+                "$type": "color",
+                "$value": "rgba(143, 153, 168, 0.1)"
+            },
+            "selection-color": {
+                "$type": "color",
+                "$value": "{palette.blue.3}"
+            },
+            "selection-background-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.1)"
+            },
+            "focus-color": {
+                "$type": "color",
+                "$value": "{palette.blue.3}"
+            }
+        }
+    }
+}
