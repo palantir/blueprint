@@ -20,17 +20,13 @@
     width: 100%;
   }
 
-  .#{$ns}-dark & {
-    @include pt-dark-input;
-  }
-
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-input-intent($color);
+      --bp-input-intent-box-shadow: var(--bp-input-intent-#{$intent}-box-shadow);
+      --bp-input-intent-box-shadow-focus: var(--bp-input-intent-#{$intent}-box-shadow-focus);
+      --bp-input-intent-box-shadow-readonly: var(--bp-input-intent-#{$intent}-box-shadow-readonly);
 
-      .#{$ns}-dark & {
-        @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
-      }
+      @include pt-input-intent($color);
     }
   }
 
@@ -46,11 +42,7 @@
     &:disabled,
     &.#{$ns}-disabled {
       opacity: 1;
-      -webkit-text-fill-color: $input-color-disabled;
-
-      .#{$ns}-dark & {
-        -webkit-text-fill-color: $dark-input-color-disabled;
-      }
+      -webkit-text-fill-color: var(--bp-input-color-disabled);
     }
   }
 }
@@ -58,7 +50,7 @@
 /* stylelint-disable-next-line selector-no-qualifying-type */
 textarea.#{$ns}-input {
   max-width: 100%;
-  padding: $input-padding-horizontal;
+  padding: var(--bp-input-padding-inline);
 
   &,
   &.#{$ns}-large,
@@ -70,7 +62,7 @@ textarea.#{$ns}-input {
   }
 
   &.#{$ns}-small {
-    padding: $input-small-padding;
+    padding: var(--bp-input-padding-inline-small);
   }
 }
 

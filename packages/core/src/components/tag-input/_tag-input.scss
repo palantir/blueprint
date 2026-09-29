@@ -5,7 +5,7 @@
 @import "../forms/common";
 @import "../tag/common";
 
-$tag-input-padding: var(--bp-spacing) !default;
+$tag-input-padding: $pt-spacing !default;
 
 $tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
 $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;
@@ -16,26 +16,26 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   cursor: text;
   height: auto;
   line-height: inherit;
-  min-height: $pt-input-height;
-  padding-left: calc(var(--bp-spacing) * 1.5);
+  min-height: var(--bp-control-height);
+  padding-left: var(--bp-tag-input-padding-inline-start);
   padding-right: 0;
 
   .#{$ns}-tag-input-icon {
-    color: $pt-icon-color;
-    margin-left: calc($tag-input-icon-padding - $tag-input-padding);
-    margin-right: $tag-input-icon-padding;
+    color: var(--bp-icon-color);
+    margin-left: var(--bp-tag-input-icon-margin-inline-start);
+    margin-right: var(--bp-tag-input-icon-margin-inline-end);
     // margins to center icon in one-line input
-    margin-top: $tag-input-icon-padding;
+    margin-top: var(--bp-tag-input-icon-margin-block-start);
   }
 
   .#{$ns}-tag-input-values {
-    @include pt-flex-container(row, $tag-input-padding);
+    @include pt-flex-container(row, var(--bp-tag-input-gap));
     align-items: center;
     // fill vertical height
     align-self: stretch;
     flex-wrap: wrap;
-    margin-right: var(--bp-spacing);
-    margin-top: var(--bp-spacing);
+    margin-right: var(--bp-tag-input-gap);
+    margin-top: var(--bp-tag-input-gap);
     // allow tags to ellipse and not overflow the container
     min-width: 0;
     position: relative;
@@ -49,12 +49,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
       .#{$ns}-input-ghost {
         // some padding-left is already applied on the root component, so we should subtract that
-        padding-left: calc($input-padding-horizontal - $tag-input-padding);
+        padding-left: var(--bp-tag-input-ghost-padding-inline-start);
       }
     }
 
     > * {
-      margin-bottom: var(--bp-spacing);
+      margin-bottom: var(--bp-tag-input-gap);
     }
   }
 
@@ -64,16 +64,19 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     overflow-wrap: break-word;
 
     &.#{$ns}-active {
-      @include focus-outline(0);
+      outline: var(--bp-focus-indicator-color) solid calc(var(--bp-spacing) * 0.5);
+      outline-offset: 0;
+      -moz-outline-radius: calc(var(--bp-spacing) * 1.5);
     }
   }
 
   .#{$ns}-input-ghost {
     // input fills remaining line
+    color: var(--bp-input-color);
     flex: 1 1 auto;
-    line-height: $tag-height;
+    line-height: var(--bp-tag-height);
     // essentially a min-width, cuz flex allows it to grow or shrink:
-    width: calc(var(--bp-spacing) * 20);
+    width: var(--bp-tag-input-ghost-min-width);
 
     &:disabled,
     &.#{$ns}-disabled {
@@ -83,7 +86,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
   .#{$ns}-button,
   .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-button-height-small) * 0.5;
+    margin: var(--bp-tag-input-action-margin);
     margin-left: 0;
   }
 
@@ -92,64 +95,38 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   }
 
   &.#{$ns}-large {
-    @include pt-flex-margin(row, $tag-input-icon-padding-large);
+    @include pt-flex-margin(row, var(--bp-tag-input-icon-spacing-large));
     height: auto;
-    min-height: $pt-input-height-large;
+    min-height: var(--bp-control-height-large);
 
     .#{$ns}-tag-input-icon {
-      margin-left: calc($tag-input-icon-padding-large - $tag-input-padding);
-      margin-top: $tag-input-icon-padding-large;
+      margin-left: var(--bp-tag-input-icon-margin-inline-start-large);
+      margin-top: var(--bp-tag-input-icon-margin-block-start-large);
     }
 
     .#{$ns}-input-ghost {
-      line-height: $tag-height-large;
+      line-height: var(--bp-tag-height-large);
     }
 
     .#{$ns}-button {
       @include pt-button-height-default;
-      margin: ($pt-input-height-large - $pt-button-height) * 0.5;
+      margin: var(--bp-tag-input-action-margin-large);
       margin-left: 0;
     }
 
     .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-button-height-small) * 0.5;
+      margin: var(--bp-tag-input-spinner-margin-large);
       margin-left: 0;
     }
   }
 
   &.#{$ns}-active {
-    background-color: $input-background-color;
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    background-color: var(--bp-input-background-color);
+    box-shadow: var(--bp-tag-input-box-shadow-focus);
 
     @each $intent, $color in $pt-intent-colors {
       &.#{$ns}-intent-#{$intent} {
-        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
-      }
-    }
-  }
-
-  .#{$ns}-dark &,
-  &.#{$ns}-dark {
-    .#{$ns}-tag-input-icon {
-      color: $pt-dark-icon-color;
-    }
-
-    .#{$ns}-input-ghost {
-      @include pt-dark-input-placeholder;
-
-      color: $dark-input-color;
-    }
-
-    &.#{$ns}-active {
-      background-color: $dark-input-background-color;
-      box-shadow:
-        dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-        $pt-dark-input-box-shadow;
-
-      @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
-        &.#{$ns}-intent-#{$intent} {
-          box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
-        }
+        box-shadow: var(--bp-tag-input-intent-#{$intent}-box-shadow-focus);
       }
     }
   }

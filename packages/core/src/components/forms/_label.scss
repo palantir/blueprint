@@ -4,6 +4,7 @@
 @import "../../common/variables-extended";
 
 label.#{$ns}-label {
+  color: var(--bp-heading-color);
   display: block;
   margin-bottom: calc(var(--bp-spacing) * 4);
   margin-top: 0;
@@ -45,12 +46,12 @@ label.#{$ns}-label {
   &.#{$ns}-disabled {
     &,
     .#{$ns}-text-muted {
-      color: $pt-text-color-disabled;
+      color: var(--bp-text-color-disabled);
     }
   }
 
   &.#{$ns}-inline {
-    line-height: $pt-input-height;
+    line-height: var(--bp-control-height);
 
     .#{$ns}-html-select,
     .#{$ns}-input,
@@ -71,7 +72,7 @@ label.#{$ns}-label {
     }
 
     &.#{$ns}-large {
-      line-height: $pt-input-height-large;
+      line-height: var(--bp-control-height-large);
     }
 
     .#{$ns}-control-group {
@@ -90,16 +91,5 @@ label.#{$ns}-label {
 
   &:not(.#{$ns}-inline) .#{$ns}-popover-target {
     display: block;
-  }
-
-  .#{$ns}-dark & {
-    color: $pt-dark-heading-color;
-
-    &.#{$ns}-disabled {
-      &,
-      .#{$ns}-text-muted {
-        color: $pt-dark-text-color-disabled;
-      }
-    }
   }
 }

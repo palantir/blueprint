@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "./common";
@@ -14,8 +15,12 @@
   }
 
   @each $intent, $colors in $tag-intent-colors {
+    $runtime-colors: map.get($tag-runtime-intent-colors, $intent);
+
     &.#{$ns}-intent-#{$intent} {
-      @include pt-tag-intent($colors...);
+      --bp-tag-intent-remove-color: var(--bp-tag-intent-#{$intent}-remove-color);
+
+      @include pt-tag-intent($runtime-colors...);
     }
   }
 
@@ -29,15 +34,21 @@
 
     @each $intent, $colors in $minimal-tag-intent-colors {
       &.#{$ns}-intent-#{$intent} {
-        @include pt-tag-minimal-intent($colors...);
-      }
-    }
+        --bp-tag-minimal-intent-background-color: var(
+          --bp-tag-minimal-intent-#{$intent}-background-color
+        );
+        --bp-tag-minimal-intent-background-color-hover: var(
+          --bp-tag-minimal-intent-#{$intent}-background-color-hover
+        );
+        --bp-tag-minimal-intent-background-color-active: var(
+          --bp-tag-minimal-intent-#{$intent}-background-color-active
+        );
+        --bp-tag-minimal-intent-text-color: var(--bp-tag-minimal-intent-#{$intent}-text-color);
+        --bp-tag-minimal-intent-text-color-interactive: var(
+          --bp-tag-minimal-intent-#{$intent}-text-color-interactive
+        );
 
-    @each $intent, $colors in $minimal-dark-tag-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-dark & {
-          @include pt-tag-minimal-dark-intent($colors...);
-        }
+        @include pt-tag-minimal-intent($colors...);
       }
     }
   }

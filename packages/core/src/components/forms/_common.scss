@@ -5,7 +5,7 @@
 @import "../../common/variables";
 @import "../button/common";
 
-$input-padding-horizontal: calc(var(--bp-spacing) * 2) !default;
+$input-padding-horizontal: $pt-spacing * 2 !default;
 $input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;
 $input-font-weight: 400 !default;
 $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
@@ -85,39 +85,39 @@ $control-group-stack: (
 @mixin pt-input() {
   @include pt-input-placeholder;
   appearance: none;
-  background: $input-background-color;
+  background: var(--bp-input-background-color);
   border: none;
   border-radius: var(--bp-border-radius);
-  box-shadow: input-transition-shadow($input-shadow-color-focus), $pt-input-box-shadow;
-  color: $input-color;
-  font-size: $pt-font-size;
-  font-weight: $input-font-weight;
-  height: $pt-input-height;
-  line-height: $pt-input-height;
+  box-shadow: var(--bp-input-box-shadow);
+  color: var(--bp-input-color);
+  font-size: var(--bp-font-size);
+  font-weight: var(--bp-input-font-weight);
+  height: var(--bp-control-height);
+  line-height: var(--bp-control-height);
 
   outline: none;
-  padding: 0 $input-padding-horizontal;
-  transition: $input-transition;
+  padding: 0 var(--bp-input-padding-inline);
+  transition: box-shadow var(--bp-transition-duration) var(--bp-transition-ease);
   vertical-align: middle;
 
   &:focus,
   &.#{$ns}-active {
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+    box-shadow: var(--bp-input-box-shadow-focus);
   }
 
   &[type="search"],
   &.#{$ns}-round {
-    border-radius: $pt-input-height;
+    border-radius: var(--bp-control-height);
     // override normalize.css
     box-sizing: border-box;
-    padding-left: calc(var(--bp-spacing) * 2);
+    padding-left: var(--bp-input-padding-inline);
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $pt-divider-black;
+    box-shadow: var(--bp-input-box-shadow-readonly);
 
     &:focus {
-      box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+      box-shadow: var(--bp-input-box-shadow-focus);
     }
   }
 
@@ -127,83 +127,82 @@ $control-group-stack: (
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid var(--bp-high-contrast-border-color);
   }
 }
 
 @mixin pt-input-placeholder() {
   &::placeholder {
-    color: $input-placeholder-color;
+    color: var(--bp-input-placeholder-color);
     // normalize.css sets an opacity less than 1, we don't want this
     opacity: 1;
   }
 }
 
 @mixin pt-input-disabled() {
-  background: $input-background-color-disabled;
+  background: var(--bp-input-background-color-disabled);
   box-shadow: none;
-  color: $input-color-disabled;
+  color: var(--bp-input-color-disabled);
   cursor: not-allowed;
   resize: none;
 
   &::placeholder {
-    color: $input-color-disabled;
+    color: var(--bp-input-color-disabled);
   }
 }
 
 @mixin pt-input-large() {
-  font-size: $pt-font-size-large;
-  height: $pt-input-height-large;
-  line-height: $pt-input-height-large;
+  font-size: var(--bp-font-size-large);
+  height: var(--bp-control-height-large);
+  line-height: var(--bp-control-height-large);
 
   &[type="search"],
   &.#{$ns}-round {
-    padding: 0 calc($input-padding-horizontal * 1.5);
+    padding: 0 var(--bp-input-padding-inline-round-large);
   }
 }
 
 @mixin pt-input-small() {
-  font-size: $pt-font-size-small;
-  height: $pt-input-height-small;
-  line-height: $pt-input-height-small;
-  padding-left: $input-small-padding;
-  padding-right: $input-small-padding;
+  font-size: var(--bp-font-size-small);
+  height: var(--bp-control-height-small);
+  line-height: var(--bp-control-height-small);
+  padding-left: var(--bp-input-padding-inline-small);
+  padding-right: var(--bp-input-padding-inline-small);
 
   &[type="search"],
   &.#{$ns}-round {
-    padding: 0 ($input-small-padding * 1.5);
+    padding: 0 var(--bp-input-padding-inline-round-small);
   }
 }
 
 @mixin pt-dark-input-disabled() {
-  background: $dark-input-background-color-disabled;
+  background: var(--bp-input-background-color-disabled);
   box-shadow: none;
-  color: $dark-input-color-disabled;
+  color: var(--bp-input-color-disabled);
 }
 
 @mixin pt-dark-input-placeholder() {
   &::placeholder {
-    color: $dark-input-placeholder-color;
+    color: var(--bp-input-placeholder-color);
   }
 }
 
 @mixin pt-dark-input() {
   @include pt-dark-input-placeholder;
-  background: $dark-input-background-color;
+  background: var(--bp-input-background-color);
 
-  box-shadow:
-    dark-input-transition-shadow($dark-input-shadow-color-focus), $pt-dark-input-box-shadow;
-  color: $dark-input-color;
+  box-shadow: var(--bp-input-box-shadow);
+  color: var(--bp-input-color);
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true);
+    box-shadow: var(--bp-input-box-shadow-focus);
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
+    box-shadow: var(--bp-input-box-shadow-readonly);
 
     &:focus {
-      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true);
+      box-shadow: var(--bp-input-box-shadow-focus);
     }
   }
 
@@ -214,17 +213,14 @@ $control-group-stack: (
 }
 
 @mixin pt-input-intent($color) {
-  box-shadow:
-    input-transition-shadow($color, false, $pt-spacing * 0.5),
-    inset border-shadow(1, $color),
-    $pt-input-box-shadow;
+  box-shadow: var(--bp-input-intent-box-shadow);
 
   &:focus {
-    box-shadow: input-transition-shadow($color, true, $pt-spacing * 0.5), $input-box-shadow-focus;
+    box-shadow: var(--bp-input-intent-box-shadow-focus);
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color;
+    box-shadow: var(--bp-input-intent-box-shadow-readonly);
   }
 
   &:disabled,
@@ -234,18 +230,14 @@ $control-group-stack: (
 }
 
 @mixin pt-dark-input-intent($color) {
-  box-shadow:
-    dark-input-transition-shadow($color, false, $pt-spacing * 0.5),
-    inset border-shadow(1, $color),
-    $pt-dark-input-box-shadow;
+  box-shadow: var(--bp-input-intent-box-shadow);
 
   &:focus {
-    box-shadow:
-      dark-input-transition-shadow($color, true, $pt-spacing * 0.5), $pt-dark-input-box-shadow;
+    box-shadow: var(--bp-input-intent-box-shadow-focus);
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px $color;
+    box-shadow: var(--bp-input-intent-box-shadow-readonly);
   }
 
   &:disabled,
