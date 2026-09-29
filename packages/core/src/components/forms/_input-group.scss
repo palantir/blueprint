@@ -24,11 +24,11 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
     // add space if there's something before or after the input
     &:not(:first-child) {
-      padding-left: $pt-input-height;
+      padding-left: var(--bp-control-height);
     }
 
     &:not(:last-child) {
-      padding-right: $pt-input-height;
+      padding-right: var(--bp-control-height);
     }
   }
 
@@ -50,9 +50,9 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-button {
-    @include pt-button-height($input-button-height);
-    margin: ($pt-input-height - $input-button-height) * 0.5;
-    padding: $button-padding-small;
+    @include pt-button-height(var(--bp-control-height-small));
+    margin: var(--bp-input-group-button-margin);
+    padding: var(--bp-button-padding-block-small) var(--bp-button-padding-inline-small);
 
     // icons CSS API support
     &:empty {
@@ -69,10 +69,10 @@ $input-button-height-small: $pt-button-height-smaller !default;
   // direct descendant to exclude icons in buttons
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon {
-    color: $pt-icon-color;
+    color: var(--bp-icon-color);
 
     &:empty {
-      @include pt-icon($pt-icon-size-standard);
+      @include pt-icon(var(--bp-icon-size-standard), 16);
     }
   }
 
@@ -81,11 +81,11 @@ $input-button-height-small: $pt-button-height-smaller !default;
   > .#{$ns}-input-left-container > .#{$ns}-icon,
   > .#{$ns}-icon,
   .#{$ns}-input-action > .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-icon-size-standard) * 0.5;
+    margin: var(--bp-input-group-icon-margin);
   }
 
   .#{$ns}-tag {
-    margin: calc(var(--bp-spacing) * 1.25);
+    margin: var(--bp-input-group-tag-margin);
   }
 
   // all buttons go gray in default state and assume their native colors only when hovered
@@ -93,26 +93,20 @@ $input-button-height-small: $pt-button-height-smaller !default;
   .#{$ns}-input:not(:focus) + .#{$ns}-button,
   .#{$ns}-input:not(:focus) + .#{$ns}-input-action .#{$ns}-button {
     &.#{$ns}-minimal:not(:hover):not(:focus) {
-      color: $pt-text-color-muted;
-
-      // same goes for dark
-      /* stylelint-disable-next-line selector-max-compound-selectors */
-      .#{$ns}-dark & {
-        color: $pt-dark-text-color-muted;
-      }
+      color: var(--bp-text-color-muted);
 
       #{$icon-classes} {
-        color: $pt-icon-color;
+        color: var(--bp-icon-color);
       }
     }
 
     &.#{$ns}-minimal:disabled {
       // override more specific selector above
       /* stylelint-disable declaration-no-important */
-      color: $pt-icon-color-disabled !important;
+      color: var(--bp-icon-color-disabled) !important;
 
       #{$icon-classes} {
-        color: $pt-icon-color-disabled !important;
+        color: var(--bp-icon-color-disabled) !important;
       }
     }
   }
@@ -123,61 +117,61 @@ $input-button-height-small: $pt-button-height-smaller !default;
     cursor: not-allowed;
 
     .#{$ns}-icon {
-      color: $pt-icon-color-disabled;
+      color: var(--bp-icon-color-disabled);
     }
   }
 
   &.#{$ns}-large {
     .#{$ns}-button {
-      @include pt-button-height($input-button-height-large);
-      margin: ($pt-input-height-large - $input-button-height-large) * 0.5;
+      @include pt-button-height(var(--bp-control-height));
+      margin: var(--bp-input-group-button-margin-large);
     }
 
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-icon-size-standard) * 0.5;
+      margin: var(--bp-input-group-icon-margin-large);
     }
 
     .#{$ns}-input {
       @include pt-input-large;
 
       &:not(:first-child) {
-        padding-left: $pt-button-height-large;
+        padding-left: var(--bp-control-height-large);
       }
 
       &:not(:last-child) {
-        padding-right: $pt-button-height-large;
+        padding-right: var(--bp-control-height-large);
       }
     }
   }
 
   &.#{$ns}-small {
     .#{$ns}-button {
-      @include pt-button-height($pt-button-height-smaller);
-      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
+      @include pt-button-height(var(--bp-control-height-smaller));
+      margin: var(--bp-input-group-button-margin-small);
     }
 
     .#{$ns}-tag {
-      @include pt-button-height($pt-button-height-smaller);
-      margin: ($pt-input-height-small - $pt-button-height-smaller) * 0.5;
+      @include pt-button-height(var(--bp-control-height-smaller));
+      margin: var(--bp-input-group-button-margin-small);
     }
 
     > .#{$ns}-input-left-container > .#{$ns}-icon,
     > .#{$ns}-icon,
     .#{$ns}-input-action > .#{$ns}-spinner {
-      margin: ($pt-input-height-small - $pt-icon-size-standard) * 0.5;
+      margin: var(--bp-input-group-icon-margin-small);
     }
 
     .#{$ns}-input {
       @include pt-input-small;
 
       &:not(:first-child) {
-        padding-left: $pt-icon-size-standard + $input-small-padding;
+        padding-left: var(--bp-input-group-padding-inline-small);
       }
 
       &:not(:last-child) {
-        padding-right: $pt-icon-size-standard + $input-small-padding;
+        padding-right: var(--bp-input-group-padding-inline-small);
       }
     }
   }
@@ -191,36 +185,24 @@ $input-button-height-small: $pt-button-height-smaller !default;
     .#{$ns}-button,
     .#{$ns}-input,
     .#{$ns}-tag {
-      border-radius: $pt-input-height;
-    }
-  }
-
-  .#{$ns}-dark & {
-    .#{$ns}-icon {
-      color: $pt-dark-icon-color;
-    }
-
-    &.#{$ns}-disabled .#{$ns}-icon {
-      color: $pt-dark-icon-color-disabled;
+      border-radius: var(--bp-control-height);
     }
   }
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-input {
-        @include pt-input-intent($color);
+        --bp-input-intent-box-shadow: var(--bp-input-intent-#{$intent}-box-shadow);
+        --bp-input-intent-box-shadow-focus: var(--bp-input-intent-#{$intent}-box-shadow-focus);
+        --bp-input-intent-box-shadow-readonly: var(
+          --bp-input-intent-#{$intent}-box-shadow-readonly
+        );
 
-        .#{$ns}-dark & {
-          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
-        }
+        @include pt-input-intent($color);
       }
 
       > .#{$ns}-icon {
-        color: map.get($pt-intent-text-colors, $intent);
-
-        .#{$ns}-dark & {
-          color: map.get($pt-dark-intent-text-colors, $intent);
-        }
+        color: var(--bp-input-group-intent-#{$intent}-icon-color);
       }
     }
   }

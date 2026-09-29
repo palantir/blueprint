@@ -20,8 +20,8 @@
 
   .#{$ns}-form-group-sub-label,
   .#{$ns}-form-helper-text {
-    color: $pt-text-color-muted;
-    font-size: $pt-font-size-small;
+    color: var(--bp-text-color-muted);
+    font-size: var(--bp-font-size-small);
   }
 
   .#{$ns}-form-group-sub-label {
@@ -36,7 +36,7 @@
   @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-form-helper-text {
-        color: $color;
+        color: var(--bp-form-group-intent-#{$intent}-helper-text-color);
       }
     }
   }
@@ -50,12 +50,12 @@
     flex-direction: row;
 
     &.#{$ns}-large label.#{$ns}-label {
-      line-height: $pt-input-height-large;
+      line-height: var(--bp-control-height-large);
       margin: 0 calc(var(--bp-spacing) * 3) 0 0;
     }
 
     label.#{$ns}-label {
-      line-height: $pt-input-height;
+      line-height: var(--bp-control-height);
       margin: 0 calc(var(--bp-spacing) * 3) 0 0;
     }
   }
@@ -67,33 +67,7 @@
     .#{$ns}-form-helper-text {
       // disabled state always overrides over styles
       /* stylelint-disable-next-line declaration-no-important */
-      color: $pt-text-color-disabled !important;
-    }
-  }
-
-  .#{$ns}-dark & {
-    @each $intent, $color in $pt-dark-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-form-helper-text {
-          color: $color;
-        }
-      }
-    }
-
-    .#{$ns}-form-group-sub-label,
-    .#{$ns}-form-helper-text {
-      color: $pt-dark-text-color-muted;
-    }
-
-    &.#{$ns}-disabled {
-      .#{$ns}-label,
-      .#{$ns}-text-muted,
-      .#{$ns}-form-group-sub-label,
-      .#{$ns}-form-helper-text {
-        // disabled state always overrides over styles
-        /* stylelint-disable-next-line declaration-no-important */
-        color: $pt-dark-text-color-disabled !important;
-      }
+      color: var(--bp-text-color-disabled) !important;
     }
   }
 }
