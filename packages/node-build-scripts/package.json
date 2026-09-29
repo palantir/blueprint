@@ -16,7 +16,8 @@
         "es-lint": "./es-lint.mjs",
         "generate-css-variables": "./generate-css-variables.mjs",
         "sass-compile": "./sass-compile.mjs",
-        "sass-lint": "./sass-lint.mjs"
+        "sass-lint": "./sass-lint.mjs",
+        "validate-sass-variable-migration": "./validate-sass-variable-migration.mjs"
     },
     "dependencies": {
         "@tokens-studio/sd-transforms": "^2.0.3",

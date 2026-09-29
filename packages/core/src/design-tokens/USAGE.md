@@ -1,152 +1,118 @@
-# Design Tokens Usage
+# Design tokens and runtime theming
 
-Design tokens are a single source of truth for Blueprint's visual language. They are defined as JSON in `tokens/base/` and compiled to CSS custom properties (prefixed `--bp-`), enabling consistent theming across different color schemes without duplicating style logic in each component.
+Blueprint's runtime visual values are exposed as CSS custom properties. Token sources use the DTCG JSON format and
+are compiled by `build-design-tokens` before Sass runs.
 
-## Intent tokens
+The migration is deliberately a parity layer: default token values reproduce Blueprint 6's Sass output. Color and
+shadow defaults are stored as exact sRGB values rather than browser-derived approximations.
 
-Intent tokens map semantic meaning to colors. Rather than referencing a raw palette value like `--bp-palette-blue-3`, components use `--bp-intent-primary-rest`, which can be remapped per theme or brand.
+## Loading tokens
 
-Five intent types are defined in `tokens/base/intent.tokens.json`, each with interaction states:
+The normal package CSS entrypoint includes that package's generated token defaults. Source-Sass consumers can import
+the package's token-only entrypoint instead:
 
-| Token pattern           | States                                | Example resolution          |
-| ----------------------- | ------------------------------------- | --------------------------- |
-| `--bp-intent-default-*` | `rest`, `hover`, `active`, `disabled` | `rest` → `palette.gray.1`   |
-| `--bp-intent-primary-*` | same                                  | `rest` → `palette.blue.3`   |
-| `--bp-intent-success-*` | same                                  | `rest` → `palette.green.3`  |
-| `--bp-intent-warning-*` | same                                  | `rest` → `palette.orange.3` |
-| `--bp-intent-danger-*`  | same                                  | `rest` → `palette.red.3`    |
+```scss
+@import "@blueprintjs/core/src/blueprint-design-tokens";
+@import "@blueprintjs/datetime/src/blueprint-datetime-design-tokens";
+```
 
-Intent tokens do not change between light and dark themes — the same blue is used for `primary` in both modes. Theme-specific adjustments happen at the surface layer (e.g. `--bp-surface-background-color-primary-rest`) which derives from intent tokens but applies lightness/chroma scaling per theme.
+Core CSS remains a prerequisite for addon CSS. Core owns shared palette, typography, intent, spacing, radius, and Core
+component tokens. Addons own their package-prefixed tokens, such as `--bp-datetime-*`, `--bp-select-*`, and
+`--bp-table-*`.
 
-## Surface tokens
+DateTime2 includes DateTime's token-only output, so Core plus DateTime2 CSS is sufficient; loading DateTime's component
+CSS separately is not required.
 
-Surface tokens control the structural and spatial properties shared across components: borders, border-radius, shadows, spacing, and background colors. They are defined in `tokens/base/surface.tokens.json` with dark-mode overrides in `tokens/themes/dark/surface.tokens.json`.
+Generated files under `design-tokens/build/` are build artifacts. Edit the DTCG JSON sources, not generated CSS.
 
-Key surface tokens used throughout components:
+## Customizing components
 
-| Token                                                   | Value                              | Purpose                                                                                                   |
-| ------------------------------------------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `--bp-surface-spacing`                                  | `4px`                              | Base spacing unit. Components multiply this (e.g. `calc(var(--bp-surface-spacing) * 2)` for 8px padding). |
-| `--bp-surface-border-width`                             | `1px`                              | Consistent border width for all bordered elements.                                                        |
-| `--bp-surface-border-radius`                            | `4px`                              | Shared corner radius.                                                                                     |
-| `--bp-surface-border-color-default`                     | `intent.default.rest` at 12% alpha | Subtle border for default states.                                                                         |
-| `--bp-surface-border-color-strong`                      | `intent.default.rest` at 25% alpha | More prominent border for outlined elements.                                                              |
-| `--bp-surface-shadow-0` through `--bp-surface-shadow-4` | Multi-layer box shadows            | Five elevation levels, from flat (0) to maximum depth (4).                                                |
-
-Surface tokens adapt automatically by theme. In light mode, borders derive from the default intent color with low opacity over a light background. In dark mode, the same tokens switch to white-based borders with inset highlights and deeper black shadows — without any component code changing.
-
-### Surface background colors, layers, and layer overrides
-
-Beyond structural properties, surface tokens provide a three-tier system for background color and compositing. Each tier builds on the one below it.
-
-#### Background colors
-
-`--bp-surface-background-color-{intent}-{state}`
-
-These are fully resolved, ready-to-use background colors for each intent and interaction state. For the **default** intent, they are derived from intent colors with lightness/chroma scaling — `default-rest` compiles to white in light mode despite deriving from gray, because the token applies `lightnessScale: 1.909`:
-
-| Token                                            | Light mode | Dark mode                            |
-| ------------------------------------------------ | ---------- | ------------------------------------ |
-| `--bp-surface-background-color-default-rest`     | `#ffffff`  | Derived with `lightnessScale: 0.248` |
-| `--bp-surface-background-color-default-hover`    | `#f6f7f9`  | Darker gray                          |
-| `--bp-surface-background-color-default-active`   | `#edeff2`  | Darker gray                          |
-| `--bp-surface-background-color-default-disabled` | `#ffffff`  | Derived with `lightnessScale: 0.319` |
-
-For **non-default** intents (primary, success, warning, danger), background colors pass through directly from the intent tokens with no derivation — the same blue works in both themes.
-
-Dark mode overrides in `tokens/themes/dark/surface.tokens.json` only redefine the `default` background colors with different scaling factors. Non-default intents need no dark override.
-
-#### Layer colors
-
-`--bp-surface-layer-color-{intent}`
-
-These are semi-transparent tints of each intent color, controlled by a shared opacity token:
-
-| Token                              | Value                             |
-| ---------------------------------- | --------------------------------- |
-| `--bp-surface-layer-opacity`       | `0.05` (5%)                       |
-| `--bp-surface-layer-color-default` | `intent.default.rest` at 5% alpha |
-| `--bp-surface-layer-color-primary` | `intent.primary.rest` at 5% alpha |
-| `--bp-surface-layer-color-success` | `intent.success.rest` at 5% alpha |
-| `--bp-surface-layer-color-warning` | `intent.warning.rest` at 5% alpha |
-| `--bp-surface-layer-color-danger`  | `intent.danger.rest` at 5% alpha  |
-
-In browsers supporting relative color syntax, each layer-color reactively references the opacity token:
+Override canonical tokens on `:root` for an application-wide theme or on a container for a scoped theme:
 
 ```css
---bp-surface-layer-color-primary: oklch(from var(--bp-intent-primary-rest) l c h / var(--bp-surface-layer-opacity));
+:root {
+    --bp-spacing: 5px;
+    --bp-border-radius: 6px;
+}
+
+.editor-theme {
+    --bp-button-background-color: #e7f0ff;
+    --bp-button-background-color-hover: #d5e5ff;
+    --bp-datetime-datepicker-selected-day-background-color: #1456a0;
+}
 ```
 
-`--bp-surface-layer-opacity` acts as a shared control knob — changing it from `0.05` to `0.1` makes every layer-color denser at once.
+Named component dimensions have independent defaults. A component uses `calc()` only where the relationship is
+intentionally proportional, such as padding derived from `--bp-spacing`.
 
-#### Stackable layers
+## Light and dark scopes
 
-`--bp-surface-layer-{intent}`
-
-These wrap each layer-color in `linear-gradient()` so they can be composited as background images:
+Every generated token sheet emits theme blocks in this order:
 
 ```css
---bp-surface-layer-primary: linear-gradient(#2d72d20d 0 0);
+:root {
+    /* invariant and light defaults */
+}
+.bp6-dark {
+    /* compatibility dark overrides */
+}
+[data-bp-color-scheme="light"] {
+    /* explicit light boundary */
+}
+[data-bp-color-scheme="dark"] {
+    /* explicit dark boundary */
+}
 ```
 
-This exists because CSS `background-color` only accepts one value, but `background-image` supports stacking multiple layers. The `linear-gradient(color 0 0)` trick creates a solid-color gradient that can be layered on top of a background:
+An explicit color-scheme attribute therefore wins over `.bp6-dark` on the same element. Explicit boundaries can also
+be nested in either direction:
 
-```scss
-// Stack a primary tint on top of the default surface
-background-color: var(--bp-surface-background-color-default-rest);
-background-image: var(--bp-surface-layer-primary);
+```html
+<section data-bp-color-scheme="dark">
+    <div data-bp-color-scheme="light">...</div>
+</section>
 ```
 
-The wrapping is triggered by the `com.blueprint.role: "stackable-layer"` annotation in the token JSON. The `build-design-tokens` generator detects this role and applies the `linear-gradient()` wrapper during compilation.
+Blueprint's old value-bearing dark selectors have been removed where they would override a nested explicit light
+scope. `.bp6-dark` remains supported as a compatibility theme boundary.
 
-## Example: Button component
+## Legacy experimental aliases
 
-The Button component (`src/components/button/`) demonstrates how surface and intent tokens work together. The key files are `_common.scss` (shared mixins) and `_button.scss` (component styles).
+The canonical shared names are `--bp-spacing` and `--bp-border-radius`. The earlier experimental names
+`--bp-surface-spacing` and `--bp-surface-border-radius` retain literal Blueprint defaults, and the canonical names
+reference them at `:root` and explicit theme boundaries.
 
-> [!NOTE]
-> The Button component in dark mode currently derives the `active` and `hover` states for minimal and outline buttons from the `rest` token. This is expected to be updated with an updated palette.
+This preserves legacy overrides made on those boundary elements. CSS custom properties are resolved where they are
+declared, however, so changing a legacy alias on an arbitrary descendant cannot update an inherited canonical token.
+Use canonical names for arbitrary subtree overrides.
 
-### Surface tokens in Button
+The historic `--bp-surface-shadow-0..4` defaults are preserved too, but they do not exactly match Blueprint 6's Sass
+elevation shadows. Runtime styles therefore consume independent `--bp-elevation-shadow-0..4` tokens (except where a
+legacy value is already exact). Legacy shadow overrides cannot retarget those canonical values; customize the
+`--bp-elevation-shadow-*` names directly.
 
-Surface tokens control the button's dimensions and structural properties:
+## Sass compatibility
 
-```scss
-// Layout — spacing token used as a multiplier base
-height: calc(var(--bp-surface-spacing) * 7.5); // 30px default height
-padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2); // 4px 8px
-border-radius: var(--bp-surface-border-radius); // 4px
+Existing documented Sass and LESS variables, initializers, types, `!default` behavior, mixins, and generated exports
+remain available. They are still useful in consumer-authored Sass, but Sass overrides no longer theme Blueprint's
+compiled component internals; override the corresponding CSS token for runtime theming.
 
-// Box shadow — two layers: inset border + depth shadow
-box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width)
-        color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+Some values intentionally remain compile-time Sass: namespace interpolation, generated icon codepoint maps,
+selector/control-flow maps, media-query inputs, mixin parameters, and geometry that Sass must calculate before CSS is
+emitted. The migration ledger in `migration/sass-variable-ledger.json` records every declaration and its disposition.
+
+## Portals
+
+CSS variables inherit through the DOM, not the React tree. A token override on a component subtree does not
+automatically cross a Portal rendered under `document.body`. Put the portal container inside the themed scope and pass
+it through Blueprint's `portalContainer` support:
+
+```tsx
+const portalContainer = document.querySelector<HTMLElement>(".editor-theme .portal-root");
+
+<BlueprintProvider portalContainer={portalContainer}>
+    <App />
+</BlueprintProvider>;
 ```
 
-The button's box-shadow has two layers that use tokens differently:
-
-- **Inset border layer**: Simulates a 1px border using `--bp-surface-border-width`. In light mode, `--bp-surface-border-color-strong` is mixed 90% with `--bp-palette-black` to darken the gray token toward black for sufficient contrast. In dark mode, `--bp-surface-border-color-default` is scaled to 50% with `transparent` to halve the token's built-in 20% alpha down to 10%.
-- **Depth shadow layer**: Uses `--bp-palette-black` at varying opacity (`10%` at rest, `20%` on hover/active) for a consistent drop shadow across themes.
-
-The large button variant simply scales the multiplier: `calc(var(--bp-surface-spacing) * 10)` for height and `calc(var(--bp-surface-spacing) * 4)` for horizontal padding.
-
-### Intent tokens in Button
-
-Intent tokens drive the button's color across every interaction state. For non-default intents (primary, success, warning, danger), a Sass map wires each intent to its tokens:
-
-```scss
-$button-intent-states: (
-    "primary": (
-        var(--bp-intent-primary-rest),
-        // background
-        var(--bp-intent-primary-hover),
-        // background on hover
-        var(--bp-intent-primary-active),
-        // background on active
-        var(--bp-intent-primary-foreground),
-        // text color
-    ), // success, warning, danger follow the same pattern
-);
-```
-
-Disabled states reference `--bp-intent-default-disabled` at reduced opacity, and minimal/outlined variants use `--bp-surface-border-color-strong` for their borders.
+No runtime token propagation is added by this migration.
