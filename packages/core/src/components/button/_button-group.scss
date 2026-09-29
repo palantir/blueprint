@@ -1,24 +1,10 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:map";
+@use "sass:list";
 @import "../../common/variables";
 @import "../forms/common";
 @import "./common";
-
-// z-index values for button stacking order (derived from $control-group-stack in forms/_common.scss)
-$button-group-z-index: (
-  "button-disabled": 3,
-  "button-default": 4,
-  "button-focus": 5,
-  "button-hover": 6,
-  "button-active": 7,
-  "intent-button-disabled": 8,
-  "intent-button-default": 9,
-  "intent-button-focus": 10,
-  "intent-button-hover": 11,
-  "intent-button-active": 12,
-);
 
 .#{$ns}-button-group {
   display: inline-flex;
@@ -27,7 +13,7 @@ $button-group-z-index: (
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: map.get($button-group-z-index, "button-default");
+    z-index: list.index($control-group-stack, "button-default");
 
     // the ordering of these z-index CSS rules is particular because of CSS
     // selector specificity. specifically, disabled styles should have
@@ -35,42 +21,42 @@ $button-group-z-index: (
     // disabled buttons from reordering elements in the stack.
 
     &:focus {
-      z-index: map.get($button-group-z-index, "button-focus");
+      z-index: list.index($control-group-stack, "button-focus");
     }
 
     &:hover {
-      z-index: map.get($button-group-z-index, "button-hover");
+      z-index: list.index($control-group-stack, "button-hover");
     }
 
     &:active,
     &.#{$ns}-active {
-      z-index: map.get($button-group-z-index, "button-active");
+      z-index: list.index($control-group-stack, "button-active");
     }
 
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: map.get($button-group-z-index, "button-disabled");
+      z-index: list.index($control-group-stack, "button-disabled");
     }
 
     &[class*="#{$ns}-intent-"] {
-      z-index: map.get($button-group-z-index, "intent-button-default");
+      z-index: list.index($control-group-stack, "intent-button-default");
 
       &:focus {
-        z-index: map.get($button-group-z-index, "intent-button-focus");
+        z-index: list.index($control-group-stack, "intent-button-focus");
       }
 
       &:hover {
-        z-index: map.get($button-group-z-index, "intent-button-hover");
+        z-index: list.index($control-group-stack, "intent-button-hover");
       }
 
       &:active,
       &.#{$ns}-active {
-        z-index: map.get($button-group-z-index, "intent-button-active");
+        z-index: list.index($control-group-stack, "intent-button-active");
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        z-index: map.get($button-group-z-index, "intent-button-disabled");
+        z-index: list.index($control-group-stack, "intent-button-disabled");
       }
     }
   }
@@ -97,7 +83,7 @@ $button-group-z-index: (
     > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
     > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
-      margin-right: calc(-1 * var(--bp-surface-border-width));
+      margin-right: -$button-border-width;
     }
   }
 
@@ -120,7 +106,7 @@ $button-group-z-index: (
       &:not(:last-child) {
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
-        margin-right: calc(-1 * var(--bp-surface-border-width));
+        margin-right: -$button-border-width;
       }
     }
   }
@@ -191,7 +177,7 @@ $button-group-z-index: (
       > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
-        margin-bottom: calc(-1 * var(--bp-surface-border-width));
+        margin-bottom: -$button-border-width;
       }
     }
 
