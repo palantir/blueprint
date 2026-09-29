@@ -35,8 +35,7 @@
 
     @each $intent, $colors in $minimal-dark-tag-intent-colors {
       &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-dark &,
-        [data-bp-color-scheme="dark"] & {
+        .#{$ns}-dark & {
           @include pt-tag-minimal-dark-intent($colors...);
         }
       }

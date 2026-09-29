@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 
 .#{$ns}-input {
@@ -23,43 +24,13 @@
     @include pt-dark-input;
   }
 
-  &.#{$ns}-intent-primary {
-    @include pt-input-intent(var(--bp-intent-primary-rest));
+  @each $intent, $color in $pt-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-input-intent($color);
 
-    .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-primary-rest) calc(l + 0.095) calc(c - 0.004) h)
-      );
-    }
-  }
-
-  &.#{$ns}-intent-success {
-    @include pt-input-intent(var(--bp-intent-success-rest));
-
-    .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-success-rest) calc(l + 0.092) calc(c + 0.016) h)
-      );
-    }
-  }
-
-  &.#{$ns}-intent-warning {
-    @include pt-input-intent(var(--bp-intent-warning-rest));
-
-    .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-warning-rest) calc(l + 0.111) calc(c + 0.004) h)
-      );
-    }
-  }
-
-  &.#{$ns}-intent-danger {
-    @include pt-input-intent(var(--bp-intent-danger-rest));
-
-    .#{$ns}-dark & {
-      @include pt-dark-input-intent(
-        oklch(from var(--bp-intent-danger-rest) calc(l + 0.098) calc(c - 0.02) h)
-      );
+      .#{$ns}-dark & {
+        @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
+      }
     }
   }
 
@@ -75,10 +46,10 @@
     &:disabled,
     &.#{$ns}-disabled {
       opacity: 1;
-      -webkit-text-fill-color: var(--bp-typography-color-default-disabled);
+      -webkit-text-fill-color: $input-color-disabled;
 
       .#{$ns}-dark & {
-        -webkit-text-fill-color: var(--bp-typography-color-default-disabled);
+        -webkit-text-fill-color: $dark-input-color-disabled;
       }
     }
   }
@@ -87,7 +58,7 @@
 /* stylelint-disable-next-line selector-no-qualifying-type */
 textarea.#{$ns}-input {
   max-width: 100%;
-  padding: calc(var(--bp-surface-spacing) * 2);
+  padding: $input-padding-horizontal;
 
   &,
   &.#{$ns}-large,
@@ -99,7 +70,7 @@ textarea.#{$ns}-input {
   }
 
   &.#{$ns}-small {
-    padding: calc(var(--bp-surface-spacing) * 2);
+    padding: $input-small-padding;
   }
 }
 
