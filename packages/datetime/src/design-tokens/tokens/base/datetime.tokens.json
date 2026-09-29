@@ -1,0 +1,252 @@
+{
+    "datetime": {
+        "datepicker": {
+            "padding": {
+                "$type": "dimension",
+                "$value": { "value": 4, "unit": "px" }
+            },
+            "min-width": {
+                "$type": "dimension",
+                "$value": { "value": 210, "unit": "px" }
+            },
+            "day-size": {
+                "$type": "dimension",
+                "$value": { "value": 30, "unit": "px" }
+            },
+            "background-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            },
+            "day-hover-background-color": {
+                "$type": "color",
+                "$value": "rgba(143, 153, 168, 0.15)"
+            },
+            "day-active-background-color": {
+                "$type": "color",
+                "$value": "rgba(143, 153, 168, 0.3)"
+            },
+            "text-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.1}"
+            },
+            "weeknumber-text-color": {
+                "$type": "color",
+                "$value": "{palette.gray.1}"
+            },
+            "legacy-week-number-text-color": {
+                "$type": "color",
+                "$value": "{text-color}"
+            },
+            "disabled-text-color": {
+                "$type": "color",
+                "$value": "rgba(95, 107, 124, 0.6)"
+            },
+            "caption-divider-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.15)"
+            },
+            "current-day-border-color": {
+                "$type": "color",
+                "$value": "rgba(17, 20, 24, 0.15)"
+            },
+            "footer-border-color": {
+                "$type": "color",
+                "$value": "{text-color}"
+            },
+            "selected-day-background-color": {
+                "$type": "color",
+                "$value": "{palette.blue.3}"
+            },
+            "selected-day-hover-background-color": {
+                "$type": "color",
+                "$value": "{palette.blue.2}"
+            },
+            "selected-day-active-background-color": {
+                "$type": "color",
+                "$value": "{palette.blue.1}"
+            },
+            "selected-day-text-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            },
+            "caption-select-padding-right": {
+                "$type": "dimension",
+                "$value": { "value": 16, "unit": "px" }
+            },
+            "nav-button-size": {
+                "$type": "dimension",
+                "$value": { "value": 30, "unit": "px" }
+            },
+            "rdp-accent-color": {
+                "$type": "color",
+                "$value": "{palette.blue.3}"
+            },
+            "rdp-background-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            },
+            "rdp-accent-color-dark": {
+                "$type": "color",
+                "$value": "{palette.blue.2}"
+            },
+            "rdp-background-color-dark": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.3}"
+            },
+            "legacy-background-color": {
+                "$type": "color",
+                "$value": "transparent"
+            }
+        },
+        "daterangepicker": {
+            "range-background-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.1)"
+            },
+            "range-selected-background-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.1)"
+            },
+            "range-selected-hover-background-color": {
+                "$type": "color",
+                "$value": "rgba(45, 114, 210, 0.2)"
+            },
+            "range-text-color": {
+                "$type": "color",
+                "$value": "{palette.blue.2}"
+            },
+            "selected-hover-text-color": {
+                "$type": "color",
+                "$value": "{datetime.datepicker.selected-day-text-color}"
+            }
+        },
+        "timepicker": {
+            "input-row-height": {
+                "$type": "dimension",
+                "$value": { "value": 30, "unit": "px" }
+            },
+            "input-row-inner-height": {
+                "$type": "dimension",
+                "$value": { "value": 28, "unit": "px" }
+            },
+            "row-padding": {
+                "$type": "string",
+                "$value": "0 1px"
+            },
+            "divider-width": {
+                "$type": "dimension",
+                "$value": { "value": 8, "unit": "px" }
+            },
+            "control-width": {
+                "$type": "dimension",
+                "$value": { "value": 32, "unit": "px" }
+            },
+            "arrow-color": {
+                "$type": "color",
+                "$value": "{palette.gray.1}"
+            },
+            "arrow-hover-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.1}"
+            },
+            "input-row-background-color": {
+                "$type": "color",
+                "$value": "{palette.white}"
+            },
+            "input-row-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(17, 20, 24, 0.2), inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+            },
+            "divider-text-color": {
+                "$type": "color",
+                "$value": "{palette.gray.1}"
+            },
+            "input-text-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.1}"
+            },
+            "input-shadow": {
+                "$type": "string",
+                "$value": "0 0 0 0 rgba(33, 93, 176, 0), 0 0 0 0 rgba(33, 93, 176, 0)"
+            },
+            "input-focus-shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(33, 93, 176, 0.752), 0 0 0 1px rgba(33, 93, 176, 0.752)"
+            },
+            "disabled-background-color": {
+                "$type": "color",
+                "$value": "rgba(211, 216, 222, 0.5)"
+            },
+            "disabled-shadow": {
+                "$type": "string",
+                "$value": "none"
+            },
+            "disabled-text-color": {
+                "$type": "color",
+                "$value": "rgba(95, 107, 124, 0.6)"
+            },
+            "disabled-row-text-color": {
+                "$type": "color",
+                "$value": "rgba(95, 107, 124, 0.6)"
+            },
+            "intent": {
+                "primary": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(45, 114, 210, 0), 0 0 0 0 rgba(45, 114, 210, 0), inset 0 0 0 1px #2d72d2, inset 0 0 0 1px rgba(17, 20, 24, 0.2), inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(45, 114, 210, 0.752), 0 0 0 2px rgba(45, 114, 210, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #2d72d2"
+                    }
+                },
+                "success": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(35, 133, 81, 0), 0 0 0 0 rgba(35, 133, 81, 0), inset 0 0 0 1px #238551, inset 0 0 0 1px rgba(17, 20, 24, 0.2), inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(35, 133, 81, 0.752), 0 0 0 2px rgba(35, 133, 81, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #238551"
+                    }
+                },
+                "warning": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(200, 118, 25, 0), 0 0 0 0 rgba(200, 118, 25, 0), inset 0 0 0 1px #c87619, inset 0 0 0 1px rgba(17, 20, 24, 0.2), inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(200, 118, 25, 0.752), 0 0 0 2px rgba(200, 118, 25, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #c87619"
+                    }
+                },
+                "danger": {
+                    "shadow": {
+                        "$type": "string",
+                        "$value": "0 0 0 0 rgba(205, 66, 70, 0), 0 0 0 0 rgba(205, 66, 70, 0), inset 0 0 0 1px #cd4246, inset 0 0 0 1px rgba(17, 20, 24, 0.2), inset 0 1px 1px rgba(17, 20, 24, 0.3)"
+                    },
+                    "focus-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px rgba(205, 66, 70, 0.752), 0 0 0 2px rgba(205, 66, 70, 0.752), inset 0 1px 1px rgba(17, 20, 24, 0.2)"
+                    },
+                    "readonly-shadow": {
+                        "$type": "string",
+                        "$value": "inset 0 0 0 1px #cd4246"
+                    }
+                }
+            }
+        }
+    }
+}

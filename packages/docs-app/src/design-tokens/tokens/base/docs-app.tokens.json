@@ -20,6 +20,14 @@
             "$type": "shadow",
             "$value": "0 0 0 1px rgba(17, 20, 24, 0.1), 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1)"
         },
+        "color-bar-pre-box-shadow": {
+            "$type": "shadow",
+            "$value": "{code-box-shadow}"
+        },
+        "section-card-margin-bottom": {
+            "$type": "dimension",
+            "$value": { "value": 0, "unit": "px" }
+        },
         "swatch-height": {
             "$type": "dimension",
             "$value": "{control-height-large}"
@@ -96,6 +104,18 @@
             "$type": "color",
             "$value": "{palette.blue.5}"
         },
+        "context-menu-node-size": {
+            "$type": "dimension",
+            "$value": { "value": 80, "unit": "px" }
+        },
+        "context-menu-icon-size": {
+            "$type": "dimension",
+            "$value": { "value": 32, "unit": "px" }
+        },
+        "context-menu-node-border-width": {
+            "$type": "dimension",
+            "$value": { "value": 4, "unit": "px" }
+        },
         "hotkey-piano-height": {
             "$type": "dimension",
             "$value": { "value": 510, "unit": "px" }
@@ -122,7 +142,7 @@
         },
         "panel-stack-shadow": {
             "$type": "shadow",
-            "$value": "{surface.shadow.0}"
+            "$value": "{elevation.shadow.0}"
         },
         "popover-placement-muted-color": {
             "$type": "color",
@@ -139,6 +159,18 @@
         "popover-portal-scroll-background-color": {
             "$type": "color",
             "$value": "{palette.light-gray.3}"
+        },
+        "popover-portal-target-plus-popover-height": {
+            "$type": "dimension",
+            "$value": { "value": 85, "unit": "px" }
+        },
+        "popover-portal-vertical-padding": {
+            "$type": "dimension",
+            "$value": { "value": 20, "unit": "px" }
+        },
+        "overlay-example-width": {
+            "$type": "dimension",
+            "$value": { "value": 400, "unit": "px" }
         },
         "datepicker-odd-day-color": {
             "$type": "color",

@@ -124,10 +124,8 @@
 
 #{example("CardListSection")} {
   .#{$ns}-section-card {
-    .#{$ns}-dark & {
-      // need a bit of margin to account for inset box shadow
-      margin-bottom: 1px;
-    }
+    // need a bit of margin to account for the dark theme's inset box shadow
+    margin-bottom: var(--bp-docs-app-section-card-margin-bottom);
   }
 }
 
@@ -141,13 +139,10 @@
   }
 
   .docs-section-card-limited-height {
+    // need a bit of margin to account for the dark theme's inset box shadow
+    margin-bottom: var(--bp-docs-app-section-card-margin-bottom);
     max-height: 152px;
     overflow-y: auto;
-
-    .#{$ns}-dark & {
-      // need a bit of margin to account for inset box shadow
-      margin-bottom: 1px;
-    }
   }
 
   .#{$ns}-section.#{$ns}-compact {
@@ -269,25 +264,31 @@
     $node-border-width: $pt-spacing;
     background-color: var(--bp-docs-app-context-menu-node-background-color);
 
-    border: $node-border-width solid var(--bp-palette-white);
+    border: var(--bp-docs-app-context-menu-node-border-width) solid var(--bp-palette-white);
     border-radius: 50%;
-    box-shadow: var(--bp-surface-shadow-2);
-    height: $node-size;
+    box-shadow: var(--bp-elevation-shadow-2);
+    height: var(--bp-docs-app-context-menu-node-size);
     overflow: hidden;
-    width: $node-size;
+    width: var(--bp-docs-app-context-menu-node-size);
 
     &::before {
-      @include pt-icon($icon-size, 16);
+      @include pt-icon(var(--bp-docs-app-context-menu-icon-size), 16);
       color: var(--bp-palette-white);
       content: map.get($blueprint-icon-codepoints, "envelope");
-      left: ($node-size - $icon-size) * 0.5 - $node-border-width;
+      left: calc(
+        (var(--bp-docs-app-context-menu-node-size) - var(--bp-docs-app-context-menu-icon-size)) *
+          0.5 - var(--bp-docs-app-context-menu-node-border-width)
+      );
       position: relative;
-      top: ($node-size - $icon-size) * 0.5 - $node-border-width;
+      top: calc(
+        (var(--bp-docs-app-context-menu-node-size) - var(--bp-docs-app-context-menu-icon-size)) *
+          0.5 - var(--bp-docs-app-context-menu-node-border-width)
+      );
     }
 
     &.docs-context-menu-open {
       box-shadow:
-        var(--bp-surface-shadow-2),
+        var(--bp-elevation-shadow-2),
         0 0 0 4px var(--bp-palette-orange-4);
     }
   }
@@ -372,7 +373,7 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("HotkeyTester")} {
   .docs-hotkey-tester {
-    @include pt-flex-container(column, $pt-spacing * 2);
+    @include pt-flex-container(column, calc(var(--bp-spacing) * 2));
     align-items: center;
     background: var(--bp-docs-app-hotkey-tester-background-color);
     border: 2px solid var(--bp-docs-app-hotkey-tester-border-color);
@@ -449,14 +450,14 @@ $docs-hotkey-piano-height: 510px;
     $pt-transition-duration * 5,
     $before: "&"
   );
-  left: calc(50vw - #{$overlay-example-width * 0.5});
+  left: calc(50vw - var(--bp-docs-app-overlay-example-width) * 0.5);
   margin: 10vh 0;
 
   top: 0;
-  width: $overlay-example-width;
+  width: var(--bp-docs-app-overlay-example-width);
 
   .#{$ns}-overlay-inline & {
-    left: calc(50% - #{$overlay-example-width * 0.5});
+    left: calc(50% - var(--bp-docs-app-overlay-example-width) * 0.5);
     margin: calc(var(--bp-spacing) * 5) 0;
   }
 }
@@ -648,9 +649,12 @@ $docs-hotkey-piano-height: 510px;
     align-items: flex-start;
 
     display: flex;
-    height: $assumed-height-of-target-plus-popover + (2 * $vertical-padding);
+    height: calc(
+      var(--bp-docs-app-popover-portal-target-plus-popover-height) + 2 *
+        var(--bp-docs-app-popover-portal-vertical-padding)
+    );
     justify-content: center;
-    padding-top: $vertical-padding;
+    padding-top: var(--bp-docs-app-popover-portal-vertical-padding);
     // wide enough to allow scrolling, but wide enough to let the popover target
     // fully leave the viewport.
     width: 200%;
@@ -733,7 +737,7 @@ $docs-hotkey-piano-height: 510px;
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, $pt-spacing);
+  @include pt-flex-container(row, var(--bp-spacing));
   align-items: center;
 }
 

@@ -58,13 +58,15 @@ Page layout elements
 
   // these rules allow the nav background-color to cover all area to the left
   /* stylelint-disable-next-line order/properties-order */
-  margin-left: -$background-shift;
+  margin-left: calc(var(--bp-docs-theme-nav-background-shift) * -1);
   overflow: hidden auto;
   padding-bottom: calc(var(--bp-docs-theme-sidebar-padding) * 2);
-  padding-left: calc(#{$background-shift} + var(--bp-docs-theme-container-padding));
+  padding-left: calc(
+    var(--bp-docs-theme-nav-background-shift) + var(--bp-docs-theme-container-padding)
+  );
 
   position: fixed;
-  width: calc(var(--bp-docs-theme-sidebar-width) + #{$background-shift});
+  width: calc(var(--bp-docs-theme-sidebar-width) + var(--bp-docs-theme-nav-background-shift));
 
   > * {
     padding: var(--bp-docs-theme-sidebar-padding);

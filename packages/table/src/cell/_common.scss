@@ -23,7 +23,7 @@ $cell-transition-duration: $pt-transition-duration * 3;
 
 @mixin cell() {
   display: inline-block;
-  font-size: var(--bp-typography-size-body-small);
+  font-size: var(--bp-font-size-small);
   height: var(--bp-table-cell-height);
   line-height: var(--bp-table-cell-height);
   padding: var(--bp-table-cell-padding-vertical) var(--bp-table-cell-padding-horizontal);
@@ -42,7 +42,7 @@ $cell-transition-duration: $pt-transition-duration * 3;
 }
 
 @mixin cell-large() {
-  font-size: var(--bp-typography-size-body-medium);
+  font-size: var(--bp-font-size);
   height: var(--bp-table-cell-large-height);
   line-height: var(--bp-table-cell-large-height);
 }

@@ -90,7 +90,7 @@ $menu-z-index: $row-z-index + 1 !default;
   position: relative;
 
   // animate width changes on scroll end
-  transition: width var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
+  transition: width var(--bp-transition-duration) var(--bp-transition-ease);
   // make custom header content overlap table body
   z-index: var(--bp-table-row-header-z-index);
 }

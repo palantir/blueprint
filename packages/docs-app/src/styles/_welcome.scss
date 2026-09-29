@@ -1,7 +1,7 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
 .blueprint-welcome {
-  @include pt-flex-container(row, $content-padding);
+  @include pt-flex-container(row, var(--bp-docs-theme-content-padding));
   justify-content: space-between;
   margin: calc(var(--bp-docs-theme-content-padding) * 2) 0;
   text-align: center;

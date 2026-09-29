@@ -1,0 +1,14 @@
+{
+    "select": {
+        "omnibar": {
+            "background-color": {
+                "$type": "color",
+                "$value": "{palette.dark-gray.3}"
+            },
+            "shadow": {
+                "$type": "string",
+                "$value": "inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 25px 60px -12px rgba(0, 0, 0, 0.85), inset 0 0 0.5px 0 rgba(255, 255, 255, 0.3), inset 0 0.5px 0 0 rgba(255, 255, 255, 0.08)"
+            }
+        }
+    }
+}

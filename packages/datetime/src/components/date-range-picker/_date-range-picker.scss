@@ -15,11 +15,11 @@
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous .rdp {
-    min-width: $datepicker-min-width + ($pt-spacing * 2);
+    min-width: calc(var(--bp-datetime-datepicker-min-width) + var(--bp-spacing) * 2);
   }
 
   &.#{$ns}-daterangepicker-single-month .rdp {
-    min-width: $datepicker-min-width;
+    min-width: var(--bp-datetime-datepicker-min-width);
   }
 
   .rdp.rdp-multiple_months {
@@ -38,8 +38,8 @@
         // be centered over the calendar (even when there is an extra-wide footer element) while the nav buttons
         // are justified on the corresponding start or end edge
         content: "";
-        height: $pt-button-height;
-        width: $pt-button-height;
+        height: var(--bp-datetime-datepicker-nav-button-size);
+        width: var(--bp-datetime-datepicker-nav-button-size);
       }
     }
 
@@ -48,8 +48,8 @@
 
       &::before {
         content: "";
-        height: $pt-button-height;
-        width: $pt-button-height;
+        height: var(--bp-datetime-datepicker-nav-button-size);
+        width: var(--bp-datetime-datepicker-nav-button-size);
       }
     }
 
@@ -71,23 +71,27 @@
 
     &_hovered:not(.rdp-day_selected) {
       border-radius: 0;
-      color: $blue2;
+      color: var(--bp-datetime-daterangepicker-range-text-color);
 
       // need to disable hover styles for all variants of selected dates
       &:not(.rdp-day_range_start, .rdp-day_range_middle, .rdp-day_range_end) {
-        background-color: $daterangepicker-range-background-color;
+        background-color: var(--bp-datetime-daterangepicker-range-background-color);
       }
     }
 
     &_range_middle {
-      background-color: $daterangepicker-range-background-color-selected;
+      background-color: var(--bp-datetime-daterangepicker-range-selected-background-color);
       border-radius: 0;
-      color: $blue2;
+      color: var(--bp-datetime-daterangepicker-range-text-color);
 
       &:hover {
-        background-color: $daterangepicker-range-background-color-selected-hover;
-        color: $blue2;
+        background-color: var(--bp-datetime-daterangepicker-range-selected-hover-background-color);
+        color: var(--bp-datetime-daterangepicker-range-text-color);
       }
+    }
+
+    &_hovered.rdp-day_selected {
+      color: var(--bp-datetime-daterangepicker-selected-hover-text-color);
     }
 
     &_range_start:not(.rdp-day_range_end, .rdp-day_hovered_end) {
@@ -112,7 +116,7 @@
   }
 
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
-    border: 1px solid $pt-divider-black;
+    border: 1px solid var(--bp-datetime-datepicker-current-day-border-color);
   }
 
   /* prettier-ignore */
@@ -142,37 +146,11 @@
 
   .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
     // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
-    margin: $datepicker-padding 0;
-  }
-}
-
-.#{$ns}-dark .#{$ns}-daterangepicker {
-  &.#{$ns}-datepicker .rdp-day {
-    &_hovered {
-      color: $light-gray5;
-
-      /* prettier-ignore */
-      &:not(.rdp-day_selected, .rdp-day_range_start, .rdp-day_range_middle, .rdp-day_range_end) {
-        background-color: $dark-daterangepicker-range-background-color;
-      }
-    }
-
-    &_range_middle {
-      background-color: $dark-daterangepicker-range-background-color-selected;
-      color: $light-gray5;
-
-      &:hover {
-        background-color: $dark-daterangepicker-range-background-color-selected-hover;
-      }
-    }
-  }
-
-  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
-    border: 1px solid $pt-dark-divider-white;
+    margin: var(--bp-datetime-datepicker-padding) 0;
   }
 }
 
 .#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
-  min-width: $pt-spacing * 30;
+  min-width: calc(var(--bp-spacing) * 30);
   padding: 0;
 }

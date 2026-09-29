@@ -6,14 +6,14 @@
 $select-padding: $pt-spacing;
 
 .#{$ns}-multi-select {
-  min-width: $pt-spacing * 37.5;
+  min-width: calc(var(--bp-spacing) * 37.5);
 }
 
 .#{$ns}-multi-select-popover {
   .#{$ns}-popover-content {
     // use padding on container rather than margin on input group
     // because top margin leaves some empty space with no background color.
-    padding: $select-padding;
+    padding: var(--bp-select-popover-padding);
   }
 
   .#{$ns}-multi-select-popover-default-width {
@@ -30,10 +30,10 @@ $select-padding: $pt-spacing;
     // offset the padding added by the multiselect component so menu can remain full width with padding on either side
     // this is important so menu dividers can be full width, and so that menu items can have padding to the left and right
     // for menu items
-    margin-left: -$select-padding;
-    margin-right: -$select-padding;
-    max-height: $select-popover-max-height;
-    max-width: $select-popover-max-width;
+    margin-left: calc(-1 * var(--bp-select-popover-padding));
+    margin-right: calc(-1 * var(--bp-select-popover-padding));
+    max-height: var(--bp-select-popover-max-height);
+    max-width: var(--bp-select-popover-max-width);
     overflow: auto;
   }
 

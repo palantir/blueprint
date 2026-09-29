@@ -302,19 +302,19 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 .#{$ns}-table-column-name {
   display: flex;
   flex-direction: column;
-  font-size: var(--bp-typography-size-body-medium);
+  font-size: var(--bp-font-size);
   text-align: left;
 }
 
 .#{$ns}-table-row-name {
   display: block;
-  font-size: var(--bp-typography-size-body-small);
+  font-size: var(--bp-font-size-small);
   padding: 0 var(--bp-spacing);
   text-align: right;
 }
 
 .#{$ns}-table-header-content {
-  font-size: var(--bp-typography-size-body-medium);
+  font-size: var(--bp-font-size);
   white-space: normal;
 
   // react-select does not conform to our naming scheme

@@ -16,22 +16,30 @@ $example-spacing: $pt-spacing * 10;
 
 // options to the right of example in same row
 .docs-example-frame-row {
-  @include pt-flex-container(row, $pt-spacing * 2, $fill: ".docs-example");
+  @include pt-flex-container(
+    row,
+    var(--bp-docs-theme-example-frame-spacing),
+    $fill: ".docs-example"
+  );
 
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
-    @include pt-flex-container(column, $pt-spacing * 2);
+    @include pt-flex-container(column, var(--bp-docs-theme-example-frame-spacing));
     max-width: calc(var(--bp-spacing) * 75);
   }
 }
 
 // options below example in its own row.
 .docs-example-frame-column {
-  @include pt-flex-container(column, $pt-spacing * 2, $fill: ".docs-example");
+  @include pt-flex-container(
+    column,
+    var(--bp-docs-theme-example-frame-spacing),
+    $fill: ".docs-example"
+  );
 
   // option elements arranged horizontally. group controls into columns.
   .docs-example-options {
-    @include pt-flex-container(row, $pt-spacing * 10);
+    @include pt-flex-container(row, var(--bp-docs-theme-example-spacing));
     justify-content: center;
     max-width: unset;
 
@@ -92,14 +100,10 @@ $example-spacing: $pt-spacing * 10;
   .editor,
   .#{$ns}-docs-code-block {
     background: var(--bp-app-elevated-background-color);
+    border: none;
     border-radius: var(--bp-docs-theme-example-frame-border-radius);
     box-shadow: none;
     margin: 0;
-
-    .#{$ns}-dark & {
-      border: none;
-      box-shadow: none;
-    }
   }
 }
 

@@ -62,7 +62,7 @@
 }
 
 .#{$ns}-table-truncated-popover {
-  font-family: var(--bp-typography-family-mono);
+  font-family: var(--bp-font-family-monospace);
   max-height: calc(var(--bp-spacing) * 75);
   max-width: calc(var(--bp-spacing) * 150);
   min-width: calc(var(--bp-spacing) * 50);

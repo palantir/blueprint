@@ -4,9 +4,10 @@
     "description": "Dev application for @blueprintjs/table",
     "private": true,
     "scripts": {
-        "bundle": "webpack",
+        "build:tokens": "build-design-tokens ../table/src/design-tokens/config.json",
+        "bundle": "run-s build:tokens && webpack",
         "clean": "rm -rf dist",
-        "dev": "webpack-dev-server",
+        "dev": "run-s build:tokens && webpack-dev-server",
         "dist": "NODE_ENV=production pnpm bundle",
         "lint": "npm-run-all -p lint:scss lint:es",
         "lint:scss": "sass-lint",

@@ -24,6 +24,10 @@
             "$type": "shadow",
             "$value": "1px 0 0 rgba(17, 20, 24, 0.15)"
         },
+        "nav-background-shift": {
+            "$type": "dimension",
+            "$value": { "value": 999, "unit": "px" }
+        },
         "content-width": {
             "$type": "dimension",
             "$value": { "value": 800, "unit": "px" }

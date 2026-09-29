@@ -15,7 +15,7 @@ $omnibar-input-height: $pt-spacing * 10 !default;
 .#{$ns}-omnibar {
   $omnibar-transition-props: (
     filter: (
-      blur($pt-spacing * 5),
+      blur(calc(var(--bp-spacing) * 5)),
       blur(0),
     ),
     opacity: (
@@ -31,13 +31,13 @@ $omnibar-input-height: $pt-spacing * 10 !default;
     $easing: $pt-transition-ease,
     $before: "&"
   );
-  background-color: $white;
-  border-radius: $pt-border-radius;
-  box-shadow: $pt-elevation-shadow-4;
-  left: calc(50% - #{$omnibar-width * 0.5});
-  top: (100 - $omnibar-height) * 0.5;
-  width: $omnibar-width;
-  z-index: $pt-z-index-overlay + 1;
+  background-color: var(--bp-select-omnibar-background-color);
+  border-radius: var(--bp-border-radius);
+  box-shadow: var(--bp-select-omnibar-shadow);
+  left: calc(50% - var(--bp-select-omnibar-width) * 0.5);
+  top: calc((100vh - var(--bp-select-omnibar-height)) * 0.5);
+  width: var(--bp-select-omnibar-width);
+  z-index: var(--bp-select-omnibar-z-index);
 
   .#{$ns}-input {
     background-color: transparent;
@@ -52,22 +52,16 @@ $omnibar-input-height: $pt-spacing * 10 !default;
   .#{$ns}-menu {
     background-color: transparent;
     border-radius: 0;
-    box-shadow: inset 0 1px 0 $pt-divider-black;
-    max-height: calc(#{$omnibar-height} - #{$omnibar-input-height});
+    box-shadow: var(--bp-select-omnibar-menu-divider-shadow);
+    max-height: calc(var(--bp-select-omnibar-height) - var(--bp-select-omnibar-input-height));
     overflow: auto;
 
     &:empty {
       display: none;
     }
   }
-
-  .#{$ns}-dark &,
-  &.#{$ns}-dark {
-    background-color: $dark-gray3;
-    box-shadow: $pt-dark-elevation-shadow-4;
-  }
 }
 
 .#{$ns}-omnibar-overlay .#{$ns}-overlay-backdrop {
-  background-color: rgba($black, 0.2);
+  background-color: var(--bp-select-omnibar-backdrop-color);
 }

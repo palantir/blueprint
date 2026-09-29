@@ -35,6 +35,12 @@
             "left": { "$value": 2 },
             "top-left": { "$value": 3 }
         },
+        "scroll-container-overflow": {
+            "$type": "dimension",
+            "default": { "$value": { "value": 20, "unit": "px" } },
+            "low-dpi": { "$value": { "value": 50, "unit": "px" } },
+            "high-dpi": { "$value": { "value": 10, "unit": "px" } }
+        },
         "cell": {
             "border-width": {
                 "$type": "dimension",

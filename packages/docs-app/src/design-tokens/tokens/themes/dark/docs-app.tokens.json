@@ -1,5 +1,13 @@
 {
     "docs-app": {
+        "color-bar-pre-box-shadow": {
+            "$type": "shadow",
+            "$value": "none"
+        },
+        "section-card-margin-bottom": {
+            "$type": "dimension",
+            "$value": { "value": 1, "unit": "px" }
+        },
         "swatch-border-color": {
             "$type": "color",
             "$value": "rgba(255, 255, 255, 0.2)"

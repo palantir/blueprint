@@ -15,7 +15,7 @@ $nav-divider-offset: $pt-spacing * 12.5;
 }
 
 .docs-nav-button {
-  @include pt-flex-container(row, ($pt-spacing * 2) + $pt-spacing);
+  @include pt-flex-container(row, calc(var(--bp-spacing) * 3));
   align-items: center;
   cursor: pointer;
 

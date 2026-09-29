@@ -64,8 +64,9 @@ $swatch-copied-message: "#{map.get($blueprint-icon-codepoints, "tick")} Copied t
 }
 
 .docs-color-bar {
+  background: transparent;
   border-radius: var(--bp-border-radius);
-  box-shadow: var(--bp-surface-shadow-0);
+  box-shadow: var(--bp-elevation-shadow-0);
   transition: all var(--bp-transition-duration) var(--bp-transition-ease);
 
   input:focus + & {
@@ -74,12 +75,12 @@ $swatch-copied-message: "#{map.get($blueprint-icon-codepoints, "tick")} Copied t
   }
 
   &:hover {
-    box-shadow: var(--bp-surface-shadow-3);
+    box-shadow: var(--bp-elevation-shadow-3);
     cursor: pointer;
   }
 
   &:active {
-    box-shadow: var(--bp-surface-shadow-1);
+    box-shadow: var(--bp-elevation-shadow-1);
   }
 
   .docs-color-bar-swatches::before {
@@ -87,15 +88,12 @@ $swatch-copied-message: "#{map.get($blueprint-icon-codepoints, "tick")} Copied t
     border-bottom-right-radius: 0;
   }
 
-  .#{$ns}-dark & {
-    background: transparent;
+  pre {
+    box-shadow: var(--bp-docs-app-color-bar-pre-box-shadow);
 
-    &:hover {
-      cursor: pointer;
-    }
-
-    pre {
-      box-shadow: none;
+    // Outrank Core's legacy dark code-block selector without adding a value-bearing dark selector.
+    &.#{$ns}-code-block {
+      box-shadow: var(--bp-docs-app-color-bar-pre-box-shadow);
     }
   }
 }

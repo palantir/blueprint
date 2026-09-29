@@ -1,9 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:map";
 @import "@blueprintjs/core/src/components/forms/common";
-@import "@blueprintjs/core/src/components/icon/icon-mixins";
 @import "../../common";
 
 $timepicker-input-row-height: $pt-spacing * 7.5 !default;
@@ -18,42 +16,43 @@ $timepicker-control-width: $pt-spacing * 8 !default;
   white-space: nowrap;
 
   .#{$ns}-timepicker-arrow-row {
-    padding: $timepicker-row-padding;
+    padding: var(--bp-datetime-timepicker-row-padding);
   }
 
   .#{$ns}-timepicker-arrow-button {
-    @include pt-icon-colors;
+    color: var(--bp-datetime-timepicker-arrow-color);
     display: inline-block;
-    padding: $pt-spacing 0;
+    padding: var(--bp-spacing) 0;
     text-align: center;
-    width: $timepicker-control-width;
+    width: var(--bp-datetime-timepicker-control-width);
 
     + .#{$ns}-timepicker-arrow-button {
-      margin-left: $timepicker-divider-width;
+      margin-left: var(--bp-datetime-timepicker-divider-width);
     }
 
     &:hover {
+      color: var(--bp-datetime-timepicker-arrow-hover-color);
       cursor: pointer;
     }
   }
 
   .#{$ns}-timepicker-input-row {
-    background: $input-background-color;
-    border-radius: $pt-border-radius;
-    box-shadow: $pt-input-box-shadow;
+    background: var(--bp-datetime-timepicker-input-row-background-color);
+    border-radius: var(--bp-border-radius);
+    box-shadow: var(--bp-datetime-timepicker-input-row-shadow);
     display: inline-block;
-    height: $timepicker-input-row-height;
-    line-height: $timepicker-input-row-inner-height;
-    padding: $timepicker-row-padding;
+    height: var(--bp-datetime-timepicker-input-row-height);
+    line-height: var(--bp-datetime-timepicker-input-row-inner-height);
+    padding: var(--bp-datetime-timepicker-row-padding);
     vertical-align: middle;
   }
 
   .#{$ns}-timepicker-divider-text {
-    color: $pt-text-color-muted;
+    color: var(--bp-datetime-timepicker-divider-text-color);
     display: inline-block;
-    font-size: $pt-font-size-large;
+    font-size: var(--bp-font-size-large);
     text-align: center;
-    width: $timepicker-divider-width;
+    width: var(--bp-datetime-timepicker-divider-width);
   }
 
   .#{$ns}-timepicker-input {
@@ -63,18 +62,18 @@ $timepicker-control-width: $pt-spacing * 8 !default;
     /* stylelint-enable property-no-vendor-prefix */
     background: transparent;
     border: 0;
-    border-radius: $pt-border-radius;
-    box-shadow: input-transition-shadow($input-shadow-color-focus);
-    color: $pt-text-color;
-    height: $timepicker-input-row-inner-height;
+    border-radius: var(--bp-border-radius);
+    box-shadow: var(--bp-datetime-timepicker-input-shadow);
+    color: var(--bp-datetime-timepicker-input-text-color);
+    height: var(--bp-datetime-timepicker-input-row-inner-height);
     outline: 0;
     padding: 0;
     text-align: center;
-    transition: $input-transition;
-    width: $timepicker-control-width;
+    transition: box-shadow var(--bp-transition-duration) var(--bp-transition-ease);
+    width: var(--bp-datetime-timepicker-control-width);
 
     &:focus {
-      box-shadow: input-transition-shadow($input-shadow-color-focus, true);
+      box-shadow: var(--bp-datetime-timepicker-input-focus-shadow);
     }
 
     &::-webkit-outer-spin-button,
@@ -85,10 +84,19 @@ $timepicker-control-width: $pt-spacing * 8 !default;
 
     @each $intent, $color in $pt-intent-colors {
       &.#{$ns}-intent-#{$intent} {
-        @include pt-input-intent($color);
+        box-shadow: var(--bp-datetime-timepicker-intent-#{$intent}-shadow);
 
-        .#{$ns}-dark & {
-          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
+        &:focus {
+          box-shadow: var(--bp-datetime-timepicker-intent-#{$intent}-focus-shadow);
+        }
+
+        &[readonly] {
+          box-shadow: var(--bp-datetime-timepicker-intent-#{$intent}-readonly-shadow);
+        }
+
+        &:disabled,
+        &.#{$ns}-disabled {
+          box-shadow: none;
         }
       }
     }
@@ -99,48 +107,32 @@ $timepicker-control-width: $pt-spacing * 8 !default;
   }
 
   .#{$ns}-timepicker-ampm-select {
-    margin-left: $pt-spacing;
+    margin-left: var(--bp-spacing);
   }
 
   &.#{$ns}-disabled {
     .#{$ns}-timepicker-input-row {
-      @include pt-input-disabled;
+      background: var(--bp-datetime-timepicker-disabled-background-color);
+      box-shadow: var(--bp-datetime-timepicker-disabled-shadow);
+      color: var(--bp-datetime-timepicker-disabled-row-text-color);
+      cursor: not-allowed;
+      resize: none;
+
+      &::placeholder {
+        color: var(--bp-datetime-timepicker-disabled-row-text-color);
+      }
     }
 
     .#{$ns}-timepicker-input,
     .#{$ns}-timepicker-divider-text {
-      color: $input-color-disabled;
+      color: var(--bp-datetime-timepicker-disabled-text-color);
       cursor: not-allowed;
     }
 
     .#{$ns}-timepicker-arrow-button,
     .#{$ns}-timepicker-arrow-button:hover {
-      color: $input-color-disabled;
+      color: var(--bp-datetime-timepicker-disabled-text-color);
       cursor: not-allowed;
-    }
-  }
-}
-
-.#{$ns}-dark .#{$ns}-timepicker {
-  .#{$ns}-timepicker-input-row {
-    background: $dark-input-background-color;
-    box-shadow: $pt-dark-input-box-shadow;
-  }
-
-  .#{$ns}-timepicker-divider-text {
-    color: $pt-dark-text-color-muted;
-  }
-
-  .#{$ns}-timepicker-input {
-    color: $pt-dark-text-color;
-  }
-
-  &.#{$ns}-disabled {
-    .#{$ns}-timepicker-input,
-    .#{$ns}-timepicker-divider-text,
-    .#{$ns}-timepicker-arrow-button,
-    .#{$ns}-timepicker-arrow-button:hover {
-      color: $dark-input-color-disabled;
     }
   }
 }

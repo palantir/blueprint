@@ -5,8 +5,8 @@
 
 .#{$ns}-suggest-popover {
   .#{$ns}-menu {
-    max-height: $select-popover-max-height;
-    max-width: $select-popover-max-width;
+    max-height: var(--bp-select-popover-max-height);
+    max-width: var(--bp-select-popover-max-width);
     overflow: auto;
   }
 
