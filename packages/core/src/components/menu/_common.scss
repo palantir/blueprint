@@ -7,7 +7,7 @@
 @import "../../common/variables";
 @import "../../common/variables-extended";
 
-$menu-item-border-radius: $pt-border-radius !default;
+$menu-item-border-radius: var(--bp-surface-border-radius) !default;
 
 // Set line-height of menu items to be a multiple of the font size. This is
 // needed because if the line-height does not extend far enough past the font's

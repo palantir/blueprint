@@ -29,7 +29,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
     .#{$ns}-tab {
       align-items: center;
-      border-radius: $pt-border-radius;
+      border-radius: var(--bp-surface-border-radius);
       display: flex;
       padding: 0 ($pt-spacing * 2);
       width: 100%;
@@ -47,7 +47,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
       background-color: rgba($pt-intent-primary, 0.2);
-      border-radius: $pt-border-radius;
+      border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
     }

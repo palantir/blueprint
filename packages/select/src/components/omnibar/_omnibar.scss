@@ -32,7 +32,7 @@ $omnibar-input-height: $pt-spacing * 10 !default;
     $before: "&"
   );
   background-color: $white;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   box-shadow: $pt-elevation-shadow-4;
   left: calc(50% - #{$omnibar-width * 0.5});
   top: (100 - $omnibar-height) * 0.5;

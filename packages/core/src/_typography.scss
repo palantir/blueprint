@@ -241,14 +241,14 @@ Styleguide preformatted
 
 %code {
   @include monospace-typography;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   font-size: smaller;
   padding: ($pt-spacing * 0.5) $pt-spacing;
 }
 
 %code-block {
   @include monospace-typography;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   display: block;
   font-size: $pt-font-size - 1px;
   line-height: 1.4;
@@ -273,7 +273,7 @@ Styleguide preformatted
 
 %keyboard {
   align-items: center;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   display: inline-flex;
   font-family: inherit;
   font-size: $pt-font-size-small;
