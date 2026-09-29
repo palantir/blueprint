@@ -83,7 +83,7 @@
     > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
     > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
     > .#{$ns}-button:not(:last-child) {
-      margin-right: -$button-border-width;
+      margin-right: calc(-1 * $button-border-width);
     }
   }
 
@@ -106,7 +106,7 @@
       &:not(:last-child) {
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
-        margin-right: -$button-border-width;
+        margin-right: calc(-1 * $button-border-width);
       }
     }
   }
@@ -177,7 +177,7 @@
       > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
-        margin-bottom: -$button-border-width;
+        margin-bottom: calc(-1 * $button-border-width);
       }
     }
 
