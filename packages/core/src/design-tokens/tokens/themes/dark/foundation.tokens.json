@@ -1,0 +1,102 @@
+{
+    "app-background-color": {
+        "$type": "color",
+        "$value": "{palette.dark-gray.1}"
+    },
+    "app-secondary-background-color": {
+        "$type": "color",
+        "$value": "{palette.black}"
+    },
+    "app-elevated-background-color": {
+        "$type": "color",
+        "$value": "{palette.dark-gray.2}"
+    },
+    "text-color": {
+        "$type": "color",
+        "$value": "{palette.light-gray.5}"
+    },
+    "text-color-muted": {
+        "$type": "color",
+        "$value": "{palette.gray.4}"
+    },
+    "text-color-disabled": {
+        "$type": "color",
+        "$value": "rgba(171, 179, 191, 0.6)"
+    },
+    "heading-color": {
+        "$type": "color",
+        "$value": "{text-color}"
+    },
+    "link-color": {
+        "$type": "color",
+        "$value": "{palette.blue.5}"
+    },
+    "intent-primary-text-color": {
+        "$type": "color",
+        "$value": "{palette.blue.5}"
+    },
+    "intent-success-text-color": {
+        "$type": "color",
+        "$value": "{palette.green.5}"
+    },
+    "intent-warning-text-color": {
+        "$type": "color",
+        "$value": "{palette.orange.5}"
+    },
+    "intent-danger-text-color": {
+        "$type": "color",
+        "$value": "{palette.red.5}"
+    },
+    "icon-color": {
+        "$type": "color",
+        "$value": "{text-color-muted}"
+    },
+    "icon-color-hover": {
+        "$type": "color",
+        "$value": "{text-color}"
+    },
+    "icon-color-disabled": {
+        "$type": "color",
+        "$value": "{text-color-disabled}"
+    },
+    "icon-color-selected": {
+        "$type": "color",
+        "$value": "{intent.primary.rest}"
+    },
+    "divider-color": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.2)"
+    },
+    "divider-color-muted": {
+        "$type": "color",
+        "$value": "rgba(255, 255, 255, 0.1)"
+    },
+    "focus-indicator-color": {
+        "$type": "color",
+        "$value": "rgba(138, 187, 255, 0.752)"
+    },
+    "code-text-color": {
+        "$type": "color",
+        "$value": "{text-color-muted}"
+    },
+    "code-background-color": {
+        "$type": "color",
+        "$value": "rgba(17, 20, 24, 0.3)"
+    },
+    "code-link-color": {
+        "$type": "color",
+        "$value": "inherit"
+    },
+    "code-box-shadow": {
+        "$type": "shadow",
+        "$value": "inset 0 0 0 1px rgba(255, 255, 255, 0.2)"
+    },
+    "key-background-color": {
+        "$type": "color",
+        "$value": "{palette.dark-gray.3}"
+    },
+    "blockquote-border-color": {
+        "$type": "color",
+        "$value": "rgba(115, 128, 145, 0.5)"
+    }
+}

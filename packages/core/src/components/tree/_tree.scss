@@ -7,13 +7,11 @@
 @import "../../common/variables-extended";
 @import "../../common/mixins";
 
-$tree-row-height: calc(var(--bp-spacing) * 7.5) !default;
-$tree-icon-spacing: calc(var(--bp-spacing) * 2) !default;
+$tree-row-height: $pt-spacing * 7.5 !default;
+$tree-icon-spacing: $pt-spacing * 2 !default;
 
-$tree-row-height-compact: calc(var(--bp-spacing) * 6) !default;
-$tree-icon-spacing-compact: calc(
-  ($tree-row-height-compact - $pt-icon-size-standard) * 0.5
-) !default;
+$tree-row-height-compact: $pt-spacing * 6 !default;
+$tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
 
 $tree-intent-icon-colors: (
   "primary": $blue5,
@@ -24,11 +22,11 @@ $tree-intent-icon-colors: (
 
 .#{$ns}-tree {
   #{$icon-classes} {
-    color: $pt-icon-color;
+    color: var(--bp-icon-color);
 
-    @each $intent, $colors in $pt-intent-colors {
+    @each $intent in ("primary", "success", "warning", "danger") {
       &.#{$ns}-intent-#{$intent} {
-        @include intent-color($intent);
+        color: var(--bp-tree-intent-#{$intent}-icon-color);
       }
     }
   }
@@ -50,7 +48,7 @@ $tree-intent-icon-colors: (
 
 @for $i from 0 through 20 {
   .#{$ns}-tree-node-content-#{$i} {
-    padding-left: calc(($tree-row-height - $tree-icon-spacing) * $i);
+    padding-left: calc((var(--bp-tree-row-height) - var(--bp-tree-icon-spacing)) * #{$i});
   }
 }
 
@@ -58,33 +56,33 @@ $tree-intent-icon-colors: (
   align-items: center;
   background: none;
   display: flex;
-  height: $tree-row-height;
+  height: var(--bp-tree-row-height);
   padding-right: var(--bp-spacing);
   width: 100%;
 
   &:hover {
-    background-color: rgba($gray3, 0.15);
+    background-color: var(--bp-tree-background-color-hover);
   }
 
   &:active {
-    background-color: rgba($gray3, 0.3);
+    background-color: var(--bp-tree-background-color-active);
   }
 }
 
 .#{$ns}-tree-node-caret,
 .#{$ns}-tree-node-caret-none {
-  min-width: $tree-row-height;
+  min-width: var(--bp-tree-row-height);
 }
 
 .#{$ns}-tree-node-caret {
-  @include pt-icon-colors;
+  color: var(--bp-icon-color);
   cursor: pointer;
-  padding: $tree-icon-spacing;
+  padding: var(--bp-tree-icon-spacing);
   transform: rotate(0deg);
-  transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
+  transition: transform var(--bp-tree-caret-transition-duration) var(--bp-transition-ease);
 
   &:hover {
-    color: $pt-text-color;
+    color: var(--bp-icon-color-hover);
   }
 
   &.#{$ns}-tree-node-caret-open {
@@ -98,7 +96,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-icon {
-  margin-right: $tree-icon-spacing;
+  margin-right: var(--bp-tree-icon-spacing);
   position: relative;
 }
 
@@ -128,32 +126,32 @@ $tree-intent-icon-colors: (
 .#{$ns}-tree-node.#{$ns}-disabled {
   .#{$ns}-tree-node-content {
     background-color: inherit;
-    color: $pt-text-color-disabled;
+    color: var(--bp-text-color-disabled);
     cursor: not-allowed;
   }
 
   .#{$ns}-tree-node-caret,
   .#{$ns}-tree-node-icon {
-    color: $pt-text-color-disabled;
+    color: var(--bp-text-color-disabled);
     cursor: not-allowed;
   }
 }
 
 .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
-  background-color: $pt-intent-primary;
+  background-color: var(--bp-tree-selected-background-color);
 
   &,
   #{$icon-classes} {
-    color: $white;
+    color: var(--bp-tree-selected-text-color);
   }
 
   .#{$ns}-tree-node-caret {
     &::before {
-      color: rgba($white, 0.7);
+      color: var(--bp-tree-selected-caret-color);
     }
 
     &:hover::before {
-      color: $white;
+      color: var(--bp-tree-selected-caret-color-hover);
     }
   }
 }
@@ -161,49 +159,12 @@ $tree-intent-icon-colors: (
 // Variant: compact
 .#{$ns}-tree.#{$ns}-compact {
   .#{$ns}-tree-node-content {
-    height: $tree-row-height-compact;
+    height: var(--bp-tree-row-height-compact);
   }
 
   .#{$ns}-tree-node-caret {
     margin-right: calc(var(--bp-spacing) * 0.75);
-    min-width: $tree-row-height-compact;
-    padding: $tree-icon-spacing-compact;
-  }
-}
-
-// Variant: dark theme
-.#{$ns}-dark {
-  .#{$ns}-tree-node-content {
-    &:hover {
-      background-color: rgba($gray1, 0.3);
-    }
-  }
-
-  .#{$ns}-tree {
-    #{$icon-classes} {
-      color: $pt-dark-icon-color;
-
-      @each $intent, $color in $tree-intent-icon-colors {
-        &.#{$ns}-intent-#{$intent} {
-          color: $color;
-        }
-      }
-    }
-  }
-
-  .#{$ns}-tree-node {
-    &:not(.#{$ns}-disabled) {
-      .#{$ns}-tree-node-caret:hover {
-        color: $pt-dark-text-color;
-      }
-    }
-
-    &.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
-      background-color: $pt-intent-primary;
-
-      #{$icon-classes} {
-        color: $white;
-      }
-    }
+    min-width: var(--bp-tree-row-height-compact);
+    padding: var(--bp-tree-icon-spacing-compact);
   }
 }

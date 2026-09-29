@@ -5,8 +5,8 @@
 @import "./common";
 
 $handle-size: $pt-icon-size-standard !default;
-$track-size: calc($handle-size - var(--bp-spacing) * 2.5) !default;
-$label-offset: calc($handle-size + var(--bp-spacing)) !default;
+$track-size: $handle-size - ($pt-spacing * 2.5) !default;
+$label-offset: $handle-size + $pt-spacing !default;
 
 $handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
 $handle-box-shadow:
@@ -25,7 +25,7 @@ $handle-height: $handle-size !default;
 $track-height: $track-size !default;
 
 .#{$ns}-slider {
-  @include slider-orientation($pt-input-height-large, $vertical: false);
+  @include slider-orientation(var(--bp-slider-size), $vertical: false);
   cursor: default;
   outline: none;
   position: relative;
@@ -45,13 +45,17 @@ $track-height: $track-size !default;
   }
 
   &.#{$ns}-slider-unlabeled {
-    height: $handle-size;
+    height: var(--bp-slider-handle-size);
   }
 }
 
 .#{$ns}-slider-track,
 .#{$ns}-slider-progress {
-  @include slider-track-orientation($handle-size, $track-size, $vertical: false);
+  @include slider-track-orientation(
+    var(--bp-slider-handle-size),
+    var(--bp-slider-track-size),
+    $vertical: false
+  );
   position: absolute;
 }
 
@@ -61,15 +65,11 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-progress {
-  background: rgba($gray1, 0.2);
+  background: var(--bp-slider-track-background-color);
 
-  .#{$ns}-dark & {
-    background: rgba($black, 0.5);
-  }
-
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent in ("primary", "success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: $color;
+      background-color: var(--bp-intent-#{$intent}-rest);
     }
   }
 
@@ -80,14 +80,15 @@ $track-height: $track-size !default;
 
 .#{$ns}-slider-handle {
   @include pt-button;
+  background-color: var(--bp-slider-handle-background-color);
   border-radius: var(--bp-border-radius);
-  box-shadow: $handle-box-shadow;
+  box-shadow: var(--bp-slider-handle-box-shadow);
   cursor: pointer;
-  height: $handle-size;
+  height: var(--bp-slider-handle-size);
   left: 0;
   position: absolute;
   top: 0;
-  width: $handle-size;
+  width: var(--bp-slider-handle-size);
 
   // ensure target handle's label always covers neighbors
   &:focus {
@@ -96,60 +97,33 @@ $track-height: $track-size !default;
 
   &:hover {
     @include pt-button-hover;
-    box-shadow: $handle-box-shadow-hover;
+    background-color: var(--bp-slider-handle-background-color-hover);
+    box-shadow: var(--bp-slider-handle-box-shadow-hover);
     cursor: grab;
     z-index: 2;
   }
 
   &.#{$ns}-active {
     @include pt-button-active;
-    box-shadow: $handle-box-shadow-active;
+    background-color: var(--bp-slider-handle-background-color-active);
+    box-shadow: var(--bp-slider-handle-box-shadow-active);
     cursor: grabbing;
   }
 
   .#{$ns}-disabled & {
-    background: $gray5;
+    background: var(--bp-slider-handle-background-color-disabled);
+    border-color: var(--bp-slider-handle-border-color-disabled);
     box-shadow: none;
     // easy way to avoid lots of special cases to ignore mouse states when disabled:
     pointer-events: none;
   }
 
-  .#{$ns}-dark & {
-    // don't use pt-dark-button() here, since we want to appear more like a light theme button
-    background-color: $gray4;
-    box-shadow: $dark-button-box-shadow;
-
-    &:hover {
-      background-color: $gray3;
-      box-shadow: $dark-button-box-shadow-active;
-    }
-
-    &.#{$ns}-active {
-      background-color: $gray2;
-      box-shadow:
-        inset 0 1px 1px rgba($black, 0.1),
-        $dark-button-box-shadow-active;
-    }
-  }
-
-  .#{$ns}-dark .#{$ns}-disabled & {
-    background: $gray1;
-    border-color: $gray1;
-    box-shadow: none;
-  }
-
   .#{$ns}-slider-label {
-    background: $tooltip-background-color;
+    background: var(--bp-tooltip-background-color);
     border-radius: var(--bp-border-radius);
-    box-shadow: $pt-tooltip-box-shadow;
-    color: $tooltip-text-color;
-    margin-left: $handle-size * 0.5;
-
-    .#{$ns}-dark & {
-      background: $dark-tooltip-background-color;
-      box-shadow: $pt-dark-tooltip-box-shadow;
-      color: $dark-tooltip-text-color;
-    }
+    box-shadow: var(--bp-tooltip-box-shadow);
+    color: var(--bp-tooltip-text-color);
+    margin-left: calc(var(--bp-slider-handle-size) * 0.5);
 
     .#{$ns}-disabled & {
       box-shadow: none;
@@ -158,7 +132,7 @@ $track-height: $track-size !default;
 
   &.#{$ns}-start,
   &.#{$ns}-end {
-    width: $handle-size * 0.5;
+    width: calc(var(--bp-slider-handle-size) * 0.5);
   }
 
   &.#{$ns}-start {
@@ -169,7 +143,7 @@ $track-height: $track-size !default;
   &.#{$ns}-end {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
-    margin-left: $handle-size * 0.5;
+    margin-left: calc(var(--bp-slider-handle-size) * 0.5);
 
     .#{$ns}-slider-label {
       margin-left: 0;
@@ -178,9 +152,9 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-label {
-  @include slider-label-orientation($label-offset);
+  @include slider-label-orientation(var(--bp-slider-label-offset));
   display: inline-block;
-  font-size: $pt-font-size-small;
+  font-size: var(--bp-font-size-small);
   line-height: 1;
   padding: calc(var(--bp-spacing) * 0.5) var(--bp-spacing);
   position: absolute;
@@ -188,11 +162,15 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider.#{$ns}-vertical {
-  @include slider-orientation($pt-input-height-large, $vertical: true);
+  @include slider-orientation(var(--bp-slider-size), $vertical: true);
 
   .#{$ns}-slider-track,
   .#{$ns}-slider-progress {
-    @include slider-track-orientation($handle-size, $track-size, $vertical: true);
+    @include slider-track-orientation(
+      var(--bp-slider-handle-size),
+      var(--bp-slider-track-size),
+      $vertical: true
+    );
   }
 
   .#{$ns}-slider-progress {
@@ -200,7 +178,7 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-slider-label {
-    @include slider-label-orientation($label-offset, $vertical: true);
+    @include slider-label-orientation(var(--bp-slider-label-offset), $vertical: true);
   }
 
   .#{$ns}-slider-handle {
@@ -208,14 +186,14 @@ $track-height: $track-size !default;
 
     .#{$ns}-slider-label {
       margin-left: 0;
-      margin-top: -$handle-size * 0.5;
+      margin-top: calc(var(--bp-slider-handle-size) * -0.5);
     }
 
     &.#{$ns}-end,
     &.#{$ns}-start {
-      height: $handle-size * 0.5;
+      height: calc(var(--bp-slider-handle-size) * 0.5);
       margin-left: 0;
-      width: $handle-size;
+      width: var(--bp-slider-handle-size);
     }
 
     &.#{$ns}-start {
@@ -223,7 +201,7 @@ $track-height: $track-size !default;
       border-top-left-radius: 0;
 
       .#{$ns}-slider-label {
-        transform: translate($label-offset);
+        transform: translate(var(--bp-slider-label-offset));
       }
     }
 
@@ -231,7 +209,7 @@ $track-height: $track-size !default;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       border-top-left-radius: var(--bp-border-radius);
-      margin-bottom: $handle-size * 0.5;
+      margin-bottom: calc(var(--bp-slider-handle-size) * 0.5);
     }
   }
 }

@@ -44,16 +44,7 @@
     padding: 0 var(--bp-spacing);
 
     > .#{$ns}-popover-content {
-      box-shadow: $pt-popover-box-shadow;
-    }
-
-    .#{$ns}-dark &,
-    &.#{$ns}-dark {
-      box-shadow: none;
-
-      > .#{$ns}-popover-content {
-        box-shadow: $pt-dark-popover-box-shadow;
-      }
+      box-shadow: var(--bp-popover-box-shadow);
     }
   }
 }

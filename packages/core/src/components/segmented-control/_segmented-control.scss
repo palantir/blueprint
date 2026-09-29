@@ -2,7 +2,7 @@
 @import "../../common/variables";
 
 .#{$ns}-segmented-control {
-  background-color: $light-gray5;
+  background-color: var(--bp-segmented-control-background-color);
   border-radius: var(--bp-border-radius);
   display: flex;
   gap: calc(var(--bp-spacing) * 0.5);
@@ -22,31 +22,15 @@
 
   > .#{$ns}-button:not(.#{$ns}-minimal) {
     &:not(.#{$ns}-intent-primary) {
-      background-color: $white;
-
-      .#{$ns}-dark & {
-        background-color: $dark-gray5;
-      }
+      background-color: var(--bp-segmented-control-button-background-color);
     }
   }
 
   > .#{$ns}-button.#{$ns}-minimal {
-    color: $pt-text-color-muted;
-
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-muted;
-    }
+    color: var(--bp-text-color-muted);
   }
 
   > .#{$ns}-button.#{$ns}-minimal:disabled {
-    color: $pt-text-color-disabled;
-
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-disabled;
-    }
-  }
-
-  .#{$ns}-dark & {
-    background-color: $dark-gray2;
+    color: var(--bp-text-color-disabled);
   }
 }

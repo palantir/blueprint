@@ -9,21 +9,41 @@
 $tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
-$tooltip-padding-compact-vertical: var(--bp-spacing) !default;
-$tooltip-padding-compact-horizontal: calc(var(--bp-spacing) * 2) !default;
+$tooltip-padding-compact-vertical: $pt-spacing !default;
+$tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
 .#{$ns}-tooltip {
+  --bp-text-color: var(--bp-tooltip-text-color);
+  --bp-text-color-muted: var(--bp-tooltip-text-color-muted);
+  --bp-text-color-disabled: var(--bp-tooltip-text-color-disabled);
+  --bp-heading-color: var(--bp-tooltip-text-color);
+  --bp-link-color: var(--bp-tooltip-link-color);
+  --bp-icon-color: var(--bp-tooltip-text-color-muted);
+  --bp-icon-color-hover: var(--bp-tooltip-text-color);
+  --bp-icon-color-disabled: var(--bp-tooltip-text-color-disabled);
+  --bp-divider-color: var(--bp-tooltip-divider-color);
+  --bp-code-text-color: var(--bp-tooltip-code-text-color);
+  --bp-code-background-color: var(--bp-tooltip-code-background-color);
+  --bp-code-box-shadow: var(--bp-tooltip-code-box-shadow);
+  --bp-code-link-color: var(--bp-tooltip-code-link-color);
+  --bp-key-background-color: var(--bp-tooltip-key-background-color);
+  --bp-elevation-shadow-1: var(--bp-tooltip-key-box-shadow);
+  --bp-intent-primary-text-color: var(--bp-tooltip-intent-primary-text-color);
+  --bp-intent-success-text-color: var(--bp-tooltip-intent-success-text-color);
+  --bp-intent-warning-text-color: var(--bp-tooltip-intent-warning-text-color);
+  --bp-intent-danger-text-color: var(--bp-tooltip-intent-danger-text-color);
+
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 5.5,
     $arrow-offset: $pt-spacing * 0.75,
     $arrow-target-offset: -$pt-spacing
   );
   @include popover-appearance(
-    $tooltip-background-color,
-    $tooltip-text-color,
-    $pt-tooltip-box-shadow,
-    $tooltip-arrow-box-shadow,
-    $pt-border-shadow-opacity
+    var(--bp-tooltip-background-color),
+    var(--bp-tooltip-text-color),
+    var(--bp-tooltip-box-shadow),
+    var(--bp-tooltip-arrow-box-shadow),
+    var(--bp-tooltip-arrow-border-fill-opacity)
   );
   // lightweight scale for tooltips
   @include react-transition(
@@ -31,20 +51,22 @@ $tooltip-padding-compact-horizontal: calc(var(--bp-spacing) * 2) !default;
     (
       transform: scale(0.8) scale(1),
     ),
-    $duration: $pt-transition-duration,
+    $duration: var(--bp-transition-duration),
+    $easing: var(--bp-transition-ease),
     $after: "> &"
   );
   // override typography & icon colors because we use a dark background
   @include pt-dark-typography-colors;
 
   .#{$ns}-popover-content {
-    padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+    padding: var(--bp-tooltip-padding-vertical) var(--bp-tooltip-padding-horizontal);
   }
 
   &.#{$ns}-compact {
     .#{$ns}-popover-content {
       line-height: 1rem; // ensure a consistent line height
-      padding: $tooltip-padding-compact-vertical $tooltip-padding-compact-horizontal;
+      padding: var(--bp-tooltip-padding-compact-vertical)
+        var(--bp-tooltip-padding-compact-horizontal);
     }
 
     // Compact tooltip content is usually just a single line with default line-height, where the slight vertical
@@ -70,32 +92,19 @@ $tooltip-padding-compact-horizontal: calc(var(--bp-spacing) * 2) !default;
     transform: translateX(calc(var(--bp-spacing) * 0.75));
   }
 
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    @include popover-appearance(
-      $dark-tooltip-background-color,
-      $dark-tooltip-text-color,
-      $pt-dark-tooltip-box-shadow,
-      $dark-tooltip-arrow-box-shadow,
-      $pt-dark-border-shadow-opacity
-    );
-    // override typography because we use a light background
-    @include pt-typography-colors;
-  }
-
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-popover-content {
-        background: $color;
-        color: $white;
+        background: var(--bp-intent-#{$intent}-rest);
+        color: var(--bp-palette-white);
       }
 
       .#{$ns}-popover-arrow-fill {
-        fill: $color;
+        fill: var(--bp-intent-#{$intent}-rest);
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // In Windows high contrast mode, just force the color to be the same as the border.
-          fill: $pt-high-contrast-mode-border-color;
+          fill: var(--bp-high-contrast-border-color);
         }
       }
     }

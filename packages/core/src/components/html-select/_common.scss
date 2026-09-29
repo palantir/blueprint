@@ -11,8 +11,8 @@
   -moz-appearance: none;
   -webkit-appearance: none;
   border-radius: var(--bp-border-radius);
-  height: $pt-button-height;
-  padding: 0 calc($input-padding-horizontal * 3) 0 $input-padding-horizontal;
+  height: var(--bp-control-height);
+  padding: var(--bp-html-select-padding);
   // fill parent container
   width: 100%;
   /* stylelint-enable property-no-vendor-prefix */
@@ -23,9 +23,9 @@
 }
 
 %pt-select-large {
-  font-size: $pt-font-size-large;
-  height: $pt-button-height-large;
-  padding-right: calc($input-padding-horizontal * 3.5);
+  font-size: var(--bp-font-size-large);
+  height: var(--bp-control-height-large);
+  padding-right: var(--bp-html-select-padding-inline-end-large);
 }
 
 %pt-dark-select {
@@ -33,22 +33,22 @@
 }
 
 %pt-select-disabled {
-  background-color: $button-background-color-disabled;
+  background-color: var(--bp-button-background-color-disabled);
   box-shadow: none;
-  color: $button-color-disabled;
+  color: var(--bp-text-color-disabled);
   cursor: not-allowed;
 }
 
 %pt-select-icon {
-  color: $pt-icon-color;
+  color: var(--bp-icon-color);
   pointer-events: none;
   position: absolute;
   // N.B. it's more important for the icon to vertically align with button end icons rather than
   // input right padding, see https://github.com/palantir/blueprint/issues/6184
   right: calc(var(--bp-spacing) * 2);
-  top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
+  top: var(--bp-html-select-icon-offset-block);
 
   &.#{$ns}-disabled {
-    color: $pt-icon-color-disabled;
+    color: var(--bp-icon-color-disabled);
   }
 }

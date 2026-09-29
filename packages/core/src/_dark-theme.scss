@@ -4,5 +4,16 @@
 .#{$ns}-dark {
   // this tells the browser to use a dark theme UI, which is most useful for enabling
   // dark scrollbars (only works in Chrome and Edge, not IE or Firefox)
+  color: var(--bp-text-color);
+  color-scheme: dark;
+}
+
+[data-bp-color-scheme="light"] {
+  color: var(--bp-text-color);
+  color-scheme: light;
+}
+
+[data-bp-color-scheme="dark"] {
+  color: var(--bp-text-color);
   color-scheme: dark;
 }

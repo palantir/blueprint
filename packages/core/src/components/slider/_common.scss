@@ -11,12 +11,12 @@
 
   @if $vertical == false {
     height: $size;
-    min-width: $slider-min-size;
+    min-width: var(--bp-slider-min-size);
     width: 100%;
   } @else {
     // define the same rules for both vertical as for horizontal to ensure all
     // horizontal rules are fully overridden.
-    height: $slider-min-size;
+    height: var(--bp-slider-min-size);
     min-width: $size;
     width: $size;
   }

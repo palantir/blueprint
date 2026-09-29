@@ -6,25 +6,20 @@
   // We'd like to use padding instead of margin here to be consistent with the -dialog-footer-fixed class,
   // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
   // TODO(adahiya): migrate from margin to padding style (CSS breaking change)
-  margin: $dialog-padding;
+  margin: var(--bp-dialog-padding);
 }
 
 .#{$ns}-dialog-footer-fixed {
   align-items: center;
-  background-color: $white;
-  border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
-  border-top: 1px solid $pt-divider-black;
+  background-color: var(--bp-dialog-footer-background-color);
+  border-radius: 0 0 var(--bp-border-radius) var(--bp-border-radius);
+  border-top: 1px solid var(--bp-divider-color);
   display: flex;
-  gap: $dialog-padding;
+  gap: var(--bp-dialog-padding);
   justify-content: space-between;
   margin: 0;
   padding: calc(var(--bp-spacing) * 2) calc(var(--bp-spacing) * 2) calc(var(--bp-spacing) * 2)
-    $dialog-padding;
-
-  .#{$ns}-dark & {
-    background: $dark-gray4;
-    border-top: 1px solid $pt-dark-divider-white;
-  }
+    var(--bp-dialog-padding);
 }
 
 .#{$ns}-dialog-footer-main-section {

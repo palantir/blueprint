@@ -13,7 +13,7 @@ body.#{$ns}-overlay-open {
 .#{$ns}-overlay {
   // 0-out all positions so page won't jump when position changes (0s already there)
   @include position-all(static, 0);
-  z-index: $pt-z-index-overlay;
+  z-index: var(--bp-z-index-overlay);
 
   &:not(.#{$ns}-overlay-open) {
     // because of the 0-position covering the viewport,
@@ -61,7 +61,7 @@ body.#{$ns}-overlay-open {
 .#{$ns}-overlay-content {
   // default fixed pulls it out of the flow and makes it viewport-relative
   position: fixed;
-  z-index: $pt-z-index-overlay;
+  z-index: var(--bp-z-index-overlay);
 
   .#{$ns}-overlay-inline &,
   .#{$ns}-overlay-scroll-container & {
@@ -79,13 +79,14 @@ body.#{$ns}-overlay-open {
     (
       opacity: 0 1,
     ),
-    $pt-transition-duration * 2,
+    var(--bp-overlay-transition-duration),
+    $easing: var(--bp-transition-ease),
     $before: "&"
   );
-  background-color: $overlay-background-color;
+  background-color: var(--bp-overlay-background-color);
   overflow: auto;
   user-select: none;
-  z-index: $pt-z-index-overlay;
+  z-index: var(--bp-z-index-overlay);
 
   &:focus {
     outline: none;
