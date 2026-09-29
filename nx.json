@@ -2,7 +2,7 @@
     "targetDefaults": {
         "compile": {
             "dependsOn": ["^compile"],
-            "inputs": ["default", "^designTokens"],
+            "inputs": ["default", "designTokens", "^designTokens"],
             "outputs": ["{projectRoot}/lib", "{projectRoot}/src/design-tokens/build"],
             "cache": true
         },
@@ -13,7 +13,7 @@
         },
         "compile:css": {
             "dependsOn": ["^compile:css"],
-            "inputs": ["default", "^designTokens"],
+            "inputs": ["default", "designTokens", "^designTokens"],
             "outputs": ["{projectRoot}/lib/css", "{projectRoot}/src/design-tokens/build"],
             "cache": true
         },
@@ -46,6 +46,7 @@
         },
         "bundle": {
             "dependsOn": ["^bundle"],
+            "inputs": ["default", "designTokens", "^designTokens"],
             "outputs": ["{projectRoot}/dist"],
             "cache": true
         },
@@ -91,7 +92,12 @@
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "namedInputs": {
         "default": ["{projectRoot}/src/**/*", "!{projectRoot}/src/design-tokens/build/**/*", "sharedGlobals"],
-        "designTokens": ["{projectRoot}/src/design-tokens/**/*", "!{projectRoot}/src/design-tokens/build/**/*"],
+        "designTokens": [
+            "{projectRoot}/src/design-tokens/**/*",
+            "!{projectRoot}/src/design-tokens/build/**/*",
+            "{workspaceRoot}/packages/node-build-scripts/build-design-tokens.mjs",
+            "{workspaceRoot}/packages/node-build-scripts/src/designTokens.mjs"
+        ],
         "sharedGlobals": [],
         "production": ["default"]
     },
