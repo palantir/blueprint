@@ -24,7 +24,7 @@
     },
     "scripts": {
         "build:tokens": "build-design-tokens src/design-tokens/config.json",
-        "build:sass": "sass-compile ./src",
+        "build:sass": "run-s build:tokens && sass-compile ./src",
         "clean": "rm -rf coverage lib src/design-tokens/build",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src/tsconfig.build.json",

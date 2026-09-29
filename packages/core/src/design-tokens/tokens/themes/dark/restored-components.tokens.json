@@ -138,7 +138,7 @@
                 },
                 "text-color-active": {
                     "$type": "color",
-                    "$value": "#99c4ff"
+                    "$value": "{palette.blue.6}"
                 },
                 "text-color-disabled": {
                     "$type": "color",
@@ -160,7 +160,7 @@
                 },
                 "text-color-active": {
                     "$type": "color",
-                    "$value": "#7cd7a2"
+                    "$value": "{palette.green.6}"
                 },
                 "text-color-disabled": {
                     "$type": "color",
@@ -182,7 +182,7 @@
                 },
                 "text-color-active": {
                     "$type": "color",
-                    "$value": "#f5c186"
+                    "$value": "{palette.orange.6}"
                 },
                 "text-color-disabled": {
                     "$type": "color",
@@ -204,7 +204,7 @@
                 },
                 "text-color-active": {
                     "$type": "color",
-                    "$value": "#ffa1a4"
+                    "$value": "{palette.red.6}"
                 },
                 "text-color-disabled": {
                     "$type": "color",
@@ -246,7 +246,7 @@
                 },
                 "text-color-interactive": {
                     "$type": "color",
-                    "$value": "#99c4ff"
+                    "$value": "{palette.blue.6}"
                 }
             },
             "success": {
@@ -268,7 +268,7 @@
                 },
                 "text-color-interactive": {
                     "$type": "color",
-                    "$value": "#7cd7a2"
+                    "$value": "{palette.green.6}"
                 }
             },
             "warning": {
@@ -290,7 +290,7 @@
                 },
                 "text-color-interactive": {
                     "$type": "color",
-                    "$value": "#f5c186"
+                    "$value": "{palette.orange.6}"
                 }
             },
             "danger": {
@@ -312,7 +312,7 @@
                 },
                 "text-color-interactive": {
                     "$type": "color",
-                    "$value": "#ffa1a4"
+                    "$value": "{palette.red.6}"
                 }
             }
         }

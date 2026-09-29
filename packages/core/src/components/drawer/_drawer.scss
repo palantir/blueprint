@@ -6,8 +6,8 @@
 @import "../../common/react-transition";
 @import "../../common/variables";
 
-$drawer-margin: calc(var(--bp-spacing) * 7.5) 0 !default;
-$drawer-padding: calc(var(--bp-spacing) * 5) !default;
+$drawer-margin: ($pt-spacing * 7.5) 0 !default;
+$drawer-padding: $pt-spacing * 5 !default;
 
 $drawer-default-size: 50%;
 
@@ -15,8 +15,8 @@ $drawer-background-color: $white !default;
 $dark-drawer-background-color: $dark-gray3 !default;
 
 .#{$ns}-drawer {
-  background: $drawer-background-color;
-  box-shadow: $pt-elevation-shadow-4;
+  background: var(--bp-drawer-background-color);
+  box-shadow: var(--bp-drawer-box-shadow);
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -36,8 +36,8 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      var(--bp-drawer-transition-duration-enter),
+      var(--bp-transition-ease),
       $before: "&"
     );
     @include react-transition-phase(
@@ -49,17 +49,18 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration,
+      var(--bp-drawer-transition-duration-exit),
+      var(--bp-transition-ease),
       $before: "&"
     );
-    height: $drawer-default-size;
+    height: var(--bp-drawer-default-size);
     left: 0;
     right: 0;
 
     top: 0;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+      border-bottom: 1px solid var(--bp-high-contrast-border-color);
     }
   }
 
@@ -73,8 +74,8 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      var(--bp-drawer-transition-duration-enter),
+      var(--bp-transition-ease),
       $before: "&"
     );
     @include react-transition-phase(
@@ -86,17 +87,18 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration,
+      var(--bp-drawer-transition-duration-exit),
+      var(--bp-transition-ease),
       $before: "&"
     );
     bottom: 0;
-    height: $drawer-default-size;
+    height: var(--bp-drawer-default-size);
     left: 0;
 
     right: 0;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-top: 1px solid $pt-high-contrast-mode-border-color;
+      border-top: 1px solid var(--bp-high-contrast-border-color);
     }
   }
 
@@ -110,8 +112,8 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      var(--bp-drawer-transition-duration-enter),
+      var(--bp-transition-ease),
       $before: "&"
     );
     @include react-transition-phase(
@@ -123,17 +125,18 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration,
+      var(--bp-drawer-transition-duration-exit),
+      var(--bp-transition-ease),
       $before: "&"
     );
     bottom: 0;
     left: 0;
 
     top: 0;
-    width: $drawer-default-size;
+    width: var(--bp-drawer-default-size);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-right: 1px solid $pt-high-contrast-mode-border-color;
+      border-right: 1px solid var(--bp-high-contrast-border-color);
     }
   }
 
@@ -147,8 +150,8 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      var(--bp-drawer-transition-duration-enter),
+      var(--bp-transition-ease),
       $before: "&"
     );
     @include react-transition-phase(
@@ -160,48 +163,47 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration,
+      var(--bp-drawer-transition-duration-exit),
+      var(--bp-transition-ease),
       $before: "&"
     );
     bottom: 0;
     right: 0;
 
     top: 0;
-    width: $drawer-default-size;
+    width: var(--bp-drawer-default-size);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-left: 1px solid $pt-high-contrast-mode-border-color;
+      border-left: 1px solid var(--bp-high-contrast-border-color);
     }
   }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background: $dark-drawer-background-color;
-    box-shadow: $pt-dark-dialog-box-shadow;
-    color: $pt-dark-text-color;
+    color: var(--bp-text-color);
   }
 }
 
 .#{$ns}-drawer-header {
   align-items: center;
   border-radius: 0;
-  box-shadow: 0 1px 0 $pt-divider-black;
+  box-shadow: 0 1px 0 var(--bp-drawer-divider-color);
   display: flex;
   flex: 0 0 auto;
-  min-height: calc($pt-icon-size-large + $drawer-padding);
-  padding: calc($drawer-padding * 0.25);
-  padding-left: $drawer-padding;
+  min-height: var(--bp-drawer-header-min-height);
+  padding: var(--bp-drawer-header-padding);
+  padding-left: var(--bp-drawer-padding);
   position: relative;
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+    border-bottom: 1px solid var(--bp-high-contrast-border-color);
   }
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
-    color: $pt-icon-color;
+    color: var(--bp-icon-color);
     flex: 0 0 auto;
-    margin-right: calc($drawer-padding * 0.5);
+    margin-right: var(--bp-drawer-header-icon-margin);
   }
 
   .#{$ns}-heading {
@@ -211,16 +213,7 @@ $dark-drawer-background-color: $dark-gray3 !default;
     margin: 0;
 
     &:last-child {
-      margin-right: $drawer-padding;
-    }
-  }
-
-  .#{$ns}-dark & {
-    box-shadow: 0 1px 0 $pt-dark-divider-black;
-
-    .#{$ns}-icon-large,
-    .#{$ns}-icon {
-      color: $pt-dark-icon-color;
+      margin-right: var(--bp-drawer-padding);
     }
   }
 }
@@ -232,12 +225,8 @@ $dark-drawer-background-color: $dark-gray3 !default;
 }
 
 .#{$ns}-drawer-footer {
-  box-shadow: inset 0 1px 0 $pt-divider-black;
+  box-shadow: inset 0 1px 0 var(--bp-drawer-divider-color);
   flex: 0 0 auto;
-  padding: calc($drawer-padding * 0.5) $drawer-padding;
+  padding: var(--bp-drawer-footer-padding);
   position: relative;
-
-  .#{$ns}-dark & {
-    box-shadow: inset 0 1px 0 $pt-dark-divider-black;
-  }
 }

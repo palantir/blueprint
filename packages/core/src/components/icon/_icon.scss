@@ -37,20 +37,14 @@
 
   // muted icon style used by NonIdealState
   &.#{$ns}-icon-muted svg {
-    fill-opacity: 0.15;
+    fill-opacity: var(--bp-icon-muted-fill-opacity);
     // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
     overflow: visible;
 
     path {
-      stroke: $gray3;
+      stroke: var(--bp-palette-gray-3);
       stroke-opacity: 0.5;
       stroke-width: 0.5px;
-    }
-  }
-
-  .#{$ns}-dark & {
-    .#{$ns}-icon-muted svg {
-      fill-opacity: 0.2;
     }
   }
 }
@@ -64,12 +58,12 @@
 //
 
 span.#{$ns}-icon-standard {
-  @include pt-icon($pt-icon-size-standard);
+  @include pt-icon(var(--bp-icon-size-standard), 16);
   display: inline-block;
 }
 
 span.#{$ns}-icon-large {
-  @include pt-icon($pt-icon-size-large);
+  @include pt-icon(var(--bp-icon-size-large), 20);
   display: inline-block;
 }
 
@@ -86,11 +80,11 @@ span.#{$ns}-icon:empty {
   }
 
   &.#{$ns}-icon-standard {
-    font-size: $pt-icon-size-standard;
+    font-size: var(--bp-icon-size-standard);
   }
 
   &.#{$ns}-icon-large {
-    font-size: $pt-icon-size-large;
+    font-size: var(--bp-icon-size-large);
   }
 }
 

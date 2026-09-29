@@ -763,7 +763,7 @@
                     },
                     "background-color-active": {
                         "$type": "color",
-                        "$value": "#11376b"
+                        "$value": "{palette.blue.0}"
                     }
                 }
             },
@@ -779,7 +779,7 @@
                     },
                     "background-color-active": {
                         "$type": "color",
-                        "$value": "#0f3e25"
+                        "$value": "{palette.green.0}"
                     }
                 }
             },
@@ -811,7 +811,7 @@
                     },
                     "background-color-active": {
                         "$type": "color",
-                        "$value": "#782326"
+                        "$value": "{palette.red.0}"
                     }
                 }
             }
@@ -1094,6 +1094,27 @@
         }
     },
     "input-group": {
+        "button-height": {
+            "$type": "dimension",
+            "$value": {
+                "value": 24,
+                "unit": "px"
+            }
+        },
+        "button-height-large": {
+            "$type": "dimension",
+            "$value": {
+                "value": 30,
+                "unit": "px"
+            }
+        },
+        "button-height-small": {
+            "$type": "dimension",
+            "$value": {
+                "value": 20,
+                "unit": "px"
+            }
+        },
         "button-margin": {
             "$type": "dimension",
             "$value": {

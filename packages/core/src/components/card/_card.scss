@@ -7,7 +7,7 @@
 .#{$ns}-card {
   background-color: var(--bp-card-background-color);
   border-radius: var(--bp-border-radius);
-  box-shadow: var(--bp-surface-shadow-0);
+  box-shadow: var(--bp-elevation-shadow-0);
   padding: var(--bp-card-padding);
   transition:
     transform calc(var(--bp-transition-duration) * 2) var(--bp-transition-ease),
@@ -23,7 +23,7 @@
 @for $index from 1 through list.length($elevation-shadows) {
   .#{$ns}-elevation-#{$index - 1} {
     /* stylelint-disable-next-line custom-property-pattern */
-    box-shadow: var(--bp-surface-shadow-#{$index - 1});
+    box-shadow: var(--bp-elevation-shadow-#{$index - 1});
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       border: 1px solid var(--bp-high-contrast-border-color);
@@ -37,7 +37,7 @@
 
 .#{$ns}-card.#{$ns}-interactive {
   &:hover {
-    box-shadow: var(--bp-surface-shadow-3);
+    box-shadow: var(--bp-elevation-shadow-3);
     cursor: pointer;
   }
 
@@ -46,7 +46,7 @@
   }
 
   &:active {
-    box-shadow: var(--bp-surface-shadow-1);
+    box-shadow: var(--bp-elevation-shadow-1);
     transition-duration: 0;
   }
 }

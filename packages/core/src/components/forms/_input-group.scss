@@ -50,7 +50,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-button {
-    @include pt-button-height(var(--bp-control-height-small));
+    @include pt-button-height(var(--bp-input-group-button-height));
     margin: var(--bp-input-group-button-margin);
     padding: var(--bp-button-padding-block-small) var(--bp-button-padding-inline-small);
 
@@ -123,7 +123,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-large {
     .#{$ns}-button {
-      @include pt-button-height(var(--bp-control-height));
+      @include pt-button-height(var(--bp-input-group-button-height-large));
       margin: var(--bp-input-group-button-margin-large);
     }
 
@@ -148,12 +148,12 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
   &.#{$ns}-small {
     .#{$ns}-button {
-      @include pt-button-height(var(--bp-control-height-smaller));
+      @include pt-button-height(var(--bp-input-group-button-height-small));
       margin: var(--bp-input-group-button-margin-small);
     }
 
     .#{$ns}-tag {
-      @include pt-button-height(var(--bp-control-height-smaller));
+      @include pt-button-height(var(--bp-input-group-button-height-small));
       margin: var(--bp-input-group-button-margin-small);
     }
 

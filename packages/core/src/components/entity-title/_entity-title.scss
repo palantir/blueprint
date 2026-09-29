@@ -59,7 +59,7 @@
   }
 
   &-subtitle {
-    font-size: $pt-font-size-small;
+    font-size: var(--bp-font-size-small);
     margin-top: calc(var(--bp-spacing) * 0.5);
   }
 
@@ -68,7 +68,7 @@
     overflow: hidden;
   }
 
-  @each $tag, $props in $headings {
+  @each $tag, $props in $heading-token-values {
     &-heading-#{$tag} .#{$ns}-icon-container {
       align-items: center;
       display: flex;
@@ -83,7 +83,7 @@
     gap: calc(var(--bp-spacing) * 4);
 
     .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size;
+      font-size: var(--bp-font-size);
     }
   }
 
@@ -93,7 +93,7 @@
     gap: calc(var(--bp-spacing) * 2);
 
     .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size-small;
+      font-size: var(--bp-font-size-small);
     }
   }
 }
