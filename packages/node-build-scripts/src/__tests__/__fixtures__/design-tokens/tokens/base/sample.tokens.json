@@ -8,6 +8,14 @@
             "$type": "dimension",
             "$value": "{sample.spacing}"
         },
+        "legacy-spacing": {
+            "$type": "dimension",
+            "$value": { "value": 6, "unit": "px" }
+        },
+        "canonical-spacing": {
+            "$type": "dimension",
+            "$value": "{sample.legacy-spacing}"
+        },
         "dependency-color": {
             "$type": "color",
             "$value": "{dependency.color}"
@@ -31,7 +39,7 @@
             "$value": {
                 "color": {
                     "colorSpace": "srgb",
-                    "components": [0, 0, 0],
+                    "components": [0.066667, 0.078431, 0.094118],
                     "alpha": 0.15
                 },
                 "offsetX": { "value": 0, "unit": "px" },

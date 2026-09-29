@@ -51,15 +51,36 @@ describe("buildDesignTokens", () => {
         const explicitDarkRule = getTopLevelRule(root.nodes, '[data-bp-color-scheme="dark"]');
 
         expect(getDeclaration(rootRule, "--bp-sample-alias")?.value).toBe("var(--bp-sample-spacing)");
+        expect(getDeclaration(rootRule, "--bp-sample-canonical-spacing")?.value).toBe(
+            "var(--bp-sample-legacy-spacing)",
+        );
         expect(getDeclaration(rootRule, "--bp-sample-dependency-color")?.value).toBe("var(--bp-dependency-color)");
         expect(getDeclaration(rootRule, "--bp-sample-layer")?.value).toBe(
             "linear-gradient(var(--bp-sample-derived) 0 0)",
         );
-        expect(getDeclaration(rootRule, "--bp-sample-shadow")?.value).toBe("0px 1px 2px rgba(0, 0, 0, 0.15)");
+        expect(getDeclaration(rootRule, "--bp-sample-shadow")?.value).toBe("0px 1px 2px rgba(17, 20, 24, 0.15)");
         expect(getDeclaration(rootRule, "--bp-dependency-color")).toBeUndefined();
 
-        expect(legacyDarkRule?.nodes).toHaveLength(1);
+        expect(
+            legacyDarkRule?.nodes.filter((node): node is Declaration => node.type === "decl").map(node => node.prop),
+        ).toStrictEqual([
+            "--bp-sample-spacing",
+            "--bp-sample-alias",
+            "--bp-sample-canonical-spacing",
+            "--bp-sample-dependency-color",
+            "--bp-sample-derived",
+            "--bp-sample-layer",
+        ]);
         expect(getDeclaration(legacyDarkRule, "--bp-sample-spacing")?.value).toBe("8px");
+        expect(getDeclaration(legacyDarkRule, "--bp-sample-alias")?.value).toBe("var(--bp-sample-spacing)");
+        expect(getDeclaration(legacyDarkRule, "--bp-sample-canonical-spacing")?.value).toBe(
+            "var(--bp-sample-legacy-spacing)",
+        );
+        expect(getDeclaration(legacyDarkRule, "--bp-sample-legacy-spacing")).toBeUndefined();
+        expect(getDeclaration(legacyDarkRule, "--bp-sample-dependency-color")?.value).toBe(
+            "var(--bp-dependency-color)",
+        );
+        expect(getDeclaration(legacyDarkRule, "--bp-dependency-color")).toBeUndefined();
         expect(getDeclaration(explicitDarkRule, "--bp-sample-spacing")?.value).toBe("8px");
         expect(getDeclaration(explicitDarkRule, "--bp-sample-alias")?.value).toBe("var(--bp-sample-spacing)");
 

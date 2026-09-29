@@ -4,6 +4,8 @@
 
 // @ts-check
 
+/* eslint-disable sort-keys */
+
 import { register } from "@tokens-studio/sd-transforms";
 import { formatHex, formatHex8, oklch, parse } from "culori";
 import fs from "fs-extra";
@@ -12,6 +14,7 @@ import StyleDictionary from "style-dictionary";
 
 const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l c h))";
 const TOKEN_REFERENCE_PATTERN = /\{([^}]+)\}/g;
+const TOKEN_REFERENCE_TEST_PATTERN = /\{[^}]+\}/;
 
 let isStyleDictionaryInitialized = false;
 
@@ -172,6 +175,10 @@ const getTokenValue = token => token.$value ?? token.value;
 const getTokenValueAsString = token => String(getTokenValue(token));
 const getOriginalValue = token => token.original?.$value ?? token.original?.value;
 const getTokenPath = token => token.path.join(".");
+const hasTokenReference = token => {
+    const originalValue = getOriginalValue(token);
+    return typeof originalValue === "string" && TOKEN_REFERENCE_TEST_PATTERN.test(originalValue);
+};
 
 const parseTokenValueAsNumber = token => {
     const value = getTokenValue(token);
@@ -461,6 +468,33 @@ const buildDictionary = async (include, source) => {
     return dictionary.getPlatformTokens("css");
 };
 
+// CSS aliases resolve where they are declared, so every owned reference token must be redeclared at the legacy dark
+// boundary. This lets aliases follow dark dependencies and preserves legacy-name overrides on the boundary element.
+const getCompatibilityDarkTokens = (baseTokens, darkDictionary, darkOverrideTokens) => {
+    const darkTokensByPath = new Map(darkDictionary.allTokens.map(token => [getTokenPath(token), token]));
+    const includedPaths = new Set();
+    const tokens = [];
+    const appendToken = token => {
+        const path = getTokenPath(token);
+        if (!includedPaths.has(path)) {
+            includedPaths.add(path);
+            tokens.push(token);
+        }
+    };
+
+    darkOverrideTokens.forEach(appendToken);
+    baseTokens.filter(hasTokenReference).forEach(baseToken => {
+        const path = getTokenPath(baseToken);
+        const darkToken = darkTokensByPath.get(path);
+        if (darkToken === undefined) {
+            throw new Error(`Unable to resolve owned token "${path}" in the dark token dictionary.`);
+        }
+        appendToken(darkToken);
+    });
+
+    return tokens;
+};
+
 /**
  * Builds a package's DTCG token sources into one CSS file containing Blueprint's ordered theme selectors.
  *
@@ -484,10 +518,11 @@ export const buildDesignTokens = async configPath => {
     }
 
     const ownedTokenPaths = new Set([...baseTokenPaths, ...darkOverrideTokens.map(getTokenPath)]);
+    const compatibilityDarkTokens = getCompatibilityDarkTokens(baseTokens, darkDictionary, darkOverrideTokens);
     const explicitDarkTokens = darkDictionary.allTokens.filter(token => ownedTokenPaths.has(getTokenPath(token)));
     const sections = [
         buildSection(":root", baseDictionary, baseTokens),
-        buildSection(".bp6-dark", darkDictionary, darkOverrideTokens),
+        buildSection(".bp6-dark", darkDictionary, compatibilityDarkTokens),
         buildSection('[data-bp-color-scheme="light"]', baseDictionary, baseTokens),
         buildSection('[data-bp-color-scheme="dark"]', darkDictionary, explicitDarkTokens),
     ];
