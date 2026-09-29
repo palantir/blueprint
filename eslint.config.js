@@ -76,17 +76,6 @@ module.exports = tseslint.config([
         },
     },
     {
-        files: [".storybook/**/*.{ts,tsx}"],
-        rules: {
-            "import/no-extraneous-dependencies": [
-                "error",
-                {
-                    devDependencies: true,
-                },
-            ],
-        },
-    },
-    {
         files: ["**/*.stories.{ts,tsx}"],
         languageOptions: {
             parserOptions: {

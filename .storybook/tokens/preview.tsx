@@ -3,30 +3,36 @@
  */
 
 import type { Decorator } from "@storybook/react-vite";
-import React from "react";
+import { addons, useEffect } from "storybook/preview-api";
 
-import type { TokenValues } from "./tokens";
+import {
+    TOKEN_DEFAULTS_REQUESTED,
+    TOKEN_DEFAULTS_UPDATED,
+    TOKEN_NAMES,
+    type TokenDefaults,
+    type TokenValues,
+} from "./tokens";
 
-interface TokenPreviewProps {
-    children: React.ReactNode;
-    tokenOverrides: Partial<TokenValues>;
-}
-
-export const withTokens: Decorator = (Story, context) => (
-    <TokenPreview tokenOverrides={context.globals.tokenOverrides}>
-        <Story />
-    </TokenPreview>
-);
-
-function TokenPreview({ children, tokenOverrides }: TokenPreviewProps) {
-    React.useEffect(
+export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
+    const tokenOverrides: Partial<TokenValues> = globals.tokenOverrides;
+    const theme = globals.theme === "dark" ? "dark" : "light";
+    useEffect(
         function applyTokenOverrides() {
+            const channel = addons.getChannel();
             const style = document.body.style;
             const previousValues = Object.keys(tokenOverrides).map(name => ({
                 name,
                 priority: style.getPropertyPriority(name),
                 value: style.getPropertyValue(name),
             }));
+
+            // Capture defaults before our overrides
+            const defaults: TokenDefaults = { storyId: id, theme, values: readTokenDefaults() };
+            function publishDefaults() {
+                channel.emit(TOKEN_DEFAULTS_UPDATED, defaults);
+            }
+            channel.on(TOKEN_DEFAULTS_REQUESTED, publishDefaults);
+            publishDefaults();
 
             for (const [name, value] of Object.entries(tokenOverrides)) {
                 if (value !== undefined) {
@@ -35,14 +41,23 @@ function TokenPreview({ children, tokenOverrides }: TokenPreviewProps) {
             }
 
             return () => {
+                channel.off(TOKEN_DEFAULTS_REQUESTED, publishDefaults);
                 for (const { name, value, priority } of previousValues) {
                     // An empty value removes the inline property.
                     style.setProperty(name, value, priority);
                 }
             };
         },
-        [tokenOverrides],
+        [id, theme, tokenOverrides],
     );
 
-    return children;
+    return <Story />;
+};
+
+function readTokenDefaults(): TokenValues {
+    const computedStyle = getComputedStyle(document.body);
+    // Every configured token is included in this mapping.
+    return Object.fromEntries(
+        TOKEN_NAMES.map(name => [name, computedStyle.getPropertyValue(name).trim()]),
+    ) as TokenValues;
 }
