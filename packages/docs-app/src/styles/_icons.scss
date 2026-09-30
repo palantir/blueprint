@@ -112,7 +112,7 @@ $docs-icon-next-columns: 6;
 
   .docs-icon-next-glyph {
     align-items: center;
-    border-radius: $pt-border-radius * 2;
+    border-radius: calc(var(--bp-surface-border-radius) * 2);
     color: $pt-icon-color;
     display: flex;
     justify-content: center;
@@ -152,7 +152,7 @@ $docs-icon-next-columns: 6;
 
   .docs-icons-next-dialog-hero {
     align-items: center;
-    border-radius: $pt-border-radius * 2;
+    border-radius: calc(var(--bp-surface-border-radius) * 2);
     display: flex;
     justify-content: center;
     padding: $pt-spacing * 8;
@@ -253,7 +253,7 @@ $docs-icon-next-columns: 6;
   &::before {
     @include position-all(absolute, 0);
     background: $light-gray4;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     content: "";
     opacity: 0;
     // must set this to avoid capturing hover events which should be sent to ClickToCopy element(s) instead
@@ -302,7 +302,7 @@ $docs-icon-next-columns: 6;
 
 .docs-icon {
   align-items: center;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   display: flex;
   flex-direction: column;
   padding: ($pt-spacing * 5) 0;
