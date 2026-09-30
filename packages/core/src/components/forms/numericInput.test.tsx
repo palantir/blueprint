@@ -902,6 +902,29 @@ describe("<NumericInput>", () => {
                 expect.anything(),
             );
         });
+
+        it("keeps the sign when decrementing below zero in a locale that uses the minus sign (sv-SE)", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            render(<ControlledNumericInput onValueChange={onValueChangeSpy} locale="sv-SE" />);
+
+            await user.click(screen.getByRole("button", { name: "decrement" }));
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(-1, "-1", expect.anything());
+            expect(screen.getByRole("spinbutton")).toHaveValue("-1");
+
+            await user.click(screen.getByRole("button", { name: "decrement" }));
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(-2, "-2", expect.anything());
+        });
+
+        it("accepts a pasted negative number that uses the minus sign (sv-SE)", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            render(<NumericInput onValueChange={onValueChangeSpy} locale="sv-SE" />);
+
+            await user.click(screen.getByRole("spinbutton"));
+            await user.paste("\u22121,5");
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(-1.5, "-1,5", expect.anything());
+        });
     });
 
     describe("Other", () => {
