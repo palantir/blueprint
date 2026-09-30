@@ -14,7 +14,8 @@
         "@blueprintjs/colors": "workspace:^",
         "postcss": "^8.5.23",
         "postcss-selector-parser": "^7.0.0",
-        "postcss-value-parser": "^4.2.0"
+        "postcss-value-parser": "^4.2.0",
+        "tslib": "catalog:"
     },
     "peerDependencies": {
         "stylelint": "^14.12.1 || ^15.10.3 || ^16.10.0"
