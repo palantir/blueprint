@@ -48,7 +48,6 @@ const preview: Preview = {
     },
 
     decorators: [
-        // Putting withTokens before withThemeByClassName so that Classes.DARK is applied before we get the token values
         withTokens,
         withThemeByClassName({
             defaultTheme: "light",

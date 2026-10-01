@@ -22,17 +22,6 @@ export type TokenControlValues = {
 // All keys come from the module-owned configuration above.
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
 
-// The Theme panel runs in the manager, but token defaults come from the preview iframe's CSS.
-// The preview publishes defaults over the channel; the panel requests them in case it missed the initial event.
-export const TOKEN_DEFAULTS_UPDATED = "tokens/defaults";
-export const TOKEN_DEFAULTS_REQUESTED = "tokens/request-defaults";
-
-export interface TokenDefaults {
-    storyId: string;
-    theme: "light" | "dark";
-    values: TokenValues;
-}
-
 interface TokenEditor<T> {
     control: NonNullable<ArgTypes[string]["control"]>;
     toControlValue: (cssValue: string) => T;
