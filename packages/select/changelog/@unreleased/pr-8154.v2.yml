@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "[QueryList] Preserve the active item when the items list changes while the query stays the same"
+  links:
+  - https://github.com/palantir/blueprint/pull/8154

@@ -281,7 +281,10 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 include: ["items", "itemListPredicate", "itemPredicate"],
             })
         ) {
-            this.setQuery(this.state.query);
+            // the query did not change, so preserve the current active item instead of resetting
+            // it to the first item. setQuery still resets when the active item is no longer present
+            // in (or is disabled within) the new filtered list.
+            this.setQuery(this.state.query, false);
         }
 
         if (this.shouldCheckActiveItemInViewport) {
