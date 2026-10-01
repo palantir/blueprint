@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Single-day date range shortcuts cover the selected day through the end of the day when a time precision is set.
+  links:
+    - https://github.com/palantir/blueprint/pull/8285
