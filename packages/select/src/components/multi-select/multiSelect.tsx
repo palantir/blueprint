@@ -121,6 +121,11 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * file a bug in the Blueprint repo:
      * - `tagInputProps.onChange`
      *
+     * Notes for `tagInputProps.onAdd`:
+     * - this handler is invoked in addition to MultiSelect's internal paste handling, so you can react
+     *   to values the user adds via paste, enter, or blur. its return value is respected, meaning
+     *   returning `false` keeps the typed text in the input rather than clearing it.
+     *
      * Notes for `tagInputProps.rightElement`:
      * - you are responsible for disabling any elements you may render here when the overall `MultiSelect` is disabled
      * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
@@ -411,10 +416,14 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     };
 
     private getTagInputAddHandler =
-        (listProps: QueryListRendererProps<T>) => (values: any[], method: TagInputAddMethod) => {
+        (listProps: QueryListRendererProps<T>) => (values: string[], method: TagInputAddMethod) => {
             if (method === "paste") {
                 listProps.handlePaste(values);
             }
+            // MultiSelect manages tag creation internally, but a consumer may still pass an onAdd
+            // handler through tagInputProps. forward to it and respect its return value so the
+            // input-clearing behavior documented on TagInput#onAdd is preserved.
+            return this.props.tagInputProps?.onAdd?.(values, method);
         };
 
     private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {

@@ -18,7 +18,7 @@ import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
 
-import { Button, Classes as CoreClasses, PopoverNext, Tag } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, PopoverNext, Tag, TagInput } from "@blueprintjs/core";
 import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
@@ -106,6 +106,18 @@ describe("<MultiSelect>", () => {
         });
         wrapper.find(`.${CoreClasses.TAG_REMOVE}`).at(1).simulate("click");
         expect(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1)).toBe(true);
+    });
+
+    it("forwards tagInputProps.onAdd to the underlying TagInput", () => {
+        // a consumer-supplied onAdd is allowed by the type but used to be silently dropped.
+        // see https://github.com/palantir/blueprint/issues/7094
+        const handleAdd = sinon.spy();
+        const wrapper = multiselect({ tagInputProps: { onAdd: handleAdd } });
+
+        const onAdd = wrapper.find(TagInput).prop("onAdd")!;
+        onAdd(["pasted value"], "paste");
+
+        expect(handleAdd.calledOnceWithExactly(["pasted value"], "paste")).toBe(true);
     });
 
     it("opens popover with custom target", async () => {
