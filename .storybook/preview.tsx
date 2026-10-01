@@ -60,6 +60,7 @@ const preview: Preview = {
             if (typeof document !== "undefined" && document.body) {
                 // Setting dark background based on class
                 document.body.style.backgroundColor = isDark ? Colors.BLACK : Colors.WHITE;
+                document.body.setAttribute("data-bp-color-scheme", isDark ? "dark" : "light");
             }
             return (
                 <BlueprintProvider>

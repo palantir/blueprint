@@ -1,0 +1,229 @@
+// Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:map";
+@import "../../common/mixins";
+@import "../../common/variables";
+@import "../../common/variables-extended";
+
+@mixin pt-button-layout-next() {
+  @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2), $inline: inline);
+  align-items: center;
+  border: none;
+  border-radius: var(--bp-surface-border-radius);
+  cursor: pointer;
+  font-size: var(--bp-typography-size-md);
+  justify-content: center;
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
+  text-align: left;
+  vertical-align: middle;
+}
+
+@mixin pt-button-height-default-next() {
+  min-height: calc(var(--bp-surface-spacing) * 7);
+  min-width: calc(var(--bp-surface-spacing) * 7);
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
+}
+
+@mixin pt-button-height-small-next() {
+  min-height: calc(var(--bp-surface-spacing) * 6);
+  min-width: calc(var(--bp-surface-spacing) * 6);
+  padding: 0 calc(var(--bp-surface-spacing) * 2);
+}
+
+// N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
+@mixin pt-button-next() {
+  background:
+    var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
+    var(--bp-surface-background-color-base-rest);
+  box-shadow: inset var(--bp-surface-shadow-0);
+  color: var(--bp-typography-color-base);
+
+  &:hover {
+    background: var(--bp-surface-layer-neutral-hover);
+    background-clip: padding-box;
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    background: var(--bp-surface-layer-neutral-active);
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background: highlight;
+    }
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    background-color: oklch(
+      from var(--bp-surface-background-color-neutral-rest) l c h /
+        var(--bp-emphasis-disabled-opacity)
+    );
+    box-shadow: none;
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+    cursor: not-allowed;
+    outline: none;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid buttonborder;
+  }
+}
+
+@mixin pt-button-intent-variant-next($intent: "neutral") {
+  background-color: var(--bp-surface-background-color-#{$intent}-rest);
+  box-shadow: inset var(--bp-surface-shadow-0);
+  color: var(--bp-intent-#{$intent}-foreground);
+
+  &:hover {
+    background-color: var(--bp-surface-background-color-#{$intent}-hover);
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    background-color: var(--bp-surface-background-color-#{$intent}-active);
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    background-color: oklch(
+      from var(--bp-surface-background-color-#{$intent}-rest) l c h /
+        var(--bp-emphasis-disabled-opacity)
+    );
+    border-color: transparent;
+    box-shadow: none;
+    color: oklch(
+      from var(--bp-intent-#{$intent}-foreground) l c h / var(--bp-emphasis-disabled-opacity)
+    );
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border-color: graytext;
+      color: graytext;
+    }
+  }
+
+  .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    // Use srgb to avoid hue shift with near-neutral gray
+    background:
+      var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest),
+      var(--bp-surface-layer-neutral-rest), var(--bp-surface-layer-neutral-rest);
+    stroke: var(--bp-intent-#{$intent}-foreground);
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid buttonborder;
+    box-shadow: none;
+  }
+}
+
+@mixin pt-button-minimal-next() {
+  background: none;
+  box-shadow: none;
+  color: var(--bp-typography-color-base);
+
+  &:hover {
+    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+    background: var(--bp-surface-layer-neutral-hover);
+    box-shadow: none;
+    text-decoration: none;
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    // Use srgb instead of oklch to avoid hue shift with near-neutral colors
+    background: var(--bp-surface-layer-neutral-active);
+    box-shadow: none;
+  }
+
+  &:disabled,
+  &:disabled:hover,
+  &.#{$ns}-disabled,
+  &.#{$ns}-disabled:hover {
+    background: none;
+    color: oklch(from var(--bp-typography-color-base) l c h / var(--bp-emphasis-disabled-opacity));
+    cursor: not-allowed;
+
+    &.#{$ns}-active {
+      background-color: oklch(
+        from var(--bp-surface-layer-neutral-active) l c h / var(--bp-emphasis-disabled-opacity)
+      );
+    }
+  }
+
+  @each $intent in $pt-intents {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-button-minimal-intent-next($intent);
+    }
+  }
+}
+
+@mixin pt-button-minimal-intent-next($intent: "neutral") {
+  color: var(--bp-typography-color-intent-#{$intent});
+
+  &:hover,
+  &:active,
+  &.#{$ns}-active {
+    background: none;
+    box-shadow: none;
+  }
+
+  &:hover {
+    background: var(--bp-surface-layer-#{$intent}-hover);
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    background: var(--bp-surface-layer-#{$intent}-active);
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    background: none;
+    color: oklch(
+      from var(--bp-surface-layer-color-#{$intent}-rest) l c h / var(--bp-emphasis-disabled-opacity)
+    );
+    cursor: not-allowed;
+
+    &.#{$ns}-active {
+      background: oklch(
+        from var(--bp-surface-layer-color-#{$intent}-active) l c h /
+          var(--bp-emphasis-disabled-opacity)
+      );
+    }
+  }
+
+  .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: var(--bp-typography-color-intent-#{$intent});
+  }
+}
+
+@mixin pt-button-outlined-next() {
+  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-neutral);
+  box-sizing: border-box;
+
+  &:disabled,
+  &:disabled:hover,
+  &.#{$ns}-disabled,
+  &.#{$ns}-disabled:hover {
+    border-color: oklch(
+      from var(--bp-surface-border-color-neutral) l c h / var(--bp-emphasis-disabled-opacity)
+    );
+  }
+
+  @each $intent in $pt-intents {
+    &.#{$ns}-intent-#{$intent} {
+      border-color: var(--bp-surface-border-color-#{$intent});
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        border-color: oklch(
+          from var(--bp-surface-border-color-#{$intent}) l c h / var(--bp-emphasis-disabled-opacity)
+        );
+      }
+    }
+  }
+}
