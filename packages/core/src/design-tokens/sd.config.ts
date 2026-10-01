@@ -610,13 +610,33 @@ const makeFallbackMap = (
 };
 
 /**
- * Classifies a token for progressive enhancement output. Tokens with a fallback get
- * the hex value as `fallbackValue` and the relative color syntax as `modernValue`.
+ * Classifies a token for progressive enhancement output. Plain token references are
+ * preserved as CSS custom property references when requested. Derived tokens keep their
+ * static fallback and use the relative color syntax as `modernValue`.
  */
-const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
+const classifyToken = (
+    token: TransformedToken,
+    fallbackMap: ReadonlyMap<string, string>,
+    outputReferences: boolean,
+): TokenClassification => {
     const tokenPath = token.path.join(".");
     const currentValue = getTokenValueAsString(token);
     const fallback = fallbackMap.get(tokenPath);
+
+    if (outputReferences && !hasDeriveExtension(token)) {
+        const original = token.original ?? {};
+        const originalValue = original.$value ?? original.value;
+        const originalReference = parseTokenReference(originalValue);
+
+        if (originalReference !== undefined) {
+            return {
+                name: token.name,
+                fallbackValue: tokenReferenceToVar(originalReference),
+                modernValue: undefined,
+                description: token.$description,
+            };
+        }
+    }
 
     if (fallback !== undefined) {
         return {
@@ -852,6 +872,7 @@ const formatProgressiveEnhancementCss = (
     tokens: readonly TransformedToken[],
     selector: string,
     onlySourceTokens: boolean,
+    outputReferences: boolean,
 ): string => {
     // Build the full token map and fallback map from ALL tokens (including non-source)
     // so that reference resolution and derived-color fallback computation works correctly.
@@ -860,7 +881,7 @@ const formatProgressiveEnhancementCss = (
 
     // Filter to only source tokens for output when requested.
     const outputTokens = onlySourceTokens ? tokens.filter(t => t.isSource) : tokens;
-    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap));
+    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap, outputReferences));
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
@@ -922,8 +943,8 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     sd.registerFormat({
         name: "bp/css/variables",
         format: ({ dictionary, options }) => {
-            const { selector, onlySourceTokens } = parseFormatOptions(options);
-            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens);
+            const { selector, onlySourceTokens, outputReferences } = parseFormatOptions(options);
+            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens, outputReferences);
         },
     });
 };
