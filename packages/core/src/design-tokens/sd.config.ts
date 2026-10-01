@@ -142,18 +142,30 @@ type BuildPlan = {
 /** CSS `@supports` query for relative color syntax, used for progressive enhancement. */
 const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l c h))";
 
+/** Base token sources in dependency order, from raw values to higher-level semantic tokens. */
+const BASE_TOKEN_SOURCES = [
+    "src/design-tokens/tokens/base/palette.tokens.json",
+    "src/design-tokens/tokens/base/intent.tokens.json",
+    "src/design-tokens/tokens/base/surface.tokens.json",
+    "src/design-tokens/tokens/base/typography.tokens.json",
+    "src/design-tokens/tokens/base/emphasis.tokens.json",
+] as const;
+
 /** All theme configurations to build. Light is the base; dark overrides via `include`. */
 const THEMES: readonly ThemeConfig[] = [
     {
         name: "light",
-        sources: ["src/design-tokens/tokens/base/**/*.tokens.json"],
+        sources: BASE_TOKEN_SOURCES,
         selector: ":root",
         destination: "tokens.css",
     },
     {
         name: "dark",
-        include: ["src/design-tokens/tokens/base/**/*.tokens.json"],
-        sources: ["src/design-tokens/tokens/themes/dark/**/*.tokens.json"],
+        include: BASE_TOKEN_SOURCES,
+        sources: [
+            "src/design-tokens/tokens/themes/dark/surface.tokens.json",
+            "src/design-tokens/tokens/themes/dark/typography.tokens.json",
+        ],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
