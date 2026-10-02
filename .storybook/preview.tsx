@@ -10,6 +10,7 @@ import { BlueprintProvider, Classes, Colors, FocusStyleManager } from "@blueprin
 import { Icons } from "../packages/icons/src/iconLoader";
 
 import { modes } from "./modes";
+import { withTokens } from "./tokens/preview";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -47,6 +48,7 @@ const preview: Preview = {
     },
 
     decorators: [
+        withTokens,
         withThemeByClassName({
             defaultTheme: "light",
             parentSelector: "body",
@@ -71,6 +73,7 @@ const preview: Preview = {
 
     initialGlobals: {
         theme: "light",
+        tokenOverrides: {},
     },
 };
 
