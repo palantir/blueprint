@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+import { fireEvent } from "@testing-library/react";
 import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
-import * as TestUtils from "react-dom/test-utils";
 
 import {
     Boundary,
@@ -229,7 +229,7 @@ describe("<DateRangeInput>", () => {
         });
 
         function keyDownOnInput(className: string, key: string, inputElementIndex: number = 0) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { key });
+            fireEvent.keyDown(findTimePickerInputElement(className, inputElementIndex), { key });
         }
 
         function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
@@ -613,9 +613,7 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, START_STR, END_STR);
         });
 
-        // HACKHACK: https://github.com/palantir/blueprint/issues/6109
-        // N.B. this test passes locally
-        it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
             const startInputProps = { onKeyDown: vi.fn() };
             const endInputProps = { onKeyDown: vi.fn() };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ endInputProps, startInputProps }} />);
@@ -2652,9 +2650,7 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, START_STR_2, END_STR_2);
         });
 
-        // HACKHACK: https://github.com/palantir/blueprint/issues/6109
-        // N.B. this test passes locally
-        it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
             const onChange = vi.fn();
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[null, null]} />);
             act(() => {
