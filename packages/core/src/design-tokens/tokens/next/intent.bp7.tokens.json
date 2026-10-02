@@ -1,0 +1,162 @@
+{
+    "intent": {
+        "$type": "color",
+        "$description": "Each included intent exposes the complete 100-1000 palette ramp so retained semantic tokens land on exact palette values and follow the active theme.",
+        "primary": {
+            "100": {
+                "$value": "{palette.blue.100}"
+            },
+            "200": {
+                "$value": "{palette.blue.200}"
+            },
+            "300": {
+                "$value": "{palette.blue.300}"
+            },
+            "400": {
+                "$value": "{palette.blue.400}"
+            },
+            "500": {
+                "$value": "{palette.blue.500}"
+            },
+            "600": {
+                "$value": "{palette.blue.600}"
+            },
+            "700": {
+                "$value": "{palette.blue.700}"
+            },
+            "800": {
+                "$value": "{palette.blue.800}"
+            },
+            "900": {
+                "$value": "{palette.blue.900}"
+            },
+            "1000": {
+                "$value": "{palette.blue.1000}"
+            },
+            "foreground": {
+                "$value": {
+                    "colorSpace": "oklch",
+                    "components": [1, 0, "none"],
+                    "hex": "#ffffff"
+                }
+            }
+        },
+        "success": {
+            "100": {
+                "$value": "{palette.green.100}"
+            },
+            "200": {
+                "$value": "{palette.green.200}"
+            },
+            "300": {
+                "$value": "{palette.green.300}"
+            },
+            "400": {
+                "$value": "{palette.green.400}"
+            },
+            "500": {
+                "$value": "{palette.green.500}"
+            },
+            "600": {
+                "$value": "{palette.green.600}"
+            },
+            "700": {
+                "$value": "{palette.green.700}"
+            },
+            "800": {
+                "$value": "{palette.green.800}"
+            },
+            "900": {
+                "$value": "{palette.green.900}"
+            },
+            "1000": {
+                "$value": "{palette.green.1000}"
+            },
+            "foreground": {
+                "$value": {
+                    "colorSpace": "oklch",
+                    "components": [1, 0, "none"],
+                    "hex": "#ffffff"
+                }
+            }
+        },
+        "warning": {
+            "100": {
+                "$value": "{palette.orange.100}"
+            },
+            "200": {
+                "$value": "{palette.orange.200}"
+            },
+            "300": {
+                "$value": "{palette.orange.300}"
+            },
+            "400": {
+                "$value": "{palette.orange.400}"
+            },
+            "500": {
+                "$value": "{palette.orange.500}"
+            },
+            "600": {
+                "$value": "{palette.orange.600}"
+            },
+            "700": {
+                "$value": "{palette.orange.700}"
+            },
+            "800": {
+                "$value": "{palette.orange.800}"
+            },
+            "900": {
+                "$value": "{palette.orange.900}"
+            },
+            "1000": {
+                "$value": "{palette.orange.1000}"
+            },
+            "foreground": {
+                "$value": {
+                    "colorSpace": "oklch",
+                    "components": [1, 0, "none"],
+                    "hex": "#ffffff"
+                }
+            }
+        },
+        "danger": {
+            "100": {
+                "$value": "{palette.red.100}"
+            },
+            "200": {
+                "$value": "{palette.red.200}"
+            },
+            "300": {
+                "$value": "{palette.red.300}"
+            },
+            "400": {
+                "$value": "{palette.red.400}"
+            },
+            "500": {
+                "$value": "{palette.red.500}"
+            },
+            "600": {
+                "$value": "{palette.red.600}"
+            },
+            "700": {
+                "$value": "{palette.red.700}"
+            },
+            "800": {
+                "$value": "{palette.red.800}"
+            },
+            "900": {
+                "$value": "{palette.red.900}"
+            },
+            "1000": {
+                "$value": "{palette.red.1000}"
+            },
+            "foreground": {
+                "$value": {
+                    "colorSpace": "oklch",
+                    "components": [1, 0, "none"],
+                    "hex": "#ffffff"
+                }
+            }
+        }
+    }
+}

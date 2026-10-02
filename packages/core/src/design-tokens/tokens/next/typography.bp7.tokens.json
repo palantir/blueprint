@@ -1,0 +1,16 @@
+{
+    "typography": {
+        "family": {
+            "$type": "fontFamily",
+            "mono": {
+                "$value": ["monospace"]
+            }
+        },
+        "weight": {
+            "$type": "fontWeight",
+            "default": {
+                "$value": 400
+            }
+        }
+    }
+}
