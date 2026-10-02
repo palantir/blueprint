@@ -1,0 +1,17 @@
+# Excavator auto-updates this file. Please contribute improvements to the central template.
+
+version: 1
+merge:
+  trigger:
+    labels: ["merge when ready"]
+  ignore:
+    labels: ["do not merge"]
+  method: squash
+  options:
+    squash:
+      body: pull_request_body
+      message_delimiter: ==COMMIT_MSG==
+  delete_after_merge: true
+update:
+  trigger:
+    labels: ["update me"]
