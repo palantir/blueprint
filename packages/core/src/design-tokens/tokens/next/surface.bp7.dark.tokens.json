@@ -1,0 +1,363 @@
+{
+    "surface": {
+        "divider-color": {
+            "$type": "color",
+            "default": {
+                "$value": "{palette.white.1000}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.12
+                    }
+                }
+            },
+            "strong": {
+                "$value": "{palette.white.1000}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            }
+        },
+        "border-color": {
+            "$type": "color",
+            "$description": "Dark borders reference the intent's .500 ramp step — exact palette landing, follows the intent.",
+            "neutral": { "$value": "{intent.neutral.500}" },
+            "primary": { "$value": "{intent.primary.500}" },
+            "success": { "$value": "{intent.success.500}" },
+            "warning": { "$value": "{intent.warning.500}" },
+            "danger": { "$value": "{intent.danger.500}" }
+        },
+        "layer-opacity": {
+            "$type": "number",
+            "$description": "Single lever for layer-tint strength; layer-color reads its alpha from here.",
+            "base": { "$value": 0.03 },
+            "intent": {
+                "rest": { "$value": 0.1 },
+                "hover": { "$value": 0.2 },
+                "active": { "$value": 0.1 }
+            }
+        },
+        "layer-color": {
+            "$type": "color",
+            "$description": "Intent tint at the layer opacity. Color references an exact intent ramp step; only alpha is derived.",
+            "base": {
+                "$value": "{intent.primary.200}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.base}" } }
+            },
+            "neutral": {
+                "rest": {
+                    "$value": "{intent.neutral.500}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.neutral.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
+                },
+                "active": {
+                    "$value": "{intent.neutral.600}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
+            },
+            "primary": {
+                "rest": {
+                    "$value": "{intent.primary.500}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.primary.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
+                },
+                "active": {
+                    "$value": "{intent.primary.600}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
+            },
+            "success": {
+                "rest": {
+                    "$value": "{intent.success.500}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.success.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
+                },
+                "active": {
+                    "$value": "{intent.success.600}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
+            },
+            "warning": {
+                "rest": {
+                    "$value": "{intent.warning.500}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.warning.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
+                },
+                "active": {
+                    "$value": "{intent.warning.600}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
+            },
+            "danger": {
+                "rest": {
+                    "$value": "{intent.danger.500}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.rest}" } }
+                },
+                "hover": {
+                    "$value": "{intent.danger.400}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.hover}" } }
+                },
+                "active": {
+                    "$value": "{intent.danger.600}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity.intent.active}" } }
+                }
+            }
+        },
+
+        "layer": {
+            "$type": "color",
+            "$description": "layer-color wrapped in linear-gradient() so it can composite as a background-image.",
+            "base": {
+                "$value": "{surface.layer-color.base}",
+                "$extensions": { "com.blueprint.role": "stackable-layer" }
+            },
+            "neutral": {
+                "rest": {
+                    "$value": "{surface.layer-color.neutral.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.neutral.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.neutral.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
+            },
+            "primary": {
+                "rest": {
+                    "$value": "{surface.layer-color.primary.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.primary.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.primary.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
+            },
+            "success": {
+                "rest": {
+                    "$value": "{surface.layer-color.success.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.success.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.success.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
+            },
+            "warning": {
+                "rest": {
+                    "$value": "{surface.layer-color.warning.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.warning.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.warning.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
+            },
+            "danger": {
+                "rest": {
+                    "$value": "{surface.layer-color.danger.rest}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "hover": {
+                    "$value": "{surface.layer-color.danger.hover}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                },
+                "active": {
+                    "$value": "{surface.layer-color.danger.active}",
+                    "$extensions": { "com.blueprint.role": "stackable-layer" }
+                }
+            }
+        },
+        "shadow": {
+            "$type": "shadow",
+            "$description": "BP6 dark mode elevation shadows - white inset borders, deeper black shadows",
+            "0": {
+                "$description": "Level 0 - border only, inset 0 0 0 1px rgba(white, 20%), 0 0 10px 0 rgba(0,0,0, 20%)",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 10, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.2 }
+                    }
+                ]
+            },
+            "1": {
+                "$description": "Level 1 - subtle elevation with inner highlights",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 10, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 10, "unit": "px" },
+                        "spread": { "value": -1, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.2 }
+                    }
+                ]
+            },
+            "2": {
+                "$description": "Level 2 - standard elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 4, "unit": "px" },
+                        "blur": { "value": 6, "unit": "px" },
+                        "spread": { "value": -4, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.5 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 30, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.5 }
+                    }
+                ]
+            },
+            "3": {
+                "$description": "Level 3 - popover/dialog elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 20, "unit": "px" },
+                        "blur": { "value": 25, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 10, "unit": "px" },
+                        "blur": { "value": 30, "unit": "px" },
+                        "spread": { "value": -5, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.3 }
+                    }
+                ]
+            },
+            "4": {
+                "$description": "Level 4 - maximum elevation",
+                "$value": [
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true,
+                        "color": { "colorSpace": "srgb", "components": [1, 1, 1], "alpha": 0.2 }
+                    },
+                    {
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 25, "unit": "px" },
+                        "blur": { "value": 60, "unit": "px" },
+                        "spread": { "value": -12, "unit": "px" },
+                        "color": { "colorSpace": "srgb", "components": [0, 0, 0], "alpha": 0.85 }
+                    }
+                ]
+            }
+        },
+        "color-code": {
+            "$type": "color",
+            "$value": "{palette.black.1000}",
+            "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+        },
+        "background-color": {
+            "$type": "color",
+            "$description": "Dark mode base backgrounds: black → dark-gray on interaction",
+            "base": {
+                "rest": { "$value": "{palette.grey.800}" },
+                "hover": { "$value": "{palette.grey.800}" },
+                "active": { "$value": "{palette.grey.800}" }
+            },
+            "neutral": {
+                "rest": { "$value": "{intent.neutral.500}" },
+                "hover": { "$value": "{intent.neutral.400}" },
+                "active": { "$value": "{intent.neutral.600}" }
+            },
+            "primary": {
+                "rest": { "$value": "{intent.primary.500}" },
+                "hover": { "$value": "{intent.primary.400}" },
+                "active": { "$value": "{intent.primary.600}" }
+            },
+            "success": {
+                "rest": { "$value": "{intent.success.500}" },
+                "hover": { "$value": "{intent.success.400}" },
+                "active": { "$value": "{intent.success.600}" }
+            },
+            "warning": {
+                "rest": { "$value": "{intent.warning.500}" },
+                "hover": { "$value": "{intent.warning.400}" },
+                "active": { "$value": "{intent.warning.600}" }
+            },
+            "danger": {
+                "rest": { "$value": "{intent.danger.500}" },
+                "hover": { "$value": "{intent.danger.400}" },
+                "active": { "$value": "{intent.danger.600}" }
+            }
+        }
+    }
+}
