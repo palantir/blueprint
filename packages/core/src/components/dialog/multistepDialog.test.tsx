@@ -30,6 +30,86 @@ import { MultistepDialog } from "./multistepDialog";
 const findButtonWithText = (wrapper: ReactWrapper, text: string) => wrapper.find(AnchorButton).find(`[text='${text}']`);
 
 describe("<MultistepDialog>", () => {
+    it("renders the selected step in controlled mode", () => {
+        const dialog = mount(
+            <MultistepDialog isOpen={true} selectedStepId="two" usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<strong>first panel</strong>} />
+                <DialogStep id="two" title="Step 2" panel={<strong>second panel</strong>} />
+            </MultistepDialog>,
+        );
+
+        const steps = dialog.find(`.${Classes.DIALOG_STEP_CONTAINER}`);
+        assert.lengthOf(steps.at(0).find(`.${Classes.ACTIVE}`), 0);
+        assert.lengthOf(steps.at(1).find(`.${Classes.ACTIVE}`), 1);
+        assert.lengthOf(dialog.find(`.${Classes.DIALOG_FOOTER}`), 1);
+        assert.strictEqual(dialog.find("strong").text(), "second panel");
+        dialog.unmount();
+    });
+
+    it("changes a controlled selection only when the selectedStepId prop changes", () => {
+        let change: [newStepId: string | number, prevStepId: string | number | undefined] | undefined;
+        const dialog = mount(
+            <MultistepDialog
+                isOpen={true}
+                onChange={(newStepId, prevStepId) => (change = [newStepId, prevStepId])}
+                selectedStepId="two"
+                usePortal={false}
+            >
+                <DialogStep id="one" title="Step 1" panel={<strong>first panel</strong>} />
+                <DialogStep id="two" title="Step 2" panel={<strong>second panel</strong>} />
+            </MultistepDialog>,
+        );
+
+        dialog.find(`.${Classes.DIALOG_STEP}`).at(0).simulate("click");
+        assert.deepEqual(change, ["one", "two"]);
+        assert.strictEqual(dialog.find("strong").text(), "second panel");
+
+        dialog.setProps({ selectedStepId: "one" });
+        assert.strictEqual(dialog.find("strong").text(), "first panel");
+        dialog.unmount();
+    });
+
+    it("allows controlled mode to override the next button click handler", () => {
+        let selectedStepId = "one";
+        const handleNext = () => (selectedStepId = "two");
+        const dialog = mount(
+            <MultistepDialog
+                isOpen={true}
+                nextButtonProps={{ onClick: handleNext }}
+                selectedStepId={selectedStepId}
+                usePortal={false}
+            >
+                <DialogStep id="one" title="Step 1" panel={<strong>first panel</strong>} />
+                <DialogStep id="two" title="Step 2" panel={<strong>second panel</strong>} />
+            </MultistepDialog>,
+        );
+
+        findButtonWithText(dialog, "Next").simulate("click");
+        dialog.setProps({ selectedStepId });
+
+        assert.strictEqual(dialog.find("strong").text(), "second panel");
+        dialog.unmount();
+    });
+
+    it("reports an undefined previous step when the controlled step ID is unknown", () => {
+        let change: [newStepId: string | number, prevStepId: string | number | undefined] | undefined;
+        const dialog = mount(
+            <MultistepDialog
+                isOpen={true}
+                onChange={(newStepId, prevStepId) => (change = [newStepId, prevStepId])}
+                selectedStepId="unknown"
+                usePortal={false}
+            >
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+            </MultistepDialog>,
+        );
+
+        dialog.find(`.${Classes.DIALOG_STEP}`).simulate("click");
+
+        assert.deepEqual(change, ["one", undefined]);
+        dialog.unmount();
+    });
+
     it("renders its content correctly", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>

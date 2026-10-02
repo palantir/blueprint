@@ -11,7 +11,7 @@ import { Flex } from "@blueprintjs/labs";
 import { Button } from "../button/buttons";
 
 import { DialogBody } from "./dialogBody";
-import { DialogStep } from "./dialogStep";
+import { DialogStep, type DialogStepId } from "./dialogStep";
 import { MultistepDialog } from "./multistepDialog";
 
 const disabledArgs = [
@@ -118,6 +118,43 @@ const disableNavigationPosition = {
 
 export const Default: Story = {
     render: renderMultistepDialog(),
+};
+
+/**
+ * Provide `selectedStepId` to control the active step externally. The built-in footer remains visible, and its button
+ * click handlers can be overridden to update the controlled selection.
+ */
+export const Controlled: Story = {
+    render: function Render(args) {
+        const [selectedStepId, setSelectedStepId] = React.useState<DialogStepId>("select");
+        const handleSelect = useCallback(() => setSelectedStepId("select"), []);
+        const handleConfirm = useCallback(() => setSelectedStepId("confirm"), []);
+        const handleComplete = useCallback(() => setSelectedStepId("complete"), []);
+
+        return (
+            <MultistepDialog {...args} onChange={setSelectedStepId} selectedStepId={selectedStepId}>
+                <DialogStep
+                    id="select"
+                    nextButtonProps={{ onClick: handleConfirm }}
+                    title="Select items"
+                    panel={<StepPanel stepNumber={1} />}
+                />
+                <DialogStep
+                    backButtonProps={{ onClick: handleSelect }}
+                    id="confirm"
+                    nextButtonProps={{ onClick: handleComplete }}
+                    title="Confirm selection"
+                    panel={<StepPanel stepNumber={2} />}
+                />
+                <DialogStep
+                    backButtonProps={{ onClick: handleConfirm }}
+                    id="complete"
+                    title="Complete"
+                    panel={<StepPanel stepNumber={3} />}
+                />
+            </MultistepDialog>
+        );
+    },
 };
 
 /**
