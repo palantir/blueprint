@@ -613,7 +613,11 @@ const makeFallbackMap = (
  * Classifies a token for progressive enhancement output. Tokens with a fallback get
  * the hex value as `fallbackValue` and the relative color syntax as `modernValue`.
  */
-const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
+const classifyToken = (
+    token: TransformedToken,
+    fallbackMap: ReadonlyMap<string, string>,
+    outputReferences: boolean,
+): TokenClassification => {
     const tokenPath = token.path.join(".");
     const currentValue = getTokenValueAsString(token);
     const fallback = fallbackMap.get(tokenPath);
@@ -627,9 +631,19 @@ const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string,
         };
     }
 
+    // Preserve plain aliases for runtime palette overrides. Derived and transitive-derived
+    // tokens keep their existing static fallback and progressive enhancement above.
+    const original = token.original ?? {};
+    const tokenRef = parseTokenReference(original.$value ?? original.value);
+    const derivation = parseColorDerivation(original.$extensions ?? original.extensions);
+    const value =
+        outputReferences && tokenRef !== undefined && derivation === undefined
+            ? tokenReferenceToVar(tokenRef)
+            : currentValue;
+
     return {
         name: token.name,
-        fallbackValue: currentValue,
+        fallbackValue: value,
         modernValue: undefined,
         description: token.$description,
     };
@@ -779,15 +793,15 @@ const nameTransformConfig: Parameters<typeof StyleDictionary.registerTransform>[
     transform: token => "bp-" + token.path.join("-"),
 };
 
-/** All standard DTCG type transforms registered via {@link makeTransformConfig}. */
+/** Build each config separately so its parser and formatter retain the same inferred value type. */
 const standardTransforms = [
-    colorTransform,
-    dimensionTransform,
-    durationTransform,
-    fontFamilyTransform,
-    fontWeightTransform,
-    numberTransform,
-    cubicBezierTransform,
+    makeTransformConfig(colorTransform),
+    makeTransformConfig(dimensionTransform),
+    makeTransformConfig(durationTransform),
+    makeTransformConfig(fontFamilyTransform),
+    makeTransformConfig(fontWeightTransform),
+    makeTransformConfig(numberTransform),
+    makeTransformConfig(cubicBezierTransform),
 ] as const;
 
 // -- Format Definition --------------------------------------------------------
@@ -852,6 +866,7 @@ const formatProgressiveEnhancementCss = (
     tokens: readonly TransformedToken[],
     selector: string,
     onlySourceTokens: boolean,
+    outputReferences: boolean,
 ): string => {
     // Build the full token map and fallback map from ALL tokens (including non-source)
     // so that reference resolution and derived-color fallback computation works correctly.
@@ -860,7 +875,7 @@ const formatProgressiveEnhancementCss = (
 
     // Filter to only source tokens for output when requested.
     const outputTokens = onlySourceTokens ? tokens.filter(t => t.isSource) : tokens;
-    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap));
+    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap, outputReferences));
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
@@ -897,7 +912,7 @@ const formatProgressiveEnhancementCss = (
 const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     register(sd);
 
-    standardTransforms.forEach(def => sd.registerTransform(makeTransformConfig(def)));
+    standardTransforms.forEach(config => sd.registerTransform(config));
     sd.registerTransform(shadowTransformConfig);
     sd.registerTransform(deriveTransformConfig);
     sd.registerTransform(nameTransformConfig);
@@ -922,8 +937,8 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     sd.registerFormat({
         name: "bp/css/variables",
         format: ({ dictionary, options }) => {
-            const { selector, onlySourceTokens } = parseFormatOptions(options);
-            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens);
+            const { selector, onlySourceTokens, outputReferences } = parseFormatOptions(options);
+            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens, outputReferences);
         },
     });
 };
