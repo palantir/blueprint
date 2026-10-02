@@ -18,6 +18,7 @@
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "compile:css-colors": "generate-css-variables --retainDefault true --outputFileName colors _colors.scss",
+        "compile:css-palette": "generate-css-variables --retainDefault true --outputFileName palette _palette.scss",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "lint": "npm-run-all -p lint:scss lint:es",
         "lint:scss": "sass-lint",
