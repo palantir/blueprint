@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+import { fireEvent } from "@testing-library/react";
 import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
-import * as TestUtils from "react-dom/test-utils";
 
 import {
     Boundary,
@@ -229,7 +229,7 @@ describe("<DateRangeInput>", () => {
         });
 
         function keyDownOnInput(className: string, key: string, inputElementIndex: number = 0) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { key });
+            fireEvent.keyDown(findTimePickerInputElement(className, inputElementIndex), { key });
         }
 
         function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
