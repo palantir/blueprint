@@ -42,7 +42,7 @@ export const CollapsePlaygroundExample: React.FC<ExampleProps> = props => {
                 <Button onClick={handleClick}>{isOpen ? "Hide" : "Show"} build logs</Button>
                 <Collapse isOpen={isOpen} keepChildrenMounted={keepChildrenMounted}>
                     <InputGroup placeholder="Search logs..." />
-                    <Pre>
+                    <Pre style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         [11:53:30] Finished 'typescript-bundle-blueprint' after 769 ms
                         <br />
                         [11:53:30] Starting 'typescript-typings-blueprint'...
