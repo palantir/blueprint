@@ -613,9 +613,7 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, START_STR, END_STR);
         });
 
-        // HACKHACK: https://github.com/palantir/blueprint/issues/6109
-        // N.B. this test passes locally
-        it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
             const startInputProps = { onKeyDown: vi.fn() };
             const endInputProps = { onKeyDown: vi.fn() };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ endInputProps, startInputProps }} />);
@@ -2652,9 +2650,7 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, START_STR_2, END_STR_2);
         });
 
-        // HACKHACK: https://github.com/palantir/blueprint/issues/6109
-        // N.B. this test passes locally
-        it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
+        it("Pressing Enter saves the inputted date and closes the popover", () => {
             const onChange = vi.fn();
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[null, null]} />);
             act(() => {
