@@ -112,7 +112,7 @@ export class EditableCell extends Component<EditableCellProps, EditableCellState
             !CoreUtils.deepCompareKeys(this.props, prevProps, ["style"]);
 
         const { value } = this.props;
-        if (didPropsChange && value != null) {
+        if (didPropsChange) {
             this.setState({ dirtyValue: value, savedValue: value });
         }
 
