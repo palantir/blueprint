@@ -460,6 +460,7 @@ export interface PopoverTargetProps
     isContentEmpty: boolean;
     isControlled: boolean;
     isHoverInteractionKind: boolean;
+    popoverId: string;
 }
 
 /**
@@ -502,13 +503,17 @@ export interface PopoverPopupProps
     hasDarkParent: boolean;
     isClosingViaEscapeKeypress: boolean;
     isHoverInteractionKind: boolean;
+    popoverId: string;
 }
 
 /**
  * Properties injected by PopoverNext when rendering custom targets via the `renderTarget` API.
  */
 export interface PopoverRenderTargetProps
-    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "aria-expanded" | "className" | "tabIndex"> {
+    extends Pick<
+        React.HTMLAttributes<HTMLElement>,
+        "aria-describedby" | "aria-haspopup" | "aria-expanded" | "className" | "tabIndex"
+    > {
     /** Target ref. */
     ref: React.Ref<any>;
 
