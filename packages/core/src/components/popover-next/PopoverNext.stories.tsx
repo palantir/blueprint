@@ -79,6 +79,7 @@ const meta = {
         },
         hoverOpenDelay: { control: "number" },
         hoverCloseDelay: { control: "number" },
+        safePolygon: { control: "object" },
         onClose: { action: "closed" },
         ...disabledArgs.reduce(
             (acc, argName) => {
@@ -111,6 +112,32 @@ export const Default: Story = {
         <PopoverNext {...args} content={SAMPLE_MENU}>
             <Button text="Open Menu" endIcon="caret-down" />
         </PopoverNext>
+    ),
+};
+
+export const SafePolygon: Story = {
+    args: {
+        safePolygon: { blockPointerEvents: true },
+        usePortal: false,
+    },
+    render: args => (
+        <Menu>
+            <MenuItem text="Share" popoverProps={{ safePolygon: args.safePolygon, usePortal: args.usePortal }}>
+                <MenuItem text="Copy link" />
+                <MenuItem text="Invite people" />
+                <MenuItem text="Export" popoverProps={{ safePolygon: args.safePolygon, usePortal: args.usePortal }}>
+                    <MenuItem text="PDF" />
+                    <MenuItem text="CSV" />
+                    <MenuItem text="Image" />
+                </MenuItem>
+            </MenuItem>
+            <MenuItem text="Move to" popoverProps={{ safePolygon: args.safePolygon, usePortal: args.usePortal }}>
+                <MenuItem text="Personal folder" />
+                <MenuItem text="Team folder" />
+            </MenuItem>
+            <MenuItem text="Duplicate" />
+            <MenuItem text="Archive" />
+        </Menu>
     ),
 };
 

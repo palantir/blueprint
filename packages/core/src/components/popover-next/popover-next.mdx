@@ -291,6 +291,37 @@ You can use this to style the target differently when the popover is open.
 
 </div>
 
+### Safe polygons
+
+Set `safePolygon={true}` on a popover with `interactionKind="hover"` to keep it open while the pointer
+moves diagonally from the target toward the content. This is useful for submenus and other interactive
+hover content. The option is disabled by default and ignored for other interaction kinds.
+
+```tsx
+<PopoverNext interactionKind="hover" safePolygon={true} content={<Menu>{menuItems}</Menu>}>
+    <Button text="More actions" />
+</PopoverNext>
+```
+
+An options object configures Floating UI's [safe polygon](https://floating-ui.com/docs/usehover#safepolygon):
+
+- `buffer` adds padding around the polygon in pixels (default `0.5`).
+- `requireIntent` checks pointer speed before keeping the triangular path open (default `true`). Set it to
+  `false` to also allow slow diagonal movement.
+- `blockPointerEvents` prevents hovering other elements while traversing the polygon (default `false`).
+  Enable it to prevent accidentally opening neighboring submenus. It can also trigger `mouseleave` on
+  surrounding containers.
+
+For a submenu, pass the option through **MenuItem**'s `popoverProps`. Configure each submenu that should
+use this behavior; nested popovers are tracked automatically, including when `usePortal={true}`.
+
+```tsx
+<MenuItem text="More actions" popoverProps={{ safePolygon: { blockPointerEvents: true } }}>
+    <MenuItem text="Duplicate" />
+    <MenuItem text="Archive" />
+</MenuItem>
+```
+
 ### Backdrop
 
 The `hasBackdrop` prop governs whether a backdrop appears while the popover is open. When `true`:
