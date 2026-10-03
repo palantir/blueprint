@@ -6,8 +6,8 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     test: {
-        name: "node-build-scripts",
         environment: "node",
-        include: ["src/**/*.test.ts"],
+        include: ["src/**/*.test.{mjs,ts}"],
+        name: "node-build-scripts",
     },
 });
