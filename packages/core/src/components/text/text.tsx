@@ -63,13 +63,31 @@ export const Text: React.FC<TextProps> = forwardRef<HTMLElement, TextProps>(
         // try to be conservative about running this effect, since querying scrollWidth causes the browser to reflow / recalculate styles,
         // which can be very expensive for long lists (for example, in long Menus)
         useIsomorphicLayoutEffect(() => {
-            if (contentMeasuringRef.current?.textContent != null) {
+            const element = contentMeasuringRef.current;
+            if (element == null) {
+                return;
+            }
+
+            const measure = () => {
+                if (contentMeasuringRef.current?.textContent == null) {
+                    return;
+                }
                 setIsContentOverflowing(
-                    ellipsize! && contentMeasuringRef.current.scrollWidth > contentMeasuringRef.current.clientWidth,
+                    ellipsize && contentMeasuringRef.current.scrollWidth > contentMeasuringRef.current.clientWidth,
                 );
                 setTextContent(contentMeasuringRef.current.textContent);
+            };
+
+            measure();
+
+            if (!ellipsize || typeof ResizeObserver === "undefined") {
+                return;
             }
-        }, [contentMeasuringRef, children, ellipsize]);
+
+            const observer = new ResizeObserver(measure);
+            observer.observe(element);
+            return () => observer.disconnect();
+        }, [children, ellipsize]);
 
         return createElement(
             tagName,
