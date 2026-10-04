@@ -12,6 +12,9 @@ The `items` prop accepts an array of generic objects. The required `visibleItemR
 appearance of a visible item. The required `overflowRenderer` callback prop receives all overflowed items and renders
 the overflow indicator.
 
+Use `onOverflow` to observe the settled overflow items, including an empty array when every item fits.
+The callback is not repeated when the overflow items are unchanged.
+
 This component uses [the `ResizeObserver` API][resizeobserver] to efficiently detect when its dimensions change. Use
 the `observeParents` prop to watch for resizing further up in the DOM tree.
 
