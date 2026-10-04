@@ -114,8 +114,9 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
 
     const isRemovable = Utils.isFunction(onRemove);
     const isInteractive = interactive ?? htmlProps.onClick != null;
+    const hasSeparateAction = isRemovable && isInteractive;
 
-    const [active, interactiveProps] = useInteractiveAttributes(isInteractive, props, ref, {
+    const [active, interactiveProps] = useInteractiveAttributes(isInteractive, props, hasSeparateAction ? null : ref, {
         defaultTabIndex: 0,
         disabledTabIndex: undefined,
     });
@@ -134,13 +135,8 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
         className,
     );
 
-    return (
-        <span
-            {...removeNonHTMLProps(htmlProps)}
-            {...interactiveProps}
-            className={tagClasses}
-            role={isInteractive ? "button" : undefined}
-        >
+    const content = (
+        <>
             <Icon icon={icon} />
             {!isReactNodeEmpty(children) && (
                 <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
@@ -148,6 +144,41 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
                 </Text>
             )}
             <Icon icon={endIcon ?? rightIcon} />
+        </>
+    );
+
+    if (hasSeparateAction) {
+        const containerProps = removeNonHTMLProps(
+            htmlProps,
+            ["onBlur", "onClick", "onFocus", "onKeyDown", "onKeyUp", "role"],
+            true,
+        );
+        const ariaProps: Record<string, unknown> = {};
+        for (const key of Object.keys(containerProps)) {
+            if (key.startsWith("aria-")) {
+                ariaProps[key] = containerProps[key];
+                delete containerProps[key];
+            }
+        }
+
+        return (
+            <span {...containerProps} className={tagClasses} ref={ref}>
+                <span {...ariaProps} {...interactiveProps} className={Classes.TAG_CONTENT} role="button">
+                    {content}
+                </span>
+                <TagRemoveButton {...props} />
+            </span>
+        );
+    }
+
+    return (
+        <span
+            {...removeNonHTMLProps(htmlProps)}
+            {...interactiveProps}
+            className={tagClasses}
+            role={isInteractive ? "button" : undefined}
+        >
+            {content}
             {isRemovable && <TagRemoveButton {...props} />}
         </span>
     );
