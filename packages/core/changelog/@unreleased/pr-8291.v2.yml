@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Keep the primary action and remove button of an interactive Tag as separate accessible controls.
+  links:
+  - https://github.com/palantir/blueprint/pull/8291
