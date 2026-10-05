@@ -82,7 +82,7 @@
 }
 
 .#{$ns}-breadcrumbs-collapsed {
-  background: rgba($gray3, 0.15);
+  background: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent);
   border: none;
   border-radius: var(--bp-surface-border-radius);
   cursor: pointer;
@@ -107,7 +107,7 @@
   }
 
   &:hover {
-    background: rgba($gray3, 0.3);
+    background: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent);
     color: $pt-text-color;
     text-decoration: none;
   }
@@ -140,7 +140,7 @@
   }
 
   .#{$ns}-breadcrumbs-collapsed {
-    background: rgba($gray3, 0.2);
+    background: color-mix(in srgb, var(--bp-palette-gray-3) 20%, transparent);
 
     &::before {
       background: svg-icon(
@@ -155,7 +155,7 @@
     }
 
     &:hover {
-      background: rgba($gray3, 0.3);
+      background: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent);
       color: $pt-dark-text-color;
     }
   }

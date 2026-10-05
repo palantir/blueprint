@@ -31,7 +31,11 @@ $nav-divider-offset: $pt-spacing * 12.5;
 
 .docs-nav-divider {
   @include divider-gradient($pt-divider-black, $pt-dark-divider-black);
-  background-image: linear-gradient(to right, rgba($black, 0) 0%, $pt-divider-black 40%);
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--bp-palette-black) 0%, transparent) 0%,
+    $pt-divider-black 40%
+  );
   height: 1px;
   margin-left: -$nav-divider-offset;
   padding: 0;

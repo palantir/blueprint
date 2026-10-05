@@ -69,7 +69,7 @@
 
     &_hovered:not(.rdp-day_selected) {
       border-radius: 0;
-      color: $blue2;
+      color: var(--bp-palette-blue-2);
 
       // need to disable hover styles for all variants of selected dates
       &:not(.rdp-day_range_start, .rdp-day_range_middle, .rdp-day_range_end) {
@@ -80,11 +80,11 @@
     &_range_middle {
       background-color: $daterangepicker-range-background-color-selected;
       border-radius: 0;
-      color: $blue2;
+      color: var(--bp-palette-blue-2);
 
       &:hover {
         background-color: $daterangepicker-range-background-color-selected-hover;
-        color: $blue2;
+        color: var(--bp-palette-blue-2);
       }
     }
 
@@ -130,7 +130,7 @@
 .#{$ns}-dark .#{$ns}-daterangepicker {
   &.#{$ns}-datepicker .rdp-day {
     &_hovered {
-      color: $light-gray5;
+      color: var(--bp-palette-light-gray-5);
 
       /* prettier-ignore */
       &:not(.rdp-day_selected, .rdp-day_range_start, .rdp-day_range_middle, .rdp-day_range_end) {
@@ -140,7 +140,7 @@
 
     &_range_middle {
       background-color: $dark-daterangepicker-range-background-color-selected;
-      color: $light-gray5;
+      color: var(--bp-palette-light-gray-5);
 
       &:hover {
         background-color: $dark-daterangepicker-range-background-color-selected-hover;

@@ -56,7 +56,7 @@
 }
 
 .docs-prop-is-deprecated code {
-  color: $red3;
+  color: var(--bp-palette-red-3);
 
   &::after {
     content: map.get($blueprint-icon-codepoints, "small-cross");
@@ -64,10 +64,10 @@
 }
 
 .docs-prop-is-required code {
-  color: $green3;
+  color: var(--bp-palette-green-3);
 
   .#{$ns}-dark & {
-    color: $green4;
+    color: var(--bp-palette-green-4);
   }
 
   &::after {

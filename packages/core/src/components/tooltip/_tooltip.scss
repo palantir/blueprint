@@ -6,8 +6,9 @@
 @import "../popover/common";
 @import "./common";
 
-$tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
-$dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$tooltip-arrow-box-shadow: 1px 1px 6px color-mix(in srgb, var(--bp-palette-black) 20%, transparent) !default;
+$dark-tooltip-arrow-box-shadow: 1px 1px 6px
+  color-mix(in srgb, var(--bp-palette-black) 40%, transparent) !default;
 
 $tooltip-padding-compact-vertical: $pt-spacing !default;
 $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
@@ -87,7 +88,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-popover-content {
         background: $color;
-        color: $white;
+        color: var(--bp-palette-white);
       }
 
       .#{$ns}-popover-arrow-fill {

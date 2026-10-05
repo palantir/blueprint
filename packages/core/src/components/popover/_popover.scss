@@ -10,13 +10,13 @@
 @import "./popover-in-tree";
 
 $popover-width: $pt-spacing * 87.5 !default;
-$popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$popover-arrow-box-shadow: 1px 1px 6px color-mix(in srgb, var(--bp-palette-black) 20%, transparent) !default;
 // Extra border shadow added here to match the one in $pt-dark-popover-box-shadow.
 // We can't use a transparent color here because it is outset and will overlay other lines/borders underneath.
 // Also, it needs to have slightly increased lightness because its apparent width makes it look darker otherwise.
 $dark-popover-arrow-box-shadow:
   0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
-  1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+  1px 1px 6px color-mix(in srgb, var(--bp-palette-black) 40%, transparent) !default;
 
 .#{$ns}-popover {
   @include popover-sizing(
@@ -113,7 +113,7 @@ $dark-popover-arrow-box-shadow:
 }
 
 .#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
-  background: rgba($white, 0);
+  background: color-mix(in srgb, var(--bp-palette-white) 0%, transparent);
 }
 
 .#{$ns}-popover-transition-container {

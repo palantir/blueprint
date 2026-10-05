@@ -84,11 +84,11 @@ $docs-icon-next-columns: 6;
     padding: $pt-spacing * 3;
 
     &:hover .docs-icon-next-glyph {
-      background-color: $light-gray4;
+      background-color: var(--bp-palette-light-gray-4);
     }
 
     &:active .docs-icon-next-glyph {
-      background-color: $light-gray3;
+      background-color: var(--bp-palette-light-gray-3);
     }
 
     &:focus-visible {
@@ -101,11 +101,11 @@ $docs-icon-next-columns: 6;
 
     .#{$ns}-dark & {
       &:hover .docs-icon-next-glyph {
-        background-color: $dark-gray3;
+        background-color: var(--bp-palette-dark-gray-3);
       }
 
       &:active .docs-icon-next-glyph {
-        background-color: $dark-gray2;
+        background-color: var(--bp-palette-dark-gray-2);
       }
     }
   }
@@ -159,12 +159,12 @@ $docs-icon-next-columns: 6;
   }
 
   .docs-icons-next-dialog-hero-default {
-    background-color: $white;
+    background-color: var(--bp-palette-white);
     box-shadow: $pt-elevation-shadow-1;
     color: $pt-icon-color;
 
     .#{$ns}-dark & {
-      background-color: $dark-gray3;
+      background-color: var(--bp-palette-dark-gray-3);
       box-shadow: $pt-dark-elevation-shadow-1;
       color: $pt-dark-icon-color;
     }
@@ -172,12 +172,12 @@ $docs-icon-next-columns: 6;
 
   .docs-icons-next-dialog-hero-primary {
     background-color: $pt-intent-primary;
-    color: $white;
+    color: var(--bp-palette-white);
   }
 
   .docs-icons-next-dialog-hero-dark {
-    background-color: $dark-gray1;
-    color: $white;
+    background-color: var(--bp-palette-dark-gray-1);
+    color: var(--bp-palette-white);
   }
 
   .docs-icons-next-dialog-section-label,
@@ -252,7 +252,7 @@ $docs-icon-next-columns: 6;
 
   &::before {
     @include position-all(absolute, 0);
-    background: $light-gray4;
+    background: var(--bp-palette-light-gray-4);
     border-radius: var(--bp-surface-border-radius);
     content: "";
     opacity: 0;
@@ -270,7 +270,7 @@ $docs-icon-next-columns: 6;
   }
 
   &:active::before {
-    background-color: $light-gray3;
+    background-color: var(--bp-palette-light-gray-3);
   }
 
   .#{$ns}-icon,
@@ -286,11 +286,11 @@ $docs-icon-next-columns: 6;
 
   .#{$ns}-dark & {
     &::before {
-      background-color: $dark-gray3;
+      background-color: var(--bp-palette-dark-gray-3);
     }
 
     &:active::before {
-      background-color: $dark-gray2;
+      background-color: var(--bp-palette-dark-gray-2);
     }
 
     .#{$ns}-icon,

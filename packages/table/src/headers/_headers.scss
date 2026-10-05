@@ -1,13 +1,12 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@use "sass:color";
 @import "../common/loading";
 @import "../common/variables";
 @import "../cell/common";
 @import "./common";
 
 @function menu-background($color) {
-  @return linear-gradient(90deg, rgba($color, 0) 0%, $color 50%);
+  @return linear-gradient(90deg, color-mix(in srgb, $color 0%, transparent) 0%, $color 50%);
 }
 
 // when selection is disabled, header background color doesn't change on hover.
@@ -17,17 +16,17 @@ $dark-header-menu-hover-background: menu-background($dark-header-background-colo
 // when selection is enabled, background color changes on hover; need to match that.
 $selectable-header-menu-hover-background: menu-background($header-hover-background-color);
 $selectable-header-menu-selected-background: menu-background(
-  color.mix($pt-intent-primary, $header-background-color, 10%)
+  color-mix(in srgb, $pt-intent-primary 10%, $header-background-color)
 );
 $selectable-header-menu-selected-hover-background: menu-background(
-  color.mix($pt-intent-primary, $header-hover-background-color, 10%)
+  color-mix(in srgb, $pt-intent-primary 10%, $header-hover-background-color)
 );
 $dark-selectable-header-menu-hover-background: menu-background($dark-header-hover-background-color);
 $dark-selectable-header-menu-selected-background: menu-background(
-  color.mix($pt-intent-primary, $dark-header-background-color, 10%)
+  color-mix(in srgb, $pt-intent-primary 10%, $dark-header-background-color)
 );
 $dark-selectable-header-menu-selected-hover-background: menu-background(
-  color.mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
+  color-mix(in srgb, $pt-intent-primary 10%, $dark-header-hover-background-color)
 );
 
 .#{$ns}-table-header {
@@ -177,7 +176,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
     $icon-offset: ($column-header-min-height - $pt-icon-size-standard) * 0.5;
     background-color: $header-background-color;
     border-radius: var(--bp-surface-border-radius);
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
     color: $pt-icon-color;
     margin-right: $icon-offset;
 
@@ -197,7 +196,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 
     .#{$ns}-dark & {
       background-color: $dark-header-background-color;
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent);
       color: $pt-dark-icon-color;
     }
 
@@ -213,11 +212,11 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   }
 
   &:hover .#{$ns}-icon {
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 200%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-black) 40%, transparent);
     color: $pt-icon-color-hover;
 
     .#{$ns}-dark & {
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 200%);
+      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 40%, transparent);
       color: $pt-dark-icon-color-hover;
     }
   }
@@ -225,12 +224,12 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   &.#{$ns}-popover-open .#{$ns}-icon {
     background-color: $pt-icon-color-selected;
     box-shadow: none;
-    color: $white;
+    color: var(--bp-palette-white);
 
     .#{$ns}-dark & {
       background-color: $pt-dark-icon-color-selected;
       box-shadow: none;
-      color: $white;
+      color: var(--bp-palette-white);
     }
   }
 }
