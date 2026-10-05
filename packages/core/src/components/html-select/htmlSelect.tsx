@@ -15,13 +15,14 @@
  */
 
 import classNames from "classnames";
-import { forwardRef } from "react";
+import { forwardRef, useMemo } from "react";
 
 import { CaretDownIcon, DoubleCaretVerticalIcon, type IconName, type SVGIconProps } from "@blueprintjs/icons";
 
 import { DISABLED, FILL, HTML_SELECT, LARGE, MINIMAL } from "../../common/classes";
-import { DISPLAYNAME_PREFIX, type OptionProps } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type MaybeElement, type OptionProps } from "../../common/props";
 import type { Extends } from "../../common/utils";
+import { Icon } from "../icon/icon";
 
 export type HTMLSelectIconName = Extends<IconName, "double-caret-vertical" | "caret-down">;
 
@@ -37,9 +38,16 @@ export interface HTMLSelectProps
     fill?: boolean;
 
     /**
-     * Name of one of the supported icons for this component to display on the right side of the element.
+     * Name of a Blueprint icon (or an icon element) to render on the right side of the element.
      *
      * @default "double-caret-vertical"
+     */
+    icon?: IconName | MaybeElement;
+
+    /**
+     * Name of one of the supported icons for this component to display on the right side of the element.
+     *
+     * @deprecated use `icon` instead
      */
     iconName?: HTMLSelectIconName;
 
@@ -74,8 +82,6 @@ export interface HTMLSelectProps
     placeholder?: string;
 }
 
-// this component is simple enough that tests would be purely tautological.
-/* istanbul ignore next */
 /**
  * HTML select component
  *
@@ -87,7 +93,9 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => 
         children,
         disabled,
         fill,
-        iconName = "double-caret-vertical",
+        icon,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        iconName,
         iconProps,
         large,
         minimal,
@@ -106,18 +114,33 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => 
         className,
     );
 
-    const iconTitle = "Open dropdown";
-    const endIcon =
-        iconName === "double-caret-vertical" ? (
-            <DoubleCaretVerticalIcon title={iconTitle} {...iconProps} />
-        ) : (
-            <CaretDownIcon title={iconTitle} {...iconProps} />
-        );
+    // `icon` takes precedence over the deprecated `iconName`.
+    const iconValue = icon !== undefined ? icon : iconName;
+    const endIcon = useMemo(() => {
+        const iconTitle = "Open dropdown";
+        if (iconValue === "double-caret-vertical" || iconValue === undefined) {
+            return <DoubleCaretVerticalIcon title={iconTitle} {...iconProps} />;
+        } else if (iconValue === "caret-down") {
+            return <CaretDownIcon title={iconTitle} {...iconProps} />;
+        } else {
+            return <Icon icon={iconValue} title={iconTitle} {...iconProps} />;
+        }
+    }, [iconValue, iconProps]);
 
-    const optionChildren = options.map(option => {
-        const optionProps: OptionProps = typeof option === "object" ? option : { value: option };
-        return <option {...optionProps} key={optionProps.value} children={optionProps.label || optionProps.value} />;
-    });
+    const optionChildren = useMemo(
+        () =>
+            options.map(option => {
+                const optionProps: OptionProps = typeof option === "object" ? option : { value: option };
+                return (
+                    <option
+                        {...optionProps}
+                        key={optionProps.value}
+                        children={optionProps.label || optionProps.value}
+                    />
+                );
+            }),
+        [options],
+    );
 
     return (
         <div className={classes}>
