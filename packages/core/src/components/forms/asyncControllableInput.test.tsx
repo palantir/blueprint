@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
-import { PureComponent } from "react";
+import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { useCallback, useState } from "react";
 
-import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest"; // this component is not part of the public API, but we want to test its implementation in isolation
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { sleep } from "../../common/test-utils";
 import { ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY } from "../../hooks/useAsyncControllableValue";
 
 import { AsyncControllableInput } from "./asyncControllableInput";
@@ -36,158 +36,158 @@ describe("asyncControllable tests", () => {
         {
             COMPOSITION_END_DELAY: AsyncControllableInput.COMPOSITION_END_DELAY,
             Component: AsyncControllableInput,
-            element: "input",
-            type: "text",
+            element: "input" as const,
+            role: "textbox" as const,
+            type: "text" as const,
         },
         {
             COMPOSITION_END_DELAY: ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY,
             Component: AsyncControllableTextArea,
-            element: "textarea",
+            element: "textarea" as const,
+            role: "textbox" as const,
             type: undefined,
         },
     ];
 
-    tests.forEach(({ Component, element, type, COMPOSITION_END_DELAY }) =>
+    tests.forEach(({ Component, element, role, type, COMPOSITION_END_DELAY }) =>
         describe(element, () => {
             describe("uncontrolled mode", () => {
                 it(`renders a ${element}`, () => {
-                    const handleChangeSpy = vi.fn();
-                    const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
-                    assert.strictEqual(wrapper.childAt(0).type(), element);
+                    render(<Component defaultValue="hi" onChange={vi.fn()} type={type} />);
+                    expect(screen.getByRole(role).tagName.toLowerCase()).toBe(element);
                 });
 
-                it("triggers onChange", () => {
+                it("triggers onChange", async () => {
+                    const user = userEvent.setup();
                     const handleChangeSpy = vi.fn();
-                    const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
-                    const input = wrapper.find(element);
-                    input.simulate("change", { target: { value: "bye" } });
-                    expect(handleChangeSpy).toHaveBeenCalledWith(
-                        expect.objectContaining({ target: expect.objectContaining({ value: "bye" }) }),
+                    render(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
+                    const input = screen.getByRole(role);
+
+                    await user.type(input, " bye");
+
+                    expect(handleChangeSpy).toHaveBeenLastCalledWith(
+                        expect.objectContaining({ target: expect.objectContaining({ value: "hi bye" }) }),
                     );
                 });
             });
 
             describe("controlled mode", () => {
+                beforeEach(() => {
+                    vi.useFakeTimers();
+                });
+
+                afterEach(() => {
+                    vi.useRealTimers();
+                });
+
                 it(`renders a ${element}`, () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    assert.strictEqual(wrapper.childAt(0).type(), element);
+                    render(<Component value="hi" type={type} />);
+                    expect(screen.getByRole(role).tagName.toLowerCase()).toBe(element);
                 });
 
                 it("accepts controlled update 'hi' -> 'bye'", () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi");
-                    wrapper.setProps({ value: "bye" });
-                    assert.strictEqual(wrapper.find(element).prop("value"), "bye");
+                    const { rerender } = render(<Component value="hi" type={type} />);
+                    const input = screen.getByRole(role);
+                    expect(input).toHaveValue("hi");
+                    rerender(<Component value="bye" type={type} />);
+                    expect(input).toHaveValue("bye");
                 });
 
                 it("triggers onChange events during composition", () => {
                     const handleChangeSpy = vi.fn();
-                    const wrapper = mount(<Component value="hi" onChange={handleChangeSpy} type={type} />);
-                    const input = wrapper.find(element);
+                    render(<Component value="hi" onChange={handleChangeSpy} type={type} />);
+                    const input = screen.getByRole(role);
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
+                    fireEvent.compositionStart(input, { data: "" });
+                    fireEvent.compositionUpdate(input, { data: " " });
                     // some browsers trigger this change event during composition, so we test to ensure that our wrapper component does too
-                    input.simulate("change", { target: { value: "hi " } });
-                    input.simulate("compositionupdate", { data: " ." });
-                    input.simulate("change", { target: { value: "hi ." } });
-                    input.simulate("compositionend", { data: " ." });
+                    fireEvent.change(input, { target: { value: "hi " } });
+                    fireEvent.compositionUpdate(input, { data: " ." });
+                    fireEvent.change(input, { target: { value: "hi ." } });
+                    fireEvent.compositionEnd(input, { data: " ." });
 
                     expect(handleChangeSpy).toHaveBeenCalledTimes(2);
                 });
 
                 it("external updates DO NOT override in-progress composition", async () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    const input = wrapper.find(element);
+                    const { rerender } = render(<Component value="hi" type={type} />);
+                    const input = screen.getByRole(role);
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
-                    input.simulate("change", { target: { value: "hi " } });
+                    fireEvent.compositionStart(input, { data: "" });
+                    fireEvent.compositionUpdate(input, { data: " " });
+                    fireEvent.change(input, { target: { value: "hi " } });
 
                     await Promise.resolve();
-                    wrapper.setProps({ value: "bye" }).update();
+                    rerender(<Component value="bye" type={type} />);
 
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi ");
+                    expect(input).toHaveValue("hi ");
                 });
 
-                it("external updates DO NOT flush with immediately ongoing compositions", async () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    const input = wrapper.find(element);
+                it("external updates DO NOT flush with immediately ongoing compositions", () => {
+                    const { rerender } = render(<Component value="hi" type={type} />);
+                    const input = screen.getByRole(role);
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
-                    input.simulate("change", { target: { value: "hi " } });
+                    fireEvent.compositionStart(input, { data: "" });
+                    fireEvent.compositionUpdate(input, { data: " " });
+                    fireEvent.change(input, { target: { value: "hi " } });
 
-                    wrapper.setProps({ value: "bye" }).update();
+                    rerender(<Component value="bye" type={type} />);
 
-                    input.simulate("compositionend", { data: " " });
-                    input.simulate("compositionstart", { data: "" });
+                    fireEvent.compositionEnd(input, { data: " " });
+                    fireEvent.compositionStart(input, { data: "" });
 
-                    // Wait for the composition ending delay to pass
-                    await sleep(COMPOSITION_END_DELAY + 5);
+                    // Advance past the composition ending delay
+                    vi.advanceTimersByTime(COMPOSITION_END_DELAY);
 
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi ");
+                    expect(input).toHaveValue("hi ");
                 });
 
-                it("external updates flush after composition ends", async () => {
-                    const wrapper = mount(<Component value="hi" type={type} />);
-                    const input = wrapper.find(element);
+                it("external updates flush after composition ends", () => {
+                    const { rerender } = render(<Component value="hi" type={type} />);
+                    const input = screen.getByRole(role);
 
-                    input.simulate("compositionstart", { data: "" });
-                    input.simulate("compositionupdate", { data: " " });
-                    input.simulate("change", { target: { value: "hi " } });
-                    input.simulate("compositionend", { data: " " });
+                    fireEvent.compositionStart(input, { data: "" });
+                    fireEvent.compositionUpdate(input, { data: " " });
+                    fireEvent.change(input, { target: { value: "hi " } });
+                    fireEvent.compositionEnd(input, { data: " ." });
 
-                    // Wait for the composition ending delay to pass
-                    await sleep(COMPOSITION_END_DELAY + 5);
+                    // Advance past the composition ending delay
+                    vi.advanceTimersByTime(COMPOSITION_END_DELAY);
 
                     // we are "rejecting" the composition here by supplying a different controlled value
-                    wrapper.setProps({ value: "bye" }).update();
+                    rerender(<Component value="bye" type={type} />);
 
-                    assert.strictEqual(wrapper.find(element).prop("value"), "bye");
+                    expect(input).toHaveValue("bye");
                 });
 
                 it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
-                    class TestComponent extends PureComponent<{ initialValue: string }, { value: string }> {
-                        public state = { value: this.props.initialValue };
+                    function TestWrapper() {
+                        const [value, setValue] = useState("hi");
 
-                        public render() {
-                            return <Component value={this.state.value} onChange={this.handleChange} type={type} />;
-                        }
+                        const handleChange = useCallback(
+                            async (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                                const newValue = e.target.value;
+                                await new Promise(resolve => setTimeout(resolve, 10));
+                                setValue(newValue);
+                            },
+                            [],
+                        );
 
-                        private handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-                            const newValue = e.target.value;
-                            await sleep(10);
-                            this.setState({ value: newValue });
-                        };
+                        return <Component value={value} onChange={handleChange} type={type} />;
                     }
 
-                    const wrapper = mount(<TestComponent initialValue="hi" />);
-                    assert.strictEqual(wrapper.find(element).prop("value"), "hi");
+                    render(<TestWrapper />);
+                    const input = screen.getByRole(role);
+                    expect(input).toHaveValue("hi");
 
-                    wrapper.find(element).simulate("change", { target: { value: "hi " } });
-                    wrapper.update();
+                    fireEvent.change(input, { target: { value: "hi " } });
 
-                    assert.strictEqual(
-                        wrapper.find(Component).prop("value"),
-                        "hi",
-                        "local state should still have initial value",
-                    );
-                    // but rendered input should optimistically show new value
-                    assert.strictEqual(
-                        wrapper.find(element).prop("value"),
-                        "hi ",
-                        `rendered <${element}> should optimistically show new value`,
-                    );
+                    // rendered input should optimistically show new value
+                    expect(input).toHaveValue("hi ");
 
-                    // after async delay, confirm the update
-                    await sleep(20);
-                    assert.strictEqual(
-                        wrapper.find(element).prop("value"),
-                        "hi ",
-                        `rendered <${element}> should still show new value`,
-                    );
-                    return;
+                    // advance past the async delay and confirm the update
+                    await vi.advanceTimersByTimeAsync(10);
+                    expect(input).toHaveValue("hi ");
                 });
             });
         }),
