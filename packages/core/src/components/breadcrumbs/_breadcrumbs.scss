@@ -22,7 +22,7 @@
 
     &::after {
       background: svg-icon(
-        "16px/chevron-right.svg",
+        "next/outlined/chevron-right.svg",
         (
           path: (
             fill: $pt-icon-color,
@@ -92,7 +92,7 @@
 
   &::before {
     background: svg-icon(
-        "16px/more.svg",
+        "next/outlined/dots-three.svg",
         (
           path: (
             fill: $pt-icon-color,
@@ -121,7 +121,7 @@
 
   .#{$ns}-breadcrumbs > li::after {
     background: svg-icon(
-      "16px/chevron-right.svg",
+      "next/outlined/chevron-right.svg",
       (
         path: (
           fill: $pt-dark-icon-color,
@@ -144,7 +144,7 @@
 
     &::before {
       background: svg-icon(
-          "16px/more.svg",
+          "next/outlined/dots-three.svg",
           (
             path: (
               fill: $pt-dark-icon-color,

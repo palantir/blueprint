@@ -16,7 +16,7 @@
 
 import type { StyledComponent } from "react-day-picker";
 
-import { ChevronLeftIcon, ChevronRightIcon } from "@blueprintjs/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@blueprintjs/icons/next";
 
 export function IconLeft({ children, ...props }: StyledComponent) {
     return <ChevronLeftIcon {...props} />;

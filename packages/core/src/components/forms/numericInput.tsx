@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 
-import { ChevronDownIcon, ChevronUpIcon } from "@blueprintjs/icons";
+import { ChevronDownIcon, ChevronUpIcon } from "@blueprintjs/icons/next";
 
 import {
     AbstractPureComponent,

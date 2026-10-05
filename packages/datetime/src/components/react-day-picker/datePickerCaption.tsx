@@ -20,7 +20,7 @@ import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "re
 import innerText from "react-innertext";
 
 import { Button, DISPLAYNAME_PREFIX, HTMLSelect, type OptionProps } from "@blueprintjs/core";
-import { ChevronLeftIcon, ChevronRightIcon } from "@blueprintjs/icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "@blueprintjs/icons/next";
 
 import { DateUtils, Months } from "../../common";
 import { DatePickerCaptionClasses as CaptionClasses, ReactDayPickerClasses } from "../../common/classes";

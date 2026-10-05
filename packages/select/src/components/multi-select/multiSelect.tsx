@@ -36,7 +36,7 @@ import {
     type TagInputProps,
     Utils,
 } from "@blueprintjs/core";
-import { CrossIcon } from "@blueprintjs/icons";
+import { XIcon } from "@blueprintjs/icons/next";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
 import { SPACE_KEY, targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
@@ -317,7 +317,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 <Button
                     aria-label="Clear selected items"
                     disabled={disabled}
-                    icon={<CrossIcon />}
+                    icon={<XIcon />}
                     onClick={this.handleClearButtonClick}
                     title="Clear selected items"
                     variant="minimal"
