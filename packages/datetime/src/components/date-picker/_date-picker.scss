@@ -96,17 +96,17 @@
     // selected styles should override disabled styles (this can happen when single day ranges are not allowed,
     // rdp applies "disabled" to the first selection in the range)
     &.rdp-day_selected {
-      background-color: $blue3;
+      background-color: var(--bp-palette-blue-3);
       border-radius: var(--bp-surface-border-radius);
-      color: $white;
+      color: var(--bp-palette-white);
 
       &:hover {
-        background-color: $blue2;
-        color: $white;
+        background-color: var(--bp-palette-blue-2);
+        color: var(--bp-palette-white);
       }
 
       &:active {
-        background-color: $blue1;
+        background-color: var(--bp-palette-blue-1);
       }
     }
   }
@@ -168,7 +168,7 @@
       &:hover,
       &:focus {
         background: $dark-datepicker-day-background-color-hover;
-        color: $white;
+        color: var(--bp-palette-white);
       }
 
       &:active {
@@ -177,14 +177,14 @@
     }
 
     &.rdp-day_selected {
-      background-color: $blue3;
+      background-color: var(--bp-palette-blue-3);
 
       &:hover {
-        background-color: $blue2;
+        background-color: var(--bp-palette-blue-2);
       }
 
       &:active {
-        background-color: $blue1;
+        background-color: var(--bp-palette-blue-1);
       }
     }
 

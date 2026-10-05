@@ -40,7 +40,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           background-color: $pt-high-contrast-mode-active-background-color;
-          color: $black;
+          color: var(--bp-palette-black);
         }
       }
     }

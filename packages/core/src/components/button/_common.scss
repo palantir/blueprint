@@ -28,41 +28,73 @@ CSS `border` property issues:
 `box-shadow` doesn't have these issues, we're using it instead of `border`.
 */
 $button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 2px rgba($black, 0.1) !default;
+  inset 0 0 0 $button-border-width color-mix(in srgb, var(--bp-palette-black) 20%, transparent),
+  0 1px 2px color-mix(in srgb, var(--bp-palette-black) 10%, transparent) !default;
 $button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width color-mix(in srgb, var(--bp-palette-black) 20%, transparent),
+  0 1px 2px color-mix(in srgb, var(--bp-palette-black) 20%, transparent) !default;
 
 $dark-button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($white, 0.1),
-  0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width color-mix(in srgb, var(--bp-palette-white) 10%, transparent),
+  0 1px 2px color-mix(in srgb, var(--bp-palette-black) 20%, transparent) !default;
 $dark-button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($white, 0.1),
-  0 1px 2px rgba($black, 0.4) !default;
+  inset 0 0 0 $button-border-width color-mix(in srgb, var(--bp-palette-white) 10%, transparent),
+  0 1px 2px color-mix(in srgb, var(--bp-palette-black) 40%, transparent) !default;
 
 $button-color-disabled: $pt-text-color-disabled !default;
-$button-background-color: $light-gray5 !default;
-$button-background-color-hover: $light-gray4 !default;
-$button-background-color-active: $light-gray2 !default;
-$button-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
-$button-intent-color-disabled: rgba($white, 0.6);
+$button-background-color: var(--bp-palette-light-gray-5) !default;
+$button-background-color-hover: var(--bp-palette-light-gray-4) !default;
+$button-background-color-active: var(--bp-palette-light-gray-2) !default;
+$button-background-color-disabled: color-mix(
+  in srgb,
+  var(--bp-palette-light-gray-1) 50%,
+  transparent
+) !default;
+$button-background-color-active-disabled: color-mix(
+  in srgb,
+  var(--bp-palette-light-gray-1) 70%,
+  transparent
+) !default;
+$button-intent-color-disabled: color-mix(in srgb, var(--bp-palette-white) 60%, transparent);
 $dark-button-color-disabled: $pt-dark-text-color-disabled !default;
-$dark-button-background-color: $dark-gray3 !default;
-$dark-button-background-color-hover: $dark-gray2 !default;
-$dark-button-background-color-active: $dark-gray1 !default;
-$dark-button-background-color-disabled: rgba($dark-gray3, 0.15) !default;
-$dark-button-background-color-active-disabled: rgba($dark-gray3, 0.7) !default;
-$dark-button-intent-color-disabled: rgba($white, 0.3);
+$dark-button-background-color: var(--bp-palette-dark-gray-3) !default;
+$dark-button-background-color-hover: var(--bp-palette-dark-gray-2) !default;
+$dark-button-background-color-active: var(--bp-palette-dark-gray-1) !default;
+$dark-button-background-color-disabled: color-mix(
+  in srgb,
+  var(--bp-palette-dark-gray-3) 15%,
+  transparent
+) !default;
+$dark-button-background-color-active-disabled: color-mix(
+  in srgb,
+  var(--bp-palette-dark-gray-3) 70%,
+  transparent
+) !default;
+$dark-button-intent-color-disabled: color-mix(in srgb, var(--bp-palette-white) 30%, transparent);
 
 $minimal-button-divider-width: 1px !default;
 $minimal-button-background-color: none !default;
-$minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
-$minimal-button-background-color-active: rgba($gray3, 0.3) !default;
+$minimal-button-background-color-hover: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 15%,
+  transparent
+) !default;
+$minimal-button-background-color-active: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 30%,
+  transparent
+) !default;
 $dark-minimal-button-background-color: none !default;
-$dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
-$dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
+$dark-minimal-button-background-color-hover: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 15%,
+  transparent
+) !default;
+$dark-minimal-button-background-color-active: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 30%,
+  transparent
+) !default;
 
 $button-outlined-width: 1px !default;
 $button-outlined-border-intent-opacity: 0.6 !default;
@@ -85,24 +117,24 @@ $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 // TODO(bp7): Replace with $button-intent-states
 $button-intents: (
   "primary": (
-    $blue3,
-    $blue2,
-    $blue1,
+    var(--bp-palette-blue-3),
+    var(--bp-palette-blue-2),
+    var(--bp-palette-blue-1),
   ),
   "success": (
-    $green3,
-    $green2,
-    $green1,
+    var(--bp-palette-green-3),
+    var(--bp-palette-green-2),
+    var(--bp-palette-green-1),
   ),
   "warning": (
-    $orange3,
-    $orange2,
-    $orange1,
+    var(--bp-palette-orange-3),
+    var(--bp-palette-orange-2),
+    var(--bp-palette-orange-1),
   ),
   "danger": (
-    $red3,
-    $red2,
-    $red1,
+    var(--bp-palette-red-3),
+    var(--bp-palette-red-2),
+    var(--bp-palette-red-1),
   ),
 ) !default;
 

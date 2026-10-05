@@ -109,7 +109,7 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
   }
 
   .#{$ns}-table-cell-client {
-    background: $white;
+    background: var(--bp-palette-white);
   }
 }
 

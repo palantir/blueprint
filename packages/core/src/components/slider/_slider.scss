@@ -8,17 +8,18 @@ $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - ($pt-spacing * 2.5) !default;
 $label-offset: $handle-size + $pt-spacing !default;
 
-$handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
+$handle-border-shadow: 0 0 0 $button-border-width
+  color-mix(in srgb, var(--bp-palette-black) 50%, transparent);
 $handle-box-shadow:
   $handle-border-shadow,
-  0 1px 1px rgba($black, 0.5) !default;
+  0 1px 1px color-mix(in srgb, var(--bp-palette-black) 50%, transparent) !default;
 $handle-box-shadow-hover:
   $handle-border-shadow,
-  0 1px 2px rgba($black, 0.6) !default;
+  0 1px 2px color-mix(in srgb, var(--bp-palette-black) 60%, transparent) !default;
 $handle-box-shadow-active:
-  inset 0 1px 1px rgba($black, 0.1),
+  inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 10%, transparent),
   $handle-border-shadow,
-  0 1px 2px rgba($black, 0.2) !default;
+  0 1px 2px color-mix(in srgb, var(--bp-palette-black) 20%, transparent) !default;
 
 // retain legacy variable aliases so as to not break consumers
 $handle-height: $handle-size !default;
@@ -61,10 +62,10 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-progress {
-  background: rgba($gray1, 0.2);
+  background: color-mix(in srgb, var(--bp-palette-gray-1) 20%, transparent);
 
   .#{$ns}-dark & {
-    background: rgba($black, 0.5);
+    background: color-mix(in srgb, var(--bp-palette-black) 50%, transparent);
   }
 
   @each $intent, $color in $pt-intent-colors {
@@ -108,7 +109,7 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-disabled & {
-    background: $gray5;
+    background: var(--bp-palette-gray-5);
     box-shadow: none;
     // easy way to avoid lots of special cases to ignore mouse states when disabled:
     pointer-events: none;
@@ -116,25 +117,25 @@ $track-height: $track-size !default;
 
   .#{$ns}-dark & {
     // don't use pt-dark-button() here, since we want to appear more like a light theme button
-    background-color: $gray4;
+    background-color: var(--bp-palette-gray-4);
     box-shadow: $dark-button-box-shadow;
 
     &:hover {
-      background-color: $gray3;
+      background-color: var(--bp-palette-gray-3);
       box-shadow: $dark-button-box-shadow-active;
     }
 
     &.#{$ns}-active {
-      background-color: $gray2;
+      background-color: var(--bp-palette-gray-2);
       box-shadow:
-        inset 0 1px 1px rgba($black, 0.1),
+        inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 10%, transparent),
         $dark-button-box-shadow-active;
     }
   }
 
   .#{$ns}-dark .#{$ns}-disabled & {
-    background: $gray1;
-    border-color: $gray1;
+    background: var(--bp-palette-gray-1);
+    border-color: var(--bp-palette-gray-1);
     box-shadow: none;
   }
 

@@ -1,14 +1,14 @@
 @import "@blueprintjs/core/lib/scss/variables";
 
-$intent-primary-text: $blue1;
-$intent-success-text: $green1;
-$intent-warning-text: $orange1;
-$intent-danger-text: $red1;
+$intent-primary-text: var(--bp-palette-blue-1);
+$intent-success-text: var(--bp-palette-green-1);
+$intent-warning-text: var(--bp-palette-orange-1);
+$intent-danger-text: var(--bp-palette-red-1);
 
-$dark-intent-primary-text: $blue5;
-$dark-intent-success-text: $green5;
-$dark-intent-warning-text: $orange5;
-$dark-intent-danger-text: $red5;
+$dark-intent-primary-text: var(--bp-palette-blue-5);
+$dark-intent-success-text: var(--bp-palette-green-5);
+$dark-intent-warning-text: var(--bp-palette-orange-5);
+$dark-intent-danger-text: var(--bp-palette-red-5);
 
 .examples-root {
   align-items: center;
@@ -17,7 +17,7 @@ $dark-intent-danger-text: $red5;
 }
 
 .examples-container {
-  background-color: $light-gray2;
+  background-color: var(--bp-palette-light-gray-2);
   display: flex;
   flex-direction: column;
   padding: $pt-spacing * 2;
@@ -45,7 +45,7 @@ $dark-intent-danger-text: $red5;
 }
 
 .example-card {
-  background-color: $light-gray4;
+  background-color: var(--bp-palette-light-gray-4);
 }
 
 .tag-container {
@@ -131,6 +131,6 @@ $dark-intent-danger-text: $red5;
 }
 
 .box-example {
-  background-color: $gray1;
-  color: $white;
+  background-color: var(--bp-palette-gray-1);
+  color: var(--bp-palette-white);
 }

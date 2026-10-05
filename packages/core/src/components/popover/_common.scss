@@ -5,8 +5,8 @@
 @import "../../common/variables";
 @import "../../common/react-transition";
 
-$pt-popover-background-color: $white !default;
-$pt-dark-popover-background-color: $dark-gray3 !default;
+$pt-popover-background-color: var(--bp-palette-white) !default;
+$pt-dark-popover-background-color: var(--bp-palette-dark-gray-3) !default;
 
 // $arrow-offset: amount to shift arrow along edge of popover
 // $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
@@ -68,7 +68,7 @@ $pt-dark-popover-background-color: $dark-gray3 !default;
   }
 
   .#{$ns}-popover-arrow-border {
-    fill: $black;
+    fill: var(--bp-palette-black);
     fill-opacity: $arrow-border-fill-opacity;
   }
 

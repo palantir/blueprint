@@ -4,7 +4,7 @@
 @import "../../common/variables";
 @import "common";
 
-$progress-bar-stripes-color: rgba($white, 0.2) !default;
+$progress-bar-stripes-color: color-mix(in srgb, var(--bp-palette-white) 20%, transparent) !default;
 
 $progress-bar-height: $pt-spacing * 2 !default;
 $progress-bar-stripes-size: $pt-spacing * 7.5 !default;

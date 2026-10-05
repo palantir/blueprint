@@ -111,7 +111,7 @@
   .docs-code-example {
     // lighten the example background in dark mode to make elevation shadows visible
     .#{$ns}-dark & {
-      background-color: $dark-gray3;
+      background-color: var(--bp-palette-dark-gray-3);
     }
   }
 
@@ -269,9 +269,9 @@
     $node-size: $pt-spacing * 20;
     $icon-size: $pt-icon-size-standard * 2;
     $node-border-width: $pt-spacing;
-    background-color: $blue5;
+    background-color: var(--bp-palette-blue-5);
 
-    border: $node-border-width solid $white;
+    border: $node-border-width solid var(--bp-palette-white);
     border-radius: 50%;
     box-shadow: $pt-elevation-shadow-2;
     height: $node-size;
@@ -280,7 +280,7 @@
 
     &::before {
       @include pt-icon($icon-size, 16);
-      color: $white;
+      color: var(--bp-palette-white);
       content: map.get($blueprint-icon-codepoints, "envelope");
       left: ($node-size - $icon-size) * 0.5 - $node-border-width;
       position: relative;
@@ -290,11 +290,11 @@
     &.docs-context-menu-open {
       box-shadow:
         $pt-elevation-shadow-2,
-        0 0 0 4px $orange4;
+        0 0 0 4px var(--bp-palette-orange-4);
     }
 
     .#{$ns}-dark & {
-      background-color: $blue2;
+      background-color: var(--bp-palette-blue-2);
     }
   }
 }
@@ -332,10 +332,10 @@ $docs-hotkey-piano-height: 510px;
     z-index: 1;
 
     > div {
-      background-color: $white;
+      background-color: var(--bp-palette-white);
       border-bottom-left-radius: $pt-spacing;
       border-bottom-right-radius: $pt-spacing;
-      color: $black;
+      color: var(--bp-palette-black);
       height: $pt-spacing * 60;
       margin-right: $pt-spacing;
       width: $pt-spacing * 20;
@@ -349,8 +349,8 @@ $docs-hotkey-piano-height: 510px;
     z-index: 2;
 
     > div {
-      background-color: $black;
-      color: $white;
+      background-color: var(--bp-palette-black);
+      color: var(--bp-palette-white);
       height: $pt-spacing * 40;
       left: $pt-spacing * -10;
       position: absolute;
@@ -360,7 +360,7 @@ $docs-hotkey-piano-height: 510px;
 
   .piano-key-pressed > div {
     background-color: $pt-intent-primary;
-    color: $white;
+    color: var(--bp-palette-white);
   }
 
   .piano-key-text {
@@ -380,8 +380,8 @@ $docs-hotkey-piano-height: 510px;
   .docs-hotkey-tester {
     @include pt-flex-container(column, $pt-spacing * 2);
     align-items: center;
-    background: rgba($gray3, 0.2);
-    border: 2px solid rgba($gray3, 0.8);
+    background: color-mix(in srgb, var(--bp-palette-gray-3) 20%, transparent);
+    border: 2px solid color-mix(in srgb, var(--bp-palette-gray-3) 80%, transparent);
     border-radius: var(--bp-surface-border-radius);
     flex: 1 1;
     justify-content: space-around;
@@ -397,15 +397,15 @@ $docs-hotkey-piano-height: 510px;
     }
 
     &:focus {
-      background: rgba($blue3, 0.1);
-      border: 2px solid rgba($blue3, 0.6);
+      background: color-mix(in srgb, var(--bp-palette-blue-3) 10%, transparent);
+      border: 2px solid color-mix(in srgb, var(--bp-palette-blue-3) 60%, transparent);
       color: map.get($pt-intent-text-colors, "primary");
       cursor: default;
       opacity: 1;
 
       .#{$ns}-dark & {
-        background: rgba($blue4, 0.1);
-        border: 2px solid rgba($blue4, 0.6);
+        background: color-mix(in srgb, var(--bp-palette-blue-4) 10%, transparent);
+        border: 2px solid color-mix(in srgb, var(--bp-palette-blue-4) 60%, transparent);
         color: map.get($pt-dark-intent-text-colors, "primary");
       }
     }
@@ -531,7 +531,7 @@ $docs-hotkey-piano-height: 510px;
     width: 300px;
 
     .#{$ns}-dark & {
-      box-shadow: border-shadow(0.2, $white);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent);
     }
   }
 
@@ -624,18 +624,18 @@ $docs-hotkey-piano-height: 510px;
 }
 
 .docs-popover-placement-label-side {
-  color: $cerulean3;
+  color: var(--bp-palette-cerulean-3);
 
   .#{$ns}-dark & {
-    color: $cerulean5;
+    color: var(--bp-palette-cerulean-5);
   }
 }
 
 .docs-popover-placement-label-alignment {
-  color: $forest3;
+  color: var(--bp-palette-forest-3);
 
   .#{$ns}-dark & {
-    color: $forest5;
+    color: var(--bp-palette-forest-5);
   }
 }
 
@@ -659,14 +659,14 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-portal-example {
   .docs-popover-portal-example-scroll-container {
-    background: $light-gray3;
+    background: var(--bp-palette-light-gray-3);
     border-radius: var(--bp-surface-border-radius);
     flex: 1 1 auto;
     overflow: scroll hidden;
     position: relative;
 
     .#{$ns}-dark & {
-      background: $dark-gray5;
+      background: var(--bp-palette-dark-gray-5);
     }
   }
 
@@ -798,10 +798,10 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("DatePickerModifier")} {
   .docs-date-picker-day-odd {
-    color: $red2;
+    color: var(--bp-palette-red-2);
 
     .#{$ns}-dark & {
-      color: $red4;
+      color: var(--bp-palette-red-4);
     }
   }
 }
