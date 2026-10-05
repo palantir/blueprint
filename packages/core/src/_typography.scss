@@ -308,12 +308,12 @@ Styleguide blockquote
 */
 
 %blockquote {
-  border-left: solid $pt-spacing rgba($gray4, 0.5);
+  border-left: solid $pt-spacing color-mix(in srgb, var(--bp-palette-gray-4) 50%, transparent);
   margin: 0 0 ($pt-spacing * 2);
   padding: 0 ($pt-spacing * 5);
 
   .#{$ns}-dark & {
-    border-color: rgba($gray2, 0.5);
+    border-color: color-mix(in srgb, var(--bp-palette-gray-2) 50%, transparent);
   }
 }
 

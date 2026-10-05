@@ -3,7 +3,7 @@
 @import "../common/variables";
 @import "../cell/common";
 
-$region-default-color: $gray3 !default;
+$region-default-color: var(--bp-palette-gray-3) !default;
 $region-selected-color: $pt-intent-primary !default;
 
 .#{$ns}-table-overlay-layer {
@@ -19,7 +19,7 @@ $region-selected-color: $pt-intent-primary !default;
 }
 
 .#{$ns}-table-region {
-  background-color: rgba($region-default-color, 0.1);
+  background-color: color-mix(in srgb, $region-default-color 10%, transparent);
   border: $cell-border-width solid $region-default-color;
 }
 
@@ -28,8 +28,8 @@ $region-selected-color: $pt-intent-primary !default;
   border: $cell-border-width solid $region-selected-color;
 
   .#{$ns}-dark & {
-    background-color: rgba($blue4, 0.1);
-    border: $cell-border-width solid $blue4;
+    background-color: color-mix(in srgb, var(--bp-palette-blue-4) 10%, transparent);
+    border: $cell-border-width solid var(--bp-palette-blue-4);
   }
 
   .#{$ns}-table-column-headers & {
@@ -44,7 +44,7 @@ $region-selected-color: $pt-intent-primary !default;
 }
 
 .#{$ns}-table-focus-region {
-  border: ($pt-spacing * 0.5) solid $blue3;
+  border: ($pt-spacing * 0.5) solid var(--bp-palette-blue-3);
 }
 
 .#{$ns}-table-column-headers .#{$ns}-table-region {

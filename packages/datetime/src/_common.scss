@@ -12,16 +12,56 @@ $datepicker-day-size: $pt-spacing * 7.5 !default;
 $datepicker-header-height: $pt-spacing * 10 !default;
 $datepicker-header-margin: ($datepicker-header-height - $pt-input-height) * 0.5 !default;
 
-$datepicker-background-color: $white !default;
-$datepicker-day-background-color-hover: rgba($gray3, 0.15) !default;
-$datepicker-day-background-color-active: rgba($gray3, 0.3) !default;
-$dark-datepicker-background-color: $dark-gray3 !default;
-$dark-datepicker-day-background-color-hover: rgba($gray3, 0.15) !default;
-$dark-datepicker-day-background-color-active: rgba($gray3, 0.3) !default;
+$datepicker-background-color: var(--bp-palette-white) !default;
+$datepicker-day-background-color-hover: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 15%,
+  transparent
+) !default;
+$datepicker-day-background-color-active: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 30%,
+  transparent
+) !default;
+$dark-datepicker-background-color: var(--bp-palette-dark-gray-3) !default;
+$dark-datepicker-day-background-color-hover: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 15%,
+  transparent
+) !default;
+$dark-datepicker-day-background-color-active: color-mix(
+  in srgb,
+  var(--bp-palette-gray-3) 30%,
+  transparent
+) !default;
 
-$daterangepicker-range-background-color: rgba($blue3, 0.1) !default;
-$daterangepicker-range-background-color-selected: rgba($blue3, 0.1) !default;
-$daterangepicker-range-background-color-selected-hover: rgba($blue3, 0.2) !default;
-$dark-daterangepicker-range-background-color: rgba($blue3, 0.2) !default;
-$dark-daterangepicker-range-background-color-selected: rgba($blue3, 0.2) !default;
-$dark-daterangepicker-range-background-color-selected-hover: rgba($blue3, 0.4) !default;
+$daterangepicker-range-background-color: color-mix(
+  in srgb,
+  var(--bp-palette-blue-3) 10%,
+  transparent
+) !default;
+$daterangepicker-range-background-color-selected: color-mix(
+  in srgb,
+  var(--bp-palette-blue-3) 10%,
+  transparent
+) !default;
+$daterangepicker-range-background-color-selected-hover: color-mix(
+  in srgb,
+  var(--bp-palette-blue-3) 20%,
+  transparent
+) !default;
+$dark-daterangepicker-range-background-color: color-mix(
+  in srgb,
+  var(--bp-palette-blue-3) 20%,
+  transparent
+) !default;
+$dark-daterangepicker-range-background-color-selected: color-mix(
+  in srgb,
+  var(--bp-palette-blue-3) 20%,
+  transparent
+) !default;
+$dark-daterangepicker-range-background-color-selected-hover: color-mix(
+  in srgb,
+  var(--bp-palette-blue-3) 40%,
+  transparent
+) !default;

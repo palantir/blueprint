@@ -75,11 +75,11 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
       &:hover,
       &:active {
-        background: $light-gray5;
+        background: var(--bp-palette-light-gray-5);
 
         &.#{$ns}-dark,
         .#{$ns}-dark & {
-          background: $dark-gray4;
+          background: var(--bp-palette-dark-gray-4);
         }
       }
     }

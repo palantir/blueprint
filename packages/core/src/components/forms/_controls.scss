@@ -20,12 +20,18 @@ $dark-control-background-color-disabled: $minimal-button-background-color-hover 
 $control-checked-background-color: list.nth(map.get($button-intents, "primary"), 1) !default;
 $control-checked-background-color-hover: list.nth(map.get($button-intents, "primary"), 2) !default;
 $control-checked-background-color-active: list.nth(map.get($button-intents, "primary"), 3) !default;
-$control-checked-background-color-disabled: rgba($control-checked-background-color, 0.5) !default;
+$control-checked-background-color-disabled: color-mix(
+  in srgb,
+  $control-checked-background-color 50%,
+  transparent
+) !default;
 
-$control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;
-$control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2) !default;
-$dark-control-box-shadow: inset 0 0 0 $button-border-width $gray3 !default;
-$dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 0.1) !default;
+$control-box-shadow: inset 0 0 0 $button-border-width var(--bp-palette-gray-2) !default;
+$control-checked-box-shadow: inset 0 0 0 $button-border-width
+  color-mix(in srgb, var(--bp-palette-black) 20%, transparent) !default;
+$dark-control-box-shadow: inset 0 0 0 $button-border-width var(--bp-palette-gray-3) !default;
+$dark-control-checked-box-shadow: inset 0 0 0 $button-border-width
+  color-mix(in srgb, var(--bp-palette-white) 10%, transparent) !default;
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
@@ -35,7 +41,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color;
     box-shadow: $control-checked-box-shadow;
-    color: $white;
+    color: var(--bp-palette-white);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       background-color: $pt-high-contrast-mode-active-background-color;
@@ -60,7 +66,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   input:disabled#{$selector} ~ .#{$ns}-control-indicator {
     background: $control-checked-background-color-disabled;
     box-shadow: none;
-    color: rgba($white, 0.6);
+    color: color-mix(in srgb, var(--bp-palette-white) 60%, transparent);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       background-color: $pt-high-contrast-mode-disabled-border-color;
@@ -91,7 +97,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     input:disabled#{$selector} ~ .#{$ns}-control-indicator {
       background: $control-checked-background-color-disabled;
       box-shadow: none;
-      color: rgba($white, 0.6);
+      color: color-mix(in srgb, var(--bp-palette-white) 60%, transparent);
     }
   }
 }
@@ -243,7 +249,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   }
 
   &.#{$ns}-checkbox {
-    @mixin indicator-inline-icon($icon, $fill-color: $white) {
+    @mixin indicator-inline-icon($icon, $fill-color: var(--bp-palette-white)) {
       &::before {
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
@@ -279,11 +285,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-tick", $black);
+        @include indicator-inline-icon("small-tick", var(--bp-palette-black));
       }
 
       input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-minus", $black);
+        @include indicator-inline-icon("small-minus", var(--bp-palette-black));
       }
 
       input:disabled ~ .#{$ns}-control-indicator {
@@ -298,7 +304,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator::before {
-      background-image: radial-gradient($white, $white 28%, transparent 32%);
+      background-image: radial-gradient(
+        var(--bp-palette-white),
+        var(--bp-palette-white) 28%,
+        transparent 32%
+      );
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
@@ -343,26 +353,59 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
   $switch-text-color: $pt-text-color !default;
   $switch-text-color-disabled: $pt-text-color-disabled !default;
-  $switch-checked-text-color: $white !default;
-  $switch-checked-text-color-disabled: rgba($white, 0.6) !default;
-  $switch-background-color: rgba($gray3, 0.3) !default;
-  $switch-background-color-hover: rgba($gray3, 0.4) !default;
-  $switch-background-color-active: rgba($gray3, 0.5) !default;
-  $switch-background-color-disabled: rgba($gray3, 0.15) !default;
+  $switch-checked-text-color: var(--bp-palette-white) !default;
+  $switch-checked-text-color-disabled: color-mix(
+    in srgb,
+    var(--bp-palette-white) 60%,
+    transparent
+  ) !default;
+  $switch-background-color: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent) !default;
+  $switch-background-color-hover: color-mix(
+    in srgb,
+    var(--bp-palette-gray-3) 40%,
+    transparent
+  ) !default;
+  $switch-background-color-active: color-mix(
+    in srgb,
+    var(--bp-palette-gray-3) 50%,
+    transparent
+  ) !default;
+  $switch-background-color-disabled: color-mix(
+    in srgb,
+    var(--bp-palette-gray-3) 15%,
+    transparent
+  ) !default;
   $switch-checked-background-color: $control-checked-background-color !default;
   $switch-checked-background-color-hover: $control-checked-background-color-hover !default;
   $switch-checked-background-color-active: $control-checked-background-color-active !default;
-  $switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
+  $switch-checked-background-color-disabled: color-mix(
+    in srgb,
+    var(--bp-palette-blue-3) 50%,
+    transparent
+  ) !default;
 
   $dark-switch-text-color: $pt-dark-text-color !default;
   $dark-switch-text-color-disabled: $pt-dark-text-color-disabled !default;
-  $dark-switch-checked-text-color: $white !default;
+  $dark-switch-checked-text-color: var(--bp-palette-white) !default;
   $dark-switch-checked-text-color-disabled: $pt-dark-text-color-disabled !default;
 
-  $switch-indicator-background-color: rgba($gray3, 0.3) !default;
-  $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
-  $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
-  $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
+  $switch-indicator-background-color: color-mix(
+    in srgb,
+    var(--bp-palette-gray-3) 30%,
+    transparent
+  ) !default;
+  $switch-indicator-box-shadow: 0 0 0 $button-border-width
+    color-mix(in srgb, var(--bp-palette-black) 50%, transparent) !default;
+  $switch-indicator-background-color-disabled: color-mix(
+    in srgb,
+    var(--bp-palette-white) 80%,
+    transparent
+  ) !default;
+  $switch-checked-indicator-background-color-disabled: color-mix(
+    in srgb,
+    var(--bp-palette-white) 50%,
+    transparent
+  ) !default;
 
   &.#{$ns}-switch {
     @mixin indicator-colors(
@@ -457,7 +500,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
       width: auto;
 
       &::before {
-        background: $white;
+        background: var(--bp-palette-white);
         border-radius: 50%;
         box-shadow: $switch-indicator-box-shadow;
         height: $switch-indicator-size;

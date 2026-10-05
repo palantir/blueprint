@@ -12,27 +12,27 @@ $toast-margin: $pt-spacing * 5 !default;
 $toast-intent-colors: (
   "primary": (
     $pt-intent-primary,
-    $white,
-    $blue2,
-    $blue1,
+    var(--bp-palette-white),
+    var(--bp-palette-blue-2),
+    var(--bp-palette-blue-1),
   ),
   "success": (
     $pt-intent-success,
-    $white,
-    $green2,
-    $green1,
+    var(--bp-palette-white),
+    var(--bp-palette-green-2),
+    var(--bp-palette-green-1),
   ),
   "warning": (
-    $orange5,
-    $dark-gray1,
-    $orange4,
-    $orange3,
+    var(--bp-palette-orange-5),
+    var(--bp-palette-dark-gray-1),
+    var(--bp-palette-orange-4),
+    var(--bp-palette-orange-3),
   ),
   "danger": (
     $pt-intent-danger,
-    $white,
-    $red2,
-    $red1,
+    var(--bp-palette-white),
+    var(--bp-palette-red-2),
+    var(--bp-palette-red-1),
   ),
 ) !default;
 
@@ -46,7 +46,7 @@ $toast-intent-colors: (
   color: $text-and-focus-color;
 
   .#{$ns}-icon:first-child {
-    color: rgba($text-and-focus-color, 0.7);
+    color: color-mix(in srgb, $text-and-focus-color 70%, transparent);
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
@@ -67,11 +67,11 @@ $toast-intent-colors: (
 
     &:focus {
       // blue outline color shows poorly on colored bg
-      outline-color: rgba($text-and-focus-color, 0.75);
+      outline-color: color-mix(in srgb, $text-and-focus-color 75%, transparent);
     }
 
     &:last-child > .#{$ns}-icon-cross {
-      color: rgba($text-and-focus-color, 0.7) !important;
+      color: color-mix(in srgb, $text-and-focus-color 70%, transparent) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
@@ -123,7 +123,7 @@ $toast-intent-colors: (
     $after: "~ &"
   );
   align-items: flex-start;
-  background-color: $white;
+  background-color: var(--bp-palette-white);
   border-radius: var(--bp-surface-border-radius);
   box-shadow: $pt-toast-box-shadow;
   display: flex;
@@ -152,7 +152,7 @@ $toast-intent-colors: (
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: $dark-gray4;
+    background-color: var(--bp-palette-dark-gray-4);
     box-shadow: $pt-dark-toast-box-shadow;
 
     > .#{$ns}-icon {
@@ -161,21 +161,21 @@ $toast-intent-colors: (
 
     // increase contrast for default intent in dark mode
     .#{$ns}-button .#{$ns}-icon {
-      color: rgba($white, 0.7);
+      color: color-mix(in srgb, var(--bp-palette-white) 70%, transparent);
     }
   }
 
   &[class*="#{$ns}-intent-"] {
     a {
-      color: rgba($white, 0.7);
+      color: color-mix(in srgb, var(--bp-palette-white) 70%, transparent);
 
       &:hover {
-        color: $white;
+        color: var(--bp-palette-white);
       }
     }
 
     > .#{$ns}-icon {
-      color: $white;
+      color: var(--bp-palette-white);
     }
   }
 

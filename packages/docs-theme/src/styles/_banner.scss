@@ -28,7 +28,7 @@ $banner-height: $pt-spacing * 10;
 
   a {
     /* stylelint-disable-next-line declaration-no-important */
-    color: $white !important;
+    color: var(--bp-palette-white) !important;
 
     &:hover {
       text-decoration: none;

@@ -68,7 +68,7 @@ body {
 }
 
 .sidebar {
-  background-color: $light-gray4;
+  background-color: var(--bp-palette-light-gray-4);
   flex: 0 0 300px;
   height: 100%;
   order: 1;
@@ -116,8 +116,8 @@ body {
   }
 
   .#{$ns}-dark & {
-    background-color: $dark-gray2;
-    color: $dark-gray2;
+    background-color: var(--bp-palette-dark-gray-2);
+    color: var(--bp-palette-dark-gray-2);
     z-index: 1;
 
     h6.#{$ns}-heading {
@@ -131,10 +131,10 @@ body {
 }
 
 .tbl-zebra-stripe {
-  background-color: $light-gray5;
+  background-color: var(--bp-palette-light-gray-5);
 
   .#{$ns}-dark & {
-    background-color: $dark-gray5;
+    background-color: var(--bp-palette-dark-gray-5);
   }
 }
 
@@ -163,12 +163,12 @@ body {
 }
 
 .tbl-custom-column-header-type {
-  color: $gray1;
+  color: var(--bp-palette-gray-1);
   font-family: "Courier", monospace;
   font-size: 12px;
   margin-top: $pt-spacing * 0.75;
 
   .#{$ns}-dark & {
-    color: $gray5;
+    color: var(--bp-palette-gray-5);
   }
 }
