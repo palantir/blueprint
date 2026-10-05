@@ -1,0 +1,76 @@
+@use "sass:map";
+@import "../../common/mixins";
+@import "../../common/variables";
+@import "../../common/variables-extended";
+
+// TODO: Remove once updated tokens are included
+/* stylelint-disable color-named */
+@mixin pt-button-layout-next() {
+  @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2), $inline: inline);
+  align-items: center;
+  border: none;
+  border-radius: var(--bp-surface-border-radius);
+  cursor: pointer;
+  font-size: var(--bp-typography-size-body-medium);
+  justify-content: center;
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
+  text-align: left;
+  vertical-align: middle;
+}
+
+@mixin pt-button-height-default-next() {
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
+  padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2);
+}
+
+@mixin pt-button-height-small-next() {
+  min-height: calc(var(--bp-surface-spacing) * 6);
+  min-width: calc(var(--bp-surface-spacing) * 6);
+  padding: 0 calc(var(--bp-surface-spacing) * 2);
+}
+
+@mixin pt-button-next() {
+  background-color: blue;
+  box-shadow: inset var(--bp-surface-shadow-0);
+  color: turquoise;
+}
+
+@mixin pt-button-intent-variant-next($intent) {
+  background-color: lightskyblue;
+  color: aliceblue;
+}
+
+@mixin pt-dark-button-next() {
+  background-color: darkblue;
+}
+
+@mixin pt-dark-button-default-colors-next() {
+  background-color: darkblue;
+}
+
+@mixin pt-dark-button-hover-next() {
+  background-color: darkblue;
+}
+
+@mixin pt-dark-button-active-next() {
+  background-color: darkblue;
+}
+
+@mixin pt-dark-button-disabled-next() {
+  background-color: darkblue;
+}
+
+@mixin pt-button-minimal-next() {
+  background: none;
+  color: blueviolet;
+}
+
+@mixin pt-button-minimal-intent-next($intent) {
+  color: indigo;
+}
+
+@mixin pt-button-outlined-next() {
+  border: var(--bp-surface-border-width) solid;
+  border-color: violet;
+}
