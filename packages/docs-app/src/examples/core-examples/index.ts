@@ -90,6 +90,7 @@ export * from "./radioExample";
 export { RadioCardGroupExample } from "./radioCardGroupExample";
 export * from "./segmentedControlExample";
 export * from "./sectionExample";
+export * from "./skeletonExamples";
 export * from "./sliderExample";
 export * from "./switchExample";
 export { SwitchCardExample } from "./switchCardExample";
