@@ -11,7 +11,7 @@ Licensed under the Apache License, Version 2.0.
 @import "@blueprintjs/core/src/common/variables";
 @import "svgs";
 
-$body-background-color: $black;
+$body-background-color: var(--bp-palette-black);
 
 $canvas-height: 630px;
 $container-width: 760px;
@@ -53,7 +53,7 @@ header {
 
   h1 {
     clear: both;
-    color: $white;
+    color: var(--bp-palette-white);
     font-weight: 400;
     line-height: 1.2;
     margin: 0 auto;
@@ -61,7 +61,7 @@ header {
   }
 
   h3 {
-    color: $white;
+    color: var(--bp-palette-white);
     font-weight: 400;
     margin-bottom: $pt-spacing * 7.5;
     margin-top: $pt-spacing * 7.5;
@@ -69,23 +69,23 @@ header {
   }
 
   .#{$ns}-button.landing-button {
-    color: rgba($white, 0.7);
+    color: color-mix(in srgb, var(--bp-palette-white) 70%, transparent);
     pointer-events: all;
     position: relative;
 
     &:hover {
-      background-color: rgba($white, 0.2);
-      color: rgba($white, 0.7);
+      background-color: color-mix(in srgb, var(--bp-palette-white) 20%, transparent);
+      color: color-mix(in srgb, var(--bp-palette-white) 70%, transparent);
     }
 
     &:active {
-      background-color: rgba($white, 0.4);
-      color: $white;
+      background-color: color-mix(in srgb, var(--bp-palette-white) 40%, transparent);
+      color: var(--bp-palette-white);
     }
   }
 
   .#{$ns}-icon-dot {
-    color: rgba($white, 0.5);
+    color: color-mix(in srgb, var(--bp-palette-white) 50%, transparent);
     margin: $pt-spacing;
   }
 
@@ -120,7 +120,7 @@ footer {
   }
 
   .landing-separator {
-    background-color: $dark-gray5;
+    background-color: var(--bp-palette-dark-gray-5);
     height: $pt-spacing * 0.5;
     width: $pt-spacing * 10;
   }
@@ -130,9 +130,9 @@ footer {
   &::before {
     background-image: linear-gradient(
       90deg,
-      rgba($white, 0) 0%,
-      rgba($white, 0.3) 50%,
-      rgba($white, 0) 100%
+      color-mix(in srgb, var(--bp-palette-white) 0%, transparent) 0%,
+      color-mix(in srgb, var(--bp-palette-white) 30%, transparent) 50%,
+      color-mix(in srgb, var(--bp-palette-white) 0%, transparent) 100%
     );
     content: "";
     display: block;
