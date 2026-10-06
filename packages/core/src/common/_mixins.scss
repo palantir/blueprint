@@ -29,10 +29,10 @@ $pt-intent-active-text-colors: (
 ) !default;
 
 $pt-dark-intent-text-colors: (
-  "primary": $blue5,
-  "success": $green5,
-  "warning": $orange5,
-  "danger": $red5,
+  "primary": $pt-dark-intent-primary,
+  "success": $pt-dark-intent-success,
+  "warning": $pt-dark-intent-warning,
+  "danger": $pt-dark-intent-danger,
 ) !default;
 
 @mixin intent-color($intentName) {
