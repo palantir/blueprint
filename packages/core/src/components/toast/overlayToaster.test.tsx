@@ -149,6 +149,24 @@ describe("OverlayToaster", () => {
             );
         });
 
+        it("dismiss() removes a toast that is still queued", async () => {
+            const onDismiss = vi.fn();
+            toaster.show({ message: "one" });
+            const key = toaster.show({ message: "two", onDismiss });
+            toaster.show({ message: "three" });
+            toaster.dismiss(key);
+            await waitFor(
+                () => {
+                    assert.deepEqual(
+                        toaster.getToasts().map(t => t.message),
+                        ["three", "one"],
+                    );
+                },
+                { timeout: 3 * OVERLAY_TOASTER_DELAY_MS },
+            );
+            expect(onDismiss).toHaveBeenCalledOnce();
+        });
+
         it("clear() removes all toasts", async () => {
             toaster.show({ message: "one" });
             toaster.show({ message: "two" });
