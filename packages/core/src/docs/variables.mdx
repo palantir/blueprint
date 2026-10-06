@@ -162,21 +162,6 @@ These variables are semantic aliases of our [colors](#core/colors).
 They are used throughout Blueprint itself to ensure consistent color usage across components
 and are available in the Sass or Less variables files.
 
-Dark theme intent aliases match the text and icon colors used by core components.
-For example, add a dark theme override in a Sass CSS module:
-
-```scss
-@use "@blueprintjs/core/lib/scss/variables.scss" as bp;
-
-.status {
-    :global(.#{bp.$ns}-dark) & {
-        color: bp.$pt-dark-intent-success;
-    }
-}
-```
-
-These aliases do not replace the existing `$pt-intent-*` colors used for solid intent backgrounds.
-
 <table class="@ns-html-table docs-color-aliases-table">
     <thead>
         <tr>
