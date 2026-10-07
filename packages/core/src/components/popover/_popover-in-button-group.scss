@@ -15,7 +15,7 @@
     > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
-      margin-right: -$button-border-width;
+      margin-right: -$legacy-button-border-width;
     }
   }
 
@@ -35,7 +35,7 @@
       }
 
       > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
-        margin-bottom: -$button-border-width;
+        margin-bottom: -$legacy-button-border-width;
       }
     }
   }

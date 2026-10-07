@@ -1,0 +1,41 @@
+{
+    "text": {
+        "color": {
+            "$type": "color",
+            "$description": "Dark default text aliases for Button recipes. Muted text primitives are not mapped yet.",
+            "neutral": {
+                "default": { "$value": "{color.grey.13}" },
+                "disabled": { "$value": "{typography.color-default.disabled}" }
+            },
+            "default": {
+                "disabled": {
+                    "$value": "color-mix(in oklch, color-mix(in srgb, {intent.default.rest} 46%, {palette.white}) 50%, transparent)"
+                }
+            },
+            "primary": {
+                "default": { "$value": "{color.blue.13}" },
+                "disabled": {
+                    "$value": "color-mix(in oklch, color-mix(in oklch, {intent.primary.rest} 51%, {palette.white}) 50%, transparent)"
+                }
+            },
+            "success": {
+                "default": { "$value": "{color.green.13}" },
+                "disabled": {
+                    "$value": "color-mix(in oklch, color-mix(in oklch, {intent.success.rest} 54%, {palette.white}) 50%, transparent)"
+                }
+            },
+            "warning": {
+                "default": { "$value": "{color.orange.13}" },
+                "disabled": {
+                    "$value": "color-mix(in oklch, color-mix(in oklch, {intent.warning.rest} 53%, {palette.white}) 50%, transparent)"
+                }
+            },
+            "danger": {
+                "default": { "$value": "{color.red.13}" },
+                "disabled": {
+                    "$value": "color-mix(in oklch, color-mix(in oklch, {intent.danger.rest} 53%, {palette.white}) 50%, transparent)"
+                }
+            }
+        }
+    }
+}

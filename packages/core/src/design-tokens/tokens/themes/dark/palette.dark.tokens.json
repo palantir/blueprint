@@ -1,7 +1,7 @@
 {
     "color": {
         "$type": "color",
-        "$description": "Dark-theme Button snapshots: grey3–5 backgrounds, solid intent9–11 backgrounds, and their contrast foregrounds. Other families and roles are not mapped.",
+        "$description": "Dark-theme Button snapshots: neutral and chromatic interaction backgrounds, outlined borders, default text, and solid contrast foregrounds. Other families and unused roles are not mapped.",
         "grey": {
             "3": {
                 "$value": "color(srgb 0.18902 0.214902 0.25098)",
@@ -14,9 +14,37 @@
             "5": {
                 "$value": "color(srgb 0.112549 0.127843 0.149412)",
                 "$description": "Dark default Button background at active, stored as a literal snapshot."
+            },
+            "7": {
+                "$value": "oklch(0.999994 0.0000497986 23.7884 / 0.3)",
+                "$description": "Dark neutral outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.999994 0.0000497986 23.7884 / 0.3)",
+                "$description": "Dark neutral outlined Button border at hover."
+            },
+            "13": {
+                "$value": "#ffffff",
+                "$description": "Dark neutral Button foreground at rest."
             }
         },
         "blue": {
+            "4": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.2)",
+                "$description": "Dark primary minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.3)",
+                "$description": "Dark primary minimal Button background at active."
+            },
+            "7": {
+                "$value": "oklch(0.77575 0.0833385 257.636 / 0.6)",
+                "$description": "Dark primary outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.77575 0.0833385 257.636 / 0.6)",
+                "$description": "Dark primary outlined Button border at hover."
+            },
             "9": {
                 "$value": "#2d72d2",
                 "$description": "Dark primary Button background at rest, stored as a literal snapshot."
@@ -29,12 +57,32 @@
                 "$value": "#184a90",
                 "$description": "Dark primary Button background at active, stored as a literal snapshot."
             },
+            "13": {
+                "$value": "oklch(0.77575 0.0833385 257.636)",
+                "$description": "Dark primary minimal Button foreground at rest."
+            },
             "contrast": {
                 "$value": "{color.white}",
                 "$description": "Text and icons on dark-theme solid backgrounds (steps 9–11), using the primary Button foreground."
             }
         },
         "green": {
+            "4": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.2)",
+                "$description": "Dark success minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.3)",
+                "$description": "Dark success minimal Button background at active."
+            },
+            "7": {
+                "$value": "oklch(0.755849 0.0650323 155.185 / 0.6)",
+                "$description": "Dark success outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.755849 0.0650323 155.185 / 0.6)",
+                "$description": "Dark success outlined Button border at hover."
+            },
             "9": {
                 "$value": "#238551",
                 "$description": "Dark success Button background at rest, stored as a literal snapshot."
@@ -47,12 +95,32 @@
                 "$value": "#165a36",
                 "$description": "Dark success Button background at active, stored as a literal snapshot."
             },
+            "13": {
+                "$value": "oklch(0.75585 0.0650323 155.185)",
+                "$description": "Dark success minimal Button foreground at rest."
+            },
             "contrast": {
                 "$value": "{color.white}",
                 "$description": "Text and icons on dark-theme solid backgrounds (steps 9–11), using the success Button foreground."
             }
         },
         "orange": {
+            "4": {
+                "$value": "oklch(0.819112 0.1303 68.0906 / 0.2)",
+                "$description": "Dark warning minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.819112 0.1303 68.0906 / 0.3)",
+                "$description": "Dark warning minimal Button background at active."
+            },
+            "7": {
+                "$value": "oklch(0.810316 0.0743826 61.8306 / 0.6)",
+                "$description": "Dark warning outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.810316 0.0743826 61.8306 / 0.6)",
+                "$description": "Dark warning outlined Button border at hover."
+            },
             "9": {
                 "$value": "#fbb360",
                 "$description": "Dark warning Button rest anchor using exact legacy orange5; the modern Button's relative color only rounds to this value."
@@ -65,12 +133,32 @@
                 "$value": "oklch(0.614901 0.111016 64.9146)",
                 "$description": "Dark warning Button background at active, stored as a literal snapshot."
             },
+            "13": {
+                "$value": "oklch(0.810316 0.0743826 61.8306)",
+                "$description": "Dark warning minimal Button foreground at rest."
+            },
             "contrast": {
                 "$value": "{color.black}",
                 "$description": "Text and icons on dark-theme solid backgrounds (steps 9–11), using the warning Button foreground."
             }
         },
         "red": {
+            "4": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.2)",
+                "$description": "Dark danger minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.3)",
+                "$description": "Dark danger minimal Button background at active."
+            },
+            "7": {
+                "$value": "oklch(0.776676 0.0929155 22.9394 / 0.6)",
+                "$description": "Dark danger outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.776676 0.0929155 22.9394 / 0.6)",
+                "$description": "Dark danger outlined Button border at hover."
+            },
             "9": {
                 "$value": "#cd4246",
                 "$description": "Dark danger Button background at rest, stored as a literal snapshot."
@@ -82,6 +170,10 @@
             "11": {
                 "$value": "#8e292c",
                 "$description": "Dark danger Button background at active, stored as a literal snapshot."
+            },
+            "13": {
+                "$value": "oklch(0.776676 0.0929155 22.9394)",
+                "$description": "Dark danger minimal Button foreground at rest."
             },
             "contrast": {
                 "$value": "{color.white}",

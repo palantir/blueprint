@@ -35,7 +35,7 @@ $banner-height: $pt-spacing * 10;
     }
   }
 
-  @each $intent, $colors in $button-intents {
+  @each $intent, $colors in $legacy-button-intents {
     &.#{$ns}-intent-#{$intent} {
       background: list.nth($colors, 1);
 

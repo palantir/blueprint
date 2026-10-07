@@ -9,23 +9,29 @@
 @import "../button/common";
 
 $control-background-color: transparent !default;
-$control-background-color-hover: $minimal-button-background-color-hover !default;
-$control-background-color-active: $minimal-button-background-color-active !default;
-$control-background-color-disabled: $minimal-button-background-color-hover !default;
+$control-background-color-hover: $legacy-minimal-button-background-color-hover !default;
+$control-background-color-active: $legacy-minimal-button-background-color-active !default;
+$control-background-color-disabled: $legacy-minimal-button-background-color-hover !default;
 $dark-control-background-color: transparent !default;
-$dark-control-background-color-hover: $minimal-button-background-color-hover !default;
-$dark-control-background-color-active: $minimal-button-background-color-active !default;
-$dark-control-background-color-disabled: $minimal-button-background-color-hover !default;
+$dark-control-background-color-hover: $legacy-minimal-button-background-color-hover !default;
+$dark-control-background-color-active: $legacy-minimal-button-background-color-active !default;
+$dark-control-background-color-disabled: $legacy-minimal-button-background-color-hover !default;
 
-$control-checked-background-color: list.nth(map.get($button-intents, "primary"), 1) !default;
-$control-checked-background-color-hover: list.nth(map.get($button-intents, "primary"), 2) !default;
-$control-checked-background-color-active: list.nth(map.get($button-intents, "primary"), 3) !default;
+$control-checked-background-color: list.nth(map.get($legacy-button-intents, "primary"), 1) !default;
+$control-checked-background-color-hover: list.nth(
+  map.get($legacy-button-intents, "primary"),
+  2
+) !default;
+$control-checked-background-color-active: list.nth(
+  map.get($legacy-button-intents, "primary"),
+  3
+) !default;
 $control-checked-background-color-disabled: rgba($control-checked-background-color, 0.5) !default;
 
-$control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;
-$control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2) !default;
-$dark-control-box-shadow: inset 0 0 0 $button-border-width $gray3 !default;
-$dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 0.1) !default;
+$control-box-shadow: inset 0 0 0 $legacy-button-border-width $gray2 !default;
+$control-checked-box-shadow: inset 0 0 0 $legacy-button-border-width rgba($black, 0.2) !default;
+$dark-control-box-shadow: inset 0 0 0 $legacy-button-border-width $gray3 !default;
+$dark-control-checked-box-shadow: inset 0 0 0 $legacy-button-border-width rgba($white, 0.1) !default;
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
@@ -360,7 +366,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   $dark-switch-checked-text-color-disabled: $pt-dark-text-color-disabled !default;
 
   $switch-indicator-background-color: rgba($gray3, 0.3) !default;
-  $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
+  $switch-indicator-box-shadow: 0 0 0 $legacy-button-border-width rgba($black, 0.5) !default;
   $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
   $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
 
