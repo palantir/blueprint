@@ -1,0 +1,28 @@
+{
+    "text": {
+        "color": {
+            "$type": "color",
+            "$description": "Semantic text colors: default uses palette step 13 and muted uses step 12.",
+            "neutral": {
+                "default": { "$value": "{color.grey.13}" },
+                "muted": { "$value": "{color.grey.12}" }
+            },
+            "primary": {
+                "default": { "$value": "{color.blue.13}" },
+                "muted": { "$value": "{color.blue.12}" }
+            },
+            "success": {
+                "default": { "$value": "{color.green.13}" },
+                "muted": { "$value": "{color.green.12}" }
+            },
+            "warning": {
+                "default": { "$value": "{color.orange.13}" },
+                "muted": { "$value": "{color.orange.12}" }
+            },
+            "danger": {
+                "default": { "$value": "{color.red.13}" },
+                "muted": { "$value": "{color.red.12}" }
+            }
+        }
+    }
+}

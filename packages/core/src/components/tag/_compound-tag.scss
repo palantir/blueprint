@@ -23,6 +23,7 @@ $compound-tag-right-default-colors: (
   var(--bp-intent-default-active)
 ) !default;
 
+// TODO: This is where we want to add some layer on top
 // one shade darker than $tag-intent-colors
 $compound-tag-left-intent-colors: (
   "primary": (

@@ -123,5 +123,853 @@
             "4": { "$value": "#af855a" },
             "5": { "$value": "#d0b090" }
         }
+    },
+    "color": {
+        "$type": "color",
+        "$description": "Light-theme functional color values evaluated from BP6 defaults: 1–2 backgrounds, 3–5 component states, 6–8 borders, 9–11 solid states, 12–13 foregrounds. Steps describe usage, not lightness; existing treatments may share values.",
+        "white": {
+            "$value": "#ffffff",
+            "$description": "Shared white, matching the legacy palette.white value in both themes."
+        },
+        "black": {
+            "$value": "#111418",
+            "$description": "Shared black, matching the legacy palette.black value in both themes."
+        },
+        "grey": {
+            "1": {
+                "$value": "#f6f7f9",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "color(srgb 0.560784 0.6 0.658824 / 0.15)",
+                "$description": "Subtle background, matching the neutral Callout's translucent fill."
+            },
+            "3": {
+                "$value": "color(srgb 0.968627 0.97098 0.974314)",
+                "$description": "Component background at rest, preserving the default Button's fill."
+            },
+            "4": {
+                "$value": "color(srgb 0.932588 0.935412 0.939647)",
+                "$description": "Component background on hover, preserving the default Button's fill."
+            },
+            "5": {
+                "$value": "color(srgb 0.875137 0.878902 0.884549)",
+                "$description": "Component background when active, preserving the default Button's fill."
+            },
+            "6": {
+                "$value": "oklch(0.523903 0.0305927 257.113 / 0.12)",
+                "$description": "Subtle border, matching the default surface border token."
+            },
+            "7": {
+                "$value": "oklch(0.523903 0.0305927 257.113 / 0.25)",
+                "$description": "Border, matching the strong surface border token."
+            },
+            "8": {
+                "$value": "#738091",
+                "$description": "Strong opaque checkbox/radio border."
+            },
+            "9": {
+                "$value": "#5f6b7c",
+                "$description": "Solid background at rest, matching the default Tag."
+            },
+            "10": {
+                "$value": "#404854",
+                "$description": "Solid background on hover, matching the default Tag."
+            },
+            "11": {
+                "$value": "#383e47",
+                "$description": "Solid background when active, matching the default Tag."
+            },
+            "12": {
+                "$value": "#5f6b7c",
+                "$description": "Muted foreground, matching the common Sass alias."
+            },
+            "13": {
+                "$value": "#1c2127",
+                "$description": "Foreground, matching the common Sass alias rather than derived Button text."
+            }
+        },
+        "blue": {
+            "1": {
+                "$value": "oklch(0.9912 0.00331602 257.636)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.1)",
+                "$description": "Subtle background, using the primary Callout's color and opacity."
+            },
+            "3": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.1)",
+                "$description": "Component background at rest, matching the minimal primary Tag."
+            },
+            "4": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.2)",
+                "$description": "Component background on hover, matching the minimal primary Tag."
+            },
+            "5": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.3)",
+                "$description": "Component background when active, matching the minimal primary Tag."
+            },
+            "6": {
+                "$value": "oklch(0.486739 0.1459 257.67 / 0.2)",
+                "$description": "Subtle border, using the disabled outlined primary Button's border treatment."
+            },
+            "7": {
+                "$value": "oklch(0.486739 0.1459 257.67 / 0.6)",
+                "$description": "Border, matching the outlined primary Button."
+            },
+            "8": {
+                "$value": "oklch(0.486739 0.1459 257.67 / 0.6)",
+                "$description": "Hover border; the outlined primary Button retains its resting border on hover."
+            },
+            "9": {
+                "$value": "#2d72d2",
+                "$description": "Solid background at rest, matching the primary Button."
+            },
+            "10": {
+                "$value": "#215db0",
+                "$description": "Solid background on hover, matching the primary Button."
+            },
+            "11": {
+                "$value": "#184a90",
+                "$description": "Solid background when active, matching the primary Button."
+            },
+            "12": {
+                "$value": "#215db0",
+                "$description": "Muted foreground, using the primary Callout and minimal Tag's resting text color."
+            },
+            "13": {
+                "$value": "#184a90",
+                "$description": "Stronger foreground, using the primary MenuItem and minimal Tag's active text color."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on solid backgrounds (steps 9–11), using the primary Button foreground."
+            }
+        },
+        "green": {
+            "1": {
+                "$value": "oklch(0.990951 0.00245656 155.185)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.1)",
+                "$description": "Subtle background, using the success Callout's color and opacity."
+            },
+            "3": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.1)",
+                "$description": "Component background at rest, matching the minimal success Tag."
+            },
+            "4": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.2)",
+                "$description": "Component background on hover, matching the minimal success Tag."
+            },
+            "5": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.3)",
+                "$description": "Component background when active, matching the minimal success Tag."
+            },
+            "6": {
+                "$value": "oklch(0.4783 0.104955 155.018 / 0.2)",
+                "$description": "Subtle border, using the disabled outlined success Button's border treatment."
+            },
+            "7": {
+                "$value": "oklch(0.4783 0.104955 155.018 / 0.6)",
+                "$description": "Border, matching the outlined success Button."
+            },
+            "8": {
+                "$value": "oklch(0.4783 0.104955 155.018 / 0.6)",
+                "$description": "Hover border; the outlined success Button retains its resting border on hover."
+            },
+            "9": {
+                "$value": "#238551",
+                "$description": "Solid background at rest, matching the success Button."
+            },
+            "10": {
+                "$value": "#1c6e42",
+                "$description": "Solid background on hover, matching the success Button."
+            },
+            "11": {
+                "$value": "#165a36",
+                "$description": "Solid background when active, matching the success Button."
+            },
+            "12": {
+                "$value": "#1c6e42",
+                "$description": "Muted foreground, using the success Callout and minimal Tag's resting text color."
+            },
+            "13": {
+                "$value": "#165a36",
+                "$description": "Stronger foreground, using the success MenuItem and minimal Tag's active text color."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on solid backgrounds (steps 9–11), using the success Button foreground."
+            }
+        },
+        "orange": {
+            "1": {
+                "$value": "oklch(0.992836 0.00285481 61.8306)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.642112 0.1403 61.8306 / 0.1)",
+                "$description": "Subtle background, using the warning Callout's color and opacity, not the solid Button fill."
+            },
+            "3": {
+                "$value": "oklch(0.642112 0.1403 61.8306 / 0.1)",
+                "$description": "Component background at rest, matching the minimal warning Tag."
+            },
+            "4": {
+                "$value": "oklch(0.642112 0.1403 61.8306 / 0.2)",
+                "$description": "Component background on hover, matching the minimal warning Tag."
+            },
+            "5": {
+                "$value": "oklch(0.642112 0.1403 61.8306 / 0.3)",
+                "$description": "Component background when active, matching the minimal warning Tag."
+            },
+            "6": {
+                "$value": "oklch(0.512718 0.111262 62.314 / 0.2)",
+                "$description": "Subtle border, using the disabled outlined warning Button's border treatment."
+            },
+            "7": {
+                "$value": "oklch(0.512718 0.111262 62.314 / 0.6)",
+                "$description": "Border, matching the outlined warning Button."
+            },
+            "8": {
+                "$value": "oklch(0.512718 0.111262 62.314 / 0.6)",
+                "$description": "Hover border; the outlined warning Button retains its resting border on hover."
+            },
+            "9": {
+                "$value": "#fbb360",
+                "$description": "Solid background at rest, using exact legacy orange5; the modern warning Button's relative color only rounds to this value."
+            },
+            "10": {
+                "$value": "oklch(0.748641 0.125922 66.762)",
+                "$description": "Solid background on hover, evaluated from the default warning Button's mix rather than substituting orange4."
+            },
+            "11": {
+                "$value": "oklch(0.614901 0.111016 64.9146)",
+                "$description": "Solid background when active, evaluated from the standalone warning Button's 46% rest and 54% orange1 mix; not the Toast button's orange3."
+            },
+            "12": {
+                "$value": "#935610",
+                "$description": "Muted foreground, using the warning Callout and minimal Tag's resting text color."
+            },
+            "13": {
+                "$value": "#77450d",
+                "$description": "Stronger foreground, using the warning MenuItem and minimal Tag's active text color."
+            },
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on solid backgrounds (steps 9–11), using the warning Button foreground."
+            }
+        },
+        "red": {
+            "1": {
+                "$value": "oklch(0.991567 0.00355416 22.9394)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.1)",
+                "$description": "Subtle background, using the danger Callout's color and opacity."
+            },
+            "3": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.1)",
+                "$description": "Component background at rest, matching the minimal danger Tag."
+            },
+            "4": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.2)",
+                "$description": "Component background on hover, matching the minimal danger Tag."
+            },
+            "5": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.3)",
+                "$description": "Component background when active, matching the minimal danger Tag."
+            },
+            "6": {
+                "$value": "oklch(0.499344 0.161314 23.6145 / 0.2)",
+                "$description": "Subtle border, using the disabled outlined danger Button's border treatment."
+            },
+            "7": {
+                "$value": "oklch(0.499344 0.161314 23.6145 / 0.6)",
+                "$description": "Border, matching the outlined danger Button."
+            },
+            "8": {
+                "$value": "oklch(0.499344 0.161314 23.6145 / 0.6)",
+                "$description": "Hover border; the outlined danger Button retains its resting border on hover."
+            },
+            "9": {
+                "$value": "#cd4246",
+                "$description": "Solid background at rest, matching the danger Button."
+            },
+            "10": {
+                "$value": "#ac2f33",
+                "$description": "Solid background on hover, matching the danger Button."
+            },
+            "11": {
+                "$value": "#8e292c",
+                "$description": "Solid background when active, matching the danger Button."
+            },
+            "12": {
+                "$value": "#ac2f33",
+                "$description": "Muted foreground, using the danger Callout and minimal Tag's resting text color."
+            },
+            "13": {
+                "$value": "#8e292c",
+                "$description": "Stronger foreground, using the danger MenuItem and minimal Tag's active text color."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on solid backgrounds (steps 9–11), using the danger Button foreground."
+            }
+        },
+        "vermilion": {
+            "1": {
+                "$value": "oklch(0.991564 0.00390115 34.4054)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.578478 0.192618 34.4054 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.578478 0.192618 34.4054 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.578478 0.192618 34.4054 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.578478 0.192618 34.4054 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.520157 0.175685 34.103 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.520157 0.175685 34.103 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.520157 0.175685 34.103 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#d33d17",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#b83211",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#96290d",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#b83211",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#96290d",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "rose": {
+            "1": {
+                "$value": "oklch(0.991842 0.00428758 4.14142)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.592401 0.211939 4.14142 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.592401 0.211939 4.14142 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.592401 0.211939 4.14142 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.592401 0.211939 4.14142 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.541948 0.192625 4.10464 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.541948 0.192625 4.10464 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.541948 0.192625 4.10464 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#db2c6f",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#c22762",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#a82255",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#c22762",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#a82255",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "violet": {
+            "1": {
+                "$value": "oklch(0.990603 0.00344981 327.653)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.530436 0.170051 327.653 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.530436 0.170051 327.653 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.530436 0.170051 327.653 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.530436 0.170051 327.653 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.449221 0.140338 327.608 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.449221 0.140338 327.608 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.449221 0.140338 327.608 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#9d3f9d",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#7c327c",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5c255c",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#7c327c",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#5c255c",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "indigo": {
+            "1": {
+                "$value": "oklch(0.991554 0.00362829 288.575)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.577981 0.178974 288.575 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.577981 0.178974 288.575 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.577981 0.178974 288.575 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.577981 0.178974 288.575 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.505335 0.171095 287.521 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.505335 0.171095 287.521 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.505335 0.171095 287.521 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#7961db",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#634dbf",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5642a6",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#634dbf",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#5642a6",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "cerulean": {
+            "1": {
+                "$value": "oklch(0.991267 0.00243793 238.06)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.563655 0.119457 238.06 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.563655 0.119457 238.06 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.563655 0.119457 238.06 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.563655 0.119457 238.06 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.49129 0.103381 237.691 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.49129 0.103381 237.691 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.49129 0.103381 237.691 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#147eb3",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#0f6894",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#0c5174",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#0f6894",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#0c5174",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "turquoise": {
+            "1": {
+                "$value": "oklch(0.992859 0.00231631 184.912)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.64326 0.113375 184.912 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.64326 0.113375 184.912 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.64326 0.113375 184.912 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.64326 0.113375 184.912 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.490235 0.0862933 185.174 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.490235 0.0862933 185.174 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.490235 0.0862933 185.174 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#00a396",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#007067",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#004d46",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#007067",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#004d46",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "forest": {
+            "1": {
+                "$value": "oklch(0.992709 0.00377984 144.074)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.635729 0.186552 144.074 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.635729 0.186552 144.074 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.635729 0.186552 144.074 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.635729 0.186552 144.074 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.56173 0.162986 144.116 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.56173 0.162986 144.116 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.56173 0.162986 144.116 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#29a634",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#238c2c",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#1d7324",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#238c2c",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#1d7324",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "lime": {
+            "1": {
+                "$value": "oklch(0.994188 0.00330164 123.338)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.709678 0.162642 123.338 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.709678 0.162642 123.338 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.709678 0.162642 123.338 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.709678 0.162642 123.338 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.51006 0.112336 123.113 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.51006 0.112336 123.113 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.51006 0.112336 123.113 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#8eb125",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#5a701a",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#43501b",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#5a701a",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#43501b",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "gold": {
+            "1": {
+                "$value": "oklch(0.994309 0.00296554 81.2607)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.715735 0.145837 81.2607 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.715735 0.145837 81.2607 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.715735 0.145837 81.2607 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.715735 0.145837 81.2607 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.517345 0.105578 82.1469 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.517345 0.105578 82.1469 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.517345 0.105578 82.1469 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#d1980b",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#866103",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5c4405",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#866103",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#5c4405",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        },
+        "sepia": {
+            "1": {
+                "$value": "oklch(0.990971 0.00176527 64.3244)",
+                "$description": "Near-white application background tinted with this family's base color."
+            },
+            "2": {
+                "$value": "oklch(0.548839 0.0858236 64.3244 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.548839 0.0858236 64.3244 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.548839 0.0858236 64.3244 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.548839 0.0858236 64.3244 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.478636 0.0735401 64.4533 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.478636 0.0735401 64.4533 / 0.6)",
+                "$description": "Border."
+            },
+            "8": {
+                "$value": "oklch(0.478636 0.0735401 64.4533 / 0.6)",
+                "$description": "Hover border; retains the resting border like the core chromatic families."
+            },
+            "9": {
+                "$value": "#946638",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#7a542e",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5e4123",
+                "$description": "Solid background when active, inferred from the legacy family1 color rather than a verified component treatment."
+            },
+            "12": {
+                "$value": "#7a542e",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#5e4123",
+                "$description": "Stronger foreground."
+            },
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+        }
     }
 }

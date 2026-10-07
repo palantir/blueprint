@@ -5,5 +5,11 @@
         "noEmit": true,
         "rootDir": "../../.."
     },
-    "include": ["**/*.stories.tsx", "**/*.stories.ts", "../../../.storybook/common.tsx"]
+    "include": [
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
+        "design-tokens/tokens/base/palette.tokens.json",
+        "design-tokens/tokens/themes/dark/palette.dark.tokens.json",
+        "../../../.storybook/common.tsx"
+    ]
 }

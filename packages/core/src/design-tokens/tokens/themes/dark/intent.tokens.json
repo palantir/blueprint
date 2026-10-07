@@ -1,0 +1,41 @@
+{
+    "intent": {
+        "$type": "color",
+        "$description": "Dark-scoped aliases for mapped primitive states. Other roles are not mapped yet.",
+        "neutral": {
+            "background": {
+                "rest": { "$value": "{color.grey.3}" },
+                "hover": { "$value": "{color.grey.4}" },
+                "active": { "$value": "{color.grey.5}" }
+            }
+        },
+        "primary": {
+            "solid": {
+                "rest": { "$value": "{color.blue.9}" },
+                "hover": { "$value": "{color.blue.10}" },
+                "active": { "$value": "{color.blue.11}" }
+            }
+        },
+        "success": {
+            "solid": {
+                "rest": { "$value": "{color.green.9}" },
+                "hover": { "$value": "{color.green.10}" },
+                "active": { "$value": "{color.green.11}" }
+            }
+        },
+        "warning": {
+            "solid": {
+                "rest": { "$value": "{color.orange.9}" },
+                "hover": { "$value": "{color.orange.10}" },
+                "active": { "$value": "{color.orange.11}" }
+            }
+        },
+        "danger": {
+            "solid": {
+                "rest": { "$value": "{color.red.9}" },
+                "hover": { "$value": "{color.red.10}" },
+                "active": { "$value": "{color.red.11}" }
+            }
+        }
+    }
+}

@@ -1,0 +1,92 @@
+{
+    "color": {
+        "$type": "color",
+        "$description": "Dark-theme Button snapshots: grey3–5 backgrounds, solid intent9–11 backgrounds, and their contrast foregrounds. Other families and roles are not mapped.",
+        "grey": {
+            "3": {
+                "$value": "color(srgb 0.18902 0.214902 0.25098)",
+                "$description": "Dark default Button background at rest, stored as a literal snapshot."
+            },
+            "4": {
+                "$value": "color(srgb 0.144078 0.164078 0.192941)",
+                "$description": "Dark default Button background at hover, stored as a literal snapshot."
+            },
+            "5": {
+                "$value": "color(srgb 0.112549 0.127843 0.149412)",
+                "$description": "Dark default Button background at active, stored as a literal snapshot."
+            }
+        },
+        "blue": {
+            "9": {
+                "$value": "#2d72d2",
+                "$description": "Dark primary Button background at rest, stored as a literal snapshot."
+            },
+            "10": {
+                "$value": "#215db0",
+                "$description": "Dark primary Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "#184a90",
+                "$description": "Dark primary Button background at active, stored as a literal snapshot."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on dark-theme solid backgrounds (steps 9–11), using the primary Button foreground."
+            }
+        },
+        "green": {
+            "9": {
+                "$value": "#238551",
+                "$description": "Dark success Button background at rest, stored as a literal snapshot."
+            },
+            "10": {
+                "$value": "#1c6e42",
+                "$description": "Dark success Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "#165a36",
+                "$description": "Dark success Button background at active, stored as a literal snapshot."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on dark-theme solid backgrounds (steps 9–11), using the success Button foreground."
+            }
+        },
+        "orange": {
+            "9": {
+                "$value": "#fbb360",
+                "$description": "Dark warning Button rest anchor using exact legacy orange5; the modern Button's relative color only rounds to this value."
+            },
+            "10": {
+                "$value": "oklch(0.748641 0.125922 66.762)",
+                "$description": "Dark warning Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "oklch(0.614901 0.111016 64.9146)",
+                "$description": "Dark warning Button background at active, stored as a literal snapshot."
+            },
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on dark-theme solid backgrounds (steps 9–11), using the warning Button foreground."
+            }
+        },
+        "red": {
+            "9": {
+                "$value": "#cd4246",
+                "$description": "Dark danger Button background at rest, stored as a literal snapshot."
+            },
+            "10": {
+                "$value": "#ac2f33",
+                "$description": "Dark danger Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "#8e292c",
+                "$description": "Dark danger Button background at active, stored as a literal snapshot."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on dark-theme solid backgrounds (steps 9–11), using the danger Button foreground."
+            }
+        }
+    }
+}

@@ -1,7 +1,25 @@
 {
     "intent": {
         "$type": "color",
-        "$description": "Semantic intent colors with interaction states (BP6 pattern: darker on hover)",
+        "$description": "Semantic intent color roles and legacy interaction-state tokens.",
+        "neutral": {
+            "background": {
+                "subtle": { "$value": "{color.grey.2}" },
+                "rest": { "$value": "{color.grey.3}" },
+                "hover": { "$value": "{color.grey.4}" },
+                "active": { "$value": "{color.grey.5}" }
+            },
+            "border": {
+                "subtle": { "$value": "{color.grey.6}" },
+                "rest": { "$value": "{color.grey.7}" },
+                "hover": { "$value": "{color.grey.8}" }
+            },
+            "solid": {
+                "rest": { "$value": "{color.grey.9}" },
+                "hover": { "$value": "{color.grey.10}" },
+                "active": { "$value": "{color.grey.11}" }
+            }
+        },
         "default": {
             "rest": { "$value": "{palette.gray.1}" },
             "hover": { "$value": "{palette.dark-gray.5}" },
@@ -10,6 +28,22 @@
             "foreground": { "$value": "{palette.white}" }
         },
         "primary": {
+            "background": {
+                "subtle": { "$value": "{color.blue.2}" },
+                "rest": { "$value": "{color.blue.3}" },
+                "hover": { "$value": "{color.blue.4}" },
+                "active": { "$value": "{color.blue.5}" }
+            },
+            "border": {
+                "subtle": { "$value": "{color.blue.6}" },
+                "rest": { "$value": "{color.blue.7}" },
+                "hover": { "$value": "{color.blue.8}" }
+            },
+            "solid": {
+                "rest": { "$value": "{color.blue.9}" },
+                "hover": { "$value": "{color.blue.10}" },
+                "active": { "$value": "{color.blue.11}" }
+            },
             "rest": { "$value": "{palette.blue.3}" },
             "hover": { "$value": "{palette.blue.2}" },
             "active": { "$value": "{palette.blue.1}" },
@@ -17,6 +51,22 @@
             "foreground": { "$value": "{palette.white}" }
         },
         "success": {
+            "background": {
+                "subtle": { "$value": "{color.green.2}" },
+                "rest": { "$value": "{color.green.3}" },
+                "hover": { "$value": "{color.green.4}" },
+                "active": { "$value": "{color.green.5}" }
+            },
+            "border": {
+                "subtle": { "$value": "{color.green.6}" },
+                "rest": { "$value": "{color.green.7}" },
+                "hover": { "$value": "{color.green.8}" }
+            },
+            "solid": {
+                "rest": { "$value": "{color.green.9}" },
+                "hover": { "$value": "{color.green.10}" },
+                "active": { "$value": "{color.green.11}" }
+            },
             "rest": { "$value": "{palette.green.3}" },
             "hover": { "$value": "{palette.green.2}" },
             "active": { "$value": "{palette.green.1}" },
@@ -24,6 +74,22 @@
             "foreground": { "$value": "{palette.white}" }
         },
         "warning": {
+            "background": {
+                "subtle": { "$value": "{color.orange.2}" },
+                "rest": { "$value": "{color.orange.3}" },
+                "hover": { "$value": "{color.orange.4}" },
+                "active": { "$value": "{color.orange.5}" }
+            },
+            "border": {
+                "subtle": { "$value": "{color.orange.6}" },
+                "rest": { "$value": "{color.orange.7}" },
+                "hover": { "$value": "{color.orange.8}" }
+            },
+            "solid": {
+                "rest": { "$value": "{color.orange.9}" },
+                "hover": { "$value": "{color.orange.10}" },
+                "active": { "$value": "{color.orange.11}" }
+            },
             "rest": { "$value": "{palette.orange.3}" },
             "hover": { "$value": "{palette.orange.2}" },
             "active": { "$value": "{palette.orange.1}" },
@@ -31,6 +97,22 @@
             "foreground": { "$value": "{palette.black}" }
         },
         "danger": {
+            "background": {
+                "subtle": { "$value": "{color.red.2}" },
+                "rest": { "$value": "{color.red.3}" },
+                "hover": { "$value": "{color.red.4}" },
+                "active": { "$value": "{color.red.5}" }
+            },
+            "border": {
+                "subtle": { "$value": "{color.red.6}" },
+                "rest": { "$value": "{color.red.7}" },
+                "hover": { "$value": "{color.red.8}" }
+            },
+            "solid": {
+                "rest": { "$value": "{color.red.9}" },
+                "hover": { "$value": "{color.red.10}" },
+                "active": { "$value": "{color.red.11}" }
+            },
             "rest": { "$value": "{palette.red.3}" },
             "hover": { "$value": "{palette.red.2}" },
             "active": { "$value": "{palette.red.1}" },
