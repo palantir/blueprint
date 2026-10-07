@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mount, type ReactWrapper } from "enzyme";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { AnchorButton } from "../button/buttons";
@@ -266,6 +267,65 @@ describe("<MultistepDialog>", () => {
         findButtonWithText(dialog, "Back").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         dialog.unmount();
+    });
+
+    it("does not allow navigating past a step whose next button is disabled via the step list", async () => {
+        const user = userEvent.setup();
+        const renderDialog = (nextButtonProps?: { disabled: boolean }) => (
+            <MultistepDialog isOpen={true} usePortal={false} nextButtonProps={nextButtonProps}>
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} />
+                <DialogStep id="three" title="Step 3" panel={<Panel />} />
+            </MultistepDialog>
+        );
+        const { rerender } = render(renderDialog());
+        const tabs = screen.getAllByRole("tab");
+
+        // view every step, then go back to the first one via the step list
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        await user.click(screen.getByText("Step 1"));
+        expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+
+        // the first step becomes invalid, so later steps should no longer be reachable
+        rerender(renderDialog({ disabled: true }));
+        expect(tabs[1]).not.toHaveClass(Classes.DIALOG_STEP_VIEWED);
+        expect(tabs[1]).toHaveAttribute("aria-disabled", "true");
+        expect(tabs[2]).not.toHaveClass(Classes.DIALOG_STEP_VIEWED);
+        expect(tabs[2]).toHaveAttribute("aria-disabled", "true");
+        await user.click(screen.getByText("Step 3"));
+        expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+
+        // once the step is valid again, previously viewed steps are reachable again
+        rerender(renderDialog({ disabled: false }));
+        await user.click(screen.getByText("Step 3"));
+        expect(tabs[2]).toHaveAttribute("aria-selected", "true");
+    });
+
+    it("does not allow skipping over a step whose next button is disabled via the step list", async () => {
+        const user = userEvent.setup();
+        const renderDialog = (isStepTwoValid: boolean) => (
+            <MultistepDialog isOpen={true} usePortal={false}>
+                <DialogStep id="one" title="Step 1" panel={<Panel />} />
+                <DialogStep id="two" title="Step 2" panel={<Panel />} nextButtonProps={{ disabled: !isStepTwoValid }} />
+                <DialogStep id="three" title="Step 3" panel={<Panel />} />
+            </MultistepDialog>
+        );
+        const { rerender } = render(renderDialog(true));
+        const tabs = screen.getAllByRole("tab");
+
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        await user.click(screen.getByRole("button", { name: "Next" }));
+        await user.click(screen.getByText("Step 1"));
+        rerender(renderDialog(false));
+
+        // step two is still reachable, but step three is not since step two cannot be completed
+        expect(tabs[1]).toHaveClass(Classes.DIALOG_STEP_VIEWED);
+        expect(tabs[2]).not.toHaveClass(Classes.DIALOG_STEP_VIEWED);
+        await user.click(screen.getByText("Step 3"));
+        expect(tabs[0]).toHaveAttribute("aria-selected", "true");
+        await user.click(screen.getByText("Step 2"));
+        expect(tabs[1]).toHaveAttribute("aria-selected", "true");
     });
 });
 
