@@ -177,13 +177,15 @@ $button-group-z-index: (
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-popover-target:first-child > .#{$ns}-button,
       > .#{$ns}-button:first-child {
-        border-radius: var(--bp-surface-border-radius) var(--bp-surface-border-radius) 0 0;
+        border-radius: var(--bp-border-radius, var(--bp-surface-border-radius))
+          var(--bp-border-radius, var(--bp-surface-border-radius)) 0 0;
       }
 
       > .#{$ns}-popover-wrapper:last-child .#{$ns}-button,
       > .#{$ns}-popover-target:last-child > .#{$ns}-button,
       > .#{$ns}-button:last-child {
-        border-radius: 0 0 var(--bp-surface-border-radius) var(--bp-surface-border-radius);
+        border-radius: 0 0 var(--bp-border-radius, var(--bp-surface-border-radius))
+          var(--bp-border-radius, var(--bp-surface-border-radius));
       }
     }
 

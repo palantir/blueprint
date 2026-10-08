@@ -64,8 +64,8 @@ $compound-tag-left-intent-colors: (
   }
 
   .#{$ns}-compound-tag-left {
-    border-bottom-left-radius: var(--bp-surface-border-radius);
-    border-top-left-radius: var(--bp-surface-border-radius);
+    border-bottom-left-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
+    border-top-left-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
     margin-right: 0; // override pt-tag() pt-flex-container() style
 
     > #{$icon-classes} {
@@ -74,8 +74,8 @@ $compound-tag-left-intent-colors: (
   }
 
   .#{$ns}-compound-tag-right {
-    border-bottom-right-radius: var(--bp-surface-border-radius);
-    border-top-right-radius: var(--bp-surface-border-radius);
+    border-bottom-right-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
+    border-top-right-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
     flex-grow: 1;
     padding: calc(var(--bp-surface-spacing) * 0.5) var(--bp-surface-spacing);
 

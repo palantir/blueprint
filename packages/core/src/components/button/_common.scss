@@ -229,7 +229,7 @@ $button-dark-minimal-active-text-colors: (
   @include pt-flex-container(row, calc(var(--bp-surface-spacing) * 2), $inline: inline);
   align-items: center;
   border: none;
-  border-radius: var(--bp-surface-border-radius);
+  border-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
   cursor: pointer;
   font-size: var(--bp-typography-size-body-medium);
   justify-content: center;
