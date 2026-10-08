@@ -107,7 +107,7 @@ $minimal-dark-tag-intent-colors: (
   align-items: center;
   background-color: var(--bp-intent-default-rest);
   border: none;
-  border-radius: var(--bp-surface-border-radius);
+  border-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
   box-shadow: none;
   color: var(--bp-intent-default-foreground);
   font-size: var(--bp-typography-size-body-small);
