@@ -2,7 +2,54 @@
 
 Design tokens are a single source of truth for Blueprint's visual language. They are defined as JSON in `tokens/base/` and compiled to CSS custom properties (prefixed `--bp-`), enabling consistent theming across different color schemes without duplicating style logic in each component.
 
-## Intent tokens
+## Functional color scales
+
+Each of the 15 color families has 13 usage-based steps in both light and dark themes, exposed as
+`--bp-color-{family}-{step}`. These are functional roles, not a monotonic lightness ramp:
+
+| Steps | Meaning                                    |
+| ----- | ------------------------------------------ |
+| 1–2   | Application and subtle backgrounds         |
+| 3–5   | Component backgrounds: rest, hover, active |
+| 6–8   | Subtle, normal, and strong borders         |
+| 9–11  | Solid backgrounds: rest, hover, active     |
+| 12–13 | Muted and strong foregrounds               |
+
+Step 11 is the additional solid-active role; unlike Radix's 12-step scales, text starts at 12.
+Each family also has `contrast`, `contrast-hover`, and `contrast-active` tokens for content on solid steps 9, 10, and 11
+respectively. These corresponding fill/foreground pairings meet 4.5:1 in both themes. Use the matching state token:
+one foreground cannot always meet the target across all three preserved fills. Other pairings are not guaranteed.
+
+New semantic aliases map neutral → grey, primary → blue, success → green, warning → orange, and danger → red:
+
+- `--bp-intent-{intent}-background-{subtle,rest,hover,active}` maps to steps 2–5.
+- `--bp-intent-{intent}-border-{subtle,rest,hover}` maps to steps 6–8.
+- `--bp-intent-{intent}-solid-{rest,hover,active}` maps to steps 9–11.
+- `--bp-text-color-{intent}-{muted,default}` maps to steps 12–13.
+
+The default neutral Button is a **surface** treatment: it uses grey 3–5, not solid grey 9–11.
+Existing Button variant names are unchanged. State-specific compatibility bindings preserve BP6's text,
+minimal overlays, outlined borders, and disabled treatments where a shared palette role cannot reproduce them.
+The legacy palette and ordinary body typography remain intact. See [PALETTE_MAPPING.md](PALETTE_MAPPING.md) for
+the original palette anchors.
+
+### Generate a custom accent in Storybook
+
+Open the **Theme** panel, enter a 3- or 6-digit hex color (with or without `#`), or choose a color with the picker,
+then select **Generate**. The panel previews all 13 roles and applies the generated palette to the primary intent.
+The toolbar's light/dark switch selects the matching palette. Other intents and neutral text stay unchanged.
+Invalid input leaves the applied palette intact. **Reset to Blueprint defaults** removes the accent customization
+without changing the border-radius control.
+
+`generateAccentPalette.ts` is a build/Storybook helper, not an exported core runtime API. It uses OKLCH interpolation
+and sRGB contrast checks; it does not reproduce Radix's generator algorithm. The entered accent is preserved at step 9.
+Generated solid foregrounds target at least 4.5:1 against steps 9–11, and generated foreground steps 12–13 target
+at least 4.5:1 against backgrounds 1–5. These checks do not certify every component or arbitrary token combination.
+
+Scoped overrides must redeclare semantic aliases alongside their primitives: inherited CSS custom properties
+are resolved where they are declared. The Storybook preview handles this for its custom accent, including dark scopes.
+
+## Legacy intent tokens
 
 Intent tokens map semantic meaning to colors. Rather than referencing a raw palette value like `--bp-palette-blue-3`, components use `--bp-intent-primary-rest`, which can be remapped per theme or brand.
 
@@ -104,7 +151,7 @@ The wrapping is triggered by the `com.blueprint.role: "stackable-layer"` annotat
 The Button component (`src/components/button/`) demonstrates how surface and intent tokens work together. The key files are `_common.scss` (shared mixins) and `_button.scss` (component styles).
 
 > [!NOTE]
-> The Button component in dark mode currently derives the `active` and `hover` states for minimal and outline buttons from the `rest` token. This is expected to be updated with an updated palette.
+> Default minimal and outlined Button states retain BP6's compatibility recipes. A generated Storybook accent opts into the new palette roles without changing those defaults.
 
 ### Surface tokens in Button
 

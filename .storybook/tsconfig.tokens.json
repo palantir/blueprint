@@ -1,0 +1,15 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "paths": {
+            "@testing-library/react": ["../packages/core/node_modules/@testing-library/react"],
+            "@testing-library/user-event": ["../packages/core/node_modules/@testing-library/user-event"]
+        }
+    },
+    "include": [
+        "./tokens/**/*",
+        "./vitest.config.mts",
+        "../packages/core/src/design-tokens/FunctionalColors.stories.tsx"
+    ]
+}

@@ -72,6 +72,7 @@ const preview: Preview = {
     ],
 
     initialGlobals: {
+        accentColor: "",
         theme: "light",
         tokenOverrides: {},
     },

@@ -124,6 +124,17 @@
     &:not([class*="#{$ns}-intent-"]) {
       @include pt-button-dark-solid-shadows($hover-opacity: 40%);
 
+      &:not(:disabled):not(.#{$ns}-disabled) {
+        color: var(--bp-intent-default-foreground);
+
+        &:hover,
+        &:active,
+        &.#{$ns}-active {
+          // BP6 slightly dims neutral solid text on interaction in dark mode.
+          color: color-mix(in srgb, var(--bp-intent-default-hover) 4%, var(--bp-palette-white));
+        }
+      }
+
       .#{$ns}-button-spinner .#{$ns}-spinner-head {
         background: color-mix(in srgb, var(--bp-intent-default-rest) 20%, var(--bp-palette-black));
         stroke: color-mix(in srgb, var(--bp-intent-default-rest) 68%, var(--bp-palette-white));
@@ -169,6 +180,65 @@
   &.#{$ns}-outlined {
     @include pt-button-minimal;
     @include pt-button-outlined;
+  }
+
+  // BP6's warning special case inspected only the Button's own variant classes.
+  // In light mode its solid interaction fill therefore overrode a group-level
+  // minimal/outlined variant; dark groups retained the translucent treatment.
+  &.#{$ns}-intent-warning:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+    .#{$ns}-button-group.#{$ns}-minimal &,
+    .#{$ns}-button-group.#{$ns}-outlined & {
+      // Group variants used the generic 50% disabled text recipe in BP6,
+      // not the 40% warning override for a Button's own variant class.
+      &:disabled {
+        color: color-mix(in oklch, var(--bp-intent-warning-hover) 50%, transparent);
+      }
+
+      .#{$ns}-dark &:disabled,
+      [data-bp-color-scheme="dark"] &:disabled {
+        color: var(--bp-text-color-warning-disabled);
+
+        // Dark group disabled styles overrode the warning solid interaction
+        // fill; retain that exception to the standalone native-disabled recipe.
+        &:hover,
+        &:active {
+          background-color: transparent;
+        }
+      }
+
+      &:not(:disabled):hover {
+        background-color: var(--bp-intent-warning-solid-hover);
+      }
+
+      &:not(:disabled):active,
+      &:not(:disabled).#{$ns}-active {
+        background-color: var(--bp-intent-warning-solid-active);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: highlight;
+        }
+      }
+
+      .#{$ns}-dark &:not(:disabled):hover,
+      [data-bp-color-scheme="dark"] &:not(:disabled):hover {
+        background-color: color-mix(
+          in oklch,
+          var(--bp6-legacy-button-warning-rest) 20%,
+          transparent
+        );
+      }
+
+      .#{$ns}-dark &:not(:disabled):active,
+      .#{$ns}-dark &:not(:disabled).#{$ns}-active,
+      [data-bp-color-scheme="dark"] &:not(:disabled):active,
+      [data-bp-color-scheme="dark"] &:not(:disabled).#{$ns}-active {
+        background-color: color-mix(
+          in oklch,
+          var(--bp6-legacy-button-warning-rest) 30%,
+          transparent
+        );
+      }
+    }
   }
 }
 

@@ -187,6 +187,18 @@
             "13": {
                 "$value": "#1c2127",
                 "$description": "Foreground, matching the common Sass alias rather than derived Button text."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
             }
         },
         "blue": {
@@ -244,7 +256,15 @@
             },
             "contrast": {
                 "$value": "{color.white}",
-                "$description": "Text and icons on solid backgrounds (steps 9–11), using the primary Button foreground."
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
             }
         },
         "green": {
@@ -302,7 +322,15 @@
             },
             "contrast": {
                 "$value": "{color.white}",
-                "$description": "Text and icons on solid backgrounds (steps 9–11), using the success Button foreground."
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
             }
         },
         "orange": {
@@ -360,7 +388,15 @@
             },
             "contrast": {
                 "$value": "{color.black}",
-                "$description": "Text and icons on solid backgrounds (steps 9–11), using the warning Button foreground."
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background when active (step 11)."
             }
         },
         "red": {
@@ -418,7 +454,15 @@
             },
             "contrast": {
                 "$value": "{color.white}",
-                "$description": "Text and icons on solid backgrounds (steps 9–11), using the danger Button foreground."
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
             }
         },
         "vermilion": {
@@ -474,7 +518,19 @@
                 "$value": "#96290d",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "rose": {
             "1": {
@@ -529,7 +585,19 @@
                 "$value": "#a82255",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "violet": {
             "1": {
@@ -584,7 +652,19 @@
                 "$value": "#5c255c",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "indigo": {
             "1": {
@@ -639,7 +719,19 @@
                 "$value": "#5642a6",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "cerulean": {
             "1": {
@@ -694,7 +786,19 @@
                 "$value": "#0c5174",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "turquoise": {
             "1": {
@@ -749,7 +853,19 @@
                 "$value": "#004d46",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "forest": {
             "1": {
@@ -804,7 +920,19 @@
                 "$value": "#1d7324",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "#000000",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "lime": {
             "1": {
@@ -859,7 +987,19 @@
                 "$value": "#43501b",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "gold": {
             "1": {
@@ -914,7 +1054,19 @@
                 "$value": "#5c4405",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         },
         "sepia": {
             "1": {
@@ -969,7 +1121,19 @@
                 "$value": "#5e4123",
                 "$description": "Stronger foreground."
             },
-            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee."
+            "$description": "Extended color family using the shared functional role mapping, not a verified BP6 component recipe or contrast guarantee.",
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ const getColorScales = (colors: typeof palette.color | typeof darkPalette.color)
                       name,
                       label: name.charAt(0).toUpperCase() + name.slice(1),
                       steps: Object.entries(scale)
-                          .filter(([step]) => !step.startsWith("$") && step !== "contrast")
+                          .filter(([step]) => /^\d+$/.test(step))
                           .toSorted(([left], [right]) => Number(left) - Number(right))
                           .flatMap(([step, token]) =>
                               typeof token === "string"
@@ -29,11 +29,11 @@ const getColorScales = (colors: typeof palette.color | typeof darkPalette.color)
                                         {
                                             step,
                                             name: `color.${name}.${step}`,
-                                            value: token.$value,
+                                            value: `var(--bp-color-${name}-${step})`,
                                             description: token.$description,
                                             contrast:
                                                 "contrast" in scale && Number(step) >= 9 && Number(step) <= 11
-                                                    ? `var(--bp-color-${name}-contrast)`
+                                                    ? `var(--bp-color-${name}-contrast${Number(step) === 9 ? "" : Number(step) === 10 ? "-hover" : "-active"})`
                                                     : undefined,
                                         },
                                     ],
@@ -183,8 +183,8 @@ function FunctionalColors({ theme = "light" }: { theme?: keyof typeof COLOR_SCAL
                     <p style={STYLES.introduction}>
                         {theme === "dark" ? (
                             <>
-                                <strong>Dark-theme values.</strong> Button rest, hover, and active backgrounds: grey3–5
-                                and intent9–11. Other dark steps and families are not mapped yet.
+                                <strong>Dark-theme values.</strong> Thirteen usage roles for every color family. Grey3–5
+                                provide the default Button surface; intent9–11 provide solid states.
                             </>
                         ) : (
                             <>
@@ -222,7 +222,7 @@ function FunctionalColors({ theme = "light" }: { theme?: keyof typeof COLOR_SCAL
                                 </H2>
                                 <ol aria-label={`${scale.label} color scale`} style={STYLES.grid}>
                                     {scale.steps.map(token => (
-                                        // Dark mappings are sparse; each token stays under its numbered usage column.
+                                        // CSS references reflect the active theme and any Storybook accent override.
                                         <li key={token.name} style={{ gridColumn: token.step }}>
                                             <div
                                                 aria-hidden="true"
@@ -297,116 +297,46 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
     play: async ({ canvasElement, globals }) => {
         const canvas = within(canvasElement);
-        await expect(canvas.getAllByText("Aa", { exact: true })).toHaveLength(12);
-        for (const family of ["blue", "green", "orange", "red"]) {
-            const label = family.charAt(0).toUpperCase() + family.slice(1);
-            const items = within(canvas.getByRole("list", { name: `${label} color scale` })).getAllByRole("listitem");
-            const foreground = family === "orange" ? palette.palette.black.$value : palette.palette.white.$value;
-            for (let state = 0; state < 3; state++) {
-                const item = items[globals.theme === "dark" ? state : state + 8];
-                await expect(within(item).getByText("Aa", { exact: true })).toHaveStyle({ color: foreground });
-            }
-        }
-
-        if (globals.theme === "dark") {
-            await expect(canvas.getAllByRole("heading", { level: 2 })).toHaveLength(5);
-            await expect(canvas.getAllByRole("listitem")).toHaveLength(15);
-            await expect(canvas.getByText("Dark-theme values.")).toBeVisible();
-            await expect(canvas.getByText(/Other dark steps and families are not mapped yet/)).toBeVisible();
-
-            for (const family of ["grey", "blue", "green", "orange", "red"] as const) {
-                const label = family.charAt(0).toUpperCase() + family.slice(1);
-                const items = within(canvas.getByRole("list", { name: `${label} color scale` })).getAllByRole(
-                    "listitem",
-                );
-                await expect(items).toHaveLength(3);
-                for (const [index, [step, token]] of Object.entries(darkPalette.color[family])
-                    .filter(([s]) => s !== "contrast")
-                    .entries()) {
-                    await expect(within(items[index]).getByText(`color.${family}.${step}`)).toBeVisible();
-                    await expect(within(items[index]).getByText(token.$value)).toBeVisible();
-                    await expect(items[index]).toHaveStyle({ gridColumn: step });
-                }
-            }
-
-            const darkOrangeNotes = canvas.getByText("Orange usage notes");
-            if (!darkOrangeNotes.closest("details")?.open) {
-                await userEvent.click(darkOrangeNotes);
-            }
-            await expect(canvas.getByText(darkPalette.color.orange["11"].$description)).toBeVisible();
-            return;
-        }
-
+        const theme = globals.theme === "dark" ? "dark" : "light";
+        const scales = COLOR_SCALES[theme];
         await expect(canvas.getAllByRole("heading", { level: 2 })).toHaveLength(15);
         await expect(canvas.getAllByRole("listitem")).toHaveLength(195);
-        await expect(canvas.getByText("Light-theme values.")).toBeVisible();
+        await expect(canvas.getByText(theme === "dark" ? "Dark-theme values." : "Light-theme values.")).toBeVisible();
 
         const legend = within(canvas.getByRole("group", { name: "Scale usage" }));
-        for (const [range, usage] of [
-            ["1–2", "Backgrounds"],
-            ["3–5", "Component states"],
-            ["6–8", "Borders"],
-            ["9–11", "Solid states"],
-            ["12–13", "Foregrounds"],
-        ]) {
-            await expect(legend.getByText(range)).toBeVisible();
-            await expect(legend.getByText(usage)).toBeVisible();
+        for (const range of USAGE_RANGES) {
+            await expect(legend.getByText(range.steps)).toBeVisible();
+            await expect(legend.getByText(range.label)).toBeVisible();
         }
 
-        for (const scale of COLOR_SCALES.light) {
+        for (const scale of scales) {
             const items = within(canvas.getByRole("list", { name: `${scale.label} color scale` })).getAllByRole(
                 "listitem",
             );
             await expect(items).toHaveLength(13);
-            await expect(items.map(item => within(item).getByText(/^color\.\w+\.\d+$/).textContent)).toEqual(
-                Array.from({ length: 13 }, (_, index) => `color.${scale.name}.${index + 1}`),
-            );
+            for (const [index, token] of scale.steps.entries()) {
+                const item = items[index];
+                await expect(within(item).getByText(token.name)).toBeVisible();
+                await expect(within(item).getByText(token.value)).toBeVisible();
+                await expect(item.querySelector("div")?.style.backgroundColor).toBe(token.value);
+                if (token.contrast !== undefined) {
+                    const swatch = within(item).getByText("Aa", { exact: true });
+                    await expect(swatch.style.color).toBe(token.contrast);
+                }
+            }
         }
 
-        const grey = within(canvas.getByRole("list", { name: "Grey color scale" }));
-        await expect(grey.getByText("color.grey.1")).toBeVisible();
-        await expect(grey.getByText(palette.color.grey["1"].$value)).toBeVisible();
-        await expect(grey.getByText(palette.color.grey["2"].$value)).toBeVisible();
-        await expect(
-            within(grey.getAllByRole("listitem")[10]).getByText(palette.palette["dark-gray"]["4"].$value),
-        ).toBeVisible();
-
-        const blue = within(canvas.getByRole("list", { name: "Blue color scale" }));
-        await expect(blue.getByText("color.blue.9")).toBeVisible();
-        await expect(blue.getByText(palette.color.blue["9"].$value)).toBeVisible();
-        await expect(
-            within(blue.getAllByRole("listitem")[10]).getByText(palette.palette.blue["1"].$value),
-        ).toBeVisible();
-
-        const orange = within(canvas.getByRole("list", { name: "Orange color scale" }));
-        await expect(
-            within(orange.getAllByRole("listitem")[8]).getByText(palette.palette.orange["5"].$value),
-        ).toBeVisible();
-        await expect(palette.color.orange["11"].$value).not.toBe(palette.palette.orange["3"].$value);
-        await expect(
-            within(orange.getAllByRole("listitem")[10]).getByText(palette.color.orange["11"].$value),
-        ).toBeVisible();
-        await expect(
-            within(orange.getAllByRole("listitem")[11]).getByText(palette.palette.orange["2"].$value),
-        ).toBeVisible();
-        await expect(
-            within(orange.getAllByRole("listitem")[12]).getByText(palette.palette.orange["1"].$value),
-        ).toBeVisible();
         const orangeNotes = canvas.getByText("Orange usage notes");
         if (!orangeNotes.closest("details")?.open) {
             await userEvent.click(orangeNotes);
         }
-        await expect(canvas.getByText(palette.color.orange["11"].$description)).toBeVisible();
-        await expect(palette.color.orange["11"].$description).toMatch(/active/i);
-        for (const step of ["12", "13"] as const) {
-            await expect(canvas.getByText(palette.color.orange[step].$description)).toBeVisible();
-            await expect(palette.color.orange[step].$description).toMatch(/foreground/i);
+        // The summary is rendered inside its family's usage details.
+        const orangeUsage = within(orangeNotes.closest("details")!);
+        const orange = scales.find(scale => scale.name === "orange");
+        for (const token of orange?.steps.filter(({ step }) => Number(step) >= 11) ?? []) {
+            const description = orangeUsage.getByText(token.name).closest("dt")?.nextElementSibling;
+            await expect(description).toBeVisible();
+            await expect(description).toHaveTextContent(token.description);
         }
-
-        const sepia = within(canvas.getByRole("list", { name: "Sepia color scale" }));
-        await expect(sepia.getByText("color.sepia.13")).toBeVisible();
-        await expect(
-            within(sepia.getAllByRole("listitem")[12]).getByText(palette.color.sepia["13"].$value),
-        ).toBeVisible();
     },
 };

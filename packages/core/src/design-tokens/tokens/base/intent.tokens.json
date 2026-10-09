@@ -22,6 +22,7 @@
                 "active": { "$value": "{color.grey.11}" },
                 "disabled": { "$value": "color-mix(in srgb, {intent.default.disabled} 20%, transparent)" },
                 "disabled-active": { "$value": "color-mix(in srgb, {intent.default.disabled} 28%, transparent)" },
+                "foreground": { "$value": "{color.grey.contrast}" },
                 "foreground-disabled": { "$value": "{typography.color-default.disabled}" }
             }
         },
@@ -127,17 +128,7 @@
                 "hover": { "$value": "{color.orange.10}" },
                 "active": { "$value": "{color.orange.11}" },
                 "foreground": { "$value": "{color.orange.contrast}" },
-                "disabled": {
-                    "$value": "{intent.warning.rest}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "lightnessOffset": 0.177,
-                            "chromaOffset": -0.01,
-                            "hueOffset": 6.26,
-                            "alpha": 0.5
-                        }
-                    }
-                },
+                "disabled": { "$value": "color-mix(in oklch, {intent.warning.rest} 40%, transparent)" },
                 "foreground-disabled": { "$value": "color-mix(in oklch, {intent.warning.foreground} 60%, transparent)" }
             },
             "rest": { "$value": "{palette.orange.3}" },

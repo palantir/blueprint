@@ -38,7 +38,8 @@
   @include pt-button-intent("neutral");
 }
 
-// State colors are theme-independent: semantic tokens own the palette.
+// Solid backgrounds use semantic palette roles; compatibility foregrounds keep
+// the established BP6 text treatment while the neutral surface uses grey 3–5.
 @mixin pt-button-intent($intent) {
   $background-role: "solid";
   $neutral: $intent == "neutral";
@@ -48,7 +49,7 @@
 
   @if $intent == "neutral" or $intent == "default" {
     $background-role: "background";
-    $text-color: var(--bp-text-color-neutral-default);
+    $text-color: var(--bp-typography-color-default-rest);
   }
 
   &:disabled,
@@ -77,6 +78,26 @@
         .#{$ns}-dark &,
         [data-bp-color-scheme="dark"] & {
           color: var(--bp-intent-#{$intent}-solid-foreground-disabled);
+        }
+      }
+    }
+  }
+
+  @if $intent == "warning" {
+    // BP6's warning special case excluded class-disabled buttons, but not
+    // native disabled buttons. Preserve that hover/press behavior separately
+    // from the normal enabled recipe (minimal/outlined remain disabled).
+    &:disabled:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+      &:hover {
+        background-color: var(--bp-intent-warning-solid-hover);
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background-color: var(--bp-intent-warning-solid-active);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: highlight;
         }
       }
     }
@@ -120,41 +141,114 @@
 }
 
 @mixin pt-button-minimal-intent($intent) {
-  @if $intent == "default" {
-    $intent: "neutral";
+  $text-rest: var(--bp-typography-color-default-rest);
+  $text-hover: $text-rest;
+  $text-active: $text-rest;
+  $background-hover: color-mix(in srgb, var(--bp-intent-default-hover) 8%, transparent);
+  $background-active: color-mix(in srgb, var(--bp-intent-default-active) 16%, transparent);
+
+  @if $intent != "neutral" {
+    $intent-color: map.get($legacy-button-intent-colors, $intent);
+    $text-rest: map.get($button-minimal-intent-text-colors, $intent);
+    $text-hover: $text-rest;
+    $text-active: map.get($legacy-button-intent-active-text-colors, $intent);
+    $background-hover: color-mix(in oklch, $intent-color 15%, transparent);
+    $background-active: color-mix(in oklch, $intent-color 30%, transparent);
   }
 
+  // A shared text13/background4–5 role cannot reproduce BP6's state-specific
+  // text and translucent overlays. Scoped themes can opt into the new roles
+  // through these bindings without changing any default palette literals.
   &:not(:disabled):not(.#{$ns}-disabled) {
     background-color: transparent;
-    color: var(--bp-text-color-#{$intent}-default);
+    color: var(--bp-button-#{$intent}-minimal-foreground-rest, #{$text-rest});
 
     &:hover {
-      background-color: var(--bp-intent-#{$intent}-background-hover);
-      color: var(--bp-text-color-#{$intent}-default);
+      background-color: var(--bp-button-#{$intent}-minimal-background-hover, #{$background-hover});
+      color: var(--bp-button-#{$intent}-minimal-foreground-hover, #{$text-hover});
     }
 
     &:active,
     &.#{$ns}-active {
-      background-color: var(--bp-intent-#{$intent}-background-active);
-      color: var(--bp-text-color-#{$intent}-default);
+      background-color: var(
+        --bp-button-#{$intent}-minimal-background-active,
+        #{$background-active}
+      );
+      color: var(--bp-button-#{$intent}-minimal-foreground-active, #{$text-active});
+    }
+
+    .#{$ns}-dark &,
+    [data-bp-color-scheme="dark"] & {
+      $dark-text-rest: var(--bp-intent-default-foreground);
+      $dark-text-hover: $dark-text-rest;
+      $dark-text-active: $dark-text-rest;
+      $dark-background-hover: color-mix(in srgb, var(--bp-intent-default-rest) 24%, transparent);
+      $dark-background-active: color-mix(in srgb, var(--bp-intent-default-rest) 49%, transparent);
+
+      @if $intent != "neutral" {
+        $intent-color: map.get($legacy-button-intent-colors, $intent);
+        $dark-text-rest: map.get($legacy-button-dark-intent-text-colors, $intent);
+        $dark-text-hover: map.get($legacy-button-dark-minimal-hover-text-colors, $intent);
+        $dark-text-active: map.get($legacy-button-dark-minimal-active-text-colors, $intent);
+        $dark-background-hover: color-mix(in oklch, $intent-color 20%, transparent);
+        $dark-background-active: color-mix(in oklch, $intent-color 30%, transparent);
+      }
+
+      color: var(--bp-button-#{$intent}-minimal-foreground-rest, #{$dark-text-rest});
+
+      &:hover {
+        background-color: var(
+          --bp-button-#{$intent}-minimal-background-hover,
+          #{$dark-background-hover}
+        );
+        color: var(--bp-button-#{$intent}-minimal-foreground-hover, #{$dark-text-hover});
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background-color: var(
+          --bp-button-#{$intent}-minimal-background-active,
+          #{$dark-background-active}
+        );
+        color: var(--bp-button-#{$intent}-minimal-foreground-active, #{$dark-text-active});
+      }
     }
   }
 }
 
 @mixin pt-button-outlined-intent($intent) {
-  @if $intent == "default" {
-    $intent: "neutral";
-  }
-
   @include pt-button-minimal-intent($intent);
 
   &:not(:disabled):not(.#{$ns}-disabled) {
-    border-color: var(--bp-intent-#{$intent}-border-rest);
+    $border-color: var(--bp-surface-border-color-strong);
+
+    @if $intent != "neutral" {
+      $text-color: map.get($button-minimal-intent-text-colors, $intent);
+      $border-color: color-mix(in oklch, $text-color 60%, transparent);
+    }
+
+    border-color: var(--bp-button-#{$intent}-outlined-border-rest, #{$border-color});
 
     &:hover,
     &:active,
     &.#{$ns}-active {
-      border-color: var(--bp-intent-#{$intent}-border-hover);
+      border-color: var(--bp-button-#{$intent}-outlined-border-hover, #{$border-color});
+    }
+
+    .#{$ns}-dark &,
+    [data-bp-color-scheme="dark"] & {
+      @if $intent != "neutral" {
+        $text-color: map.get($legacy-button-dark-intent-text-colors, $intent);
+        $border-color: color-mix(in oklch, $text-color 60%, transparent);
+      }
+
+      border-color: var(--bp-button-#{$intent}-outlined-border-rest, #{$border-color});
+
+      &:hover,
+      &:active,
+      &.#{$ns}-active {
+        border-color: var(--bp-button-#{$intent}-outlined-border-hover, #{$border-color});
+      }
     }
   }
 }

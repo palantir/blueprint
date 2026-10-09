@@ -24,7 +24,7 @@
             "warning": {
                 "default": { "$value": "{color.orange.13}" },
                 "muted": { "$value": "{color.orange.12}" },
-                "disabled": { "$value": "color-mix(in oklch, {intent.warning.hover} 50%, transparent)" }
+                "disabled": { "$value": "color-mix(in oklch, {intent.warning.hover} 40%, transparent)" }
             },
             "danger": {
                 "default": { "$value": "{color.red.13}" },
