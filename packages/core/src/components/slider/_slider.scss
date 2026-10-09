@@ -8,7 +8,7 @@ $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - ($pt-spacing * 2.5) !default;
 $label-offset: $handle-size + $pt-spacing !default;
 
-$handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
+$handle-border-shadow: 0 0 0 $legacy-button-border-width rgba($black, 0.5);
 $handle-box-shadow:
   $handle-border-shadow,
   0 1px 1px rgba($black, 0.5) !default;
@@ -79,7 +79,7 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-handle {
-  @include pt-button;
+  @include pt-legacy-button;
   border-radius: var(--bp-surface-border-radius);
   box-shadow: $handle-box-shadow;
   cursor: pointer;
@@ -95,14 +95,14 @@ $track-height: $track-size !default;
   }
 
   &:hover {
-    @include pt-button-hover;
+    @include pt-legacy-button-hover;
     box-shadow: $handle-box-shadow-hover;
     cursor: grab;
     z-index: 2;
   }
 
   &.#{$ns}-active {
-    @include pt-button-active;
+    @include pt-legacy-button-active;
     box-shadow: $handle-box-shadow-active;
     cursor: grabbing;
   }
@@ -115,20 +115,20 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-dark & {
-    // don't use pt-dark-button() here, since we want to appear more like a light theme button
+    // don't use pt-legacy-dark-button() here, since we want to appear more like a light theme button
     background-color: $gray4;
-    box-shadow: $dark-button-box-shadow;
+    box-shadow: $legacy-dark-button-box-shadow;
 
     &:hover {
       background-color: $gray3;
-      box-shadow: $dark-button-box-shadow-active;
+      box-shadow: $legacy-dark-button-box-shadow-active;
     }
 
     &.#{$ns}-active {
       background-color: $gray2;
       box-shadow:
         inset 0 1px 1px rgba($black, 0.1),
-        $dark-button-box-shadow-active;
+        $legacy-dark-button-box-shadow-active;
     }
   }
 

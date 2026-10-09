@@ -5,7 +5,7 @@
 
 %pt-select {
   @include pt-button-layout;
-  @include pt-button;
+  @include pt-legacy-button;
 
   /* stylelint-disable property-no-vendor-prefix */
   -moz-appearance: none;
@@ -19,7 +19,7 @@
 }
 
 %pt-select-minimal {
-  @include pt-button-minimal;
+  @include pt-legacy-button-minimal;
 }
 
 %pt-select-large {
@@ -29,13 +29,13 @@
 }
 
 %pt-dark-select {
-  @include pt-dark-button;
+  @include pt-legacy-dark-button;
 }
 
 %pt-select-disabled {
-  background-color: $button-background-color-disabled;
+  background-color: $legacy-button-background-color-disabled;
   box-shadow: none;
-  color: $button-color-disabled;
+  color: $legacy-button-color-disabled;
   cursor: not-allowed;
 }
 

@@ -15,7 +15,8 @@
 import { register } from "@tokens-studio/sd-transforms";
 import { formatHex, formatHex8, oklch, parse } from "culori";
 import StyleDictionary from "style-dictionary";
-import type { Config, TransformedToken } from "style-dictionary/types";
+import type { Config, Dictionary, TransformedToken } from "style-dictionary/types";
+import { createPropertyFormatter, usesReferences } from "style-dictionary/utils";
 
 // -- Types --------------------------------------------------------------------
 
@@ -829,10 +830,21 @@ const applyRoleToValue = (value: string, token: TransformedToken): string => {
 };
 
 /** Formats a CSS custom property declaration for the base (fallback) block. */
-const formatBaseDeclaration = (classification: TokenClassification, token: TransformedToken): string => {
-    const finalValue = applyRoleToValue(classification.fallbackValue, token);
-    const comment = classification.description !== undefined ? ` /** ${classification.description} */` : "";
-    return `  --${classification.name}: ${finalValue};${comment}`;
+const formatBaseDeclaration = (
+    classification: TokenClassification,
+    token: TransformedToken,
+    formatProperty: ReturnType<typeof createPropertyFormatter>,
+): string => {
+    const originalValue = token.original.$value ?? token.original.value;
+    return formatProperty({
+        ...token,
+        $value: applyRoleToValue(classification.fallbackValue, token),
+        original: {
+            ...token.original,
+            // The reference formatter reconstructs strings from the original value, so retain role wrappers there too.
+            $value: typeof originalValue === "string" ? applyRoleToValue(originalValue, token) : originalValue,
+        },
+    });
 };
 
 /** Formats a CSS custom property declaration for the `@supports` enhanced block. */
@@ -845,14 +857,24 @@ const formatEnhancedDeclaration = (classification: TokenClassification, token: T
 
 /**
  * Generates the full CSS output with progressive enhancement.
- * Emits a base block with hex fallbacks for all tokens, followed by an `@supports`
+ * Emits a base block with optional references and derived-color hex fallbacks, followed by an `@supports`
  * block that overrides derived tokens with relative color syntax for capable browsers.
  */
 const formatProgressiveEnhancementCss = (
-    tokens: readonly TransformedToken[],
-    selector: string,
-    onlySourceTokens: boolean,
+    dictionary: Dictionary,
+    { selector, onlySourceTokens, outputReferences }: FormatOptions,
 ): string => {
+    const tokens = dictionary.allTokens;
+    // Derived tokens must keep their transformed color rather than reverting to an unmodified base reference.
+    const preserveReferences = (token: TransformedToken) =>
+        outputReferences && !hasDeriveExtension(token) && usesReferences(token.original.$value ?? token.original.value);
+    const formatProperty = createPropertyFormatter({
+        dictionary,
+        format: "css",
+        usesDtcg: true,
+        outputReferences: preserveReferences,
+    });
+
     // Build the full token map and fallback map from ALL tokens (including non-source)
     // so that reference resolution and derived-color fallback computation works correctly.
     const tokenMap = buildTokenMap(tokens);
@@ -864,12 +886,13 @@ const formatProgressiveEnhancementCss = (
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
-        formatBaseDeclaration(classification, outputTokens[index]),
+        formatBaseDeclaration(classification, outputTokens[index], formatProperty),
     );
 
     const enhancedTokens = classifications
         .map((classification, index) => ({ classification, token: outputTokens[index] }))
-        .filter(({ classification }) => classification.modernValue !== undefined);
+        // Preserved aliases already follow their target's @supports override through var().
+        .filter(({ classification, token }) => classification.modernValue !== undefined && !preserveReferences(token));
 
     const baseBlock = [header, ...baseDeclarations, "}"].join("\n");
 
@@ -894,7 +917,7 @@ const formatProgressiveEnhancementCss = (
  * Registers all custom transforms, the `bp/css` transform group, and the `bp/css/variables`
  * format with the given Style Dictionary instance. Must be called once before building.
  */
-const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
+export const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     register(sd);
 
     standardTransforms.forEach(def => sd.registerTransform(makeTransformConfig(def)));
@@ -922,8 +945,7 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     sd.registerFormat({
         name: "bp/css/variables",
         format: ({ dictionary, options }) => {
-            const { selector, onlySourceTokens } = parseFormatOptions(options);
-            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens);
+            return formatProgressiveEnhancementCss(dictionary, parseFormatOptions(options));
         },
     });
 };

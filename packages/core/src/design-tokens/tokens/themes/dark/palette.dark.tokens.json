@@ -1,0 +1,996 @@
+{
+    "color": {
+        "$type": "color",
+        "$description": "Dark-theme functional colors: 1–2 backgrounds, 3–5 component states, 6–8 borders, 9–11 solid states, 12–13 foregrounds. Established Button snapshots are retained; additional roles complete the same usage scale as the light theme.",
+        "grey": {
+            "1": {
+                "$value": "#1c2127",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "color(srgb 0.560784 0.6 0.658824 / 0.15)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "color(srgb 0.18902 0.214902 0.25098)",
+                "$description": "Dark default Button background at rest, stored as a literal snapshot."
+            },
+            "4": {
+                "$value": "color(srgb 0.144078 0.164078 0.192941)",
+                "$description": "Dark default Button background at hover, stored as a literal snapshot."
+            },
+            "5": {
+                "$value": "color(srgb 0.112549 0.127843 0.149412)",
+                "$description": "Dark default Button background at active, stored as a literal snapshot."
+            },
+            "6": {
+                "$value": "color(srgb 1 1 1 / 0.12)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.999994 0.0000497986 23.7884 / 0.3)",
+                "$description": "Dark neutral outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.999994 0.0000497986 23.7884 / 0.3)",
+                "$description": "Dark neutral outlined Button border at hover."
+            },
+            "9": {
+                "$value": "#5f6b7c",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#404854",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#383e47",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#abb3bf",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#ffffff",
+                "$description": "Dark neutral Button foreground at rest."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "blue": {
+            "1": {
+                "$value": "#1d232b",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5603150218267458 0.1633776184612115 257.6302823730946 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5603150218267458 0.1633776184612115 257.6302823730946 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.2)",
+                "$description": "Dark primary minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.5603 0.163361 257.636 / 0.3)",
+                "$description": "Dark primary minimal Button background at active."
+            },
+            "6": {
+                "$value": "oklch(0.7755074809080134 0.08273769727353608 257.71337905836856 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.77575 0.0833385 257.636 / 0.6)",
+                "$description": "Dark primary outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.77575 0.0833385 257.636 / 0.6)",
+                "$description": "Dark primary outlined Button border at hover."
+            },
+            "9": {
+                "$value": "#2d72d2",
+                "$description": "Dark primary Button background at rest, stored as a literal snapshot."
+            },
+            "10": {
+                "$value": "#215db0",
+                "$description": "Dark primary Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "#184a90",
+                "$description": "Dark primary Button background at active, stored as a literal snapshot."
+            },
+            "12": {
+                "$value": "#4c90f0",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "oklch(0.77575 0.0833385 257.636)",
+                "$description": "Dark primary minimal Button foreground at rest."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "green": {
+            "1": {
+                "$value": "#1d232b",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.547879145240308 0.1204095713184422 155.19353280932674 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.547879145240308 0.1204095713184422 155.19353280932674 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.2)",
+                "$description": "Dark success minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.547875 0.120388 155.185 / 0.3)",
+                "$description": "Dark success minimal Button background at active."
+            },
+            "6": {
+                "$value": "oklch(0.7687086286757143 0.0616429591771264 155.20630816488654 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.755849 0.0650323 155.185 / 0.6)",
+                "$description": "Dark success outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.755849 0.0650323 155.185 / 0.6)",
+                "$description": "Dark success outlined Button border at hover."
+            },
+            "9": {
+                "$value": "#238551",
+                "$description": "Dark success Button background at rest, stored as a literal snapshot."
+            },
+            "10": {
+                "$value": "#1c6e42",
+                "$description": "Dark success Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "#165a36",
+                "$description": "Dark success Button background at active, stored as a literal snapshot."
+            },
+            "12": {
+                "$value": "#32a467",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "oklch(0.75585 0.0650323 155.185)",
+                "$description": "Dark success minimal Button foreground at rest."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "orange": {
+            "1": {
+                "$value": "#1e242c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.6421077618001615 0.14027961076036002 61.839029529431414 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.6421077618001615 0.14027961076036002 61.839029529431414 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.819112 0.1303 68.0906 / 0.2)",
+                "$description": "Dark warning minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.819112 0.1303 68.0906 / 0.3)",
+                "$description": "Dark warning minimal Button background at active."
+            },
+            "6": {
+                "$value": "oklch(0.8168188619917862 0.07185491217720384 60.97938261440326 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.810316 0.0743826 61.8306 / 0.6)",
+                "$description": "Dark warning outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.810316 0.0743826 61.8306 / 0.6)",
+                "$description": "Dark warning outlined Button border at hover."
+            },
+            "9": {
+                "$value": "#fbb360",
+                "$description": "Dark warning Button rest anchor using exact legacy orange5; the modern Button's relative color only rounds to this value."
+            },
+            "10": {
+                "$value": "oklch(0.748641 0.125922 66.762)",
+                "$description": "Dark warning Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "oklch(0.614901 0.111016 64.9146)",
+                "$description": "Dark warning Button background at active, stored as a literal snapshot."
+            },
+            "12": {
+                "$value": "#ec9a3c",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "oklch(0.810316 0.0743826 61.8306)",
+                "$description": "Dark warning minimal Button foreground at rest."
+            },
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "red": {
+            "1": {
+                "$value": "#1d232c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5786335395876713 0.17524500015847394 22.937842658477166 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5786335395876713 0.17524500015847394 22.937842658477166 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.2)",
+                "$description": "Dark danger minimal Button background at hover."
+            },
+            "5": {
+                "$value": "oklch(0.578639 0.175268 22.9394 / 0.3)",
+                "$description": "Dark danger minimal Button background at active."
+            },
+            "6": {
+                "$value": "oklch(0.785860219649464 0.08880988341586961 23.573323806039134 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.776676 0.0929155 22.9394 / 0.6)",
+                "$description": "Dark danger outlined Button border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.776676 0.0929155 22.9394 / 0.6)",
+                "$description": "Dark danger outlined Button border at hover."
+            },
+            "9": {
+                "$value": "#cd4246",
+                "$description": "Dark danger Button background at rest, stored as a literal snapshot."
+            },
+            "10": {
+                "$value": "#ac2f33",
+                "$description": "Dark danger Button background at hover, stored as a literal snapshot."
+            },
+            "11": {
+                "$value": "#8e292c",
+                "$description": "Dark danger Button background at active, stored as a literal snapshot."
+            },
+            "12": {
+                "$value": "#e76a6e",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "oklch(0.776676 0.0929155 22.9394)",
+                "$description": "Dark danger minimal Button foreground at rest."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "vermilion": {
+            "1": {
+                "$value": "#1d232c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5784699902857797 0.1925957036832543 34.405879663921276 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5784699902857797 0.1925957036832543 34.405879663921276 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.5784699902857797 0.1925957036832543 34.405879663921276 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.5784699902857797 0.1925957036832543 34.405879663921276 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.7851131251408718 0.09855922770828342 34.1247083559807 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.7851131251408718 0.09855922770828342 34.1247083559807 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.7851131251408718 0.09855922770828342 34.1247083559807 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#d33d17",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#b83211",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#96290d",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#eb6847",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#f1a28f",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "rose": {
+            "1": {
+                "$value": "#1d232c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5923954170230615 0.2119197068616438 4.137095070217264 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5923954170230615 0.2119197068616438 4.137095070217264 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.5923954170230615 0.2119197068616438 4.137095070217264 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.5923954170230615 0.2119197068616438 4.137095070217264 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.7928539479016203 0.10741778230656407 4.291786691416124 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.7928539479016203 0.10741778230656407 4.291786691416124 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.7928539479016203 0.10741778230656407 4.291786691416124 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#db2c6f",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#c22762",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#a82255",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#f5498b",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#f69eb3",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "violet": {
+            "1": {
+                "$value": "#1d232b",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5304394142111097 0.17004056342332952 327.64494947105084 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5304394142111097 0.17004056342332952 327.64494947105084 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.5304394142111097 0.17004056342332952 327.64494947105084 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.5304394142111097 0.17004056342332952 327.64494947105084 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.7611600683150977 0.08722372695772712 327.70294473744195 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.7611600683150977 0.08722372695772712 327.70294473744195 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.7611600683150977 0.08722372695772712 327.70294473744195 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#9d3f9d",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#7c327c",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5c255c",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#bd6bbd",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#d09ece",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "indigo": {
+            "1": {
+                "$value": "#1d232c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5779935654691909 0.17898046074317212 288.5660605542818 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5779935654691909 0.17898046074317212 288.5660605542818 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.5779935654691909 0.17898046074317212 288.5660605542818 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.5779935654691909 0.17898046074317212 288.5660605542818 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.7849650813496946 0.09040600662689777 288.42316052699186 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.7849650813496946 0.09040600662689777 288.42316052699186 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.7849650813496946 0.09040600662689777 288.42316052699186 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#7961db",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#634dbf",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5642a6",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#9881f3",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#b6b0f0",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "cerulean": {
+            "1": {
+                "$value": "#1d232b",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5636668499479779 0.1194786884817463 238.05359951205367 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5636668499479779 0.1194786884817463 238.05359951205367 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.5636668499479779 0.1194786884817463 238.05359951205367 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.5636668499479779 0.1194786884817463 238.05359951205367 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.7778284713859975 0.06011451210869054 237.73817120611363 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.7778284713859975 0.06011451210869054 237.73817120611363 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.7778284713859975 0.06011451210869054 237.73817120611363 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#147eb3",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#0f6894",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#0c5174",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#3fa6da",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#93bdd9",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "turquoise": {
+            "1": {
+                "$value": "#1e242b",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.6432679960508323 0.11340572649068387 184.9162777103287 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.6432679960508323 0.11340572649068387 184.9162777103287 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.6432679960508323 0.11340572649068387 184.9162777103287 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.6432679960508323 0.11340572649068387 184.9162777103287 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.8172980787705761 0.057915922367457844 185.0024564426715 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.8172980787705761 0.057915922367457844 185.0024564426715 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.8172980787705761 0.057915922367457844 185.0024564426715 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#00a396",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#007067",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#004d46",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#13c9ba",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#99d0c8",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "forest": {
+            "1": {
+                "$value": "#1c242c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.6357332825862987 0.18657673806596034 144.08159558439573 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.6357332825862987 0.18657673806596034 144.08159558439573 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.6357332825862987 0.18657673806596034 144.08159558439573 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.6357332825862987 0.18657673806596034 144.08159558439573 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.8148194498800304 0.09558578442526855 143.768758329014 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.8148194498800304 0.09558578442526855 143.768758329014 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.8148194498800304 0.09558578442526855 143.768758329014 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#29a634",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#238c2c",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#1d7324",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#43bf4d",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#9dd39b",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "#000000",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "lime": {
+            "1": {
+                "$value": "#1d252c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.7096790955591706 0.1626575169675225 123.35020830926733 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.7096790955591706 0.1626575169675225 123.35020830926733 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.7096790955591706 0.1626575169675225 123.35020830926733 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.7096790955591706 0.1626575169675225 123.35020830926733 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.8524045062995708 0.08245967459597688 123.11310849617071 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.8524045062995708 0.08245967459597688 123.11310849617071 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.8524045062995708 0.08245967459597688 123.11310849617071 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#8eb125",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#5a701a",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#43501b",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#b6d94c",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#c4d89c",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "gold": {
+            "1": {
+                "$value": "#1d252c",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.7157319553592573 0.1458238570024547 81.27331035194275 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.7157319553592573 0.1458238570024547 81.27331035194275 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.7157319553592573 0.1458238570024547 81.27331035194275 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.7157319553592573 0.1458238570024547 81.27331035194275 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.8544952339007081 0.07397534258875088 81.45208672229822 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.8544952339007081 0.07397534258875088 81.45208672229822 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.8544952339007081 0.07397534258875088 81.45208672229822 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#d1980b",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#866103",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5c4405",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#f0b726",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#e8cb98",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.black}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        },
+        "sepia": {
+            "1": {
+                "$value": "#1e232a",
+                "$description": "Application background."
+            },
+            "2": {
+                "$value": "oklch(0.5488375815850404 0.08580513671428375 64.33673757318289 / 0.1)",
+                "$description": "Subtle background."
+            },
+            "3": {
+                "$value": "oklch(0.5488375815850404 0.08580513671428375 64.33673757318289 / 0.1)",
+                "$description": "Component background at rest."
+            },
+            "4": {
+                "$value": "oklch(0.5488375815850404 0.08580513671428375 64.33673757318289 / 0.2)",
+                "$description": "Component background on hover."
+            },
+            "5": {
+                "$value": "oklch(0.5488375815850404 0.08580513671428375 64.33673757318289 / 0.3)",
+                "$description": "Component background when active."
+            },
+            "6": {
+                "$value": "oklch(0.7704767098073392 0.043848246902149154 63.61266204403675 / 0.2)",
+                "$description": "Subtle border."
+            },
+            "7": {
+                "$value": "oklch(0.7704767098073392 0.043848246902149154 63.61266204403675 / 0.6)",
+                "$description": "Border at rest."
+            },
+            "8": {
+                "$value": "oklch(0.7704767098073392 0.043848246902149154 63.61266204403675 / 0.6)",
+                "$description": "Border on hover or focus."
+            },
+            "9": {
+                "$value": "#946638",
+                "$description": "Solid background at rest."
+            },
+            "10": {
+                "$value": "#7a542e",
+                "$description": "Solid background on hover."
+            },
+            "11": {
+                "$value": "#5e4123",
+                "$description": "Solid background when active."
+            },
+            "12": {
+                "$value": "#af855a",
+                "$description": "Muted foreground."
+            },
+            "13": {
+                "$value": "#c9af98",
+                "$description": "High-contrast foreground."
+            },
+            "contrast": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background at rest (step 9)."
+            },
+            "contrast-hover": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background on hover (step 10)."
+            },
+            "contrast-active": {
+                "$value": "{color.white}",
+                "$description": "Text and icons on the solid background when active (step 11)."
+            }
+        }
+    }
+}
