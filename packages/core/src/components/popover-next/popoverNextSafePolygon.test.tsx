@@ -99,6 +99,25 @@ describe("<PopoverNext> safePolygon", () => {
         expect(screen.getByTestId("content")).toBeInTheDocument();
     });
 
+    it("keeps the diagonal path open on later traversals with requireIntent", async () => {
+        render(<PopoverNext {...POPOVER_PROPS} safePolygon={true} />);
+        const target = screen.getByTestId("target");
+
+        for (const traversal of [1, 2, 3]) {
+            await openPopover(target);
+            fireEvent.mouseLeave(target, { clientX: 199, clientY: 129 });
+            fireEvent.mouseMove(document.body, { clientX: 215, clientY: 160 });
+            fireEvent.mouseMove(screen.getByTestId("content"), { clientX: 240, clientY: 190 });
+            await advanceTimers(100);
+            expect(screen.queryByTestId("content"), `traversal ${traversal}`).toBeInTheDocument();
+
+            // Leave the polygon, then pause so the next traversal's cursor samples are far apart in time.
+            fireEvent.mouseMove(document.body, { clientX: 450, clientY: 400 });
+            await advanceTimers(1000);
+            expect(screen.queryByTestId("content")).not.toBeInTheDocument();
+        }
+    });
+
     it.each([undefined, false])("preserves immediate hover closure when safePolygon=%s", async safePolygon => {
         render(<PopoverNext {...POPOVER_PROPS} safePolygon={safePolygon} />);
         const target = screen.getByTestId("target");

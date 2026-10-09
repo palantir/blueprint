@@ -104,14 +104,13 @@ export function usePopover({
     const { context } = data;
 
     const { blockPointerEvents, buffer, requireIntent } = typeof safePolygon === "object" ? safePolygon : {};
-    const handleHoverClose = useMemo(
-        () => createSafePolygon({ blockPointerEvents, buffer, requireIntent }),
-        [blockPointerEvents, buffer, requireIntent],
-    );
     const hover = useHover(context, {
         delay: { close: hoverCloseDelay, open: hoverOpenDelay },
         enabled: !disabled && safePolygon != null && safePolygon !== false,
-        handleClose: handleHoverClose,
+        // Each safePolygon() instance stores cursor samples for `requireIntent`'s speed check, so it is
+        // created per render, as Floating UI documents. A shared instance would compare a new traversal
+        // against the previous traversal's last sample and close the popover.
+        handleClose: createSafePolygon({ blockPointerEvents, buffer, requireIntent }),
         // Reopening on mousemove would undo Escape and dismiss-item clicks while the pointer stays on the target.
         move: false,
     });
