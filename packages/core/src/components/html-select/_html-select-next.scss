@@ -1,0 +1,63 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-next";
+@import "../popover/common-next";
+@import "./common-next";
+
+.#{$ns}-html-select,
+.#{$ns}-select {
+  display: inline-block;
+  letter-spacing: normal;
+  position: relative;
+  vertical-align: middle;
+
+  select {
+    @extend %pt-select-next;
+
+    &:disabled {
+      @extend %pt-select-disabled-next;
+    }
+  }
+
+  .#{$ns}-icon {
+    @extend %pt-select-icon-next;
+    @include pt-icon-colors-next;
+  }
+
+  &.#{$ns}-minimal select {
+    @extend %pt-select-minimal-next;
+  }
+
+  &.#{$ns}-large {
+    select {
+      @extend %pt-select-large-next;
+    }
+
+    &::after, // CSS support
+    .#{$ns}-icon {
+      right: $pt-spacing * 3;
+      top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
+    }
+  }
+
+  &.#{$ns}-fill {
+    &,
+    select {
+      width: 100%;
+    }
+  }
+
+  option {
+    background-color: var(--bp-background-color-overlay);
+    color: var(--bp-text-color-neutral-default);
+  }
+
+  option:disabled {
+    color: var(--bp-text-color-disabled);
+  }
+
+  &::after {
+    color: var(--bp-text-color-neutral-subtle);
+  }
+}

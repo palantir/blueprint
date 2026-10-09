@@ -1,0 +1,298 @@
+{
+    "background-color": {
+        "$type": "color",
+        "base": {
+            "$value": "{scale.gray.1}"
+        },
+        "content": {
+            "$value": "{scale.gray.2}"
+        },
+        "sunken": {
+            "$value": "{scale.gray.alpha.1}"
+        },
+        "field": {
+            "$value": "{scale.gray.alpha.2}"
+        },
+        "overlay": {
+            "$value": "{scale.gray.overlay}"
+        },
+        "backdrop": {
+            "$value": "{scale.gray.backdrop}"
+        },
+        "inverse": {
+            "$value": "{scale.gray.inverse}"
+        },
+        "stripe": {
+            "$value": "{scale.white.alpha.4}"
+        },
+        "disabled": {
+            "$value": "{scale.gray.alpha.3}"
+        },
+        "neutral": {
+            "soft": {
+                "rest": {
+                    "$value": "{scale.gray.alpha.3}"
+                },
+                "hover": {
+                    "$value": "{scale.gray.alpha.4}"
+                },
+                "active": {
+                    "$value": "{scale.gray.alpha.5}"
+                }
+            },
+            "solid": {
+                "rest": {
+                    "$value": "{scale.gray.9}"
+                },
+                "hover": {
+                    "$value": "{scale.gray.10}"
+                },
+                "active": {
+                    "$value": "{scale.gray.11}"
+                }
+            },
+            "indicator": {
+                "$value": "{scale.gray.indicator}"
+            }
+        },
+        "primary": {
+            "soft": {
+                "rest": {
+                    "$value": "{scale.primary.alpha.3}"
+                },
+                "hover": {
+                    "$value": "{scale.primary.alpha.4}"
+                },
+                "active": {
+                    "$value": "{scale.primary.alpha.5}"
+                }
+            },
+            "solid": {
+                "rest": {
+                    "$value": "{scale.primary.9}"
+                },
+                "hover": {
+                    "$value": "{scale.primary.10}"
+                },
+                "active": {
+                    "$value": "{scale.primary.11}"
+                }
+            },
+            "indicator": {
+                "$value": "{scale.primary.indicator}"
+            }
+        },
+        "success": {
+            "soft": {
+                "rest": {
+                    "$value": "{scale.success.alpha.3}"
+                },
+                "hover": {
+                    "$value": "{scale.success.alpha.4}"
+                },
+                "active": {
+                    "$value": "{scale.success.alpha.5}"
+                }
+            },
+            "solid": {
+                "rest": {
+                    "$value": "{scale.success.9}"
+                },
+                "hover": {
+                    "$value": "{scale.success.10}"
+                },
+                "active": {
+                    "$value": "{scale.success.11}"
+                }
+            },
+            "indicator": {
+                "$value": "{scale.success.indicator}"
+            }
+        },
+        "warning": {
+            "soft": {
+                "rest": {
+                    "$value": "{scale.warning.alpha.3}"
+                },
+                "hover": {
+                    "$value": "{scale.warning.alpha.4}"
+                },
+                "active": {
+                    "$value": "{scale.warning.alpha.5}"
+                }
+            },
+            "solid": {
+                "rest": {
+                    "$value": "{scale.warning.9}"
+                },
+                "hover": {
+                    "$value": "{scale.warning.10}"
+                },
+                "active": {
+                    "$value": "{scale.warning.11}"
+                }
+            },
+            "indicator": {
+                "$value": "{scale.warning.indicator}"
+            }
+        },
+        "danger": {
+            "soft": {
+                "rest": {
+                    "$value": "{scale.danger.alpha.3}"
+                },
+                "hover": {
+                    "$value": "{scale.danger.alpha.4}"
+                },
+                "active": {
+                    "$value": "{scale.danger.alpha.5}"
+                }
+            },
+            "solid": {
+                "rest": {
+                    "$value": "{scale.danger.9}"
+                },
+                "hover": {
+                    "$value": "{scale.danger.10}"
+                },
+                "active": {
+                    "$value": "{scale.danger.11}"
+                }
+            },
+            "indicator": {
+                "$value": "{scale.danger.indicator}"
+            }
+        }
+    },
+    "text-color": {
+        "$type": "color",
+        "disabled": {
+            "$value": "{scale.gray.alpha.12}"
+        },
+        "inverse": {
+            "$value": "{scale.gray.inverse-text}"
+        },
+        "neutral": {
+            "default": {
+                "$value": "{scale.gray.13}"
+            },
+            "subtle": {
+                "$value": "{scale.gray.12}"
+            },
+            "solid": {
+                "$value": "{scale.gray.solid-text}"
+            }
+        },
+        "primary": {
+            "default": {
+                "$value": "{scale.primary.13}"
+            },
+            "subtle": {
+                "$value": "{scale.primary.12}"
+            },
+            "solid": {
+                "$value": "{scale.primary.solid-text}"
+            }
+        },
+        "success": {
+            "default": {
+                "$value": "{scale.success.13}"
+            },
+            "subtle": {
+                "$value": "{scale.success.12}"
+            },
+            "solid": {
+                "$value": "{scale.success.solid-text}"
+            }
+        },
+        "warning": {
+            "default": {
+                "$value": "{scale.warning.13}"
+            },
+            "subtle": {
+                "$value": "{scale.warning.12}"
+            },
+            "solid": {
+                "$value": "{scale.warning.solid-text}"
+            }
+        },
+        "danger": {
+            "default": {
+                "$value": "{scale.danger.13}"
+            },
+            "subtle": {
+                "$value": "{scale.danger.12}"
+            },
+            "solid": {
+                "$value": "{scale.danger.solid-text}"
+            }
+        }
+    },
+    "border-color": {
+        "$type": "color",
+        "disabled": {
+            "$value": "{scale.gray.alpha.6}"
+        },
+        "neutral": {
+            "default": {
+                "$value": "{scale.gray.alpha.7}"
+            },
+            "strong": {
+                "$value": "{scale.gray.alpha.8}"
+            },
+            "subtle": {
+                "$value": "{scale.gray.alpha.6}"
+            }
+        },
+        "primary": {
+            "default": {
+                "$value": "{scale.primary.alpha.7}"
+            },
+            "strong": {
+                "$value": "{scale.primary.alpha.8}"
+            }
+        },
+        "success": {
+            "default": {
+                "$value": "{scale.success.alpha.7}"
+            },
+            "strong": {
+                "$value": "{scale.success.alpha.8}"
+            }
+        },
+        "warning": {
+            "default": {
+                "$value": "{scale.warning.alpha.7}"
+            },
+            "strong": {
+                "$value": "{scale.warning.alpha.8}"
+            }
+        },
+        "danger": {
+            "default": {
+                "$value": "{scale.danger.alpha.7}"
+            },
+            "strong": {
+                "$value": "{scale.danger.alpha.8}"
+            }
+        }
+    },
+    "focus-color": {
+        "$type": "color",
+        "neutral": {
+            "$value": "{scale.primary.focus}"
+        },
+        "primary": {
+            "$value": "{scale.primary.focus}"
+        },
+        "success": {
+            "$value": "{scale.success.focus}"
+        },
+        "warning": {
+            "$value": "{scale.warning.focus}"
+        },
+        "danger": {
+            "$value": "{scale.danger.focus}"
+        }
+    }
+}

@@ -10,59 +10,37 @@ import type { ArgTypes } from "@storybook/react-vite";
 import React, { useMemo } from "react";
 import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 
-import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, type TokenValues } from "./tokens";
+import { THEME_INTENTS, type ThemeColors } from "./intentScale";
+
+const ROWS: ArgTypes = Object.fromEntries(
+    THEME_INTENTS.map(intent => [
+        intent,
+        {
+            control: { type: "color" },
+            description: `Generates the ${intent} scale (both themes) from one color`,
+            name: intent.charAt(0).toUpperCase() + intent.slice(1),
+        },
+    ]),
+);
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
-    const tokenValues = useMemo(
-        () =>
-            Object.fromEntries(
-                TOKEN_NAMES.flatMap(name => {
-                    const overrideValue = tokenOverrides?.[name];
-                    return overrideValue === undefined || overrideValue === ""
-                        ? []
-                        : [[name, TOKEN_CONFIG[name].toControlValue(overrideValue)]];
-                }),
-            ),
-        [tokenOverrides],
-    );
+    const themeColors: ThemeColors = useMemo(() => globals.themeColors ?? {}, [globals.themeColors]);
 
     const handleUpdateArgs = React.useCallback(
-        (updates: Partial<TokenControlValues>) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            for (const name of TOKEN_NAMES) {
-                const value = updates[name];
-                if (value !== undefined) {
-                    overrides[name] = TOKEN_CONFIG[name].toCssValue(value);
-                }
-            }
-            updateGlobals({ tokenOverrides: overrides });
-        },
-        [tokenOverrides, updateGlobals],
-    );
-
-    const rows = useMemo(
-        () =>
-            TOKEN_NAMES.reduce<ArgTypes>((acc, key) => {
-                acc[key] = {
-                    control: TOKEN_CONFIG[key].control,
-                    name: key,
-                };
-                return acc;
-            }, {}),
-        [],
+        (updates: ThemeColors) => updateGlobals({ themeColors: { ...themeColors, ...updates } }),
+        [themeColors, updateGlobals],
     );
 
     return (
         <PureArgsTable
             compact={true}
-            args={tokenValues}
+            args={themeColors}
             inAddonPanel={true}
             isLoading={!isStoryPrepared}
-            rows={rows}
+            rows={ROWS}
             updateArgs={handleUpdateArgs}
         />
     );

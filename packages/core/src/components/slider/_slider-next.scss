@@ -1,0 +1,217 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../tooltip/tooltip-next";
+@import "./common-next";
+
+$handle-size: $pt-icon-size-standard !default;
+$track-size: $handle-size - ($pt-spacing * 2.5) !default;
+$label-offset: $handle-size + $pt-spacing !default;
+
+// Legacy handle shadows: no longer used (the handle uses the Button `xs` shadow role); kept so as to
+// not break consumers that reference them.
+$handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
+$handle-box-shadow:
+  $handle-border-shadow,
+  0 1px 1px rgba($black, 0.5) !default;
+$handle-box-shadow-hover:
+  $handle-border-shadow,
+  0 1px 2px rgba($black, 0.6) !default;
+$handle-box-shadow-active:
+  inset 0 1px 1px rgba($black, 0.1),
+  $handle-border-shadow,
+  0 1px 2px rgba($black, 0.2) !default;
+
+// retain legacy variable aliases so as to not break consumers
+$handle-height: $handle-size !default;
+$track-height: $track-size !default;
+
+.#{$ns}-slider {
+  @include slider-orientation($pt-input-height-large, $vertical: false);
+  cursor: default;
+  outline: none;
+  position: relative;
+  user-select: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  &.#{$ns}-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.#{$ns}-slider-unlabeled {
+    height: $handle-size;
+  }
+}
+
+.#{$ns}-slider-track,
+.#{$ns}-slider-progress {
+  @include slider-track-orientation($handle-size, $track-size, $vertical: false);
+  position: absolute;
+}
+
+.#{$ns}-slider-track {
+  border-radius: var(--bp-surface-border-radius);
+  overflow: hidden;
+}
+
+.#{$ns}-slider-progress {
+  // Unfilled rail (Track): Sunken layer. The intent-colored progress is the Head.
+  background: var(--bp-background-color-sunken);
+
+  @each $intent in (primary, success, warning, danger) {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: var(--bp-background-color-#{$intent}-indicator);
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    background: ButtonText;
+  }
+}
+
+.#{$ns}-slider-handle {
+  @include pt-button-next;
+  // The Button's soft background is translucent; the handle sits on the track, so it gets an
+  // opaque Content base with the soft tint layered on top.
+  background-color: var(--bp-background-color-content);
+  background-image: linear-gradient(var(--bp-background-color-neutral-soft-rest) 0 0);
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: var(--bp-shadow-xs);
+  cursor: pointer;
+  height: $handle-size;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: $handle-size;
+
+  // ensure target handle's label always covers neighbors
+  &:focus {
+    z-index: 1;
+  }
+
+  &:hover {
+    @include pt-button-hover-next;
+    background-color: var(--bp-background-color-content);
+    background-image: linear-gradient(var(--bp-background-color-neutral-soft-hover) 0 0);
+    box-shadow: var(--bp-shadow-xs);
+    cursor: grab;
+    z-index: 2;
+  }
+
+  &.#{$ns}-active {
+    @include pt-button-active-next;
+    background-color: var(--bp-background-color-content);
+    background-image: linear-gradient(var(--bp-background-color-neutral-soft-active) 0 0);
+    box-shadow: var(--bp-shadow-xs);
+    cursor: grabbing;
+  }
+
+  .#{$ns}-disabled & {
+    // stays opaque like the enabled handle: Content base with the Disabled role layered on top
+    background-color: var(--bp-background-color-content);
+    background-image: linear-gradient(var(--bp-background-color-disabled) 0 0);
+    box-shadow: none;
+    // easy way to avoid lots of special cases to ignore mouse states when disabled:
+    pointer-events: none;
+  }
+
+  .#{$ns}-slider-label {
+    // same Inverse layer and overlay shadow as Tooltip
+    background: var(--bp-background-color-inverse);
+    border-radius: var(--bp-surface-border-radius);
+    box-shadow: var(--bp-shadow-xl);
+    color: var(--bp-text-color-inverse);
+    margin-left: $handle-size * 0.5;
+
+    .#{$ns}-disabled & {
+      box-shadow: none;
+    }
+  }
+
+  &.#{$ns}-start,
+  &.#{$ns}-end {
+    width: $handle-size * 0.5;
+  }
+
+  &.#{$ns}-start {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &.#{$ns}-end {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-left: $handle-size * 0.5;
+
+    .#{$ns}-slider-label {
+      margin-left: 0;
+    }
+  }
+}
+
+.#{$ns}-slider-label {
+  @include slider-label-orientation($label-offset);
+  display: inline-block;
+  font-size: $pt-font-size-small;
+  line-height: 1;
+  padding: ($pt-spacing * 0.5) $pt-spacing;
+  position: absolute;
+  vertical-align: top;
+}
+
+.#{$ns}-slider.#{$ns}-vertical {
+  @include slider-orientation($pt-input-height-large, $vertical: true);
+
+  .#{$ns}-slider-track,
+  .#{$ns}-slider-progress {
+    @include slider-track-orientation($handle-size, $track-size, $vertical: true);
+  }
+
+  .#{$ns}-slider-progress {
+    top: auto;
+  }
+
+  .#{$ns}-slider-label {
+    @include slider-label-orientation($label-offset, $vertical: true);
+  }
+
+  .#{$ns}-slider-handle {
+    top: auto;
+
+    .#{$ns}-slider-label {
+      margin-left: 0;
+      margin-top: -$handle-size * 0.5;
+    }
+
+    &.#{$ns}-end,
+    &.#{$ns}-start {
+      height: $handle-size * 0.5;
+      margin-left: 0;
+      width: $handle-size;
+    }
+
+    &.#{$ns}-start {
+      border-bottom-right-radius: var(--bp-surface-border-radius);
+      border-top-left-radius: 0;
+
+      .#{$ns}-slider-label {
+        transform: translate($label-offset);
+      }
+    }
+
+    &.#{$ns}-end {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: var(--bp-surface-border-radius);
+      margin-bottom: $handle-size * 0.5;
+    }
+  }
+}

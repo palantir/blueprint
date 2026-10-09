@@ -1,0 +1,37 @@
+@use "sass:math";
+@import "../../common/variables-next";
+
+.#{$ns}-segmented-control {
+  // the track is the page Base layer; the selected (non-minimal) option is raised onto the Overlay layer
+  background-color: var(--bp-background-color-base);
+  border-radius: var(--bp-surface-border-radius);
+  display: flex;
+  gap: $pt-spacing * 0.5;
+  padding: $pt-spacing * 0.5;
+
+  &.#{$ns}-inline {
+    display: inline-flex;
+  }
+
+  &.#{$ns}-fill {
+    width: 100%;
+
+    > .#{$ns}-button {
+      flex-grow: 1;
+    }
+  }
+
+  > .#{$ns}-button:not(.#{$ns}-minimal) {
+    &:not(.#{$ns}-intent-primary) {
+      background-color: var(--bp-background-color-overlay);
+    }
+  }
+
+  > .#{$ns}-button.#{$ns}-minimal {
+    color: var(--bp-text-color-neutral-subtle);
+  }
+
+  > .#{$ns}-button.#{$ns}-minimal:disabled {
+    color: var(--bp-text-color-disabled);
+  }
+}

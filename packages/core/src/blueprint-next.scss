@@ -1,0 +1,22 @@
+/*
+
+Copyright 2021-present Palantir Technologies, Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0.
+
+*/
+
+// The next styles: the same stylesheet as blueprint.scss, with the next version of each component that has one.
+// Load it instead of blueprint.css, not alongside it.
+@import "design-tokens/build/tokens";
+@import "design-tokens/build/tokens-dark";
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "common/variables-next";
+@import "common/variables-extended-next";
+@import "common/mixins";
+@import "common/mixins-next";
+
+@import "reset-next";
+@import "typography-next";
+@import "accessibility/focus-states-next";
+@import "dark-theme-next";
+@import "components/index-next";

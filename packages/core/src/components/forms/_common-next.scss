@@ -1,0 +1,258 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:list";
+@use "sass:string";
+
+/* stylelint-disable alpha-value-notation */
+@import "@blueprintjs/icons/lib/scss/variables";
+@import "../../common/variables-next";
+@import "../button/common-next";
+
+$input-padding-horizontal: $pt-spacing * 2 !default;
+$input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;
+$input-font-weight: 400 !default;
+$input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
+
+$input-color: $pt-text-color !default;
+$input-color-disabled: $button-color-disabled !default;
+$input-placeholder-color: $pt-text-color-muted !default;
+$input-background-color: $white !default;
+$input-background-color-disabled: rgba($light-gray1, 0.5) !default;
+$input-shadow-color-focus: $pt-focus-indicator-color;
+
+$dark-input-color: $pt-dark-text-color !default;
+$dark-input-color-disabled: $dark-button-color-disabled !default;
+$dark-input-placeholder-color: $pt-dark-text-color-muted !default;
+$dark-input-background-color: rgba($black, 0.3) !default;
+$dark-input-background-color-disabled: rgba($dark-gray5, 0.5) !default;
+$dark-input-shadow-color-focus: $pt-dark-focus-indicator-color;
+
+$control-indicator-size: $pt-icon-size-standard !default;
+$control-indicator-size-large: $pt-icon-size-large !default;
+
+// avoids edge blurriness for light theme focused default input
+// second box-shadow of $pt-input-box-shadow
+$input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+
+// for best visual results, button group and control group elements should be
+// stacked in the following order to ensure sharp edges in all cases and states:
+
+$control-group-stack: (
+  // lowest z-index
+  "input-disabled",
+  "input-default",
+  "button-disabled",
+  "button-default",
+  "button-focus",
+  "button-hover",
+  "button-active",
+  "intent-button-disabled",
+  "intent-button-default",
+  "intent-button-focus",
+  "intent-button-hover",
+  "intent-button-active",
+  "intent-input-default",
+  "input-focus",
+  "intent-input-focus",
+  "input-group-children",
+  "select-caret"
+);
+
+// animating shadows requires the same number of shadows in different states
+@function input-transition-shadow-next(
+  $color: $input-shadow-color-focus,
+  $focus: false,
+  $outer-shadow-focus-width: 1px
+) {
+  @if $focus {
+    @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
+      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
+  } @else {
+    @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
+  }
+}
+
+@function dark-input-transition-shadow-next(
+  $color: $dark-input-shadow-color-focus,
+  $focus: false,
+  $outer-shadow-focus-width: 1px
+) {
+  @if $focus {
+    @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
+      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
+  } @else {
+    @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
+  }
+}
+
+$input-intents: (primary, success, warning, danger);
+// focus ring width: 2px Neutral (1px inset + 1px outer), 3px Intent (1px inset + 2px outer); H4
+$input-focus-outer-width-neutral: 1px;
+$input-focus-outer-width-intent: calc(var(--bp-surface-spacing) * 0.5);
+
+// accepts an intent name, or (legacy callers) one of the $pt-intent-colors values
+@function input-intent-name($intent-or-color) {
+  @if list.index($input-intents, $intent-or-color) {
+    @return $intent-or-color;
+  }
+
+  @each $intent, $color in $pt-intent-colors {
+    @if $color == $intent-or-color {
+      @return string.unquote($intent);
+    }
+  }
+
+  @error "pt-input-intent: expected one of #{$input-intents} or a $pt-intent-colors value, got #{$intent-or-color}";
+}
+
+// animating shadows requires the same number of shadows in different states:
+// [inset focus ring, outer focus ring, rest ring, inner shadow]. The focus layers at rest are
+// zero-size (invisible) so they can animate in.
+@function input-role-shadow($intent, $focus: false, $ring: null, $inner: true) {
+  $focus-color: var(--bp-focus-color-#{$intent});
+  $outer-width: if(
+    $intent == neutral,
+    $input-focus-outer-width-neutral,
+    $input-focus-outer-width-intent
+  );
+  $ring-color: if($ring == null, var(--bp-border-color-#{$intent}-strong), $ring);
+  $inner-shadow: if($inner, inset 0 1px 1px var(--bp-border-color-neutral-strong), null);
+
+  @if $focus {
+    @return inset 0 0 0 1px $focus-color, 0 0 0 $outer-width $focus-color, $inner-shadow;
+  }
+
+  @return inset 0 0 0 0 $focus-color, 0 0 0 0 $focus-color, inset 0 0 0 1px $ring-color,
+    $inner-shadow;
+}
+
+@mixin pt-input-next() {
+  @include pt-input-placeholder-next;
+  appearance: none;
+  background: var(--bp-background-color-field);
+  border: none;
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: input-role-shadow(neutral);
+  color: var(--bp-text-color-neutral-default);
+  font-size: var(--bp-typography-size-body-medium);
+  font-weight: var(--bp-typography-weight-default);
+  height: calc(var(--bp-surface-spacing) * 7.5);
+  line-height: calc(var(--bp-surface-spacing) * 7.5);
+
+  outline: none;
+  padding: 0 calc(var(--bp-surface-spacing) * 2);
+  transition: box-shadow var(--bp-emphasis-transition-duration) var(--bp-emphasis-ease-default);
+  vertical-align: middle;
+
+  &:focus,
+  &.#{$ns}-active {
+    box-shadow: input-role-shadow(neutral, $focus: true);
+  }
+
+  &[type="search"],
+  &.#{$ns}-round {
+    border-radius: calc(var(--bp-surface-spacing) * 7.5);
+    // override normalize.css
+    box-sizing: border-box;
+    padding-left: calc(var(--bp-surface-spacing) * 2);
+  }
+
+  &[readonly] {
+    box-shadow: inset 0 0 0 1px var(--bp-border-color-neutral-subtle);
+
+    &:focus {
+      box-shadow: input-role-shadow(neutral, $focus: true, $inner: false);
+    }
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    @include pt-input-disabled-next;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
+}
+
+@mixin pt-input-placeholder-next() {
+  &::placeholder {
+    color: var(--bp-text-color-neutral-subtle);
+    // normalize.css sets an opacity less than 1, we don't want this
+    opacity: 1;
+  }
+}
+
+@mixin pt-input-disabled-next() {
+  background: var(--bp-background-color-disabled);
+  box-shadow: none;
+  color: var(--bp-text-color-disabled);
+  cursor: not-allowed;
+  resize: none;
+
+  &::placeholder {
+    color: var(--bp-text-color-disabled);
+  }
+}
+
+@mixin pt-input-large-next() {
+  font-size: var(--bp-typography-size-body-large);
+  height: calc(var(--bp-surface-spacing) * 10);
+  line-height: calc(var(--bp-surface-spacing) * 10);
+
+  &[type="search"],
+  &.#{$ns}-round {
+    padding: 0 calc(var(--bp-surface-spacing) * 3);
+  }
+}
+
+@mixin pt-input-small-next() {
+  font-size: var(--bp-typography-size-body-small);
+  height: calc(var(--bp-surface-spacing) * 6);
+  line-height: calc(var(--bp-surface-spacing) * 6);
+  padding-left: calc(var(--bp-surface-spacing) * 2);
+  padding-right: calc(var(--bp-surface-spacing) * 2);
+
+  &[type="search"],
+  &.#{$ns}-round {
+    padding: 0 calc(var(--bp-surface-spacing) * 3);
+  }
+}
+
+// Dark-theme mixins are kept (empty) for callers in other files; the roles used by the
+// light mixins above already switch per theme.
+@mixin pt-dark-input-disabled-next() {
+  // no-op: roles switch per theme
+}
+
+@mixin pt-dark-input-placeholder-next() {
+  // no-op: roles switch per theme
+}
+
+@mixin pt-dark-input-next() {
+  // no-op: roles switch per theme
+}
+
+// $intent: primary | success | warning | danger (a $pt-intent-colors value is also accepted)
+@mixin pt-input-intent-next($intent) {
+  $intent: input-intent-name($intent);
+  box-shadow: input-role-shadow($intent);
+
+  &:focus {
+    box-shadow: input-role-shadow($intent, $focus: true);
+  }
+
+  &[readonly] {
+    box-shadow: inset 0 0 0 1px var(--bp-border-color-#{$intent}-strong);
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    box-shadow: none;
+  }
+}
+
+@mixin pt-dark-input-intent-next($color) {
+  // no-op: roles switch per theme
+}

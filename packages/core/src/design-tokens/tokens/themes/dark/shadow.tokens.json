@@ -1,0 +1,573 @@
+{
+    "shadow": {
+        "$type": "shadow",
+        "$description": "Size ramp (2xs ring only, xs Button, sm-2xl Card elevation 1-4). Rings and dark highlights live inside the levels (H10).",
+        "2xs": {
+            "$value": [
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.2
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.2
+                    }
+                }
+            ]
+        },
+        "xs": {
+            "$value": [
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.1
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 2,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0667, 0.0784, 0.0941],
+                        "alpha": 0.2
+                    }
+                }
+            ]
+        },
+        "sm": {
+            "$value": [
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.2
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.2
+                    }
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": -1,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.2
+                    }
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.3
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.08
+                    },
+                    "inset": true
+                }
+            ]
+        },
+        "lg": {
+            "$value": [
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.2
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 4,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 6,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": -4,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.5
+                    }
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 30,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": -5,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.5
+                    }
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.3
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.08
+                    },
+                    "inset": true
+                }
+            ]
+        },
+        "xl": {
+            "$value": [
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.2
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 20,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 25,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": -5,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.3
+                    }
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 10,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 30,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": -5,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.3
+                    }
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.3
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.08
+                    },
+                    "inset": true
+                }
+            ]
+        },
+        "2xl": {
+            "$value": [
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 1,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.2
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 25,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 60,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": -12,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [0.0, 0.0, 0.0],
+                        "alpha": 0.85
+                    }
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.3
+                    },
+                    "inset": true
+                },
+                {
+                    "offsetX": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "offsetY": {
+                        "value": 0.5,
+                        "unit": "px"
+                    },
+                    "blur": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "spread": {
+                        "value": 0,
+                        "unit": "px"
+                    },
+                    "color": {
+                        "colorSpace": "srgb",
+                        "components": [1.0, 1.0, 1.0],
+                        "alpha": 0.08
+                    },
+                    "inset": true
+                }
+            ]
+        }
+    }
+}

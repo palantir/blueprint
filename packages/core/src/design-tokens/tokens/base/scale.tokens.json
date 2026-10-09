@@ -1,0 +1,283 @@
+{
+    "scale": {
+        "$type": "color",
+        "$description": "13-step scales (ADR 0004): 1 page bg, 2 container bg, 3-5 soft, 6-8 borders, 9-11 solid, 12 low-contrast text, 13 high-contrast text. `alpha` holds the translucent steps.",
+        "gray": {
+            "1": {
+                "$value": "#f6f7f9",
+                "$description": "Base layer"
+            },
+            "2": {
+                "$value": "#ffffff",
+                "$description": "Content layer"
+            },
+            "8": {
+                "$value": "#738091"
+            },
+            "9": {
+                "$value": "#5f6b7c"
+            },
+            "10": {
+                "$value": "#404854"
+            },
+            "11": {
+                "$value": "#383e47"
+            },
+            "12": {
+                "$value": "#5f6b7c"
+            },
+            "13": {
+                "$value": "#1c2127"
+            },
+            "alpha": {
+                "1": {
+                    "$value": "rgb(95 107 124 / 20%)",
+                    "$description": "Sunken layer"
+                },
+                "2": {
+                    "$value": "#ffffff",
+                    "$description": "Field background"
+                },
+                "3": {
+                    "$value": "rgb(143 153 168 / 10%)"
+                },
+                "4": {
+                    "$value": "rgb(143 153 168 / 20%)"
+                },
+                "5": {
+                    "$value": "rgb(143 153 168 / 30%)"
+                },
+                "6": {
+                    "$value": "rgb(17 20 24 / 10%)"
+                },
+                "7": {
+                    "$value": "rgb(17 20 24 / 15%)"
+                },
+                "8": {
+                    "$value": "rgb(17 20 24 / 20%)"
+                },
+                "12": {
+                    "$value": "rgb(95 107 124 / 60%)",
+                    "$description": "Disabled text"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "overlay": {
+                "$value": "#ffffff",
+                "$description": "Overlay layer (Popover, Dialog header)"
+            },
+            "backdrop": {
+                "$value": "rgb(17 20 24 / 70%)",
+                "$description": "Dimming backdrop behind a Dialog"
+            },
+            "inverse": {
+                "$value": "#404854",
+                "$description": "Inverse surface (Tooltip)"
+            },
+            "inverse-text": {
+                "$value": "#f6f7f9",
+                "$description": "Text on the inverse surface"
+            },
+            "indicator": {
+                "$value": "{scale.gray.8}"
+            },
+            "focus": {
+                "$value": "{scale.blue.focus}"
+            }
+        },
+        "blue": {
+            "8": {
+                "$value": "#2d72d2"
+            },
+            "9": {
+                "$value": "#2d72d2"
+            },
+            "10": {
+                "$value": "#215db0"
+            },
+            "11": {
+                "$value": "#184a90"
+            },
+            "12": {
+                "$value": "#215db0"
+            },
+            "13": {
+                "$value": "#184a90"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(45 114 210 / 10%)"
+                },
+                "4": {
+                    "$value": "rgb(45 114 210 / 20%)"
+                },
+                "5": {
+                    "$value": "rgb(45 114 210 / 30%)"
+                },
+                "7": {
+                    "$value": "rgb(33 93 176 / 60%)"
+                },
+                "8": {
+                    "$value": "#2d72d2"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "indicator": {
+                "$value": "{scale.blue.9}"
+            },
+            "focus": {
+                "$value": "rgb(33 93 176 / 75%)"
+            }
+        },
+        "green": {
+            "8": {
+                "$value": "#238551"
+            },
+            "9": {
+                "$value": "#238551"
+            },
+            "10": {
+                "$value": "#1c6e42"
+            },
+            "11": {
+                "$value": "#165a36"
+            },
+            "12": {
+                "$value": "#1c6e42"
+            },
+            "13": {
+                "$value": "#165a36"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(35 133 81 / 10%)"
+                },
+                "4": {
+                    "$value": "rgb(35 133 81 / 20%)"
+                },
+                "5": {
+                    "$value": "rgb(35 133 81 / 30%)"
+                },
+                "7": {
+                    "$value": "rgb(28 110 66 / 60%)"
+                },
+                "8": {
+                    "$value": "#238551"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "indicator": {
+                "$value": "{scale.green.9}"
+            },
+            "focus": {
+                "$value": "rgb(35 133 81 / 75%)"
+            }
+        },
+        "red": {
+            "8": {
+                "$value": "#cd4246"
+            },
+            "9": {
+                "$value": "#cd4246"
+            },
+            "10": {
+                "$value": "#ac2f33"
+            },
+            "11": {
+                "$value": "#8e292c"
+            },
+            "12": {
+                "$value": "#ac2f33"
+            },
+            "13": {
+                "$value": "#8e292c"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(205 66 70 / 10%)"
+                },
+                "4": {
+                    "$value": "rgb(205 66 70 / 20%)"
+                },
+                "5": {
+                    "$value": "rgb(205 66 70 / 30%)"
+                },
+                "7": {
+                    "$value": "rgb(172 47 51 / 60%)"
+                },
+                "8": {
+                    "$value": "#cd4246"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "indicator": {
+                "$value": "{scale.red.9}"
+            },
+            "focus": {
+                "$value": "rgb(205 66 70 / 75%)"
+            }
+        },
+        "orange": {
+            "8": {
+                "$value": "#c87619"
+            },
+            "9": {
+                "$value": "#fbb360"
+            },
+            "10": {
+                "$value": "#e29d4e"
+            },
+            "11": {
+                "$value": "#b27634"
+            },
+            "12": {
+                "$value": "#935610"
+            },
+            "13": {
+                "$value": "#77450d"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(200 118 25 / 10%)"
+                },
+                "4": {
+                    "$value": "rgb(200 118 25 / 20%)"
+                },
+                "5": {
+                    "$value": "rgb(200 118 25 / 30%)"
+                },
+                "7": {
+                    "$value": "rgb(147 86 16 / 60%)"
+                },
+                "8": {
+                    "$value": "#c87619"
+                }
+            },
+            "solid-text": {
+                "$value": "#111418"
+            },
+            "indicator": {
+                "$value": "{scale.orange.8}"
+            },
+            "focus": {
+                "$value": "rgb(200 118 25 / 75%)"
+            }
+        },
+        "white": {
+            "alpha": {
+                "4": {
+                    "$value": "rgb(255 255 255 / 20%)",
+                    "$description": "ProgressBar stripes (H11 placeholder)"
+                }
+            }
+        }
+    }
+}

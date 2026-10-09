@@ -1,0 +1,142 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-next";
+@import "../forms/common-next";
+
+// animating shadows requires the same number of shadows in different states:
+// [inset focus ring, outer focus ring, rest ring or inner shadow]. EditableText keeps a 1px outer
+// focus ring for every Intent (the shared input mixin uses 2px for Intents).
+@function editable-text-shadow($intent, $focus: false, $ring: null) {
+  $focus-color: var(--bp-focus-color-#{$intent});
+
+  @if $focus {
+    @return inset 0 0 0 1px $focus-color, 0 0 0 1px $focus-color,
+      inset 0 1px 1px var(--bp-border-color-neutral-strong);
+  }
+
+  @return inset 0 0 0 0 $focus-color, 0 0 0 0 $focus-color, inset 0 0 0 1px $ring;
+}
+
+.#{$ns}-editable-text {
+  cursor: text;
+  display: inline-block;
+  max-width: 100%;
+  position: relative;
+  vertical-align: top;
+  white-space: nowrap;
+
+  // input styles on the ::before
+  &::before {
+    @include position-all-next(absolute, $pt-spacing * -0.5);
+    border-radius: var(--bp-surface-border-radius);
+    content: "";
+    transition:
+      background-color $pt-transition-duration $pt-transition-ease,
+      box-shadow $pt-transition-duration $pt-transition-ease;
+  }
+
+  &:hover::before {
+    box-shadow: editable-text-shadow(neutral, $ring: var(--bp-border-color-neutral-default));
+  }
+
+  &.#{$ns}-editable-text-editing::before {
+    background-color: var(--bp-background-color-field);
+    box-shadow: editable-text-shadow(neutral, $focus: true);
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    &:not(.#{$ns}-disabled)::before {
+      border: 1px solid $pt-high-contrast-mode-border-color;
+    }
+  }
+
+  @each $intent in (primary, success, warning, danger) {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-editable-text-content,
+      .#{$ns}-editable-text-input,
+      .#{$ns}-editable-text-input::placeholder {
+        color: var(--bp-text-color-#{$intent}-subtle);
+      }
+
+      &:hover::before {
+        box-shadow: editable-text-shadow($intent, $ring: var(--bp-border-color-#{$intent}-default));
+      }
+
+      &.#{$ns}-editable-text-editing::before {
+        box-shadow: editable-text-shadow($intent, $focus: true);
+      }
+    }
+  }
+
+  &.#{$ns}-disabled::before {
+    // override intent + dark theme selectors
+    /* stylelint-disable-next-line declaration-no-important */
+    box-shadow: none !important;
+  }
+}
+
+.#{$ns}-editable-text-input,
+.#{$ns}-editable-text-content {
+  color: inherit;
+  display: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  max-width: inherit;
+  // inherit and respect parent bounds and text styles
+  min-width: inherit;
+  position: relative;
+  // prevent user resizing of textarea
+  resize: none;
+  text-transform: inherit;
+  vertical-align: top;
+}
+
+.#{$ns}-editable-text-input {
+  @include pt-input-placeholder-next;
+  background: none;
+  // reset browser input styles (we're using an input solely because you can type in it)
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  // IE11's textarea will otherwise inherit the white-space property from its direct parent
+  white-space: pre-wrap;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::-ms-clear {
+    display: none;
+  }
+}
+
+.#{$ns}-editable-text-content {
+  overflow: hidden;
+  // magical number to account for slight increase in input width for cursor bar
+  padding-right: $pt-spacing * 0.5;
+  text-overflow: ellipsis;
+  // preserve so trailing whitespace is included in scrollWidth
+  white-space: pre;
+
+  .#{$ns}-editable-text-editing > & {
+    left: 0;
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .#{$ns}-editable-text-placeholder > & {
+    color: var(--bp-text-color-neutral-subtle);
+  }
+}
+
+.#{$ns}-editable-text.#{$ns}-multiline {
+  display: block;
+
+  .#{$ns}-editable-text-content {
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+}

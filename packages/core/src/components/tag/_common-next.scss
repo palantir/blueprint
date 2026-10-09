@@ -1,0 +1,372 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:list";
+@use "sass:map";
+@import "../../common/variables-next";
+@import "../../common/variables-extended-next";
+
+// Variables
+// ---------------------------------------------------------------------------------------------------------------------
+
+$tag-height: $pt-spacing * 5 !default;
+$tag-line-height: $pt-icon-size-standard !default;
+$tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
+$tag-padding: $tag-padding-top * 3 !default;
+$tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
+
+$tag-height-large: $pt-spacing * 7.5 !default;
+$tag-line-height-large: $pt-spacing * 4.5 !default;
+$tag-padding-large: $pt-spacing * 2 !default;
+
+$tag-icon-spacing: $pt-spacing !default;
+$tag-icon-spacing-large: $pt-spacing * 2 !default;
+
+$tag-round-adjustment: $pt-spacing * 0.5 !default;
+
+// Solid Tag colors per Intent: (rest background, hover background, active background, text and icon color).
+// Neutral (no Intent class) uses the same roles with the `neutral` intent in pt-tag().
+$tag-intent-colors: () !default;
+// Soft (`minimal`) Tag colors per Intent:
+// (rest background, hover background, active background, rest text, pressed text).
+$minimal-tag-intent-colors: () !default;
+
+@each $intent in (primary, success, warning, danger) {
+  $tag-intent-colors: map.merge(
+    $tag-intent-colors,
+    (
+      $intent: (
+          var(--bp-background-color-#{$intent}-solid-rest),
+          var(--bp-background-color-#{$intent}-solid-hover),
+          var(--bp-background-color-#{$intent}-solid-active),
+          var(--bp-text-color-#{$intent}-solid),
+        ),
+    )
+  );
+  $minimal-tag-intent-colors: map.merge(
+    $minimal-tag-intent-colors,
+    (
+      $intent: (
+          var(--bp-background-color-#{$intent}-soft-rest),
+          var(--bp-background-color-#{$intent}-soft-hover),
+          var(--bp-background-color-#{$intent}-soft-active),
+          var(--bp-text-color-#{$intent}-subtle),
+          var(--bp-text-color-#{$intent}-default),
+        ),
+    )
+  );
+}
+
+// Mixins - Tag component
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin pt-tag-next() {
+  @include pt-flex-container(row, var(--bp-surface-spacing), inline);
+  align-items: center;
+  background-color: var(--bp-background-color-neutral-solid-rest);
+  border: none;
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: none;
+  color: var(--bp-text-color-neutral-solid);
+  font-size: var(--bp-typography-size-body-small);
+  line-height: calc(var(--bp-surface-spacing) * 4);
+  max-width: 100%;
+  min-height: calc(var(--bp-surface-spacing) * 5);
+  min-width: calc(var(--bp-surface-spacing) * 5);
+  padding: calc(var(--bp-surface-spacing) * 0.5) calc(var(--bp-surface-spacing) * 1.5);
+  position: relative;
+
+  // Center text for short content (e.g. single characters) only when the text
+  // element is the sole child (no icons/remove button) and the tag is not fill.
+  &:not(.#{$ns}-fill) > .#{$ns}-fill:only-child {
+    text-align: center;
+  }
+
+  &:focus {
+    // same geometry as the shared focus-outline(0) mixin, with the focus role as color
+    outline: var(--bp-focus-color-neutral) solid ($pt-spacing * 0.5);
+    outline-offset: 0;
+    -moz-outline-radius: $pt-spacing * 1.5;
+  }
+
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background: var(--bp-background-color-neutral-solid-hover);
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background: var(--bp-background-color-neutral-solid-active);
+    }
+  }
+
+  &.#{$ns}-round {
+    border-radius: calc(var(--bp-surface-spacing) * 7.5);
+    padding-left: calc(var(--bp-surface-spacing) * 2);
+    // optical adjustment for rounded tags
+    padding-right: calc(var(--bp-surface-spacing) * 2);
+  }
+
+  > #{$icon-classes} {
+    fill: var(--bp-text-color-neutral-solid);
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
+}
+
+@mixin pt-tag-large-next() {
+  @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+  font-size: var(--bp-typography-size-body-medium);
+  line-height: calc(var(--bp-surface-spacing) * 4.5);
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  min-width: calc(var(--bp-surface-spacing) * 7.5);
+  padding: calc(var(--bp-surface-spacing) * 1.5) calc(var(--bp-surface-spacing) * 2);
+
+  &.#{$ns}-round {
+    padding-left: calc(var(--bp-surface-spacing) * 2.5);
+    // optical adjustment for rounded tags
+    padding-right: calc(var(--bp-surface-spacing) * 2.5);
+  }
+}
+
+@mixin pt-tag-intent-next($background-color, $hover-color, $active-color, $text-color) {
+  background: $background-color;
+  color: $text-color;
+
+  &.#{$ns}-interactive {
+    &:hover {
+      background-color: $hover-color;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background-color: $active-color;
+    }
+  }
+
+  > #{$icon-classes} {
+    fill: $text-color;
+  }
+
+  .#{$ns}-tag-remove {
+    // H13: the × fades the Solid text color via opacity at rest
+    color: $text-color;
+    opacity: 0.7;
+
+    &:hover,
+    &:active {
+      color: $text-color;
+      opacity: 1;
+    }
+  }
+}
+
+@mixin pt-tag-minimal-next() {
+  > #{$icon-classes} {
+    fill: var(--bp-text-color-neutral-subtle);
+  }
+
+  &:not([class*="#{$ns}-intent-"]) {
+    @include pt-tag-minimal-interactive-next(
+      var(--bp-background-color-neutral-soft-hover),
+      var(--bp-text-color-neutral-default),
+      var(--bp-background-color-neutral-soft-active)
+    );
+
+    background-color: var(--bp-background-color-neutral-soft-rest);
+    color: var(--bp-text-color-neutral-default);
+
+    .#{$ns}-tag-remove {
+      color: var(--bp-text-color-neutral-subtle);
+      opacity: 1;
+
+      &:hover,
+      &:active {
+        color: var(--bp-text-color-neutral-default);
+      }
+    }
+  }
+}
+
+@mixin pt-tag-minimal-interactive-next(
+  $background-color,
+  $text-color,
+  $active-background-color: $background-color
+) {
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: $background-color;
+      color: $text-color;
+    }
+
+    &.#{$ns}-active,
+    &:active {
+      background-color: $active-background-color;
+      color: $text-color;
+    }
+  }
+}
+
+@mixin pt-tag-minimal-intent-next(
+  $background-color,
+  $hover-background-color,
+  $active-background-color,
+  $text-color,
+  $hover-active-text-color
+) {
+  background-color: $background-color;
+  color: $text-color;
+
+  > #{$icon-classes} {
+    fill: $text-color;
+  }
+
+  &.#{$ns}-interactive {
+    // Hover keeps the rest text step (12); only pressed moves to 13, as for Button.
+    &:hover {
+      background-color: $hover-background-color;
+      color: $text-color;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background-color: $active-background-color;
+      color: $hover-active-text-color;
+    }
+  }
+
+  .#{$ns}-tag-remove {
+    color: $text-color;
+    opacity: 1;
+
+    &:hover,
+    &:active {
+      color: $hover-active-text-color;
+    }
+  }
+}
+
+@mixin pt-tag-remove-next() {
+  background: none;
+  border: none;
+  // H13: the × fades the Solid text color via opacity at rest
+  color: var(--bp-text-color-neutral-solid);
+  cursor: pointer;
+  display: flex;
+  margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
+  /* stylelint-disable-next-line declaration-no-important */
+  margin-right: calc(var(--bp-surface-spacing) * -1.5) !important;
+  // top/bottom to allow for padding to enlarge click area,
+  // right to tuck remove button into padding space.
+  margin-top: calc(var(--bp-surface-spacing) * -0.5);
+  opacity: 0.7;
+  padding: calc(var(--bp-surface-spacing) * 0.5);
+  padding-left: 0;
+
+  &:hover {
+    background: none;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .#{$ns}-icon:first-child {
+    color: inherit;
+  }
+
+  &:hover,
+  &:active {
+    color: var(--bp-text-color-neutral-solid);
+    opacity: 1;
+  }
+
+  // CSS API support
+  &:empty::before {
+    @include pt-icon-next;
+    content: map.get($blueprint-icon-codepoints, "small-cross");
+  }
+
+  .#{$ns}-large & {
+    /* stylelint-disable-next-line declaration-no-important */
+    margin-right: calc(var(--bp-surface-spacing) * -2) !important;
+    padding: 0 var(--bp-surface-spacing) 0 0;
+
+    &:empty::before {
+      // font-family name "blueprint-icons-20" requires a compile-time value for Sass string interpolation
+      @include pt-icon-sized-next(calc(var(--bp-surface-spacing) * 5), 20);
+    }
+  }
+}
+
+// Mixins - CompoundTag component
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin compound-tag-colors-next(
+  /* each list is a (default, hover, active) tuple of background colors */ $left-colors,
+  $right-colors
+) {
+  // override default tag background styles: this is important for minimal tags with opacity values
+  // which we want to define _absolutely_ in our design system and not by stacking opacities on top of each other.
+  background: none;
+
+  .#{$ns}-compound-tag-left {
+    background-color: list.nth($left-colors, 1);
+  }
+
+  .#{$ns}-compound-tag-right {
+    background-color: list.nth($right-colors, 1);
+  }
+
+  &.#{$ns}-interactive {
+    // The halves carry the color in every state; a tinted root would stack under them.
+    &:hover,
+    &:active,
+    &.#{$ns}-active {
+      background: none;
+    }
+
+    &:hover {
+      .#{$ns}-compound-tag-left {
+        background-color: list.nth($left-colors, 2);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: list.nth($right-colors, 2);
+      }
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      .#{$ns}-compound-tag-left {
+        background-color: list.nth($left-colors, 3);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: list.nth($right-colors, 3);
+      }
+    }
+  }
+}
+
+// Soft (`minimal`) CompoundTag: the right half uses the soft roles, the left half is one state ahead
+// (rest → soft-hover, hover → soft-active, active → soft-active), mirroring the solid CompoundTag (Known issues #22).
+@mixin minimal-compound-tag-colors-next($intent) {
+  $left-colors: (
+    var(--bp-background-color-#{$intent}-soft-hover),
+    var(--bp-background-color-#{$intent}-soft-active),
+    var(--bp-background-color-#{$intent}-soft-active)
+  );
+  $right-colors: (
+    var(--bp-background-color-#{$intent}-soft-rest),
+    var(--bp-background-color-#{$intent}-soft-hover),
+    var(--bp-background-color-#{$intent}-soft-active)
+  );
+
+  @include compound-tag-colors-next($left-colors, $right-colors);
+}

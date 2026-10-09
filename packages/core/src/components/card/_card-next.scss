@@ -1,0 +1,84 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+/* stylelint-disable alpha-value-notation */
+
+@import "./card-variables-next";
+
+.#{$ns}-card {
+  background-color: var(--bp-background-color-content);
+  border-radius: var(--bp-surface-border-radius);
+  box-shadow: var(--bp-shadow-2xs);
+  padding: calc(var(--bp-surface-spacing) * 5);
+  transition:
+    transform calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default),
+    box-shadow calc(var(--bp-emphasis-transition-duration) * 2) var(--bp-emphasis-ease-default);
+
+  // High contrast mode hides box-shadows, so we need to use a border instead
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+    box-shadow: none;
+  }
+}
+
+.#{$ns}-elevation-0 {
+  box-shadow: var(--bp-shadow-2xs);
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-elevation-1 {
+  box-shadow: var(--bp-shadow-sm);
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-elevation-2 {
+  box-shadow: var(--bp-shadow-lg);
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-elevation-3 {
+  box-shadow: var(--bp-shadow-xl);
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-elevation-4 {
+  box-shadow: var(--bp-shadow-2xl);
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid buttonborder;
+  }
+}
+
+.#{$ns}-card.#{$ns}-compact {
+  padding: calc(var(--bp-surface-spacing) * 4);
+}
+
+.#{$ns}-card.#{$ns}-interactive {
+  &:hover {
+    box-shadow: var(--bp-shadow-xl);
+    cursor: pointer;
+  }
+
+  &.#{$ns}-selected {
+    box-shadow:
+      0 0 0 3px var(--bp-background-color-primary-soft-hover),
+      0 0 0 1px var(--bp-focus-color-primary);
+  }
+
+  &:active {
+    box-shadow: var(--bp-shadow-sm);
+    transition-duration: 0;
+  }
+}

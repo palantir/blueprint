@@ -10,6 +10,7 @@ import { BlueprintProvider, Classes, Colors, FocusStyleManager } from "@blueprin
 import { Icons } from "../packages/icons/src/iconLoader";
 
 import { modes } from "./modes";
+import { withCoreStyles } from "./tokens/coreStyles";
 import { withTokens } from "./tokens/preview";
 
 FocusStyleManager.onlyShowFocusOnTabs();
@@ -19,8 +20,7 @@ Icons.setLoaderOptions({ loader: "all" });
 // optionally, load the icons up-front so that future usage does not trigger a network request
 await Icons.loadAll();
 
-// Import Blueprint compiled CSS
-import "@blueprintjs/core/lib/css/blueprint.css";
+// Import Blueprint compiled CSS (core is loaded by withCoreStyles, which switches between default and next)
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";
 import "@blueprintjs/labs/lib/css/blueprint-labs.css";
 import "@blueprintjs/select/lib/css/blueprint-select.css";
@@ -48,6 +48,7 @@ const preview: Preview = {
     },
 
     decorators: [
+        withCoreStyles,
         withTokens,
         withThemeByClassName({
             defaultTheme: "light",
@@ -71,9 +72,25 @@ const preview: Preview = {
         },
     ],
 
+    globalTypes: {
+        styles: {
+            description: "Blueprint core stylesheet",
+            toolbar: {
+                dynamicTitle: true,
+                icon: "paintbrush",
+                items: [
+                    { title: "Default styles", value: "default" },
+                    { title: "Next styles", value: "next" },
+                ],
+                title: "Styles",
+            },
+        },
+    },
+
     initialGlobals: {
+        styles: "default",
         theme: "light",
-        tokenOverrides: {},
+        themeColors: {},
     },
 };
 

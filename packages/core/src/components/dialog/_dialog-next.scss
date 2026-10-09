@@ -1,0 +1,106 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:math";
+@import "@blueprintjs/icons/lib/scss/variables";
+@import "../../common/mixins-next";
+@import "../../common/react-transition";
+@import "../../common/variables-next";
+
+$dialog-background-color: var(--bp-background-color-base) !default;
+$dialog-border-radius: var(--bp-surface-border-radius) !default;
+$dialog-margin: ($pt-spacing * 8) 0 !default;
+$dialog-padding: $pt-spacing * 4 !default;
+
+.#{$ns}-dialog-container {
+  $dialog-transition-props: (
+    opacity: (
+      0,
+      1,
+    ),
+    transform: (
+      scale(0.5),
+      scale(1),
+    ),
+  );
+
+  @include react-transition(
+    "#{$ns}-overlay",
+    $dialog-transition-props,
+    $duration: $pt-transition-duration * 3,
+    $easing: $pt-transition-ease-bounce,
+    $before: "&",
+    $after: "> .#{$ns}-dialog"
+  );
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100%;
+  pointer-events: none;
+  user-select: none;
+  width: 100%;
+}
+
+.#{$ns}-dialog {
+  background: $dialog-background-color;
+  border-radius: $dialog-border-radius;
+  box-shadow: var(--bp-shadow-xl);
+  color: var(--bp-text-color-neutral-default);
+  display: flex;
+  flex-direction: column;
+  margin: $dialog-margin;
+  pointer-events: all;
+  user-select: text;
+  width: $pt-spacing * 125;
+
+  &:focus {
+    outline: 0;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
+}
+
+$dialog-header-padding: $pt-spacing;
+
+.#{$ns}-dialog-header {
+  align-items: center;
+  background: var(--bp-background-color-overlay);
+  border-radius: $dialog-border-radius $dialog-border-radius 0 0;
+  box-shadow: 0 1px 0 var(--bp-border-color-neutral-default);
+  display: flex;
+  flex: 0 0 auto;
+  min-height: $pt-button-height + $dialog-header-padding * 2;
+  padding: $dialog-header-padding;
+  padding-left: $dialog-padding;
+  z-index: 0;
+
+  .#{$ns}-icon-large,
+  .#{$ns}-icon {
+    flex: 0 0 auto;
+    margin-left: -$pt-spacing;
+    margin-right: $dialog-padding * 0.5;
+
+    // only apply light color to icons that are not intent-specific
+    &:not([class*="#{$ns}-intent"]) {
+      color: var(--bp-text-color-neutral-subtle);
+    }
+  }
+
+  .#{$ns}-heading {
+    @include overflow-ellipsis-next;
+    flex: 1 1 auto;
+    font-size: 14px;
+    line-height: inherit;
+    margin: 0;
+
+    &:last-child {
+      margin-right: $dialog-padding;
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+  }
+}

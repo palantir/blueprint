@@ -1,0 +1,140 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+/* stylelint-disable alpha-value-notation */
+
+@import "../../common/variables-next";
+@import "../button/common-next";
+@import "../../common/mixins-next";
+
+$file-input-button-width: calc(var(--bp-surface-spacing) * 17.5) !default;
+$file-input-button-width-large: calc(var(--bp-surface-spacing) * 21.25) !default;
+$file-input-button-width-small: calc(var(--bp-surface-spacing) * 13.75) !default;
+$file-input-button-padding: ($pt-input-height - $pt-button-height-small) * 0.5 !default;
+$file-input-button-padding-large: ($pt-input-height-large - $pt-button-height) * 0.5 !default;
+$file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-smaller) * 0.5 !default;
+
+.#{$ns}-file-input {
+  cursor: pointer;
+  display: inline-block;
+  height: calc(var(--bp-surface-spacing) * 7.5);
+  position: relative;
+
+  input {
+    margin: 0;
+    min-width: calc(var(--bp-surface-spacing) * 50);
+    opacity: 0;
+
+    // unlike other form controls that directly style native elements,
+    // pt-file-input wraps and hides the native element for better control over
+    // visual styles. to disable, we need to disable the hidden child input, not
+    // the surrounding wrapper. @see https://github.com/palantir/blueprint/issues/689
+    // for gory details.
+    &:disabled + .#{$ns}-file-upload-input,
+    &.#{$ns}-disabled + .#{$ns}-file-upload-input {
+      @include pt-input-disabled-next;
+
+      &::after {
+        @include pt-button-disabled-next;
+      }
+    }
+
+    // borrows focus styles from the pt-input mixin (see _common.scss)
+    &:focus + .#{$ns}-file-upload-input {
+      box-shadow: input-role-shadow(neutral, $focus: true);
+    }
+  }
+
+  &.#{$ns}-file-input-has-selection {
+    .#{$ns}-file-upload-input {
+      color: var(--bp-text-color-neutral-default);
+    }
+  }
+
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+
+  &.#{$ns}-large,
+  .#{$ns}-large & {
+    height: calc(var(--bp-surface-spacing) * 10);
+  }
+
+  &.#{$ns}-small,
+  .#{$ns}-small & {
+    height: calc(var(--bp-surface-spacing) * 6);
+  }
+
+  .#{$ns}-file-upload-input-custom-text::after {
+    content: attr(#{$ns}-button-text);
+  }
+}
+
+.#{$ns}-file-upload-input {
+  @include pt-input-next;
+  @include overflow-ellipsis-next;
+  // placeholder-like text until a file is selected
+  color: var(--bp-text-color-neutral-subtle);
+  left: 0;
+  padding-right: calc($file-input-button-width + calc(var(--bp-surface-spacing) * 2));
+  position: absolute;
+  right: 0;
+  top: 0;
+  user-select: none;
+
+  &::after {
+    @include pt-button-default-colors-next;
+    @include pt-button-height-next(calc(var(--bp-surface-spacing) * 6));
+    @include overflow-ellipsis-next;
+    border-radius: var(--bp-surface-border-radius);
+    content: "Browse";
+    line-height: calc(var(--bp-surface-spacing) * 6);
+    margin: calc(var(--bp-surface-spacing) * 0.75);
+    position: absolute;
+    right: 0;
+    text-align: center;
+    top: 0;
+    width: $file-input-button-width;
+  }
+
+  &:hover::after {
+    @include pt-button-hover-next;
+  }
+
+  &:active::after {
+    @include pt-button-active-next;
+  }
+
+  // N.B. disabled state is handled above, inside .#{$ns}-file-input block
+
+  .#{$ns}-large & {
+    @include pt-input-large-next;
+    padding-right: calc($file-input-button-width-large + calc(var(--bp-surface-spacing) * 2));
+
+    &::after {
+      @include pt-button-height-next(calc(var(--bp-surface-spacing) * 7.5));
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+      margin: calc(var(--bp-surface-spacing) * 1.25);
+      width: $file-input-button-width-large;
+    }
+  }
+
+  .#{$ns}-small & {
+    @include pt-input-small-next;
+    padding-right: calc($file-input-button-width-small + calc(var(--bp-surface-spacing) * 2));
+
+    &::after {
+      @include pt-button-height-next(calc(var(--bp-surface-spacing) * 5));
+      line-height: calc(var(--bp-surface-spacing) * 5);
+      margin: calc(var(--bp-surface-spacing) * 0.5);
+      width: $file-input-button-width-small;
+    }
+  }
+}
+
+// hack to force the button shadow to display since
+// it doesn't render correct via the `pt-button` mixin
+/* stylelint-disable-next-line no-duplicate-selectors */
+.#{$ns}-file-upload-input::after {
+  box-shadow: var(--bp-shadow-xs);
+}

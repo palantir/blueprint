@@ -1,0 +1,152 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+/* stylelint-disable alpha-value-notation */
+
+@import "../../common/variables-next";
+@import "../forms/common-next";
+@import "../tag/common-next";
+
+$tag-input-padding: $pt-spacing !default;
+
+$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
+$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;
+
+.#{$ns}-tag-input {
+  @include pt-flex-container(row, $fill: ".#{$ns}-tag-input-values");
+  align-items: flex-start;
+  cursor: text;
+  height: auto;
+  line-height: inherit;
+  min-height: calc(var(--bp-surface-spacing) * 7.5);
+  padding-left: calc(var(--bp-surface-spacing) * 1.5);
+  padding-right: 0;
+
+  .#{$ns}-tag-input-icon {
+    color: var(--bp-text-color-neutral-subtle);
+    margin-left: calc(var(--bp-surface-spacing) * 0.75);
+    margin-right: calc(var(--bp-surface-spacing) * 1.75);
+    // margins to center icon in one-line input
+    margin-top: calc(var(--bp-surface-spacing) * 1.75);
+  }
+
+  .#{$ns}-tag-input-values {
+    @include pt-flex-container(row, var(--bp-surface-spacing));
+    align-items: center;
+    // fill vertical height
+    align-self: stretch;
+    flex-wrap: wrap;
+    margin-right: var(--bp-surface-spacing);
+    margin-top: var(--bp-surface-spacing);
+    // allow tags to ellipse and not overflow the container
+    min-width: 0;
+    position: relative;
+
+    // use the larger, conventional input padding when there are no tags and no left icon present.
+    // see: https://github.com/palantir/blueprint/issues/2872
+    &:first-child {
+      .#{$ns}-tag ~ .#{$ns}-input-ghost {
+        padding-left: 0;
+      }
+
+      .#{$ns}-input-ghost {
+        // some padding-left is already applied on the root component, so we should subtract that
+        padding-left: var(--bp-surface-spacing);
+      }
+    }
+
+    > * {
+      margin-bottom: var(--bp-surface-spacing);
+    }
+  }
+
+  .#{$ns}-tag {
+    // NOTE: in order to wrap long words, you must set explicit width on TagInput,
+    // or use .#{$ns}-fill CSS class modifier.
+    overflow-wrap: break-word;
+
+    &.#{$ns}-active {
+      // geometry of the shared focus-outline mixin, with the focus role
+      outline: var(--bp-focus-color-neutral) solid ($pt-spacing * 0.5);
+      outline-offset: 0;
+      -moz-outline-radius: $pt-spacing * 1.5;
+    }
+  }
+
+  .#{$ns}-input-ghost {
+    // input fills remaining line
+    flex: 1 1 auto;
+    line-height: calc(var(--bp-surface-spacing) * 5);
+    // essentially a min-width, cuz flex allows it to grow or shrink:
+    width: calc(var(--bp-surface-spacing) * 20);
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .#{$ns}-button,
+  .#{$ns}-spinner {
+    margin: calc(var(--bp-surface-spacing) * 0.75);
+    margin-left: 0;
+  }
+
+  .#{$ns}-button {
+    @include pt-button-height-small-next;
+  }
+
+  &.#{$ns}-large {
+    @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2.5));
+    height: auto;
+    min-height: calc(var(--bp-surface-spacing) * 10);
+
+    .#{$ns}-tag-input-icon {
+      margin-left: calc(var(--bp-surface-spacing) * 1.5);
+      margin-top: calc(var(--bp-surface-spacing) * 2.5);
+    }
+
+    .#{$ns}-input-ghost {
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+    }
+
+    .#{$ns}-button {
+      @include pt-button-height-default-next;
+      margin: calc(var(--bp-surface-spacing) * 1.25);
+      margin-left: 0;
+    }
+
+    .#{$ns}-spinner {
+      margin: calc(var(--bp-surface-spacing) * 2);
+      margin-left: 0;
+    }
+  }
+
+  &.#{$ns}-active {
+    background-color: var(--bp-background-color-field);
+    box-shadow: input-role-shadow(neutral, $focus: true);
+
+    @each $intent in $input-intents {
+      &.#{$ns}-intent-#{$intent} {
+        box-shadow: input-role-shadow($intent, $focus: true);
+      }
+    }
+  }
+}
+
+// TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
+.#{$ns}-input-ghost {
+  @include pt-input-placeholder-next;
+  background: none;
+
+  // reset browser input styles (we're using an input solely because you can type in it)
+  border: none;
+  box-shadow: none;
+  padding: 0;
+
+  &:focus {
+    // remove focus state too
+    /* stylelint-disable-next-line declaration-no-important */
+    outline: none !important;
+  }
+}

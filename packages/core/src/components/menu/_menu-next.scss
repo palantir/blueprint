@@ -1,0 +1,71 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-next";
+@import "@blueprintjs/icons/lib/scss/variables";
+@import "../../common/mixins-next";
+
+@import "./common-next";
+@import "./submenu-next";
+
+.#{$ns}-menu {
+  background: var(--bp-background-color-overlay);
+  border-radius: var(--bp-surface-border-radius);
+  color: var(--bp-text-color-neutral-default);
+  list-style: none;
+  margin: 0;
+  min-width: $menu-min-width;
+  padding: $pt-spacing;
+  text-align: left;
+}
+
+.#{$ns}-menu-divider {
+  @include menu-divider-next;
+}
+
+.#{$ns}-menu-item {
+  @include menu-item-next;
+
+  @each $intent in (primary, success, warning, danger) {
+    @include menu-item-intent-next($intent);
+  }
+
+  &::before {
+    // support pt-icon-* classes directly on this element
+    @include pt-icon-next;
+    margin-right: $menu-item-padding;
+  }
+
+  .#{$ns}-large & {
+    @include menu-item-large-next;
+
+    &::before {
+      @include pt-icon-next($pt-icon-size-large);
+      margin-right: $menu-item-padding-large;
+    }
+  }
+
+  .#{$ns}-small & {
+    @include menu-item-small-next;
+  }
+}
+
+button.#{$ns}-menu-item {
+  background: none;
+  border: none;
+  text-align: left;
+  width: 100%;
+}
+
+.#{$ns}-menu-header {
+  @include menu-header-next($heading-selector: "> h6");
+
+  .#{$ns}-large & {
+    @include menu-header-large-next($heading-selector: "> h6");
+  }
+}
+
+// #402 support menu inside label
+.#{$ns}-label .#{$ns}-menu {
+  margin-top: $pt-spacing;
+}

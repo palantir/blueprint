@@ -1,0 +1,21 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "./common-next";
+@import "../menu/common-next";
+
+.#{$ns}-submenu {
+  .#{$ns}-popover-target {
+    display: block;
+  }
+
+  &.#{$ns}-popover {
+    box-shadow: none;
+    // horizontal padding leaves some space from parent menu item, and extends mouse zone
+    padding: 0 $pt-spacing;
+
+    > .#{$ns}-popover-content {
+      box-shadow: var(--bp-shadow-xl);
+    }
+  }
+}

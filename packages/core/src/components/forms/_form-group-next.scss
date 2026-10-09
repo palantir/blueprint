@@ -1,0 +1,73 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-next";
+@import "../../common/mixins-next";
+@import "common-next";
+
+.#{$ns}-form-group {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 calc(var(--bp-surface-spacing) * 4);
+
+  label.#{$ns}-label {
+    margin-bottom: var(--bp-surface-spacing);
+  }
+
+  .#{$ns}-control {
+    margin-top: calc(var(--bp-surface-spacing) * 2);
+  }
+
+  .#{$ns}-form-group-sub-label,
+  .#{$ns}-form-helper-text {
+    color: var(--bp-text-color-neutral-subtle);
+    font-size: var(--bp-typography-size-body-small);
+  }
+
+  .#{$ns}-form-group-sub-label {
+    margin-bottom: var(--bp-surface-spacing);
+  }
+
+  .#{$ns}-form-helper-text {
+    margin-top: var(--bp-surface-spacing);
+  }
+
+  /* stylelint-disable-next-line order/declaration-block-order */
+  @each $intent in (primary, success, warning, danger) {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-form-helper-text {
+        color: var(--bp-text-color-#{$intent}-subtle);
+      }
+    }
+  }
+
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+
+  &.#{$ns}-inline {
+    align-items: flex-start;
+    flex-direction: row;
+
+    &.#{$ns}-large label.#{$ns}-label {
+      line-height: calc(var(--bp-surface-spacing) * 10);
+      margin: 0 calc(var(--bp-surface-spacing) * 3) 0 0;
+    }
+
+    label.#{$ns}-label {
+      line-height: calc(var(--bp-surface-spacing) * 7.5);
+      margin: 0 calc(var(--bp-surface-spacing) * 3) 0 0;
+    }
+  }
+
+  &.#{$ns}-disabled {
+    .#{$ns}-label,
+    .#{$ns}-text-muted,
+    .#{$ns}-form-group-sub-label,
+    .#{$ns}-form-helper-text {
+      // disabled state always overrides over styles
+      /* stylelint-disable-next-line declaration-no-important */
+      color: var(--bp-text-color-disabled) !important;
+    }
+  }
+}

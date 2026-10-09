@@ -142,18 +142,22 @@ type BuildPlan = {
 /** CSS `@supports` query for relative color syntax, used for progressive enhancement. */
 const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l c h))";
 
+/** Tokens that are emitted as `var()` references and repeated in every theme's selector. */
+const SEMANTIC_TOKENS_DIR = "src/design-tokens/tokens/semantic/";
+
 /** All theme configurations to build. Light is the base; dark overrides via `include`. */
 const THEMES: readonly ThemeConfig[] = [
     {
         name: "light",
-        sources: ["src/design-tokens/tokens/base/**/*.tokens.json"],
+        sources: ["src/design-tokens/tokens/base/**/*.tokens.json", `${SEMANTIC_TOKENS_DIR}**/*.tokens.json`],
         selector: ":root",
         destination: "tokens.css",
     },
     {
         name: "dark",
         include: ["src/design-tokens/tokens/base/**/*.tokens.json"],
-        sources: ["src/design-tokens/tokens/themes/dark/**/*.tokens.json"],
+        // Semantic tokens are repeated so their var() references resolve against the dark scales.
+        sources: ["src/design-tokens/tokens/themes/dark/**/*.tokens.json", `${SEMANTIC_TOKENS_DIR}**/*.tokens.json`],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
@@ -610,11 +614,34 @@ const makeFallbackMap = (
 };
 
 /**
+ * Semantic tokens (accent alias and roles) keep their reference as `var()` so that overriding a
+ * scale step at runtime (a generated accent, the dark theme) reaches every role that points at it.
+ */
+const getSemanticReferenceAsCss = (token: TransformedToken): string | undefined => {
+    // Normalize Windows separators; filePath comes from the same relative globs as SEMANTIC_TOKENS_DIR.
+    if (!token.filePath.replace(/\\/g, "/").includes(SEMANTIC_TOKENS_DIR)) return undefined;
+    const original = token.original ?? {};
+    const tokenRef = parseTokenReference(original.$value ?? original.value);
+    if (tokenRef === undefined) return undefined;
+    return `var(--bp-${tokenRef.slice(1, -1).split(".").join("-")})`;
+};
+
+/**
  * Classifies a token for progressive enhancement output. Tokens with a fallback get
  * the hex value as `fallbackValue` and the relative color syntax as `modernValue`.
  */
 const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
     const tokenPath = token.path.join(".");
+    const semanticReference = getSemanticReferenceAsCss(token);
+    if (semanticReference !== undefined) {
+        return {
+            name: token.name,
+            fallbackValue: semanticReference,
+            modernValue: undefined,
+            description: token.$description,
+        };
+    }
+
     const currentValue = getTokenValueAsString(token);
     const fallback = fallbackMap.get(tokenPath);
 

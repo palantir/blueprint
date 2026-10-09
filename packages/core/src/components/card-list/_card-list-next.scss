@@ -1,0 +1,74 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../card/card-variables-next";
+
+.#{$ns}-card-list {
+  overflow: auto;
+  padding: 0;
+  width: 100%;
+
+  > .#{$ns}-card {
+    align-items: center;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    min-height: $card-list-item-min-height;
+    padding: $card-list-item-padding;
+
+    &.#{$ns}-interactive:hover,
+    &.#{$ns}-interactive:active {
+      background-color: var(--bp-background-color-neutral-soft-rest);
+      box-shadow: none;
+    }
+
+    &.#{$ns}-interactive:active {
+      background-color: var(--bp-background-color-neutral-soft-active);
+    }
+
+    &.#{$ns}-selected {
+      background-color: var(--bp-background-color-neutral-soft-hover);
+      box-shadow: none;
+    }
+
+    &:not(:last-child) {
+      border-bottom: $card-list-border-width solid var(--bp-border-color-neutral-subtle);
+    }
+  }
+
+  &.#{$ns}-compact {
+    padding: 0;
+
+    > .#{$ns}-card {
+      min-height: $card-list-item-min-height-compact;
+      padding: $card-list-item-padding-compact;
+    }
+  }
+
+  .#{$ns}-dark & {
+    // card border is inset in dark theme, so we need to add padding to prevent items from going over it
+    padding: 1px;
+  }
+
+  &:not(.#{$ns}-card-list-bordered) {
+    border-radius: 0;
+    box-shadow: none;
+
+    .#{$ns}-dark & {
+      margin: 1px;
+      width: calc(100% - ($pt-spacing * 0.5));
+    }
+  }
+
+  &.#{$ns}-card-list-bordered {
+    > .#{$ns}-card:first-child {
+      border-top-left-radius: var(--bp-surface-border-radius);
+      border-top-right-radius: var(--bp-surface-border-radius);
+    }
+
+    > .#{$ns}-card:last-child {
+      border-bottom-left-radius: var(--bp-surface-border-radius);
+      border-bottom-right-radius: var(--bp-surface-border-radius);
+    }
+  }
+}

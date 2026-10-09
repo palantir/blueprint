@@ -1,0 +1,493 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+@import "../../common/mixins-next";
+@import "../../common/variables-next";
+@import "../button/common-next";
+
+// Unchecked indicator: a field (like an input) with the Neutral strong ring; hover and active
+// layer the Neutral soft roles over the field (Transparent rule, ADR 0002).
+$control-box-shadow: inset 0 0 0 $button-border-width var(--bp-border-color-neutral-strong) !default;
+
+$control-indicator-size: $pt-icon-size-standard !default;
+$control-indicator-size-large: $pt-icon-size-large !default;
+$control-indicator-spacing: $pt-spacing * 2 !default;
+
+// Checked (and indeterminate) indicator: Primary Solid roles with the Solid text color for the
+// tick, minus and radio dot (drawn in currentcolor).
+@mixin control-checked-colors-next($selector: ":checked") {
+  input#{$selector} ~ .#{$ns}-control-indicator {
+    background-color: var(--bp-background-color-primary-solid-rest);
+    background-image: none;
+    box-shadow: var(--bp-shadow-xs);
+    color: var(--bp-text-color-primary-solid);
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      background-color: $pt-high-contrast-mode-active-background-color;
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-active-background-color;
+    }
+  }
+
+  &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+    background-color: var(--bp-background-color-primary-solid-hover);
+    background-image: none;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: $pt-high-contrast-mode-active-background-color;
+    }
+  }
+
+  input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+    background: var(--bp-background-color-primary-solid-active);
+    box-shadow: var(--bp-shadow-xs);
+  }
+
+  input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+    background: var(--bp-background-color-disabled);
+    box-shadow: none;
+    color: var(--bp-text-color-disabled);
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      background-color: $pt-high-contrast-mode-disabled-border-color;
+      border-color: $pt-high-contrast-mode-disabled-border-color;
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    .#{$ns}-dark & input#{$selector} ~ .#{$ns}-control-indicator {
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-border-color;
+    }
+  }
+}
+
+@mixin indicator-position-next($size) {
+  $padding: $size + $control-indicator-spacing;
+
+  &:not(.#{$ns}-align-right) {
+    padding-inline-start: $padding;
+
+    .#{$ns}-control-indicator {
+      margin-inline-start: -$padding;
+    }
+  }
+
+  &.#{$ns}-align-right {
+    padding-right: $padding;
+
+    .#{$ns}-control-indicator {
+      margin-right: -$padding;
+    }
+  }
+
+  // special handling for left-aligned indicators in RTL
+  [dir="rtl"] &.#{$ns}-align-left {
+    padding-inline-start: 0;
+    padding-left: $padding;
+
+    .#{$ns}-control-indicator {
+      margin-left: -$padding;
+    }
+  }
+}
+
+.#{$ns}-control {
+  @include control-checked-colors-next;
+  @include indicator-position-next($control-indicator-size);
+  color: var(--bp-text-color-neutral-default);
+  cursor: pointer;
+
+  display: block;
+  margin-bottom: $pt-spacing * 2;
+  position: relative;
+  text-transform: none;
+
+  &.#{$ns}-disabled {
+    color: var(--bp-text-color-disabled);
+    cursor: not-allowed;
+  }
+
+  &.#{$ns}-inline {
+    display: inline-block;
+    margin-inline-end: $pt-spacing * 5;
+  }
+
+  .#{$ns}-control-input {
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    z-index: -1; // don't let it intercept clicks
+  }
+
+  .#{$ns}-control-indicator {
+    background-clip: padding-box;
+    background-color: var(--bp-background-color-field);
+    border: none;
+    box-shadow: $control-box-shadow;
+    cursor: pointer;
+    display: inline-block;
+    // font-size is used to size indicator for all control types,
+    // to reduce property changes needed across types and sizes (large).
+    font-size: $control-indicator-size;
+    height: 1em;
+    margin-inline-end: $control-indicator-spacing;
+    margin-top: $pt-spacing * -0.75;
+    position: relative;
+    user-select: none;
+    vertical-align: middle;
+    width: 1em;
+
+    &::before {
+      content: "";
+      display: block;
+      height: 1em;
+      width: 1em;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-border-color;
+
+      &::before {
+        // Because we're using a border in high contrast mode, we need to adjust the margins
+        // to compensate for the space the border takes up
+        margin-left: -1px;
+        margin-top: -1px;
+      }
+    }
+  }
+
+  // soft roles are translucent, so they are layered over the field background
+  &:hover .#{$ns}-control-indicator {
+    background-image: linear-gradient(var(--bp-background-color-neutral-soft-rest) 0 0);
+  }
+
+  input:not(:disabled):active ~ .#{$ns}-control-indicator {
+    background-image: linear-gradient(var(--bp-background-color-neutral-soft-active) 0 0);
+    box-shadow: $control-box-shadow;
+  }
+
+  input:disabled ~ .#{$ns}-control-indicator {
+    background: var(--bp-background-color-disabled);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  input:focus ~ .#{$ns}-control-indicator {
+    // geometry of the shared focus-outline mixin, with the focus role
+    outline: var(--bp-focus-color-neutral) solid ($pt-spacing * 0.5);
+    outline-offset: $pt-spacing * 0.5;
+    -moz-outline-radius: $pt-spacing * 1.5;
+  }
+
+  // right-aligned indicator is glued to the right side of the container
+  &.#{$ns}-align-right .#{$ns}-control-indicator {
+    float: right;
+    margin-left: $control-indicator-spacing;
+    margin-top: 1px;
+  }
+
+  [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+    float: left;
+    margin-top: 1px;
+  }
+
+  &.#{$ns}-large {
+    @include indicator-position-next($control-indicator-size-large);
+    // larger text
+    font-size: $pt-font-size-large;
+
+    .#{$ns}-control-indicator {
+      // em-based sizing
+      font-size: $control-indicator-size-large;
+    }
+
+    &.#{$ns}-align-right .#{$ns}-control-indicator {
+      margin-top: 0;
+    }
+
+    [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+      margin-top: 0;
+    }
+  }
+
+  &.#{$ns}-checkbox {
+    @mixin indicator-inline-icon-next($icon, $fill-color: null) {
+      &::before {
+        // the SVG image content is inlined into the CSS, so use this sparingly.
+        @if $fill-color == null {
+          // the icon is a mask filled with currentcolor (the indicator's text role)
+          background-color: currentcolor;
+          // (only the alpha of the SVG matters; the selector map is required by svg-icon)
+          mask-image: svg-icon(
+            "16px/#{$icon}.svg",
+            (
+              path: (
+                  fill-opacity: 1,
+                ),
+            )
+          );
+        } @else {
+          // embed SVG icon image as backgroud-image (forced-colors mode)
+          background-image: svg-icon(
+            "16px/#{$icon}.svg",
+            (
+              path: (
+                  fill: $fill-color,
+                ),
+            )
+          );
+        }
+      }
+    }
+
+    // make :indeterminate look like :checked _for Checkbox only_
+    @include control-checked-colors-next(":indeterminate");
+
+    .#{$ns}-control-indicator {
+      border-radius: var(--bp-surface-border-radius);
+    }
+
+    input:checked ~ .#{$ns}-control-indicator {
+      @include indicator-inline-icon-next("small-tick");
+    }
+
+    input:indeterminate ~ .#{$ns}-control-indicator {
+      @include indicator-inline-icon-next("small-minus");
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
+        @include indicator-inline-icon-next("small-tick", $black);
+      }
+
+      input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator {
+        @include indicator-inline-icon-next("small-minus", $black);
+      }
+
+      input:disabled ~ .#{$ns}-control-indicator {
+        border-color: $pt-high-contrast-mode-disabled-border-color;
+      }
+    }
+  }
+
+  &.#{$ns}-radio {
+    .#{$ns}-control-indicator {
+      border-radius: 50%;
+    }
+
+    input:checked ~ .#{$ns}-control-indicator::before {
+      background-image: radial-gradient(currentcolor, currentcolor 28%, transparent 32%);
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        background: $pt-high-contrast-mode-active-background-color;
+        // Subtract border on either end, and then an extra 2px for space between the border
+        height: $control-indicator-size - $pt-spacing;
+        margin-left: 1px;
+        margin-top: 1px;
+        width: $control-indicator-size - $pt-spacing;
+      }
+    }
+
+    input:checked:disabled ~ .#{$ns}-control-indicator::before {
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        background: $pt-high-contrast-mode-disabled-background-color;
+      }
+    }
+
+    input:focus ~ .#{$ns}-control-indicator {
+      -moz-outline-radius: $control-indicator-size;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:disabled ~ .#{$ns}-control-indicator {
+        border-color: $pt-high-contrast-mode-disabled-border-color;
+      }
+    }
+  }
+
+  /* stylelint-disable-next-line order/order */
+  $switch-width: 1.75em !default;
+  $switch-indicator-margin: $pt-spacing * 0.5 !default;
+  $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
+
+  $switch-indicator-child-height: 1em;
+  $switch-indicator-child-outside-margin: 0.5em;
+  $switch-indicator-child-inside-margin: 1.2em;
+
+  $switch-indicator-text-font-size: 0.7em;
+
+  // Switch track: Neutral Soft roles unchecked, Primary Solid roles checked. The knob is white in
+  // both themes, i.e. the Solid text color (content drawn on a solid fill).
+  $switch-knob-color: var(--bp-text-color-neutral-solid);
+  $switch-indicator-box-shadow: 0 0 0 $button-border-width var(--bp-border-color-neutral-strong) !default;
+
+  &.#{$ns}-switch {
+    @mixin indicator-colors-next(
+      $selector,
+      $text-color,
+      $background-color,
+      $hover-color,
+      $active-color,
+      $disabled-text-color,
+      $disabled-background-color,
+      $disabled-indicator-color
+    ) {
+      input#{$selector} ~ .#{$ns}-control-indicator {
+        background: $background-color;
+        color: $text-color;
+      }
+
+      &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+        background: $hover-color;
+      }
+
+      input#{$selector}:not(:disabled):active ~ .#{$ns}-control-indicator {
+        background: $active-color;
+      }
+
+      input#{$selector}:disabled ~ .#{$ns}-control-indicator {
+        background: $disabled-background-color;
+        color: $disabled-text-color;
+
+        &::before {
+          background: $disabled-indicator-color;
+          box-shadow: none;
+        }
+      }
+    }
+
+    @include indicator-colors-next(
+      "",
+      var(--bp-text-color-neutral-default),
+      var(--bp-background-color-neutral-soft-rest),
+      var(--bp-background-color-neutral-soft-hover),
+      var(--bp-background-color-neutral-soft-active),
+      var(--bp-text-color-disabled),
+      var(--bp-background-color-disabled),
+      $switch-knob-color
+    );
+    @include indicator-colors-next(
+      ":checked",
+      var(--bp-text-color-primary-solid),
+      var(--bp-background-color-primary-solid-rest),
+      var(--bp-background-color-primary-solid-hover),
+      var(--bp-background-color-primary-solid-active),
+      var(--bp-text-color-disabled),
+      var(--bp-background-color-disabled),
+      $switch-knob-color
+    );
+    // convert em variable to px value
+    @include indicator-position-next(math.div($switch-width, 1em) * $control-indicator-size);
+
+    // Add Windows high contrast mode styles
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      input:checked ~ .#{$ns}-control-indicator {
+        background: $pt-high-contrast-mode-active-background-color;
+        border: 1px solid $pt-high-contrast-mode-border-color;
+      }
+
+      input:checked:disabled ~ .#{$ns}-control-indicator {
+        background-color: $pt-high-contrast-mode-disabled-background-color;
+      }
+
+      input:not(:checked):disabled ~ .#{$ns}-control-indicator {
+        border-color: $pt-high-contrast-mode-disabled-border-color;
+
+        &::before {
+          border-color: $pt-high-contrast-mode-disabled-border-color;
+        }
+      }
+
+      &:hover input:checked ~ .#{$ns}-control-indicator {
+        background: $pt-high-contrast-mode-active-background-color;
+      }
+    }
+
+    .#{$ns}-control-indicator {
+      border: none;
+      border-radius: $switch-width;
+      // override default button styles, never have a box-shadow here.
+      /* stylelint-disable-next-line declaration-no-important */
+      box-shadow: none !important;
+      min-width: $switch-width;
+      transition: background-color $pt-transition-duration $pt-transition-ease;
+      width: auto;
+
+      &::before {
+        background: $switch-knob-color;
+        border-radius: 50%;
+        box-shadow: $switch-indicator-box-shadow;
+        height: $switch-indicator-size;
+        left: $switch-indicator-margin;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: left $pt-transition-duration $pt-transition-ease;
+        width: $switch-indicator-size;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          border: 1px solid $pt-high-contrast-mode-border-color;
+          // Because we're using a border for the outline, we need to decrease the top margin
+          margin-top: $switch-indicator-margin - 1px;
+        }
+      }
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border: 1px solid $pt-high-contrast-mode-border-color;
+      }
+    }
+
+    input:checked ~ .#{$ns}-control-indicator::before {
+      // 1em is size of indicator
+      left: calc($switch-indicator-margin + 100% - 1em);
+    }
+
+    &.#{$ns}-large {
+      @include indicator-position-next(
+        math.div($switch-width, 1em) * $control-indicator-size-large
+      );
+    }
+
+    .#{$ns}-switch-inner-text {
+      font-size: $switch-indicator-text-font-size;
+      text-align: center;
+    }
+
+    .#{$ns}-control-indicator-child {
+      &:first-child {
+        line-height: 0;
+        margin-left: $switch-indicator-child-outside-margin;
+        margin-right: $switch-indicator-child-inside-margin;
+        visibility: hidden;
+      }
+
+      &:last-child {
+        line-height: $switch-indicator-child-height;
+        margin-left: $switch-indicator-child-inside-margin;
+        margin-right: $switch-indicator-child-outside-margin;
+        visibility: visible;
+      }
+    }
+
+    input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child {
+      &:first-child {
+        line-height: $switch-indicator-child-height;
+        visibility: visible;
+      }
+
+      &:last-child {
+        line-height: 0;
+        visibility: hidden;
+      }
+    }
+  }
+}

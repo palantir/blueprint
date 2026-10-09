@@ -1,0 +1,160 @@
+// Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "variables-next";
+@import "variables-extended-next";
+@import "mixins-next";
+
+@mixin pt-typography-colors-next() {
+  // N.B. we can't declare any global colors here because this mixin is @included at
+  // the root, outside of any selector, but _reset.scss sets the body text color for us.
+
+  .#{$ns}-text-muted {
+    color: var(--bp-text-color-neutral-subtle);
+  }
+
+  .#{$ns}-text-disabled {
+    color: var(--bp-text-color-disabled);
+  }
+
+  .#{$ns}-running-text {
+    hr {
+      border-color: var(--bp-border-color-neutral-default);
+    }
+  }
+
+  a {
+    color: var(--bp-text-color-primary-subtle);
+
+    &:hover {
+      color: var(--bp-text-color-primary-default);
+    }
+
+    #{$icon-classes} {
+      color: inherit;
+    }
+
+    code {
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-code,
+  .#{$ns}-running-text code {
+    background: var(--bp-background-color-field);
+    box-shadow: inset 0 0 0 1px var(--bp-border-color-neutral-strong);
+    color: var(--bp-text-color-neutral-subtle);
+
+    a > & {
+      // <code> in links. markdown: [`code`](http://url): follow the link's text role
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-code-block,
+  .#{$ns}-running-text pre {
+    background: var(--bp-background-color-field);
+    box-shadow: inset 0 0 0 1px var(--bp-border-color-neutral-default);
+    color: var(--bp-text-color-neutral-default);
+
+    > code {
+      background: none;
+      box-shadow: none;
+      color: inherit;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-border-color;
+      box-shadow: none;
+    }
+  }
+
+  .#{$ns}-key,
+  .#{$ns}-running-text kbd {
+    background: var(--bp-background-color-overlay);
+    box-shadow: var(--bp-shadow-sm);
+    color: var(--bp-text-color-neutral-subtle);
+  }
+
+  #{$icon-classes} {
+    @each $intent in (primary, success, warning, danger) {
+      &.#{$ns}-intent-#{$intent} {
+        color: var(--bp-text-color-#{$intent}-subtle);
+      }
+    }
+  }
+}
+
+@mixin pt-dark-typography-colors-next() {
+  color: $pt-dark-text-color;
+
+  .#{$ns}-text-muted {
+    color: $pt-dark-text-color-muted;
+  }
+
+  .#{$ns}-text-disabled {
+    color: $pt-dark-text-color-disabled;
+  }
+
+  .#{$ns}-running-text {
+    hr {
+      border-color: $pt-dark-divider-white;
+    }
+  }
+
+  a {
+    color: $pt-dark-link-color;
+
+    &:hover {
+      color: $pt-dark-link-color;
+    }
+
+    #{$icon-classes} {
+      color: inherit;
+    }
+
+    code {
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-code,
+  .#{$ns}-running-text code {
+    background: $pt-dark-code-background-color;
+    box-shadow: inset border-shadow-next(0.2, $white);
+    color: $pt-dark-code-text-color;
+
+    a > & {
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-code-block,
+  .#{$ns}-running-text pre {
+    background: $pt-dark-code-background-color;
+    box-shadow: inset border-shadow-next(0.2, $white);
+    color: $pt-dark-text-color;
+
+    > code {
+      background: none;
+      box-shadow: none;
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-key,
+  .#{$ns}-running-text kbd {
+    background: $dark-gray3;
+    box-shadow: $pt-dark-elevation-shadow-1;
+    color: $pt-dark-text-color-muted;
+  }
+
+  #{$icon-classes} {
+    @each $intent, $color in $pt-dark-intent-text-colors {
+      &.#{$ns}-intent-#{$intent} {
+        color: $color;
+      }
+    }
+  }
+}

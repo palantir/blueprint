@@ -1,0 +1,283 @@
+{
+    "scale": {
+        "$type": "color",
+        "$description": "13-step scales (ADR 0004): 1 page bg, 2 container bg, 3-5 soft, 6-8 borders, 9-11 solid, 12 low-contrast text, 13 high-contrast text. `alpha` holds the translucent steps.",
+        "gray": {
+            "1": {
+                "$value": "#1c2127",
+                "$description": "Base layer"
+            },
+            "2": {
+                "$value": "#252a31",
+                "$description": "Content layer"
+            },
+            "8": {
+                "$value": "#8f99a8"
+            },
+            "9": {
+                "$value": "#5f6b7c"
+            },
+            "10": {
+                "$value": "#404854"
+            },
+            "11": {
+                "$value": "#383e47"
+            },
+            "12": {
+                "$value": "#abb3bf"
+            },
+            "13": {
+                "$value": "#f6f7f9"
+            },
+            "alpha": {
+                "1": {
+                    "$value": "rgb(17 20 24 / 50%)",
+                    "$description": "Sunken layer"
+                },
+                "2": {
+                    "$value": "rgb(17 20 24 / 30%)",
+                    "$description": "Field background"
+                },
+                "3": {
+                    "$value": "rgb(143 153 168 / 20%)"
+                },
+                "4": {
+                    "$value": "rgb(143 153 168 / 30%)"
+                },
+                "5": {
+                    "$value": "rgb(143 153 168 / 35%)"
+                },
+                "6": {
+                    "$value": "rgb(255 255 255 / 10%)"
+                },
+                "7": {
+                    "$value": "rgb(255 255 255 / 20%)"
+                },
+                "8": {
+                    "$value": "rgb(255 255 255 / 30%)"
+                },
+                "12": {
+                    "$value": "rgb(171 179 191 / 60%)",
+                    "$description": "Disabled text"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "overlay": {
+                "$value": "#2f343c",
+                "$description": "Overlay layer (Popover, Dialog header)"
+            },
+            "backdrop": {
+                "$value": "rgb(17 20 24 / 70%)",
+                "$description": "Dimming backdrop behind a Dialog"
+            },
+            "inverse": {
+                "$value": "#e5e8eb",
+                "$description": "Inverse surface (Tooltip)"
+            },
+            "inverse-text": {
+                "$value": "#404854",
+                "$description": "Text on the inverse surface"
+            },
+            "indicator": {
+                "$value": "{scale.gray.8}"
+            },
+            "focus": {
+                "$value": "{scale.blue.focus}"
+            }
+        },
+        "blue": {
+            "8": {
+                "$value": "#2d72d2"
+            },
+            "9": {
+                "$value": "#2d72d2"
+            },
+            "10": {
+                "$value": "#215db0"
+            },
+            "11": {
+                "$value": "#184a90"
+            },
+            "12": {
+                "$value": "#8abbff"
+            },
+            "13": {
+                "$value": "#99c4ff"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(45 114 210 / 20%)"
+                },
+                "4": {
+                    "$value": "rgb(45 114 210 / 30%)"
+                },
+                "5": {
+                    "$value": "rgb(45 114 210 / 35%)"
+                },
+                "7": {
+                    "$value": "rgb(138 187 255 / 60%)"
+                },
+                "8": {
+                    "$value": "#2d72d2"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "indicator": {
+                "$value": "{scale.blue.9}"
+            },
+            "focus": {
+                "$value": "rgb(138 187 255 / 75%)"
+            }
+        },
+        "green": {
+            "8": {
+                "$value": "#238551"
+            },
+            "9": {
+                "$value": "#238551"
+            },
+            "10": {
+                "$value": "#1c6e42"
+            },
+            "11": {
+                "$value": "#165a36"
+            },
+            "12": {
+                "$value": "#72ca9b"
+            },
+            "13": {
+                "$value": "#7cd7a2"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(35 133 81 / 20%)"
+                },
+                "4": {
+                    "$value": "rgb(35 133 81 / 30%)"
+                },
+                "5": {
+                    "$value": "rgb(35 133 81 / 35%)"
+                },
+                "7": {
+                    "$value": "rgb(114 202 155 / 60%)"
+                },
+                "8": {
+                    "$value": "#238551"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "indicator": {
+                "$value": "{scale.green.9}"
+            },
+            "focus": {
+                "$value": "rgb(35 133 81 / 75%)"
+            }
+        },
+        "red": {
+            "8": {
+                "$value": "#cd4246"
+            },
+            "9": {
+                "$value": "#cd4246"
+            },
+            "10": {
+                "$value": "#ac2f33"
+            },
+            "11": {
+                "$value": "#8e292c"
+            },
+            "12": {
+                "$value": "#fa999c"
+            },
+            "13": {
+                "$value": "#ffa1a4"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(205 66 70 / 20%)"
+                },
+                "4": {
+                    "$value": "rgb(205 66 70 / 30%)"
+                },
+                "5": {
+                    "$value": "rgb(205 66 70 / 35%)"
+                },
+                "7": {
+                    "$value": "rgb(250 153 156 / 60%)"
+                },
+                "8": {
+                    "$value": "#cd4246"
+                }
+            },
+            "solid-text": {
+                "$value": "#ffffff"
+            },
+            "indicator": {
+                "$value": "{scale.red.9}"
+            },
+            "focus": {
+                "$value": "rgb(205 66 70 / 75%)"
+            }
+        },
+        "orange": {
+            "8": {
+                "$value": "#c87619"
+            },
+            "9": {
+                "$value": "#fbb360"
+            },
+            "10": {
+                "$value": "#e29d4e"
+            },
+            "11": {
+                "$value": "#b27634"
+            },
+            "12": {
+                "$value": "#fbb360"
+            },
+            "13": {
+                "$value": "#f5c186"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "rgb(200 118 25 / 20%)"
+                },
+                "4": {
+                    "$value": "rgb(200 118 25 / 30%)"
+                },
+                "5": {
+                    "$value": "rgb(200 118 25 / 35%)"
+                },
+                "7": {
+                    "$value": "rgb(251 179 96 / 60%)"
+                },
+                "8": {
+                    "$value": "#c87619"
+                }
+            },
+            "solid-text": {
+                "$value": "#111418"
+            },
+            "indicator": {
+                "$value": "{scale.orange.8}"
+            },
+            "focus": {
+                "$value": "rgb(200 118 25 / 75%)"
+            }
+        },
+        "white": {
+            "alpha": {
+                "4": {
+                    "$value": "rgb(255 255 255 / 20%)",
+                    "$description": "ProgressBar stripes (H11 placeholder)"
+                }
+            }
+        }
+    }
+}

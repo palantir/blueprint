@@ -1,0 +1,107 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-next";
+@import "../popover/common-next";
+@import "./common";
+
+$tooltip-arrow-box-shadow: 1px 1px 6px var(--bp-background-color-sunken) !default;
+
+$tooltip-padding-compact-vertical: $pt-spacing !default;
+$tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
+
+.#{$ns}-tooltip {
+  @include popover-sizing-next(
+    $arrow-square-size: $pt-spacing * 5.5,
+    $arrow-offset: $pt-spacing * 0.75,
+    $arrow-target-offset: -$pt-spacing
+  );
+  @include popover-appearance-next(
+    var(--bp-background-color-inverse),
+    var(--bp-text-color-inverse),
+    var(--bp-shadow-xl),
+    $tooltip-arrow-box-shadow,
+    var(--bp-border-color-neutral-subtle)
+  );
+  // lightweight scale for tooltips
+  @include react-transition(
+    "#{$ns}-popover",
+    (
+      transform: scale(0.8) scale(1),
+    ),
+    $duration: $pt-transition-duration,
+    $after: "> &"
+  );
+  // content sits on the inverse layer, where theme-following text roles lose contrast,
+  // so descendant text inherits the inverse text color instead
+  .#{$ns}-text-muted,
+  .#{$ns}-text-disabled,
+  a,
+  a:hover,
+  .#{$ns}-code,
+  .#{$ns}-running-text code {
+    color: inherit;
+  }
+
+  .#{$ns}-code,
+  .#{$ns}-running-text code {
+    background: var(--bp-background-color-neutral-soft-hover);
+    box-shadow: none;
+  }
+
+  .#{$ns}-popover-content {
+    padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+  }
+
+  &.#{$ns}-compact {
+    .#{$ns}-popover-content {
+      line-height: 1rem; // ensure a consistent line height
+      padding: $tooltip-padding-compact-vertical $tooltip-padding-compact-horizontal;
+    }
+
+    // Compact tooltip content is usually just a single line with default line-height, where the slight vertical
+    // misalignment of <Code> spans inside text stands out more than it does elsewhere in the design system. We apply
+    // a small typographic adjustment here to counteract this problem.
+    // TODO(adahiya): consider applying this more broadly to fix the root problem...
+    .#{$ns}-code {
+      vertical-align: text-bottom;
+    }
+  }
+
+  // need to adjust arrow placement a little bit for tooltips
+  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
+    transform: translateY($pt-spacing * -0.75);
+  }
+  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
+    transform: translateX($pt-spacing * -0.75);
+  }
+  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
+    transform: translateY($pt-spacing * 0.75);
+  }
+  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
+    transform: translateX($pt-spacing * 0.75);
+  }
+
+  @each $intent in (primary, success, warning, danger) {
+    &.#{$ns}-intent-#{$intent} {
+      .#{$ns}-popover-content {
+        background: var(--bp-background-color-#{$intent}-solid-rest);
+        color: var(--bp-text-color-#{$intent}-solid);
+      }
+
+      .#{$ns}-popover-arrow-fill {
+        fill: var(--bp-background-color-#{$intent}-solid-rest);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // In Windows high contrast mode, just force the color to be the same as the border.
+          fill: $pt-high-contrast-mode-border-color;
+        }
+      }
+    }
+  }
+}
+
+.#{$ns}-tooltip-indicator {
+  border-bottom: dotted 1px;
+  cursor: help;
+}

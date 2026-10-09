@@ -1,0 +1,193 @@
+{
+    "scale": {
+        "$type": "color",
+        "primary": {
+            "$description": "The Primary scale; defaults to blue and is replaced by a generated scale when a consumer supplies a primary color.",
+            "8": {
+                "$value": "{scale.blue.8}"
+            },
+            "9": {
+                "$value": "{scale.blue.9}"
+            },
+            "10": {
+                "$value": "{scale.blue.10}"
+            },
+            "11": {
+                "$value": "{scale.blue.11}"
+            },
+            "12": {
+                "$value": "{scale.blue.12}"
+            },
+            "13": {
+                "$value": "{scale.blue.13}"
+            },
+            "solid-text": {
+                "$value": "{scale.blue.solid-text}"
+            },
+            "indicator": {
+                "$value": "{scale.blue.indicator}"
+            },
+            "focus": {
+                "$value": "{scale.blue.focus}"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "{scale.blue.alpha.3}"
+                },
+                "4": {
+                    "$value": "{scale.blue.alpha.4}"
+                },
+                "5": {
+                    "$value": "{scale.blue.alpha.5}"
+                },
+                "7": {
+                    "$value": "{scale.blue.alpha.7}"
+                },
+                "8": {
+                    "$value": "{scale.blue.alpha.8}"
+                }
+            }
+        },
+        "success": {
+            "$description": "The Success scale; defaults to green and is replaced by a generated scale when a consumer supplies a success color.",
+            "8": {
+                "$value": "{scale.green.8}"
+            },
+            "9": {
+                "$value": "{scale.green.9}"
+            },
+            "10": {
+                "$value": "{scale.green.10}"
+            },
+            "11": {
+                "$value": "{scale.green.11}"
+            },
+            "12": {
+                "$value": "{scale.green.12}"
+            },
+            "13": {
+                "$value": "{scale.green.13}"
+            },
+            "solid-text": {
+                "$value": "{scale.green.solid-text}"
+            },
+            "indicator": {
+                "$value": "{scale.green.indicator}"
+            },
+            "focus": {
+                "$value": "{scale.green.focus}"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "{scale.green.alpha.3}"
+                },
+                "4": {
+                    "$value": "{scale.green.alpha.4}"
+                },
+                "5": {
+                    "$value": "{scale.green.alpha.5}"
+                },
+                "7": {
+                    "$value": "{scale.green.alpha.7}"
+                },
+                "8": {
+                    "$value": "{scale.green.alpha.8}"
+                }
+            }
+        },
+        "warning": {
+            "$description": "The Warning scale; defaults to orange and is replaced by a generated scale when a consumer supplies a warning color.",
+            "8": {
+                "$value": "{scale.orange.8}"
+            },
+            "9": {
+                "$value": "{scale.orange.9}"
+            },
+            "10": {
+                "$value": "{scale.orange.10}"
+            },
+            "11": {
+                "$value": "{scale.orange.11}"
+            },
+            "12": {
+                "$value": "{scale.orange.12}"
+            },
+            "13": {
+                "$value": "{scale.orange.13}"
+            },
+            "solid-text": {
+                "$value": "{scale.orange.solid-text}"
+            },
+            "indicator": {
+                "$value": "{scale.orange.indicator}"
+            },
+            "focus": {
+                "$value": "{scale.orange.focus}"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "{scale.orange.alpha.3}"
+                },
+                "4": {
+                    "$value": "{scale.orange.alpha.4}"
+                },
+                "5": {
+                    "$value": "{scale.orange.alpha.5}"
+                },
+                "7": {
+                    "$value": "{scale.orange.alpha.7}"
+                },
+                "8": {
+                    "$value": "{scale.orange.alpha.8}"
+                }
+            }
+        },
+        "danger": {
+            "$description": "The Danger scale; defaults to red and is replaced by a generated scale when a consumer supplies a danger color.",
+            "8": {
+                "$value": "{scale.red.8}"
+            },
+            "9": {
+                "$value": "{scale.red.9}"
+            },
+            "10": {
+                "$value": "{scale.red.10}"
+            },
+            "11": {
+                "$value": "{scale.red.11}"
+            },
+            "12": {
+                "$value": "{scale.red.12}"
+            },
+            "13": {
+                "$value": "{scale.red.13}"
+            },
+            "solid-text": {
+                "$value": "{scale.red.solid-text}"
+            },
+            "indicator": {
+                "$value": "{scale.red.indicator}"
+            },
+            "focus": {
+                "$value": "{scale.red.focus}"
+            },
+            "alpha": {
+                "3": {
+                    "$value": "{scale.red.alpha.3}"
+                },
+                "4": {
+                    "$value": "{scale.red.alpha.4}"
+                },
+                "5": {
+                    "$value": "{scale.red.alpha.5}"
+                },
+                "7": {
+                    "$value": "{scale.red.alpha.7}"
+                },
+                "8": {
+                    "$value": "{scale.red.alpha.8}"
+                }
+            }
+        }
+    }
+}

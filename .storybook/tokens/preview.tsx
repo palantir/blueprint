@@ -5,34 +5,29 @@
 import type { Decorator } from "@storybook/react-vite";
 import { useEffect } from "storybook/preview-api";
 
-import type { TokenValues } from "./tokens";
+import { generateThemeStylesheet, type ThemeColors } from "./intentScale";
 
-export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
-    const tokenOverrides: Partial<TokenValues> = globals.tokenOverrides;
+const THEME_STYLE_ID = "bp-storybook-intent-scales";
+
+export const withTokens: Decorator = function WithTokens(Story, { globals }) {
+    const themeColors: ThemeColors = globals.themeColors ?? {};
+    const colorsKey = JSON.stringify(themeColors);
 
     useEffect(
-        function applyTokenOverrides() {
-            const style = document.body.style;
-            const previousValues = Object.keys(tokenOverrides).map(name => ({
-                name,
-                priority: style.getPropertyPriority(name),
-                value: style.getPropertyValue(name),
-            }));
-
-            for (const [name, value] of Object.entries(tokenOverrides)) {
-                if (value != null) {
-                    style.setProperty(name, String(value));
-                }
+        function applyIntentScales() {
+            if (!Object.values(themeColors).some(Boolean)) {
+                return;
             }
-
-            return () => {
-                for (const { name, value, priority } of previousValues) {
-                    // An empty value removes the inline property.
-                    style.setProperty(name, value, priority);
-                }
-            };
+            // Scales are set per theme selector, so the roles redeclared for dark resolve against the dark scale.
+            const style = document.createElement("style");
+            style.id = THEME_STYLE_ID;
+            style.textContent = generateThemeStylesheet(themeColors);
+            document.head.appendChild(style);
+            return () => style.remove();
         },
-        [id, tokenOverrides],
+        // themeColors is a fresh object on every render; the serialized key captures its content.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [colorsKey],
     );
 
     return <Story />;

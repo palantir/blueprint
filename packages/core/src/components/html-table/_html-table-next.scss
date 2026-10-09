@@ -1,0 +1,124 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-next";
+
+$table-row-height: $pt-spacing * 10 !default;
+$table-row-height-small: $pt-spacing * 7.5 !default;
+$table-border-width: 1px !default;
+$table-border-color: var(--bp-border-color-neutral-default) !default;
+
+// placeholder for extending inside running-text (see typography)
+%html-table-next {
+  border-spacing: 0;
+  font-size: $pt-font-size;
+
+  th,
+  td {
+    padding: centered-text-next($table-row-height);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    color: var(--bp-text-color-neutral-default);
+    font-weight: 600;
+  }
+
+  td {
+    color: var(--bp-text-color-neutral-default);
+  }
+
+  tbody tr:first-child,
+  tfoot tr:first-child {
+    th,
+    td {
+      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+    }
+  }
+}
+
+table.#{$ns}-html-table {
+  @extend %html-table-next;
+
+  &.#{$ns}-compact {
+    $small-vertical-padding: centered-text-next($table-row-height-small);
+
+    th,
+    td {
+      padding-bottom: $small-vertical-padding;
+      padding-top: $small-vertical-padding;
+    }
+  }
+
+  &.#{$ns}-html-table-striped {
+    tbody tr:nth-child(odd) td {
+      background: var(--bp-background-color-neutral-soft-rest);
+    }
+  }
+
+  // Borders are applied as box-shadows (at the top and left borders of a cell) for better color control.
+  &.#{$ns}-html-table-bordered {
+    th:not(:first-child) {
+      box-shadow: inset $table-border-width 0 0 0 $table-border-color;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border-left: 1px solid $pt-high-contrast-mode-border-color;
+      }
+    }
+
+    tbody tr td,
+    tfoot tr td {
+      box-shadow: inset 0 $table-border-width 0 0 $table-border-color;
+
+      &:not(:first-child) {
+        box-shadow: inset $table-border-width $table-border-width 0 0 $table-border-color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          border-left: 1px solid $pt-high-contrast-mode-border-color;
+          border-top: 1px solid $pt-high-contrast-mode-border-color;
+        }
+      }
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border-top: 1px solid $pt-high-contrast-mode-border-color;
+      }
+    }
+
+    &.#{$ns}-html-table-striped {
+      tbody tr:not(:first-child) td {
+        box-shadow: none;
+
+        &:not(:first-child) {
+          box-shadow: inset $table-border-width 0 0 0 $table-border-color;
+        }
+      }
+    }
+  }
+
+  &.#{$ns}-interactive {
+    tbody tr {
+      &:hover td {
+        background-color: var(--bp-background-color-neutral-soft-rest);
+        cursor: pointer;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
+      }
+
+      &:active td {
+        background-color: var(--bp-background-color-neutral-soft-active);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
+      }
+    }
+
+    // Stripes already use soft rest, so a hovered row in a striped table moves one step up.
+    &.#{$ns}-html-table-striped tbody tr:hover td {
+      background-color: var(--bp-background-color-neutral-soft-hover);
+    }
+  }
+}

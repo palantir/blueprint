@@ -1,0 +1,7 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+
+@import "../../common/variables-next";
+
+$skeleton-animation: ($pt-transition-duration * 10) linear infinite alternate skeleton-glow !default;
+$skeleton-color-start: var(--bp-background-color-neutral-soft-rest) !default;
+$skeleton-color-end: var(--bp-background-color-neutral-soft-active) !default;

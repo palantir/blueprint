@@ -1,0 +1,69 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-next";
+
+.#{$ns}-input {
+  @include pt-input-next;
+
+  &.#{$ns}-large {
+    @include pt-input-large-next;
+  }
+
+  &.#{$ns}-small {
+    @include pt-input-small-next;
+  }
+
+  &.#{$ns}-fill {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  @each $intent in $input-intents {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-input-intent-next($intent);
+    }
+  }
+
+  &::-ms-clear {
+    display: none;
+  }
+}
+
+// for iOS support
+@supports (-webkit-touch-callout: none) {
+  // only html input elements require a fix on iOS
+  input.#{$ns}-input {
+    &:disabled,
+    &.#{$ns}-disabled {
+      opacity: 1;
+      -webkit-text-fill-color: var(--bp-text-color-disabled);
+    }
+  }
+}
+
+/* stylelint-disable-next-line selector-no-qualifying-type */
+textarea.#{$ns}-input {
+  max-width: 100%;
+  padding: calc(var(--bp-surface-spacing) * 2);
+
+  &,
+  &.#{$ns}-large,
+  &.#{$ns}-small {
+    // override input styles for these modifiers.
+    // line-height is needed to center text on <input> but not on multiline <textarea>
+    height: auto;
+    line-height: inherit;
+  }
+
+  &.#{$ns}-small {
+    padding: calc(var(--bp-surface-spacing) * 2);
+  }
+}
+
+.#{$ns}-text-area {
+  &.#{$ns}-text-area-auto-resize {
+    // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
+    resize: horizontal;
+  }
+}
