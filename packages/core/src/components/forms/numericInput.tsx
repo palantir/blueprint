@@ -378,6 +378,13 @@ export class NumericInput extends AbstractPureComponent<
         }
     }
 
+    public componentWillUnmount() {
+        // stop any in-progress continuous change so its interval and document event
+        // listener do not outlive this component (calling this again after a mouseup is a no-op)
+        this.stopContinuousChange();
+        super.componentWillUnmount();
+    }
+
     protected validateProps(nextProps: HTMLInputProps & NumericInputProps) {
         const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
