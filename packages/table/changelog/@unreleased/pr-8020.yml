@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "Table: remove blue artifact line below column headers when first-row cell is selected"
+  links:
+  - https://github.com/palantir/blueprint/pull/8020
