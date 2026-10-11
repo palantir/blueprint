@@ -183,6 +183,78 @@ describe("useHotkeys", () => {
         expect(onKeyASpy).toHaveBeenCalledOnce();
     });
 
+    describe("stopPropagation in nested contexts", () => {
+        /** Renders a local hotkey bound to `combo` on a focusable div, optionally nesting children. */
+        const NestedHotkey: React.FC<{
+            children?: React.ReactNode;
+            combo: string;
+            onFire: () => void;
+            stopPropagation?: boolean;
+            testId: string;
+        }> = ({ children, combo, onFire, stopPropagation, testId }) => {
+            const keys = useMemo(
+                () => [{ combo, label: testId, onKeyDown: onFire, stopPropagation }],
+                [combo, onFire, stopPropagation, testId],
+            );
+            const { handleKeyDown, handleKeyUp } = useHotkeys(keys);
+            return (
+                <div data-testid={testId} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} tabIndex={0}>
+                    {children}
+                </div>
+            );
+        };
+
+        const renderNested = (stopPropagation: boolean) => {
+            const onInner = vi.fn();
+            const onOuter = vi.fn();
+            render(
+                <HotkeysProvider>
+                    <NestedHotkey combo="X" onFire={onOuter} testId="outer-context">
+                        <NestedHotkey
+                            combo="X"
+                            onFire={onInner}
+                            stopPropagation={stopPropagation}
+                            testId="inner-context"
+                        />
+                    </NestedHotkey>
+                </HotkeysProvider>,
+            );
+            return { onInner, onOuter };
+        };
+
+        it("stopPropagation on the inner hotkey prevents the outer one from firing", async () => {
+            const user = userEvent.setup();
+            const { onInner, onOuter } = renderNested(true);
+            screen.getByTestId("inner-context").focus();
+            await user.keyboard("X");
+
+            expect(onInner).toHaveBeenCalledOnce();
+            // React dispatches local hotkeys from its root container, so stopping only the
+            // native event left the outer context firing the same combo as well.
+            expect(onOuter).not.toHaveBeenCalled();
+        });
+
+        it("without stopPropagation, both contexts still fire", async () => {
+            const user = userEvent.setup();
+            const { onInner, onOuter } = renderNested(false);
+            screen.getByTestId("inner-context").focus();
+            await user.keyboard("X");
+
+            expect(onInner).toHaveBeenCalledOnce();
+            expect(onOuter).toHaveBeenCalledOnce();
+        });
+
+        it("an outer hotkey still fires when the event originates outside the inner context", async () => {
+            const user = userEvent.setup();
+            const { onInner, onOuter } = renderNested(true);
+            screen.getByTestId("outer-context").focus();
+            await user.keyboard("X");
+
+            expect(onOuter).toHaveBeenCalledOnce();
+            expect(onInner).not.toHaveBeenCalled();
+        });
+    });
+
     describe("working with HotkeysProvider", () => {
         const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
         beforeEach(() => warnSpy.mockClear());

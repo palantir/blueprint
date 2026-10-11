@@ -67,6 +67,11 @@ export interface HotkeyConfig {
      * When `true`, invokes `event.stopPropagation()` before the respective `onKeyDown` and
      * `onKeyUp` callbacks are invoked. Enabling this can simplify handler implementations.
      *
+     * For a local hotkey this also stops the same combo being handled again by an enclosing
+     * context, which is how to make a hotkey registered in nested contexts run only the
+     * innermost handler. It has no such effect on global hotkeys, which are all bound to the
+     * document and so have no enclosing context to stop.
+     *
      * @default false
      */
     stopPropagation?: boolean;
