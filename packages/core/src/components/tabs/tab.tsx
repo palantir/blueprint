@@ -18,7 +18,7 @@ import classNames from "classnames";
 
 import type { IconName } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { AbstractPureComponent, Classes, type Intent } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type MaybeElement, type Props } from "../../common/props";
 import { isFunction } from "../../common/utils";
 import type { TagProps } from "../tag/tag";
@@ -76,6 +76,17 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
 
     /** Name of a Blueprint UI icon (or an icon element) to render before the children. */
     icon?: IconName | MaybeElement;
+
+    /**
+     * Visual intent to apply to this tab. It colors the tab title, its icon,
+     * its tag, and the indicator shown when the tab is selected.
+     *
+     * When omitted, the tab uses the default colors and turns
+     * `Intent.PRIMARY` while it is selected.
+     *
+     * @default Intent.NONE
+     */
+    intent?: Intent;
 
     /**
      * Content to render inside a `<Tag>` after the children.

@@ -19,7 +19,7 @@ import { act } from "react";
 
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "../../common";
+import { Classes, Intent } from "../../common";
 
 import { Tab } from "./tab";
 import { Tabs, type TabsProps, type TabsState } from "./tabs";
@@ -416,6 +416,137 @@ describe("<Tabs>", () => {
             await waitFor(() => {
                 assertIndicatorPosition(wrapper, TAB_ID_TO_SELECT);
             });
+        });
+    });
+
+    // https://github.com/palantir/blueprint/issues/8172
+    describe("intent", () => {
+        const INTENT_TABS = (
+            <Tabs id={ID}>
+                <Tab id="plain" title="Plain" panel={<Panel title="plain" />} />
+                <Tab id="danger" intent={Intent.DANGER} title="Danger" panel={<Panel title="danger" />} />
+                <Tab id="none" intent={Intent.NONE} title="None" panel={<Panel title="none" />} />
+            </Tabs>
+        );
+
+        it("applies the intent class to the tab", () => {
+            const wrapper = mount<Tabs>(INTENT_TABS, { attachTo: containerElement });
+            assert.isTrue(
+                findTabById(wrapper, "danger").hasClass(Classes.INTENT_DANGER),
+                "tab with an intent should have the intent class",
+            );
+        });
+
+        it("adds no intent class when intent is omitted or NONE", () => {
+            const wrapper = mount<Tabs>(INTENT_TABS, { attachTo: containerElement });
+            for (const id of ["plain", "none"]) {
+                const className = findTabById(wrapper, id).prop("className")!;
+                assert.isFalse(
+                    /bp\d+-intent-/.test(className),
+                    `tab "${id}" should not have an intent class, got "${className}"`,
+                );
+            }
+        });
+
+        it("applies the selected tab's intent to the indicator", () => {
+            const wrapper = mount<Tabs>(
+                <Tabs id={ID} selectedTabId="danger">
+                    {[
+                        <Tab id="plain" key="plain" title="Plain" panel={<Panel title="plain" />} />,
+                        <Tab
+                            id="danger"
+                            key="danger"
+                            intent={Intent.DANGER}
+                            title="Danger"
+                            panel={<Panel title="danger" />}
+                        />,
+                    ]}
+                </Tabs>,
+                { attachTo: containerElement },
+            );
+
+            const indicator = wrapper.find(`.${Classes.TAB_INDICATOR_WRAPPER}`).hostNodes();
+            assert.isTrue(
+                indicator.hasClass(Classes.INTENT_DANGER),
+                "indicator should take the intent of the selected tab",
+            );
+        });
+
+        it("moves the intent with the selection", () => {
+            const wrapper = mount<Tabs>(
+                <Tabs id={ID} selectedTabId="plain">
+                    {[
+                        <Tab id="plain" key="plain" title="Plain" panel={<Panel title="plain" />} />,
+                        <Tab
+                            id="danger"
+                            key="danger"
+                            intent={Intent.DANGER}
+                            title="Danger"
+                            panel={<Panel title="danger" />}
+                        />,
+                    ]}
+                </Tabs>,
+                { attachTo: containerElement },
+            );
+
+            const indicatorClass = () =>
+                wrapper.find(`.${Classes.TAB_INDICATOR_WRAPPER}`).hostNodes().prop("className")!;
+            assert.isFalse(
+                indicatorClass().includes(Classes.INTENT_DANGER),
+                "indicator should have no intent while a plain tab is selected",
+            );
+
+            wrapper.setProps({ selectedTabId: "danger" });
+            wrapper.update();
+            assert.isTrue(
+                indicatorClass().includes(Classes.INTENT_DANGER),
+                "indicator should pick up the intent of the newly selected tab",
+            );
+        });
+
+        it("passes the intent to the tab's icon and tag", () => {
+            const wrapper = mount<Tabs>(
+                <Tabs id={ID}>
+                    <Tab
+                        id="danger"
+                        intent={Intent.DANGER}
+                        icon="warning-sign"
+                        tagContent={3}
+                        title="Danger"
+                        panel={<Panel title="danger" />}
+                    />
+                </Tabs>,
+                { attachTo: containerElement },
+            );
+
+            assert.isTrue(
+                wrapper.find(`.${Classes.TAB_ICON}`).hostNodes().hasClass(Classes.INTENT_DANGER),
+                "icon should take the tab's intent",
+            );
+            assert.isTrue(
+                wrapper.find(`.${Classes.TAB_TAG}`).hostNodes().hasClass(Classes.INTENT_DANGER),
+                "tag should take the tab's intent",
+            );
+        });
+
+        it("keeps the primary-when-selected default for tabs without an intent", () => {
+            const wrapper = mount<Tabs>(
+                <Tabs id={ID} selectedTabId="plain">
+                    <Tab id="plain" icon="document" tagContent={1} title="Plain" panel={<Panel title="plain" />} />
+                </Tabs>,
+                { attachTo: containerElement },
+            );
+
+            assert.isTrue(
+                wrapper.find(`.${Classes.TAB_ICON}`).hostNodes().hasClass(Classes.INTENT_PRIMARY),
+                "a selected tab without an intent should still render a primary icon",
+            );
+        });
+
+        it("does not leak the intent prop onto the DOM element", () => {
+            const wrapper = mount<Tabs>(INTENT_TABS, { attachTo: containerElement });
+            const tab = findTabById(wrapper, "danger").getDOMNode();
+            assert.isFalse(tab.hasAttribute("intent"), "intent should not be rendered as an HTML attribute");
         });
     });
 

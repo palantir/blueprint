@@ -10,7 +10,7 @@ import { useArgs } from "storybook/preview-api";
 import { Home } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
-import { Colors } from "../../common";
+import { Colors, Intent } from "../../common";
 
 import { Tab } from "./tab";
 import { Tabs, type TabsProps } from "./tabs";
@@ -224,6 +224,38 @@ export const IconExample: Story = {
             <Tab id="tab2" title="Documents" icon="document" panel={<p>Documents panel content</p>} />
             <Tab id="tab3" title="Applications" icon="application" panel={<p>Applications panel content</p>} />
             <Tab id="tab4" title="Element icon" icon={<Home />} panel={<p>Element icon panel</p>} />
+        </Tabs>
+    ),
+};
+
+/**
+ * Each tab can be given an `intent`, which colors its title, icon, tag, and the
+ * selected indicator. A tab without an `intent` keeps the default colors and
+ * turns primary while it is selected.
+ */
+export const IntentExample: Story = {
+    name: "Intent",
+    render: args => (
+        <Tabs {...args} id="with-intent">
+            <Tab id="tab1" title="Overview" panel={<p>No intent</p>} />
+            <Tab id="tab2" intent={Intent.SUCCESS} icon="tick-circle" title="Passing" panel={<p>Success intent</p>} />
+            <Tab
+                id="tab3"
+                intent={Intent.WARNING}
+                icon="warning-sign"
+                tagContent={7}
+                title="Flaky"
+                panel={<p>Warning intent</p>}
+            />
+            <Tab
+                id="tab4"
+                intent={Intent.DANGER}
+                icon="error"
+                tagContent={2}
+                title="Failing"
+                panel={<p>Danger intent</p>}
+            />
+            <Tab id="tab5" disabled={true} intent={Intent.DANGER} title="Disabled" panel={<p>Disabled</p>} />
         </Tabs>
     ),
 };

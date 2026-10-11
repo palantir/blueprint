@@ -60,6 +60,10 @@ parent **Tabs** component. Tab title text can be set either via `title` prop or 
 The associated tab `panel` will be visible when the _Tab_ is active. Omitting the `panel` prop is supported; this can
 be useful when you want the associated panel to appear elsewhere in the DOM (by rendering it yourself as needed&mdash;see _TabPanel_).
 
+Set `intent` to color a tab: the intent applies to the tab title, its `icon`, its `tagContent` tag, and the
+indicator shown while the tab is selected. A tab without an `intent` keeps the default colors and turns
+primary while selected. Disabled tabs ignore `intent` and keep the disabled color.
+
 @interface TabProps
 
 ### TabPanel

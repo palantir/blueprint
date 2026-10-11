@@ -184,8 +184,15 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             .filter(renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
             .map(this.renderTabPanel);
 
+        // the indicator is a sibling of the tabs rather than a child of the
+        // selected one, so it has to be told which intent to take
+        const selectedTabIntent = this.getTabChildren().find(tab => tab.props.id === selectedTabId)?.props.intent;
+
         const tabIndicator = animate ? (
-            <div className={Classes.TAB_INDICATOR_WRAPPER} style={indicatorWrapperStyle}>
+            <div
+                className={classNames(Classes.TAB_INDICATOR_WRAPPER, Classes.intentClass(selectedTabIntent))}
+                style={indicatorWrapperStyle}
+            >
                 <div className={Classes.TAB_INDICATOR} />
             </div>
         ) : null;
