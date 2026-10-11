@@ -33,7 +33,9 @@ import { TimezoneSelect, type TimezoneSelectProps } from "../..";
 import { getCurrentTimezone } from "../../common/getTimezone";
 import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../common/timezoneNameUtils";
-import type { TimezoneWithNames } from "../../common/timezoneTypes";
+import type { TimezoneWithNames, TimezoneWithoutOffset } from "../../common/timezoneTypes";
+
+import type { TimezoneSelectState } from "./timezoneSelect";
 
 const LOS_ANGELES_TZ = "America/Los_Angeles";
 let CURRENT_TZ = getCurrentTimezone();
@@ -92,6 +94,48 @@ describe("<TimezoneSelect>", () => {
         expect(timezoneSelect.state("query")).toBe(query);
         const items = findSelect(timezoneSelect).prop("items");
         expect(items).toEqual(mapTimezonesWithNames(date, TIMEZONE_ITEMS));
+    });
+
+    it("should use custom timezone items for initial suggestions and search", () => {
+        const timezoneItems: TimezoneWithoutOffset[] = [
+            { ianaCode: "America/Chicago", label: "Chicago" },
+            { ianaCode: "Europe/Oslo", label: "Oslo" },
+        ];
+        const timezoneSelect = mountTS({ timezoneItems });
+
+        expect(
+            findSelect(timezoneSelect)
+                .prop("items")
+                .map(item => item.ianaCode),
+        ).toEqual(["America/Chicago", "Europe/Oslo"]);
+
+        act(() => timezoneSelect.setState({ query: "Chicago" }));
+        timezoneSelect.update();
+
+        expect(
+            findSelect(timezoneSelect)
+                .prop("items")
+                .map(item => item.ianaCode),
+        ).toEqual(["America/Chicago", "Europe/Oslo"]);
+    });
+
+    it("should update when custom timezone items change", () => {
+        const timezoneSelect = mountTS({
+            timezoneItems: [{ ianaCode: "America/Chicago", label: "Chicago" }],
+        });
+
+        act(() => {
+            timezoneSelect.setProps({
+                timezoneItems: [{ ianaCode: "Europe/Oslo", label: "Oslo" }],
+            });
+        });
+        timezoneSelect.update();
+
+        expect(
+            findSelect(timezoneSelect)
+                .prop("items")
+                .map(item => item.ianaCode),
+        ).toEqual(["Europe/Oslo"]);
     });
 
     it("should render the local timezone at the top of the item list if showLocalTimezone=true", () => {
@@ -179,27 +223,31 @@ describe("<TimezoneSelect>", () => {
         }
     });
 
-    function mountTS(props: Partial<TimezoneSelectProps> = {}): ReactWrapper<TimezoneSelect> {
+    function mountTS(
+        props: Partial<TimezoneSelectProps> = {},
+    ): ReactWrapper<TimezoneSelectProps, TimezoneSelectState, TimezoneSelect> {
         return mount(<TimezoneSelect {...DEFAULT_PROPS} {...props} />);
     }
 
-    function findSelect(timezoneSelect: ReactWrapper<TimezoneSelect>) {
+    function findSelect(timezoneSelect: ReactWrapper<TimezoneSelectProps, TimezoneSelectState, TimezoneSelect>) {
         return timezoneSelect.find<Select<TimezoneWithNames>>(Select);
     }
 
-    function findQueryList(timezoneSelect: ReactWrapper<TimezoneSelect>) {
+    function findQueryList(timezoneSelect: ReactWrapper<TimezoneSelectProps, TimezoneSelectState, TimezoneSelect>) {
         return findSelect(timezoneSelect).find<QueryList<TimezoneWithNames>>(QueryList);
     }
 
-    function findPopover(timezoneSelect: ReactWrapper<TimezoneSelect>) {
+    function findPopover(timezoneSelect: ReactWrapper<TimezoneSelectProps, TimezoneSelectState, TimezoneSelect>) {
         return findQueryList(timezoneSelect).find(PopoverNext);
     }
 
-    function findInputGroup(timezoneSelect: ReactWrapper<TimezoneSelect>) {
+    function findInputGroup(timezoneSelect: ReactWrapper<TimezoneSelectProps, TimezoneSelectState, TimezoneSelect>) {
         return findQueryList(timezoneSelect).find(InputGroup);
     }
 
-    function clickFirstMenuItem(timezoneSelect: ReactWrapper<TimezoneSelect>): void {
+    function clickFirstMenuItem(
+        timezoneSelect: ReactWrapper<TimezoneSelectProps, TimezoneSelectState, TimezoneSelect>,
+    ): void {
         findSelect(timezoneSelect).find(MenuItem).first().simulate("click");
     }
 });
