@@ -15,8 +15,11 @@
  */
 
 import { mount, type ReactWrapper } from "enzyme";
+import { act } from "react";
 
 import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+
+import { Classes } from "../../common";
 
 import { OverflowList, type OverflowListProps, type OverflowListState } from "./overflowList";
 
@@ -29,18 +32,92 @@ interface TestItemProps {
 const IDS = [0, 1, 2, 3, 4, 5];
 const ITEMS: TestItemProps[] = IDS.map(id => ({ id }));
 
-const TestItem: React.FC<TestItemProps> = () => <div style={{ flex: "0 0 auto", height: 10, width: 10 }} />;
+const VISIBLE_ITEM_CLASS = "test-visible-item";
+const ITEM_WIDTH = 10;
+
+const TestItem: React.FC<TestItemProps> = () => (
+    <div className={VISIBLE_ITEM_CLASS} style={{ flex: "0 0 auto", height: ITEM_WIDTH, width: ITEM_WIDTH }} />
+);
 const TestOverflow: React.FC<{ items: TestItemProps[] }> = () => <div />;
 
-describe.skip("<OverflowList>", { retry: 3 }, () => {
-    // these tests rely on DOM measurement which can be flaky, so we allow some retries
+/**
+ * jsdom performs no layout, so `OverflowList` (which measures its spacer element to decide whether
+ * items fit) cannot be tested against real dimensions. These two mocks model just enough of the
+ * browser for the component's measurement loop to behave deterministically:
+ *
+ *  - `MockResizeObserver` lets a test drive `ResizeSensor` on demand instead of waiting on a real
+ *    observer, which jsdom does not implement at all.
+ *  - the `offsetWidth` mock reproduces the spacer's flex behavior: the spacer is 1px wide and
+ *    shrinkable, so it keeps its width only while the visible items still fit in the list.
+ */
+class MockResizeObserver implements ResizeObserver {
+    public static instances: MockResizeObserver[] = [];
+
+    /** Notify every live observer, mimicking a browser resize pass. */
+    public static triggerAll() {
+        for (const instance of MockResizeObserver.instances) {
+            instance.trigger();
+        }
+    }
+
+    private elements = new Set<Element>();
+
+    constructor(private readonly callback: ResizeObserverCallback) {
+        MockResizeObserver.instances.push(this);
+    }
+
+    public observe(element: Element) {
+        this.elements.add(element);
+    }
+
+    public unobserve(element: Element) {
+        this.elements.delete(element);
+    }
+
+    public disconnect() {
+        this.elements.clear();
+    }
+
+    private trigger() {
+        if (this.elements.size > 0) {
+            this.callback([], this);
+        }
+    }
+}
+
+describe("<OverflowList>", () => {
     const onOverflowSpy = vi.fn();
     let containerElement: HTMLElement;
     let wrapper: OverflowListWrapper;
+    /** Simulated width of the list, in px. Read by the `offsetWidth` mock below. */
+    let listWidth = 0;
+    let originalOffsetWidth: PropertyDescriptor | undefined;
+    let originalResizeObserver: typeof globalThis.ResizeObserver | undefined;
 
     beforeEach(() => {
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
+
+        originalResizeObserver = globalThis.ResizeObserver;
+        MockResizeObserver.instances = [];
+        globalThis.ResizeObserver = MockResizeObserver;
+
+        originalOffsetWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "offsetWidth");
+        Object.defineProperty(HTMLElement.prototype, "offsetWidth", {
+            configurable: true,
+            get(this: HTMLElement) {
+                if (!this.classList.contains(Classes.OVERFLOW_LIST_SPACER)) {
+                    return 0;
+                }
+                const list = this.parentElement;
+                if (list == null) {
+                    return 0;
+                }
+                const visibleCount = list.querySelectorAll(`.${VISIBLE_ITEM_CLASS}`).length;
+                // the spacer only keeps its 1px width while the visible items still fit
+                return listWidth - visibleCount * ITEM_WIDTH >= 1 ? 1 : 0;
+            },
+        });
     });
 
     afterEach(() => {
@@ -49,6 +126,12 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
         wrapper?.detach();
         containerElement.remove();
         onOverflowSpy.mockClear();
+
+        if (originalOffsetWidth !== undefined) {
+            Object.defineProperty(HTMLElement.prototype, "offsetWidth", originalOffsetWidth);
+        }
+        globalThis.ResizeObserver = originalResizeObserver!;
+        MockResizeObserver.instances = [];
     });
 
     it("adds className to itself", () => {
@@ -63,7 +146,8 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
         overflowList().assertVisibleItemSplit(4);
     });
 
-    it("overflows correctly on initial mount with large number of items", () => {
+    // rendering 10k items through the measurement loop is slow under jsdom
+    it("overflows correctly on initial mount with large number of items", { timeout: 30_000 }, () => {
         overflowList(45, { items: new Array(10000).fill(0).map((_, i) => ({ id: i })) }).assertVisibleItemSplit(4);
     });
 
@@ -145,6 +229,14 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
             expect(onOverflowSpy).toHaveBeenCalledTimes(tests.length);
         });
 
+        it("invoked with no items once the list stops overflowing", async () => {
+            await overflowList(22).waitForResize();
+            wrapper.assertLastOnOverflowArgs([0, 1, 2, 3]);
+            // growing the list until everything fits must report the now-empty overflow
+            await wrapper.setWidth(200).waitForResize();
+            wrapper.assertLastOnOverflowArgs([]);
+        });
+
         it("not invoked if resize doesn't change overflow", async () => {
             // show a few items
             await overflowList(22).waitForResize();
@@ -190,6 +282,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
     }
 
     function overflowList(initialWidth = 45, props: Partial<OverflowProps> = {}) {
+        listWidth = initialWidth;
         wrapper = mount<OverflowProps, OverflowListState<TestItemProps>>(
             <OverflowList
                 items={ITEMS}
@@ -247,7 +340,12 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
         };
 
         wrapper.setWidth = (width: number) => {
-            return wrapper.setProps({ style: { width } });
+            listWidth = width;
+            act(() => {
+                wrapper.setProps({ style: { height: 10, width } });
+                MockResizeObserver.triggerAll();
+            });
+            return wrapper;
         };
 
         /** Promise that resolves after DOM has a chance to settle. */
