@@ -32,29 +32,27 @@ $control-indicator-size-large: $pt-icon-size-large !default;
 // second box-shadow of $pt-input-box-shadow
 $input-box-shadow-focus: inset 0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 
-// for best visual results, button group and control group elements should be
-// stacked in the following order to ensure sharp edges in all cases and states:
-
-$control-group-stack: (
-  // lowest z-index
-  "input-disabled",
-  "input-default",
-  "button-disabled",
-  "button-default",
-  "button-focus",
-  "button-hover",
-  "button-active",
-  "intent-button-disabled",
-  "intent-button-default",
-  "intent-button-focus",
-  "intent-button-hover",
-  "intent-button-active",
-  "intent-input-default",
-  "input-focus",
-  "intent-input-focus",
-  "input-group-children",
-  "select-caret"
-);
+// Z-index stacking order for ControlGroup and ButtonGroup children. Disabled
+// values sit above their corresponding interactive states so a disabled
+// element's border is not overdrawn by an adjacent hover/active sibling
+// (which collapses borders via negative margin).
+$control-group-z-input-disabled: 1;
+$control-group-z-input-default: 2;
+$control-group-z-button-disabled: 3;
+$control-group-z-button-default: 4;
+$control-group-z-button-focus: 5;
+$control-group-z-button-hover: 6;
+$control-group-z-button-active: 7;
+$control-group-z-intent-button-disabled: 8;
+$control-group-z-intent-button-default: 9;
+$control-group-z-intent-button-focus: 10;
+$control-group-z-intent-button-hover: 11;
+$control-group-z-intent-button-active: 12;
+$control-group-z-intent-input-default: 13;
+$control-group-z-input-focus: 14;
+$control-group-z-intent-input-focus: 15;
+$control-group-z-input-group-children: 16;
+$control-group-z-select-caret: 17;
 
 // animating shadows requires the same number of shadows in different states
 @function input-transition-shadow(
