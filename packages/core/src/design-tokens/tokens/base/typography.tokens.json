@@ -116,91 +116,30 @@
         },
         "color-muted": {
             "$type": "color",
-            "$value": "{intent.default.rest}"
+            "$value": "{intent.default}"
         },
         "color-default": {
             "$type": "color",
-            "rest": {
-                "$value": "{intent.default.rest}",
-                "$extensions": {
-                    "com.blueprint.derive": { "lightnessOffset": -0.279, "chromaOffset": -0.017, "hueOffset": -4 }
-                }
-            },
-            "hover": {
-                "$value": "{intent.default.hover}",
-                "$extensions": {
-                    "com.blueprint.derive": { "lightnessOffset": -0.209, "chromaOffset": -0.013, "hueOffset": -2.7 }
-                }
-            },
-            "active": {
-                "$value": "{intent.default.active}",
-                "$extensions": {
-                    "com.blueprint.derive": { "lightnessOffset": -0.079, "chromaOffset": -0.003, "hueOffset": -1.6 }
-                }
-            },
-            "disabled": {
-                "$value": "{intent.default.disabled}"
+            "$value": "{intent.default}",
+            "$extensions": {
+                "com.blueprint.derive": { "lightnessOffset": -0.279, "chromaOffset": -0.017, "hueOffset": -4 }
             }
         },
         "color-primary": {
             "$type": "color",
-            "rest": {
-                "$value": "{intent.primary.rest}"
-            },
-            "hover": {
-                "$value": "{intent.primary.hover}"
-            },
-            "active": {
-                "$value": "{intent.primary.active}"
-            },
-            "disabled": {
-                "$value": "{intent.primary.disabled}"
-            }
+            "$value": "{intent.primary}"
         },
         "color-success": {
             "$type": "color",
-            "rest": {
-                "$value": "{intent.success.rest}"
-            },
-            "hover": {
-                "$value": "{intent.success.hover}"
-            },
-            "active": {
-                "$value": "{intent.success.active}"
-            },
-            "disabled": {
-                "$value": "{intent.success.disabled}"
-            }
+            "$value": "{intent.success}"
         },
         "color-warning": {
             "$type": "color",
-            "rest": {
-                "$value": "{intent.warning.rest}"
-            },
-            "hover": {
-                "$value": "{intent.warning.hover}"
-            },
-            "active": {
-                "$value": "{intent.warning.active}"
-            },
-            "disabled": {
-                "$value": "{intent.warning.disabled}"
-            }
+            "$value": "{intent.warning}"
         },
         "color-danger": {
             "$type": "color",
-            "rest": {
-                "$value": "{intent.danger.rest}"
-            },
-            "hover": {
-                "$value": "{intent.danger.hover}"
-            },
-            "active": {
-                "$value": "{intent.danger.active}"
-            },
-            "disabled": {
-                "$value": "{intent.danger.disabled}"
-            }
+            "$value": "{intent.danger}"
         }
     }
 }
