@@ -708,27 +708,35 @@ export class Regions {
                     }
                 }
                 break;
-            case RegionCardinality.FULL_COLUMNS:
+            case RegionCardinality.FULL_COLUMNS: {
+                // clamp to the supplied dimensions: a region may extend past them, or be unbounded
+                const colEnd = Math.min(region.cols![1], numCols - 1);
                 for (let row = 0; row < numRows; row++) {
-                    for (let col = region.cols![0]; col <= region.cols![1]; col++) {
+                    for (let col = region.cols![0]; col <= colEnd; col++) {
                         iteratee(row, col);
                     }
                 }
                 break;
-            case RegionCardinality.FULL_ROWS:
-                for (let row = region.rows![0]; row <= region.rows![1]; row++) {
+            }
+            case RegionCardinality.FULL_ROWS: {
+                const rowEnd = Math.min(region.rows![1], numRows - 1);
+                for (let row = region.rows![0]; row <= rowEnd; row++) {
                     for (let col = 0; col < numCols; col++) {
                         iteratee(row, col);
                     }
                 }
                 break;
-            case RegionCardinality.CELLS:
-                for (let row = region.rows![0]; row <= region.rows![1]; row++) {
-                    for (let col = region.cols![0]; col <= region.cols![1]; col++) {
+            }
+            case RegionCardinality.CELLS: {
+                const rowEnd = Math.min(region.rows![1], numRows - 1);
+                const colEnd = Math.min(region.cols![1], numCols - 1);
+                for (let row = region.rows![0]; row <= rowEnd; row++) {
+                    for (let col = region.cols![0]; col <= colEnd; col++) {
                         iteratee(row, col);
                     }
                 }
                 break;
+            }
             default:
                 break;
         }
