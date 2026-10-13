@@ -11,6 +11,9 @@
   }
 
   .#{$ns}-popover-target {
+    // the popover target span is the focusable element for a submenu item, so it must carry the
+    // same border-radius as a regular menu item for its focus outline to render rounded (#6890)
+    border-radius: $menu-item-border-radius;
     display: block;
 
     &.#{$ns}-popover-open > .#{$ns}-menu-item {
