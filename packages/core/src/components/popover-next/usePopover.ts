@@ -6,10 +6,12 @@ import {
     autoUpdate,
     type Middleware,
     type Placement,
+    safePolygon,
     useClick,
     useDismiss,
     useFloating,
     type UseFloatingReturn,
+    useHover,
     useInteractions,
     type UseInteractionsReturn,
 } from "@floating-ui/react";
@@ -21,10 +23,14 @@ import type { PopoverNextAutoUpdateOptions } from "./popoverNextProps";
 interface PopoverOptions {
     autoUpdateOptions?: PopoverNextAutoUpdateOptions;
     disabled?: boolean;
+    hoverCloseDelay?: number;
+    hoverOpenDelay?: number;
+    hoverSafePolygon?: boolean;
     isControlled?: boolean;
     isHoverInteractionKind?: boolean;
     isOpen?: boolean;
     middleware?: Middleware[];
+    nodeId?: string;
     placement?: Placement;
     positioningStrategy?: PopoverNextPositioningStrategy;
     onOpenChange?: (isOpen: boolean, event?: Event) => void;
@@ -38,10 +44,14 @@ interface UsePopoverReturn extends UseFloatingReturn, UseInteractionsReturn {
 export function usePopover({
     autoUpdateOptions,
     disabled = false,
+    hoverCloseDelay,
+    hoverOpenDelay,
+    hoverSafePolygon = false,
     isControlled = false,
     isHoverInteractionKind = false,
     isOpen = false,
     middleware,
+    nodeId,
     placement,
     positioningStrategy = "absolute",
     onOpenChange,
@@ -86,6 +96,7 @@ export function usePopover({
 
     const data = useFloating({
         middleware,
+        nodeId,
         onOpenChange: handleOpenChange,
         open: isOpenState,
         placement,
@@ -95,6 +106,15 @@ export function usePopover({
 
     const { context } = data;
 
+    const hover = useHover(context, {
+        delay: { close: hoverCloseDelay, open: hoverOpenDelay },
+        enabled: !disabled && hoverSafePolygon,
+        // Avoid activating sibling items while crossing them toward a submenu,
+        // including when the pointer moves slowly.
+        handleClose: safePolygon({ blockPointerEvents: true, requireIntent: false }),
+        // Match the existing behavior: only reopen after re-entering the target.
+        move: false,
+    });
     const click = useClick(context, {
         enabled: !disabled && !isHoverInteractionKind,
         // Disable Floating UI's built-in Space/Enter keyboard handlers because they
@@ -122,7 +142,7 @@ export function usePopover({
         outsidePress: false,
     });
 
-    const interactions = useInteractions([click, dismiss]);
+    const interactions = useInteractions([hover, click, dismiss]);
 
     return useMemo(
         () => ({
