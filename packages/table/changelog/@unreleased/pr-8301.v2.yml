@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: '[table] Clamp cell enumeration to the supplied table dimensions'
+  links:
+  - https://github.com/palantir/blueprint/pull/8301
