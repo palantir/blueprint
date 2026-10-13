@@ -1,0 +1,3 @@
+<CheckboxCard disabled={true}>Soup</CheckboxCard>
+<CheckboxCard disabled={true}>Salad</CheckboxCard>
+<CheckboxCard disabled={true}>Sandwich</CheckboxCard>
