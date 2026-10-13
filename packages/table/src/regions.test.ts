@@ -290,6 +290,28 @@ describe("Regions", () => {
         ]);
     });
 
+    it("enumerates cells within the supplied dimensions", () => {
+        // a region can extend past the current dimensions, e.g. a controlled `selectedRegions`
+        // prop which still covers a column that has since been removed from the table.
+        expect(Regions.enumerateUniqueCells([Regions.column(0, 5)], 2, 2)).to.deep.equal([
+            [0, 0],
+            [0, 1],
+            [1, 0],
+            [1, 1],
+        ]);
+        expect(Regions.enumerateUniqueCells([Regions.cell(0, 0, 9, 9)], 1, 2)).to.deep.equal([
+            [0, 0],
+            [0, 1],
+        ]);
+    });
+
+    it("does not hang when enumerating cells of an unbounded region", () => {
+        expect(Regions.enumerateUniqueCells([Regions.row(0, Infinity)], 2, 1)).to.deep.equal([
+            [0, 0],
+            [1, 0],
+        ]);
+    });
+
     it("sparsely maps cells", () => {
         const cells = [
             [0, 0],
