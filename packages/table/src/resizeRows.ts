@@ -159,8 +159,10 @@ export function resizeRowsByTallestCell(
         }
     } else {
         const columnIndicesArray = Array.isArray(columnIndices) ? columnIndices : [columnIndices];
-        const tallestByColumns = columnIndicesArray.map(col => locator.getTallestVisibleCellInColumn(col));
-        tallest = Math.max(...tallestByColumns);
+        if (columnIndicesArray.length > 0) {
+            const tallestByColumns = columnIndicesArray.map(col => locator.getTallestVisibleCellInColumn(col));
+            tallest = Math.max(...tallestByColumns);
+        }
     }
     return Array(numRows).fill(tallest);
 }

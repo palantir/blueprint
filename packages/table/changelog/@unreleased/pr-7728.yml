@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Fix `resizeRowsByTallestCell` returning -Infinity height when called with empty array
+  links:
+    - https://github.com/palantir/blueprint/pull/7728
