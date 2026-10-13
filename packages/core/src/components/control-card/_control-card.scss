@@ -53,3 +53,22 @@
     padding: $card-padding-compact;
   }
 }
+
+.#{$ns}-control-card-group {
+  display: flex;
+  flex-direction: column;
+  gap: $pt-spacing * 2;
+
+  &.#{$ns}-inline {
+    flex-flow: row wrap;
+
+    > .#{$ns}-control-card {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    > .#{$ns}-label {
+      flex-basis: 100%;
+    }
+  }
+}
