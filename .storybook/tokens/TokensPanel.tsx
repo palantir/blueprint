@@ -32,6 +32,7 @@ const TokenNameLabel = styled.code({ fontSize: 11, overflowWrap: "anywhere" });
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
+    const [customFonts, setCustomFonts] = React.useState<Partial<Record<TokenName, boolean>>>({});
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
     const names = useParameter<TokenName[]>("themeTokens", TOKEN_NAMES);
@@ -49,9 +50,12 @@ export function TokensPanel() {
 
     const resetTokens = () => {
         const overrides = { ...tokenOverrides };
+        const custom = { ...customFonts };
         for (const name of names) {
             delete overrides[name];
+            delete custom[name];
         }
+        setCustomFonts(custom);
         updateGlobals({ tokenOverrides: overrides });
     };
 
@@ -62,7 +66,7 @@ export function TokensPanel() {
     return (
         <Panel>
             <IconButton
-                disabled={!names.some(name => tokenOverrides[name] !== undefined)}
+                disabled={!names.some(name => tokenOverrides[name] !== undefined || customFonts[name])}
                 onClick={resetTokens}
                 variant="ghost"
             >
@@ -72,6 +76,11 @@ export function TokensPanel() {
                 const editor = TOKEN_CONFIG[name];
                 const override = tokenOverrides[name];
                 const value = override ? editor.toControlValue(override) : editor.defaultValue;
+                const isCustom =
+                    customFonts[name] ||
+                    (editor.options !== undefined &&
+                        override !== undefined &&
+                        !Object.values(editor.options).includes(override));
                 const NumberEditor = editor.control.type === "range" ? RangeControl : NumberControl;
                 return (
                     <TokenRow key={name}>
@@ -81,8 +90,11 @@ export function TokensPanel() {
                             </label>
                             <IconButton
                                 ariaLabel={`Reset ${name}`}
-                                disabled={override === undefined}
-                                onClick={() => updateToken(name, undefined)}
+                                disabled={override === undefined && !customFonts[name]}
+                                onClick={() => {
+                                    setCustomFonts(current => ({ ...current, [name]: false }));
+                                    updateToken(name, undefined);
+                                }}
                                 size="small"
                                 variant="ghost"
                             >
@@ -93,26 +105,35 @@ export function TokensPanel() {
                             <>
                                 <Form.Select
                                     id={`control-${name}`}
-                                    onChange={event => updateToken(name, event.currentTarget.value)}
-                                    value={value ?? ""}
+                                    onChange={event => {
+                                        const nextValue = event.currentTarget.value;
+                                        const custom = nextValue === "__custom__";
+                                        setCustomFonts(current => ({ ...current, [name]: custom }));
+                                        if (!custom) {
+                                            updateToken(name, nextValue);
+                                        }
+                                    }}
+                                    value={isCustom ? "__custom__" : (value ?? "")}
                                 >
-                                    {override && !Object.values(editor.options).includes(override) && (
-                                        <option value={override}>Custom font stack</option>
-                                    )}
                                     {Object.entries(editor.options).map(([label, optionValue]) => (
                                         <option key={label} value={optionValue}>
                                             {label}
                                         </option>
                                     ))}
+                                    <option value="__custom__">Add custom…</option>
                                 </Form.Select>
-                                <Form.Input
-                                    aria-label={`Custom font stack for ${name}`}
-                                    onChange={event => updateToken(name, event.currentTarget.value)}
-                                    placeholder="Custom CSS font stack"
-                                    style={{ marginTop: 6 }}
-                                    type="text"
-                                    value={value ?? ""}
-                                />
+                                {isCustom && (
+                                    <Form.Input
+                                        aria-label={`Custom font stack for ${name}`}
+                                        // Focus only after explicitly choosing Add custom.
+                                        autoFocus={customFonts[name] === true}
+                                        onChange={event => updateToken(name, event.currentTarget.value)}
+                                        placeholder="Custom CSS font stack"
+                                        style={{ marginTop: 6 }}
+                                        type="text"
+                                        value={value ?? ""}
+                                    />
+                                )}
                             </>
                         ) : (
                             <NumberEditor
