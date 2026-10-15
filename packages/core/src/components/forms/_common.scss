@@ -88,7 +88,7 @@ $control-group-stack: (
   appearance: none;
   background: var(--bp-surface-background-color-default-rest);
   border: none;
-  border-radius: var(--bp-surface-border-radius);
+  border-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
   box-shadow:
     inset 0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0),
     0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0),

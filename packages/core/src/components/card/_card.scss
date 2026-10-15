@@ -7,7 +7,7 @@
 
 .#{$ns}-card {
   background-color: var(--bp-surface-background-color-default-rest);
-  border-radius: var(--bp-surface-border-radius);
+  border-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
   box-shadow: var(--bp-surface-shadow-0);
   padding: calc(var(--bp-surface-spacing) * 5);
   transition:

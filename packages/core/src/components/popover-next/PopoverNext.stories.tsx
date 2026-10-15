@@ -656,7 +656,7 @@ export const UsePortalExample: Story = {
             <div
                 style={{
                     border: "2px dashed var(--bp-surface-border-color-default)",
-                    borderRadius: "var(--bp-surface-border-radius)",
+                    borderRadius: "var(--bp-border-radius, var(--bp-surface-border-radius))",
                     width: 400,
                     height: 250,
                     overflow: "auto",
@@ -702,7 +702,7 @@ export const BoundaryExample: Story = {
                 ref={setBoundary}
                 style={{
                     border: "2px dashed var(--bp-surface-border-color-default)",
-                    borderRadius: "var(--bp-surface-border-radius)",
+                    borderRadius: "var(--bp-border-radius, var(--bp-surface-border-radius))",
                     width: 400,
                     height: 250,
                     overflow: "auto",

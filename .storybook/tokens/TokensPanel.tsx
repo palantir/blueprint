@@ -2,68 +2,155 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { PureArgsTable } from "@storybook/addon-docs/blocks";
-import type { ArgTypes } from "@storybook/react-vite";
+import { RangeControl } from "@storybook/addon-docs/blocks";
 // This panel uses the manager's separate build config and classic JSX runtime.
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
-import React, { useMemo } from "react";
+import React from "react";
+import { IconButton, Loader } from "storybook/internal/components";
 import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import { styled } from "storybook/theming";
 
-import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, type TokenValues } from "./tokens";
+import { TOKEN_CONFIG, TOKEN_NAMES, type TokenName, type TokenValues } from "./tokens";
+
+const LoadingWrapper = styled.div({
+    alignItems: "center",
+    display: "flex",
+    height: "100%",
+    justifyContent: "center",
+});
+
+const TableWrapper = styled.div({ overflowX: "auto" });
+
+const TokensTable = styled.table(({ theme }) => ({
+    borderCollapse: "collapse",
+    color: theme.color.defaultText,
+    fontSize: theme.typography.size.s2 - 1,
+    width: "100%",
+
+    "th, td": {
+        borderBottom: `1px solid ${theme.appBorderColor}`,
+        padding: "10px 15px",
+    },
+
+    th: {
+        color: theme.textMutedColor,
+        fontWeight: theme.typography.weight.bold,
+        textAlign: "left",
+    },
+
+    "th:last-of-type, td:last-of-type": {
+        paddingLeft: 0,
+        width: 32,
+    },
+}));
+
+const TokenNameLabel = styled.code({ whiteSpace: "nowrap" });
+const ResetGlyph = styled.span({ fontSize: 16, lineHeight: 1 });
+
+interface TokenRowProps {
+    name: TokenName;
+    onResetToken: (name: TokenName) => void;
+    onUpdateToken: (name: TokenName, value: number | undefined) => void;
+    overrideValue: string | undefined;
+}
+
+function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
+    const editor = TOKEN_CONFIG[name];
+    const hasOverride = overrideValue !== undefined && overrideValue !== "";
+    const controlValue = hasOverride ? editor.toControlValue(overrideValue) : undefined;
+    const handleChange = React.useCallback(
+        (value: number | undefined) => onUpdateToken(name, value ?? undefined),
+        [name, onUpdateToken],
+    );
+    const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
+
+    return (
+        <tr>
+            <td>
+                <TokenNameLabel>{name}</TokenNameLabel>
+            </td>
+            <td>
+                <RangeControl {...editor.control} name={name} onChange={handleChange} value={controlValue} />
+            </td>
+            <td>
+                <IconButton
+                    ariaLabel={`Reset ${name}`}
+                    disabled={!hasOverride}
+                    onClick={handleReset}
+                    padding="small"
+                    size="small"
+                    variant="ghost"
+                >
+                    <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
+                </IconButton>
+            </td>
+        </tr>
+    );
+}
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
-    const tokenValues = useMemo(
-        () =>
-            Object.fromEntries(
-                TOKEN_NAMES.flatMap(name => {
-                    const overrideValue = tokenOverrides?.[name];
-                    return overrideValue === undefined || overrideValue === ""
-                        ? []
-                        : [[name, TOKEN_CONFIG[name].toControlValue(overrideValue)]];
-                }),
-            ),
-        [tokenOverrides],
+    const tokenOverrides: Partial<TokenValues> = React.useMemo(
+        () => globals.tokenOverrides ?? {},
+        [globals.tokenOverrides],
     );
 
-    const handleUpdateArgs = React.useCallback(
-        (updates: Partial<TokenControlValues>) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            for (const name of TOKEN_NAMES) {
-                const value = updates[name];
-                if (value !== undefined) {
-                    overrides[name] = TOKEN_CONFIG[name].toCssValue(value);
-                }
+    const handleUpdateToken = React.useCallback(
+        (name: TokenName, value: number | undefined) => {
+            if (value !== undefined) {
+                updateGlobals({
+                    tokenOverrides: {
+                        ...tokenOverrides,
+                        [name]: TOKEN_CONFIG[name].toCssValue(value),
+                    },
+                });
             }
+        },
+        [tokenOverrides, updateGlobals],
+    );
+
+    const handleResetToken = React.useCallback(
+        (name: TokenName) => {
+            const overrides: Partial<TokenValues> = { ...tokenOverrides };
+            delete overrides[name];
             updateGlobals({ tokenOverrides: overrides });
         },
         [tokenOverrides, updateGlobals],
     );
 
-    const rows = useMemo(
-        () =>
-            TOKEN_NAMES.reduce<ArgTypes>((acc, key) => {
-                acc[key] = {
-                    control: TOKEN_CONFIG[key].control,
-                    name: key,
-                };
-                return acc;
-            }, {}),
-        [],
-    );
+    if (!isStoryPrepared) {
+        return (
+            <LoadingWrapper>
+                <Loader size={32} />
+            </LoadingWrapper>
+        );
+    }
 
     return (
-        <PureArgsTable
-            compact={true}
-            args={tokenValues}
-            inAddonPanel={true}
-            isLoading={!isStoryPrepared}
-            rows={rows}
-            updateArgs={handleUpdateArgs}
-        />
+        <TableWrapper>
+            <TokensTable>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Control</th>
+                        <th aria-label="Reset" />
+                    </tr>
+                </thead>
+                <tbody>
+                    {TOKEN_NAMES.map(name => (
+                        <TokenRow
+                            key={name}
+                            name={name}
+                            onResetToken={handleResetToken}
+                            onUpdateToken={handleUpdateToken}
+                            overrideValue={tokenOverrides[name]}
+                        />
+                    ))}
+                </tbody>
+            </TokensTable>
+        </TableWrapper>
     );
 }

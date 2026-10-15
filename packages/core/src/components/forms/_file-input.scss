@@ -112,7 +112,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     @include pt-button-default-colors;
     @include pt-button-height(calc(var(--bp-surface-spacing) * 6));
     @include overflow-ellipsis;
-    border-radius: var(--bp-surface-border-radius);
+    border-radius: var(--bp-border-radius, var(--bp-surface-border-radius));
     content: "Browse";
     line-height: calc(var(--bp-surface-spacing) * 6);
     margin: calc(var(--bp-surface-spacing) * 0.75);
