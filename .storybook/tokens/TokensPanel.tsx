@@ -7,10 +7,17 @@ import type { ArgTypes } from "@storybook/react-vite";
 // This panel uses the manager's separate build config and classic JSX runtime.
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
-import React, { useMemo } from "react";
-import { useGlobals, useParameter, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import React, { useEffect, useMemo, useState } from "react";
+import { useChannel, useGlobals, useParameter, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 
-import { TOKEN_CONFIG, type TokenControlValues, type TokenName, type TokenValues } from "./tokens";
+import {
+    TOKEN_CONFIG,
+    TOKEN_VALUES_CHANGED,
+    TOKEN_VALUES_REQUEST,
+    type TokenControlValues,
+    type TokenName,
+    type TokenValues,
+} from "./tokens";
 
 const DEFAULT_TOKEN_NAMES: TokenName[] = ["--bp-surface-border-radius"];
 
@@ -20,6 +27,13 @@ export function TokensPanel() {
     const isStoryPrepared = useStoryPrepared(storyId);
     const tokenNames = useParameter<TokenName[]>("themeTokens", DEFAULT_TOKEN_NAMES);
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
+    const [resolvedValues, setResolvedValues] = useState<Partial<TokenValues>>({});
+    const emit = useChannel({ [TOKEN_VALUES_CHANGED]: setResolvedValues }, []);
+    useEffect(() => {
+        if (isStoryPrepared) {
+            emit(TOKEN_VALUES_REQUEST);
+        }
+    }, [emit, isStoryPrepared, storyId]);
     const tokenValues = useMemo(
         () =>
             Object.fromEntries(
@@ -28,12 +42,12 @@ export function TokensPanel() {
                     return [
                         name,
                         overrideValue === undefined || overrideValue === ""
-                            ? TOKEN_CONFIG[name].defaultValue
+                            ? resolvedValues[name]
                             : TOKEN_CONFIG[name].toControlValue(overrideValue),
                     ];
                 }),
             ),
-        [tokenNames, tokenOverrides],
+        [resolvedValues, tokenNames, tokenOverrides],
     );
 
     const handleUpdateArgs = React.useCallback(
@@ -74,6 +88,7 @@ export function TokensPanel() {
                 acc[key] = {
                     control: TOKEN_CONFIG[key].control,
                     name: key,
+                    table: { category: key.split("-")[3] },
                 };
                 return acc;
             }, {}),

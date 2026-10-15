@@ -7,7 +7,7 @@ import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { TOKEN_NAMES } from "../../../../../.storybook/tokens/tokens";
+import { COLOR_TOKEN_NAMES } from "../../../../../.storybook/tokens/tokens";
 import { Intent } from "../../common";
 
 import { Callout } from "./callout";
@@ -18,7 +18,7 @@ const meta: Meta<typeof Callout> = {
     decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     parameters: {
-        themeTokens: TOKEN_NAMES,
+        themeTokens: COLOR_TOKEN_NAMES,
     },
     args: {
         children: "This is a callout with some informational content.",
@@ -184,24 +184,15 @@ export const AllIntentsAllVariants: Story = {
 };
 
 /**
- * Compare token overrides across filled and minimal callouts.
+ * Interactive playground with all props togglable via Storybook controls.
  */
 export const Playground: Story = {
-    parameters: {
-        docs: {
-            description: {
-                story: "Use the Theme panel to edit Callout tokens. Compare all intents and minimal variants here, then use the Compact and Icons stories to check spacing and alignment. Clear a color or font field, or use Reset controls, to restore the theme defaults.",
-            },
-        },
-    },
-    argTypes: {
-        ...AllIntentsAllVariants.argTypes,
-        children: { table: { disable: true } },
-        title: { table: { disable: true } },
-    },
     args: {
+        children: "Adjust the controls to customize this callout.",
+        intent: "primary",
+        title: "Playground Callout",
         icon: undefined,
         compact: false,
+        minimal: false,
     },
-    render: AllIntentsAllVariants.render,
 };
