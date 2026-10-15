@@ -2,84 +2,129 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { PureArgsTable } from "@storybook/addon-docs/blocks";
-import type { ArgTypes } from "@storybook/react-vite";
+/* eslint-disable react/jsx-no-bind -- Six lightweight manager controls do not need memoized callbacks. */
+/** @jsxRuntime classic */
+
+import { NumberControl, RangeControl } from "@storybook/addon-docs/blocks";
 // This panel uses the manager's separate build config and classic JSX runtime.
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
-import React, { useMemo } from "react";
-import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import React from "react";
+import { Form, IconButton, Loader } from "storybook/internal/components";
+import { useGlobals, useParameter, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import { styled } from "storybook/theming";
 
-import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, type TokenValues } from "./tokens";
+import { TOKEN_CONFIG, TOKEN_NAMES, type TokenName, type TokenValues } from "./tokens";
+
+const Panel = styled.div({ padding: 12 });
+const TokenRow = styled.div(({ theme }) => ({
+    borderTop: `1px solid ${theme.appBorderColor}`,
+    padding: "10px 0",
+}));
+const TokenLabel = styled.div({
+    alignItems: "center",
+    display: "flex",
+    gap: 4,
+    justifyContent: "space-between",
+    marginBottom: 6,
+});
+const TokenNameLabel = styled.code({ fontSize: 11, overflowWrap: "anywhere" });
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
-    const tokenValues = useMemo(
-        () =>
-            Object.fromEntries(
-                TOKEN_NAMES.flatMap(name => {
-                    const overrideValue = tokenOverrides?.[name];
-                    const value =
-                        overrideValue === undefined || overrideValue === ""
-                            ? TOKEN_CONFIG[name].defaultValue
-                            : TOKEN_CONFIG[name].toControlValue(overrideValue);
-                    return value === undefined ? [] : [[name, value]];
-                }),
-            ),
-        [tokenOverrides],
-    );
+    const names = useParameter<TokenName[]>("themeTokens", TOKEN_NAMES);
+    const tokenOverrides: Partial<TokenValues> = globals.tokenOverrides ?? {};
 
-    const handleUpdateArgs = React.useCallback(
-        (updates: Partial<TokenControlValues>) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            for (const name of TOKEN_NAMES) {
-                const value = updates[name];
-                if (value !== undefined) {
-                    overrides[name] = TOKEN_CONFIG[name].toCssValue(value);
-                }
-            }
-            updateGlobals({ tokenOverrides: overrides });
-        },
-        [tokenOverrides, updateGlobals],
-    );
+    const updateToken = (name: TokenName, value: string | number | null | undefined) => {
+        const overrides = { ...tokenOverrides };
+        if (value == null || value === "") {
+            delete overrides[name];
+        } else {
+            overrides[name] = TOKEN_CONFIG[name].toCssValue(value);
+        }
+        updateGlobals({ tokenOverrides: overrides });
+    };
 
-    const handleResetArgs = React.useCallback(
-        (names: string[] = TOKEN_NAMES) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            for (const name of TOKEN_NAMES) {
-                if (names.includes(name)) {
-                    delete overrides[name];
-                }
-            }
-            updateGlobals({ tokenOverrides: overrides });
-        },
-        [tokenOverrides, updateGlobals],
-    );
+    const resetTokens = () => {
+        const overrides = { ...tokenOverrides };
+        for (const name of names) {
+            delete overrides[name];
+        }
+        updateGlobals({ tokenOverrides: overrides });
+    };
 
-    const rows = useMemo(
-        () =>
-            TOKEN_NAMES.reduce<ArgTypes>((acc, key) => {
-                acc[key] = {
-                    control: TOKEN_CONFIG[key].control,
-                    name: key,
-                };
-                return acc;
-            }, {}),
-        [],
-    );
+    if (!isStoryPrepared) {
+        return <Loader />;
+    }
 
     return (
-        <PureArgsTable
-            compact={true}
-            args={tokenValues}
-            inAddonPanel={true}
-            isLoading={!isStoryPrepared}
-            resetArgs={handleResetArgs}
-            rows={rows}
-            updateArgs={handleUpdateArgs}
-        />
+        <Panel>
+            <IconButton
+                disabled={!names.some(name => tokenOverrides[name] !== undefined)}
+                onClick={resetTokens}
+                variant="ghost"
+            >
+                Reset all
+            </IconButton>
+            {names.map(name => {
+                const editor = TOKEN_CONFIG[name];
+                const override = tokenOverrides[name];
+                const value = override ? editor.toControlValue(override) : editor.defaultValue;
+                const NumberEditor = editor.control.type === "range" ? RangeControl : NumberControl;
+                return (
+                    <TokenRow key={name}>
+                        <TokenLabel>
+                            <label htmlFor={`control-${name}`}>
+                                <TokenNameLabel>{name}</TokenNameLabel>
+                            </label>
+                            <IconButton
+                                ariaLabel={`Reset ${name}`}
+                                disabled={override === undefined}
+                                onClick={() => updateToken(name, undefined)}
+                                size="small"
+                                variant="ghost"
+                            >
+                                <span aria-hidden={true}>↺</span>
+                            </IconButton>
+                        </TokenLabel>
+                        {editor.options ? (
+                            <>
+                                <Form.Select
+                                    id={`control-${name}`}
+                                    onChange={event => updateToken(name, event.currentTarget.value)}
+                                    value={value ?? ""}
+                                >
+                                    {override && !Object.values(editor.options).includes(override) && (
+                                        <option value={override}>Custom font stack</option>
+                                    )}
+                                    {Object.entries(editor.options).map(([label, optionValue]) => (
+                                        <option key={label} value={optionValue}>
+                                            {label}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                                <Form.Input
+                                    aria-label={`Custom font stack for ${name}`}
+                                    onChange={event => updateToken(name, event.currentTarget.value)}
+                                    placeholder="Custom CSS font stack"
+                                    style={{ marginTop: 6 }}
+                                    type="text"
+                                    value={value ?? ""}
+                                />
+                            </>
+                        ) : (
+                            <NumberEditor
+                                {...editor.control}
+                                name={name}
+                                onChange={nextValue => updateToken(name, nextValue)}
+                                value={typeof value === "number" ? value : undefined}
+                            />
+                        )}
+                    </TokenRow>
+                );
+            })}
+        </Panel>
     );
 }

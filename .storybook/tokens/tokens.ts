@@ -2,8 +2,6 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import type { ArgTypes } from "@storybook/react-vite";
-
 import typographyTokens from "../../packages/core/src/design-tokens/tokens/base/typography.tokens.json";
 
 export const TOKEN_CONFIG = {
@@ -14,12 +12,27 @@ export const TOKEN_CONFIG = {
         toCssValue: value => `${value}px`,
     }),
     "--bp-typography-family-default": tokenEditor<string>({
-        control: { type: "text" },
+        control: { type: "select" },
+        defaultValue: "",
+        options: {
+            Arial: "Arial, Helvetica, sans-serif",
+            "Blueprint system font": "",
+            "Courier New": '"Courier New", Courier, monospace',
+            Georgia: "Georgia, serif",
+            "Times New Roman": '"Times New Roman", Times, serif',
+        },
         toControlValue: value => value,
         toCssValue: value => String(value),
     }),
     "--bp-typography-family-mono": tokenEditor<string>({
-        control: { type: "text" },
+        control: { type: "select" },
+        defaultValue: "",
+        options: {
+            "Blueprint monospace": "",
+            "Courier New": '"Courier New", Courier, monospace',
+            Menlo: "Menlo, monospace",
+            Monaco: "Monaco, monospace",
+        },
         toControlValue: value => value,
         toCssValue: value => String(value),
     }),
@@ -51,16 +64,14 @@ export const TOKEN_CONFIG = {
 
 export type TokenName = keyof typeof TOKEN_CONFIG;
 export type TokenValues = Record<TokenName, string>;
-export type TokenControlValues = {
-    [Name in TokenName]: ReturnType<(typeof TOKEN_CONFIG)[Name]["toControlValue"]>;
-};
-
 // All keys come from the module-owned configuration above.
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
+export const TYPOGRAPHY_TOKEN_NAMES = TOKEN_NAMES.filter(name => name.startsWith("--bp-typography-"));
 
 interface TokenEditor<T> {
-    control: NonNullable<ArgTypes[string]["control"]>;
+    control: { type: "number" | "range" | "select"; min?: number; max?: number; step?: number };
     defaultValue?: T;
+    options?: Record<string, string>;
     toControlValue: (cssValue: string) => T;
     toCssValue: (controlValue: string | number) => string;
 }

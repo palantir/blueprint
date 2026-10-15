@@ -1,0 +1,92 @@
+/* !
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
+ */
+
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "common/variables";
+
+.typography-playground {
+  padding: 12px;
+
+  &-grid {
+    align-items: start;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  &-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 12px;
+  }
+
+  &-headings,
+  &-row {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &-headings > .#{$ns}-heading,
+  &-stack > .#{$ns}-code-block,
+  &-row > .#{$ns}-control {
+    margin: 0;
+  }
+
+  &-calendar {
+    display: flex;
+    justify-content: center;
+    padding: 4px;
+  }
+
+  // Keep the real overlay components in the overview's document flow.
+  // Only positioning is adjusted; their typography comes from Blueprint.
+  &-dialog,
+  &-drawer {
+    isolation: isolate;
+    position: relative;
+
+    .#{$ns}-overlay.#{$ns}-overlay-inline {
+      display: block;
+      position: static;
+    }
+
+    .#{$ns}-dialog-container,
+    .#{$ns}-drawer {
+      position: static;
+    }
+
+    .#{$ns}-dialog {
+      margin: 0;
+      width: 100%;
+    }
+
+    .#{$ns}-overlay-backdrop {
+      display: none;
+    }
+
+    .#{$ns}-dialog-body {
+      margin: 12px;
+    }
+
+    .#{$ns}-drawer-body {
+      padding: 12px;
+    }
+  }
+
+  @media (width <= 780px) {
+    &-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (width <= 520px) {
+    &-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}
