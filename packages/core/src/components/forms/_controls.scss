@@ -1,8 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:list";
-@use "sass:map";
 @use "sass:math";
 @import "../../common/mixins";
 @import "../../common/variables";
@@ -17,12 +15,18 @@ $dark-control-background-color-hover: $minimal-button-background-color-hover !de
 $dark-control-background-color-active: $minimal-button-background-color-active !default;
 $dark-control-background-color-disabled: $minimal-button-background-color-hover !default;
 
-$control-checked-background-color: list.nth(map.get($button-intents, "primary"), 1) !default;
-$control-checked-background-color-hover: list.nth(map.get($button-intents, "primary"), 2) !default;
-$control-checked-background-color-active: list.nth(map.get($button-intents, "primary"), 3) !default;
+$control-checked-background-color: var(--bp-intent-primary-rest) !default;
+$control-checked-background-color-hover: var(--bp-intent-primary-hover) !default;
+$control-checked-background-color-active: var(--bp-intent-primary-active) !default;
 $control-checked-background-color-disabled: color-mix(
   in srgb,
   $control-checked-background-color 50%,
+  transparent
+) !default;
+$control-checked-foreground-color: var(--bp-intent-primary-foreground) !default;
+$control-checked-foreground-color-disabled: color-mix(
+  in srgb,
+  $control-checked-foreground-color 60%,
   transparent
 ) !default;
 
@@ -41,7 +45,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color;
     box-shadow: $control-checked-box-shadow;
-    color: var(--bp-palette-white);
+    color: $control-checked-foreground-color;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       background-color: $pt-high-contrast-mode-active-background-color;
@@ -66,7 +70,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   input:disabled#{$selector} ~ .#{$ns}-control-indicator {
     background: $control-checked-background-color-disabled;
     box-shadow: none;
-    color: color-mix(in srgb, var(--bp-palette-white) 60%, transparent);
+    color: $control-checked-foreground-color-disabled;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       background-color: $pt-high-contrast-mode-disabled-border-color;
@@ -97,7 +101,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     input:disabled#{$selector} ~ .#{$ns}-control-indicator {
       background: $control-checked-background-color-disabled;
       box-shadow: none;
-      color: color-mix(in srgb, var(--bp-palette-white) 60%, transparent);
+      color: $control-checked-foreground-color-disabled;
     }
   }
 }
@@ -306,8 +310,8 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
     input:checked ~ .#{$ns}-control-indicator::before {
       background-image: radial-gradient(
-        var(--bp-palette-white),
-        var(--bp-palette-white) 28%,
+        $control-checked-foreground-color,
+        $control-checked-foreground-color 28%,
         transparent 32%
       );
 
@@ -354,12 +358,8 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
   $switch-text-color: $pt-text-color !default;
   $switch-text-color-disabled: $pt-text-color-disabled !default;
-  $switch-checked-text-color: var(--bp-palette-white) !default;
-  $switch-checked-text-color-disabled: color-mix(
-    in srgb,
-    var(--bp-palette-white) 60%,
-    transparent
-  ) !default;
+  $switch-checked-text-color: $control-checked-foreground-color !default;
+  $switch-checked-text-color-disabled: $control-checked-foreground-color-disabled !default;
   $switch-background-color: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent) !default;
   $switch-background-color-hover: color-mix(
     in srgb,
@@ -379,15 +379,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   $switch-checked-background-color: $control-checked-background-color !default;
   $switch-checked-background-color-hover: $control-checked-background-color-hover !default;
   $switch-checked-background-color-active: $control-checked-background-color-active !default;
-  $switch-checked-background-color-disabled: color-mix(
-    in srgb,
-    var(--bp-palette-blue-3) 50%,
-    transparent
-  ) !default;
+  $switch-checked-background-color-disabled: $control-checked-background-color-disabled !default;
 
   $dark-switch-text-color: $pt-dark-text-color !default;
   $dark-switch-text-color-disabled: $pt-dark-text-color-disabled !default;
-  $dark-switch-checked-text-color: var(--bp-palette-white) !default;
+  $dark-switch-checked-text-color: $control-checked-foreground-color !default;
   $dark-switch-checked-text-color-disabled: $pt-dark-text-color-disabled !default;
 
   $switch-indicator-background-color: color-mix(
