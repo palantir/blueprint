@@ -11,6 +11,11 @@ export const TOKEN_CONFIG = {
         toControlValue: value => Number.parseFloat(value),
         toCssValue: value => `${value}px`,
     }),
+    "--bp-typography-family-default": tokenEditor<string>({
+        control: { type: "text" },
+        toControlValue: value => value,
+        toCssValue: value => value,
+    }),
 } as const satisfies Record<`--${string}`, TokenEditor<number> | TokenEditor<string>>;
 
 export type TokenName = keyof typeof TOKEN_CONFIG;
@@ -21,6 +26,11 @@ export type TokenControlValues = {
 
 // All keys come from the module-owned configuration above.
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
+
+export function tokenControlValueToCss<Name extends TokenName>(name: Name, value: TokenControlValues[Name]): string {
+    const editors: { [Key in TokenName]: TokenEditor<TokenControlValues[Key]> } = TOKEN_CONFIG;
+    return editors[name].toCssValue(value);
+}
 
 interface TokenEditor<T> {
     control: NonNullable<ArgTypes[string]["control"]>;

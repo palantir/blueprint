@@ -10,7 +10,7 @@ import type { ArgTypes } from "@storybook/react-vite";
 import React, { useMemo } from "react";
 import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 
-import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, type TokenValues } from "./tokens";
+import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, tokenControlValueToCss, type TokenValues } from "./tokens";
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
@@ -36,7 +36,7 @@ export function TokensPanel() {
             for (const name of TOKEN_NAMES) {
                 const value = updates[name];
                 if (value !== undefined) {
-                    overrides[name] = TOKEN_CONFIG[name].toCssValue(value);
+                    overrides[name] = tokenControlValueToCss(name, value);
                 }
             }
             updateGlobals({ tokenOverrides: overrides });

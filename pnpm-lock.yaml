@@ -99,6 +99,9 @@ importers:
       http-server:
         specifier: ^14.1.1
         version: 14.1.1
+      normalize.css:
+        specifier: ^8.0.1
+        version: 8.0.1
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5

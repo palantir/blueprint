@@ -32,6 +32,18 @@ rare cases where custom styling is necessary and should be used sparingly:
 - `$pt-font-size-large`
 - `$pt-line-height`
 
+Blueprint's default font is controlled at runtime by `--bp-typography-family-default` on `:root` or `body`.
+Override this CSS token instead of `$pt-font-family` to change the font used by Blueprint text and controls:
+
+```css
+:root {
+    --bp-typography-family-default: "Helvetica Neue", Arial, sans-serif;
+}
+```
+
+Try different font stacks in Storybook's **Theme** panel. The **Core / Typography / Font Family** story includes
+text, form controls, and a portaled menu. The monospace font used for code is configured separately.
+
 ## Icon variables
 
 Most icons should be displayed using the `<Icon>` component from `@blueprintjs/icons` or the
