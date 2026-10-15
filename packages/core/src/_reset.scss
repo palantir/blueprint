@@ -21,7 +21,7 @@ html {
 body {
   @include base-typography;
   color: $pt-text-color;
-  font-family: var(--bp-typography-family-default);
+  font-family: var(--bp-font-family, var(--bp-typography-family-default));
 }
 
 p {
@@ -34,7 +34,7 @@ small {
 }
 
 strong {
-  font-weight: 600;
+  font-weight: var(--bp-font-weight-bold, var(--bp-typography-weight-bold));
 }
 
 // consistent cross-browser text selection

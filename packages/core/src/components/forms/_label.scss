@@ -24,7 +24,7 @@ label.#{$ns}-label {
 
   .#{$ns}-select select,
   .#{$ns}-html-select select {
-    font-weight: 400;
+    font-weight: var(--bp-font-weight-regular, var(--bp-typography-weight-default));
     vertical-align: top;
     width: 100%;
   }

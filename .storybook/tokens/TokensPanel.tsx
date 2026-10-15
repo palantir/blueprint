@@ -10,7 +10,7 @@ import type { ArgTypes } from "@storybook/react-vite";
 import React, { useMemo } from "react";
 import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 
-import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, tokenControlValueToCss, type TokenValues } from "./tokens";
+import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, type TokenValues } from "./tokens";
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
@@ -22,9 +22,11 @@ export function TokensPanel() {
             Object.fromEntries(
                 TOKEN_NAMES.flatMap(name => {
                     const overrideValue = tokenOverrides?.[name];
-                    return overrideValue === undefined || overrideValue === ""
-                        ? []
-                        : [[name, TOKEN_CONFIG[name].toControlValue(overrideValue)]];
+                    const value =
+                        overrideValue === undefined || overrideValue === ""
+                            ? TOKEN_CONFIG[name].defaultValue
+                            : TOKEN_CONFIG[name].toControlValue(overrideValue);
+                    return value === undefined ? [] : [[name, value]];
                 }),
             ),
         [tokenOverrides],
@@ -36,7 +38,20 @@ export function TokensPanel() {
             for (const name of TOKEN_NAMES) {
                 const value = updates[name];
                 if (value !== undefined) {
-                    overrides[name] = tokenControlValueToCss(name, value);
+                    overrides[name] = TOKEN_CONFIG[name].toCssValue(value);
+                }
+            }
+            updateGlobals({ tokenOverrides: overrides });
+        },
+        [tokenOverrides, updateGlobals],
+    );
+
+    const handleResetArgs = React.useCallback(
+        (names: string[] = TOKEN_NAMES) => {
+            const overrides: Partial<TokenValues> = { ...tokenOverrides };
+            for (const name of TOKEN_NAMES) {
+                if (names.includes(name)) {
+                    delete overrides[name];
                 }
             }
             updateGlobals({ tokenOverrides: overrides });
@@ -62,6 +77,7 @@ export function TokensPanel() {
             args={tokenValues}
             inAddonPanel={true}
             isLoading={!isStoryPrepared}
+            resetArgs={handleResetArgs}
             rows={rows}
             updateArgs={handleUpdateArgs}
         />

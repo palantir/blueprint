@@ -51,7 +51,7 @@
 
   .rdp-head_cell {
     font-size: inherit;
-    font-weight: 600;
+    font-weight: var(--bp-font-weight-bold, var(--bp-typography-weight-bold));
     padding-top: $datepicker-padding;
     text-decoration: none;
     text-transform: none;
@@ -71,7 +71,7 @@
 
     &.rdp-day_today {
       // override rdp's default of making today's date bold
-      font-weight: 400;
+      font-weight: var(--bp-font-weight-regular, var(--bp-typography-weight-default));
     }
 
     // need some extra specificity here to override rdp default styles
@@ -135,7 +135,7 @@
 .#{$ns}-datepicker-month-select,
 .#{$ns}-datepicker-year-select {
   select {
-    font-weight: 600;
+    font-weight: var(--bp-font-weight-bold, var(--bp-typography-weight-bold));
     padding-left: $datepicker-padding;
     padding-right: $pt-icon-size-standard;
 
