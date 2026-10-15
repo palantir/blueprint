@@ -120,6 +120,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
   &[aria-selected="true"] {
     border-radius: 0;
+    // Semantic exception: the hover token matches the selected underline color, not its state.
     box-shadow: inset 0 (-$tab-indicator-width) 0 var(--bp-intent-primary-hover);
   }
 
@@ -170,6 +171,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   transition-timing-function: $pt-transition-ease;
 
   .#{$ns}-tab-indicator {
+    // Semantic exception: the hover token matches the selected indicator color, not its state.
     background-color: var(--bp-surface-background-color-primary-hover);
     bottom: 0;
     height: $tab-indicator-width;
