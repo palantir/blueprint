@@ -1,54 +1,57 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:map";
 @import "../../common/variables-extended";
 
-$callout-padding: $pt-spacing * 4;
-$callout-header-margin-top: $pt-spacing * 0.5;
-$callout-padding-compact: $pt-spacing * 2;
+$callout-padding: calc(var(--bp-surface-spacing) * 4);
+$callout-header-margin-top: calc(var(--bp-surface-spacing) * 0.5);
+$callout-padding-compact: calc(var(--bp-surface-spacing) * 2);
 
 .#{$ns}-callout {
-  @include running-typography;
   border-radius: var(--bp-surface-border-radius);
+  font-family: var(--bp-typography-family-default);
+  font-size: var(--bp-typography-size-body-medium);
+  font-weight: var(--bp-typography-weight-default);
+  line-height: var(--bp-typography-line-height-large);
   padding: $callout-padding;
   position: relative;
   width: 100%;
 
   &:not(.#{$ns}-minimal) {
-    background-color: rgba($gray3, 0.15);
+    background-color: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent);
   }
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
+    padding-left: calc($callout-padding + $pt-icon-size-standard + var(--bp-surface-spacing) * 2);
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
-      color: $pt-icon-color;
+      color: var(--bp-intent-default-rest);
       left: $callout-padding;
       position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
+      top: calc($callout-padding + $callout-header-margin-top);
     }
   }
 
   // High contrast mode hides backgrounds, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: var(--bp-surface-border-width) solid $pt-high-contrast-mode-border-color;
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
+    padding-left: calc($callout-padding + $pt-icon-size-standard + var(--bp-surface-spacing) * 2);
 
     > .#{$ns}-icon:first-child {
-      color: $pt-icon-color;
+      color: var(--bp-intent-default-rest);
       left: $callout-padding;
       position: absolute;
-      top: $callout-padding + $callout-header-margin-top;
+      top: calc($callout-padding + $callout-header-margin-top);
     }
   }
 
   .#{$ns}-heading {
+    font-weight: var(--bp-typography-weight-bold);
     line-height: $pt-icon-size-standard;
     margin-bottom: 0;
     margin-top: $callout-header-margin-top;
@@ -56,7 +59,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
   &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
-      margin-bottom: $pt-spacing;
+      margin-bottom: var(--bp-surface-spacing);
     }
   }
 
@@ -64,55 +67,60 @@ $callout-padding-compact: $pt-spacing * 2;
     padding: $callout-padding-compact;
 
     &.#{$ns}-callout-icon {
-      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-spacing * 2);
+      padding-left: calc(
+        $callout-padding-compact + $pt-icon-size-standard + var(--bp-surface-spacing) * 2
+      );
 
       > .#{$ns}-icon:first-child {
         left: $callout-padding-compact;
-        top: $callout-padding-compact + $callout-header-margin-top;
+        top: calc($callout-padding-compact + $callout-header-margin-top);
       }
     }
   }
 
   .#{$ns}-dark & {
     &:not(.#{$ns}-minimal) {
-      background-color: rgba($gray3, 0.2);
+      background-color: color-mix(in srgb, var(--bp-palette-gray-3) 20%, transparent);
     }
 
     &[class*="#{$ns}-icon-"]::before,
     &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
-      color: $pt-dark-icon-color;
+      color: var(--bp-palette-gray-4);
     }
   }
 
-  @each $intent, $color in $pt-intent-colors {
+  // Existing semantic text tokens do not yet cover the BP6 dark intent colors.
+  @each $intent,
+    $palette in ("primary": "blue", "success": "green", "warning": "orange", "danger": "red")
+  {
     &.#{$ns}-intent-#{$intent} {
-      color: map.get($pt-intent-text-colors, $intent);
+      color: var(--bp-typography-color-#{$intent}-hover);
 
       &:not(.#{$ns}-minimal) {
-        background-color: rgba($color, 0.1);
+        background-color: color-mix(in srgb, var(--bp-intent-#{$intent}-rest) 10%, transparent);
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        border: 1px solid $pt-high-contrast-mode-border-color;
+        border: var(--bp-surface-border-width) solid $pt-high-contrast-mode-border-color;
       }
 
       &[class*="#{$ns}-icon-"]::before,
       > .#{$ns}-icon:first-child,
       .#{$ns}-heading {
-        color: map.get($pt-intent-text-colors, $intent);
+        color: var(--bp-typography-color-#{$intent}-hover);
       }
 
       .#{$ns}-dark & {
-        color: map.get($pt-dark-intent-text-colors, $intent);
+        color: var(--bp-palette-#{$palette}-5);
 
         &:not(.#{$ns}-minimal) {
-          background-color: rgba($color, 0.2);
+          background-color: color-mix(in srgb, var(--bp-intent-#{$intent}-rest) 20%, transparent);
         }
 
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
-          color: map.get($pt-dark-intent-text-colors, $intent);
+          color: var(--bp-palette-#{$palette}-5);
         }
       }
     }
@@ -125,18 +133,18 @@ $callout-padding-compact: $pt-spacing * 2;
       text-decoration: underline;
 
       &:hover {
-        color: $blue1;
+        color: var(--bp-typography-color-primary-active);
       }
     }
 
     .#{$ns}-dark & {
       a:hover {
-        color: $blue6;
+        color: color-mix(in srgb, var(--bp-palette-blue-5) 87%, var(--bp-palette-white));
       }
     }
   }
 
   .#{$ns}-running-text & {
-    margin: ($pt-spacing * 5) 0;
+    margin: calc(var(--bp-surface-spacing) * 5) 0;
   }
 }

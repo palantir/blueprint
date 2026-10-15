@@ -8,52 +8,76 @@ import type { ArgTypes } from "@storybook/react-vite";
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
 import React, { useMemo } from "react";
-import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import { useGlobals, useParameter, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 
-import { TOKEN_CONFIG, TOKEN_NAMES, type TokenControlValues, type TokenValues } from "./tokens";
+import { TOKEN_CONFIG, type TokenControlValues, type TokenName, type TokenValues } from "./tokens";
+
+const DEFAULT_TOKEN_NAMES: TokenName[] = ["--bp-surface-border-radius"];
 
 export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
+    const tokenNames = useParameter<TokenName[]>("themeTokens", DEFAULT_TOKEN_NAMES);
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
     const tokenValues = useMemo(
         () =>
             Object.fromEntries(
-                TOKEN_NAMES.flatMap(name => {
+                tokenNames.map(name => {
                     const overrideValue = tokenOverrides?.[name];
-                    return overrideValue === undefined || overrideValue === ""
-                        ? []
-                        : [[name, TOKEN_CONFIG[name].toControlValue(overrideValue)]];
+                    return [
+                        name,
+                        overrideValue === undefined || overrideValue === ""
+                            ? TOKEN_CONFIG[name].defaultValue
+                            : TOKEN_CONFIG[name].toControlValue(overrideValue),
+                    ];
                 }),
             ),
-        [tokenOverrides],
+        [tokenNames, tokenOverrides],
     );
 
     const handleUpdateArgs = React.useCallback(
         (updates: Partial<TokenControlValues>) => {
             const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            for (const name of TOKEN_NAMES) {
+            for (const name of tokenNames) {
+                if (!Object.hasOwn(updates, name)) {
+                    continue;
+                }
                 const value = updates[name];
-                if (value !== undefined) {
+                if (value == null || value === "") {
+                    delete overrides[name];
+                } else {
                     overrides[name] = TOKEN_CONFIG[name].toCssValue(value);
                 }
             }
             updateGlobals({ tokenOverrides: overrides });
         },
-        [tokenOverrides, updateGlobals],
+        [tokenNames, tokenOverrides, updateGlobals],
+    );
+
+    const handleResetArgs = React.useCallback(
+        (names: string[] = tokenNames) => {
+            const overrides = { ...tokenOverrides };
+            for (const name of tokenNames) {
+                if (names.includes(name)) {
+                    delete overrides[name];
+                }
+            }
+            updateGlobals({ tokenOverrides: overrides });
+        },
+        [tokenNames, tokenOverrides, updateGlobals],
     );
 
     const rows = useMemo(
         () =>
-            TOKEN_NAMES.reduce<ArgTypes>((acc, key) => {
+            tokenNames.reduce<ArgTypes>((acc, key) => {
                 acc[key] = {
                     control: TOKEN_CONFIG[key].control,
                     name: key,
                 };
                 return acc;
             }, {}),
-        [],
+        [tokenNames],
     );
 
     return (
@@ -62,6 +86,7 @@ export function TokensPanel() {
             args={tokenValues}
             inAddonPanel={true}
             isLoading={!isStoryPrepared}
+            resetArgs={handleResetArgs}
             rows={rows}
             updateArgs={handleUpdateArgs}
         />
