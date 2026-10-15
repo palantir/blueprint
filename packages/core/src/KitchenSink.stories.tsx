@@ -749,6 +749,151 @@ function KitchenSink() {
     );
 }
 
+function NonIntentComponentsShowcase() {
+    const [selectedTabId, setSelectedTabId] = useState<TabId>("general");
+    const [selectedMenuItem, setSelectedMenuItem] = useState("appearance");
+    const [selectedCard, setSelectedCard] = useState("light");
+    const [selectedRegion, setSelectedRegion] = useState("us-east");
+    const [analyticsEnabled, setAnalyticsEnabled] = useState(true);
+    const [releaseChannel, setReleaseChannel] = useState("stable");
+    const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+
+    return (
+        <main style={{ ...PAGE_STYLE, maxWidth: 1200 }}>
+            <ShowcaseSection
+                icon="style"
+                subtitle="Selected and active states for components whose appearance is not controlled by an intent prop."
+                title="Non-intent components"
+            >
+                <div style={STACK_STYLE}>
+                    <div>
+                        <H3 style={{ marginTop: 0 }}>Intent reference</H3>
+                        <div style={ROW_STYLE}>
+                            <Button>Default button</Button>
+                            <Button intent={Intent.PRIMARY}>Primary button</Button>
+                            <Button intent={Intent.PRIMARY} variant="outlined">
+                                Primary outlined
+                            </Button>
+                            <Button intent={Intent.PRIMARY} variant="minimal">
+                                Primary minimal
+                            </Button>
+                        </div>
+                    </div>
+
+                    <Divider />
+
+                    <div style={CONTENT_GRID_STYLE}>
+                        <Card elevation={Elevation.ZERO} style={STACK_STYLE}>
+                            <H3 style={{ margin: 0 }}>Navigation</H3>
+                            <Tabs
+                                animate={false}
+                                id="kitchen-sink-non-intent-tabs"
+                                onChange={setSelectedTabId}
+                                selectedTabId={selectedTabId}
+                            >
+                                <Tab id="general" panel={<p>General workspace settings.</p>} title="General" />
+                                <Tab id="members" panel={<p>Workspace member settings.</p>} title="Members" />
+                                <Tab disabled={true} id="archived" title="Archived" />
+                            </Tabs>
+                            <Menu aria-label="Theme settings">
+                                <MenuItem
+                                    active={selectedMenuItem === "appearance"}
+                                    icon="style"
+                                    onClick={() => setSelectedMenuItem("appearance")}
+                                    text="Appearance"
+                                />
+                                <MenuItem
+                                    active={selectedMenuItem === "accessibility"}
+                                    icon="eye-open"
+                                    onClick={() => setSelectedMenuItem("accessibility")}
+                                    text="Accessibility"
+                                />
+                                <MenuItem disabled={true} icon="lock" text="Organization defaults" />
+                            </Menu>
+                        </Card>
+
+                        <Card elevation={Elevation.ZERO} style={STACK_STYLE}>
+                            <H3 style={{ margin: 0 }}>Controls</H3>
+                            <Checkbox
+                                checked={analyticsEnabled}
+                                label="Usage analytics"
+                                onChange={event => setAnalyticsEnabled(event.currentTarget.checked)}
+                            />
+                            <Checkbox indeterminate={true} label="Inherited permissions" />
+                            <Checkbox checked={true} disabled={true} label="Disabled checkbox" />
+                            <RadioGroup
+                                label="Release channel"
+                                onChange={event => setReleaseChannel(event.currentTarget.value)}
+                                selectedValue={releaseChannel}
+                            >
+                                <Radio label="Stable" value="stable" />
+                                <Radio label="Preview" value="preview" />
+                                <Radio disabled={true} label="Internal" value="internal" />
+                            </RadioGroup>
+                            <Switch
+                                checked={notificationsEnabled}
+                                innerLabel="Off"
+                                innerLabelChecked="On"
+                                label="Notifications"
+                                onChange={event => setNotificationsEnabled(event.currentTarget.checked)}
+                            />
+                            <Switch checked={true} disabled={true} label="Disabled switch" />
+                        </Card>
+
+                        <Card elevation={Elevation.ZERO} style={STACK_STYLE}>
+                            <H3 style={{ margin: 0 }}>Fields and surfaces</H3>
+                            <Label>
+                                Region
+                                <HTMLSelect
+                                    fill={true}
+                                    onChange={event => setSelectedRegion(event.currentTarget.value)}
+                                    options={[
+                                        { label: "US East", value: "us-east" },
+                                        { label: "US West", value: "us-west" },
+                                        { label: "Europe", value: "eu" },
+                                    ]}
+                                    value={selectedRegion}
+                                />
+                            </Label>
+                            <div>
+                                <Label htmlFor="kitchen-sink-non-intent-file">Workspace logo</Label>
+                                <FileInput
+                                    fill={true}
+                                    inputProps={{ id: "kitchen-sink-non-intent-file" }}
+                                    text="Choose a file..."
+                                />
+                            </div>
+                            <div style={ROW_STYLE}>
+                                {["light", "dark"].map(theme => (
+                                    <Card
+                                        compact={true}
+                                        interactive={true}
+                                        key={theme}
+                                        onClick={() => setSelectedCard(theme)}
+                                        onKeyDown={event => {
+                                            if (event.key === "Enter" || event.key === " ") {
+                                                event.preventDefault();
+                                                setSelectedCard(theme);
+                                            }
+                                        }}
+                                        role="button"
+                                        selected={selectedCard === theme}
+                                        style={{ flex: "1 1 120px" }}
+                                        tabIndex={0}
+                                    >
+                                        <strong style={{ textTransform: "capitalize" }}>{theme}</strong>
+                                        <div>{selectedCard === theme ? "Selected" : "Select theme"}</div>
+                                    </Card>
+                                ))}
+                            </div>
+                        </Card>
+                    </div>
+                </div>
+            </ShowcaseSection>
+        </main>
+    );
+}
+
 const meta = {
     title: "Core/Kitchen Sink",
     parameters: {
@@ -762,4 +907,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Overview: Story = {
     render: () => <KitchenSink />,
+};
+
+export const NonIntentComponents: Story = {
+    name: "Non-intent components",
+    render: () => <NonIntentComponentsShowcase />,
 };
