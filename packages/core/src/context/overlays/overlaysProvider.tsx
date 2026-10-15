@@ -58,6 +58,8 @@ export const OverlaysContext = createContext<OverlaysContextState>({
 export interface OverlaysProviderProps {
     /** The component subtree which will have access to this overlay stack context. */
     children: React.ReactNode;
+    /** Reuse an existing stack instead of creating an independent overlay scope. */
+    value?: OverlaysContextState;
 }
 
 /**
@@ -65,8 +67,8 @@ export interface OverlaysProviderProps {
  *
  * @see https://blueprintjs.com/docs/#core/context/overlays-provider
  */
-export const OverlaysProvider = ({ children }: OverlaysProviderProps) => {
+export const OverlaysProvider = ({ children, value }: OverlaysProviderProps) => {
     const stack = useRef<OverlayInstance[]>([]);
     const contextValue = useMemo(() => ({ hasProvider: true, stack }), [stack]);
-    return <OverlaysContext.Provider value={contextValue}>{children}</OverlaysContext.Provider>;
+    return <OverlaysContext.Provider value={value ?? contextValue}>{children}</OverlaysContext.Provider>;
 };

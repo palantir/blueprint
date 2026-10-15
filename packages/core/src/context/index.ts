@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { BlueprintThemeContext, type BlueprintTheme, type BlueprintThemeTokens } from "./blueprintTheme";
 export { BlueprintProvider, type BlueprintProviderProps } from "./blueprintProvider";
 export {
     HotkeysContext,
@@ -27,4 +28,10 @@ export {
     type OverlaysContextState,
     type OverlaysProviderProps,
 } from "./overlays/overlaysProvider";
-export { PortalContext, type PortalContextOptions, PortalProvider } from "./portal/portalProvider";
+export {
+    PortalContext,
+    type PortalContextOptions,
+    type PortalProviderProps,
+    usePortalContext,
+    PortalProvider,
+} from "./portal/portalProvider";

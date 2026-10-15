@@ -29,7 +29,9 @@ const config: Record<string, IsomorphicTestConfig> = {
         props: { isOpen: true, lazy: false, usePortal: false },
     },
     BlueprintProvider: {
+        children: requiredChild,
         className: false,
+        props: { theme: { borderRadius: "SQUARE" } },
     },
     Breadcrumbs: {
         props: { items: [] },

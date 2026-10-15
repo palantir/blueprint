@@ -2,14 +2,18 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { useContext } from "react";
+import { type PropsWithChildren, useContext, useMemo, useState } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
+import { Dialog } from "../components/dialog/dialog";
+import { useHotkeys } from "../hooks";
+
 import { BlueprintProvider } from "./blueprintProvider";
 import { HotkeysContext } from "./hotkeys/hotkeysProvider";
+import { OverlaysContext } from "./overlays/overlaysProvider";
 import { PortalContext, type PortalContextOptions } from "./portal/portalProvider";
 
 describe("BlueprintProvider", () => {
@@ -133,3 +137,134 @@ describe("BlueprintProvider", () => {
         });
     });
 });
+
+function PreservedScope({ children }: PropsWithChildren) {
+    const overlays = useContext(OverlaysContext);
+    const hotkeys = useContext(HotkeysContext);
+    return (
+        <BlueprintProvider
+            theme={{ borderRadius: "SQUARE" }}
+            overlaysProviderValue={overlays}
+            hotkeysProviderValue={hotkeys}
+        >
+            {children}
+        </BlueprintProvider>
+    );
+}
+
+for (const useComposite of [false, true]) {
+    describe(`Workshop scopes (${useComposite ? "BlueprintProvider" : "baseline"})`, () => {
+        const Boundary = useComposite ? PreservedScope : ({ children }: PropsWithChildren) => <>{children}</>;
+
+        it("preserves focus containment, stack order, Escape and focus restoration across separate roots", async () => {
+            const firstClose = vi.fn();
+            const secondClose = vi.fn();
+            function TestDialog({ name, onClose }: { name: string; onClose: () => void }) {
+                const [isOpen, setOpen] = useState(true);
+                return (
+                    <Dialog
+                        isOpen={isOpen}
+                        transitionDuration={0}
+                        onClose={() => {
+                            onClose();
+                            setOpen(false);
+                        }}
+                    >
+                        <input autoFocus={true} data-testid={name} />
+                    </Dialog>
+                );
+            }
+            const module = render(
+                <Boundary>
+                    <TestDialog name="module" onClose={firstClose} />
+                </Boundary>,
+            );
+            await waitFor(() =>
+                expect(screen.getByTestId("module").closest(".bp6-overlay")!.contains(document.activeElement)).toBe(
+                    true,
+                ),
+            );
+            const widget = render(<TestDialog name="widget" onClose={secondClose} />);
+            const top = screen.getByTestId("widget").closest(".bp6-overlay")!;
+            await waitFor(() => expect(top.contains(document.activeElement)).toBe(true));
+            screen.getByTestId("module").focus();
+            await waitFor(() => expect(top.contains(document.activeElement)).toBe(true));
+            fireEvent.keyDown(document.activeElement!, { key: "Escape" });
+            await waitFor(() => expect(screen.queryByTestId("widget")).not.toBeInTheDocument());
+            expect(secondClose).toHaveBeenCalledOnce();
+            expect(firstClose).not.toHaveBeenCalled();
+            await waitFor(() =>
+                expect(screen.getByTestId("module").closest(".bp6-overlay")!.contains(document.activeElement)).toBe(
+                    true,
+                ),
+            );
+            widget.unmount();
+            module.unmount();
+        });
+
+        it("dismisses only the top overlay on document Escape or backdrop click", async () => {
+            const firstClose = vi.fn();
+            const secondClose = vi.fn();
+            const module = render(
+                <Boundary>
+                    <Dialog isOpen={true} autoFocus={false} enforceFocus={false} onClose={firstClose}>
+                        Module
+                    </Dialog>
+                </Boundary>,
+            );
+            const widget = render(
+                <Dialog isOpen={true} autoFocus={false} enforceFocus={false} onClose={secondClose}>
+                    Widget
+                </Dialog>,
+            );
+            fireEvent.keyDown(document, { key: "Escape" });
+            expect(firstClose).not.toHaveBeenCalled();
+            expect(secondClose).toHaveBeenCalledOnce();
+            const backdrops = document.querySelectorAll(".bp6-overlay-backdrop");
+            fireEvent.mouseDown(backdrops[backdrops.length - 1]);
+            expect(firstClose).not.toHaveBeenCalled();
+            expect(secondClose).toHaveBeenCalledTimes(2);
+            widget.unmount();
+            expect(document.body).toHaveClass("bp6-overlay-open");
+            module.unmount();
+            expect(document.body).not.toHaveClass("bp6-overlay-open");
+        });
+
+        it("keeps global and local hotkeys single-fired and shares the existing help dialog", async () => {
+            const local = vi.fn();
+            const global = vi.fn();
+            function Keys() {
+                const keys = useMemo(
+                    () => [
+                        { combo: "a", group: "Workshop", label: "Local", onKeyDown: local },
+                        { combo: "b", global: true, label: "Global action", onKeyDown: global },
+                    ],
+                    [],
+                );
+                const { handleKeyDown, handleKeyUp } = useHotkeys(keys);
+                const [, dispatch] = useContext(HotkeysContext);
+                return (
+                    <div tabIndex={0} data-testid="keys" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        <button onClick={() => dispatch({ type: "OPEN_DIALOG" })}>Help</button>
+                    </div>
+                );
+            }
+            render(
+                <BlueprintProvider>
+                    <Boundary>
+                        <Keys />
+                    </Boundary>
+                </BlueprintProvider>,
+            );
+            const user = userEvent.setup();
+            screen.getByTestId("keys").focus();
+            await user.keyboard("ab");
+            expect(local).toHaveBeenCalledOnce();
+            expect(global).toHaveBeenCalledOnce();
+            await user.click(screen.getByText("Help"));
+            expect(document.querySelectorAll(".bp6-hotkey-dialog")).toHaveLength(1);
+            expect(screen.getByText("Local")).toBeInTheDocument();
+            expect(screen.getByText("Global action")).toBeInTheDocument();
+        });
+    });
+}

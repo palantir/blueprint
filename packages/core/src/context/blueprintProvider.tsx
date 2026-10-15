@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
+import { useContext } from "react";
+
+import {
+    type BlueprintTheme,
+    BlueprintThemeContext,
+    type BlueprintThemeTokens,
+    useBlueprintTheme,
+} from "./blueprintTheme";
 import { HotkeysProvider, type HotkeysProviderProps } from "./hotkeys/hotkeysProvider";
-import { OverlaysProvider, type OverlaysProviderProps } from "./overlays/overlaysProvider";
-import { type PortalContextOptions, PortalProvider } from "./portal/portalProvider";
+import { type OverlaysContextState, OverlaysProvider, type OverlaysProviderProps } from "./overlays/overlaysProvider";
+import { PortalContext, PortalProvider, type PortalProviderProps } from "./portal/portalProvider";
 
 // for some props interfaces, it helps to prefix their property names with the name of the provider
 // to avoid any ambiguity in the API
@@ -25,36 +33,58 @@ type HotkeysProviderPrefix<T> = {
 };
 
 export interface BlueprintProviderProps
-    extends OverlaysProviderProps,
-        PortalContextOptions,
+    extends Omit<OverlaysProviderProps, "value">,
+        PortalProviderProps,
         HotkeysProviderPrefix<HotkeysProviderProps> {
-    // no props of its own, `children` comes from `OverlaysProviderProps`
+    /** Reuse an application overlay stack across nested providers or separate React roots. */
+    overlaysProviderValue?: OverlaysContextState;
+    /** Theme application content via BlueprintThemeContext and scope the same tokens to portals. */
+    theme?: BlueprintTheme;
+    /** Disable theme overrides without remounting open portals. @default true */
+    themeEnabled?: boolean;
 }
+
+const EMPTY_TOKENS: BlueprintThemeTokens = {};
 
 /**
  * Composite Blueprint context provider which enables & manages various global behaviors of Blueprint applications.
  *
  * @see https://blueprintjs.com/docs/#core/context/blueprint-provider
  */
-export const BlueprintProvider = ({
-    children,
-    hotkeysProviderValue,
-    hotkeysProviderDialogProps,
-    hotkeysProviderRenderDialog,
-    portalClassName,
-    portalContainer,
-}: BlueprintProviderProps) => {
+export const BlueprintProvider = (props: BlueprintProviderProps) => {
+    const {
+        children,
+        hotkeysProviderValue,
+        hotkeysProviderDialogProps,
+        hotkeysProviderRenderDialog,
+        portalClassName,
+        portalContainer,
+        portalTokens,
+        overlaysProviderValue,
+        theme,
+        themeEnabled = true,
+    } = props;
+    const inheritedPortalOptions = useContext(PortalContext);
+    const hasTheme = "theme" in props;
+    const themeTokens = useBlueprintTheme(theme, themeEnabled);
+    const tokens = portalTokens ?? (hasTheme ? (themeTokens ?? EMPTY_TOKENS) : undefined);
     return (
-        <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
-            <OverlaysProvider>
-                <HotkeysProvider
-                    value={hotkeysProviderValue}
-                    dialogProps={hotkeysProviderDialogProps}
-                    renderDialog={hotkeysProviderRenderDialog}
-                >
-                    {children}
-                </HotkeysProvider>
-            </OverlaysProvider>
-        </PortalProvider>
+        <BlueprintThemeContext.Provider value={tokens}>
+            <PortalProvider
+                portalClassName={portalClassName ?? (hasTheme ? inheritedPortalOptions.portalClassName : undefined)}
+                portalContainer={portalContainer ?? (hasTheme ? inheritedPortalOptions.portalContainer : undefined)}
+                portalTokens={tokens}
+            >
+                <OverlaysProvider value={overlaysProviderValue}>
+                    <HotkeysProvider
+                        value={hotkeysProviderValue}
+                        dialogProps={hotkeysProviderDialogProps}
+                        renderDialog={hotkeysProviderRenderDialog}
+                    >
+                        {children}
+                    </HotkeysProvider>
+                </OverlaysProvider>
+            </PortalProvider>
+        </BlueprintThemeContext.Provider>
     );
 };

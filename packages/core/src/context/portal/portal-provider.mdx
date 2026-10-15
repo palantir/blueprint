@@ -39,6 +39,37 @@ root.render(
 );
 ```
 
+## Scoped theme tokens
+
+Supply `portalTokens` to apply CSS custom properties to this provider's portals, including dialogs and popovers.
+`BlueprintProvider` accepts the same option. Token updates keep open portals mounted; pass an empty map to clear
+an override while preserving portal state. Omitting the option retains existing portal behavior.
+
+```tsx
+<PortalProvider portalTokens={{ "--bp-surface-border-radius": "8px" }}>
+    <App />
+</PortalProvider>
+```
+
+`BlueprintProvider` translates `{ borderRadius: "SQUARE" | "REGULAR" | "ROUNDED" }` into tokens and configures
+portal scoping automatically. Its `BlueprintThemeContext` exposes the tokens for applying to the application's
+root element with `style`. A missing theme or `enabled={false}` applies no overrides. Nested theme providers
+use the nearest theme. Explicit component radius styles still take precedence over inherited tokens.
+
+React context does not cross independent roots. Plugin hosts can capture resolved options with `usePortalContext()`
+and supply them to `<PortalProvider {...options}>` in the plugin root. Keep the original provider mounted for
+as long as its portals need the scoped stylesheet. A `portalContainer` in another document scopes the stylesheet
+to that document; individual portals in other documents need a provider for their own document.
+
 ## Props interface
 
-@interface PortalContextOptions
+@interface PortalProviderProps
+
+When adding `BlueprintProvider` solely for theming inside an existing application, pass the existing
+`OverlaysContext` as `overlaysProviderValue` and `HotkeysContext` as `hotkeysProviderValue` to retain
+its overlay stack and keyboard scope. Otherwise the provider creates independent scopes. Separate React
+roots still need to receive the resolved portal options explicitly.
+
+Passing `theme` (including `undefined`) reserves a stable portal theme scope. `themeEnabled={false}`
+clears its overrides without remounting portals. Explicit `portalTokens` take precedence over translated
+theme tokens; apply `BlueprintThemeContext` to the content root for the matching inline tokens.
