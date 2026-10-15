@@ -72,30 +72,36 @@ export const Playground: Story = {
                 to other stories.
             </p>
             <div className="typography-playground-grid">
-                <Section compact={true} title="Text & headings">
-                    <SectionCard className="typography-playground-stack">
-                        <div className="typography-playground-headings">
-                            <H1>H1</H1>
-                            <H2>H2</H2>
-                            <H3>H3</H3>
-                            <H4>H4</H4>
-                            <H5>H5</H5>
-                            <H6>H6</H6>
-                        </div>
-                        <div>
-                            Regular text, <strong>strong text</strong>, <em>italic text</em>.
-                            <br />A second line uses the default line height.
-                        </div>
-                        <div className={Classes.RUNNING_TEXT}>
-                            Running text uses the large line height.
-                            <br />
-                            Compare the space between these two lines.
-                        </div>
-                        <div className={Classes.MONOSPACE_TEXT}>Monospace: AaBb 0O 1Il 0123456789</div>
-                        <Code>project.status === "draft"</Code>
-                        <Pre>{'const project = {\n    name: "Analysis",\n};'}</Pre>
-                    </SectionCard>
-                </Section>
+                <div className="typography-playground-column">
+                    <Section compact={true} title="Text & headings">
+                        <SectionCard className="typography-playground-stack">
+                            <div className="typography-playground-headings">
+                                <H1>H1</H1>
+                                <H2>H2</H2>
+                                <H3>H3</H3>
+                                <H4>H4</H4>
+                                <H5>H5</H5>
+                                <H6>H6</H6>
+                            </div>
+                            <div>
+                                Regular text, <strong>strong text</strong>, <em>italic text</em>.
+                                <br />A second line uses the default line height.
+                            </div>
+                            <div className={Classes.RUNNING_TEXT}>
+                                Running text uses the large line height.
+                                <br />
+                                Compare the space between these two lines.
+                            </div>
+                        </SectionCard>
+                    </Section>
+                    <Section compact={true} title="Monospace">
+                        <SectionCard className="typography-playground-stack">
+                            <div className={Classes.MONOSPACE_TEXT}>Monospace: AaBb 0O 1Il 0123456789</div>
+                            <Code>project.status === "draft"</Code>
+                            <Pre>{'const project = {\n    name: "Analysis",\n};'}</Pre>
+                        </SectionCard>
+                    </Section>
+                </div>
 
                 <Section compact={true} title="Component titles">
                     <SectionCard className="typography-playground-stack">

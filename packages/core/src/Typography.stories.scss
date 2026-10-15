@@ -23,6 +23,12 @@
     padding: 12px;
   }
 
+  &-column {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+  }
+
   &-headings,
   &-row {
     align-items: baseline;
