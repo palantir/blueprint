@@ -4,8 +4,15 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-$tab-color-selected: $pt-link-color !default;
-$dark-tab-color-selected: $pt-dark-link-color !default;
+$tab-color-selected: var(--bp-intent-primary-hover) !default;
+$dark-tab-color-selected: oklch(
+  from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) calc(h - 0.927)
+) !default;
+$tab-background-color-selected: color-mix(
+  in srgb,
+  var(--bp-intent-primary-rest) 20%,
+  transparent
+) !default;
 
 $tab-indicator-width: $pt-spacing * 0.75 !default;
 
@@ -35,7 +42,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
       width: 100%;
 
       &[aria-selected="true"] {
-        background-color: rgba($pt-intent-primary, 0.2);
+        background-color: $tab-background-color-selected;
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -46,7 +53,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: rgba($pt-intent-primary, 0.2);
+      background-color: $tab-background-color-selected;
       border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
