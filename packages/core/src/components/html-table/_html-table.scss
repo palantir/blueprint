@@ -23,7 +23,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
 
   th {
     color: $pt-heading-color;
-    font-weight: var(--bp-font-weight-bold, var(--bp-typography-weight-bold));
+    font-weight: var(--bp-typography-weight-bold);
   }
 
   td {

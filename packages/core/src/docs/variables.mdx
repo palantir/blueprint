@@ -36,47 +36,43 @@ rare cases where custom styling is necessary and should be used sparingly:
 
 Override these CSS tokens on `:root` or `body` to customize Blueprint typography at runtime:
 
-| Token                      | Default                       | Applies to                                                                |
-| -------------------------- | ----------------------------- | ------------------------------------------------------------------------- |
-| `--bp-font-family`         | Blueprint's system font stack | Body text and inherited control fonts                                     |
-| `--bp-font-family-mono`    | `monospace`                   | Code, monospace text, and table truncated-value popovers                  |
-| `--bp-font-weight-regular` | `400`                         | Body text, inputs, and regular-weight labels                              |
-| `--bp-font-weight-bold`    | `600`                         | Headings, strong text, table headers, breadcrumbs, and date-picker labels |
-| `--bp-line-height`         | `1.28581`                     | Body and UI text                                                          |
-| `--bp-line-height-lg`      | `1.5`                         | Running text and callout bodies                                           |
+| Token                                 | Default                       | Applies to                                                                |
+| ------------------------------------- | ----------------------------- | ------------------------------------------------------------------------- |
+| `--bp-typography-family-default`      | Blueprint's system font stack | Body text and inherited control fonts                                     |
+| `--bp-typography-family-mono`         | `monospace`                   | Code, monospace text, and table truncated-value popovers                  |
+| `--bp-typography-weight-default`      | `400`                         | Body text, inputs, and regular-weight labels                              |
+| `--bp-typography-weight-bold`         | `600`                         | Headings, strong text, table headers, breadcrumbs, and date-picker labels |
+| `--bp-typography-line-height-default` | `1.28581`                     | Body and UI text                                                          |
+| `--bp-typography-line-height-large`   | `1.5`                         | Running text and callout bodies                                           |
 
 ```css
 :root {
-    --bp-font-family: "Helvetica Neue", Arial, sans-serif;
-    --bp-font-family-mono: "Courier New", monospace;
-    --bp-font-weight-regular: 400;
-    --bp-font-weight-bold: 600;
-    --bp-line-height: 1.4;
-    --bp-line-height-lg: 1.6;
+    --bp-typography-family-default: "Helvetica Neue", Arial, sans-serif;
+    --bp-typography-family-mono: "Courier New", monospace;
+    --bp-typography-weight-default: 400;
+    --bp-typography-weight-bold: 600;
+    --bp-typography-line-height-default: 1.4;
+    --bp-typography-line-height-large: 1.6;
 }
 ```
 
 Both shared line-height tokens are unitless. Heading and code-block line heights, icon fonts, and fixed-height
 control alignment retain their existing styles. Font sizes are configured separately.
 
-The new token names are optional overrides. At each consuming style, they fall back to the existing
-`--bp-typography-family-default`, `--bp-typography-family-mono`, `--bp-typography-weight-default`,
-`--bp-typography-weight-bold`, `--bp-typography-line-height-default`, and `--bp-typography-line-height-large`
-tokens, respectively. Existing BP6 token overrides continue to work when the corresponding new token is unset.
-Remove an override to restore that fallback. Applications that customize `$pt-font-family`,
+Remove an override to restore the default token value. Applications that customize `$pt-font-family`,
 `$pt-font-family-monospace`, or `$pt-line-height` should use the CSS tokens for these runtime styles.
 
 For a nested font-family override, apply the property on the same container so its descendants inherit the new font:
 
 ```css
 .custom-typography {
-    --bp-font-family: Georgia, serif;
-    font-family: var(--bp-font-family);
+    --bp-typography-family-default: Georgia, serif;
+    font-family: var(--bp-typography-family-default);
 }
 ```
 
 Body font and line-height values are inherited after they are resolved. For a nested text line-height override,
-also apply `line-height: var(--bp-line-height)` on the container, or use the `@ns-ui-text` class.
+also apply `line-height: var(--bp-typography-line-height-default)` on the container, or use the `@ns-ui-text` class.
 Portals inherit from their container; use a `:root` or `body` override to include default body-mounted portals.
 
 Try the tokens in Storybook's **Theme** panel. The **Core / Typography / Playground** story includes multiline text,

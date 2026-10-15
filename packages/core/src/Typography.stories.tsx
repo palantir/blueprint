@@ -31,7 +31,7 @@ const meta = {
         docs: {
             description: {
                 component:
-                    'Use the Theme panel to edit font families, regular/bold weights, and default/large line heights. Try Georgia, serif for --bp-font-family and "Courier New", monospace for --bp-font-family-mono. Line heights are unitless. Reset the controls to restore defaults. Overrides apply to every story, including portaled content.',
+                    'Use the Theme panel to edit font families, regular/bold weights, and default/large line heights. Try Georgia, serif for --bp-typography-family-default and "Courier New", monospace for --bp-typography-family-mono. Line heights are unitless. Reset the controls to restore defaults. Overrides apply to every story, including portaled content.',
             },
         },
     },
