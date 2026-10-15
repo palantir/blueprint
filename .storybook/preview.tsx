@@ -19,6 +19,9 @@ Icons.setLoaderOptions({ loader: "all" });
 // optionally, load the icons up-front so that future usage does not trigger a network request
 await Icons.loadAll();
 
+// Normalize native form controls so they inherit Blueprint's typography.
+import "normalize.css/normalize.css";
+
 // Import Blueprint compiled CSS
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/datetime/lib/css/blueprint-datetime.css";

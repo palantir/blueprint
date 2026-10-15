@@ -12,7 +12,7 @@
   // override HTMLSelect styles for a narrower appearance
   // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
   .#{$ns}-html-select select {
-    font-weight: 600;
+    font-weight: var(--bp-typography-weight-bold);
     padding-left: $datepicker-padding;
     padding-right: $pt-icon-size-standard;
 
@@ -34,7 +34,7 @@
   // override HTMLSelect styles for a narrower appearance
   // N.B. these styles are important to achieve accurate measurements to position the dropdown arrows in <DatePickerCaption>
   .#{$ns}-html-select select {
-    font-weight: 600;
+    font-weight: var(--bp-typography-weight-bold);
     padding-left: $datepicker-padding;
     padding-right: $pt-icon-size-standard;
 
@@ -62,6 +62,6 @@
 }
 
 .#{$ns}-datepicker-caption-measure {
-  font-weight: 600;
+  font-weight: var(--bp-typography-weight-bold);
   padding-left: $datepicker-padding;
 }

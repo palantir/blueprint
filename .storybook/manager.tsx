@@ -15,6 +15,12 @@ import { TokensPanel } from "./tokens/TokensPanel";
 const ADDON_ID = "tokens";
 const PANEL_ID = `${ADDON_ID}/panel`;
 
+addons.setConfig({
+    panelPosition: "right",
+    rightPanelWidth: 340,
+    selectedPanel: PANEL_ID,
+});
+
 addons.register(ADDON_ID, () => {
     addons.add(PANEL_ID, {
         render: ({ active = false }) => (
