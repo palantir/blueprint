@@ -76,9 +76,6 @@ $callout-padding-compact: $pt-spacing * 2;
   }
 
   .#{$ns}-dark & {
-    // Palette exception: no semantic typography token retains this dark text color (#f6f7f9).
-    color: var(--bp-palette-light-gray-5);
-
     &:not(.#{$ns}-minimal) {
       // Palette exception: no semantic surface token matches the neutral fill (#8f99a8).
       background-color: oklch(from var(--bp-palette-gray-3) l c h / 20%);
@@ -91,7 +88,9 @@ $callout-padding-compact: $pt-spacing * 2;
     }
   }
 
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent,
+    $color in ("primary": "blue", "success": "green", "warning": "orange", "danger": "red")
+  {
     &.#{$ns}-intent-#{$intent} {
       // Semantic exception: the hover token preserves the existing intent text color at rest.
       color: var(--bp-typography-color-#{$intent}-hover);
@@ -113,7 +112,8 @@ $callout-padding-compact: $pt-spacing * 2;
       }
 
       .#{$ns}-dark & {
-        color: var(--bp-typography-color-#{$intent}-hover);
+        // Preserve the legacy dark intent text shades without changing shared typography tokens.
+        color: var(--bp-palette-#{$color}-5);
 
         &:not(.#{$ns}-minimal) {
           background-color: oklch(
@@ -124,7 +124,7 @@ $callout-padding-compact: $pt-spacing * 2;
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
-          color: var(--bp-typography-color-#{$intent}-hover);
+          color: var(--bp-palette-#{$color}-5);
         }
       }
     }
@@ -144,7 +144,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
     .#{$ns}-dark & {
       a:hover {
-        // Token gap: the extended blue6 shade (#99c4ff) has no existing design token.
+        // The extended blue6 link-hover shade (#99c4ff) has no design token.
         color: $blue6;
       }
     }
