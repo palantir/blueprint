@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useMemo, useRef } from "react";
+import { Children, isValidElement, type OptionHTMLAttributes, useMemo, useRef } from "react";
 import type { DropdownProps } from "react-day-picker";
 
 import { HTMLSelect } from "@blueprintjs/core";
@@ -40,10 +40,24 @@ export function DatePickerDropdown({ caption, children, ...props }: DropdownProp
         [props.name, monthSelectRightOffset],
     );
 
+    // react-day-picker only lists the months and years between fromDate and toDate, but the displayed month can be
+    // outside them. Without an option for it, the select would show its first option instead.
+    const optionValues = Children.toArray(children).map(child =>
+        isValidElement<OptionHTMLAttributes<HTMLOptionElement>>(child) ? child.props.value : undefined,
+    );
+    const outOfRangeOption = optionValues.includes(props.value) ? null : (
+        <option disabled={true} value={props.value}>
+            {caption}
+        </option>
+    );
+    const isBeforeOptions = Number(props.value) < Number(optionValues[0]);
+
     return (
         <div ref={containerElement}>
             <HTMLSelect iconProps={iconProps} minimal={true} ref={selectElement} {...props}>
+                {isBeforeOptions && outOfRangeOption}
                 {children}
+                {!isBeforeOptions && outOfRangeOption}
             </HTMLSelect>
         </div>
     );
