@@ -7,7 +7,6 @@ import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { COLOR_TOKEN_NAMES } from "../../../../../.storybook/tokens/tokens";
 import { Intent } from "../../common";
 
 import { Callout } from "./callout";
@@ -17,9 +16,6 @@ const meta: Meta<typeof Callout> = {
     component: Callout,
     decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
-    parameters: {
-        themeTokens: COLOR_TOKEN_NAMES,
-    },
     args: {
         children: "This is a callout with some informational content.",
         intent: undefined,

@@ -56,12 +56,6 @@ $callout-padding-compact: $pt-spacing * 2;
     margin-top: $callout-header-margin-top;
   }
 
-  a,
-  a:hover {
-    // Semantic exception: the hover token preserves the existing link color at rest.
-    color: var(--bp-typography-color-primary-hover);
-  }
-
   &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
       margin-bottom: $pt-spacing;
@@ -94,12 +88,6 @@ $callout-padding-compact: $pt-spacing * 2;
     &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
       // Palette exception: no semantic token matches the dark muted icon color (#abb3bf).
       color: var(--bp-palette-gray-4);
-    }
-
-    a,
-    a:hover {
-      // Palette exception: no semantic typography token matches the dark link color (#8abbff).
-      color: var(--bp-palette-blue-5);
     }
   }
 
