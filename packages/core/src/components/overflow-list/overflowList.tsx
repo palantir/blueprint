@@ -156,6 +156,7 @@ export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowLis
     };
 
     private spacer: HTMLElement | null = null;
+    private lastOverflow: readonly T[] = [];
 
     public componentDidMount() {
         this.repartition();
@@ -188,7 +189,7 @@ export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowLis
             this.setState({
                 chopSize: this.defaultChopSize(),
                 lastChopSize: null,
-                lastOverflowCount: 0,
+                lastOverflowCount: this.state.overflow.length,
                 overflow: [],
                 repartitioning: true,
                 visible: this.props.items,
@@ -203,7 +204,11 @@ export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowLis
             prevState.repartitioning === true
         ) {
             // only invoke the callback if the UI has actually changed
-            if (overflow.length !== lastOverflowCount) {
+            if (
+                overflow.length !== lastOverflowCount ||
+                overflow.some((item, index) => item !== this.lastOverflow[index])
+            ) {
+                this.lastOverflow = overflow;
                 this.props.onOverflow?.(overflow.slice());
             }
         } else if (!shallowCompareKeys(prevState, this.state)) {
@@ -302,9 +307,7 @@ export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowLis
                     chopSize: halve(state.chopSize),
                     lastChopSize: state.chopSize,
                     // if we're starting a new partition cycle, record the last overflow count so we can track whether the UI changes after the new overflow is calculated
-                    lastOverflowCount: this.isFirstPartitionCycle(state.chopSize)
-                        ? state.overflow.length
-                        : state.lastOverflowCount,
+                    lastOverflowCount: state.repartitioning ? state.lastOverflowCount : state.overflow.length,
                     overflow,
                     repartitioning: true,
                     visible,
@@ -322,10 +325,6 @@ export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowLis
 
     private defaultChopSize(): number {
         return halve(this.props.items.length);
-    }
-
-    private isFirstPartitionCycle(currentChopSize: number): boolean {
-        return currentChopSize === this.defaultChopSize();
     }
 }
 
