@@ -4,6 +4,14 @@
 
 import type { ColorProps } from "@storybook/addon-docs/blocks";
 
+import intentTokenSource from "../../packages/core/src/design-tokens/tokens/base/intent.tokens.json";
+import paletteTokenSource from "../../packages/core/src/design-tokens/tokens/base/palette.tokens.json";
+
+const INTENT_TOKENS = intentTokenSource.intent;
+const PALETTE_TOKENS = paletteTokenSource.palette;
+const TOKEN_SOURCES: Record<string, unknown> = { ...intentTokenSource, ...paletteTokenSource };
+const TOKEN_REFERENCE_PATTERN = /^\{([^{}]+)\}$/;
+
 // Keep palette tokens before their semantic aliases so the panel mirrors their dependency order.
 /* eslint-disable sort-keys */
 export const TOKEN_CONFIG = {
@@ -14,68 +22,68 @@ export const TOKEN_CONFIG = {
         toCssValue: value => `${value}px`,
         type: "range",
     }),
-    "--bp-palette-black": colorTokenEditor("#111418"),
-    "--bp-palette-white": colorTokenEditor("#ffffff"),
-    "--bp-palette-dark-gray-1": colorTokenEditor("#1c2127"),
-    "--bp-palette-dark-gray-2": colorTokenEditor("#252a31"),
-    "--bp-palette-dark-gray-3": colorTokenEditor("#2f343c"),
-    "--bp-palette-dark-gray-4": colorTokenEditor("#383e47"),
-    "--bp-palette-dark-gray-5": colorTokenEditor("#404854"),
-    "--bp-palette-gray-1": colorTokenEditor("#5f6b7c"),
-    "--bp-palette-gray-2": colorTokenEditor("#738091"),
-    "--bp-palette-gray-3": colorTokenEditor("#8f99a8"),
-    "--bp-palette-gray-4": colorTokenEditor("#abb3bf"),
-    "--bp-palette-gray-5": colorTokenEditor("#c5cbd3"),
-    "--bp-palette-light-gray-1": colorTokenEditor("#d3d8de"),
-    "--bp-palette-light-gray-2": colorTokenEditor("#dce0e5"),
-    "--bp-palette-light-gray-3": colorTokenEditor("#e5e8eb"),
-    "--bp-palette-light-gray-4": colorTokenEditor("#edeff2"),
-    "--bp-palette-light-gray-5": colorTokenEditor("#f6f7f9"),
-    "--bp-palette-blue-1": colorTokenEditor("#184a90"),
-    "--bp-palette-blue-2": colorTokenEditor("#215db0"),
-    "--bp-palette-blue-3": colorTokenEditor("#2d72d2"),
-    "--bp-palette-blue-4": colorTokenEditor("#4c90f0"),
-    "--bp-palette-blue-5": colorTokenEditor("#8abbff"),
-    "--bp-palette-green-1": colorTokenEditor("#165a36"),
-    "--bp-palette-green-2": colorTokenEditor("#1c6e42"),
-    "--bp-palette-green-3": colorTokenEditor("#238551"),
-    "--bp-palette-green-4": colorTokenEditor("#32a467"),
-    "--bp-palette-green-5": colorTokenEditor("#72ca9b"),
-    "--bp-palette-orange-1": colorTokenEditor("#77450d"),
-    "--bp-palette-orange-2": colorTokenEditor("#935610"),
-    "--bp-palette-orange-3": colorTokenEditor("#c87619"),
-    "--bp-palette-orange-4": colorTokenEditor("#ec9a3c"),
-    "--bp-palette-orange-5": colorTokenEditor("#fbb360"),
-    "--bp-palette-red-1": colorTokenEditor("#8e292c"),
-    "--bp-palette-red-2": colorTokenEditor("#ac2f33"),
-    "--bp-palette-red-3": colorTokenEditor("#cd4246"),
-    "--bp-palette-red-4": colorTokenEditor("#e76a6e"),
-    "--bp-palette-red-5": colorTokenEditor("#fa999c"),
-    "--bp-intent-default-rest": colorTokenEditor("#5f6b7c"),
-    "--bp-intent-default-hover": colorTokenEditor("#404854"),
-    "--bp-intent-default-active": colorTokenEditor("#383e47"),
-    "--bp-intent-default-disabled": colorTokenEditor("#8f99a8"),
-    "--bp-intent-default-foreground": colorTokenEditor("#ffffff"),
-    "--bp-intent-primary-rest": colorTokenEditor("#2d72d2"),
-    "--bp-intent-primary-hover": colorTokenEditor("#215db0"),
-    "--bp-intent-primary-active": colorTokenEditor("#184a90"),
-    "--bp-intent-primary-disabled": colorTokenEditor("#4c90f0"),
-    "--bp-intent-primary-foreground": colorTokenEditor("#ffffff"),
-    "--bp-intent-success-rest": colorTokenEditor("#238551"),
-    "--bp-intent-success-hover": colorTokenEditor("#1c6e42"),
-    "--bp-intent-success-active": colorTokenEditor("#165a36"),
-    "--bp-intent-success-disabled": colorTokenEditor("#32a467"),
-    "--bp-intent-success-foreground": colorTokenEditor("#ffffff"),
-    "--bp-intent-warning-rest": colorTokenEditor("#c87619"),
-    "--bp-intent-warning-hover": colorTokenEditor("#935610"),
-    "--bp-intent-warning-active": colorTokenEditor("#77450d"),
-    "--bp-intent-warning-disabled": colorTokenEditor("#ec9a3c"),
-    "--bp-intent-warning-foreground": colorTokenEditor("#111418"),
-    "--bp-intent-danger-rest": colorTokenEditor("#cd4246"),
-    "--bp-intent-danger-hover": colorTokenEditor("#ac2f33"),
-    "--bp-intent-danger-active": colorTokenEditor("#8e292c"),
-    "--bp-intent-danger-disabled": colorTokenEditor("#e76a6e"),
-    "--bp-intent-danger-foreground": colorTokenEditor("#ffffff"),
+    "--bp-palette-black": colorTokenEditor(PALETTE_TOKENS.black.$value),
+    "--bp-palette-white": colorTokenEditor(PALETTE_TOKENS.white.$value),
+    "--bp-palette-dark-gray-1": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["1"].$value),
+    "--bp-palette-dark-gray-2": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["2"].$value),
+    "--bp-palette-dark-gray-3": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["3"].$value),
+    "--bp-palette-dark-gray-4": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["4"].$value),
+    "--bp-palette-dark-gray-5": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["5"].$value),
+    "--bp-palette-gray-1": colorTokenEditor(PALETTE_TOKENS.gray["1"].$value),
+    "--bp-palette-gray-2": colorTokenEditor(PALETTE_TOKENS.gray["2"].$value),
+    "--bp-palette-gray-3": colorTokenEditor(PALETTE_TOKENS.gray["3"].$value),
+    "--bp-palette-gray-4": colorTokenEditor(PALETTE_TOKENS.gray["4"].$value),
+    "--bp-palette-gray-5": colorTokenEditor(PALETTE_TOKENS.gray["5"].$value),
+    "--bp-palette-light-gray-1": colorTokenEditor(PALETTE_TOKENS["light-gray"]["1"].$value),
+    "--bp-palette-light-gray-2": colorTokenEditor(PALETTE_TOKENS["light-gray"]["2"].$value),
+    "--bp-palette-light-gray-3": colorTokenEditor(PALETTE_TOKENS["light-gray"]["3"].$value),
+    "--bp-palette-light-gray-4": colorTokenEditor(PALETTE_TOKENS["light-gray"]["4"].$value),
+    "--bp-palette-light-gray-5": colorTokenEditor(PALETTE_TOKENS["light-gray"]["5"].$value),
+    "--bp-palette-blue-1": colorTokenEditor(PALETTE_TOKENS.blue["1"].$value),
+    "--bp-palette-blue-2": colorTokenEditor(PALETTE_TOKENS.blue["2"].$value),
+    "--bp-palette-blue-3": colorTokenEditor(PALETTE_TOKENS.blue["3"].$value),
+    "--bp-palette-blue-4": colorTokenEditor(PALETTE_TOKENS.blue["4"].$value),
+    "--bp-palette-blue-5": colorTokenEditor(PALETTE_TOKENS.blue["5"].$value),
+    "--bp-palette-green-1": colorTokenEditor(PALETTE_TOKENS.green["1"].$value),
+    "--bp-palette-green-2": colorTokenEditor(PALETTE_TOKENS.green["2"].$value),
+    "--bp-palette-green-3": colorTokenEditor(PALETTE_TOKENS.green["3"].$value),
+    "--bp-palette-green-4": colorTokenEditor(PALETTE_TOKENS.green["4"].$value),
+    "--bp-palette-green-5": colorTokenEditor(PALETTE_TOKENS.green["5"].$value),
+    "--bp-palette-orange-1": colorTokenEditor(PALETTE_TOKENS.orange["1"].$value),
+    "--bp-palette-orange-2": colorTokenEditor(PALETTE_TOKENS.orange["2"].$value),
+    "--bp-palette-orange-3": colorTokenEditor(PALETTE_TOKENS.orange["3"].$value),
+    "--bp-palette-orange-4": colorTokenEditor(PALETTE_TOKENS.orange["4"].$value),
+    "--bp-palette-orange-5": colorTokenEditor(PALETTE_TOKENS.orange["5"].$value),
+    "--bp-palette-red-1": colorTokenEditor(PALETTE_TOKENS.red["1"].$value),
+    "--bp-palette-red-2": colorTokenEditor(PALETTE_TOKENS.red["2"].$value),
+    "--bp-palette-red-3": colorTokenEditor(PALETTE_TOKENS.red["3"].$value),
+    "--bp-palette-red-4": colorTokenEditor(PALETTE_TOKENS.red["4"].$value),
+    "--bp-palette-red-5": colorTokenEditor(PALETTE_TOKENS.red["5"].$value),
+    "--bp-intent-default-rest": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.default.rest.$value)),
+    "--bp-intent-default-hover": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.default.hover.$value)),
+    "--bp-intent-default-active": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.default.active.$value)),
+    "--bp-intent-default-disabled": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.default.disabled.$value)),
+    "--bp-intent-default-foreground": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.default.foreground.$value)),
+    "--bp-intent-primary-rest": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.primary.rest.$value)),
+    "--bp-intent-primary-hover": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.primary.hover.$value)),
+    "--bp-intent-primary-active": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.primary.active.$value)),
+    "--bp-intent-primary-disabled": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.primary.disabled.$value)),
+    "--bp-intent-primary-foreground": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.primary.foreground.$value)),
+    "--bp-intent-success-rest": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.success.rest.$value)),
+    "--bp-intent-success-hover": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.success.hover.$value)),
+    "--bp-intent-success-active": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.success.active.$value)),
+    "--bp-intent-success-disabled": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.success.disabled.$value)),
+    "--bp-intent-success-foreground": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.success.foreground.$value)),
+    "--bp-intent-warning-rest": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.warning.rest.$value)),
+    "--bp-intent-warning-hover": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.warning.hover.$value)),
+    "--bp-intent-warning-active": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.warning.active.$value)),
+    "--bp-intent-warning-disabled": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.warning.disabled.$value)),
+    "--bp-intent-warning-foreground": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.warning.foreground.$value)),
+    "--bp-intent-danger-rest": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.rest.$value)),
+    "--bp-intent-danger-hover": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.hover.$value)),
+    "--bp-intent-danger-active": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.active.$value)),
+    "--bp-intent-danger-disabled": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.disabled.$value)),
+    "--bp-intent-danger-foreground": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.foreground.$value)),
 } as const satisfies Record<`--${string}`, TokenEditor>;
 /* eslint-enable sort-keys */
 
@@ -101,6 +109,34 @@ interface RangeTokenControlConfig {
     max?: number;
     min?: number;
     step?: number;
+}
+
+function resolveColorTokenValue(value: string, resolvedReferences = new Set<string>()): string {
+    const reference = TOKEN_REFERENCE_PATTERN.exec(value)?.[1];
+    if (reference === undefined) {
+        return value;
+    }
+    if (resolvedReferences.has(reference)) {
+        throw new Error(`Circular design token reference: ${reference}`);
+    }
+
+    const referencedToken = getTokenByPath(reference);
+    if (!isRecord(referencedToken) || typeof referencedToken.$value !== "string") {
+        throw new Error(`Unable to resolve design token reference: ${reference}`);
+    }
+
+    const nextResolvedReferences = new Set(resolvedReferences).add(reference);
+    return resolveColorTokenValue(referencedToken.$value, nextResolvedReferences);
+}
+
+function getTokenByPath(path: string): unknown {
+    return path
+        .split(".")
+        .reduce<unknown>((value, segment) => (isRecord(value) ? value[segment] : undefined), TOKEN_SOURCES);
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
 function colorTokenEditor(defaultCssValue: string): ColorTokenEditor {
