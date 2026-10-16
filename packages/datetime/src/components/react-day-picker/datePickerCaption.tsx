@@ -84,22 +84,23 @@ export const DatePickerCaption = (props: CaptionProps) => {
     // user-provided formatter to localize the year "names"
     const { formatYearCaption } = formatters;
     const allYearOptions = useMemo<OptionProps[]>(() => {
+        const toYearOption = (year: number): OptionProps => ({
+            label: innerText(formatYearCaption(new Date(year, 0), { locale })),
+            value: year,
+        });
         const years: OptionProps[] = [];
         for (let year = minYear; year <= maxYear; year++) {
-            const yearDate = new Date(year, 0);
-            const yearCaption = formatYearCaption(yearDate, { locale });
-            years.push({ label: innerText(yearCaption), value: year });
+            years.push(toYearOption(year));
+        }
+        // allow out-of-bounds years but disable the option.
+        // this handles the Dec 2016 case in https://github.com/palantir/blueprint/issues/391
+        if (displayYear < minYear) {
+            years.unshift({ ...toYearOption(displayYear), disabled: true });
+        } else if (displayYear > maxYear) {
+            years.push({ ...toYearOption(displayYear), disabled: true });
         }
         return years;
-    }, [formatYearCaption, maxYear, minYear, locale]);
-
-    // allow out-of-bounds years but disable the option.
-    // this handles the Dec 2016 case in https://github.com/palantir/blueprint/issues/391
-    if (displayYear > maxYear) {
-        const displayYearDate = new Date(displayYear, 0);
-        const displayYearCaption = formatYearCaption(displayYearDate, { locale });
-        allYearOptions.push({ disabled: true, label: innerText(displayYearCaption), value: displayYear });
-    }
+    }, [displayYear, formatYearCaption, maxYear, minYear, locale]);
 
     const handleMonthSelectChange = useCallback(
         (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -130,8 +131,9 @@ export const DatePickerCaption = (props: CaptionProps) => {
         }
         return months;
     }, [displayYear, formatMonthCaption, locale]);
-    const allMonthOptions = allMonths.map<OptionProps>((month, i) => ({ label: month, value: i }));
-    const availableMonthOptions = allMonthOptions.slice(startMonth, endMonth);
+    const monthOptions = allMonths
+        .map<OptionProps>((month, i) => ({ disabled: i < startMonth || i >= endMonth, label: month, value: i }))
+        .filter(option => !option.disabled || option.value === displayMonth);
     const displayedMonthText = allMonths[displayMonth];
 
     const monthSelectRightOffset = useMonthSelectRightOffset(monthSelectElement, containerElement, displayedMonthText);
@@ -145,7 +147,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
             onChange={handleMonthSelectChange}
             ref={monthSelectElement}
             value={displayMonth}
-            options={availableMonthOptions}
+            options={monthOptions}
         />
     );
 
