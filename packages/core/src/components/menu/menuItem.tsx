@@ -27,6 +27,7 @@ import type { PopoverProps } from "../popover/popoverProps";
 import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
 import { PopoverNext } from "../popover-next/popoverNext";
 import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
+import type { PopoverNextProps } from "../popover-next/popoverNextProps";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -127,7 +128,7 @@ export interface MenuItemProps
      * changed and `usePortal` defaults to `false` so all submenus will live in
      * the same container.
      */
-    popoverProps?: Partial<Omit<PopoverProps, "content" | "minimal">>;
+    popoverProps?: Partial<Omit<PopoverProps, "content" | "minimal"> & Pick<PopoverNextProps, "safePolygon">>;
 
     /**
      * Whether this item should appear selected - `roleStructure` must be `"listoption"` for this to be
