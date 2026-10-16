@@ -20,6 +20,30 @@
                     "com.blueprint.derive": { "lightnessOffset": 0.095, "chromaOffset": -0.008, "hueOffset": 0 }
                 }
             }
+        },
+        "color-primary": {
+            "$type": "color",
+            "hover": {
+                "$value": "{palette.blue.5}"
+            }
+        },
+        "color-success": {
+            "$type": "color",
+            "hover": {
+                "$value": "{palette.green.5}"
+            }
+        },
+        "color-warning": {
+            "$type": "color",
+            "hover": {
+                "$value": "{palette.orange.5}"
+            }
+        },
+        "color-danger": {
+            "$type": "color",
+            "hover": {
+                "$value": "{palette.red.5}"
+            }
         }
     }
 }

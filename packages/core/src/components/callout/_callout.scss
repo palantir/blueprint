@@ -91,9 +91,7 @@ $callout-padding-compact: $pt-spacing * 2;
     }
   }
 
-  @each $intent,
-    $color in ("primary": "blue", "success": "green", "warning": "orange", "danger": "red")
-  {
+  @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       // Semantic exception: the hover token preserves the existing intent text color at rest.
       color: var(--bp-typography-color-#{$intent}-hover);
@@ -115,8 +113,7 @@ $callout-padding-compact: $pt-spacing * 2;
       }
 
       .#{$ns}-dark & {
-        // Palette exception: semantic intent text tokens lack the lighter dark-theme shades.
-        color: var(--bp-palette-#{$color}-5);
+        color: var(--bp-typography-color-#{$intent}-hover);
 
         &:not(.#{$ns}-minimal) {
           background-color: oklch(
@@ -127,7 +124,7 @@ $callout-padding-compact: $pt-spacing * 2;
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
-          color: var(--bp-palette-#{$color}-5);
+          color: var(--bp-typography-color-#{$intent}-hover);
         }
       }
     }
