@@ -11,8 +11,8 @@ $drawer-padding: $pt-spacing * 5 !default;
 
 $drawer-default-size: 50%;
 
-$drawer-background-color: $white !default;
-$dark-drawer-background-color: $dark-gray3 !default;
+$drawer-background-color: var(--bp-palette-white) !default;
+$dark-drawer-background-color: var(--bp-palette-dark-gray-3) !default;
 
 .#{$ns}-drawer {
   background: $drawer-background-color;

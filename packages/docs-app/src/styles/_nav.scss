@@ -8,71 +8,71 @@ $pkg-icon-width: $pt-spacing * 6;
 
 $package-colors: (
   "blueprint": (
-    $gray1,
-    $black,
+    var(--bp-palette-gray-1),
+    var(--bp-palette-black),
   ),
   "core": (
-    $blue3,
-    $blue2,
+    var(--bp-palette-blue-3),
+    var(--bp-palette-blue-2),
   ),
   "datetime": (
-    $red3,
-    $red2,
+    var(--bp-palette-red-3),
+    var(--bp-palette-red-2),
   ),
   "datetime2": (
-    $rose3,
-    $rose2,
+    var(--bp-palette-rose-3),
+    var(--bp-palette-rose-2),
   ),
   "icons": (
-    $gold4,
-    $gold3,
+    var(--bp-palette-gold-4),
+    var(--bp-palette-gold-3),
   ),
   "select": (
-    $cerulean3,
-    $cerulean2,
+    var(--bp-palette-cerulean-3),
+    var(--bp-palette-cerulean-2),
   ),
   "table": (
-    $forest3,
-    $forest2,
+    var(--bp-palette-forest-3),
+    var(--bp-palette-forest-2),
   ),
   "labs": (
-    $indigo3,
-    $indigo2,
+    var(--bp-palette-indigo-3),
+    var(--bp-palette-indigo-2),
   ),
 );
 
 $dark-package-colors: (
   "blueprint": (
-    $gray3,
-    $white,
+    var(--bp-palette-gray-3),
+    var(--bp-palette-white),
   ),
   "core": (
-    $blue4,
-    $blue5,
+    var(--bp-palette-blue-4),
+    var(--bp-palette-blue-5),
   ),
   "datetime": (
-    $red4,
-    $red5,
+    var(--bp-palette-red-4),
+    var(--bp-palette-red-5),
   ),
   "datetime2": (
-    $rose4,
-    $rose5,
+    var(--bp-palette-rose-4),
+    var(--bp-palette-rose-5),
   ),
   "icons": (
-    $gold4,
-    $gold5,
+    var(--bp-palette-gold-4),
+    var(--bp-palette-gold-5),
   ),
   "select": (
-    $cerulean4,
-    $cerulean5,
+    var(--bp-palette-cerulean-4),
+    var(--bp-palette-cerulean-5),
   ),
   "table": (
-    $forest4,
-    $forest5,
+    var(--bp-palette-forest-4),
+    var(--bp-palette-forest-5),
   ),
   "labs": (
-    $indigo4,
-    $indigo5,
+    var(--bp-palette-indigo-4),
+    var(--bp-palette-indigo-5),
   ),
 );
 
@@ -91,10 +91,10 @@ $dark-package-colors: (
   }
 
   svg {
-    fill: $dark-gray5;
+    fill: var(--bp-palette-dark-gray-5);
 
     .#{$ns}-dark & {
-      fill: $gray5;
+      fill: var(--bp-palette-gray-5);
     }
   }
 }
@@ -146,11 +146,11 @@ $dark-package-colors: (
 
     &[data-route="#{$package-name}"] {
       .docs-nav-package-icon {
-        background-color: rgba($color, 0.1);
+        background-color: color-mix(in srgb, $color 10%, transparent);
         fill: $color;
 
         .#{$ns}-dark & {
-          background-color: rgba($dark-color, 0.15);
+          background-color: color-mix(in srgb, $dark-color 15%, transparent);
           fill: $dark-color;
         }
       }
@@ -168,11 +168,11 @@ $dark-package-colors: (
         }
 
         .docs-nav-package-icon {
-          background-color: rgba($color, 0.8);
-          fill: $white;
+          background-color: color-mix(in srgb, $color 80%, transparent);
+          fill: var(--bp-palette-white);
 
           .#{$ns}-dark & {
-            background-color: rgba($dark-color, 0.8);
+            background-color: color-mix(in srgb, $dark-color 80%, transparent);
           }
         }
 
