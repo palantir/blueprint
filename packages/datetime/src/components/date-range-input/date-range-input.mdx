@@ -29,6 +29,16 @@ import { DateRangeInput } from "@blueprintjs/datetime";
 Use the `onChange` prop callback to listen for changes to the selected day and the `onError` prop to react to invalid
 dates entered in the text inputs.
 
+## Keyboard interaction
+
+With either date input focused, press **Alt+ArrowDown** to enter the date picker. **Tab** and **Shift+Tab**
+move through its shortcuts, month and year selectors, calendar, and time controls. **Escape** closes the
+picker and returns focus to the input used to enter it. Tabbing past either end of the picker also returns
+to that input. Unmodified arrow keys keep their existing date-selection behavior in the text inputs.
+
+The inputs expose this shortcut through `aria-keyshortcuts`. Applications can provide a visible hint and
+connect it to the inputs with `startInputProps.aria-describedby` and `endInputProps.aria-describedby`.
+
 ## Date formatting
 
 You may customize the date display format with the required `formatDate` and `parseDate` props.
