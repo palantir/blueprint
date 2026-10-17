@@ -272,8 +272,9 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             this.setState({ activeItem: this.props.activeItem });
         }
 
-        if (this.props.query != null && this.props.query !== prevProps.query) {
-            // new query
+        if (this.props.query != null && this.props.query !== this.state.query) {
+            // new query, or a controlled `query` prop which state has drifted from (e.g. a parent
+            // ignored an `onQueryChange` update and kept its previous value), so re-sync to the prop
             this.setQuery(this.props.query, this.props.resetOnQuery, this.props);
         } else if (
             // same query (or uncontrolled query), but items in the list changed
