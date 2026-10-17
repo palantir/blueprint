@@ -88,4 +88,8 @@ To add a submenu to a **Menu**, you may nest one or more **MenuItem** elements w
 The submenu opens to the right of its parent by default, but will adjust and flip to the left if there is not enough
 room to the right.
 
+Submenus stay open while the pointer moves diagonally from the parent item toward the submenu, even when the
+pointer briefly leaves both elements. Moving away from this safe area closes the submenu. To disable this behavior,
+set `popoverProps={{ hoverSafePolygon: false }}` on the parent **MenuItem**.
+
 @reactCodeExample MenuSubmenuExample
