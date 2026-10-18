@@ -171,6 +171,12 @@ export const getKeyComboString = (e: KeyboardEvent): string => {
 const KEY_CODE_PREFIX = "Key";
 const DIGIT_CODE_PREFIX = "Digit";
 
+const SPECIAL_CODE_KEYS: KeyMap = {
+    Delete: "delete",
+    NumpadAdd: "numadd",
+    Space: "space",
+};
+
 function maybeGetKeyFromEventCode(e: KeyboardEvent) {
     if (e.code == null) {
         return undefined;
@@ -182,8 +188,8 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
     } else if (e.code.startsWith(DIGIT_CODE_PREFIX)) {
         // Code looks like "Digit1", etc.
         return e.code.substring(DIGIT_CODE_PREFIX.length).toLowerCase();
-    } else if (e.code === "Space" || e.code === "Delete") {
-        return e.code.toLowerCase();
+    } else if (SPECIAL_CODE_KEYS[e.code] !== undefined) {
+        return SPECIAL_CODE_KEYS[e.code];
     }
 
     return undefined;
@@ -202,16 +208,19 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
  */
 export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
+    let shouldApplyShiftKeyMapping = true;
     if (MODIFIER_KEYS.has(e.key)) {
         // Leave local variable `key` undefined
     } else {
         const codeKey = maybeGetKeyFromEventCode(e);
 
         // Special cases where we must use code instead of key
-        if (e.code === "Space" || e.code === "Delete") {
+        if (e.code != null && SPECIAL_CODE_KEYS[e.code] !== undefined) {
             // Space: event.key is " " but we need "space" to match parseKeyCombo
             // Delete: need lowercase code name
+            // NumpadAdd: event.key is "+" but the key is physically distinct from top-row plus
             key = codeKey;
+            shouldApplyShiftKeyMapping = false;
         } else if (e.altKey && isAltModifiedCharacter(e.key) && codeKey !== undefined) {
             // Alt on macOS produces special characters (e.g., Alt+c → ç), use code for those cases
             key = codeKey;
@@ -236,7 +245,7 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     }
     if (e.shiftKey) {
         modifiers += MODIFIER_BIT_MASKS.shift;
-        if (SHIFT_KEYS[e.key] !== undefined) {
+        if (shouldApplyShiftKeyMapping && SHIFT_KEYS[e.key] !== undefined) {
             key = SHIFT_KEYS[e.key];
         }
     }
