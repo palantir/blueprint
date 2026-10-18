@@ -12,11 +12,11 @@ $cell-padding: $cell-padding-vertical $cell-padding-horizontal !default;
 $cell-height: $pt-spacing * 5 !default;
 $large-cell-height: $pt-spacing * 7.5 !default;
 
-$cell-background-color: $white !default;
+$cell-background-color: var(--bp-palette-white) !default;
 $cell-background-color-opacity: 0.1 !default;
 $cell-border-color: $pt-divider-black !default;
 $cell-text-color: $pt-text-color !default;
-$dark-cell-background-color: $dark-gray3 !default;
+$dark-cell-background-color: var(--bp-palette-dark-gray-3) !default;
 $dark-cell-border-color: $pt-dark-divider-black !default;
 $dark-cell-text-color: $pt-dark-text-color !default;
 

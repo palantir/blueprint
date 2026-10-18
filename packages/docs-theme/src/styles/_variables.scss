@@ -10,8 +10,8 @@ $container-padding: $pt-spacing;
 
 $sidebar-width: $pt-spacing * 75;
 $sidebar-padding: $pt-spacing * 4;
-$sidebar-background-color: $white;
-$dark-sidebar-background-color: $dark-gray3;
+$sidebar-background-color: var(--bp-palette-white);
+$dark-sidebar-background-color: var(--bp-palette-dark-gray-3);
 
 $content-width: $container-width - $sidebar-width;
 $content-padding: $pt-spacing * 5;

@@ -8,8 +8,8 @@
 $heading-margin: $pt-spacing * 10;
 $link-icon-padding: $pt-spacing * 2;
 
-$class-modifier-color: $rose4;
-$attribute-modifier-color: $violet5;
+$class-modifier-color: var(--bp-palette-rose-4);
+$attribute-modifier-color: var(--bp-palette-violet-5);
 
 // title of a section
 .docs-title {

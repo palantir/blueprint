@@ -9,7 +9,7 @@
 // Variables
 // ---------------------------------------------------------------------------------------------------------------------
 
-$tag-default-color: $gray1 !default;
+$tag-default-color: var(--bp-palette-gray-1) !default;
 
 $tag-height: $pt-spacing * 5 !default;
 $tag-line-height: $pt-icon-size-standard !default;

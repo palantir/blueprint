@@ -111,7 +111,7 @@ label.docs-color-scheme-label {
 }
 
 .docs-color-bar-hexes {
-  background: $white;
+  background: var(--bp-palette-white);
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   box-shadow: none;
@@ -147,7 +147,7 @@ label.docs-color-scheme-label {
 }
 
 .docs-color-swatch {
-  border: 1px solid rgba($black, $pt-border-shadow-opacity * 200%);
+  border: 1px solid color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
   border-bottom-width: 0;
   border-top-width: 0;
   display: block;
@@ -173,8 +173,8 @@ label.docs-color-scheme-label {
     border-radius: var(--bp-surface-border-radius);
     box-shadow:
       inset border-shadow($pt-border-shadow-opacity * 2),
-      0 2px 4px rgba($black, $pt-drop-shadow-opacity * 50%),
-      0 8px 24px rgba($black, $pt-drop-shadow-opacity);
+      0 2px 4px color-mix(in srgb, var(--bp-palette-black) 10%, transparent),
+      0 8px 24px color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
     z-index: $pt-z-index-base + 1;
   }
 
@@ -182,23 +182,23 @@ label.docs-color-scheme-label {
     @include position-all(absolute, $swatch-hover-offset * 0.5);
     box-shadow:
       inset border-shadow($pt-border-shadow-opacity * 2),
-      0 1px 1px rgba($black, $pt-drop-shadow-opacity);
+      0 1px 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
   }
 
   .#{$ns}-dark & {
-    border-color: rgba($white, $pt-dark-border-shadow-opacity);
+    border-color: color-mix(in srgb, var(--bp-palette-white) 20%, transparent);
 
     &:hover .docs-color-swatch-trigger {
       box-shadow:
-        inset border-shadow($pt-dark-border-shadow-opacity, $color: $white),
-        0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity * 50%),
-        0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity);
+        inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent),
+        0 2px 4px color-mix(in srgb, var(--bp-palette-black) 20%, transparent),
+        0 8px 24px color-mix(in srgb, var(--bp-palette-black) 40%, transparent);
     }
 
     &:active .docs-color-swatch-trigger {
       box-shadow:
-        inset border-shadow($pt-dark-border-shadow-opacity, $color: $white),
-        0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity);
+        inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent),
+        0 1px 1px color-mix(in srgb, var(--bp-palette-black) 40%, transparent);
     }
   }
 }
@@ -313,6 +313,6 @@ $bubble-size: $pt-spacing * 5;
   width: $bubble-size;
 
   .#{$ns}-dark & {
-    box-shadow: inset border-shadow(0.2, $white);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent);
   }
 }
