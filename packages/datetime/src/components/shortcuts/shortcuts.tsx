@@ -135,8 +135,37 @@ const ShortcutMenuItem: React.FC<ShortcutMenuItemProps> = props => {
     );
 };
 
-function createShortcut(label: string, dateRange: DateRange): DateRangeShortcut {
-    return { dateRange, label };
+function createShortcut(label: string, dateRange: DateRange, includeTime = false): DateRangeShortcut {
+    return includeTime ? { dateRange, includeTime, label } : { dateRange, label };
+}
+
+/** Single-day range shortcuts select the whole calendar day when a time is shown. */
+function singleDayShortcutRange(
+    day: Date,
+    hasTimePrecision: boolean,
+    useSingleDateShortcuts: boolean,
+    exclusiveEnd: Date,
+): DateRange {
+    if (!hasTimePrecision) {
+        return [day, day];
+    } else if (useSingleDateShortcuts) {
+        // DatePicker only reads the start date and keeps the current time.
+        return [day, exclusiveEnd];
+    } else {
+        return [startOfDay(day), endOfDay(day)];
+    }
+}
+
+function startOfDay(date: Date): Date {
+    const result = clone(date);
+    result.setHours(0, 0, 0, 0);
+    return result;
+}
+
+function endOfDay(date: Date): Date {
+    const result = clone(date);
+    result.setHours(23, 59, 59, 999);
+    return result;
 }
 
 function createDefaultShortcuts(
@@ -161,11 +190,20 @@ function createDefaultShortcuts(
     const oneYearAgo = makeDate(d => d.setFullYear(d.getFullYear() - 1));
     const twoYearsAgo = makeDate(d => d.setFullYear(d.getFullYear() - 2));
 
+    const includeSingleDayTime = hasTimePrecision && !useSingleDateShortcuts;
     const singleDayShortcuts =
         allowSingleDayRange || useSingleDateShortcuts
             ? [
-                  createShortcut("Today", [today, hasTimePrecision ? tomorrow : today]),
-                  createShortcut("Yesterday", [yesterday, hasTimePrecision ? today : yesterday]),
+                  createShortcut(
+                      "Today",
+                      singleDayShortcutRange(today, hasTimePrecision, useSingleDateShortcuts, tomorrow),
+                      includeSingleDayTime,
+                  ),
+                  createShortcut(
+                      "Yesterday",
+                      singleDayShortcutRange(yesterday, hasTimePrecision, useSingleDateShortcuts, today),
+                      includeSingleDayTime,
+                  ),
               ]
             : [];
 

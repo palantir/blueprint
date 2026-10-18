@@ -950,17 +950,28 @@ describe("<DateRangePicker>", () => {
             expect(DateUtils.isSameDay(today, value[1]!)).toBe(true);
         });
 
-        it("should fire onChange with correct values from shortcuts when single day range and allowSingleDayRange enabled", () => {
+        it("should cover the selected day from midnight through the end of the day when a single-day shortcut is chosen", () => {
             render({ allowSingleDayRange: true, timePrecision: "minute" }).clickShortcut();
 
-            const today = new Date();
-            const tomorrow = DateUtils.clone(today);
-            tomorrow.setDate(today.getDate() + 1);
+            expect(onChangeSpy).toHaveBeenCalledOnce();
+            assertFullDayRange(onChangeSpy.mock.calls[0][0], new Date());
+        });
+
+        it("should cover the previous day when the Yesterday shortcut is chosen with time precision", () => {
+            render({ allowSingleDayRange: true, timePrecision: "minute" }).clickShortcut(1);
+
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
 
             expect(onChangeSpy).toHaveBeenCalledOnce();
-            const value = onChangeSpy.mock.calls[0][0];
-            expect(DateUtils.isSameDay(today, value[0]!)).toBe(true);
-            expect(DateUtils.isSameDay(tomorrow, value[1]!)).toBe(true);
+            assertFullDayRange(onChangeSpy.mock.calls[0][0], yesterday);
+        });
+
+        it("should cover the full day when time precision comes from timePickerProps", () => {
+            render({ allowSingleDayRange: true, timePickerProps: { precision: "minute" } }).clickShortcut();
+
+            expect(onChangeSpy).toHaveBeenCalledOnce();
+            assertFullDayRange(onChangeSpy.mock.calls[0][0], new Date());
         });
 
         it("should display all shortcuts as inactive when none are selected", () => {
@@ -1350,6 +1361,22 @@ describe("<DateRangePicker>", () => {
             expect(DateUtils.isSameTime(onChangeSpy.mock.calls[1][0][0] as Date, defaultRange[0])).toBe(true);
         });
     });
+
+    function assertFullDayRange(range: DateRange, day: Date) {
+        const [start, end] = range;
+        expect(start).not.toBeNull();
+        expect(end).not.toBeNull();
+        expect(DateUtils.isSameDay(day, start!)).toBe(true);
+        expect(DateUtils.isSameDay(day, end!)).toBe(true);
+        expect(start!.getHours()).toBe(0);
+        expect(start!.getMinutes()).toBe(0);
+        expect(start!.getSeconds()).toBe(0);
+        expect(start!.getMilliseconds()).toBe(0);
+        expect(end!.getHours()).toBe(23);
+        expect(end!.getMinutes()).toBe(59);
+        expect(end!.getSeconds()).toBe(59);
+        expect(end!.getMilliseconds()).toBe(999);
+    }
 
     function dayNotOutside(day: ReactWrapper) {
         return !day.hasClass(Classes.DATEPICKER3_DAY_OUTSIDE);
