@@ -2,7 +2,17 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { Children, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
+import {
+    Children,
+    forwardRef,
+    useCallback,
+    useEffect,
+    useId,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import * as Errors from "../../common/errors";
@@ -102,6 +112,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const cancelOpenTimeout = useRef<(() => void) | undefined>(undefined);
     const isMouseInTargetOrPopover = useRef(false);
     const lostFocusOnSamePage = useRef(true);
+    const popoverId = useId();
     const targetRef = useRef<HTMLElement>(null);
     const timeoutIds = useRef<number[]>([]);
 
@@ -385,6 +396,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                 isControlled={isControlled}
                 isHoverInteractionKind={isHoverInteractionKind}
                 openOnTargetFocus={openOnTargetFocus}
+                popoverId={popoverId}
                 ref={targetRef}
                 {...props}
             >
@@ -402,6 +414,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                     hasDarkParent={hasDarkParent}
                     isClosingViaEscapeKeypress={isClosingViaEscapeKeypress}
                     isHoverInteractionKind={isHoverInteractionKind}
+                    popoverId={popoverId}
                     popoverRef={popoverRef}
                     shouldReturnFocusOnClose={shouldReturnFocusOnClose}
                     {...props}
