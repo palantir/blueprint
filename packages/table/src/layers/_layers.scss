@@ -35,6 +35,9 @@ $region-selected-color: $pt-intent-primary !default;
   .#{$ns}-table-column-headers & {
     // Issue #120 - Don't actually overlay a color since it causes artifacts.
     background-color: transparent;
+    // Issue #6799 - Remove bottom border to prevent blue artifact line below column headers
+    // when a cell in the first row is selected and the table is scrolled.
+    border-bottom: none;
   }
 
   .#{$ns}-table-row-headers & {
