@@ -29,14 +29,54 @@ Tokens are available as CSS custom properties on `:root`:
 ## Development
 
 ```bash
-pnpm run build:tokens  # Generate tokens
+pnpm run build:tokens        # Generate tokens
+pnpm run build:palette-ramp  # Regenerate tokens/base/palette/ramp.tokens.json
 ```
+
+## Palette Ramp
+
+Each BP6 color family also has a 100–900 ramp, `--bp-palette-{family}-{step}`, plus a single `gray` ramp that covers the BP6 light-gray, gray, and dark-gray scales. Step 100 is the lightest and 900 the darkest, the reverse of the BP6 1–5 scales, where 1 is the darkest.
+
+```css
+.element {
+    background: var(--bp-palette-blue-100);
+    color: var(--bp-palette-blue-900);
+}
+```
+
+The ramp tokens live in `tokens/base/palette/ramp.tokens.json`, which is generated from `tokens/base/palette.tokens.json` by `paletteRamp.ts`. Don't edit it by hand: change the BP6 palette or `DEFAULT_RAMP_CONFIG`, then run `pnpm run build:palette-ramp`. A test fails if the committed file is out of date.
+
+### How the ramp is built
+
+- **Target lightness.** Every ramp shares one target curve: OKLCH lightness evenly spaced from 0.95 at step 100 to 0.25 at step 900.
+- **BP6 colors are kept exactly.** Each BP6 chromatic color is reused verbatim at the step whose target lightness it matches best, keeping the five colors in order. Its token references the BP6 token, and its CSS comment names it (`/** Same as --bp-palette-blue-3 */`).
+- **Other steps are generated** in OKLCH. Lightness follows the target curve, bent smoothly to pass through the BP6 colors. Hue and chroma are interpolated from the BP6 colors, and chroma tapers past the lightest and darkest BP6 color so tints and shades don't become neon.
+- **Grays.** A BP6 gray is reused only where it sits within 0.02 of a step's target lightness (about one just-noticeable difference). Other gray steps are generated, and BP6 grays without a step keep only their BP6 names.
+
+Because placement follows lightness, the same BP6 shade can land on different steps in different families:
+
+| Family                                                             | 5 → | 4 → | 3 → | 2 → | 1 → |
+| ------------------------------------------------------------------ | --- | --- | --- | --- | --- |
+| blue, green, red, vermilion, rose, indigo, cerulean, forest, sepia | 300 | 400 | 500 | 600 | 700 |
+| orange                                                             | 200 | 300 | 500 | 600 | 700 |
+| turquoise                                                          | 200 | 300 | 500 | 600 | 800 |
+| gold                                                               | 200 | 300 | 400 | 600 | 700 |
+| lime                                                               | 100 | 200 | 400 | 600 | 700 |
+| violet                                                             | 300 | 400 | 600 | 700 | 800 |
+
+| `gray` step | 100            | 200            | 300      | 400      | 500      | 600      | 700       | 800           | 900           |
+| ----------- | -------------- | -------------- | -------- | -------- | -------- | -------- | --------- | ------------- | ------------- |
+| BP6 gray    | `$light-gray4` | `$light-gray1` | `$gray4` | `$gray3` | `$gray2` | `$gray1` | generated | `$dark-gray3` | `$dark-gray1` |
+
+Not in the `gray` ramp: `$light-gray5`, `$light-gray3`, `$light-gray2`, `$gray5`, `$dark-gray5`, `$dark-gray4`, `$dark-gray2`.
+
+The Storybook story **Core/Styles/Palette Ramp** shows each ramp next to the BP6 colors it reuses, the lightness curves, and the full migration map. Its Playground story regenerates the ramps live with adjustable settings.
 
 ## Additional Notes
 
 ### Token Structure
 
-Tokens follow the [DTCG](https://tr.designtokens.org/format/) specification. Source files live in `tokens/base/` (5 files: palette, intent, surface, typography, emphasis) with theme overrides in `tokens/themes/` (which currently includes only dark tokens).
+Tokens follow the [DTCG](https://tr.designtokens.org/format/) specification. Source files live in `tokens/base/` (palette, intent, surface, typography, emphasis, and the generated palette ramp) with theme overrides in `tokens/themes/` (which currently includes only dark tokens).
 
 Each token uses these standard DTCG properties:
 
