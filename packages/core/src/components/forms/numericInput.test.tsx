@@ -1077,6 +1077,27 @@ describe("<NumericInput>", () => {
             consoleWarn.mockRestore();
         });
 
+        it("does not round stepSize increments when stepSize has more decimal places than minorStepSize", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            render(<NumericInput stepSize={0.25} onValueChange={onValueChangeSpy} />);
+
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(0.25, "0.25", expect.anything());
+            expect(screen.getByRole("spinbutton")).toHaveValue("0.25");
+        });
+
+        it("does not round majorStepSize increments when majorStepSize has more decimal places than stepSize", async () => {
+            const user = userEvent.setup();
+            const onValueChangeSpy = vi.fn();
+            render(<NumericInput majorStepSize={2.5} minorStepSize={null} onValueChange={onValueChangeSpy} />);
+
+            await user.keyboard("{Shift>}");
+            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.keyboard("{/Shift}");
+            expect(onValueChangeSpy).toHaveBeenLastCalledWith(2.5, "2.5", expect.anything());
+        });
+
         it("must not call handleButtonClick if component is disabled", async () => {
             const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
