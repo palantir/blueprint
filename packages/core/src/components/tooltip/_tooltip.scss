@@ -18,11 +18,19 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
     $arrow-offset: $pt-spacing * 0.75,
     $arrow-target-offset: -$pt-spacing
   );
+  // The box shadow is $pt-tooltip-box-shadow ($pt-elevation-shadow-3) written with tokens. It
+  // doesn't use --bp-surface-shadow-3, whose first layer is pure black instead of palette black and
+  // whose dark variant adds an inset white ring. color-mix() uses srgb for the reason given in
+  // ./_common.scss.
   @include popover-appearance(
-    $tooltip-background-color,
-    $tooltip-text-color,
-    $pt-tooltip-box-shadow,
-    $tooltip-arrow-box-shadow,
+    var(--bp-palette-dark-gray-5),
+    var(--bp-palette-light-gray-5),
+    (
+      0 0 0 1px color-mix(in srgb, var(--bp-palette-black) 10%, transparent),
+      0 20px 25px -5px rgba(0, 0, 0, 10%),
+      0 10px 15px -3px rgba(0, 0, 0, 10%)
+    ),
+    1px 1px 6px color-mix(in srgb, var(--bp-palette-black) 20%, transparent),
     $pt-border-shadow-opacity
   );
   // lightweight scale for tooltips
@@ -35,7 +43,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
     $after: "> &"
   );
   // override typography & icon colors because we use a dark background
-  @include pt-dark-typography-colors;
+  @include tooltip-dark-typography-colors;
 
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
@@ -72,26 +80,32 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
+    // The box shadow is $pt-dark-tooltip-box-shadow written with tokens.
     @include popover-appearance(
-      $dark-tooltip-background-color,
-      $dark-tooltip-text-color,
-      $pt-dark-tooltip-box-shadow,
-      $dark-tooltip-arrow-box-shadow,
+      var(--bp-palette-light-gray-3),
+      var(--bp-palette-dark-gray-5),
+      (
+        0 2px 4px color-mix(in srgb, var(--bp-palette-black) 40%, transparent),
+        0 8px 24px color-mix(in srgb, var(--bp-palette-black) 40%, transparent)
+      ),
+      1px 1px 6px color-mix(in srgb, var(--bp-palette-black) 40%, transparent),
       $pt-dark-border-shadow-opacity
     );
     // override typography because we use a light background
-    @include pt-typography-colors;
+    @include tooltip-typography-colors;
   }
 
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent in ("primary", "success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-popover-content {
-        background: $color;
-        color: $white;
+        background: var(--bp-intent-#{$intent}-rest);
+        // Text stays white for every intent. --bp-intent-warning-foreground is black, so the
+        // intent foreground tokens would change warning tooltips.
+        color: var(--bp-palette-white);
       }
 
       .#{$ns}-popover-arrow-fill {
-        fill: $color;
+        fill: var(--bp-intent-#{$intent}-rest);
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // In Windows high contrast mode, just force the color to be the same as the border.
