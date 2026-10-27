@@ -3,34 +3,56 @@
  */
 
 import type { Decorator } from "@storybook/react-vite";
-import { useEffect } from "storybook/preview-api";
+import { useEffect, useRef } from "storybook/preview-api";
 
-import type { TokenValues } from "./tokens";
+import { TOKEN_NAMES, type TokenName, type TokenValues } from "./tokens";
+
+type InlineTokenValues = Record<TokenName, { priority: string; value: string }>;
 
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
-    const tokenOverrides: Partial<TokenValues> = globals.tokenOverrides;
+    const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
+    const initialTokenValues = useRef<InlineTokenValues | undefined>(undefined);
+
+    useEffect(
+        function captureInitialTokenValues() {
+            const style = document.body.style;
+            const values = Object.fromEntries(
+                TOKEN_NAMES.map(name => [
+                    name,
+                    {
+                        priority: style.getPropertyPriority(name),
+                        value: style.getPropertyValue(name),
+                    },
+                ]),
+            ) as InlineTokenValues;
+            initialTokenValues.current = values;
+
+            return () => {
+                for (const name of TOKEN_NAMES) {
+                    const { value, priority } = values[name];
+                    // An empty value removes the inline property.
+                    style.setProperty(name, value, priority);
+                }
+                initialTokenValues.current = undefined;
+            };
+        },
+        [id],
+    );
 
     useEffect(
         function applyTokenOverrides() {
             const style = document.body.style;
-            const previousValues = Object.keys(tokenOverrides).map(name => ({
-                name,
-                priority: style.getPropertyPriority(name),
-                value: style.getPropertyValue(name),
-            }));
+            const overrides = tokenOverrides ?? {};
 
-            for (const [name, value] of Object.entries(tokenOverrides)) {
-                if (value != null) {
-                    style.setProperty(name, String(value));
+            for (const name of TOKEN_NAMES) {
+                const override = overrides[name];
+                if (override != null && override !== "") {
+                    style.setProperty(name, override);
+                } else {
+                    const initialValue = initialTokenValues.current?.[name];
+                    style.setProperty(name, initialValue?.value ?? "", initialValue?.priority);
                 }
             }
-
-            return () => {
-                for (const { name, value, priority } of previousValues) {
-                    // An empty value removes the inline property.
-                    style.setProperty(name, value, priority);
-                }
-            };
         },
         [id, tokenOverrides],
     );

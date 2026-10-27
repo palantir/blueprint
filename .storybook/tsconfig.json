@@ -6,6 +6,7 @@
         "target": "ESNext",
         "lib": ["ESNext", "DOM", "DOM.Iterable"],
         "moduleResolution": "bundler",
+        "resolveJsonModule": true,
         "skipLibCheck": true,
         "paths": {
             "@storybook-common": ["./common"],
