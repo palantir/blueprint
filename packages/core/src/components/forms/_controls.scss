@@ -253,19 +253,21 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   }
 
   &.#{$ns}-checkbox {
-    // Embedded SVG data URLs cannot resolve CSS custom properties from the containing document.
-    @mixin indicator-inline-icon($icon, $fill-color: $white) {
+    @mixin indicator-mask($icon) {
       &::before {
-        // embed SVG icon image as backgroud-image above gradient.
-        // the SVG image content is inlined into the CSS, so use this sparingly.
-        background-image: svg-icon(
+        // Use the embedded SVG as a mask so its color can be customized at runtime.
+        background-color: $control-checked-foreground-color;
+        mask-image: svg-icon(
           "16px/#{$icon}.svg",
           (
             path: (
-              fill: $fill-color,
+              fill: $black,
             ),
           )
         );
+        mask-position: center;
+        mask-repeat: no-repeat;
+        mask-size: contain;
       }
     }
 
@@ -277,11 +279,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
-      @include indicator-inline-icon("small-tick");
+      @include indicator-mask("small-tick");
     }
 
     input:indeterminate ~ .#{$ns}-control-indicator {
-      @include indicator-inline-icon("small-minus");
+      @include indicator-mask("small-minus");
     }
 
     input:disabled ~ .#{$ns}-control-indicator::before {
@@ -289,12 +291,12 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-tick", $black);
+      input:checked:not(:disabled) ~ .#{$ns}-control-indicator::before {
+        background-color: var(--bp-palette-black);
       }
 
-      input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-minus", $black);
+      input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator::before {
+        background-color: var(--bp-palette-black);
       }
 
       input:disabled ~ .#{$ns}-control-indicator {
