@@ -229,4 +229,65 @@ describe("useHotkeys", () => {
             expect(screen.queryByRole("dialog")).toBeNull();
         });
     });
+
+    // https://github.com/palantir/blueprint/issues/6028
+    describe("local hotkeys with stopPropagation", () => {
+        const LocalHotkeyInsideParent: React.FC<{
+            onHotkey: () => void;
+            onParentKeyDown: () => void;
+            onParentKeyUp: () => void;
+            stopPropagation: boolean;
+        }> = ({ onHotkey, onParentKeyDown, onParentKeyUp, stopPropagation }) => {
+            const hotkeys = useMemo(
+                () => [{ combo: "W", label: "W", onKeyDown: onHotkey, onKeyUp: onHotkey, stopPropagation }],
+                [onHotkey, stopPropagation],
+            );
+            const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
+            return (
+                <div onKeyDown={onParentKeyDown} onKeyUp={onParentKeyUp}>
+                    <div data-testid="hotkey-target" onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} tabIndex={0} />
+                </div>
+            );
+        };
+
+        it("stops keydown and keyup from reaching parent React handlers", async () => {
+            const user = userEvent.setup();
+            const onHotkey = vi.fn();
+            const onParentKeyDown = vi.fn();
+            const onParentKeyUp = vi.fn();
+            render(
+                <LocalHotkeyInsideParent
+                    onHotkey={onHotkey}
+                    onParentKeyDown={onParentKeyDown}
+                    onParentKeyUp={onParentKeyUp}
+                    stopPropagation={true}
+                />,
+            );
+            screen.getByTestId("hotkey-target").focus();
+            await user.keyboard("w");
+            expect(onHotkey).toHaveBeenCalledTimes(2);
+            expect(onParentKeyDown).not.toHaveBeenCalled();
+            expect(onParentKeyUp).not.toHaveBeenCalled();
+        });
+
+        it("lets events reach parent React handlers when stopPropagation is not set", async () => {
+            const user = userEvent.setup();
+            const onHotkey = vi.fn();
+            const onParentKeyDown = vi.fn();
+            const onParentKeyUp = vi.fn();
+            render(
+                <LocalHotkeyInsideParent
+                    onHotkey={onHotkey}
+                    onParentKeyDown={onParentKeyDown}
+                    onParentKeyUp={onParentKeyUp}
+                    stopPropagation={false}
+                />,
+            );
+            screen.getByTestId("hotkey-target").focus();
+            await user.keyboard("w");
+            expect(onHotkey).toHaveBeenCalledTimes(2);
+            expect(onParentKeyDown).toHaveBeenCalledOnce();
+            expect(onParentKeyUp).toHaveBeenCalledOnce();
+        });
+    });
 });
