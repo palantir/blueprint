@@ -4,7 +4,7 @@
 @import "../../common/variables";
 @import "./common";
 
-$pt-dark-option-background-color: var(--bp-palette-dark-gray-3) !default;
+$pt-dark-option-background-color: $dark-gray3 !default;
 
 .#{$ns}-html-select,
 .#{$ns}-select {
