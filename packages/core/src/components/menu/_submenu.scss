@@ -3,6 +3,7 @@
 
 @import "../../common/variables";
 @import "@blueprintjs/icons/lib/scss/variables";
+@import "../popover/common";
 @import "./common";
 
 .#{$ns}-submenu {
@@ -44,7 +45,7 @@
     padding: 0 $pt-spacing;
 
     > .#{$ns}-popover-content {
-      box-shadow: $pt-popover-box-shadow;
+      box-shadow: $popover-box-shadow;
     }
 
     .#{$ns}-dark &,
@@ -52,7 +53,7 @@
       box-shadow: none;
 
       > .#{$ns}-popover-content {
-        box-shadow: $pt-dark-popover-box-shadow;
+        box-shadow: $dark-popover-box-shadow;
       }
     }
   }

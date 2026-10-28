@@ -27,7 +27,7 @@ $dark-popover-arrow-box-shadow:
   @include popover-appearance(
     $pt-popover-background-color,
     inherit,
-    $pt-popover-box-shadow,
+    $popover-box-shadow,
     $popover-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
@@ -90,7 +90,7 @@ $dark-popover-arrow-box-shadow:
     @include popover-appearance(
       $pt-dark-popover-background-color,
       inherit,
-      $pt-dark-popover-box-shadow,
+      $dark-popover-box-shadow,
       $dark-popover-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );

@@ -8,6 +8,13 @@
 $pt-popover-background-color: var(--bp-palette-white) !default;
 $pt-dark-popover-background-color: var(--bp-palette-dark-gray-3) !default;
 
+$popover-box-shadow: var(--bp-surface-shadow-3) !default;
+$dark-popover-box-shadow:
+  0 0 0 1px $pt-dark-popover-border-color,
+  var(--bp-surface-shadow-3),
+  inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 30%),
+  inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 8%) !default;
+
 // $arrow-offset: amount to shift arrow along edge of popover
 // $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
 
