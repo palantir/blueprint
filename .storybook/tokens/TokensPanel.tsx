@@ -64,7 +64,7 @@ interface TokenRowProps {
 
 function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
     const editor = TOKEN_CONFIG[name];
-    const hasOverride = overrideValue !== undefined && overrideValue !== "";
+    const hasOverride = overrideValue != null && overrideValue !== "";
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
         (value: string | undefined) => onUpdateToken(name, value),
