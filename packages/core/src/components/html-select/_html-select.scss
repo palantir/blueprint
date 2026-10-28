@@ -2,8 +2,9 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
-@import "../popover/common";
 @import "./common";
+
+$pt-dark-option-background-color: $dark-gray3 !default;
 
 .#{$ns}-html-select,
 .#{$ns}-select {
@@ -54,7 +55,7 @@
     }
 
     option {
-      background-color: $pt-dark-popover-background-color;
+      background-color: $pt-dark-option-background-color;
       color: $pt-dark-text-color;
     }
 
