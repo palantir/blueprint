@@ -71,6 +71,48 @@ describe("<Tag>", () => {
         expect(handleRemove).toHaveBeenCalledOnce();
     });
 
+    it("keeps the tag action and remove button as separate controls", async () => {
+        const user = userEvent.setup();
+        const onClick = vi.fn();
+        const onRemove = vi.fn();
+        const ref = createRef<HTMLSpanElement>();
+        render(
+            <Tag ref={ref} role="button" onClick={onClick} onRemove={onRemove}>
+                Hello
+            </Tag>,
+        );
+        const action = screen.getByRole("button", { name: "Hello" });
+        const remove = screen.getByRole("button", { name: "Remove tag" });
+        expect(action.contains(remove)).toBe(false);
+        expect(ref.current).toHaveClass(Classes.TAG);
+        expect(ref.current).not.toHaveAttribute("role");
+        await user.tab();
+        expect(action).toHaveFocus();
+        await user.keyboard("{Enter}");
+        await user.keyboard(" ");
+        expect(onClick).toHaveBeenCalledTimes(2);
+        await user.tab();
+        expect(remove).toHaveFocus();
+        await user.keyboard("{Enter}");
+        expect(onRemove).toHaveBeenCalledOnce();
+        expect(onClick).toHaveBeenCalledTimes(2);
+        await user.click(remove);
+        expect(onRemove).toHaveBeenCalledTimes(2);
+        expect(onClick).toHaveBeenCalledTimes(2);
+    });
+
+    it("labels the tag action independently of its remove button", () => {
+        render(
+            <Tag interactive={true} aria-label="Open greeting" aria-pressed={true} onRemove={vi.fn()}>
+                Hello
+            </Tag>,
+        );
+        expect(screen.getByRole("button", { name: "Open greeting" })).toHaveAttribute("aria-pressed", "true");
+        expect(screen.getByRole("button", { name: "Open greeting" })).not.toContainElement(
+            screen.getByRole("button", { name: "Remove tag" }),
+        );
+    });
+
     it("should be interactive when onClick is provided", () => {
         render(<Tag onClick={vi.fn()}>Hello</Tag>);
         const button = screen.getByRole("button", { name: "Hello" });
