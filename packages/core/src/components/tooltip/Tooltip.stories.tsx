@@ -8,8 +8,9 @@ import { expect, screen, waitFor } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { Intent, mergeRefs } from "../../common";
+import { Classes, Intent, mergeRefs } from "../../common";
 import { Button } from "../button/buttons";
+import { Code, H5, Pre } from "../html/html";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { PopoverNext } from "../popover-next/popoverNext";
@@ -22,6 +23,40 @@ const TOOLTIP_POPOVER_MENU = (
         <MenuItem icon="duplicate" text="Duplicate" />
         <MenuItem icon="trash" intent="danger" text="Delete" />
     </Menu>
+);
+
+const TOOLTIP_TYPOGRAPHY_CONTENT = (
+    <div>
+        <H5>Heading</H5>
+        <p>
+            Default, <span className={Classes.TEXT_MUTED}>muted</span>, and{" "}
+            <span className={Classes.TEXT_DISABLED}>disabled</span> text
+        </p>
+        <p>
+            <a href="https://blueprintjs.com">Link</a> and{" "}
+            <a href="https://blueprintjs.com">
+                <Code>linked code</Code>
+            </a>
+        </p>
+        <p>
+            Inline <Code>code</Code> and <kbd className={Classes.KEY}>K</kbd>
+        </p>
+        <Pre>Code block</Pre>
+        <div className={Classes.RUNNING_TEXT}>
+            <p>Running text above a divider</p>
+            <hr />
+        </div>
+        {/* Typography intent colors only target icon classes, so these text spans carry Classes.ICON */}
+        <Flex gap={2}>
+            {Object.values(Intent)
+                .filter(intent => intent !== Intent.NONE)
+                .map(intent => (
+                    <span key={intent} className={`${Classes.ICON} ${Classes.intentClass(intent)}`}>
+                        {intent}
+                    </span>
+                ))}
+        </Flex>
+    </div>
 );
 
 const meta: Meta<typeof Tooltip> = {
@@ -136,6 +171,24 @@ export const VariantExample: Story = {
                 </div>
             </Flex>
         </Flex>
+    ),
+};
+
+/**
+ * Tooltips use the opposite color scheme to the page, so they recolor typography to suit their own background.
+ * This story renders each typography style the tooltip recolors.
+ */
+export const TypographyExample: Story = {
+    name: "Typography",
+    argTypes: {
+        content: { table: { disable: true } },
+    },
+    render: args => (
+        <div style={{ paddingBottom: 320 }}>
+            <Tooltip {...args} content={TOOLTIP_TYPOGRAPHY_CONTENT} placement="bottom" isOpen={true}>
+                <Button>Typography</Button>
+            </Tooltip>
+        </div>
     ),
 };
 

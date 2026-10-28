@@ -68,7 +68,7 @@ $pt-dark-popover-background-color: $dark-gray3 !default;
   }
 
   .#{$ns}-popover-arrow-border {
-    fill: $black;
+    fill: var(--bp-palette-black);
     fill-opacity: $arrow-border-fill-opacity;
   }
 

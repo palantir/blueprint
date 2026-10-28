@@ -96,8 +96,14 @@ $pt-dark-intent-text-colors: (
   }
 }
 
+// TODO: Delete once all consumers have migrated to next-border-shadow
 @function border-shadow($alpha, $color: $black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
+}
+
+// Token-aware counterpart to border-shadow. Use sRGB to preserve the palette's RGB channels.
+@function next-border-shadow($alpha, $color: var(--bp-palette-black), $size: 1px) {
+  @return 0 0 0 $size color-mix(in srgb, $color math.percentage($alpha), transparent);
 }
 
 // returns the padding necessary to center text in a container of the given height.
