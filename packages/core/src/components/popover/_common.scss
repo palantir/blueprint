@@ -75,7 +75,7 @@ $dark-popover-box-shadow:
   }
 
   .#{$ns}-popover-arrow-border {
-    fill: $black;
+    fill: var(--bp-palette-black);
     fill-opacity: $arrow-border-fill-opacity;
   }
 
