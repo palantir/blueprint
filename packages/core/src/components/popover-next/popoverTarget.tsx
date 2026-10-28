@@ -29,6 +29,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
         isControlled,
         isHoverInteractionKind,
         openOnTargetFocus = true,
+        popoverId,
         popupKind,
         renderTarget = undefined,
         targetProps,
@@ -88,6 +89,8 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
 
     // Ensure target is focusable if relevant prop enabled
     const targetTabIndex = !isContentEmpty && !disabled && openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
+    const targetAriaDescribedBy =
+        isOpen && isHoverInteractionKind && !isContentEmpty && !disabled ? popoverId : undefined;
 
     // Hover targets (including Tooltip) open via the mouse/focus handlers in `targetEventHandlers`, so
     // they must not receive Floating UI's reference props; those carry the `onClick`/keyboard click
@@ -114,6 +117,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
         ...targetEventHandlers,
     } satisfies React.HTMLProps<HTMLElement>;
     const childTargetProps = {
+        "aria-describedby": targetAriaDescribedBy,
         "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
         "aria-haspopup":
             interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : (popupKind ?? "menu"),
@@ -150,6 +154,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
 
         const clonedTarget = cloneElement(childTarget, {
             ...childTargetProps,
+            "aria-describedby": mergeAriaDescribedBy(childTarget.props["aria-describedby"], targetAriaDescribedBy),
             className: classNames(childTarget.props.className, targetModifierClasses),
             disabled: (isOpen && isTooltipElement(childTarget)) || childTarget.props.disabled,
             tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
@@ -159,6 +164,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
             {
                 ...ownTargetProps,
                 ...targetProps,
+                "aria-describedby": mergeAriaDescribedBy(targetProps?.["aria-describedby"], targetAriaDescribedBy),
                 // Apply Floating UI's interaction props to the wrapper element (same element that has the ref)
                 ...floatingProps,
             },
@@ -193,4 +199,14 @@ function isTooltipElement(element: React.ReactElement): boolean {
 function isTypeableElement(element: HTMLElement): boolean {
     const tagName = element.tagName;
     return tagName === "INPUT" || tagName === "TEXTAREA" || tagName === "SELECT" || element.isContentEditable;
+}
+
+function mergeAriaDescribedBy(existingId: string | undefined, popoverId: string | undefined): string | undefined {
+    if (popoverId === undefined) {
+        return existingId;
+    }
+    if (existingId === undefined || existingId.length === 0) {
+        return popoverId;
+    }
+    return `${existingId} ${popoverId}`;
 }
