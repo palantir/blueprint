@@ -29,6 +29,7 @@ export async function loadDateFnsLocale(localeCode: string): Promise<Locale | un
         const localeModule = await import(
             /* @vite-ignore */
             /* webpackChunkName: "date-fns-locale-[request]" */
+            /* webpackInclude: /[/\\]locale[/\\][^/\\]+[/\\]index\.js$/ */
             `date-fns/locale/${localeCode}/index.js`
         );
         return localeModule.default;
