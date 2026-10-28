@@ -114,7 +114,7 @@ $dark-popover-arrow-box-shadow:
 }
 
 .#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
-  background: rgba($white, 0);
+  background: oklch(from var(--bp-palette-white) l c h / 0%);
 }
 
 .#{$ns}-popover-transition-container {
