@@ -36,6 +36,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         interactionKind = PopoverInteractionKind.CLICK,
         isClosingViaEscapeKeypress,
         isHoverInteractionKind,
+        isSafePolygonEnabled,
         lazy = false,
         matchTargetWidth = false,
         onClosed,
@@ -141,7 +142,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
                 className={Classes.POPOVER_TRANSITION_CONTAINER}
                 style={floatingData.floatingStyles}
                 ref={ref}
-                {...popoverHandlers}
+                {...(isSafePolygonEnabled ? floatingData.getFloatingProps(popoverHandlers) : popoverHandlers)}
             >
                 <div className={popoverClasses} ref={popoverRef} style={{ transformOrigin }}>
                     {arrow && (

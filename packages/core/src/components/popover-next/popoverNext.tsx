@@ -2,6 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import { FloatingNode, FloatingTree, useFloatingTree } from "@floating-ui/react";
 import { Children, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
@@ -26,6 +27,17 @@ export interface PopoverNextRef {
 }
 
 export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
+    const tree = useFloatingTree();
+    return tree == null ? (
+        <FloatingTree>
+            <PopoverNextInner {...props} ref={ref} />
+        </FloatingTree>
+    ) : (
+        <PopoverNextInner {...props} ref={ref} />
+    );
+});
+
+const PopoverNextInner = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
     const {
         animation = POPOVER_NEXT_DEFAULT_ANIMATION,
         autoUpdateOptions,
@@ -50,6 +62,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         positioningStrategy = "absolute",
         renderTarget,
         rootBoundary,
+        safePolygon = false,
         shouldReturnFocusOnClose = true,
         targetProps,
         usePortal = true,
@@ -113,6 +126,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const isHoverInteractionKind =
         interactionKind === PopoverInteractionKind.HOVER ||
         interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+    const isSafePolygonEnabled = interactionKind === PopoverInteractionKind.HOVER && safePolygon !== false;
 
     const middleware = useMemo(() => {
         const defaultMiddleware: MiddlewareConfig = {
@@ -143,6 +157,8 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const floatingData = usePopover({
         autoUpdateOptions,
         disabled,
+        hoverCloseDelay,
+        hoverOpenDelay,
         isControlled,
         isHoverInteractionKind,
         isOpen: computedIsOpen,
@@ -153,6 +169,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         },
         placement,
         positioningStrategy,
+        safePolygon: isSafePolygonEnabled ? safePolygon : false,
     });
 
     useImperativeHandle(
@@ -229,6 +246,10 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         (event: React.MouseEvent<HTMLElement>) => {
             isMouseInTargetOrPopover.current = false;
 
+            if (isSafePolygonEnabled && event.type !== "blur") {
+                return;
+            }
+
             event.persist();
             setTimeout(() => {
                 if (isMouseInTargetOrPopover.current) {
@@ -237,12 +258,17 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                 setOpenState(false, event, hoverCloseDelay);
             });
         },
-        [hoverCloseDelay, setOpenState, setTimeout],
+        [hoverCloseDelay, isSafePolygonEnabled, setOpenState, setTimeout],
     );
 
     const handleMouseEnter = useCallback(
         (event: React.MouseEvent<HTMLElement>) => {
             isMouseInTargetOrPopover.current = true;
+
+            if (isSafePolygonEnabled && event.type !== "focus") {
+                cancelOpenTimeout.current?.();
+                return;
+            }
 
             // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
             // trigger the mouse leave event, as hovering over the popover shouldn't count.
@@ -264,6 +290,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
             hoverOpenDelay,
             interactionKind,
             isElementInPopover,
+            isSafePolygonEnabled,
             openOnTargetFocus,
             setOpenState,
             usePortal,
@@ -372,6 +399,8 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         }
     }, [computedIsOpen, disabled, floatingData, isContentEmpty, isOpen, setOpenState, updateDarkParent]);
 
+    useEffect(() => () => timeoutIds.current.forEach(window.clearTimeout), []);
+
     return (
         <>
             <PopoverTarget
@@ -384,6 +413,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                 isContentEmpty={isContentEmpty}
                 isControlled={isControlled}
                 isHoverInteractionKind={isHoverInteractionKind}
+                isSafePolygonEnabled={isSafePolygonEnabled}
                 openOnTargetFocus={openOnTargetFocus}
                 ref={targetRef}
                 {...props}
@@ -391,27 +421,31 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                 {children}
             </PopoverTarget>
             {!isContentEmpty && (
-                <PopoverPopup
-                    animation={animation}
-                    arrowRef={arrowRef}
-                    floatingData={floatingData}
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
-                    handleOverlayClose={handleOverlayClose}
-                    handlePopoverClick={handlePopoverClick}
-                    hasDarkParent={hasDarkParent}
-                    isClosingViaEscapeKeypress={isClosingViaEscapeKeypress}
-                    isHoverInteractionKind={isHoverInteractionKind}
-                    popoverRef={popoverRef}
-                    shouldReturnFocusOnClose={shouldReturnFocusOnClose}
-                    {...props}
-                />
+                <FloatingNode id={floatingData.context.nodeId}>
+                    <PopoverPopup
+                        animation={animation}
+                        arrowRef={arrowRef}
+                        floatingData={floatingData}
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleOverlayClose={handleOverlayClose}
+                        handlePopoverClick={handlePopoverClick}
+                        hasDarkParent={hasDarkParent}
+                        isClosingViaEscapeKeypress={isClosingViaEscapeKeypress}
+                        isHoverInteractionKind={isHoverInteractionKind}
+                        isSafePolygonEnabled={isSafePolygonEnabled}
+                        popoverRef={popoverRef}
+                        shouldReturnFocusOnClose={shouldReturnFocusOnClose}
+                        {...props}
+                    />
+                </FloatingNode>
             )}
         </>
     );
 });
 
 PopoverNext.displayName = `${DISPLAYNAME_PREFIX}.PopoverNext`;
+PopoverNextInner.displayName = `${DISPLAYNAME_PREFIX}.PopoverNextInner`;
 
 function isEscapeKeypressEvent(e?: Event) {
     return e instanceof KeyboardEvent && e.key === "Escape";

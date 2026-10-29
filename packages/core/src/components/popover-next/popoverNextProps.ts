@@ -2,6 +2,8 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import type { safePolygon } from "@floating-ui/react";
+
 import { PopoverAnimation, type PopoverInteractionKind } from "../popover/popoverProps";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -364,6 +366,16 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
     rootBoundary?: PopoverNextRootBoundary;
 
     /**
+     * Keeps the popover open while the pointer moves diagonally from its target toward its content.
+     * Only applies to `interactionKind="hover"`. Set to `true` for Floating UI's defaults or supply
+     * options to customize the polygon's `buffer`, `requireIntent`, and `blockPointerEvents` behavior.
+     *
+     * @default false
+     * @see https://floating-ui.com/docs/usehover#safepolygon
+     */
+    safePolygon?: boolean | Parameters<typeof safePolygon>[0];
+
+    /**
      * Whether the application should return focus to the last active element in the
      * document after this popover closes.
      *
@@ -460,6 +472,7 @@ export interface PopoverTargetProps
     isContentEmpty: boolean;
     isControlled: boolean;
     isHoverInteractionKind: boolean;
+    isSafePolygonEnabled: boolean;
 }
 
 /**
@@ -502,13 +515,23 @@ export interface PopoverPopupProps
     hasDarkParent: boolean;
     isClosingViaEscapeKeypress: boolean;
     isHoverInteractionKind: boolean;
+    isSafePolygonEnabled: boolean;
 }
 
 /**
  * Properties injected by PopoverNext when rendering custom targets via the `renderTarget` API.
  */
 export interface PopoverRenderTargetProps
-    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "aria-expanded" | "className" | "tabIndex"> {
+    extends Pick<
+        React.HTMLAttributes<HTMLElement>,
+        | "aria-haspopup"
+        | "aria-expanded"
+        | "className"
+        | "tabIndex"
+        | "onMouseMove"
+        | "onPointerDown"
+        | "onPointerEnter"
+    > {
     /** Target ref. */
     ref: React.Ref<any>;
 

@@ -28,6 +28,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
         isContentEmpty,
         isControlled,
         isHoverInteractionKind,
+        isSafePolygonEnabled,
         openOnTargetFocus = true,
         popupKind,
         renderTarget = undefined,
@@ -89,13 +90,12 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     // Ensure target is focusable if relevant prop enabled
     const targetTabIndex = !isContentEmpty && !disabled && openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
 
-    // Hover targets (including Tooltip) open via the mouse/focus handlers in `targetEventHandlers`, so
-    // they must not receive Floating UI's reference props; those carry the `onClick`/keyboard click
-    // handlers used for click interactions. Applying them to a hover target injects an `onClick` that
-    // can shadow a consumer's own handler when the target is shared with an enclosing Popover via
-    // `renderTarget`. This mirrors legacy `Popover`, which only attached click handlers for click kinds.
+    // Only click interactions receive keyboard click handlers: hover targets can share a consumer's
+    // click handler with an enclosing Popover via renderTarget. Safe polygons also need useHover's pointer props.
     const floatingProps = isHoverInteractionKind
-        ? {}
+        ? isSafePolygonEnabled
+            ? floatingData.getReferenceProps()
+            : {}
         : floatingData.getReferenceProps({
               onKeyDown: handleReferenceKeyDown,
           });
@@ -154,14 +154,11 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
             disabled: (isOpen && isTooltipElement(childTarget)) || childTarget.props.disabled,
             tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
         });
+        const wrapperProps = { ...ownTargetProps, ...targetProps };
         const wrappedTarget = createElement(
             tagName,
-            {
-                ...ownTargetProps,
-                ...targetProps,
-                // Apply Floating UI's interaction props to the wrapper element (same element that has the ref)
-                ...floatingProps,
-            },
+            // Compose consumer pointer handlers with useHover on the same element that owns the reference ref.
+            isSafePolygonEnabled ? floatingData.getReferenceProps(wrapperProps) : { ...wrapperProps, ...floatingProps },
             clonedTarget,
         );
         target = wrappedTarget;
