@@ -22,6 +22,7 @@ export type { DefaultSVGIconAttributes, DefaultSVGIconProps, SVGIconAttributes, 
 export { SVGIconContainer, type SVGIconContainerComponent, type SVGIconContainerProps } from "./svgIconContainer";
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export {
+    getLegacyIconVariant,
     iconNameToIconNextName,
     legacyIconNameToIconNextName,
     LegacyToIconNextNameMap,

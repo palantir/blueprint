@@ -5,12 +5,14 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
 
 import {
+    getLegacyIconVariant,
     iconNameToIconNextName,
     type LegacyIconName,
     legacyIconNameToIconNextName,
     LegacyToIconNextNameMap,
 } from "./iconNameConversion";
 import type { IconName } from "./iconNames";
+import { IconsNext, type NextIconVariant } from "./next/iconLoaderNext";
 import type { IconNextName } from "./next/iconNextNames";
 
 describe("LegacyToIconNextNameMap", () => {
@@ -43,6 +45,72 @@ describe("legacyIconNameToIconNextName", () => {
 
         expectTypeOf(legacyIconNameToIconNextName(legacyName)).toEqualTypeOf<IconNextName>();
         expectTypeOf(legacyIconNameToIconNextName(currentLegacyName)).toEqualTypeOf<IconNextName>();
+    });
+});
+
+describe("getLegacyIconVariant", () => {
+    it("returns filled for legacy icons which previously had a filled appearance", () => {
+        expect(getLegacyIconVariant("symbol-square")).toBe("filled");
+        expect(getLegacyIconVariant("airplane")).toBe("filled");
+        expect(getLegacyIconVariant("drawer-left-filled")).toBe("filled");
+        expect(getLegacyIconVariant("paragraph")).toBe("filled");
+        expect(getLegacyIconVariant("regex")).toBe("filled");
+        expect(getLegacyIconVariant("rotate-ccw")).toBe("filled");
+        expect(getLegacyIconVariant("rotate-cw")).toBe("filled");
+    });
+
+    it("returns outlined for legacy icons which should use the next outlined variant", () => {
+        const outlinedLegacyNames = [
+            "add",
+            "app-header",
+            "buggy",
+            "chart",
+            "diagnosis",
+            "drawer-left",
+            "group-item",
+            "more",
+            "pivot-table",
+            "playbook",
+            "star-empty",
+        ];
+
+        outlinedLegacyNames.forEach(iconName => expect(getLegacyIconVariant(iconName)).toBe("outlined"));
+    });
+
+    it("preserves legacy variants which collapse to the same next icon name", () => {
+        expect(legacyIconNameToIconNextName("star")).toBe("star");
+        expect(legacyIconNameToIconNextName("star-empty")).toBe("star");
+        expect(getLegacyIconVariant("star")).toBe("filled");
+        expect(getLegacyIconVariant("star-empty")).toBe("outlined");
+    });
+
+    it("defaults unknown and next-only names to outlined", () => {
+        expect(getLegacyIconVariant("house")).toBe("outlined");
+        expect(getLegacyIconVariant("not-an-icon")).toBe("outlined");
+        expect(getLegacyIconVariant("constructor")).toBe("outlined");
+        expect(getLegacyIconVariant("__proto__")).toBe("outlined");
+    });
+
+    it("resolves every legacy ledger name and contains the expected filled set", () => {
+        const variants = Object.keys(LegacyToIconNextNameMap).map(getLegacyIconVariant);
+
+        expect(variants).toHaveLength(Object.keys(LegacyToIconNextNameMap).length);
+        expect(variants.every(variant => variant === "filled" || variant === "outlined")).toBe(true);
+        expect(variants.filter(variant => variant === "filled")).toHaveLength(297);
+    });
+
+    it("only returns filled when the mapped next icon provides a filled variant", () => {
+        Object.keys(LegacyToIconNextNameMap)
+            .filter(iconName => getLegacyIconVariant(iconName) === "filled")
+            .forEach(iconName => {
+                const nextIconName = legacyIconNameToIconNextName(iconName)!;
+
+                expect(IconsNext.hasFilled(nextIconName), `${iconName} -> ${nextIconName}`).toBe(true);
+            });
+    });
+
+    it("returns a NextIconVariant for arbitrary strings", () => {
+        expectTypeOf(getLegacyIconVariant("symbol-square")).toEqualTypeOf<NextIconVariant>();
     });
 });
 
