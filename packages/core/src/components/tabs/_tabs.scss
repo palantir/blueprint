@@ -32,7 +32,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
       width: 100%;
 
       &[aria-selected="true"] {
-        background-color: var(--bp-primary-overlay-subtle-active);
+        background-color: var(--bp-primary-overlay-active);
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -43,7 +43,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: var(--bp-primary-overlay-subtle-active);
+      background-color: var(--bp-primary-overlay-active);
       border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
@@ -109,7 +109,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   }
 
   &[aria-disabled="true"] {
-    color: $pt-text-color-disabled;
+    color: var(--bp-neutral-text-disabled);
     cursor: not-allowed;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -197,7 +197,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
     color: var(--bp-neutral-text-normal);
 
     &[aria-disabled="true"] {
-      color: $pt-dark-text-color-disabled;
+      color: var(--bp-neutral-text-disabled);
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
