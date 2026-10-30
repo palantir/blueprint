@@ -1,0 +1,73 @@
+{
+    "primary": {
+        "$type": "color",
+        "border": {
+            "strong": {
+                "rest": { "$value": "{palette.blue.4}" }
+            }
+        },
+        "text": {
+            "normal": { "$value": "{palette.blue.5}" },
+            "strong": { "$value": "{palette.blue.6}" }
+        }
+    },
+    "success": {
+        "$type": "color",
+        "border": {
+            "strong": {
+                "rest": { "$value": "{palette.green.4}" }
+            }
+        },
+        "text": {
+            "normal": { "$value": "{palette.green.5}" },
+            "strong": { "$value": "{palette.green.6}" }
+        }
+    },
+    "danger": {
+        "$type": "color",
+        "border": {
+            "strong": {
+                "rest": { "$value": "{palette.red.4}" }
+            }
+        },
+        "text": {
+            "normal": { "$value": "{palette.red.5}" },
+            "strong": { "$value": "{palette.red.6}" }
+        }
+    },
+    "warning": {
+        "$type": "color",
+        "border": {
+            "strong": {
+                "rest": { "$value": "{palette.orange.4}" }
+            }
+        },
+        "text": {
+            "normal": { "$value": "{palette.orange.5}" },
+            "strong": { "$value": "{palette.orange.6}" }
+        }
+    },
+    "neutral": {
+        "$type": "color",
+        "background": {
+            "subtle": {
+                "rest": { "$value": "{palette.dark-gray.3}" },
+                "hover": { "$value": "{palette.dark-gray.2}" },
+                "active": { "$value": "{palette.dark-gray.1}" }
+            }
+        },
+        "border": {
+            "strong": {
+                "rest": { "$value": "{palette.gray.3}" }
+            }
+        },
+        "text": {
+            "muted": { "$value": "{palette.gray.4}" },
+            "normal": { "$value": "{palette.light-gray.5}" },
+            "strong": { "$value": "{palette.white}" }
+        },
+        "graphic": {
+            "accent": { "$value": "{palette.gray.3}" }
+        }
+    }
+}

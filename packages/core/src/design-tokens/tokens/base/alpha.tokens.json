@@ -1,0 +1,270 @@
+{
+    "primary": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{primary.text.normal}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{primary.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{primary.background.solid.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{primary.background.solid.rest}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                    },
+                    "hover": {
+                        "$value": "{primary.background.solid.rest}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    },
+                    "active": {
+                        "$value": "{primary.background.solid.rest}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{primary.background.solid.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+            },
+            "active": {
+                "$value": "{primary.background.solid.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+            }
+        }
+    },
+    "opacity": {
+        "$type": "number",
+        "disabled": {
+            "$value": 0.5,
+            "$description": "Opacity multiplier for disabled states"
+        }
+    },
+    "success": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{success.text.normal}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{success.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{success.background.solid.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{success.background.solid.rest}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.1
+                            }
+                        }
+                    },
+                    "hover": {
+                        "$value": "{success.background.solid.rest}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.2
+                            }
+                        }
+                    },
+                    "active": {
+                        "$value": "{success.background.solid.rest}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.3
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{success.background.solid.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.1
+                    }
+                }
+            },
+            "active": {
+                "$value": "{success.background.solid.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            }
+        }
+    },
+    "danger": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{danger.text.normal}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{danger.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{danger.background.solid.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{danger.background.solid.rest}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.1
+                            }
+                        }
+                    },
+                    "hover": {
+                        "$value": "{danger.background.solid.rest}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.2
+                            }
+                        }
+                    },
+                    "active": {
+                        "$value": "{danger.background.solid.rest}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.3
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{danger.background.solid.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.1
+                    }
+                }
+            },
+            "active": {
+                "$value": "{danger.background.solid.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            }
+        }
+    },
+    "warning": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{warning.text.normal}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{warning.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{warning.background.solid.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{warning.background.solid.active}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                    },
+                    "hover": {
+                        "$value": "{warning.background.solid.active}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    },
+                    "active": {
+                        "$value": "{warning.background.solid.active}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{warning.background.solid.active}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+            },
+            "active": {
+                "$value": "{warning.background.solid.active}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+            }
+        }
+    },
+    "neutral": {
+        "$type": "color",
+        "background": {
+            "subtle": {
+                "disabled": {
+                    "$value": "{neutral.background.subtle.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                }
+            }
+        },
+        "text": {
+            "disabled": {
+                "$value": "{neutral.text.normal}",
+                "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+            }
+        }
+    }
+}
