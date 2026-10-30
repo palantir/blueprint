@@ -19,3 +19,4 @@ export * from "./common";
 export * from "./components";
 export * from "./context";
 export * from "./hooks";
+export type * from "./theme";
