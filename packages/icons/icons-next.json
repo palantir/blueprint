@@ -9981,7 +9981,7 @@
     },
     {
         "name": "paragraph",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "pilcrow",
             "text",
@@ -10727,7 +10727,7 @@
     },
     {
         "name": "regex",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "regular-expression",
             "pattern",
@@ -11684,7 +11684,7 @@
     },
     {
         "name": "square-rotate-left",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "rotate",
             "ccw",
@@ -11705,7 +11705,7 @@
     },
     {
         "name": "square-rotate-right",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "turn",
             "rotate",
