@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
+import { render, screen, within } from "@testing-library/react";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import { Day } from "react-day-picker";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
 import { assertDatesEqual } from "@blueprintjs/test-commons";
-import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import {
+    afterAll,
+    afterEach,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -913,4 +923,59 @@ describe("<DatePicker>", () => {
             years: wrapper.find(HTMLSelect).filter(`.${Classes.DATEPICKER_YEAR_SELECT}`).find("select"),
         };
     }
+});
+
+describe("<DatePicker> caption dropdowns when the displayed month is out of bounds", () => {
+    let consoleError: MockInstance<typeof console.error>;
+    beforeEach(() => {
+        consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
+    });
+    afterEach(() => consoleError.mockRestore());
+
+    it("should show a year after maxDate's year as a disabled option", () => {
+        render(
+            <DatePicker
+                locale={enUSLocale}
+                maxDate={new Date(2126, Months.DECEMBER, 31)}
+                minDate={new Date(1826, Months.JANUARY, 1)}
+                value={new Date(9999, Months.SEPTEMBER, 30)}
+            />,
+        );
+        const yearSelect = screen.getByRole("combobox", { name: "Year:" });
+        expect(yearSelect).toHaveDisplayValue("9999");
+        expect(within(yearSelect).getByRole("option", { name: "9999" })).toBeDisabled();
+        expect(within(yearSelect).getAllByRole("option").at(-1)).toHaveTextContent("9999");
+        expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATEPICKER_VALUE_INVALID);
+    });
+
+    it("should show a year before minDate's year as a disabled option", () => {
+        render(
+            <DatePicker
+                locale={enUSLocale}
+                maxDate={new Date(2020, Months.DECEMBER, 31)}
+                minDate={new Date(2010, Months.JANUARY, 1)}
+                value={new Date(2005, Months.JUNE, 15)}
+            />,
+        );
+        const yearSelect = screen.getByRole("combobox", { name: "Year:" });
+        expect(yearSelect).toHaveDisplayValue("2005");
+        expect(within(yearSelect).getByRole("option", { name: "2005" })).toBeDisabled();
+        expect(within(yearSelect).getAllByRole("option")[0]).toHaveTextContent("2005");
+        expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATEPICKER_VALUE_INVALID);
+    });
+
+    it("should show a month outside a single-year range as a disabled option", () => {
+        render(
+            <DatePicker
+                locale={enUSLocale}
+                maxDate={new Date(2015, Months.JANUARY, 12)}
+                minDate={new Date(2015, Months.JANUARY, 7)}
+                value={new Date(2015, Months.MARCH, 10)}
+            />,
+        );
+        const monthSelect = screen.getByRole("combobox", { name: "Month:" });
+        expect(monthSelect).toHaveDisplayValue("March");
+        expect(within(monthSelect).getByRole("option", { name: "March" })).toBeDisabled();
+        expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATEPICKER_VALUE_INVALID);
+    });
 });
