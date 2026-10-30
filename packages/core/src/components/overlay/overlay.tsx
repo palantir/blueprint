@@ -382,7 +382,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             }
 
             if (openStack.filter(o => o.props.usePortal && o.props.hasBackdrop).length === 0) {
-                document.body.classList.remove(Classes.OVERLAY_OPEN);
+                document.body?.classList.remove(Classes.OVERLAY_OPEN);
             }
         }
     }
@@ -411,7 +411,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
 
         if (this.props.hasBackdrop && this.props.usePortal) {
             // add a class to the body to prevent scrolling of content below the overlay
-            document.body.classList.add(Classes.OVERLAY_OPEN);
+            document.body?.classList.add(Classes.OVERLAY_OPEN);
         }
 
         this.lastActiveElementBeforeOpened = getActiveElement(this.containerElement.current);

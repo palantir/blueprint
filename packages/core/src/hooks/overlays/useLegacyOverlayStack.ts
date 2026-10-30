@@ -78,7 +78,7 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         globalStack.push(overlay);
         if (overlay.props.usePortal && overlay.props.hasBackdrop) {
             // add a class to the body to prevent scrolling of content below the overlay
-            document.body.classList.add(Classes.OVERLAY_OPEN);
+            document.body?.classList.add(Classes.OVERLAY_OPEN);
         }
     }, []);
 
@@ -95,7 +95,7 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
 
             if (otherOverlaysWithBackdrop.length === 0) {
                 // remove body class which prevents scrolling of content below overlay
-                document.body.classList.remove(Classes.OVERLAY_OPEN);
+                document.body?.classList.remove(Classes.OVERLAY_OPEN);
             }
         },
         [stack],
