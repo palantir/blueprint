@@ -1437,6 +1437,24 @@
         ]
     },
     {
+        "name": "arrows-in-list",
+        "hasFilled": false,
+        "tags": [
+            "collapse",
+            "compress",
+            "compact",
+            "decrease",
+            "rows",
+            "spacing",
+            "density",
+            "vertical",
+            "shrink",
+            "reduce",
+            "layout",
+            "interface"
+        ]
+    },
+    {
         "name": "arrows-left-right",
         "hasFilled": false,
         "tags": [
@@ -1656,6 +1674,24 @@
             "or",
             "collapse",
             "open",
+            "interface"
+        ]
+    },
+    {
+        "name": "arrows-out-list",
+        "hasFilled": false,
+        "tags": [
+            "resize",
+            "vertical",
+            "expand",
+            "rows",
+            "spacing",
+            "height",
+            "up",
+            "down",
+            "stretch",
+            "density",
+            "layout",
             "interface"
         ]
     },
@@ -4252,6 +4288,24 @@
         ]
     },
     {
+        "name": "cloud-layers",
+        "hasFilled": true,
+        "tags": [
+            "stack",
+            "layer",
+            "storage",
+            "server",
+            "data",
+            "hosting",
+            "infrastructure",
+            "network",
+            "platform",
+            "sync",
+            "levels",
+            "interface"
+        ]
+    },
+    {
         "name": "cloud-rain",
         "hasFilled": true,
         "tags": ["rain", "weather", "cloud", "storm", "precipitation", "shower", "forecast", "miscellaneous"]
@@ -5217,6 +5271,24 @@
         "name": "dot",
         "hasFilled": true,
         "tags": ["circle", "ring", "dot", "donut", "annulus", "hollow", "outline", "point", "small", "miscellaneous"]
+    },
+    {
+        "name": "dot-waves",
+        "hasFilled": true,
+        "tags": [
+            "signal",
+            "live",
+            "broadcast",
+            "wireless",
+            "radio",
+            "transmit",
+            "network",
+            "communication",
+            "antenna",
+            "beacon",
+            "radar",
+            "miscellaneous"
+        ]
     },
     {
         "name": "dots-arrow-down-line",
@@ -7388,6 +7460,24 @@
         ]
     },
     {
+        "name": "image-crop",
+        "hasFilled": false,
+        "tags": [
+            "photo",
+            "picture",
+            "trim",
+            "resize",
+            "frame",
+            "cut",
+            "edit",
+            "landscape",
+            "media",
+            "gallery",
+            "clip",
+            "action"
+        ]
+    },
+    {
         "name": "image-rotate-left",
         "hasFilled": false,
         "tags": [
@@ -8124,6 +8214,26 @@
             "voltage",
             "spark",
             "miscellaneous"
+        ]
+    },
+    {
+        "name": "line-width",
+        "hasFilled": true,
+        "tags": [
+            "stroke",
+            "thickness",
+            "weight",
+            "size",
+            "thin",
+            "medium",
+            "thick",
+            "bold",
+            "border",
+            "outline",
+            "format",
+            "style",
+            "drawing",
+            "editor"
         ]
     },
     {
@@ -9475,6 +9585,24 @@
         ]
     },
     {
+        "name": "octagon-slash",
+        "hasFilled": true,
+        "tags": [
+            "deprecated",
+            "ban",
+            "block",
+            "prohibited",
+            "disable",
+            "no",
+            "cancel",
+            "forbid",
+            "off",
+            "remove",
+            "stop",
+            "action"
+        ]
+    },
+    {
         "name": "oil-rig",
         "hasFilled": false,
         "tags": [
@@ -9750,6 +9878,24 @@
             "task",
             "view",
             "interface"
+        ]
+    },
+    {
+        "name": "panel-left",
+        "hasFilled": false,
+        "tags": [
+            "sidebar",
+            "layout",
+            "column",
+            "window",
+            "pane",
+            "side",
+            "bar",
+            "drawer",
+            "menu",
+            "website",
+            "dashboard",
+            "table"
         ]
     },
     {
@@ -10845,6 +10991,25 @@
         ]
     },
     {
+        "name": "ruler",
+        "hasFilled": true,
+        "tags": [
+            "measure",
+            "measurement",
+            "length",
+            "distance",
+            "scale",
+            "size",
+            "dimension",
+            "tool",
+            "units",
+            "precision",
+            "straightedge",
+            "geometry",
+            "editor"
+        ]
+    },
+    {
         "name": "satellite",
         "hasFilled": false,
         "tags": [
@@ -10871,6 +11036,25 @@
         "name": "scissors",
         "hasFilled": true,
         "tags": ["cut", "trim", "clip", "snip", "edit", "remove", "scissors", "action"]
+    },
+    {
+        "name": "scroll",
+        "hasFilled": true,
+        "tags": [
+            "skill",
+            "ai",
+            "document",
+            "paper",
+            "page",
+            "text",
+            "instructions",
+            "prompt",
+            "agent",
+            "assistant",
+            "automation",
+            "workflow",
+            "action"
+        ]
     },
     {
         "name": "segmented-control",
@@ -12127,6 +12311,24 @@
             "lift",
             "open",
             "lever"
+        ]
+    },
+    {
+        "name": "table-play",
+        "hasFilled": false,
+        "tags": [
+            "stream",
+            "video",
+            "media",
+            "screen",
+            "player",
+            "watch",
+            "broadcast",
+            "browser",
+            "window",
+            "application",
+            "webpage",
+            "interface"
         ]
     },
     {
