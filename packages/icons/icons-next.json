@@ -1678,10 +1678,11 @@
         ]
     },
     {
-        "name": "arrows-vertical-list",
+        "name": "arrows-out-list",
         "hasFilled": false,
         "tags": [
             "resize",
+            "vertical",
             "expand",
             "rows",
             "spacing",
