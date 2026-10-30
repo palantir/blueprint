@@ -8217,6 +8217,26 @@
         ]
     },
     {
+        "name": "line-width",
+        "hasFilled": true,
+        "tags": [
+            "stroke",
+            "thickness",
+            "weight",
+            "size",
+            "thin",
+            "medium",
+            "thick",
+            "bold",
+            "border",
+            "outline",
+            "format",
+            "style",
+            "drawing",
+            "editor"
+        ]
+    },
+    {
         "name": "link",
         "hasFilled": false,
         "tags": ["chain", "connect", "url", "hyperlink", "attach", "link", "connection", "network", "interface"]
