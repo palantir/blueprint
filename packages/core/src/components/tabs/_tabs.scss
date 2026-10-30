@@ -192,44 +192,6 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   }
 }
 
-.#{$ns}-dark {
-  .#{$ns}-tab {
-    color: var(--bp-neutral-text-normal);
-
-    &[aria-disabled="true"] {
-      color: var(--bp-neutral-text-disabled);
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-disabled-text-color;
-      }
-    }
-
-    &[aria-selected="true"] {
-      box-shadow: inset 0 (-$tab-indicator-width) 0 var(--bp-primary-text-normal);
-    }
-
-    &[aria-selected="true"],
-    &:not([aria-disabled="true"]):hover {
-      color: var(--bp-primary-text-normal);
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-active-text-color;
-      }
-    }
-  }
-
-  .#{$ns}-tab-indicator {
-    background-color: var(--bp-primary-text-normal);
-
-    @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
-    }
-  }
-}
-
 .#{$ns}-flex-expander {
   flex: 1 1;
 }
