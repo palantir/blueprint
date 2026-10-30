@@ -5,10 +5,22 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 
-import { CircleArrowDownIcon, HouseIcon, PlayFilledIcon, PlayIcon } from "@blueprintjs/icons/next";
+import {
+    CircleArrowDownIcon,
+    getLegacyIconVariant,
+    HouseIcon,
+    type IconName,
+    legacyIconNameToIconNextName,
+    LegacyToIconNextNameMap,
+    PlayFilledIcon,
+    PlayIcon,
+} from "@blueprintjs/icons/next";
 
-import { Intent } from "../../common";
+import { Classes, Intent } from "../../common";
 import { Button } from "../button/buttons";
+import { Code, H2 } from "../html/html";
+import { HTMLTable } from "../html-table/htmlTable";
+import { Icon } from "../icon/icon";
 
 import { IconNext } from "./iconNext";
 
@@ -24,6 +36,8 @@ const meta: Meta<typeof IconNext> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const LEGACY_ICON_NAMES = Object.keys(LegacyToIconNextNameMap) as IconName[];
+
 /**
  * Dynamic string usage — the icon is loaded asynchronously by name.
  */
@@ -36,6 +50,86 @@ export const DynamicString: Story = {
             <IconNext icon="star" size={32} />
             <IconNext icon="gear" size={32} />
             <IconNext icon="magnifying-glass" size={32} />
+        </div>
+    ),
+};
+
+/**
+ * Preserve the visual appearance of stored legacy icon-name strings while migrating to IconNext.
+ */
+export const LegacyStringCompatibility: Story = {
+    name: "Legacy String Compatibility",
+    parameters: {
+        layout: "fullscreen",
+    },
+    render: () => (
+        <div style={{ margin: "0 auto", maxWidth: 1280, padding: 24 }}>
+            <H2 style={{ marginBottom: 8 }}>Legacy icon string compatibility</H2>
+            <p className={Classes.TEXT_MUTED} style={{ marginBottom: 24, marginTop: 0 }}>
+                Compare all {LEGACY_ICON_NAMES.length} legacy icon names with their default and appearance-preserving
+                IconNext renderings.
+            </p>
+            <HTMLTable bordered={true} compact={true} striped={true} style={{ tableLayout: "fixed", width: "100%" }}>
+                <colgroup>
+                    <col style={{ width: "28%" }} />
+                    <col style={{ width: "24%" }} />
+                    <col style={{ width: "24%" }} />
+                    <col style={{ width: "24%" }} />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th
+                            style={{
+                                backgroundColor: "var(--bp-surface-background-color-default-rest)",
+                                position: "sticky",
+                                top: 0,
+                                zIndex: 1,
+                            }}
+                        >
+                            Legacy name
+                        </th>
+                        {["Legacy rendering", "Default next rendering", "Appearance-preserving next rendering"].map(
+                            columnName => (
+                                <th
+                                    key={columnName}
+                                    style={{
+                                        backgroundColor: "var(--bp-surface-background-color-default-rest)",
+                                        position: "sticky",
+                                        textAlign: "center",
+                                        top: 0,
+                                        zIndex: 1,
+                                    }}
+                                >
+                                    {columnName}
+                                </th>
+                            ),
+                        )}
+                    </tr>
+                </thead>
+                <tbody>
+                    {LEGACY_ICON_NAMES.map(legacyIconName => {
+                        const nextIconName = legacyIconNameToIconNextName(legacyIconName);
+                        const variant = getLegacyIconVariant(legacyIconName);
+
+                        return (
+                            <tr key={legacyIconName}>
+                                <td style={{ verticalAlign: "middle" }}>
+                                    <Code>{legacyIconName}</Code>
+                                </td>
+                                <td style={{ textAlign: "center", verticalAlign: "middle" }}>
+                                    <Icon icon={legacyIconName} size={32} />
+                                </td>
+                                <td style={{ textAlign: "center", verticalAlign: "middle" }}>
+                                    <IconNext icon={nextIconName} size={32} />
+                                </td>
+                                <td style={{ textAlign: "center", verticalAlign: "middle" }}>
+                                    <IconNext icon={nextIconName} size={32} variant={variant} />
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </HTMLTable>
         </div>
     ),
 };
