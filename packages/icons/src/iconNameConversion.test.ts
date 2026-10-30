@@ -7,7 +7,6 @@ import { describe, expect, expectTypeOf, it } from "vitest";
 import {
     getLegacyIconVariant,
     iconNameToIconNextName,
-    type LegacyIconName,
     legacyIconNameToIconNextName,
     LegacyToIconNextNameMap,
 } from "./iconNameConversion";
@@ -39,12 +38,12 @@ describe("legacyIconNameToIconNextName", () => {
         expect(legacyIconNameToIconNextName("__proto__")).toBeUndefined();
     });
 
-    it("has a guaranteed return type for known ledger names", () => {
-        const legacyName: LegacyIconName = "home";
-        const currentLegacyName: IconName = "home";
+    it("has a guaranteed return type for known icon names", () => {
+        const legacyIconName: IconName = "home";
+        const untypedLegacyIconName: string = "home";
 
-        expectTypeOf(legacyIconNameToIconNextName(legacyName)).toEqualTypeOf<IconNextName>();
-        expectTypeOf(legacyIconNameToIconNextName(currentLegacyName)).toEqualTypeOf<IconNextName>();
+        expectTypeOf(legacyIconNameToIconNextName(legacyIconName)).toEqualTypeOf<IconNextName>();
+        expectTypeOf(legacyIconNameToIconNextName(untypedLegacyIconName)).toEqualTypeOf<IconNextName | undefined>();
     });
 });
 
@@ -72,7 +71,7 @@ describe("getLegacyIconVariant", () => {
             "pivot-table",
             "playbook",
             "star-empty",
-        ];
+        ] satisfies IconName[];
 
         outlinedLegacyNames.forEach(iconName => expect(getLegacyIconVariant(iconName)).toBe("outlined"));
     });
@@ -92,18 +91,19 @@ describe("getLegacyIconVariant", () => {
     });
 
     it("resolves every legacy ledger name and contains the expected filled set", () => {
-        const variants = Object.keys(LegacyToIconNextNameMap).map(getLegacyIconVariant);
+        const legacyIconNames = Object.keys(LegacyToIconNextNameMap) as IconName[];
+        const variants = legacyIconNames.map(getLegacyIconVariant);
 
-        expect(variants).toHaveLength(Object.keys(LegacyToIconNextNameMap).length);
+        expect(variants).toHaveLength(legacyIconNames.length);
         expect(variants.every(variant => variant === "filled" || variant === "outlined")).toBe(true);
         expect(variants.filter(variant => variant === "filled")).toHaveLength(297);
     });
 
     it("only returns filled when the mapped next icon provides a filled variant", () => {
-        Object.keys(LegacyToIconNextNameMap)
+        (Object.keys(LegacyToIconNextNameMap) as IconName[])
             .filter(iconName => getLegacyIconVariant(iconName) === "filled")
             .forEach(iconName => {
-                const nextIconName = legacyIconNameToIconNextName(iconName)!;
+                const nextIconName = legacyIconNameToIconNextName(iconName);
 
                 expect(IconsNext.hasFilled(nextIconName), `${iconName} -> ${nextIconName}`).toBe(true);
             });
@@ -136,9 +136,9 @@ describe("iconNameToIconNextName", () => {
 
     it("has a guaranteed return type for typed icon names", () => {
         const iconName = "home" as IconName | IconNextName;
-        const arbitraryName = "home" as string;
+        const untypedIconName: string = "home";
 
         expectTypeOf(iconNameToIconNextName(iconName)).toEqualTypeOf<IconNextName>();
-        expectTypeOf(iconNameToIconNextName(arbitraryName)).toEqualTypeOf<IconNextName | undefined>();
+        expectTypeOf(iconNameToIconNextName(untypedIconName)).toEqualTypeOf<IconNextName | undefined>();
     });
 });

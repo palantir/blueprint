@@ -26,7 +26,6 @@ export {
     iconNameToIconNextName,
     legacyIconNameToIconNextName,
     LegacyToIconNextNameMap,
-    type LegacyIconName,
 } from "./iconNameConversion";
 export { type IconName, IconNames } from "./iconNames";
 export { IconSize, type IconPaths } from "./iconTypes";

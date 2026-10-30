@@ -20,9 +20,8 @@
  * generator ({@link file://./generate-icon-name-map.mjs}) and the verifier
  * ({@link file://./verify-icons.mjs}) so both enforce identical rules.
  *
- * Enforces: every current legacy icon has a mapping; every value is a current next (outlined) icon;
- * and there are no duplicate keys. Historical legacy keys are intentionally allowed so the map can
- * remain a durable compatibility ledger after a legacy SVG is removed.
+ * Enforces: every current legacy icon has exactly one mapping; every value is a current next
+ * (outlined) icon; and there are no duplicate or unknown legacy keys.
  *
  * @param {string} rawMap raw file contents (for duplicate-key detection, which `JSON.parse` hides)
  * @param {Record<string, unknown>} iconNameMap parsed map
@@ -54,7 +53,9 @@ export function validateIconNameMap(rawMap, iconNameMap, legacyIconNames, nextIc
     }
 
     for (const [legacyName, nextName] of Object.entries(iconNameMap)) {
-        if (typeof nextName !== "string") {
+        if (!legacyIconNames.has(legacyName)) {
+            errors.push(`icons-name-map.json has entry for unknown legacy icon "${legacyName}"`);
+        } else if (typeof nextName !== "string") {
             errors.push(`icons-name-map.json value for "${legacyName}" must be a string`);
         } else if (!nextIconNames.has(nextName)) {
             errors.push(

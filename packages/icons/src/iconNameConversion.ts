@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import { type LegacyIconName, LegacyToIconNextNameMap } from "./generated/iconNameMap";
+import { LegacyToIconNextNameMap } from "./generated/iconNameMap";
 import type { IconName } from "./iconNames";
 import type { NextIconVariant } from "./next/iconLoaderNext";
 import { type IconNextName, IconNextNamesSet } from "./next/iconNextNames";
 
-export { LegacyToIconNextNameMap, type LegacyIconName };
+export { LegacyToIconNextNameMap };
 
-const LEGACY_FILLED_ICON_NAMES: ReadonlySet<LegacyIconName> = new Set([
+const LEGACY_FILLED_ICON_NAMES: ReadonlySet<IconName> = new Set([
     "add-tile",
     "add-to-folder",
     "airplane",
@@ -327,27 +327,12 @@ const LEGACY_FILLED_ICON_NAMES: ReadonlySet<LegacyIconName> = new Set([
  * This function always interprets its argument as a legacy name. This distinction matters for names
  * which exist in both sets but identify different glyphs, such as `"user"`.
  */
-export function legacyIconNameToIconNextName(iconName: LegacyIconName): IconNextName;
+export function legacyIconNameToIconNextName(iconName: IconName): IconNextName;
 export function legacyIconNameToIconNextName(iconName: string): IconNextName | undefined;
 export function legacyIconNameToIconNextName(iconName: string): IconNextName | undefined {
     return Object.prototype.hasOwnProperty.call(LegacyToIconNextNameMap, iconName)
-        ? LegacyToIconNextNameMap[iconName as LegacyIconName]
+        ? LegacyToIconNextNameMap[iconName as IconName]
         : undefined;
-}
-
-/**
- * Returns the next-generation icon variant which most closely preserves the appearance of a legacy icon.
- *
- * This function must receive the original legacy icon name, before it is passed to
- * {@link legacyIconNameToIconNextName}. Several outlined and filled legacy icons map to the same next-generation
- * name, so the original name is required to preserve that distinction. Unknown and next-only names default to
- * `"outlined"`.
- *
- * A `"filled"` result indicates that the mapped next icon provides a compatible filled variant. Legacy icons
- * without a compatible next filled variant resolve to `"outlined"`.
- */
-export function getLegacyIconVariant(iconName: string): NextIconVariant {
-    return LEGACY_FILLED_ICON_NAMES.has(iconName as LegacyIconName) ? "filled" : "outlined";
 }
 
 /**
@@ -364,4 +349,14 @@ export function iconNameToIconNextName(iconName: string): IconNextName | undefin
     }
 
     return legacyIconNameToIconNextName(iconName);
+}
+
+/**
+ * Returns the next-generation icon variant which most closely preserves the appearance of a legacy icon.
+ *
+ * A `"filled"` result indicates that the mapped next icon provides a compatible filled variant. Legacy icons
+ * without a compatible next filled variant resolve to `"outlined"`.
+ */
+export function getLegacyIconVariant(iconName: string): NextIconVariant {
+    return LEGACY_FILLED_ICON_NAMES.has(iconName as IconName) ? "filled" : "outlined";
 }
