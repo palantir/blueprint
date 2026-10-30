@@ -10,7 +10,6 @@
         "**/*.stories.tsx",
         "**/*.stories.ts",
         "vitest-env.d.ts",
-        "design-tokens/build.ts",
-        "design-tokens/sd.config.ts"
+        "design-tokens/**"
     ]
 }

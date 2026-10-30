@@ -23,6 +23,7 @@
         "upgrade-blueprint-3.0.0-rename": "scripts/upgrade-blueprint-3.0.0-rename.sh"
     },
     "scripts": {
+        "build:palette-ramp": "tsx src/design-tokens/buildPaletteRamp.ts",
         "build:tokens": "tsx src/design-tokens/build.ts",
         "build:sass": "sass-compile ./src",
         "clean": "rm -rf coverage lib src/design-tokens/build",
