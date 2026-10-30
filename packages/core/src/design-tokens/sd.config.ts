@@ -145,6 +145,7 @@ const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l
 /** Base token sources in dependency order, from raw values to higher-level semantic tokens. */
 const BASE_TOKEN_SOURCES = [
     "src/design-tokens/tokens/base/palette.tokens.json",
+    "src/design-tokens/tokens/base/opaque.tokens.json",
     "src/design-tokens/tokens/base/intent.tokens.json",
     "src/design-tokens/tokens/base/surface.tokens.json",
     "src/design-tokens/tokens/base/typography.tokens.json",
@@ -163,6 +164,7 @@ const THEMES: readonly ThemeConfig[] = [
         name: "dark",
         include: BASE_TOKEN_SOURCES,
         sources: [
+            "src/design-tokens/tokens/themes/dark/opaque.tokens.json",
             "src/design-tokens/tokens/themes/dark/surface.tokens.json",
             "src/design-tokens/tokens/themes/dark/typography.tokens.json",
         ],
