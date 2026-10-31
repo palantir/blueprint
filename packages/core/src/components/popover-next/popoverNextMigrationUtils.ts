@@ -126,7 +126,9 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
  * - `boundary: "clippingParents"` → `"clippingAncestors"` (the Floating UI equivalent).
  *
  * Dropped (with dev-only `console.warn`):
- * - `modifiersCustom` — no Floating UI equivalent; migrate manually to `middleware`.
+ * - `modifiersCustom` — no Floating UI equivalent; reimplement as a Floating UI middleware and pass it via
+ *   `middleware` on `PopoverNext`, or via `modifiers` on a wrapping component such as `Tooltip`
+ *   (which has no public `middleware` prop but converts `modifiers` to `middleware` internally).
  * - `portalStopPropagationEvents` — already deprecated and non-functional in React 17+.
  *
  * Intended for use inside Blueprint components that wrap `Popover` internally and pass
@@ -161,7 +163,9 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         if (modifiersCustom !== undefined) {
             console.warn(
                 "[Blueprint] popoverPropsToNextProps: `modifiersCustom` has no equivalent in PopoverNext and will be dropped. " +
-                    "Migrate to the `middleware` prop manually.",
+                    "Reimplement the behavior as a Floating UI middleware: pass it via the `middleware` prop on `PopoverNext`, " +
+                    "or via the `modifiers` prop on a wrapping component such as `Tooltip` (Blueprint converts `modifiers` to `middleware`). " +
+                    "Components that wrap `Popover` do not expose a `middleware` prop directly.",
             );
         }
         if (portalStopPropagationEvents !== undefined) {
