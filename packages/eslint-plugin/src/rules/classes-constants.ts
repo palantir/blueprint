@@ -53,10 +53,13 @@ function create(
     context: TSESLint.RuleContext<MessageIds, []>,
     node: TSESTree.Literal | TSESTree.TemplateElement,
 ): void {
-    // We shouldn't lint on strings from imports/exports
+    // We shouldn't lint on strings from imports/exports, including dynamic imports
+    // (`import("...")`) and re-exports (`export * from "..."`).
     if (
         node.parent?.type === AST_NODE_TYPES.ImportDeclaration ||
-        node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration
+        node.parent?.type === AST_NODE_TYPES.ImportExpression ||
+        node.parent?.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+        node.parent?.type === AST_NODE_TYPES.ExportAllDeclaration
     ) {
         return;
     }
