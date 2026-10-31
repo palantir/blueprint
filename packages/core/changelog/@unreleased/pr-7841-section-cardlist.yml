@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Remove rounded top corners on bordered CardList when nested in SectionCard (#7841).
+  links:
+  - https://github.com/palantir/blueprint/issues/7841
