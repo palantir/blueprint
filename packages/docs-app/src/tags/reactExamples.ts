@@ -26,6 +26,7 @@ import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
 
 import type { BlueprintExampleData } from "./types";
+import { exampleExportNameToSourceFileName } from "./exampleSourceFileName";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
@@ -36,7 +37,7 @@ function getPackageExamples(
     const ret: ExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
         const example = packageExamples[exampleName];
-        const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
+        const fileName = exampleExportNameToSourceFileName(exampleName);
         ret[exampleName] = {
             render: props => createElement(example, { ...props, data: { themeName: getTheme() } }),
             sourceUrl: [SRC_HREF_BASE, `${packageName}-examples`, fileName].join("/"),

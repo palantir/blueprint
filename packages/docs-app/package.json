@@ -13,7 +13,7 @@
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
-        "test": "exit 0",
+        "test": "vitest run",
         "verify": "run-p dist lint"
     },
     "nx": {
@@ -52,6 +52,7 @@
         "tslib": "catalog:"
     },
     "devDependencies": {
+        "vitest": "catalog:",
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",

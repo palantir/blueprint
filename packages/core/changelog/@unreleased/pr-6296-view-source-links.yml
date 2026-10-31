@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Correct "View source on GitHub" links for example components whose names start with an acronym (e.g. `HTMLSelectExample` → `htmlSelectExample.tsx`) (#6296).
+  links:
+  - https://github.com/palantir/blueprint/issues/6296
