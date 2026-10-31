@@ -162,6 +162,26 @@ describe("<QueryList>", () => {
             });
             expect(filmQueryList.state().activeItem).toEqual(TOP_100_FILMS[1]);
         });
+
+        it("preserves activeItem when the items list changes but the active item is still present", () => {
+            // see https://github.com/palantir/blueprint/issues/4562 and
+            // https://github.com/palantir/blueprint/issues/4192
+            const props: QueryListProps<Film> = {
+                ...testProps,
+                items: [TOP_100_FILMS[0], TOP_100_FILMS[1]],
+                query: "abc",
+            };
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
+            act(() => {
+                filmQueryList.setState({ activeItem: TOP_100_FILMS[1] });
+            });
+            testProps.onActiveItemChange.resetHistory();
+            // the items array changes by reference (e.g. a re-filtered list) while the query
+            // stays the same; the still-present active item must not be reset to the first item
+            filmQueryList.setProps({ items: [TOP_100_FILMS[2], TOP_100_FILMS[1]] });
+            expect(filmQueryList.state().activeItem).toEqual(TOP_100_FILMS[1]);
+            expect(testProps.onActiveItemChange.callCount).toBe(0);
+        });
     });
 
     describe("activeItem state initialization", () => {
