@@ -10,6 +10,7 @@ $section-min-height-compact: $pt-spacing * 10 !default;
 $section-padding-compact-vertical: $pt-spacing * 2 !default;
 $section-padding-compact-horizontal: $pt-spacing * 4 !default;
 $section-card-padding-compact: $pt-spacing * 4 !default;
+$section-unbordered-gap: 15px !default;
 
 .#{$ns}-section {
   overflow: hidden;
@@ -118,6 +119,22 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
     .#{$ns}-section-card.#{$ns}-padded {
       padding: $section-card-padding-compact;
+    }
+  }
+
+  &:not(.#{$ns}-section-bordered) {
+    .#{$ns}-section-header {
+      border-bottom: none;
+    }
+
+    .#{$ns}-section-card {
+      &:not(:last-child) {
+        border-bottom: none;
+      }
+
+      &.#{$ns}-padded {
+        padding-top: $section-unbordered-gap;
+      }
     }
   }
 }
