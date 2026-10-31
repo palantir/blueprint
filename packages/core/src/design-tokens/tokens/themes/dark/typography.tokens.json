@@ -20,6 +20,54 @@
                     "com.blueprint.derive": { "lightnessOffset": 0.095, "chromaOffset": -0.008, "hueOffset": 0 }
                 }
             }
+        },
+        "color-intent": {
+            "$type": "color",
+            "primary": {
+                "$value": "color-mix(in oklch, var(--bp-intent-primary-rest) 51%, var(--bp-palette-white))"
+            },
+            "primary-hover": {
+                "$value": "color-mix(in oklch, var(--bp-intent-primary-hover) 51%, var(--bp-palette-white))"
+            },
+            "primary-active": {
+                "$value": "color-mix(in oklch, var(--bp-intent-primary-active) 51%, var(--bp-palette-white))"
+            },
+            "success": {
+                "$value": "color-mix(in oklch, var(--bp-intent-success-rest) 54%, var(--bp-palette-white))"
+            },
+            "success-hover": {
+                "$value": "color-mix(in oklch, var(--bp-intent-success-hover) 54%, var(--bp-palette-white))"
+            },
+            "success-active": {
+                "$value": "color-mix(in oklch, var(--bp-intent-success-active) 54%, var(--bp-palette-white))"
+            },
+            "warning": {
+                "$value": "color-mix(in oklch, var(--bp-intent-warning-rest) 53%, var(--bp-palette-white))"
+            },
+            "warning-hover": {
+                "$value": "color-mix(in oklch, var(--bp-intent-warning-hover) 53%, var(--bp-palette-white))"
+            },
+            "warning-active": {
+                "$value": "color-mix(in oklch, var(--bp-intent-warning-active) 53%, var(--bp-palette-white))"
+            },
+            "danger": {
+                "$value": "color-mix(in oklch, var(--bp-intent-danger-rest) 53%, var(--bp-palette-white))"
+            },
+            "danger-hover": {
+                "$value": "color-mix(in oklch, var(--bp-intent-danger-hover) 53%, var(--bp-palette-white))"
+            },
+            "danger-active": {
+                "$value": "color-mix(in oklch, var(--bp-intent-danger-active) 53%, var(--bp-palette-white))"
+            },
+            "default": {
+                "$value": "color-mix(in srgb, var(--bp-intent-default-rest) 46%, var(--bp-palette-white))"
+            },
+            "default-hover": {
+                "$value": "color-mix(in srgb, var(--bp-intent-default-hover) 46%, var(--bp-palette-white))"
+            },
+            "default-active": {
+                "$value": "color-mix(in srgb, var(--bp-intent-default-active) 46%, var(--bp-palette-white))"
+            }
         }
     }
 }

@@ -4,17 +4,17 @@ Design tokens are a single source of truth for Blueprint's visual language. They
 
 ## Intent tokens
 
-Intent tokens map semantic meaning to colors. Rather than referencing a raw palette value like `--bp-palette-blue-3`, components use `--bp-intent-primary-rest`, which can be remapped per theme or brand.
+Intent tokens map semantic meaning to colors. Rather than referencing a raw palette value like `--bp-palette-blue-500`, components use `--bp-intent-primary-rest`, which can be remapped per theme or brand.
 
 Five intent types are defined in `tokens/base/intent.tokens.json`, each with interaction states:
 
-| Token pattern           | States                                | Example resolution          |
-| ----------------------- | ------------------------------------- | --------------------------- |
-| `--bp-intent-default-*` | `rest`, `hover`, `active`, `disabled` | `rest` → `palette.gray.1`   |
-| `--bp-intent-primary-*` | same                                  | `rest` → `palette.blue.3`   |
-| `--bp-intent-success-*` | same                                  | `rest` → `palette.green.3`  |
-| `--bp-intent-warning-*` | same                                  | `rest` → `palette.orange.3` |
-| `--bp-intent-danger-*`  | same                                  | `rest` → `palette.red.3`    |
+| Token pattern           | States                                | Example resolution            |
+| ----------------------- | ------------------------------------- | ----------------------------- |
+| `--bp-intent-default-*` | `rest`, `hover`, `active`, `disabled` | `rest` → `palette.gray.600`   |
+| `--bp-intent-primary-*` | same                                  | `rest` → `palette.blue.500`   |
+| `--bp-intent-success-*` | same                                  | `rest` → `palette.green.500`  |
+| `--bp-intent-warning-*` | same                                  | `rest` → `palette.orange.500` |
+| `--bp-intent-danger-*`  | same                                  | `rest` → `palette.red.500`    |
 
 Intent tokens do not change between light and dark themes — the same blue is used for `primary` in both modes. Theme-specific adjustments happen at the surface layer (e.g. `--bp-surface-background-color-primary-rest`) which derives from intent tokens but applies lightness/chroma scaling per theme.
 
@@ -52,7 +52,7 @@ These are fully resolved, ready-to-use background colors for each intent and int
 | `--bp-surface-background-color-default-active`   | `#edeff2`  | Darker gray                          |
 | `--bp-surface-background-color-default-disabled` | `#ffffff`  | Derived with `lightnessScale: 0.319` |
 
-For **non-default** intents (primary, success, warning, danger), background colors pass through directly from the intent tokens with no derivation — the same blue works in both themes.
+For **primary, success, and danger**, background colors pass through directly from the intent tokens with no derivation. **Warning** uses a brighter derived rest color (approximately `#fbb360`) and mixes it at 77%/46% with generic warning hover/active colors. Its disabled token still aliases `intent.warning.disabled`. These non-default surface backgrounds are the same in both themes; generic `--bp-intent-warning-rest` remains the orange-500 semantic color.
 
 Dark mode overrides in `tokens/themes/dark/surface.tokens.json` only redefine the `default` background colors with different scaling factors. Non-default intents need no dark override.
 
@@ -103,8 +103,9 @@ The wrapping is triggered by the `com.blueprint.role: "stackable-layer"` annotat
 
 The Button component (`src/components/button/`) demonstrates how surface and intent tokens work together. The key files are `_common.scss` (shared mixins) and `_button.scss` (component styles).
 
-> [!NOTE]
-> The Button component in dark mode currently derives the `active` and `hover` states for minimal and outline buttons from the `rest` token. This is expected to be updated with an updated palette.
+Filled primary, success, warning, and danger backgrounds use `--bp-surface-background-color-{intent}-{rest|hover|active}`. Legacy default-intent Buttons use `--bp-intent-default-{rest|hover|active}`, not the distinct default surface colors. Filled text continues to use `--bp-intent-{intent}-foreground`. Minimal and outlined text use `--bp-typography-color-intent-{intent}` with `-hover` and `-active` state roles. Dark text roles preserve the existing per-intent white mixes rather than substituting a palette stop.
+
+Outline borders use an independent `--bp-border-color-intent-{intent}` hue basis, with 60% opacity normally and 20% when disabled. Overriding an intent text role does not alter its border. Warning filled backgrounds preserve the existing relative-OKLCH rest color and its 77%/46% hover/active mixes.
 
 ### Surface tokens in Button
 
@@ -137,11 +138,11 @@ Intent tokens drive the button's color across every interaction state. For non-d
 ```scss
 $button-intent-states: (
     "primary": (
-        var(--bp-intent-primary-rest),
+        var(--bp-surface-background-color-primary-rest),
         // background
-        var(--bp-intent-primary-hover),
+        var(--bp-surface-background-color-primary-hover),
         // background on hover
-        var(--bp-intent-primary-active),
+        var(--bp-surface-background-color-primary-active),
         // background on active
         var(--bp-intent-primary-foreground),
         // text color
@@ -149,4 +150,4 @@ $button-intent-states: (
 );
 ```
 
-Disabled states reference `--bp-intent-default-disabled` at reduced opacity, and minimal/outlined variants use `--bp-surface-border-color-strong` for their borders.
+Neutral recipes retain their existing surface and generic intent tokens. Matching disabled minimal/outlined intent text uses `--bp-disabled-opacity` (`0.5`); light warning text retains its `0.4` exception. Filled foreground, outline-border, and disabled-background opacities remain independent. See [runtime override scope](./README.md#runtime-overrides) when experimenting with palette and semantic roles.

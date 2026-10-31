@@ -201,6 +201,55 @@
             "disabled": {
                 "$value": "{intent.danger.disabled}"
             }
+        },
+        "color-intent": {
+            "$type": "color",
+            "$description": "Unfilled intent text colors, independent from filled foreground and outline borders",
+            "primary": {
+                "$value": "{intent.primary.hover}"
+            },
+            "primary-hover": {
+                "$value": "{intent.primary.hover}"
+            },
+            "primary-active": {
+                "$value": "{intent.primary.active}"
+            },
+            "success": {
+                "$value": "{intent.success.hover}"
+            },
+            "success-hover": {
+                "$value": "{intent.success.hover}"
+            },
+            "success-active": {
+                "$value": "{intent.success.active}"
+            },
+            "warning": {
+                "$value": "{intent.warning.hover}"
+            },
+            "warning-hover": {
+                "$value": "{intent.warning.hover}"
+            },
+            "warning-active": {
+                "$value": "{intent.warning.active}"
+            },
+            "danger": {
+                "$value": "{intent.danger.hover}"
+            },
+            "danger-hover": {
+                "$value": "{intent.danger.hover}"
+            },
+            "danger-active": {
+                "$value": "{intent.danger.active}"
+            },
+            "default": {
+                "$value": "{intent.default.hover}"
+            },
+            "default-hover": {
+                "$value": "{intent.default.hover}"
+            },
+            "default-active": {
+                "$value": "{intent.default.active}"
+            }
         }
     }
 }

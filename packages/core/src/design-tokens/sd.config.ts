@@ -659,9 +659,19 @@ const classifyToken = (
         };
     }
 
+    // Preserve plain aliases for runtime palette overrides. Derived and transitive-derived
+    // tokens keep their existing static fallback and progressive enhancement above.
+    const original = token.original ?? {};
+    const tokenRef = parseTokenReference(original.$value ?? original.value);
+    const derivation = parseColorDerivation(original.$extensions ?? original.extensions);
+    const value =
+        outputReferences && tokenRef !== undefined && derivation === undefined
+            ? tokenReferenceToVar(tokenRef)
+            : currentValue;
+
     return {
         name: token.name,
-        fallbackValue: currentValue,
+        fallbackValue: value,
         modernValue: undefined,
         description: token.$description,
     };
@@ -811,15 +821,15 @@ const nameTransformConfig: Parameters<typeof StyleDictionary.registerTransform>[
     transform: token => "bp-" + token.path.join("-"),
 };
 
-/** All standard DTCG type transforms registered via {@link makeTransformConfig}. */
+/** Build each config separately so its parser and formatter retain the same inferred value type. */
 const standardTransforms = [
-    colorTransform,
-    dimensionTransform,
-    durationTransform,
-    fontFamilyTransform,
-    fontWeightTransform,
-    numberTransform,
-    cubicBezierTransform,
+    makeTransformConfig(colorTransform),
+    makeTransformConfig(dimensionTransform),
+    makeTransformConfig(durationTransform),
+    makeTransformConfig(fontFamilyTransform),
+    makeTransformConfig(fontWeightTransform),
+    makeTransformConfig(numberTransform),
+    makeTransformConfig(cubicBezierTransform),
 ] as const;
 
 // -- Format Definition --------------------------------------------------------
@@ -930,7 +940,7 @@ const formatProgressiveEnhancementCss = (
 const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     register(sd);
 
-    standardTransforms.forEach(def => sd.registerTransform(makeTransformConfig(def)));
+    standardTransforms.forEach(config => sd.registerTransform(config));
     sd.registerTransform(shadowTransformConfig);
     sd.registerTransform(deriveTransformConfig);
     sd.registerTransform(nameTransformConfig);

@@ -262,9 +262,22 @@
                 "disabled": { "$value": "{intent.success.disabled}" }
             },
             "warning": {
-                "rest": { "$value": "{intent.warning.rest}" },
-                "hover": { "$value": "{intent.warning.hover}" },
-                "active": { "$value": "{intent.warning.active}" },
+                "rest": {
+                    "$value": "{intent.warning.rest}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "lightnessOffset": 0.177,
+                            "chromaOffset": -0.01,
+                            "hueOffset": 6.26
+                        }
+                    }
+                },
+                "hover": {
+                    "$value": "color-mix(in oklch, var(--bp-surface-background-color-warning-rest) 77%, var(--bp-intent-warning-hover))"
+                },
+                "active": {
+                    "$value": "color-mix(in oklch, var(--bp-surface-background-color-warning-rest) 46%, var(--bp-intent-warning-active))"
+                },
                 "disabled": { "$value": "{intent.warning.disabled}" }
             },
             "danger": {
