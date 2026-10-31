@@ -6,9 +6,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
 import { type ComponentProps } from "react";
 
+import { EndorsedIcon, type IconName } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
-import { HTMLSelect, type HTMLSelectIconName } from "./htmlSelect";
+import { HTMLSelect } from "./htmlSelect";
 
 const SAMPLE_OPTIONS = [
     { label: "Option 1", value: "1" },
@@ -31,7 +32,7 @@ const meta: Meta<typeof HTMLSelect> = {
         large: false,
         minimal: false,
         disabled: false,
-        iconName: "double-caret-vertical",
+        icon: "double-caret-vertical",
     },
     argTypes: {
         fill: {
@@ -46,9 +47,9 @@ const meta: Meta<typeof HTMLSelect> = {
         disabled: {
             control: "boolean",
         },
-        iconName: {
+        icon: {
             control: "select",
-            options: ["double-caret-vertical", "caret-down"] satisfies HTMLSelectIconName[],
+            options: ["double-caret-vertical", "caret-down"] satisfies IconName[],
         },
         onChange: { action: "changed" },
         ...disabledArgs.reduce(
@@ -124,22 +125,30 @@ export const StateExample: Story = {
 };
 
 /**
- * Use the `iconName` prop to choose between the supported dropdown icons.
+ * Use the `icon` prop to render any Blueprint icon — or an icon element — on the right side of the select.
  */
 export const IconsExample: Story = {
     name: "Icons",
     argTypes: {
-        iconName: { table: { disable: true } },
+        icon: { table: { disable: true } },
     },
     render: args => (
         <Flex gap={2} alignItems="center">
             <Flex flexDirection="column" gap={1} alignItems="center">
-                <HTMLSelect {...args} iconName="double-caret-vertical" />
+                <HTMLSelect {...args} icon="double-caret-vertical" />
                 <StoryLabel title="double-caret-vertical" />
             </Flex>
             <Flex flexDirection="column" gap={1} alignItems="center">
-                <HTMLSelect {...args} iconName="caret-down" />
+                <HTMLSelect {...args} icon="caret-down" />
                 <StoryLabel title="caret-down" />
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <HTMLSelect {...args} icon="filter" />
+                <StoryLabel title="filter" />
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <HTMLSelect {...args} icon={<EndorsedIcon />} />
+                <StoryLabel title="<EndorsedIcon />" />
             </Flex>
         </Flex>
     ),

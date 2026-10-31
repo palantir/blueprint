@@ -16,33 +16,19 @@
 
 import { useState } from "react";
 
-import {
-    Divider,
-    FormGroup,
-    H5,
-    HTMLSelect,
-    type HTMLSelectIconName,
-    Switch,
-} from "@blueprintjs/core";
-import {
-    Example,
-    type ExampleProps,
-    handleBooleanChange,
-    handleStringChange,
-} from "@blueprintjs/docs-theme";
+import { Divider, H5, HTMLSelect, type IconName, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-const SUPPORTED_ICON_NAMES: HTMLSelectIconName[] = ["double-caret-vertical", "caret-down"];
+import { IconSelect } from "./common/iconSelect";
 
 const SELECT_OPTIONS = ["One", "Two", "Three", "Four"];
 
 export const HTMLSelectExample: React.FC<ExampleProps> = props => {
     const [disabled, setDisabled] = useState(false);
     const [fill, setFill] = useState(false);
-    const [iconName, setIconName] = useState<HTMLSelectIconName>(undefined);
+    const [icon, setIcon] = useState<IconName>("double-caret-vertical");
     const [large, setLarge] = useState(false);
     const [minimal, setMinimal] = useState(false);
-
-    const handleIconChange = handleStringChange(value => setIconName(value as HTMLSelectIconName));
 
     const options = (
         <>
@@ -56,13 +42,7 @@ export const HTMLSelectExample: React.FC<ExampleProps> = props => {
                 onChange={handleBooleanChange(setDisabled)}
             />
             <Divider />
-            <FormGroup label="Icon">
-                <HTMLSelect
-                    onChange={handleIconChange}
-                    options={SUPPORTED_ICON_NAMES}
-                    placeholder="Choose an item..."
-                />
-            </FormGroup>
+            <IconSelect iconName={icon} onChange={setIcon} />
         </>
     );
 
@@ -71,7 +51,7 @@ export const HTMLSelectExample: React.FC<ExampleProps> = props => {
             <HTMLSelect
                 disabled={disabled}
                 fill={fill}
-                iconName={iconName}
+                icon={icon}
                 large={large}
                 minimal={minimal}
                 options={SELECT_OPTIONS}
