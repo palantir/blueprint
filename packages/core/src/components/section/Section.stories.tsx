@@ -185,7 +185,7 @@ export const Collapsible: Story = {
         await step("Section starts expanded with content visible", async () => {
             await expect(canvas.getByText(/content can be toggled/)).toBeVisible();
             await expect(collapseBody).toHaveAttribute("aria-hidden", "false");
-            await expect(caret).toHaveAttribute("aria-expanded", "false");
+            await expect(caret).toHaveAttribute("aria-expanded", "true");
         });
 
         await step("Click header to collapse the section", async () => {
@@ -193,7 +193,7 @@ export const Collapsible: Story = {
             await waitFor(() => expect(collapseBody).toHaveAttribute("aria-hidden", "true"));
             await expect(section).toHaveClass("bp6-section-collapsed");
             await expect(collapseBody).toHaveAttribute("aria-hidden", "true");
-            await expect(caret).toHaveAttribute("aria-expanded", "true");
+            await expect(caret).toHaveAttribute("aria-expanded", "false");
         });
 
         await step("Click header again to re-expand the section", async () => {
@@ -201,7 +201,7 @@ export const Collapsible: Story = {
             await waitFor(() => expect(collapseBody).toHaveAttribute("aria-hidden", "false"));
             await expect(canvas.getByText(/content can be toggled/)).toBeVisible();
             await expect(section).not.toHaveClass("bp6-section-collapsed");
-            await expect(caret).toHaveAttribute("aria-expanded", "false");
+            await expect(caret).toHaveAttribute("aria-expanded", "true");
         });
     },
 };

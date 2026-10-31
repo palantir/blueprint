@@ -15,9 +15,10 @@
  */
 
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { IconNames } from "@blueprintjs/icons";
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { H5 } from "../html/html";
@@ -57,6 +58,27 @@ describe("<Section>", () => {
     });
 
     describe("uncontrolled collapse mode", () => {
+        it.each(["click", "Enter", " "])("updates expanded state after %s activation", async key => {
+            const user = userEvent.setup();
+            render(
+                <Section collapsible={true} collapseProps={{ defaultIsOpen: false }} title="Test">
+                    <SectionCard>Content</SectionCard>
+                </Section>,
+            );
+            const button = screen.getByRole("button", { expanded: false, name: "expand section" });
+            button.focus();
+
+            for (const expanded of [true, false]) {
+                if (key === "click") {
+                    await user.click(button);
+                } else {
+                    await user.keyboard(key === "Enter" ? "{Enter}" : key);
+                }
+                expect(button).toHaveAttribute("aria-expanded", String(expanded));
+                expect(button).toHaveAccessibleName(expanded ? "collapse section" : "expand section");
+            }
+        });
+
         it("collapsible is open when defaultIsOpen={undefined}", () => {
             render(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }} title="Test">
@@ -64,7 +86,7 @@ describe("<Section>", () => {
                 </Section>,
             );
             const button = screen.getByRole("button", { name: "collapse section" });
-            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(button).toHaveAttribute("aria-expanded", "true");
             expect(screen.getByText("is open")).toBeVisible();
         });
 
@@ -75,7 +97,7 @@ describe("<Section>", () => {
                 </Section>,
             );
             const button = screen.getByRole("button", { name: "collapse section" });
-            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(button).toHaveAttribute("aria-expanded", "true");
             expect(screen.getByText("is open")).toBeVisible();
         });
 
@@ -86,12 +108,33 @@ describe("<Section>", () => {
                 </Section>,
             );
             const button = screen.getByRole("button", { name: "expand section" });
-            expect(button).toHaveAttribute("aria-expanded", "true");
+            expect(button).toHaveAttribute("aria-expanded", "false");
             expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
 
     describe("controlled collapse mode", () => {
+        it("updates expanded state only when isOpen changes", async () => {
+            const user = userEvent.setup();
+            const onToggle = vi.fn();
+            const renderSection = (isOpen: boolean) => (
+                <Section collapsible={true} collapseProps={{ isOpen, onToggle }} title="Test">
+                    <SectionCard>Content</SectionCard>
+                </Section>
+            );
+            const { rerender } = render(renderSection(false));
+            const button = screen.getByRole("button", { expanded: false, name: "expand section" });
+
+            await user.click(button);
+            expect(onToggle).toHaveBeenCalledOnce();
+            expect(button).toHaveAttribute("aria-expanded", "false");
+
+            rerender(renderSection(true));
+            expect(button).toHaveAttribute("aria-expanded", "true");
+            rerender(renderSection(false));
+            expect(button).toHaveAttribute("aria-expanded", "false");
+        });
+
         it("collapsible is open when isOpen={true}", () => {
             render(
                 <Section collapsible={true} collapseProps={{ isOpen: true }} title="Test">
@@ -99,7 +142,7 @@ describe("<Section>", () => {
                 </Section>,
             );
             const button = screen.getByRole("button", { name: "collapse section" });
-            expect(button).toHaveAttribute("aria-expanded", "false");
+            expect(button).toHaveAttribute("aria-expanded", "true");
             expect(screen.getByText("is open")).toBeVisible();
         });
 
@@ -110,7 +153,7 @@ describe("<Section>", () => {
                 </Section>,
             );
             const button = screen.getByRole("button", { name: "expand section" });
-            expect(button).toHaveAttribute("aria-expanded", "true");
+            expect(button).toHaveAttribute("aria-expanded", "false");
             expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
