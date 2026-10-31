@@ -1,0 +1,67 @@
+---
+title: Radio card
+---
+
+# Radio card
+
+A radio card is an interactive [**Card**](#core/components/card) with an embedded [**Radio**](#core/components/radio) control (start-aligned by default).
+
+Most of the properties in [**CardProps**](#core/components/card.props-interface) and
+[**RadioProps**](#core/components/radio.props-interface) are available on the root component.
+
+The label may be specified as either `children` (`React.ReactNode`) or the `label` prop (`string`).
+
+Users may click anywhere inside the card to toggle the control state.
+
+By default, a "checked" control card will be displayed with the same appearance as a "selected" card.
+This behavior may be toggled with the `showAsSelectedWhenChecked` prop.
+
+Just like the **Radio** component, a **RadioCard** is usually contained in a
+[**RadioCardGroup**](#core/components/radio.radiogroup) which manages its selection state.
+
+## Usage
+
+```tsx copy
+import { RadioCard, RadioCardGroup } from "@blueprintjs/core";
+```
+
+```tsx
+<RadioCardGroup>
+    <RadioCard value="1">Option 1</RadioCard>
+    <RadioCard value="2">Option 2</RadioCard>
+</RadioCardGroup>
+```
+
+## Examples
+
+### Basic
+
+Radio cards are typically used inside a **RadioGroup** which manages the selection state.
+
+@reactCodeExample RadioCardBasicExample
+
+### Compact
+
+The `compact` prop renders a smaller card with reduced padding.
+
+@reactCodeExample RadioCardCompactExample
+
+### Disabled
+
+The `disabled` prop prevents user interaction.
+
+@reactCodeExample RadioCardDisabledExample
+
+### Align indicator
+
+The `alignIndicator` prop controls which side of the card the radio control appears on.
+
+@reactCodeExample RadioCardAlignIndicatorExample
+
+## Interactive Playground
+
+@reactExample RadioCardGroupExample
+
+## Props interface
+
+@interface ControlCardProps

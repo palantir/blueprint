@@ -1,0 +1,3 @@
+<SwitchCard disabled={true}>Wifi</SwitchCard>
+<SwitchCard disabled={true}>Bluetooth</SwitchCard>
+<SwitchCard disabled={true}>VPN</SwitchCard>
