@@ -1,7 +1,6 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:map";
 @import "../../common/variables-extended";
 
 $callout-padding: $pt-spacing * 4;
@@ -11,12 +10,14 @@ $callout-padding-compact: $pt-spacing * 2;
 .#{$ns}-callout {
   @include running-typography;
   border-radius: var(--bp-surface-border-radius);
+  color: var(--bp-typography-color-default-rest);
   padding: $callout-padding;
   position: relative;
   width: 100%;
 
   &:not(.#{$ns}-minimal) {
-    background-color: rgba($gray3, 0.15);
+    // Palette exception: no semantic surface token matches the neutral fill (#8f99a8).
+    background-color: oklch(from var(--bp-palette-gray-3) l c h / 15%);
   }
 
   // CSS API support
@@ -25,7 +26,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
-      color: $pt-icon-color;
+      color: var(--bp-typography-color-muted);
       left: $callout-padding;
       position: absolute;
       top: $callout-padding + $callout-header-margin-top;
@@ -41,7 +42,7 @@ $callout-padding-compact: $pt-spacing * 2;
     padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
 
     > .#{$ns}-icon:first-child {
-      color: $pt-icon-color;
+      color: var(--bp-typography-color-muted);
       left: $callout-padding;
       position: absolute;
       top: $callout-padding + $callout-header-margin-top;
@@ -49,6 +50,7 @@ $callout-padding-compact: $pt-spacing * 2;
   }
 
   .#{$ns}-heading {
+    color: inherit;
     line-height: $pt-icon-size-standard;
     margin-bottom: 0;
     margin-top: $callout-header-margin-top;
@@ -75,21 +77,28 @@ $callout-padding-compact: $pt-spacing * 2;
 
   .#{$ns}-dark & {
     &:not(.#{$ns}-minimal) {
-      background-color: rgba($gray3, 0.2);
+      // Palette exception: no semantic surface token matches the neutral fill (#8f99a8).
+      background-color: oklch(from var(--bp-palette-gray-3) l c h / 20%);
     }
 
     &[class*="#{$ns}-icon-"]::before,
     &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
-      color: $pt-dark-icon-color;
+      // Palette exception: no semantic token matches the dark muted icon color (#abb3bf).
+      color: var(--bp-palette-gray-4);
     }
   }
 
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent,
+    $color in ("primary": "blue", "success": "green", "warning": "orange", "danger": "red")
+  {
     &.#{$ns}-intent-#{$intent} {
-      color: map.get($pt-intent-text-colors, $intent);
+      // Semantic exception: the hover token preserves the existing intent text color at rest.
+      color: var(--bp-typography-color-#{$intent}-hover);
 
       &:not(.#{$ns}-minimal) {
-        background-color: rgba($color, 0.1);
+        background-color: oklch(
+          from var(--bp-surface-background-color-#{$intent}-rest) l c h / 10%
+        );
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -99,20 +108,23 @@ $callout-padding-compact: $pt-spacing * 2;
       &[class*="#{$ns}-icon-"]::before,
       > .#{$ns}-icon:first-child,
       .#{$ns}-heading {
-        color: map.get($pt-intent-text-colors, $intent);
+        color: var(--bp-typography-color-#{$intent}-hover);
       }
 
       .#{$ns}-dark & {
-        color: map.get($pt-dark-intent-text-colors, $intent);
+        // Preserve the legacy dark intent text shades without changing shared typography tokens.
+        color: var(--bp-palette-#{$color}-5);
 
         &:not(.#{$ns}-minimal) {
-          background-color: rgba($color, 0.2);
+          background-color: oklch(
+            from var(--bp-surface-background-color-#{$intent}-rest) l c h / 20%
+          );
         }
 
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
-          color: map.get($pt-dark-intent-text-colors, $intent);
+          color: var(--bp-palette-#{$color}-5);
         }
       }
     }
@@ -125,12 +137,14 @@ $callout-padding-compact: $pt-spacing * 2;
       text-decoration: underline;
 
       &:hover {
-        color: $blue1;
+        // Semantic exception: the active token preserves this link's hover color.
+        color: var(--bp-typography-color-primary-active);
       }
     }
 
     .#{$ns}-dark & {
       a:hover {
+        // The extended blue6 link-hover shade (#99c4ff) has no design token.
         color: $blue6;
       }
     }
