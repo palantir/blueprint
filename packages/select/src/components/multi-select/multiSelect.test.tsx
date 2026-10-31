@@ -140,6 +140,38 @@ describe("<MultiSelect>", () => {
         },
     );
 
+    it("opens the popover when the input is focused", () => {
+        // see https://github.com/palantir/blueprint/issues/4152: MultiSelect should open on keyboard
+        // focus like Suggest does, not only on click
+        const wrapper = multiselect({ popoverProps: { usePortal: false } });
+
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+        wrapper.find("input").simulate("focus");
+
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+    });
+
+    it("does not open the popover on input focus when openOnKeyDown is set", () => {
+        const wrapper = multiselect({ openOnKeyDown: true, popoverProps: { usePortal: false } });
+
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+        wrapper.find("input").simulate("focus");
+
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+    });
+
+    it("forwards tagInputProps.inputProps.onFocus when the input is focused", () => {
+        const onFocus = sinon.spy();
+        const wrapper = multiselect({
+            popoverProps: { usePortal: false },
+            tagInputProps: { inputProps: { onFocus } },
+        });
+
+        wrapper.find("input").simulate("focus");
+
+        expect(onFocus.calledOnce).toBe(true);
+    });
+
     it("allows searching within popover content when custom target provided", async () => {
         // Mount to document for this test to check from input focus
         const containerElement = document.createElement("div");
