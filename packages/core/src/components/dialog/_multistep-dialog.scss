@@ -9,6 +9,14 @@
 $dialog-border-radius: var(--bp-surface-border-radius) !default;
 $step-radius: var(--bp-surface-border-radius) !default;
 
+
+.#{$ns}-multistep-dialog {
+  max-width: 800px;
+  width: 100%;
+  max-height: 500px;
+  height: 100%;
+}
+
 .#{$ns}-multistep-dialog-panels {
   display: flex;
 
