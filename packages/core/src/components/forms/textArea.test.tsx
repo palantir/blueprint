@@ -14,33 +14,24 @@
  * limitations under the License.
  */
 
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { TextArea } from "./textArea";
 
 describe("<TextArea>", () => {
-    let containerElement: HTMLElement;
+    it("does not manually resize when autoResize enabled", async () => {
+        const user = userEvent.setup();
+        render(<TextArea autoResize={true} />);
+        const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
 
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        containerElement.setAttribute("style", "width: 1000px; height: 1000px;");
-        document.body.appendChild(containerElement);
-    });
+        await user.type(textarea, "new text");
 
-    afterEach(() => {
-        containerElement.remove();
-    });
-
-    it("No manual resizes when autoResize enabled", () => {
-        const wrapper = mount(<TextArea autoResize={true} />, { attachTo: containerElement });
-        const textarea = wrapper.find("textarea");
-
-        textarea.simulate("change", { target: { scrollHeight: 500 } });
-
-        assert.notEqual(textarea.getDOMNode<HTMLElement>().style.height, "500px");
+        // In jsdom, scrollHeight is 0, so height should be "0px" (from autoResize)
+        expect(textarea).toHaveStyle({ height: "0px" });
     });
 
     it("resizes with large initial input when autoResize enabled", () => {
@@ -52,12 +43,11 @@ describe("<TextArea>", () => {
         Sed eros sapien, semper sed imperdiet sed,
         dictum eget purus. Donec porta accumsan pretium.
         Fusce at felis mattis, tincidunt erat non, varius erat.`;
-        const wrapper = mount(<TextArea value={initialValue} autoResize={true} />, { attachTo: containerElement });
-        const textarea = wrapper.find("textarea");
+        render(<TextArea value={initialValue} autoResize={true} />);
+        const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
 
-        const scrollHeightInPixels = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
-
-        assert.equal(textarea.getDOMNode<HTMLElement>().style.height, scrollHeightInPixels);
+        const scrollHeightInPixels = `${textarea.scrollHeight}px`;
+        expect(textarea).toHaveStyle({ height: scrollHeightInPixels });
     });
 
     // Skip: jsdom doesn't compute real scroll heights
@@ -71,38 +61,34 @@ describe("<TextArea>", () => {
         Sed eros sapien, semper sed imperdiet sed,
         dictum eget purus. Donec porta accumsan pretium.
         Fusce at felis mattis, tincidunt erat non, varius erat.`;
-        const wrapper = mount(<TextArea value={initialValue} autoResize={true} />, { attachTo: containerElement });
-        const textarea = wrapper.find("textarea");
+        const { rerender } = render(<TextArea value={initialValue} autoResize={true} />);
+        const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
 
-        const scrollHeightInPixelsBefore = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
-        wrapper.setProps({ value: nextValue }).update();
-        const scrollHeightInPixelsAfter = `${textarea.getDOMNode<HTMLElement>().scrollHeight}px`;
+        const scrollHeightBefore = `${textarea.scrollHeight}px`;
+        rerender(<TextArea value={nextValue} autoResize={true} />);
+        const scrollHeightAfter = `${textarea.scrollHeight}px`;
 
-        assert.notEqual(scrollHeightInPixelsBefore, scrollHeightInPixelsAfter);
+        expect(scrollHeightBefore).not.toBe(scrollHeightAfter);
     });
 
-    it("doesn't resize by default", () => {
-        const wrapper = mount(<TextArea />, { attachTo: containerElement });
-        const textarea = wrapper.find("textarea");
+    it("doesn't resize by default", async () => {
+        const user = userEvent.setup();
+        render(<TextArea />);
+        const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
 
-        textarea.simulate("change", {
-            target: {
-                scrollHeight: textarea.getDOMNode().scrollHeight,
-            },
-        });
+        await user.type(textarea, "some text");
 
-        assert.equal(textarea.getDOMNode<HTMLElement>().style.height, "");
+        expect(textarea).toHaveStyle({ height: "" });
     });
 
-    it("doesn't clobber user-supplied styles", () => {
-        const wrapper = mount(<TextArea autoResize={true} style={{ marginTop: 10 }} />, {
-            attachTo: containerElement,
-        });
-        const textarea = wrapper.find("textarea");
+    it("doesn't clobber user-supplied styles", async () => {
+        const user = userEvent.setup();
+        render(<TextArea autoResize={true} style={{ marginTop: 10 }} />);
+        const textarea = screen.getByRole<HTMLTextAreaElement>("textbox");
 
-        textarea.simulate("change", { target: { scrollHeight: 500 } });
+        await user.type(textarea, "some text");
 
-        assert.equal(textarea.getDOMNode<HTMLElement>().style.marginTop, "10px");
+        expect(textarea).toHaveStyle({ marginTop: "10px" });
     });
 
     it("updates on ref change", () => {
@@ -119,27 +105,26 @@ describe("<TextArea>", () => {
             textAreaNew = ref;
         };
 
-        const textAreawrapper = mount(<TextArea inputRef={textAreaRefCallback} />, { attachTo: containerElement });
-        assert.instanceOf(textArea, HTMLTextAreaElement);
-        assert.strictEqual(callCount, 1);
+        const { rerender } = render(<TextArea inputRef={textAreaRefCallback} />);
+        expect(textArea).toBeInstanceOf(HTMLTextAreaElement);
+        expect(callCount).toBe(1);
 
-        textAreawrapper.setProps({ inputRef: textAreaNewRefCallback });
-        textAreawrapper.update();
-        assert.strictEqual(callCount, 2);
-        assert.isNull(textArea);
-        assert.strictEqual(newCallCount, 1);
-        assert.instanceOf(textAreaNew, HTMLTextAreaElement);
+        rerender(<TextArea inputRef={textAreaNewRefCallback} />);
+        expect(callCount).toBe(2);
+        expect(textArea).toBeNull();
+        expect(newCallCount).toBe(1);
+        expect(textAreaNew).toBeInstanceOf(HTMLTextAreaElement);
     });
 
     it("accepts object refs created with createRef and updates on change", () => {
         const textAreaRef = createRef<HTMLTextAreaElement>();
         const textAreaNewRef = createRef<HTMLTextAreaElement>();
 
-        const textAreawrapper = mount(<TextArea inputRef={textAreaRef} />, { attachTo: containerElement });
-        assert.instanceOf(textAreaRef.current, HTMLTextAreaElement);
+        const { rerender } = render(<TextArea inputRef={textAreaRef} />);
+        expect(textAreaRef.current).toBeInstanceOf(HTMLTextAreaElement);
 
-        textAreawrapper.setProps({ inputRef: textAreaNewRef });
-        assert.isNull(textAreaRef.current);
-        assert.instanceOf(textAreaNewRef.current, HTMLTextAreaElement);
+        rerender(<TextArea inputRef={textAreaNewRef} />);
+        expect(textAreaRef.current).toBeNull();
+        expect(textAreaNewRef.current).toBeInstanceOf(HTMLTextAreaElement);
     });
 });
