@@ -4940,5 +4940,19 @@
         "tags": "scenario, sparkle, star, possibility, option",
         "group": "miscellaneous",
         "codepoint": 62402
+    },
+    {
+        "displayName": "Iceberg table",
+        "iconName": "iceberg-table",
+        "tags": "index, rows, columns, agenda, list, spreadsheet, table, sheet, entry, iceberg",
+        "group": "table",
+        "codepoint": 62403
+    },
+    {
+        "displayName": "Iceberg table: add",
+        "iconName": "iceberg-table-add",
+        "tags": "index, rows, columns, agenda, list, spreadsheet, table, sheet, entry, new, create, plus, iceberg",
+        "group": "table",
+        "codepoint": 62404
     }
 ]
