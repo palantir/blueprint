@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Lower RadioGroup label margin to match FormGroup
+  links:
+  - https://github.com/palantir/blueprint/pull/7451
