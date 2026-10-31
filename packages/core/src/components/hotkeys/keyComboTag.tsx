@@ -57,6 +57,14 @@ export const DISPLAY_ALIASES: Record<string, string> = {
     arrowup: "up",
 };
 
+/**
+ * Display aliases which only apply on macOS, where some modifier keys are named differently than on
+ * other platforms (for example, the `alt` key is labeled "option").
+ */
+const MAC_DISPLAY_ALIASES: Record<string, string> = {
+    alt: "option",
+};
+
 export interface KeyComboTagProps extends Props {
     /** The key combo to display, such as `"cmd + s"`. */
     combo: string;
@@ -92,7 +100,11 @@ export const KeyComboTagInternal: React.FC<KeyComboTagInternalProps> = memo(prop
 
     const renderKey = useCallback(
         (key: string, index: number) => {
-            const keyString = DISPLAY_ALIASES[key.toLowerCase()] ?? key;
+            const lowerKey = key.toLowerCase();
+            const keyString =
+                (isMac(platformOverride) ? MAC_DISPLAY_ALIASES[lowerKey] : undefined) ??
+                DISPLAY_ALIASES[lowerKey] ??
+                key;
             const icon = getKeyIcon(key);
             const reactKey = `key-${index}`;
             return (
@@ -102,7 +114,7 @@ export const KeyComboTagInternal: React.FC<KeyComboTagInternalProps> = memo(prop
                 </kbd>
             );
         },
-        [getKeyIcon],
+        [getKeyIcon, platformOverride],
     );
 
     const renderMinimalKey = useCallback(
