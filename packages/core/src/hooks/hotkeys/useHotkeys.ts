@@ -94,7 +94,14 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     }, [dispatch, globalKeys, localKeys]);
 
     const invokeNamedCallbackIfComboRecognized = useCallback(
-        (global: boolean, combo: KeyCombo, callbackName: "onKeyDown" | "onKeyUp", e: KeyboardEvent) => {
+        (
+            global: boolean,
+            combo: KeyCombo,
+            callbackName: "onKeyDown" | "onKeyUp",
+            e: KeyboardEvent,
+            // For local hotkeys: the React event whose handler we're running in. See `stopPropagation` below.
+            syntheticEvent?: React.KeyboardEvent<HTMLElement>,
+        ) => {
             const isTextInput = elementIsTextInput(e.target as HTMLElement);
             for (const key of global ? globalKeys : localKeys) {
                 const {
@@ -111,7 +118,10 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
                     if (stopPropagation) {
                         // set a flag just for unit testing. not meant to be referenced in feature work.
                         (e as any).isPropagationStopped = true;
-                        e.stopPropagation();
+                        // React (17+) delegates events to the root, so stopping the native event from a React
+                        // handler can't keep it from reaching parent React handlers. Stop the synthetic event
+                        // instead; React forwards the call to the native event as well.
+                        (syntheticEvent ?? e).stopPropagation();
                     }
                     key.config[callbackName]?.(e);
                 }
@@ -142,12 +152,12 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
 
     const handleLocalKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent),
+            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent, e),
         [invokeNamedCallbackIfComboRecognized],
     );
     const handleLocalKeyUp = useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent),
+            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent, e),
         [invokeNamedCallbackIfComboRecognized],
     );
 
