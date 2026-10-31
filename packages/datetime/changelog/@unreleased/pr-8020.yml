@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "DatePicker: month dropdown now respects minDate/maxDate when using dropdown-buttons caption layout"
+  links:
+  - https://github.com/palantir/blueprint/pull/8020
