@@ -274,7 +274,15 @@ workflows:
     unless: << pipeline.parameters.run-chromatic >>
     jobs:
       - circle-all:
-          requires: [dist, lint, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
+          requires:
+            - dist
+            - lint
+            - clean-lockfile
+            - format-check
+            - test-node-libs
+            - type-check-icons
+            - test-react-18
+            - test-iso-react-18
       - checkout-code
       - clean-lockfile:
           requires: [checkout-code]
@@ -306,7 +314,15 @@ workflows:
       - store-packages:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
+          requires:
+            - dist
+            - lint
+            - clean-lockfile
+            - format-check
+            - test-node-libs
+            - type-check-icons
+            - test-react-18
+            - test-iso-react-18
           filters:
             branches:
               only:
