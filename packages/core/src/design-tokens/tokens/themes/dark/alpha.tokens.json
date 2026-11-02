@@ -12,6 +12,10 @@
                 "rest": {
                     "$value": "{primary.text.normal}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                },
+                "disabled": {
+                    "$value": "{primary.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 }
             }
         },
@@ -63,6 +67,10 @@
                 "rest": {
                     "$value": "{success.text.normal}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                },
+                "disabled": {
+                    "$value": "{success.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 }
             }
         },
@@ -134,6 +142,10 @@
                 "rest": {
                     "$value": "{danger.text.normal}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                },
+                "disabled": {
+                    "$value": "{danger.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 }
             }
         },
@@ -205,6 +217,10 @@
                 "rest": {
                     "$value": "{warning.text.normal}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                },
+                "disabled": {
+                    "$value": "{warning.text.normal}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 }
             }
         },
@@ -234,17 +250,43 @@
         },
         "overlay": {
             "hover": {
-                "$value": "{warning.background.solid.active}",
+                "$value": "{warning.background.solid.rest}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
             },
             "active": {
-                "$value": "{warning.background.solid.active}",
+                "$value": "{warning.background.solid.rest}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
             }
         }
     },
     "neutral": {
         "$type": "color",
+        "border": {
+            "alpha": {
+                "muted": {
+                    "rest": {
+                        "$value": "{neutral.text.strong}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                    }
+                },
+                "normal": {
+                    "rest": {
+                        "$value": "{neutral.text.strong}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    }
+                },
+                "strong": {
+                    "rest": {
+                        "$value": "{neutral.text.strong}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+                    },
+                    "disabled": {
+                        "$value": "{neutral.text.strong}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    }
+                }
+            }
+        },
         "background": {
             "subtle": {
                 "disabled": {
@@ -257,6 +299,16 @@
             "disabled": {
                 "$value": "{neutral.text.normal}",
                 "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{neutral.background.solid.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+            },
+            "active": {
+                "$value": "{neutral.background.solid.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
             }
         }
     }
