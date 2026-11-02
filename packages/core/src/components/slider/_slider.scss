@@ -115,7 +115,7 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-dark & {
-    // don't use pt-dark-button() here, since we want to appear more like a light theme button
+    // Keep the handle's light appearance in dark mode.
     background-color: $gray4;
     box-shadow: $dark-button-box-shadow;
 

@@ -117,11 +117,7 @@
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
     &:not([class*="#{$ns}-intent-"]) {
-      @include pt-dark-button;
-
-      &[class*="#{$ns}-icon-"]::before {
-        color: var(--bp-neutral-text-muted);
-      }
+      @include pt-dark-button-shadows;
 
       #{$icon-classes} {
         &:not([class*="#{$ns}-intent-"]) {
@@ -131,27 +127,7 @@
     }
 
     &[class*="#{$ns}-intent-"] {
-      box-shadow:
-        inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
-
-      &:hover {
-        box-shadow:
-          inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
-      }
-
-      &:active,
-      &.#{$ns}-active {
-        box-shadow:
-          inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        box-shadow: none;
-      }
+      @include pt-dark-button-shadows($hover-opacity: 20%);
     }
   }
 

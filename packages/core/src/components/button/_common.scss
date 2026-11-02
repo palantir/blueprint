@@ -302,27 +302,46 @@ $button-dark-minimal-active-text-colors: (
   }
 }
 
-@mixin pt-button-default-colors() {
-  background-color: var(--bp-neutral-background-subtle-rest);
+@mixin pt-button-shadow($opacity: 10%) {
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+    0 1px 2px color-mix(in oklch, var(--bp-palette-black) $opacity, transparent);
+}
+
+// Dark shadow overrides for a control and its interaction states, not pseudo-elements.
+@mixin pt-dark-button-shadows($hover-opacity: 40%) {
+  @include pt-button-shadow(20%);
+
+  &:hover {
+    @include pt-button-shadow($hover-opacity);
+  }
+
+  &:active,
+  &.#{$ns}-active {
+    @include pt-button-shadow(40%);
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    box-shadow: none;
+  }
+}
+
+@mixin pt-button-default-colors() {
+  @include pt-button-shadow;
+  background-color: var(--bp-neutral-background-subtle-rest);
   color: var(--bp-neutral-text-normal);
 }
 
 @mixin pt-button-hover() {
+  @include pt-button-shadow(20%);
   background-clip: padding-box;
   background-color: var(--bp-neutral-background-subtle-hover);
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
 }
 
 @mixin pt-button-active() {
+  @include pt-button-shadow(20%);
   background-color: var(--bp-neutral-background-subtle-active);
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
@@ -353,20 +372,13 @@ $button-dark-minimal-active-text-colors: (
       transparent
     )
 ) {
+  @include pt-button-shadow;
   background-color: $default-color;
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
   color: $text-color;
 
   // Loading disables the button, but the spinner keeps the enabled foreground.
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
     stroke: $text-color;
-
-    .#{$ns}-dark &,
-    [data-bp-color-scheme="dark"] & {
-      stroke: $text-color;
-    }
   }
 
   &:hover,
@@ -376,18 +388,14 @@ $button-dark-minimal-active-text-colors: (
   }
 
   &:hover {
+    @include pt-button-shadow(20%);
     background-color: $hover-color;
-    box-shadow:
-      inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
   }
 
   &:active,
   &.#{$ns}-active {
+    @include pt-button-shadow(20%);
     background-color: $active-color;
-    box-shadow:
-      inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-      0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
@@ -414,75 +422,6 @@ $button-dark-minimal-active-text-colors: (
     border: 1px solid buttonborder;
     box-shadow: none;
   }
-}
-
-// N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
-@mixin pt-dark-button() {
-  @include pt-dark-button-default-colors;
-
-  &:hover,
-  &:active,
-  &.#{$ns}-active {
-    color: var(--bp-neutral-text-normal);
-  }
-
-  &:hover {
-    @include pt-dark-button-hover;
-  }
-
-  &:active,
-  &.#{$ns}-active {
-    @include pt-dark-button-active;
-  }
-
-  &:disabled,
-  &.#{$ns}-disabled {
-    @include pt-dark-button-disabled;
-
-    &.#{$ns}-active {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-neutral-background-subtle-active) calc(var(--bp-opacity-disabled) * 100%),
-        transparent
-      );
-    }
-  }
-
-  .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    stroke: var(--bp-neutral-text-normal);
-  }
-}
-
-@mixin pt-dark-button-default-colors() {
-  background-color: var(--bp-neutral-background-subtle-rest);
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
-  color: var(--bp-neutral-text-normal);
-}
-
-@mixin pt-dark-button-hover() {
-  background-color: var(--bp-neutral-background-subtle-hover);
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
-}
-
-@mixin pt-dark-button-active() {
-  background-color: var(--bp-neutral-background-subtle-active);
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
-}
-
-@mixin pt-dark-button-disabled() {
-  background-color: var(--bp-neutral-background-subtle-disabled);
-  box-shadow: none;
-  color: color-mix(
-    in oklch,
-    var(--bp-neutral-text-normal) calc(var(--bp-opacity-disabled) * 100%),
-    transparent
-  );
 }
 
 @mixin pt-button-minimal() {
@@ -518,25 +457,12 @@ $button-dark-minimal-active-text-colors: (
 
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
-    background: none;
     box-shadow: none;
-    color: var(--bp-neutral-text-normal);
 
     &:hover,
     &:active,
     &.#{$ns}-active {
-      background: none;
       box-shadow: none;
-      color: var(--bp-neutral-text-normal);
-    }
-
-    &:hover {
-      background-color: var(--bp-neutral-overlay-hover);
-    }
-
-    &:active,
-    &.#{$ns}-active {
-      background-color: var(--bp-neutral-overlay-active);
     }
 
     &:disabled,
@@ -545,7 +471,6 @@ $button-dark-minimal-active-text-colors: (
     &.#{$ns}-disabled:hover {
       background: none;
       color: var(--bp-neutral-text-disabled);
-      cursor: not-allowed;
 
       &.#{$ns}-active {
         background-color: var(--bp-neutral-overlay-active);
@@ -608,19 +533,6 @@ $button-dark-minimal-active-text-colors: (
 
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
-    color: $text-color;
-
-    &:hover {
-      background-color: $hover-background-color;
-      color: $text-color;
-    }
-
-    &:active,
-    &.#{$ns}-active {
-      background-color: $active-background-color;
-      color: $active-text-color;
-    }
-
     &:disabled,
     &.#{$ns}-disabled {
       background: none;
@@ -642,18 +554,6 @@ $button-dark-minimal-active-text-colors: (
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
     border-color: var(--bp-neutral-border-alpha-strong-disabled);
-  }
-
-  .#{$ns}-dark &,
-  [data-bp-color-scheme="dark"] & {
-    border-color: var(--bp-neutral-border-alpha-strong-rest);
-
-    &:disabled,
-    &:disabled:hover,
-    &.#{$ns}-disabled,
-    &.#{$ns}-disabled:hover {
-      border-color: var(--bp-neutral-border-alpha-strong-disabled);
-    }
   }
 
   @each $intent, $colors in $button-intent-states {
@@ -678,15 +578,5 @@ $button-dark-minimal-active-text-colors: (
   &:disabled,
   &.#{$ns}-disabled {
     border-color: $disabled-border-color;
-  }
-
-  .#{$ns}-dark &,
-  [data-bp-color-scheme="dark"] & {
-    border-color: $border-color;
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      border-color: $disabled-border-color;
-    }
   }
 }

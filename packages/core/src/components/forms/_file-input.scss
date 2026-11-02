@@ -42,7 +42,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
         @include pt-dark-input-disabled;
 
         &::after {
-          @include pt-dark-button-disabled;
+          @include pt-button-disabled;
         }
       }
     }
@@ -162,15 +162,15 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     color: oklch(from var(--bp-typography-color-muted) calc(l + 0.24) calc(c - 0.011) h / 0.6);
 
     &::after {
-      @include pt-dark-button-default-colors;
+      @include pt-button-shadow(20%);
     }
 
     &:hover::after {
-      @include pt-dark-button-hover;
+      @include pt-button-shadow(40%);
     }
 
     &:active::after {
-      @include pt-dark-button-active;
+      @include pt-button-shadow(40%);
     }
   }
 }
