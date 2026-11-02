@@ -69,7 +69,7 @@ $track-height: $track-size !default;
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      background-color: $color;
+      background-color: var(--bp-#{$intent}-graphic-accent);
     }
   }
 
