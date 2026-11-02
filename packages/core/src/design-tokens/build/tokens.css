@@ -170,10 +170,8 @@
   --bp-neutral-background-solid-hover: var(--bp-palette-dark-gray-5);
   --bp-neutral-background-solid-active: var(--bp-palette-dark-gray-4);
   --bp-neutral-border-strong-rest: var(--bp-palette-gray-2);
-  --bp-neutral-border-alpha-muted-rest: #1114181a;
-  --bp-neutral-border-alpha-normal-rest: #11141826;
-  --bp-neutral-border-alpha-strong-rest: #11141899;
-  --bp-neutral-border-alpha-strong-disabled: #11141833;
+  --bp-neutral-border-alpha-rest: #11141833;
+  --bp-neutral-border-alpha-disabled: #1114181a;
   --bp-neutral-text-muted: var(--bp-palette-gray-1);
   --bp-neutral-text-normal: var(--bp-palette-dark-gray-1);
   --bp-neutral-text-strong: var(--bp-palette-black);
@@ -181,6 +179,8 @@
   --bp-neutral-overlay-hover: #5f6b7c1a;
   --bp-neutral-overlay-active: #5f6b7c33;
   --bp-opacity-disabled: 0.5; /** Opacity multiplier for disabled states */
+  --bp-divider-normal: #11141826;
+  --bp-divider-muted: #1114181a;
   --bp-intent-default-rest: var(--bp-palette-gray-1);
   --bp-intent-default-hover: var(--bp-palette-dark-gray-5);
   --bp-intent-default-active: var(--bp-palette-dark-gray-4);
@@ -340,13 +340,13 @@
     --bp-warning-overlay-hover: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.1);
     --bp-warning-overlay-active: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.2);
     --bp-neutral-background-subtle-disabled: oklch(from var(--bp-neutral-background-subtle-rest) l c h / var(--bp-opacity-disabled));
-    --bp-neutral-border-alpha-muted-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.1);
-    --bp-neutral-border-alpha-normal-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.15);
-    --bp-neutral-border-alpha-strong-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.6);
-    --bp-neutral-border-alpha-strong-disabled: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
+    --bp-neutral-border-alpha-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
+    --bp-neutral-border-alpha-disabled: oklch(from var(--bp-neutral-text-strong) l c h / 0.1);
     --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-normal) l c h / var(--bp-opacity-disabled));
     --bp-neutral-overlay-hover: oklch(from var(--bp-neutral-background-solid-rest) l c h / 0.1);
     --bp-neutral-overlay-active: oklch(from var(--bp-neutral-background-solid-rest) l c h / 0.2);
+    --bp-divider-normal: oklch(from var(--bp-neutral-text-strong) l c h / 0.15);
+    --bp-divider-muted: oklch(from var(--bp-neutral-text-strong) l c h / 0.1);
     --bp-surface-border-color-default: oklch(from var(--bp-intent-default-rest) l c h / 0.12);
     --bp-surface-border-color-strong: oklch(from var(--bp-intent-default-rest) l c h / 0.25);
     --bp-surface-color-code: oklch(from var(--bp-palette-white) l c h / 0.7);

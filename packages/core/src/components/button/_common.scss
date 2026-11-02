@@ -156,7 +156,7 @@ $button-intent-states: (
 
 @mixin pt-button-shadow($opacity: 10%) {
   box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
+    inset 0 0 0 var(--bp-surface-border-width) var(--bp-divider-normal),
     0 1px 2px color-mix(in oklch, var(--bp-palette-black) $opacity, transparent);
 }
 
@@ -398,21 +398,21 @@ $button-intent-states: (
 }
 
 @mixin pt-button-outlined() {
-  border: var(--bp-surface-border-width) solid var(--bp-neutral-border-alpha-strong-rest);
+  border: var(--bp-surface-border-width) solid var(--bp-neutral-border-alpha-rest);
   box-sizing: border-box;
 
   &:disabled,
   &:disabled:hover,
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
-    border-color: var(--bp-neutral-border-alpha-strong-disabled);
+    border-color: var(--bp-neutral-border-alpha-disabled);
   }
 
   @each $intent, $colors in $button-intent-states {
     $border-token: "#{$intent}-border-alpha";
 
     @if $intent == "default" {
-      $border-token: "neutral-border-alpha-strong";
+      $border-token: "neutral-border-alpha";
     }
 
     &.#{$ns}-intent-#{$intent} {

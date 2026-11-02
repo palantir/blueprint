@@ -266,31 +266,28 @@
             }
         }
     },
+    "divider": {
+        "$type": "color",
+        "normal": {
+            "$value": "{neutral.text.strong}",
+            "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
+        },
+        "muted": {
+            "$value": "{neutral.text.strong}",
+            "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+        }
+    },
     "neutral": {
         "$type": "color",
         "border": {
             "alpha": {
-                "muted": {
-                    "rest": {
-                        "$value": "{neutral.text.strong}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
-                    }
+                "rest": {
+                    "$value": "{neutral.text.strong}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
-                "normal": {
-                    "rest": {
-                        "$value": "{neutral.text.strong}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
-                    }
-                },
-                "strong": {
-                    "rest": {
-                        "$value": "{neutral.text.strong}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
-                    },
-                    "disabled": {
-                        "$value": "{neutral.text.strong}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
-                    }
+                "disabled": {
+                    "$value": "{neutral.text.strong}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
                 }
             }
         },
