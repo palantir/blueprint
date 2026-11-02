@@ -1,38 +1,14 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:map";
 @import "../../common/mixins";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../progress-bar/common";
 
-// N.B. Keeping existing SCSS variables for backward-compatibility.
-// These are **not used** in button, and should be removed in
-// the major version change.
+// Legacy variables still consumed by other components and docs-theme.
 
 $button-border-width: 1px !default;
-$button-padding: $pt-spacing ($pt-spacing * 2) !default;
-$button-padding-small: 0 ($pt-spacing * 2) !default;
-$button-padding-large: $pt-spacing ($pt-spacing * 4) !default;
-$button-icon-spacing: $pt-spacing * 2 !default;
-$button-icon-spacing-large: $pt-spacing * 2 !default;
-
-/*
-CSS `border` property issues:
-- An element can only have one border.
-- Borders can't stack with shadows.
-- Borders modify the size of the element they're applied to.
-- Border positioning requires the extra `box-sizing` property.
-
-`box-shadow` doesn't have these issues, we're using it instead of `border`.
-*/
-$button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 2px rgba($black, 0.1) !default;
-$button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 2px rgba($black, 0.2) !default;
 
 $dark-button-box-shadow:
   inset 0 0 0 $button-border-width rgba($white, 0.1),
@@ -42,45 +18,11 @@ $dark-button-box-shadow-active:
   0 1px 2px rgba($black, 0.4) !default;
 
 $button-color-disabled: $pt-text-color-disabled !default;
-$button-background-color: $light-gray5 !default;
-$button-background-color-hover: $light-gray4 !default;
-$button-background-color-active: $light-gray2 !default;
 $button-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
-$button-intent-color-disabled: rgba($white, 0.6);
 $dark-button-color-disabled: $pt-dark-text-color-disabled !default;
-$dark-button-background-color: $dark-gray3 !default;
-$dark-button-background-color-hover: $dark-gray2 !default;
-$dark-button-background-color-active: $dark-gray1 !default;
-$dark-button-background-color-disabled: rgba($dark-gray3, 0.15) !default;
-$dark-button-background-color-active-disabled: rgba($dark-gray3, 0.7) !default;
-$dark-button-intent-color-disabled: rgba($white, 0.3);
 
-$minimal-button-divider-width: 1px !default;
-$minimal-button-background-color: none !default;
 $minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $minimal-button-background-color-active: rgba($gray3, 0.3) !default;
-$dark-minimal-button-background-color: none !default;
-$dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
-$dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
-
-$button-outlined-width: 1px !default;
-$button-outlined-border-intent-opacity: 0.6 !default;
-$button-outlined-border-disabled-intent-opacity: 0.2 !default;
-
-// Temporary: warning button rest color needs a pre-computed fallback
-// for browsers that don't support relative color syntax.
-:root {
-  --bp6-button-warning-rest: var(--bp-palette-orange-5); //#fbb360;
-}
-
-@supports (color: oklch(from var(--any-color) l c h)) {
-  :root {
-    --bp6-button-warning-rest: oklch(
-      from var(--bp-intent-warning-rest) calc(l + 0.177) calc(c - 0.01) calc(h + 6.26)
-    );
-  }
-}
 
 // TODO(bp7): Replace with $button-intent-states
 $button-intents: (
@@ -143,96 +85,6 @@ $button-intent-states: (
     var(--bp-neutral-text-normal),
     var(--bp-neutral-background-subtle-disabled),
   ),
-) !default;
-
-$button-intent-states: (
-  "primary": (
-    var(--bp-primary-background-solid-rest),
-    var(--bp-primary-background-solid-hover),
-    var(--bp-primary-background-solid-active),
-    var(--bp-primary-text-on-solid),
-    var(--bp-primary-background-solid-disabled),
-  ),
-  "success": (
-    var(--bp-success-background-solid-rest),
-    var(--bp-success-background-solid-hover),
-    var(--bp-success-background-solid-active),
-    var(--bp-success-text-on-solid),
-    var(--bp-success-background-solid-disabled),
-  ),
-  "warning": (
-    var(--bp-warning-background-solid-rest),
-    var(--bp-warning-background-solid-hover),
-    var(--bp-warning-background-solid-active),
-    var(--bp-warning-text-on-solid),
-    var(--bp-warning-background-solid-disabled),
-  ),
-  "danger": (
-    var(--bp-danger-background-solid-rest),
-    var(--bp-danger-background-solid-hover),
-    var(--bp-danger-background-solid-active),
-    var(--bp-danger-text-on-solid),
-    var(--bp-danger-background-solid-disabled),
-  ),
-  "default": (
-    var(--bp-neutral-background-subtle-rest),
-    var(--bp-neutral-background-subtle-hover),
-    var(--bp-neutral-background-subtle-active),
-    var(--bp-neutral-text-normal),
-    var(--bp-neutral-background-subtle-disabled),
-  ),
-) !default;
-
-// Based off of `$pt-` variables in common/_mixins.scss
-$button-intent-colors: (
-  "primary": var(--bp-intent-primary-rest),
-  "success": var(--bp-intent-success-rest),
-  "warning": var(--bp6-button-warning-rest),
-  "danger": var(--bp-intent-danger-rest),
-  "default": var(--bp-intent-default-rest),
-) !default;
-
-$button-minimal-intent-text-colors: (
-  "primary": var(--bp-intent-primary-hover),
-  "success": var(--bp-intent-success-hover),
-  "warning": var(--bp-intent-warning-hover),
-  "danger": var(--bp-intent-danger-hover),
-  "default": var(--bp-intent-default-hover),
-) !default;
-
-$button-intent-active-text-colors: (
-  "primary": var(--bp-intent-primary-active),
-  "success": var(--bp-intent-success-active),
-  "warning": var(--bp-intent-warning-active),
-  "danger": var(--bp-intent-danger-active),
-  "default": var(--bp-intent-default-active),
-) !default;
-
-$button-dark-intent-text-colors: (
-  "primary": color-mix(in oklch, var(--bp-intent-primary-rest) 51%, var(--bp-palette-white)),
-  "success": color-mix(in oklch, var(--bp-intent-success-rest) 54%, var(--bp-palette-white)),
-  "warning": color-mix(in oklch, var(--bp-intent-warning-rest) 53%, var(--bp-palette-white)),
-  "danger": color-mix(in oklch, var(--bp-intent-danger-rest) 53%, var(--bp-palette-white)),
-  // Use srgb for default intent to avoid hue shift with near-neutral gray
-  "default": color-mix(in srgb, var(--bp-intent-default-rest) 46%, var(--bp-palette-white)),
-) !default;
-
-$button-dark-minimal-hover-text-colors: (
-  "primary": color-mix(in oklch, var(--bp-intent-primary-hover) 51%, var(--bp-palette-white)),
-  "success": color-mix(in oklch, var(--bp-intent-success-hover) 54%, var(--bp-palette-white)),
-  "warning": color-mix(in oklch, var(--bp-intent-warning-hover) 53%, var(--bp-palette-white)),
-  "danger": color-mix(in oklch, var(--bp-intent-danger-hover) 53%, var(--bp-palette-white)),
-  // Use srgb for default intent to avoid hue shift with near-neutral gray
-  "default": color-mix(in srgb, var(--bp-intent-default-hover) 46%, var(--bp-palette-white)),
-) !default;
-
-$button-dark-minimal-active-text-colors: (
-  "primary": color-mix(in oklch, var(--bp-intent-primary-active) 51%, var(--bp-palette-white)),
-  "success": color-mix(in oklch, var(--bp-intent-success-active) 54%, var(--bp-palette-white)),
-  "warning": color-mix(in oklch, var(--bp-intent-warning-active) 53%, var(--bp-palette-white)),
-  "danger": color-mix(in oklch, var(--bp-intent-danger-active) 53%, var(--bp-palette-white)),
-  // Use srgb for default intent to avoid hue shift with near-neutral gray
-  "default": color-mix(in srgb, var(--bp-intent-default-active) 46%, var(--bp-palette-white)),
 ) !default;
 
 @mixin pt-button-layout() {

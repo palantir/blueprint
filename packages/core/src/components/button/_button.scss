@@ -119,6 +119,7 @@
     &:not([class*="#{$ns}-intent-"]) {
       @include pt-dark-button-shadows;
 
+      // Can we remove this exception??
       #{$icon-classes} {
         &:not([class*="#{$ns}-intent-"]) {
           color: var(--bp-neutral-text-muted);

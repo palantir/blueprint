@@ -4,8 +4,12 @@
 
 import type { ColorProps } from "@storybook/addon-docs/blocks";
 
+import alphaTokenSource from "../../packages/core/src/design-tokens/tokens/base/alpha.tokens.json";
 import intentTokenSource from "../../packages/core/src/design-tokens/tokens/base/intent.tokens.json";
+import opaqueTokenSource from "../../packages/core/src/design-tokens/tokens/base/opaque.tokens.json";
 import paletteTokenSource from "../../packages/core/src/design-tokens/tokens/base/palette.tokens.json";
+import darkAlphaTokenSource from "../../packages/core/src/design-tokens/tokens/themes/dark/alpha.tokens.json";
+import darkOpaqueTokenSource from "../../packages/core/src/design-tokens/tokens/themes/dark/opaque.tokens.json";
 
 const INTENT_TOKENS = intentTokenSource.intent;
 const PALETTE_TOKENS = paletteTokenSource.palette;
@@ -14,7 +18,7 @@ const TOKEN_REFERENCE_PATTERN = /^\{([^{}]+)\}$/;
 
 // Keep palette tokens before their semantic aliases so the panel mirrors their dependency order.
 /* eslint-disable sort-keys */
-export const TOKEN_CONFIG = {
+const EXISTING_TOKEN_CONFIG = {
     "--bp-surface-border-radius": rangeTokenEditor({
         control: { max: 32, min: 0, step: 1 },
         // Storybook's slider uses numbers; the CSS token keeps its pixel unit.
@@ -87,11 +91,57 @@ export const TOKEN_CONFIG = {
 } as const satisfies Record<`--${string}`, TokenEditor>;
 /* eslint-enable sort-keys */
 
+const PROPOSAL_TOKEN_CONFIG = {
+    ...collectColorTokenEditors(opaqueTokenSource),
+    ...collectColorTokenEditors(alphaTokenSource),
+    ...collectColorTokenEditors(darkOpaqueTokenSource),
+    ...collectColorTokenEditors(darkAlphaTokenSource),
+    "--bp-opacity-disabled": rangeTokenEditor({
+        control: { max: 1, min: 0, step: 0.05 },
+        defaultCssValue: String(alphaTokenSource.opacity.disabled.$value),
+        toControlValue: Number,
+        toCssValue: String,
+        type: "range",
+    }),
+};
+
+export const TOKEN_CONFIG: Record<`--bp-${string}`, TokenEditor> = {
+    ...EXISTING_TOKEN_CONFIG,
+    ...PROPOSAL_TOKEN_CONFIG,
+};
+
 export type TokenName = keyof typeof TOKEN_CONFIG;
 export type TokenValues = Record<TokenName, string>;
 
 // All keys come from the module-owned configuration above.
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
+export const EXISTING_TOKEN_NAMES = Object.keys(EXISTING_TOKEN_CONFIG) as TokenName[];
+const PROPOSAL_TOKEN_NAMES = Object.keys(PROPOSAL_TOKEN_CONFIG) as TokenName[];
+const INTENTS = ["neutral", "primary", "success", "warning", "danger"] as const;
+
+export interface TokenGroup {
+    names: readonly TokenName[];
+    title?: string;
+}
+
+export const PROPOSAL_TOKEN_GROUPS: TokenGroup[] = [
+    {
+        names: PROPOSAL_TOKEN_NAMES.filter(name => !INTENTS.some(intent => name.startsWith(`--bp-${intent}-`))),
+        title: "Shared",
+    },
+    ...INTENTS.map(intent => ({
+        names: PROPOSAL_TOKEN_NAMES.filter(name => name.startsWith(`--bp-${intent}-`)),
+        title: intent[0].toUpperCase() + intent.slice(1),
+    })),
+];
+
+export const TOKEN_VALUES_REQUESTED = "tokens/values-requested";
+export const TOKEN_VALUES_UPDATED = "tokens/values-updated";
+
+export interface TokenValuesSnapshot {
+    storyId: string;
+    values: Partial<TokenValues>;
+}
 
 interface BaseTokenEditor<T, TControlType extends "color" | "range", TControl> {
     control: TControl;
@@ -139,7 +189,22 @@ function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function colorTokenEditor(defaultCssValue: string): ColorTokenEditor {
+function collectColorTokenEditors(source: unknown, path: string[] = []): Record<TokenName, ColorTokenEditor> {
+    if (!isRecord(source)) {
+        return {};
+    }
+    if ("$value" in source) {
+        return typeof source.$value === "string" ? { [`--bp-${path.join("-")}`]: colorTokenEditor() } : {};
+    }
+
+    return Object.fromEntries(
+        Object.entries(source)
+            .filter(([key]) => !key.startsWith("$"))
+            .flatMap(([key, value]) => Object.entries(collectColorTokenEditors(value, [...path, key]))),
+    );
+}
+
+function colorTokenEditor(defaultCssValue?: string): ColorTokenEditor {
     return {
         control: {},
         defaultCssValue,
