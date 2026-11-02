@@ -296,6 +296,10 @@ $button-dark-minimal-active-text-colors: (
     // Windows High Contrast dark theme
     border: 1px solid buttonborder;
   }
+
+  .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: var(--bp-neutral-text-normal);
+  }
 }
 
 @mixin pt-button-default-colors() {
@@ -355,6 +359,16 @@ $button-dark-minimal-active-text-colors: (
     0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
   color: $text-color;
 
+  // Loading disables the button, but the spinner keeps the enabled foreground.
+  .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: $text-color;
+
+    .#{$ns}-dark &,
+    [data-bp-color-scheme="dark"] & {
+      stroke: $text-color;
+    }
+  }
+
   &:hover,
   &:active,
   &.#{$ns}-active {
@@ -374,6 +388,11 @@ $button-dark-minimal-active-text-colors: (
     box-shadow:
       inset 0 0 0 var(--bp-surface-border-width) var(--bp-neutral-border-alpha-normal-rest),
       0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background: highlight;
+    }
   }
 
   &:disabled,
@@ -430,17 +449,7 @@ $button-dark-minimal-active-text-colors: (
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    // Use srgb to avoid hue shift with near-neutral gray
-    background: color-mix(
-      in srgb,
-      var(--bp-intent-default-rest) 20%,
-      var(--bp-palette-black)
-    ); //$dark-progress-track-color;
-    stroke: color-mix(
-      in srgb,
-      var(--bp-intent-default-rest) 68%,
-      var(--bp-palette-white)
-    ); //$dark-progress-head-color;
+    stroke: var(--bp-neutral-text-normal);
   }
 }
 
