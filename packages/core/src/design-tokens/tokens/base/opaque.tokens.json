@@ -111,6 +111,7 @@
             }
         },
         "text": {
+            "on-solid": { "$value": "{palette.white}" },
             "muted": { "$value": "{palette.gray.1}" },
             "normal": { "$value": "{palette.dark-gray.1}" },
             "strong": { "$value": "{palette.black}" }

@@ -28,18 +28,8 @@
             },
             "alpha": {
                 "subtle": {
-                    "rest": {
-                        "$value": "{primary.background.solid.rest}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
-                    },
-                    "hover": {
-                        "$value": "{primary.background.solid.rest}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
-                    },
-                    "active": {
-                        "$value": "{primary.background.solid.rest}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
-                    }
+                    "$value": "{primary.background.solid.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
                 }
             }
         },
@@ -90,28 +80,10 @@
             },
             "alpha": {
                 "subtle": {
-                    "rest": {
-                        "$value": "{success.background.solid.rest}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.1
-                            }
-                        }
-                    },
-                    "hover": {
-                        "$value": "{success.background.solid.rest}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.2
-                            }
-                        }
-                    },
-                    "active": {
-                        "$value": "{success.background.solid.rest}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.3
-                            }
+                    "$value": "{success.background.solid.rest}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
                         }
                     }
                 }
@@ -165,28 +137,10 @@
             },
             "alpha": {
                 "subtle": {
-                    "rest": {
-                        "$value": "{danger.background.solid.rest}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.1
-                            }
-                        }
-                    },
-                    "hover": {
-                        "$value": "{danger.background.solid.rest}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.2
-                            }
-                        }
-                    },
-                    "active": {
-                        "$value": "{danger.background.solid.rest}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.3
-                            }
+                    "$value": "{danger.background.solid.rest}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
                         }
                     }
                 }
@@ -240,18 +194,8 @@
             },
             "alpha": {
                 "subtle": {
-                    "rest": {
-                        "$value": "{warning.background.solid.rest}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
-                    },
-                    "hover": {
-                        "$value": "{warning.background.solid.active}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
-                    },
-                    "active": {
-                        "$value": "{warning.background.solid.active}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
-                    }
+                    "$value": "{warning.background.solid.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
                 }
             }
         },

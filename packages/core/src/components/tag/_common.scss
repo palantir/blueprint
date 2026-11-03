@@ -55,28 +55,28 @@ $tag-intent-colors: (
 
 $minimal-tag-intent-colors: (
   "primary": (
-    var(--bp-primary-background-alpha-subtle-rest),
+    var(--bp-primary-background-alpha-subtle),
     var(--bp-primary-text-normal),
     var(--bp-primary-text-strong),
     var(--bp-primary-overlay-hover),
     var(--bp-primary-overlay-active),
   ),
   "success": (
-    var(--bp-success-background-alpha-subtle-rest),
+    var(--bp-success-background-alpha-subtle),
     var(--bp-success-text-normal),
     var(--bp-success-text-strong),
     var(--bp-success-overlay-hover),
     var(--bp-success-overlay-active),
   ),
   "warning": (
-    var(--bp-warning-background-alpha-subtle-rest),
+    var(--bp-warning-background-alpha-subtle),
     var(--bp-warning-text-normal),
     var(--bp-warning-text-strong),
     var(--bp-warning-overlay-hover),
     var(--bp-warning-overlay-active),
   ),
   "danger": (
-    var(--bp-danger-background-alpha-subtle-rest),
+    var(--bp-danger-background-alpha-subtle),
     var(--bp-danger-text-normal),
     var(--bp-danger-text-strong),
     var(--bp-danger-overlay-hover),
