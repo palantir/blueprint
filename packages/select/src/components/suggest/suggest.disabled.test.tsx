@@ -20,7 +20,7 @@ describe("Suggest disabled selection", () => {
         const props = {
             defaultSelectedItem: "Apple",
             inputValueRenderer: (item: string) => item,
-            itemRenderer: (item: string, { handleClick }: ItemRendererProps<string>) => (
+            itemRenderer: (item: string, { handleClick }: ItemRendererProps) => (
                 <li key={item} role="option" onClick={handleClick}>
                     {item}
                 </li>
