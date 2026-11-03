@@ -12,6 +12,11 @@
   vertical-align: top;
   white-space: nowrap;
 
+  &.#{$ns}-fill {
+    display: block;
+    width: 100%;
+  }
+
   // input styles on the ::before
   &::before {
     @include position-all(absolute, $pt-spacing * -0.5);

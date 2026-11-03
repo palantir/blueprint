@@ -22,6 +22,7 @@ const meta: Meta<typeof EditableText> = {
     args: {
         placeholder: "Click to Edit",
         disabled: false,
+        fill: false,
         multiline: false,
         selectAllOnFocus: false,
         confirmOnEnterKey: false,
@@ -32,6 +33,9 @@ const meta: Meta<typeof EditableText> = {
             options: Object.values(Intent),
         },
         disabled: {
+            control: "boolean",
+        },
+        fill: {
             control: "boolean",
         },
         multiline: {

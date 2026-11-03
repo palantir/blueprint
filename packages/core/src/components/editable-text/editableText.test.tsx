@@ -65,6 +65,27 @@ describe("<EditableText>", () => {
         expect(span).toBeInTheDocument();
     });
 
+    it("fills the container without enabling multiline editing", async () => {
+        const user = userEvent.setup();
+        const confirmSpy = vi.fn();
+        const { container } = render(<EditableText defaultValue="Name" fill={true} onConfirm={confirmSpy} />);
+        expect(container.firstElementChild).toHaveClass(Classes.FILL);
+
+        await user.click(screen.getByText("Name"));
+        const textbox = screen.getByRole<HTMLInputElement>("textbox");
+        expect(textbox).toHaveAttribute("type", "text");
+        expect(textbox).toHaveStyle({ width: "100%" });
+
+        await user.clear(textbox);
+        await user.type(textbox, "Updated name");
+        expect(textbox).toHaveStyle({ width: "100%" });
+        await user.keyboard("{Enter}");
+
+        expect(confirmSpy).toHaveBeenCalledExactlyOnceWith("Updated name");
+        expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
+        expect(screen.getByText("Updated name")).toBeInTheDocument();
+    });
+
     describe("when editing", () => {
         it('renders <input type="text"> when editing', () => {
             render(<EditableText isEditing={true} />);
