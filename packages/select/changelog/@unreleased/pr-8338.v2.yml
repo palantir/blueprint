@@ -1,5 +1,0 @@
-type: fix
-fix:
-  description: Prevent Suggest from selecting an item after becoming disabled while its menu is open
-  links:
-    - https://github.com/palantir/blueprint/pull/8338
