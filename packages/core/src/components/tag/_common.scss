@@ -28,74 +28,59 @@ $tag-round-adjustment: $pt-spacing * 0.5 !default;
 
 $tag-intent-colors: (
   "primary": (
-    var(--bp-intent-primary-rest),
-    var(--bp-intent-primary-hover),
-    var(--bp-intent-primary-active),
-    var(--bp-intent-primary-foreground),
+    var(--bp-primary-background-solid-rest),
+    var(--bp-primary-background-solid-hover),
+    var(--bp-primary-background-solid-active),
+    var(--bp-primary-text-on-solid),
   ),
   "success": (
-    var(--bp-intent-success-rest),
-    var(--bp-intent-success-hover),
-    var(--bp-intent-success-active),
-    var(--bp-intent-success-foreground),
+    var(--bp-success-background-solid-rest),
+    var(--bp-success-background-solid-hover),
+    var(--bp-success-background-solid-active),
+    var(--bp-success-text-on-solid),
   ),
   "warning": (
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h),
-    oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h),
-    oklch(from var(--bp-intent-warning-active) calc(l + 0.2) calc(c + 0.05) h),
-    oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h),
+    var(--bp-warning-background-solid-rest),
+    var(--bp-warning-background-solid-hover),
+    var(--bp-warning-background-solid-active),
+    var(--bp-warning-text-on-solid),
   ),
   "danger": (
-    var(--bp-intent-danger-rest),
-    var(--bp-intent-danger-hover),
-    var(--bp-intent-danger-active),
-    var(--bp-intent-danger-foreground),
+    var(--bp-danger-background-solid-rest),
+    var(--bp-danger-background-solid-hover),
+    var(--bp-danger-background-solid-active),
+    var(--bp-danger-text-on-solid),
   ),
 ) !default;
 
 $minimal-tag-intent-colors: (
   "primary": (
-    var(--bp-intent-primary-rest),
-    var(--bp-intent-primary-hover),
-    var(--bp-intent-primary-active),
+    var(--bp-primary-background-alpha-subtle-rest),
+    var(--bp-primary-text-normal),
+    var(--bp-primary-text-strong),
+    var(--bp-primary-overlay-hover),
+    var(--bp-primary-overlay-active),
   ),
   "success": (
-    var(--bp-intent-success-rest),
-    var(--bp-intent-success-hover),
-    var(--bp-intent-success-active),
+    var(--bp-success-background-alpha-subtle-rest),
+    var(--bp-success-text-normal),
+    var(--bp-success-text-strong),
+    var(--bp-success-overlay-hover),
+    var(--bp-success-overlay-active),
   ),
   "warning": (
-    var(--bp-intent-warning-rest),
-    var(--bp-intent-warning-hover),
-    var(--bp-intent-warning-active),
+    var(--bp-warning-background-alpha-subtle-rest),
+    var(--bp-warning-text-normal),
+    var(--bp-warning-text-strong),
+    var(--bp-warning-overlay-hover),
+    var(--bp-warning-overlay-active),
   ),
   "danger": (
-    var(--bp-intent-danger-rest),
-    var(--bp-intent-danger-hover),
-    var(--bp-intent-danger-active),
-  ),
-) !default;
-
-$minimal-dark-tag-intent-colors: (
-  "primary": (
-    var(--bp-intent-primary-rest),
-    oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h),
-  ),
-  "success": (
-    var(--bp-intent-success-rest),
-    oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h),
-    oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h),
-  ),
-  "warning": (
-    var(--bp-intent-warning-rest),
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h),
-  ),
-  "danger": (
-    var(--bp-intent-danger-rest),
-    oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h),
+    var(--bp-danger-background-alpha-subtle-rest),
+    var(--bp-danger-text-normal),
+    var(--bp-danger-text-strong),
+    var(--bp-danger-overlay-hover),
+    var(--bp-danger-overlay-active),
   ),
 ) !default;
 
@@ -105,11 +90,11 @@ $minimal-dark-tag-intent-colors: (
 @mixin pt-tag() {
   @include pt-flex-container(row, var(--bp-surface-spacing), inline);
   align-items: center;
-  background-color: var(--bp-intent-default-rest);
+  background-color: var(--bp-neutral-background-solid-rest);
   border: none;
   border-radius: var(--bp-surface-border-radius);
   box-shadow: none;
-  color: var(--bp-intent-default-foreground);
+  color: var(--bp-neutral-text-on-solid);
   font-size: var(--bp-typography-size-body-small);
   line-height: calc(var(--bp-surface-spacing) * 4);
   max-width: 100%;
@@ -132,12 +117,12 @@ $minimal-dark-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      background: var(--bp-intent-default-hover);
+      background: var(--bp-neutral-background-solid-hover);
     }
 
     &:active,
     &.#{$ns}-active {
-      background: var(--bp-intent-default-active);
+      background: var(--bp-neutral-background-solid-active);
     }
   }
 
@@ -149,7 +134,7 @@ $minimal-dark-tag-intent-colors: (
   }
 
   > #{$icon-classes} {
-    fill: var(--bp-intent-default-foreground);
+    fill: currentcolor;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -201,46 +186,24 @@ $minimal-dark-tag-intent-colors: (
 
 @mixin pt-tag-minimal() {
   > #{$icon-classes} {
-    fill: var(--bp-typography-color-muted);
+    fill: var(--bp-neutral-text-muted);
   }
 
   &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive(
-      oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
-      var(--bp-palette-black)
+      var(--bp-neutral-background-alpha-subtle),
+      var(--bp-neutral-text-strong)
     );
 
-    /* stylelint-disable-next-line alpha-value-notation */
-    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
-    color: var(--bp-typography-color-default-rest);
+    background-color: var(--bp-neutral-background-alpha-subtle);
+    color: var(--bp-neutral-text-normal);
 
     .#{$ns}-tag-remove {
-      color: var(--bp-typography-color-muted);
+      color: var(--bp-neutral-text-muted);
 
       &:hover,
       &:active {
-        color: var(--bp-intent-default-hover);
-      }
-    }
-
-    .#{$ns}-dark &,
-    [data-bp-color-scheme="dark"] & {
-      @include pt-tag-minimal-interactive(
-        oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
-        var(--bp-palette-white)
-      );
-
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
-      color: oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h);
-
-      .#{$ns}-tag-remove {
-        color: var(--bp-typography-color-muted);
-
-        &:hover,
-        &:active {
-          color: oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h);
-        }
+        color: var(--bp-neutral-text-strong);
       }
     }
   }
@@ -251,23 +214,28 @@ $minimal-dark-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
+      background-color: $background-color;
+      background-image: linear-gradient(var(--bp-neutral-overlay-hover) 0 0);
       color: $text-color;
     }
 
     &.#{$ns}-active,
     &:active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.35);
+      background-color: $background-color;
+      background-image: linear-gradient(var(--bp-neutral-overlay-active) 0 0);
       color: $text-color;
     }
   }
 }
 
-@mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: oklch(from $background-color l c h / 0.1);
+@mixin pt-tag-minimal-intent(
+  $background-color,
+  $text-color,
+  $hover-active-text-color,
+  $hover-overlay,
+  $active-overlay
+) {
+  background-color: $background-color;
   color: $text-color;
 
   > #{$icon-classes} {
@@ -276,45 +244,15 @@ $minimal-dark-tag-intent-colors: (
 
   &.#{$ns}-interactive {
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.2);
+      background-color: $background-color;
+      background-image: linear-gradient($hover-overlay 0 0);
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
-      color: $hover-active-text-color;
-    }
-  }
-
-  .#{$ns}-tag-remove {
-    color: $text-color;
-
-    &:hover,
-    &:active {
-      color: $hover-active-text-color;
-    }
-  }
-}
-
-@mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: oklch(from $background-color l c h / 0.2);
-  color: $text-color;
-
-  &.#{$ns}-interactive {
-    &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
-      color: $hover-active-text-color;
-    }
-
-    &:active,
-    &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.35);
+      background-color: $background-color;
+      background-image: linear-gradient($active-overlay 0 0);
       color: $hover-active-text-color;
     }
   }
@@ -333,7 +271,7 @@ $minimal-dark-tag-intent-colors: (
   background: none;
   border: none;
   /* stylelint-disable-next-line alpha-value-notation */
-  color: oklch(from var(--bp-intent-default-foreground) l c h / 0.7);
+  color: oklch(from var(--bp-neutral-text-on-solid) l c h / 0.7);
   cursor: pointer;
   display: flex;
   margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
@@ -357,7 +295,7 @@ $minimal-dark-tag-intent-colors: (
 
   &:hover,
   &:active {
-    color: var(--bp-intent-default-foreground);
+    color: var(--bp-neutral-text-on-solid);
   }
 
   // CSS API support

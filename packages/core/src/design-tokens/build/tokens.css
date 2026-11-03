@@ -149,7 +149,7 @@
   --bp-warning-background-solid-hover: var(--bp-palette-orange-4);
   --bp-warning-background-solid-active: var(--bp-palette-orange-3);
   --bp-warning-background-solid-disabled: #fbb36080;
-  --bp-warning-background-alpha-subtle-rest: #c876191a;
+  --bp-warning-background-alpha-subtle-rest: #fbb36026;
   --bp-warning-background-alpha-subtle-hover: #c8761933;
   --bp-warning-background-alpha-subtle-active: #c876194d;
   --bp-warning-border-strong-rest: var(--bp-palette-orange-3);
@@ -169,6 +169,7 @@
   --bp-neutral-background-solid-rest: var(--bp-palette-gray-1);
   --bp-neutral-background-solid-hover: var(--bp-palette-dark-gray-5);
   --bp-neutral-background-solid-active: var(--bp-palette-dark-gray-4);
+  --bp-neutral-background-alpha-subtle: #7380911a;
   --bp-neutral-border-strong-rest: var(--bp-palette-gray-2);
   --bp-neutral-border-alpha-rest: #11141833;
   --bp-neutral-border-alpha-disabled: #1114181a;
@@ -331,7 +332,7 @@
     --bp-danger-overlay-hover: oklch(from var(--bp-danger-background-solid-rest) l c h / 0.1);
     --bp-danger-overlay-active: oklch(from var(--bp-danger-background-solid-rest) l c h / 0.2);
     --bp-warning-background-solid-disabled: oklch(from var(--bp-warning-background-solid-rest) l c h / var(--bp-opacity-disabled));
-    --bp-warning-background-alpha-subtle-rest: oklch(from var(--bp-warning-background-solid-active) l c h / 0.1);
+    --bp-warning-background-alpha-subtle-rest: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.15);
     --bp-warning-background-alpha-subtle-hover: oklch(from var(--bp-warning-background-solid-active) l c h / 0.2);
     --bp-warning-background-alpha-subtle-active: oklch(from var(--bp-warning-background-solid-active) l c h / 0.3);
     --bp-warning-border-alpha-rest: oklch(from var(--bp-warning-text-normal) l c h / 0.6);
@@ -340,6 +341,7 @@
     --bp-warning-overlay-hover: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.1);
     --bp-warning-overlay-active: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.2);
     --bp-neutral-background-subtle-disabled: oklch(from var(--bp-neutral-background-subtle-rest) l c h / var(--bp-opacity-disabled));
+    --bp-neutral-background-alpha-subtle: oklch(from var(--bp-palette-gray-2) l c h / 0.1);
     --bp-neutral-border-alpha-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
     --bp-neutral-border-alpha-disabled: oklch(from var(--bp-neutral-text-strong) l c h / 0.1);
     --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-normal) l c h / var(--bp-opacity-disabled));

@@ -241,8 +241,8 @@
             "alpha": {
                 "subtle": {
                     "rest": {
-                        "$value": "{warning.background.solid.active}",
-                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                        "$value": "{warning.background.solid.rest}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
                     },
                     "hover": {
                         "$value": "{warning.background.solid.active}",
@@ -296,6 +296,12 @@
                 "disabled": {
                     "$value": "{neutral.background.subtle.rest}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "$value": "{palette.gray.2}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
                 }
             }
         },

@@ -290,6 +290,12 @@
                     "$value": "{neutral.background.subtle.rest}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
                 }
+            },
+            "alpha": {
+                "subtle": {
+                    "$value": "{palette.gray.2}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                }
             }
         },
         "text": {

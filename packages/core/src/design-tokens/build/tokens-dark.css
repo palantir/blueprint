@@ -56,6 +56,7 @@
   --bp-neutral-background-subtle-hover: var(--bp-palette-dark-gray-2);
   --bp-neutral-background-subtle-active: var(--bp-palette-dark-gray-1);
   --bp-neutral-background-subtle-disabled: #2f343c80;
+  --bp-neutral-background-alpha-subtle: #73809133;
   --bp-neutral-border-strong-rest: var(--bp-palette-gray-3);
   --bp-neutral-border-alpha-rest: #ffffff66;
   --bp-neutral-border-alpha-disabled: #ffffff33;
@@ -125,6 +126,7 @@
     --bp-warning-overlay-hover: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.2);
     --bp-warning-overlay-active: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.3);
     --bp-neutral-background-subtle-disabled: oklch(from var(--bp-neutral-background-subtle-rest) l c h / var(--bp-opacity-disabled));
+    --bp-neutral-background-alpha-subtle: oklch(from var(--bp-palette-gray-2) l c h / 0.2);
     --bp-neutral-border-alpha-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.4);
     --bp-neutral-border-alpha-disabled: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
     --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-normal) l c h / var(--bp-opacity-disabled));
