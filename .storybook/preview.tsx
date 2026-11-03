@@ -51,7 +51,7 @@ const preview: Preview = {
         withTokens,
         withThemeByClassName({
             defaultTheme: "light",
-            parentSelector: "html",
+            parentSelector: "body",
             themes: {
                 dark: Classes.DARK,
                 light: "",

@@ -31,7 +31,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function captureInitialTokenValues() {
-            const style = document.documentElement.style;
+            const style = document.body.style;
             // Entries are produced from the complete module-owned token list.
             const values = Object.fromEntries(
                 TOKEN_NAMES.map(name => [
@@ -58,7 +58,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function applyTokenOverrides() {
-            const style = document.documentElement.style;
+            const style = document.body.style;
             const overrides = tokenOverrides ?? {};
 
             for (const name of TOKEN_NAMES) {
@@ -90,7 +90,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
 function readTokenValues(): Partial<TokenValues> {
     const values: Partial<TokenValues> = {};
-    const computed = getComputedStyle(document.documentElement);
+    const computed = getComputedStyle(document.body);
     const probe = document.createElement("span");
     probe.hidden = true;
     document.body.append(probe);
