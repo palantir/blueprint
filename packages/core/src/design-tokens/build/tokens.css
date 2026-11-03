@@ -173,6 +173,7 @@
   --bp-neutral-border-strong-rest: var(--bp-palette-gray-2);
   --bp-neutral-border-alpha-rest: #11141833;
   --bp-neutral-border-alpha-disabled: #1114181a;
+  --bp-neutral-text-on-solid: var(--bp-palette-white);
   --bp-neutral-text-muted: var(--bp-palette-gray-1);
   --bp-neutral-text-normal: var(--bp-palette-dark-gray-1);
   --bp-neutral-text-strong: var(--bp-palette-black);
