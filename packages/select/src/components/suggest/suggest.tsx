@@ -297,6 +297,10 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
+        if (this.props.disabled) {
+            return;
+        }
+
         let nextOpenState: boolean;
 
         if (!this.props.closeOnSelect) {
