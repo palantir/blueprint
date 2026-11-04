@@ -16,8 +16,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { BlueprintProvider, Callout, FocusStyleManager, Intent } from "@blueprintjs/core";
-import { Flex } from "@blueprintjs/labs";
+import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
+
+import { Examples } from "./examples/Examples";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -31,9 +32,7 @@ const root = createRoot(container);
     root.render(
         <StrictMode>
             <BlueprintProvider>
-                <Flex padding={4}>
-                    <Callout intent={Intent.PRIMARY}>Test</Callout>
-                </Flex>
+                <Examples />
             </BlueprintProvider>
         </StrictMode>,
     );
