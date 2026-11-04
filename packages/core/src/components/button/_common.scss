@@ -10,12 +10,22 @@
 
 $button-border-width: 1px !default;
 
+$button-box-shadow:
+  inset 0 0 0 var(--bp-surface-border-width)
+    color-mix(in oklch, var(--bp-palette-black) 20%, transparent),
+  0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent) !default;
+$button-box-shadow-active:
+  inset 0 0 0 var(--bp-surface-border-width)
+    color-mix(in oklch, var(--bp-palette-black) 20%, transparent),
+  0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent) !default;
 $dark-button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($white, 0.1),
-  0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 var(--bp-surface-border-width)
+    color-mix(in oklch, var(--bp-palette-white) 10%, transparent),
+  0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent) !default;
 $dark-button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($white, 0.1),
-  0 1px 2px rgba($black, 0.4) !default;
+  inset 0 0 0 var(--bp-surface-border-width)
+    color-mix(in oklch, var(--bp-palette-white) 10%, transparent),
+  0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent) !default;
 
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color-disabled: rgba($light-gray1, 0.5) !default;
@@ -79,11 +89,10 @@ $button-intent-states: (
     var(--bp-danger-background-solid-disabled),
   ),
   "default": (
-    var(--bp-neutral-background-subtle-rest),
-    var(--bp-neutral-background-subtle-hover),
-    var(--bp-neutral-background-subtle-active),
-    var(--bp-neutral-text-normal),
-    var(--bp-neutral-background-subtle-disabled),
+    var(--bp-neutral-background-solid-rest),
+    var(--bp-neutral-background-solid-hover),
+    var(--bp-neutral-background-solid-active),
+    var(--bp-neutral-text-on-solid),
   ),
 ) !default;
 
@@ -136,11 +145,7 @@ $button-intent-states: (
 
     &.#{$ns}-active,
     &.#{$ns}-active:hover {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-neutral-background-subtle-active) calc(var(--bp-opacity-disabled) * 100%),
-        transparent
-      );
+      background-color: var(--bp-neutral-background-subtle-disabled-active);
     }
   }
 
@@ -154,23 +159,17 @@ $button-intent-states: (
   }
 }
 
-@mixin pt-button-shadow($opacity: 10%) {
-  box-shadow:
-    inset 0 0 0 var(--bp-surface-border-width) var(--bp-divider-normal),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) $opacity, transparent);
-}
-
 // Dark shadow overrides for a control and its interaction states, not pseudo-elements.
-@mixin pt-dark-button-shadows($hover-opacity: 40%) {
-  @include pt-button-shadow(20%);
+@mixin pt-dark-button-shadows($hover-shadow: $dark-button-box-shadow-active) {
+  box-shadow: $dark-button-box-shadow;
 
   &:hover {
-    @include pt-button-shadow($hover-opacity);
+    box-shadow: $hover-shadow;
   }
 
   &:active,
   &.#{$ns}-active {
-    @include pt-button-shadow(40%);
+    box-shadow: $dark-button-box-shadow-active;
   }
 
   &:disabled,
@@ -180,20 +179,20 @@ $button-intent-states: (
 }
 
 @mixin pt-button-default-colors() {
-  @include pt-button-shadow;
   background-color: var(--bp-neutral-background-subtle-rest);
+  box-shadow: $button-box-shadow;
   color: var(--bp-neutral-text-normal);
 }
 
 @mixin pt-button-hover() {
-  @include pt-button-shadow(20%);
   background-clip: padding-box;
   background-color: var(--bp-neutral-background-subtle-hover);
+  box-shadow: $button-box-shadow-active;
 }
 
 @mixin pt-button-active() {
-  @include pt-button-shadow(20%);
   background-color: var(--bp-neutral-background-subtle-active);
+  box-shadow: $button-box-shadow-active;
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
@@ -224,8 +223,8 @@ $button-intent-states: (
       transparent
     )
 ) {
-  @include pt-button-shadow;
   background-color: $default-color;
+  box-shadow: $button-box-shadow;
   color: $text-color;
 
   // Loading disables the button, but the spinner keeps the enabled foreground.
@@ -240,14 +239,14 @@ $button-intent-states: (
   }
 
   &:hover {
-    @include pt-button-shadow(20%);
     background-color: $hover-color;
+    box-shadow: $button-box-shadow-active;
   }
 
   &:active,
   &.#{$ns}-active {
-    @include pt-button-shadow(20%);
     background-color: $active-color;
+    box-shadow: $button-box-shadow-active;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
@@ -281,7 +280,7 @@ $button-intent-states: (
   box-shadow: none;
 
   &:hover {
-    background-color: var(--bp-neutral-overlay-hover);
+    background-color: var(--bp-neutral-overlay-strong-hover);
     box-shadow: none;
     color: var(--bp-neutral-text-normal);
     text-decoration: none;
@@ -289,7 +288,7 @@ $button-intent-states: (
 
   &:active,
   &.#{$ns}-active {
-    background-color: var(--bp-neutral-overlay-active);
+    background-color: var(--bp-neutral-overlay-strong-active);
     box-shadow: none;
     color: var(--bp-neutral-text-normal);
   }
@@ -303,7 +302,7 @@ $button-intent-states: (
     cursor: not-allowed;
 
     &.#{$ns}-active {
-      background-color: var(--bp-neutral-overlay-active);
+      background-color: var(--bp-neutral-overlay-strong-active);
     }
   }
 
@@ -325,7 +324,7 @@ $button-intent-states: (
       color: var(--bp-neutral-text-disabled);
 
       &.#{$ns}-active {
-        background-color: var(--bp-neutral-overlay-active);
+        background-color: var(--bp-neutral-overlay-strong-active);
       }
     }
   }
@@ -345,8 +344,8 @@ $button-intent-states: (
   $text-color: var(--bp-#{$intent}-text-normal);
   $active-text-color: var(--bp-#{$intent}-text-strong);
   $disabled-text-color: var(--bp-#{$intent}-text-disabled);
-  $hover-background-color: var(--bp-#{$intent}-overlay-hover);
-  $active-background-color: var(--bp-#{$intent}-overlay-active);
+  $hover-background-color: var(--bp-#{$intent}-overlay-strong-hover);
+  $active-background-color: var(--bp-#{$intent}-overlay-strong-active);
 
   color: $text-color;
 

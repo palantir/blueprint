@@ -128,7 +128,7 @@
     }
 
     &[class*="#{$ns}-intent-"] {
-      @include pt-dark-button-shadows($hover-opacity: 20%);
+      @include pt-dark-button-shadows($hover-shadow: $dark-button-box-shadow);
     }
   }
 
