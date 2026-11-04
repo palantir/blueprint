@@ -7,6 +7,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Portal } from "../../components/portal/portal";
+import { THEME_API_VERSION, type ThemeAPI } from "../../theme";
 import { BlueprintProvider } from "../blueprintProvider";
 
 import { BlueprintThemeProvider, type ThemeRepresentations, useBlueprintTheme } from "./themeProvider";
@@ -24,7 +25,7 @@ describe("BlueprintThemeProvider", () => {
             return <div data-testid="root" style={tokens} />;
         }
         const { container } = render(
-            <BlueprintThemeProvider themes={themes}>
+            <BlueprintThemeProvider themesByVersion={themes}>
                 <Consumer />
             </BlueprintThemeProvider>,
         );
@@ -37,7 +38,7 @@ describe("BlueprintThemeProvider", () => {
     it("updates and clears portal overrides without remounting children or styling the container", () => {
         const mounted = vi.fn();
         const view = (themes?: ThemeRepresentations) => (
-            <BlueprintProvider themes={themes}>
+            <BlueprintProvider themesByVersion={themes}>
                 <Portal onChildrenMount={mounted}>
                     <input aria-label="Portal input" defaultValue="preserved" />
                 </Portal>
@@ -61,5 +62,21 @@ describe("BlueprintThemeProvider", () => {
             expect(root.style.getPropertyValue("--unrelated")).toBe("keep");
         }
         expect(mounted).toHaveBeenCalledOnce();
+    });
+
+    it("accepts and clears a directly authored theme through BlueprintProvider", () => {
+        const theme: ThemeAPI = { borderRadius: "4px", version: THEME_API_VERSION };
+        const view = (value?: ThemeAPI) => (
+            <BlueprintProvider theme={value}>
+                <Portal>
+                    <span>Direct theme</span>
+                </Portal>
+            </BlueprintProvider>
+        );
+        const { rerender } = render(view(theme));
+        const root = screen.getByText("Direct theme").parentElement!;
+        expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("4px");
+        rerender(view());
+        expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("");
     });
 });

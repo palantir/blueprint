@@ -25,13 +25,10 @@ type HotkeysProviderPrefix<T> = {
     [Property in keyof T as `hotkeysProvider${Capitalize<string & Property>}`]: T[Property];
 };
 
-export interface BlueprintProviderProps
-    extends OverlaysProviderProps,
-        BlueprintThemeProviderProps,
-        PortalContextOptions,
-        HotkeysProviderPrefix<HotkeysProviderProps> {
-    // no props of its own, `children` comes from `OverlaysProviderProps`
-}
+export type BlueprintProviderProps = OverlaysProviderProps &
+    BlueprintThemeProviderProps &
+    PortalContextOptions &
+    HotkeysProviderPrefix<HotkeysProviderProps>;
 
 /**
  * Composite Blueprint context provider which enables & manages various global behaviors of Blueprint applications.
@@ -45,10 +42,10 @@ export const BlueprintProvider = ({
     hotkeysProviderRenderDialog,
     portalClassName,
     portalContainer,
-    themes,
+    ...themeProps
 }: BlueprintProviderProps) => {
     return (
-        <BlueprintThemeProvider themes={themes}>
+        <BlueprintThemeProvider {...themeProps}>
             <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
                 <OverlaysProvider>
                     <HotkeysProvider

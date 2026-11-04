@@ -4,24 +4,42 @@
 
 import { createContext, useContext, useMemo } from "react";
 
-import type { ThemeAPI } from "../../theme/themeApi";
+import { THEME_API_VERSION, type ThemeAPI } from "../../theme/themeApi";
 
 export type ThemeRepresentations = Readonly<Record<string, unknown>>;
 export type BlueprintThemeTokens = Readonly<Partial<Record<`--bp-${string}`, string>>>;
 
-export interface BlueprintThemeProviderProps {
-    /** Version-keyed Theme API payloads. Unknown versions and fields are preserved by callers. */
-    themes?: ThemeRepresentations;
-}
+export type BlueprintThemeProviderProps =
+    | {
+          /**
+           * Use when authoring a theme for this Blueprint release. Construct a ThemeAPI using
+           * THEME_API_VERSION. Omit to clear overrides; mutually exclusive with themesByVersion.
+           */
+          theme?: ThemeAPI;
+          themesByVersion?: never;
+      }
+    | {
+          theme?: never;
+          /**
+           * Use when forwarding themes from a host which supports multiple schema versions, such as
+           * Workshop. Pass the bundle unchanged; Blueprint selects THEME_API_VERSION and ignores other
+           * entries. A missing or invalid matching entry clears overrides. Mutually exclusive with theme.
+           */
+          themesByVersion?: ThemeRepresentations;
+      };
 
 const BlueprintThemeContext = createContext<BlueprintThemeTokens>({});
 
 /** Supplies converted tokens without adding DOM elements. Consumers apply them to their existing roots. */
-export function BlueprintThemeProvider({ children, themes }: React.PropsWithChildren<BlueprintThemeProviderProps>) {
+export function BlueprintThemeProvider({
+    children,
+    theme,
+    themesByVersion,
+}: React.PropsWithChildren<BlueprintThemeProviderProps>) {
     const tokens = useMemo(() => {
-        const theme = parseTheme(themes?.["1"]);
-        return theme == null ? {} : customThemeToBlueprintTokens(theme);
-    }, [themes]);
+        const selectedTheme = parseTheme(theme ?? themesByVersion?.[THEME_API_VERSION]);
+        return selectedTheme == null ? {} : customThemeToBlueprintTokens(selectedTheme);
+    }, [theme, themesByVersion]);
 
     return <BlueprintThemeContext.Provider value={tokens}>{children}</BlueprintThemeContext.Provider>;
 }
@@ -39,7 +57,7 @@ export function customThemeToBlueprintTokens(theme: ThemeAPI): BlueprintThemeTok
 }
 
 function parseTheme(value: unknown): ThemeAPI | undefined {
-    if (typeof value !== "object" || value == null || !("version" in value) || value.version !== 1) {
+    if (typeof value !== "object" || value == null || !("version" in value) || value.version !== THEME_API_VERSION) {
         return undefined;
     }
     if ("borderRadius" in value && value.borderRadius !== undefined && typeof value.borderRadius !== "string") {
