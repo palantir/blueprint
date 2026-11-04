@@ -43,6 +43,32 @@ describe("renderFilteredItems()", () => {
         expect(element).toBe(initialContent);
     });
 
+    it("returns loadingContent while loading", () => {
+        const loadingContent = <section />;
+        const element = renderFilteredItems({ ...PROPS, loading: true }, noResults, initialContent, loadingContent);
+        expect(element).toBe(loadingContent);
+    });
+
+    it("returns loadingContent while loading even if query is empty or nothing matches", () => {
+        const loadingContent = <section />;
+        const props = { ...PROPS, filteredItems: [], loading: true, query: "" };
+        expect(renderFilteredItems(props, noResults, initialContent, loadingContent)).toBe(loadingContent);
+    });
+
+    it("returns null while loading if loadingContent is null", () => {
+        expect(renderFilteredItems({ ...PROPS, loading: true }, noResults, initialContent, null)).toBeNull();
+    });
+
+    it("ignores loadingContent when not loading", () => {
+        const elements = renderFilteredItems({ ...PROPS, loading: false }, noResults, initialContent, <section />);
+        expect(elements).toHaveLength(PROPS.filteredItems.length);
+    });
+
+    it("renders items while loading if loadingContent is omitted", () => {
+        const elements = renderFilteredItems({ ...PROPS, loading: true }) as React.JSX.Element[];
+        expect(elements).toHaveLength(PROPS.filteredItems.length);
+    });
+
     it("returns filteredItems mapped through renderItem", () => {
         const elements = renderFilteredItems(PROPS) as React.JSX.Element[];
         expect(elements).toHaveLength(PROPS.filteredItems.length);

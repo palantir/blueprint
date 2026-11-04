@@ -96,6 +96,23 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             expect(wrapper.find("address")).toHaveLength(1);
         });
 
+        it("renders loading state instead of items when loading=true", () => {
+            const wrapper = render({ ...testProps, loading: true, noResults: <address /> });
+            expect(testProps.itemRenderer.called).toBe(false);
+            expect(wrapper.find("address")).toHaveLength(0);
+            expect(wrapper.find(`.${Classes.SPINNER}`).hostNodes()).toHaveLength(1);
+            expect(wrapper.find(`.${Classes.MENU}`).hostNodes().prop("aria-busy")).toBe(true);
+        });
+
+        it("renders items again when loading changes to false", () => {
+            const wrapper = render({ ...testProps, loading: true, loadingContent: <address /> });
+            expect(wrapper.find("address")).toHaveLength(1);
+            wrapper.setProps({ loading: false });
+            wrapper.update();
+            expect(wrapper.find("address")).toHaveLength(0);
+            expect(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes()).toHaveLength(15);
+        });
+
         it("clicking item invokes onItemSelect and changes active item", () => {
             const wrapper = render(testProps);
             findItems(wrapper).at(4).simulate("click");

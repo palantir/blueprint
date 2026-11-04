@@ -18,11 +18,11 @@ import { mount, type ReactWrapper, shallow } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
 
-import { Menu } from "@blueprintjs/core";
+import { Classes, Menu, MenuItem, Spinner } from "@blueprintjs/core";
 import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
-import type { ItemListRenderer } from "../../common/itemListRenderer";
+import type { ItemListRenderer, ItemListRendererProps } from "../../common/itemListRenderer";
 import type { ItemListPredicate, ItemPredicate } from "../../common/predicate";
 
 import { QueryList, type QueryListProps, type QueryListRendererProps, type QueryListState } from "./queryList";
@@ -208,6 +208,157 @@ describe("<QueryList>", () => {
             expect(filmQueryList.find(Menu).children().children().last().is("article")).toBeTruthy();
             filmQueryList.setProps({ createNewItemPosition: "first" });
             expect(filmQueryList.find(Menu).children().children().first().is("article")).toBeTruthy();
+        });
+    });
+
+    describe("loading", () => {
+        const renderWithKeyHandlers = sinon.spy((props: QueryListRendererProps<Film>) => (
+            <div className="list-wrapper" onKeyDown={props.handleKeyDown} onKeyUp={props.handleKeyUp}>
+                {props.itemList}
+            </div>
+        ));
+
+        beforeEach(() => {
+            renderWithKeyHandlers.resetHistory();
+        });
+
+        function mountLoading(props: Partial<QueryListProps<Film>> = {}): FilmQueryListWrapper {
+            return mount(<QueryList<Film> {...testProps} renderer={renderWithKeyHandlers} loading={true} {...props} />);
+        }
+
+        function pressKey(wrapper: FilmQueryListWrapper, key: string) {
+            const target = wrapper.find(".list-wrapper").hostNodes();
+            target.simulate("keydown", { key });
+            target.simulate("keyup", { key });
+        }
+
+        it("renders a spinner menu item instead of the items by default", () => {
+            const wrapper = mountLoading();
+            expect(testProps.itemRenderer.called).toBe(false);
+            const menuItem = wrapper.find(MenuItem);
+            expect(menuItem).toHaveLength(1);
+            expect(menuItem.prop("disabled")).toBe(true);
+            expect(menuItem.prop("roleStructure")).toBe("listoption");
+            expect(menuItem.find(Spinner)).toHaveLength(1);
+            expect(menuItem.text()).toContain("Loading...");
+        });
+
+        it("uses a menuitem role for the default loading item inside a menu", () => {
+            const wrapper = mountLoading({ menuProps: { role: "menu" } });
+            expect(wrapper.find(MenuItem).prop("roleStructure")).toBe("menuitem");
+            expect(wrapper.find("ul[role='menu']").prop("aria-busy")).toBe(true);
+        });
+
+        it("marks the listbox as busy while loading", () => {
+            const wrapper = mountLoading();
+            const listbox = wrapper.find("ul[role='listbox']");
+            expect(listbox).toHaveLength(1);
+            expect(listbox.prop("aria-busy")).toBe(true);
+        });
+
+        it("renders custom loadingContent", () => {
+            const wrapper = mountLoading({ loadingContent: <li className="custom-loading" role="option" /> });
+            expect(wrapper.find("li.custom-loading")).toHaveLength(1);
+            expect(wrapper.find(Spinner)).toHaveLength(0);
+        });
+
+        it("renders nothing when loadingContent is null", () => {
+            const wrapper = mountLoading({ loadingContent: null });
+            expect(wrapper.find(Menu)).toHaveLength(0);
+            expect(wrapper.find(`.${Classes.MENU_ITEM}`)).toHaveLength(0);
+        });
+
+        it("takes precedence over noResults, initialContent and the create item option", () => {
+            const wrapper = mountLoading({
+                createNewItemFromQuery: (title: string) => ({ rank: 0, title, year: 0 }),
+                createNewItemRenderer: () => <li className="create-item" role="option" />,
+                initialContent: <li className="initial" role="option" />,
+                itemPredicate: () => false,
+                noResults: <li className="no-results" role="option" />,
+                query: "abc",
+            });
+            expect(wrapper.find("li.create-item")).toHaveLength(0);
+            expect(wrapper.find("li.no-results")).toHaveLength(0);
+            expect(wrapper.find("li.initial")).toHaveLength(0);
+            expect(wrapper.find(Spinner)).toHaveLength(1);
+        });
+
+        it("passes loading to renderer and itemListRenderer", () => {
+            const itemListRenderer = sinon.spy((_props: ItemListRendererProps<Film>) => <ul />);
+            mount(<QueryList<Film> {...testProps} itemListRenderer={itemListRenderer} loading={true} />);
+            expect(itemListRenderer.lastCall.args[0]).toMatchObject({ loading: true });
+            expect(testProps.renderer.lastCall.args[0]).toMatchObject({ loading: true });
+        });
+
+        it("defaults to not loading", () => {
+            const wrapper = mount(<QueryList<Film> {...testProps} />);
+            expect(testProps.renderer.lastCall.args[0]).toMatchObject({ loading: false });
+            expect(wrapper.find("ul[role='listbox']").prop("aria-busy")).toBeUndefined();
+            expect(testProps.itemRenderer.callCount).toBeGreaterThan(0);
+        });
+
+        it("does not select the active item on Enter while loading", () => {
+            const wrapper = mountLoading();
+            pressKey(wrapper, "Enter");
+            expect(testProps.onItemSelect.called).toBe(false);
+        });
+
+        it("does not create an item on Enter while loading", () => {
+            const createNewItemFromQuery = sinon.spy((title: string) => ({ rank: 0, title, year: 0 }));
+            const wrapper = mountLoading({
+                activeItem: null,
+                createNewItemFromQuery,
+                createNewItemRenderer: () => <li role="option" />,
+                query: "new film",
+            });
+            createNewItemFromQuery.resetHistory();
+            pressKey(wrapper, "Enter");
+            expect(createNewItemFromQuery.called).toBe(false);
+            expect(testProps.onItemSelect.called).toBe(false);
+        });
+
+        it("does not move the active item with arrow keys while loading", () => {
+            const wrapper = mountLoading();
+            testProps.onActiveItemChange.resetHistory();
+            pressKey(wrapper, "ArrowDown");
+            pressKey(wrapper, "ArrowUp");
+            expect(testProps.onActiveItemChange.called).toBe(false);
+            expect(wrapper.state("activeItem")).toBe(testProps.items[0]);
+        });
+
+        it("still invokes onKeyDown and onKeyUp callbacks while loading", () => {
+            const onKeyDown = sinon.spy();
+            const onKeyUp = sinon.spy();
+            const wrapper = mountLoading({ onKeyDown, onKeyUp });
+            pressKey(wrapper, "Enter");
+            expect(onKeyDown.calledOnce).toBe(true);
+            expect(onKeyUp.calledOnce).toBe(true);
+        });
+
+        it("does not expose an active descendant while loading", () => {
+            mountLoading();
+            expect(renderWithKeyHandlers.lastCall.args[0].activeItemId).toBeUndefined();
+        });
+
+        it("restores items and keyboard selection when loading finishes", () => {
+            const wrapper = mountLoading();
+            wrapper.setProps({ loading: false });
+            wrapper.update();
+            expect(wrapper.find(Spinner)).toHaveLength(0);
+            expect(wrapper.find("ul[role='listbox']").prop("aria-busy")).toBeUndefined();
+            expect(renderWithKeyHandlers.lastCall.args[0].activeItemId).toBeDefined();
+            pressKey(wrapper, "ArrowDown");
+            pressKey(wrapper, "Enter");
+            expect(testProps.onItemSelect.calledOnceWith(testProps.items[1])).toBe(true);
+        });
+
+        it("ignores an Enter keyup whose keydown happened before loading started", () => {
+            const wrapper = mount(<QueryList<Film> {...testProps} renderer={renderWithKeyHandlers} />);
+            const target = () => wrapper.find(".list-wrapper").hostNodes();
+            target().simulate("keydown", { key: "Enter" });
+            wrapper.setProps({ loading: true });
+            target().simulate("keyup", { key: "Enter" });
+            expect(testProps.onItemSelect.called).toBe(false);
         });
     });
 
