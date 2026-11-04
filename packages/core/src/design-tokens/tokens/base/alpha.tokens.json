@@ -28,8 +28,18 @@
             },
             "alpha": {
                 "subtle": {
-                    "$value": "{primary.background.solid.rest}",
-                    "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                    "rest": {
+                        "$value": "{primary.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                    },
+                    "hover": {
+                        "$value": "{primary.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    },
+                    "active": {
+                        "$value": "{primary.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+                    }
                 }
             }
         },
@@ -84,11 +94,21 @@
             },
             "alpha": {
                 "subtle": {
-                    "$value": "{success.background.solid.rest}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "alpha": 0.1
+                    "rest": {
+                        "$value": "{success.background.alpha.source}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.1
+                            }
                         }
+                    },
+                    "hover": {
+                        "$value": "{success.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    },
+                    "active": {
+                        "$value": "{success.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                     }
                 }
             }
@@ -141,11 +161,21 @@
             },
             "alpha": {
                 "subtle": {
-                    "$value": "{danger.background.solid.rest}",
-                    "$extensions": {
-                        "com.blueprint.derive": {
-                            "alpha": 0.1
+                    "rest": {
+                        "$value": "{danger.background.alpha.source}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.1
+                            }
                         }
+                    },
+                    "hover": {
+                        "$value": "{danger.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    },
+                    "active": {
+                        "$value": "{danger.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                     }
                 }
             }
@@ -198,8 +228,18 @@
             },
             "alpha": {
                 "subtle": {
-                    "$value": "{warning.background.solid.rest}",
-                    "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
+                    "rest": {
+                        "$value": "{warning.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                    },
+                    "hover": {
+                        "$value": "{warning.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
+                    },
+                    "active": {
+                        "$value": "{warning.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+                    }
                 }
             }
         },
@@ -248,8 +288,18 @@
             },
             "alpha": {
                 "subtle": {
-                    "$value": "{palette.gray.2}",
-                    "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
+                    "rest": {
+                        "$value": "{neutral.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
+                    },
+                    "hover": {
+                        "$value": "{neutral.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+                    },
+                    "active": {
+                        "$value": "{neutral.background.alpha.source}",
+                        "$extensions": { "com.blueprint.derive": { "alpha": 0.35 } }
+                    }
                 }
             }
         },

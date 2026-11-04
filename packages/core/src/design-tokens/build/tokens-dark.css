@@ -4,8 +4,10 @@
 
 [data-bp-color-scheme="dark"],
 .bp6-dark {
+  --bp-primary-background-alpha-subtle-rest: #2d72d233;
+  --bp-primary-background-alpha-subtle-hover: #2d72d24d;
+  --bp-primary-background-alpha-subtle-active: #2d72d259;
   --bp-primary-background-solid-disabled: #2d72d280;
-  --bp-primary-background-alpha-subtle: #2d72d233;
   --bp-primary-border-strong-rest: var(--bp-palette-blue-4);
   --bp-primary-border-alpha-rest: #8abbff99;
   --bp-primary-border-alpha-disabled: #8abbff33;
@@ -15,8 +17,10 @@
   --bp-primary-overlay-hover: #2d72d233;
   --bp-primary-overlay-active: #2d72d24d;
   --bp-primary-overlay-selected: #2d72d233;
+  --bp-success-background-alpha-subtle-rest: #23855133;
+  --bp-success-background-alpha-subtle-hover: #2385514d;
+  --bp-success-background-alpha-subtle-active: #23855159;
   --bp-success-background-solid-disabled: #23855180;
-  --bp-success-background-alpha-subtle: #23855133;
   --bp-success-border-strong-rest: var(--bp-palette-green-4);
   --bp-success-border-alpha-rest: #72ca9b99;
   --bp-success-border-alpha-disabled: #72ca9b33;
@@ -25,8 +29,10 @@
   --bp-success-text-disabled: #72ca9b80;
   --bp-success-overlay-hover: #23855133;
   --bp-success-overlay-active: #2385514d;
+  --bp-danger-background-alpha-subtle-rest: #cd424633;
+  --bp-danger-background-alpha-subtle-hover: #cd42464d;
+  --bp-danger-background-alpha-subtle-active: #cd424659;
   --bp-danger-background-solid-disabled: #cd424680;
-  --bp-danger-background-alpha-subtle: #cd424633;
   --bp-danger-border-strong-rest: var(--bp-palette-red-4);
   --bp-danger-border-alpha-rest: #fa999c99;
   --bp-danger-border-alpha-disabled: #fa999c33;
@@ -35,8 +41,10 @@
   --bp-danger-text-disabled: #fa999c80;
   --bp-danger-overlay-hover: #cd424633;
   --bp-danger-overlay-active: #cd42464d;
+  --bp-warning-background-alpha-subtle-rest: #c8761933;
+  --bp-warning-background-alpha-subtle-hover: #c876194d;
+  --bp-warning-background-alpha-subtle-active: #c8761959;
   --bp-warning-background-solid-disabled: #fbb36080;
-  --bp-warning-background-alpha-subtle: #c8761933;
   --bp-warning-border-strong-rest: var(--bp-palette-orange-4);
   --bp-warning-border-alpha-rest: #fbb36099;
   --bp-warning-border-alpha-disabled: #fbb36033;
@@ -45,16 +53,19 @@
   --bp-warning-text-disabled: #fbb36080;
   --bp-warning-overlay-hover: #fbb36033;
   --bp-warning-overlay-active: #fbb3604d;
+  --bp-neutral-background-alpha-subtle-rest: #8f99a826;
+  --bp-neutral-background-alpha-subtle-hover: #8f99a84d;
+  --bp-neutral-background-alpha-subtle-active: #8f99a859;
   --bp-neutral-background-subtle-rest: var(--bp-palette-dark-gray-3);
   --bp-neutral-background-subtle-hover: var(--bp-palette-dark-gray-2);
   --bp-neutral-background-subtle-active: var(--bp-palette-dark-gray-1);
   --bp-neutral-background-subtle-disabled: #2f343c80;
-  --bp-neutral-background-alpha-subtle: #73809133;
   --bp-neutral-border-strong-rest: var(--bp-palette-gray-3);
   --bp-neutral-border-alpha-rest: #ffffff66;
   --bp-neutral-border-alpha-disabled: #ffffff33;
   --bp-neutral-text-muted: var(--bp-palette-gray-4);
   --bp-neutral-text-normal: var(--bp-palette-light-gray-5);
+  --bp-neutral-text-soft: var(--bp-palette-light-gray-1);
   --bp-neutral-text-strong: var(--bp-palette-white);
   --bp-neutral-text-disabled: #abb3bf99;
   --bp-neutral-overlay-hover: #5f6b7c33;
@@ -82,37 +93,47 @@
 @supports (color: oklch(from var(--any-color) l c h)) {
   [data-bp-color-scheme="dark"],
 .bp6-dark {
+    --bp-primary-background-alpha-subtle-rest: oklch(from var(--bp-primary-background-alpha-source) l c h / 0.2);
+    --bp-primary-background-alpha-subtle-hover: oklch(from var(--bp-primary-background-alpha-source) l c h / 0.3);
+    --bp-primary-background-alpha-subtle-active: oklch(from var(--bp-primary-background-alpha-source) l c h / 0.35);
     --bp-primary-background-solid-disabled: oklch(from var(--bp-primary-background-solid-rest) l c h / var(--bp-opacity-disabled));
-    --bp-primary-background-alpha-subtle: oklch(from var(--bp-primary-background-solid-rest) l c h / 0.2);
     --bp-primary-border-alpha-rest: oklch(from var(--bp-primary-text-normal) l c h / 0.6);
     --bp-primary-border-alpha-disabled: oklch(from var(--bp-primary-text-normal) l c h / 0.2);
     --bp-primary-text-disabled: oklch(from var(--bp-primary-text-normal) l c h / var(--bp-opacity-disabled));
     --bp-primary-overlay-hover: oklch(from var(--bp-primary-background-solid-rest) l c h / 0.2);
     --bp-primary-overlay-active: oklch(from var(--bp-primary-background-solid-rest) l c h / 0.3);
     --bp-primary-overlay-selected: oklch(from var(--bp-primary-background-solid-rest) l c h / 0.2);
+    --bp-success-background-alpha-subtle-rest: oklch(from var(--bp-success-background-alpha-source) l c h / 0.2);
+    --bp-success-background-alpha-subtle-hover: oklch(from var(--bp-success-background-alpha-source) l c h / 0.3);
+    --bp-success-background-alpha-subtle-active: oklch(from var(--bp-success-background-alpha-source) l c h / 0.35);
     --bp-success-background-solid-disabled: oklch(from var(--bp-success-background-solid-rest) l c h / var(--bp-opacity-disabled));
-    --bp-success-background-alpha-subtle: oklch(from var(--bp-success-background-solid-rest) l c h / 0.2);
     --bp-success-border-alpha-rest: oklch(from var(--bp-success-text-normal) l c h / 0.6);
     --bp-success-border-alpha-disabled: oklch(from var(--bp-success-text-normal) l c h / 0.2);
     --bp-success-text-disabled: oklch(from var(--bp-success-text-normal) l c h / var(--bp-opacity-disabled));
     --bp-success-overlay-hover: oklch(from var(--bp-success-background-solid-rest) l c h / 0.2);
     --bp-success-overlay-active: oklch(from var(--bp-success-background-solid-rest) l c h / 0.3);
+    --bp-danger-background-alpha-subtle-rest: oklch(from var(--bp-danger-background-alpha-source) l c h / 0.2);
+    --bp-danger-background-alpha-subtle-hover: oklch(from var(--bp-danger-background-alpha-source) l c h / 0.3);
+    --bp-danger-background-alpha-subtle-active: oklch(from var(--bp-danger-background-alpha-source) l c h / 0.35);
     --bp-danger-background-solid-disabled: oklch(from var(--bp-danger-background-solid-rest) l c h / var(--bp-opacity-disabled));
-    --bp-danger-background-alpha-subtle: oklch(from var(--bp-danger-background-solid-rest) l c h / 0.2);
     --bp-danger-border-alpha-rest: oklch(from var(--bp-danger-text-normal) l c h / 0.6);
     --bp-danger-border-alpha-disabled: oklch(from var(--bp-danger-text-normal) l c h / 0.2);
     --bp-danger-text-disabled: oklch(from var(--bp-danger-text-normal) l c h / var(--bp-opacity-disabled));
     --bp-danger-overlay-hover: oklch(from var(--bp-danger-background-solid-rest) l c h / 0.2);
     --bp-danger-overlay-active: oklch(from var(--bp-danger-background-solid-rest) l c h / 0.3);
+    --bp-warning-background-alpha-subtle-rest: oklch(from var(--bp-warning-background-alpha-source) l c h / 0.2);
+    --bp-warning-background-alpha-subtle-hover: oklch(from var(--bp-warning-background-alpha-source) l c h / 0.3);
+    --bp-warning-background-alpha-subtle-active: oklch(from var(--bp-warning-background-alpha-source) l c h / 0.35);
     --bp-warning-background-solid-disabled: oklch(from var(--bp-warning-background-solid-rest) l c h / var(--bp-opacity-disabled));
-    --bp-warning-background-alpha-subtle: oklch(from var(--bp-warning-background-solid-active) l c h / 0.2);
     --bp-warning-border-alpha-rest: oklch(from var(--bp-warning-text-normal) l c h / 0.6);
     --bp-warning-border-alpha-disabled: oklch(from var(--bp-warning-text-normal) l c h / 0.2);
     --bp-warning-text-disabled: oklch(from var(--bp-warning-text-normal) l c h / var(--bp-opacity-disabled));
     --bp-warning-overlay-hover: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.2);
     --bp-warning-overlay-active: oklch(from var(--bp-warning-background-solid-rest) l c h / 0.3);
+    --bp-neutral-background-alpha-subtle-rest: oklch(from var(--bp-neutral-background-alpha-source) l c h / 0.15);
+    --bp-neutral-background-alpha-subtle-hover: oklch(from var(--bp-neutral-background-alpha-source) l c h / 0.3);
+    --bp-neutral-background-alpha-subtle-active: oklch(from var(--bp-neutral-background-alpha-source) l c h / 0.35);
     --bp-neutral-background-subtle-disabled: oklch(from var(--bp-neutral-background-subtle-rest) l c h / var(--bp-opacity-disabled));
-    --bp-neutral-background-alpha-subtle: oklch(from var(--bp-palette-gray-2) l c h / 0.2);
     --bp-neutral-border-alpha-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.4);
     --bp-neutral-border-alpha-disabled: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
     --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-muted) l c h / 0.6);
