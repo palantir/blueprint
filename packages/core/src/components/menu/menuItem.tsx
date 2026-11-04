@@ -27,6 +27,7 @@ import type { PopoverProps } from "../popover/popoverProps";
 import type { MiddlewareConfig } from "../popover-next/middlewareTypes";
 import { PopoverNext } from "../popover-next/popoverNext";
 import { popoverPropsToNextProps } from "../popover-next/popoverNextMigrationUtils";
+import type { PopoverNextProps } from "../popover-next/popoverNextProps";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -125,9 +126,9 @@ export interface MenuItemProps
     /**
      * Props to spread to the submenu popover. Note that `content` and `minimal` cannot be
      * changed and `usePortal` defaults to `false` so all submenus will live in
-     * the same container.
+     * the same container. `hoverSafePolygon` defaults to `true` for submenus.
      */
-    popoverProps?: Partial<Omit<PopoverProps, "content" | "minimal">>;
+    popoverProps?: Partial<Omit<PopoverProps, "content" | "minimal"> & Pick<PopoverNextProps, "hoverSafePolygon">>;
 
     /**
      * Whether this item should appear selected - `roleStructure` must be `"listoption"` for this to be
@@ -293,6 +294,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     disabled={disabled}
                     enforceFocus={false}
                     hoverCloseDelay={0}
+                    hoverSafePolygon={true}
                     interactionKind="hover"
                     targetProps={{ role: targetRole, tabIndex: 0 }}
                     placement="right-start"
