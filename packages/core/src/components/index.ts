@@ -95,12 +95,11 @@ export type {
     MiddlewareConfig,
     PopoverNextAutoUpdateOptions,
     PopoverNextBoundary,
-    PopoverNextPlacement,
     PopoverNextPositioningStrategy,
     PopoverNextProps,
     PopoverNextRootBoundary,
 } from "./popover-next/popoverNextProps";
-export { POPOVER_NEXT_PLACEMENTS } from "./popover-next/popoverNextProps";
+export { POPOVER_NEXT_PLACEMENTS, PopoverNextPlacement } from "./popover-next/popoverNextProps";
 export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
 export {
     popoverPlacementToNextPlacement,
