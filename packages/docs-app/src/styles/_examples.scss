@@ -647,7 +647,7 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
-    font-family: $pt-font-family-monospace;
+    font-family: var(--bp-typography-family-mono);
     margin-right: $pt-spacing * 2;
   }
 }
