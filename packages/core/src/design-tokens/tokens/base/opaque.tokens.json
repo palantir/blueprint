@@ -103,7 +103,7 @@
             "accent": { "$value": "{palette.orange.3}" }
         }
     },
-    "neutral": {
+    "default": {
         "$type": "color",
         "background": {
             "alpha": {

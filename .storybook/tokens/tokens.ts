@@ -117,7 +117,7 @@ export type TokenValues = Record<TokenName, string>;
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
 export const EXISTING_TOKEN_NAMES = Object.keys(EXISTING_TOKEN_CONFIG) as TokenName[];
 const PROPOSAL_TOKEN_NAMES = Object.keys(PROPOSAL_TOKEN_CONFIG) as TokenName[];
-const INTENTS = ["neutral", "primary", "success", "warning", "danger"] as const;
+const INTENTS = ["default", "primary", "success", "warning", "danger"] as const;
 
 export interface TokenGroup {
     names: readonly TokenName[];

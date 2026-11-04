@@ -90,11 +90,11 @@ $minimal-tag-intent-colors: (
 @mixin pt-tag() {
   @include pt-flex-container(row, var(--bp-surface-spacing), inline);
   align-items: center;
-  background-color: var(--bp-neutral-background-solid-rest);
+  background-color: var(--bp-default-background-solid-rest);
   border: none;
   border-radius: var(--bp-surface-border-radius);
   box-shadow: none;
-  color: var(--bp-neutral-text-on-solid);
+  color: var(--bp-default-text-on-solid);
   font-size: var(--bp-typography-size-body-small);
   line-height: calc(var(--bp-surface-spacing) * 4);
   max-width: 100%;
@@ -117,12 +117,12 @@ $minimal-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      background: var(--bp-neutral-background-solid-hover);
+      background: var(--bp-default-background-solid-hover);
     }
 
     &:active,
     &.#{$ns}-active {
-      background: var(--bp-neutral-background-solid-active);
+      background: var(--bp-default-background-solid-active);
     }
   }
 
@@ -186,24 +186,24 @@ $minimal-tag-intent-colors: (
 
 @mixin pt-tag-minimal() {
   > #{$icon-classes} {
-    fill: var(--bp-neutral-text-muted);
+    fill: var(--bp-default-text-muted);
   }
 
   &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive(
-      var(--bp-neutral-background-alpha-subtle-rest),
-      var(--bp-neutral-text-strong)
+      var(--bp-default-background-alpha-subtle-rest),
+      var(--bp-default-text-strong)
     );
 
-    background-color: var(--bp-neutral-background-alpha-subtle-rest);
-    color: var(--bp-neutral-text-normal);
+    background-color: var(--bp-default-background-alpha-subtle-rest);
+    color: var(--bp-default-text-normal);
 
     .#{$ns}-tag-remove {
-      color: var(--bp-neutral-text-muted);
+      color: var(--bp-default-text-muted);
 
       &:hover,
       &:active {
-        color: var(--bp-neutral-text-soft);
+        color: var(--bp-default-text-soft);
       }
     }
   }
@@ -215,13 +215,13 @@ $minimal-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      background-color: var(--bp-neutral-background-alpha-subtle-hover);
+      background-color: var(--bp-default-background-alpha-subtle-hover);
       color: $text-color;
     }
 
     &.#{$ns}-active,
     &:active {
-      background-color: var(--bp-neutral-background-alpha-subtle-active);
+      background-color: var(--bp-default-background-alpha-subtle-active);
       color: $text-color;
     }
   }
@@ -268,7 +268,7 @@ $minimal-tag-intent-colors: (
   background: none;
   border: none;
   /* stylelint-disable-next-line alpha-value-notation */
-  color: oklch(from var(--bp-neutral-text-on-solid) l c h / 0.7);
+  color: oklch(from var(--bp-default-text-on-solid) l c h / 0.7);
   cursor: pointer;
   display: flex;
   margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
@@ -292,7 +292,7 @@ $minimal-tag-intent-colors: (
 
   &:hover,
   &:active {
-    color: var(--bp-neutral-text-on-solid);
+    color: var(--bp-default-text-on-solid);
   }
 
   // CSS API support

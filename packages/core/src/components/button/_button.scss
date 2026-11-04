@@ -88,7 +88,7 @@
   &[class*="#{$ns}-icon-"] {
     &::before {
       @include pt-icon;
-      color: var(--bp-neutral-text-muted);
+      color: var(--bp-default-text-muted);
     }
   }
 
@@ -99,7 +99,7 @@
   }
 
   .#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
-    color: var(--bp-neutral-text-muted);
+    color: var(--bp-default-text-muted);
   }
 
   // button with SVG icon only (no text or children)
@@ -122,7 +122,7 @@
       // Can we remove this exception??
       #{$icon-classes} {
         &:not([class*="#{$ns}-intent-"]) {
-          color: var(--bp-neutral-text-muted);
+          color: var(--bp-default-text-muted);
         }
       }
     }
@@ -164,11 +164,11 @@ a.#{$ns}-button {
   &:hover,
   &:active {
     // override global 'a' styles
-    color: var(--bp-neutral-text-normal);
+    color: var(--bp-default-text-normal);
   }
 
   &.#{$ns}-disabled {
-    color: var(--bp-neutral-text-disabled);
+    color: var(--bp-default-text-disabled);
   }
 }
 

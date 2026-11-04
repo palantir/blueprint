@@ -47,7 +47,7 @@
             "strong": { "$value": "{palette.orange.6}" }
         }
     },
-    "neutral": {
+    "default": {
         "$type": "color",
         "background": {
             "subtle": {

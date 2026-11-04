@@ -38,7 +38,7 @@
     &.#{$ns}-active {
       background-color: color-mix(
         in oklch,
-        var(--bp-neutral-background-subtle-active) calc(var(--bp-opacity-disabled) * 100%),
+        var(--bp-default-background-subtle-active) calc(var(--bp-opacity-disabled) * 100%),
         transparent
       );
     }

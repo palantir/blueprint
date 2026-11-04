@@ -93,12 +93,12 @@ $button-intent-states: (
     var(--bp-danger-text-on-solid-disabled),
   ),
   "default": (
-    var(--bp-neutral-background-solid-rest),
-    var(--bp-neutral-background-solid-hover),
-    var(--bp-neutral-background-solid-active),
-    var(--bp-neutral-text-on-solid),
-    var(--bp-neutral-background-solid-disabled),
-    var(--bp-neutral-text-on-solid-disabled),
+    var(--bp-default-background-solid-rest),
+    var(--bp-default-background-solid-hover),
+    var(--bp-default-background-solid-active),
+    var(--bp-default-text-on-solid),
+    var(--bp-default-background-solid-disabled),
+    var(--bp-default-text-on-solid-disabled),
   ),
 ) !default;
 
@@ -151,7 +151,7 @@ $button-intent-states: (
 
     &.#{$ns}-active,
     &.#{$ns}-active:hover {
-      background-color: var(--bp-neutral-background-subtle-disabled-active);
+      background-color: var(--bp-default-background-subtle-disabled-active);
     }
   }
 
@@ -161,7 +161,7 @@ $button-intent-states: (
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    stroke: var(--bp-neutral-text-normal);
+    stroke: var(--bp-default-text-normal);
   }
 }
 
@@ -185,19 +185,19 @@ $button-intent-states: (
 }
 
 @mixin pt-button-default-colors() {
-  background-color: var(--bp-neutral-background-subtle-rest);
+  background-color: var(--bp-default-background-subtle-rest);
   box-shadow: $button-box-shadow;
-  color: var(--bp-neutral-text-normal);
+  color: var(--bp-default-text-normal);
 }
 
 @mixin pt-button-hover() {
   background-clip: padding-box;
-  background-color: var(--bp-neutral-background-subtle-hover);
+  background-color: var(--bp-default-background-subtle-hover);
   box-shadow: $button-box-shadow-active;
 }
 
 @mixin pt-button-active() {
-  background-color: var(--bp-neutral-background-subtle-active);
+  background-color: var(--bp-default-background-subtle-active);
   box-shadow: $button-box-shadow-active;
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -207,9 +207,9 @@ $button-intent-states: (
 }
 
 @mixin pt-button-disabled() {
-  background-color: var(--bp-neutral-background-subtle-disabled);
+  background-color: var(--bp-default-background-subtle-disabled);
   box-shadow: none;
-  color: var(--bp-neutral-text-disabled);
+  color: var(--bp-default-text-disabled);
   cursor: not-allowed;
   outline: none;
 }
@@ -285,20 +285,20 @@ $button-intent-states: (
 @mixin pt-button-minimal() {
   background: none;
   box-shadow: none;
-  color: var(--bp-neutral-text-normal);
+  color: var(--bp-default-text-normal);
 
   &:hover {
-    background-color: var(--bp-neutral-overlay-strong-hover);
+    background-color: var(--bp-default-overlay-strong-hover);
     box-shadow: none;
-    color: var(--bp-neutral-text-normal);
+    color: var(--bp-default-text-normal);
     text-decoration: none;
   }
 
   &:active,
   &.#{$ns}-active {
-    background-color: var(--bp-neutral-overlay-strong-active);
+    background-color: var(--bp-default-overlay-strong-active);
     box-shadow: none;
-    color: var(--bp-neutral-text-normal);
+    color: var(--bp-default-text-normal);
   }
 
   &:disabled,
@@ -306,24 +306,24 @@ $button-intent-states: (
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
     background: none;
-    color: var(--bp-neutral-text-disabled);
+    color: var(--bp-default-text-disabled);
     cursor: not-allowed;
 
     &.#{$ns}-active {
-      background-color: var(--bp-neutral-overlay-strong-active);
+      background-color: var(--bp-default-overlay-strong-active);
     }
   }
 
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
     box-shadow: none;
-    color: var(--bp-neutral-text-strong);
+    color: var(--bp-default-text-strong);
 
     &:hover,
     &:active,
     &.#{$ns}-active {
       box-shadow: none;
-      color: var(--bp-neutral-text-strong);
+      color: var(--bp-default-text-strong);
     }
 
     &:disabled,
@@ -331,10 +331,10 @@ $button-intent-states: (
     &.#{$ns}-disabled,
     &.#{$ns}-disabled:hover {
       background: none;
-      color: var(--bp-neutral-text-disabled);
+      color: var(--bp-default-text-disabled);
 
       &.#{$ns}-active {
-        background-color: var(--bp-neutral-overlay-strong-active);
+        background-color: var(--bp-default-overlay-strong-active);
       }
     }
   }
@@ -347,10 +347,6 @@ $button-intent-states: (
 }
 
 @mixin pt-button-minimal-intent($intent) {
-  @if $intent == "default" {
-    $intent: "neutral";
-  }
-
   $text-color: var(--bp-#{$intent}-text-normal);
   $active-text-color: var(--bp-#{$intent}-text-strong);
   $disabled-text-color: var(--bp-#{$intent}-text-disabled);
@@ -407,22 +403,18 @@ $button-intent-states: (
 }
 
 @mixin pt-button-outlined() {
-  border: var(--bp-surface-border-width) solid var(--bp-neutral-border-alpha-rest);
+  border: var(--bp-surface-border-width) solid var(--bp-default-border-alpha-rest);
   box-sizing: border-box;
 
   &:disabled,
   &:disabled:hover,
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
-    border-color: var(--bp-neutral-border-alpha-disabled);
+    border-color: var(--bp-default-border-alpha-disabled);
   }
 
   @each $intent, $colors in $button-intent-states {
     $border-token: "#{$intent}-border-alpha";
-
-    @if $intent == "default" {
-      $border-token: "neutral-border-alpha";
-    }
 
     &.#{$ns}-intent-#{$intent} {
       @include pt-button-outlined-intent(
