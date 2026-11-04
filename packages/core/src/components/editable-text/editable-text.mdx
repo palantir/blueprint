@@ -39,8 +39,6 @@ The `onCancel` callback is invoked when user presses <kbd>Escape</kbd>.
 Canceling resets the field to the last confirmed value. Neither callback is
 invoked if the value is unchanged.
 
-Set `fill` to `true` to take up the full width of the container while keeping single-line editing.
-
 @reactCodeExample EditableTextBasicExample
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
@@ -51,6 +49,13 @@ in the browser ([more details](https://github.com/JedWatson/react-select/issues/
 you should center the component via flexbox or with `position` and `transform: translateX(-50%)`.
 
 </div>
+
+### Fill
+
+Set `fill` to `true` to make the component and its input take up the full width of the container.
+Single-line editing still confirms with <kbd>Enter</kbd>.
+
+@reactCodeExample EditableTextFillExample
 
 ### Disabled
 
