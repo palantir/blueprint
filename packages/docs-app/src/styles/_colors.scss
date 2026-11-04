@@ -43,7 +43,7 @@ $swatch-copied-message: "#{map.get($blueprint-icon-codepoints, "tick")} Copied t
   /* stylelint-disable declaration-no-important */
   &.docs-clipboard-copied .docs-clipboard-message::after {
     content: $swatch-copied-message !important;
-    font-family: $blueprint-icons-16-font, $pt-font-family-monospace, sans-serif;
+    font-family: $blueprint-icons-16-font, var(--bp-typography-family-mono), sans-serif;
   }
 
   &.docs-clipboard-copied .docs-clipboard-message[data-copied-message]::after {
@@ -151,7 +151,7 @@ label.docs-color-scheme-label {
   border-bottom-width: 0;
   border-top-width: 0;
   display: block;
-  font-family: $pt-font-family-monospace;
+  font-family: var(--bp-typography-family-mono);
   height: $swatch-height;
   position: relative;
 
