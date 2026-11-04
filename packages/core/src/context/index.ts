@@ -28,3 +28,11 @@ export {
     type OverlaysProviderProps,
 } from "./overlays/overlaysProvider";
 export { PortalContext, type PortalContextOptions, PortalProvider } from "./portal/portalProvider";
+export {
+    BlueprintThemeProvider,
+    type BlueprintThemeProviderProps,
+    type BlueprintThemeTokens,
+    customThemeToBlueprintTokens,
+    type ThemeRepresentations,
+    useBlueprintTheme,
+} from "./theme/themeProvider";

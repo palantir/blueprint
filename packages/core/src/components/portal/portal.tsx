@@ -19,6 +19,7 @@ import { createPortal } from "react-dom";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { PortalContext } from "../../context/portal/portalProvider";
+import { useIsomorphicLayoutEffect } from "../../hooks/useIsomorphicLayoutEffect";
 
 export interface PortalProps extends Props {
     /** Contents to send through the portal. */
@@ -66,6 +67,27 @@ export function Portal(
         container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
 
     const [portalElement, setPortalElement] = useState<HTMLElement>();
+
+    useIsomorphicLayoutEffect(() => {
+        if (portalElement == null) {
+            return;
+        }
+        const previous = Object.entries(context.portalTheme ?? {}).map(([name, value]) => {
+            const previousValue = portalElement.style.getPropertyValue(name);
+            const priority = portalElement.style.getPropertyPriority(name);
+            portalElement.style.setProperty(name, value!);
+            return { name, previousValue, priority };
+        });
+        return () => {
+            previous.forEach(({ name, previousValue, priority }) => {
+                if (previousValue === "") {
+                    portalElement.style.removeProperty(name);
+                } else {
+                    portalElement.style.setProperty(name, previousValue, priority);
+                }
+            });
+        };
+    }, [context.portalTheme, portalElement]);
 
     const createPortalElement = useCallback(() => {
         const newPortalElement = document.createElement("div");

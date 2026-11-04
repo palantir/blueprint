@@ -33,6 +33,37 @@ root.render(
 );
 ```
 
+## Theme overrides
+
+Pass version-keyed Theme API representations through `themes`. Blueprint selects the representation for
+its supported schema version (currently `1`), ignores other versions, and converts `borderRadius` and
+`fontFamily` to Blueprint CSS tokens. Missing or invalid representations clear the overrides.
+
+`BlueprintProvider` supplies these tokens to portals automatically. It does not add a DOM wrapper or
+style ordinary children; use `useBlueprintTheme()` to apply tokens to your existing content root.
+The styles require Blueprint's token-based component styles.
+
+```tsx
+import { BlueprintProvider, useBlueprintTheme } from "@blueprintjs/core";
+
+function Content() {
+    const tokens = useBlueprintTheme();
+    return <main style={tokens}>Application content</main>;
+}
+
+function App() {
+    return (
+        <BlueprintProvider themes={{ "1": { version: 1, borderRadius: "8px", fontFamily: "Arial, sans-serif" } }}>
+            <Content />
+        </BlueprintProvider>
+    );
+}
+```
+
+`BlueprintThemeProvider` can also be used independently. Place `PortalProvider` below it to propagate
+the tokens to portals. A nested theme provider replaces the theme for its consumers; clearing context
+does not reset CSS variables inherited from a themed DOM ancestor.
+
 ## Usage with other providers
 
 If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest

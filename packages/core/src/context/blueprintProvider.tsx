@@ -17,6 +17,7 @@
 import { HotkeysProvider, type HotkeysProviderProps } from "./hotkeys/hotkeysProvider";
 import { OverlaysProvider, type OverlaysProviderProps } from "./overlays/overlaysProvider";
 import { type PortalContextOptions, PortalProvider } from "./portal/portalProvider";
+import { BlueprintThemeProvider, type BlueprintThemeProviderProps } from "./theme/themeProvider";
 
 // for some props interfaces, it helps to prefix their property names with the name of the provider
 // to avoid any ambiguity in the API
@@ -26,6 +27,7 @@ type HotkeysProviderPrefix<T> = {
 
 export interface BlueprintProviderProps
     extends OverlaysProviderProps,
+        BlueprintThemeProviderProps,
         PortalContextOptions,
         HotkeysProviderPrefix<HotkeysProviderProps> {
     // no props of its own, `children` comes from `OverlaysProviderProps`
@@ -43,18 +45,21 @@ export const BlueprintProvider = ({
     hotkeysProviderRenderDialog,
     portalClassName,
     portalContainer,
+    themes,
 }: BlueprintProviderProps) => {
     return (
-        <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
-            <OverlaysProvider>
-                <HotkeysProvider
-                    value={hotkeysProviderValue}
-                    dialogProps={hotkeysProviderDialogProps}
-                    renderDialog={hotkeysProviderRenderDialog}
-                >
-                    {children}
-                </HotkeysProvider>
-            </OverlaysProvider>
-        </PortalProvider>
+        <BlueprintThemeProvider themes={themes}>
+            <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
+                <OverlaysProvider>
+                    <HotkeysProvider
+                        value={hotkeysProviderValue}
+                        dialogProps={hotkeysProviderDialogProps}
+                        renderDialog={hotkeysProviderRenderDialog}
+                    >
+                        {children}
+                    </HotkeysProvider>
+                </OverlaysProvider>
+            </PortalProvider>
+        </BlueprintThemeProvider>
     );
 };
