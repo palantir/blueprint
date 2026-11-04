@@ -1,9 +1,10 @@
 @import "foundation";
 @import "fixtures/semantic-tabs";
 
-// Fixture equivalents of the six role leaves in the semantic proposal.
+// Fixture equivalents of the seven role leaves in the semantic proposal.
 :root {
   --bp-text-normal: var(--bp-palette-dark-gray-1);
+  --bp-text-muted: var(--bp-palette-gray-1);
   --bp-primary-text-normal: var(--bp-palette-blue-2);
   --bp-primary-text-strong: var(--bp-palette-blue-1);
   --bp-primary-background-solid-rest: var(--bp-palette-blue-3);
@@ -17,6 +18,7 @@
 
 .#{$ns}-dark {
   --bp-text-normal: var(--bp-palette-light-gray-5);
+  --bp-text-muted: var(--bp-palette-gray-4);
   --bp-primary-text-normal: var(--bp-palette-blue-5);
   --bp-primary-text-strong: var(--bp-palette-blue-5);
 }

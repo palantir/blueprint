@@ -29,7 +29,6 @@ export function getColorNotes(
     const selected = dark ? "Blue5" : "Blue2";
     const strong = dark ? "Blue5" : "Blue1";
     const indicator = vertical ? "Blue3 · 20%" : selected;
-    const newIndicator = semantic && !vertical ? "Blue3" : indicator;
     const note = (label: string, before: string, after = before): ColorNote => ({
         after,
         before,
@@ -43,17 +42,17 @@ export function getColorNotes(
                 `${selected} · 100%`,
                 semantic ? `${strong} · 50%` : `${selected} · 100%`,
             ),
-            note(vertical ? "Selection fill" : "Underline", indicator, newIndicator),
+            note(vertical ? "Selection fill" : "Underline", indicator),
         ];
     }
     return [
         note("Selected text / icon", selected, semantic ? strong : selected),
-        note(vertical ? "Selection fill" : "Underline", indicator, newIndicator),
+        note(vertical ? "Selection fill" : "Underline", indicator),
         note("Hover text / icon", selected),
         note(
             "Disabled text / icon",
             dark ? "Gray4 · 60%" : "Gray1 · 60%",
-            semantic ? `${dark ? "LightGray5" : "DarkGray1"} · 50%` : undefined,
+            semantic ? `${dark ? "Gray4" : "Gray1"} · 50%` : undefined,
         ),
     ];
 }

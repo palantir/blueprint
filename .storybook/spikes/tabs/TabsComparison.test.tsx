@@ -44,7 +44,7 @@ describe("Tabs token comparison", () => {
         expect(docs.every(doc => doc !== document && doc.querySelectorAll('[role="tab"]').length === 3)).toBe(true);
         expect(docs[0].querySelectorAll(".changed")).toHaveLength(0);
         expect(docs[1].querySelectorAll(".changed")).toHaveLength(0);
-        expect(docs[2].querySelectorAll(".changed")).toHaveLength(3);
+        expect(docs[2].querySelectorAll(".changed")).toHaveLength(2);
         expect(docs[1].head.textContent).toContain("--bp-typography-color-link");
         expect(docs[2].head.textContent).toContain("--bp-primary-text-strong");
         expect(docs.every(doc => doc.body.style.getPropertyValue("--bp-primary-text-strong") === "")).toBe(true);
@@ -55,7 +55,7 @@ describe("Tabs token comparison", () => {
                 doc => doc.body.classList.contains("bp6-dark") && doc.documentElement.dataset.bpColorScheme === "dark",
             ),
         ).toBe(true);
-        expect(documents()[2].querySelectorAll(".changed")).toHaveLength(2);
+        expect(documents()[2].querySelectorAll(".changed")).toHaveLength(1);
         document.body.style.removeProperty("--bp-primary-text-strong");
 
         await act(async () =>
@@ -68,7 +68,7 @@ describe("Tabs token comparison", () => {
         expect(documents()[2].body.textContent).toContain("Theme overrides active");
         await act(async () => root.render(<TabsComparison {...defaults} />));
         expect(documents().every(doc => doc.body.style.getPropertyValue("--bp-primary-text-strong") === "")).toBe(true);
-        expect(documents()[2].querySelectorAll(".changed")).toHaveLength(3);
+        expect(documents()[2].querySelectorAll(".changed")).toHaveLength(2);
     });
 
     it("synchronizes clicks and keyboard selection while skipping disabled tabs", async () => {

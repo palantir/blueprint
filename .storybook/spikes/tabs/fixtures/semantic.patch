@@ -39,7 +39,7 @@ index 62603e66d..ebbd68940 100644
    cursor: pointer;
    display: flex;
    flex: 0 0 auto;
-@@ -111,31 +108,50 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
+@@ -111,31 +108,55 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
      /* stylelint-enable declaration-no-important */
    }
  
@@ -56,7 +56,7 @@ index 62603e66d..ebbd68940 100644
    &[aria-selected="true"] {
      border-radius: 0;
 -    box-shadow: inset 0 (-$tab-indicator-width) 0 $tab-color-selected;
-+    box-shadow: inset 0 (-$tab-indicator-width) 0 var(--bp-primary-background-solid-rest);
++    box-shadow: inset 0 (-$tab-indicator-width) 0 var(--bp-primary-text-normal);
 +    color: var(--bp-primary-text-strong);
    }
  
@@ -67,7 +67,12 @@ index 62603e66d..ebbd68940 100644
 +    color: var(--bp-primary-text-normal);
 +  }
  
++  &:not([aria-disabled="true"]):active {
++    color: var(--bp-primary-text-strong);
++  }
++
 +  &[aria-selected="true"],
++  &:not([aria-disabled="true"]):active,
 +  &:not([aria-disabled="true"], [aria-selected="true"]):hover {
      @media (forced-colors: active) and (prefers-color-scheme: dark) {
        // Windows High Contrast dark theme
@@ -79,7 +84,7 @@ index 62603e66d..ebbd68940 100644
 +    // Fade the foreground once; the selection indicator and fill stay selected.
 +    color: color-mix(
 +      in srgb,
-+      var(--bp-text-normal) calc(var(--bp-opacity-disabled) * 100%),
++      var(--bp-text-muted) calc(var(--bp-opacity-disabled) * 100%),
 +      transparent
 +    );
 +    cursor: not-allowed;
@@ -104,16 +109,16 @@ index 62603e66d..ebbd68940 100644
    &:focus {
      -moz-outline-radius: 0;
    }
-@@ -173,7 +189,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
+@@ -173,7 +194,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
    transition-timing-function: $pt-transition-ease;
  
    .#{$ns}-tab-indicator {
 -    background-color: $tab-color-selected;
-+    background-color: var(--bp-primary-background-solid-rest);
++    background-color: var(--bp-primary-text-normal);
      bottom: 0;
      height: $tab-indicator-width;
      left: 0;
-@@ -195,44 +211,6 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
+@@ -195,44 +216,6 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
    }
  }
  
@@ -182,11 +187,12 @@ diff --git a/packages/core/src/design-tokens/tokens/base/semantic.tokens.json b/
 new file mode 100644
 --- /dev/null
 +++ b/packages/core/src/design-tokens/tokens/base/semantic.tokens.json
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,34 @@
 +{
 +    "text": {
 +        "$type": "color",
-+        "normal": { "$value": "{palette.dark-gray.1}" }
++        "normal": { "$value": "{palette.dark-gray.1}" },
++        "muted": { "$value": "{palette.gray.1}" }
 +    },
 +    "primary": {
 +        "$type": "color",
@@ -220,11 +226,12 @@ diff --git a/packages/core/src/design-tokens/tokens/themes/dark/semantic.tokens.
 new file mode 100644
 --- /dev/null
 +++ b/packages/core/src/design-tokens/tokens/themes/dark/semantic.tokens.json
-@@ -0,0 +1,13 @@
+@@ -0,0 +1,14 @@
 +{
 +    "text": {
 +        "$type": "color",
-+        "normal": { "$value": "{palette.light-gray.5}" }
++        "normal": { "$value": "{palette.light-gray.5}" },
++        "muted": { "$value": "{palette.gray.4}" }
 +    },
 +    "primary": {
 +        "$type": "color",

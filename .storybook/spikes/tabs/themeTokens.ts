@@ -21,6 +21,7 @@ export function getTabsTokenEditors(dark: boolean): Record<`--${string}`, TokenE
         "--bp-typography-color-muted-disabled": color(dark ? "#abb3bf99" : "#5f6b7c99"),
         "--bp-surface-background-color-primary-selected": color("#2d72d233"),
         "--bp-text-normal": color(dark ? "#f6f7f9" : "#1c2127"),
+        "--bp-text-muted": color(dark ? "#abb3bf" : "#5f6b7c"),
         "--bp-primary-text-normal": color(dark ? "#8abbff" : "#215db0"),
         "--bp-primary-text-strong": color(dark ? "#8abbff" : "#184a90"),
         "--bp-primary-background-solid-rest": color("#2d72d2"),

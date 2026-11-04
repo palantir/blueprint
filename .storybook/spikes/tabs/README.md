@@ -14,7 +14,7 @@ Selection is synchronized across the three implementations in each row. Controls
 
 ## Implementations
 
-All previews use the repository's real React Tabs/Tab components. Each iframe receives a separate compiled stylesheet, so their identical selectors and token names cannot affect each other or the parent Storybook. The Theme panel lists the nine proposed roles first while viewing the overview, followed by the shipped tokens. Overrides are applied to each frame; the original Sass remains a fixed baseline wherever it uses Sass colors. Reset each override with its adjacent reset button. Annotations describe the default palette and are replaced with a notice while overrides are active.
+All previews use the repository's real React Tabs/Tab components. Each iframe receives a separate compiled stylesheet, so their identical selectors and token names cannot affect each other or the parent Storybook. The Theme panel lists the ten proposed roles first while viewing the overview, followed by the shipped tokens. Overrides are applied to each frame; the original Sass remains a fixed baseline wherever it uses Sass colors. Reset each override with its adjacent reset button. Annotations describe the default palette and are replaced with a notice while overrides are active.
 
 `_foundation.scss` imports the common reset, typography, tokens, focus, dark, and icon styles without the production Tabs recipe. `original.scss` adds the current production recipe. The alternatives add their own recipe from `fixtures/`, with explicit role defaults in `existing.scss` and `semantic.scss`. These role declarations are fixture equivalents of the proposed token JSON, using `color-mix` for derived alpha values. They are not additions to the public token generator. Build output lives in the ignored `generated/` directory and is recreated by both Storybook commands.
 
@@ -26,12 +26,14 @@ All previews use the repository's real React Tabs/Tab components. Each iframe re
 | ---------------------------- | ---------------------------- | -------------------------------- |
 | Hover / selected foreground  | Shared link role             | Separate normal / strong roles   |
 | Light selected foreground    | Blue2                        | Blue1                            |
-| Light / dark underline       | Blue2 / Blue5                | Blue3 / Blue3                    |
+| Light / dark underline       | Blue2 / Blue5                | Blue2 / Blue5                    |
 | Selected fill                | Blue3 at 20%                 | Blue3 at 20%                     |
-| Disabled foreground          | Gray1 / Gray4 at 60%         | Normal foreground at 50%         |
+| Disabled foreground          | Gray1 / Gray4 at 60%         | Muted foreground at 50%          |
 | Selected-disabled foreground | Selected foreground at 100%  | Selected foreground at 50%, once |
 
-The decision is whether separate selected/hover/indicator roles and the different disabled foreground are desired. Adopting either proposal is a subsequent change. Neither custom ancestor foregrounds, independently colored children such as Tags, nor forced-colors rendering are covered by the three default specimens.
+The semantic mapping follows the [consolidated color tokens RFC](https://palantir.coda.io/d/_d0ztkgFfiRB/_suDvJGYB#_luDEjjbk): selected and pressed foregrounds use `primary.text.strong`, hover uses `primary.text.normal`, and disabled foregrounds receive `opacity.disabled` once. The underline shares `primary.text.normal` with hover as a foreground selection mark. Disabled unselected tabs use `text.muted` as secondary, unavailable content. These component mappings aim to preserve the existing appearance without overriding the RFC's strong selected foreground or 50% disabled opacity.
+
+The RFC explicitly supplies the primary text shades and disabled opacity. The normal/muted neutral defaults and selected overlay's 20% alpha are baseline-preserving fixture choices; they are not fully specified in the readable RFC text. In dark mode, normal and strong primary text both resolve to Blue5, leaving only the disabled-opacity differences. In light mode, selected text also becomes Blue1 instead of Blue2. Adopting either proposal is a subsequent change. Neither custom ancestor foregrounds, independently colored children such as Tags, nor forced-colors rendering are covered by the three default specimens.
 
 Focused checks:
 
