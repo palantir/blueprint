@@ -66,6 +66,7 @@ $button-intent-states: (
     var(--bp-primary-background-solid-active),
     var(--bp-primary-text-on-solid),
     var(--bp-primary-background-solid-disabled),
+    var(--bp-primary-text-on-solid-disabled),
   ),
   "success": (
     var(--bp-success-background-solid-rest),
@@ -73,6 +74,7 @@ $button-intent-states: (
     var(--bp-success-background-solid-active),
     var(--bp-success-text-on-solid),
     var(--bp-success-background-solid-disabled),
+    var(--bp-success-text-on-solid-disabled),
   ),
   "warning": (
     var(--bp-warning-background-solid-rest),
@@ -80,6 +82,7 @@ $button-intent-states: (
     var(--bp-warning-background-solid-active),
     var(--bp-warning-text-on-solid),
     var(--bp-warning-background-solid-disabled),
+    var(--bp-warning-text-on-solid-disabled),
   ),
   "danger": (
     var(--bp-danger-background-solid-rest),
@@ -87,12 +90,15 @@ $button-intent-states: (
     var(--bp-danger-background-solid-active),
     var(--bp-danger-text-on-solid),
     var(--bp-danger-background-solid-disabled),
+    var(--bp-danger-text-on-solid-disabled),
   ),
   "default": (
     var(--bp-neutral-background-solid-rest),
     var(--bp-neutral-background-solid-hover),
     var(--bp-neutral-background-solid-active),
     var(--bp-neutral-text-on-solid),
+    var(--bp-neutral-background-solid-disabled),
+    var(--bp-neutral-text-on-solid-disabled),
   ),
 ) !default;
 
@@ -203,11 +209,7 @@ $button-intent-states: (
 @mixin pt-button-disabled() {
   background-color: var(--bp-neutral-background-subtle-disabled);
   box-shadow: none;
-  color: color-mix(
-    in oklch,
-    var(--bp-neutral-text-normal) calc(var(--bp-opacity-disabled) * 100%),
-    transparent
-  );
+  color: var(--bp-neutral-text-disabled);
   cursor: not-allowed;
   outline: none;
 }
@@ -220,6 +222,11 @@ $button-intent-states: (
   $disabled-background-color: color-mix(
       in oklch,
       $default-color calc(var(--bp-opacity-disabled) * 100%),
+      transparent
+    ),
+  $disabled-text-color: color-mix(
+      in oklch,
+      $text-color calc(var(--bp-opacity-disabled) * 100%),
       transparent
     )
 ) {
@@ -259,7 +266,7 @@ $button-intent-states: (
     background-color: $disabled-background-color;
     border-color: transparent;
     box-shadow: none;
-    color: color-mix(in oklch, $text-color calc(var(--bp-opacity-disabled) * 100%), transparent);
+    color: $disabled-text-color;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
@@ -278,6 +285,7 @@ $button-intent-states: (
 @mixin pt-button-minimal() {
   background: none;
   box-shadow: none;
+  color: var(--bp-neutral-text-normal);
 
   &:hover {
     background-color: var(--bp-neutral-overlay-strong-hover);
@@ -309,11 +317,13 @@ $button-intent-states: (
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
     box-shadow: none;
+    color: var(--bp-neutral-text-strong);
 
     &:hover,
     &:active,
     &.#{$ns}-active {
       box-shadow: none;
+      color: var(--bp-neutral-text-strong);
     }
 
     &:disabled,

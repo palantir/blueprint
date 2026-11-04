@@ -73,6 +73,7 @@
   --bp-neutral-background-subtle-active: var(--bp-palette-dark-gray-1);
   --bp-neutral-background-subtle-disabled: #2f343c26;
   --bp-neutral-background-subtle-disabled-active: #2f343cb3;
+  --bp-neutral-background-solid-disabled: #5f6b7c80;
   --bp-neutral-border-strong-rest: var(--bp-palette-gray-3);
   --bp-neutral-border-alpha-rest: #ffffff66;
   --bp-neutral-border-alpha-disabled: #ffffff33;
@@ -80,6 +81,7 @@
   --bp-neutral-text-normal: var(--bp-palette-light-gray-5);
   --bp-neutral-text-soft: var(--bp-palette-light-gray-1);
   --bp-neutral-text-strong: var(--bp-palette-white);
+  --bp-neutral-text-on-solid-disabled: #ffffff4d;
   --bp-neutral-text-disabled: #abb3bf99;
   --bp-neutral-overlay-subtle-hover: #8f99a826;
   --bp-neutral-overlay-subtle-active: #8f99a84d;
@@ -162,8 +164,10 @@
     --bp-neutral-background-alpha-subtle-active: oklch(from var(--bp-neutral-background-alpha-source) l c h / 0.35);
     --bp-neutral-background-subtle-disabled: oklch(from var(--bp-neutral-background-subtle-rest) l c h / 0.15);
     --bp-neutral-background-subtle-disabled-active: oklch(from var(--bp-neutral-background-subtle-rest) l c h / 0.7);
+    --bp-neutral-background-solid-disabled: oklch(from var(--bp-neutral-background-solid-rest) l c h / var(--bp-opacity-disabled));
     --bp-neutral-border-alpha-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.4);
     --bp-neutral-border-alpha-disabled: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
+    --bp-neutral-text-on-solid-disabled: oklch(from var(--bp-neutral-text-on-solid) l c h / 0.3);
     --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-muted) l c h / 0.6);
     --bp-neutral-overlay-subtle-hover: oklch(from var(--bp-neutral-background-alpha-source) l c h / 0.15);
     --bp-neutral-overlay-subtle-active: oklch(from var(--bp-neutral-background-alpha-source) l c h / 0.3);

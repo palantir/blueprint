@@ -328,6 +328,12 @@
             }
         },
         "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{neutral.background.solid.rest}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                }
+            },
             "subtle": {
                 "disabled": {
                     "$value": "{palette.light-gray.1}",
@@ -356,6 +362,10 @@
             }
         },
         "text": {
+            "on-solid-disabled": {
+                "$value": "{neutral.text.on-solid}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
+            },
             "disabled": {
                 "$value": "{neutral.text.muted}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
