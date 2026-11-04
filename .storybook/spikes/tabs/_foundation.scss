@@ -1,0 +1,13 @@
+// Shared fixture foundation. Deliberately excludes the production Tabs recipe.
+@import "../../../packages/core/src/design-tokens/build/tokens";
+@import "../../../packages/core/src/design-tokens/build/tokens-dark";
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "../../../packages/core/src/common/variables";
+@import "../../../packages/core/src/common/variables-extended";
+@import "../../../packages/core/src/common/mixins";
+@import "../../../packages/core/src/reset";
+@import "../../../packages/core/src/typography";
+@import "../../../packages/core/src/accessibility/focus-states";
+@import "../../../packages/core/src/dark-theme";
+@import "../../../packages/core/src/components/icon/icon";
+@import "../../../packages/core/src/components/html-table/html-table";

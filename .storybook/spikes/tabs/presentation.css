@@ -1,0 +1,65 @@
+/* Only fixture layout and annotations. The Tabs recipe comes from its own Sass entry. */
+body {
+    margin: 0;
+    background: #fff;
+    color: #1c2127;
+}
+body.bp6-dark {
+    background: #252a31;
+    color: #f6f7f9;
+}
+.tabs-spike-specimen {
+    padding: 16px;
+}
+.tabs-spike-specimen > .bp6-tabs.bp6-vertical > .bp6-tab-list {
+    width: 200px;
+}
+.tabs-spike-notes {
+    margin: 12px 0 0;
+    font:
+        12px/18px system-ui,
+        sans-serif;
+}
+.tabs-spike-notes > div {
+    padding: 7px 9px;
+    border-left: 3px solid transparent;
+}
+.tabs-spike-notes dt {
+    font-size: 11px;
+    color: #5f6b7c;
+}
+.tabs-spike-notes dd {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 5px;
+    align-items: baseline;
+}
+.tabs-spike-notes .changed {
+    background: #fff4df;
+    border-color: #b87912;
+    border-radius: 3px;
+}
+.tabs-spike-notes .changed strong {
+    color: #754b0b;
+}
+.tabs-spike-notes .status {
+    margin-left: auto;
+    font-size: 10px;
+    color: #738091;
+}
+.tabs-spike-notes .changed .status {
+    color: #754b0b;
+    font-weight: 700;
+}
+.bp6-dark .tabs-spike-notes .changed {
+    background: #40331f;
+    border-color: #d9a441;
+}
+.bp6-dark .tabs-spike-notes dt {
+    color: #abb3bf;
+}
+.bp6-dark .tabs-spike-notes .changed strong,
+.bp6-dark .tabs-spike-notes .changed .status {
+    color: #f3ce83;
+}

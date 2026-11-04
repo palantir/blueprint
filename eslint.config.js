@@ -76,11 +76,17 @@ module.exports = tseslint.config([
         },
     },
     {
+        files: [".storybook/spikes/tabs/**/*.{ts,tsx,mts,mjs}"],
+        rules: {
+            "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
+        },
+    },
+    {
         files: ["**/*.stories.{ts,tsx}"],
         languageOptions: {
             parserOptions: {
-                projectService: false,
                 project: `${__dirname}/.storybook/tsconfig.json`,
+                projectService: false,
             },
         },
         rules: {
