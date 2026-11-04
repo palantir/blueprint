@@ -30,7 +30,7 @@ import {
     type BlueprintIconsNext,
     IconNextNames,
     IconSize,
-    type NextIconVariant,
+    NextIconVariant,
 } from "@blueprintjs/icons/next";
 
 import { IconNextSelect } from "./common/iconNextSelect";
@@ -41,13 +41,13 @@ const MAX_ICON_SIZE = 100;
 const iconSizeLabelId = "icon-next-size-label";
 
 const VARIANT_OPTIONS = [
-    { label: "Outlined", value: "outlined" },
-    { label: "Filled", value: "filled" },
+    { label: "Outlined", value: NextIconVariant.OUTLINED },
+    { label: "Filled", value: NextIconVariant.FILLED },
 ];
 
 export const IconNextExample: React.FC<ExampleProps> = props => {
     const [icon, setIcon] = useState<BlueprintIconsNext>(IconNextNames.Star);
-    const [variant, setVariant] = useState<NextIconVariant>("outlined");
+    const [variant, setVariant] = useState<NextIconVariant>(NextIconVariant.OUTLINED);
     const [iconSize, setIconSize] = useState<number>(IconSize.STANDARD);
     const [intent, setIntent] = useState<Intent>(Intent.NONE);
 
@@ -59,7 +59,7 @@ export const IconNextExample: React.FC<ExampleProps> = props => {
             <FormGroup label="Variant">
                 <SegmentedControl
                     fill={true}
-                    onValueChange={value => setVariant(value as NextIconVariant)}
+                    onValueChange={handleVariantChange}
                     options={VARIANT_OPTIONS}
                     value={variant}
                 />
@@ -80,6 +80,12 @@ export const IconNextExample: React.FC<ExampleProps> = props => {
     function handleIconChange(nextIcon?: BlueprintIconsNext) {
         if (nextIcon != null) {
             setIcon(nextIcon);
+        }
+    }
+
+    function handleVariantChange(value: string) {
+        if (value === NextIconVariant.OUTLINED || value === NextIconVariant.FILLED) {
+            setVariant(value);
         }
     }
 

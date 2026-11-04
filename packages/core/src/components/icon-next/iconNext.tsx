@@ -23,7 +23,7 @@ import {
     type IconPaths,
     IconSize,
     IconsNext,
-    type NextIconVariant,
+    NextIconVariant,
     SvgIconContainerNext,
     type SVGIconProps,
 } from "@blueprintjs/icons/next";
@@ -106,7 +106,7 @@ export const IconNext: IconNextComponent = forwardRef(
             svgProps,
             tagName = "span",
             title,
-            variant = "outlined",
+            variant = NextIconVariant.OUTLINED,
             ...htmlProps
         } = props;
 

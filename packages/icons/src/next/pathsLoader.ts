@@ -18,8 +18,8 @@ import { pascalCase } from "change-case";
 
 import type { IconPaths } from "../iconTypes";
 
-import type { NextIconVariant } from "./iconLoaderNext";
 import type { IconNextName } from "./iconNextNames";
+import { NextIconVariant } from "./nextIconVariant";
 
 /** Loader function signature for next icon paths. */
 export type NextIconPathsLoader = (iconName: IconNextName, variant: NextIconVariant) => Promise<IconPaths>;
@@ -34,7 +34,7 @@ export const defaultNextIconPathsLoader: NextIconPathsLoader = async (name, vari
     );
     const outlinedKey = pascalCase(name);
     const filledKey = `${outlinedKey}Filled`;
-    const key = variant === "filled" && filledKey in pathsRecord ? filledKey : outlinedKey;
+    const key = variant === NextIconVariant.FILLED && filledKey in pathsRecord ? filledKey : outlinedKey;
 
     return pathsRecord[key];
 };
