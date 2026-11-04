@@ -109,6 +109,7 @@
   --bp-primary-graphic-accent: var(--bp-palette-blue-3);
   --bp-primary-overlay-hover: #2d72d21a;
   --bp-primary-overlay-active: #2d72d233;
+  --bp-primary-overlay-selected: #2d72d233;
   --bp-success-background-solid-rest: var(--bp-palette-green-3);
   --bp-success-background-solid-hover: var(--bp-palette-green-2);
   --bp-success-background-solid-active: var(--bp-palette-green-1);
@@ -169,7 +170,7 @@
   --bp-neutral-text-muted: var(--bp-palette-gray-1);
   --bp-neutral-text-normal: var(--bp-palette-dark-gray-1);
   --bp-neutral-text-strong: var(--bp-palette-black);
-  --bp-neutral-text-disabled: #1c212780;
+  --bp-neutral-text-disabled: #5f6b7c99;
   --bp-neutral-overlay-hover: #5f6b7c1a;
   --bp-neutral-overlay-active: #5f6b7c33;
   --bp-opacity-disabled: 0.5; /** Opacity multiplier for disabled states */
@@ -304,6 +305,7 @@
     --bp-primary-text-disabled: oklch(from var(--bp-primary-text-normal) l c h / var(--bp-opacity-disabled));
     --bp-primary-overlay-hover: oklch(from var(--bp-primary-background-solid-rest) l c h / 0.1);
     --bp-primary-overlay-active: oklch(from var(--bp-primary-background-solid-rest) l c h / 0.2);
+    --bp-primary-overlay-selected: oklch(from var(--bp-primary-background-solid-rest) l c h / 0.2);
     --bp-success-background-solid-disabled: oklch(from var(--bp-success-background-solid-rest) l c h / var(--bp-opacity-disabled));
     --bp-success-background-alpha-subtle: oklch(from var(--bp-success-background-solid-rest) l c h / 0.1);
     --bp-success-border-alpha-rest: oklch(from var(--bp-success-text-normal) l c h / 0.6);
@@ -329,7 +331,7 @@
     --bp-neutral-background-alpha-subtle: oklch(from var(--bp-palette-gray-2) l c h / 0.1);
     --bp-neutral-border-alpha-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
     --bp-neutral-border-alpha-disabled: oklch(from var(--bp-neutral-text-strong) l c h / 0.1);
-    --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-normal) l c h / var(--bp-opacity-disabled));
+    --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-muted) l c h / 0.6);
     --bp-neutral-overlay-hover: oklch(from var(--bp-neutral-background-solid-rest) l c h / 0.1);
     --bp-neutral-overlay-active: oklch(from var(--bp-neutral-background-solid-rest) l c h / 0.2);
     --bp-divider-normal: oklch(from var(--bp-neutral-text-strong) l c h / 0.15);

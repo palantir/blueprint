@@ -41,6 +41,10 @@
             "active": {
                 "$value": "{primary.background.solid.rest}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
+            },
+            "selected": {
+                "$value": "{primary.background.solid.rest}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
             }
         }
     },
@@ -244,8 +248,8 @@
         },
         "text": {
             "disabled": {
-                "$value": "{neutral.text.normal}",
-                "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                "$value": "{neutral.text.muted}",
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
             }
         },
         "overlay": {
