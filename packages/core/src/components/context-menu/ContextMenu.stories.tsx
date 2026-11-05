@@ -184,7 +184,8 @@ export const RightClickOpen: Story = {
             const rect = target.getBoundingClientRect();
             const coords = { clientX: rect.left + rect.width / 2, clientY: rect.top + rect.height / 2 };
             await userEvent.pointer({ keys: "[MouseRight]", target, coords });
-            await waitFor(() => expect(screen.getByText("Select all")).toBeVisible());
+            // Allow slower Chromatic renders without introducing a fixed delay.
+            await waitFor(() => expect(screen.getByText("Select all")).toBeVisible(), { timeout: 5000 });
         });
     },
 };
