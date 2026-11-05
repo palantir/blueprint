@@ -44,7 +44,7 @@ export interface ListItemsProps<T> extends Props {
     activeItem?: T | CreateNewItem | null;
 
     /** Array of items in the list. */
-    items: T[];
+    items: ReadonlyArray<T>;
 
     /**
      * Specifies how to test if two items are equal. By default, simple strict
@@ -170,7 +170,7 @@ export interface ListItemsProps<T> extends Props {
      * created, either by pressing the `Enter` key or by clicking on the "Create
      * Item" option. It transforms a query string into one or many items type.
      */
-    createNewItemFromQuery?: (query: string) => T | T[];
+    createNewItemFromQuery?: (query: string) => T | ReadonlyArray<T>;
 
     /**
      * Custom renderer to transform the current query string into a selectable

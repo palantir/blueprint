@@ -148,10 +148,10 @@ export interface QueryListState<T> {
      * this element will be used to hide the "Create Item" option if its value
      * matches the current `query`.
      */
-    createNewItem: T | T[] | undefined;
+    createNewItem: T | ReadonlyArray<T> | undefined;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
-    filteredItems: T[];
+    filteredItems: ReadonlyArray<T>;
 
     /** The current query string. */
     query: string;
@@ -619,7 +619,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
      * @param createNewItem Checks if this item would match the current query. Cannot check this.state.createNewItem
      *  every time since state may not have been updated yet.
      */
-    private isCreateItemRendered(createNewItem?: T | T[]): boolean {
+    private isCreateItemRendered(createNewItem?: T | ReadonlyArray<T>): boolean {
         return (
             this.canCreateItems() &&
             this.state.query !== "" &&
@@ -638,7 +638,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         return this.props.createNewItemFromQuery != null && this.props.createNewItemRenderer != null;
     }
 
-    private wouldCreatedItemMatchSomeExistingItem(createNewItem?: T | T[]) {
+    private wouldCreatedItemMatchSomeExistingItem(createNewItem?: T | ReadonlyArray<T>) {
         // search only the filtered items, not the full items list, because we
         // only need to check items that match the current query.
         return this.state.filteredItems.some(item => {
@@ -688,7 +688,10 @@ function getMatchingItem<T>(query: string, { items, itemPredicate }: QueryListPr
     return undefined;
 }
 
-function getFilteredItems<T>(query: string, { items, itemPredicate, itemListPredicate }: QueryListProps<T>) {
+function getFilteredItems<T>(
+    query: string,
+    { items, itemPredicate, itemListPredicate }: QueryListProps<T>,
+): ReadonlyArray<T> {
     if (Utils.isFunction(itemListPredicate)) {
         // note that implementations can reorder the items here
         return itemListPredicate(query, items);
@@ -727,7 +730,7 @@ function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: ListIte
  * @param startIndex which index to begin moving from
  */
 export function getFirstEnabledItem<T>(
-    items: T[],
+    items: ReadonlyArray<T>,
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,
