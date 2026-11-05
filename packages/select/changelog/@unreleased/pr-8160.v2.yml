@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "[MultiSelect] Open the popover when its input gains focus, matching `Suggest`"
+  links:
+  - https://github.com/palantir/blueprint/pull/8160
