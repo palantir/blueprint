@@ -96,6 +96,12 @@ $pt-dark-intent-text-colors: (
   }
 }
 
+@mixin focus-outline-next($offset: $pt-spacing * 0.5) {
+  outline: oklch(from var(--bp-primary-text-normal) l c h / 75.2%) solid ($pt-spacing * 0.5);
+  outline-offset: $offset;
+  -moz-outline-radius: $pt-spacing * 1.5;
+}
+
 @function border-shadow($alpha, $color: $black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
 }

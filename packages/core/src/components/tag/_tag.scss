@@ -32,15 +32,6 @@
         @include pt-tag-minimal-intent($colors...);
       }
     }
-
-    @each $intent, $colors in $minimal-dark-tag-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-dark &,
-        [data-bp-color-scheme="dark"] & {
-          @include pt-tag-minimal-dark-intent($colors...);
-        }
-      }
-    }
   }
 }
 
