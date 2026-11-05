@@ -323,10 +323,10 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
             if (activeBottomEdge >= parentScrollTop + parentHeight) {
                 // offscreen bottom: align bottom of item with bottom of viewport
-                this.itemsParentRef.scrollTop = activeBottomEdge + activeHeight - parentHeight;
+                this.itemsParentRef.scrollTop = activeBottomEdge - parentHeight;
             } else if (activeTopEdge <= parentScrollTop) {
                 // offscreen top: align top of item with top of viewport
-                this.itemsParentRef.scrollTop = activeTopEdge - activeHeight;
+                this.itemsParentRef.scrollTop = activeTopEdge;
             }
         }
     }

@@ -19,7 +19,7 @@ import { act } from "react";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
-import { afterEach, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import type { ItemListRenderer } from "../../common/itemListRenderer";
@@ -213,6 +213,78 @@ describe("<QueryList>", () => {
 
     describe("scrolling", () => {
         it("brings active item into view");
+
+        it("scrolls so that bottom edge of active item aligns with bottom of container", () => {
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...testProps} />);
+            const queryListInstance = filmQueryList.instance() as QueryList<Film>;
+
+            // mock the items parent ref with a fake scrollable container
+            const fakeParent = {
+                children: {
+                    item: () => null,
+                },
+                clientHeight: 200,
+                offsetTop: 0,
+                scrollTop: 0,
+            } as unknown as HTMLElement;
+            Object.defineProperty(fakeParent, "style", { value: {} });
+            // stub getComputedStyle to return padding values
+            const spy = vi
+                .spyOn(window, "getComputedStyle")
+                .mockImplementation(() => ({ paddingBottom: "0px", paddingTop: "0px" }) as CSSStyleDeclaration);
+
+            try {
+                (queryListInstance as any).itemsParentRef = fakeParent;
+
+                // mock an active element that is below the visible area
+                const fakeActiveElement = { offsetHeight: 30, offsetTop: 350 };
+                (queryListInstance as any).getActiveElement = () => fakeActiveElement;
+
+                queryListInstance.scrollActiveItemIntoView();
+
+                // activeBottomEdge = 350 + 30 + 0 - 0 = 380
+                // expected scrollTop = activeBottomEdge - parentHeight = 380 - 200 = 180
+                // (not 380 + 30 - 200 = 210, which would over-scroll by one item height)
+                expect(fakeParent.scrollTop).toBe(180);
+            } finally {
+                spy.mockRestore();
+            }
+        });
+
+        it("scrolls so that top edge of active item aligns with top of container", () => {
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...testProps} />);
+            const queryListInstance = filmQueryList.instance() as QueryList<Film>;
+
+            const fakeParent = {
+                children: {
+                    item: () => null,
+                },
+                clientHeight: 200,
+                offsetTop: 0,
+                scrollTop: 300,
+            } as unknown as HTMLElement;
+            Object.defineProperty(fakeParent, "style", { value: {} });
+            const spy = vi
+                .spyOn(window, "getComputedStyle")
+                .mockImplementation(() => ({ paddingBottom: "0px", paddingTop: "0px" }) as CSSStyleDeclaration);
+
+            try {
+                (queryListInstance as any).itemsParentRef = fakeParent;
+
+                // mock an active element that is above the visible area
+                const fakeActiveElement = { offsetHeight: 30, offsetTop: 50 };
+                (queryListInstance as any).getActiveElement = () => fakeActiveElement;
+
+                queryListInstance.scrollActiveItemIntoView();
+
+                // activeTopEdge = 50 - 0 - 0 = 50
+                // expected scrollTop = activeTopEdge = 50
+                // (not 50 - 30 = 20, which would over-scroll upward by one item height)
+                expect(fakeParent.scrollTop).toBe(50);
+            } finally {
+                spy.mockRestore();
+            }
+        });
     });
 
     describe("pasting", () => {

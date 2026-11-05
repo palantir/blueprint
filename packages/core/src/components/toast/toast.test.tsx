@@ -96,5 +96,11 @@ describe("<Toast>", () => {
             expect(handleDismiss).toHaveBeenCalledOnce();
             expect(handleDismiss.mock.calls[0][0]).toBe(true);
         });
+
+        it("does not dismiss toast when timeout={Infinity}", async () => {
+            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={Infinity} />);
+            await sleep(50);
+            expect(handleDismiss).not.toHaveBeenCalled();
+        });
     });
 });
