@@ -476,12 +476,13 @@ $button-dark-minimal-active-text-colors: (
 @mixin pt-button-minimal() {
   background: none;
   box-shadow: none;
+  color: var(--bp-palette-black);
 
   &:hover {
     // Use srgb instead of oklch to avoid hue shift with near-neutral colors
     background-color: color-mix(in srgb, var(--bp-intent-default-hover) 8%, transparent);
     box-shadow: none;
-    color: var(--bp-typography-color-default-rest);
+    color: var(--bp-palette-black);
     text-decoration: none;
   }
 
@@ -490,7 +491,7 @@ $button-dark-minimal-active-text-colors: (
     // Use srgb instead of oklch to avoid hue shift with near-neutral colors
     background-color: color-mix(in srgb, var(--bp-intent-default-active) 16%, transparent);
     box-shadow: none;
-    color: var(--bp-typography-color-default-rest);
+    color: var(--bp-palette-black);
   }
 
   &:disabled,
@@ -510,14 +511,14 @@ $button-dark-minimal-active-text-colors: (
   [data-bp-color-scheme="dark"] & {
     background: none;
     box-shadow: none;
-    color: var(--bp-typography-color-default-rest);
+    color: var(--bp-intent-default-foreground);
 
     &:hover,
     &:active,
     &.#{$ns}-active {
       background: none;
       box-shadow: none;
-      color: var(--bp-typography-color-default-rest);
+      color: var(--bp-intent-default-foreground);
     }
 
     &:hover {
