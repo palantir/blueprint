@@ -510,14 +510,14 @@ $button-dark-minimal-active-text-colors: (
   [data-bp-color-scheme="dark"] & {
     background: none;
     box-shadow: none;
-    color: var(--bp-intent-default-foreground);
+    color: var(--bp-typography-color-default-rest);
 
     &:hover,
     &:active,
     &.#{$ns}-active {
       background: none;
       box-shadow: none;
-      color: var(--bp-intent-default-foreground);
+      color: var(--bp-typography-color-default-rest);
     }
 
     &:hover {
