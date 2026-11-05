@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-export const NextIconVariant = {
+export const IconVariant = {
     FILLED: "filled" as const,
     OUTLINED: "outlined" as const,
 };
-export type NextIconVariant = (typeof NextIconVariant)[keyof typeof NextIconVariant];
+export type IconVariant = (typeof IconVariant)[keyof typeof IconVariant];

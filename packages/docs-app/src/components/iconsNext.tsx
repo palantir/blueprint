@@ -20,7 +20,7 @@ import { Classes, Code, Dialog, DialogBody, H5, InputGroup, NonIdealState, Radio
 import { CopyToClipboardButton, smartSearch, useTheme } from "@blueprintjs/docs-theme";
 import { type SVGIconProps } from "@blueprintjs/icons";
 import * as NextIcons from "@blueprintjs/icons/next";
-import { nextIconManifest, type NextIconManifestEntry, NextIconVariant } from "@blueprintjs/icons/next";
+import { IconVariant, nextIconManifest, type NextIconManifestEntry } from "@blueprintjs/icons/next";
 
 const icons: readonly NextIconManifestEntry[] = nextIconManifest;
 
@@ -31,7 +31,7 @@ const HERO_BACKGROUNDS = ["default", "primary", "dark"] as const;
 export function IconsNext() {
     const variantLabelId = useId();
     const [filter, setFilter] = useState("");
-    const [variant, setVariant] = useState<NextIconVariant>(NextIconVariant.OUTLINED);
+    const [variant, setVariant] = useState<IconVariant>(IconVariant.OUTLINED);
     const [selectedIcon, setSelectedIcon] = useState<NextIconManifestEntry | undefined>(undefined);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -55,7 +55,7 @@ export function IconsNext() {
 
     const handleVariantChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = event.currentTarget;
-        if (value === NextIconVariant.OUTLINED || value === NextIconVariant.FILLED) {
+        if (value === IconVariant.OUTLINED || value === IconVariant.FILLED) {
             setVariant(value);
         }
     }, []);
@@ -79,8 +79,8 @@ export function IconsNext() {
                 <div className="docs-icons-next-filter">
                     <H5 id={variantLabelId}>Filter by style</H5>
                     <RadioGroup aria-labelledby={variantLabelId} onChange={handleVariantChange} selectedValue={variant}>
-                        <Radio label="Outlined" value={NextIconVariant.OUTLINED} />
-                        <Radio label="Filled" value={NextIconVariant.FILLED} />
+                        <Radio label="Outlined" value={IconVariant.OUTLINED} />
+                        <Radio label="Filled" value={IconVariant.FILLED} />
                     </RadioGroup>
                 </div>
                 <div className="docs-icons-next-results">
@@ -101,7 +101,7 @@ export function IconsNext() {
 
 interface IconCardProps {
     icon: NextIconManifestEntry;
-    variant: NextIconVariant;
+    variant: IconVariant;
     onClick: (icon: NextIconManifestEntry) => void;
 }
 
@@ -126,7 +126,7 @@ const IconCard = memo(function IconCard({ icon, onClick, variant }: IconCardProp
 interface IconDialogProps {
     icon: NextIconManifestEntry | undefined;
     isOpen: boolean;
-    variant: NextIconVariant;
+    variant: IconVariant;
     onClose: () => void;
 }
 
@@ -191,17 +191,17 @@ const CopyableCode = memo(function CopyableCode({ label, value }: { label: strin
     );
 });
 
-function getIconComponent(name: string, variant: NextIconVariant) {
+function getIconComponent(name: string, variant: IconVariant) {
     const exportName = getExportName(name, variant);
     return NextIcons[exportName as keyof typeof NextIcons] as React.FC<SVGIconProps> | undefined;
 }
 
-function getExportName(name: string, variant: NextIconVariant) {
-    return `${kebabToPascal(name)}${variant === NextIconVariant.FILLED ? "FilledIcon" : "Icon"}`;
+function getExportName(name: string, variant: IconVariant) {
+    return `${kebabToPascal(name)}${variant === IconVariant.FILLED ? "FilledIcon" : "Icon"}`;
 }
 
-function matchesVariant(variant: NextIconVariant, icon: NextIconManifestEntry) {
-    return variant === NextIconVariant.OUTLINED || icon.hasFilled;
+function matchesVariant(variant: IconVariant, icon: NextIconManifestEntry) {
+    return variant === IconVariant.OUTLINED || icon.hasFilled;
 }
 
 function matchesFilter(filter: string, icon: NextIconManifestEntry) {

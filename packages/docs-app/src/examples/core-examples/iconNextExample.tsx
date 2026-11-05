@@ -30,7 +30,7 @@ import {
     type BlueprintIconsNext,
     IconNextNames,
     IconSize,
-    NextIconVariant,
+    IconVariant,
 } from "@blueprintjs/icons/next";
 
 import { IconNextSelect } from "./common/iconNextSelect";
@@ -41,13 +41,13 @@ const MAX_ICON_SIZE = 100;
 const iconSizeLabelId = "icon-next-size-label";
 
 const VARIANT_OPTIONS = [
-    { label: "Outlined", value: NextIconVariant.OUTLINED },
-    { label: "Filled", value: NextIconVariant.FILLED },
+    { label: "Outlined", value: IconVariant.OUTLINED },
+    { label: "Filled", value: IconVariant.FILLED },
 ];
 
 export const IconNextExample: React.FC<ExampleProps> = props => {
     const [icon, setIcon] = useState<BlueprintIconsNext>(IconNextNames.Star);
-    const [variant, setVariant] = useState<NextIconVariant>(NextIconVariant.OUTLINED);
+    const [variant, setVariant] = useState<IconVariant>(IconVariant.OUTLINED);
     const [iconSize, setIconSize] = useState<number>(IconSize.STANDARD);
     const [intent, setIntent] = useState<Intent>(Intent.NONE);
 
@@ -84,7 +84,7 @@ export const IconNextExample: React.FC<ExampleProps> = props => {
     }
 
     function handleVariantChange(value: string) {
-        if (value === NextIconVariant.OUTLINED || value === NextIconVariant.FILLED) {
+        if (value === IconVariant.OUTLINED || value === IconVariant.FILLED) {
             setVariant(value);
         }
     }

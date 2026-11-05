@@ -9,7 +9,7 @@ import { pascalCase } from "change-case";
 import React, { type ComponentType, type ReactElement, useCallback, useState } from "react";
 
 import * as NextIcons from "@blueprintjs/icons/next";
-import { nextIconManifest, type NextIconManifestEntry, NextIconVariant } from "@blueprintjs/icons/next";
+import { IconVariant, nextIconManifest, type NextIconManifestEntry } from "@blueprintjs/icons/next";
 import { Flex } from "@blueprintjs/labs";
 
 import { Card } from "../card/card";
@@ -53,11 +53,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Outlined: Story = {
-    render: ({ size }) => <NextIconGallery icons={OUTLINED_ICONS} variant={NextIconVariant.OUTLINED} size={size} />,
+    render: ({ size }) => <NextIconGallery icons={OUTLINED_ICONS} variant={IconVariant.OUTLINED} size={size} />,
 };
 
 export const Filled: Story = {
-    render: ({ size }) => <NextIconGallery icons={FILLED_ICONS} variant={NextIconVariant.FILLED} size={size} />,
+    render: ({ size }) => <NextIconGallery icons={FILLED_ICONS} variant={IconVariant.FILLED} size={size} />,
 };
 
 export const Compare: Story = {
@@ -82,7 +82,7 @@ function NextIconGallery({
 }: {
     icons: NextIconManifestEntry[];
     size: number;
-    variant: NextIconVariant;
+    variant: IconVariant;
 }) {
     return (
         <Flex flexDirection="column" gap={4}>
@@ -127,7 +127,7 @@ function CompareCard({ iconName, size }: { iconName: string; size: number }) {
             onClick={handleClick}
         >
             <Flex alignItems="center" justifyContent="center" style={{ height: "100%" }}>
-                {renderNextIcon(iconName, size, showFilled ? NextIconVariant.FILLED : NextIconVariant.OUTLINED)}
+                {renderNextIcon(iconName, size, showFilled ? IconVariant.FILLED : IconVariant.OUTLINED)}
             </Flex>
         </Card>
     );
@@ -136,9 +136,9 @@ function CompareCard({ iconName, size }: { iconName: string; size: number }) {
 // -----------------------------------------------------------------------------
 // Icon rendering
 
-function renderNextIcon(iconName: string, pixelSize: number, variant: NextIconVariant): ReactElement {
+function renderNextIcon(iconName: string, pixelSize: number, variant: IconVariant): ReactElement {
     const exportName =
-        variant === NextIconVariant.OUTLINED ? `${pascalCase(iconName)}Icon` : `${pascalCase(iconName)}FilledIcon`;
+        variant === IconVariant.OUTLINED ? `${pascalCase(iconName)}Icon` : `${pascalCase(iconName)}FilledIcon`;
     const IconComponent = (NextIcons as unknown as Record<string, ComponentType<{ size?: number }>>)[exportName];
     if (IconComponent == null) {
         return <span title={`${exportName} not found`} />;

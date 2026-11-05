@@ -17,7 +17,7 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { StrictMode } from "react";
 
-import { HouseIcon, type IconPaths, IconSize, IconsNext, NextIconVariant } from "@blueprintjs/icons/next";
+import { HouseIcon, type IconPaths, IconSize, IconsNext, IconVariant } from "@blueprintjs/icons/next";
 import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Intent } from "../../common";
@@ -32,7 +32,7 @@ describe("<IconNext>", () => {
     beforeEach(() => {
         pathsByKey = new Map();
         consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
-        vi.spyOn(IconsNext, "getPaths").mockImplementation((icon, variant = NextIconVariant.OUTLINED) =>
+        vi.spyOn(IconsNext, "getPaths").mockImplementation((icon, variant = IconVariant.OUTLINED) =>
             pathsByKey.get(`${icon}:${variant}`),
         );
         load = vi.spyOn(IconsNext, "load").mockResolvedValue(undefined);
