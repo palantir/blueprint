@@ -42,6 +42,20 @@
         "codepoint": 61708
     },
     {
+        "displayName": "Align: top",
+        "iconName": "align-top",
+        "tags": "text flow, alignment, justification, range, flush top, vertical",
+        "group": "editor",
+        "codepoint": 62401
+    },
+    {
+        "displayName": "Align: bottom",
+        "iconName": "align-bottom",
+        "tags": "text flow, alignment, justification, range, flush bottom, vertical",
+        "group": "editor",
+        "codepoint": 62402
+    },
+    {
         "displayName": "Bold",
         "iconName": "bold",
         "tags": "typography, text, font style, weight",
