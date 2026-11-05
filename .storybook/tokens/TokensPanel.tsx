@@ -7,17 +7,22 @@ import { ColorControl, RangeControl } from "@storybook/addon-docs/blocks";
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
 import React from "react";
-import { IconButton, Loader } from "storybook/internal/components";
-import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import { Button, IconButton, Loader, TabsView } from "storybook/internal/components";
+import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
 import {
     type ColorTokenEditor,
+    EXISTING_TOKEN_NAMES,
+    PROPOSAL_TOKEN_GROUPS,
     type RangeTokenEditor,
     TOKEN_CONFIG,
-    TOKEN_NAMES,
+    TOKEN_VALUES_REQUESTED,
+    TOKEN_VALUES_UPDATED,
+    type TokenGroup,
     type TokenName,
     type TokenValues,
+    type TokenValuesSnapshot,
 } from "./tokens";
 
 const LoadingWrapper = styled.div({
@@ -28,6 +33,19 @@ const LoadingWrapper = styled.div({
 });
 
 const TableWrapper = styled.div({ overflowX: "auto" });
+
+const IntentFilters = styled.div(({ theme }) => ({
+    display: "flex",
+    flexWrap: "wrap",
+    gap: theme.layoutMargin,
+    paddingBlock: theme.layoutMargin,
+    paddingInline: theme.layoutMargin * 1.5,
+}));
+
+const IntentFilter = styled(Button)({
+    // Keep rounded ends regardless of the label's width.
+    borderRadius: "999px",
+});
 
 const TokensTable = styled.table(({ theme }) => ({
     borderCollapse: "collapse",
@@ -46,9 +64,14 @@ const TokensTable = styled.table(({ theme }) => ({
         textAlign: "left",
     },
 
-    "th:last-of-type, td:last-of-type": {
+    "thead th:last-of-type, td:last-of-type": {
         paddingLeft: 0,
         width: 32,
+    },
+
+    'th[scope="rowgroup"]': {
+        background: theme.background.app,
+        color: theme.color.defaultText,
     },
 }));
 
@@ -60,9 +83,10 @@ interface TokenRowProps {
     onResetToken: (name: TokenName) => void;
     onUpdateToken: (name: TokenName, value: string | undefined) => void;
     overrideValue: string | undefined;
+    resolvedValue: string | undefined;
 }
 
-function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
+function TokenRow({ name, onResetToken, onUpdateToken, overrideValue, resolvedValue }: TokenRowProps) {
     const editor = TOKEN_CONFIG[name];
     const hasOverride = overrideValue !== undefined && overrideValue !== "";
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
@@ -83,6 +107,7 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
                         name={name}
                         onChange={handleUpdate}
                         overrideValue={overrideValue}
+                        resolvedValue={resolvedValue}
                     />
                 ) : (
                     <RangeTokenControl
@@ -90,6 +115,7 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
                         name={name}
                         onChange={handleUpdate}
                         overrideValue={overrideValue}
+                        resolvedValue={resolvedValue}
                     />
                 )}
             </td>
@@ -114,10 +140,17 @@ interface TokenControlProps<TEditor> {
     name: TokenName;
     onChange: (value: string | undefined) => void;
     overrideValue: string | undefined;
+    resolvedValue: string | undefined;
 }
 
-function ColorTokenControl({ editor, name, onChange, overrideValue }: TokenControlProps<ColorTokenEditor>) {
-    const cssValue = overrideValue || editor.defaultCssValue;
+function ColorTokenControl({
+    editor,
+    name,
+    onChange,
+    overrideValue,
+    resolvedValue,
+}: TokenControlProps<ColorTokenEditor>) {
+    const cssValue = overrideValue || resolvedValue || editor.defaultCssValue;
     const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
         (value: string | undefined) =>
@@ -128,8 +161,15 @@ function ColorTokenControl({ editor, name, onChange, overrideValue }: TokenContr
     return <ColorControl {...editor.control} name={name} onChange={handleChange} value={controlValue} />;
 }
 
-function RangeTokenControl({ editor, name, onChange, overrideValue }: TokenControlProps<RangeTokenEditor>) {
-    const controlValue = overrideValue === undefined ? undefined : editor.toControlValue(overrideValue);
+function RangeTokenControl({
+    editor,
+    name,
+    onChange,
+    overrideValue,
+    resolvedValue,
+}: TokenControlProps<RangeTokenEditor>) {
+    const cssValue = overrideValue ?? resolvedValue ?? editor.defaultCssValue;
+    const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
         (value: number | null | undefined) => onChange(value == null ? undefined : editor.toCssValue(value)),
         [editor, onChange],
@@ -142,6 +182,26 @@ export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
+    const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
+    const [resolvedTokenValues, setResolvedTokenValues] = React.useState<Partial<TokenValues>>({});
+    const emit = useChannel(
+        {
+            [TOKEN_VALUES_UPDATED]: (snapshot: TokenValuesSnapshot) => {
+                if (snapshot.storyId === storyId) {
+                    setResolvedTokenValues(snapshot.values);
+                }
+            },
+        },
+        [storyId],
+    );
+
+    React.useEffect(() => {
+        setResolvedTokenValues({});
+        if (isStoryPrepared) {
+            emit(TOKEN_VALUES_REQUESTED);
+        }
+    }, [emit, isStoryPrepared, storyId]);
+
     const tokenOverrides: Partial<TokenValues> = React.useMemo(
         () => globals.tokenOverrides ?? {},
         [globals.tokenOverrides],
@@ -169,6 +229,13 @@ export function TokensPanel() {
         [tokenOverrides, updateGlobals],
     );
 
+    const handleToggleFilter = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+        const title = event.currentTarget.value;
+        setSelectedFilters(selected =>
+            selected.includes(title) ? selected.filter(filter => filter !== title) : [...selected, title],
+        );
+    }, []);
+
     if (!isStoryPrepared) {
         return (
             <LoadingWrapper>
@@ -177,6 +244,83 @@ export function TokensPanel() {
         );
     }
 
+    const renderTokens = (groups: TokenGroup[]) => (
+        <TokenList
+            groups={groups}
+            onResetToken={handleResetToken}
+            onUpdateToken={handleUpdateToken}
+            resolvedTokenValues={resolvedTokenValues}
+            tokenOverrides={tokenOverrides}
+        />
+    );
+
+    const filteredGroups = PROPOSAL_TOKEN_GROUPS.filter(
+        group => selectedFilters.length === 0 || selectedFilters.includes(group.title),
+    );
+
+    return (
+        <TabsView
+            defaultSelected="proposal"
+            tabs={[
+                {
+                    children: (
+                        <>
+                            <IntentFilters aria-label="Filter tokens by intent" role="group">
+                                {PROPOSAL_TOKEN_GROUPS.map(group => {
+                                    const solidRestToken = group.names.find(name =>
+                                        name.endsWith("-background-solid-rest"),
+                                    );
+                                    // The manager doesn't inherit the preview iframe's CSS variables.
+                                    const color =
+                                        solidRestToken === undefined ? undefined : resolvedTokenValues[solidRestToken];
+                                    const isSelected = selectedFilters.includes(group.title);
+
+                                    return (
+                                        <IntentFilter
+                                            key={group.title}
+                                            active={isSelected}
+                                            aria-pressed={isSelected}
+                                            ariaLabel={false}
+                                            onClick={handleToggleFilter}
+                                            size="small"
+                                            style={{
+                                                backgroundColor:
+                                                    isSelected && color !== undefined
+                                                        ? `color-mix(in srgb, ${color} 15%, transparent)`
+                                                        : undefined,
+                                                border: `solid 2px ${color}`,
+                                                color,
+                                            }}
+                                            value={group.title}
+                                            variant="outline"
+                                        >
+                                            {isSelected && <span aria-hidden={true}>✓</span>}
+                                            {group.title}
+                                        </IntentFilter>
+                                    );
+                                })}
+                            </IntentFilters>
+                            {renderTokens(filteredGroups)}
+                        </>
+                    ),
+                    id: "proposal",
+                    title: "Proposal",
+                },
+                { children: renderTokens([{ names: EXISTING_TOKEN_NAMES }]), id: "existing", title: "Existing" },
+            ]}
+        />
+    );
+}
+
+interface TokenListProps {
+    groups: TokenGroup[];
+    onResetToken: TokenRowProps["onResetToken"];
+    onUpdateToken: TokenRowProps["onUpdateToken"];
+    resolvedTokenValues: Partial<TokenValues>;
+    tokenOverrides: Partial<TokenValues>;
+}
+
+function TokenList({ groups, onResetToken, onUpdateToken, resolvedTokenValues, tokenOverrides }: TokenListProps) {
     return (
         <TableWrapper>
             <TokensTable>
@@ -187,17 +331,27 @@ export function TokensPanel() {
                         <th aria-label="Reset" />
                     </tr>
                 </thead>
-                <tbody>
-                    {TOKEN_NAMES.map(name => (
-                        <TokenRow
-                            key={name}
-                            name={name}
-                            onResetToken={handleResetToken}
-                            onUpdateToken={handleUpdateToken}
-                            overrideValue={tokenOverrides[name]}
-                        />
-                    ))}
-                </tbody>
+                {groups.map(({ names, title }) => (
+                    <tbody key={title ?? "existing"}>
+                        {title !== undefined && (
+                            <tr>
+                                <th colSpan={3} scope="rowgroup">
+                                    {title}
+                                </th>
+                            </tr>
+                        )}
+                        {names.map(name => (
+                            <TokenRow
+                                key={name}
+                                name={name}
+                                onResetToken={onResetToken}
+                                onUpdateToken={onUpdateToken}
+                                overrideValue={tokenOverrides[name]}
+                                resolvedValue={resolvedTokenValues[name]}
+                            />
+                        ))}
+                    </tbody>
+                ))}
             </TokensTable>
         </TableWrapper>
     );
