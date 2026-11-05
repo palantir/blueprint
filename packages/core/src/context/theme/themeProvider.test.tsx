@@ -2,7 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, renderHook, screen } from "@testing-library/react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
@@ -26,16 +26,13 @@ describe("ThemeProvider", () => {
         { borderRadius: 8, version: 1 },
         { fontFamily: null, version: 1 },
         { fontFamily: ["Arial"], version: 1 },
-    ])("clears overrides for an invalid representation: %j", representation => {
-        function Consumer() {
-            return <span>{JSON.stringify(useBlueprintTheme())}</span>;
-        }
-        render(
-            <ThemeProvider themesByVersion={{ "1": representation }}>
-                <Consumer />
-            </ThemeProvider>,
-        );
-        expect(screen.getByText("{}")).toBeInTheDocument();
+    ])("provides no overrides for an invalid representation: %j", representation => {
+        const { result } = renderHook(() => useBlueprintTheme(), {
+            wrapper: ({ children }) => (
+                <ThemeProvider themesByVersion={{ "1": representation }}>{children}</ThemeProvider>
+            ),
+        });
+        expect(result.current).toEqual({});
     });
 
     it("exposes v1 tokens without adding a DOM wrapper or inspecting future versions", () => {
