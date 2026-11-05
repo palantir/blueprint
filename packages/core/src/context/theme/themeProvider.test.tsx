@@ -7,7 +7,7 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Portal } from "../../components/portal/portal";
-import { THEME_API_VERSION, type ThemeAPI } from "../../theme";
+import type { ThemeAPI } from "../../theme";
 import { BlueprintProvider } from "../blueprintProvider";
 
 import { ThemeProvider, type ThemeRepresentations } from "./themeProvider";
@@ -89,7 +89,7 @@ describe("ThemeProvider", () => {
     });
 
     it("accepts and clears a directly authored theme through BlueprintProvider", () => {
-        const theme: ThemeAPI = { borderRadius: "4px", version: THEME_API_VERSION };
+        const theme: ThemeAPI = { borderRadius: "4px", version: 1 };
         const view = (value?: ThemeAPI) => (
             <BlueprintProvider theme={value}>
                 <Portal>

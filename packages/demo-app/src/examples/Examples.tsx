@@ -15,8 +15,9 @@
  */
 
 import classNames from "classnames";
+import { useCallback, useState } from "react";
 
-import { Classes } from "@blueprintjs/core";
+import { BlueprintProvider, Classes, H4, Switch, type ThemeAPI, useBlueprintTheme } from "@blueprintjs/core";
 
 import { BoxExample } from "./BoxExample";
 import { BreadcrumbExample } from "./BreadcrumbExample";
@@ -49,11 +50,28 @@ import { ToastExample } from "./ToastExample";
 import { TooltipExample } from "./TooltipExample";
 import { TreeExample } from "./TreeExample";
 
+const CUSTOM_THEME: ThemeAPI = {
+    borderRadius: "16px",
+    fontFamily: "Courier New",
+    version: 1,
+};
+
 export const Examples: React.FC = () => {
+    const [enabled, setEnabled] = useState(false);
+    const toggleTheme = useCallback(() => setEnabled(value => !value), []);
+
     return (
-        <div className="examples-root">
-            <ExamplesContainer />
-            <ExamplesContainer isDark={true} />
+        <div>
+            <div className="theme-override-panel">
+                <H4>Theme Overrides Example</H4>
+                <Switch checked={enabled} label="Enable custom theme" onChange={toggleTheme} />
+            </div>
+            <div className="examples-panel">
+                <BlueprintProvider theme={enabled ? CUSTOM_THEME : undefined}>
+                    <ExamplesContainer />
+                    <ExamplesContainer isDark={true} />
+                </BlueprintProvider>
+            </div>
         </div>
     );
 };
@@ -61,9 +79,10 @@ export const Examples: React.FC = () => {
 Examples.displayName = "DemoApp.Examples";
 
 const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {
+    const themeOverrides = useBlueprintTheme();
     const className = isDark ? Classes.DARK : undefined;
     return (
-        <div className={classNames("examples-container", className)}>
+        <div style={themeOverrides} className={classNames("examples-container", className)}>
             <BoxExample />
             <BreadcrumbExample />
             <ButtonExample />
