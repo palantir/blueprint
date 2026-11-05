@@ -66,9 +66,6 @@
             "normal": { "$value": "{palette.light-gray.5}" },
             "soft": { "$value": "{palette.light-gray.1}" },
             "strong": { "$value": "{palette.white}" }
-        },
-        "graphic": {
-            "accent": { "$value": "{palette.gray.3}" }
         }
     }
 }
