@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "[FocusStyleManager] Hide focus styles immediately when `onlyShowFocusOnTabs` is enabled, instead of waiting for the first mouse interaction"
+  links:
+  - https://github.com/palantir/blueprint/pull/8161
