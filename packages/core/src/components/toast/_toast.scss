@@ -70,7 +70,7 @@ $toast-intent-colors: (
       outline-color: rgba($text-and-focus-color, 0.75);
     }
 
-    &:last-child > .#{$ns}-icon-cross {
+    &:last-child > .#{$ns}-icon-x {
       color: rgba($text-and-focus-color, 0.7) !important;
     }
   }
