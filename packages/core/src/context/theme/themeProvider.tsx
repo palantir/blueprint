@@ -54,16 +54,16 @@ const themeTokenMap = {
  * The inputs are mutually exclusive. Omitting both, or providing an invalid matching theme, clears overrides.
  */
 export function ThemeProvider({ children, theme, themesByVersion }: React.PropsWithChildren<ThemeProviderProps>) {
-    const tokens = useMemo(() => {
+    const themeOverrides = useMemo(() => {
         const selectedTheme = parseTheme(theme ?? themesByVersion?.[THEME_API_VERSION]);
         return selectedTheme == null ? {} : customThemeToBlueprintTokens(selectedTheme);
     }, [theme, themesByVersion]);
 
-    return <BlueprintThemeContext.Provider value={tokens}>{children}</BlueprintThemeContext.Provider>;
+    return <BlueprintThemeContext.Provider value={themeOverrides}>{children}</BlueprintThemeContext.Provider>;
 }
 
 function customThemeToBlueprintTokens(theme: ThemeAPI): BlueprintThemeTokens {
-    const tokens: Partial<Record<`--bp-${string}`, string>> = {};
+    const tokens: Record<`--bp-${string}`, string> = {};
     for (const key of Object.keys(themeTokenMap) as Array<keyof typeof themeTokenMap>) {
         const value = theme[key];
         if (value != null) {

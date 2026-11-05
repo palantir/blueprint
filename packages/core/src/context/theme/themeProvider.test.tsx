@@ -6,6 +6,7 @@ import { render, screen } from "@testing-library/react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
+import { Classes } from "../../common";
 import { Portal } from "../../components/portal/portal";
 import type { ThemeAPI } from "../../theme";
 import { BlueprintProvider } from "../blueprintProvider";
@@ -72,6 +73,8 @@ describe("ThemeProvider", () => {
         const input = screen.getByRole("textbox");
         const root = input.parentElement!;
         expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("8px");
+        expect(root).toHaveClass(Classes.THEME_ROOT);
+        expect(root.style.getPropertyValue("--bp-typography-family-default")).toBe("Arial");
         expect(document.body.style.getPropertyValue("--bp-surface-border-radius")).toBe("");
         root.style.setProperty("--unrelated", "keep");
 

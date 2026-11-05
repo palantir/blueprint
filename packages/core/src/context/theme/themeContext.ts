@@ -4,6 +4,6 @@
 
 import { createContext } from "react";
 
-export type BlueprintThemeTokens = Readonly<Partial<Record<`--bp-${string}`, string>>>;
+export type BlueprintThemeTokens = Readonly<Record<`--bp-${string}`, string>>;
 
 export const BlueprintThemeContext = createContext<BlueprintThemeTokens>({});

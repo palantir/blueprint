@@ -52,7 +52,7 @@ import { TreeExample } from "./TreeExample";
 
 const CUSTOM_THEME: ThemeAPI = {
     borderRadius: "16px",
-    fontFamily: "Courier New",
+    fontFamily: "cursive",
     version: 1,
 };
 
@@ -61,7 +61,7 @@ export const Examples: React.FC = () => {
     const toggleTheme = useCallback(() => setEnabled(value => !value), []);
 
     return (
-        <div>
+        <div className="examples-root">
             <div className="theme-override-panel">
                 <H4>Theme Overrides Example</H4>
                 <Switch checked={enabled} label="Enable custom theme" onChange={toggleTheme} />
@@ -82,7 +82,7 @@ const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) =
     const themeOverrides = useBlueprintTheme();
     const className = isDark ? Classes.DARK : undefined;
     return (
-        <div style={themeOverrides} className={classNames("examples-container", className)}>
+        <div style={themeOverrides} className={classNames("examples-container", Classes.THEME_ROOT, className)}>
             <BoxExample />
             <BreadcrumbExample />
             <ButtonExample />

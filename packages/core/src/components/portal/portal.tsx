@@ -75,7 +75,7 @@ export function Portal(
         const previous = Object.entries(context.portalTheme ?? {}).map(([name, value]) => {
             const previousValue = portalElement.style.getPropertyValue(name);
             const priority = portalElement.style.getPropertyPriority(name);
-            portalElement.style.setProperty(name, value!);
+            portalElement.style.setProperty(name, value);
             return { name, previousValue, priority };
         });
         return () => {
@@ -91,7 +91,7 @@ export function Portal(
 
     const createPortalElement = useCallback(() => {
         const newPortalElement = document.createElement("div");
-        newPortalElement.classList.add(Classes.PORTAL);
+        newPortalElement.classList.add(Classes.PORTAL, Classes.THEME_ROOT);
         maybeAddClass(newPortalElement.classList, className); // directly added to this portal element
         maybeAddClass(newPortalElement.classList, context.portalClassName); // added via PortalProvider context
         addStopPropagationListeners(newPortalElement, stopPropagationEvents);

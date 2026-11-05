@@ -99,6 +99,11 @@ Styleguide ui-text
   @include base-typography;
 }
 
+// Inherited font-family is computed at body; resolve the token again where scoped overrides are applied.
+.#{$ns}-theme-root {
+  font-family: var(--bp-typography-family-default);
+}
+
 .#{$ns}-monospace-text {
   @include monospace-typography;
 }
