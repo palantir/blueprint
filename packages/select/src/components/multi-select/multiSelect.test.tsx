@@ -140,6 +140,17 @@ describe("<MultiSelect>", () => {
         },
     );
 
+    it("keeps input empty when controlled `query` prop rejects a change", () => {
+        const wrapper = multiselect({ query: "" });
+
+        const input = wrapper.find("input");
+        input.simulate("change", { target: { value: "a" } });
+
+        // the parent ignores `onQueryChange` and keeps passing `query=""`,
+        // so the input re-syncs to the controlled prop instead of drifting
+        expect(wrapper.find("input").prop("value")).toBe("");
+    });
+
     it("allows searching within popover content when custom target provided", async () => {
         // Mount to document for this test to check from input focus
         const containerElement = document.createElement("div");
@@ -177,6 +188,11 @@ describe("<MultiSelect>", () => {
         }
 
         input.simulate("change", { target: { value: "Hello World" } });
+        expect(handleQueryChange.calledWith("Hello World")).toBe(true);
+
+        // a controlled parent accepts the change and echoes it back through the `query` prop
+        wrapper.setProps({ query: "Hello World" });
+        wrapper.update();
 
         input = wrapper.find("input");
         expect(input.prop("value")).toBe("Hello World");
