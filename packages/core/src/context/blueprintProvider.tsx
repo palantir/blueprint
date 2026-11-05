@@ -17,7 +17,7 @@
 import { HotkeysProvider, type HotkeysProviderProps } from "./hotkeys/hotkeysProvider";
 import { OverlaysProvider, type OverlaysProviderProps } from "./overlays/overlaysProvider";
 import { type PortalContextOptions, PortalProvider } from "./portal/portalProvider";
-import { BlueprintThemeProvider, type BlueprintThemeProviderProps } from "./theme/themeProvider";
+import { ThemeProvider, type ThemeProviderProps } from "./theme/themeProvider";
 
 // for some props interfaces, it helps to prefix their property names with the name of the provider
 // to avoid any ambiguity in the API
@@ -26,7 +26,7 @@ type HotkeysProviderPrefix<T> = {
 };
 
 export type BlueprintProviderProps = OverlaysProviderProps &
-    BlueprintThemeProviderProps &
+    ThemeProviderProps &
     PortalContextOptions &
     HotkeysProviderPrefix<HotkeysProviderProps>;
 
@@ -45,7 +45,7 @@ export const BlueprintProvider = ({
     ...themeProps
 }: BlueprintProviderProps) => {
     return (
-        <BlueprintThemeProvider {...themeProps}>
+        <ThemeProvider {...themeProps}>
             <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
                 <OverlaysProvider>
                     <HotkeysProvider
@@ -57,6 +57,6 @@ export const BlueprintProvider = ({
                     </HotkeysProvider>
                 </OverlaysProvider>
             </PortalProvider>
-        </BlueprintThemeProvider>
+        </ThemeProvider>
     );
 };

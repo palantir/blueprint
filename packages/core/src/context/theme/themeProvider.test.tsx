@@ -10,9 +10,33 @@ import { Portal } from "../../components/portal/portal";
 import { THEME_API_VERSION, type ThemeAPI } from "../../theme";
 import { BlueprintProvider } from "../blueprintProvider";
 
-import { BlueprintThemeProvider, type ThemeRepresentations, useBlueprintTheme } from "./themeProvider";
+import { ThemeProvider, type ThemeRepresentations } from "./themeProvider";
+import { useBlueprintTheme } from "./useBlueprintTheme";
 
-describe("BlueprintThemeProvider", () => {
+describe("ThemeProvider", () => {
+    it.each([
+        undefined,
+        null,
+        [],
+        "theme",
+        {},
+        { version: "1" },
+        { version: 2 },
+        { borderRadius: 8, version: 1 },
+        { fontFamily: null, version: 1 },
+        { fontFamily: ["Arial"], version: 1 },
+    ])("clears overrides for an invalid representation: %j", representation => {
+        function Consumer() {
+            return <span>{JSON.stringify(useBlueprintTheme())}</span>;
+        }
+        render(
+            <ThemeProvider themesByVersion={{ "1": representation }}>
+                <Consumer />
+            </ThemeProvider>,
+        );
+        expect(screen.getByText("{}")).toBeInTheDocument();
+    });
+
     it("exposes v1 tokens without adding a DOM wrapper or inspecting future versions", () => {
         const themes = {
             "1": { borderRadius: "8px", fontFamily: "Arial", futureField: true, version: 1 },
@@ -25,9 +49,9 @@ describe("BlueprintThemeProvider", () => {
             return <div data-testid="root" style={tokens} />;
         }
         const { container } = render(
-            <BlueprintThemeProvider themesByVersion={themes}>
+            <ThemeProvider themesByVersion={themes}>
                 <Consumer />
-            </BlueprintThemeProvider>,
+            </ThemeProvider>,
         );
         const root = screen.getByTestId("root");
         expect(container.firstElementChild).toBe(root);

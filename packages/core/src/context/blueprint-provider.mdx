@@ -79,7 +79,7 @@ versions, and converts it to tokens. Missing or invalid matching entries clear t
 `theme` and `themesByVersion` are mutually exclusive. Omitting both clears overrides. Both inputs
 convert `borderRadius` and `fontFamily` to Blueprint CSS tokens and use the same runtime validation.
 
-`BlueprintThemeProvider` can also be used independently. Place `PortalProvider` below it to propagate
+`ThemeProvider` can also be used independently. Place `PortalProvider` below it to propagate
 the tokens to portals. A nested theme provider replaces the theme for its consumers; clearing context
 does not reset CSS variables inherited from a themed DOM ancestor.
 
