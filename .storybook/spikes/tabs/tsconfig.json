@@ -1,0 +1,9 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "paths": {
+            "@blueprintjs/core": ["../../../packages/core/lib/esm"]
+        }
+    },
+    "include": ["./**/*.ts", "./**/*.tsx", "./**/*.mts", "../../tokens/TokensPanel.tsx"]
+}

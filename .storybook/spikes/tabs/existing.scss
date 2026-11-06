@@ -1,0 +1,26 @@
+@import "foundation";
+@import "fixtures/existing-tabs";
+
+// Fixture equivalents of the three new leaves in fixtures/existing.patch.
+:root {
+  --bp-typography-color-link: var(--bp-intent-primary-hover);
+  --bp-typography-color-muted-disabled: color-mix(
+    in srgb,
+    var(--bp-intent-default-rest) 60%,
+    transparent
+  );
+  --bp-surface-background-color-primary-selected: color-mix(
+    in srgb,
+    var(--bp-intent-primary-rest) 20%,
+    transparent
+  );
+}
+
+.#{$ns}-dark {
+  --bp-typography-color-link: var(--bp-palette-blue-5);
+  --bp-typography-color-muted-disabled: color-mix(
+    in srgb,
+    var(--bp-palette-gray-4) 60%,
+    transparent
+  );
+}

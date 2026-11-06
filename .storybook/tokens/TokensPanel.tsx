@@ -11,14 +11,9 @@ import { IconButton, Loader } from "storybook/internal/components";
 import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
-import {
-    type ColorTokenEditor,
-    type RangeTokenEditor,
-    TOKEN_CONFIG,
-    TOKEN_NAMES,
-    type TokenName,
-    type TokenValues,
-} from "./tokens";
+import { getTabsTokenEditors } from "../spikes/tabs/themeTokens";
+
+import { type ColorTokenEditor, type RangeTokenEditor, TOKEN_CONFIG, type TokenEditor } from "./tokens";
 
 const LoadingWrapper = styled.div({
     alignItems: "center",
@@ -56,14 +51,14 @@ const TokenNameLabel = styled.code({ whiteSpace: "nowrap" });
 const ResetGlyph = styled.span({ fontSize: 16, lineHeight: 1 });
 
 interface TokenRowProps {
-    name: TokenName;
-    onResetToken: (name: TokenName) => void;
-    onUpdateToken: (name: TokenName, value: string | undefined) => void;
+    editor: TokenEditor;
+    name: string;
+    onResetToken: (name: string) => void;
+    onUpdateToken: (name: string, value: string | undefined) => void;
     overrideValue: string | undefined;
 }
 
-function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
-    const editor = TOKEN_CONFIG[name];
+function TokenRow({ editor, name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
     const hasOverride = overrideValue !== undefined && overrideValue !== "";
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
@@ -111,7 +106,7 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
 
 interface TokenControlProps<TEditor> {
     editor: TEditor;
-    name: TokenName;
+    name: string;
     onChange: (value: string | undefined) => void;
     overrideValue: string | undefined;
 }
@@ -129,7 +124,8 @@ function ColorTokenControl({ editor, name, onChange, overrideValue }: TokenContr
 }
 
 function RangeTokenControl({ editor, name, onChange, overrideValue }: TokenControlProps<RangeTokenEditor>) {
-    const controlValue = overrideValue === undefined ? undefined : editor.toControlValue(overrideValue);
+    const cssValue = overrideValue || editor.defaultCssValue;
+    const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
         (value: number | null | undefined) => onChange(value == null ? undefined : editor.toCssValue(value)),
         [editor, onChange],
@@ -142,14 +138,17 @@ export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const tokenOverrides: Partial<TokenValues> = React.useMemo(
+    const tokenOverrides: Record<string, string | undefined> = React.useMemo(
         () => globals.tokenOverrides ?? {},
         [globals.tokenOverrides],
     );
+    const tokenEditors = storyId?.startsWith("spikes-tabs-token-comparison--")
+        ? { ...getTabsTokenEditors(globals.theme === "dark"), ...TOKEN_CONFIG }
+        : TOKEN_CONFIG;
 
     const handleUpdateToken = React.useCallback(
-        (name: TokenName, value: string | undefined) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
+        (name: string, value: string | undefined) => {
+            const overrides = { ...tokenOverrides };
             if (value === undefined) {
                 delete overrides[name];
             } else {
@@ -161,8 +160,8 @@ export function TokensPanel() {
     );
 
     const handleResetToken = React.useCallback(
-        (name: TokenName) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
+        (name: string) => {
+            const overrides = { ...tokenOverrides };
             delete overrides[name];
             updateGlobals({ tokenOverrides: overrides });
         },
@@ -188,8 +187,9 @@ export function TokensPanel() {
                     </tr>
                 </thead>
                 <tbody>
-                    {TOKEN_NAMES.map(name => (
+                    {Object.entries(tokenEditors).map(([name, editor]) => (
                         <TokenRow
+                            editor={editor}
                             key={name}
                             name={name}
                             onResetToken={handleResetToken}

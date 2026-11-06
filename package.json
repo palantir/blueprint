@@ -33,8 +33,9 @@
         "site:clean": "git clean -xdfq site/",
         "test": "nx run-many -t test",
         "verify": "npm-run-all -s compile dist -p test lint format-check",
-        "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build --stats-json",
+        "storybook:spike-styles": "pnpm --filter @blueprintjs/core build:tokens && node .storybook/spikes/tabs/build-styles.mjs",
+        "storybook": "pnpm storybook:spike-styles && storybook dev -p 6006",
+        "build-storybook": "pnpm storybook:spike-styles && storybook build --stats-json",
         "chromatic": "chromatic",
         "prepare": "husky"
     },
