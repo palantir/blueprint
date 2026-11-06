@@ -232,6 +232,15 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
             timePrecision === TimePrecision.SECOND ||
             timePrecision === TimePrecision.MILLISECOND;
 
+        // On a range within a single day the end time cannot be earlier than the start time, so each time picker is
+        // limited by the time of the other one. Bounds set through `timePickerProps` still apply.
+        const [start, end] = this.state.value;
+        const isSingleDayRange = start != null && end != null && DateUtils.isSameDay(start, end);
+        const startMaxTime = isSingleDayRange
+            ? getEarlierTime(timePickerProps?.maxTime, end)
+            : timePickerProps?.maxTime;
+        const endMinTime = isSingleDayRange ? getLaterTime(timePickerProps?.minTime, start) : timePickerProps?.minTime;
+
         return (
             <div
                 className={classNames(Classes.DATERANGEPICKER_TIMEPICKERS, {
@@ -241,12 +250,14 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
                 <TimePicker
                     precision={timePrecision}
                     {...timePickerProps}
+                    maxTime={startMaxTime}
                     onChange={this.handleTimeChangeLeftCalendar}
                     value={this.state.time[0]}
                 />
                 <TimePicker
                     precision={timePrecision}
                     {...timePickerProps}
+                    minTime={endMinTime}
                     onChange={this.handleTimeChangeRightCalendar}
                     value={this.state.time[1]}
                 />
@@ -423,12 +434,30 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         selectedRange[0] = DateUtils.getDateTime(selectedRange[0], selectedTimeRange[0]);
         selectedRange[1] = DateUtils.getDateTime(selectedRange[1], selectedTimeRange[1]);
 
+        const [start, end] = selectedRange;
+        if (start != null && end != null && DateUtils.isSameDay(start, end) && end < start) {
+            // A range within a single day cannot end before it starts. Keep the earlier time first, which is also
+            // the order the time pickers limit each other to.
+            selectedRange = [end, start];
+            selectedTimeRange = [selectedTimeRange[1], selectedTimeRange[0]];
+        }
+
         if (this.props.value == null) {
             // uncontrolled range selection
             this.setState({ time: selectedTimeRange, value: selectedRange });
         }
         this.props.onChange?.(selectedRange);
     };
+}
+
+/** Returns the date with the earlier time of day, ignoring the day. `a` is optional so that it can be a prop. */
+function getEarlierTime(a: Date | undefined, b: Date): Date {
+    return a != null && !DateUtils.isTimeSameOrAfter(a, b) ? a : b;
+}
+
+/** Returns the date with the later time of day, ignoring the day. `a` is optional so that it can be a prop. */
+function getLaterTime(a: Date | undefined, b: Date): Date {
+    return a != null && DateUtils.isTimeSameOrAfter(a, b) ? a : b;
 }
 
 function getIsSingleMonthOnly(props: DateRangePickerProps): boolean {
