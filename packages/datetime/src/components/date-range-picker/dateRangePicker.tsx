@@ -16,6 +16,7 @@
 
 import classNames from "classnames";
 import { addDays, format } from "date-fns";
+import { createRef } from "react";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
 import { Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
@@ -60,6 +61,8 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
+
+    private timePickerRefs = [createRef<TimePicker>(), createRef<TimePicker>()];
 
     // these will get merged with the user's own
     private modifiers: DayModifiers = {
@@ -242,12 +245,14 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
                     precision={timePrecision}
                     {...timePickerProps}
                     onChange={this.handleTimeChangeLeftCalendar}
+                    ref={this.timePickerRefs[0]}
                     value={this.state.time[0]}
                 />
                 <TimePicker
                     precision={timePrecision}
                     {...timePickerProps}
                     onChange={this.handleTimeChangeRightCalendar}
+                    ref={this.timePickerRefs[1]}
                     value={this.state.time[1]}
                 />
             </div>
@@ -266,6 +271,21 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         newDateRange[dateIndex] = newValue;
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
+
+        const otherIndex = dateIndex === 0 ? 1 : 0;
+        const otherTime = this.timePickerRefs[otherIndex].current?.state.value;
+        if (
+            this.props.allowSingleDayRange &&
+            value[dateIndex] != null &&
+            value[otherIndex] == null &&
+            otherTime != null
+        ) {
+            const otherValue = DateUtils.getDateTime(newValue, otherTime);
+            if (!DateUtils.isSameTime(newValue, otherValue)) {
+                newDateRange[otherIndex] = otherValue;
+                newTimeRange[otherIndex] = otherValue;
+            }
+        }
 
         this.props.onChange?.(newDateRange);
         this.setState({ time: newTimeRange, value: newDateRange });

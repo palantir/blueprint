@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+import { fireEvent, render as renderWithTestingLibrary, screen } from "@testing-library/react";
 import { addDays, format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
+import { useState } from "react";
 import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
 
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
@@ -1490,6 +1492,170 @@ describe("<DateRangePicker>", () => {
         };
         /* eslint-enable sort-keys */
         return harness;
+    }
+});
+
+describe("<DateRangePicker> partial-range time selection", () => {
+    const selectedDate = new Date(2024, 0, 10);
+    const defaultTime = new Date(2024, 0, 10, 17);
+    const pickerProps: DateRangePickerProps = {
+        allowSingleDayRange: true,
+        defaultValue: [new Date(2024, 0, 10, 8), null],
+        initialMonth: selectedDate,
+        locale: enUSLocale,
+        shortcuts: false,
+        singleMonthOnly: true,
+        timePickerProps: { defaultValue: defaultTime },
+        timePrecision: "minute",
+    };
+
+    it("completes a clicked date when its start time changes", async () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(<DateRangePicker {...pickerProps} defaultValue={undefined} onChange={onChange} />);
+
+        fireEvent.click(await screen.findByRole("gridcell", { name: "10" }));
+        expect(onChange).toHaveBeenLastCalledWith([selectedDate, null]);
+
+        changeHour(0, 9);
+
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), defaultTime]);
+        expect(screen.getAllByLabelText("hours (24hr clock)")[1]).toHaveValue(17);
+    });
+
+    it.each<{
+        description: string;
+        expectedRange: DateRange;
+        hour: number;
+        props: DateRangePickerProps;
+    }>([
+        {
+            description: "keeps equal times partial",
+            expectedRange: [defaultTime, null],
+            hour: 17,
+            props: {},
+        },
+        {
+            description: "keeps single-day-disabled ranges partial",
+            expectedRange: [new Date(2024, 0, 10, 9), null],
+            hour: 9,
+            props: { allowSingleDayRange: false },
+        },
+        {
+            description: "uses displayed midnight for an unset end time",
+            expectedRange: [new Date(2024, 0, 10, 9), selectedDate],
+            hour: 9,
+            props: { timePickerProps: undefined },
+        },
+        {
+            description: "uses the displayed minimum time",
+            expectedRange: [new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 7)],
+            hour: 9,
+            props: { timePickerProps: { minTime: new Date(2024, 0, 10, 7) } },
+        },
+        {
+            description: "keeps equal clamped times partial",
+            expectedRange: [new Date(2024, 0, 10, 9), null],
+            hour: 9,
+            props: { timePickerProps: { defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 9) } },
+        },
+        {
+            description: "uses the displayed clamped end time",
+            expectedRange: [new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 10)],
+            hour: 9,
+            props: { timePickerProps: { defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 10) } },
+        },
+        {
+            description: "preserves an existing multi-day end date",
+            expectedRange: [new Date(2024, 0, 10, 9), new Date(2024, 0, 12, 17)],
+            hour: 9,
+            props: { defaultValue: [new Date(2024, 0, 10, 8), new Date(2024, 0, 12, 17)] },
+        },
+    ])("$description", ({ expectedRange, hour, props }) => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(<DateRangePicker {...pickerProps} {...props} onChange={onChange} />);
+
+        changeHour(0, hour);
+
+        expect(onChange).toHaveBeenLastCalledWith(expectedRange);
+    });
+
+    it("completes an end-only date when its end time changes", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(
+            <DateRangePicker
+                {...pickerProps}
+                defaultValue={[null, defaultTime]}
+                onChange={onChange}
+                timePickerProps={{ defaultValue: new Date(2024, 0, 10, 9) }}
+            />,
+        );
+
+        changeHour(1, 18);
+
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 18)]);
+    });
+
+    it("does not infer both dates when no date has been selected", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(<DateRangePicker {...pickerProps} defaultValue={[null, null]} onChange={onChange} />);
+
+        changeHour(0, 9);
+
+        expect(onChange).toHaveBeenLastCalledWith([expect.any(Date), null]);
+    });
+
+    it("uses the time still displayed after time bounds change", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        const { rerender } = renderWithTestingLibrary(
+            <DateRangePicker
+                {...pickerProps}
+                onChange={onChange}
+                timePickerProps={{ defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 10) }}
+            />,
+        );
+        rerender(
+            <DateRangePicker
+                {...pickerProps}
+                onChange={onChange}
+                timePickerProps={{ defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 18) }}
+            />,
+        );
+        expect(screen.getAllByLabelText("hours (24hr clock)")[1]).toHaveValue(10);
+
+        changeHour(0, 10);
+
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 10), null]);
+    });
+
+    it("retains inferred times through controlled updates", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        function ControlledPicker() {
+            const [value, setValue] = useState<DateRange>([new Date(2024, 0, 10, 8), null]);
+            return (
+                <DateRangePicker
+                    {...pickerProps}
+                    defaultValue={undefined}
+                    onChange={range => {
+                        setValue(range);
+                        onChange(range);
+                    }}
+                    value={value}
+                />
+            );
+        }
+        renderWithTestingLibrary(<ControlledPicker />);
+
+        changeHour(0, 9);
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), defaultTime]);
+
+        changeHour(1, 18);
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 18)]);
+    });
+
+    function changeHour(index: number, hour: number) {
+        const input = screen.getAllByLabelText("hours (24hr clock)")[index];
+        fireEvent.change(input, { target: { value: hour.toString() } });
+        fireEvent.blur(input);
     }
 });
 
