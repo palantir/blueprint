@@ -1,0 +1,9 @@
+/*
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
+ */
+
+import { createContext } from "react";
+
+export type BlueprintThemeTokens = Readonly<Record<`--bp-${string}`, string>>;
+
+export const BlueprintThemeContext = createContext<BlueprintThemeTokens>({});

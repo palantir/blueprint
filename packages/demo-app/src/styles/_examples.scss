@@ -10,7 +10,14 @@ $dark-intent-success-text: $green5;
 $dark-intent-warning-text: $orange5;
 $dark-intent-danger-text: $red5;
 
-.examples-root {
+.theme-override-panel {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  padding: $pt-spacing * 2;
+}
+
+.examples-panel {
   align-items: center;
   display: flex;
   flex-direction: row;

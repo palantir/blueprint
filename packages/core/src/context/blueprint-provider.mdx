@@ -33,6 +33,65 @@ root.render(
 );
 ```
 
+## Theme overrides
+
+Use `theme` when authoring overrides against the `ThemeAPI` type exported by your installed Blueprint version. Import it for the
+accepted fields and its required literal `version` value. The schema version changes
+only for breaking Theme API changes, independently of the Blueprint package version.
+
+`BlueprintProvider` supplies these tokens to portals automatically. It does not add a DOM wrapper or
+style ordinary children; use `useBlueprintTheme()` to apply tokens and `Classes.THEME_ROOT` on your existing content root.
+The styles require Blueprint's token-based component styles.
+
+The theme-root class resolves `font-family` from the font token at the boundary. Descendants otherwise inherit
+the font already computed on `body`, which does not reevaluate when a nested element overrides the token.
+Portal roots apply this class automatically, so dialog content resolves the same scoped font override.
+
+```tsx
+import { BlueprintProvider, Classes, type ThemeAPI, useBlueprintTheme } from "@blueprintjs/core";
+
+const theme = {
+    version: 1,
+    borderRadius: "8px",
+    fontFamily: "Arial, sans-serif",
+} satisfies ThemeAPI;
+
+function Content() {
+    const tokens = useBlueprintTheme();
+    return (
+        <main className={Classes.THEME_ROOT} style={tokens}>
+            Application content
+        </main>
+    );
+}
+
+function App() {
+    return (
+        <BlueprintProvider theme={theme}>
+            <Content />
+        </BlueprintProvider>
+    );
+}
+```
+
+Use `themesByVersion` when the receiving Blueprint instance’s supported Theme API version is unknown, for example,
+when a host forwards theme overrides to an independently deployed widget. Provide the available representations
+keyed by schema version; the receiving provider selects the version it supports. Other versions are ignored.
+Missing or invalid matching entries clear the overrides.
+
+```tsx
+<BlueprintProvider themesByVersion={themesByVersion}>
+    <Content />
+</BlueprintProvider>
+```
+
+`theme` and `themesByVersion` are mutually exclusive. Omitting both clears overrides. Both inputs
+convert `borderRadius` and `fontFamily` to Blueprint CSS tokens and use the same runtime validation.
+
+`ThemeProvider` can also be used independently. Place `PortalProvider` below it to propagate
+the tokens to portals. A nested theme provider replaces the theme for its consumers; clearing context
+does not reset CSS variables inherited from a themed DOM ancestor.
+
 ## Usage with other providers
 
 If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest
