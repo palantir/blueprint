@@ -1,0 +1,8 @@
+type: fix
+fix:
+  description: >-
+    DateRangeInput supports Alt+ArrowDown to enter its calendar popup and restores
+    focus to the originating input on Escape, while preserving normal arrow-key
+    text selection and Tab navigation.
+  links:
+    - https://github.com/palantir/blueprint/pull/8286
