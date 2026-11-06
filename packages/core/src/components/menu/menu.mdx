@@ -89,3 +89,8 @@ The submenu opens to the right of its parent by default, but will adjust and fli
 room to the right.
 
 @reactCodeExample MenuSubmenuExample
+
+Set `popoverProps={{ safePolygon: true }}` on a parent **MenuItem** to keep its submenu open while the
+pointer moves diagonally toward it. To also prevent accidentally hovering neighboring items, use
+`popoverProps={{ safePolygon: { blockPointerEvents: true } }}`. See
+[PopoverNext safe polygons](#core/components/popover-next.safe-polygons) for the available options.
