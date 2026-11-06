@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Notify OverflowList consumers when all items fit or the overflowed items change without changing their count.
+  links:
+  - https://github.com/palantir/blueprint/pull/8292
