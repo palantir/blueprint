@@ -69,7 +69,7 @@ $track-height: $track-size !default;
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      background-color: var(--bp-#{$intent}-graphic-accent);
+      background-color: $color;
     }
   }
 
@@ -115,7 +115,7 @@ $track-height: $track-size !default;
   }
 
   .#{$ns}-dark & {
-    // Keep the handle's light appearance in dark mode.
+    // don't use pt-dark-button() here, since we want to appear more like a light theme button
     background-color: $gray4;
     box-shadow: $dark-button-box-shadow;
 

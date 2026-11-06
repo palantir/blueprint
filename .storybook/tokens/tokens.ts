@@ -124,16 +124,16 @@ export interface TokenGroup {
     title?: string;
 }
 
-export const PROPOSAL_TOKEN_GROUPS: TokenGroup[] = [
+export const PROPOSAL_TOKEN_GROUPS = [
     {
         names: PROPOSAL_TOKEN_NAMES.filter(name => !INTENTS.some(intent => name.startsWith(`--bp-${intent}-`))),
-        title: "Shared",
+        title: "No intent",
     },
     ...INTENTS.map(intent => ({
         names: PROPOSAL_TOKEN_NAMES.filter(name => name.startsWith(`--bp-${intent}-`)),
         title: intent[0].toUpperCase() + intent.slice(1),
     })),
-];
+] satisfies TokenGroup[];
 
 export const TOKEN_VALUES_REQUESTED = "tokens/values-requested";
 export const TOKEN_VALUES_UPDATED = "tokens/values-updated";

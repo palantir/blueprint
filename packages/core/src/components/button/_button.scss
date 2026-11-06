@@ -48,6 +48,10 @@
     }
   }
 
+  &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: var(--bp-primary-text-on-solid);
+  }
+
   // size modifiers
   &.#{$ns}-large,
   .#{$ns}-large & {
@@ -117,18 +121,34 @@
   .#{$ns}-dark &,
   [data-bp-color-scheme="dark"] & {
     &:not([class*="#{$ns}-intent-"]) {
-      @include pt-dark-button-shadows;
-
-      // Can we remove this exception??
-      #{$icon-classes} {
-        &:not([class*="#{$ns}-intent-"]) {
-          color: var(--bp-neutral-text-muted);
-        }
-      }
+      @include pt-dark-button;
     }
 
     &[class*="#{$ns}-intent-"] {
-      @include pt-dark-button-shadows($hover-shadow: $dark-button-box-shadow);
+      box-shadow:
+        inset 0 0 0 var(--bp-surface-border-width)
+          color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+
+      &:hover {
+        box-shadow:
+          inset 0 0 0 var(--bp-surface-border-width)
+            color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        box-shadow:
+          inset 0 0 0 var(--bp-surface-border-width)
+            color-mix(in oklch, var(--bp-surface-border-color-default) 50%, transparent),
+          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        box-shadow: none;
+      }
     }
   }
 
@@ -152,6 +172,25 @@
   &.#{$ns}-outlined {
     @include pt-button-minimal;
     @include pt-button-outlined;
+  }
+
+  // Not sure why this is needed instead of just using currentColor.
+  &.#{$ns}-intent-warning {
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+      fill: color-mix(in oklch, var(--bp-warning-text-on-solid) 70%, transparent);
+    }
+    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+      &:active,
+      &.#{$ns}-active {
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          background: highlight;
+        }
+      }
+    }
+
+
+
   }
 }
 

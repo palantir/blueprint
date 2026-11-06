@@ -7,7 +7,7 @@ import { ColorControl, RangeControl } from "@storybook/addon-docs/blocks";
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
 import React from "react";
-import { IconButton, Loader, TabsView } from "storybook/internal/components";
+import { Button, IconButton, Loader, TabsView } from "storybook/internal/components";
 import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
@@ -33,6 +33,19 @@ const LoadingWrapper = styled.div({
 });
 
 const TableWrapper = styled.div({ overflowX: "auto" });
+
+const IntentFilters = styled.div(({ theme }) => ({
+    display: "flex",
+    flexWrap: "wrap",
+    gap: theme.layoutMargin,
+    paddingBlock: theme.layoutMargin,
+    paddingInline: theme.layoutMargin * 1.5,
+}));
+
+const IntentFilter = styled(Button)({
+    // Keep rounded ends regardless of the label's width.
+    borderRadius: "999px",
+});
 
 const TokensTable = styled.table(({ theme }) => ({
     borderCollapse: "collapse",
@@ -169,6 +182,7 @@ export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
+    const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
     const [resolvedTokenValues, setResolvedTokenValues] = React.useState<Partial<TokenValues>>({});
     const emit = useChannel(
         {
@@ -215,6 +229,13 @@ export function TokensPanel() {
         [tokenOverrides, updateGlobals],
     );
 
+    const handleToggleFilter = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
+        const title = event.currentTarget.value;
+        setSelectedFilters(selected =>
+            selected.includes(title) ? selected.filter(filter => filter !== title) : [...selected, title],
+        );
+    }, []);
+
     if (!isStoryPrepared) {
         return (
             <LoadingWrapper>
@@ -233,11 +254,58 @@ export function TokensPanel() {
         />
     );
 
+    const filteredGroups = PROPOSAL_TOKEN_GROUPS.filter(
+        group => selectedFilters.length === 0 || selectedFilters.includes(group.title),
+    );
+
     return (
         <TabsView
             defaultSelected="proposal"
             tabs={[
-                { children: renderTokens(PROPOSAL_TOKEN_GROUPS), id: "proposal", title: "Proposal" },
+                {
+                    children: (
+                        <>
+                            <IntentFilters aria-label="Filter tokens by intent" role="group">
+                                {PROPOSAL_TOKEN_GROUPS.map(group => {
+                                    const solidRestToken = group.names.find(name =>
+                                        name.endsWith("-background-solid-rest"),
+                                    );
+                                    // The manager doesn't inherit the preview iframe's CSS variables.
+                                    const color =
+                                        solidRestToken === undefined ? undefined : resolvedTokenValues[solidRestToken];
+                                    const isSelected = selectedFilters.includes(group.title);
+
+                                    return (
+                                        <IntentFilter
+                                            key={group.title}
+                                            active={isSelected}
+                                            aria-pressed={isSelected}
+                                            ariaLabel={false}
+                                            onClick={handleToggleFilter}
+                                            size="small"
+                                            style={{
+                                                backgroundColor:
+                                                    isSelected && color !== undefined
+                                                        ? `color-mix(in srgb, ${color} 15%, transparent)`
+                                                        : undefined,
+                                                border: `solid 2px ${color}`,
+                                                color,
+                                            }}
+                                            value={group.title}
+                                            variant="outline"
+                                        >
+                                            {isSelected && <span aria-hidden={true}>✓</span>}
+                                            {group.title}
+                                        </IntentFilter>
+                                    );
+                                })}
+                            </IntentFilters>
+                            {renderTokens(filteredGroups)}
+                        </>
+                    ),
+                    id: "proposal",
+                    title: "Proposal",
+                },
                 { children: renderTokens([{ names: EXISTING_TOKEN_NAMES }]), id: "existing", title: "Existing" },
             ]}
         />

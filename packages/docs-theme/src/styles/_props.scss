@@ -79,7 +79,7 @@
   align-items: center;
   box-shadow: 0 1px 0 $pt-divider-black;
   display: flex;
-  font-family: $pt-font-family-monospace;
+  font-family: var(--bp-typography-family-mono);
   font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;

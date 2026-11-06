@@ -29,20 +29,7 @@
 }
 
 %pt-dark-select {
-  @include pt-dark-button-shadows;
-
-  &:disabled,
-  &.#{$ns}-disabled {
-    @include pt-button-disabled;
-
-    &.#{$ns}-active {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-neutral-background-subtle-active) calc(var(--bp-opacity-disabled) * 100%),
-        transparent
-      );
-    }
-  }
+  @include pt-dark-button;
 }
 
 %pt-select-disabled {
