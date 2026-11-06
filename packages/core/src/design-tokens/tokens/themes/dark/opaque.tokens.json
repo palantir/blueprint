@@ -64,7 +64,6 @@
         "text": {
             "muted": { "$value": "{palette.gray.4}" },
             "normal": { "$value": "{palette.light-gray.5}" },
-            "soft": { "$value": "{palette.light-gray.1}" },
             "strong": { "$value": "{palette.white}" }
         }
     }
