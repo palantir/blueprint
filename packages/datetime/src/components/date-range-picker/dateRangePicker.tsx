@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { addDays, format } from "date-fns";
+import { addDays, format, isSameMinute, isSameSecond } from "date-fns";
 import { createRef } from "react";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
@@ -266,22 +266,30 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         const newValue = DateUtils.getDateTime(
             value[dateIndex] != null ? DateUtils.clone(value[dateIndex]!) : this.getDefaultDate(dateIndex),
             newTime,
-        );
+        )!;
         const newDateRange: DateRange = [value[0], value[1]];
         newDateRange[dateIndex] = newValue;
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
 
         const otherIndex = dateIndex === 0 ? 1 : 0;
-        const otherTime = this.timePickerRefs[otherIndex].current?.state.value;
+        const otherTimePicker = this.timePickerRefs[otherIndex].current;
+        const otherTime = otherTimePicker?.state.value;
         if (
             this.props.allowSingleDayRange &&
             value[dateIndex] != null &&
             value[otherIndex] == null &&
             otherTime != null
         ) {
-            const otherValue = DateUtils.getDateTime(newValue, otherTime);
-            if (!DateUtils.isSameTime(newValue, otherValue)) {
+            const otherValue = DateUtils.getDateTime(newValue, otherTime)!;
+            const isSameDisplayedTime =
+                otherTimePicker?.props.precision === TimePrecision.MILLISECOND
+                    ? DateUtils.isSameTime(newValue, otherValue)
+                    : otherTimePicker?.props.precision === TimePrecision.SECOND
+                      ? isSameSecond(newValue, otherValue)
+                      : isSameMinute(newValue, otherValue);
+            const isRangeOrdered = dateIndex === 0 ? newValue < otherValue : otherValue < newValue;
+            if (isRangeOrdered && !isSameDisplayedTime) {
                 newDateRange[otherIndex] = otherValue;
                 newTimeRange[otherIndex] = otherValue;
             }

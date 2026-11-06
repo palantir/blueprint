@@ -1535,20 +1535,26 @@ describe("<DateRangePicker> partial-range time selection", () => {
             props: {},
         },
         {
+            description: "keeps a start edited after the displayed end partial",
+            expectedRange: [new Date(2024, 0, 10, 18), null],
+            hour: 18,
+            props: {},
+        },
+        {
             description: "keeps single-day-disabled ranges partial",
             expectedRange: [new Date(2024, 0, 10, 9), null],
             hour: 9,
             props: { allowSingleDayRange: false },
         },
         {
-            description: "uses displayed midnight for an unset end time",
-            expectedRange: [new Date(2024, 0, 10, 9), selectedDate],
+            description: "keeps a start after displayed midnight partial",
+            expectedRange: [new Date(2024, 0, 10, 9), null],
             hour: 9,
             props: { timePickerProps: undefined },
         },
         {
-            description: "uses the displayed minimum time",
-            expectedRange: [new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 7)],
+            description: "keeps a start after the displayed minimum time partial",
+            expectedRange: [new Date(2024, 0, 10, 9), null],
             hour: 9,
             props: { timePickerProps: { minTime: new Date(2024, 0, 10, 7) } },
         },
@@ -1579,7 +1585,112 @@ describe("<DateRangePicker> partial-range time selection", () => {
         expect(onChange).toHaveBeenLastCalledWith(expectedRange);
     });
 
-    it("completes an end-only date when its end time changes", () => {
+    it.each<{
+        description: string;
+        isComplete: boolean;
+        props: DateRangePickerProps;
+        seconds: number;
+    }>([
+        {
+            description: "ignores hidden seconds at minute precision",
+            isComplete: false,
+            props: { timePrecision: "minute" },
+            seconds: 30,
+        },
+        {
+            description: "ignores hidden milliseconds at second precision",
+            isComplete: false,
+            props: { timePrecision: "second" },
+            seconds: 0,
+        },
+        {
+            description: "completes ordered ranges with different visible seconds",
+            isComplete: true,
+            props: { timePrecision: "second" },
+            seconds: 30,
+        },
+        {
+            description: "completes ordered ranges with different visible milliseconds",
+            isComplete: true,
+            props: { timePrecision: "millisecond" },
+            seconds: 0,
+        },
+        {
+            description: "uses minute precision overriding root millisecond precision",
+            isComplete: false,
+            props: { timePickerProps: { precision: "minute" }, timePrecision: "millisecond" },
+            seconds: 30,
+        },
+        {
+            description: "uses millisecond precision overriding root minute precision",
+            isComplete: true,
+            props: { timePickerProps: { precision: "millisecond" }, timePrecision: "minute" },
+            seconds: 0,
+        },
+        {
+            description: "ignores hidden seconds at default minute precision",
+            isComplete: false,
+            props: { timePrecision: undefined },
+            seconds: 30,
+        },
+    ])("$description", ({ isComplete, props, seconds }) => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        const displayedEnd = new Date(2024, 0, 10, 17, 0, seconds, 500);
+        renderWithTestingLibrary(
+            <DateRangePicker
+                {...pickerProps}
+                {...props}
+                defaultValue={[new Date(2024, 0, 10, 8, 0, 0, 125), null]}
+                onChange={onChange}
+                timePickerProps={{ defaultValue: displayedEnd, ...props.timePickerProps }}
+            />,
+        );
+
+        changeHour(0, 17);
+
+        expect(onChange).toHaveBeenLastCalledWith([
+            new Date(2024, 0, 10, 17, 0, 0, 125),
+            isComplete ? displayedEnd : null,
+        ]);
+    });
+
+    it.each<{
+        description: string;
+        expectedStart: Date;
+        timePickerProps: DateRangePickerProps["timePickerProps"];
+    }>([
+        {
+            description: "default time",
+            expectedStart: new Date(2024, 0, 10, 9),
+            timePickerProps: { defaultValue: new Date(2024, 0, 10, 9) },
+        },
+        {
+            description: "minimum time",
+            expectedStart: new Date(2024, 0, 10, 7),
+            timePickerProps: { minTime: new Date(2024, 0, 10, 7) },
+        },
+        {
+            description: "midnight",
+            expectedStart: selectedDate,
+            timePickerProps: undefined,
+        },
+    ])("completes an end-only date using the displayed $description", ({ expectedStart, timePickerProps }) => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(
+            <DateRangePicker
+                {...pickerProps}
+                defaultValue={[null, defaultTime]}
+                onChange={onChange}
+                timePickerProps={timePickerProps}
+            />,
+        );
+
+        changeHour(1, 18);
+
+        expect(onChange).toHaveBeenLastCalledWith([expectedStart, new Date(2024, 0, 10, 18)]);
+    });
+
+    it("keeps an end-only date edited before the displayed start partial", () => {
         const onChange = vi.fn<(range: DateRange) => void>();
         renderWithTestingLibrary(
             <DateRangePicker
@@ -1590,9 +1701,9 @@ describe("<DateRangePicker> partial-range time selection", () => {
             />,
         );
 
-        changeHour(1, 18);
+        changeHour(1, 8);
 
-        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 18)]);
+        expect(onChange).toHaveBeenLastCalledWith([null, new Date(2024, 0, 10, 8)]);
     });
 
     it("does not infer both dates when no date has been selected", () => {
