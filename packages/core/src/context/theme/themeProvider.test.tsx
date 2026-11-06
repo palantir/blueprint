@@ -96,7 +96,7 @@ describe("ThemeProvider", () => {
     });
 
     it("accepts and clears a directly authored theme through BlueprintProvider", () => {
-        const theme: ThemeAPI = { borderRadius: "4px", version: 1 };
+        const theme: ThemeAPI = { borderRadius: "4.5px", version: 1 };
         const view = (value?: ThemeAPI) => (
             <BlueprintProvider theme={value}>
                 <Portal>
@@ -106,7 +106,7 @@ describe("ThemeProvider", () => {
         );
         const { rerender } = render(view(theme));
         const root = screen.getByText("Direct theme").parentElement!;
-        expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("4px");
+        expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("4.5px");
         rerender(view());
         expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("");
     });
