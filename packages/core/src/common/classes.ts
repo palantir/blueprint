@@ -353,6 +353,7 @@ export const TABS = `${TAB}s`;
 
 export const TAG = `${NS}-tag`;
 export const TAG_REMOVE = `${TAG}-remove`;
+export const TAG_CONTENT = `${TAG}-content`;
 export const COMPOUND_TAG = `${NS}-compound-tag`;
 export const COMPOUND_TAG_LEFT = `${COMPOUND_TAG}-left`;
 export const COMPOUND_TAG_LEFT_CONTENT = `${COMPOUND_TAG}-left-content`;

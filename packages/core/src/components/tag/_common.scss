@@ -148,7 +148,8 @@ $minimal-dark-tag-intent-colors: (
     padding-right: calc(var(--bp-surface-spacing) * 2);
   }
 
-  > #{$icon-classes} {
+  > #{$icon-classes},
+  > .#{$ns}-tag-content > #{$icon-classes} {
     fill: var(--bp-intent-default-foreground);
   }
 
@@ -200,7 +201,8 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin pt-tag-minimal() {
-  > #{$icon-classes} {
+  > #{$icon-classes},
+  > .#{$ns}-tag-content > #{$icon-classes} {
     fill: var(--bp-typography-color-muted);
   }
 
@@ -270,7 +272,8 @@ $minimal-dark-tag-intent-colors: (
   background-color: oklch(from $background-color l c h / 0.1);
   color: $text-color;
 
-  > #{$icon-classes} {
+  > #{$icon-classes},
+  > .#{$ns}-tag-content > #{$icon-classes} {
     fill: $text-color;
   }
 
