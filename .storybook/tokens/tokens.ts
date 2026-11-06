@@ -16,6 +16,12 @@ const PALETTE_TOKENS = paletteTokenSource.palette;
 const TOKEN_SOURCES: Record<string, unknown> = { ...intentTokenSource, ...paletteTokenSource };
 const TOKEN_REFERENCE_PATTERN = /^\{([^{}]+)\}$/;
 
+// Keep the preview and the generator's contrast reference surfaces in sync.
+export const STORYBOOK_BACKGROUNDS = {
+    dark: PALETTE_TOKENS.black.$value,
+    light: PALETTE_TOKENS.white.$value,
+};
+
 // Keep palette tokens before their semantic aliases so the panel mirrors their dependency order.
 /* eslint-disable sort-keys */
 const EXISTING_TOKEN_CONFIG = {
@@ -117,7 +123,10 @@ export type TokenValues = Record<TokenName, string>;
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
 export const EXISTING_TOKEN_NAMES = Object.keys(EXISTING_TOKEN_CONFIG) as TokenName[];
 const PROPOSAL_TOKEN_NAMES = Object.keys(PROPOSAL_TOKEN_CONFIG) as TokenName[];
-const INTENTS = ["neutral", "primary", "success", "warning", "danger"] as const;
+export const INTENTS = ["neutral", "primary", "success", "warning", "danger"] as const;
+export type TokenIntent = (typeof INTENTS)[number];
+export type SimpleColors = Partial<Record<TokenIntent, string>>;
+export const SIMPLE_TOKEN_NAMES = INTENTS.map((intent): TokenName => `--bp-${intent}-accent`);
 
 export interface TokenGroup {
     names: readonly TokenName[];

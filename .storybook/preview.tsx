@@ -5,12 +5,13 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Preview } from "@storybook/react-vite";
 
-import { BlueprintProvider, Classes, Colors, FocusStyleManager } from "@blueprintjs/core";
+import { BlueprintProvider, Classes, FocusStyleManager } from "@blueprintjs/core";
 
 import { Icons } from "../packages/icons/src/iconLoader";
 
 import { modes } from "./modes";
 import { withTokens } from "./tokens/preview";
+import { STORYBOOK_BACKGROUNDS } from "./tokens/tokens";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -58,10 +59,9 @@ const preview: Preview = {
             },
         }),
         (Story, context) => {
-            const isDark = context.globals?.theme === "dark";
+            const theme = context.globals?.theme === "dark" ? "dark" : "light";
             if (typeof document !== "undefined" && document.body) {
-                // Setting dark background based on class
-                document.body.style.backgroundColor = isDark ? Colors.BLACK : Colors.WHITE;
+                document.body.style.backgroundColor = STORYBOOK_BACKGROUNDS[theme];
             }
             return (
                 <BlueprintProvider>
@@ -72,6 +72,7 @@ const preview: Preview = {
     ],
 
     initialGlobals: {
+        simpleColors: {},
         theme: "light",
         tokenOverrides: {},
     },

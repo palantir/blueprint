@@ -14,8 +14,11 @@ import { styled } from "storybook/theming";
 import {
     type ColorTokenEditor,
     EXISTING_TOKEN_NAMES,
+    INTENTS,
     PROPOSAL_TOKEN_GROUPS,
     type RangeTokenEditor,
+    SIMPLE_TOKEN_NAMES,
+    type SimpleColors,
     TOKEN_CONFIG,
     TOKEN_VALUES_REQUESTED,
     TOKEN_VALUES_UPDATED,
@@ -77,6 +80,11 @@ const TokensTable = styled.table(({ theme }) => ({
 
 const TokenNameLabel = styled.code({ whiteSpace: "nowrap" });
 const ResetGlyph = styled.span({ fontSize: 16, lineHeight: 1 });
+
+const SimpleMessage = styled.p(({ theme }) => ({
+    color: theme.textMutedColor,
+    margin: theme.layoutMargin,
+}));
 
 interface TokenRowProps {
     name: TokenName;
@@ -184,6 +192,7 @@ export function TokensPanel() {
     const isStoryPrepared = useStoryPrepared(storyId);
     const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
     const [resolvedTokenValues, setResolvedTokenValues] = React.useState<Partial<TokenValues>>({});
+    const simpleColors: SimpleColors | undefined = globals.simpleColors;
     const emit = useChannel(
         {
             [TOKEN_VALUES_UPDATED]: (snapshot: TokenValuesSnapshot) => {
@@ -236,6 +245,33 @@ export function TokensPanel() {
         );
     }, []);
 
+    const handleUpdateSimpleColor = React.useCallback(
+        (name: TokenName, value: string | undefined) => {
+            const intent = INTENTS.find(candidate => name === `--bp-${candidate}-accent`);
+            if (intent === undefined) {
+                return;
+            }
+            const colors = { ...simpleColors };
+            if (value === undefined || value === "") {
+                delete colors[intent];
+            } else {
+                colors[intent] = value;
+            }
+            updateGlobals({ simpleColors: colors });
+        },
+        [simpleColors, updateGlobals],
+    );
+
+    const handleResetSimpleColor = React.useCallback(
+        (name: TokenName) => handleUpdateSimpleColor(name, undefined),
+        [handleUpdateSimpleColor],
+    );
+
+    const simpleOverrides: Partial<TokenValues> = {};
+    for (const intent of INTENTS) {
+        simpleOverrides[`--bp-${intent}-accent`] = simpleColors?.[intent];
+    }
+
     if (!isStoryPrepared) {
         return (
             <LoadingWrapper>
@@ -262,6 +298,21 @@ export function TokensPanel() {
         <TabsView
             defaultSelected="proposal"
             tabs={[
+                {
+                    children: (
+                        <>
+                            <TokenList
+                                groups={[{ names: SIMPLE_TOKEN_NAMES }]}
+                                onResetToken={handleResetSimpleColor}
+                                onUpdateToken={handleUpdateSimpleColor}
+                                resolvedTokenValues={resolvedTokenValues}
+                                tokenOverrides={simpleOverrides}
+                            />
+                        </>
+                    ),
+                    id: "simple",
+                    title: "Simple",
+                },
                 {
                     children: (
                         <>
