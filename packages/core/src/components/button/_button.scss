@@ -174,7 +174,7 @@
     @include pt-button-outlined;
   }
 
-  // Preserve the warning icon opacity overrides.
+  // Not sure why this is needed instead of just using currentColor.
   &.#{$ns}-intent-warning {
     &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
       fill: color-mix(in oklch, var(--bp-warning-text-on-solid) 70%, transparent);
@@ -191,15 +191,6 @@
 
 
 
-    &.#{$ns}-minimal,
-    &.#{$ns}-outlined {
-      .#{$ns}-dark &,
-      [data-bp-color-scheme="dark"] & {
-        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-          fill: color-mix(in oklch, var(--bp-warning-accent) 35%, transparent);
-        }
-      }
-    }
   }
 }
 
