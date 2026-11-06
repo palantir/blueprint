@@ -15,7 +15,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function captureInitialTokenValues() {
-            const style = document.body.style;
+            const style = document.documentElement.style;
             const values = Object.fromEntries(
                 TOKEN_NAMES.map(name => [
                     name,
@@ -41,7 +41,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function applyTokenOverrides() {
-            const style = document.body.style;
+            const style = document.documentElement.style;
             const overrides = tokenOverrides ?? {};
 
             for (const name of TOKEN_NAMES) {

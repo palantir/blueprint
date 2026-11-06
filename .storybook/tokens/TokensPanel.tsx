@@ -64,7 +64,7 @@ interface TokenRowProps {
 
 function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
     const editor = TOKEN_CONFIG[name];
-    const hasOverride = overrideValue !== undefined && overrideValue !== "";
+    const hasOverride = overrideValue != null && overrideValue !== "";
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
         (value: string | undefined) => onUpdateToken(name, value),
@@ -169,6 +169,11 @@ export function TokensPanel() {
         [tokenOverrides, updateGlobals],
     );
 
+    const hasOverrides = Object.values(tokenOverrides).some(value => value !== undefined && value !== "");
+    const handleResetAllTokens = React.useCallback(() => {
+        updateGlobals({ tokenOverrides: {} });
+    }, [updateGlobals]);
+
     if (!isStoryPrepared) {
         return (
             <LoadingWrapper>
@@ -184,7 +189,18 @@ export function TokensPanel() {
                     <tr>
                         <th>Name</th>
                         <th>Control</th>
-                        <th aria-label="Reset" />
+                        <th>
+                            <IconButton
+                                ariaLabel="Reset all tokens"
+                                disabled={!hasOverrides}
+                                onClick={handleResetAllTokens}
+                                padding="small"
+                                size="small"
+                                variant="ghost"
+                            >
+                                <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
+                            </IconButton>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
