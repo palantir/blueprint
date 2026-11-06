@@ -34,7 +34,10 @@ export type ThemeProviderProps =
 const THEME_API_VERSION = 1 satisfies ThemeAPI["version"];
 
 const themeSchema = z.object({
-    borderRadius: z.string().optional(),
+    borderRadius: z
+        .string()
+        .regex(/^(?:0|[1-9]\d*)(?:\.\d+)?px$/)
+        .optional(),
     fontFamily: z.string().optional(),
     version: z.literal(THEME_API_VERSION),
 } satisfies { [Key in keyof ThemeAPI]-?: z.ZodType<ThemeAPI[Key]> });

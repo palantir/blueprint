@@ -24,6 +24,8 @@ describe("ThemeProvider", () => {
         { version: "1" },
         { version: 2 },
         { borderRadius: 8, version: 1 },
+        { borderRadius: "SQUARE", version: 1 },
+        { borderRadius: "4em", version: 1 },
         { fontFamily: null, version: 1 },
         { fontFamily: ["Arial"], version: 1 },
     ])("provides no overrides for an invalid representation: %j", representation => {
@@ -80,7 +82,12 @@ describe("ThemeProvider", () => {
         expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("0px");
         expect(root.style.getPropertyValue("--bp-typography-family-default")).toBe("");
 
-        for (const themes of [{ "1": { borderRadius: 8, version: 1 } }, { "2": { version: 2 } }, undefined]) {
+        for (const themes of [
+            { "1": { borderRadius: "SQUARE", version: 1 } },
+            { "1": { borderRadius: 8, version: 1 } },
+            { "2": { version: 2 } },
+            undefined,
+        ]) {
             rerender(view(themes));
             expect(root.style.getPropertyValue("--bp-surface-border-radius")).toBe("");
             expect(root.style.getPropertyValue("--unrelated")).toBe("keep");
