@@ -1300,7 +1300,7 @@ describe("<DateRangePicker>", () => {
 
             dateRange.left.clickDay(10);
             dateRange.setTimeInput("minute", "right", 45);
-            const [start, end] = dateRange.wrapper.state("value");
+            const [start, end] = onChangeSpy.mock.lastCall![0] as DateRange;
 
             expect(start).not.toBeNull();
             expect(end).not.toBeNull();
@@ -1498,6 +1498,7 @@ describe("<DateRangePicker>", () => {
 describe("<DateRangePicker> partial-range time selection", () => {
     const selectedDate = new Date(2024, 0, 10);
     const defaultTime = new Date(2024, 0, 10, 17);
+    const multiDayRange: DateRange = [new Date(2024, 0, 10, 9), new Date(2024, 0, 12, 17)];
     const pickerProps: DateRangePickerProps = {
         allowSingleDayRange: true,
         defaultValue: [new Date(2024, 0, 10, 8), null],
@@ -1738,23 +1739,144 @@ describe("<DateRangePicker> partial-range time selection", () => {
         expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 10), null]);
     });
 
+    it.each([
+        { isControlled: false, remainingDay: 10, selectedDay: 12 },
+        { isControlled: false, remainingDay: 12, selectedDay: 10 },
+        { isControlled: true, remainingDay: 10, selectedDay: 12 },
+        { isControlled: true, remainingDay: 12, selectedDay: 10 },
+    ])(
+        "completes a range after deselecting $selectedDay and can extend it (controlled=$isControlled)",
+        ({ isControlled, remainingDay, selectedDay }) => {
+            const onChange = vi.fn<(range: DateRange) => void>();
+            renderWithTestingLibrary(
+                <StatefulPicker initialValue={multiDayRange} isControlled={isControlled} onChange={onChange} />,
+            );
+
+            fireEvent.click(screen.getByRole("gridcell", { name: selectedDay.toString() }));
+
+            expect(onChange).toHaveBeenLastCalledWith([
+                new Date(2024, 0, remainingDay, 9),
+                new Date(2024, 0, remainingDay, 17),
+            ]);
+
+            fireEvent.click(screen.getByRole("gridcell", { name: "14" }));
+
+            expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, remainingDay, 9), new Date(2024, 0, 14, 17)]);
+        },
+    );
+
+    it.each([false, true])("uses retained times after clearing both dates (controlled=%s)", isControlled => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(
+            <StatefulPicker
+                initialValue={[new Date(2024, 0, 10, 9), defaultTime]}
+                isControlled={isControlled}
+                onChange={onChange}
+            />,
+        );
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "10" }));
+        expect(onChange).toHaveBeenLastCalledWith([null, null]);
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "12" }));
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 12, 9), new Date(2024, 0, 12, 17)]);
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "14" }));
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 12, 9), new Date(2024, 0, 14, 17)]);
+    });
+
+    it.each<{ description: string; props: DateRangePickerProps }>([
+        { description: "single-day ranges are disabled", props: { allowSingleDayRange: false } },
+        {
+            description: "times are equal",
+            props: { defaultValue: [new Date(2024, 0, 10, 9), new Date(2024, 0, 12, 9)] },
+        },
+        {
+            description: "times would be reversed",
+            props: { defaultValue: [new Date(2024, 0, 10, 18), new Date(2024, 0, 12, 17)] },
+        },
+        {
+            description: "only hidden seconds differ",
+            props: { defaultValue: [new Date(2024, 0, 10, 9), new Date(2024, 0, 12, 9, 0, 30)] },
+        },
+    ])("keeps deselection partial when $description", ({ props }) => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        const initialValue = props.defaultValue ?? multiDayRange;
+        renderWithTestingLibrary(
+            <DateRangePicker {...pickerProps} defaultValue={initialValue} {...props} onChange={onChange} />,
+        );
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "12" }));
+
+        expect(onChange).toHaveBeenLastCalledWith([initialValue[0], null]);
+    });
+
+    it("does not change the controlled selection when the parent rejects the inferred range", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(
+            <DateRangePicker {...pickerProps} defaultValue={undefined} onChange={onChange} value={multiDayRange} />,
+        );
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "12" }));
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), defaultTime]);
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "14" }));
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 14, 9), new Date(2024, 0, 14, 17)]);
+    });
+
+    it("does not restore a pending selection when the parent changes the inferred times", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        const { rerender } = renderWithTestingLibrary(
+            <DateRangePicker {...pickerProps} defaultValue={undefined} onChange={onChange} value={multiDayRange} />,
+        );
+        fireEvent.click(screen.getByRole("gridcell", { name: "12" }));
+        rerender(
+            <DateRangePicker
+                {...pickerProps}
+                defaultValue={undefined}
+                onChange={onChange}
+                value={[new Date(2024, 0, 10, 11), defaultTime]}
+            />,
+        );
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "14" }));
+
+        const lastRange = onChange.mock.lastCall![0];
+        expect(lastRange.map(date => date?.getDate())).toEqual([14, 14]);
+    });
+
+    it("can clear a controlled same-day range after its inferred completion is explicitly selected", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(<StatefulPicker initialValue={multiDayRange} onChange={onChange} />);
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "12" }));
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), defaultTime]);
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "10" }));
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), defaultTime]);
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "10" }));
+        expect(onChange).toHaveBeenLastCalledWith([null, null]);
+    });
+
+    it("can extend a controlled range after a time edit infers the other endpoint", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        renderWithTestingLibrary(
+            <StatefulPicker initialValue={[new Date(2024, 0, 10, 8), null]} onChange={onChange} />,
+        );
+
+        changeHour(0, 9);
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), defaultTime]);
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "12" }));
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 12, 17)]);
+    });
+
     it("retains inferred times through controlled updates", () => {
         const onChange = vi.fn<(range: DateRange) => void>();
-        function ControlledPicker() {
-            const [value, setValue] = useState<DateRange>([new Date(2024, 0, 10, 8), null]);
-            return (
-                <DateRangePicker
-                    {...pickerProps}
-                    defaultValue={undefined}
-                    onChange={range => {
-                        setValue(range);
-                        onChange(range);
-                    }}
-                    value={value}
-                />
-            );
-        }
-        renderWithTestingLibrary(<ControlledPicker />);
+        renderWithTestingLibrary(
+            <StatefulPicker initialValue={[new Date(2024, 0, 10, 8), null]} onChange={onChange} />,
+        );
 
         changeHour(0, 9);
         expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), defaultTime]);
@@ -1762,6 +1884,91 @@ describe("<DateRangePicker> partial-range time selection", () => {
         changeHour(1, 18);
         expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 18)]);
     });
+
+    it.each([false, true])(
+        "keeps the calendar anchor when editing the missing end clock (controlled=%s)",
+        isControlled => {
+            const onChange = vi.fn<(range: DateRange) => void>();
+            renderWithTestingLibrary(
+                <StatefulPicker
+                    initialValue={[new Date(2024, 0, 10, 9), null]}
+                    isControlled={isControlled}
+                    onChange={onChange}
+                />,
+            );
+
+            changeHour(1, 18);
+            expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 18)]);
+
+            fireEvent.click(screen.getByRole("gridcell", { name: "14" }));
+            expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 14, 18)]);
+        },
+    );
+
+    it.each([false, true])(
+        "keeps the calendar anchor when editing the missing start clock (controlled=%s)",
+        isControlled => {
+            const onChange = vi.fn<(range: DateRange) => void>();
+            renderWithTestingLibrary(
+                <StatefulPicker initialValue={[null, defaultTime]} isControlled={isControlled} onChange={onChange} />,
+            );
+
+            changeHour(0, 8);
+            expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 8), defaultTime]);
+
+            fireEvent.click(screen.getByRole("gridcell", { name: "14" }));
+            expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 8), new Date(2024, 0, 14, 17)]);
+        },
+    );
+
+    it.each<{ dateIndex: number; hour: number; initialValue: DateRange }>([
+        { dateIndex: 1, hour: 9, initialValue: [new Date(2024, 0, 10, 9), null] },
+        { dateIndex: 1, hour: 8, initialValue: [new Date(2024, 0, 10, 9), null] },
+        { dateIndex: 0, hour: 17, initialValue: [null, defaultTime] },
+        { dateIndex: 0, hour: 18, initialValue: [null, defaultTime] },
+    ])(
+        "keeps the missing clock partial when setting endpoint $dateIndex to $hour",
+        ({ dateIndex, hour, initialValue }) => {
+            const onChange = vi.fn<(range: DateRange) => void>();
+            renderWithTestingLibrary(
+                <DateRangePicker
+                    {...pickerProps}
+                    defaultValue={initialValue}
+                    onChange={onChange}
+                    timePickerProps={{ defaultValue: new Date(2024, 0, 10, dateIndex === 0 ? 9 : 17) }}
+                />,
+            );
+
+            changeHour(dateIndex, hour);
+
+            expect(onChange).toHaveBeenLastCalledWith(initialValue);
+        },
+    );
+
+    function StatefulPicker({
+        initialValue,
+        isControlled = true,
+        onChange,
+    }: {
+        initialValue: DateRange;
+        isControlled?: boolean;
+        onChange: (range: DateRange) => void;
+    }) {
+        const [value, setValue] = useState(initialValue);
+        return (
+            <DateRangePicker
+                {...pickerProps}
+                defaultValue={isControlled ? undefined : initialValue}
+                onChange={range => {
+                    if (isControlled) {
+                        setValue(range);
+                    }
+                    onChange(range);
+                }}
+                value={isControlled ? value : undefined}
+            />
+        );
+    }
 
     function changeHour(index: number, hour: number) {
         const input = screen.getAllByLabelText("hours (24hr clock)")[index];

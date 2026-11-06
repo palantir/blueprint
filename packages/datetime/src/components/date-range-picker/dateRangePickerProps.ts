@@ -49,7 +49,9 @@ export interface DateRangePickerProps
     /**
      * Called when the user selects a day.
      * If no days are selected, it will pass `[null, null]`.
-     * If a start date is selected but not an end date, it will pass `[selectedDate, null]`.
+     * If only one day is selected, it will pass a partial range with one `null` endpoint,
+     * unless single-day ranges are allowed and the displayed start time is earlier than the end time.
+     * In that case, both endpoints use that day with their respective times.
      * If both a start and end date are selected, it will pass `[startDate, endDate]`.
      */
     onChange?: (selectedDates: DateRange) => void;
