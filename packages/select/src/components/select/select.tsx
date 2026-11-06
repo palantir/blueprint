@@ -197,6 +197,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         // N.B. no need to set `fill` since that is unused with the `renderTarget` API
         return (
             <PopoverNext
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
@@ -205,6 +206,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 {...popoverPropsToNextProps(popoverProps)}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
+                    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         {filterable ? input : undefined}
                         {listProps.itemList}
