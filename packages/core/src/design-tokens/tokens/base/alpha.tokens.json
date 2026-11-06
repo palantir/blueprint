@@ -66,7 +66,8 @@
                 "active": {
                     "$value": "{primary.accent}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
-                }
+                },
+                "disabled-active": { "$value": "{primary.overlay.strong.active}" }
             },
             "selected": {
                 "$value": "{primary.background.solid.rest}",
@@ -152,7 +153,8 @@
                 "active": {
                     "$value": "{success.accent}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
-                }
+                },
+                "disabled-active": { "$value": "{success.overlay.strong.active}" }
             }
         }
     },
@@ -227,7 +229,8 @@
                 "active": {
                     "$value": "{danger.accent}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
-                }
+                },
+                "disabled-active": { "$value": "{danger.overlay.strong.active}" }
             }
         }
     },
@@ -298,7 +301,8 @@
                 "active": {
                     "$value": "{warning.accent}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
-                }
+                },
+                "disabled-active": { "$value": "{warning.overlay.strong.active}" }
             }
         }
     },
@@ -388,6 +392,10 @@
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
                 },
                 "active": {
+                    "$value": "{palette.dark-gray.4}",
+                    "$extensions": { "com.blueprint.derive": { "alpha": 0.16 } }
+                },
+                "disabled-active": {
                     "$value": "{neutral.accent}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 }
