@@ -7,7 +7,6 @@
             }
         },
         "text": {
-            "on-subtle": { "$value": "{primary.text.normal}" },
             "normal": { "$value": "{palette.blue.5}" },
             "strong": { "$value": "{palette.blue.6}" }
         }
@@ -20,7 +19,6 @@
             }
         },
         "text": {
-            "on-subtle": { "$value": "{success.text.normal}" },
             "normal": { "$value": "{palette.green.5}" },
             "strong": { "$value": "{palette.green.6}" }
         }
@@ -33,7 +31,6 @@
             }
         },
         "text": {
-            "on-subtle": { "$value": "{danger.text.normal}" },
             "normal": { "$value": "{palette.red.5}" },
             "strong": { "$value": "{palette.red.6}" }
         }
@@ -46,7 +43,6 @@
             }
         },
         "text": {
-            "on-subtle": { "$value": "{warning.text.normal}" },
             "normal": { "$value": "{palette.orange.5}" },
             "strong": { "$value": "{palette.orange.6}" }
         }
@@ -66,7 +62,6 @@
             }
         },
         "text": {
-            "on-subtle": { "$value": "{neutral.text.strong}" },
             "muted": { "$value": "{palette.gray.4}" },
             "normal": { "$value": "{palette.light-gray.5}" },
             "soft": { "$value": "{palette.light-gray.1}" },

@@ -16,7 +16,6 @@
         },
         "text": {
             "on-solid": { "$value": "{palette.white}" },
-            "on-subtle": { "$value": "{primary.text.normal}" },
             "normal": { "$value": "{palette.blue.2}" },
             "strong": { "$value": "{palette.blue.1}" }
         }
@@ -38,7 +37,6 @@
         },
         "text": {
             "on-solid": { "$value": "{palette.white}" },
-            "on-subtle": { "$value": "{success.text.normal}" },
             "normal": { "$value": "{palette.green.2}" },
             "strong": { "$value": "{palette.green.1}" }
         }
@@ -60,7 +58,6 @@
         },
         "text": {
             "on-solid": { "$value": "{palette.white}" },
-            "on-subtle": { "$value": "{danger.text.normal}" },
             "normal": { "$value": "{palette.red.2}" },
             "strong": { "$value": "{palette.red.1}" }
         }
@@ -82,7 +79,6 @@
         },
         "text": {
             "on-solid": { "$value": "{palette.dark-gray.1}" },
-            "on-subtle": { "$value": "{warning.text.normal}" },
             "normal": { "$value": "{palette.orange.2}" },
             "strong": { "$value": "{palette.orange.1}" }
         }
@@ -109,7 +105,6 @@
         },
         "text": {
             "on-solid": { "$value": "{palette.white}" },
-            "on-subtle": { "$value": "{neutral.text.normal}" },
             "muted": { "$value": "{palette.gray.1}" },
             "normal": { "$value": "{palette.dark-gray.1}" },
             "soft": { "$value": "{palette.dark-gray.5}" },
