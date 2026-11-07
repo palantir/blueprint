@@ -56,6 +56,20 @@ describe("<Section>", () => {
         expect(title.tagName.toLowerCase()).toBe("h5");
     });
 
+    it("keeps section and title ids stable across re-renders", () => {
+        const { container, rerender } = render(<Section title="title" />);
+        const section = container.querySelector(`.${Classes.SECTION}`)!;
+        const sectionId = section.getAttribute("id");
+        const titleId = screen.getByRole("heading", { name: "title" }).getAttribute("id");
+        expect(sectionId).not.toBeNull();
+        expect(titleId).not.toBeNull();
+        expect(section.getAttribute("aria-labelledby")).toBe(titleId);
+
+        rerender(<Section title="title" subtitle="subtitle" />);
+        expect(section.getAttribute("id")).toBe(sectionId);
+        expect(screen.getByRole("heading", { name: "title" }).getAttribute("id")).toBe(titleId);
+    });
+
     describe("uncontrolled collapse mode", () => {
         it("collapsible is open when defaultIsOpen={undefined}", () => {
             render(
