@@ -49,6 +49,11 @@ export interface ItemListRendererProps<T> {
     query: string;
 
     /**
+     * Whether the list of items is currently loading. See `ListItemsProps#loading`.
+     */
+    loading?: boolean;
+
+    /**
      * A ref handler that should be attached to the parent HTML element of the menu items.
      * This is required for the active item to scroll into view automatically.
      */
@@ -79,14 +84,17 @@ export type ItemListRenderer<T> = (itemListProps: ItemListRendererProps<T>) => R
 
 /**
  * Helper method for rendering each item in `filteredItems`, with optional support for
- * `noResults` (when filtered items is empty) and `initialContent` (when query is empty).
+ * `loadingContent` (while `loading` is true), `noResults` (when filtered items is empty)
+ * and `initialContent` (when query is empty).
  *
  * This utility is useful when creating a custom `itemListRenderer`. It handles the
- * logic for rendering `initialContent`, `noResults`, or the actual list of filtered items.
+ * logic for rendering `loadingContent`, `initialContent`, `noResults`, or the actual list of filtered items.
  *
  * @param props Props passed to the item list renderer.
  * @param noResults Optional element to render when the filtered list is empty.
  * @param initialContent Optional element to render when the query is empty.
+ * @param loadingContent Optional element to render while `props.loading` is true. Pass `null` to render nothing;
+ *  pass `undefined` (or omit) to keep rendering items while loading.
  * @returns The rendered list of items or the appropriate placeholder content.
  */
 
@@ -94,7 +102,11 @@ export function renderFilteredItems(
     props: ItemListRendererProps<any>,
     noResults?: React.ReactNode,
     initialContent?: React.ReactNode | null,
+    loadingContent?: React.ReactNode | null,
 ): React.ReactNode {
+    if (props.loading && loadingContent !== undefined) {
+        return loadingContent;
+    }
     if (props.query.length === 0 && initialContent !== undefined) {
         return initialContent;
     }
