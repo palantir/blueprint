@@ -56,6 +56,42 @@ describe("<Section>", () => {
         expect(title.tagName.toLowerCase()).toBe("h5");
     });
 
+    it("keeps section and title ids stable across re-renders", () => {
+        const { container, rerender } = render(<Section title="title" />);
+        const section = container.querySelector(`.${Classes.SECTION}`)!;
+        const sectionId = section.getAttribute("id");
+        const titleId = screen.getByRole("heading", { name: "title" }).getAttribute("id");
+        expect(sectionId).not.toBeNull();
+        expect(titleId).not.toBeNull();
+        expect(section.getAttribute("aria-labelledby")).toBe(titleId);
+
+        rerender(<Section title="title" subtitle="subtitle" />);
+        expect(section.getAttribute("id")).toBe(sectionId);
+        expect(screen.getByRole("heading", { name: "title" }).getAttribute("id")).toBe(titleId);
+    });
+
+    it("generates distinct ids for sibling sections", () => {
+        const { container } = render(
+            <>
+                <Section title="first" />
+                <Section title="second" />
+            </>,
+        );
+        const [first, second] = Array.from(container.querySelectorAll(`.${Classes.SECTION}`));
+        expect(first.getAttribute("id")).not.toBe(second.getAttribute("id"));
+    });
+
+    it("collapse toggle aria-controls matches the section id", () => {
+        const { container } = render(
+            <Section collapsible={true} title="Test">
+                <SectionCard>content</SectionCard>
+            </Section>,
+        );
+        const section = container.querySelector(`.${Classes.SECTION}`)!;
+        const toggle = screen.getByRole("button", { name: "collapse section" });
+        expect(toggle.getAttribute("aria-controls")).toBe(section.getAttribute("id"));
+    });
+
     describe("uncontrolled collapse mode", () => {
         it("collapsible is open when defaultIsOpen={undefined}", () => {
             render(

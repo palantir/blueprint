@@ -15,13 +15,13 @@
  */
 
 import classNames from "classnames";
-import { createElement, forwardRef, useCallback, useState } from "react";
+import { createElement, forwardRef, useCallback, useId, useState } from "react";
 
 import { ChevronDownIcon, ChevronUpIcon, type IconName } from "@blueprintjs/icons";
 
 import { Classes, Elevation, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type MaybeElement, type Props } from "../../common/props";
-import { clickElementOnKeyPress, uniqueId } from "../../common/utils";
+import { clickElementOnKeyPress } from "../../common/utils";
 import { Card } from "../card/card";
 import { Collapse, type CollapseProps } from "../collapse/collapse";
 import { H6 } from "../html/html";
@@ -160,8 +160,10 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
 
     const isHeaderRightContainerVisible = rightElement != null || collapsible;
 
-    const sectionId = uniqueId("section");
-    const sectionTitleId = title ? uniqueId("section-title") : undefined;
+    // id must be stable across re-renders, see https://github.com/palantir/blueprint/issues/7977
+    const id = useId();
+    const sectionId = `section-${id}`;
+    const sectionTitleId = title ? `section-title-${id}` : undefined;
 
     return (
         <Card
