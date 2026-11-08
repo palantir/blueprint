@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Add `numadd` hotkey support for matching the physical numpad plus key (#3738).
+  links:
+  - https://github.com/palantir/blueprint/issues/3738
