@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useMemo, useRef } from "react";
+import { Children, isValidElement, useMemo, useRef } from "react";
 import type { DropdownProps } from "react-day-picker";
 
 import { HTMLSelect } from "@blueprintjs/core";
@@ -34,7 +34,17 @@ export function DatePickerDropdown({ caption, children, ...props }: DropdownProp
     // Use a custom hook to adjust the position of the position of the HTMLSelect icon to appear right next to
     // the month name. N.B. we expect props.caption to be a simple string representing the month name.
     const displayedMonthText = typeof caption === "string" ? caption : "";
-    const monthSelectRightOffset = useMonthSelectRightOffset(selectElement, containerElement, displayedMonthText);
+    // react-day-picker narrows the month options when minDate and maxDate are in the same year, which changes the
+    // width of the select, so the icon position must be measured again
+    const optionsKey = Children.map(children, child =>
+        isValidElement<{ value?: unknown }>(child) ? String(child.props.value) : "",
+    )?.join(",");
+    const monthSelectRightOffset = useMonthSelectRightOffset(
+        selectElement,
+        containerElement,
+        displayedMonthText,
+        optionsKey,
+    );
     const iconProps = useMemo(
         () => (props.name === "months" ? { style: { right: monthSelectRightOffset } } : {}),
         [props.name, monthSelectRightOffset],

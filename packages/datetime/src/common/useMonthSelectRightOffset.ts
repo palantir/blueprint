@@ -23,10 +23,18 @@ import { DatePickerUtils } from "../components/date-picker/datePickerUtils";
 
 import { Classes } from ".";
 
+/**
+ * Measures how far from the right edge of the month select its dropdown icon should sit so that it appears right
+ * next to the displayed month name.
+ *
+ * @param monthOptionsKey identifies the month options. The select is as wide as its widest option, so the offset
+ * is measured again whenever the options change (for example when `minDate` and `maxDate` move into the same year).
+ */
 export function useMonthSelectRightOffset(
     monthSelectElement: RefObject<HTMLSelectElement>,
     containerElement: RefObject<HTMLElement>,
     displayedMonthText: string,
+    monthOptionsKey?: string,
 ): number {
     const [monthRightOffset, setMonthRightOffset] = useState<number>(0);
 
@@ -44,7 +52,7 @@ export function useMonthSelectRightOffset(
         const monthSelectWidth = monthSelectElement.current?.clientWidth ?? 0;
         const rightOffset = Math.max(2, monthSelectWidth - monthTextWidth - IconSize.STANDARD - 2);
         setMonthRightOffset(rightOffset);
-    }, [containerElement, displayedMonthText, monthSelectElement]);
+    }, [containerElement, displayedMonthText, monthOptionsKey, monthSelectElement]);
 
     return monthRightOffset;
 }
