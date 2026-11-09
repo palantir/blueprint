@@ -94,6 +94,35 @@ corresponding panel.
 This component expects `<DialogStep>` child elements: each "step" is rendered in order and its panel is shown as the
 dialog body content when the corresponding step is selected in the navigation panel.
 
+By default, **MultistepDialog** manages the selected step. To control the selected step externally, provide
+`selectedStepId`.
+
+```tsx
+import * as React from "react";
+import { DialogBody, DialogStep, type DialogStepId, MultistepDialog } from "@blueprintjs/core";
+
+function ControlledMultistepDialog() {
+    const [selectedStepId, setSelectedStepId] = React.useState<DialogStepId>("details");
+
+    return (
+        <MultistepDialog isOpen={true} onChange={setSelectedStepId} selectedStepId={selectedStepId} title="Create item">
+            <DialogStep
+                id="details"
+                title="Details"
+                nextButtonProps={{ onClick: () => setSelectedStepId("confirm") }}
+                panel={<DialogBody>Enter the item details.</DialogBody>}
+            />
+            <DialogStep
+                backButtonProps={{ onClick: () => setSelectedStepId("details") }}
+                id="confirm"
+                title="Confirm"
+                panel={<DialogBody>Confirm the item details.</DialogBody>}
+            />
+        </MultistepDialog>
+    );
+}
+```
+
 @interface MultistepDialogProps
 
 ### DialogStep
