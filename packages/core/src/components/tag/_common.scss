@@ -57,28 +57,28 @@ $minimal-tag-intent-colors: (
   "primary": (
     var(--bp-primary-background-alpha-subtle-rest),
     var(--bp-primary-overlay-hover),
-    var(--bp-primary-overlay-active),
+    var(--bp-primary-overlay-selected),
     var(--bp-primary-text-normal),
     var(--bp-primary-text-strong),
   ),
   "success": (
     var(--bp-success-background-alpha-subtle-rest),
     var(--bp-success-overlay-hover),
-    var(--bp-success-overlay-active),
+    var(--bp-success-overlay-selected),
     var(--bp-success-text-normal),
     var(--bp-success-text-strong),
   ),
   "warning": (
     var(--bp-warning-background-alpha-subtle-rest),
     var(--bp-warning-overlay-hover),
-    var(--bp-warning-overlay-active),
+    var(--bp-warning-overlay-selected),
     var(--bp-warning-text-normal),
     var(--bp-warning-text-strong),
   ),
   "danger": (
     var(--bp-danger-background-alpha-subtle-rest),
     var(--bp-danger-overlay-hover),
-    var(--bp-danger-overlay-active),
+    var(--bp-danger-overlay-selected),
     var(--bp-danger-text-normal),
     var(--bp-danger-text-strong),
   ),
@@ -218,7 +218,7 @@ $minimal-tag-intent-colors: (
 
     &.#{$ns}-active,
     &:active {
-      background: linear-gradient(var(--bp-neutral-overlay-active) 0 0)
+      background: linear-gradient(var(--bp-neutral-overlay-selected) 0 0)
         var(--bp-neutral-background-alpha-subtle-rest);
       color: var(--bp-neutral-text-strong);
     }

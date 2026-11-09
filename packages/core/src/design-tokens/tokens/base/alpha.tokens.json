@@ -36,10 +36,6 @@
                 "$value": "{primary.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
             },
-            "active": {
-                "$value": "{primary.base}",
-                "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
-            },
             "selected": {
                 "$value": "{primary.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
@@ -94,7 +90,7 @@
                 "$value": "{success.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
             },
-            "active": {
+            "selected": {
                 "$value": "{success.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
             }
@@ -141,7 +137,7 @@
                 "$value": "{danger.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
             },
-            "active": {
+            "selected": {
                 "$value": "{danger.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
             }
@@ -184,7 +180,7 @@
                 "$value": "{warning.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.1 } }
             },
-            "active": {
+            "selected": {
                 "$value": "{warning.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
             }
@@ -244,7 +240,7 @@
                 "$value": "{neutral.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
             },
-            "active": {
+            "selected": {
                 "$value": "{neutral.base}",
                 "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
             }
