@@ -17,7 +17,13 @@
 import classNames from "classnames";
 import { PureComponent } from "react";
 
-import { DISPLAYNAME_PREFIX, PopoverNext, type PopoverProps, popoverPropsToNextProps, type Props } from "@blueprintjs/core";
+import {
+    DISPLAYNAME_PREFIX,
+    PopoverNext,
+    type PopoverProps,
+    popoverPropsToNextProps,
+    type Props,
+} from "@blueprintjs/core";
 import { DotsThreeIcon } from "@blueprintjs/icons/next";
 
 import * as Classes from "../../common/classes";
@@ -254,7 +260,10 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
             // NOTE: This structure matches what `<PopoverNext>` does internally. If `<PopoverNext>` changes, this must be updated.
             return (
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                <span className={classNames(Classes.TABLE_TRUNCATED_POPOVER_TARGET, this.props.popoverProps?.className)} onClick={this.handlePopoverOpen}>
+                <span
+                    className={classNames(Classes.TABLE_TRUNCATED_POPOVER_TARGET, this.props.popoverProps?.className)}
+                    onClick={this.handlePopoverOpen}
+                >
                     <DotsThreeIcon />
                 </span>
             );
