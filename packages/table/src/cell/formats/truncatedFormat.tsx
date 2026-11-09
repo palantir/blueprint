@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { PureComponent } from "react";
 
-import { DISPLAYNAME_PREFIX, PopoverNext, type Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, PopoverNext, type PopoverProps, popoverPropsToNextProps, type Props } from "@blueprintjs/core";
 import { DotsThreeIcon } from "@blueprintjs/icons/next";
 
 import * as Classes from "../../common/classes";
@@ -143,6 +143,11 @@ export interface TruncatedFormatProps extends Props {
      * @default "..."
      */
     truncationSuffix?: string;
+
+    /**
+     * Optional props to forward to the popover when content is truncated.
+     */
+    popoverProps?: Partial<Omit<PopoverProps, "content">>;
 }
 
 export interface TruncatedFormatState {
@@ -233,13 +238,14 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
                 <PopoverNext
-                    className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
+                    className={classNames(Classes.TABLE_TRUNCATED_POPOVER_TARGET, this.props.popoverProps?.className)}
                     content={popoverContent}
                     isOpen={true}
                     onClose={this.handlePopoverClose}
                     placement="bottom"
                     rootBoundary="document"
                     shouldReturnFocusOnClose={false}
+                    {...popoverPropsToNextProps(this.props.popoverProps)}
                 >
                     <DotsThreeIcon />
                 </PopoverNext>
@@ -248,19 +254,21 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
             // NOTE: This structure matches what `<PopoverNext>` does internally. If `<PopoverNext>` changes, this must be updated.
             return (
                 // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-                <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
+                <span className={classNames(Classes.TABLE_TRUNCATED_POPOVER_TARGET, this.props.popoverProps?.className)} onClick={this.handlePopoverOpen}>
                     <DotsThreeIcon />
                 </span>
             );
         }
     }
 
-    private handlePopoverOpen = () => {
+    private handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
         this.setState({ isPopoverOpen: true });
+        this.props.popoverProps?.onOpening?.(event);
     };
 
-    private handlePopoverClose = () => {
+    private handlePopoverClose = (event: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isPopoverOpen: false });
+        this.props.popoverProps?.onClose?.(event);
     };
 
     private shouldShowPopover(content: string) {
