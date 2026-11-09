@@ -204,6 +204,16 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
     hoverOpenDelay?: number;
 
     /**
+     * Whether to keep the popover open while the pointer moves through a safe
+     * polygon between the target and popover. This allows diagonal movement
+     * into a submenu without activating adjacent targets along the way.
+     * Only applies to `interactionKind="hover"`.
+     *
+     * @default false
+     */
+    hoverSafePolygon?: boolean;
+
+    /**
      * Whether a popover that uses a `Portal` should automatically inherit the
      * dark theme from its parent.
      *
@@ -442,6 +452,7 @@ export interface PopoverTargetProps
         | "children"
         | "disabled"
         | "fill"
+        | "hoverSafePolygon"
         | "interactionKind"
         | "openOnTargetFocus"
         | "popupKind"
