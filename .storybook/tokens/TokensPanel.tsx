@@ -19,6 +19,7 @@ import {
     type RangeTokenEditor,
     SIMPLE_TOKEN_NAMES,
     type SimpleColors,
+    type SimpleGenerationMode,
     TOKEN_CONFIG,
     TOKEN_VALUES_REQUESTED,
     TOKEN_VALUES_UPDATED,
@@ -83,6 +84,13 @@ const ResetGlyph = styled.span({ fontSize: 16, lineHeight: 1 });
 
 const SimpleMessage = styled.p(({ theme }) => ({
     color: theme.textMutedColor,
+    margin: theme.layoutMargin,
+}));
+
+const SimpleModeControl = styled.label(({ theme }) => ({
+    alignItems: "center",
+    display: "flex",
+    gap: theme.layoutMargin,
     margin: theme.layoutMargin,
 }));
 
@@ -187,12 +195,14 @@ function RangeTokenControl({
 }
 
 export function TokensPanel() {
+    const cssModeHelpId = React.useId();
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
     const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
     const [resolvedTokenValues, setResolvedTokenValues] = React.useState<Partial<TokenValues>>({});
     const simpleColors: SimpleColors | undefined = globals.simpleColors;
+    const simpleGenerationMode: SimpleGenerationMode = globals.simpleGenerationMode === "css" ? "css" : "js";
     const emit = useChannel(
         {
             [TOKEN_VALUES_UPDATED]: (snapshot: TokenValuesSnapshot) => {
@@ -267,6 +277,14 @@ export function TokensPanel() {
         [handleUpdateSimpleColor],
     );
 
+    const handleGenerationModeChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLSelectElement>) => {
+            const mode: SimpleGenerationMode = event.currentTarget.value === "css" ? "css" : "js";
+            updateGlobals({ simpleGenerationMode: mode });
+        },
+        [updateGlobals],
+    );
+
     const simpleOverrides: Partial<TokenValues> = {};
     for (const intent of INTENTS) {
         simpleOverrides[`--bp-${intent}-base`] = simpleColors?.[intent];
@@ -296,11 +314,28 @@ export function TokensPanel() {
 
     return (
         <TabsView
-            defaultSelected="proposal"
+            defaultSelected="simple"
             tabs={[
                 {
                     children: (
                         <>
+                            <SimpleModeControl>
+                                Generation mode
+                                <select
+                                    aria-describedby={simpleGenerationMode === "css" ? cssModeHelpId : undefined}
+                                    onChange={handleGenerationModeChange}
+                                    value={simpleGenerationMode}
+                                >
+                                    <option value="js">JavaScript</option>
+                                    <option value="css">Pure CSS</option>
+                                </select>
+                            </SimpleModeControl>
+                            {simpleGenerationMode === "css" && (
+                                <SimpleMessage id={cssModeHelpId}>
+                                    Requires a modern browser with contrast-color() support. Unsupported browsers keep
+                                    baseline token styles.
+                                </SimpleMessage>
+                            )}
                             <TokenList
                                 groups={[{ names: SIMPLE_TOKEN_NAMES }]}
                                 onResetToken={handleResetSimpleColor}

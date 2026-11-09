@@ -73,6 +73,7 @@ const preview: Preview = {
 
     initialGlobals: {
         simpleColors: {},
+        simpleGenerationMode: "js",
         theme: "light",
         tokenOverrides: {},
     },

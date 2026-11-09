@@ -5,10 +5,13 @@
 import type { Decorator } from "@storybook/react-vite";
 import { useChannel, useEffect, useRef } from "storybook/preview-api";
 
+import * as Classes from "../../packages/core/src/common/classes";
+
 import { generateTokens } from "./generateTokens";
 import {
     INTENTS,
     type SimpleColors,
+    type SimpleGenerationMode,
     TOKEN_CONFIG,
     TOKEN_NAMES,
     TOKEN_VALUES_REQUESTED,
@@ -28,6 +31,7 @@ interface InlineTokenSnapshot {
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
     const simpleColors: SimpleColors | undefined = globals.simpleColors;
+    const simpleGenerationMode: SimpleGenerationMode = globals.simpleGenerationMode === "css" ? "css" : "js";
     const initialTokenValues = useRef<InlineTokenSnapshot[]>([]);
     const emit = useChannel(
         {
@@ -69,6 +73,19 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
     );
 
     useEffect(
+        function applyNextClass() {
+            const { body } = document;
+            if (simpleGenerationMode !== "css" || body.classList.contains(Classes.NEXT)) {
+                return;
+            }
+            // A story may already opt in itself; clean up only the class this decorator added.
+            body.classList.add(Classes.NEXT);
+            return () => body.classList.remove(Classes.NEXT);
+        },
+        [id, simpleGenerationMode],
+    );
+
+    useEffect(
         function applyTokenOverrides() {
             const overrides = tokenOverrides ?? {};
             const generated: Record<string, string> = {};
@@ -76,8 +93,12 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
             for (const intent of INTENTS) {
                 const color = simpleColors?.[intent];
                 if (color !== undefined) {
-                    for (const [name, values] of Object.entries(generateTokens(color, { intent }))) {
-                        generated[name] = values[theme];
+                    if (simpleGenerationMode === "css") {
+                        generated[`--bp-${intent}-base`] = color;
+                    } else {
+                        for (const [name, values] of Object.entries(generateTokens(color, { intent }))) {
+                            generated[name] = values[theme];
+                        }
                     }
                 }
             }
@@ -94,7 +115,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
                 }
             }
         },
-        [globals.theme, id, simpleColors, tokenOverrides],
+        [globals.theme, id, simpleColors, simpleGenerationMode, tokenOverrides],
     );
 
     useEffect(
@@ -105,7 +126,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
             });
             return () => cancelAnimationFrame(frame);
         },
-        [emit, globals.theme, id, simpleColors, tokenOverrides],
+        [emit, globals.theme, id, simpleColors, simpleGenerationMode, tokenOverrides],
     );
 
     return <Story />;

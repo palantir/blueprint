@@ -1,0 +1,372 @@
+{
+    "neutral": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{neutral.text.normal}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": "{opacity.disabled}"
+                    }
+                }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{neutral.text.normal}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.6
+                        }
+                    }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{neutral.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": "{opacity.disabled}"
+                        }
+                    }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{neutral.palette.5}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.2
+                            }
+                        }
+                    }
+                }
+            },
+            "subtle": {
+                "disabled": {
+                    "$value": "{neutral.background.subtle.rest}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": "{opacity.disabled}"
+                        }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{neutral.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            },
+            "selected": {
+                "$value": "{neutral.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.3
+                    }
+                }
+            }
+        }
+    },
+    "primary": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{primary.text.normal}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": "{opacity.disabled}"
+                    }
+                }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{primary.text.normal}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.6
+                        }
+                    }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{primary.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": "{opacity.disabled}"
+                        }
+                    }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{primary.palette.5}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.2
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{primary.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            },
+            "selected": {
+                "$value": "{primary.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.3
+                    }
+                }
+            }
+        }
+    },
+    "success": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{success.text.normal}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": "{opacity.disabled}"
+                    }
+                }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{success.text.normal}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.6
+                        }
+                    }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{success.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": "{opacity.disabled}"
+                        }
+                    }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{success.palette.5}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.2
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{success.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            },
+            "selected": {
+                "$value": "{success.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.3
+                    }
+                }
+            }
+        }
+    },
+    "warning": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{warning.text.normal}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": "{opacity.disabled}"
+                    }
+                }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{warning.text.normal}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.6
+                        }
+                    }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{warning.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": "{opacity.disabled}"
+                        }
+                    }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{warning.palette.5}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.2
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{warning.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            },
+            "selected": {
+                "$value": "{warning.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.3
+                    }
+                }
+            }
+        }
+    },
+    "danger": {
+        "$type": "color",
+        "text": {
+            "disabled": {
+                "$value": "{danger.text.normal}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": "{opacity.disabled}"
+                    }
+                }
+            }
+        },
+        "border": {
+            "alpha": {
+                "rest": {
+                    "$value": "{danger.text.normal}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.6
+                        }
+                    }
+                }
+            }
+        },
+        "background": {
+            "solid": {
+                "disabled": {
+                    "$value": "{danger.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": "{opacity.disabled}"
+                        }
+                    }
+                }
+            },
+            "alpha": {
+                "subtle": {
+                    "rest": {
+                        "$value": "{danger.palette.5}",
+                        "$extensions": {
+                            "com.blueprint.derive": {
+                                "alpha": 0.2
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "overlay": {
+            "hover": {
+                "$value": "{danger.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.2
+                    }
+                }
+            },
+            "selected": {
+                "$value": "{danger.palette.5}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.3
+                    }
+                }
+            }
+        }
+    },
+    "divider": {
+        "$type": "color",
+        "normal": {
+            "$value": "{neutral.text.strong}",
+            "$extensions": {
+                "com.blueprint.derive": {
+                    "alpha": 0.2
+                }
+            }
+        },
+        "muted": {
+            "$value": "{neutral.text.strong}",
+            "$extensions": {
+                "com.blueprint.derive": {
+                    "alpha": 0.1
+                }
+            }
+        }
+    },
+    "text": {
+        "$type": "color",
+        "disabled": {
+            "$value": "{neutral.text.disabled}"
+        }
+    }
+}
