@@ -32,7 +32,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
       width: 100%;
 
       &[aria-selected="true"] {
-        background-color: var(--bp-primary-overlay-selected);
+        background-color: var(--bp-primary-layer-active);
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -43,7 +43,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: var(--bp-primary-overlay-selected);
+      background-color: var(--bp-primary-layer-active);
       border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
