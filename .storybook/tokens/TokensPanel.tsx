@@ -247,7 +247,7 @@ export function TokensPanel() {
 
     const handleUpdateSimpleColor = React.useCallback(
         (name: TokenName, value: string | undefined) => {
-            const intent = INTENTS.find(candidate => name === `--bp-${candidate}-accent`);
+            const intent = INTENTS.find(candidate => name === `--bp-${candidate}-base`);
             if (intent === undefined) {
                 return;
             }
@@ -269,7 +269,7 @@ export function TokensPanel() {
 
     const simpleOverrides: Partial<TokenValues> = {};
     for (const intent of INTENTS) {
-        simpleOverrides[`--bp-${intent}-accent`] = simpleColors?.[intent];
+        simpleOverrides[`--bp-${intent}-base`] = simpleColors?.[intent];
     }
 
     if (!isStoryPrepared) {

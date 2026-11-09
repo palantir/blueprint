@@ -1,7 +1,7 @@
 {
     "primary": {
         "$type": "color",
-        "accent": { "$value": "{palette.blue.3}" },
+        "base": { "$value": "{palette.blue.3}" },
         "background": {
             "solid": {
                 "rest": { "$value": "{palette.blue.3}" },
@@ -22,7 +22,7 @@
     },
     "success": {
         "$type": "color",
-        "accent": { "$value": "{palette.green.3}" },
+        "base": { "$value": "{palette.green.3}" },
         "background": {
             "solid": {
                 "rest": { "$value": "{palette.green.3}" },
@@ -43,7 +43,7 @@
     },
     "danger": {
         "$type": "color",
-        "accent": { "$value": "{palette.red.3}" },
+        "base": { "$value": "{palette.red.3}" },
         "background": {
             "solid": {
                 "rest": { "$value": "{palette.red.3}" },
@@ -64,7 +64,7 @@
     },
     "warning": {
         "$type": "color",
-        "accent": { "$value": "{palette.orange.3}" },
+        "base": { "$value": "{palette.orange.3}" },
         "background": {
             "solid": {
                 "rest": { "$value": "{palette.orange.5}" },
@@ -85,7 +85,7 @@
     },
     "neutral": {
         "$type": "color",
-        "accent": { "$value": "{palette.gray.3}" },
+        "base": { "$value": "{palette.gray.3}" },
         "background": {
             "subtle": {
                 "rest": { "$value": "{palette.light-gray.5}" },
@@ -109,5 +109,10 @@
             "normal": { "$value": "{palette.dark-gray.1}" },
             "strong": { "$value": "{palette.black}" }
         }
+    },
+    "text": {
+        "$type": "color",
+        "normal": { "$value": "{neutral.text.normal}" },
+        "muted": { "$value": "{neutral.text.muted}" }
     }
 }

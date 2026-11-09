@@ -40,7 +40,7 @@ export type GeneratedTokenValues = Record<TokenName, { light: string; dark: stri
 
 /**
  * Replaces palette-backed CSS colors with light/dark values from one opaque intent color.
- * Colors are gamut-mapped to sRGB; accent and solid.rest use the same normalized color.
+ * Colors are gamut-mapped to sRGB; base and solid.rest use the same normalized color.
  *
  * Text and border contrast targets apply only against the fixed Storybook backgrounds.
  * Solid states may coincide near their text contrast limit. JSON-derived roles, including
@@ -96,7 +96,7 @@ function generateThemeTokens(color: string, intent: TokenIntent, theme: "light" 
     const onSolid = wcagContrast(base, BLACK) >= wcagContrast(base, WHITE) ? BLACK : WHITE;
 
     return {
-        [`--bp-${intent}-accent`]: base,
+        [`--bp-${intent}-base`]: base,
         [`--bp-${intent}-background-solid-rest`]: base,
         [`--bp-${intent}-background-solid-hover`]: atContrast(
             Math.max(0, lightness - SOLID_LIGHTNESS_OFFSETS.hover),

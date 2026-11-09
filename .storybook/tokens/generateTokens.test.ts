@@ -17,8 +17,8 @@ describe("generateTokens", () => {
     it.each(INTENTS)("returns a flat map of existing %s CSS custom properties", intent => {
         const tokens = generateTokens("#ffcc00", { intent });
 
-        expect(tokens[`--bp-${intent}-accent`]).toEqual({ dark: "#ffcc00", light: "#ffcc00" });
-        expect(tokens[`--bp-${intent}-background-solid-rest`]).toEqual(tokens[`--bp-${intent}-accent`]);
+        expect(tokens[`--bp-${intent}-base`]).toEqual({ dark: "#ffcc00", light: "#ffcc00" });
+        expect(tokens[`--bp-${intent}-background-solid-rest`]).toEqual(tokens[`--bp-${intent}-base`]);
         for (const [name, values] of Object.entries(tokens)) {
             expect(name.startsWith(`--bp-${intent}-`)).toBe(true);
             expect(TOKEN_CONFIG).toHaveProperty(name);
@@ -33,7 +33,7 @@ describe("generateTokens", () => {
             "text-disabled",
             "border-alpha-rest",
             "overlay-hover",
-            "overlay-active",
+            "overlay-selected",
         ]) {
             expect(tokens).not.toHaveProperty(`--bp-${intent}-${role}`);
         }
@@ -91,7 +91,7 @@ describe("generateTokens", () => {
     it("returns theme-specific values together without changing the seed", () => {
         const tokens = generateTokens("#336699", { intent: "primary" });
 
-        expect(tokens["--bp-primary-accent"].dark).toBe(tokens["--bp-primary-accent"].light);
+        expect(tokens["--bp-primary-base"].dark).toBe(tokens["--bp-primary-base"].light);
         expect(tokens["--bp-primary-text-normal"].dark).not.toBe(tokens["--bp-primary-text-normal"].light);
     });
 

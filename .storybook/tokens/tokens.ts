@@ -126,7 +126,7 @@ const PROPOSAL_TOKEN_NAMES = Object.keys(PROPOSAL_TOKEN_CONFIG) as TokenName[];
 export const INTENTS = ["neutral", "primary", "success", "warning", "danger"] as const;
 export type TokenIntent = (typeof INTENTS)[number];
 export type SimpleColors = Partial<Record<TokenIntent, string>>;
-export const SIMPLE_TOKEN_NAMES = INTENTS.map((intent): TokenName => `--bp-${intent}-accent`);
+export const SIMPLE_TOKEN_NAMES = INTENTS.map((intent): TokenName => `--bp-${intent}-base`);
 
 export interface TokenGroup {
     names: readonly TokenName[];
