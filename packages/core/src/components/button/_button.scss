@@ -122,16 +122,6 @@
   [data-bp-color-scheme="dark"] & {
     &:not([class*="#{$ns}-intent-"]) {
       @include pt-dark-button;
-
-      &[class*="#{$ns}-icon-"]::before {
-        color: var(--bp-typography-color-default-rest);
-      }
-
-      #{$icon-classes} {
-        &:not([class*="#{$ns}-intent-"]) {
-          color: var(--bp-typography-color-default-rest);
-        }
-      }
     }
 
     &[class*="#{$ns}-intent-"] {
