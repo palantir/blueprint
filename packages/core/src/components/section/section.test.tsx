@@ -33,6 +33,20 @@ describe("<Section>", () => {
         expect(section!).toHaveClass("foo");
     });
 
+    it("renders with bordered styles by default", () => {
+        const wrapper = mount(<Section title="title" />, {
+            attachTo: containerElement,
+        });
+        assert.isTrue(wrapper.find(`.${Classes.SECTION_BORDERED}`).hostNodes().exists());
+    });
+
+    it("renders without bordered styles when bordered={false}", () => {
+        const wrapper = mount(<Section bordered={false} title="title" />, {
+            attachTo: containerElement,
+        });
+        assert.isFalse(wrapper.find(`.${Classes.SECTION_BORDERED}`).hostNodes().exists());
+    });
+
     it("supports icon", () => {
         const { container } = render(<Section icon={IconNames.GRAPH} title="title" />);
         expect(container.querySelector(`[data-icon="${IconNames.GRAPH}"]`)).toBeInTheDocument();
