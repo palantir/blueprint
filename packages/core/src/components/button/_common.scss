@@ -451,7 +451,7 @@ $button-dark-minimal-active-text-colors: (
   color: var(--bp-neutral-text-normal);
 
   &:hover {
-    background-color: var(--bp-neutral-overlay-strong-hover);
+    background-color: var(--bp-neutral-layer-strong-hover);
     box-shadow: none;
     color: var(--bp-neutral-text-normal);
     text-decoration: none;
@@ -459,7 +459,7 @@ $button-dark-minimal-active-text-colors: (
 
   &:active,
   &.#{$ns}-active {
-    background-color: var(--bp-neutral-overlay-strong-active);
+    background-color: var(--bp-neutral-layer-strong-active);
     box-shadow: none;
     color: var(--bp-neutral-text-strong);
   }
@@ -473,7 +473,7 @@ $button-dark-minimal-active-text-colors: (
     cursor: not-allowed;
 
     &.#{$ns}-active {
-      background-color: var(--bp-neutral-overlay-strong-disabled-active);
+      background-color: var(--bp-neutral-layer-strong-disabled-active);
     }
   }
 
@@ -514,12 +514,12 @@ $button-dark-minimal-active-text-colors: (
   }
 
   &:hover {
-    background-color: var(--bp-#{$token-intent}-overlay-strong-hover);
+    background-color: var(--bp-#{$token-intent}-layer-strong-hover);
   }
 
   &:active,
   &.#{$ns}-active {
-    background-color: var(--bp-#{$token-intent}-overlay-strong-active);
+    background-color: var(--bp-#{$token-intent}-layer-strong-active);
     color: var(--bp-#{$token-intent}-text-strong);
   }
 
@@ -529,7 +529,7 @@ $button-dark-minimal-active-text-colors: (
     color: var(--bp-#{$token-intent}-text-disabled);
 
     &.#{$ns}-active {
-      background-color: var(--bp-#{$token-intent}-overlay-strong-disabled-active);
+      background-color: var(--bp-#{$token-intent}-layer-strong-disabled-active);
     }
   }
 

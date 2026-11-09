@@ -55,30 +55,30 @@ $tag-intent-colors: (
 
 $minimal-tag-intent-colors: (
   "primary": (
-    var(--bp-primary-background-alpha-subtle-rest),
-    var(--bp-primary-background-alpha-subtle-hover),
-    var(--bp-primary-background-alpha-subtle-active),
+    var(--bp-primary-background-alpha-rest),
+    var(--bp-primary-background-alpha-hover),
+    var(--bp-primary-background-alpha-active),
     var(--bp-primary-text-normal),
     var(--bp-primary-text-strong),
   ),
   "success": (
-    var(--bp-success-background-alpha-subtle-rest),
-    var(--bp-success-background-alpha-subtle-hover),
-    var(--bp-success-background-alpha-subtle-active),
+    var(--bp-success-background-alpha-rest),
+    var(--bp-success-background-alpha-hover),
+    var(--bp-success-background-alpha-active),
     var(--bp-success-text-normal),
     var(--bp-success-text-strong),
   ),
   "warning": (
-    var(--bp-warning-background-alpha-subtle-rest),
-    var(--bp-warning-background-alpha-subtle-hover),
-    var(--bp-warning-background-alpha-subtle-active),
+    var(--bp-warning-background-alpha-rest),
+    var(--bp-warning-background-alpha-hover),
+    var(--bp-warning-background-alpha-active),
     var(--bp-warning-text-normal),
     var(--bp-warning-text-strong),
   ),
   "danger": (
-    var(--bp-danger-background-alpha-subtle-rest),
-    var(--bp-danger-background-alpha-subtle-hover),
-    var(--bp-danger-background-alpha-subtle-active),
+    var(--bp-danger-background-alpha-rest),
+    var(--bp-danger-background-alpha-hover),
+    var(--bp-danger-background-alpha-active),
     var(--bp-danger-text-normal),
     var(--bp-danger-text-strong),
   ),
@@ -192,7 +192,7 @@ $minimal-tag-intent-colors: (
   &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive;
 
-    background-color: var(--bp-neutral-background-alpha-subtle-rest);
+    background-color: var(--bp-neutral-background-alpha-rest);
     color: var(--bp-neutral-text-normal);
 
     .#{$ns}-tag-remove {
@@ -211,13 +211,13 @@ $minimal-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      background-color: var(--bp-neutral-background-alpha-subtle-hover);
+      background-color: var(--bp-neutral-background-alpha-hover);
       color: var(--bp-neutral-text-strong);
     }
 
     &.#{$ns}-active,
     &:active {
-      background-color: var(--bp-neutral-background-alpha-subtle-active);
+      background-color: var(--bp-neutral-background-alpha-active);
       color: var(--bp-neutral-text-strong);
     }
   }
