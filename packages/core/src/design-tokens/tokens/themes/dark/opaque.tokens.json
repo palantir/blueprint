@@ -67,5 +67,10 @@
             "soft": { "$value": "{palette.light-gray.1}" },
             "strong": { "$value": "{palette.white}" }
         }
+    },
+    "text": {
+        "$type": "color",
+        "normal": { "$value": "{neutral.text.normal}" },
+        "muted": { "$value": "{neutral.text.muted}" }
     }
 }

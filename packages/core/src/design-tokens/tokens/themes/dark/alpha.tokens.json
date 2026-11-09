@@ -26,22 +26,22 @@
         "background": {
             "solid": {
                 "disabled": {
-                    "$value": "{primary.accent}",
+                    "$value": "{primary.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
                 }
             },
             "alpha": {
                 "subtle": {
                     "rest": {
-                        "$value": "{primary.accent}",
+                        "$value": "{primary.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                     },
                     "hover": {
-                        "$value": "{primary.accent}",
+                        "$value": "{primary.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                     },
                     "active": {
-                        "$value": "{primary.accent}",
+                        "$value": "{primary.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.35 } }
                     }
                 }
@@ -50,21 +50,21 @@
         "overlay": {
             "subtle": {
                 "hover": {
-                    "$value": "{primary.accent}",
+                    "$value": "{primary.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{primary.accent}",
+                    "$value": "{primary.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 }
             },
             "strong": {
                 "hover": {
-                    "$value": "{primary.accent}",
+                    "$value": "{primary.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{primary.accent}",
+                    "$value": "{primary.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 },
                 "disabled-active": { "$value": "{primary.overlay.strong.active}" }
@@ -102,14 +102,14 @@
         "background": {
             "solid": {
                 "disabled": {
-                    "$value": "{success.accent}",
+                    "$value": "{success.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
                 }
             },
             "alpha": {
                 "subtle": {
                     "rest": {
-                        "$value": "{success.accent}",
+                        "$value": "{success.base}",
                         "$extensions": {
                             "com.blueprint.derive": {
                                 "alpha": 0.2
@@ -117,11 +117,11 @@
                         }
                     },
                     "hover": {
-                        "$value": "{success.accent}",
+                        "$value": "{success.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                     },
                     "active": {
-                        "$value": "{success.accent}",
+                        "$value": "{success.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.35 } }
                     }
                 }
@@ -130,21 +130,21 @@
         "overlay": {
             "subtle": {
                 "hover": {
-                    "$value": "{success.accent}",
+                    "$value": "{success.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{success.accent}",
+                    "$value": "{success.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 }
             },
             "strong": {
                 "hover": {
-                    "$value": "{success.accent}",
+                    "$value": "{success.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{success.accent}",
+                    "$value": "{success.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 },
                 "disabled-active": { "$value": "{success.overlay.strong.active}" }
@@ -178,14 +178,14 @@
         "background": {
             "solid": {
                 "disabled": {
-                    "$value": "{danger.accent}",
+                    "$value": "{danger.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
                 }
             },
             "alpha": {
                 "subtle": {
                     "rest": {
-                        "$value": "{danger.accent}",
+                        "$value": "{danger.base}",
                         "$extensions": {
                             "com.blueprint.derive": {
                                 "alpha": 0.2
@@ -193,11 +193,11 @@
                         }
                     },
                     "hover": {
-                        "$value": "{danger.accent}",
+                        "$value": "{danger.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                     },
                     "active": {
-                        "$value": "{danger.accent}",
+                        "$value": "{danger.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.35 } }
                     }
                 }
@@ -206,21 +206,21 @@
         "overlay": {
             "subtle": {
                 "hover": {
-                    "$value": "{danger.accent}",
+                    "$value": "{danger.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{danger.accent}",
+                    "$value": "{danger.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 }
             },
             "strong": {
                 "hover": {
-                    "$value": "{danger.accent}",
+                    "$value": "{danger.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{danger.accent}",
+                    "$value": "{danger.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 },
                 "disabled-active": { "$value": "{danger.overlay.strong.active}" }
@@ -254,22 +254,22 @@
         "background": {
             "solid": {
                 "disabled": {
-                    "$value": "{warning.accent}",
+                    "$value": "{warning.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
                 }
             },
             "alpha": {
                 "subtle": {
                     "rest": {
-                        "$value": "{warning.accent}",
+                        "$value": "{warning.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                     },
                     "hover": {
-                        "$value": "{warning.accent}",
+                        "$value": "{warning.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                     },
                     "active": {
-                        "$value": "{warning.accent}",
+                        "$value": "{warning.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.35 } }
                     }
                 }
@@ -278,21 +278,21 @@
         "overlay": {
             "subtle": {
                 "hover": {
-                    "$value": "{warning.accent}",
+                    "$value": "{warning.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{warning.accent}",
+                    "$value": "{warning.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 }
             },
             "strong": {
                 "hover": {
-                    "$value": "{warning.accent}",
+                    "$value": "{warning.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.2 } }
                 },
                 "active": {
-                    "$value": "{warning.accent}",
+                    "$value": "{warning.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 },
                 "disabled-active": { "$value": "{warning.overlay.strong.active}" }
@@ -344,15 +344,15 @@
             "alpha": {
                 "subtle": {
                     "rest": {
-                        "$value": "{neutral.accent}",
+                        "$value": "{neutral.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
                     },
                     "hover": {
-                        "$value": "{neutral.accent}",
+                        "$value": "{neutral.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                     },
                     "active": {
-                        "$value": "{neutral.accent}",
+                        "$value": "{neutral.base}",
                         "$extensions": { "com.blueprint.derive": { "alpha": 0.35 } }
                     }
                 }
@@ -371,17 +371,17 @@
         "overlay": {
             "subtle": {
                 "hover": {
-                    "$value": "{neutral.accent}",
+                    "$value": "{neutral.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
                 },
                 "active": {
-                    "$value": "{neutral.accent}",
+                    "$value": "{neutral.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 }
             },
             "strong": {
                 "hover": {
-                    "$value": "{neutral.accent}",
+                    "$value": "{neutral.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.15 } }
                 },
                 "active": {
@@ -389,10 +389,14 @@
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.49 } }
                 },
                 "disabled-active": {
-                    "$value": "{neutral.accent}",
+                    "$value": "{neutral.base}",
                     "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
                 }
             }
         }
+    },
+    "text": {
+        "$type": "color",
+        "disabled": { "$value": "{neutral.text.disabled}" }
     }
 }
