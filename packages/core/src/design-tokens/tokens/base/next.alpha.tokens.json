@@ -35,13 +35,11 @@
                 }
             },
             "alpha": {
-                "subtle": {
-                    "rest": {
-                        "$value": "{neutral.palette.5}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.1
-                            }
+                "rest": {
+                    "$value": "{neutral.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
                         }
                     }
                 }
@@ -57,7 +55,7 @@
                 }
             }
         },
-        "overlay": {
+        "layer": {
             "hover": {
                 "$value": "{neutral.palette.5}",
                 "$extensions": {
@@ -66,7 +64,7 @@
                     }
                 }
             },
-            "selected": {
+            "active": {
                 "$value": "{neutral.palette.5}",
                 "$extensions": {
                     "com.blueprint.derive": {
@@ -112,19 +110,17 @@
                 }
             },
             "alpha": {
-                "subtle": {
-                    "rest": {
-                        "$value": "{primary.palette.5}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.1
-                            }
+                "rest": {
+                    "$value": "{primary.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
                         }
                     }
                 }
             }
         },
-        "overlay": {
+        "layer": {
             "hover": {
                 "$value": "{primary.palette.5}",
                 "$extensions": {
@@ -133,7 +129,7 @@
                     }
                 }
             },
-            "selected": {
+            "active": {
                 "$value": "{primary.palette.5}",
                 "$extensions": {
                     "com.blueprint.derive": {
@@ -179,19 +175,17 @@
                 }
             },
             "alpha": {
-                "subtle": {
-                    "rest": {
-                        "$value": "{success.palette.5}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.1
-                            }
+                "rest": {
+                    "$value": "{success.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
                         }
                     }
                 }
             }
         },
-        "overlay": {
+        "layer": {
             "hover": {
                 "$value": "{success.palette.5}",
                 "$extensions": {
@@ -200,7 +194,7 @@
                     }
                 }
             },
-            "selected": {
+            "active": {
                 "$value": "{success.palette.5}",
                 "$extensions": {
                     "com.blueprint.derive": {
@@ -246,19 +240,17 @@
                 }
             },
             "alpha": {
-                "subtle": {
-                    "rest": {
-                        "$value": "{warning.palette.5}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.1
-                            }
+                "rest": {
+                    "$value": "{warning.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
                         }
                     }
                 }
             }
         },
-        "overlay": {
+        "layer": {
             "hover": {
                 "$value": "{warning.palette.5}",
                 "$extensions": {
@@ -267,7 +259,7 @@
                     }
                 }
             },
-            "selected": {
+            "active": {
                 "$value": "{warning.palette.5}",
                 "$extensions": {
                     "com.blueprint.derive": {
@@ -313,19 +305,17 @@
                 }
             },
             "alpha": {
-                "subtle": {
-                    "rest": {
-                        "$value": "{danger.palette.5}",
-                        "$extensions": {
-                            "com.blueprint.derive": {
-                                "alpha": 0.1
-                            }
+                "rest": {
+                    "$value": "{danger.palette.5}",
+                    "$extensions": {
+                        "com.blueprint.derive": {
+                            "alpha": 0.1
                         }
                     }
                 }
             }
         },
-        "overlay": {
+        "layer": {
             "hover": {
                 "$value": "{danger.palette.5}",
                 "$extensions": {
@@ -334,7 +324,7 @@
                     }
                 }
             },
-            "selected": {
+            "active": {
                 "$value": "{danger.palette.5}",
                 "$extensions": {
                     "com.blueprint.derive": {

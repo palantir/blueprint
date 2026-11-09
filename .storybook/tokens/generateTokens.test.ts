@@ -32,8 +32,8 @@ describe("generateTokens", () => {
             "background-solid-disabled",
             "text-disabled",
             "border-alpha-rest",
-            "overlay-hover",
-            "overlay-selected",
+            "layer-hover",
+            "layer-active",
         ]) {
             expect(tokens).not.toHaveProperty(`--bp-${intent}-${role}`);
         }
