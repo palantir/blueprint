@@ -247,11 +247,11 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
                     className={classNames(Classes.TABLE_TRUNCATED_POPOVER_TARGET, this.props.popoverProps?.className)}
                     content={popoverContent}
                     isOpen={true}
-                    onClose={this.handlePopoverClose}
                     placement="bottom"
                     rootBoundary="document"
                     shouldReturnFocusOnClose={false}
                     {...popoverPropsToNextProps(this.props.popoverProps)}
+                    onClose={this.handlePopoverClose}
                 >
                     <DotsThreeIcon />
                 </PopoverNext>
@@ -270,14 +270,15 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
         }
     }
 
-    private handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
+    private handlePopoverOpen = () => {
         this.setState({ isPopoverOpen: true });
-        this.props.popoverProps?.onOpening?.(event);
     };
 
-    private handlePopoverClose = (event: React.SyntheticEvent<HTMLElement>) => {
+    private handlePopoverClose = (event?: React.SyntheticEvent<HTMLElement>) => {
         this.setState({ isPopoverOpen: false });
-        this.props.popoverProps?.onClose?.(event);
+        if (event != null) {
+            this.props.popoverProps?.onClose?.(event);
+        }
     };
 
     private shouldShowPopover(content: string) {
