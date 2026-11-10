@@ -32,7 +32,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
       width: 100%;
 
       &[aria-selected="true"] {
-        background-color: var(--bp-primary-overlay-selected);
+        background-color: var(--bp-primary-layer-active);
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -43,7 +43,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: var(--bp-primary-overlay-selected);
+      background-color: var(--bp-primary-layer-active);
       border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
@@ -82,7 +82,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   @include overflow-ellipsis;
   align-items: center;
   align-self: stretch;
-  color: var(--bp-neutral-text-normal);
+  color: var(--bp-text-normal);
   cursor: pointer;
   display: flex;
   flex: 0 0 auto;
@@ -109,7 +109,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   }
 
   &[aria-disabled="true"] {
-    color: var(--bp-neutral-text-disabled);
+    color: var(--bp-text-disabled);
     cursor: not-allowed;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
