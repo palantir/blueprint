@@ -1,0 +1,32 @@
+---
+title: Next icons
+tag: new
+---
+
+# Next icons
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+
+**Experimental**
+
+These next-generation icons are experimental: names are stable, but the icon set and component API may change in upcoming 6.x releases.
+
+</div>
+
+`@blueprintjs/icons/next` is a full redesign of Blueprint's icon set. Every icon was redrawn in a
+single design language for a consistent look. These icons are built on a single 16px grid rather
+than separate 16px and 20px sizes. Many icons were also renamed to follow a more consistent naming scheme.
+
+Icons come in two styles, outlined and filled. Every icon has an outlined version, exported as
+`*Icon`. A subset also have a filled version, exported as `*FilledIcon`. Each is a React component
+imported by name, so bundlers include only the icons in use. Each renders an inline `<svg>` that
+inherits its color from `currentColor` and its size from a `size` prop (16px by default), so it picks
+up the surrounding text color and Blueprint intent classes automatically.
+
+@reactCodeExample NextIconUsageExample
+
+## Search next icons
+
+Browse the full set below. Filter by style, then search by name or by what an icon represents.
+
+@reactDocs IconsNext

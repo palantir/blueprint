@@ -330,6 +330,7 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={options} {...props}>
             <div className="docs-popover-example-scroll" ref={centerScroll}>
+                {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
                 <Popover
                     boundary={
                         boundary === "scrollParent"

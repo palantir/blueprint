@@ -10,6 +10,9 @@ import editableTextBasicCode from "./editable-text/EditableTextBasic.tsx?raw";
 import EditableTextDisabled from "./editable-text/EditableTextDisabled";
 import editableTextDisabledPreview from "./editable-text/EditableTextDisabled.tsx.preview?raw";
 import editableTextDisabledCode from "./editable-text/EditableTextDisabled.tsx?raw";
+import EditableTextFill from "./editable-text/EditableTextFill";
+import editableTextFillPreview from "./editable-text/EditableTextFill.tsx.preview?raw";
+import editableTextFillCode from "./editable-text/EditableTextFill.tsx?raw";
 import EditableTextIntent from "./editable-text/EditableTextIntent";
 import editableTextIntentPreview from "./editable-text/EditableTextIntent.tsx.preview?raw";
 import editableTextIntentCode from "./editable-text/EditableTextIntent.tsx?raw";
@@ -28,6 +31,18 @@ export const EditableTextBasicExample: React.FC<ExampleProps> = props => {
             {...props}
         >
             <EditableTextBasic />
+        </CodeExample>
+    );
+};
+
+export const EditableTextFillExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={editableTextFillPreview}
+            sourceCode={editableTextFillCode}
+            {...props}
+        >
+            <EditableTextFill />
         </CodeExample>
     );
 };

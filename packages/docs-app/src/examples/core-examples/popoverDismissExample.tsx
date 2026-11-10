@@ -44,6 +44,7 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={false} {...props}>
+            {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
             <Popover
                 // don't autofocus or enforce focus because it is open by default on the page,
                 // and that will make unexpectedly users scroll to this example
@@ -58,6 +59,7 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
                                 label="Capture dismiss"
                                 onChange={handleDismissChange}
                             />
+                            {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
                             <Popover
                                 autoFocus={false}
                                 captureDismiss={captureDismiss}

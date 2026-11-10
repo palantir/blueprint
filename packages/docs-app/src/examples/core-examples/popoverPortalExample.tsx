@@ -97,6 +97,7 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
                 ref={scrollContainerLeftRef}
             >
                 <div className="docs-popover-portal-example-scroll-content">
+                    {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
                     <Popover
                         {...POPOVER_PROPS}
                         content="I am in a Portal (default)."
@@ -114,6 +115,7 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
                 ref={scrollContainerRightRef}
             >
                 <div className="docs-popover-portal-example-scroll-content">
+                    {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
                     <Popover
                         {...POPOVER_PROPS}
                         content="I am an inline popover."

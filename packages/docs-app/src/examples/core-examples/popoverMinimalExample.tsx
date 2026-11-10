@@ -21,6 +21,7 @@ import { FileMenu } from "../core-examples/common/fileMenu";
 
 export const PopoverMinimalExample: React.FC<ExampleProps> = props => (
     <Example options={false} {...props}>
+        {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
         <Popover
             content={<FileMenu />}
             minimal={true}
@@ -29,6 +30,7 @@ export const PopoverMinimalExample: React.FC<ExampleProps> = props => (
                 <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
             )}
         />
+        {/* eslint-disable-next-line @blueprintjs/no-deprecated-components */}
         <Popover
             content={<FileMenu />}
             placement="bottom-end"

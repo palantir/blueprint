@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { version } from "react";
+
 import { CLAMP_MIN_MAX } from "../errors";
 
 // injected by webpack.DefinePlugin
@@ -23,6 +25,14 @@ declare let NODE_ENV: string;
 /** Returns whether bundler-injected variable `NODE_ENV` equals `env`. */
 export function isNodeEnv(env: string) {
     return typeof NODE_ENV !== "undefined" && NODE_ENV === env;
+}
+
+/**
+ * Returns the major version of the running React runtime as an integer
+ * (e.g. "19.1.0" -> 19, "18.3.1" -> 18).
+ */
+export function getReactMajorVersion(): number {
+    return parseInt(version, 10);
 }
 
 /**

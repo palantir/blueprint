@@ -4,7 +4,7 @@
 
 <img height="204" src="https://cloud.githubusercontent.com/assets/464822/20228152/d3f36dc2-a804-11e6-80ff-51ada2d13ea7.png">
 
-# [Blueprint](http://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/workflows/blueprint)
+# [Blueprint](https://blueprintjs.com/) [![CircleCI](https://circleci.com/gh/palantir/blueprint/tree/develop.svg?style=svg)](https://circleci.com/gh/palantir/workflows/blueprint)
 
 Blueprint is a React-based UI toolkit for the web.
 
@@ -13,7 +13,7 @@ This is not a mobile-first UI toolkit.
 
 [**Read the introductory blog post ▸**](https://medium.com/@palantir/scaling-product-design-with-blueprint-25492827bb4a)
 
-[**View the full documentation ▸**](http://blueprintjs.com/docs)
+[**View the full documentation ▸**](https://blueprintjs.com/docs)
 
 [**Try it out on CodeSandbox ▸**](https://codesandbox.io/p/sandbox/blueprint-v6-react-18-template-lc69nt)
 

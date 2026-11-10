@@ -4,11 +4,14 @@
 
 import type { TSESLint } from "@typescript-eslint/utils";
 
-import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
+import { createNoDeprecatedComponentsRule, type DeprecatedComponentsConfig } from "./createNoDeprecatedComponentsRule";
 
-export const coreComponentsMigrationMapping = {
-    // TODO(@adidahiya): Blueprint v6
-    // PanelStack: "PanelStack2",
+export const coreComponentsMigrationMapping: DeprecatedComponentsConfig = {
+    HotkeysTarget2: "HotkeysTarget",
+    Overlay: "Overlay2",
+    PanelStack2: "PanelStack",
+    Popover: "PopoverNext",
+    Toast2: "Toast",
 };
 
 /**
