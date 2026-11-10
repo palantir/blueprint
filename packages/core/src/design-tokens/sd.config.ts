@@ -15,7 +15,8 @@
 import { register } from "@tokens-studio/sd-transforms";
 import { formatHex, formatHex8, oklch, parse } from "culori";
 import StyleDictionary from "style-dictionary";
-import type { Config, TransformedToken } from "style-dictionary/types";
+import type { Config, Dictionary, TransformedToken } from "style-dictionary/types";
+import { getReferences, usesReferences } from "style-dictionary/utils";
 
 // -- Types --------------------------------------------------------------------
 
@@ -172,6 +173,33 @@ const THEMES: readonly ThemeConfig[] = [
         ],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
+    },
+    {
+        name: "next-light",
+        include: BASE_TOKEN_SOURCES,
+        sources: [
+            "src/design-tokens/tokens/base/next.opaque.tokens.json",
+            "src/design-tokens/tokens/base/next.alpha.tokens.json",
+        ],
+        selector: ".bp6-next",
+        destination: "tokens-next.css",
+    },
+    {
+        name: "next-dark",
+        include: BASE_TOKEN_SOURCES,
+        sources: [
+            "src/design-tokens/tokens/themes/dark/next.opaque.tokens.json",
+            "src/design-tokens/tokens/themes/dark/next.alpha.tokens.json",
+        ],
+        selector: [
+            ".bp6-next.bp6-dark",
+            '.bp6-next[data-bp-color-scheme="dark"]',
+            ".bp6-dark .bp6-next",
+            '[data-bp-color-scheme="dark"] .bp6-next',
+            ".bp6-next .bp6-dark",
+            '.bp6-next [data-bp-color-scheme="dark"]',
+        ].join(",\n"),
+        destination: "tokens-next-dark.css",
     },
 ];
 
@@ -626,7 +654,7 @@ const makeFallbackMap = (
 };
 
 /**
- * Classifies a token for progressive enhancement output. Plain token references are
+ * Classifies a token for progressive enhancement output. Token references, including those in CSS expressions, are
  * preserved as CSS custom property references when requested. Derived tokens keep their
  * static fallback and use the relative color syntax as `modernValue`.
  */
@@ -634,6 +662,7 @@ const classifyToken = (
     token: TransformedToken,
     fallbackMap: ReadonlyMap<string, string>,
     outputReferences: boolean,
+    tokens: Dictionary["tokens"],
 ): TokenClassification => {
     const tokenPath = token.path.join(".");
     const currentValue = getTokenValueAsString(token);
@@ -642,12 +671,15 @@ const classifyToken = (
     if (outputReferences && !hasDeriveExtension(token)) {
         const original = token.original ?? {};
         const originalValue = original.$value ?? original.value;
-        const originalReference = parseTokenReference(originalValue);
-
-        if (originalReference !== undefined) {
+        if (typeof originalValue === "string" && usesReferences(originalValue)) {
+            const references = getReferences(originalValue, tokens, { usesDtcg: true });
+            const cssValue = references.reduce(
+                (value, reference) => value.replaceAll(`{${reference.path.join(".")}}`, `var(--${reference.name})`),
+                originalValue,
+            );
             return {
                 name: token.name,
-                fallbackValue: tokenReferenceToVar(originalReference),
+                fallbackValue: cssValue,
                 modernValue: undefined,
                 description: token.$description,
             };
@@ -885,11 +917,12 @@ const formatEnhancedDeclaration = (classification: TokenClassification, token: T
  * block that overrides derived tokens with relative color syntax for capable browsers.
  */
 const formatProgressiveEnhancementCss = (
-    tokens: readonly TransformedToken[],
+    dictionary: Dictionary,
     selector: string,
     onlySourceTokens: boolean,
     outputReferences: boolean,
 ): string => {
+    const tokens = dictionary.allTokens;
     // Build the full token map and fallback map from ALL tokens (including non-source)
     // so that reference resolution and derived-color fallback computation works correctly.
     const tokenMap = buildTokenMap(tokens);
@@ -897,7 +930,9 @@ const formatProgressiveEnhancementCss = (
 
     // Filter to only source tokens for output when requested.
     const outputTokens = onlySourceTokens ? tokens.filter(t => t.isSource) : tokens;
-    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap, outputReferences));
+    const classifications = outputTokens.map(token =>
+        classifyToken(token, fallbackMap, outputReferences, dictionary.tokens),
+    );
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
@@ -960,7 +995,7 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
         name: "bp/css/variables",
         format: ({ dictionary, options }) => {
             const { selector, onlySourceTokens, outputReferences } = parseFormatOptions(options);
-            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens, outputReferences);
+            return formatProgressiveEnhancementCss(dictionary, selector, onlySourceTokens, outputReferences);
         },
     });
 };
