@@ -14,9 +14,134 @@
  * limitations under the License.
  */
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { Documentalist } from "@documentalist/compiler";
+import type * as DocumentalistCompiler from "@documentalist/compiler";
+import type * as NodeFs from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { basename } from "node:path";
+import packageJson from "package-json";
+import { vi } from "vitest";
 
-import { interpolateClassNamespace, sortMajorVersions, transformDocumentalistData } from "./compile-docs-data.mts";
+import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
+import {
+    compileDocsData,
+    interpolateClassNamespace,
+    sortMajorVersions,
+    transformDocumentalistData,
+} from "./compile-docs-data.mts";
+
+const { documentGlobs } = vi.hoisted(() => ({ documentGlobs: vi.fn() }));
+
+vi.mock("node:fs", async importOriginal => {
+    const original = await importOriginal<typeof NodeFs>();
+    return {
+        ...original,
+        mkdirSync: vi.fn(),
+        readFileSync: vi.fn((...args: Parameters<typeof readFileSync>) =>
+            args[0].toString() === new URL("./nav.json", import.meta.url).href ? "[]" : original.readFileSync(...args),
+        ),
+        writeFileSync: vi.fn(),
+    };
+});
+
+vi.mock("package-json", () => ({ default: vi.fn() }));
+
+vi.mock("@documentalist/compiler", async importOriginal => {
+    function mockDocumentalist() {
+        return {
+            documentGlobs,
+            use() {
+                return this;
+            },
+        };
+    }
+
+    return {
+        ...(await importOriginal<typeof DocumentalistCompiler>()),
+        Documentalist: vi.fn(mockDocumentalist),
+    };
+});
+
+describe("compilation entry point", () => {
+    it("does not compile, fetch metadata, or write files when imported", () => {
+        expect(Documentalist).not.toHaveBeenCalled();
+        expect(packageJson).not.toHaveBeenCalled();
+        expect(mkdirSync).not.toHaveBeenCalled();
+        expect(writeFileSync).not.toHaveBeenCalled();
+    });
+
+    describe("explicit compilation", () => {
+        beforeEach(() => {
+            vi.clearAllMocks();
+            vi.mocked(packageJson).mockReset();
+            documentGlobs.mockReset().mockResolvedValue({ css: {}, nav: [], pages: {}, typescript: {} });
+        });
+
+        it("generates documentation without fetching or overwriting npm metadata", async () => {
+            await compileDocsData("docs");
+
+            expect(Documentalist).toHaveBeenCalledOnce();
+            expect(packageJson).not.toHaveBeenCalled();
+            expect(writtenFiles()).toEqual(["docs.json", "nav-constants.js"]);
+        });
+
+        it("propagates extraction failures without writing partial documentation", async () => {
+            const error = new Error("Extraction failed");
+            documentGlobs.mockRejectedValue(error);
+            const errorLog = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+            try {
+                await expect(compileDocsData("docs")).rejects.toBe(error);
+                expect(writeFileSync).not.toHaveBeenCalled();
+            } finally {
+                errorLog.mockRestore();
+            }
+        });
+
+        it("refreshes npm metadata independently of documentation extraction", async () => {
+            vi.mocked(packageJson).mockResolvedValue({
+                "dist-tags": { latest: "6.2.0", next: "7.0.0-beta.1" },
+                versions: { "5.0.0": {}, "5.1.0": {}, "6.2.0": {}, "7.0.0-beta.1": {} },
+            } as Awaited<ReturnType<typeof packageJson>>);
+
+            await compileDocsData("npm");
+
+            expect(Documentalist).not.toHaveBeenCalled();
+            expect(writtenFiles()).toEqual(["npm-data.json"]);
+            const data = JSON.parse(vi.mocked(writeFileSync).mock.calls[0][1] as string);
+            expect(data["@blueprintjs/icons"]).toEqual({
+                name: "@blueprintjs/icons",
+                nextVersion: "7.0.0-beta.1",
+                version: "6.2.0",
+                versions: ["6.2.0", "5.1.0"],
+            });
+        });
+
+        it("falls back to the local package version when the registry is unavailable", async () => {
+            vi.mocked(packageJson).mockRejectedValue(new Error("Registry unavailable"));
+            const warning = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+
+            try {
+                await compileDocsData("npm");
+
+                const { name, version } = JSON.parse(
+                    readFileSync(new URL("../icons/package.json", import.meta.url), "utf8"),
+                );
+                const data = JSON.parse(vi.mocked(writeFileSync).mock.calls[0][1] as string);
+                expect(data[name]).toEqual({ name, version, versions: [version] });
+                expect(warning).toHaveBeenCalled();
+                expect(writtenFiles()).toEqual(["npm-data.json"]);
+            } finally {
+                warning.mockRestore();
+            }
+        });
+    });
+});
+
+function writtenFiles(): string[] {
+    return vi.mocked(writeFileSync).mock.calls.map(([path]) => basename(path as string));
+}
 
 describe("interpolateClassNamespace", () => {
     it("replaces #{$ns} and @ns with the default class namespace", () => {

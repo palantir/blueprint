@@ -74,6 +74,13 @@ export interface EditableTextProps extends IntentProps, Props {
      */
     elementRef?: React.Ref<HTMLDivElement>;
 
+    /**
+     * Whether the component should take up the full width of its container.
+     *
+     * @default false
+     */
+    fill?: boolean;
+
     /** Whether the component is currently being edited. */
     isEditing?: boolean;
 
@@ -171,6 +178,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         confirmOnEnterKey: false,
         defaultValue: "",
         disabled: false,
+        fill: false,
         maxLines: Infinity,
         minLines: 1,
         minWidth: 80,
@@ -224,7 +232,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     }
 
     public render() {
-        const { alwaysRenderInput, disabled, elementRef, multiline, contentId } = this.props;
+        const { alwaysRenderInput, disabled, elementRef, fill, multiline, contentId } = this.props;
         const value = this.props.value ?? this.state.value;
         const hasValue = value != null && value !== "";
 
@@ -235,6 +243,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
                 [Classes.DISABLED]: disabled,
                 [Classes.EDITABLE_TEXT_EDITING]: this.state.isEditing,
                 [Classes.EDITABLE_TEXT_PLACEHOLDER]: !hasValue,
+                [Classes.FILL]: fill,
                 [Classes.MULTILINE]: multiline,
             },
             this.props.className,
@@ -309,6 +318,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         if (
             this.state.value !== prevState.value ||
             this.props.alwaysRenderInput !== prevProps.alwaysRenderInput ||
+            this.props.fill !== prevProps.fill ||
             this.props.maxLines !== prevProps.maxLines ||
             this.props.minLines !== prevProps.minLines ||
             this.props.minWidth !== prevProps.minWidth ||
@@ -394,7 +404,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     };
 
     private renderInput(value: string | undefined) {
-        const { disabled, maxLength, multiline, type, placeholder, customInputAttributes } = this.props;
+        const { disabled, fill, maxLength, multiline, type, placeholder, customInputAttributes } = this.props;
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             disabled,
@@ -411,7 +421,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
             props.style = {
                 height: inputHeight,
                 lineHeight: !multiline && inputHeight != null ? `${inputHeight}px` : undefined,
-                width: multiline ? "100%" : inputWidth,
+                width: fill || multiline ? "100%" : inputWidth,
             };
         }
 

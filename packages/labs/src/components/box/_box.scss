@@ -297,11 +297,11 @@ $relative-sizes: (
   }
 
   &.#{bp.$ns}-self-baseline {
-    align-self: stretch;
+    align-self: baseline;
   }
 
   &.#{bp.$ns}-self-stretch {
-    align-self: baseline;
+    align-self: stretch;
   }
 
   // display

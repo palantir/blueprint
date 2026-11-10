@@ -22,7 +22,7 @@
 
     &::after {
       background: svg-icon(
-        "16px/chevron-right.svg",
+        "next/outlined/chevron-right.svg",
         (
           path: (
             fill: $pt-icon-color,
@@ -84,7 +84,7 @@
 .#{$ns}-breadcrumbs-collapsed {
   background: rgba($gray3, 0.15);
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   cursor: pointer;
   margin-right: $pt-spacing * 0.5;
   padding: 1px $pt-spacing;
@@ -92,7 +92,7 @@
 
   &::before {
     background: svg-icon(
-        "16px/more.svg",
+        "next/outlined/dots-three.svg",
         (
           path: (
             fill: $pt-icon-color,
@@ -121,7 +121,7 @@
 
   .#{$ns}-breadcrumbs > li::after {
     background: svg-icon(
-      "16px/chevron-right.svg",
+      "next/outlined/chevron-right.svg",
       (
         path: (
           fill: $pt-dark-icon-color,
@@ -144,7 +144,7 @@
 
     &::before {
       background: svg-icon(
-          "16px/more.svg",
+          "next/outlined/dots-three.svg",
           (
             path: (
               fill: $pt-dark-icon-color,
