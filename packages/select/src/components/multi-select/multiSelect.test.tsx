@@ -121,6 +121,25 @@ describe("<MultiSelect>", () => {
         expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
     });
 
+    it.each(["Enter", " "] as const)(
+        "opens popover from a button custom target's %s keyup click, not on keydown",
+        key => {
+            const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
+            const wrapper = multiselect({ customTarget, popoverProps: { usePortal: false } });
+
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+            const targetButton = findTargetButton(wrapper);
+
+            targetButton.simulate("keydown", { key });
+            // The button activates itself on keyup, so MultiSelect should not open early on keydown.
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(false);
+
+            targetButton.simulate("keyup", { key });
+            // ...and should open once after the button synthesizes its keyup click.
+            expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+        },
+    );
+
     it("allows searching within popover content when custom target provided", async () => {
         // Mount to document for this test to check from input focus
         const containerElement = document.createElement("div");

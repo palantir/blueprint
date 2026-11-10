@@ -40,10 +40,10 @@ $tag-intent-colors: (
     var(--bp-intent-success-foreground),
   ),
   "warning": (
-    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h)"},
-    #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h)"},
-    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.20) calc(c + 0.05) h)"},
-    #{"oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h)"},
+    oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h),
+    oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h),
+    oklch(from var(--bp-intent-warning-active) calc(l + 0.2) calc(c + 0.05) h),
+    oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h),
   ),
   "danger": (
     var(--bp-intent-danger-rest),
@@ -79,23 +79,23 @@ $minimal-tag-intent-colors: (
 $minimal-dark-tag-intent-colors: (
   "primary": (
     var(--bp-intent-primary-rest),
-    #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h)"},
-    #{"oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h)"},
+    oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h),
+    oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h),
   ),
   "success": (
     var(--bp-intent-success-rest),
-    #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h)"},
-    #{"oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h)"},
+    oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h),
+    oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h),
   ),
   "warning": (
     var(--bp-intent-warning-rest),
-    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h)"},
-    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h)"},
+    oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h),
+    oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h),
   ),
   "danger": (
     var(--bp-intent-danger-rest),
-    #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h)"},
-    #{"oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h)"},
+    oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h),
+    oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h),
   ),
 ) !default;
 
@@ -190,7 +190,7 @@ $minimal-dark-tag-intent-colors: (
 
   .#{$ns}-tag-remove {
     /* stylelint-disable-next-line alpha-value-notation */
-    color: #{"oklch(from "}#{$text-color}#{" l c h / 0.7)"};
+    color: oklch(from $text-color l c h / 0.7);
 
     &:hover,
     &:active {
@@ -206,12 +206,12 @@ $minimal-dark-tag-intent-colors: (
 
   &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive(
-      #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+      oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
       var(--bp-palette-black)
     );
 
     /* stylelint-disable-next-line alpha-value-notation */
-    background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
     color: var(--bp-typography-color-default-rest);
 
     .#{$ns}-tag-remove {
@@ -226,20 +226,20 @@ $minimal-dark-tag-intent-colors: (
     .#{$ns}-dark &,
     [data-bp-color-scheme="dark"] & {
       @include pt-tag-minimal-interactive(
-        #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h)"},
+        oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
         var(--bp-palette-white)
       );
 
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15)"};
-      color: #{"oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h)"};
+      background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
+      color: oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h);
 
       .#{$ns}-tag-remove {
         color: var(--bp-typography-color-muted);
 
         &:hover,
         &:active {
-          color: #{"oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h)"};
+          color: oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h);
         }
       }
     }
@@ -252,14 +252,14 @@ $minimal-dark-tag-intent-colors: (
 
     &:hover {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      background-color: oklch(from $background-color l c h / 0.3);
       color: $text-color;
     }
 
     &.#{$ns}-active,
     &:active {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      background-color: oklch(from $background-color l c h / 0.35);
       color: $text-color;
     }
   }
@@ -267,7 +267,7 @@ $minimal-dark-tag-intent-colors: (
 
 @mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
   /* stylelint-disable-next-line alpha-value-notation */
-  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.1)"};
+  background-color: oklch(from $background-color l c h / 0.1);
   color: $text-color;
 
   > #{$icon-classes} {
@@ -277,14 +277,14 @@ $minimal-dark-tag-intent-colors: (
   &.#{$ns}-interactive {
     &:hover {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+      background-color: oklch(from $background-color l c h / 0.2);
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      background-color: oklch(from $background-color l c h / 0.3);
       color: $hover-active-text-color;
     }
   }
@@ -301,20 +301,20 @@ $minimal-dark-tag-intent-colors: (
 
 @mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
   /* stylelint-disable-next-line alpha-value-notation */
-  background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.2)"};
+  background-color: oklch(from $background-color l c h / 0.2);
   color: $text-color;
 
   &.#{$ns}-interactive {
     &:hover {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.3)"};
+      background-color: oklch(from $background-color l c h / 0.3);
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
       /* stylelint-disable-next-line alpha-value-notation */
-      background-color: #{"oklch(from "}#{$background-color}#{" l c h / 0.35)"};
+      background-color: oklch(from $background-color l c h / 0.35);
       color: $hover-active-text-color;
     }
   }
@@ -333,7 +333,7 @@ $minimal-dark-tag-intent-colors: (
   background: none;
   border: none;
   /* stylelint-disable-next-line alpha-value-notation */
-  color: #{"oklch(from var(--bp-intent-default-foreground) l c h / 0.7)"};
+  color: oklch(from var(--bp-intent-default-foreground) l c h / 0.7);
   cursor: pointer;
   display: flex;
   margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
@@ -424,14 +424,14 @@ $minimal-dark-tag-intent-colors: (
 @mixin minimal-compound-tag-colors($base-color) {
   /* stylelint-disable alpha-value-notation */
   $left-colors: (
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.4)"}
+    oklch(from $base-color l c h / 0.2),
+    oklch(from $base-color l c h / 0.3),
+    oklch(from $base-color l c h / 0.4)
   );
   $right-colors: (
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.1)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"}
+    oklch(from $base-color l c h / 0.1),
+    oklch(from $base-color l c h / 0.2),
+    oklch(from $base-color l c h / 0.3)
   );
   /* stylelint-enable alpha-value-notation */
 
@@ -441,14 +441,14 @@ $minimal-dark-tag-intent-colors: (
 @mixin dark-minimal-compound-tag-colors($base-color) {
   /* stylelint-disable alpha-value-notation */
   $left-colors: (
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.4)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.5)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.55)"}
+    oklch(from $base-color l c h / 0.4),
+    oklch(from $base-color l c h / 0.5),
+    oklch(from $base-color l c h / 0.55)
   );
   $right-colors: (
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.2)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.3)"},
-    #{"oklch(from "}#{$base-color}#{" l c h / 0.35)"}
+    oklch(from $base-color l c h / 0.2),
+    oklch(from $base-color l c h / 0.3),
+    oklch(from $base-color l c h / 0.35)
   );
   /* stylelint-enable alpha-value-notation */
 

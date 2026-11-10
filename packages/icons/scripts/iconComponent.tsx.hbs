@@ -24,7 +24,7 @@ const PATHS_16 = {{{paths16Json}}} as readonly string[];
 /** Path data for the 20px grid; matches {@link generate-icon-paths.mjs} / `<Icon />` from core. */
 const PATHS_20 = {{{paths20Json}}} as readonly string[];
 
-export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => {
+export const {{pascalCase iconName}}Icon: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => {
     const isLarge = (props.size ?? IconSize.STANDARD) >= IconSize.LARGE;
     const paths = isLarge ? PATHS_20 : PATHS_16;
     return (
@@ -35,5 +35,11 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<
         </SVGIconContainer>
     );
 });
-{{pascalCase iconName}}.displayName = `Blueprint6.Icon.{{pascalCase iconName}}`;
-export default {{pascalCase iconName}};
+{{pascalCase iconName}}Icon.displayName = `Blueprint6.Icon.{{pascalCase iconName}}Icon`;
+
+/**
+ * @deprecated Use {@link {{pascalCase iconName}}Icon} instead.
+ */
+export const {{pascalCase iconName}}: typeof {{pascalCase iconName}}Icon = {{pascalCase iconName}}Icon;
+
+export default {{pascalCase iconName}}Icon;

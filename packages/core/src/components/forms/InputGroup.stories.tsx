@@ -3,6 +3,7 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { type ChangeEvent, useCallback, useState } from "react";
 
 import { Flex } from "@blueprintjs/labs";
@@ -16,13 +17,7 @@ import { InputGroup } from "./inputGroup";
 const meta: Meta<typeof InputGroup> = {
     title: "Core/Form/Inputs/InputGroup",
     component: InputGroup,
-    decorators: [
-        Story => (
-            <Flex flexDirection="column" gap={3} style={{ width: "100%", minWidth: "400px" }}>
-                <Story />
-            </Flex>
-        ),
-    ],
+    decorators: [storybookLayoutDecorator],
     tags: ["autodocs"],
     args: {
         intent: "none",
@@ -225,6 +220,18 @@ export const FillExample: Story = {
             <InputGroup {...args} fill={false} placeholder="Auto Width" />
         </Flex>
     ),
+};
+
+/**
+ * An input in the focused state, showing the focus ring. Use controls to change the intent.
+ */
+export const FocusedExample: Story = {
+    name: "Focused",
+    play: async ({ canvas, userEvent }) => {
+        const input = canvas.getByPlaceholderText("Click to focus...");
+        await userEvent.click(input);
+    },
+    render: args => <InputGroup {...args} placeholder="Click to focus..." />,
 };
 
 /**

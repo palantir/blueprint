@@ -1,9 +1,10 @@
-/* !
+/*
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { storybookLayoutDecorator, StoryLabel } from "@storybook-common";
+import { type ComponentProps } from "react";
 
 import { Flex } from "@blueprintjs/labs";
 
@@ -17,10 +18,13 @@ const SAMPLE_OPTIONS = [
     { label: "Option 5", value: "5" },
 ];
 
+const disabledArgs = ["children", "multiple"] as const satisfies ReadonlyArray<keyof ComponentProps<typeof HTMLSelect>>;
+
 const meta: Meta<typeof HTMLSelect> = {
     title: "Core/Form/HTMLSelect",
     component: HTMLSelect,
     decorators: [storybookLayoutDecorator],
+    tags: ["autodocs"],
     args: {
         options: SAMPLE_OPTIONS,
         fill: false,
@@ -46,7 +50,14 @@ const meta: Meta<typeof HTMLSelect> = {
             control: "select",
             options: ["double-caret-vertical", "caret-down"] satisfies HTMLSelectIconName[],
         },
-        onChange: { action: "changed", table: { disable: true } },
+        onChange: { action: "changed" },
+        ...disabledArgs.reduce(
+            (acc, argName) => {
+                acc[argName] = { table: { disable: true } };
+                return acc;
+            },
+            {} as Record<(typeof disabledArgs)[number], { table: { disable: boolean } }>,
+        ),
     },
 } satisfies Meta<typeof HTMLSelect>;
 
@@ -59,6 +70,28 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 
 /**
+ * Use the `minimal` prop to apply minimal styling.
+ */
+export const VariantExample: Story = {
+    name: "Variant",
+    argTypes: {
+        minimal: { table: { disable: true } },
+    },
+    render: args => (
+        <Flex gap={2} alignItems="center">
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <HTMLSelect {...args} minimal={false} />
+                <StoryLabel title="Default" />
+            </Flex>
+            <Flex flexDirection="column" gap={1} alignItems="center">
+                <HTMLSelect {...args} minimal={true} />
+                <StoryLabel title="Minimal" />
+            </Flex>
+        </Flex>
+    ),
+};
+
+/**
  * Use the `large` prop to render a larger select element.
  */
 export const SizeExample: Story = {
@@ -67,15 +100,9 @@ export const SizeExample: Story = {
         large: { table: { disable: true } },
     },
     render: args => (
-        <Flex gap={10} alignItems="center">
-            <Flex flexDirection="column" gap={1} alignItems="center">
-                <StoryLabel title="default" />
-                <HTMLSelect {...args} large={false} />
-            </Flex>
-            <Flex flexDirection="column" gap={1} alignItems="center">
-                <StoryLabel title="large" />
-                <HTMLSelect {...args} large={true} />
-            </Flex>
+        <Flex gap={2} alignItems="center">
+            <HTMLSelect {...args} large={false} />
+            <HTMLSelect {...args} large={true} />
         </Flex>
     ),
 };
@@ -89,14 +116,30 @@ export const StateExample: Story = {
         disabled: { table: { disable: true } },
     },
     render: args => (
-        <Flex gap={10} alignItems="center">
+        <Flex gap={2} alignItems="center">
+            <HTMLSelect {...args} disabled={false} />
+            <HTMLSelect {...args} disabled={true} />
+        </Flex>
+    ),
+};
+
+/**
+ * Use the `iconName` prop to choose between the supported dropdown icons.
+ */
+export const IconsExample: Story = {
+    name: "Icons",
+    argTypes: {
+        iconName: { table: { disable: true } },
+    },
+    render: args => (
+        <Flex gap={2} alignItems="center">
             <Flex flexDirection="column" gap={1} alignItems="center">
-                <StoryLabel title="enabled" />
-                <HTMLSelect {...args} disabled={false} />
+                <HTMLSelect {...args} iconName="double-caret-vertical" />
+                <StoryLabel title="double-caret-vertical" />
             </Flex>
             <Flex flexDirection="column" gap={1} alignItems="center">
-                <StoryLabel title="disabled" />
-                <HTMLSelect {...args} disabled={true} />
+                <HTMLSelect {...args} iconName="caret-down" />
+                <StoryLabel title="caret-down" />
             </Flex>
         </Flex>
     ),
@@ -118,37 +161,9 @@ export const FillExample: Story = {
         ),
     ],
     render: args => (
-        <Flex flexDirection="column" gap={5} alignItems="start">
-            <Flex flexDirection="column" gap={1} width={100}>
-                <StoryLabel title="fill is true" />
-                <HTMLSelect {...args} fill={true} />
-            </Flex>
-            <Flex flexDirection="column" gap={1}>
-                <StoryLabel title="fill is false" />
-                <HTMLSelect {...args} fill={false} />
-            </Flex>
-        </Flex>
-    ),
-};
-
-/**
- * Use the `minimal` prop to render a select with minimal chrome.
- */
-export const MinimalExample: Story = {
-    name: "Minimal",
-    argTypes: {
-        minimal: { table: { disable: true } },
-    },
-    render: args => (
-        <Flex gap={10} alignItems="center">
-            <Flex flexDirection="column" gap={1} alignItems="center">
-                <StoryLabel title="default" />
-                <HTMLSelect {...args} minimal={false} />
-            </Flex>
-            <Flex flexDirection="column" gap={1} alignItems="center">
-                <StoryLabel title="minimal" />
-                <HTMLSelect {...args} minimal={true} />
-            </Flex>
+        <Flex flexDirection="column" gap={2} alignItems="start">
+            <HTMLSelect {...args} fill={true} options={[{ label: "Full Width", value: "full" }]} />
+            <HTMLSelect {...args} fill={false} options={[{ label: "Auto Width", value: "auto" }]} />
         </Flex>
     ),
 };
@@ -156,12 +171,4 @@ export const MinimalExample: Story = {
 /**
  * Interactive playground with all props togglable via Storybook controls.
  */
-export const Playground: Story = {
-    args: {
-        options: SAMPLE_OPTIONS,
-        fill: false,
-        large: false,
-        minimal: false,
-        disabled: false,
-    },
-};
+export const Playground: Story = {};

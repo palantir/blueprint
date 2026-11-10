@@ -21,7 +21,7 @@ html {
 body {
   @include base-typography;
   color: $pt-text-color;
-  font-family: $pt-font-family;
+  font-family: var(--bp-typography-family-default);
 }
 
 p {

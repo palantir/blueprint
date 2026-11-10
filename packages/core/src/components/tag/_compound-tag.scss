@@ -13,9 +13,9 @@ Compound Tags
 
 // some of these values are copied from _common.scss, but our mixins have a different shape here
 $compound-tag-left-default-colors: (
-  #{"oklch(from var(--bp-intent-default-rest) calc(l - 0.14) c h)"},
-  #{"oklch(from var(--bp-intent-default-hover) calc(l - 0.05) c h)"},
-  #{"oklch(from var(--bp-intent-default-active) calc(l - 0.03) c h)"}
+  oklch(from var(--bp-intent-default-rest) calc(l - 0.14) c h),
+  oklch(from var(--bp-intent-default-hover) calc(l - 0.05) c h),
+  oklch(from var(--bp-intent-default-active) calc(l - 0.03) c h)
 ) !default;
 $compound-tag-right-default-colors: (
   var(--bp-intent-default-rest),
@@ -26,24 +26,24 @@ $compound-tag-right-default-colors: (
 // one shade darker than $tag-intent-colors
 $compound-tag-left-intent-colors: (
   "primary": (
-    #{"oklch(from var(--bp-intent-primary-rest) calc(l - 0.06) c h)"},
-    #{"oklch(from var(--bp-intent-primary-hover) calc(l - 0.07) c h)"},
-    #{"oklch(from var(--bp-intent-primary-active) calc(l - 0.07) c h)"},
+    oklch(from var(--bp-intent-primary-rest) calc(l - 0.06) c h),
+    oklch(from var(--bp-intent-primary-hover) calc(l - 0.07) c h),
+    oklch(from var(--bp-intent-primary-active) calc(l - 0.07) c h),
   ),
   "success": (
-    #{"oklch(from var(--bp-intent-success-rest) calc(l - 0.07) c h)"},
-    #{"oklch(from var(--bp-intent-success-hover) calc(l - 0.07) c h)"},
-    #{"oklch(from var(--bp-intent-success-active) calc(l - 0.09) c h)"},
+    oklch(from var(--bp-intent-success-rest) calc(l - 0.07) c h),
+    oklch(from var(--bp-intent-success-hover) calc(l - 0.07) c h),
+    oklch(from var(--bp-intent-success-active) calc(l - 0.09) c h),
   ),
   "warning": (
-    #{"oklch(from var(--bp-intent-warning-rest) calc(l + 0.11) c h)"},
-    #{"oklch(from var(--bp-intent-warning-hover) calc(l + 0.13) c h)"},
-    #{"oklch(from var(--bp-intent-warning-active) calc(l + 0.08) c h)"},
+    oklch(from var(--bp-intent-warning-rest) calc(l + 0.11) c h),
+    oklch(from var(--bp-intent-warning-hover) calc(l + 0.13) c h),
+    oklch(from var(--bp-intent-warning-active) calc(l + 0.08) c h),
   ),
   "danger": (
-    #{"oklch(from var(--bp-intent-danger-rest) calc(l - 0.07) c h)"},
-    #{"oklch(from var(--bp-intent-danger-hover) calc(l - 0.05) c h)"},
-    #{"oklch(from var(--bp-intent-danger-active) calc(l - 0.04) c h)"},
+    oklch(from var(--bp-intent-danger-rest) calc(l - 0.07) c h),
+    oklch(from var(--bp-intent-danger-hover) calc(l - 0.05) c h),
+    oklch(from var(--bp-intent-danger-active) calc(l - 0.04) c h),
   ),
 ) !default;
 
