@@ -67,6 +67,11 @@ export const ICON_SIZES = [16, 20];
 export const ICON_SIZES_PX = ICON_SIZES.map(n => `${n}px`);
 
 /**
+ * Resource subdirectories holding next-generation icon SVG sources.
+ */
+export const NEXT_ICON_DIRS = ["next/outlined", "next/filled"];
+
+/**
  * We need to scale up the icon paths during conversion so that the icons do not get visually degraded
  * or compressed through rounding errors (svgicons2svgfont rasterizes the icons in order to convert them).
  *

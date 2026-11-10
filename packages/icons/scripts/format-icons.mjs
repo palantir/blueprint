@@ -19,7 +19,7 @@ import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { extname, join } from "node:path";
 
 import { createCliLogger } from "./cliLogger.mjs";
-import { ICON_SIZES_PX, iconResourcesDir, repoRelative } from "./common.mjs";
+import { ICON_SIZES_PX, iconResourcesDir, NEXT_ICON_DIRS, repoRelative } from "./common.mjs";
 import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 const logger = createCliLogger("icons:format");
@@ -29,16 +29,16 @@ async function main() {
     let changed = 0;
     let total = 0;
 
-    for (const size of ICON_SIZES_PX) {
-        const sizeDir = join(iconResourcesDir, size);
-        logger.info(repoRelative(sizeDir));
-        const filenames = readdirSync(sizeDir)
+    for (const subdir of [...ICON_SIZES_PX, ...NEXT_ICON_DIRS]) {
+        const dir = join(iconResourcesDir, subdir);
+        logger.info(repoRelative(dir));
+        const filenames = readdirSync(dir)
             .filter(name => extname(name) === ".svg")
             .sort();
 
         for (const filename of filenames) {
             total += 1;
-            const path = join(sizeDir, filename);
+            const path = join(dir, filename);
             const source = readFileSync(path, "utf8");
             const optimized = optimizeSvg(source, path);
             if (optimized !== source) {

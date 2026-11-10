@@ -56,6 +56,7 @@ export { HTMLSelectExample } from "./htmlSelectExample";
 export { IconExample } from "./iconExample";
 export * from "./iconExamples";
 export { IconGeneratedComponentExample } from "./iconGeneratedComponentExample";
+export { IconNextExample } from "./iconNextExample";
 export * from "./linkExamples";
 export * from "./menuExample";
 export * from "./menuExamples";

@@ -21,13 +21,13 @@ from the icons package.
 
 ```tsx
 import { Button } from "@blueprintjs/core";
-import { Download } from "@blueprintjs/icons";
+import { DownloadIcon } from "@blueprintjs/icons";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(<Button text="Download" icon={<Download size={16} />} />);
+root.render(<Button text="Download" icon={<DownloadIcon size={16} />} />);
 ```
 
 This approach has benefits and tradeoffs:
@@ -35,6 +35,10 @@ This approach has benefits and tradeoffs:
 - Bundling only the icons you need is trivial with a properly-configured bundler which supports tree-shaking.
 - You do have to explicitly import each icon you use as an ES import.
 - You do have to take care to specify the correct icon size (if it is not the default 16px size) depending on the usage context.
+
+> `@blueprintjs/icons` now prefers static component names with an `Icon` suffix (for example `DownloadIcon`).
+> Legacy unsuffixed exports (for example `Download`) remain available temporarily for backward compatibility, but are
+> deprecated and planned for removal in the next major release.
 
 ## Using dynamic imports
 
