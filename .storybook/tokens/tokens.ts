@@ -6,15 +6,22 @@ import type { ColorProps } from "@storybook/addon-docs/blocks";
 
 import intentTokenSource from "../../packages/core/src/design-tokens/tokens/base/intent.tokens.json";
 import paletteTokenSource from "../../packages/core/src/design-tokens/tokens/base/palette.tokens.json";
+import typographyTokenSource from "../../packages/core/src/design-tokens/tokens/base/typography.tokens.json";
 
 const INTENT_TOKENS = intentTokenSource.intent;
 const PALETTE_TOKENS = paletteTokenSource.palette;
-const TOKEN_SOURCES: Record<string, unknown> = { ...intentTokenSource, ...paletteTokenSource };
+const TYPOGRAPHY_TOKENS = typographyTokenSource.typography;
+const TOKEN_SOURCES: Record<string, unknown> = {
+    ...intentTokenSource,
+    ...paletteTokenSource,
+    ...typographyTokenSource,
+};
 const TOKEN_REFERENCE_PATTERN = /^\{([^{}]+)\}$/;
 const TOKEN_GROUP_CONFIG = [
     { initialCollapsed: true, label: "Surface", tokenPrefix: "--bp-surface-" },
     { initialCollapsed: true, label: "Palette", tokenPrefix: "--bp-palette-" },
     { initialCollapsed: false, label: "Intent", tokenPrefix: "--bp-intent-" },
+    { initialCollapsed: true, label: "Typography", tokenPrefix: "--bp-typography-" },
 ] as const;
 
 // Keep palette tokens before their semantic aliases so the panel mirrors their dependency order.
@@ -89,6 +96,27 @@ export const TOKEN_CONFIG = {
     "--bp-intent-danger-active": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.active.$value)),
     "--bp-intent-danger-disabled": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.disabled.$value)),
     "--bp-intent-danger-foreground": colorTokenEditor(resolveColorTokenValue(INTENT_TOKENS.danger.foreground.$value)),
+    "--bp-typography-color-muted": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-muted"]),
+    "--bp-typography-color-default-rest": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-default"].rest),
+    "--bp-typography-color-default-hover": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-default"].hover),
+    "--bp-typography-color-default-active": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-default"].active),
+    "--bp-typography-color-default-disabled": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-default"].disabled),
+    "--bp-typography-color-primary-rest": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-primary"].rest),
+    "--bp-typography-color-primary-hover": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-primary"].hover),
+    "--bp-typography-color-primary-active": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-primary"].active),
+    "--bp-typography-color-primary-disabled": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-primary"].disabled),
+    "--bp-typography-color-success-rest": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-success"].rest),
+    "--bp-typography-color-success-hover": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-success"].hover),
+    "--bp-typography-color-success-active": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-success"].active),
+    "--bp-typography-color-success-disabled": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-success"].disabled),
+    "--bp-typography-color-warning-rest": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-warning"].rest),
+    "--bp-typography-color-warning-hover": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-warning"].hover),
+    "--bp-typography-color-warning-active": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-warning"].active),
+    "--bp-typography-color-warning-disabled": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-warning"].disabled),
+    "--bp-typography-color-danger-rest": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-danger"].rest),
+    "--bp-typography-color-danger-hover": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-danger"].hover),
+    "--bp-typography-color-danger-active": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-danger"].active),
+    "--bp-typography-color-danger-disabled": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-danger"].disabled),
 } as const satisfies Record<`--${string}`, TokenEditor>;
 /* eslint-enable sort-keys */
 
@@ -158,6 +186,26 @@ function colorTokenEditor(defaultCssValue: string): ColorTokenEditor {
         toCssValue: value => value,
         type: "color",
     };
+}
+
+function typographyColorTokenEditor(token: { $extensions?: unknown; $value: string }): ColorTokenEditor {
+    const resolvedValue = resolveColorTokenValue(token.$value);
+    const derivation = isRecord(token.$extensions) ? token.$extensions["com.blueprint.derive"] : undefined;
+    const alpha = isRecord(derivation) && typeof derivation.alpha === "number" ? derivation.alpha : undefined;
+
+    return colorTokenEditor(alpha === undefined ? resolvedValue : applyAlpha(resolvedValue, alpha));
+}
+
+function applyAlpha(color: string, alpha: number): string {
+    const hex = /^#([\da-f]{6})$/i.exec(color)?.[1];
+    if (hex === undefined) {
+        return color;
+    }
+
+    const alphaHex = Math.round(alpha * 255)
+        .toString(16)
+        .padStart(2, "0");
+    return `#${hex}${alphaHex}`;
 }
 
 function rangeTokenEditor(editor: RangeTokenEditor): RangeTokenEditor {
