@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { createElement, forwardRef, useCallback, useState } from "react";
 
-import { ChevronDown, ChevronUp, type IconName } from "@blueprintjs/icons";
+import { ChevronDownIcon, ChevronUpIcon, type IconName } from "@blueprintjs/icons";
 
 import { Classes, Elevation, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type MaybeElement, type Props } from "../../common/props";
@@ -214,7 +214,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
                                     onKeyDown={clickElementOnKeyPress(["Enter", " "])}
                                     className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_COLLAPSE_CARET)}
                                 >
-                                    {isCollapsed ? <ChevronDown /> : <ChevronUp />}
+                                    {isCollapsed ? <ChevronDownIcon /> : <ChevronUpIcon />}
                                 </span>
                             )}
                         </div>

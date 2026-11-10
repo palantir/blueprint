@@ -36,9 +36,10 @@ import {
     type TagInputProps,
     Utils,
 } from "@blueprintjs/core";
-import { Cross } from "@blueprintjs/icons";
+import { XIcon } from "@blueprintjs/icons/next";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
+import { SPACE_KEY, targetSelfActivatesOnKeyUp } from "../../common/keyboardInteractions";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -316,7 +317,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 <Button
                     aria-label="Clear selected items"
                     disabled={disabled}
-                    icon={<Cross />}
+                    icon={<XIcon />}
                     onClick={this.handleClearButtonClick}
                     title="Clear selected items"
                     variant="minimal"
@@ -432,11 +433,15 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             } else if (!(e.key === "Backspace" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
                 // Custom target might not be an input, so certain keystrokes might have other effects (space pushing the scrollview down)
                 if (this.props.customTarget != null) {
-                    if (e.key === " ") {
-                        e.preventDefault();
-                        this.setState({ isOpen: true });
-                    } else if (e.key === "Enter") {
-                        this.setState({ isOpen: true });
+                    // Skip opening on keydown when the custom target activates itself on keyup, otherwise
+                    // its synthesized click would toggle the popover back closed. See targetSelfActivatesOnKeyUp.
+                    if (!targetSelfActivatesOnKeyUp(e)) {
+                        if (e.key === SPACE_KEY) {
+                            e.preventDefault();
+                            this.setState({ isOpen: true });
+                        } else if (e.key === "Enter") {
+                            this.setState({ isOpen: true });
+                        }
                     }
                 } else {
                     this.setState({ isOpen: true });

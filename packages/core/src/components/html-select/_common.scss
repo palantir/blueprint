@@ -10,7 +10,7 @@
   /* stylelint-disable property-no-vendor-prefix */
   -moz-appearance: none;
   -webkit-appearance: none;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   height: $pt-button-height;
   padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
   // fill parent container

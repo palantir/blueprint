@@ -70,7 +70,7 @@ $toast-intent-colors: (
       outline-color: rgba($text-and-focus-color, 0.75);
     }
 
-    &:last-child > .#{$ns}-icon-cross {
+    &:last-child > .#{$ns}-icon-x {
       color: rgba($text-and-focus-color, 0.7) !important;
     }
   }
@@ -124,7 +124,7 @@ $toast-intent-colors: (
   );
   align-items: flex-start;
   background-color: $white;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   box-shadow: $pt-toast-box-shadow;
   display: flex;
   margin: $toast-margin 0 0;

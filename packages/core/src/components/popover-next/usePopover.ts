@@ -22,6 +22,7 @@ interface PopoverOptions {
     autoUpdateOptions?: PopoverNextAutoUpdateOptions;
     disabled?: boolean;
     isControlled?: boolean;
+    isHoverInteractionKind?: boolean;
     isOpen?: boolean;
     middleware?: Middleware[];
     placement?: Placement;
@@ -38,6 +39,7 @@ export function usePopover({
     autoUpdateOptions,
     disabled = false,
     isControlled = false,
+    isHoverInteractionKind = false,
     isOpen = false,
     middleware,
     placement,
@@ -94,7 +96,7 @@ export function usePopover({
     const { context } = data;
 
     const click = useClick(context, {
-        enabled: !disabled,
+        enabled: !disabled && !isHoverInteractionKind,
         // Disable Floating UI's built-in Space/Enter keyboard handlers because they
         // call `preventDefault()` on the Space keydown event to prevent page scrolling.
         // This also prevents space characters from being typed in <input>/<textarea>
