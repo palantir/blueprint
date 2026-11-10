@@ -4,37 +4,24 @@ name: Preview Comment
 # commit status. This turns a successful status into a PR comment linking them.
 # `status` workflows always run develop's copy of this file, so PR code never
 # runs next to the write token.
-on: [status, pull_request] # TEMP: pull_request for testing
+on: status
 
 permissions: {}
 
 jobs:
   comment:
     name: Comment with preview links
-    if: "github.event_name == 'pull_request' || github.event.context == 'ci/circleci: deploy-preview' && github.event.state == 'success'"
-    timeout-minutes: 60 # TEMP: was 5
+    if: "github.event.context == 'ci/circleci: deploy-preview' && github.event.state == 'success'"
+    timeout-minutes: 5
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
     steps:
-      - name: "TEMP: wait for the deploy-preview status"
-        id: wait
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ github.token }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-        run: |
-          for _ in $(seq 1 110); do
-            url=$(gh api "repos/palantir/blueprint/commits/$HEAD_SHA/statuses" --jq '[.[] | select(.context == "ci/circleci: deploy-preview")][0] | select(.state == "success") | .target_url')
-            if [ -n "$url" ]; then echo "target_url=$url" >> "$GITHUB_OUTPUT"; exit 0; fi
-            sleep 30
-          done
-          exit 1
       - name: Comment with preview links
         env:
           GH_TOKEN: ${{ github.token }}
-          SHA: ${{ github.event.sha || github.event.pull_request.head.sha }}
-          TARGET_URL: ${{ github.event.target_url || steps.wait.outputs.target_url }}
+          SHA: ${{ github.event.sha }}
+          TARGET_URL: ${{ github.event.target_url }}
         run: |
           set -euo pipefail
           repo=palantir/blueprint
