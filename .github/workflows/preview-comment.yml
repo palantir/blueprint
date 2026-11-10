@@ -42,11 +42,24 @@ jobs:
           # Anyone with write access can post a status, so take only the job
           # number from it and confirm with CircleCI that the job really is a
           # successful deploy-preview of this commit.
-          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ && "$TARGET_URL" =~ ^https://circleci\.com/gh/palantir/blueprint/([0-9]+)$ ]]; then
+          # CircleCI has linked statuses both by job number and, since Nov 2026,
+          # by workflow and job UUID; the latter is resolved to a job number.
+          uuid='[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
+          job=
+          if [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            if [[ "$TARGET_URL" =~ ^https://circleci\.com/gh/palantir/blueprint/([0-9]+)$ ]]; then
+              job="${BASH_REMATCH[1]}"
+            elif [[ "$TARGET_URL" =~ ^https://app\.circleci\.com/workflow/($uuid)/job/($uuid)$ ]]; then
+              job=$(
+                curl -fsS "https://circleci.com/api/v2/workflow/${BASH_REMATCH[1]}/job" \
+                  | jq -r --arg id "${BASH_REMATCH[2]}" '[.items[] | select(.id == $id and .project_slug == "gh/palantir/blueprint") | .job_number][0] // empty'
+              )
+            fi
+          fi
+          if ! [[ "$job" =~ ^[0-9]+$ ]]; then
             echo "Unexpected status: sha '$SHA', target_url '$TARGET_URL'."
             exit 1
           fi
-          job="${BASH_REMATCH[1]}"
           read -r name state revision < <(
             curl -fsS "https://circleci.com/api/v1.1/project/gh/$repo/$job" \
               | jq -r '[.workflows.job_name, .status, .vcs_revision] | @tsv'
