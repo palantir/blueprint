@@ -258,7 +258,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
         // Use the embedded SVG as a mask so its color can be customized at runtime.
         background-color: $control-checked-foreground-color;
         mask-image: svg-icon(
-          "16px/#{$icon}.svg",
+          "next/outlined/#{$icon}.svg",
           (
             path: (
               fill: $black,
@@ -279,11 +279,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
-      @include indicator-mask("small-tick");
+      @include indicator-mask("check-small");
     }
 
     input:indeterminate ~ .#{$ns}-control-indicator {
-      @include indicator-mask("small-minus");
+      @include indicator-mask("minus-small");
     }
 
     input:disabled ~ .#{$ns}-control-indicator::before {
