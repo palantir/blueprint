@@ -40,10 +40,10 @@ $tag-intent-colors: (
     var(--bp-intent-success-foreground),
   ),
   "warning": (
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.19) c h),
-    oklch(from var(--bp-intent-warning-hover) calc(l + 0.24) c h),
-    oklch(from var(--bp-intent-warning-active) calc(l + 0.2) calc(c + 0.05) h),
-    oklch(from var(--bp-intent-warning-foreground) calc(l + 0.05) c h),
+    var(--bp-palette-orange-5),
+    var(--bp-palette-orange-4),
+    var(--bp-palette-orange-3),
+    var(--bp-intent-warning-foreground),
   ),
   "danger": (
     var(--bp-intent-danger-rest),
@@ -56,46 +56,23 @@ $tag-intent-colors: (
 $minimal-tag-intent-colors: (
   "primary": (
     var(--bp-intent-primary-rest),
-    var(--bp-intent-primary-hover),
-    var(--bp-intent-primary-active),
+    var(--bp-typography-color-primary-rest),
+    var(--bp-typography-color-primary-active),
   ),
   "success": (
     var(--bp-intent-success-rest),
-    var(--bp-intent-success-hover),
-    var(--bp-intent-success-active),
+    var(--bp-typography-color-success-rest),
+    var(--bp-typography-color-success-active),
   ),
   "warning": (
     var(--bp-intent-warning-rest),
-    var(--bp-intent-warning-hover),
-    var(--bp-intent-warning-active),
+    var(--bp-typography-color-warning-rest),
+    var(--bp-typography-color-warning-active),
   ),
   "danger": (
     var(--bp-intent-danger-rest),
-    var(--bp-intent-danger-hover),
-    var(--bp-intent-danger-active),
-  ),
-) !default;
-
-$minimal-dark-tag-intent-colors: (
-  "primary": (
-    var(--bp-intent-primary-rest),
-    oklch(from var(--bp-intent-primary-rest) calc(l + 0.22) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-primary-rest) calc(l + 0.3) calc(c - 0.04) h),
-  ),
-  "success": (
-    var(--bp-intent-success-rest),
-    oklch(from var(--bp-intent-success-rest) calc(l + 0.25) calc(c - 0.03) h),
-    oklch(from var(--bp-intent-success-rest) calc(l + 0.33) calc(c - 0.05) h),
-  ),
-  "warning": (
-    var(--bp-intent-warning-rest),
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.18) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.26) calc(c - 0.04) h),
-  ),
-  "danger": (
-    var(--bp-intent-danger-rest),
-    oklch(from var(--bp-intent-danger-rest) calc(l + 0.2) calc(c - 0.02) h),
-    oklch(from var(--bp-intent-danger-rest) calc(l + 0.28) calc(c - 0.04) h),
+    var(--bp-typography-color-danger-rest),
+    var(--bp-typography-color-danger-active),
   ),
 ) !default;
 
@@ -189,8 +166,7 @@ $minimal-dark-tag-intent-colors: (
   }
 
   .#{$ns}-tag-remove {
-    /* stylelint-disable-next-line alpha-value-notation */
-    color: oklch(from $text-color l c h / 0.7);
+    color: color-mix(in srgb, $text-color 70%, transparent);
 
     &:hover,
     &:active {
@@ -206,12 +182,11 @@ $minimal-dark-tag-intent-colors: (
 
   &:not([class*="#{$ns}-intent-"]) {
     @include pt-tag-minimal-interactive(
-      oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
-      var(--bp-palette-black)
+      var(--bp-palette-gray-3),
+      var(--bp-typography-color-default-hover)
     );
 
-    /* stylelint-disable-next-line alpha-value-notation */
-    background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
+    background-color: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent);
     color: var(--bp-typography-color-default-rest);
 
     .#{$ns}-tag-remove {
@@ -219,27 +194,16 @@ $minimal-dark-tag-intent-colors: (
 
       &:hover,
       &:active {
-        color: var(--bp-intent-default-hover);
+        color: var(--bp-palette-dark-gray-5);
       }
     }
 
     .#{$ns}-dark &,
     [data-bp-color-scheme="dark"] & {
-      @include pt-tag-minimal-interactive(
-        oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h),
-        var(--bp-palette-white)
-      );
-
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from var(--bp-intent-default-rest) calc(l + 0.16) c h / 0.15);
-      color: oklch(from var(--bp-typography-color-default-rest) calc(l + 0.24) c h);
-
       .#{$ns}-tag-remove {
-        color: var(--bp-typography-color-muted);
-
         &:hover,
         &:active {
-          color: oklch(from var(--bp-typography-color-default-hover) calc(l + 0.35) c h);
+          color: var(--bp-palette-light-gray-1);
         }
       }
     }
@@ -251,23 +215,20 @@ $minimal-dark-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
+      background-color: color-mix(in srgb, $background-color 30%, transparent);
       color: $text-color;
     }
 
     &.#{$ns}-active,
     &:active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.35);
+      background-color: color-mix(in srgb, $background-color 35%, transparent);
       color: $text-color;
     }
   }
 }
 
 @mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: oklch(from $background-color l c h / 0.1);
+  background-color: color-mix(in srgb, $background-color 10%, transparent);
   color: $text-color;
 
   > #{$icon-classes} {
@@ -276,15 +237,13 @@ $minimal-dark-tag-intent-colors: (
 
   &.#{$ns}-interactive {
     &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.2);
+      background-color: color-mix(in srgb, $background-color 20%, transparent);
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
+      background-color: color-mix(in srgb, $background-color 30%, transparent);
       color: $hover-active-text-color;
     }
   }
@@ -297,34 +256,20 @@ $minimal-dark-tag-intent-colors: (
       color: $hover-active-text-color;
     }
   }
-}
 
-@mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
-  /* stylelint-disable-next-line alpha-value-notation */
-  background-color: oklch(from $background-color l c h / 0.2);
-  color: $text-color;
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    background-color: color-mix(in srgb, $background-color 20%, transparent);
 
-  &.#{$ns}-interactive {
-    &:hover {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.3);
-      color: $hover-active-text-color;
-    }
+    &.#{$ns}-interactive {
+      &:hover {
+        background-color: color-mix(in srgb, $background-color 30%, transparent);
+      }
 
-    &:active,
-    &.#{$ns}-active {
-      /* stylelint-disable-next-line alpha-value-notation */
-      background-color: oklch(from $background-color l c h / 0.35);
-      color: $hover-active-text-color;
-    }
-  }
-
-  .#{$ns}-tag-remove {
-    color: $text-color;
-
-    &:hover,
-    &:active {
-      color: $hover-active-text-color;
+      &:active,
+      &.#{$ns}-active {
+        background-color: color-mix(in srgb, $background-color 35%, transparent);
+      }
     }
   }
 }
@@ -332,8 +277,7 @@ $minimal-dark-tag-intent-colors: (
 @mixin pt-tag-remove() {
   background: none;
   border: none;
-  /* stylelint-disable-next-line alpha-value-notation */
-  color: oklch(from var(--bp-intent-default-foreground) l c h / 0.7);
+  color: color-mix(in srgb, var(--bp-intent-default-foreground) 70%, transparent);
   cursor: pointer;
   display: flex;
   margin-bottom: calc(var(--bp-surface-spacing) * -0.5);
@@ -422,35 +366,31 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin minimal-compound-tag-colors($base-color) {
-  /* stylelint-disable alpha-value-notation */
   $left-colors: (
-    oklch(from $base-color l c h / 0.2),
-    oklch(from $base-color l c h / 0.3),
-    oklch(from $base-color l c h / 0.4)
+    color-mix(in srgb, $base-color 20%, transparent),
+    color-mix(in srgb, $base-color 30%, transparent),
+    color-mix(in srgb, $base-color 40%, transparent)
   );
   $right-colors: (
-    oklch(from $base-color l c h / 0.1),
-    oklch(from $base-color l c h / 0.2),
-    oklch(from $base-color l c h / 0.3)
+    color-mix(in srgb, $base-color 10%, transparent),
+    color-mix(in srgb, $base-color 20%, transparent),
+    color-mix(in srgb, $base-color 30%, transparent)
   );
-  /* stylelint-enable alpha-value-notation */
 
   @include compound-tag-colors($left-colors, $right-colors);
 }
 
 @mixin dark-minimal-compound-tag-colors($base-color) {
-  /* stylelint-disable alpha-value-notation */
   $left-colors: (
-    oklch(from $base-color l c h / 0.4),
-    oklch(from $base-color l c h / 0.5),
-    oklch(from $base-color l c h / 0.55)
+    color-mix(in srgb, $base-color 40%, transparent),
+    color-mix(in srgb, $base-color 50%, transparent),
+    color-mix(in srgb, $base-color 55%, transparent)
   );
   $right-colors: (
-    oklch(from $base-color l c h / 0.2),
-    oklch(from $base-color l c h / 0.3),
-    oklch(from $base-color l c h / 0.35)
+    color-mix(in srgb, $base-color 20%, transparent),
+    color-mix(in srgb, $base-color 30%, transparent),
+    color-mix(in srgb, $base-color 35%, transparent)
   );
-  /* stylelint-enable alpha-value-notation */
 
   @include compound-tag-colors($left-colors, $right-colors);
 }
