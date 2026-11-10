@@ -9,11 +9,11 @@ import { isNodeEnv } from "../../common/utils";
 import { POPOVER_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import { positionToPlacement } from "../popover/popoverPlacementUtils";
 import { type PopoverPosition } from "../popover/popoverPosition";
-import type { PopoverProps } from "../popover/popoverProps";
+import { PopoverAnimation, type PopoverProps } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 import type { MiddlewareConfig, PopoverNextBoundary, PopoverNextPlacement } from "./middlewareTypes";
-import type { PopoverNextProps } from "./popoverNextProps";
+import { POPOVER_NEXT_DEFAULT_ANIMATION, POPOVER_NEXT_DEFAULT_ARROW, type PopoverNextProps } from "./popoverNextProps";
 
 /**
  * Converts Popper.js v2 `modifiers` (used by `Popover`) to a Floating UI `MiddlewareConfig` (used by `PopoverNext`).
@@ -122,7 +122,7 @@ export function popperModifiersToNextMiddleware(modifiers: PopperModifierOverrid
  * - `placement` ?? `position` → `placement`, mirroring legacy `Popover`'s resolution
  *   (`placement ?? positionToPlacement(position)`). When `placement` is defined it always wins.
  * - `modifiers` → `middleware` (via {@link popperModifiersToNextMiddleware}).
- * - `minimal: true` → `animation: "minimal"` and `arrow: false` (legacy `minimal` disables the arrow).
+ * - `minimal` → the equivalent explicit `animation` and `arrow` values.
  * - `boundary: "clippingParents"` → `"clippingAncestors"` (the Floating UI equivalent).
  *
  * Dropped (with dev-only `console.warn`):
@@ -192,9 +192,9 @@ export function popoverPropsToNextProps<T extends DefaultPopoverTargetHTMLProps>
         nextProps.middleware = popperModifiersToNextMiddleware(modifiers);
     }
 
-    if (minimal === true) {
-        nextProps.animation ??= "minimal";
-        nextProps.arrow ??= false;
+    if (minimal != null) {
+        nextProps.animation ??= minimal ? PopoverAnimation.MINIMAL : POPOVER_NEXT_DEFAULT_ANIMATION;
+        nextProps.arrow ??= minimal ? false : POPOVER_NEXT_DEFAULT_ARROW;
     }
 
     if (onClose !== undefined) {

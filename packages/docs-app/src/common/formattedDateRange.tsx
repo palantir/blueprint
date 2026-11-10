@@ -16,7 +16,7 @@
 
 import { Tag } from "@blueprintjs/core";
 import type { DateRange } from "@blueprintjs/datetime";
-import { ArrowRight } from "@blueprintjs/icons";
+import { ArrowRightIcon } from "@blueprintjs/icons";
 
 import { FormattedDateTag } from "./formattedDateTag";
 
@@ -35,7 +35,7 @@ export const FormattedDateRange: React.FC<FormattedDateRangeProps> = ({ range, s
     return (
         <div className="docs-date-range">
             <FormattedDateTag date={start} showTime={showTime} />
-            <ArrowRight />
+            <ArrowRightIcon />
             <FormattedDateTag date={end} showTime={showTime} />
         </div>
     );

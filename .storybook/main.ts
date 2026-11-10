@@ -38,6 +38,7 @@ const storybookConfig: StorybookConfig = {
                     { find: "@blueprintjs/core/lib", replacement: resolve(rootDir, "packages/core/lib") },
                     { find: "@blueprintjs/core", replacement: resolve(rootDir, "packages/core/src") },
                     { find: "@blueprintjs/datetime", replacement: resolve(rootDir, "packages/datetime") },
+                    { find: "@blueprintjs/icons/next", replacement: resolve(rootDir, "packages/icons/next") },
                     { find: "@blueprintjs/icons", replacement: resolve(rootDir, "packages/icons") },
                     { find: "@blueprintjs/labs", replacement: resolve(rootDir, "packages/labs") },
                     { find: "@blueprintjs/select", replacement: resolve(rootDir, "packages/select") },

@@ -17,7 +17,7 @@
 import { useCallback } from "react";
 
 import { Button, MenuItem } from "@blueprintjs/core";
-import { CaretDown } from "@blueprintjs/icons";
+import { CaretDownIcon } from "@blueprintjs/icons";
 import { type ItemRenderer, Select, type SelectPopoverProps } from "@blueprintjs/select";
 
 export type CommonDateFnsLocale = "de" | "en-US" | "es" | "fr" | "hi" | "it" | "zh-CN";
@@ -69,7 +69,7 @@ export const DateFnsLocaleSelect: React.FC<DateFnsLocaleSelectProps> = props => 
             onItemSelect={props.onChange}
             popoverProps={{ minimal: true, placement: "bottom-end", ...props.popoverProps }}
         >
-            <Button alignText="start" fill={true} endIcon={<CaretDown />} text={props.value} />
+            <Button alignText="start" fill={true} endIcon={<CaretDownIcon />} text={props.value} />
         </Select>
     );
 };
