@@ -1,0 +1,102 @@
+name: Preview Comment
+
+# CircleCI's deploy-preview job stores the built apps as artifacts and reports a
+# commit status. This turns a successful status into a PR comment linking them.
+# `status` workflows always run develop's copy of this file, so PR code never
+# runs next to the write token.
+on: [status, pull_request] # TEMP: pull_request for testing
+
+permissions: {}
+
+jobs:
+  comment:
+    name: Comment with preview links
+    if: "github.event_name == 'pull_request' || github.event.context == 'ci/circleci: deploy-preview' && github.event.state == 'success'"
+    timeout-minutes: 60 # TEMP: was 5
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+    steps:
+      - name: "TEMP: wait for the deploy-preview status"
+        id: wait
+        if: github.event_name == 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          for _ in $(seq 1 110); do
+            url=$(gh api "repos/palantir/blueprint/commits/$HEAD_SHA/statuses" --jq '[.[] | select(.context == "ci/circleci: deploy-preview")][0] | select(.state == "success") | .target_url')
+            if [ -n "$url" ]; then echo "target_url=$url" >> "$GITHUB_OUTPUT"; exit 0; fi
+            sleep 30
+          done
+          exit 1
+      - name: Comment with preview links
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.sha || github.event.pull_request.head.sha }}
+          TARGET_URL: ${{ github.event.target_url || steps.wait.outputs.target_url }}
+        run: |
+          set -euo pipefail
+          repo=palantir/blueprint
+
+          # Anyone with write access can post a status, so take only the job
+          # number from it and confirm with CircleCI that the job really is a
+          # successful deploy-preview of this commit.
+          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ && "$TARGET_URL" =~ ^https://circleci\.com/gh/palantir/blueprint/([0-9]+)$ ]]; then
+            echo "Unexpected status: sha '$SHA', target_url '$TARGET_URL'."
+            exit 1
+          fi
+          job="${BASH_REMATCH[1]}"
+          read -r name state revision < <(
+            curl -fsS "https://circleci.com/api/v1.1/project/gh/$repo/$job" \
+              | jq -r '[.workflows.job_name, .status, .vcs_revision] | @tsv'
+          )
+          if [ "$name" != deploy-preview ] || [ "$state" != success ] || [ "$revision" != "$SHA" ]; then
+            echo "CircleCI job $job is '$name' ($state) at $revision, not a successful deploy-preview of $SHA."
+            exit 1
+          fi
+
+          artifacts=$(curl -fsS "https://circleci.com/api/v2/project/gh/$repo/$job/artifacts")
+          links=()
+          for entry in \
+            documentation=packages/docs-app/dist/index.html \
+            landing=packages/landing-app/dist/index.html \
+            table=packages/table-dev-app/dist/index.html \
+            demo=packages/demo-app/dist/index.html \
+            storybook=storybook-static/index.html; do
+            label="${entry%%=*}"
+            path="${entry#*=}"
+            url=$(jq -r --arg path "$path" '[.items[] | select(.path == $path) | .url][0] // empty' <<< "$artifacts")
+            if [[ "$url" =~ ^https://output\.circle-artifacts\.com/output/job/[0-9a-f-]+/artifacts/[0-9]+/${path//./\\.}$ ]]; then
+              links+=("<a href=\"$url\">$label</a>")
+            else
+              echo "CircleCI job $job has no valid $path artifact; skipping $label."
+            fi
+          done
+          if [ ${#links[@]} -eq 0 ]; then
+            echo "CircleCI job $job has no preview artifacts."
+            exit 1
+          fi
+
+          pr=$(gh api "repos/$repo/commits/$SHA/pulls" --jq "[.[] | select(.state == \"open\" and .head.sha == \"$SHA\")][0].number // empty")
+          if [ -z "$pr" ]; then
+            echo "No open PR has $SHA as its head; nothing to comment on."
+            exit 0
+          fi
+
+          # The invisible marker line lets later pushes edit this comment.
+          joined=$(printf ' | %s' "${links[@]}")
+          cat > /tmp/preview-comment.md <<EOF
+          <!-- preview-links -->
+          <h3>$(gh api "repos/$repo/commits/$SHA" --jq '.commit.message' | head -1)</h3>
+          Build artifact links for this commit: <strong>${joined:3}</strong>
+
+          <em>This is an automated comment from the Preview Comment workflow.</em>
+          EOF
+
+          comment_id=$(gh api --paginate "repos/$repo/issues/$pr/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- preview-links -->"))) | .id' | head -1)
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$repo/issues/comments/$comment_id" -F body=@/tmp/preview-comment.md > /dev/null
+          else
+            gh api "repos/$repo/issues/$pr/comments" -F body=@/tmp/preview-comment.md > /dev/null
+          fi
