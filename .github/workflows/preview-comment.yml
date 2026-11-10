@@ -100,3 +100,38 @@ jobs:
           else
             gh api "repos/$repo/issues/$pr/comments" -F body=@/tmp/preview-comment.md > /dev/null
           fi
+
+      # Same marker as above, so the next successful run replaces this comment.
+      # target_url is left out of the body because whoever posted the status controls it.
+      - name: Comment that the preview links failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.event.sha }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          repo=palantir/blueprint
+
+          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            exit 0
+          fi
+          pr=$(gh api "repos/$repo/commits/$SHA/pulls" --jq "[.[] | select(.state == \"open\" and .head.sha == \"$SHA\")][0].number // empty")
+          if [ -z "$pr" ]; then
+            exit 0
+          fi
+
+          cat > /tmp/preview-comment.md <<EOF
+          <!-- preview-links -->
+          <h3>:warning: Preview links failed</h3>
+          CircleCI's deploy-preview passed for $SHA, but this workflow could not post the preview links. Please check <a href="$RUN_URL">the workflow run</a>.
+
+          <em>This is an automated comment from the Preview Comment workflow.</em>
+          EOF
+
+          comment_id=$(gh api --paginate "repos/$repo/issues/$pr/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- preview-links -->"))) | .id' | head -1)
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$repo/issues/comments/$comment_id" -F body=@/tmp/preview-comment.md > /dev/null
+          else
+            gh api "repos/$repo/issues/$pr/comments" -F body=@/tmp/preview-comment.md > /dev/null
+          fi
