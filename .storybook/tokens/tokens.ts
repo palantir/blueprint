@@ -11,6 +11,11 @@ const INTENT_TOKENS = intentTokenSource.intent;
 const PALETTE_TOKENS = paletteTokenSource.palette;
 const TOKEN_SOURCES: Record<string, unknown> = { ...intentTokenSource, ...paletteTokenSource };
 const TOKEN_REFERENCE_PATTERN = /^\{([^{}]+)\}$/;
+const TOKEN_GROUP_CONFIG = [
+    { initialCollapsed: true, label: "Surface", tokenPrefix: "--bp-surface-" },
+    { initialCollapsed: true, label: "Palette", tokenPrefix: "--bp-palette-" },
+    { initialCollapsed: false, label: "Intent", tokenPrefix: "--bp-intent-" },
+] as const;
 
 // Keep palette tokens before their semantic aliases so the panel mirrors their dependency order.
 /* eslint-disable sort-keys */
@@ -92,6 +97,12 @@ export type TokenValues = Record<TokenName, string>;
 
 // All keys come from the module-owned configuration above.
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
+export const TOKEN_GROUPS = TOKEN_GROUP_CONFIG.map(({ tokenPrefix, ...group }) => ({
+    ...group,
+    tokenNames: TOKEN_NAMES.filter(name => name.startsWith(tokenPrefix)),
+}));
+
+export type TokenGroup = (typeof TOKEN_GROUPS)[number];
 
 interface BaseTokenEditor<T, TControlType extends "color" | "range", TControl> {
     control: TControl;
