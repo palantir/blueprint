@@ -30,20 +30,54 @@ const ruleTester = new RuleTester({
 });
 
 ruleTester.run("no-deprecated-core-components", noDeprecatedCoreComponentsRule, {
-    // N.B. most other deprecated components are tested by no-deprecated-components.test.ts, this suite just tests
-    // for more specific violations which involve certain deprecated props
     invalid: [
         {
             code: dedent`
-                import { Popover } from "@blueprintjs/core";
+                import { HotkeysTarget2, Overlay, PanelStack2, Popover, Toast2 } from "@blueprintjs/core";
 
-                return <Popover />;
+                return (
+                    <>
+                        <HotkeysTarget2 />
+                        <Overlay />
+                        <PanelStack2 />
+                        <Popover />
+                        <Toast2 />
+                    </>
+                );
             `,
             errors: [
                 {
                     data: {
+                        deprecatedComponentName: "HotkeysTarget2",
+                        newComponentName: "HotkeysTarget",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
+                        deprecatedComponentName: "Overlay",
+                        newComponentName: "Overlay2",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
+                        deprecatedComponentName: "PanelStack2",
+                        newComponentName: "PanelStack",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
                         deprecatedComponentName: "Popover",
                         newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
+                        deprecatedComponentName: "Toast2",
+                        newComponentName: "Toast",
                     },
                     messageId: "migration",
                 },
@@ -53,13 +87,49 @@ ruleTester.run("no-deprecated-core-components", noDeprecatedCoreComponentsRule, 
             code: dedent`
                 import * as Blueprint from "@blueprintjs/core";
 
-                return <Blueprint.Popover />;
+                return (
+                    <>
+                        <Blueprint.HotkeysTarget2 />
+                        <Blueprint.Overlay />
+                        <Blueprint.PanelStack2 />
+                        <Blueprint.Popover />
+                        <Blueprint.Toast2 />
+                    </>
+                );
             `,
             errors: [
                 {
                     data: {
+                        deprecatedComponentName: "HotkeysTarget2",
+                        newComponentName: "HotkeysTarget",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
+                        deprecatedComponentName: "Overlay",
+                        newComponentName: "Overlay2",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
+                        deprecatedComponentName: "PanelStack2",
+                        newComponentName: "PanelStack",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
                         deprecatedComponentName: "Popover",
                         newComponentName: "PopoverNext",
+                    },
+                    messageId: "migration",
+                },
+                {
+                    data: {
+                        deprecatedComponentName: "Toast2",
+                        newComponentName: "Toast",
                     },
                     messageId: "migration",
                 },

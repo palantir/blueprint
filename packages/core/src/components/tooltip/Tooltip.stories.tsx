@@ -3,15 +3,26 @@
  */
 
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { DashedPaddedContainer, storybookLayoutDecorator } from "@storybook-common";
+import { storybookLayoutDecorator } from "@storybook-common";
 import { expect, screen, waitFor } from "storybook/test";
 
 import { Flex } from "@blueprintjs/labs";
 
-import { Intent } from "../../common";
+import { Intent, mergeRefs } from "../../common";
 import { Button } from "../button/buttons";
+import { Menu } from "../menu/menu";
+import { MenuItem } from "../menu/menuItem";
+import { PopoverNext } from "../popover-next/popoverNext";
 
 import { Tooltip } from "./tooltip";
+
+const TOOLTIP_POPOVER_MENU = (
+    <Menu>
+        <MenuItem icon="edit" text="Rename" />
+        <MenuItem icon="duplicate" text="Duplicate" />
+        <MenuItem icon="trash" intent="danger" text="Delete" />
+    </Menu>
+);
 
 const meta: Meta<typeof Tooltip> = {
     title: "Core/Overlays/Tooltip",
@@ -136,6 +147,42 @@ export const Playground: Story = {
         content: "Tooltip content",
         children: <Button>Hover over me</Button>,
     },
+};
+
+/**
+ * A tooltip can share a single target with a click popover. Tooltip render-target
+ * props are spread after PopoverNext's props here to verify that Tooltip does not
+ * inject an `onClick` handler which would shadow the popover trigger.
+ */
+export const WithPopover: Story = {
+    name: "With Popover",
+    args: {
+        content: "Tooltip: more actions",
+        placement: "top",
+    },
+    render: args => (
+        <PopoverNext
+            content={TOOLTIP_POPOVER_MENU}
+            placement="bottom"
+            transitionDuration={0}
+            // eslint-disable-next-line react/jsx-no-bind
+            renderTarget={({ ref: popoverRef, ...popoverProps }) => (
+                <Tooltip
+                    {...args}
+                    // eslint-disable-next-line react/jsx-no-bind
+                    renderTarget={({ ref: tooltipRef, ...tooltipProps }) => (
+                        <Button
+                            {...popoverProps}
+                            {...tooltipProps}
+                            ref={mergeRefs(popoverRef, tooltipRef)}
+                            icon="more"
+                            text="Actions"
+                        />
+                    )}
+                />
+            )}
+        />
+    ),
 };
 
 /**

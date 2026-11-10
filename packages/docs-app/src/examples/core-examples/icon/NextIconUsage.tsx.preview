@@ -1,0 +1,5 @@
+import { Button } from "@blueprintjs/core";
+import { AirplaneFilledIcon, AirplaneIcon } from "@blueprintjs/icons/next";
+
+<Button icon={<AirplaneIcon />} intent="primary" text="Book flight" />
+<Button icon={<AirplaneFilledIcon />} text="Booked" />
