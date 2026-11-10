@@ -15,7 +15,7 @@
 
 // @ts-check
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -25,13 +25,18 @@ import {
     ICON_SIZES_PX,
     iconDirectoryParityDiff,
     iconResourcesDir,
+    NEXT_ICON_DIRS,
     readIconsManifestFile,
     repoRelative,
 } from "./common.mjs";
+import { validateIconNameMap } from "./iconNameMapValidation.mjs";
 import { canonicalIconName, ICON_NAME_PATTERN } from "./iconNaming.mjs";
+import { validateIconsNextManifest } from "./iconsNextManifestValidation.mjs";
 import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 const ICONS_JSON_PATH = resolve(import.meta.dirname, "../icons.json");
+const ICONS_NEXT_JSON_PATH = resolve(import.meta.dirname, "../icons-next.json");
+const ICONS_NAME_MAP_PATH = resolve(import.meta.dirname, "../icons-name-map.json");
 const logger = createCliLogger("icons:verify");
 
 /**
@@ -64,8 +69,73 @@ export async function verifyIcons() {
     // Only paired icons have both files on disk; unpaired names are already reported by verifyDirectoryParity.
     const pairedIconNames = new Set([...iconNames16].filter(name => iconNames20.has(name)));
     errors.push(...(await verifySvgFormatting(pairedIconNames)));
+    errors.push(...verifyIconsNext());
+    errors.push(...verifyNextSvgFormatting());
+    errors.push(...verifyIconNameMap());
 
     return errors;
+}
+
+/**
+ * Checks that next-generation icon SVGs (outlined + filled) are SVGO-normalized, mirroring
+ * {@link verifySvgFormatting} for the legacy size directories.
+ *
+ * @returns {string[]}
+ */
+export function verifyNextSvgFormatting() {
+    /** @type {string[]} */
+    const errors = [];
+    for (const subdir of NEXT_ICON_DIRS) {
+        const dir = join(iconResourcesDir, subdir);
+        if (!existsSync(dir)) {
+            continue;
+        }
+        for (const iconName of [...getIconNamesInDirectory(dir)].sort()) {
+            const path = join(dir, `${iconName}.svg`);
+            if (!isSvgFormatted(path)) {
+                errors.push(
+                    `${repoRelative(path)} is not normalized; run "pnpm --filter @blueprintjs/icons icons:format"`,
+                );
+            }
+        }
+    }
+    return errors;
+}
+
+/**
+ * @returns {string[]}
+ */
+export function verifyIconNameMap() {
+    if (!existsSync(ICONS_NAME_MAP_PATH)) {
+        return [`${repoRelative(ICONS_NAME_MAP_PATH)} is missing (required by generate-icon-name-map.mjs)`];
+    }
+
+    const rawMap = readFileSync(ICONS_NAME_MAP_PATH, "utf8");
+    /** @type {Record<string, unknown>} */
+    let iconNameMap;
+    try {
+        iconNameMap = JSON.parse(rawMap);
+    } catch (err) {
+        return [`icons-name-map.json is not valid JSON (${err instanceof Error ? err.message : String(err)})`];
+    }
+
+    const legacyIconNames = getIconNamesInDirectory(join(iconResourcesDir, "16px"));
+    const nextIconNames = getIconNamesInDirectory(join(iconResourcesDir, "next/outlined"));
+    return validateIconNameMap(rawMap, iconNameMap, legacyIconNames, nextIconNames);
+}
+
+/**
+ * @returns {string[]}
+ */
+export function verifyIconsNext() {
+    if (!existsSync(ICONS_NEXT_JSON_PATH)) {
+        return [`${repoRelative(ICONS_NEXT_JSON_PATH)} is missing (required by generate-next-icon-components.mjs)`];
+    }
+
+    const outlinedIconNames = getIconNamesInDirectory(join(iconResourcesDir, "next/outlined"));
+    const filledIconNames = getIconNamesInDirectory(join(iconResourcesDir, "next/filled"));
+    const manifest = readIconsManifestFile(ICONS_NEXT_JSON_PATH);
+    return validateIconsNextManifest(manifest, outlinedIconNames, filledIconNames);
 }
 
 /**
@@ -223,6 +293,15 @@ export function verifyManifestResourceParity(manifestNames, iconNames16, iconNam
 }
 
 /**
+ * @param {string} svgPath absolute path to an SVG resource
+ * @returns {boolean} whether the file already matches its SVGO-normalized form
+ */
+function isSvgFormatted(svgPath) {
+    const source = readFileSync(svgPath, "utf8");
+    return optimizeSvg(source, svgPath) === source;
+}
+
+/**
  * @param {Set<string>} iconNames
  */
 async function verifySvgFormatting(iconNames) {
@@ -231,12 +310,9 @@ async function verifySvgFormatting(iconNames) {
     for (const iconName of [...iconNames].sort()) {
         for (const size of ICON_SIZES_PX) {
             const path = join(iconResourcesDir, size, `${iconName}.svg`);
-            const source = readFileSync(path, "utf8");
-            const optimized = optimizeSvg(source, path);
-            if (optimized !== source) {
-                const displayPath = repoRelative(path);
+            if (!isSvgFormatted(path)) {
                 errors.push(
-                    `${displayPath} is not normalized; run "pnpm --filter @blueprintjs/icons icons:add" or reformat icon resources`,
+                    `${repoRelative(path)} is not normalized; run "pnpm --filter @blueprintjs/icons icons:add" or reformat icon resources`,
                 );
             }
         }

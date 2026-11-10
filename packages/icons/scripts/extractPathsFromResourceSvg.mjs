@@ -23,17 +23,17 @@ import { iconResourcesDir } from "./common.mjs";
 import { optimizeSvg } from "./iconSvgoConfig.mjs";
 
 /**
- * Extracts path `d` strings from an on-disk icon SVG. This matches the pipeline used for
- * {@link generate-icon-paths.mjs} and the path modules consumed by `<Icon />` from core.
+ * Extracts path `d` strings from an SVG file on disk, running it through the same SVGO normalization
+ * as the rest of the icon pipeline. This is the single place coupled to SVGO's output shape; callers
+ * supply the file path. Used by both the legacy ({@link generate-icon-paths.mjs},
+ * {@link generate-icon-components.mjs}) and next ({@link generate-next-icon-components.mjs}) pipelines.
  *
- * @param {16 | 20} iconSize
- * @param {string} iconName
- * @returns {Promise<string[]>}
+ * @param {string} svgPath absolute path to an `.svg` file
+ * @returns {string[]}
  */
-export async function extractPathsFromResourceSvg(iconSize, iconName) {
-    const path = join(iconResourcesDir, `${iconSize}px`, `${iconName}.svg`);
-    const source = readFileSync(path, "utf-8");
-    const optimized = optimizeSvg(source, path);
+export function extractPathsFromSvgFile(svgPath) {
+    const source = readFileSync(svgPath, "utf-8");
+    const optimized = optimizeSvg(source, svgPath);
     /** @type string[] */
     const paths = [];
     // Match `d` attributes on `<path>` elements from our normalized SVGO output.
@@ -43,4 +43,16 @@ export async function extractPathsFromResourceSvg(iconSize, iconName) {
         paths.push(m[1]);
     }
     return paths;
+}
+
+/**
+ * Extracts path `d` strings from a legacy 16px/20px resource icon SVG. This matches the pipeline used
+ * for {@link generate-icon-paths.mjs} and the path modules consumed by `<Icon />` from core.
+ *
+ * @param {16 | 20} iconSize
+ * @param {string} iconName
+ * @returns {Promise<string[]>}
+ */
+export async function extractPathsFromResourceSvg(iconSize, iconName) {
+    return extractPathsFromSvgFile(join(iconResourcesDir, `${iconSize}px`, `${iconName}.svg`));
 }

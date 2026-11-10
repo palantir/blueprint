@@ -73,7 +73,7 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
                 role="tab"
                 tabIndex={disabled ? undefined : selected ? 0 : -1}
             >
-                {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
+                {icon != null && <Icon icon={icon} className={Classes.TAB_ICON} />}
                 {title}
                 {children}
                 {tagContent != null && (

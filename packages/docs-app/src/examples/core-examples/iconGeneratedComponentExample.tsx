@@ -18,7 +18,7 @@ import { useState } from "react";
 
 import { H5, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
-import { Calendar, IconSize } from "@blueprintjs/icons";
+import { CalendarIcon, IconSize } from "@blueprintjs/icons";
 
 const MAX_ICON_SIZE = 100;
 
@@ -45,7 +45,7 @@ export const IconGeneratedComponentExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <Calendar size={iconSize} />
+            <CalendarIcon size={iconSize} />
         </Example>
     );
 };
