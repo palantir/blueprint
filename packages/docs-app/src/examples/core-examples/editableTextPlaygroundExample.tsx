@@ -36,6 +36,7 @@ export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
     const [alwaysRenderInput, setAlwaysRenderInput] = useState(false);
     const [confirmOnEnterKey, setConfirmOnEnterKey] = useState(false);
     const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
     const [intent, setIntent] = useState<Intent | undefined>(undefined);
     const [maxLength, setMaxLength] = useState<number | undefined>(undefined);
     const [report, setReport] = useState("");
@@ -76,6 +77,7 @@ export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
                 label="Disabled"
                 onChange={handleBooleanChange(setDisabled)}
             />
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch
                 checked={selectAllOnFocus}
                 label="Select all on focus"
@@ -101,6 +103,7 @@ export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
                 <EditableText
                     alwaysRenderInput={alwaysRenderInput}
                     disabled={disabled}
+                    fill={fill}
                     intent={intent}
                     maxLength={maxLength}
                     placeholder="Edit title..."
@@ -111,6 +114,7 @@ export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
                 alwaysRenderInput={alwaysRenderInput}
                 confirmOnEnterKey={confirmOnEnterKey}
                 disabled={disabled}
+                fill={fill}
                 intent={intent}
                 maxLength={maxLength}
                 maxLines={12}

@@ -75,7 +75,7 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin monospace-typography() {
-  font-family: $pt-font-family-monospace;
+  font-family: var(--bp-typography-family-mono);
   text-transform: none;
 }
 

@@ -10,7 +10,7 @@
 
 .#{$ns}-datepicker {
   background: $datepicker-background-color;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   display: flex;
   padding: $datepicker-padding;
   position: relative;
@@ -62,7 +62,7 @@
   }
 
   .rdp-day {
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
 
     // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
     &.rdp-day_outside {
@@ -97,7 +97,7 @@
     // rdp applies "disabled" to the first selection in the range)
     &.rdp-day_selected {
       background-color: $blue3;
-      border-radius: $pt-border-radius;
+      border-radius: var(--bp-surface-border-radius);
       color: $white;
 
       &:hover {
