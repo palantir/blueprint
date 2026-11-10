@@ -32,12 +32,12 @@ $dark-popover-arrow-box-shadow:
     $pt-border-shadow-opacity
   );
   @include scale-transition;
-  border-radius: $pt-border-radius;
+  border-radius: var(--bp-surface-border-radius);
   display: inline-block;
   z-index: $pt-z-index-overlay;
 
   .#{$ns}-popover-content {
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     position: relative;
   }
 

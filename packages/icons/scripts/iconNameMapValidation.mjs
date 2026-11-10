@@ -20,8 +20,9 @@
  * generator ({@link file://./generate-icon-name-map.mjs}) and the verifier
  * ({@link file://./verify-icons.mjs}) so both enforce identical rules.
  *
- * Enforces: every key is a real legacy icon; every value is a real next (outlined) icon; no
- * duplicate keys; and every legacy icon has a mapping.
+ * Enforces: every current legacy icon has a mapping; every value is a current next (outlined) icon;
+ * and there are no duplicate keys. Historical legacy keys are intentionally allowed so the map can
+ * remain a durable compatibility ledger after a legacy SVG is removed.
  *
  * @param {string} rawMap raw file contents (for duplicate-key detection, which `JSON.parse` hides)
  * @param {Record<string, unknown>} iconNameMap parsed map
@@ -47,17 +48,12 @@ export function validateIconNameMap(rawMap, iconNameMap, legacyIconNames, nextIc
 
     // Coverage: every legacy icon must have a mapping.
     for (const legacyName of legacyIconNames) {
-        if (!(legacyName in iconNameMap)) {
+        if (!Object.prototype.hasOwnProperty.call(iconNameMap, legacyName)) {
             errors.push(`legacy icon "${legacyName}" has no entry in icons-name-map.json`);
         }
     }
 
     for (const [legacyName, nextName] of Object.entries(iconNameMap)) {
-        if (!legacyIconNames.has(legacyName)) {
-            errors.push(
-                `icons-name-map.json key "${legacyName}" is not a legacy icon (no resources/icons/16px/${legacyName}.svg)`,
-            );
-        }
         if (typeof nextName !== "string") {
             errors.push(`icons-name-map.json value for "${legacyName}" must be a string`);
         } else if (!nextIconNames.has(nextName)) {

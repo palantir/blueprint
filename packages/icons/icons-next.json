@@ -1,5 +1,21 @@
 [
     {
+        "name": "agent",
+        "hasFilled": false,
+        "tags": [
+            "ai",
+            "agent",
+            "assistant",
+            "automation",
+            "intelligence",
+            "bot",
+            "magic",
+            "sparkles",
+            "generative",
+            "action"
+        ]
+    },
+    {
         "name": "airplane",
         "hasFilled": true,
         "tags": [
@@ -89,6 +105,24 @@
             "bars",
             "biplane",
             "editor"
+        ]
+    },
+    {
+        "name": "ambulance",
+        "hasFilled": true,
+        "tags": [
+            "emergency",
+            "medical",
+            "hospital",
+            "healthcare",
+            "paramedic",
+            "rescue",
+            "first-aid",
+            "vehicle",
+            "transport",
+            "siren",
+            "urgent",
+            "interface"
         ]
     },
     {
@@ -892,6 +926,11 @@
         "tags": ["arrow", "left", "back", "previous", "navigate", "direction", "return", "backspace", "interface"]
     },
     {
+        "name": "arrow-left-from-bracket",
+        "hasFilled": false,
+        "tags": ["logout", "exit", "leave", "sign-out", "door", "previous", "back", "action"]
+    },
+    {
         "name": "arrow-merge",
         "hasFilled": false,
         "tags": ["merge", "converge", "fork", "git", "branch", "flow", "arrow", "right", "end", "join", "action"]
@@ -1398,6 +1437,24 @@
         ]
     },
     {
+        "name": "arrows-in-list",
+        "hasFilled": false,
+        "tags": [
+            "collapse",
+            "compress",
+            "compact",
+            "decrease",
+            "rows",
+            "spacing",
+            "density",
+            "vertical",
+            "shrink",
+            "reduce",
+            "layout",
+            "interface"
+        ]
+    },
+    {
         "name": "arrows-left-right",
         "hasFilled": false,
         "tags": [
@@ -1617,6 +1674,24 @@
             "or",
             "collapse",
             "open",
+            "interface"
+        ]
+    },
+    {
+        "name": "arrows-out-list",
+        "hasFilled": false,
+        "tags": [
+            "resize",
+            "vertical",
+            "expand",
+            "rows",
+            "spacing",
+            "height",
+            "up",
+            "down",
+            "stretch",
+            "density",
+            "layout",
             "interface"
         ]
     },
@@ -1847,6 +1922,23 @@
         ]
     },
     {
+        "name": "bed",
+        "hasFilled": true,
+        "tags": [
+            "sleep",
+            "bed",
+            "bedroom",
+            "hotel",
+            "rest",
+            "furniture",
+            "accommodation",
+            "lodging",
+            "mattress",
+            "room",
+            "night"
+        ]
+    },
+    {
         "name": "bell",
         "hasFilled": true,
         "tags": [
@@ -1901,6 +1993,24 @@
             "bell",
             "plus",
             "notifications",
+            "interface"
+        ]
+    },
+    {
+        "name": "bell-ringing",
+        "hasFilled": true,
+        "tags": [
+            "notification",
+            "alert",
+            "alarm",
+            "ringing",
+            "sound",
+            "reminder",
+            "active",
+            "attention",
+            "bell",
+            "notice",
+            "warning",
             "interface"
         ]
     },
@@ -2241,6 +2351,22 @@
         ]
     },
     {
+        "name": "buildings",
+        "hasFilled": true,
+        "tags": [
+            "city",
+            "skyline",
+            "offices",
+            "architecture",
+            "urban",
+            "company",
+            "business",
+            "headquarters",
+            "location",
+            "real-estate"
+        ]
+    },
+    {
         "name": "bullseye",
         "hasFilled": false,
         "tags": [
@@ -2260,6 +2386,22 @@
             "reference",
             "point",
             "miscellaneous"
+        ]
+    },
+    {
+        "name": "bus",
+        "hasFilled": true,
+        "tags": [
+            "transport",
+            "transit",
+            "travel",
+            "public",
+            "vehicle",
+            "commute",
+            "coach",
+            "shuttle",
+            "road",
+            "station"
         ]
     },
     {
@@ -2322,6 +2464,11 @@
         ]
     },
     {
+        "name": "calendar-arrow-up",
+        "hasFilled": false,
+        "tags": ["date", "schedule", "event", "upload", "export", "send", "move", "agenda", "planner", "interface"]
+    },
+    {
         "name": "calendar-dots",
         "hasFilled": false,
         "tags": [
@@ -2338,6 +2485,24 @@
             "diary",
             "day",
             "week",
+            "interface"
+        ]
+    },
+    {
+        "name": "calendar-lightning",
+        "hasFilled": true,
+        "tags": [
+            "calendar",
+            "date",
+            "schedule",
+            "event",
+            "urgent",
+            "fast",
+            "lightning",
+            "deadline",
+            "instant",
+            "priority",
+            "appointment",
             "interface"
         ]
     },
@@ -2432,6 +2597,23 @@
             "missing",
             "mystery",
             "mark",
+            "interface"
+        ]
+    },
+    {
+        "name": "cards-stack",
+        "hasFilled": true,
+        "tags": [
+            "cards",
+            "stack",
+            "layers",
+            "multiple",
+            "collection",
+            "deck",
+            "group",
+            "pile",
+            "queue",
+            "items",
             "interface"
         ]
     },
@@ -3152,6 +3334,22 @@
             "agree",
             "verify",
             "correct",
+            "action"
+        ]
+    },
+    {
+        "name": "checks",
+        "hasFilled": false,
+        "tags": [
+            "double-check",
+            "ticks",
+            "confirm",
+            "done",
+            "success",
+            "approve",
+            "complete",
+            "verified",
+            "mark",
             "action"
         ]
     },
@@ -4021,6 +4219,24 @@
         ]
     },
     {
+        "name": "clock-dotted",
+        "hasFilled": false,
+        "tags": [
+            "time",
+            "clock",
+            "pending",
+            "progress",
+            "loading",
+            "duration",
+            "wait",
+            "schedule",
+            "timer",
+            "incomplete",
+            "status",
+            "interface"
+        ]
+    },
+    {
         "name": "clock-location-pin",
         "hasFilled": true,
         "tags": [
@@ -4069,6 +4285,24 @@
             "storage",
             "transfer",
             "save"
+        ]
+    },
+    {
+        "name": "cloud-layers",
+        "hasFilled": true,
+        "tags": [
+            "stack",
+            "layer",
+            "storage",
+            "server",
+            "data",
+            "hosting",
+            "infrastructure",
+            "network",
+            "platform",
+            "sync",
+            "levels",
+            "interface"
         ]
     },
     {
@@ -4461,6 +4695,26 @@
         ]
     },
     {
+        "name": "compass-needle",
+        "hasFilled": false,
+        "tags": [
+            "needle",
+            "navigate",
+            "navigation",
+            "direction",
+            "orientation",
+            "bearing",
+            "heading",
+            "north",
+            "pointer",
+            "arrow",
+            "magnetic",
+            "map",
+            "geo",
+            "interface"
+        ]
+    },
+    {
         "name": "copy",
         "hasFilled": true,
         "tags": [
@@ -4535,7 +4789,7 @@
     },
     {
         "name": "cube-cutout",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "hexagon",
             "square",
@@ -4553,7 +4807,7 @@
     },
     {
         "name": "cube-cutouts",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "duplicate",
             "copy",
@@ -4910,6 +5164,24 @@
         ]
     },
     {
+        "name": "diagram-tree-view",
+        "hasFilled": true,
+        "tags": [
+            "hierarchy",
+            "tree",
+            "diagram",
+            "structure",
+            "nodes",
+            "branches",
+            "organization",
+            "chart",
+            "relationships",
+            "sitemap",
+            "outline",
+            "data"
+        ]
+    },
+    {
         "name": "digits-one-two-three",
         "hasFilled": false,
         "tags": [
@@ -4999,6 +5271,24 @@
         "name": "dot",
         "hasFilled": true,
         "tags": ["circle", "ring", "dot", "donut", "annulus", "hollow", "outline", "point", "small", "miscellaneous"]
+    },
+    {
+        "name": "dot-waves",
+        "hasFilled": true,
+        "tags": [
+            "signal",
+            "live",
+            "broadcast",
+            "wireless",
+            "radio",
+            "transmit",
+            "network",
+            "communication",
+            "antenna",
+            "beacon",
+            "radar",
+            "miscellaneous"
+        ]
     },
     {
         "name": "dots-arrow-down-line",
@@ -6561,6 +6851,25 @@
         ]
     },
     {
+        "name": "globe-navigation-arrow",
+        "hasFilled": false,
+        "tags": [
+            "world",
+            "earth",
+            "global",
+            "navigate",
+            "navigation",
+            "location",
+            "cursor",
+            "gps",
+            "map",
+            "travel",
+            "geography",
+            "internet",
+            "interface"
+        ]
+    },
+    {
         "name": "globe-plus",
         "hasFilled": false,
         "tags": [
@@ -7037,6 +7346,42 @@
         ]
     },
     {
+        "name": "horse",
+        "hasFilled": true,
+        "tags": [
+            "animal",
+            "equine",
+            "equestrian",
+            "riding",
+            "stable",
+            "race",
+            "farm",
+            "ranch",
+            "pony",
+            "knight",
+            "chess",
+            "miscellaneous"
+        ]
+    },
+    {
+        "name": "hospital",
+        "hasFilled": true,
+        "tags": [
+            "hospital",
+            "medical",
+            "healthcare",
+            "clinic",
+            "building",
+            "emergency",
+            "doctor",
+            "treatment",
+            "patient",
+            "cross",
+            "location",
+            "miscellaneous"
+        ]
+    },
+    {
         "name": "house",
         "hasFilled": true,
         "tags": [
@@ -7112,6 +7457,24 @@
             "video",
             "drawing",
             "illustration"
+        ]
+    },
+    {
+        "name": "image-crop",
+        "hasFilled": false,
+        "tags": [
+            "photo",
+            "picture",
+            "trim",
+            "resize",
+            "frame",
+            "cut",
+            "edit",
+            "landscape",
+            "media",
+            "gallery",
+            "clip",
+            "action"
         ]
     },
     {
@@ -7854,6 +8217,26 @@
         ]
     },
     {
+        "name": "line-width",
+        "hasFilled": true,
+        "tags": [
+            "stroke",
+            "thickness",
+            "weight",
+            "size",
+            "thin",
+            "medium",
+            "thick",
+            "bold",
+            "border",
+            "outline",
+            "format",
+            "style",
+            "drawing",
+            "editor"
+        ]
+    },
+    {
         "name": "link",
         "hasFilled": false,
         "tags": ["chain", "connect", "url", "hyperlink", "attach", "link", "connection", "network", "interface"]
@@ -8056,6 +8439,11 @@
             "horizontal",
             "bars"
         ]
+    },
+    {
+        "name": "list-magnifying-glass",
+        "hasFilled": false,
+        "tags": ["list", "search", "find", "filter", "lookup", "items", "rows", "lines", "menu", "inspection", "action"]
     },
     {
         "name": "list-numbers",
@@ -8604,6 +8992,23 @@
         ]
     },
     {
+        "name": "microscope",
+        "hasFilled": true,
+        "tags": [
+            "science",
+            "laboratory",
+            "research",
+            "biology",
+            "chemistry",
+            "experiment",
+            "medical",
+            "analysis",
+            "magnify",
+            "discovery",
+            "interface"
+        ]
+    },
+    {
         "name": "minus",
         "hasFilled": false,
         "tags": [
@@ -8770,6 +9175,24 @@
             "location",
             "aircraft",
             "plane",
+            "interface"
+        ]
+    },
+    {
+        "name": "navigation-arrow-top-left",
+        "hasFilled": true,
+        "tags": [
+            "navigation",
+            "arrow",
+            "top-left",
+            "up-left",
+            "northwest",
+            "diagonal",
+            "navigate",
+            "direction",
+            "cursor",
+            "pointer",
+            "location",
             "interface"
         ]
     },
@@ -9162,6 +9585,24 @@
         ]
     },
     {
+        "name": "octagon-slash",
+        "hasFilled": true,
+        "tags": [
+            "deprecated",
+            "ban",
+            "block",
+            "prohibited",
+            "disable",
+            "no",
+            "cancel",
+            "forbid",
+            "off",
+            "remove",
+            "stop",
+            "action"
+        ]
+    },
+    {
         "name": "oil-rig",
         "hasFilled": false,
         "tags": [
@@ -9440,6 +9881,24 @@
         ]
     },
     {
+        "name": "panel-left",
+        "hasFilled": false,
+        "tags": [
+            "sidebar",
+            "layout",
+            "column",
+            "window",
+            "pane",
+            "side",
+            "bar",
+            "drawer",
+            "menu",
+            "website",
+            "dashboard",
+            "table"
+        ]
+    },
+    {
         "name": "panel-list",
         "hasFilled": false,
         "tags": [
@@ -9522,7 +9981,7 @@
     },
     {
         "name": "paragraph",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "pilcrow",
             "text",
@@ -10023,6 +10482,28 @@
         ]
     },
     {
+        "name": "rectangle-arrow-cw",
+        "hasFilled": false,
+        "tags": [
+            "rotate",
+            "refresh",
+            "reload",
+            "redo",
+            "clockwise",
+            "repeat",
+            "cycle",
+            "loop",
+            "sync",
+            "update",
+            "box",
+            "frame",
+            "container",
+            "retry",
+            "again",
+            "action"
+        ]
+    },
+    {
         "name": "rectangle-dots",
         "hasFilled": false,
         "tags": [
@@ -10246,7 +10727,7 @@
     },
     {
         "name": "regex",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "regular-expression",
             "pattern",
@@ -10326,6 +10807,23 @@
             "hole",
             "disc",
             "miscellaneous"
+        ]
+    },
+    {
+        "name": "robot",
+        "hasFilled": true,
+        "tags": [
+            "bot",
+            "android",
+            "droid",
+            "machine",
+            "automation",
+            "agent",
+            "assistant",
+            "ai",
+            "artificial",
+            "intelligence",
+            "interface"
         ]
     },
     {
@@ -10493,6 +10991,25 @@
         ]
     },
     {
+        "name": "ruler",
+        "hasFilled": true,
+        "tags": [
+            "measure",
+            "measurement",
+            "length",
+            "distance",
+            "scale",
+            "size",
+            "dimension",
+            "tool",
+            "units",
+            "precision",
+            "straightedge",
+            "geometry",
+            "editor"
+        ]
+    },
+    {
         "name": "satellite",
         "hasFilled": false,
         "tags": [
@@ -10519,6 +11036,25 @@
         "name": "scissors",
         "hasFilled": true,
         "tags": ["cut", "trim", "clip", "snip", "edit", "remove", "scissors", "action"]
+    },
+    {
+        "name": "scroll",
+        "hasFilled": true,
+        "tags": [
+            "skill",
+            "ai",
+            "document",
+            "paper",
+            "page",
+            "text",
+            "instructions",
+            "prompt",
+            "agent",
+            "assistant",
+            "automation",
+            "workflow",
+            "action"
+        ]
     },
     {
         "name": "segmented-control",
@@ -10715,6 +11251,11 @@
             "blocks",
             "interface"
         ]
+    },
+    {
+        "name": "share",
+        "hasFilled": true,
+        "tags": ["forward", "send", "export", "arrow", "link", "distribute", "social", "open", "action"]
     },
     {
         "name": "shield",
@@ -10999,6 +11540,25 @@
         ]
     },
     {
+        "name": "speaker-x",
+        "hasFilled": true,
+        "tags": [
+            "audio",
+            "sound",
+            "volume",
+            "mute",
+            "speaker",
+            "music",
+            "off",
+            "silence",
+            "x",
+            "close",
+            "disable",
+            "video",
+            "media"
+        ]
+    },
+    {
         "name": "square",
         "hasFilled": true,
         "tags": ["box", "shape", "checkbox", "empty", "outline", "rectangle", "square", "miscellaneous"]
@@ -11124,7 +11684,7 @@
     },
     {
         "name": "square-rotate-left",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "rotate",
             "ccw",
@@ -11145,7 +11705,7 @@
     },
     {
         "name": "square-rotate-right",
-        "hasFilled": false,
+        "hasFilled": true,
         "tags": [
             "turn",
             "rotate",
@@ -11751,6 +12311,24 @@
             "lift",
             "open",
             "lever"
+        ]
+    },
+    {
+        "name": "table-play",
+        "hasFilled": false,
+        "tags": [
+            "stream",
+            "video",
+            "media",
+            "screen",
+            "player",
+            "watch",
+            "broadcast",
+            "browser",
+            "window",
+            "application",
+            "webpage",
+            "interface"
         ]
     },
     {

@@ -25,6 +25,7 @@
                     "html-table",
                     "hotkeys-target",
                     "icon",
+                    "icon-next",
                     "link",
                     "menu",
                     "navbar",
@@ -97,7 +98,7 @@
     },
     {
         "package": "icons",
-        "pages": ["loading-icons", "icons-list"]
+        "pages": ["loading-icons", "icons-list", "next-icons"]
     },
     {
         "package": "select",

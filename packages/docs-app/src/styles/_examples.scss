@@ -382,7 +382,7 @@ $docs-hotkey-piano-height: 510px;
     align-items: center;
     background: rgba($gray3, 0.2);
     border: 2px solid rgba($gray3, 0.8);
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     flex: 1 1;
     justify-content: space-around;
     max-width: 70%;
@@ -647,7 +647,7 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
-    font-family: $pt-font-family-monospace;
+    font-family: var(--bp-typography-family-mono);
     margin-right: $pt-spacing * 2;
   }
 }
@@ -660,7 +660,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-portal-example {
   .docs-popover-portal-example-scroll-container {
     background: $light-gray3;
-    border-radius: $pt-border-radius;
+    border-radius: var(--bp-surface-border-radius);
     flex: 1 1 auto;
     overflow: scroll hidden;
     position: relative;
