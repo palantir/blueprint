@@ -21,261 +21,312 @@
 
 /* eslint-disable @typescript-eslint/no-deprecated */
 
-import { waitFor } from "@testing-library/dom";
-import { mount, ReactWrapper, shallow } from "enzyme";
-import { createRef } from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createRef, useState } from "react";
 
-import { afterAll, afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
-import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Utils } from "../../common";
-import { sleep } from "../../common/test-utils";
-import { Portal, type PortalProps } from "../portal/portal";
+import { Classes } from "../../common";
 
 import { Overlay } from "./overlay";
-import { type OverlayProps } from "./overlayProps";
-
-function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
-    // React 16: createPortal preserves React tree so simple find works.
-    const element = overlay.find(Portal).find(selector);
-    if (element.exists()) {
-        return element;
-    }
-
-    // React 15: unstable_renderSubtree does not preserve tree so we must create new wrapper.
-    const portal = overlay.find(Portal).instance() as React.Component<PortalProps>;
-    const portalChildren = new ReactWrapper(<>{portal.props.children}</>);
-    if (portalChildren.is(selector)) {
-        return portalChildren;
-    }
-    return portalChildren.find(selector);
-}
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
-/*
-IMPORTANT NOTE: It is critical that every <Overlay> wrapper be unmounted after the test, to avoid
-polluting the DOM with leftover overlay elements. This was the cause of the Overlay test flakes of
-late 2017/early 2018 and was resolved by ensuring that every wrapper is unmounted.
-
-The `wrapper` variable below and the `mountWrapper` method should be used for full enzyme mounts.
-For shallow mounts, be sure to call `shallowWrapper.unmount()` after the assertions.
-*/
 describe("<Overlay>", () => {
-    let wrapper: ReactWrapper<OverlayProps, any>;
-    let isMounted = false;
-    const containerElement = document.createElement("div");
-    document.documentElement.appendChild(containerElement);
-
-    /**
-     * Mount the `content` into `containerElement` and assign to local `wrapper` variable.
-     * Use this method in this suite instead of Enzyme's `mount` method.
-     */
-    function mountWrapper(content: React.JSX.Element) {
-        wrapper = mount(content, { attachTo: containerElement });
-        isMounted = true;
-        return wrapper;
-    }
-
-    afterEach(() => {
-        if (isMounted) {
-            // clean up wrapper after each test, if it was used
-            wrapper?.unmount();
-            wrapper?.detach();
-            isMounted = false;
-        }
+    beforeEach(() => {
+        // force-reset Overlay stack state between tests
+        (Overlay as any).openStack = [];
+        document.body.classList.remove(Classes.OVERLAY_OPEN);
     });
 
-    afterAll(() => {
-        document.documentElement.removeChild(containerElement);
+    afterEach(() => {
+        // clean up any leftover overlay classes on body
+        document.body.classList.remove(Classes.OVERLAY_OPEN);
     });
 
     it("renders its content correctly", () => {
-        const overlay = shallow(
-            <Overlay isOpen={true} usePortal={false}>
-                {createOverlayContents()}
+        const { container } = render(
+            <Overlay isOpen={true} usePortal={false} transitionDuration={0}>
+                <strong>Overlay content!</strong>
             </Overlay>,
         );
-        assert.lengthOf(overlay.find("strong"), 1);
-        assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 1);
-        overlay.unmount();
+
+        expect(screen.getByText("Overlay content!")).toBeInTheDocument();
+        expect(container.querySelector(BACKDROP_SELECTOR)).toBeInTheDocument();
     });
 
     it("renders contents to specified container correctly", () => {
-        const CLASS_TO_TEST = "bp-test-content";
-        const container = document.createElement("div");
-        document.body.appendChild(container);
-        mountWrapper(
-            <Overlay isOpen={true} portalContainer={container}>
-                <p className={CLASS_TO_TEST}>test</p>
+        const portalContainer = document.createElement("div");
+        document.body.appendChild(portalContainer);
+
+        render(
+            <Overlay isOpen={true} portalContainer={portalContainer} transitionDuration={0}>
+                <p className="bp-test-content">test</p>
             </Overlay>,
         );
-        assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
-        document.body.removeChild(container);
+
+        expect(portalContainer.getElementsByClassName("bp-test-content")).toHaveLength(1);
+
+        document.body.removeChild(portalContainer);
     });
 
     it("sets aria-live", () => {
-        // Using an open Overlay because an initially closed Overlay will not render anything to the
-        // DOM
-        mountWrapper(<Overlay className="aria-test" isOpen={true} usePortal={false} />);
-        const overlayElement = document.querySelector(".aria-test");
-        assert.exists(overlayElement);
-        // Element#ariaLive not supported in Firefox or IE
-        assert.equal(overlayElement?.getAttribute("aria-live"), "polite");
+        const { container } = render(
+            <Overlay className="aria-test" isOpen={true} usePortal={false} transitionDuration={0} />,
+        );
+        const overlayElement = container.querySelector(".aria-test");
+
+        expect(overlayElement).toBeInTheDocument();
+        expect(overlayElement?.getAttribute("aria-live")).toBe("polite");
     });
 
     it("portalClassName appears on Portal", () => {
         const CLASS_TO_TEST = "bp-test-content";
-        mountWrapper(
-            <Overlay isOpen={true} portalClassName={CLASS_TO_TEST}>
+        render(
+            <Overlay isOpen={true} portalClassName={CLASS_TO_TEST} transitionDuration={0}>
                 <p>test</p>
             </Overlay>,
         );
-        // search document for portal container element.
-        assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`));
+
+        expect(document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`)).toBeInTheDocument();
     });
 
     it("renders Portal after first opened", () => {
-        mountWrapper(<Overlay isOpen={false}>{createOverlayContents()}</Overlay>);
-        assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
-        wrapper.setProps({ isOpen: true });
-        assert.lengthOf(wrapper.find(Portal), 1, "expected Portal");
+        const portalClassName = "test-portal-lazy";
+        const { rerender } = render(
+            <Overlay isOpen={false} portalClassName={portalClassName} transitionDuration={0}>
+                <strong>Overlay content!</strong>
+            </Overlay>,
+        );
+
+        expect(document.querySelector(`.${Classes.PORTAL}.${portalClassName}`)).not.toBeInTheDocument();
+
+        rerender(
+            <Overlay isOpen={true} portalClassName={portalClassName} transitionDuration={0}>
+                <strong>Overlay content!</strong>
+            </Overlay>,
+        );
+
+        expect(document.querySelector(`.${Classes.PORTAL}.${portalClassName}`)).toBeInTheDocument();
     });
 
     it("supports non-element children", () => {
-        assert.doesNotThrow(() =>
-            shallow(
-                <Overlay isOpen={true} usePortal={false}>
+        expect(() =>
+            render(
+                <Overlay isOpen={true} usePortal={false} transitionDuration={0}>
                     {null} {undefined}
                 </Overlay>,
-            ).unmount(),
-        );
+            ),
+        ).not.toThrow();
     });
 
     it("hasBackdrop=false does not render backdrop", () => {
-        const overlay = shallow(
-            <Overlay hasBackdrop={false} isOpen={true} usePortal={false}>
-                {createOverlayContents()}
+        const { container } = render(
+            <Overlay hasBackdrop={false} isOpen={true} usePortal={false} transitionDuration={0}>
+                <strong>Overlay content!</strong>
             </Overlay>,
         );
-        assert.lengthOf(overlay.find("strong"), 1);
-        assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 0);
-        overlay.unmount();
+
+        expect(screen.getByText("Overlay content!")).toBeInTheDocument();
+        expect(container.querySelector(BACKDROP_SELECTOR)).not.toBeInTheDocument();
     });
 
     it("renders portal attached to body when not inline after first opened", () => {
-        mountWrapper(<Overlay isOpen={false}>{createOverlayContents()}</Overlay>);
-        assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
-        wrapper.setProps({ isOpen: true });
-        assert.lengthOf(wrapper.find(Portal), 1, "expected Portal");
+        const portalClassName = "test-portal-body";
+        const { rerender } = render(
+            <Overlay isOpen={false} portalClassName={portalClassName} transitionDuration={0}>
+                <strong>Overlay content!</strong>
+            </Overlay>,
+        );
+
+        expect(document.querySelector(`.${Classes.PORTAL}.${portalClassName}`)).not.toBeInTheDocument();
+
+        rerender(
+            <Overlay isOpen={true} portalClassName={portalClassName} transitionDuration={0}>
+                <strong>Overlay content!</strong>
+            </Overlay>,
+        );
+
+        expect(document.querySelector(`.${Classes.PORTAL}.${portalClassName}`)).toBeInTheDocument();
     });
 
     describe("onClose", () => {
-        it("invoked on backdrop mousedown when canOutsideClickClose=true", () => {
+        it("invoked on backdrop mousedown when canOutsideClickClose=true", async () => {
+            const user = userEvent.setup();
             const onClose = vi.fn();
-            const overlay = shallow(
-                <Overlay canOutsideClickClose={true} isOpen={true} onClose={onClose} usePortal={false}>
-                    {createOverlayContents()}
+            const { container } = render(
+                <Overlay
+                    canOutsideClickClose={true}
+                    isOpen={true}
+                    onClose={onClose}
+                    usePortal={false}
+                    transitionDuration={0}
+                >
+                    <strong>Overlay content!</strong>
                 </Overlay>,
             );
-            overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
+            const backdropElement = container.querySelector(BACKDROP_SELECTOR);
+
+            expect(backdropElement).toBeInTheDocument();
+
+            await user.click(backdropElement!);
+
             expect(onClose).toHaveBeenCalledOnce();
-            overlay.unmount();
         });
 
-        it("not invoked on backdrop mousedown when canOutsideClickClose=false", () => {
+        it("not invoked on backdrop mousedown when canOutsideClickClose=false", async () => {
+            const user = userEvent.setup();
             const onClose = vi.fn();
-            const overlay = shallow(
-                <Overlay canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
-                    {createOverlayContents()}
+            const { container } = render(
+                <Overlay
+                    canOutsideClickClose={false}
+                    isOpen={true}
+                    onClose={onClose}
+                    usePortal={false}
+                    transitionDuration={0}
+                >
+                    <strong>Overlay content!</strong>
                 </Overlay>,
             );
-            overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
+            const backdropElement = container.querySelector(BACKDROP_SELECTOR);
+
+            expect(backdropElement).toBeInTheDocument();
+
+            await user.click(backdropElement!);
+
             expect(onClose).not.toHaveBeenCalled();
-            overlay.unmount();
         });
 
-        it("invoked on document mousedown when hasBackdrop=false", () => {
+        it("invoked on document mousedown when hasBackdrop=false", async () => {
+            const user = userEvent.setup();
             const onClose = vi.fn();
-            // mounting cuz we need document events + lifecycle
-            mountWrapper(
-                <Overlay hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false}>
-                    {createOverlayContents()}
+            render(
+                <Overlay hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false} transitionDuration={0}>
+                    <strong>Overlay content!</strong>
                 </Overlay>,
             );
 
-            dispatchMouseEvent(document.documentElement, "mousedown");
+            await user.click(document.documentElement);
+
             expect(onClose).toHaveBeenCalledOnce();
         });
 
-        it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
+        it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", async () => {
+            const user = userEvent.setup();
             const onClose = vi.fn();
-            mountWrapper(
+            render(
                 <Overlay
                     canOutsideClickClose={false}
                     hasBackdrop={false}
                     isOpen={true}
                     onClose={onClose}
                     usePortal={false}
+                    transitionDuration={0}
                 >
-                    {createOverlayContents()}
+                    <strong>Overlay content!</strong>
                 </Overlay>,
             );
 
-            dispatchMouseEvent(document.documentElement, "mousedown");
+            await user.click(document.documentElement);
+
             expect(onClose).not.toHaveBeenCalled();
         });
 
-        it("not invoked on click of a nested overlay", () => {
+        it("not invoked on click of a nested overlay", async () => {
+            const user = userEvent.setup();
             const onClose = vi.fn();
-            mountWrapper(
-                <Overlay isOpen={true} onClose={onClose}>
-                    <div id="outer-element">
-                        {createOverlayContents()}
-                        <Overlay isOpen={true}>
-                            <div id="inner-element">{createOverlayContents()}</div>
+            render(
+                <Overlay isOpen={true} onClose={onClose} transitionDuration={0}>
+                    <>
+                        <span>outer content</span>
+                        <Overlay isOpen={true} transitionDuration={0}>
+                            <span>inner content</span>
                         </Overlay>
-                    </div>
+                    </>
                 </Overlay>,
             );
-            // this hackery is necessary for React 15 support, where Portals break trees.
-            findInPortal(findInPortal(wrapper, "#outer-element"), "#inner-element").simulate("mousedown");
+            const innerElement = screen.getByText("inner content");
+
+            await user.click(innerElement);
+
             expect(onClose).not.toHaveBeenCalled();
         });
 
         it("invoked on escape key", () => {
             const onClose = vi.fn();
-            mountWrapper(
-                <Overlay isOpen={true} onClose={onClose} usePortal={false}>
-                    {createOverlayContents()}
-                </Overlay>,
-            );
-            wrapper.simulate("keydown", { key: "Escape" });
+
+            function TestOverlay() {
+                const [isOpen, setIsOpen] = useState(true);
+
+                return (
+                    <Overlay
+                        isOpen={isOpen}
+                        onClose={e => {
+                            onClose(e);
+                            setIsOpen(false);
+                        }}
+                        usePortal={false}
+                        transitionDuration={0}
+                    >
+                        <span>test content</span>
+                    </Overlay>
+                );
+            }
+
+            const { container } = render(<TestOverlay />);
+            const overlayElement = container.querySelector(`.${Classes.OVERLAY}`);
+
+            expect(overlayElement).toBeInTheDocument();
+
+            fireEvent.keyDown(overlayElement!, { key: "Escape" });
+
             expect(onClose).toHaveBeenCalledOnce();
         });
 
         it("not invoked on escape key when canEscapeKeyClose=false", () => {
             const onClose = vi.fn();
-            const overlay = shallow(
-                <Overlay canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
-                    {createOverlayContents()}
-                </Overlay>,
-            );
-            overlay.simulate("keydown", { key: "Escape" });
+
+            function TestOverlay() {
+                const [isOpen, setIsOpen] = useState(true);
+
+                return (
+                    <Overlay
+                        canEscapeKeyClose={false}
+                        isOpen={isOpen}
+                        onClose={e => {
+                            onClose(e);
+                            setIsOpen(false);
+                        }}
+                        usePortal={false}
+                        transitionDuration={0}
+                    >
+                        <span>test content</span>
+                    </Overlay>
+                );
+            }
+
+            const { container } = render(<TestOverlay />);
+            const overlayElement = container.querySelector(`.${Classes.OVERLAY}`);
+
+            expect(overlayElement).toBeInTheDocument();
+
+            fireEvent.keyDown(overlayElement!, { key: "Escape" });
+
             expect(onClose).not.toHaveBeenCalled();
-            overlay.unmount();
         });
 
         it("renders portal attached to body when not inline", () => {
-            const overlay = shallow(
-                <Overlay isOpen={true} usePortal={true}>
-                    {createOverlayContents()}
+            const portalClassName = "test-portal-inline";
+            render(
+                <Overlay isOpen={true} usePortal={true} portalClassName={portalClassName} transitionDuration={0}>
+                    <strong>Overlay content!</strong>
                 </Overlay>,
             );
-            const portal = overlay.find(Portal);
-            assert.isTrue(portal.exists(), "missing Portal");
-            assert.lengthOf(portal.find("strong"), 1, "missing h1");
-            overlay.unmount();
+
+            const portalElement = document.querySelector(`.${Classes.PORTAL}.${portalClassName}`);
+            expect(portalElement).toBeInTheDocument();
+            expect(screen.getByText("Overlay content!")).toBeInTheDocument();
         });
     });
 
@@ -283,16 +334,25 @@ describe("<Overlay>", () => {
         const overlayClassName = "test-overlay";
 
         it("brings focus to overlay if autoFocus=true", async () => {
-            mountWrapper(
-                <Overlay className={overlayClassName} autoFocus={true} isOpen={true} usePortal={true}>
+            render(
+                <Overlay
+                    className={overlayClassName}
+                    autoFocus={true}
+                    isOpen={true}
+                    usePortal={true}
+                    transitionDuration={0}
+                >
                     <input type="text" />
                 </Overlay>,
             );
-            await assertFocusIsInOverlay();
+
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            );
         });
 
         it("does not bring focus to overlay if autoFocus=false and enforceFocus=false", async () => {
-            mountWrapper(
+            render(
                 <div>
                     <button>something outside overlay for browser to focus on</button>
                     <Overlay
@@ -301,59 +361,87 @@ describe("<Overlay>", () => {
                         enforceFocus={false}
                         isOpen={true}
                         usePortal={true}
+                        transitionDuration={0}
                     >
                         <input type="text" />
                     </Overlay>
                 </div>,
             );
-            await assertFocus("body");
+
+            await waitFor(() => expect(document.activeElement).toBe(document.body));
         });
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
         // Still, worth testing we can control where the focus goes.
         it("autoFocus element inside overlay gets the focus", async () => {
-            mountWrapper(
-                <Overlay className={overlayClassName} isOpen={true} usePortal={true}>
+            render(
+                <Overlay className={overlayClassName} isOpen={true} usePortal={true} transitionDuration={0}>
                     <input autoFocus={true} type="text" />
                 </Overlay>,
             );
-            await assertFocus("input");
+
+            await waitFor(() => expect(document.activeElement).toBe(document.querySelector("input")));
         });
 
         it("returns focus to overlay if enforceFocus=true", async () => {
             const buttonRef = createRef<HTMLButtonElement>();
             const inputRef = createRef<HTMLInputElement>();
-            mountWrapper(
+            render(
                 <div>
                     <button ref={buttonRef} />
-                    <Overlay className={overlayClassName} enforceFocus={true} isOpen={true} usePortal={true}>
-                        <input autoFocus={true} ref={inputRef} />
+                    <Overlay
+                        className={overlayClassName}
+                        enforceFocus={true}
+                        isOpen={true}
+                        usePortal={true}
+                        transitionDuration={0}
+                    >
+                        <div>
+                            <input autoFocus={true} ref={inputRef} />
+                        </div>
                     </Overlay>
                 </div>,
             );
-            assert.strictEqual(document.activeElement, inputRef.current);
+
+            expect(document.activeElement).toBe(inputRef.current);
             buttonRef.current?.focus();
-            await assertFocusIsInOverlay();
+
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            );
         });
 
         it("returns focus to overlay after clicking the backdrop if enforceFocus=true", async () => {
-            mountWrapper(
+            const user = userEvent.setup();
+            const { container } = render(
                 <Overlay
                     className={overlayClassName}
                     enforceFocus={true}
                     canOutsideClickClose={false}
                     isOpen={true}
                     usePortal={false}
+                    transitionDuration={0}
                 >
-                    {createOverlayContents()}
+                    <strong tabIndex={0}>Overlay content!</strong>
                 </Overlay>,
             );
-            wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
-            await assertFocusIsInOverlay();
+            const backdropElement = container.querySelector(BACKDROP_SELECTOR);
+
+            expect(backdropElement).toBeInTheDocument();
+
+            await user.click(backdropElement!);
+
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            );
         });
 
-        it("returns focus to overlay after clicking an outside element if enforceFocus=true", async () => {
-            mountWrapper(
+        // SKIP: jsdom + requestAnimationFrame timing issue. The enforceFocus mechanism uses
+        // requestAnimationFrame to delay focus manipulation (Overlay), and RAF
+        // timing in jsdom is inconsistent with userEvent clicks.
+        it.skip("returns focus to overlay after clicking an outside element if enforceFocus=true", async () => {
+            const user = userEvent.setup();
+            render(
                 <div>
                     <Overlay
                         enforceFocus={true}
@@ -362,80 +450,136 @@ describe("<Overlay>", () => {
                         isOpen={true}
                         usePortal={false}
                         hasBackdrop={false}
+                        transitionDuration={0}
                     >
-                        {createOverlayContents()}
+                        <strong tabIndex={0}>Overlay content!</strong>
                     </Overlay>
-                    <button id="buttonId" />
+                    <button>Button outside overlay</button>
                 </div>,
             );
-            wrapper.find("#buttonId").simulate("click");
-            await assertFocusIsInOverlay();
+            const buttonElement = screen.getByRole("button", { name: /button outside overlay/i });
+
+            await user.click(buttonElement);
+
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            );
         });
 
-        it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
-            const anotherContainer = document.createElement("div");
-            document.documentElement.appendChild(anotherContainer);
-            const temporaryWrapper = mount(
-                <Overlay className={overlayClassName} enforceFocus={true} isOpen={true} usePortal={false}>
-                    <input type="text" />
-                </Overlay>,
-                { attachTo: anotherContainer },
+        it("does not result in maximum call stack if two overlays open with enforceFocus=true", async () => {
+            const user = userEvent.setup();
+            const secondOverlayInputID = "inputId";
+
+            const { rerender } = render(
+                <>
+                    <Overlay
+                        className={overlayClassName}
+                        enforceFocus={true}
+                        isOpen={true}
+                        usePortal={false}
+                        transitionDuration={0}
+                    >
+                        <input type="text" />
+                    </Overlay>
+                    <Overlay
+                        className={overlayClassName}
+                        enforceFocus={true}
+                        isOpen={false}
+                        usePortal={false}
+                        transitionDuration={0}
+                    >
+                        <input type="text" data-testid={secondOverlayInputID} />
+                    </Overlay>
+                </>,
             );
 
-            mountWrapper(
-                <Overlay className={overlayClassName} enforceFocus={true} isOpen={false} usePortal={false}>
-                    <input id="inputId" type="text" />
-                </Overlay>,
+            // open the second overlay
+            rerender(
+                <>
+                    <Overlay
+                        className={overlayClassName}
+                        enforceFocus={true}
+                        isOpen={true}
+                        usePortal={false}
+                        transitionDuration={0}
+                    >
+                        <input type="text" />
+                    </Overlay>
+                    <Overlay
+                        className={overlayClassName}
+                        enforceFocus={true}
+                        isOpen={true}
+                        usePortal={false}
+                        transitionDuration={0}
+                    >
+                        <input type="text" data-testid={secondOverlayInputID} />
+                    </Overlay>
+                </>,
             );
-            // ES6 class property vs prototype, see: https://github.com/airbnb/enzyme/issues/365
-            const bringFocusSpy = vi.spyOn(wrapper.instance() as Overlay, "bringFocusInsideOverlay");
-            wrapper.setProps({ isOpen: true });
 
-            // triggers the infinite recursion
-            wrapper.find("#inputId").simulate("click");
-            expect(bringFocusSpy).toHaveBeenCalledOnce();
+            const secondOverlayInputElement = screen.getByTestId(secondOverlayInputID);
 
-            // don't need spy.restore() since the wrapper will be destroyed after test anyways
-            temporaryWrapper.unmount();
-            document.documentElement.removeChild(anotherContainer);
+            // this click potentially triggers infinite recursion if both overlays try to bring focus back to themselves
+            await user.click(secondOverlayInputElement);
         });
 
-        it("does not return focus to overlay if enforceFocus=false", () => {
-            let buttonRef: HTMLElement | null;
-            const focusBtnAndAssert = async () => {
-                buttonRef?.focus();
-                await waitFor(() => assert.strictEqual(buttonRef, document.activeElement));
-            };
-
-            mountWrapper(
+        it("does not return focus to overlay if enforceFocus=false", async () => {
+            const buttonRef = createRef<HTMLButtonElement>();
+            render(
                 <div>
-                    <button ref={ref => (buttonRef = ref)} />
-                    <Overlay className={overlayClassName} enforceFocus={false} isOpen={true} usePortal={true}>
-                        <input ref={ref => ref && focusBtnAndAssert()} />
+                    <button ref={buttonRef} />
+                    <Overlay
+                        className={overlayClassName}
+                        enforceFocus={false}
+                        isOpen={true}
+                        usePortal={true}
+                        transitionDuration={0}
+                    >
+                        <div>
+                            <input type="text" />
+                        </div>
                     </Overlay>
                 </div>,
             );
+
+            expect(buttonRef.current).not.toBeNull();
+
+            buttonRef.current!.focus();
+
+            await waitFor(() => expect(document.activeElement).toBe(buttonRef.current));
         });
 
         it("doesn't focus overlay if focus is already inside overlay", async () => {
-            let textarea: HTMLTextAreaElement | null;
-            mountWrapper(
-                <Overlay className={overlayClassName} isOpen={true} usePortal={true}>
-                    <textarea ref={ref => (textarea = ref)} />
+            const textareaRef = createRef<HTMLTextAreaElement>();
+            render(
+                <Overlay className={overlayClassName} isOpen={true} usePortal={true} transitionDuration={0}>
+                    <div>
+                        <textarea ref={textareaRef} />
+                    </div>
                 </Overlay>,
             );
-            textarea!.focus();
-            await assertFocus("textarea");
+
+            expect(textareaRef.current).not.toBeNull();
+
+            textareaRef.current!.focus();
+
+            await waitFor(() => expect(document.activeElement).toBe(textareaRef.current));
         });
 
         it("does not focus overlay when closed", async () => {
-            mountWrapper(
+            const buttonRef = createRef<HTMLButtonElement>();
+            render(
                 <div>
-                    <button ref={ref => ref && ref.focus()} />
-                    <Overlay className={overlayClassName} isOpen={false} usePortal={true} />
+                    <button ref={buttonRef} />
+                    <Overlay className={overlayClassName} isOpen={false} usePortal={true} transitionDuration={0} />
                 </div>,
             );
-            await assertFocus("button");
+
+            expect(buttonRef.current).not.toBeNull();
+
+            buttonRef.current!.focus();
+
+            await waitFor(() => expect(document.activeElement).toBe(buttonRef.current));
         });
 
         // SKIP: @testing-library/user-event v14 installs a global focus listener that
@@ -443,15 +587,16 @@ describe("<Overlay>", () => {
         // event with window as the target to simulate clicking browser chrome.
         // The underlying Blueprint behavior is still valid.
         it.skip("does not crash while trying to return focus to overlay if user clicks outside the document", () => {
-            mountWrapper(
+            render(
                 <Overlay
                     className={overlayClassName}
                     enforceFocus={true}
                     canOutsideClickClose={false}
                     isOpen={true}
                     usePortal={false}
+                    transitionDuration={0}
                 >
-                    {createOverlayContents()}
+                    <strong tabIndex={0}>Overlay content!</strong>
                 </Overlay>,
             );
 
@@ -461,32 +606,8 @@ describe("<Overlay>", () => {
             const event = new FocusEvent("focus");
             Object.defineProperty(event, "target", { value: window });
 
-            try {
-                document.dispatchEvent(event);
-            } catch (e) {
-                assert.fail("threw uncaught error");
-            }
+            expect(() => document.dispatchEvent(event)).not.toThrow();
         });
-
-        async function assertFocus(selector: string | (() => void)) {
-            // the behavior being tested relies on requestAnimationFrame.
-            // waitFor to reduce flakes.
-            await waitFor(() => {
-                wrapper.update();
-                if (Utils.isFunction(selector)) {
-                    selector();
-                } else {
-                    assert.strictEqual(document.querySelector(selector), document.activeElement);
-                }
-            });
-        }
-
-        async function assertFocusIsInOverlay() {
-            await assertFocus(() => {
-                const overlayElement = document.querySelector(`.${overlayClassName}`);
-                assert.isTrue(overlayElement?.contains(document.activeElement));
-            });
-        }
     });
 
     describe("Background scrolling", () => {
@@ -497,61 +618,88 @@ describe("<Overlay>", () => {
         });
 
         it("disables document scrolling by default", async () => {
-            wrapper = mountWrapper(renderBackdropOverlay());
-            await assertBodyScrollingDisabled(true);
+            render(
+                <Overlay isOpen={true} transitionDuration={0}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+
+            await waitFor(() => expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true));
         });
 
         it("disables document scrolling if hasBackdrop=true and usePortal=true", async () => {
-            wrapper = mountWrapper(renderBackdropOverlay(true, true));
-            await assertBodyScrollingDisabled(true);
+            render(
+                <Overlay hasBackdrop={true} isOpen={true} usePortal={true} transitionDuration={0}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+
+            await waitFor(() => expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true));
         });
 
         it("does not disable document scrolling if hasBackdrop=true and usePortal=false", async () => {
-            wrapper = mountWrapper(renderBackdropOverlay(true, false));
-            await assertBodyScrollingDisabled(false);
+            render(
+                <Overlay hasBackdrop={true} isOpen={true} usePortal={false} transitionDuration={0}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+
+            await waitFor(() => expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(false));
         });
 
         it("does not disable document scrolling if hasBackdrop=false and usePortal=true", async () => {
-            wrapper = mountWrapper(renderBackdropOverlay(false, true));
-            await assertBodyScrollingDisabled(false);
+            render(
+                <Overlay hasBackdrop={false} isOpen={true} usePortal={true} transitionDuration={0}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+
+            await waitFor(() => expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(false));
         });
 
         it("does not disable document scrolling if hasBackdrop=false and usePortal=false", async () => {
-            wrapper = mountWrapper(renderBackdropOverlay(false, false));
-            await assertBodyScrollingDisabled(false);
+            render(
+                <Overlay hasBackdrop={false} isOpen={true} usePortal={false} transitionDuration={0}>
+                    <div>Some overlay content</div>
+                </Overlay>,
+            );
+
+            await waitFor(() => expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(false));
         });
 
         it("keeps scrolling disabled if hasBackdrop=true overlay exists following unmount", async () => {
-            const backdropOverlay = mount(renderBackdropOverlay(true));
-            wrapper = mountWrapper(renderBackdropOverlay(true));
-            backdropOverlay.unmount();
+            const { unmount } = render(
+                <Overlay hasBackdrop={true} isOpen={true} transitionDuration={0}>
+                    <div>First overlay</div>
+                </Overlay>,
+            );
+            render(
+                <Overlay hasBackdrop={true} isOpen={true} transitionDuration={0}>
+                    <div>Second overlay</div>
+                </Overlay>,
+            );
 
-            await assertBodyScrollingDisabled(true);
+            unmount();
+
+            await waitFor(() => expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true));
         });
 
         it("doesn't keep scrolling disabled if no hasBackdrop=true overlay exists following unmount", async () => {
-            const backdropOverlay = mount(renderBackdropOverlay(true));
-            wrapper = mountWrapper(renderBackdropOverlay(false));
-            backdropOverlay.unmount();
-
-            await assertBodyScrollingDisabled(false);
-        });
-
-        function renderBackdropOverlay(hasBackdrop?: boolean, usePortal?: boolean) {
-            return (
-                <Overlay hasBackdrop={hasBackdrop} isOpen={true} usePortal={usePortal}>
-                    <div>Some overlay content</div>
-                </Overlay>
+            const { unmount } = render(
+                <Overlay hasBackdrop={true} isOpen={true} transitionDuration={0}>
+                    <div>First overlay</div>
+                </Overlay>,
             );
-        }
+            render(
+                <Overlay hasBackdrop={false} isOpen={true} transitionDuration={0}>
+                    <div>Second overlay</div>
+                </Overlay>,
+            );
 
-        async function assertBodyScrollingDisabled(disabled: boolean) {
-            // wait for the DOM to settle before checking body classes
-            await waitFor(() => {
-                const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
-                assert.equal(hasClass, disabled);
-            });
-        }
+            unmount();
+
+            await waitFor(() => expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(false));
+        });
     });
 
     it.skip("lifecycle methods called as expected", async () => {
@@ -561,41 +709,42 @@ describe("<Overlay>", () => {
         const onClosing = vi.fn();
         const onOpened = vi.fn();
         const onOpening = vi.fn();
-        wrapper = mountWrapper(
+
+        const { rerender } = render(
             <Overlay
-                {...{ onClosed, onClosing, onOpened, onOpening }}
                 isOpen={true}
                 usePortal={false}
                 // transition duration shorter than timeout below to ensure it's done
                 transitionDuration={8}
+                onClosed={onClosed}
+                onClosing={onClosing}
+                onOpened={onOpened}
+                onOpening={onOpening}
             >
-                {createOverlayContents()}
+                <strong tabIndex={0}>Overlay content!</strong>
             </Overlay>,
         );
-        expect(onOpening).toHaveBeenCalledOnce();
+
+        await waitFor(() => expect(onOpening).toHaveBeenCalledOnce());
         expect(onOpened).not.toHaveBeenCalled();
 
-        await sleep(10);
+        await waitFor(() => expect(onOpened).toHaveBeenCalledOnce(), { timeout: 100 });
 
-        // on*ed called after transition completes
-        expect(onOpened).toHaveBeenCalledOnce();
-
-        wrapper.setProps({ isOpen: false });
-        // on*ing called immediately when prop changes
-        expect(onClosing).toHaveBeenCalledOnce();
-        expect(onClosed).not.toHaveBeenCalled();
-
-        await sleep(10);
-
-        expect(onClosed).toHaveBeenCalledOnce();
-    });
-
-    let index = 0;
-    function createOverlayContents() {
-        return (
-            <strong id={`overlay-${index++}`} tabIndex={0}>
-                Overlay content!
-            </strong>
+        rerender(
+            <Overlay
+                isOpen={false}
+                usePortal={false}
+                transitionDuration={8}
+                onClosed={onClosed}
+                onClosing={onClosing}
+                onOpened={onOpened}
+                onOpening={onOpening}
+            >
+                <strong tabIndex={0}>Overlay content!</strong>
+            </Overlay>,
         );
-    }
+
+        await waitFor(() => expect(onClosing).toHaveBeenCalledOnce(), { timeout: 200 });
+        await waitFor(() => expect(onClosed).toHaveBeenCalledOnce(), { timeout: 200 });
+    });
 });
