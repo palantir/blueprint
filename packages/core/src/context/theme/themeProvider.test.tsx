@@ -12,7 +12,7 @@ import type { ThemeAPI } from "../../theme";
 import { BlueprintProvider } from "../blueprintProvider";
 
 import { ThemeProvider, type ThemeRepresentations } from "./themeProvider";
-import { useBlueprintTheme } from "./useBlueprintTheme";
+import { useBlueprintTheme, useBlueprintThemeValue } from "./useBlueprintTheme";
 
 describe("ThemeProvider", () => {
     it.each([
@@ -29,12 +29,20 @@ describe("ThemeProvider", () => {
         { fontFamily: null, version: 1 },
         { fontFamily: ["Arial"], version: 1 },
     ])("provides no overrides for an invalid representation: %j", representation => {
-        const { result } = renderHook(() => useBlueprintTheme(), {
+        const { result } = renderHook(() => ({ theme: useBlueprintThemeValue(), tokens: useBlueprintTheme() }), {
             wrapper: ({ children }) => (
                 <ThemeProvider themesByVersion={{ "1": representation }}>{children}</ThemeProvider>
             ),
         });
-        expect(result.current).toEqual({});
+        expect(result.current).toEqual({ theme: undefined, tokens: {} });
+    });
+
+    it("exposes the selected original theme without stripping future fields", () => {
+        const theme = { borderRadius: "8px", futureField: true, version: 1 };
+        const { result } = renderHook(() => useBlueprintThemeValue(), {
+            wrapper: ({ children }) => <ThemeProvider themesByVersion={{ "1": theme }}>{children}</ThemeProvider>,
+        });
+        expect(result.current).toBe(theme);
     });
 
     it("exposes v1 tokens without adding a DOM wrapper or inspecting future versions", () => {

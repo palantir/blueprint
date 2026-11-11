@@ -4,6 +4,13 @@
 
 import { createContext } from "react";
 
+import type { ThemeAPI } from "../../theme/themeApi";
+
 export type BlueprintThemeTokens = Readonly<Record<`--bp-${string}`, string>>;
 
-export const BlueprintThemeContext = createContext<BlueprintThemeTokens>({});
+export interface BlueprintThemeContextValue {
+    tokens: BlueprintThemeTokens;
+    theme: ThemeAPI | undefined;
+}
+
+export const BlueprintThemeContext = createContext<BlueprintThemeContextValue>({ theme: undefined, tokens: {} });
