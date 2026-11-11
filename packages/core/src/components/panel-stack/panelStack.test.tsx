@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-import { mount, type ReactWrapper } from "enzyme";
-import { useState } from "react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { useCallback, useState } from "react";
 
-import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { NumericInput } from "../forms/numericInput";
 
-import { PanelStack, type PanelStackProps } from "./panelStack";
+import { PanelStack } from "./panelStack";
 import { type Panel, type PanelProps } from "./panelTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
@@ -44,283 +45,231 @@ const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
     );
 };
 
+const initialPanel: Panel<TestPanelInfo> = {
+    props: {},
+    renderPanel: TestPanel,
+    title: "Test Title",
+};
+
+const emptyTitleInitialPanel: Panel<TestPanelInfo> = {
+    props: {},
+    renderPanel: TestPanel,
+};
+
 describe("<PanelStack>", () => {
-    let containerElement: HTMLElement;
-    let panelStackWrapper: PanelStackWrapper<TestPanelType>;
-
-    const initialPanel: Panel<TestPanelInfo> = {
-        props: {},
-        renderPanel: TestPanel,
-        title: "Test Title",
-    };
-
-    const emptyTitleInitialPanel: Panel<TestPanelInfo> = {
-        props: {},
-        renderPanel: TestPanel,
-    };
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-
-    afterEach(() => {
-        panelStackWrapper?.unmount();
-        panelStackWrapper?.detach();
-        containerElement.remove();
-    });
-
     describe("uncontrolled mode", () => {
-        it("renders a basic panel and allows opening and closing", () => {
-            panelStackWrapper = renderPanelStack({ initialPanel });
-            expect(panelStackWrapper).toBeDefined();
+        it("renders a basic panel and allows opening and closing", async () => {
+            const user = userEvent.setup();
+            const { container } = render(<PanelStack initialPanel={initialPanel} />);
 
-            const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            expect(newPanelButton).toBeDefined();
-            newPanelButton.simulate("click");
+            await user.click(container.querySelector<HTMLElement>("#new-panel-button")!);
 
-            const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(newPanelHeader).toBeDefined();
-            expect(newPanelHeader.at(0).text()).toBe("New Panel 1");
+            const headings = container.querySelectorAll(`.${Classes.HEADING}`);
+            expect(headings.length).toBeGreaterThanOrEqual(1);
+            expect(headings[0]).toHaveTextContent("New Panel 1");
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            expect(backButton).toBeDefined();
-            backButton.simulate("click");
+            const backButton = container.querySelector<HTMLElement>(`.${Classes.PANEL_STACK_HEADER_BACK}`);
+            expect(backButton).not.toBeNull();
+            await user.click(backButton!);
 
-            const oldPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(oldPanelHeader).toBeDefined();
-            expect(oldPanelHeader.at(1).text()).toBe("Test Title");
+            const headingsAfterBack = container.querySelectorAll(`.${Classes.HEADING}`);
+            // After going back, the "Test Title" heading should be present
+            const headingTexts = Array.from(headingsAfterBack).map(h => h.textContent);
+            expect(headingTexts).toContain("Test Title");
         });
 
-        it("renders a panel stack without header and allows opening and closing", () => {
-            panelStackWrapper = renderPanelStack({ initialPanel, showPanelHeader: false });
-            expect(panelStackWrapper).toBeDefined();
+        it("renders a panel stack without header and allows opening and closing", async () => {
+            const user = userEvent.setup();
+            const { container } = render(<PanelStack initialPanel={initialPanel} showPanelHeader={false} />);
 
-            const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            expect(newPanelButton).toBeDefined();
-            newPanelButton.simulate("click");
+            await user.click(container.querySelector<HTMLElement>("#new-panel-button")!);
 
-            const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(newPanelHeader).toHaveLength(0);
+            expect(container.querySelectorAll(`.${Classes.HEADING}`)).toHaveLength(0);
+            expect(container.querySelector(`.${Classes.PANEL_STACK_HEADER_BACK}`)).toBeNull();
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            expect(backButton).toHaveLength(0);
+            const closePanelButtons = container.querySelectorAll<HTMLElement>("#close-panel-button");
+            await user.click(closePanelButtons[closePanelButtons.length - 1]);
 
-            const closePanel = panelStackWrapper.find("#close-panel-button");
-            expect(closePanel).toBeDefined();
-            closePanel.last().simulate("click");
-
-            const oldPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(oldPanelHeader).toHaveLength(0);
+            expect(container.querySelectorAll(`.${Classes.HEADING}`)).toHaveLength(0);
         });
 
-        it("does not call the callback handler onClose when there is only a single panel on the stack", () => {
+        it("does not call the callback handler onClose when there is only a single panel on the stack", async () => {
+            const user = userEvent.setup();
             const onClose = vi.fn();
-            panelStackWrapper = renderPanelStack({ initialPanel, onClose });
+            const { container } = render(<PanelStack initialPanel={initialPanel} onClose={onClose} />);
 
-            const closePanel = panelStackWrapper.find("#close-panel-button");
-            expect(closePanel).toBeDefined();
-
-            closePanel.simulate("click");
+            await user.click(container.querySelector<HTMLElement>("#close-panel-button")!);
             expect(onClose).not.toHaveBeenCalled();
         });
 
-        it("calls the callback handlers onOpen and onClose", () => {
+        it("calls the callback handlers onOpen and onClose", async () => {
+            const user = userEvent.setup();
             const onOpen = vi.fn();
             const onClose = vi.fn();
-            panelStackWrapper = renderPanelStack({ initialPanel, onClose, onOpen });
+            const { container } = render(<PanelStack initialPanel={initialPanel} onClose={onClose} onOpen={onOpen} />);
 
-            const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            expect(newPanelButton).toBeDefined();
-            newPanelButton.simulate("click");
+            await user.click(container.querySelector<HTMLElement>("#new-panel-button")!);
             expect(onOpen).toHaveBeenCalledOnce();
             expect(onClose).not.toHaveBeenCalled();
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            expect(backButton).toBeDefined();
-            backButton.simulate("click");
+            const backButton = container.querySelector<HTMLElement>(`.${Classes.PANEL_STACK_HEADER_BACK}`);
+            expect(backButton).not.toBeNull();
+            await user.click(backButton!);
             expect(onClose).toHaveBeenCalledOnce();
             expect(onOpen).toHaveBeenCalledOnce();
         });
 
         it("does not have the back button when only a single panel is on the stack", () => {
-            panelStackWrapper = renderPanelStack({ initialPanel });
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            expect(backButton).toHaveLength(0);
+            const { container } = render(<PanelStack initialPanel={initialPanel} />);
+            expect(container.querySelector(`.${Classes.PANEL_STACK_HEADER_BACK}`)).toBeNull();
         });
 
         it("assigns the class to TransitionGroup", () => {
             const TEST_CLASS_NAME = "TEST_CLASS_NAME";
-            panelStackWrapper = renderPanelStack({ className: TEST_CLASS_NAME, initialPanel });
-            expect(panelStackWrapper.hasClass(TEST_CLASS_NAME)).toBe(true);
+            const { container } = render(<PanelStack className={TEST_CLASS_NAME} initialPanel={initialPanel} />);
 
-            const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;
-            expect(transitionGroupClassName).toBeDefined();
-            expect(transitionGroupClassName!.indexOf(Classes.PANEL_STACK)).toBe(0);
+            const panelStack = container.querySelector(`.${TEST_CLASS_NAME}`);
+            expect(panelStack).not.toBeNull();
+            expect(panelStack!.className.indexOf(Classes.PANEL_STACK)).toBe(0);
         });
 
-        it("can render a panel without a title", () => {
-            panelStackWrapper = renderPanelStack({ initialPanel: emptyTitleInitialPanel });
-            expect(panelStackWrapper).toBeDefined();
+        it("can render a panel without a title", async () => {
+            const user = userEvent.setup();
+            const { container } = render(<PanelStack initialPanel={emptyTitleInitialPanel} />);
 
-            const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            expect(newPanelButton).toBeDefined();
-            newPanelButton.simulate("click");
+            await user.click(container.querySelector<HTMLElement>("#new-panel-button")!);
 
-            const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            expect(
-                backButtonWithoutTitle.prop("aria-label"),
-                "expected icon-only back button to have accessible label",
-            ).toBe("Back");
+            const backButtons = container.querySelectorAll<HTMLElement>(`.${Classes.PANEL_STACK_HEADER_BACK}`);
+            expect(backButtons).toHaveLength(1);
+            expect(backButtons[0]).toHaveAttribute("aria-label", "Back");
 
-            const newPanelButtonOnNotEmpty = panelStackWrapper.find("#new-panel-button").hostNodes().at(1);
-            expect(newPanelButtonOnNotEmpty).toBeDefined();
-            newPanelButtonOnNotEmpty.simulate("click");
+            // Open another panel from the second panel
+            const newPanelButtons = container.querySelectorAll<HTMLElement>("#new-panel-button");
+            await user.click(newPanelButtons[newPanelButtons.length - 1]);
 
-            const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK).hostNodes().at(1);
-            expect(
-                backButtonWithTitle.prop("aria-label"),
-                "expected icon-only back button to have accessible label",
-            ).toBe("Back");
+            const backButtonsAfter = container.querySelectorAll<HTMLElement>(`.${Classes.PANEL_STACK_HEADER_BACK}`);
+            // The latest back button should also have the accessible label
+            expect(backButtonsAfter[backButtonsAfter.length - 1]).toHaveAttribute("aria-label", "Back");
         });
     });
 
     describe("controlled mode", () => {
-        it("can render a panel stack in controlled mode", () => {
-            const stack = [initialPanel];
-            panelStackWrapper = renderPanelStack({ stack });
-            expect(panelStackWrapper).toBeDefined();
+        it("can render a panel stack in controlled mode", async () => {
+            const user = userEvent.setup();
+            const { container } = render(<PanelStack stack={[initialPanel]} />);
 
-            const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            expect(newPanelButton).toBeDefined();
-            newPanelButton.simulate("click");
+            await user.click(container.querySelector<HTMLElement>("#new-panel-button")!);
 
             // Expect the same panel as before since onOpen is not handled
-            const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(newPanelHeader).toBeDefined();
-            expect(newPanelHeader.at(0).text()).toBe("Test Title");
+            const heading = container.querySelector(`.${Classes.HEADING}`);
+            expect(heading).not.toBeNull();
+            expect(heading).toHaveTextContent("Test Title");
         });
 
-        it("can open a panel in controlled mode", () => {
-            let stack = [initialPanel];
-            panelStackWrapper = renderPanelStack({
-                onOpen: panel => {
-                    stack = [...stack, panel];
-                },
-                stack,
-            });
-            expect(panelStackWrapper).toBeDefined();
+        it("can open a panel in controlled mode", async () => {
+            const user = userEvent.setup();
 
-            const newPanelButton = panelStackWrapper.find("#new-panel-button");
-            expect(newPanelButton).toBeDefined();
-            newPanelButton.simulate("click");
-            panelStackWrapper.setProps({ stack });
+            function ControlledPanelStack() {
+                const [stack, setStack] = useState<TestPanelType[]>([initialPanel]);
+                return <PanelStack onOpen={panel => setStack(prev => [...prev, panel])} stack={stack} />;
+            }
 
-            const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(newPanelHeader).toBeDefined();
-            expect(newPanelHeader.at(0).text()).toBe("New Panel 1");
+            const { container } = render(<ControlledPanelStack />);
+
+            await user.click(container.querySelector<HTMLElement>("#new-panel-button")!);
+
+            const heading = container.querySelector(`.${Classes.HEADING}`);
+            expect(heading).not.toBeNull();
+            expect(heading).toHaveTextContent("New Panel 1");
         });
 
-        it("can render a panel stack with multiple initial panels and close one", () => {
-            let stack: Array<Panel<TestPanelInfo>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
-            panelStackWrapper = renderPanelStack({
-                onClose: () => {
-                    stack = stack.slice(0, -1);
-                },
-                stack,
-            });
-            expect(panelStackWrapper).toBeDefined();
+        it("can render a panel stack with multiple initial panels and close one", async () => {
+            const user = userEvent.setup();
 
-            const panelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(panelHeader).toBeDefined();
-            expect(panelHeader.at(0).text()).toBe("New Panel 1");
+            function ControlledPanelStack() {
+                const [stack, setStack] = useState<TestPanelType[]>([
+                    initialPanel,
+                    { renderPanel: TestPanel, title: "New Panel 1" },
+                ]);
+                return <PanelStack onClose={() => setStack(prev => prev.slice(0, -1))} stack={stack} />;
+            }
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-            expect(backButton).toBeDefined();
-            backButton.simulate("click");
-            panelStackWrapper.setProps({ stack });
+            const { container } = render(<ControlledPanelStack />);
 
-            const firstPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
-            expect(firstPanelHeader).toBeDefined();
-            expect(firstPanelHeader.at(0).text()).toBe("Test Title");
+            const heading = container.querySelector(`.${Classes.HEADING}`);
+            expect(heading).not.toBeNull();
+            expect(heading).toHaveTextContent("New Panel 1");
+
+            const backButton = container.querySelector<HTMLElement>(`.${Classes.PANEL_STACK_HEADER_BACK}`);
+            expect(backButton).not.toBeNull();
+            await user.click(backButton!);
+
+            const firstPanelHeader = container.querySelector(`.${Classes.HEADING}`);
+            expect(firstPanelHeader).not.toBeNull();
+            expect(firstPanelHeader).toHaveTextContent("Test Title");
         });
 
         it("renders only one panel by default", () => {
-            const stack = [
+            const stack: TestPanelType[] = [
                 { renderPanel: TestPanel, title: "Panel A" },
                 { renderPanel: TestPanel, title: "Panel B" },
             ];
-            panelStackWrapper = renderPanelStack({ stack });
+            const { container } = render(<PanelStack stack={stack} />);
 
-            const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
-            expect(panelHeaders).toBeDefined();
+            const panelHeaders = container.querySelectorAll(`.${Classes.HEADING}`);
             expect(panelHeaders).toHaveLength(1);
-            expect(panelHeaders.at(0).text()).toBe(stack[1].title);
+            expect(panelHeaders[0]).toHaveTextContent("Panel B");
         });
 
         describe("with renderActivePanelOnly={false}", () => {
             it("renders all panels", () => {
-                const stack = [
+                const stack: TestPanelType[] = [
                     { renderPanel: TestPanel, title: "Panel A" },
                     { renderPanel: TestPanel, title: "Panel B" },
                 ];
-                panelStackWrapper = renderPanelStack({ renderActivePanelOnly: false, stack });
+                const { container } = render(<PanelStack renderActivePanelOnly={false} stack={stack} />);
 
-                const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
-                expect(panelHeaders).toBeDefined();
+                const panelHeaders = container.querySelectorAll(`.${Classes.HEADING}`);
                 expect(panelHeaders).toHaveLength(2);
-                expect(panelHeaders.at(0).text()).toBe(stack[0].title);
-                expect(panelHeaders.at(1).text()).toBe(stack[1].title);
+                expect(panelHeaders[0]).toHaveTextContent("Panel A");
+                expect(panelHeaders[1]).toHaveTextContent("Panel B");
             });
 
-            it("keeps panels mounted", () => {
-                let stack = [initialPanel];
-                panelStackWrapper = renderPanelStack({
-                    onClose: () => {
-                        stack = stack.slice(0, -1);
-                    },
-                    onOpen: panel => {
-                        stack = [...stack, panel];
-                    },
-                    renderActivePanelOnly: false,
-                    stack,
-                });
+            it("keeps panels mounted", async () => {
+                const user = userEvent.setup();
 
-                const incrementButton = panelStackWrapper.find(`[aria-label="increment"]`);
-                expect(incrementButton).toBeDefined();
-                incrementButton.hostNodes().simulate("mousedown");
-                expect(getFirstPanelCounterValue(), "clicking increment button should increase counter").toBe(1);
+                function ControlledPanelStack() {
+                    const [stack, setStack] = useState<TestPanelType[]>([initialPanel]);
+                    const handleClose = useCallback(() => setStack(prev => prev.slice(0, -1)), []);
+                    const handleOpen = useCallback((panel: TestPanelType) => setStack(prev => [...prev, panel]), []);
+                    return (
+                        <PanelStack
+                            onClose={handleClose}
+                            onOpen={handleOpen}
+                            renderActivePanelOnly={false}
+                            stack={stack}
+                        />
+                    );
+                }
 
-                const newPanelButton = panelStackWrapper.find("#new-panel-button");
-                newPanelButton.hostNodes().simulate("click");
-                panelStackWrapper.setProps({ stack });
+                const { container } = render(<ControlledPanelStack />);
 
-                const backButton = panelStackWrapper.find(`[aria-label="Back"]`);
-                backButton.hostNodes().simulate("click");
-                panelStackWrapper.setProps({ stack });
-                expect(
-                    getFirstPanelCounterValue(),
-                    "first panel should retain its counter state when we return to it",
-                ).toBe(1);
+                await user.click(screen.getByRole("button", { name: "increment" }));
+
+                expect(getCounterValue(container)).toBe(1);
+
+                await user.click(container.querySelector<HTMLElement>("#new-panel-button")!);
+
+                await user.click(screen.getAllByRole("button", { name: "Back" })[0]);
+
+                expect(getCounterValue(container)).toBe(1);
             });
-
-            function getFirstPanelCounterValue() {
-                const counterValue = panelStackWrapper.find(`[aria-label="counter value"]`);
-                expect(counterValue).toBeDefined();
-                return parseInt(counterValue.hostNodes().first().text().trim(), 10);
-            }
         });
     });
-
-    interface PanelStackWrapper<T extends Panel<object>> extends ReactWrapper<PanelStackProps<T>, any> {
-        findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
-    }
-
-    function renderPanelStack(props: PanelStackProps<TestPanelType>): PanelStackWrapper<TestPanelType> {
-        panelStackWrapper = mount(<PanelStack {...props} />, {
-            attachTo: containerElement,
-        }) as PanelStackWrapper<TestPanelType>;
-        panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
-        return panelStackWrapper;
-    }
 });
+
+function getCounterValue(container: HTMLElement) {
+    const counterValue = container.querySelector<HTMLElement>(`[aria-label="counter value"]`);
+    expect(counterValue).not.toBeNull();
+    return parseInt(counterValue!.textContent!.trim(), 10);
+}
