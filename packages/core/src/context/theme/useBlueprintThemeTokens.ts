@@ -8,8 +8,8 @@ import type { ThemeAPI } from "../../theme/themeApi";
 
 import { BlueprintThemeContext, type BlueprintThemeTokens } from "./themeContext";
 
-/** Returns overrides for the current subtree, suitable for an existing element's style prop. */
-export function useBlueprintThemeTokens(): BlueprintThemeTokens {
+/** Returns overrides for the current subtree, or undefined when no valid theme is active. */
+export function useBlueprintThemeTokens(): BlueprintThemeTokens | undefined {
     return useContext(BlueprintThemeContext).tokens;
 }
 

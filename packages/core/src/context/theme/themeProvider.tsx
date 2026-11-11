@@ -61,7 +61,7 @@ export function ThemeProvider({ children, theme, themesByVersion }: React.PropsW
         const validTheme = isTheme(selectedTheme) ? selectedTheme : undefined;
         return {
             theme: validTheme,
-            tokens: validTheme == null ? {} : customThemeToBlueprintTokens(validTheme),
+            tokens: validTheme == null ? undefined : customThemeToBlueprintTokens(validTheme),
         };
     }, [theme, themesByVersion]);
 
@@ -80,5 +80,12 @@ function customThemeToBlueprintTokens(theme: ThemeAPI): BlueprintThemeTokens {
 }
 
 function isTheme(value: unknown): value is ThemeAPI {
-    return themeSchema.safeParse(value).success;
+    if (value === undefined) {
+        return false;
+    }
+    const result = themeSchema.safeParse(value);
+    if (!result.success) {
+        console.error("[Blueprint] Invalid theme:", result.error.issues);
+    }
+    return result.success;
 }

@@ -9,8 +9,8 @@ import type { ThemeAPI } from "../../theme/themeApi";
 export type BlueprintThemeTokens = Readonly<Record<`--bp-${string}`, string>>;
 
 export interface BlueprintThemeContextValue {
-    tokens: BlueprintThemeTokens;
+    tokens: BlueprintThemeTokens | undefined;
     theme: ThemeAPI | undefined;
 }
 
-export const BlueprintThemeContext = createContext<BlueprintThemeContextValue>({ theme: undefined, tokens: {} });
+export const BlueprintThemeContext = createContext<BlueprintThemeContextValue>({ theme: undefined, tokens: undefined });
