@@ -1,0 +1,170 @@
+{
+    "palette": {
+        "$type": "color",
+        "blue": {
+            "100": { "$value": "#e4f0ff", "$description": "Generated: oklch(0.950 0.024 256.7)" },
+            "200": { "$value": "#b8d6ff", "$description": "Generated: oklch(0.868 0.065 256.7)" },
+            "300": { "$value": "{palette.blue.5}", "$description": "Same as --bp-palette-blue-5" },
+            "400": { "$value": "{palette.blue.4}", "$description": "Same as --bp-palette-blue-4" },
+            "500": { "$value": "{palette.blue.3}", "$description": "Same as --bp-palette-blue-3" },
+            "600": { "$value": "{palette.blue.2}", "$description": "Same as --bp-palette-blue-2" },
+            "700": { "$value": "{palette.blue.1}", "$description": "Same as --bp-palette-blue-1" },
+            "800": { "$value": "#0f356a", "$description": "Generated: oklch(0.334 0.102 257.9)" },
+            "900": { "$value": "#062045", "$description": "Generated: oklch(0.250 0.076 257.9)" }
+        },
+        "green": {
+            "100": { "$value": "#d5f9e3", "$description": "Generated: oklch(0.950 0.048 159.0)" },
+            "200": { "$value": "#a4e2bf", "$description": "Generated: oklch(0.861 0.079 159.0)" },
+            "300": { "$value": "{palette.green.5}", "$description": "Same as --bp-palette-green-5" },
+            "400": { "$value": "{palette.green.4}", "$description": "Same as --bp-palette-green-4" },
+            "500": { "$value": "{palette.green.3}", "$description": "Same as --bp-palette-green-3" },
+            "600": { "$value": "{palette.green.2}", "$description": "Same as --bp-palette-green-2" },
+            "700": { "$value": "{palette.green.1}", "$description": "Same as --bp-palette-green-1" },
+            "800": { "$value": "#0d4126", "$description": "Generated: oklch(0.334 0.072 155.5)" },
+            "900": { "$value": "#062916", "$description": "Generated: oklch(0.250 0.054 155.5)" }
+        },
+        "orange": {
+            "100": { "$value": "#feebd8", "$description": "Generated: oklch(0.950 0.033 68.1)" },
+            "200": { "$value": "{palette.orange.5}", "$description": "Same as --bp-palette-orange-5" },
+            "300": { "$value": "{palette.orange.4}", "$description": "Same as --bp-palette-orange-4" },
+            "400": { "$value": "#dd892d", "$description": "Generated: oklch(0.704 0.143 63.5)" },
+            "500": { "$value": "{palette.orange.3}", "$description": "Same as --bp-palette-orange-3" },
+            "600": { "$value": "{palette.orange.2}", "$description": "Same as --bp-palette-orange-2" },
+            "700": { "$value": "{palette.orange.1}", "$description": "Same as --bp-palette-orange-1" },
+            "800": { "$value": "#553007", "$description": "Generated: oklch(0.347 0.074 62.2)" },
+            "900": { "$value": "#331b02", "$description": "Generated: oklch(0.250 0.054 62.2)" }
+        },
+        "red": {
+            "100": { "$value": "#fee9e9", "$description": "Generated: oklch(0.950 0.023 18.1)" },
+            "200": { "$value": "#fcc3c3", "$description": "Generated: oklch(0.868 0.065 18.1)" },
+            "300": { "$value": "{palette.red.5}", "$description": "Same as --bp-palette-red-5" },
+            "400": { "$value": "{palette.red.4}", "$description": "Same as --bp-palette-red-4" },
+            "500": { "$value": "{palette.red.3}", "$description": "Same as --bp-palette-red-3" },
+            "600": { "$value": "{palette.red.2}", "$description": "Same as --bp-palette-red-2" },
+            "700": { "$value": "{palette.red.1}", "$description": "Same as --bp-palette-red-1" },
+            "800": { "$value": "#661b1d", "$description": "Generated: oklch(0.346 0.107 23.2)" },
+            "900": { "$value": "#3f0d0f", "$description": "Generated: oklch(0.250 0.077 23.2)" }
+        },
+        "vermilion": {
+            "100": { "$value": "#ffe9e3", "$description": "Generated: oklch(0.950 0.025 34.6)" },
+            "200": { "$value": "#ffc3b4", "$description": "Generated: oklch(0.868 0.072 34.6)" },
+            "300": { "$value": "{palette.vermilion.5}", "$description": "Same as --bp-palette-vermilion-5" },
+            "400": { "$value": "{palette.vermilion.4}", "$description": "Same as --bp-palette-vermilion-4" },
+            "500": { "$value": "{palette.vermilion.3}", "$description": "Same as --bp-palette-vermilion-3" },
+            "600": { "$value": "{palette.vermilion.2}", "$description": "Same as --bp-palette-vermilion-2" },
+            "700": { "$value": "{palette.vermilion.1}", "$description": "Same as --bp-palette-vermilion-1" },
+            "800": { "$value": "#6b1b06", "$description": "Generated: oklch(0.353 0.117 34.5)" },
+            "900": { "$value": "#410c02", "$description": "Generated: oklch(0.250 0.083 34.5)" }
+        },
+        "rose": {
+            "100": { "$value": "#ffe7ee", "$description": "Generated: oklch(0.950 0.027 359.2)" },
+            "200": { "$value": "#ffaac5", "$description": "Generated: oklch(0.827 0.105 359.2)" },
+            "300": { "$value": "{palette.rose.5}", "$description": "Same as --bp-palette-rose-5" },
+            "400": { "$value": "{palette.rose.4}", "$description": "Same as --bp-palette-rose-4" },
+            "500": { "$value": "{palette.rose.3}", "$description": "Same as --bp-palette-rose-3" },
+            "600": { "$value": "{palette.rose.2}", "$description": "Same as --bp-palette-rose-2" },
+            "700": { "$value": "{palette.rose.1}", "$description": "Same as --bp-palette-rose-1" },
+            "800": { "$value": "#76153a", "$description": "Generated: oklch(0.377 0.133 3.8)" },
+            "900": { "$value": "#41071d", "$description": "Generated: oklch(0.250 0.088 3.8)" }
+        },
+        "violet": {
+            "100": { "$value": "#f6eaf5", "$description": "Generated: oklch(0.950 0.019 326.5)" },
+            "200": { "$value": "#e6c5e6", "$description": "Generated: oklch(0.861 0.057 326.5)" },
+            "300": { "$value": "{palette.violet.5}", "$description": "Same as --bp-palette-violet-5" },
+            "400": { "$value": "{palette.violet.4}", "$description": "Same as --bp-palette-violet-4" },
+            "500": { "$value": "#ae52ae", "$description": "Generated: oklch(0.587 0.166 327.5)" },
+            "600": { "$value": "{palette.violet.3}", "$description": "Same as --bp-palette-violet-3" },
+            "700": { "$value": "{palette.violet.2}", "$description": "Same as --bp-palette-violet-2" },
+            "800": { "$value": "{palette.violet.1}", "$description": "Same as --bp-palette-violet-1" },
+            "900": { "$value": "#341234", "$description": "Generated: oklch(0.250 0.075 327.5)" }
+        },
+        "indigo": {
+            "100": { "$value": "#eeecff", "$description": "Generated: oklch(0.950 0.026 292.5)" },
+            "200": { "$value": "#d6ceff", "$description": "Generated: oklch(0.873 0.068 292.5)" },
+            "300": { "$value": "{palette.indigo.5}", "$description": "Same as --bp-palette-indigo-5" },
+            "400": { "$value": "{palette.indigo.4}", "$description": "Same as --bp-palette-indigo-4" },
+            "500": { "$value": "{palette.indigo.3}", "$description": "Same as --bp-palette-indigo-3" },
+            "600": { "$value": "{palette.indigo.2}", "$description": "Same as --bp-palette-indigo-2" },
+            "700": { "$value": "{palette.indigo.1}", "$description": "Same as --bp-palette-indigo-1" },
+            "800": { "$value": "#3c2d76", "$description": "Generated: oklch(0.357 0.120 287.9)" },
+            "900": { "$value": "#211847", "$description": "Generated: oklch(0.250 0.084 287.9)" }
+        },
+        "cerulean": {
+            "100": { "$value": "#e1f2fb", "$description": "Generated: oklch(0.950 0.022 232.5)" },
+            "200": { "$value": "#a8d9f4", "$description": "Generated: oklch(0.861 0.063 232.5)" },
+            "300": { "$value": "{palette.cerulean.5}", "$description": "Same as --bp-palette-cerulean-5" },
+            "400": { "$value": "{palette.cerulean.4}", "$description": "Same as --bp-palette-cerulean-4" },
+            "500": { "$value": "{palette.cerulean.3}", "$description": "Same as --bp-palette-cerulean-3" },
+            "600": { "$value": "{palette.cerulean.2}", "$description": "Same as --bp-palette-cerulean-2" },
+            "700": { "$value": "{palette.cerulean.1}", "$description": "Same as --bp-palette-cerulean-1" },
+            "800": { "$value": "#063a55", "$description": "Generated: oklch(0.332 0.069 237.7)" },
+            "900": { "$value": "#032537", "$description": "Generated: oklch(0.250 0.052 237.7)" }
+        },
+        "turquoise": {
+            "100": { "$value": "#cef9f4", "$description": "Generated: oklch(0.950 0.044 188.1)" },
+            "200": { "$value": "{palette.turquoise.5}", "$description": "Same as --bp-palette-turquoise-5" },
+            "300": { "$value": "{palette.turquoise.4}", "$description": "Same as --bp-palette-turquoise-4" },
+            "400": { "$value": "#04b6a8", "$description": "Generated: oklch(0.698 0.122 185.0)" },
+            "500": { "$value": "{palette.turquoise.3}", "$description": "Same as --bp-palette-turquoise-3" },
+            "600": { "$value": "{palette.turquoise.2}", "$description": "Same as --bp-palette-turquoise-2" },
+            "700": { "$value": "#005e56", "$description": "Generated: oklch(0.434 0.076 184.9)" },
+            "800": { "$value": "{palette.turquoise.1}", "$description": "Same as --bp-palette-turquoise-1" },
+            "900": { "$value": "#002824", "$description": "Generated: oklch(0.250 0.044 184.5)" }
+        },
+        "forest": {
+            "100": { "$value": "#d4fbd4", "$description": "Generated: oklch(0.950 0.066 145.0)" },
+            "200": { "$value": "#9bec9d", "$description": "Generated: oklch(0.871 0.134 145.0)" },
+            "300": { "$value": "{palette.forest.5}", "$description": "Same as --bp-palette-forest-5" },
+            "400": { "$value": "{palette.forest.4}", "$description": "Same as --bp-palette-forest-4" },
+            "500": { "$value": "{palette.forest.3}", "$description": "Same as --bp-palette-forest-3" },
+            "600": { "$value": "{palette.forest.2}", "$description": "Same as --bp-palette-forest-2" },
+            "700": { "$value": "{palette.forest.1}", "$description": "Same as --bp-palette-forest-1" },
+            "800": { "$value": "#114f16", "$description": "Generated: oklch(0.377 0.108 144.1)" },
+            "900": { "$value": "#052a08", "$description": "Generated: oklch(0.250 0.072 144.1)" }
+        },
+        "lime": {
+            "100": { "$value": "{palette.lime.5}", "$description": "Same as --bp-palette-lime-5" },
+            "200": { "$value": "{palette.lime.4}", "$description": "Same as --bp-palette-lime-4" },
+            "300": { "$value": "#a2c636", "$description": "Generated: oklch(0.774 0.169 122.9)" },
+            "400": { "$value": "{palette.lime.3}", "$description": "Same as --bp-palette-lime-3" },
+            "500": { "$value": "#74911f", "$description": "Generated: oklch(0.613 0.139 123.3)" },
+            "600": { "$value": "{palette.lime.2}", "$description": "Same as --bp-palette-lime-2" },
+            "700": { "$value": "{palette.lime.1}", "$description": "Same as --bp-palette-lime-1" },
+            "800": { "$value": "#2f3911", "$description": "Generated: oklch(0.327 0.062 121.6)" },
+            "900": { "$value": "#1e2508", "$description": "Generated: oklch(0.250 0.048 121.6)" }
+        },
+        "gold": {
+            "100": { "$value": "#fdedc8", "$description": "Generated: oklch(0.950 0.052 87.5)" },
+            "200": { "$value": "{palette.gold.5}", "$description": "Same as --bp-palette-gold-5" },
+            "300": { "$value": "{palette.gold.4}", "$description": "Same as --bp-palette-gold-4" },
+            "400": { "$value": "{palette.gold.3}", "$description": "Same as --bp-palette-gold-3" },
+            "500": { "$value": "#ac7c06", "$description": "Generated: oklch(0.619 0.126 81.5)" },
+            "600": { "$value": "{palette.gold.2}", "$description": "Same as --bp-palette-gold-2" },
+            "700": { "$value": "{palette.gold.1}", "$description": "Same as --bp-palette-gold-1" },
+            "800": { "$value": "#433003", "$description": "Generated: oklch(0.323 0.064 84.7)" },
+            "900": { "$value": "#2d1f01", "$description": "Generated: oklch(0.250 0.050 84.7)" }
+        },
+        "sepia": {
+            "100": { "$value": "#f4ede7", "$description": "Generated: oklch(0.950 0.011 66.8)" },
+            "200": { "$value": "#e2cfbc", "$description": "Generated: oklch(0.864 0.033 66.8)" },
+            "300": { "$value": "{palette.sepia.5}", "$description": "Same as --bp-palette-sepia-5" },
+            "400": { "$value": "{palette.sepia.4}", "$description": "Same as --bp-palette-sepia-4" },
+            "500": { "$value": "{palette.sepia.3}", "$description": "Same as --bp-palette-sepia-3" },
+            "600": { "$value": "{palette.sepia.2}", "$description": "Same as --bp-palette-sepia-2" },
+            "700": { "$value": "{palette.sepia.1}", "$description": "Same as --bp-palette-sepia-1" },
+            "800": { "$value": "#452f18", "$description": "Generated: oklch(0.325 0.049 65.6)" },
+            "900": { "$value": "#2e1e0d", "$description": "Generated: oklch(0.250 0.037 65.6)" }
+        },
+        "gray": {
+            "100": { "$value": "{palette.light-gray.4}", "$description": "Same as --bp-palette-light-gray-4" },
+            "200": { "$value": "{palette.light-gray.1}", "$description": "Same as --bp-palette-light-gray-1" },
+            "300": { "$value": "{palette.gray.4}", "$description": "Same as --bp-palette-gray-4" },
+            "400": { "$value": "{palette.gray.3}", "$description": "Same as --bp-palette-gray-3" },
+            "500": { "$value": "{palette.gray.2}", "$description": "Same as --bp-palette-gray-2" },
+            "600": { "$value": "{palette.gray.1}", "$description": "Same as --bp-palette-gray-1" },
+            "700": { "$value": "#464f5c", "$description": "Generated: oklch(0.424 0.025 258.3)" },
+            "800": { "$value": "{palette.dark-gray.3}", "$description": "Same as --bp-palette-dark-gray-3" },
+            "900": { "$value": "{palette.dark-gray.1}", "$description": "Same as --bp-palette-dark-gray-1" }
+        }
+    }
+}
