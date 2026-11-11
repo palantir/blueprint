@@ -263,15 +263,17 @@ export class NumericInput extends AbstractPureComponent<
         const value = props.value?.toString() ?? state.value;
         const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
 
-        const sanitizedValue =
-            value !== NumericInput.VALUE_EMPTY
-                ? NumericInput.roundAndClampValue(value, stepMaxPrecision, props.min, props.max, 0, props.locale)
-                : NumericInput.VALUE_EMPTY;
+        if (didBoundsChange) {
+            const sanitizedValue =
+                value !== NumericInput.VALUE_EMPTY
+                    ? NumericInput.roundAndClampValue(value, stepMaxPrecision, props.min, props.max, 0, props.locale)
+                    : NumericInput.VALUE_EMPTY;
 
-        // if a new min and max were provided that cause the existing value to fall
-        // outside of the new bounds, then clamp the value to the new valid range.
-        if (didBoundsChange && sanitizedValue !== state.value) {
-            return { ...nextState, stepMaxPrecision, value: sanitizedValue };
+            // if a new min and max were provided that cause the existing value to fall
+            // outside of the new bounds, then clamp the value to the new valid range.
+            if (sanitizedValue !== state.value) {
+                return { ...nextState, stepMaxPrecision, value: sanitizedValue };
+            }
         }
         return { ...nextState, stepMaxPrecision, value };
     }

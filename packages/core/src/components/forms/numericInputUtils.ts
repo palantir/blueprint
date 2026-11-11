@@ -119,26 +119,35 @@ export function isValidNumericKeyboardEvent(e: React.KeyboardEvent, locale: stri
 }
 
 /**
- * A regex that matches a string of length 1 (i.e. a standalone character)
- * if and only if it is a floating-point number character as defined by W3C:
- * https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
- *
- * Floating-point number characters are the only characters that can be
- * printed within a default input[type="number"]. This component should
- * behave the same way when this.props.allowNumericCharactersOnly = true.
- * See here for the input[type="number"].value spec:
- * https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
+ * Caches the output of `generateLocaleFloatingPointNumericRegex` by locale, as
+ * `Number.prototype.toLocaleString` is currently relatively slow in Firefox.
  */
+const localeFloatingPointNumericRegexCache = new Map<string, RegExp>();
+
+function generateLocaleFloatingPointNumericRegex(locale: string) {
+    const decimalSeparator = getDecimalSeparator(locale).replace(".", "\\.");
+    const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => value.toLocaleString(locale)).join("");
+    return new RegExp("^[Ee" + numbers + "\\+\\-" + decimalSeparator + "]$");
+}
+
 function isFloatingPointNumericCharacter(character: string, locale: string | undefined) {
     if (locale !== undefined) {
-        const decimalSeparator = getDecimalSeparator(locale).replace(".", "\\.");
-        const numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(value => value.toLocaleString(locale)).join("");
-        const localeFloatingPointNumericCharacterRegex = new RegExp(
-            "^[Ee" + numbers + "\\+\\-" + decimalSeparator + "]$",
-        );
-
+        let localeFloatingPointNumericCharacterRegex = localeFloatingPointNumericRegexCache.get(locale);
+        if (localeFloatingPointNumericCharacterRegex == null) {
+            localeFloatingPointNumericCharacterRegex = generateLocaleFloatingPointNumericRegex(locale);
+            localeFloatingPointNumericRegexCache.set(locale, localeFloatingPointNumericCharacterRegex);
+        }
         return localeFloatingPointNumericCharacterRegex.test(character);
     } else {
+        // A regex that matches a string of length 1 (i.e. a standalone character)
+        // if and only if it is a floating-point number character as defined by W3C:
+        // https://www.w3.org/TR/2012/WD-html-markup-20120329/datatypes.html#common.data.float
+        //
+        // Floating-point number characters are the only characters that can be
+        // printed within a default input[type="number"]. This component should
+        // behave the same way when this.props.allowNumericCharactersOnly = true.
+        // See here for the input[type="number"].value spec:
+        // https://www.w3.org/TR/2012/WD-html-markup-20120329/input.number.html#input.number.attrs.value
         const floatingPointNumericCharacterRegex = /^[Ee0-9\+\-\.]$/;
 
         return floatingPointNumericCharacterRegex.test(character);
