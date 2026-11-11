@@ -23,11 +23,10 @@ import { type usePopover } from "./usePopover";
 export type {
     MiddlewareConfig,
     PopoverNextBoundary,
-    PopoverNextPlacement,
     PopoverNextPositioningStrategy,
     PopoverNextRootBoundary,
 } from "./middlewareTypes";
-export { POPOVER_NEXT_PLACEMENTS } from "./middlewareTypes";
+export { POPOVER_NEXT_PLACEMENTS, PopoverNextPlacement } from "./middlewareTypes";
 
 /**
  * Options to configure how the popover position is automatically updated.
