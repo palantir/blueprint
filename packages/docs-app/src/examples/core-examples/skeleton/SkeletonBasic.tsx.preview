@@ -1,0 +1,10 @@
+<Card>
+    <H5>
+        <a className={Classes.SKELETON} href="#" tabIndex={-1}>
+            Card heading
+        </a>
+    </H5>
+    <p className={Classes.SKELETON}>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    </p>
+</Card>
