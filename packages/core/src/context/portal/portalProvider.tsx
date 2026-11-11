@@ -17,7 +17,7 @@
 import { createContext, useMemo } from "react";
 
 import type { BlueprintThemeTokens } from "../theme/themeContext";
-import { useBlueprintTheme } from "../theme/useBlueprintTheme";
+import { useBlueprintThemeTokens } from "../theme/useBlueprintThemeTokens";
 
 export interface PortalContextOptions {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
@@ -46,7 +46,7 @@ export const PortalProvider = ({
     portalClassName,
     portalContainer,
 }: React.PropsWithChildren<PortalContextOptions>) => {
-    const portalTheme = useBlueprintTheme();
+    const portalTheme = useBlueprintThemeTokens();
     const contextOptions = useMemo<PortalContextValue>(
         () => ({
             portalClassName,

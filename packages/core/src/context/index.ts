@@ -30,4 +30,4 @@ export {
 export { PortalContext, type PortalContextOptions, PortalProvider } from "./portal/portalProvider";
 export type { BlueprintThemeTokens } from "./theme/themeContext";
 export { ThemeProvider, type ThemeProviderProps, type ThemeRepresentations } from "./theme/themeProvider";
-export { useBlueprintTheme, useBlueprintThemeValue } from "./theme/useBlueprintTheme";
+export { useBlueprintThemeTokens, useBlueprintThemeValue } from "./theme/useBlueprintThemeTokens";

@@ -9,7 +9,7 @@ import type { ThemeAPI } from "../../theme/themeApi";
 import { BlueprintThemeContext, type BlueprintThemeTokens } from "./themeContext";
 
 /** Returns overrides for the current subtree, suitable for an existing element's style prop. */
-export function useBlueprintTheme(): BlueprintThemeTokens {
+export function useBlueprintThemeTokens(): BlueprintThemeTokens {
     return useContext(BlueprintThemeContext).tokens;
 }
 

@@ -12,7 +12,7 @@ import type { ThemeAPI } from "../../theme";
 import { BlueprintProvider } from "../blueprintProvider";
 
 import { ThemeProvider, type ThemeRepresentations } from "./themeProvider";
-import { useBlueprintTheme, useBlueprintThemeValue } from "./useBlueprintTheme";
+import { useBlueprintThemeTokens, useBlueprintThemeValue } from "./useBlueprintThemeTokens";
 
 describe("ThemeProvider", () => {
     it.each([
@@ -29,7 +29,7 @@ describe("ThemeProvider", () => {
         { fontFamily: null, version: 1 },
         { fontFamily: ["Arial"], version: 1 },
     ])("provides no overrides for an invalid representation: %j", representation => {
-        const { result } = renderHook(() => ({ theme: useBlueprintThemeValue(), tokens: useBlueprintTheme() }), {
+        const { result } = renderHook(() => ({ theme: useBlueprintThemeValue(), tokens: useBlueprintThemeTokens() }), {
             wrapper: ({ children }) => (
                 <ThemeProvider themesByVersion={{ "1": representation }}>{children}</ThemeProvider>
             ),
@@ -53,7 +53,7 @@ describe("ThemeProvider", () => {
             },
         };
         function Consumer() {
-            const tokens = useBlueprintTheme();
+            const tokens = useBlueprintThemeTokens();
             return <div data-testid="root" style={tokens} />;
         }
         const { container } = render(

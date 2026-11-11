@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { useCallback, useState } from "react";
 
-import { BlueprintProvider, Classes, H4, Switch, type ThemeAPI, useBlueprintTheme } from "@blueprintjs/core";
+import { BlueprintProvider, Classes, H4, Switch, type ThemeAPI, useBlueprintThemeTokens } from "@blueprintjs/core";
 
 import { BoxExample } from "./BoxExample";
 import { BreadcrumbExample } from "./BreadcrumbExample";
@@ -79,7 +79,7 @@ export const Examples: React.FC = () => {
 Examples.displayName = "DemoApp.Examples";
 
 const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {
-    const themeOverrides = useBlueprintTheme();
+    const themeOverrides = useBlueprintThemeTokens();
     const className = isDark ? Classes.DARK : undefined;
     return (
         <div style={themeOverrides} className={classNames("examples-container", Classes.THEME_ROOT, className)}>

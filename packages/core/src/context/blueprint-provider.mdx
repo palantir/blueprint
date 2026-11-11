@@ -40,7 +40,7 @@ accepted fields and its required literal `version` value. The schema version cha
 only for breaking Theme API changes, independently of the Blueprint package version.
 
 `BlueprintProvider` supplies these tokens to portals automatically. It does not add a DOM wrapper or
-style ordinary children; use `useBlueprintTheme()` to apply tokens and `Classes.THEME_ROOT` on your existing content root.
+style ordinary children; use `useBlueprintThemeTokens()` to apply tokens and `Classes.THEME_ROOT` on your existing content root.
 The styles require Blueprint's token-based component styles.
 
 The theme-root class resolves `font-family` from the font token at the boundary. Descendants otherwise inherit
@@ -48,7 +48,7 @@ the font already computed on `body`, which does not reevaluate when a nested ele
 Portal roots apply this class automatically, so dialog content resolves the same scoped font override.
 
 ```tsx
-import { BlueprintProvider, Classes, type ThemeAPI, useBlueprintTheme } from "@blueprintjs/core";
+import { BlueprintProvider, Classes, type ThemeAPI, useBlueprintThemeTokens } from "@blueprintjs/core";
 
 const theme = {
     version: 1,
@@ -57,7 +57,7 @@ const theme = {
 } satisfies ThemeAPI;
 
 function Content() {
-    const tokens = useBlueprintTheme();
+    const tokens = useBlueprintThemeTokens();
     return (
         <main className={Classes.THEME_ROOT} style={tokens}>
             Application content
