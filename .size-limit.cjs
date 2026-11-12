@@ -29,10 +29,11 @@ const css = (pkg, file) => ({ name: `@blueprintjs/${pkg} CSS`, path: `packages/$
 module.exports = [
     js("core"),
     {
-        // Tracks a known problem: importing Button pulls in every icon's paths.
+        // esbuild inlines Icons' lazily loaded path chunks and keeps the static `allPaths` re-export that
+        // Rollup drops, so this is the worst case for esbuild apps, not what Vite or webpack load up front.
         ...js("core", undefined, "{ Button }"),
         ignore: ignore.filter(dep => dep !== "@blueprintjs/icons"),
-        name: "@blueprintjs/core { Button } (with icons)",
+        name: "@blueprintjs/core { Button } (esbuild, incl. lazy icon paths)",
     },
     js("core", undefined, "{ Classes }"),
     js("icons", "lib/esm/generated/index.js"),
