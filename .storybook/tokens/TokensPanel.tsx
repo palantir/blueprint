@@ -15,7 +15,8 @@ import {
     type ColorTokenEditor,
     type RangeTokenEditor,
     TOKEN_CONFIG,
-    TOKEN_NAMES,
+    TOKEN_GROUPS,
+    type TokenGroup,
     type TokenName,
     type TokenValues,
 } from "./tokens";
@@ -54,6 +55,38 @@ const TokensTable = styled.table(({ theme }) => ({
 
 const TokenNameLabel = styled.code({ whiteSpace: "nowrap" });
 const ResetGlyph = styled.span({ fontSize: 16, lineHeight: 1 });
+const TokenGroupHeader = styled.th({
+    "&&": { padding: 0 },
+});
+const TokenGroupButton = styled.button(({ theme }) => ({
+    alignItems: "center",
+    background: "transparent",
+    border: 0,
+    color: theme.color.defaultText,
+    cursor: "pointer",
+    display: "flex",
+    font: "inherit",
+    fontWeight: theme.typography.weight.bold,
+    gap: 8,
+    padding: "10px 15px",
+    textAlign: "left",
+    width: "100%",
+
+    "&:focus-visible": {
+        outline: `2px solid ${theme.color.secondary}`,
+        outlineOffset: -2,
+    },
+    "&:hover": { background: theme.background.hoverable },
+}));
+const TokenGroupChevron = styled.span({
+    display: "inline-block",
+    transition: "transform 100ms ease",
+});
+const TokenGroupCount = styled.span(({ theme }) => ({
+    color: theme.textMutedColor,
+    fontWeight: theme.typography.weight.regular,
+    marginLeft: "auto",
+}));
 
 interface TokenRowProps {
     name: TokenName;
@@ -106,6 +139,56 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
                 </IconButton>
             </td>
         </tr>
+    );
+}
+
+interface TokenGroupSectionProps {
+    group: TokenGroup;
+    onResetToken: (name: TokenName) => void;
+    onUpdateToken: (name: TokenName, value: string | undefined) => void;
+    tokenOverrides: Partial<TokenValues>;
+}
+
+function TokenGroupSection({ group, onResetToken, onUpdateToken, tokenOverrides }: TokenGroupSectionProps) {
+    const [isExpanded, setIsExpanded] = React.useState(!group.initialCollapsed);
+    const controlsId = React.useId();
+    const handleToggle = React.useCallback(() => setIsExpanded(expanded => !expanded), []);
+
+    return (
+        <>
+            <tbody>
+                <tr>
+                    <TokenGroupHeader colSpan={3} scope="rowgroup">
+                        <TokenGroupButton
+                            aria-controls={controlsId}
+                            aria-expanded={isExpanded}
+                            onClick={handleToggle}
+                            type="button"
+                        >
+                            <TokenGroupChevron
+                                aria-hidden={true}
+                                style={{ transform: isExpanded ? "rotate(90deg)" : undefined }}
+                            >
+                                ▸
+                            </TokenGroupChevron>
+                            {group.label}
+                            <TokenGroupCount>{group.tokenNames.length}</TokenGroupCount>
+                        </TokenGroupButton>
+                    </TokenGroupHeader>
+                </tr>
+            </tbody>
+            <tbody hidden={!isExpanded} id={controlsId}>
+                {group.tokenNames.map(name => (
+                    <TokenRow
+                        key={name}
+                        name={name}
+                        onResetToken={onResetToken}
+                        onUpdateToken={onUpdateToken}
+                        overrideValue={tokenOverrides[name]}
+                    />
+                ))}
+            </tbody>
+        </>
     );
 }
 
@@ -187,17 +270,15 @@ export function TokensPanel() {
                         <th aria-label="Reset" />
                     </tr>
                 </thead>
-                <tbody>
-                    {TOKEN_NAMES.map(name => (
-                        <TokenRow
-                            key={name}
-                            name={name}
-                            onResetToken={handleResetToken}
-                            onUpdateToken={handleUpdateToken}
-                            overrideValue={tokenOverrides[name]}
-                        />
-                    ))}
-                </tbody>
+                {TOKEN_GROUPS.map(group => (
+                    <TokenGroupSection
+                        key={group.label}
+                        group={group}
+                        onResetToken={handleResetToken}
+                        onUpdateToken={handleUpdateToken}
+                        tokenOverrides={tokenOverrides}
+                    />
+                ))}
             </TokensTable>
         </TableWrapper>
     );
