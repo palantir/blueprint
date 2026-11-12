@@ -11,30 +11,14 @@ import { BlueprintThemeContext, type BlueprintThemeTokens } from "./themeContext
 
 export type ThemeRepresentations = Readonly<Record<string, unknown>>;
 
-type ThemeProviderThemeProps =
-    | {
-          /**
-           * Use when authoring overrides against the ThemeAPI type exported by your installed Blueprint version.
-           * Omit to clear overrides; mutually exclusive with themesByVersion.
-           */
-          theme?: ThemeAPI;
-          themesByVersion?: never;
-      }
-    | {
-          theme?: never;
-          /**
-           * Use when the receiving Blueprint instance's supported Theme API version is unknown, for example
-           * when a host forwards overrides to an independently deployed widget. Provide the available
-           * representations keyed by schema version; the receiving provider selects the version it supports.
-           * A missing or invalid matching entry clears overrides. Mutually exclusive with theme.
-           */
-          themesByVersion?: ThemeRepresentations;
-      };
-
-export type ThemeProviderProps = ThemeProviderThemeProps & {
+export interface ThemeProviderProps {
+    /** Use a valid direct theme before any matching versioned representation. */
+    theme?: ThemeAPI;
+    /** Used when the direct theme is missing or invalid; future versions are ignored. */
+    themesByVersion?: ThemeRepresentations;
     // Future color overrides will select light or dark token values using this mode.
     isDarkMode?: boolean;
-};
+}
 
 const THEME_API_VERSION = 1 satisfies ThemeAPI["version"];
 
@@ -58,12 +42,18 @@ const themeTokenMap = {
  * Use `themesByVersion` when the receiving Blueprint instance's supported Theme API version is unknown,
  * such as when a host forwards overrides to an independently deployed widget. Provide representations keyed
  * by schema version; the receiving provider selects the version it supports.
- * The inputs are mutually exclusive. Omitting both, or providing an invalid matching theme, clears overrides.
+ * A valid `theme` takes precedence. If it is missing or invalid, the matching `themesByVersion` entry is used.
+ * Omitting both, or providing no valid matching theme, clears overrides.
  */
 export function ThemeProvider({ children, theme, themesByVersion }: React.PropsWithChildren<ThemeProviderProps>) {
     const contextValue = useMemo(() => {
-        const selectedTheme = theme ?? themesByVersion?.[THEME_API_VERSION];
-        const validTheme = isTheme(selectedTheme) ? selectedTheme : undefined;
+        let validTheme: ThemeAPI | undefined;
+        if (isTheme(theme)) {
+            validTheme = theme;
+        } else {
+            const versionedTheme = themesByVersion?.[THEME_API_VERSION];
+            validTheme = isTheme(versionedTheme) ? versionedTheme : undefined;
+        }
         return {
             theme: validTheme,
             tokens: validTheme == null ? undefined : customThemeToBlueprintTokens(validTheme),

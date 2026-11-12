@@ -17,7 +17,7 @@
 import { createContext, useMemo } from "react";
 
 import type { BlueprintThemeTokens } from "../theme/themeContext";
-import { useBlueprintThemeTokens } from "../theme/useBlueprintThemeTokens";
+import { useBlueprintThemeTokens } from "../theme/useBlueprintTheme";
 
 export interface PortalContextOptions {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */

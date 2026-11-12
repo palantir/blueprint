@@ -5,14 +5,31 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useContext } from "react";
+import { expectTypeOf } from "vitest";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { BlueprintProvider } from "./blueprintProvider";
+import type { ThemeAPI } from "../theme/themeApi";
+
+import { BlueprintProvider, type BlueprintProviderProps } from "./blueprintProvider";
 import { HotkeysContext } from "./hotkeys/hotkeysProvider";
 import { PortalContext, type PortalContextOptions } from "./portal/portalProvider";
+import type { ThemeRepresentations } from "./theme/themeProvider";
+
+interface ExtendedBlueprintProviderProps extends BlueprintProviderProps {
+    applicationId: string;
+}
 
 describe("BlueprintProvider", () => {
+    it("keeps its props extendable while accepting both theme inputs", () => {
+        expectTypeOf<ExtendedBlueprintProviderProps>().toExtend<BlueprintProviderProps>();
+        expectTypeOf<{
+            children: React.ReactNode;
+            theme: ThemeAPI;
+            themesByVersion: ThemeRepresentations;
+        }>().toExtend<React.ComponentProps<typeof BlueprintProvider>>();
+    });
+
     it("renders children", () => {
         render(
             <BlueprintProvider>
