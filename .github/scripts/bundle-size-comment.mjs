@@ -56,12 +56,26 @@ const lines = ["## size-limit report 📦", ""];
 if (names.length === 0) {
     lines.push("size-limit produced no measurements for either side of this comparison.");
 } else {
-    lines.push("| Path | Size | Change |", "|------|------|--------|");
-    for (const name of names) {
+    const rows = names.map(name => {
         const cur = currentMap[name] ?? 0;
-        const bas = baseMap[name] ?? 0;
-        lines.push(`| \`${name}\` | ${formatBytes(cur)} | ${formatChange(cur, bas)} |`);
+        const change = formatChange(cur, baseMap[name] ?? 0);
+        return { change, row: `| \`${name}\` | ${formatBytes(cur)} | ${change} |` };
+    });
+    const header = ["| Path | Size | Change |", "|------|------|--------|"];
+    // Changes that round to 0% count as unchanged, so byte-level noise stays out of the summary.
+    const changed = rows.filter(r => r.change !== "0%");
+    const unchanged = rows.length - changed.length;
+
+    if (changed.length === 0) {
+        lines.push(`No size changes across ${unchanged} entries.`);
+    } else {
+        lines.push(...header, ...changed.map(r => r.row));
+        if (unchanged > 0) {
+            lines.push("", `${unchanged} unchanged.`);
+        }
     }
+    // The blank lines around the table are needed for GitHub to render markdown inside <details>.
+    lines.push("", "<details><summary>All entries</summary>", "", ...header, ...rows.map(r => r.row), "", "</details>");
 }
 
 for (const error of errors) {
