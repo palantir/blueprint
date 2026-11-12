@@ -19,17 +19,23 @@ $dark-popover-arrow-box-shadow:
   1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-popover {
+  --bp-popover-background-color: var(--bp-palette-white);
+  --bp-popover-box-shadow: var(--bp-surface-shadow-3);
+  --bp-popover-arrow-box-shadow: 1px 1px 6px
+    color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
+  --bp-popover-arrow-border-fill-opacity: #{$pt-border-shadow-opacity};
+
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 7.5,
     $arrow-offset: $pt-spacing,
     $arrow-target-offset: -$pt-spacing
   );
   @include popover-appearance(
-    $pt-popover-background-color,
+    var(--bp-popover-background-color),
     inherit,
-    $pt-popover-box-shadow,
-    $popover-arrow-box-shadow,
-    $pt-border-shadow-opacity
+    var(--bp-popover-box-shadow),
+    var(--bp-popover-arrow-box-shadow),
+    var(--bp-popover-arrow-border-fill-opacity)
   );
   @include scale-transition;
   border-radius: var(--bp-surface-border-radius);
@@ -86,18 +92,26 @@ $dark-popover-arrow-box-shadow:
   }
 
   &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    @include popover-appearance(
-      $pt-dark-popover-background-color,
-      inherit,
-      $pt-dark-popover-box-shadow,
-      $dark-popover-arrow-box-shadow,
-      $pt-dark-border-shadow-opacity
-    );
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    --bp-popover-background-color: var(--bp-palette-dark-gray-3);
+    --bp-popover-border-color: #{$pt-dark-popover-border-color};
+    --bp-popover-arrow-border-color: #{color.adjust($pt-dark-popover-border-color, $lightness: 10%)};
+    --bp-popover-box-shadow:
+      0 0 0 1px var(--bp-popover-border-color),
+      inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent),
+      0 20px 25px -5px color-mix(in srgb, var(--bp-palette-black) 30%, transparent),
+      inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+      inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent),
+      0 10px 30px -5px color-mix(in srgb, var(--bp-palette-black) 30%, transparent);
+    --bp-popover-arrow-box-shadow:
+      0 0 0 1px var(--bp-popover-arrow-border-color),
+      1px 1px 6px color-mix(in srgb, var(--bp-palette-black) 40%, transparent);
+    --bp-popover-arrow-border-fill-opacity: #{$pt-dark-border-shadow-opacity};
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
     // Windows High Contrast dark theme
     box-shadow: none;
   }
@@ -113,7 +127,7 @@ $dark-popover-arrow-box-shadow:
 }
 
 .#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
-  background: rgba($white, 0);
+  background: transparent;
 }
 
 .#{$ns}-popover-transition-container {
