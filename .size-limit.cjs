@@ -4,6 +4,7 @@
 
 // Bundle sizes reported on PRs by .github/workflows/bundle-size.yml. Run
 // `pnpm nx run-many -t compile` first; this measures the compiled lib/ output.
+// JS is bundled with Rolldown (Vite 8's bundler), counting only the chunks loaded up front.
 
 // Sibling packages are ignored so each row is only that package's own cost.
 const ignore = [
@@ -18,6 +19,8 @@ const ignore = [
 ];
 
 const js = (pkg, path = "lib/esm/index.js", importName = "*") => ({
+    // Without `entry`, lazily imported chunks (e.g. icon paths) would be counted too.
+    entry: ["index"],
     ignore,
     import: importName,
     name: `@blueprintjs/${pkg}${importName === "*" ? "" : ` ${importName}`}`,
@@ -80,16 +83,20 @@ const CORE_COMPONENTS = [
     "Tree",
 ];
 
-const css = (pkg, file) => ({ name: `@blueprintjs/${pkg} CSS`, path: `packages/${pkg}/lib/css/${file}` });
+// Rolldown can't bundle CSS, so these are the unminified lib/css files, brotli-compressed.
+const css = (pkg, file) => ({
+    name: `@blueprintjs/${pkg} CSS`,
+    path: `packages/${pkg}/lib/css/${file}`,
+    rolldown: false,
+});
 
 module.exports = [
     js("core"),
     {
-        // esbuild inlines Icons' lazily loaded path chunks and keeps the static `allPaths` re-export that
-        // Rollup drops, so this is the worst case for esbuild apps, not what Vite or webpack load up front.
+        // Button's real cost including the icons code it pulls in; compare with the plain `{ Button }` row.
         ...js("core", undefined, "{ Button }"),
         ignore: ignore.filter(dep => dep !== "@blueprintjs/icons"),
-        name: "@blueprintjs/core { Button } (esbuild, incl. lazy icon paths)",
+        name: "@blueprintjs/core { Button } (with icons)",
     },
     js("core", undefined, "{ Classes }"),
     ...CORE_COMPONENTS.map(component => js("core", undefined, `{ ${component} }`)),
