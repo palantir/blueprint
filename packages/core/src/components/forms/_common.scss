@@ -151,7 +151,7 @@ $control-group-stack: (
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
   }
 }
 
