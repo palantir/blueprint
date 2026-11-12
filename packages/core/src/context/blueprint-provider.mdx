@@ -85,8 +85,9 @@ Missing or invalid matching entries clear the overrides.
 </BlueprintProvider>
 ```
 
-When both inputs are present, a valid `theme` takes precedence. If it is missing or invalid, Blueprint
-uses the matching entry in `themesByVersion`. Omitting both clears overrides. Both inputs convert
+When both inputs are present, Blueprint uses `theme` if it is defined, even if it is invalid. An invalid
+`theme` clears overrides; the matching `themesByVersion` entry is used only when `theme` is undefined.
+Omitting both clears overrides. Both inputs convert
 `borderRadius` and `fontFamily` to Blueprint CSS tokens and use the same runtime validation.
 
 `ThemeProvider` can also be used independently. Place `PortalProvider` below it to propagate

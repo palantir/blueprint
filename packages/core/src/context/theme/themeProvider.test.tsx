@@ -52,7 +52,7 @@ describe("ThemeProvider", () => {
         expect(result.current).toBe(theme);
     });
 
-    it("prefers a valid direct theme without reading the versioned fallback", () => {
+    it("uses a defined direct theme without reading the versioned representation", () => {
         const theme = { borderRadius: "6px", version: 1 } satisfies ThemeAPI;
         const themesByVersion = {
             get "1"() {
@@ -70,21 +70,36 @@ describe("ThemeProvider", () => {
         expect(result.current.tokens).toEqual({ "--bp-surface-border-radius": "6px" });
     });
 
-    it("uses the matching versioned theme when the direct theme is invalid", () => {
+    it("clears overrides for an invalid direct theme without reading the versioned representation", () => {
         const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
         const theme = { borderRadius: "SQUARE", version: 1 } satisfies ThemeAPI;
-        const versionedTheme = { borderRadius: "8px", version: 1 };
+        const themesByVersion = {
+            get "1"() {
+                throw new Error("The versioned theme must not be inspected");
+            },
+        };
         const { result } = renderHook(() => ({ theme: useBlueprintThemeValue(), tokens: useBlueprintThemeTokens() }), {
             wrapper: ({ children }) => (
-                <BlueprintProvider theme={theme} themesByVersion={{ "1": versionedTheme }}>
+                <BlueprintProvider theme={theme} themesByVersion={themesByVersion}>
                     {children}
                 </BlueprintProvider>
             ),
         });
-        expect(result.current.theme).toBe(versionedTheme);
-        expect(result.current.tokens).toEqual({ "--bp-surface-border-radius": "8px" });
+        expect(result.current).toEqual({ theme: undefined, tokens: undefined });
         expect(error).toHaveBeenCalledWith("[Blueprint] Invalid theme:", expect.any(Array));
         error.mockRestore();
+    });
+
+    it("uses the versioned representation when the direct theme is undefined", () => {
+        const versionedTheme = { borderRadius: "8px", version: 1 };
+        const { result } = renderHook(() => useBlueprintThemeValue(), {
+            wrapper: ({ children }) => (
+                <BlueprintProvider theme={undefined} themesByVersion={{ "1": versionedTheme }}>
+                    {children}
+                </BlueprintProvider>
+            ),
+        });
+        expect(result.current).toBe(versionedTheme);
     });
 
     it.each([true, false])("accepts isDarkMode=%s without changing current tokens", isDarkMode => {

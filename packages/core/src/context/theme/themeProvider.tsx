@@ -14,8 +14,8 @@ export type ThemeRepresentations = Readonly<Record<string, unknown>>;
 export interface ThemeProviderProps {
     /**
      * Use when authoring overrides against the ThemeAPI type exported by your installed Blueprint version.
-     * When both inputs are present, a valid theme takes precedence over themesByVersion. An invalid theme
-     * falls back to the matching themesByVersion entry.
+     * When both inputs are present, theme takes precedence over themesByVersion. An invalid theme clears
+     * overrides; themesByVersion is used only when theme is undefined.
      */
     theme?: ThemeAPI;
     /**
@@ -49,18 +49,13 @@ const themeTokenMap = {
  * Use `themesByVersion` when the receiving Blueprint instance's supported Theme API version is unknown,
  * such as when a host forwards overrides to an independently deployed widget. Provide representations keyed
  * by schema version; the receiving provider selects the version it supports.
- * A valid `theme` takes precedence. If it is missing or invalid, the matching `themesByVersion` entry is used.
- * Omitting both, or providing no valid matching theme, clears overrides.
+ * When `theme` is defined, it is used exclusively; an invalid value clears overrides. The matching
+ * `themesByVersion` entry is used only when `theme` is undefined. Omitting both clears overrides.
  */
 export function ThemeProvider({ children, theme, themesByVersion }: React.PropsWithChildren<ThemeProviderProps>) {
     const contextValue = useMemo(() => {
-        let validTheme: ThemeAPI | undefined;
-        if (isTheme(theme)) {
-            validTheme = theme;
-        } else {
-            const versionedTheme = themesByVersion?.[THEME_API_VERSION];
-            validTheme = isTheme(versionedTheme) ? versionedTheme : undefined;
-        }
+        const selectedTheme = theme === undefined ? themesByVersion?.[THEME_API_VERSION] : theme;
+        const validTheme = isTheme(selectedTheme) ? selectedTheme : undefined;
         return {
             theme: validTheme,
             tokens: validTheme == null ? undefined : customThemeToBlueprintTokens(validTheme),
