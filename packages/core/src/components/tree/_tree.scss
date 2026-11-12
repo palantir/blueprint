@@ -22,11 +22,11 @@ $tree-intent-icon-colors: (
 
 .#{$ns}-tree {
   #{$icon-classes} {
-    color: $pt-icon-color;
+    color: var(--bp-typography-color-muted);
 
-    @each $intent, $colors in $pt-intent-colors {
+    @each $intent in ("primary", "success", "warning", "danger") {
       &.#{$ns}-intent-#{$intent} {
-        @include intent-color($intent);
+        color: var(--bp-intent-#{$intent}-rest);
       }
     }
   }
@@ -61,11 +61,11 @@ $tree-intent-icon-colors: (
   width: 100%;
 
   &:hover {
-    background-color: rgba($gray3, 0.15);
+    background-color: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent);
   }
 
   &:active {
-    background-color: rgba($gray3, 0.3);
+    background-color: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent);
   }
 }
 
@@ -82,7 +82,7 @@ $tree-intent-icon-colors: (
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
-    color: $pt-text-color;
+    color: var(--bp-typography-color-default-rest);
   }
 
   &.#{$ns}-tree-node-caret-open {
@@ -126,32 +126,32 @@ $tree-intent-icon-colors: (
 .#{$ns}-tree-node.#{$ns}-disabled {
   .#{$ns}-tree-node-content {
     background-color: inherit;
-    color: $pt-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
     cursor: not-allowed;
   }
 
   .#{$ns}-tree-node-caret,
   .#{$ns}-tree-node-icon {
-    color: $pt-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
     cursor: not-allowed;
   }
 }
 
 .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
-  background-color: $pt-intent-primary;
+  background-color: var(--bp-intent-primary-rest);
 
   &,
   #{$icon-classes} {
-    color: $white;
+    color: var(--bp-intent-primary-foreground);
   }
 
   .#{$ns}-tree-node-caret {
     &::before {
-      color: rgba($white, 0.7);
+      color: color-mix(in srgb, var(--bp-intent-primary-foreground) 70%, transparent);
     }
 
     &:hover::before {
-      color: $white;
+      color: var(--bp-intent-primary-foreground);
     }
   }
 }
@@ -170,37 +170,20 @@ $tree-intent-icon-colors: (
 }
 
 // Variant: dark theme
-.#{$ns}-dark {
+.#{$ns}-dark,
+[data-bp-color-scheme="dark"] {
   .#{$ns}-tree-node-content {
     &:hover {
-      background-color: rgba($gray1, 0.3);
+      background-color: color-mix(in srgb, var(--bp-palette-gray-1) 30%, transparent);
     }
   }
 
   .#{$ns}-tree {
     #{$icon-classes} {
-      color: $pt-dark-icon-color;
-
-      @each $intent, $color in $tree-intent-icon-colors {
+      @each $intent in ("primary", "success", "warning", "danger") {
         &.#{$ns}-intent-#{$intent} {
-          color: $color;
+          color: var(--bp-typography-color-#{$intent}-rest);
         }
-      }
-    }
-  }
-
-  .#{$ns}-tree-node {
-    &:not(.#{$ns}-disabled) {
-      .#{$ns}-tree-node-caret:hover {
-        color: $pt-dark-text-color;
-      }
-    }
-
-    &.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
-      background-color: $pt-intent-primary;
-
-      #{$icon-classes} {
-        color: $white;
       }
     }
   }
