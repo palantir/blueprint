@@ -13,6 +13,11 @@ on:
 
 permissions: {}
 
+# A newer push supersedes the run in progress. A cancelled run doesn't trigger a comment.
+concurrency:
+  group: bundle-size-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   measure:
     name: Measure bundle size

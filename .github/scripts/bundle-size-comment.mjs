@@ -4,7 +4,7 @@
 
 // Renders the size-limit comparison table for a PR.
 //
-//   node bundle-size-comment.mjs <current.json> <base.json>
+//   node bundle-size-comment.mjs <current.json> <base.json> [<measured sha>]
 //
 // Both inputs are `size-limit --json` output. Either may be missing or garbage
 // (the measurement steps tolerate failure), so treat an unreadable file as an
@@ -13,7 +13,7 @@
 
 import { readFileSync } from "node:fs";
 
-const [currentPath, basePath] = process.argv.slice(2);
+const [currentPath, basePath, sha] = process.argv.slice(2);
 
 const errors = [];
 
@@ -54,6 +54,8 @@ const names = [...new Set([...base.map(e => e.name), ...current.map(e => e.name)
 const lines = [
     "## size-limit report 📦",
     "",
+    // A bare SHA is auto-linked by GitHub; it shows when the comment is stale after a failed run.
+    ...(sha ? [`Measured at ${sha}.`, ""] : []),
     "Brotli-compressed JS from bundling each entry with [Rolldown](https://rolldown.rs) (Vite 8's bundler), counting only what loads up front. React and other `@blueprintjs/*` packages are excluded.",
     "",
 ];

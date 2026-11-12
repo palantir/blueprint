@@ -56,7 +56,7 @@ jobs:
             exit 0
           fi
 
-          node .github/scripts/bundle-size-comment.mjs /tmp/sizes/current.json /tmp/sizes/base.json > /tmp/comment.md
+          node .github/scripts/bundle-size-comment.mjs /tmp/sizes/current.json /tmp/sizes/base.json "$SHA" > /tmp/comment.md
           comment_id=$(gh api --paginate "repos/$REPO/issues/$pr/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("## size-limit report"))) | .id' | head -1)
           if [ -n "$comment_id" ]; then
             gh api -X PATCH "repos/$REPO/issues/comments/$comment_id" -F body=@/tmp/comment.md > /dev/null
