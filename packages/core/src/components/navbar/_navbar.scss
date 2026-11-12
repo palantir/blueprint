@@ -10,8 +10,8 @@ $navbar-background-color: $card-background-color !default;
 $dark-navbar-background-color: $dark-card-background-color !default;
 
 .#{$ns}-navbar {
-  background-color: $navbar-background-color;
-  box-shadow: $pt-elevation-shadow-1;
+  background-color: var(--bp-surface-background-color-default-rest);
+  box-shadow: var(--bp-surface-shadow-1);
   height: $pt-navbar-height;
   padding: 0 $navbar-padding;
   position: relative;
@@ -20,17 +20,8 @@ $dark-navbar-background-color: $dark-card-background-color !default;
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: $dark-navbar-background-color;
-  }
-
-  // shadow for dark navbar in light theme apps
-  &.#{$ns}-dark {
-    box-shadow: inset $pt-dark-elevation-shadow-1;
-  }
-
-  // shadow for dark navbar in dark theme apps
-  .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-1;
+    // stylelint-disable-next-line function-no-unknown
+    background-color: oklch(from var(--bp-intent-default-rest) calc(l * 0.54) calc(c * 0.481) h);
   }
 
   &.#{$ns}-fixed-top {
@@ -65,11 +56,7 @@ $dark-navbar-background-color: $dark-card-background-color !default;
 }
 
 .#{$ns}-navbar-divider {
-  border-left: 1px solid $pt-divider-black;
+  border-left: 1px solid var(--bp-surface-border-color-default);
   height: $pt-navbar-height - $pt-spacing * 7.5;
   margin: 0 ($pt-spacing * 2);
-
-  .#{$ns}-dark & {
-    border-left-color: $pt-dark-divider-white;
-  }
 }
