@@ -2,6 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
+@use "sass:map";
 @import "../../common/variables";
 
 .#{$ns}-link {
@@ -35,22 +36,9 @@
     color: inherit;
   }
 
-  @each $intent, $color in $pt-intent-text-colors {
+  @each $intent in map.keys($pt-intent-colors) {
     &.#{$ns}-intent-#{$intent} {
-      color: $color;
-    }
-  }
-
-  // Dark theme
-  .#{$ns}-dark & {
-    &.#{$ns}-link-color-inherit {
-      color: inherit;
-    }
-
-    @each $intent, $color in $pt-dark-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        color: $color;
-      }
+      color: var(--bp-typography-color-#{$intent}-rest);
     }
   }
 }
