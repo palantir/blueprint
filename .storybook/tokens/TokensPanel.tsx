@@ -315,6 +315,16 @@ export function TokensPanel() {
         [activeTheme, themeTokenOverrides, tokenOverrides, updateGlobals],
     );
 
+    const hasOverrides = Object.values(tokenOverrides).some(value => value !== undefined && value !== "");
+    const handleResetAllTokens = React.useCallback(() => {
+        updateGlobals({
+            tokenOverrides: {
+                ...themeTokenOverrides,
+                [activeTheme]: {},
+            },
+        });
+    }, [activeTheme, themeTokenOverrides, updateGlobals]);
+
     if (!isStoryPrepared) {
         return (
             <LoadingWrapper>
@@ -330,7 +340,18 @@ export function TokensPanel() {
                     <tr>
                         <th>Name</th>
                         <th>Control</th>
-                        <th aria-label="Reset" />
+                        <th>
+                            <IconButton
+                                ariaLabel={`Reset all ${activeTheme} theme tokens`}
+                                disabled={!hasOverrides}
+                                onClick={handleResetAllTokens}
+                                padding="small"
+                                size="small"
+                                variant="ghost"
+                            >
+                                <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
+                            </IconButton>
+                        </th>
                     </tr>
                 </thead>
                 {TOKEN_GROUPS.map(group => (
