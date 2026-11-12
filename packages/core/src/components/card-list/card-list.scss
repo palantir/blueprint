@@ -18,29 +18,30 @@
 
     &.#{$ns}-interactive:hover,
     &.#{$ns}-interactive:active {
-      background-color: $light-gray5;
+      background-color: var(--bp-palette-light-gray-5);
       box-shadow: none;
 
       .#{$ns}-dark & {
-        background-color: $dark-gray3;
+        background-color: var(--bp-palette-dark-gray-3);
       }
     }
 
     &.#{$ns}-selected {
-      background-color: $light-gray4;
+      background-color: var(--bp-palette-light-gray-4);
       box-shadow: none;
 
       .#{$ns}-dark & {
-        background-color: $dark-gray4;
+        background-color: var(--bp-palette-dark-gray-4);
         box-shadow: none;
       }
     }
 
     &:not(:last-child) {
-      border-bottom: $card-list-border-width solid $pt-divider-black-muted;
+      border-bottom: $card-list-border-width solid
+        color-mix(in srgb, var(--bp-palette-black) 10%, transparent);
 
       .#{$ns}-dark & {
-        border-color: $pt-dark-divider-white-muted;
+        border-color: color-mix(in srgb, var(--bp-palette-white) 10%, transparent);
       }
     }
   }
