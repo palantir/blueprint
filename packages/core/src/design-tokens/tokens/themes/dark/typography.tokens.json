@@ -2,84 +2,201 @@
     "typography": {
         "color-muted": {
             "$type": "color",
-            "$value": "{palette.gray.4}"
+            "$value": "{intent.default.rest}",
+            "$extensions": {
+                "com.blueprint.derive": {
+                    "lightnessOffset": 0.240267,
+                    "chromaOffset": -0.011259,
+                    "hueOffset": 1.286459
+                }
+            }
         },
         "color-default": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.light-gray.5}"
+                "$value": "{intent.default.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.452033,
+                        "chromaOffset": -0.027741,
+                        "hueOffset": 7.467782
+                    }
+                }
             },
             "hover": {
-                "$value": "{palette.white}"
+                "$value": "{intent.default.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.600882,
+                        "chromaOffset": -0.022839,
+                        "hueOffset": -258.370989
+                    }
+                }
             },
             "active": {
-                "$value": "{palette.light-gray.4}"
+                "$value": "{intent.default.active}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.589661,
+                        "chromaOffset": -0.012981,
+                        "hueOffset": -0.047469
+                    }
+                }
             },
             "disabled": {
-                "$value": "{palette.gray.4}",
+                "$value": "{intent.default.disabled}",
                 "$extensions": {
-                    "com.blueprint.derive": { "alpha": 0.6 }
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.084353,
+                        "chromaOffset": -0.005593,
+                        "hueOffset": -0.008911,
+                        "alpha": 0.6
+                    }
                 }
             }
         },
         "color-primary": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.blue.5}"
+                "$value": "{intent.primary.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.297118,
+                        "chromaOffset": -0.035143,
+                        "hueOffset": -0.960804
+                    }
+                }
             },
             "hover": {
-                "$value": "{palette.blue.5}"
+                "$value": "{intent.primary.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.297118,
+                        "chromaOffset": -0.035143,
+                        "hueOffset": -0.960804
+                    }
+                }
             },
             "active": {
-                "$value": "{palette.blue.6}"
+                "$value": "{intent.primary.active}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.393925,
+                        "chromaOffset": -0.031647,
+                        "hueOffset": -1.467004
+                    }
+                }
             },
             "disabled": {
-                "$value": "{palette.blue.4}"
+                "$value": "{intent.primary.disabled}"
             }
         },
         "color-success": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.green.5}"
+                "$value": "{intent.success.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.292477,
+                        "chromaOffset": 0.00479,
+                        "hueOffset": 3.995626
+                    }
+                }
             },
             "hover": {
-                "$value": "{palette.green.5}"
+                "$value": "{intent.success.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.292477,
+                        "chromaOffset": 0.00479,
+                        "hueOffset": 3.995626
+                    }
+                }
             },
             "active": {
-                "$value": "{palette.green.6}"
+                "$value": "{intent.success.active}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.392028,
+                        "chromaOffset": 0.0264,
+                        "hueOffset": 1.500956
+                    }
+                }
             },
             "disabled": {
-                "$value": "{palette.green.4}"
+                "$value": "{intent.success.disabled}"
             }
         },
         "color-warning": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.orange.5}"
+                "$value": "{intent.warning.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.306228,
+                        "chromaOffset": 0.018817,
+                        "hueOffset": 5.774548
+                    }
+                }
             },
             "hover": {
-                "$value": "{palette.orange.5}"
+                "$value": "{intent.warning.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.306228,
+                        "chromaOffset": 0.018817,
+                        "hueOffset": 5.774548
+                    }
+                }
             },
             "active": {
-                "$value": "{palette.orange.6}"
+                "$value": "{intent.warning.active}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.403325,
+                        "chromaOffset": 0.001566,
+                        "hueOffset": 7.239542
+                    }
+                }
             },
             "disabled": {
-                "$value": "{palette.orange.4}"
+                "$value": "{intent.warning.disabled}"
             }
         },
         "color-danger": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.red.5}"
+                "$value": "{intent.danger.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.283867,
+                        "chromaOffset": -0.044744,
+                        "hueOffset": -5.538761
+                    }
+                }
             },
             "hover": {
-                "$value": "{palette.red.5}"
+                "$value": "{intent.danger.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.283867,
+                        "chromaOffset": -0.044744,
+                        "hueOffset": -5.538761
+                    }
+                }
             },
             "active": {
-                "$value": "{palette.red.6}"
+                "$value": "{intent.danger.active}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": 0.365621,
+                        "chromaOffset": -0.02384,
+                        "hueOffset": -5.388736
+                    }
+                }
             },
             "disabled": {
-                "$value": "{palette.red.4}"
+                "$value": "{intent.danger.disabled}"
             }
         }
     }

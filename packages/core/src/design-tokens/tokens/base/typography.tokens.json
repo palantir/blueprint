@@ -116,84 +116,110 @@
         },
         "color-muted": {
             "$type": "color",
-            "$value": "{palette.gray.1}"
+            "$value": "{intent.default.rest}"
         },
         "color-default": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.dark-gray.1}"
+                "$value": "{intent.default.rest}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": -0.278582,
+                        "chromaOffset": -0.016984,
+                        "hueOffset": -3.993949
+                    }
+                }
             },
             "hover": {
-                "$value": "{palette.black}"
+                "$value": "{intent.default.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": -0.209289,
+                        "chromaOffset": -0.013425,
+                        "hueOffset": -2.737703
+                    }
+                }
             },
             "active": {
-                "$value": "{palette.dark-gray.2}"
+                "$value": "{intent.default.active}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": -0.078766,
+                        "chromaOffset": -0.002807,
+                        "hueOffset": -1.580492
+                    }
+                }
             },
             "disabled": {
-                "$value": "{palette.gray.1}",
+                "$value": "{intent.default.disabled}",
                 "$extensions": {
-                    "com.blueprint.derive": { "alpha": 0.6 }
+                    "com.blueprint.derive": {
+                        "lightnessOffset": -0.155914,
+                        "chromaOffset": 0.005666,
+                        "hueOffset": -1.29537,
+                        "alpha": 0.6
+                    }
                 }
             }
         },
         "color-primary": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.blue.2}"
+                "$value": "{intent.primary.hover}"
             },
             "hover": {
-                "$value": "{palette.blue.2}"
+                "$value": "{intent.primary.hover}"
             },
             "active": {
-                "$value": "{palette.blue.1}"
+                "$value": "{intent.primary.active}"
             },
             "disabled": {
-                "$value": "{palette.blue.4}"
+                "$value": "{intent.primary.disabled}"
             }
         },
         "color-success": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.green.2}"
+                "$value": "{intent.success.hover}"
             },
             "hover": {
-                "$value": "{palette.green.2}"
+                "$value": "{intent.success.hover}"
             },
             "active": {
-                "$value": "{palette.green.1}"
+                "$value": "{intent.success.active}"
             },
             "disabled": {
-                "$value": "{palette.green.4}"
+                "$value": "{intent.success.disabled}"
             }
         },
         "color-warning": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.orange.2}"
+                "$value": "{intent.warning.hover}"
             },
             "hover": {
-                "$value": "{palette.orange.2}"
+                "$value": "{intent.warning.hover}"
             },
             "active": {
-                "$value": "{palette.orange.1}"
+                "$value": "{intent.warning.active}"
             },
             "disabled": {
-                "$value": "{palette.orange.4}"
+                "$value": "{intent.warning.disabled}"
             }
         },
         "color-danger": {
             "$type": "color",
             "rest": {
-                "$value": "{palette.red.2}"
+                "$value": "{intent.danger.hover}"
             },
             "hover": {
-                "$value": "{palette.red.2}"
+                "$value": "{intent.danger.hover}"
             },
             "active": {
-                "$value": "{palette.red.1}"
+                "$value": "{intent.danger.active}"
             },
             "disabled": {
-                "$value": "{palette.red.4}"
+                "$value": "{intent.danger.disabled}"
             }
         }
     }
