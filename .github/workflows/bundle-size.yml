@@ -71,3 +71,52 @@ jobs:
           name: bundle-size
           path: /tmp/sizes
           retention-days: 1
+
+  # TEMP: exercises bundle-size-comment.yml's steps on this PR, since workflow_run
+  # only runs develop's copy. Remove before merging.
+  temp-comment:
+    name: TEMP comment test
+    needs: measure
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Check out the comment script
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/scripts
+
+      - name: Download measurements
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: bundle-size
+          path: /tmp/sizes
+
+      - name: Compare and comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Unexpected head sha '$SHA'."
+            exit 1
+          fi
+          pr=$(gh api "repos/$REPO/commits/$SHA/pulls" --jq "[.[] | select(.state == \"open\" and .head.sha == \"$SHA\")][0].number // empty")
+          if [ -z "$pr" ]; then
+            echo "No open PR has $SHA as its head; nothing to comment on."
+            exit 0
+          fi
+
+          node .github/scripts/bundle-size-comment.mjs /tmp/sizes/current.json /tmp/sizes/base.json > /tmp/comment.md
+          comment_id=$(gh api --paginate "repos/$REPO/issues/$pr/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("## size-limit report"))) | .id' | head -1)
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$comment_id" -F body=@/tmp/comment.md > /dev/null
+          else
+            gh api "repos/$REPO/issues/$pr/comments" -F body=@/tmp/comment.md > /dev/null
+          fi
