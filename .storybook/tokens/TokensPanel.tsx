@@ -14,8 +14,12 @@ import { styled } from "storybook/theming";
 import {
     type ColorTokenEditor,
     EXISTING_TOKEN_NAMES,
+    INTENTS,
     PROPOSAL_TOKEN_GROUPS,
     type RangeTokenEditor,
+    SIMPLE_TOKEN_NAMES,
+    type SimpleColors,
+    type SimpleGenerationMode,
     TOKEN_CONFIG,
     TOKEN_VALUES_REQUESTED,
     TOKEN_VALUES_UPDATED,
@@ -77,6 +81,18 @@ const TokensTable = styled.table(({ theme }) => ({
 
 const TokenNameLabel = styled.code({ whiteSpace: "nowrap" });
 const ResetGlyph = styled.span({ fontSize: 16, lineHeight: 1 });
+
+const SimpleMessage = styled.p(({ theme }) => ({
+    color: theme.textMutedColor,
+    margin: theme.layoutMargin,
+}));
+
+const SimpleModeControl = styled.label(({ theme }) => ({
+    alignItems: "center",
+    display: "flex",
+    gap: theme.layoutMargin,
+    margin: theme.layoutMargin,
+}));
 
 interface TokenRowProps {
     name: TokenName;
@@ -179,11 +195,14 @@ function RangeTokenControl({
 }
 
 export function TokensPanel() {
+    const cssModeHelpId = React.useId();
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
     const [selectedFilters, setSelectedFilters] = React.useState<string[]>([]);
     const [resolvedTokenValues, setResolvedTokenValues] = React.useState<Partial<TokenValues>>({});
+    const simpleColors: SimpleColors | undefined = globals.simpleColors;
+    const simpleGenerationMode: SimpleGenerationMode = globals.simpleGenerationMode === "css" ? "css" : "js";
     const emit = useChannel(
         {
             [TOKEN_VALUES_UPDATED]: (snapshot: TokenValuesSnapshot) => {
@@ -236,6 +255,41 @@ export function TokensPanel() {
         );
     }, []);
 
+    const handleUpdateSimpleColor = React.useCallback(
+        (name: TokenName, value: string | undefined) => {
+            const intent = INTENTS.find(candidate => name === `--bp-${candidate}-base`);
+            if (intent === undefined) {
+                return;
+            }
+            const colors = { ...simpleColors };
+            if (value === undefined || value === "") {
+                delete colors[intent];
+            } else {
+                colors[intent] = value;
+            }
+            updateGlobals({ simpleColors: colors });
+        },
+        [simpleColors, updateGlobals],
+    );
+
+    const handleResetSimpleColor = React.useCallback(
+        (name: TokenName) => handleUpdateSimpleColor(name, undefined),
+        [handleUpdateSimpleColor],
+    );
+
+    const handleGenerationModeChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLSelectElement>) => {
+            const mode: SimpleGenerationMode = event.currentTarget.value === "css" ? "css" : "js";
+            updateGlobals({ simpleGenerationMode: mode });
+        },
+        [updateGlobals],
+    );
+
+    const simpleOverrides: Partial<TokenValues> = {};
+    for (const intent of INTENTS) {
+        simpleOverrides[`--bp-${intent}-base`] = simpleColors?.[intent];
+    }
+
     if (!isStoryPrepared) {
         return (
             <LoadingWrapper>
@@ -260,8 +314,40 @@ export function TokensPanel() {
 
     return (
         <TabsView
-            defaultSelected="proposal"
+            defaultSelected="simple"
             tabs={[
+                {
+                    children: (
+                        <>
+                            <SimpleModeControl>
+                                Generation mode
+                                <select
+                                    aria-describedby={simpleGenerationMode === "css" ? cssModeHelpId : undefined}
+                                    onChange={handleGenerationModeChange}
+                                    value={simpleGenerationMode}
+                                >
+                                    <option value="js">JavaScript</option>
+                                    <option value="css">Pure CSS</option>
+                                </select>
+                            </SimpleModeControl>
+                            {simpleGenerationMode === "css" && (
+                                <SimpleMessage id={cssModeHelpId}>
+                                    Requires a modern browser with contrast-color() support. Unsupported browsers keep
+                                    baseline token styles.
+                                </SimpleMessage>
+                            )}
+                            <TokenList
+                                groups={[{ names: SIMPLE_TOKEN_NAMES }]}
+                                onResetToken={handleResetSimpleColor}
+                                onUpdateToken={handleUpdateSimpleColor}
+                                resolvedTokenValues={resolvedTokenValues}
+                                tokenOverrides={simpleOverrides}
+                            />
+                        </>
+                    ),
+                    id: "simple",
+                    title: "Simple",
+                },
                 {
                     children: (
                         <>

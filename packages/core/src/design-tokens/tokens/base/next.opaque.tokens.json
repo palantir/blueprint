@@ -1,0 +1,355 @@
+{
+    "neutral": {
+        "$type": "color",
+        "palette": {
+            "0": {
+                "$value": "color-mix(in oklch, {neutral.base} 5%, {palette.white})"
+            },
+            "1": {
+                "$value": "color-mix(in oklch, {neutral.base} 10%, {palette.white})"
+            },
+            "2": {
+                "$value": "color-mix(in oklch, {neutral.base} 20%, {palette.white})"
+            },
+            "3": {
+                "$value": "color-mix(in oklch, {neutral.base} 35%, {palette.white})"
+            },
+            "4": {
+                "$value": "color-mix(in oklch, {neutral.base} 60%, {palette.white})"
+            },
+            "5": {
+                "$value": "{neutral.base}"
+            },
+            "6": {
+                "$value": "color-mix(in oklch, {neutral.base} 90%, {palette.black})"
+            },
+            "7": {
+                "$value": "color-mix(in oklch, {neutral.base} 80%, {palette.black})"
+            },
+            "8": {
+                "$value": "color-mix(in oklch, {neutral.base} 70%, {palette.black})"
+            },
+            "9": {
+                "$value": "color-mix(in oklch, {neutral.base} 60%, {palette.black})"
+            }
+        },
+        "background": {
+            "solid": {
+                "rest": {
+                    "$value": "{neutral.palette.5}"
+                },
+                "hover": {
+                    "$value": "{neutral.palette.6}"
+                },
+                "active": {
+                    "$value": "{neutral.palette.7}"
+                }
+            },
+            "subtle": {
+                "rest": {
+                    "$value": "{neutral.palette.1}"
+                },
+                "hover": {
+                    "$value": "{neutral.palette.2}"
+                },
+                "active": {
+                    "$value": "{neutral.palette.3}"
+                }
+            }
+        },
+        "border": {
+            "strong": {
+                "rest": {
+                    "$value": "{neutral.palette.5}"
+                }
+            }
+        },
+        "text": {
+            "normal": {
+                "$value": "{neutral.palette.8}"
+            },
+            "strong": {
+                "$value": "{neutral.palette.9}"
+            },
+            "on-solid": {
+                "$value": "contrast-color({neutral.background.solid.rest})"
+            },
+            "muted": {
+                "$value": "{neutral.palette.7}"
+            }
+        }
+    },
+    "primary": {
+        "$type": "color",
+        "palette": {
+            "0": {
+                "$value": "color-mix(in oklch, {primary.base} 5%, {palette.white})"
+            },
+            "1": {
+                "$value": "color-mix(in oklch, {primary.base} 10%, {palette.white})"
+            },
+            "2": {
+                "$value": "color-mix(in oklch, {primary.base} 20%, {palette.white})"
+            },
+            "3": {
+                "$value": "color-mix(in oklch, {primary.base} 35%, {palette.white})"
+            },
+            "4": {
+                "$value": "color-mix(in oklch, {primary.base} 60%, {palette.white})"
+            },
+            "5": {
+                "$value": "{primary.base}"
+            },
+            "6": {
+                "$value": "color-mix(in oklch, {primary.base} 90%, {palette.black})"
+            },
+            "7": {
+                "$value": "color-mix(in oklch, {primary.base} 80%, {palette.black})"
+            },
+            "8": {
+                "$value": "color-mix(in oklch, {primary.base} 70%, {palette.black})"
+            },
+            "9": {
+                "$value": "color-mix(in oklch, {primary.base} 60%, {palette.black})"
+            }
+        },
+        "background": {
+            "solid": {
+                "rest": {
+                    "$value": "{primary.palette.5}"
+                },
+                "hover": {
+                    "$value": "{primary.palette.6}"
+                },
+                "active": {
+                    "$value": "{primary.palette.7}"
+                }
+            }
+        },
+        "border": {
+            "strong": {
+                "rest": {
+                    "$value": "{primary.palette.5}"
+                }
+            }
+        },
+        "text": {
+            "normal": {
+                "$value": "{primary.palette.8}"
+            },
+            "strong": {
+                "$value": "{primary.palette.9}"
+            },
+            "on-solid": {
+                "$value": "contrast-color({primary.background.solid.rest})"
+            }
+        }
+    },
+    "success": {
+        "$type": "color",
+        "palette": {
+            "0": {
+                "$value": "color-mix(in oklch, {success.base} 5%, {palette.white})"
+            },
+            "1": {
+                "$value": "color-mix(in oklch, {success.base} 10%, {palette.white})"
+            },
+            "2": {
+                "$value": "color-mix(in oklch, {success.base} 20%, {palette.white})"
+            },
+            "3": {
+                "$value": "color-mix(in oklch, {success.base} 35%, {palette.white})"
+            },
+            "4": {
+                "$value": "color-mix(in oklch, {success.base} 60%, {palette.white})"
+            },
+            "5": {
+                "$value": "{success.base}"
+            },
+            "6": {
+                "$value": "color-mix(in oklch, {success.base} 90%, {palette.black})"
+            },
+            "7": {
+                "$value": "color-mix(in oklch, {success.base} 80%, {palette.black})"
+            },
+            "8": {
+                "$value": "color-mix(in oklch, {success.base} 70%, {palette.black})"
+            },
+            "9": {
+                "$value": "color-mix(in oklch, {success.base} 60%, {palette.black})"
+            }
+        },
+        "background": {
+            "solid": {
+                "rest": {
+                    "$value": "{success.palette.5}"
+                },
+                "hover": {
+                    "$value": "{success.palette.6}"
+                },
+                "active": {
+                    "$value": "{success.palette.7}"
+                }
+            }
+        },
+        "border": {
+            "strong": {
+                "rest": {
+                    "$value": "{success.palette.5}"
+                }
+            }
+        },
+        "text": {
+            "normal": {
+                "$value": "{success.palette.8}"
+            },
+            "strong": {
+                "$value": "{success.palette.9}"
+            },
+            "on-solid": {
+                "$value": "contrast-color({success.background.solid.rest})"
+            }
+        }
+    },
+    "warning": {
+        "$type": "color",
+        "palette": {
+            "0": {
+                "$value": "color-mix(in oklch, {warning.base} 5%, {palette.white})"
+            },
+            "1": {
+                "$value": "color-mix(in oklch, {warning.base} 10%, {palette.white})"
+            },
+            "2": {
+                "$value": "color-mix(in oklch, {warning.base} 20%, {palette.white})"
+            },
+            "3": {
+                "$value": "color-mix(in oklch, {warning.base} 35%, {palette.white})"
+            },
+            "4": {
+                "$value": "color-mix(in oklch, {warning.base} 60%, {palette.white})"
+            },
+            "5": {
+                "$value": "{warning.base}"
+            },
+            "6": {
+                "$value": "color-mix(in oklch, {warning.base} 90%, {palette.black})"
+            },
+            "7": {
+                "$value": "color-mix(in oklch, {warning.base} 80%, {palette.black})"
+            },
+            "8": {
+                "$value": "color-mix(in oklch, {warning.base} 70%, {palette.black})"
+            },
+            "9": {
+                "$value": "color-mix(in oklch, {warning.base} 60%, {palette.black})"
+            }
+        },
+        "background": {
+            "solid": {
+                "rest": {
+                    "$value": "{warning.palette.5}"
+                },
+                "hover": {
+                    "$value": "{warning.palette.6}"
+                },
+                "active": {
+                    "$value": "{warning.palette.7}"
+                }
+            }
+        },
+        "border": {
+            "strong": {
+                "rest": {
+                    "$value": "{warning.palette.5}"
+                }
+            }
+        },
+        "text": {
+            "normal": {
+                "$value": "{warning.palette.8}"
+            },
+            "strong": {
+                "$value": "{warning.palette.9}"
+            },
+            "on-solid": {
+                "$value": "contrast-color({warning.background.solid.rest})"
+            }
+        }
+    },
+    "danger": {
+        "$type": "color",
+        "palette": {
+            "0": {
+                "$value": "color-mix(in oklch, {danger.base} 5%, {palette.white})"
+            },
+            "1": {
+                "$value": "color-mix(in oklch, {danger.base} 10%, {palette.white})"
+            },
+            "2": {
+                "$value": "color-mix(in oklch, {danger.base} 20%, {palette.white})"
+            },
+            "3": {
+                "$value": "color-mix(in oklch, {danger.base} 35%, {palette.white})"
+            },
+            "4": {
+                "$value": "color-mix(in oklch, {danger.base} 60%, {palette.white})"
+            },
+            "5": {
+                "$value": "{danger.base}"
+            },
+            "6": {
+                "$value": "color-mix(in oklch, {danger.base} 90%, {palette.black})"
+            },
+            "7": {
+                "$value": "color-mix(in oklch, {danger.base} 80%, {palette.black})"
+            },
+            "8": {
+                "$value": "color-mix(in oklch, {danger.base} 70%, {palette.black})"
+            },
+            "9": {
+                "$value": "color-mix(in oklch, {danger.base} 60%, {palette.black})"
+            }
+        },
+        "background": {
+            "solid": {
+                "rest": {
+                    "$value": "{danger.palette.5}"
+                },
+                "hover": {
+                    "$value": "{danger.palette.6}"
+                },
+                "active": {
+                    "$value": "{danger.palette.7}"
+                }
+            }
+        },
+        "border": {
+            "strong": {
+                "rest": {
+                    "$value": "{danger.palette.5}"
+                }
+            }
+        },
+        "text": {
+            "normal": {
+                "$value": "{danger.palette.8}"
+            },
+            "strong": {
+                "$value": "{danger.palette.9}"
+            },
+            "on-solid": {
+                "$value": "contrast-color({danger.background.solid.rest})"
+            }
+        }
+    },
+    "text": {
+        "$type": "color",
+        "normal": {
+            "$value": "{neutral.text.normal}"
+        },
+        "muted": {
+            "$value": "{neutral.text.muted}"
+        }
+    }
+}

@@ -5,7 +5,13 @@
 import type { Decorator } from "@storybook/react-vite";
 import { useChannel, useEffect, useRef } from "storybook/preview-api";
 
+import * as Classes from "../../packages/core/src/common/classes";
+
+import { generateTokens } from "./generateTokens";
 import {
+    INTENTS,
+    type SimpleColors,
+    type SimpleGenerationMode,
     TOKEN_CONFIG,
     TOKEN_NAMES,
     TOKEN_VALUES_REQUESTED,
@@ -17,9 +23,16 @@ import {
 
 type InlineTokenValues = Record<TokenName, { priority: string; value: string }>;
 
+interface InlineTokenSnapshot {
+    style: CSSStyleDeclaration;
+    values: InlineTokenValues;
+}
+
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
-    const initialTokenValues = useRef<InlineTokenValues | undefined>(undefined);
+    const simpleColors: SimpleColors | undefined = globals.simpleColors;
+    const simpleGenerationMode: SimpleGenerationMode = globals.simpleGenerationMode === "css" ? "css" : "js";
+    const initialTokenValues = useRef<InlineTokenSnapshot[]>([]);
     const emit = useChannel(
         {
             [TOKEN_VALUES_REQUESTED]: () => {
@@ -31,47 +44,78 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function captureInitialTokenValues() {
-            const style = document.body.style;
-            // Entries are produced from the complete module-owned token list.
-            const values = Object.fromEntries(
-                TOKEN_NAMES.map(name => [
-                    name,
-                    {
-                        priority: style.getPropertyPriority(name),
-                        value: style.getPropertyValue(name),
-                    },
-                ]),
-            ) as InlineTokenValues;
-            initialTokenValues.current = values;
+            // Light aliases are declared on :root; dark aliases are declared on body.bp6-dark.
+            // Override inputs at both declaration scopes so the existing CSS derivations stay reactive.
+            const snapshots = [document.documentElement.style, document.body.style].map(style => ({
+                style,
+                // Entries are produced from the complete module-owned token list.
+                values: Object.fromEntries(
+                    TOKEN_NAMES.map(name => [
+                        name,
+                        { priority: style.getPropertyPriority(name), value: style.getPropertyValue(name) },
+                    ]),
+                ) as InlineTokenValues,
+            }));
+            initialTokenValues.current = snapshots;
 
             return () => {
-                for (const name of TOKEN_NAMES) {
-                    const { value, priority } = values[name];
-                    // An empty value removes the inline property.
-                    style.setProperty(name, value, priority);
+                for (const { style, values } of snapshots) {
+                    for (const name of TOKEN_NAMES) {
+                        const { value, priority } = values[name];
+                        // An empty value removes the inline property.
+                        style.setProperty(name, value, priority);
+                    }
                 }
-                initialTokenValues.current = undefined;
+                initialTokenValues.current = [];
             };
         },
         [id],
     );
 
     useEffect(
-        function applyTokenOverrides() {
-            const style = document.body.style;
-            const overrides = tokenOverrides ?? {};
+        function applyNextClass() {
+            const { body } = document;
+            if (simpleGenerationMode !== "css" || body.classList.contains(Classes.NEXT)) {
+                return;
+            }
+            // A story may already opt in itself; clean up only the class this decorator added.
+            body.classList.add(Classes.NEXT);
+            return () => body.classList.remove(Classes.NEXT);
+        },
+        [id, simpleGenerationMode],
+    );
 
-            for (const name of TOKEN_NAMES) {
-                const override = overrides[name];
-                if (override != null && override !== "") {
-                    style.setProperty(name, override);
-                } else {
-                    const initialValue = initialTokenValues.current?.[name];
-                    style.setProperty(name, initialValue?.value ?? "", initialValue?.priority);
+    useEffect(
+        function applyTokenOverrides() {
+            const overrides = tokenOverrides ?? {};
+            const generated: Record<string, string> = {};
+            const theme = globals.theme === "dark" ? "dark" : "light";
+            for (const intent of INTENTS) {
+                const color = simpleColors?.[intent];
+                if (color !== undefined) {
+                    if (simpleGenerationMode === "css") {
+                        generated[`--bp-${intent}-base`] = color;
+                    } else {
+                        for (const [name, values] of Object.entries(generateTokens(color, { intent }))) {
+                            generated[name] = values[theme];
+                        }
+                    }
+                }
+            }
+
+            for (const { style, values } of initialTokenValues.current) {
+                for (const name of TOKEN_NAMES) {
+                    const override = overrides[name] || generated[name];
+                    if (override != null && override !== "") {
+                        style.setProperty(name, override);
+                    } else {
+                        const initialValue = values[name];
+                        style.setProperty(name, initialValue.value, initialValue.priority);
+                    }
                 }
             }
         },
-        [id, tokenOverrides],
+        [globals.theme, id, simpleColors, simpleGenerationMode, tokenOverrides],
     );
 
     useEffect(
@@ -82,7 +126,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
             });
             return () => cancelAnimationFrame(frame);
         },
-        [emit, globals.theme, id, tokenOverrides],
+        [emit, globals.theme, id, simpleColors, simpleGenerationMode, tokenOverrides],
     );
 
     return <Story />;
