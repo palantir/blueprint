@@ -85,16 +85,15 @@ const CORE_COMPONENTS = [
 
 module.exports = [
     js("core"),
-    {
-        // Button's real cost including the icons code it pulls in; compare with the plain `{ Button }` row.
-        ...js("core", undefined, "{ Button }"),
-        ignore: ignore.filter(dep => dep !== "@blueprintjs/icons"),
-        name: "@blueprintjs/core { Button } (with icons)",
-    },
     js("core", undefined, "{ Classes }"),
     ...CORE_COMPONENTS.map(component => js("core", undefined, `{ ${component} }`)),
     js("icons", "lib/esm/generated/index.js"),
     js("icons", "lib/esm/generated/index.js", "{ IconNames }"),
+    {
+        // What core's Icon pulls in from icons, paid once by any app that renders an icon.
+        ...js("icons", "lib/esm/generated/index.js", "{ Icons, SVGIconContainer }"),
+        name: "@blueprintjs/icons { Icons, SVGIconContainer } (used by core's Icon)",
+    },
     js("datetime"),
     js("select"),
     js("table"),
