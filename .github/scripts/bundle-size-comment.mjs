@@ -51,7 +51,12 @@ const currentMap = Object.fromEntries(current.map(e => [e.name, e.size]));
 const baseMap = Object.fromEntries(base.map(e => [e.name, e.size]));
 const names = [...new Set([...base.map(e => e.name), ...current.map(e => e.name)])];
 
-const lines = ["## size-limit report 📦", ""];
+const lines = [
+    "## size-limit report 📦",
+    "",
+    "Brotli-compressed JS from bundling each entry with [Rolldown](https://rolldown.rs) (Vite 8's bundler), counting only what loads up front. React and other `@blueprintjs/*` packages are excluded.",
+    "",
+];
 
 if (names.length === 0) {
     lines.push("size-limit produced no measurements for either side of this comparison.");
