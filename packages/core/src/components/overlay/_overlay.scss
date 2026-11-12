@@ -82,7 +82,7 @@ body.#{$ns}-overlay-open {
     $pt-transition-duration * 2,
     $before: "&"
   );
-  background-color: $overlay-background-color;
+  background-color: color-mix(in srgb, var(--bp-palette-black) 70%, transparent);
   overflow: auto;
   user-select: none;
   z-index: $pt-z-index-overlay;
