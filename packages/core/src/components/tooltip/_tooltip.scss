@@ -13,17 +13,24 @@ $tooltip-padding-compact-vertical: $pt-spacing !default;
 $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
 .#{$ns}-tooltip {
+  --bp-tooltip-background-color: var(--bp-palette-dark-gray-5);
+  --bp-tooltip-text-color: var(--bp-palette-light-gray-5);
+  --bp-tooltip-box-shadow: var(--bp-surface-shadow-3);
+  --bp-tooltip-arrow-box-shadow: 1px 1px 6px
+    color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
+  --bp-tooltip-arrow-border-fill-opacity: #{$pt-border-shadow-opacity};
+
   @include popover-sizing(
     $arrow-square-size: $pt-spacing * 5.5,
     $arrow-offset: $pt-spacing * 0.75,
     $arrow-target-offset: -$pt-spacing
   );
   @include popover-appearance(
-    $tooltip-background-color,
-    $tooltip-text-color,
-    $pt-tooltip-box-shadow,
-    $tooltip-arrow-box-shadow,
-    $pt-border-shadow-opacity
+    var(--bp-tooltip-background-color),
+    var(--bp-tooltip-text-color),
+    var(--bp-tooltip-box-shadow),
+    var(--bp-tooltip-arrow-box-shadow),
+    var(--bp-tooltip-arrow-border-fill-opacity)
   );
   // lightweight scale for tooltips
   @include react-transition(
@@ -71,27 +78,30 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
   }
 
   &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    @include popover-appearance(
-      $dark-tooltip-background-color,
-      $dark-tooltip-text-color,
-      $pt-dark-tooltip-box-shadow,
-      $dark-tooltip-arrow-box-shadow,
-      $pt-dark-border-shadow-opacity
-    );
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    --bp-tooltip-background-color: var(--bp-palette-light-gray-3);
+    --bp-tooltip-text-color: var(--bp-palette-dark-gray-5);
+    --bp-tooltip-box-shadow:
+      0 2px 4px color-mix(in srgb, var(--bp-palette-black) 40%, transparent),
+      0 8px 24px color-mix(in srgb, var(--bp-palette-black) 40%, transparent);
+    --bp-tooltip-arrow-box-shadow: 1px 1px 6px
+      color-mix(in srgb, var(--bp-palette-black) 40%, transparent);
+    --bp-tooltip-arrow-border-fill-opacity: #{$pt-dark-border-shadow-opacity};
+
     // override typography because we use a light background
     @include pt-typography-colors;
   }
 
-  @each $intent, $color in $pt-intent-colors {
+  @each $intent in ("primary", "success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
       .#{$ns}-popover-content {
-        background: $color;
-        color: $white;
+        background: var(--bp-intent-#{$intent}-rest);
+        color: var(--bp-palette-white);
       }
 
       .#{$ns}-popover-arrow-fill {
-        fill: $color;
+        fill: var(--bp-intent-#{$intent}-rest);
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // In Windows high contrast mode, just force the color to be the same as the border.
