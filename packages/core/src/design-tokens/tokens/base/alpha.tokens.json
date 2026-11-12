@@ -222,7 +222,7 @@
         "text": {
             "disabled": {
                 "$value": "{neutral.text.muted}",
-                "$extensions": { "com.blueprint.derive": { "alpha": "{opacity.disabled}" } }
+                "$extensions": { "com.blueprint.derive": { "alpha": 0.6 } }
             }
         },
         "layer": {

@@ -51,7 +51,7 @@
   --bp-neutral-text-muted: var(--bp-palette-gray-4);
   --bp-neutral-text-normal: var(--bp-palette-light-gray-5);
   --bp-neutral-text-strong: var(--bp-palette-white);
-  --bp-neutral-text-disabled: #abb3bf80;
+  --bp-neutral-text-disabled: #abb3bf99;
   --bp-neutral-layer-hover: #8f99a826;
   --bp-neutral-layer-active: #8f99a84d;
   --bp-text-normal: var(--bp-neutral-text-normal);
@@ -107,7 +107,7 @@
     --bp-neutral-background-solid-disabled: oklch(from var(--bp-neutral-background-solid-rest) l c h / var(--bp-opacity-disabled));
     --bp-neutral-background-alpha-rest: oklch(from var(--bp-neutral-base) l c h / 0.15);
     --bp-neutral-border-alpha-rest: oklch(from var(--bp-neutral-text-strong) l c h / 0.4);
-    --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-muted) l c h / var(--bp-opacity-disabled));
+    --bp-neutral-text-disabled: oklch(from var(--bp-neutral-text-muted) l c h / 0.6);
     --bp-neutral-layer-hover: oklch(from var(--bp-neutral-base) l c h / 0.15);
     --bp-neutral-layer-active: oklch(from var(--bp-neutral-base) l c h / 0.3);
     --bp-divider-normal: oklch(from var(--bp-neutral-text-strong) l c h / 0.2);
