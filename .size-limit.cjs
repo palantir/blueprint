@@ -4,7 +4,7 @@
 
 // Bundle sizes reported on PRs by .github/workflows/bundle-size.yml. Run
 // `pnpm nx run-many -t compile` first; this measures the compiled lib/ output.
-// JS is bundled with Rolldown (Vite 8's bundler), counting only the chunks loaded up front.
+// JS only, bundled with Rolldown (Vite 8's bundler), counting only the chunks loaded up front.
 
 // Sibling packages are ignored so each row is only that package's own cost.
 const ignore = [
@@ -83,13 +83,6 @@ const CORE_COMPONENTS = [
     "Tree",
 ];
 
-// Rolldown can't bundle CSS, so these are the unminified lib/css files, brotli-compressed.
-const css = (pkg, file) => ({
-    name: `@blueprintjs/${pkg} CSS`,
-    path: `packages/${pkg}/lib/css/${file}`,
-    rolldown: false,
-});
-
 module.exports = [
     js("core"),
     {
@@ -107,8 +100,4 @@ module.exports = [
     js("table"),
     js("labs"),
     js("colors"),
-    css("core", "blueprint.css"),
-    css("datetime", "blueprint-datetime.css"),
-    css("select", "blueprint-select.css"),
-    css("table", "table.css"),
 ];
