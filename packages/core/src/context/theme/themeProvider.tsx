@@ -12,9 +12,16 @@ import { BlueprintThemeContext, type BlueprintThemeTokens } from "./themeContext
 export type ThemeRepresentations = Readonly<Record<string, unknown>>;
 
 export interface ThemeProviderProps {
-    /** Use a valid direct theme before any matching versioned representation. */
+    /**
+     * Use when authoring overrides against the ThemeAPI type exported by your installed Blueprint version.
+     * When both inputs are present, a valid theme takes precedence over themesByVersion. An invalid theme
+     * falls back to the matching themesByVersion entry.
+     */
     theme?: ThemeAPI;
-    /** Used when the direct theme is missing or invalid; future versions are ignored. */
+    /**
+     * Use when the receiving Blueprint instance's supported Theme API version is unknown. Provide the available
+     * representations keyed by schema version; the receiving provider selects the version it supports.
+     */
     themesByVersion?: ThemeRepresentations;
     // Future color overrides will select light or dark token values using this mode.
     isDarkMode?: boolean;
