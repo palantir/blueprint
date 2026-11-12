@@ -88,7 +88,7 @@
 }
 
 @mixin pt-dark-typography-colors() {
-  color: $pt-dark-text-color;
+  color: var(--bp-typography-color-default-rest);
 
   .#{$ns}-text-muted {
     color: $pt-dark-text-color-muted;

@@ -20,7 +20,7 @@ html {
 
 body {
   @include base-typography;
-  color: $pt-text-color;
+  color: var(--bp-typography-color-default-rest);
   font-family: var(--bp-typography-family-default);
 }
 
