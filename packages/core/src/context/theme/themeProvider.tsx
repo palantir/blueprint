@@ -11,7 +11,7 @@ import { BlueprintThemeContext, type BlueprintThemeTokens } from "./themeContext
 
 export type ThemeRepresentations = Readonly<Record<string, unknown>>;
 
-export type ThemeProviderProps =
+type ThemeProviderThemeProps =
     | {
           /**
            * Use when authoring overrides against the ThemeAPI type exported by your installed Blueprint version.
@@ -30,6 +30,11 @@ export type ThemeProviderProps =
            */
           themesByVersion?: ThemeRepresentations;
       };
+
+export type ThemeProviderProps = ThemeProviderThemeProps & {
+    // Future color overrides will select light or dark token values using this mode.
+    isDarkMode?: boolean;
+};
 
 const THEME_API_VERSION = 1 satisfies ThemeAPI["version"];
 

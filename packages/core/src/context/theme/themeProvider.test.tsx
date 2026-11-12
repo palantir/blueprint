@@ -52,6 +52,17 @@ describe("ThemeProvider", () => {
         expect(result.current).toBe(theme);
     });
 
+    it.each([true, false])("accepts isDarkMode=%s without changing current tokens", isDarkMode => {
+        const { result } = renderHook(() => useBlueprintThemeTokens(), {
+            wrapper: ({ children }) => (
+                <ThemeProvider isDarkMode={isDarkMode} theme={{ borderRadius: "8px", version: 1 }}>
+                    {children}
+                </ThemeProvider>
+            ),
+        });
+        expect(result.current).toEqual({ "--bp-surface-border-radius": "8px" });
+    });
+
     it("exposes v1 tokens without adding a DOM wrapper or inspecting future versions", () => {
         const themes = {
             "1": { borderRadius: "8px", fontFamily: "Arial", futureField: true, version: 1 },
