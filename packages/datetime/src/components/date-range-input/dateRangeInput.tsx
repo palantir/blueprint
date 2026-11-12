@@ -184,6 +184,13 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         }
 
         let nextState: Partial<DateRangeInputState> = {};
+        if (this.props.disabled && !prevProps.disabled) {
+            nextState = {
+                isEndInputFocused: false,
+                isOpen: false,
+                isStartInputFocused: false,
+            };
+        }
 
         if (this.props.value !== prevProps.value) {
             const [selectedStart, selectedEnd] = this.getInitialRange(this.props);
@@ -209,7 +216,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
 
     public render() {
         const { locale, selectedShortcutIndex } = this.state;
-        const { popoverProps = {}, popoverRef } = this.props;
+        const { disabled, popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
             <DateRangePicker
@@ -235,6 +242,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 autoFocus={false}
                 className={classNames(Classes.DATE_RANGE_INPUT, popoverProps.className, this.props.className)}
                 content={popoverContent}
+                disabled={disabled || popoverProps.disabled}
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
@@ -299,8 +307,8 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
     // ===========================
 
     private handleDateRangePickerChange = (selectedRange: DateRange, didSubmitWithEnter = false) => {
-        // ignore mouse events in the date-range picker if the popover is animating closed.
-        if (!this.state.isOpen) {
+        // The date-range picker can still receive events while the popover is closing.
+        if (this.props.disabled || !this.state.isOpen) {
             return;
         }
 
