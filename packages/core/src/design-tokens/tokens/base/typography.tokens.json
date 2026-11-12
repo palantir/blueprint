@@ -116,62 +116,33 @@
         },
         "color-muted": {
             "$type": "color",
-            "$value": "{intent.default.rest}"
+            "$value": "{intent.default.text-muted}"
         },
         "color-default": {
             "$type": "color",
             "rest": {
-                "$value": "{intent.default.rest}",
-                "$extensions": {
-                    "com.blueprint.derive": {
-                        "lightnessOffset": -0.278582,
-                        "chromaOffset": -0.016984,
-                        "hueOffset": -3.993949
-                    }
-                }
+                "$value": "{intent.default.text}"
             },
             "hover": {
-                "$value": "{intent.default.hover}",
-                "$extensions": {
-                    "com.blueprint.derive": {
-                        "lightnessOffset": -0.209289,
-                        "chromaOffset": -0.013425,
-                        "hueOffset": -2.737703
-                    }
-                }
+                "$value": "{intent.default.text-hover}"
             },
             "active": {
-                "$value": "{intent.default.active}",
-                "$extensions": {
-                    "com.blueprint.derive": {
-                        "lightnessOffset": -0.078766,
-                        "chromaOffset": -0.002807,
-                        "hueOffset": -1.580492
-                    }
-                }
+                "$value": "{intent.default.text-active}"
             },
             "disabled": {
-                "$value": "{intent.default.disabled}",
-                "$extensions": {
-                    "com.blueprint.derive": {
-                        "lightnessOffset": -0.155914,
-                        "chromaOffset": 0.005666,
-                        "hueOffset": -1.29537,
-                        "alpha": 0.6
-                    }
-                }
+                "$value": "{intent.default.text-disabled}"
             }
         },
         "color-primary": {
             "$type": "color",
             "rest": {
-                "$value": "{intent.primary.hover}"
+                "$value": "{intent.primary.text}"
             },
             "hover": {
-                "$value": "{intent.primary.hover}"
+                "$value": "{intent.primary.text}"
             },
             "active": {
-                "$value": "{intent.primary.active}"
+                "$value": "{intent.primary.text-active}"
             },
             "disabled": {
                 "$value": "{intent.primary.disabled}"
@@ -180,13 +151,13 @@
         "color-success": {
             "$type": "color",
             "rest": {
-                "$value": "{intent.success.hover}"
+                "$value": "{intent.success.text}"
             },
             "hover": {
-                "$value": "{intent.success.hover}"
+                "$value": "{intent.success.text}"
             },
             "active": {
-                "$value": "{intent.success.active}"
+                "$value": "{intent.success.text-active}"
             },
             "disabled": {
                 "$value": "{intent.success.disabled}"
@@ -195,13 +166,13 @@
         "color-warning": {
             "$type": "color",
             "rest": {
-                "$value": "{intent.warning.hover}"
+                "$value": "{intent.warning.text}"
             },
             "hover": {
-                "$value": "{intent.warning.hover}"
+                "$value": "{intent.warning.text}"
             },
             "active": {
-                "$value": "{intent.warning.active}"
+                "$value": "{intent.warning.text-active}"
             },
             "disabled": {
                 "$value": "{intent.warning.disabled}"
@@ -210,13 +181,13 @@
         "color-danger": {
             "$type": "color",
             "rest": {
-                "$value": "{intent.danger.hover}"
+                "$value": "{intent.danger.text}"
             },
             "hover": {
-                "$value": "{intent.danger.hover}"
+                "$value": "{intent.danger.text}"
             },
             "active": {
-                "$value": "{intent.danger.active}"
+                "$value": "{intent.danger.text-active}"
             },
             "disabled": {
                 "$value": "{intent.danger.disabled}"

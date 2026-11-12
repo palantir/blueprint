@@ -163,8 +163,8 @@ const THEMES: readonly ThemeConfig[] = [
         name: "dark",
         include: BASE_TOKEN_SOURCES,
         sources: [
+            "src/design-tokens/tokens/themes/dark/intent.tokens.json",
             "src/design-tokens/tokens/themes/dark/surface.tokens.json",
-            "src/design-tokens/tokens/themes/dark/typography.tokens.json",
         ],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
