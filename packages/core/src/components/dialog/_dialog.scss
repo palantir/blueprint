@@ -42,9 +42,15 @@ $dialog-padding: $pt-spacing * 4 !default;
 }
 
 .#{$ns}-dialog {
-  background: $dialog-background-color;
+  --bp-dialog-background-color: var(--bp-palette-light-gray-5);
+  --bp-dialog-box-shadow: var(--bp-surface-shadow-3);
+  --bp-dialog-header-background-color: var(--bp-palette-white);
+  --bp-dialog-header-box-shadow: 0 1px 0 var(--bp-surface-border-color-default);
+  --bp-dialog-footer-background-color: var(--bp-palette-white);
+
+  background: var(--bp-dialog-background-color);
   border-radius: $dialog-border-radius;
-  box-shadow: $pt-dialog-box-shadow;
+  box-shadow: var(--bp-dialog-box-shadow);
   display: flex;
   flex-direction: column;
   margin: $dialog-margin;
@@ -57,14 +63,22 @@ $dialog-padding: $pt-spacing * 4 !default;
   }
 
   &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    background: $pt-dark-app-background-color;
-    box-shadow: $pt-dark-dialog-box-shadow;
-    color: $pt-dark-text-color;
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    --bp-dialog-background-color: var(--bp-surface-background-color-default-rest);
+    --bp-dialog-box-shadow:
+      var(--bp-surface-shadow-3),
+      inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+      inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent);
+    --bp-dialog-header-background-color: var(--bp-palette-dark-gray-3);
+    --bp-dialog-header-box-shadow: inset 0 0 0 1px var(--bp-surface-border-color-default);
+    --bp-dialog-footer-background-color: var(--bp-palette-dark-gray-4);
+
+    color: var(--bp-typography-color-default-rest);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid buttonborder;
   }
 }
 
@@ -72,9 +86,9 @@ $dialog-header-padding: $pt-spacing;
 
 .#{$ns}-dialog-header {
   align-items: center;
-  background: $white;
+  background: var(--bp-dialog-header-background-color);
   border-radius: $dialog-border-radius $dialog-border-radius 0 0;
-  box-shadow: 0 1px 0 $pt-divider-black;
+  box-shadow: var(--bp-dialog-header-box-shadow);
   display: flex;
   flex: 0 0 auto;
   min-height: $pt-button-height + $dialog-header-padding * 2;
@@ -90,7 +104,7 @@ $dialog-header-padding: $pt-spacing;
 
     // only apply light color to icons that are not intent-specific
     &:not([class*="#{$ns}-intent"]) {
-      color: $pt-icon-color;
+      color: var(--bp-typography-color-muted);
     }
   }
 
@@ -106,20 +120,7 @@ $dialog-header-padding: $pt-spacing;
     }
   }
 
-  .#{$ns}-dark & {
-    background: $dark-gray3;
-    box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
-
-    // only apply dark color to icons that are not intent-specific
-    :not([class*="#{$ns}-intent"]) {
-      &.#{$ns}-icon-large,
-      &.#{$ns}-icon {
-        color: $pt-dark-icon-color;
-      }
-    }
-  }
-
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+    border-bottom: 1px solid buttonborder;
   }
 }

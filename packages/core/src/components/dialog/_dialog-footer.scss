@@ -11,19 +11,14 @@
 
 .#{$ns}-dialog-footer-fixed {
   align-items: center;
-  background-color: $white;
+  background-color: var(--bp-dialog-footer-background-color);
   border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
-  border-top: 1px solid $pt-divider-black;
+  border-top: 1px solid var(--bp-surface-border-color-default);
   display: flex;
   gap: $dialog-padding;
   justify-content: space-between;
   margin: 0;
   padding: ($pt-spacing * 2) ($pt-spacing * 2) ($pt-spacing * 2) $dialog-padding;
-
-  .#{$ns}-dark & {
-    background: $dark-gray4;
-    border-top: 1px solid $pt-dark-divider-white;
-  }
 }
 
 .#{$ns}-dialog-footer-main-section {
