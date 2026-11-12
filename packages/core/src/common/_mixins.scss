@@ -58,19 +58,11 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin heading-typography() {
-  color: $pt-heading-color;
+  color: var(--bp-text-normal);
   font-weight: 600;
 
-  .#{$ns}-dark & {
-    color: $pt-dark-heading-color;
-  }
-
   &.#{$ns}-text-muted {
-    color: $pt-text-color-muted;
-
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-muted;
-    }
+    color: var(--bp-text-muted);
   }
 }
 
@@ -87,19 +79,19 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin focus-outline($offset: $pt-spacing * 0.5) {
-  outline: $pt-focus-indicator-color solid ($pt-spacing * 0.5);
+  outline: oklab(from var(--bp-primary-text-normal) l a b / 75.2%) solid ($pt-spacing * 0.5);
   outline-offset: $offset;
   -moz-outline-radius: $pt-spacing * 1.5;
 
-  .#{$ns}-dark & {
-    outline-color: $pt-dark-focus-indicator-color;
+  // Preserve focus styling in browsers without relative color syntax.
+  @supports not (color: oklab(from red l a b / 75.2%)) {
+    outline: $pt-focus-indicator-color solid ($pt-spacing * 0.5);
+
+    .#{$ns}-dark &,
+    [data-bp-color-scheme="dark"] & {
+      outline-color: $pt-dark-focus-indicator-color;
+    }
   }
-}
-
-@mixin focus-outline-next($offset: $pt-spacing * 0.5) {
-  outline: oklch(from var(--bp-primary-text-normal) l c h / 75.2%) solid ($pt-spacing * 0.5);
-  outline-offset: $offset;
-  -moz-outline-radius: $pt-spacing * 1.5;
 }
 
 @function border-shadow($alpha, $color: $black, $size: 1px) {

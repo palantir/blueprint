@@ -110,7 +110,7 @@ $minimal-tag-intent-colors: (
   }
 
   &:focus {
-    @include focus-outline-next(0);
+    @include focus-outline(0);
   }
 
   &.#{$ns}-interactive {

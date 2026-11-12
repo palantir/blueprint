@@ -50,6 +50,7 @@
     "neutral": {
         "$type": "color",
         "background": {
+            "floating": { "$value": "{palette.dark-gray.3}" },
             "subtle": {
                 "rest": { "$value": "{palette.dark-gray.3}" },
                 "hover": { "$value": "{palette.dark-gray.2}" },

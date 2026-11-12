@@ -87,6 +87,7 @@
         "$type": "color",
         "base": { "$value": "{palette.gray.3}" },
         "background": {
+            "floating": { "$value": "{palette.white}" },
             "subtle": {
                 "rest": { "$value": "{palette.light-gray.5}" },
                 "hover": { "$value": "{palette.light-gray.4}" },

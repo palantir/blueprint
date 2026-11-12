@@ -141,7 +141,8 @@ type BuildPlan = {
 // -- Constants ----------------------------------------------------------------
 
 /** CSS `@supports` query for relative color syntax, used for progressive enhancement. */
-const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l c h))";
+const SUPPORTS_RELATIVE_COLOR =
+    "@supports (color: oklab(from #000 l a b / 0.5)) and (color: oklch(from #000 l c h / 0.5))";
 
 /** Base token sources in dependency order, from raw values to higher-level semantic tokens. */
 const BASE_TOKEN_SOURCES = [
@@ -448,10 +449,19 @@ const formatAlpha = (alpha: number | string): string =>
     typeof alpha === "number" ? String(alpha) : tokenReferenceToVar(alpha);
 
 /**
- * Produces a CSS relative color syntax expression: `oklch(from <baseVar> <l> <c> <h> [/ <alpha>])`.
- * Channel modifications are applied as `calc()` wrappers around the implicit `l`, `c`, `h` keywords.
+ * Uses relative OKLab for alpha-only changes to avoid losing the hue of low-chroma
+ * colors in browsers' OKLCH conversions. Channel modifications still use relative OKLCH.
  */
 const formatDerivedColorToCss = (baseVar: string, derivation: ColorDerivation): string => {
+    if (
+        derivation.alpha != null &&
+        derivation.lightness == null &&
+        derivation.chroma == null &&
+        derivation.hue == null
+    ) {
+        return `oklab(from ${baseVar} l a b / ${formatAlpha(derivation.alpha)})`;
+    }
+
     const l = formatChannelModification("l", derivation.lightness);
     const c = formatChannelModification("c", derivation.chroma);
     const h = formatChannelModification("h", derivation.hue);
@@ -492,8 +502,9 @@ const parseTokenValueAsNumber = (token: TransformedToken): number | undefined =>
 
 // -- Fallback Computation -----------------------------------------------------
 
-/** Returns `true` if the CSS value contains `oklch(from ...)` relative color syntax. */
-const containsRelativeColorSyntax = (value: string): boolean => value.includes("oklch(from");
+/** Returns `true` if the CSS value contains generated OKLab or OKLCH relative color syntax. */
+const containsRelativeColorSyntax = (value: string): boolean =>
+    value.includes("oklab(from") || value.includes("oklch(from");
 
 /** Returns `true` if the token has a `com.blueprint.derive` extension. */
 const hasDeriveExtension = (token: TransformedToken): boolean => {
@@ -805,7 +816,7 @@ const shadowTransformConfig: Parameters<typeof StyleDictionary.registerTransform
 
 /**
  * Blueprint-specific transform for tokens with `com.blueprint.derive` extensions.
- * Produces CSS relative color syntax (`oklch(from <base> ...)`) from original token references.
+ * Produces CSS relative color syntax (`oklab(from ...)` or `oklch(from ...)`) from original token references.
  * Must run after `dtcg/color/css` to override resolved color references.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch#using_relative_colors_with_oklch

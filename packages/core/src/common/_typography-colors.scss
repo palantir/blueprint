@@ -10,7 +10,7 @@
   // the root, outside of any selector, but _reset.scss sets the body text color for us.
 
   .#{$ns}-text-muted {
-    color: $pt-text-color-muted;
+    color: var(--bp-text-muted);
   }
 
   .#{$ns}-text-disabled {
@@ -90,8 +90,9 @@
 @mixin pt-dark-typography-colors() {
   color: $pt-dark-text-color;
 
+  // Keep muted links above the global dark link color in the cascade.
   .#{$ns}-text-muted {
-    color: $pt-dark-text-color-muted;
+    color: var(--bp-text-muted);
   }
 
   .#{$ns}-text-disabled {

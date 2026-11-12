@@ -11,7 +11,7 @@
 .#{$ns}-menu {
   background: $menu-background-color;
   border-radius: var(--bp-surface-border-radius);
-  color: $pt-text-color;
+  color: var(--bp-text-normal);
   list-style: none;
   margin: 0;
   min-width: $menu-min-width;
@@ -27,7 +27,7 @@
   @include menu-item;
 
   @each $intent, $colors in $menu-item-intent-colors {
-    @include menu-item-intent($intent, false, $colors...);
+    @include menu-item-intent($intent, $colors...);
   }
 
   &::before {
@@ -65,28 +65,16 @@ button.#{$ns}-menu-item {
   }
 }
 
-// dark theme
-.#{$ns}-dark {
-  .#{$ns}-menu {
-    background: $dark-menu-background-color;
-    color: $pt-dark-text-color;
-  }
-
+// TODO: remove this dark block once global links and active-label foreground roles are theme-independent.
+// Keep layout in the base rules; global dark links still require this specificity.
+.#{$ns}-dark,
+[data-bp-color-scheme="dark"] {
   .#{$ns}-menu-item {
     @include dark-menu-item;
 
-    @each $intent, $colors in $dark-menu-item-intent-colors {
-      @include menu-item-intent($intent, true, $colors...);
+    @each $intent, $colors in $menu-item-intent-colors {
+      @include menu-item-intent($intent, $colors...);
     }
-  }
-
-  .#{$ns}-menu-divider,
-  .#{$ns}-menu-header {
-    border-color: $pt-dark-divider-white;
-  }
-
-  .#{$ns}-menu-header > h6 {
-    color: $pt-dark-heading-color;
   }
 }
 

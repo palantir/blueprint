@@ -1,8 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "sass:list";
-@use "sass:map";
 @import "../../common/mixins";
 @import "../../common/variables";
 @import "../../common/variables-extended";
@@ -29,55 +27,34 @@ $menu-item-padding-vertical-small: $pt-spacing * 0.5 !default;
 $menu-item-selected-icon-spacing: $pt-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
-$menu-background-color: $white !default;
-$dark-menu-background-color: $dark-gray3 !default;
-
-$menu-item-color-hover: rgba($gray3, 0.15) !default;
-$menu-item-color-active: rgba($gray3, 0.3) !default;
+$menu-background-color: var(--bp-neutral-background-floating) !default;
+$menu-item-color-hover: var(--bp-neutral-layer-hover) !default;
+$menu-item-color-active: var(--bp-neutral-layer-active) !default;
 
 $menu-item-intent-colors: (
   "primary": (
-    /* bg */ $blue3,
-    /* fg */ $blue2,
-    /* fg active */ $blue1,
+    /* bg hover */ var(--bp-primary-layer-hover),
+    /* bg active */ var(--bp-primary-layer-active),
+    /* fg */ var(--bp-primary-text-normal),
+    /* fg active */ var(--bp-primary-text-strong),
   ),
   "success": (
-    /* bg */ $green3,
-    /* fg */ $green2,
-    /* fg active */ $green1,
+    /* bg hover */ var(--bp-success-layer-hover),
+    /* bg active */ var(--bp-success-layer-active),
+    /* fg */ var(--bp-success-text-normal),
+    /* fg active */ var(--bp-success-text-strong),
   ),
   "warning": (
-    /* bg */ $orange3,
-    /* fg */ $orange2,
-    /* fg active */ $orange1,
+    /* bg hover */ var(--bp-warning-layer-hover),
+    /* bg active */ var(--bp-warning-layer-active),
+    /* fg */ var(--bp-warning-text-normal),
+    /* fg active */ var(--bp-warning-text-strong),
   ),
   "danger": (
-    /* bg */ $red3,
-    /* fg */ $red2,
-    /* fg active */ $red1,
-  ),
-) !default;
-
-$dark-menu-item-intent-colors: (
-  "primary": (
-    /* bg */ $blue3,
-    /* fg */ $blue5,
-    /* fg active */ $blue6,
-  ),
-  "success": (
-    /* bg */ $green3,
-    /* fg */ $green5,
-    /* fg active */ $green6,
-  ),
-  "warning": (
-    /* bg */ $orange3,
-    /* fg */ $orange5,
-    /* fg active */ $orange6,
-  ),
-  "danger": (
-    /* bg */ $red3,
-    /* fg */ $red5,
-    /* fg active */ $red6,
+    /* bg hover */ var(--bp-danger-layer-hover),
+    /* bg active */ var(--bp-danger-layer-active),
+    /* fg */ var(--bp-danger-text-normal),
+    /* fg active */ var(--bp-danger-text-strong),
   ),
 ) !default;
 
@@ -103,14 +80,14 @@ $dark-menu-item-intent-colors: (
   }
 
   .#{$ns}-menu-item-label {
-    color: $pt-text-color-muted;
+    color: var(--bp-text-muted);
   }
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-icon-color;
+    color: var(--bp-text-muted);
   }
 
   &::before,
@@ -129,7 +106,7 @@ $dark-menu-item-intent-colors: (
     background-color: $menu-item-color-active;
 
     .#{$ns}-menu-item-label {
-      color: $pt-text-color;
+      color: var(--bp-text-normal);
     }
   }
 
@@ -154,7 +131,7 @@ $dark-menu-item-intent-colors: (
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
     background-color: inherit !important;
-    color: $pt-text-color-disabled !important;
+    color: var(--bp-text-disabled) !important;
     cursor: not-allowed !important;
     // override global a:focus styles
     outline: none !important;
@@ -162,11 +139,11 @@ $dark-menu-item-intent-colors: (
     &::before,
     .#{$ns}-menu-item-icon,
     .#{$ns}-submenu-icon {
-      color: $pt-icon-color-disabled !important;
+      color: var(--bp-text-disabled) !important;
     }
 
     .#{$ns}-menu-item-label {
-      color: $pt-text-color-disabled !important;
+      color: var(--bp-text-disabled) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
@@ -176,50 +153,29 @@ $dark-menu-item-intent-colors: (
   color: inherit;
 
   .#{$ns}-menu-item-label {
-    color: $pt-dark-text-color-muted;
+    color: var(--bp-text-muted);
   }
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-dark-icon-color;
+    color: var(--bp-text-muted);
   }
 
   &:hover {
     @include dark-menu-item-hover;
   }
 
-  // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
   &:active {
-    // we can use the same color as light theme due to transparency
-    background-color: $menu-item-color-active;
-
     .#{$ns}-menu-item-label {
-      color: $pt-dark-text-color;
+      color: var(--bp-text-normal);
     }
   }
 
   &.#{$ns}-active {
     @include menu-item-active(true);
   }
-
-  // pt-disable always overrides over styles
-  /* stylelint-disable declaration-no-important */
-  &.#{$ns}-disabled {
-    color: $pt-dark-text-color-disabled !important;
-
-    &::before,
-    .#{$ns}-menu-item-icon,
-    .#{$ns}-submenu-icon {
-      color: $pt-dark-icon-color-disabled !important;
-    }
-
-    .#{$ns}-menu-item-label {
-      color: $pt-dark-text-color-disabled !important;
-    }
-  }
-  /* stylelint-enable declaration-no-important */
 }
 
 @mixin menu-item-hover() {
@@ -230,42 +186,35 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin dark-menu-item-hover() {
-  color: inherit;
-
-  // need to override typography styles here
+  // Override global dark link icon colors.
   .#{$ns}-menu-item-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-dark-icon-color;
+    color: var(--bp-text-muted);
   }
 }
 
 @mixin menu-item-active($is-dark) {
-  $intent-colors: $menu-item-intent-colors;
-  $background-alpha: 0.1;
-
-  @if $is-dark {
-    $intent-colors: $dark-menu-item-intent-colors;
-    $background-alpha: 0.2;
-  } @else {
+  // TODO: remove this theme flag once active labels have a theme-independent foreground role.
+  @if not $is-dark {
     .#{$ns}-menu-item-label {
       color: inherit;
     }
   }
 
-  background-color: rgba(list.nth(map.get($intent-colors, "primary"), 1), $background-alpha);
-  color: list.nth(map.get($intent-colors, "primary"), 2);
+  background-color: var(--bp-primary-layer-hover);
+  color: var(--bp-primary-text-normal);
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: list.nth(map.get($intent-colors, "primary"), 2);
+    color: var(--bp-primary-text-normal);
   }
 
   @each $intent in ("success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba(list.nth(map.get($intent-colors, $intent), 1), $background-alpha);
-      color: list.nth(map.get($intent-colors, $intent), 2);
+      background-color: var(--bp-#{$intent}-layer-hover);
+      color: var(--bp-#{$intent}-text-normal);
 
       &::before,
       .#{$ns}-menu-item-icon,
@@ -281,7 +230,7 @@ $dark-menu-item-intent-colors: (
   }
 }
 
-@mixin menu-item-intent($intent, $is-dark, $bg-color, $fg-color, $fg-color-active) {
+@mixin menu-item-intent($intent, $bg-color-hover, $bg-color-active, $fg-color, $fg-color-active) {
   &.#{$ns}-intent-#{$intent} {
     color: $fg-color;
 
@@ -294,20 +243,12 @@ $dark-menu-item-intent-colors: (
     }
 
     &:hover {
-      @if $is-dark {
-        background-color: rgba($bg-color, 0.2);
-      } @else {
-        background-color: rgba($bg-color, 0.1);
-      }
+      background-color: $bg-color-hover;
     }
 
     &:active,
     &.#{$ns}-active {
-      @if $is-dark {
-        background-color: rgba($bg-color, 0.3);
-      } @else {
-        background-color: rgba($bg-color, 0.2);
-      }
+      background-color: $bg-color-active;
       color: $fg-color-active;
     }
   }
@@ -340,14 +281,10 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-divider() {
-  border-top: 1px solid $pt-divider-black;
+  border-top: 1px solid var(--bp-divider-normal);
   display: block;
   // use negative margin to make dividers take up full menu width
   margin: $pt-spacing (-$pt-spacing);
-
-  .#{$ns}-dark & {
-    border-top-color: $pt-dark-divider-white;
-  }
 }
 
 @mixin menu-header($heading-selector: null) {

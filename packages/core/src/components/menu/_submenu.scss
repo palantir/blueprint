@@ -18,7 +18,8 @@
       /* stylelint-disable scss/at-extend-no-missing-placeholder */
       &:not([class*="#{$ns}-intent-"]) {
         @include menu-item-hover;
-        .#{$ns}-dark & {
+        .#{$ns}-dark &,
+        [data-bp-color-scheme="dark"] & {
           @include dark-menu-item-hover;
         }
       }
@@ -29,7 +30,8 @@
         &:active {
           @include menu-item-active(false);
 
-          .#{$ns}-dark & {
+          .#{$ns}-dark &,
+          [data-bp-color-scheme="dark"] & {
             @include menu-item-active(true);
           }
         }
