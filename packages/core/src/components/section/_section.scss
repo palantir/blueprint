@@ -23,7 +23,7 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
   &-header {
     align-items: center;
-    border-bottom: 1px solid $pt-divider-black;
+    border-bottom: 1px solid var(--bp-surface-border-color-default);
     display: flex;
     gap: $pt-spacing * 5;
     justify-content: space-between;
@@ -31,11 +31,6 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
     padding: 0 $section-padding-horizontal;
     position: relative;
     width: 100%;
-
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      border-color: $pt-dark-divider-white;
-    }
 
     &-left {
       align-items: center;
@@ -75,11 +70,11 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
 
       &:hover,
       &:active {
-        background: $light-gray5;
+        background: var(--bp-palette-light-gray-5);
 
         &.#{$ns}-dark,
         .#{$ns}-dark & {
-          background: $dark-gray4;
+          background: var(--bp-palette-dark-gray-4);
         }
       }
     }
@@ -91,12 +86,7 @@ $section-card-padding-compact: $pt-spacing * 4 !default;
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid $pt-divider-black;
-
-      &.#{$ns}-dark,
-      .#{$ns}-dark & {
-        border-color: $pt-dark-divider-white;
-      }
+      border-bottom: 1px solid var(--bp-surface-border-color-default);
     }
   }
 
