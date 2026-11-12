@@ -5995,10 +5995,6 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
-  lilconfig@3.1.3:
-    resolution: {integrity: sha512-/vlFKAoH5Cgt3Ie+JLhRbwOsCQePABiU3tJ1egGvyQ+33R/vcwM2Zl2QR/LzjsBeItPt3oSVXapn+m4nQDvpzw==}
-    engines: {node: '>=14'}
-
   lilconfig@3.1.4:
     resolution: {integrity: sha512-zJZyBmQhArDRefuWTypZxwDpFDIYmrj8ypSBvwGD5P13Y95s6DjzKgu4DVdGbeQa5PDEsAOCAPNk4X+QOR006w==}
     engines: {node: '>=14'}
@@ -6473,6 +6469,7 @@ packages:
 
   node-abort-controller@3.1.1:
     resolution: {integrity: sha512-AGK2yQKIjRuqnc6VkX2Xj5d+QW8xZ87pa1UK6yA6ouUyuxfHuMP6umE5QK7UmTeOAymo+Zx1Fxiuw9rVx8taHQ==}
+    deprecated: This package is no longer needed on supported Node.js versions. Node.js 16+ includes AbortController and AbortSignal as built-in globals. All Node.js versions requiring this polyfill are end-of-life. Use the built-in globals instead.
 
   node-addon-api@7.1.1:
     resolution: {integrity: sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==}
@@ -11918,7 +11915,7 @@ snapshots:
   cssnano@7.1.4(postcss@8.5.26):
     dependencies:
       cssnano-preset-default: 7.0.12(postcss@8.5.26)
-      lilconfig: 3.1.3
+      lilconfig: 3.1.4
       postcss: 8.5.26
 
   csso@5.0.5:
@@ -13850,8 +13847,6 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  lilconfig@3.1.3: {}
-
   lilconfig@3.1.4: {}
 
   lines-and-columns@1.2.4: {}
@@ -14897,7 +14892,7 @@ snapshots:
 
   postcss-load-config@5.1.0(jiti@2.6.1)(postcss@8.5.26)(tsx@4.21.0):
     dependencies:
-      lilconfig: 3.1.3
+      lilconfig: 3.1.4
       yaml: 2.9.0
     optionalDependencies:
       jiti: 2.6.1
