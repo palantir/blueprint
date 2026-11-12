@@ -103,14 +103,14 @@ $dark-menu-item-intent-colors: (
   }
 
   .#{$ns}-menu-item-label {
-    color: $pt-text-color-muted;
+    color: var(--bp-typography-color-muted);
   }
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: $pt-icon-color;
+    color: var(--bp-typography-color-muted);
   }
 
   &::before,
@@ -119,22 +119,22 @@ $dark-menu-item-intent-colors: (
   }
 
   &:hover {
-    @include menu-item-hover;
+    @include menu-item-runtime-hover;
   }
 
   // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
   // The latter is often used to indicate keyboard navigation, and it's helpful to distinguish between keyboard
   // and mouse interactions.
   &:active {
-    background-color: $menu-item-color-active;
+    background-color: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent);
 
     .#{$ns}-menu-item-label {
-      color: $pt-text-color;
+      color: var(--bp-typography-color-default-rest);
     }
   }
 
   &.#{$ns}-active {
-    @include menu-item-active(false);
+    @include menu-item-runtime-active;
   }
 
   &.#{$ns}-menu-item-is-selectable {
@@ -154,7 +154,7 @@ $dark-menu-item-intent-colors: (
   /* stylelint-disable declaration-no-important */
   &.#{$ns}-disabled {
     background-color: inherit !important;
-    color: $pt-text-color-disabled !important;
+    color: var(--bp-typography-color-default-disabled) !important;
     cursor: not-allowed !important;
     // override global a:focus styles
     outline: none !important;
@@ -162,14 +162,95 @@ $dark-menu-item-intent-colors: (
     &::before,
     .#{$ns}-menu-item-icon,
     .#{$ns}-submenu-icon {
-      color: $pt-icon-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
     }
 
     .#{$ns}-menu-item-label {
-      color: $pt-text-color-disabled !important;
+      color: var(--bp-typography-color-default-disabled) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
+}
+
+@mixin menu-item-runtime-hover() {
+  background-color: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent);
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@mixin menu-item-runtime-active() {
+  background-color: color-mix(
+    in srgb,
+    var(--bp-intent-primary-rest) var(--bp-menu-item-active-background-alpha),
+    transparent
+  );
+  color: var(--bp-typography-color-primary-rest);
+
+  .#{$ns}-menu-item-label {
+    color: inherit;
+  }
+
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon {
+    color: var(--bp-typography-color-primary-rest);
+  }
+
+  @each $intent in ("success", "warning", "danger") {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: color-mix(
+        in srgb,
+        var(--bp-intent-#{$intent}-rest) var(--bp-menu-item-active-background-alpha),
+        transparent
+      );
+      color: var(--bp-typography-color-#{$intent}-rest);
+
+      &::before,
+      .#{$ns}-menu-item-icon,
+      .#{$ns}-submenu-icon {
+        color: inherit;
+      }
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    background-color: highlight;
+  }
+}
+
+@mixin menu-item-runtime-intent($intent) {
+  &.#{$ns}-intent-#{$intent} {
+    color: var(--bp-typography-color-#{$intent}-rest);
+
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-menu-item-selected-icon,
+    .#{$ns}-submenu-icon,
+    .#{$ns}-menu-item-label {
+      color: inherit;
+    }
+
+    &:hover {
+      background-color: color-mix(
+        in srgb,
+        var(--bp-intent-#{$intent}-rest) var(--bp-menu-item-intent-hover-background-alpha),
+        transparent
+      );
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      background-color: color-mix(
+        in srgb,
+        var(--bp-intent-#{$intent}-rest) var(--bp-menu-item-intent-active-background-alpha),
+        transparent
+      );
+      color: var(--bp-typography-color-#{$intent}-active);
+    }
+  }
 }
 
 @mixin dark-menu-item() {
@@ -340,14 +421,10 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-divider() {
-  border-top: 1px solid $pt-divider-black;
+  border-top: 1px solid var(--bp-surface-border-color-default);
   display: block;
   // use negative margin to make dividers take up full menu width
   margin: $pt-spacing (-$pt-spacing);
-
-  .#{$ns}-dark & {
-    border-top-color: $pt-dark-divider-white;
-  }
 }
 
 @mixin menu-header($heading-selector: null) {
@@ -371,12 +448,17 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-heading() {
-  @include heading-typography;
   @include overflow-ellipsis;
   // a little extra space to avoid clipping descenders (because overflow hidden)
+  color: var(--bp-typography-color-default-rest);
+  font-weight: 600;
   line-height: $pt-icon-size-standard + 1px;
   margin: 0;
   padding: ($pt-spacing * 2) $menu-item-padding 0 ($pt-spacing * 2);
+
+  &.#{$ns}-text-muted {
+    color: var(--bp-typography-color-muted);
+  }
 }
 
 @mixin menu-header-large($heading-selector) {

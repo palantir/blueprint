@@ -9,14 +9,21 @@
 @import "./submenu";
 
 .#{$ns}-menu {
-  background: $menu-background-color;
+  --bp-menu-background-color: var(--bp-palette-white);
+
+  background: var(--bp-menu-background-color);
   border-radius: var(--bp-surface-border-radius);
-  color: $pt-text-color;
+  color: var(--bp-typography-color-default-rest);
   list-style: none;
   margin: 0;
   min-width: $menu-min-width;
   padding: $pt-spacing;
   text-align: left;
+
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    --bp-menu-background-color: var(--bp-palette-dark-gray-3);
+  }
 }
 
 .#{$ns}-menu-divider {
@@ -24,10 +31,14 @@
 }
 
 .#{$ns}-menu-item {
+  --bp-menu-item-active-background-alpha: 10%;
+  --bp-menu-item-intent-hover-background-alpha: 10%;
+  --bp-menu-item-intent-active-background-alpha: 20%;
+
   @include menu-item;
 
-  @each $intent, $colors in $menu-item-intent-colors {
-    @include menu-item-intent($intent, false, $colors...);
+  @each $intent in ("primary", "success", "warning", "danger") {
+    @include menu-item-runtime-intent($intent);
   }
 
   &::before {
@@ -48,6 +59,13 @@
   .#{$ns}-small & {
     @include menu-item-small;
   }
+
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    --bp-menu-item-active-background-alpha: 20%;
+    --bp-menu-item-intent-hover-background-alpha: 20%;
+    --bp-menu-item-intent-active-background-alpha: 30%;
+  }
 }
 
 button.#{$ns}-menu-item {
@@ -62,31 +80,6 @@ button.#{$ns}-menu-item {
 
   .#{$ns}-large & {
     @include menu-header-large($heading-selector: "> h6");
-  }
-}
-
-// dark theme
-.#{$ns}-dark {
-  .#{$ns}-menu {
-    background: $dark-menu-background-color;
-    color: $pt-dark-text-color;
-  }
-
-  .#{$ns}-menu-item {
-    @include dark-menu-item;
-
-    @each $intent, $colors in $dark-menu-item-intent-colors {
-      @include menu-item-intent($intent, true, $colors...);
-    }
-  }
-
-  .#{$ns}-menu-divider,
-  .#{$ns}-menu-header {
-    border-color: $pt-dark-divider-white;
-  }
-
-  .#{$ns}-menu-header > h6 {
-    color: $pt-dark-heading-color;
   }
 }
 
