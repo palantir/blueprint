@@ -126,6 +126,22 @@ There are a few ways to run development scripts, here they are listed from simpl
 
 Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist). If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `pnpm compile` from `packages/docs-data` to see changes reflected in the application. For simplicity, an alias script `pnpm docs-data` exists in the root to minimize directory hopping.
 
+### Publishing the website
+
+After compiling and distributing the packages, build the website bundles and Storybook:
+
+```sh
+pnpm bundle
+pnpm build-storybook
+pnpm site
+```
+
+`pnpm site` stages the landing page, documentation, and Storybook in `site/` and starts a local preview.
+Check Storybook at `http://localhost:8080/storybook/`, then stop the preview server.
+
+Maintainers can run `pnpm deploy:site` to publish the staged site to GitHub Pages, including Storybook at
+`https://blueprintjs.com/storybook/`. Chromatic publishing and visual tests remain separate.
+
 ### Updating icons
 
 The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should produce the generated source code in this repo used to build the icons documentation. This is sufficient for most development workflows.
