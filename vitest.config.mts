@@ -11,6 +11,7 @@ export default defineConfig({
         environment: "jsdom",
         exclude: ["lib/**", "node_modules/**"],
         projects: [
+            ".storybook/vitest.config.mts",
             "packages/core/vitest.config.mts",
             "packages/datetime/vitest.config.mts",
             "packages/docs-data/vitest.config.mts",

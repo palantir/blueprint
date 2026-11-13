@@ -72,6 +72,7 @@ const preview: Preview = {
     ],
 
     initialGlobals: {
+        generatorInputs: {},
         theme: "light",
         tokenOverrides: {},
     },

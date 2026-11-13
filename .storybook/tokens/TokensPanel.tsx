@@ -3,14 +3,25 @@
  */
 
 import { ColorControl, RangeControl } from "@storybook/addon-docs/blocks";
+// eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root Culori devDependency.
+import { formatHex, parse } from "culori";
 // This panel uses the manager's separate build config and classic JSX runtime.
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
 import React from "react";
-import { IconButton, Loader } from "storybook/internal/components";
+import { IconButton, Loader, TabsView } from "storybook/internal/components";
 import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
+import {
+    type FamilyInput,
+    generateTokens,
+    type GeneratorInputs,
+    getFamilyTokenNames,
+    TOKEN_FAMILIES,
+    type TokenFamily,
+} from "./generateTokens";
+import { type ManualTokenOverrides, resolveTokenOverrides } from "./resolveTokenOverrides";
 import {
     type ColorTokenEditor,
     type RangeTokenEditor,
@@ -55,6 +66,15 @@ const TokensTable = styled.table(({ theme }) => ({
 
 const TokenNameLabel = styled.code({ whiteSpace: "nowrap" });
 const ResetGlyph = styled.span({ fontSize: 16, lineHeight: 1 });
+const FAMILY_LABELS: Record<TokenFamily, string> = {
+    danger: "Danger",
+    default: "Default",
+    primary: "Primary",
+    success: "Success",
+    warning: "Warning",
+};
+// Preserve picker drafts/debounced edits and the token editor's expanded groups across tab changes.
+const TAB_PANEL_PROPS = { renderAllChildren: true };
 const TokenGroupHeader = styled.th({
     "&&": { padding: 0 },
 });
@@ -127,16 +147,7 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
                 )}
             </td>
             <td>
-                <IconButton
-                    ariaLabel={`Reset ${name}`}
-                    disabled={!hasOverride}
-                    onClick={handleReset}
-                    padding="small"
-                    size="small"
-                    variant="ghost"
-                >
-                    <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
-                </IconButton>
+                <ResetButton disabled={!hasOverride} name={name} onClick={handleReset} />
             </td>
         </tr>
     );
@@ -194,18 +205,31 @@ function TokenGroupSection({ group, onResetToken, onUpdateToken, tokenOverrides 
 
 interface TokenControlProps<TEditor> {
     editor: TEditor;
-    name: TokenName;
+    name: string;
     onChange: (value: string | undefined) => void;
     overrideValue: string | undefined;
 }
 
 function ColorTokenControl({ editor, name, onChange, overrideValue }: TokenControlProps<ColorTokenEditor>) {
+    const onChangeRef = React.useRef(onChange);
+    onChangeRef.current = onChange;
+    const isMounted = React.useRef(true);
+    React.useEffect(function ignoreUnmountedPickerUpdates() {
+        isMounted.current = true;
+        return () => {
+            isMounted.current = false;
+        };
+    }, []);
     const cssValue = overrideValue || editor.defaultCssValue;
     const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
-        (value: string | undefined) =>
-            onChange(value === undefined || value === "" ? undefined : editor.toCssValue(value)),
-        [editor, onChange],
+        (value: string | undefined) => {
+            // ColorControl debounces by 200 ms without cancelling on unmount. Reset remounts the generator controls.
+            if (isMounted.current) {
+                onChangeRef.current(value == null || value === "" ? undefined : editor.toCssValue(value));
+            }
+        },
+        [editor],
     );
 
     return <ColorControl {...editor.control} name={name} onChange={handleChange} value={controlValue} />;
@@ -225,31 +249,59 @@ export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const tokenOverrides: Partial<TokenValues> = React.useMemo(
+    const manualOverrides: ManualTokenOverrides = React.useMemo(
         () => globals.tokenOverrides ?? {},
         [globals.tokenOverrides],
+    );
+    const generatorInputs: GeneratorInputs | undefined = globals.generatorInputs;
+    const theme = globals.theme === "dark" ? "dark" : "light";
+    const tokenOverrides = resolveTokenOverrides(generatorInputs, manualOverrides, theme);
+
+    const handleGenerate = React.useCallback(
+        (family: TokenFamily, input: FamilyInput) => {
+            const defaultColor = TOKEN_CONFIG[`--bp-intent-${family}-rest`].defaultCssValue;
+            if (input.color === (generatorInputs?.[family]?.color ?? defaultColor)) {
+                return;
+            }
+            const inputs = { ...generatorInputs };
+            if (input.color === defaultColor) {
+                delete inputs[family];
+            } else {
+                inputs[family] = input;
+            }
+            const generated = generateTokens({ [family]: inputs[family] });
+            if (generated == null) {
+                return;
+            }
+            const overrides = { ...manualOverrides };
+            for (const name of getFamilyTokenNames(family)) {
+                delete overrides[name];
+            }
+            updateGlobals({ generatorInputs: inputs, tokenOverrides: overrides });
+        },
+        [generatorInputs, manualOverrides, updateGlobals],
     );
 
     const handleUpdateToken = React.useCallback(
         (name: TokenName, value: string | undefined) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
+            const overrides = { ...manualOverrides };
             if (value === undefined) {
-                delete overrides[name];
+                if (generateTokens(generatorInputs ?? {})?.[theme][name] !== undefined) {
+                    overrides[name] = null;
+                } else {
+                    delete overrides[name];
+                }
             } else {
                 overrides[name] = value;
             }
             updateGlobals({ tokenOverrides: overrides });
         },
-        [tokenOverrides, updateGlobals],
+        [generatorInputs, manualOverrides, theme, updateGlobals],
     );
 
     const handleResetToken = React.useCallback(
-        (name: TokenName) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            delete overrides[name];
-            updateGlobals({ tokenOverrides: overrides });
-        },
-        [tokenOverrides, updateGlobals],
+        (name: TokenName) => handleUpdateToken(name, undefined),
+        [handleUpdateToken],
     );
 
     if (!isStoryPrepared) {
@@ -261,25 +313,138 @@ export function TokensPanel() {
     }
 
     return (
+        <TabsView
+            defaultSelected="generate"
+            panelProps={TAB_PANEL_PROPS}
+            tabs={[
+                {
+                    children: <GenerateColors inputs={generatorInputs} onChange={handleGenerate} />,
+                    id: "generate",
+                    title: "Generate",
+                },
+                {
+                    children: (
+                        <TableWrapper>
+                            <TokensTable>
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Control</th>
+                                        <th aria-label="Reset" />
+                                    </tr>
+                                </thead>
+                                {TOKEN_GROUPS.map(group => (
+                                    <TokenGroupSection
+                                        key={group.label}
+                                        group={group}
+                                        onResetToken={handleResetToken}
+                                        onUpdateToken={handleUpdateToken}
+                                        tokenOverrides={tokenOverrides}
+                                    />
+                                ))}
+                            </TokensTable>
+                        </TableWrapper>
+                    ),
+                    id: "tokens",
+                    title: "Tokens",
+                },
+            ]}
+        />
+    );
+}
+
+function ResetButton({ disabled, name, onClick }: { disabled: boolean; name: string; onClick: () => void }) {
+    return (
+        <IconButton
+            ariaLabel={`Reset ${name}`}
+            disabled={disabled}
+            onClick={onClick}
+            padding="small"
+            size="small"
+            variant="ghost"
+        >
+            <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
+        </IconButton>
+    );
+}
+
+function GenerateColors({
+    inputs,
+    onChange,
+}: {
+    inputs: GeneratorInputs | undefined;
+    onChange: (family: TokenFamily, input: FamilyInput) => void;
+}) {
+    return (
         <TableWrapper>
             <TokensTable>
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Control</th>
+                        <th>Color</th>
                         <th aria-label="Reset" />
                     </tr>
                 </thead>
-                {TOKEN_GROUPS.map(group => (
-                    <TokenGroupSection
-                        key={group.label}
-                        group={group}
-                        onResetToken={handleResetToken}
-                        onUpdateToken={handleUpdateToken}
-                        tokenOverrides={tokenOverrides}
-                    />
-                ))}
+                <tbody>
+                    {TOKEN_FAMILIES.map(family => (
+                        <FamilyColorRow key={family} family={family} input={inputs?.[family]} onChange={onChange} />
+                    ))}
+                </tbody>
             </TokensTable>
         </TableWrapper>
     );
+}
+
+function FamilyColorRow({
+    family,
+    input,
+    onChange,
+}: {
+    family: TokenFamily;
+    input: FamilyInput | undefined;
+    onChange: (family: TokenFamily, input: FamilyInput) => void;
+}) {
+    const editor = TOKEN_CONFIG[`--bp-intent-${family}-rest`];
+    const color = input?.color ?? editor.defaultCssValue;
+    const [colorResetRevision, setColorResetRevision] = React.useState(0);
+    const handleColor = React.useCallback(
+        (value: string | undefined) => {
+            const normalized = normalizeOpaqueColor(value);
+            if (normalized != null) {
+                onChange(family, { color: normalized });
+            }
+        },
+        [family, onChange],
+    );
+    const handleResetColor = React.useCallback(() => {
+        setColorResetRevision(revision => revision + 1);
+        onChange(family, { color: editor.defaultCssValue });
+    }, [editor, family, onChange]);
+
+    return (
+        <tr>
+            <td>{FAMILY_LABELS[family]}</td>
+            <td>
+                <ColorTokenControl
+                    key={colorResetRevision}
+                    editor={editor}
+                    name={`${FAMILY_LABELS[family]} color`}
+                    onChange={handleColor}
+                    overrideValue={color}
+                />
+            </td>
+            <td>
+                <ResetButton
+                    disabled={color === editor.defaultCssValue}
+                    name={`${family} color`}
+                    onClick={handleResetColor}
+                />
+            </td>
+        </tr>
+    );
+}
+
+function normalizeOpaqueColor(value: string | undefined): string | undefined {
+    const color = value == null ? undefined : parse(value);
+    return color == null || (color.alpha != null && color.alpha !== 1) ? undefined : formatHex(color);
 }

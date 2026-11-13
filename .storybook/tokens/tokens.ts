@@ -140,7 +140,10 @@ interface BaseTokenEditor<T, TControlType extends "color" | "range", TControl> {
     type: TControlType;
 }
 
-export type ColorTokenEditor = BaseTokenEditor<string, "color", Pick<ColorProps, "presetColors" | "startOpen">>;
+export interface ColorTokenEditor
+    extends BaseTokenEditor<string, "color", Pick<ColorProps, "presetColors" | "startOpen">> {
+    defaultCssValue: string;
+}
 export type RangeTokenEditor = BaseTokenEditor<number, "range", RangeTokenControlConfig>;
 export type TokenEditor = ColorTokenEditor | RangeTokenEditor;
 
