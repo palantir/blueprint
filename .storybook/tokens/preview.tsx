@@ -5,14 +5,20 @@
 import type { Decorator } from "@storybook/react-vite";
 import { useEffect, useRef } from "storybook/preview-api";
 
-import { GENERATED_TOKEN_NAMES, type GeneratedTokenName, type GeneratedTokens } from "./generateTokens";
-import { TOKEN_NAMES, type TokenValues } from "./tokens";
+import {
+    GENERATED_TOKEN_NAMES,
+    type GeneratedTokenName,
+    type GeneratedTokens,
+    type GeneratorInputs,
+} from "./generateTokens";
+import { type ManualTokenOverrides, resolveTokenOverrides } from "./resolveTokenOverrides";
+import { TOKEN_NAMES } from "./tokens";
 
 type InlineTokenValues = Map<GeneratedTokenName, { priority: string; value: string }>;
 
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
-    const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
-    const generatedOverrides: GeneratedTokens | undefined = globals.generatedTokenOverrides;
+    const tokenOverrides: ManualTokenOverrides | undefined = globals.tokenOverrides;
+    const generatorInputs: GeneratorInputs | undefined = globals.generatorInputs;
     const theme = globals.theme === "dark" ? "dark" : "light";
     const initialTokenValues = useRef<InlineTokenValues | undefined>(undefined);
     const initialRootTokenValues = useRef<InlineTokenValues | undefined>(undefined);
@@ -38,13 +44,13 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function applyTokenOverrides() {
-            const overrides = { ...generatedOverrides?.[theme], ...tokenOverrides };
+            const overrides = resolveTokenOverrides(generatorInputs, tokenOverrides, theme);
             applyOverrides(document.body.style, initialTokenValues.current, overrides);
             // Root-scoped aliases resolve before inheritance. Source colors must also reach those declarations.
             // Body remains the dark-theme scope; dependent CSS stays owned by the shipped stylesheets.
             applyOverrides(document.documentElement.style, initialRootTokenValues.current, overrides);
         },
-        [generatedOverrides, id, theme, tokenOverrides],
+        [generatorInputs, id, theme, tokenOverrides],
     );
 
     return <Story />;

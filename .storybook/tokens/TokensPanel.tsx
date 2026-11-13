@@ -15,13 +15,13 @@ import { styled } from "storybook/theming";
 
 import {
     type FamilyInput,
-    type GeneratedTokens,
     generateTokens,
     type GeneratorInputs,
     getFamilyTokenNames,
     TOKEN_FAMILIES,
     type TokenFamily,
 } from "./generateTokens";
+import { type ManualTokenOverrides, resolveTokenOverrides } from "./resolveTokenOverrides";
 import {
     type ColorTokenEditor,
     type RangeTokenEditor,
@@ -249,14 +249,13 @@ export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const manualOverrides: Partial<TokenValues> = React.useMemo(
+    const manualOverrides: ManualTokenOverrides = React.useMemo(
         () => globals.tokenOverrides ?? {},
         [globals.tokenOverrides],
     );
     const generatorInputs: GeneratorInputs | undefined = globals.generatorInputs;
-    const generatedOverrides: GeneratedTokens | undefined = globals.generatedTokenOverrides;
     const theme = globals.theme === "dark" ? "dark" : "light";
-    const tokenOverrides = { ...generatedOverrides?.[theme], ...manualOverrides };
+    const tokenOverrides = resolveTokenOverrides(generatorInputs, manualOverrides, theme);
 
     const handleGenerate = React.useCallback(
         (family: TokenFamily, input: FamilyInput) => {
@@ -274,46 +273,30 @@ export function TokensPanel() {
             if (generated == null) {
                 return;
             }
-            const overrides: GeneratedTokens["light"] = { ...manualOverrides };
-            const generatedTokenOverrides: GeneratedTokens = {
-                dark: { ...generatedOverrides?.dark },
-                light: { ...generatedOverrides?.light },
-            };
+            const overrides = { ...manualOverrides };
             for (const name of getFamilyTokenNames(family)) {
                 delete overrides[name];
-                delete generatedTokenOverrides.light[name];
-                delete generatedTokenOverrides.dark[name];
             }
-            Object.assign(generatedTokenOverrides.light, generated.light);
-            Object.assign(generatedTokenOverrides.dark, generated.dark);
-            updateGlobals({ generatedTokenOverrides, generatorInputs: inputs, tokenOverrides: overrides });
+            updateGlobals({ generatorInputs: inputs, tokenOverrides: overrides });
         },
-        [generatedOverrides, generatorInputs, manualOverrides, updateGlobals],
+        [generatorInputs, manualOverrides, updateGlobals],
     );
 
     const handleUpdateToken = React.useCallback(
         (name: TokenName, value: string | undefined) => {
-            const overrides: Partial<TokenValues> = { ...manualOverrides };
+            const overrides = { ...manualOverrides };
             if (value === undefined) {
-                delete overrides[name];
+                if (generateTokens(generatorInputs ?? {})?.[theme][name] !== undefined) {
+                    overrides[name] = null;
+                } else {
+                    delete overrides[name];
+                }
             } else {
                 overrides[name] = value;
             }
-            const generatedTokenOverrides: GeneratedTokens = {
-                dark: { ...generatedOverrides?.dark },
-                light: { ...generatedOverrides?.light },
-            };
-            // Manual editing/reset replaces the generated value in both modes; reset never reveals a fallback.
-            for (const mode of ["light", "dark"] as const) {
-                delete generatedTokenOverrides[mode][name];
-                if (name === "--bp-intent-warning-rest") {
-                    // Release the generated Button override when its source is manually edited or reset.
-                    delete generatedTokenOverrides[mode]["--bp6-button-warning-rest"];
-                }
-            }
-            updateGlobals({ generatedTokenOverrides, tokenOverrides: overrides });
+            updateGlobals({ tokenOverrides: overrides });
         },
-        [generatedOverrides, manualOverrides, updateGlobals],
+        [generatorInputs, manualOverrides, theme, updateGlobals],
     );
 
     const handleResetToken = React.useCallback(
