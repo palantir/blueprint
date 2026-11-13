@@ -17,6 +17,7 @@
 import { HotkeysProvider, type HotkeysProviderProps } from "./hotkeys/hotkeysProvider";
 import { OverlaysProvider, type OverlaysProviderProps } from "./overlays/overlaysProvider";
 import { type PortalContextOptions, PortalProvider } from "./portal/portalProvider";
+import { ThemeProvider, type ThemeProviderProps } from "./theme/themeProvider";
 
 // for some props interfaces, it helps to prefix their property names with the name of the provider
 // to avoid any ambiguity in the API
@@ -26,10 +27,9 @@ type HotkeysProviderPrefix<T> = {
 
 export interface BlueprintProviderProps
     extends OverlaysProviderProps,
+        ThemeProviderProps,
         PortalContextOptions,
-        HotkeysProviderPrefix<HotkeysProviderProps> {
-    // no props of its own, `children` comes from `OverlaysProviderProps`
-}
+        HotkeysProviderPrefix<HotkeysProviderProps> {}
 
 /**
  * Composite Blueprint context provider which enables & manages various global behaviors of Blueprint applications.
@@ -43,18 +43,21 @@ export const BlueprintProvider = ({
     hotkeysProviderRenderDialog,
     portalClassName,
     portalContainer,
+    ...themeProps
 }: BlueprintProviderProps) => {
     return (
-        <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
-            <OverlaysProvider>
-                <HotkeysProvider
-                    value={hotkeysProviderValue}
-                    dialogProps={hotkeysProviderDialogProps}
-                    renderDialog={hotkeysProviderRenderDialog}
-                >
-                    {children}
-                </HotkeysProvider>
-            </OverlaysProvider>
-        </PortalProvider>
+        <ThemeProvider {...themeProps}>
+            <PortalProvider portalClassName={portalClassName} portalContainer={portalContainer}>
+                <OverlaysProvider>
+                    <HotkeysProvider
+                        value={hotkeysProviderValue}
+                        dialogProps={hotkeysProviderDialogProps}
+                        renderDialog={hotkeysProviderRenderDialog}
+                    >
+                        {children}
+                    </HotkeysProvider>
+                </OverlaysProvider>
+            </PortalProvider>
+        </ThemeProvider>
     );
 };

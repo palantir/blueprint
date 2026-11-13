@@ -16,7 +16,7 @@
 
 import { memo, useCallback, useState } from "react";
 
-import { Button, Dialog, DialogBody } from "@blueprintjs/core";
+import { Button, Dialog, DialogBody, DialogFooter } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -31,6 +31,10 @@ export const DialogExample = memo<DialogExampleProps>(({ className }) => {
         setIsOpen(!isOpen);
     }, [isOpen]);
 
+    const closeDialog = useCallback(() => {
+        setIsOpen(false);
+    }, []);
+
     return (
         <ExampleCard label="Dialog">
             <Button onClick={toggleDialog} text="Show dialog" />
@@ -40,6 +44,9 @@ export const DialogExample = memo<DialogExampleProps>(({ className }) => {
                     et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
                     aliquip ex ea commodo consequat
                 </DialogBody>
+                <DialogFooter>
+                    <Button onClick={closeDialog}>Cancel</Button>
+                </DialogFooter>
             </Dialog>
         </ExampleCard>
     );
