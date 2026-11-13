@@ -4,8 +4,7 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-$tab-color-selected: $pt-link-color !default;
-$dark-tab-color-selected: $pt-dark-link-color !default;
+$tab-color-selected: var(--bp-typography-color-primary-rest) !default;
 
 $tab-indicator-width: $pt-spacing * 0.75 !default;
 
@@ -35,18 +34,18 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
       width: 100%;
 
       &[aria-selected="true"] {
-        background-color: rgba($pt-intent-primary, 0.2);
+        background-color: color-mix(in srgb, var(--bp-intent-primary-rest) 20%, transparent);
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           background-color: $pt-high-contrast-mode-active-background-color;
-          color: $black;
+          color: var(--bp-palette-black);
         }
       }
     }
 
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: rgba($pt-intent-primary, 0.2);
+      background-color: color-mix(in srgb, var(--bp-intent-primary-rest) 20%, transparent);
       border-radius: var(--bp-surface-border-radius);
       height: auto;
       inset: 0;
@@ -85,7 +84,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   @include overflow-ellipsis;
   align-items: center;
   align-self: stretch;
-  color: $pt-text-color;
+  color: var(--bp-typography-color-default-rest);
   cursor: pointer;
   display: flex;
   flex: 0 0 auto;
@@ -112,7 +111,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
   }
 
   &[aria-disabled="true"] {
-    color: $pt-text-color-disabled;
+    color: var(--bp-typography-color-default-disabled);
     cursor: not-allowed;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -192,44 +191,6 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 
   .#{$ns}-tabs:not(.#{$ns}-vertical) & {
     height: 100%;
-  }
-}
-
-.#{$ns}-dark {
-  .#{$ns}-tab {
-    color: $pt-dark-text-color;
-
-    &[aria-disabled="true"] {
-      color: $pt-dark-text-color-disabled;
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-disabled-text-color;
-      }
-    }
-
-    &[aria-selected="true"] {
-      box-shadow: inset 0 (-$tab-indicator-width) 0 $dark-tab-color-selected;
-    }
-
-    &[aria-selected="true"],
-    &:not([aria-disabled="true"]):hover {
-      color: $dark-tab-color-selected;
-
-      @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-active-text-color;
-      }
-    }
-  }
-
-  .#{$ns}-tab-indicator {
-    background-color: $dark-tab-color-selected;
-
-    @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
-    }
   }
 }
 
