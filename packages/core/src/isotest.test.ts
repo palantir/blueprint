@@ -148,6 +148,9 @@ const config: Record<string, IsomorphicTestConfig> = {
     TagInput: {
         props: { values: ["foo", "bar", "baz"] },
     },
+    ThemeProvider: {
+        className: false,
+    },
     Tooltip: {
         children: requiredChild,
         props: { content: createElement("h1", {}, "content") },
