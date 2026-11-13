@@ -29,10 +29,19 @@ describe("generateTokens", () => {
         }
         for (const role of [
             "background-solid-disabled",
+            "background-subtle-disabled",
+            "background-subtle-disabled-active",
+            "background-alpha-hover",
+            "background-alpha-active",
             "text-disabled",
+            "text-on-solid-disabled",
             "border-alpha-rest",
-            "layer-hover",
-            "layer-active",
+            "border-alpha-disabled",
+            "layer-subtle-hover",
+            "layer-subtle-active",
+            "layer-strong-hover",
+            "layer-strong-active",
+            "layer-strong-disabled-active",
         ]) {
             expect(tokens).not.toHaveProperty(`--bp-${intent}-${role}`);
         }
@@ -49,6 +58,7 @@ describe("generateTokens", () => {
                 );
                 for (const [role, minimum] of [
                     ["muted", 4.5],
+                    ["soft", 5.5],
                     ["normal", 7],
                     ["strong", 11],
                 ] as const) {
@@ -69,7 +79,7 @@ describe("generateTokens", () => {
         },
     );
 
-    it.each(["light", "dark"] as const)("generates exactly the palette-backed roles in %s mode", theme => {
+    it.each(["light", "dark"] as const)("generates exactly the opaque palette-backed roles in %s mode", theme => {
         const tokens = Object.fromEntries(
             INTENTS.flatMap(intent => Object.entries(generateTokens("#336699", { intent }))),
         );

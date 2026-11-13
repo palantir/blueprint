@@ -56,29 +56,29 @@ $tag-intent-colors: (
 $minimal-tag-intent-colors: (
   "primary": (
     var(--bp-primary-background-alpha-rest),
-    var(--bp-primary-layer-hover),
-    var(--bp-primary-layer-active),
+    var(--bp-primary-background-alpha-hover),
+    var(--bp-primary-background-alpha-active),
     var(--bp-primary-text-normal),
     var(--bp-primary-text-strong),
   ),
   "success": (
     var(--bp-success-background-alpha-rest),
-    var(--bp-success-layer-hover),
-    var(--bp-success-layer-active),
+    var(--bp-success-background-alpha-hover),
+    var(--bp-success-background-alpha-active),
     var(--bp-success-text-normal),
     var(--bp-success-text-strong),
   ),
   "warning": (
     var(--bp-warning-background-alpha-rest),
-    var(--bp-warning-layer-hover),
-    var(--bp-warning-layer-active),
+    var(--bp-warning-background-alpha-hover),
+    var(--bp-warning-background-alpha-active),
     var(--bp-warning-text-normal),
     var(--bp-warning-text-strong),
   ),
   "danger": (
     var(--bp-danger-background-alpha-rest),
-    var(--bp-danger-layer-hover),
-    var(--bp-danger-layer-active),
+    var(--bp-danger-background-alpha-hover),
+    var(--bp-danger-background-alpha-active),
     var(--bp-danger-text-normal),
     var(--bp-danger-text-strong),
   ),
@@ -200,7 +200,7 @@ $minimal-tag-intent-colors: (
 
       &:hover,
       &:active {
-        color: var(--bp-neutral-text-normal);
+        color: var(--bp-neutral-text-soft);
       }
     }
   }
@@ -211,15 +211,13 @@ $minimal-tag-intent-colors: (
     cursor: pointer;
 
     &:hover {
-      background: linear-gradient(var(--bp-neutral-layer-hover) 0 0)
-        var(--bp-neutral-background-alpha-rest);
+      background-color: var(--bp-neutral-background-alpha-hover);
       color: var(--bp-neutral-text-strong);
     }
 
     &.#{$ns}-active,
     &:active {
-      background: linear-gradient(var(--bp-neutral-layer-active) 0 0)
-        var(--bp-neutral-background-alpha-rest);
+      background-color: var(--bp-neutral-background-alpha-active);
       color: var(--bp-neutral-text-strong);
     }
   }
@@ -241,13 +239,13 @@ $minimal-tag-intent-colors: (
 
   &.#{$ns}-interactive {
     &:hover {
-      background: linear-gradient($hover-color 0 0) $background-color;
+      background-color: $hover-color;
       color: $hover-active-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
-      background: linear-gradient($active-color 0 0) $background-color;
+      background-color: $active-color;
       color: $hover-active-text-color;
     }
   }

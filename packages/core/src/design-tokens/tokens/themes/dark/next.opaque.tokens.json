@@ -76,6 +76,9 @@
             },
             "muted": {
                 "$value": "{neutral.palette.2}"
+            },
+            "soft": {
+                "$value": "{neutral.text.normal}"
             }
         }
     },
