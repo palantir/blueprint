@@ -9,13 +9,13 @@ import { GENERATED_TOKEN_NAMES, generateTokens, getFamilyTokenNames, TOKEN_FAMIL
 describe("generateTokens", () => {
     it("assigns only primary's nine source roles using the current palette in each mode", () => {
         const result = generateTokens({ primary: { color: "#2D72D2" } });
-        // Palette output revision 1; these are role expectations, not a second palette recipe.
+        // Approved role expectations, including the 10%/20% dark steps.
         expect(result).toEqual({
             dark: {
-                "--bp-intent-primary-active": "#03122b",
+                "--bp-intent-primary-active": "#1f539b",
                 "--bp-intent-primary-disabled": "#528adb",
                 "--bp-intent-primary-foreground": "#ffffff",
-                "--bp-intent-primary-hover": "#163f79",
+                "--bp-intent-primary-hover": "#2662b6",
                 "--bp-intent-primary-rest": "#2d72d2",
                 "--bp-typography-color-primary-active": "#97baec",
                 "--bp-typography-color-primary-disabled": "#528adb",
@@ -23,15 +23,15 @@ describe("generateTokens", () => {
                 "--bp-typography-color-primary-rest": "#75a2e4",
             },
             light: {
-                "--bp-intent-primary-active": "#03122b",
+                "--bp-intent-primary-active": "#1f539b",
                 "--bp-intent-primary-disabled": "#528adb",
                 "--bp-intent-primary-foreground": "#ffffff",
-                "--bp-intent-primary-hover": "#163f79",
+                "--bp-intent-primary-hover": "#2662b6",
                 "--bp-intent-primary-rest": "#2d72d2",
-                "--bp-typography-color-primary-active": "#03122b",
+                "--bp-typography-color-primary-active": "#1f539b",
                 "--bp-typography-color-primary-disabled": "#528adb",
-                "--bp-typography-color-primary-hover": "#163f79",
-                "--bp-typography-color-primary-rest": "#163f79",
+                "--bp-typography-color-primary-hover": "#2662b6",
+                "--bp-typography-color-primary-rest": "#2662b6",
             },
         });
     });
@@ -46,16 +46,16 @@ describe("generateTokens", () => {
         for (const mode of ["light", "dark"] as const) {
             expect(Object.keys(result[mode]).sort()).toEqual(getFamilyTokenNames(family).sort());
             expect(result[mode][`--bp-intent-${family}-rest`]).toBe("#2d72d2");
-            expect(result[mode][`--bp-intent-${family}-hover`]).toBe("#163f79");
-            expect(result[mode][`--bp-intent-${family}-active`]).toBe("#03122b");
+            expect(result[mode][`--bp-intent-${family}-hover`]).toBe("#2662b6");
+            expect(result[mode][`--bp-intent-${family}-active`]).toBe("#1f539b");
             expect(result[mode][`--bp-intent-${family}-disabled`]).toBe("#528adb");
             expect(result[mode][`--bp-intent-${family}-foreground`]).toBe("#ffffff");
-            expect(result[mode][`--bp-typography-color-${family}-rest`]).toBe(mode === "light" ? "#163f79" : "#75a2e4");
+            expect(result[mode][`--bp-typography-color-${family}-rest`]).toBe(mode === "light" ? "#2662b6" : "#75a2e4");
             expect(result[mode][`--bp-typography-color-${family}-hover`]).toBe(
-                mode === "light" ? "#163f79" : "#75a2e4",
+                mode === "light" ? "#2662b6" : "#75a2e4",
             );
             expect(result[mode][`--bp-typography-color-${family}-active`]).toBe(
-                mode === "light" ? "#03122b" : "#97baec",
+                mode === "light" ? "#1f539b" : "#97baec",
             );
             expect(result[mode][`--bp-typography-color-${family}-disabled`]).toBe("#528adb");
         }
@@ -65,13 +65,13 @@ describe("generateTokens", () => {
         const result = generateTokens({ default: { color: "#2d72d2" } });
         assert(result != null);
         expect(result.light).toEqual({
-            "--bp-intent-default-active": "#03122b",
+            "--bp-intent-default-active": "#1f539b",
             "--bp-intent-default-disabled": "#528adb",
             "--bp-intent-default-foreground": "#ffffff",
-            "--bp-intent-default-hover": "#163f79",
+            "--bp-intent-default-hover": "#2662b6",
             "--bp-intent-default-rest": "#2d72d2",
-            "--bp-typography-color-default-active": "#163f79",
-            "--bp-typography-color-default-rest": "#03122b",
+            "--bp-typography-color-default-active": "#2662b6",
+            "--bp-typography-color-default-rest": "#1f539b",
         });
         expect(result.dark).toEqual({
             ...result.light,

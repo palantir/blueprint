@@ -32,8 +32,8 @@ export function generatePalette(input: string): Palette | undefined {
         formatShade(lighter(4 / 6)),
         formatShade(lighter(5 / 6)),
         formatHex(seed),
-        formatShade(darker(1 / 3)),
-        formatShade(darker(2 / 3)),
+        formatShade(darker(0.1)),
+        formatShade(darker(0.2)),
     ];
 }
 
