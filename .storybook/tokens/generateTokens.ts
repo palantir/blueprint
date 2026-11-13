@@ -8,7 +8,7 @@ import { parseHex, yiq } from "culori";
 import paletteTokens from "../../packages/core/src/design-tokens/tokens/base/palette.tokens.json";
 
 import { generatePalette } from "./generatePalette";
-import type { TokenName, TokenValues } from "./tokens";
+import type { TokenName } from "./tokens";
 
 export interface FamilyInput {
     color: string;
@@ -17,15 +17,16 @@ export interface FamilyInput {
 export const TOKEN_FAMILIES = ["default", "primary", "success", "warning", "danger"] as const;
 export type TokenFamily = (typeof TOKEN_FAMILIES)[number];
 export type GeneratorInputs = Partial<Record<TokenFamily, FamilyInput>>;
+export type GeneratedTokenName = TokenName | "--bp6-button-warning-rest";
 
 export interface GeneratedTokens {
-    dark: Partial<TokenValues>;
-    light: Partial<TokenValues>;
+    dark: Partial<Record<GeneratedTokenName, string>>;
+    light: Partial<Record<GeneratedTokenName, string>>;
 }
 
 export const GENERATED_TOKEN_NAMES = TOKEN_FAMILIES.flatMap(getFamilyTokenNames);
 
-/** Composes the independent palette and role-assignment stages. No dependent tokens are emitted. */
+/** Composes palette generation and role assignment, including BP6's warning Button rest override. */
 export function generateTokens(inputs: GeneratorInputs): GeneratedTokens | undefined {
     const result: GeneratedTokens = { dark: {}, light: {} };
     for (const family of TOKEN_FAMILIES) {
@@ -50,14 +51,14 @@ export function generateTokens(inputs: GeneratorInputs): GeneratedTokens | undef
     return result;
 }
 
-export function getFamilyTokenNames(family: TokenFamily): TokenName[] {
+export function getFamilyTokenNames(family: TokenFamily): GeneratedTokenName[] {
     return [`--bp-intent-${family}-foreground`, ...getFamilyAssignments(family).map(({ name }) => name)];
 }
 
 interface TokenAssignment {
     dark: number;
     light: number;
-    name: TokenName;
+    name: GeneratedTokenName;
 }
 
 function getFamilyAssignments(family: TokenFamily): TokenAssignment[] {
@@ -74,11 +75,16 @@ function getFamilyAssignments(family: TokenFamily): TokenAssignment[] {
                   { dark: 2, light: 7, name: `--bp-typography-color-${family}-active` },
                   { dark: 4, light: 4, name: `--bp-typography-color-${family}-disabled` },
               ];
-    return [
+    const assignments: TokenAssignment[] = [
         { dark: 5, light: 5, name: `--bp-intent-${family}-rest` },
         { dark: 6, light: 6, name: `--bp-intent-${family}-hover` },
         { dark: 7, light: 7, name: `--bp-intent-${family}-active` },
         { dark: 4, light: 4, name: `--bp-intent-${family}-disabled` },
         ...textAssignments,
     ];
+    if (family === "warning") {
+        // Generated themes use the exact seed instead of BP6's lighter warning Button recipe.
+        assignments.push({ dark: 5, light: 5, name: "--bp6-button-warning-rest" });
+    }
+    return assignments;
 }

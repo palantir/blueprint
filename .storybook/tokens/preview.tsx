@@ -5,10 +5,10 @@
 import type { Decorator } from "@storybook/react-vite";
 import { useEffect, useRef } from "storybook/preview-api";
 
-import { GENERATED_TOKEN_NAMES, type GeneratedTokens } from "./generateTokens";
-import { TOKEN_NAMES, type TokenName, type TokenValues } from "./tokens";
+import { GENERATED_TOKEN_NAMES, type GeneratedTokenName, type GeneratedTokens } from "./generateTokens";
+import { TOKEN_NAMES, type TokenValues } from "./tokens";
 
-type InlineTokenValues = Map<TokenName, { priority: string; value: string }>;
+type InlineTokenValues = Map<GeneratedTokenName, { priority: string; value: string }>;
 
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
@@ -50,7 +50,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
     return <Story />;
 };
 
-function captureInlineValues(style: CSSStyleDeclaration, names: readonly TokenName[]): InlineTokenValues {
+function captureInlineValues(style: CSSStyleDeclaration, names: readonly GeneratedTokenName[]): InlineTokenValues {
     return new Map(
         names.map(name => [name, { priority: style.getPropertyPriority(name), value: style.getPropertyValue(name) }]),
     );
@@ -59,7 +59,7 @@ function captureInlineValues(style: CSSStyleDeclaration, names: readonly TokenNa
 function applyOverrides(
     style: CSSStyleDeclaration,
     initialValues: InlineTokenValues | undefined,
-    overrides: Partial<TokenValues>,
+    overrides: GeneratedTokens["light"],
 ) {
     for (const [name, initial] of initialValues ?? []) {
         const override = overrides[name];

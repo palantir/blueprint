@@ -274,7 +274,7 @@ export function TokensPanel() {
             if (generated == null) {
                 return;
             }
-            const overrides = { ...manualOverrides };
+            const overrides: GeneratedTokens["light"] = { ...manualOverrides };
             const generatedTokenOverrides: GeneratedTokens = {
                 dark: { ...generatedOverrides?.dark },
                 light: { ...generatedOverrides?.light },
@@ -304,8 +304,13 @@ export function TokensPanel() {
                 light: { ...generatedOverrides?.light },
             };
             // Manual editing/reset replaces the generated value in both modes; reset never reveals a fallback.
-            delete generatedTokenOverrides.dark[name];
-            delete generatedTokenOverrides.light[name];
+            for (const mode of ["light", "dark"] as const) {
+                delete generatedTokenOverrides[mode][name];
+                if (name === "--bp-intent-warning-rest") {
+                    // Release the generated Button override when its source is manually edited or reset.
+                    delete generatedTokenOverrides[mode]["--bp6-button-warning-rest"];
+                }
+            }
             updateGlobals({ generatedTokenOverrides, tokenOverrides: overrides });
         },
         [generatedOverrides, manualOverrides, updateGlobals],

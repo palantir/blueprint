@@ -80,7 +80,18 @@ describe("generateTokens", () => {
         });
     });
 
-    it("composes all five families without adding dependent or unrelated tokens", () => {
+    it("uses the exact warning seed for BP6's Button rest override in both modes", () => {
+        const result = generateTokens({ warning: { color: "#AbC" } });
+        assert(result != null);
+        for (const mode of ["light", "dark"] as const) {
+            expect(result[mode]["--bp6-button-warning-rest"]).toBe("#aabbcc");
+            expect(result[mode]["--bp6-button-warning-rest"]).toBe(result[mode]["--bp-intent-warning-rest"]);
+        }
+        expect(getFamilyTokenNames("warning")).toContain("--bp6-button-warning-rest");
+        expect(getFamilyTokenNames("primary")).not.toContain("--bp6-button-warning-rest");
+    });
+
+    it("composes all five families with only approved roles and the warning Button override", () => {
         const inputs = {
             danger: { color: "#ba3456" },
             default: { color: "#123456" },
@@ -90,7 +101,7 @@ describe("generateTokens", () => {
         };
         const result = generateTokens(inputs);
         assert(result != null);
-        expect(new Set(GENERATED_TOKEN_NAMES).size).toBe(43);
+        expect(new Set(GENERATED_TOKEN_NAMES).size).toBe(44);
         for (const mode of ["light", "dark"] as const) {
             expect(Object.keys(result[mode]).sort()).toEqual([...GENERATED_TOKEN_NAMES].sort());
             for (const family of TOKEN_FAMILIES) {
