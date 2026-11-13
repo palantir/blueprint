@@ -138,6 +138,7 @@ pnpm site
 
 `pnpm site` stages the landing page, documentation, and Storybook in `site/` and starts a local preview.
 Check Storybook at `http://localhost:8080/storybook/`, then stop the preview server.
+
 Maintainers can run `pnpm deploy:site` to publish the staged site to GitHub Pages, including Storybook at
 `https://blueprintjs.com/storybook/`. Chromatic publishing and visual tests remain separate.
 
