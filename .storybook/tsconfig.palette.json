@@ -1,0 +1,24 @@
+{
+    "extends": "../config/tsconfig.base.json",
+    "compilerOptions": {
+        "allowImportingTsExtensions": true,
+        "allowJs": true,
+        "checkJs": true,
+        "jsx": "react-jsx",
+        "lib": ["ES2022", "DOM"],
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "target": "ES2022",
+        "types": ["node"]
+    },
+    "include": [
+        "tokens/**/*.ts",
+        "tokens/**/*.tsx",
+        "tokens/generatePalette.samples.mjs",
+        "manager.tsx",
+        "vitest.config.mts"
+    ]
+}

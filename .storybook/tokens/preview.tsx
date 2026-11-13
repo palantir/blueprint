@@ -5,35 +5,32 @@
 import type { Decorator } from "@storybook/react-vite";
 import { useEffect, useRef } from "storybook/preview-api";
 
+import { GENERATED_TOKEN_NAMES, type GeneratedTokens } from "./generateTokens";
 import { TOKEN_NAMES, type TokenName, type TokenValues } from "./tokens";
 
-type InlineTokenValues = Record<TokenName, { priority: string; value: string }>;
+type InlineTokenValues = Map<TokenName, { priority: string; value: string }>;
 
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
+    const generatedOverrides: GeneratedTokens | undefined = globals.generatedTokenOverrides;
+    const theme = globals.theme === "dark" ? "dark" : "light";
     const initialTokenValues = useRef<InlineTokenValues | undefined>(undefined);
+    const initialRootTokenValues = useRef<InlineTokenValues | undefined>(undefined);
 
     useEffect(
         function captureInitialTokenValues() {
             const style = document.body.style;
-            const values = Object.fromEntries(
-                TOKEN_NAMES.map(name => [
-                    name,
-                    {
-                        priority: style.getPropertyPriority(name),
-                        value: style.getPropertyValue(name),
-                    },
-                ]),
-            ) as InlineTokenValues;
+            const rootStyle = document.documentElement.style;
+            const values = captureInlineValues(style, TOKEN_NAMES);
+            const rootValues = captureInlineValues(rootStyle, GENERATED_TOKEN_NAMES);
             initialTokenValues.current = values;
+            initialRootTokenValues.current = rootValues;
 
             return () => {
-                for (const name of TOKEN_NAMES) {
-                    const { value, priority } = values[name];
-                    // An empty value removes the inline property.
-                    style.setProperty(name, value, priority);
-                }
+                applyOverrides(style, values, {});
+                applyOverrides(rootStyle, rootValues, {});
                 initialTokenValues.current = undefined;
+                initialRootTokenValues.current = undefined;
             };
         },
         [id],
@@ -41,21 +38,36 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function applyTokenOverrides() {
-            const style = document.body.style;
-            const overrides = tokenOverrides ?? {};
-
-            for (const name of TOKEN_NAMES) {
-                const override = overrides[name];
-                if (override != null && override !== "") {
-                    style.setProperty(name, override);
-                } else {
-                    const initialValue = initialTokenValues.current?.[name];
-                    style.setProperty(name, initialValue?.value ?? "", initialValue?.priority);
-                }
-            }
+            const overrides = { ...generatedOverrides?.[theme], ...tokenOverrides };
+            applyOverrides(document.body.style, initialTokenValues.current, overrides);
+            // Root-scoped aliases resolve before inheritance. Source colors must also reach those declarations.
+            // Body remains the dark-theme scope; dependent CSS stays owned by the shipped stylesheets.
+            applyOverrides(document.documentElement.style, initialRootTokenValues.current, overrides);
         },
-        [id, tokenOverrides],
+        [generatedOverrides, id, theme, tokenOverrides],
     );
 
     return <Story />;
 };
+
+function captureInlineValues(style: CSSStyleDeclaration, names: readonly TokenName[]): InlineTokenValues {
+    return new Map(
+        names.map(name => [name, { priority: style.getPropertyPriority(name), value: style.getPropertyValue(name) }]),
+    );
+}
+
+function applyOverrides(
+    style: CSSStyleDeclaration,
+    initialValues: InlineTokenValues | undefined,
+    overrides: Partial<TokenValues>,
+) {
+    for (const [name, initial] of initialValues ?? []) {
+        const override = overrides[name];
+        if (override != null && override !== "") {
+            style.setProperty(name, override);
+        } else {
+            // An empty value restores the cascade by removing the inline property.
+            style.setProperty(name, initial.value, initial.priority);
+        }
+    }
+}
