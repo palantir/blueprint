@@ -1,0 +1,65 @@
+name: Bundle Size Comment
+
+# Posts the Bundle Size workflow's measurements on the PR. `workflow_run`
+# workflows always run develop's copy of this file and its scripts, so nothing a
+# PR changes runs next to the write token. The measurements come from the PR's
+# run, so they are only ever parsed as data.
+on:
+  workflow_run:
+    workflows: [Bundle Size]
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  comment:
+    name: Comment with the bundle size comparison
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Check out the comment script
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+          sparse-checkout: .github/scripts
+
+      - name: Download measurements
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: bundle-size
+          path: /tmp/sizes
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Compare and comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+
+          # Only the open PR whose head is the measured commit, so a run that
+          # finishes after a newer push can't overwrite the newer result.
+          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
+            echo "Unexpected head sha '$SHA'."
+            exit 1
+          fi
+          pr=$(gh api "repos/$REPO/commits/$SHA/pulls" --jq "[.[] | select(.state == \"open\" and .head.sha == \"$SHA\")][0].number // empty")
+          if [ -z "$pr" ]; then
+            echo "No open PR has $SHA as its head; nothing to comment on."
+            exit 0
+          fi
+
+          node .github/scripts/bundle-size-comment.mjs /tmp/sizes/current.json /tmp/sizes/base.json "$SHA" > /tmp/comment.md
+          comment_id=$(gh api --paginate "repos/$REPO/issues/$pr/comments" --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("## size-limit report"))) | .id' | head -1)
+          if [ -n "$comment_id" ]; then
+            gh api -X PATCH "repos/$REPO/issues/comments/$comment_id" -F body=@/tmp/comment.md > /dev/null
+          else
+            gh api "repos/$REPO/issues/$pr/comments" -F body=@/tmp/comment.md > /dev/null
+          fi
