@@ -57,8 +57,7 @@
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "catalog:",
-        "zod": "^4.6.7"
+        "tslib": "catalog:"
     },
     "peerDependencies": {
         "@types/react": "18 || 19",

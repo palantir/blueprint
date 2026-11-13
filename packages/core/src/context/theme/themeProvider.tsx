@@ -3,7 +3,6 @@
  */
 
 import { useMemo } from "react";
-import { z } from "zod";
 
 import type { ThemeAPI } from "../../theme/themeApi";
 
@@ -29,14 +28,6 @@ export interface ThemeProviderProps {
 
 const THEME_API_VERSION = 1 satisfies ThemeAPI["version"];
 
-const pixelStringSchema = z.string().regex(/^(?:0|[1-9]\d*)(?:\.\d+)?px$/);
-
-const themeSchema = z.object({
-    borderRadius: pixelStringSchema.optional(),
-    fontFamily: z.string().optional(),
-    version: z.literal(THEME_API_VERSION),
-} satisfies { [Key in keyof ThemeAPI]-?: z.ZodType<ThemeAPI[Key]> });
-
 const themeTokenMap = {
     borderRadius: "--bp-surface-border-radius",
     fontFamily: "--bp-typography-family-default",
@@ -55,7 +46,7 @@ const themeTokenMap = {
 export function ThemeProvider({ children, theme, themesByVersion }: React.PropsWithChildren<ThemeProviderProps>) {
     const contextValue = useMemo(() => {
         const selectedTheme = theme === undefined ? themesByVersion?.[THEME_API_VERSION] : theme;
-        const validTheme = isTheme(selectedTheme) ? selectedTheme : undefined;
+        const validTheme = isThemeValid(selectedTheme) ? selectedTheme : undefined;
         return {
             theme: validTheme,
             tokens: validTheme == null ? undefined : customThemeToBlueprintTokens(validTheme),
@@ -76,13 +67,19 @@ function customThemeToBlueprintTokens(theme: ThemeAPI): BlueprintThemeTokens {
     return tokens;
 }
 
-function isTheme(value: unknown): value is ThemeAPI {
-    if (value === undefined) {
+function isThemeValid(value: unknown): value is ThemeAPI {
+    if (typeof value !== "object" || value === null || Array.isArray(value)) {
         return false;
     }
-    const result = themeSchema.safeParse(value);
-    if (!result.success) {
-        console.error("[Blueprint] Invalid theme:", result.error.issues);
-    }
-    return result.success;
+
+    const theme = value as Record<string, unknown>;
+    return (
+        theme.version === THEME_API_VERSION &&
+        (theme.borderRadius === undefined || isPixelString(theme.borderRadius)) &&
+        (theme.fontFamily === undefined || typeof theme.fontFamily === "string")
+    );
+}
+
+function isPixelString(value: unknown): value is string {
+    return typeof value === "string" && /^(?:0|[1-9]\d*)(?:\.\d+)?px$/.test(value);
 }

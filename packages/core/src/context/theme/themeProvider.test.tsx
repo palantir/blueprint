@@ -29,19 +29,12 @@ describe("ThemeProvider", () => {
         { fontFamily: null, version: 1 },
         { fontFamily: ["Arial"], version: 1 },
     ])("provides no overrides for an invalid representation: %j", representation => {
-        const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
         const { result } = renderHook(() => ({ theme: useBlueprintThemeValue(), tokens: useBlueprintThemeTokens() }), {
             wrapper: ({ children }) => (
                 <ThemeProvider themesByVersion={{ "1": representation }}>{children}</ThemeProvider>
             ),
         });
         expect(result.current).toEqual({ theme: undefined, tokens: undefined });
-        if (representation === undefined) {
-            expect(error).not.toHaveBeenCalled();
-        } else {
-            expect(error).toHaveBeenCalledWith("[Blueprint] Invalid theme:", expect.any(Array));
-        }
-        error.mockRestore();
     });
 
     it("exposes the selected original theme without stripping future fields", () => {
@@ -71,7 +64,6 @@ describe("ThemeProvider", () => {
     });
 
     it("clears overrides for an invalid direct theme without reading the versioned representation", () => {
-        const error = vi.spyOn(console, "error").mockImplementation(() => undefined);
         const theme = { borderRadius: "SQUARE", version: 1 } satisfies ThemeAPI;
         const themesByVersion = {
             get "1"() {
@@ -86,8 +78,6 @@ describe("ThemeProvider", () => {
             ),
         });
         expect(result.current).toEqual({ theme: undefined, tokens: undefined });
-        expect(error).toHaveBeenCalledWith("[Blueprint] Invalid theme:", expect.any(Array));
-        error.mockRestore();
     });
 
     it("uses the versioned representation when the direct theme is undefined", () => {
