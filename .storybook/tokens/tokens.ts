@@ -24,6 +24,9 @@ const TOKEN_GROUP_CONFIG = [
     { initialCollapsed: true, label: "Typography", tokenPrefix: "--bp-typography-" },
 ] as const;
 
+export const TOKEN_VALUES_REQUESTED = "blueprint/tokens/values-requested";
+export const TOKEN_VALUES_UPDATED = "blueprint/tokens/values-updated";
+
 // Keep palette tokens before their semantic aliases so the panel mirrors their dependency order.
 /* eslint-disable sort-keys */
 export const TOKEN_CONFIG = {
@@ -122,6 +125,17 @@ export const TOKEN_CONFIG = {
 
 export type TokenName = keyof typeof TOKEN_CONFIG;
 export type TokenValues = Record<TokenName, string>;
+export type ThemeName = "dark" | "light";
+export type ThemeTokenOverrides = Record<ThemeName, Partial<TokenValues>>;
+
+export interface TokenValuesRequest {
+    storyId: string;
+    theme: ThemeName;
+}
+
+export interface TokenValuesUpdate extends TokenValuesRequest {
+    values: TokenValues;
+}
 
 // All keys come from the module-owned configuration above.
 export const TOKEN_NAMES = Object.keys(TOKEN_CONFIG) as TokenName[];
@@ -131,6 +145,25 @@ export const TOKEN_GROUPS = TOKEN_GROUP_CONFIG.map(({ tokenPrefix, ...group }) =
 }));
 
 export type TokenGroup = (typeof TOKEN_GROUPS)[number];
+
+export function getActiveTheme(theme: unknown): ThemeName {
+    return theme === "dark" ? "dark" : "light";
+}
+
+export function normalizeTokenOverrides(value: unknown): ThemeTokenOverrides {
+    if (isRecord(value) && (isRecord(value.dark) || isRecord(value.light))) {
+        return {
+            dark: pickTokenOverrides(value.dark),
+            light: pickTokenOverrides(value.light),
+        };
+    }
+
+    const legacyOverrides = pickTokenOverrides(value);
+    return {
+        dark: { ...legacyOverrides },
+        light: { ...legacyOverrides },
+    };
+}
 
 interface BaseTokenEditor<T, TControlType extends "color" | "range", TControl> {
     control: TControl;
@@ -176,6 +209,21 @@ function getTokenByPath(path: string): unknown {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function pickTokenOverrides(value: unknown): Partial<TokenValues> {
+    if (!isRecord(value)) {
+        return {};
+    }
+
+    const overrides: Partial<TokenValues> = {};
+    for (const name of TOKEN_NAMES) {
+        const tokenValue = value[name];
+        if (typeof tokenValue === "string" && tokenValue !== "") {
+            overrides[name] = tokenValue;
+        }
+    }
+    return overrides;
 }
 
 function colorTokenEditor(defaultCssValue: string): ColorTokenEditor {
