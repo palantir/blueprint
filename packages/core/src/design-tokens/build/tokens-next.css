@@ -8,14 +8,22 @@
   --bp-primary-background-solid-active: var(--bp-primary-palette-7);
   --bp-primary-background-solid-disabled: #2d72d280;
   --bp-primary-background-alpha-rest: #2d72d21a;
+  --bp-primary-background-alpha-hover: #2d72d230; /** Equivalent to the former hover layer composited over the resting fill. */
+  --bp-primary-background-alpha-active: #2d72d247; /** Equivalent to the former active layer composited over the resting fill. */
   --bp-primary-border-strong-rest: var(--bp-primary-palette-5);
   --bp-primary-border-alpha-rest: oklab(from var(--bp-primary-text-normal) l a b / 0.6);
+  --bp-primary-border-alpha-disabled: oklab(from var(--bp-primary-text-normal) l a b / 0.3); /** Preserves the former 60% border alpha at 50% disabled opacity. */
   --bp-primary-text-on-solid: contrast-color(var(--bp-primary-background-solid-rest));
   --bp-primary-text-normal: var(--bp-primary-palette-8);
   --bp-primary-text-strong: var(--bp-primary-palette-9);
+  --bp-primary-text-on-solid-disabled: oklab(from var(--bp-primary-text-on-solid) l a b / var(--bp-opacity-disabled));
   --bp-primary-text-disabled: oklab(from var(--bp-primary-text-normal) l a b / var(--bp-opacity-disabled));
-  --bp-primary-layer-hover: #2d72d21a;
-  --bp-primary-layer-active: #2d72d233;
+  --bp-primary-layer-subtle-hover: #2d72d21a;
+  --bp-primary-layer-subtle-active: #2d72d233;
+  --bp-primary-layer-strong-hover: #2d72d21a;
+  --bp-primary-layer-strong-active: #2d72d233;
+  --bp-primary-layer-strong-disabled-active: #2d72d21a; /** Preserves the former active layer at 50% disabled opacity. */
+  --bp-primary-layer-selected: #2d72d233;
   --bp-primary-palette-0: color-mix(in oklch, var(--bp-primary-base) 5%, var(--bp-palette-white));
   --bp-primary-palette-1: color-mix(in oklch, var(--bp-primary-base) 10%, var(--bp-palette-white));
   --bp-primary-palette-2: color-mix(in oklch, var(--bp-primary-base) 20%, var(--bp-palette-white));
@@ -31,14 +39,21 @@
   --bp-success-background-solid-active: var(--bp-success-palette-7);
   --bp-success-background-solid-disabled: #23855180;
   --bp-success-background-alpha-rest: #2385511a;
+  --bp-success-background-alpha-hover: #23855130; /** Equivalent to the former hover layer composited over the resting fill. */
+  --bp-success-background-alpha-active: #23855147; /** Equivalent to the former active layer composited over the resting fill. */
   --bp-success-border-strong-rest: var(--bp-success-palette-5);
   --bp-success-border-alpha-rest: oklab(from var(--bp-success-text-normal) l a b / 0.6);
+  --bp-success-border-alpha-disabled: oklab(from var(--bp-success-text-normal) l a b / 0.3); /** Preserves the former 60% border alpha at 50% disabled opacity. */
   --bp-success-text-on-solid: contrast-color(var(--bp-success-background-solid-rest));
   --bp-success-text-normal: var(--bp-success-palette-8);
   --bp-success-text-strong: var(--bp-success-palette-9);
+  --bp-success-text-on-solid-disabled: oklab(from var(--bp-success-text-on-solid) l a b / var(--bp-opacity-disabled));
   --bp-success-text-disabled: oklab(from var(--bp-success-text-normal) l a b / var(--bp-opacity-disabled));
-  --bp-success-layer-hover: #2385511a;
-  --bp-success-layer-active: #23855133;
+  --bp-success-layer-subtle-hover: #2385511a;
+  --bp-success-layer-subtle-active: #23855133;
+  --bp-success-layer-strong-hover: #2385511a;
+  --bp-success-layer-strong-active: #23855133;
+  --bp-success-layer-strong-disabled-active: #2385511a; /** Preserves the former active layer at 50% disabled opacity. */
   --bp-success-palette-0: color-mix(in oklch, var(--bp-success-base) 5%, var(--bp-palette-white));
   --bp-success-palette-1: color-mix(in oklch, var(--bp-success-base) 10%, var(--bp-palette-white));
   --bp-success-palette-2: color-mix(in oklch, var(--bp-success-base) 20%, var(--bp-palette-white));
@@ -54,14 +69,21 @@
   --bp-danger-background-solid-active: var(--bp-danger-palette-7);
   --bp-danger-background-solid-disabled: #cd424680;
   --bp-danger-background-alpha-rest: #cd42461a;
+  --bp-danger-background-alpha-hover: #cd424630; /** Equivalent to the former hover layer composited over the resting fill. */
+  --bp-danger-background-alpha-active: #cd424647; /** Equivalent to the former active layer composited over the resting fill. */
   --bp-danger-border-strong-rest: var(--bp-danger-palette-5);
   --bp-danger-border-alpha-rest: oklab(from var(--bp-danger-text-normal) l a b / 0.6);
+  --bp-danger-border-alpha-disabled: oklab(from var(--bp-danger-text-normal) l a b / 0.3); /** Preserves the former 60% border alpha at 50% disabled opacity. */
   --bp-danger-text-on-solid: contrast-color(var(--bp-danger-background-solid-rest));
   --bp-danger-text-normal: var(--bp-danger-palette-8);
   --bp-danger-text-strong: var(--bp-danger-palette-9);
+  --bp-danger-text-on-solid-disabled: oklab(from var(--bp-danger-text-on-solid) l a b / var(--bp-opacity-disabled));
   --bp-danger-text-disabled: oklab(from var(--bp-danger-text-normal) l a b / var(--bp-opacity-disabled));
-  --bp-danger-layer-hover: #cd42461a;
-  --bp-danger-layer-active: #cd424633;
+  --bp-danger-layer-subtle-hover: #cd42461a;
+  --bp-danger-layer-subtle-active: #cd424633;
+  --bp-danger-layer-strong-hover: #cd42461a;
+  --bp-danger-layer-strong-active: #cd424633;
+  --bp-danger-layer-strong-disabled-active: #cd42461a; /** Preserves the former active layer at 50% disabled opacity. */
   --bp-danger-palette-0: color-mix(in oklch, var(--bp-danger-base) 5%, var(--bp-palette-white));
   --bp-danger-palette-1: color-mix(in oklch, var(--bp-danger-base) 10%, var(--bp-palette-white));
   --bp-danger-palette-2: color-mix(in oklch, var(--bp-danger-base) 20%, var(--bp-palette-white));
@@ -77,14 +99,21 @@
   --bp-warning-background-solid-active: var(--bp-warning-palette-7);
   --bp-warning-background-solid-disabled: #c8761980;
   --bp-warning-background-alpha-rest: #c876191a;
+  --bp-warning-background-alpha-hover: #c8761930; /** Equivalent to the former hover layer composited over the resting fill. */
+  --bp-warning-background-alpha-active: #c8761947; /** Equivalent to the former active layer composited over the resting fill. */
   --bp-warning-border-strong-rest: var(--bp-warning-palette-5);
   --bp-warning-border-alpha-rest: oklab(from var(--bp-warning-text-normal) l a b / 0.6);
+  --bp-warning-border-alpha-disabled: oklab(from var(--bp-warning-text-normal) l a b / 0.3); /** Preserves the former 60% border alpha at 50% disabled opacity. */
   --bp-warning-text-on-solid: contrast-color(var(--bp-warning-background-solid-rest));
   --bp-warning-text-normal: var(--bp-warning-palette-8);
   --bp-warning-text-strong: var(--bp-warning-palette-9);
+  --bp-warning-text-on-solid-disabled: oklab(from var(--bp-warning-text-on-solid) l a b / var(--bp-opacity-disabled));
   --bp-warning-text-disabled: oklab(from var(--bp-warning-text-normal) l a b / var(--bp-opacity-disabled));
-  --bp-warning-layer-hover: #c876191a;
-  --bp-warning-layer-active: #c8761933;
+  --bp-warning-layer-subtle-hover: #c876191a;
+  --bp-warning-layer-subtle-active: #c8761933;
+  --bp-warning-layer-strong-hover: #c876191a;
+  --bp-warning-layer-strong-active: #c8761933;
+  --bp-warning-layer-strong-disabled-active: #c876191a; /** Preserves the former active layer at 50% disabled opacity. */
   --bp-warning-palette-0: color-mix(in oklch, var(--bp-warning-base) 5%, var(--bp-palette-white));
   --bp-warning-palette-1: color-mix(in oklch, var(--bp-warning-base) 10%, var(--bp-palette-white));
   --bp-warning-palette-2: color-mix(in oklch, var(--bp-warning-base) 20%, var(--bp-palette-white));
@@ -99,20 +128,29 @@
   --bp-neutral-background-subtle-hover: var(--bp-neutral-palette-2);
   --bp-neutral-background-subtle-active: var(--bp-neutral-palette-3);
   --bp-neutral-background-subtle-disabled: oklab(from var(--bp-neutral-background-subtle-rest) l a b / var(--bp-opacity-disabled));
+  --bp-neutral-background-subtle-disabled-active: oklab(from var(--bp-neutral-background-subtle-active) l a b / var(--bp-opacity-disabled));
   --bp-neutral-background-solid-rest: var(--bp-neutral-palette-5);
   --bp-neutral-background-solid-hover: var(--bp-neutral-palette-6);
   --bp-neutral-background-solid-active: var(--bp-neutral-palette-7);
   --bp-neutral-background-solid-disabled: #8f99a880;
   --bp-neutral-background-alpha-rest: #8f99a81a;
+  --bp-neutral-background-alpha-hover: #8f99a830; /** Equivalent to the former hover layer composited over the resting fill. */
+  --bp-neutral-background-alpha-active: #8f99a847; /** Equivalent to the former active layer composited over the resting fill. */
   --bp-neutral-border-strong-rest: var(--bp-neutral-palette-5);
   --bp-neutral-border-alpha-rest: oklab(from var(--bp-neutral-text-normal) l a b / 0.6);
+  --bp-neutral-border-alpha-disabled: oklab(from var(--bp-neutral-text-normal) l a b / 0.3); /** Preserves the former 60% border alpha at 50% disabled opacity. */
   --bp-neutral-text-on-solid: contrast-color(var(--bp-neutral-background-solid-rest));
   --bp-neutral-text-muted: var(--bp-neutral-palette-7);
   --bp-neutral-text-normal: var(--bp-neutral-palette-8);
+  --bp-neutral-text-soft: var(--bp-neutral-text-normal);
   --bp-neutral-text-strong: var(--bp-neutral-palette-9);
+  --bp-neutral-text-on-solid-disabled: oklab(from var(--bp-neutral-text-on-solid) l a b / var(--bp-opacity-disabled));
   --bp-neutral-text-disabled: oklab(from var(--bp-neutral-text-normal) l a b / var(--bp-opacity-disabled));
-  --bp-neutral-layer-hover: #8f99a81a;
-  --bp-neutral-layer-active: #8f99a833;
+  --bp-neutral-layer-subtle-hover: #8f99a81a;
+  --bp-neutral-layer-subtle-active: #8f99a833;
+  --bp-neutral-layer-strong-hover: #8f99a81a;
+  --bp-neutral-layer-strong-active: #8f99a833;
+  --bp-neutral-layer-strong-disabled-active: #8f99a81a; /** Preserves the former active layer at 50% disabled opacity. */
   --bp-neutral-palette-0: color-mix(in oklch, var(--bp-neutral-base) 5%, var(--bp-palette-white));
   --bp-neutral-palette-1: color-mix(in oklch, var(--bp-neutral-base) 10%, var(--bp-palette-white));
   --bp-neutral-palette-2: color-mix(in oklch, var(--bp-neutral-base) 20%, var(--bp-palette-white));
@@ -134,23 +172,49 @@
   .bp6-next {
     --bp-primary-background-solid-disabled: oklab(from var(--bp-primary-palette-5) l a b / var(--bp-opacity-disabled));
     --bp-primary-background-alpha-rest: oklab(from var(--bp-primary-palette-5) l a b / 0.1);
-    --bp-primary-layer-hover: oklab(from var(--bp-primary-palette-5) l a b / 0.1);
-    --bp-primary-layer-active: oklab(from var(--bp-primary-palette-5) l a b / 0.2);
+    --bp-primary-background-alpha-hover: oklab(from var(--bp-primary-palette-5) l a b / 0.19);
+    --bp-primary-background-alpha-active: oklab(from var(--bp-primary-palette-5) l a b / 0.28);
+    --bp-primary-layer-subtle-hover: oklab(from var(--bp-primary-palette-5) l a b / 0.1);
+    --bp-primary-layer-subtle-active: oklab(from var(--bp-primary-palette-5) l a b / 0.2);
+    --bp-primary-layer-strong-hover: oklab(from var(--bp-primary-palette-5) l a b / 0.1);
+    --bp-primary-layer-strong-active: oklab(from var(--bp-primary-palette-5) l a b / 0.2);
+    --bp-primary-layer-strong-disabled-active: oklab(from var(--bp-primary-palette-5) l a b / 0.1);
+    --bp-primary-layer-selected: oklab(from var(--bp-primary-palette-5) l a b / 0.2);
     --bp-success-background-solid-disabled: oklab(from var(--bp-success-palette-5) l a b / var(--bp-opacity-disabled));
     --bp-success-background-alpha-rest: oklab(from var(--bp-success-palette-5) l a b / 0.1);
-    --bp-success-layer-hover: oklab(from var(--bp-success-palette-5) l a b / 0.1);
-    --bp-success-layer-active: oklab(from var(--bp-success-palette-5) l a b / 0.2);
+    --bp-success-background-alpha-hover: oklab(from var(--bp-success-palette-5) l a b / 0.19);
+    --bp-success-background-alpha-active: oklab(from var(--bp-success-palette-5) l a b / 0.28);
+    --bp-success-layer-subtle-hover: oklab(from var(--bp-success-palette-5) l a b / 0.1);
+    --bp-success-layer-subtle-active: oklab(from var(--bp-success-palette-5) l a b / 0.2);
+    --bp-success-layer-strong-hover: oklab(from var(--bp-success-palette-5) l a b / 0.1);
+    --bp-success-layer-strong-active: oklab(from var(--bp-success-palette-5) l a b / 0.2);
+    --bp-success-layer-strong-disabled-active: oklab(from var(--bp-success-palette-5) l a b / 0.1);
     --bp-danger-background-solid-disabled: oklab(from var(--bp-danger-palette-5) l a b / var(--bp-opacity-disabled));
     --bp-danger-background-alpha-rest: oklab(from var(--bp-danger-palette-5) l a b / 0.1);
-    --bp-danger-layer-hover: oklab(from var(--bp-danger-palette-5) l a b / 0.1);
-    --bp-danger-layer-active: oklab(from var(--bp-danger-palette-5) l a b / 0.2);
+    --bp-danger-background-alpha-hover: oklab(from var(--bp-danger-palette-5) l a b / 0.19);
+    --bp-danger-background-alpha-active: oklab(from var(--bp-danger-palette-5) l a b / 0.28);
+    --bp-danger-layer-subtle-hover: oklab(from var(--bp-danger-palette-5) l a b / 0.1);
+    --bp-danger-layer-subtle-active: oklab(from var(--bp-danger-palette-5) l a b / 0.2);
+    --bp-danger-layer-strong-hover: oklab(from var(--bp-danger-palette-5) l a b / 0.1);
+    --bp-danger-layer-strong-active: oklab(from var(--bp-danger-palette-5) l a b / 0.2);
+    --bp-danger-layer-strong-disabled-active: oklab(from var(--bp-danger-palette-5) l a b / 0.1);
     --bp-warning-background-solid-disabled: oklab(from var(--bp-warning-palette-5) l a b / var(--bp-opacity-disabled));
     --bp-warning-background-alpha-rest: oklab(from var(--bp-warning-palette-5) l a b / 0.1);
-    --bp-warning-layer-hover: oklab(from var(--bp-warning-palette-5) l a b / 0.1);
-    --bp-warning-layer-active: oklab(from var(--bp-warning-palette-5) l a b / 0.2);
+    --bp-warning-background-alpha-hover: oklab(from var(--bp-warning-palette-5) l a b / 0.19);
+    --bp-warning-background-alpha-active: oklab(from var(--bp-warning-palette-5) l a b / 0.28);
+    --bp-warning-layer-subtle-hover: oklab(from var(--bp-warning-palette-5) l a b / 0.1);
+    --bp-warning-layer-subtle-active: oklab(from var(--bp-warning-palette-5) l a b / 0.2);
+    --bp-warning-layer-strong-hover: oklab(from var(--bp-warning-palette-5) l a b / 0.1);
+    --bp-warning-layer-strong-active: oklab(from var(--bp-warning-palette-5) l a b / 0.2);
+    --bp-warning-layer-strong-disabled-active: oklab(from var(--bp-warning-palette-5) l a b / 0.1);
     --bp-neutral-background-solid-disabled: oklab(from var(--bp-neutral-palette-5) l a b / var(--bp-opacity-disabled));
     --bp-neutral-background-alpha-rest: oklab(from var(--bp-neutral-palette-5) l a b / 0.1);
-    --bp-neutral-layer-hover: oklab(from var(--bp-neutral-palette-5) l a b / 0.1);
-    --bp-neutral-layer-active: oklab(from var(--bp-neutral-palette-5) l a b / 0.2);
+    --bp-neutral-background-alpha-hover: oklab(from var(--bp-neutral-palette-5) l a b / 0.19);
+    --bp-neutral-background-alpha-active: oklab(from var(--bp-neutral-palette-5) l a b / 0.28);
+    --bp-neutral-layer-subtle-hover: oklab(from var(--bp-neutral-palette-5) l a b / 0.1);
+    --bp-neutral-layer-subtle-active: oklab(from var(--bp-neutral-palette-5) l a b / 0.2);
+    --bp-neutral-layer-strong-hover: oklab(from var(--bp-neutral-palette-5) l a b / 0.1);
+    --bp-neutral-layer-strong-active: oklab(from var(--bp-neutral-palette-5) l a b / 0.2);
+    --bp-neutral-layer-strong-disabled-active: oklab(from var(--bp-neutral-palette-5) l a b / 0.1);
   }
 }

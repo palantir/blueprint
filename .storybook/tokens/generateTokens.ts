@@ -18,6 +18,7 @@ const MINIMUM_BORDER_CONTRAST = 3;
 const TEXT_CONTRAST_TARGETS = {
     muted: MINIMUM_TEXT_CONTRAST,
     normal: 7, // WCAG AAA target for normal-size text.
+    soft: 5.5, // Intermediate emphasis between muted and normal text.
     strong: 11, // Additional emphasis; a design choice, not a WCAG threshold.
 };
 
@@ -40,12 +41,13 @@ export interface GenerateTokensOptions {
 export type GeneratedTokenValues = Record<TokenName, { light: string; dark: string }>;
 
 /**
- * Replaces palette-backed CSS colors with light/dark values from one opaque intent color.
+ * Replaces opaque palette-backed CSS colors with light/dark values from one opaque intent color.
  * Colors are gamut-mapped to sRGB; base and solid.rest use the same normalized color.
  *
  * Text and border contrast targets apply only against the fixed Storybook backgrounds.
  * Solid states may coincide near their text contrast limit. JSON-derived roles, including
  * disabled colors, alpha borders, and overlays, remain owned by the token stylesheet.
+ * Derived roles with fixed palette inputs retain their Blueprint colors rather than following the seed.
  *
  * This demo assumes valid, opaque color inputs.
  */
@@ -117,10 +119,12 @@ function generateThemeTokens(color: string, intent: TokenIntent, theme: "light" 
         [`--bp-${intent}-border-strong-rest`]: contrastingColor(MINIMUM_BORDER_CONTRAST),
         ...(intent === "neutral"
             ? {
+                  "--bp-neutral-background-floating": subtleShade(SUBTLE_LIGHTNESS_OFFSETS.rest),
                   "--bp-neutral-background-subtle-active": subtleShade(SUBTLE_LIGHTNESS_OFFSETS.active),
                   "--bp-neutral-background-subtle-hover": subtleShade(SUBTLE_LIGHTNESS_OFFSETS.hover),
                   "--bp-neutral-background-subtle-rest": subtleShade(SUBTLE_LIGHTNESS_OFFSETS.rest),
                   "--bp-neutral-text-muted": contrastingColor(TEXT_CONTRAST_TARGETS.muted),
+                  "--bp-neutral-text-soft": contrastingColor(TEXT_CONTRAST_TARGETS.soft),
               }
             : {}),
     };

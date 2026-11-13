@@ -28,31 +28,31 @@ $menu-item-selected-icon-spacing: $pt-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
 $menu-background-color: var(--bp-neutral-background-floating) !default;
-$menu-item-color-hover: var(--bp-neutral-layer-hover) !default;
-$menu-item-color-active: var(--bp-neutral-layer-active) !default;
+$menu-item-color-hover: var(--bp-neutral-layer-subtle-hover) !default;
+$menu-item-color-active: var(--bp-neutral-layer-subtle-active) !default;
 
 $menu-item-intent-colors: (
   "primary": (
-    /* bg hover */ var(--bp-primary-layer-hover),
-    /* bg active */ var(--bp-primary-layer-active),
+    /* bg hover */ var(--bp-primary-layer-subtle-hover),
+    /* bg active */ var(--bp-primary-layer-subtle-active),
     /* fg */ var(--bp-primary-text-normal),
     /* fg active */ var(--bp-primary-text-strong),
   ),
   "success": (
-    /* bg hover */ var(--bp-success-layer-hover),
-    /* bg active */ var(--bp-success-layer-active),
+    /* bg hover */ var(--bp-success-layer-subtle-hover),
+    /* bg active */ var(--bp-success-layer-subtle-active),
     /* fg */ var(--bp-success-text-normal),
     /* fg active */ var(--bp-success-text-strong),
   ),
   "warning": (
-    /* bg hover */ var(--bp-warning-layer-hover),
-    /* bg active */ var(--bp-warning-layer-active),
+    /* bg hover */ var(--bp-warning-layer-subtle-hover),
+    /* bg active */ var(--bp-warning-layer-subtle-active),
     /* fg */ var(--bp-warning-text-normal),
     /* fg active */ var(--bp-warning-text-strong),
   ),
   "danger": (
-    /* bg hover */ var(--bp-danger-layer-hover),
-    /* bg active */ var(--bp-danger-layer-active),
+    /* bg hover */ var(--bp-danger-layer-subtle-hover),
+    /* bg active */ var(--bp-danger-layer-subtle-active),
     /* fg */ var(--bp-danger-text-normal),
     /* fg active */ var(--bp-danger-text-strong),
   ),
@@ -201,7 +201,7 @@ $menu-item-intent-colors: (
     }
   }
 
-  background-color: var(--bp-primary-layer-hover);
+  background-color: var(--bp-primary-layer-subtle-hover);
   color: var(--bp-primary-text-normal);
 
   &::before,
@@ -213,7 +213,7 @@ $menu-item-intent-colors: (
 
   @each $intent in ("success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: var(--bp-#{$intent}-layer-hover);
+      background-color: var(--bp-#{$intent}-layer-subtle-hover);
       color: var(--bp-#{$intent}-text-normal);
 
       &::before,
