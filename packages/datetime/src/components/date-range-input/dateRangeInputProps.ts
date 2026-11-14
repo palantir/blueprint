@@ -59,7 +59,7 @@ export interface DateRangeInputProps
     defaultValue?: DateRange;
 
     /**
-     * Whether the text inputs are non-interactive.
+     * Whether the text inputs and calendar popover are non-interactive.
      *
      * @default false
      */
