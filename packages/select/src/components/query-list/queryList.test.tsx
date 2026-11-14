@@ -115,6 +115,9 @@ describe("<QueryList>", () => {
             act(() => {
                 filmQueryList.setState({ query: "query" });
             });
+            // re-syncing state.query to the controlled `query` prop resets the active item,
+            // which emits onActiveItemChange; ignore that call for the purpose of this test
+            testProps.onActiveItemChange.resetHistory();
             act(() => {
                 filmQueryList.setState({ activeItem: undefined });
             });
@@ -379,6 +382,28 @@ describe("<QueryList>", () => {
         it("does not reset the query after creating new item if resetOnSelect=false", () => {
             const onQueryChangeSpy = runResetOnSelectTest(false);
             expect(onQueryChangeSpy.notCalled).toBe(true);
+        });
+
+        it("re-syncs state.query to a controlled `query` prop that rejects a change", () => {
+            let triggerInputQueryChange: ((e: any) => void) | undefined;
+            const renderer = sinon.spy((props: QueryListRendererProps<Film>) => {
+                triggerInputQueryChange = props.handleQueryChange;
+                return <div>{props.itemList}</div>;
+            });
+            // a controlled parent may ignore `onQueryChange` and keep passing the same `query` prop
+            const filmQueryList: FilmQueryListWrapper = mount(
+                <QueryList<Film> {...testProps} renderer={renderer} query="" />,
+            );
+
+            expect(triggerInputQueryChange).toBeDefined();
+            act(() => {
+                triggerInputQueryChange!({ target: { value: "a" } });
+            });
+            expect(filmQueryList.state().query).toEqual("");
+
+            // when the parent does accept a change, state.query follows the prop
+            filmQueryList.setProps({ query: "a" });
+            expect(filmQueryList.state().query).toEqual("a");
         });
 
         function runResetOnSelectTest(resetOnSelect: boolean): sinon.SinonSpy {
