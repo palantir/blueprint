@@ -348,6 +348,12 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         }
     };
 
+    private handleBlur = () => {
+        if (this.state.isEditing) {
+            this.toggleEditing();
+        }
+    };
+
     private handleFocus = () => {
         const { alwaysRenderInput, disabled, selectAllOnFocus } = this.props;
 
@@ -409,7 +415,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
             className: Classes.EDITABLE_TEXT_INPUT,
             disabled,
             maxLength,
-            onBlur: this.toggleEditing,
+            onBlur: this.handleBlur,
             onChange: this.handleTextChange,
             onKeyDown: this.handleKeyEvent,
             placeholder,
