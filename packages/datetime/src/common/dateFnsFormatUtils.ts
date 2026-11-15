@@ -26,15 +26,18 @@ export const DefaultDateFnsFormats = {
     DATE_TIME_SECONDS: "yyyy-MM-dd HH:mm:ss",
 };
 
-export function getDefaultDateFnsFormat(props: Pick<DatePickerBaseProps, "timePickerProps" | "timePrecision">): string {
+export function getTimePrecision(props: Pick<DatePickerBaseProps, "timePickerProps" | "timePrecision">) {
     const hasTimePickerProps = props.timePickerProps !== undefined && Object.keys(props.timePickerProps).length > 0;
-    const precision =
+    return (
         props.timePrecision ??
         props.timePickerProps?.precision ??
         // if timePickerProps is non-empty but has no precision defined, use the default value of "minute"
-        (hasTimePickerProps ? TimePrecision.MINUTE : undefined);
+        (hasTimePickerProps ? TimePrecision.MINUTE : undefined)
+    );
+}
 
-    switch (precision) {
+export function getDefaultDateFnsFormat(props: Pick<DatePickerBaseProps, "timePickerProps" | "timePrecision">): string {
+    switch (getTimePrecision(props)) {
         case TimePrecision.MILLISECOND:
             return DefaultDateFnsFormats.DATE_TIME_MILLISECONDS;
         case TimePrecision.MINUTE:
