@@ -19,6 +19,8 @@ import {
 } from "./tokens";
 
 type InlineTokenValues = Record<TokenName, { priority: string; value: string }>;
+// Wait two frames for Storybook's theme decorator to update the body class before reading computed token values.
+// Track both callbacks so a superseded update or unmount can cancel whichever frame is pending.
 interface PublishFrameIds {
     first?: number;
     second?: number;
