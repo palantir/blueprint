@@ -11,6 +11,10 @@ import typographyTokenSource from "../../packages/core/src/design-tokens/tokens/
 const INTENT_TOKENS = intentTokenSource.intent;
 const PALETTE_TOKENS = paletteTokenSource.palette;
 const TYPOGRAPHY_TOKENS = typographyTokenSource.typography;
+
+export const BLACK = PALETTE_TOKENS.black.$value;
+export const WHITE = PALETTE_TOKENS.white.$value;
+
 const TOKEN_SOURCES: Record<string, unknown> = {
     ...intentTokenSource,
     ...paletteTokenSource,
@@ -34,8 +38,8 @@ export const TOKEN_CONFIG = {
         toCssValue: value => `${value}px`,
         type: "range",
     }),
-    "--bp-palette-black": colorTokenEditor(PALETTE_TOKENS.black.$value),
-    "--bp-palette-white": colorTokenEditor(PALETTE_TOKENS.white.$value),
+    "--bp-palette-black": colorTokenEditor(BLACK),
+    "--bp-palette-white": colorTokenEditor(WHITE),
     "--bp-palette-dark-gray-1": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["1"].$value),
     "--bp-palette-dark-gray-2": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["2"].$value),
     "--bp-palette-dark-gray-3": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["3"].$value),

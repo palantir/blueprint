@@ -5,10 +5,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root Culori devDependency.
 import { wcagContrast } from "culori";
 
-import paletteTokens from "../../packages/core/src/design-tokens/tokens/base/palette.tokens.json";
-
 import { generatePalette, type Palette } from "./generatePalette";
-import type { TokenName } from "./tokens";
+import { BLACK, type TokenName, WHITE } from "./tokens";
 
 export interface FamilyInput {
     color: string;
@@ -51,11 +49,9 @@ interface TokenAssignment {
 }
 
 function getFamilyAssignments(family: TokenFamily, palette: Palette): TokenAssignment[] {
-    const black = paletteTokens.palette.black.$value;
-    const white = paletteTokens.palette.white.$value;
     // Choose the higher-contrast foreground against the filled rest color.
     const foreground =
-        wcagContrast(palette[6], black) >= wcagContrast(palette[6], white)
+        wcagContrast(palette[6], BLACK) >= wcagContrast(palette[6], WHITE)
             ? "var(--bp-palette-black)"
             : "var(--bp-palette-white)";
     const textAssignments: TokenAssignment[] =
