@@ -104,6 +104,9 @@ interface TokenRowProps {
 function TokenRow({ name, onResetToken, onUpdateToken, overrideValue, resolvedValue }: TokenRowProps) {
     const editor = TOKEN_CONFIG[name];
     const hasOverride = overrideValue !== undefined && overrideValue !== "";
+    // Prefer the saved override, then the value computed in the active preview theme. The editor default keeps the
+    // control usable until the preview publishes its resolved values.
+    const effectiveCssValue = overrideValue ?? resolvedValue ?? editor.defaultCssValue;
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
         (value: string | undefined) => onUpdateToken(name, value),
@@ -117,21 +120,9 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue, resolvedVa
             </td>
             <td>
                 {editor.type === "color" ? (
-                    <ColorTokenControl
-                        editor={editor}
-                        name={name}
-                        onChange={handleUpdate}
-                        overrideValue={overrideValue}
-                        resolvedValue={resolvedValue}
-                    />
+                    <ColorTokenControl editor={editor} name={name} onChange={handleUpdate} value={effectiveCssValue} />
                 ) : (
-                    <RangeTokenControl
-                        editor={editor}
-                        name={name}
-                        onChange={handleUpdate}
-                        overrideValue={overrideValue}
-                        resolvedValue={resolvedValue}
-                    />
+                    <RangeTokenControl editor={editor} name={name} onChange={handleUpdate} value={effectiveCssValue} />
                 )}
             </td>
             <td>
@@ -212,18 +203,10 @@ interface TokenControlProps<TEditor> {
     editor: TEditor;
     name: TokenName;
     onChange: (value: string | undefined) => void;
-    overrideValue: string | undefined;
-    resolvedValue: string | undefined;
+    value: string | undefined;
 }
 
-function ColorTokenControl({
-    editor,
-    name,
-    onChange,
-    overrideValue,
-    resolvedValue,
-}: TokenControlProps<ColorTokenEditor>) {
-    const cssValue = overrideValue ?? resolvedValue ?? editor.defaultCssValue;
+function ColorTokenControl({ editor, name, onChange, value: cssValue }: TokenControlProps<ColorTokenEditor>) {
     const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
         (value: string | undefined) =>
@@ -234,14 +217,7 @@ function ColorTokenControl({
     return <ColorControl {...editor.control} name={name} onChange={handleChange} value={controlValue} />;
 }
 
-function RangeTokenControl({
-    editor,
-    name,
-    onChange,
-    overrideValue,
-    resolvedValue,
-}: TokenControlProps<RangeTokenEditor>) {
-    const cssValue = overrideValue ?? resolvedValue ?? editor.defaultCssValue;
+function RangeTokenControl({ editor, name, onChange, value: cssValue }: TokenControlProps<RangeTokenEditor>) {
     const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
         (value: number | null | undefined) => onChange(value == null ? undefined : editor.toCssValue(value)),
