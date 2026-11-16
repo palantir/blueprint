@@ -50,4 +50,18 @@ describe("KeyCombo", () => {
         expect(icon).to.exist;
         expect(screen.getByText("left")).to.exist;
     });
+
+    it("should label the alt key as 'option' on Mac", () => {
+        render(<KeyComboTagInternal combo="alt+S" platformOverride="Mac" />);
+
+        expect(screen.getByText("option")).to.exist;
+        expect(screen.queryByText("alt")).not.toBeInTheDocument();
+    });
+
+    it("should label the alt key as 'alt' on non-Macs", () => {
+        render(<KeyComboTagInternal combo="alt+S" platformOverride="Win32" />);
+
+        expect(screen.getByText("alt")).to.exist;
+        expect(screen.queryByText("option")).not.toBeInTheDocument();
+    });
 });
