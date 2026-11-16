@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: 'DateRangePicker: on a range within a single day, the time pickers no longer allow an end time earlier than the start time'
+  links:
+  - https://github.com/palantir/blueprint/pull/8329
