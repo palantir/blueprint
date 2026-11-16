@@ -11,11 +11,11 @@ describe("resolveTokenOverrides", () => {
         const inputs = { primary: { color: "#2d72d2" } };
         const light = resolveTokenOverrides(inputs, undefined, "light");
         const dark = resolveTokenOverrides(inputs, undefined, "dark");
-        expect(light["--bp-intent-primary-hover"]).toBe("#2662b6");
-        expect(light["--bp-intent-primary-active"]).toBe("#1f539b");
+        expect(light["--bp-intent-primary-hover"]).toBe("color-mix(in oklab, #2d72d2, black 14%)");
+        expect(light["--bp-intent-primary-active"]).toBe("color-mix(in oklab, #2d72d2, black 24%)");
         expect(dark["--bp-intent-primary-hover"]).toBe(light["--bp-intent-primary-hover"]);
-        expect(light["--bp-typography-color-primary-rest"]).toBe("#2662b6");
-        expect(dark["--bp-typography-color-primary-rest"]).toBe("#75a2e4");
+        expect(light["--bp-typography-color-primary-rest"]).toBe("color-mix(in oklab, #2d72d2, black 14%)");
+        expect(dark["--bp-typography-color-primary-rest"]).toBe("color-mix(in oklab, #2d72d2, white 37%)");
         expect(light).not.toHaveProperty("--bp-intent-warning-rest");
         expect(inputs).toEqual({ primary: { color: "#2d72d2" } });
     });
@@ -27,7 +27,7 @@ describe("resolveTokenOverrides", () => {
         };
         const result = resolveTokenOverrides({ primary: { color: "#2d72d2" } }, manual, "light");
         expect(result["--bp-intent-primary-rest"]).toBe("#112233");
-        expect(result["--bp-intent-primary-hover"]).toBe("#2662b6");
+        expect(result["--bp-intent-primary-hover"]).toBe("color-mix(in oklab, #2d72d2, black 14%)");
         expect(result["--bp-surface-border-radius"]).toBe("12px");
         expect(manual).toEqual({ "--bp-intent-primary-rest": "#112233", "--bp-surface-border-radius": "12px" });
     });
@@ -36,7 +36,7 @@ describe("resolveTokenOverrides", () => {
         const manual: ManualTokenOverrides = { "--bp-intent-primary-rest": null };
         const result = resolveTokenOverrides({ primary: { color: "#2d72d2" } }, manual, theme);
         expect(result).not.toHaveProperty("--bp-intent-primary-rest");
-        expect(result["--bp-intent-primary-hover"]).toBe("#2662b6");
+        expect(result["--bp-intent-primary-hover"]).toBe("color-mix(in oklab, #2d72d2, black 14%)");
         expect(manual["--bp-intent-primary-rest"]).toBeNull();
     });
 
@@ -47,7 +47,7 @@ describe("resolveTokenOverrides", () => {
             const result = resolveTokenOverrides(inputs, { "--bp-intent-warning-rest": value }, theme);
             expect(result).not.toHaveProperty("--bp6-button-warning-rest");
             expect(result["--bp-intent-warning-rest"]).toBe(value ?? undefined);
-            expect(result["--bp-intent-warning-hover"]).toBe("#8d44a8");
+            expect(result["--bp-intent-warning-hover"]).toBe("color-mix(in oklab, #a34fc2, black 14%)");
         }
     });
 

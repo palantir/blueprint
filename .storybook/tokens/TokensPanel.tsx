@@ -221,7 +221,7 @@ function ColorTokenControl({ editor, name, onChange, overrideValue }: TokenContr
         };
     }, []);
     const cssValue = overrideValue || editor.defaultCssValue;
-    const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
+    const controlValue = cssValue === undefined ? undefined : editor.toControlValue(colorForPicker(cssValue));
     const handleChange = React.useCallback(
         (value: string | undefined) => {
             // ColorControl debounces by 200 ms without cancelling on unmount. Reset remounts the generator controls.
@@ -447,4 +447,22 @@ function FamilyColorRow({
 function normalizeOpaqueColor(value: string | undefined): string | undefined {
     const color = value == null ? undefined : parse(value);
     return color == null || (color.alpha != null && color.alpha !== 1) ? undefined : formatHex(color);
+}
+
+/** Storybook's picker needs hex; let the browser resolve generated CSS and map it to sRGB. */
+function colorForPicker(value: string): string {
+    if (!value.startsWith("color-mix(")) {
+        return value;
+    }
+    const canvas = document.createElement("canvas");
+    canvas.width = 1;
+    canvas.height = 1;
+    const context = canvas.getContext("2d");
+    if (context === null) {
+        return value;
+    }
+    context.fillStyle = value;
+    context.fillRect(0, 0, 1, 1);
+    const [r, g, b] = context.getImageData(0, 0, 1, 1).data;
+    return `#${[r, g, b].map(channel => channel.toString(16).padStart(2, "0")).join("")}`;
 }

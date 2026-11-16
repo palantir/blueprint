@@ -3,7 +3,7 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root Culori devDependency.
-import { parseHex, yiq } from "culori";
+import { wcagContrast } from "culori";
 
 import paletteTokens from "../../packages/core/src/design-tokens/tokens/base/palette.tokens.json";
 
@@ -35,12 +35,13 @@ export function generateTokens(inputs: GeneratorInputs): GeneratedTokens | undef
             continue;
         }
         const palette = generatePalette(input.color);
-        const seed = parseHex(input.color);
-        if (palette == null || seed == null) {
+        if (palette === undefined) {
             return undefined;
         }
-        // The approved brightness heuristic is a starting choice, not a contrast guarantee.
-        const foreground = yiq(seed).y >= 0.5 ? paletteTokens.palette.black.$value : paletteTokens.palette.white.$value;
+        const black = paletteTokens.palette.black.$value;
+        const white = paletteTokens.palette.white.$value;
+        // Choose the higher-contrast foreground against the filled rest color.
+        const foreground = wcagContrast(palette[6], black) >= wcagContrast(palette[6], white) ? black : white;
         result.light[`--bp-intent-${family}-foreground`] = foreground;
         result.dark[`--bp-intent-${family}-foreground`] = foreground;
         for (const { name, light, dark } of getFamilyAssignments(family)) {
@@ -66,25 +67,25 @@ function getFamilyAssignments(family: TokenFamily): TokenAssignment[] {
         family === "default"
             ? [
                   // Default hover and disabled text stay owned by existing CSS.
-                  { dark: 0, light: 7, name: "--bp-typography-color-default-rest" },
-                  { dark: 1, light: 6, name: "--bp-typography-color-default-active" },
+                  { dark: 0, light: 9, name: "--bp-typography-color-default-rest" },
+                  { dark: 1, light: 8, name: "--bp-typography-color-default-active" },
               ]
             : [
-                  { dark: 3, light: 6, name: `--bp-typography-color-${family}-rest` },
-                  { dark: 3, light: 6, name: `--bp-typography-color-${family}-hover` },
-                  { dark: 2, light: 7, name: `--bp-typography-color-${family}-active` },
+                  { dark: 3, light: 7, name: `--bp-typography-color-${family}-rest` },
+                  { dark: 3, light: 7, name: `--bp-typography-color-${family}-hover` },
+                  { dark: 2, light: 8, name: `--bp-typography-color-${family}-active` },
                   { dark: 4, light: 4, name: `--bp-typography-color-${family}-disabled` },
               ];
     const assignments: TokenAssignment[] = [
-        { dark: 5, light: 5, name: `--bp-intent-${family}-rest` },
-        { dark: 6, light: 6, name: `--bp-intent-${family}-hover` },
-        { dark: 7, light: 7, name: `--bp-intent-${family}-active` },
+        { dark: 6, light: 6, name: `--bp-intent-${family}-rest` },
+        { dark: 7, light: 7, name: `--bp-intent-${family}-hover` },
+        { dark: 8, light: 8, name: `--bp-intent-${family}-active` },
         { dark: 4, light: 4, name: `--bp-intent-${family}-disabled` },
         ...textAssignments,
     ];
     if (family === "warning") {
-        // Generated themes use the exact seed instead of BP6's lighter warning Button recipe.
-        assignments.push({ dark: 5, light: 5, name: "--bp6-button-warning-rest" });
+        // Keep the warning Button on the generated filled shade instead of BP6's lighter recipe.
+        assignments.push({ dark: 6, light: 6, name: "--bp6-button-warning-rest" });
     }
     return assignments;
 }

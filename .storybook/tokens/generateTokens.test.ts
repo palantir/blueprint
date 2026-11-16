@@ -7,31 +7,31 @@ import { assert, describe, expect, it } from "vitest";
 import { GENERATED_TOKEN_NAMES, generateTokens, getFamilyTokenNames, TOKEN_FAMILIES } from "./generateTokens";
 
 describe("generateTokens", () => {
-    it("assigns only primary's nine source roles using the current palette in each mode", () => {
+    it("assigns only primary's nine source roles using the anchored palette in each mode", () => {
         const result = generateTokens({ primary: { color: "#2D72D2" } });
-        // Approved role expectations, including the 10%/20% dark steps.
+        // Fixed expectations for the seed-anchored palette and Blueprint's role mapping.
         expect(result).toEqual({
             dark: {
-                "--bp-intent-primary-active": "#1f539b",
-                "--bp-intent-primary-disabled": "#528adb",
+                "--bp-intent-primary-active": "color-mix(in oklab, #2d72d2, black 24%)",
+                "--bp-intent-primary-disabled": "color-mix(in oklab, #2d72d2, white 18%)",
                 "--bp-intent-primary-foreground": "#ffffff",
-                "--bp-intent-primary-hover": "#2662b6",
+                "--bp-intent-primary-hover": "color-mix(in oklab, #2d72d2, black 14%)",
                 "--bp-intent-primary-rest": "#2d72d2",
-                "--bp-typography-color-primary-active": "#97baec",
-                "--bp-typography-color-primary-disabled": "#528adb",
-                "--bp-typography-color-primary-hover": "#75a2e4",
-                "--bp-typography-color-primary-rest": "#75a2e4",
+                "--bp-typography-color-primary-active": "color-mix(in oklab, #2d72d2, white 60%)",
+                "--bp-typography-color-primary-disabled": "color-mix(in oklab, #2d72d2, white 18%)",
+                "--bp-typography-color-primary-hover": "color-mix(in oklab, #2d72d2, white 37%)",
+                "--bp-typography-color-primary-rest": "color-mix(in oklab, #2d72d2, white 37%)",
             },
             light: {
-                "--bp-intent-primary-active": "#1f539b",
-                "--bp-intent-primary-disabled": "#528adb",
+                "--bp-intent-primary-active": "color-mix(in oklab, #2d72d2, black 24%)",
+                "--bp-intent-primary-disabled": "color-mix(in oklab, #2d72d2, white 18%)",
                 "--bp-intent-primary-foreground": "#ffffff",
-                "--bp-intent-primary-hover": "#2662b6",
+                "--bp-intent-primary-hover": "color-mix(in oklab, #2d72d2, black 14%)",
                 "--bp-intent-primary-rest": "#2d72d2",
-                "--bp-typography-color-primary-active": "#1f539b",
-                "--bp-typography-color-primary-disabled": "#528adb",
-                "--bp-typography-color-primary-hover": "#2662b6",
-                "--bp-typography-color-primary-rest": "#2662b6",
+                "--bp-typography-color-primary-active": "color-mix(in oklab, #2d72d2, black 24%)",
+                "--bp-typography-color-primary-disabled": "color-mix(in oklab, #2d72d2, white 18%)",
+                "--bp-typography-color-primary-hover": "color-mix(in oklab, #2d72d2, black 14%)",
+                "--bp-typography-color-primary-rest": "color-mix(in oklab, #2d72d2, black 14%)",
             },
         });
     });
@@ -40,24 +40,45 @@ describe("generateTokens", () => {
         expect(generateTokens({})).toEqual({ dark: {}, light: {} });
     });
 
+    it("preserves a near-black primary as the exact Button rest color in both modes", () => {
+        const result = generateTokens({ primary: { color: "#050505" } });
+        assert(result != null);
+        for (const mode of ["light", "dark"] as const) {
+            expect(result[mode]["--bp-intent-primary-rest"]).toBe("#050505");
+            expect(result[mode]["--bp-intent-primary-hover"]).toBe("color-mix(in oklab, #050505, black 14%)");
+            expect(result[mode]["--bp-intent-primary-active"]).toBe("color-mix(in oklab, #050505, black 24%)");
+            expect(result[mode]["--bp-intent-primary-foreground"]).toBe("#ffffff");
+        }
+    });
+
     it.each(["success", "warning", "danger"] as const)("applies the same role mapping to %s alone", family => {
         const result = generateTokens({ [family]: { color: "#2d72d2" } });
         assert(result != null);
         for (const mode of ["light", "dark"] as const) {
             expect(Object.keys(result[mode]).sort()).toEqual(getFamilyTokenNames(family).sort());
             expect(result[mode][`--bp-intent-${family}-rest`]).toBe("#2d72d2");
-            expect(result[mode][`--bp-intent-${family}-hover`]).toBe("#2662b6");
-            expect(result[mode][`--bp-intent-${family}-active`]).toBe("#1f539b");
-            expect(result[mode][`--bp-intent-${family}-disabled`]).toBe("#528adb");
+            expect(result[mode][`--bp-intent-${family}-hover`]).toBe("color-mix(in oklab, #2d72d2, black 14%)");
+            expect(result[mode][`--bp-intent-${family}-active`]).toBe("color-mix(in oklab, #2d72d2, black 24%)");
+            expect(result[mode][`--bp-intent-${family}-disabled`]).toBe("color-mix(in oklab, #2d72d2, white 18%)");
             expect(result[mode][`--bp-intent-${family}-foreground`]).toBe("#ffffff");
-            expect(result[mode][`--bp-typography-color-${family}-rest`]).toBe(mode === "light" ? "#2662b6" : "#75a2e4");
+            expect(result[mode][`--bp-typography-color-${family}-rest`]).toBe(
+                mode === "light"
+                    ? "color-mix(in oklab, #2d72d2, black 14%)"
+                    : "color-mix(in oklab, #2d72d2, white 37%)",
+            );
             expect(result[mode][`--bp-typography-color-${family}-hover`]).toBe(
-                mode === "light" ? "#2662b6" : "#75a2e4",
+                mode === "light"
+                    ? "color-mix(in oklab, #2d72d2, black 14%)"
+                    : "color-mix(in oklab, #2d72d2, white 37%)",
             );
             expect(result[mode][`--bp-typography-color-${family}-active`]).toBe(
-                mode === "light" ? "#1f539b" : "#97baec",
+                mode === "light"
+                    ? "color-mix(in oklab, #2d72d2, black 24%)"
+                    : "color-mix(in oklab, #2d72d2, white 60%)",
             );
-            expect(result[mode][`--bp-typography-color-${family}-disabled`]).toBe("#528adb");
+            expect(result[mode][`--bp-typography-color-${family}-disabled`]).toBe(
+                "color-mix(in oklab, #2d72d2, white 18%)",
+            );
         }
     });
 
@@ -65,22 +86,22 @@ describe("generateTokens", () => {
         const result = generateTokens({ default: { color: "#2d72d2" } });
         assert(result != null);
         expect(result.light).toEqual({
-            "--bp-intent-default-active": "#1f539b",
-            "--bp-intent-default-disabled": "#528adb",
+            "--bp-intent-default-active": "color-mix(in oklab, #2d72d2, black 24%)",
+            "--bp-intent-default-disabled": "color-mix(in oklab, #2d72d2, white 18%)",
             "--bp-intent-default-foreground": "#ffffff",
-            "--bp-intent-default-hover": "#2662b6",
+            "--bp-intent-default-hover": "color-mix(in oklab, #2d72d2, black 14%)",
             "--bp-intent-default-rest": "#2d72d2",
-            "--bp-typography-color-default-active": "#2662b6",
-            "--bp-typography-color-default-rest": "#1f539b",
+            "--bp-typography-color-default-active": "color-mix(in oklab, #2d72d2, black 24%)",
+            "--bp-typography-color-default-rest": "color-mix(in oklab, #2d72d2, black 34%)",
         });
         expect(result.dark).toEqual({
             ...result.light,
-            "--bp-typography-color-default-active": "#b9d1f3",
-            "--bp-typography-color-default-rest": "#dce8f9",
+            "--bp-typography-color-default-active": "color-mix(in oklab, #2d72d2, white 81%)",
+            "--bp-typography-color-default-rest": "color-mix(in oklab, #2d72d2, white 92%)",
         });
     });
 
-    it("uses the exact warning seed for BP6's Button rest override in both modes", () => {
+    it("uses the generated warning fill for BP6's Button rest override in both modes", () => {
         const result = generateTokens({ warning: { color: "#AbC" } });
         assert(result != null);
         for (const mode of ["light", "dark"] as const) {
@@ -118,18 +139,23 @@ describe("generateTokens", () => {
     });
 
     it.each([
-        ["#7f7f7f", "#ffffff"],
+        ["#7f7f7f", "#111418"],
         ["#808080", "#111418"],
         ["#ffff00", "#111418"],
         ["#00f", "#ffffff"],
-    ])("chooses the agreed automatic foreground for %s in both modes", (color, foreground) => {
-        const result = generateTokens({ primary: { color } });
-        assert(result != null);
-        expect(result.light["--bp-intent-primary-foreground"]).toBe(foreground);
-        expect(result.dark["--bp-intent-primary-foreground"]).toBe(foreground);
-    });
+        ["#123456", "#ffffff"],
+        ["#AbC", "#111418"],
+    ])(
+        "chooses the higher-contrast foreground against the generated fill for %s in both modes",
+        (color, foreground) => {
+            const result = generateTokens({ primary: { color } });
+            assert(result != null);
+            expect(result.light["--bp-intent-primary-foreground"]).toBe(foreground);
+            expect(result.dark["--bp-intent-primary-foreground"]).toBe(foreground);
+        },
+    );
 
-    it("always chooses foreground from the seed, ignoring an obsolete foreground input", () => {
+    it("chooses foreground automatically, ignoring an obsolete foreground input", () => {
         const primary = { color: "#2d72d2", foreground: "#000000" };
         const result = generateTokens({ primary });
         assert(result != null);

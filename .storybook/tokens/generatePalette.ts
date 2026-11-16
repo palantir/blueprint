@@ -3,40 +3,38 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root Culori devDependency.
-import { clampChroma, formatHex, interpolate, oklab, type Oklab, parseHex } from "culori";
+import { formatHex, parseHex } from "culori";
 
-/** Eight shades ordered light to dark, with the exact normalized input at index 5. */
-export type Palette = readonly [string, string, string, string, string, string, string, string];
+/** Ten CSS colors ordered light to dark, with the exact normalized input at index 6. */
+export type Palette = readonly [string, string, string, string, string, string, string, string, string, string];
 
 /** Returns no palette for inputs other than opaque #RGB or #RRGGBB. */
 export function generatePalette(input: string): Palette | undefined {
-    if (!input.startsWith("#") || (input.length !== 4 && input.length !== 7)) {
+    if (!isHexColor(input)) {
         return undefined;
     }
     const seed = parseHex(input);
-    if (seed === undefined) {
+    if (seed == null) {
         return undefined;
     }
 
-    const converted = oklab(seed);
-    // Avoid conversion noise introducing a tint into an achromatic input.
-    const anchor = seed.r === seed.g && seed.g === seed.b ? { ...converted, a: 0, b: 0 } : converted;
-    const lighter = interpolate([{ a: 0, b: 0, l: 1, mode: "oklab" }, anchor], "oklab");
-    const darker = interpolate([anchor, { a: 0, b: 0, l: 0, mode: "oklab" }], "oklab");
+    const color = formatHex(seed);
 
-    // The white/black bounds guide interpolation but are not returned as entries.
+    // Generate approximate colors: subject to change: no contrast guarantee
     return [
-        formatShade(lighter(1 / 6)),
-        formatShade(lighter(2 / 6)),
-        formatShade(lighter(3 / 6)),
-        formatShade(lighter(4 / 6)),
-        formatShade(lighter(5 / 6)),
-        formatHex(seed),
-        formatShade(darker(0.1)),
-        formatShade(darker(0.2)),
+        `color-mix(in oklab, ${color}, white 92%)`,
+        `color-mix(in oklab, ${color}, white 81%)`,
+        `color-mix(in oklab, ${color}, white 60%)`,
+        `color-mix(in oklab, ${color}, white 37%)`,
+        `color-mix(in oklab, ${color}, white 18%)`,
+        `color-mix(in oklab, ${color}, white 6%)`,
+        color,
+        `color-mix(in oklab, ${color}, black 14%)`,
+        `color-mix(in oklab, ${color}, black 24%)`,
+        `color-mix(in oklab, ${color}, black 34%)`,
     ];
 }
 
-function formatShade(color: Oklab): string {
-    return formatHex(clampChroma(color, "oklch", "rgb"));
+function isHexColor(input: string) {
+    return input.startsWith("#") && (input.length === 4 || input.length === 7);
 }
