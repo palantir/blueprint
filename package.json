@@ -33,8 +33,6 @@
         "site": "npm-run-all site:clean -p 'copy:*' -s serve",
         "site:clean": "git clean -xdfq site/",
         "test": "nx run-many -t test",
-        "test:storybook": "vitest run --project storybook-tokens",
-        "test:storybook:typecheck": "tsc -p .storybook/tsconfig.palette.json",
         "verify": "npm-run-all -s compile dist -p test lint format-check",
         "storybook": "storybook dev -p 6006",
         "build-storybook": "storybook build --stats-json",

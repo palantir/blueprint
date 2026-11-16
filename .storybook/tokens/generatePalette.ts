@@ -3,24 +3,21 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root Culori devDependency.
-import { formatHex, parseHex } from "culori";
+import { formatHex, parse } from "culori";
 
 /** Ten CSS colors ordered light to dark, with the exact normalized input at index 6. */
 export type Palette = readonly [string, string, string, string, string, string, string, string, string, string];
 
-/** Returns no palette for inputs other than opaque #RGB or #RRGGBB. */
+/** Accepts opaque CSS seed colors; returns no palette for invalid or translucent colors. */
 export function generatePalette(input: string): Palette | undefined {
-    if (!isHexColor(input)) {
-        return undefined;
-    }
-    const seed = parseHex(input);
-    if (seed == null) {
+    const seed = parse(input);
+    if (seed == null || (seed.alpha ?? 1) !== 1) {
         return undefined;
     }
 
     const color = formatHex(seed);
 
-    // Generate approximate colors: subject to change: no contrast guarantee
+    // Generate approximate colors with no contrast guarantee
     return [
         `color-mix(in oklab, ${color}, white 92%)`,
         `color-mix(in oklab, ${color}, white 81%)`,
@@ -33,8 +30,4 @@ export function generatePalette(input: string): Palette | undefined {
         `color-mix(in oklab, ${color}, black 24%)`,
         `color-mix(in oklab, ${color}, black 34%)`,
     ];
-}
-
-function isHexColor(input: string) {
-    return input.startsWith("#") && (input.length === 4 || input.length === 7);
 }
