@@ -379,7 +379,7 @@ export class NumericInput extends AbstractPureComponent<
     }
 
     protected validateProps(nextProps: HTMLInputProps & NumericInputProps) {
-        const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
+        const { majorStepSize, max, min, minorStepSize, stepSize } = nextProps;
         if (min != null && max != null && min > max) {
             console.error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
@@ -399,28 +399,11 @@ export class NumericInput extends AbstractPureComponent<
             console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
 
-        // controlled mode
-        if (value != null) {
-            const stepMaxPrecision = NumericInput.getStepMaxPrecision(nextProps);
-            const sanitizedValue = NumericInput.roundAndClampValue(
-                value.toString(),
-                stepMaxPrecision,
-                min,
-                max,
-                0,
-                this.props.locale,
-            );
-            const valueDoesNotMatch = sanitizedValue !== value.toString();
-            const localizedValue = toLocaleString(
-                Number(parseStringToStringNumber(value, this.props.locale)),
-                this.props.locale,
-            );
-            const isNotLocalized = sanitizedValue !== localizedValue;
-
-            if (valueDoesNotMatch && isNotLocalized) {
-                console.warn(Errors.NUMERIC_INPUT_CONTROLLED_VALUE_INVALID);
-            }
-        }
+        // Note: we intentionally do not warn when a controlled `value` falls outside the
+        // stepSize/min/max constraints. Unlike the checks above, that is not a developer
+        // misconfiguration — a free-text input can legitimately hold an intermediate or
+        // out-of-range value while the user is typing, and coercing it away would be worse
+        // UX than allowing it. See https://github.com/palantir/blueprint/issues/7370.
     }
 
     // Render Helpers
