@@ -100,7 +100,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 .#{$ns}-file-upload-input {
   @include pt-input;
   @include overflow-ellipsis;
-  color: var(--bp-typography-color-default-disabled);
+  color: var(--bp-typography-color-muted);
   left: 0;
   padding-right: calc($file-input-button-width + calc(var(--bp-surface-spacing) * 2));
   position: absolute;
@@ -159,7 +159,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 
   .#{$ns}-dark & {
     @include pt-dark-input;
-    color: var(--bp-typography-color-default-disabled);
+    color: var(--bp-typography-color-muted);
 
     &::after {
       @include pt-dark-button-default-colors;
