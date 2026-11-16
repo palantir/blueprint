@@ -77,21 +77,20 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
     useEffect(
         function publishTokenValuesOnRequest() {
+            const frameIds = publishFrameIds.current;
             const handleRequest = (request: TokenValuesRequest) => {
                 if (request.storyId === id && request.theme === activeTheme) {
                     scheduleTokenValuesUpdate();
                 }
             };
             channel.on(TOKEN_VALUES_REQUESTED, handleRequest);
-            return () => channel.off(TOKEN_VALUES_REQUESTED, handleRequest);
+            return () => {
+                channel.off(TOKEN_VALUES_REQUESTED, handleRequest);
+                cancelScheduledPublish(frameIds);
+            };
         },
         [activeTheme, channel, id, scheduleTokenValuesUpdate],
     );
-
-    useEffect(function cancelPendingTokenValuesUpdate() {
-        const frameIds = publishFrameIds.current;
-        return () => cancelScheduledPublish(frameIds);
-    }, []);
 
     useEffect(
         function applyTokenOverrides() {
