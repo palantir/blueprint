@@ -39,6 +39,10 @@
   @each $intent in map.keys($pt-intent-colors) {
     &.#{$ns}-intent-#{$intent} {
       color: var(--bp-typography-color-#{$intent}-rest);
+
+      &:hover {
+        color: var(--bp-typography-color-#{$intent}-rest);
+      }
     }
   }
 }
