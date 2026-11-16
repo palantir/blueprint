@@ -102,6 +102,12 @@ $input-button-height-small: $pt-button-height-smaller !default;
 
       #{$icon-classes} {
         color: var(--bp-typography-color-muted);
+
+        .#{$ns}-dark & {
+          color: oklch(
+            from var(--bp-typography-color-muted) calc(l - 0.24) calc(c + 0.011) calc(h - 1.3)
+          );
+        }
       }
     }
 
