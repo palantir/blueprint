@@ -18,9 +18,10 @@
 /**
  * Validate `icons-next.json` (the next-generation icon manifest) against the SVGs on disk.
  *
- * Enforces: each entry is a well-formed object (`{ name: string, hasFilled: boolean, tags: string[] }`);
- * no duplicate names; `hasFilled` matches whether a filled SVG exists; the manifest and the outlined
- * directory line up both ways; and every filled icon has an outlined counterpart.
+ * Enforces: each entry is a well-formed object (`{ name: string, hasFilled: boolean, tags: string[] }`)
+ * with non-empty `tags`; no duplicate names; `hasFilled` matches whether a filled SVG exists; the
+ * manifest and the outlined directory line up both ways; and every filled icon has an outlined
+ * counterpart.
  *
  * @param {readonly unknown[]} manifest parsed `icons-next.json` (entries are untrusted)
  * @param {Set<string>} outlinedIconNames basenames of `resources/icons/next/outlined`
@@ -45,8 +46,11 @@ export function validateIconsNextManifest(manifest, outlinedIconNames, filledIco
         if (typeof entry.hasFilled !== "boolean") {
             errors.push(`${label} missing boolean "hasFilled"`);
         }
+        const entryLabel = typeof entry.name === "string" ? `icons-next.json icon "${entry.name}"` : label;
         if (!Array.isArray(entry.tags) || !entry.tags.every(tag => typeof tag === "string")) {
-            errors.push(`${label} "tags" must be an array of strings`);
+            errors.push(`${entryLabel} "tags" must be an array of strings`);
+        } else if (entry.tags.every(tag => tag.trim().length === 0)) {
+            errors.push(`${entryLabel} must have non-empty "tags"`);
         }
         if (typeof entry.name === "string") {
             if (manifestNames.has(entry.name)) {
