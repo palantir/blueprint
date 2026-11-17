@@ -487,7 +487,7 @@ export const HasBackdropExample: Story = {
                     hasBackdrop={true}
                     backdropProps={{
                         style: {
-                            backgroundColor: "oklch(from var(--bp-palette-black) l c h / 0.3)",
+                            backgroundColor: "color-mix(in srgb, var(--bp-palette-black) 30%, transparent)",
                         },
                     }}
                 >

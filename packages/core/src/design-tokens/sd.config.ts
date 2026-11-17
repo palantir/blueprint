@@ -88,8 +88,8 @@ type OklchColor = {
 
 /**
  * The result of classifying a token for progressive enhancement output.
- * - `fallbackValue`: the fallback hex value (for browsers without relative color syntax).
- * - `modernValue`: the relative color syntax value (emitted inside `@supports`), or
+ * - `fallbackValue`: the fallback hex value (for browsers without modern color syntax).
+ * - `modernValue`: the modern color syntax value (emitted inside `@supports`), or
  *   `undefined` if the token does not require progressive enhancement.
  */
 type TokenClassification = {
@@ -411,22 +411,33 @@ const tokenReferenceToVar = (ref: string): string => {
     return `var(--bp-${path.join("-")})`;
 };
 
-/** Formats an alpha value as a CSS string — either a literal number or a resolved `var()` reference. */
+/** Formats an alpha value as a CSS number or resolved `var()` reference. */
 const formatAlpha = (alpha: number | string): string =>
     typeof alpha === "number" ? String(alpha) : tokenReferenceToVar(alpha);
 
+/** Formats an alpha value as a percentage for use in `color-mix()`. */
+const formatAlphaPercentage = (alpha: number | string): string =>
+    typeof alpha === "number" ? `${Number((alpha * 100).toFixed(10))}%` : `calc(${tokenReferenceToVar(alpha)} * 100%)`;
+
 /**
- * Produces a CSS relative color syntax expression: `oklch(from <baseVar> <l> <c> <h> [/ <alpha>])`.
- * Channel modifications are applied as `calc()` wrappers around the implicit `l`, `c`, `h` keywords.
+ * Produces a derived CSS color from a token reference. Channel modifications use relative OKLCH syntax;
+ * alpha-only derivations use `color-mix()` in sRGB space.
  */
 const formatDerivedColorToCss = (baseVar: string, derivation: ColorDerivation): string => {
     const l = formatChannelModification("l", derivation.lightness);
     const c = formatChannelModification("c", derivation.chroma);
     const h = formatChannelModification("h", derivation.hue);
+    const hasChannelModification =
+        derivation.lightness !== undefined || derivation.chroma !== undefined || derivation.hue !== undefined;
+
+    if (hasChannelModification) {
+        const alpha = derivation.alpha !== undefined ? ` / ${formatAlpha(derivation.alpha)}` : "";
+        return `oklch(from ${baseVar} ${l} ${c} ${h}${alpha})`;
+    }
 
     return derivation.alpha !== undefined
-        ? `oklch(from ${baseVar} ${l} ${c} ${h} / ${formatAlpha(derivation.alpha)})`
-        : `oklch(from ${baseVar} ${l} ${c} ${h})`;
+        ? `color-mix(in srgb, ${baseVar} ${formatAlphaPercentage(derivation.alpha)}, transparent)`
+        : baseVar;
 };
 
 /** Converts an OKLCH color to a hex string (`#RRGGBB` or `#RRGGBBAA`) via culori. */
@@ -460,8 +471,9 @@ const parseTokenValueAsNumber = (token: TransformedToken): number | undefined =>
 
 // -- Fallback Computation -----------------------------------------------------
 
-/** Returns `true` if the CSS value contains `oklch(from ...)` relative color syntax. */
-const containsRelativeColorSyntax = (value: string): boolean => value.includes("oklch(from");
+/** Returns `true` if the CSS value contains syntax that requires the progressive-enhancement block. */
+const containsModernColorSyntax = (value: string): boolean =>
+    value.includes("oklch(from") || value.includes("color-mix(");
 
 /** Returns `true` if the token has a `com.blueprint.derive` extension. */
 const hasDeriveExtension = (token: TransformedToken): boolean => {
@@ -599,7 +611,7 @@ const collectReferencingFallbacks = (
     for (const token of tokens) {
         const tokenPath = token.path.join(".");
         if (fallbacks.has(tokenPath)) continue;
-        if (!containsRelativeColorSyntax(getTokenValueAsString(token))) continue;
+        if (!containsModernColorSyntax(getTokenValueAsString(token))) continue;
         const fallback = computeStaticFallbackForReferencingToken(token, tokenMap, fallbacks);
         if (fallback !== undefined) {
             fallbacks.set(tokenPath, fallback);
@@ -608,7 +620,7 @@ const collectReferencingFallbacks = (
 };
 
 /**
- * Builds a map of token path → static hex fallback for all tokens that use relative color syntax.
+ * Builds a map of token path → static hex fallback for all tokens that use modern color syntax.
  * Two-pass: derived tokens first, then referencing tokens (order matters for cache hits).
  */
 const makeFallbackMap = (
@@ -624,7 +636,7 @@ const makeFallbackMap = (
 /**
  * Classifies a token for progressive enhancement output. Plain token references are
  * preserved as CSS custom property references when requested. Derived tokens keep their
- * static fallback and use the relative color syntax as `modernValue`.
+ * static fallback and use the modern color syntax as `modernValue`.
  */
 const classifyToken = (
     token: TransformedToken,
@@ -769,7 +781,7 @@ const shadowTransformConfig: Parameters<typeof StyleDictionary.registerTransform
 
 /**
  * Blueprint-specific transform for tokens with `com.blueprint.derive` extensions.
- * Produces CSS relative color syntax (`oklch(from <base> ...)`) from original token references.
+ * Produces CSS relative color and `color-mix()` syntax from original token references.
  * Must run after `dtcg/color/css` to override resolved color references.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch#using_relative_colors_with_oklch
@@ -878,7 +890,7 @@ const formatEnhancedDeclaration = (classification: TokenClassification, token: T
 /**
  * Generates the full CSS output with progressive enhancement.
  * Emits a base block with hex fallbacks for all tokens, followed by an `@supports`
- * block that overrides derived tokens with relative color syntax for capable browsers.
+ * block that overrides derived tokens with modern color syntax for capable browsers.
  */
 const formatProgressiveEnhancementCss = (
     tokens: readonly TransformedToken[],

@@ -2,6 +2,9 @@
 // Licensed under the Apache License, Version 2.0.
 
 /* stylelint-disable alpha-value-notation */
+
+@use "sass:color";
+
 @import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 @import "../button/common";
@@ -71,11 +74,14 @@ $control-group-stack: (
   $focus: false,
   $outer-shadow-focus-width: 1px
 ) {
+  $opaque-color: color.change($color, $alpha: 1);
+
   @if $focus {
-    @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
+    @return inset 0 0 0 1px color-mix(in srgb, $opaque-color 75.2%, transparent),
+      0 0 0 $outer-shadow-focus-width color-mix(in srgb, $opaque-color 75.2%, transparent);
   } @else {
-    @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
+    @return 0 0 0 0 color-mix(in srgb, $opaque-color 0%, transparent),
+      0 0 0 0 color-mix(in srgb, $opaque-color 0%, transparent);
   }
 }
 
@@ -84,11 +90,14 @@ $control-group-stack: (
   $focus: false,
   $outer-shadow-focus-width: 1px
 ) {
+  $opaque-color: color.change($color, $alpha: 1);
+
   @if $focus {
-    @return inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 $outer-shadow-focus-width oklch(from $color l c h / 0.752);
+    @return inset 0 0 0 1px color-mix(in srgb, $opaque-color 75.2%, transparent),
+      0 0 0 $outer-shadow-focus-width color-mix(in srgb, $opaque-color 75.2%, transparent);
   } @else {
-    @return 0 0 0 0 oklch(from $color l c h / 0), 0 0 0 0 oklch(from $color l c h / 0);
+    @return 0 0 0 0 color-mix(in srgb, $opaque-color 0%, transparent),
+      0 0 0 0 color-mix(in srgb, $opaque-color 0%, transparent);
   }
 }
 
@@ -101,8 +110,8 @@ $control-group-stack: (
   box-shadow:
     inset 0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0),
     0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0),
-    inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.2),
-    inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.3);
+    inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent),
+    inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 30%, transparent);
   color: var(--bp-typography-color-default-rest);
   font-size: var(--bp-typography-size-body-medium);
   font-weight: var(--bp-typography-weight-default);
@@ -120,7 +129,7 @@ $control-group-stack: (
       inset 0 0 0 1px
         oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
       0 0 0 1px oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
-      inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.2);
+      inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
   }
 
   &[type="search"],
@@ -140,8 +149,8 @@ $control-group-stack: (
           oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
         0 0 0 1px
           oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
-        inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.2),
-        inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.3);
+        inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent),
+        inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 30%, transparent);
     }
   }
 
@@ -200,7 +209,7 @@ $control-group-stack: (
 }
 
 @mixin pt-dark-input-disabled() {
-  background: oklch(from var(--bp-intent-default-hover) l c h / 0.5);
+  background: color-mix(in srgb, var(--bp-intent-default-hover) 50%, transparent);
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
 }
@@ -213,13 +222,13 @@ $control-group-stack: (
 
 @mixin pt-dark-input() {
   @include pt-dark-input-placeholder;
-  background: oklch(from var(--bp-palette-black) l c h / 0.3);
+  background: color-mix(in srgb, var(--bp-palette-black) 30%, transparent);
 
   box-shadow:
     inset 0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0),
     0 0 0 0 oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0),
-    inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
-    inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
+    inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent),
+    inset 0 -1px 1px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent);
   color: var(--bp-typography-color-default-rest);
 
   &:focus {
@@ -230,7 +239,7 @@ $control-group-stack: (
   }
 
   &[readonly] {
-    box-shadow: inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.4);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-black) 40%, transparent);
 
     &:focus {
       box-shadow:
@@ -249,16 +258,16 @@ $control-group-stack: (
 
 @mixin pt-input-intent($color) {
   box-shadow:
-    inset 0 0 0 0 oklch(from $color l c h / 0),
-    0 0 0 0 oklch(from $color l c h / 0),
+    inset 0 0 0 0 color-mix(in srgb, $color 0%, transparent),
+    0 0 0 0 color-mix(in srgb, $color 0%, transparent),
     inset 0 0 0 1px $color,
-    inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.3);
+    inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 30%, transparent);
 
   &:focus {
     box-shadow:
-      inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 calc(var(--bp-surface-spacing) * 0.5) oklch(from $color l c h / 0.752),
-      inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.2);
+      inset 0 0 0 1px color-mix(in srgb, $color 75.2%, transparent),
+      0 0 0 calc(var(--bp-surface-spacing) * 0.5) color-mix(in srgb, $color 75.2%, transparent),
+      inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
   }
 
   &[readonly] {
@@ -273,18 +282,18 @@ $control-group-stack: (
 
 @mixin pt-dark-input-intent($color) {
   box-shadow:
-    inset 0 0 0 0 oklch(from $color l c h / 0),
-    0 0 0 0 oklch(from $color l c h / 0),
+    inset 0 0 0 0 color-mix(in srgb, $color 0%, transparent),
+    0 0 0 0 color-mix(in srgb, $color 0%, transparent),
     inset 0 0 0 1px $color,
-    inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
-    inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
+    inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent),
+    inset 0 -1px 1px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent);
 
   &:focus {
     box-shadow:
-      inset 0 0 0 1px oklch(from $color l c h / 0.752),
-      0 0 0 calc(var(--bp-surface-spacing) * 0.5) oklch(from $color l c h / 0.752),
-      inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
-      inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
+      inset 0 0 0 1px color-mix(in srgb, $color 75.2%, transparent),
+      0 0 0 calc(var(--bp-surface-spacing) * 0.5) color-mix(in srgb, $color 75.2%, transparent),
+      inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent),
+      inset 0 -1px 1px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent);
   }
 
   &[readonly] {
