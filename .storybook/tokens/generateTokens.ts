@@ -49,11 +49,11 @@ interface TokenAssignment {
 }
 
 function getFamilyAssignments(family: TokenFamily, palette: Palette): TokenAssignment[] {
+    // Color used as the filled rest color
+    const base = palette[6];
     // Choose the higher-contrast foreground against the filled rest color.
     const foreground =
-        wcagContrast(palette[6], BLACK) >= wcagContrast(palette[6], WHITE)
-            ? "var(--bp-palette-black)"
-            : "var(--bp-palette-white)";
+        wcagContrast(base, BLACK) >= wcagContrast(base, WHITE) ? "var(--bp-palette-black)" : "var(--bp-palette-white)";
     const textAssignments: TokenAssignment[] =
         family === "default"
             ? [
@@ -69,7 +69,7 @@ function getFamilyAssignments(family: TokenFamily, palette: Palette): TokenAssig
               ];
     const assignments: TokenAssignment[] = [
         { dark: foreground, light: foreground, name: `--bp-intent-${family}-foreground` },
-        { dark: palette[6], light: palette[6], name: `--bp-intent-${family}-rest` },
+        { dark: base, light: base, name: `--bp-intent-${family}-rest` },
         { dark: palette[7], light: palette[7], name: `--bp-intent-${family}-hover` },
         { dark: palette[8], light: palette[8], name: `--bp-intent-${family}-active` },
         { dark: palette[4], light: palette[4], name: `--bp-intent-${family}-disabled` },
@@ -77,7 +77,7 @@ function getFamilyAssignments(family: TokenFamily, palette: Palette): TokenAssig
     ];
     if (family === "warning") {
         // Keep the warning Button on the generated filled shade instead of BP6's lighter recipe.
-        assignments.push({ dark: palette[6], light: palette[6], name: "--bp6-button-warning-rest" });
+        assignments.push({ dark: base, light: base, name: "--bp6-button-warning-rest" });
     }
     return assignments;
 }

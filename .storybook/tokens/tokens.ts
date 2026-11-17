@@ -124,6 +124,8 @@ export const TOKEN_CONFIG = {
     "--bp-typography-color-danger-hover": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-danger"].hover),
     "--bp-typography-color-danger-active": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-danger"].active),
     "--bp-typography-color-danger-disabled": typographyColorTokenEditor(TYPOGRAPHY_TOKENS["color-danger"].disabled),
+    // Defined in core's button/_common.scss; register it so generated warning colors
+    // can override BP6's lighter warning-button recipe.
     "--bp6-button-warning-rest": colorTokenEditor(PALETTE_TOKENS.orange["5"].$value),
 } as const satisfies Record<`--${string}`, TokenEditor>;
 /* eslint-enable sort-keys */
