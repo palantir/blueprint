@@ -4737,6 +4737,25 @@
         ]
     },
     {
+        "name": "crane",
+        "hasFilled": true,
+        "tags": [
+            "construction",
+            "building",
+            "hoist",
+            "lift",
+            "hook",
+            "tower",
+            "machine",
+            "equipment",
+            "industrial",
+            "engineering",
+            "cargo",
+            "load",
+            "worksite"
+        ]
+    },
+    {
         "name": "credit-card",
         "hasFilled": true,
         "tags": [
@@ -6168,6 +6187,25 @@
             "size",
             "alphabet",
             "editor"
+        ]
+    },
+    {
+        "name": "fork-knife",
+        "hasFilled": true,
+        "tags": [
+            "food",
+            "dining",
+            "restaurant",
+            "utensils",
+            "cutlery",
+            "silverware",
+            "eat",
+            "meal",
+            "kitchen",
+            "dinner",
+            "lunch",
+            "breakfast",
+            "hospitality"
         ]
     },
     {
@@ -8612,6 +8650,27 @@
         ]
     },
     {
+        "name": "lng-tanker",
+        "hasFilled": true,
+        "tags": [
+            "ship",
+            "boat",
+            "carrier",
+            "vessel",
+            "cargo",
+            "gas",
+            "natural-gas",
+            "liquefied",
+            "fuel",
+            "energy",
+            "storage",
+            "marine",
+            "maritime",
+            "transport",
+            "shipping"
+        ]
+    },
+    {
         "name": "location",
         "hasFilled": true,
         "tags": [
@@ -10382,6 +10441,25 @@
         "tags": ["print", "document", "paper", "office", "output", "publish", "printer", "send", "to", "action"]
     },
     {
+        "name": "propeller",
+        "hasFilled": true,
+        "tags": [
+            "fan",
+            "rotor",
+            "blade",
+            "spin",
+            "rotate",
+            "engine",
+            "aircraft",
+            "airplane",
+            "boat",
+            "ship",
+            "propulsion",
+            "turbine",
+            "aviation"
+        ]
+    },
+    {
         "name": "pumpjack",
         "hasFilled": false,
         "tags": [
@@ -10463,6 +10541,25 @@
             "end",
             "grammar",
             "editor"
+        ]
+    },
+    {
+        "name": "radioactive",
+        "hasFilled": true,
+        "tags": [
+            "radiation",
+            "nuclear",
+            "hazard",
+            "warning",
+            "danger",
+            "contamination",
+            "atomic",
+            "energy",
+            "symbol",
+            "safety",
+            "alert",
+            "ionizing",
+            "trefoil"
         ]
     },
     {
@@ -11556,6 +11653,26 @@
             "disable",
             "video",
             "media"
+        ]
+    },
+    {
+        "name": "speedboat",
+        "hasFilled": true,
+        "tags": [
+            "boat",
+            "motorboat",
+            "powerboat",
+            "watercraft",
+            "vessel",
+            "marine",
+            "maritime",
+            "ocean",
+            "sea",
+            "travel",
+            "transport",
+            "fast",
+            "racing",
+            "recreation"
         ]
     },
     {
