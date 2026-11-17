@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, type Props, Utils } from "@blueprintjs/core";
+import {
+    AbstractComponent,
+    DISPLAYNAME_PREFIX,
+    IconSize,
+    Menu,
+    MenuItem,
+    type Props,
+    Spinner,
+    Utils,
+} from "@blueprintjs/core";
 
 import {
     type CreateNewItem,
@@ -135,6 +144,9 @@ export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's
 
     /** Rendered elements returned from `itemListRenderer` prop. */
     itemList: React.ReactNode;
+
+    /** Whether the list of items is currently loading. See `ListItemsProps#loading`. */
+    loading?: boolean;
 }
 
 /** Exported for testing, not part of public API */
@@ -167,6 +179,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
     public static defaultProps = {
         disabled: false,
+        loading: false,
         resetOnQuery: true,
     };
 
@@ -238,6 +251,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     public render() {
         const { className, items, renderer, itemListRenderer = this.renderItemList, menuProps } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
+        const loading = this.isLoading();
 
         // Generate ID for active item
         const activeItemId = this.getActiveItemId();
@@ -255,14 +269,17 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
+                loading,
                 menuProps: {
                     ...menuProps,
+                    ...(loading ? { "aria-busy": true } : {}),
                     id: this.listId,
                 },
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
             }),
             listId: this.listId,
+            loading,
         });
     }
 
@@ -385,6 +402,18 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     private renderItemList = (listProps: ItemListRendererProps<T>) => {
         const { initialContent, noResults } = this.props;
 
+        if (listProps.loading) {
+            const loadingContent = this.getLoadingContent(listProps.menuProps?.role === "menu");
+            if (loadingContent == null) {
+                return null;
+            }
+            return (
+                <Menu role="listbox" {...listProps.menuProps} ulRef={listProps.itemsParentRef}>
+                    {loadingContent}
+                </Menu>
+            );
+        }
+
         // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
         const createItemView = listProps.renderCreateItem();
         const maybeNoResults = createItemView != null ? null : noResults;
@@ -435,6 +464,26 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
         return null;
     };
+
+    private getLoadingContent(isMenu: boolean): React.ReactNode {
+        const { loadingContent } = this.props;
+        if (loadingContent !== undefined) {
+            return loadingContent;
+        }
+        return (
+            <MenuItem
+                disabled={true}
+                icon={<Spinner size={IconSize.STANDARD} />}
+                // match the role of the surrounding menu (Omnibar renders a "menu" rather than a "listbox")
+                roleStructure={isMenu ? "menuitem" : "listoption"}
+                text="Loading..."
+            />
+        );
+    }
+
+    private isLoading(): boolean {
+        return this.props.loading === true;
+    }
 
     private renderCreateItemMenuItem = () => {
         if (this.isCreateItemRendered(this.state.createNewItem)) {
@@ -555,7 +604,10 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         if (!event.nativeEvent.isComposing) {
             const { key } = event;
             const direction = Utils.getArrowKeyDirection(event, ["ArrowUp"], ["ArrowDown"]);
-            if (direction !== undefined) {
+            if (direction !== undefined && this.isLoading()) {
+                // while loading, the rendered list does not reflect `filteredItems`, so don't move the active item
+                event.preventDefault();
+            } else if (direction !== undefined) {
                 event.preventDefault();
                 const nextActiveItem = this.getNextActiveItem(direction);
                 if (nextActiveItem != null) {
@@ -573,7 +625,12 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         const { onKeyUp } = this.props;
         const { activeItem } = this.state;
 
-        if (event.key === "Enter" && this.isEnterKeyPressed) {
+        if (event.key === "Enter" && this.isEnterKeyPressed && this.isLoading()) {
+            // don't select a stale (possibly hidden) active item or create an item from a query
+            // whose results haven't arrived yet; still prevent default so a wrapping Button doesn't re-open the popover
+            event.preventDefault();
+            this.isEnterKeyPressed = false;
+        } else if (event.key === "Enter" && this.isEnterKeyPressed) {
             // We handle ENTER in keyup here to play nice with the Button component's keyboard
             // clicking. Button is commonly used as the only child of Select. If we were to
             // instead process ENTER on keydown, then Button would click itself on keyup and
@@ -657,7 +714,8 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     private getActiveItemId(): string | undefined {
         const { activeItem } = this.state;
 
-        if (activeItem == null) {
+        // while loading, the active item's element is not rendered, so it can't be the active descendant
+        if (activeItem == null || this.isLoading()) {
             return undefined;
         }
 

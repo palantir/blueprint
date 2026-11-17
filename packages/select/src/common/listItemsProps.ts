@@ -132,6 +132,35 @@ export interface ListItemsProps<T> extends Props {
     noResults?: React.ReactNode;
 
     /**
+     * Whether the list of items is currently being loaded, for example while
+     * results for the current query are fetched from a server.
+     *
+     * While loading, the default `itemListRenderer` renders `loadingContent` in
+     * place of the items (as well as `noResults`, `initialContent` and the
+     * "Create Item" option) and marks the list with `aria-busy="true"`. Keyboard
+     * interactions that would select or create an item, or move the active
+     * item, are ignored until loading finishes, so a stale or hidden item is
+     * never selected by accident.
+     *
+     * A custom `itemListRenderer` receives this value as `loading` and can pass
+     * `loadingContent` to `renderFilteredItems()`.
+     *
+     * @default false
+     */
+    loading?: boolean;
+
+    /**
+     * React content to render in place of the list while `loading` is `true`.
+     * If omitted, a disabled menu item with a spinner and "Loading..." text is rendered.
+     * If explicit `null`, nothing will be rendered while loading.
+     *
+     * This prop is ignored if a custom `itemListRenderer` is supplied.
+     *
+     * NOTE: if passing a `MenuItem`, ensure it has `roleStructure="listoption"` prop.
+     */
+    loadingContent?: React.ReactNode | null;
+
+    /**
      * Invoked when user interaction should change the active item: arrow keys
      * move it up/down in the list, selecting an item makes it active, and
      * changing the query may reset it to the first item in the list if it no

@@ -114,6 +114,52 @@ process of implementing these functions. See the code sample in
 If the query returns no results or `items` is empty, then `noResults` will be rendered in place of the usual list.
 You also have the option to provide `initialContent`, which will render in place of the item list if the query is empty.
 
+### Loading state
+
+When items are fetched asynchronously (for example, a server-side search that runs as the user types), set `loading`
+to `true` while the request is in flight. The default renderer then shows `loadingContent` in place of the list
+(a disabled menu item with a spinner and "Loading..." text unless you provide your own, or nothing if you pass
+`null`) and sets `aria-busy="true"` on the menu. While loading, the arrow keys and <kbd>Enter</kbd> do not move,
+select or create items, so users can't accidentally pick a stale result that is no longer visible.
+
+```tsx
+const FilmSearch: React.FC = () => {
+    const [query, setQuery] = React.useState("");
+    const [films, setFilms] = React.useState<Film[]>([]);
+    const [loading, setLoading] = React.useState(false);
+
+    React.useEffect(() => {
+        let cancelled = false;
+        setLoading(true);
+        searchFilms(query).then(results => {
+            if (!cancelled) {
+                setFilms(results);
+                setLoading(false);
+            }
+        });
+        return () => {
+            cancelled = true;
+        };
+    }, [query]);
+
+    return (
+        <Select<Film>
+            items={films}
+            itemRenderer={renderFilm}
+            loading={loading}
+            noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
+            onItemSelect={...}
+            onQueryChange={setQuery}
+            query={query}
+        >
+            <Button text="Search films..." endIcon="double-caret-vertical" />
+        </Select>
+    );
+};
+```
+
+`loading` and `loadingContent` are supported by **Select**, **Suggest**, **MultiSelect**, **Omnibar** and **QueryList**.
+
 ## Styling
 
 ### Button styling
@@ -173,8 +219,9 @@ overridden by providing the `itemListRenderer` prop, giving you full control ove
 you can group items under a common heading, or render large data sets using
 [react-virtualized](https://github.com/bvaughn/react-virtualized).
 
-Note that the non-ideal states of `noResults` and `initialContent` are specific to the default renderer. If you provide
-the `itemListRenderer` prop, these props will be ignored.
+Note that the non-ideal states of `noResults`, `initialContent` and `loadingContent` are specific to the default
+renderer. If you provide the `itemListRenderer` prop, these props will be ignored. Your renderer receives `loading` in its
+props and can pass loading content to `renderFilteredItems()`.
 
 See the code sample in [Item List Renderer API](#select/select-component.item-list-renderer) below for more info.
 
@@ -405,7 +452,7 @@ const FilmSelect: React.FC = () => (
 ### Using renderFilteredItems()
 
 This package also exports a `renderFilteredItems()` helper function for custom item list rendering. It handles the
-`noResults` and `initialContent` states automatically.
+`noResults`, `initialContent` and (optionally) loading states automatically.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
@@ -449,6 +496,7 @@ function renderFilteredItems(
     props: ItemListRendererProps<T>,
     noResults?: React.ReactNode,
     initialContent?: React.ReactNode | null,
+    loadingContent?: React.ReactNode | null,
 ): React.ReactNode;
 ```
 
@@ -456,5 +504,7 @@ function renderFilteredItems(
 - `noResults`: (optional) content to render when `filteredItems` is empty.
 - `initialContent`: (optional) content to render when `query` is empty. Pass `null` to render nothing;
   pass `undefined` (or omit) to render items normally.
+- `loadingContent`: (optional) content to render while `props.loading` is `true`. It takes precedence over the other
+  states. Pass `null` to render nothing; pass `undefined` (or omit) to keep rendering items while loading.
 
 @interface ItemListRendererProps

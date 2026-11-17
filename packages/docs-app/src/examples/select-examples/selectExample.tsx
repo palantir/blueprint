@@ -30,6 +30,7 @@ export const SelectExample: React.FC<ExampleProps> = props => {
     const [filterable, setFilterable] = useState(true);
     const [grouped, setGrouped] = useState(false);
     const [hasInitialContent, setHasInitialContent] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [matchTargetWidth, setMatchTargetWidth] = useState(false);
     const [minimal, setMinimal] = useState(false);
     const [resetOnClose, setResetOnClose] = useState(false);
@@ -55,6 +56,9 @@ export const SelectExample: React.FC<ExampleProps> = props => {
 
     const renderGroupedMenuContent = useCallback(
         (listProps: ItemListRendererProps<Film>, noResults?: React.ReactNode) => {
+            if (listProps.loading) {
+                return <MenuItem disabled={true} text="Loading..." roleStructure="listoption" />;
+            }
             if (listProps.query.length === 0 && initialContent !== undefined) {
                 return initialContent;
             }
@@ -81,7 +85,7 @@ export const SelectExample: React.FC<ExampleProps> = props => {
             );
 
             // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
-            const createItemView = listProps.renderCreateItem();
+            const createItemView = listProps.loading ? null : listProps.renderCreateItem();
             const maybeNoResults = createItemView != null ? null : noResults;
 
             const menuContent = renderGroupedMenuContent(listProps, maybeNoResults);
@@ -128,6 +132,7 @@ export const SelectExample: React.FC<ExampleProps> = props => {
                 label="Use initial content"
                 onChange={handleBooleanChange(setHasInitialContent)}
             />
+            <Switch checked={loading} label="Loading" onChange={handleBooleanChange(setLoading)} />
             <Switch
                 checked={disableItems}
                 label="Disable films before 2000"
@@ -181,6 +186,7 @@ export const SelectExample: React.FC<ExampleProps> = props => {
                 itemListRenderer={grouped ? renderGroupedItemList : undefined}
                 itemListPredicate={grouped ? groupedItemListPredicate : undefined}
                 initialContent={hasInitialContent ? initialContent : undefined}
+                loading={loading}
                 popoverProps={{ matchTargetWidth, minimal }}
                 resetOnClose={resetOnClose}
                 resetOnQuery={resetOnQuery}
