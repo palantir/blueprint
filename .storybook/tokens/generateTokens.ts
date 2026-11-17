@@ -5,7 +5,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root Culori devDependency.
 import { wcagContrast } from "culori";
 
-import { generatePalette } from "./generatePalette";
+import { generatePalette, type Palette } from "./generatePalette";
 import { BLACK, type TokenName, WHITE } from "./tokens";
 
 export interface FamilyInput {
@@ -33,15 +33,10 @@ export function generateTokens(inputs: GeneratorInputs): GeneratedTokens | undef
         if (palette == null) {
             return undefined;
         }
-        // Choose the higher-contrast foreground against the filled rest color.
-        const foreground =
-            wcagContrast(palette[6], BLACK) >= wcagContrast(palette[6], WHITE)
-                ? "var(--bp-palette-black)"
-                : "var(--bp-palette-white)";
-        const familyAssignments = getFamilyAssignments(family);
+        const familyAssignments = getFamilyAssignments(family, palette);
         for (const { name, light, dark } of familyAssignments) {
-            result.light[name] = light === "foreground" ? foreground : palette[light];
-            result.dark[name] = dark === "foreground" ? foreground : palette[dark];
+            result.light[name] = light;
+            result.dark[name] = dark;
         }
     }
     return result;
@@ -52,19 +47,32 @@ export function generateTokensForTheme(inputs: GeneratorInputs, theme: unknown) 
 }
 
 export function getFamilyTokenNames(family: TokenFamily): TokenName[] {
-    return getFamilyAssignments(family).map(({ name }) => name);
+    return getFamilyAssignmentDefinitions(family).map(({ name }) => name);
 }
 
 type PaletteShade = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "foreground";
 
-interface TokenAssignment {
+interface TokenAssignmentDefinition {
     dark: PaletteShade;
     light: PaletteShade;
     name: TokenName;
 }
 
-function getFamilyAssignments(family: TokenFamily): TokenAssignment[] {
-    const textAssignments: TokenAssignment[] =
+function getFamilyAssignments(family: TokenFamily, palette: Palette) {
+    // Choose the higher-contrast foreground against the filled rest color.
+    const foreground =
+        wcagContrast(palette[6], BLACK) >= wcagContrast(palette[6], WHITE)
+            ? "var(--bp-palette-black)"
+            : "var(--bp-palette-white)";
+    return getFamilyAssignmentDefinitions(family).map(({ dark, light, name }) => ({
+        dark: dark === "foreground" ? foreground : palette[dark],
+        light: light === "foreground" ? foreground : palette[light],
+        name,
+    }));
+}
+
+function getFamilyAssignmentDefinitions(family: TokenFamily): TokenAssignmentDefinition[] {
+    const textAssignments: TokenAssignmentDefinition[] =
         family === "default"
             ? [
                   // Hover and disabled text are derived from existing colors
@@ -77,7 +85,7 @@ function getFamilyAssignments(family: TokenFamily): TokenAssignment[] {
                   { dark: 2, light: 8, name: `--bp-typography-color-${family}-active` },
                   { dark: 4, light: 4, name: `--bp-typography-color-${family}-disabled` },
               ];
-    const assignments: TokenAssignment[] = [
+    const assignments: TokenAssignmentDefinition[] = [
         { dark: "foreground", light: "foreground", name: `--bp-intent-${family}-foreground` },
         { dark: 6, light: 6, name: `--bp-intent-${family}-rest` },
         { dark: 7, light: 7, name: `--bp-intent-${family}-hover` },

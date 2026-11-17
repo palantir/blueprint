@@ -20,7 +20,6 @@ import {
     serializeTokenOverrides,
     TOKEN_CONFIG,
     TOKEN_GROUPS,
-    TOKEN_NAMES,
     TOKEN_VALUES_REQUESTED,
     TOKEN_VALUES_UPDATED,
     type TokenGroup,
@@ -254,7 +253,6 @@ export function TokensPanel() {
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
     const [inputErrors, setInputErrors] = React.useState<Partial<Record<TokenFamily, string>>>({});
-    const [controlResetCounts, setControlResetCounts] = React.useState<Partial<Record<TokenName, number>>>({});
     const activeTheme = getActiveTheme(globals.theme);
     const themeTokenOverrides = React.useMemo(
         () => deserializeTokenOverrides(globals.tokenOverrides),
@@ -283,17 +281,6 @@ export function TokensPanel() {
         }
     }, [activeTheme, emit, isStoryPrepared, storyId]);
 
-    const resetTokenControls = React.useCallback((names: TokenName[]) => {
-        // Storybook keeps local drafts even when a reset leaves the effective CSS color unchanged.
-        setControlResetCounts(counts => {
-            const nextCounts = { ...counts };
-            for (const name of names) {
-                nextCounts[name] = (counts[name] ?? 0) + 1;
-            }
-            return nextCounts;
-        });
-    }, []);
-
     const handleUpdateToken = React.useCallback(
         (name: TokenName, value: string | undefined) => {
             const family = TOKEN_FAMILIES.find(candidate => name === `--bp-intent-${candidate}-rest`);
@@ -303,7 +290,6 @@ export function TokensPanel() {
             const overrides = { ...tokenOverrides };
             if (value === undefined) {
                 delete overrides[name];
-                resetTokenControls([name]);
             } else {
                 overrides[name] = value;
             }
@@ -314,7 +300,7 @@ export function TokensPanel() {
                 }),
             });
         },
-        [activeTheme, resetTokenControls, themeTokenOverrides, tokenOverrides, updateGlobals],
+        [activeTheme, themeTokenOverrides, tokenOverrides, updateGlobals],
     );
 
     const handleResetToken = React.useCallback(
@@ -330,9 +316,6 @@ export function TokensPanel() {
                 return;
             }
             setInputErrors(errors => ({ ...errors, [family]: undefined }));
-            if (value === undefined) {
-                resetTokenControls(getFamilyTokenNames(family));
-            }
             const overrides = { ...themeTokenOverrides };
             for (const theme of ["dark", "light"] as const) {
                 const values = { ...overrides[theme], ...generatedTokens?.[theme] };
@@ -345,20 +328,19 @@ export function TokensPanel() {
             }
             updateGlobals({ tokenOverrides: serializeTokenOverrides(overrides) });
         },
-        [resetTokenControls, themeTokenOverrides, updateGlobals],
+        [themeTokenOverrides, updateGlobals],
     );
 
     const hasOverrides = Object.values(tokenOverrides).some(value => value !== undefined && value !== "");
     const handleResetAllTokens = React.useCallback(() => {
         setInputErrors({});
-        resetTokenControls(TOKEN_NAMES);
         updateGlobals({
             tokenOverrides: serializeTokenOverrides({
                 ...themeTokenOverrides,
                 [activeTheme]: {},
             }),
         });
-    }, [activeTheme, resetTokenControls, themeTokenOverrides, updateGlobals]);
+    }, [activeTheme, themeTokenOverrides, updateGlobals]);
 
     if (!isStoryPrepared) {
         return (
@@ -378,7 +360,7 @@ export function TokensPanel() {
                             <tbody>
                                 {TOKEN_FAMILIES.map(family => (
                                     <IntentSeedRow
-                                        key={`${family}:${controlResetCounts[`--bp-intent-${family}-rest`] ?? 0}`}
+                                        key={family}
                                         canReset={getFamilyTokenNames(family).some(
                                             name =>
                                                 themeTokenOverrides.dark[name] !== undefined ||
@@ -417,7 +399,7 @@ export function TokensPanel() {
                                 <TokenGroupSection key={group.label} group={group}>
                                     {group.tokenNames.map(name => (
                                         <TokenRow
-                                            key={`${name}:${controlResetCounts[name] ?? 0}`}
+                                            key={name}
                                             name={name}
                                             onResetToken={handleResetToken}
                                             onUpdateToken={handleUpdateToken}
