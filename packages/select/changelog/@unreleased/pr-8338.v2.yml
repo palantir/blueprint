@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Prevent Suggest from changing its selection when disabled while open
+  links:
+  - https://github.com/palantir/blueprint/pull/8338
