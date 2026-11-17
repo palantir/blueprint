@@ -11,7 +11,7 @@
 
 .#{$ns}-dialog-footer-fixed {
   align-items: center;
-  background-color: $white;
+  background-color: var(--bp-palette-white);
   border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
   border-top: 1px solid $pt-divider-black;
   display: flex;
@@ -21,7 +21,7 @@
   padding: ($pt-spacing * 2) ($pt-spacing * 2) ($pt-spacing * 2) $dialog-padding;
 
   .#{$ns}-dark & {
-    background: $dark-gray4;
+    background: var(--bp-palette-dark-gray-4);
     border-top: 1px solid $pt-dark-divider-white;
   }
 }

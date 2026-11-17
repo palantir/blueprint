@@ -2,7 +2,7 @@
 @import "../../common/variables";
 
 .#{$ns}-segmented-control {
-  background-color: $light-gray5;
+  background-color: var(--bp-palette-light-gray-5);
   border-radius: var(--bp-surface-border-radius);
   display: flex;
   gap: $pt-spacing * 0.5;
@@ -22,10 +22,10 @@
 
   > .#{$ns}-button:not(.#{$ns}-minimal) {
     &:not(.#{$ns}-intent-primary) {
-      background-color: $white;
+      background-color: var(--bp-palette-white);
 
       .#{$ns}-dark & {
-        background-color: $dark-gray5;
+        background-color: var(--bp-palette-dark-gray-5);
       }
     }
   }
@@ -47,6 +47,6 @@
   }
 
   .#{$ns}-dark & {
-    background-color: $dark-gray2;
+    background-color: var(--bp-palette-dark-gray-2);
   }
 }

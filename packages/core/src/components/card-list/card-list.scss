@@ -18,20 +18,20 @@
 
     &.#{$ns}-interactive:hover,
     &.#{$ns}-interactive:active {
-      background-color: $light-gray5;
+      background-color: var(--bp-palette-light-gray-5);
       box-shadow: none;
 
       .#{$ns}-dark & {
-        background-color: $dark-gray3;
+        background-color: var(--bp-palette-dark-gray-3);
       }
     }
 
     &.#{$ns}-selected {
-      background-color: $light-gray4;
+      background-color: var(--bp-palette-light-gray-4);
       box-shadow: none;
 
       .#{$ns}-dark & {
-        background-color: $dark-gray4;
+        background-color: var(--bp-palette-dark-gray-4);
         box-shadow: none;
       }
     }

@@ -29,55 +29,55 @@ $menu-item-padding-vertical-small: $pt-spacing * 0.5 !default;
 $menu-item-selected-icon-spacing: $pt-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
-$menu-background-color: $white !default;
-$dark-menu-background-color: $dark-gray3 !default;
+$menu-background-color: var(--bp-palette-white) !default;
+$dark-menu-background-color: var(--bp-palette-dark-gray-3) !default;
 
-$menu-item-color-hover: rgba($gray3, 0.15) !default;
-$menu-item-color-active: rgba($gray3, 0.3) !default;
+$menu-item-color-hover: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent) !default;
+$menu-item-color-active: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent) !default;
 
 $menu-item-intent-colors: (
   "primary": (
-    /* bg */ $blue3,
-    /* fg */ $blue2,
-    /* fg active */ $blue1,
+    /* bg */ var(--bp-palette-blue-3),
+    /* fg */ var(--bp-palette-blue-2),
+    /* fg active */ var(--bp-palette-blue-1),
   ),
   "success": (
-    /* bg */ $green3,
-    /* fg */ $green2,
-    /* fg active */ $green1,
+    /* bg */ var(--bp-palette-green-3),
+    /* fg */ var(--bp-palette-green-2),
+    /* fg active */ var(--bp-palette-green-1),
   ),
   "warning": (
-    /* bg */ $orange3,
-    /* fg */ $orange2,
-    /* fg active */ $orange1,
+    /* bg */ var(--bp-palette-orange-3),
+    /* fg */ var(--bp-palette-orange-2),
+    /* fg active */ var(--bp-palette-orange-1),
   ),
   "danger": (
-    /* bg */ $red3,
-    /* fg */ $red2,
-    /* fg active */ $red1,
+    /* bg */ var(--bp-palette-red-3),
+    /* fg */ var(--bp-palette-red-2),
+    /* fg active */ var(--bp-palette-red-1),
   ),
 ) !default;
 
 $dark-menu-item-intent-colors: (
   "primary": (
-    /* bg */ $blue3,
-    /* fg */ $blue5,
-    /* fg active */ $blue6,
+    /* bg */ var(--bp-palette-blue-3),
+    /* fg */ var(--bp-palette-blue-5),
+    /* fg active */ var(--bp-palette-blue-6),
   ),
   "success": (
-    /* bg */ $green3,
-    /* fg */ $green5,
-    /* fg active */ $green6,
+    /* bg */ var(--bp-palette-green-3),
+    /* fg */ var(--bp-palette-green-5),
+    /* fg active */ var(--bp-palette-green-6),
   ),
   "warning": (
-    /* bg */ $orange3,
-    /* fg */ $orange5,
-    /* fg active */ $orange6,
+    /* bg */ var(--bp-palette-orange-3),
+    /* fg */ var(--bp-palette-orange-5),
+    /* fg active */ var(--bp-palette-orange-6),
   ),
   "danger": (
-    /* bg */ $red3,
-    /* fg */ $red5,
-    /* fg active */ $red6,
+    /* bg */ var(--bp-palette-red-3),
+    /* fg */ var(--bp-palette-red-5),
+    /* fg active */ var(--bp-palette-red-6),
   ),
 ) !default;
 
@@ -241,18 +241,23 @@ $dark-menu-item-intent-colors: (
 
 @mixin menu-item-active($is-dark) {
   $intent-colors: $menu-item-intent-colors;
-  $background-alpha: 0.1;
+  $background-percentage: 10%;
 
   @if $is-dark {
     $intent-colors: $dark-menu-item-intent-colors;
-    $background-alpha: 0.2;
+    $background-percentage: 20%;
   } @else {
     .#{$ns}-menu-item-label {
       color: inherit;
     }
   }
 
-  background-color: rgba(list.nth(map.get($intent-colors, "primary"), 1), $background-alpha);
+  $primary-background-color: list.nth(map.get($intent-colors, "primary"), 1);
+  background-color: color-mix(
+    in srgb,
+    $primary-background-color $background-percentage,
+    transparent
+  );
   color: list.nth(map.get($intent-colors, "primary"), 2);
 
   &::before,
@@ -264,7 +269,12 @@ $dark-menu-item-intent-colors: (
 
   @each $intent in ("success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba(list.nth(map.get($intent-colors, $intent), 1), $background-alpha);
+      $intent-background-color: list.nth(map.get($intent-colors, $intent), 1);
+      background-color: color-mix(
+        in srgb,
+        $intent-background-color $background-percentage,
+        transparent
+      );
       color: list.nth(map.get($intent-colors, $intent), 2);
 
       &::before,
@@ -295,18 +305,18 @@ $dark-menu-item-intent-colors: (
 
     &:hover {
       @if $is-dark {
-        background-color: rgba($bg-color, 0.2);
+        background-color: color-mix(in srgb, $bg-color 20%, transparent);
       } @else {
-        background-color: rgba($bg-color, 0.1);
+        background-color: color-mix(in srgb, $bg-color 10%, transparent);
       }
     }
 
     &:active,
     &.#{$ns}-active {
       @if $is-dark {
-        background-color: rgba($bg-color, 0.3);
+        background-color: color-mix(in srgb, $bg-color 30%, transparent);
       } @else {
-        background-color: rgba($bg-color, 0.2);
+        background-color: color-mix(in srgb, $bg-color 20%, transparent);
       }
       color: $fg-color-active;
     }
