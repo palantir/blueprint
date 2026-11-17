@@ -8,7 +8,7 @@ import { ColorControl, RangeControl } from "@storybook/addon-docs/blocks";
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
 import React from "react";
 import { IconButton, Loader, TabsView } from "storybook/internal/components";
-import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
+import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
 import {
@@ -20,12 +20,17 @@ import {
 } from "./generateTokens";
 import {
     type ColorTokenEditor,
+    getActiveTheme,
+    normalizeTokenOverrides,
     type RangeTokenEditor,
     TOKEN_CONFIG,
     TOKEN_GROUPS,
+    TOKEN_VALUES_REQUESTED,
+    TOKEN_VALUES_UPDATED,
     type TokenGroup,
     type TokenName,
     type TokenValues,
+    type TokenValuesUpdate,
 } from "./tokens";
 
 const LoadingWrapper = styled.div({
@@ -102,11 +107,15 @@ interface TokenRowProps {
     onResetToken: (name: TokenName) => void;
     onUpdateToken: (name: TokenName, value: string | undefined) => void;
     overrideValue: string | undefined;
+    resolvedValue?: string;
 }
 
-function TokenRow({ label, name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
+function TokenRow({ label, name, onResetToken, onUpdateToken, overrideValue, resolvedValue }: TokenRowProps) {
     const displayLabel = label ?? name;
     const editor = TOKEN_CONFIG[name];
+    // Prefer the saved override, then the value computed in the active preview theme. The editor default keeps the
+    // control usable until the preview publishes its resolved values.
+    const effectiveCssValue = overrideValue || resolvedValue || editor.defaultCssValue;
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
         (value: string | undefined) => onUpdateToken(name, value),
@@ -120,19 +129,9 @@ function TokenRow({ label, name, onResetToken, onUpdateToken, overrideValue }: T
             </td>
             <td>
                 {editor.type === "color" ? (
-                    <ColorTokenControl
-                        editor={editor}
-                        name={name}
-                        onChange={handleUpdate}
-                        overrideValue={overrideValue}
-                    />
+                    <ColorTokenControl editor={editor} name={name} onChange={handleUpdate} value={effectiveCssValue} />
                 ) : (
-                    <RangeTokenControl
-                        editor={editor}
-                        name={name}
-                        onChange={handleUpdate}
-                        overrideValue={overrideValue}
-                    />
+                    <RangeTokenControl editor={editor} name={name} onChange={handleUpdate} value={effectiveCssValue} />
                 )}
             </td>
             <td>
@@ -195,11 +194,10 @@ interface TokenControlProps<TEditor> {
     editor: TEditor;
     name: TokenName;
     onChange: (value: string | undefined) => void;
-    overrideValue: string | undefined;
+    value: string | undefined;
 }
 
-function ColorTokenControl({ editor, name, onChange, overrideValue }: TokenControlProps<ColorTokenEditor>) {
-    const cssValue = overrideValue || editor.defaultCssValue;
+function ColorTokenControl({ editor, name, onChange, value: cssValue }: TokenControlProps<ColorTokenEditor>) {
     const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
         (value: string | undefined) =>
@@ -210,8 +208,8 @@ function ColorTokenControl({ editor, name, onChange, overrideValue }: TokenContr
     return <ColorControl {...editor.control} name={name} onChange={handleChange} value={controlValue} />;
 }
 
-function RangeTokenControl({ editor, name, onChange, overrideValue }: TokenControlProps<RangeTokenEditor>) {
-    const controlValue = overrideValue === undefined ? undefined : editor.toControlValue(overrideValue);
+function RangeTokenControl({ editor, name, onChange, value: cssValue }: TokenControlProps<RangeTokenEditor>) {
+    const controlValue = cssValue === undefined ? undefined : editor.toControlValue(cssValue);
     const handleChange = React.useCallback(
         (value: number | null | undefined) => onChange(value == null ? undefined : editor.toCssValue(value)),
         [editor, onChange],
@@ -225,16 +223,42 @@ export function TokensPanel() {
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
     const [inputError, setInputError] = React.useState<string>();
+    const activeTheme = getActiveTheme(globals.theme);
     const simpleTokenOverrides: GeneratorInputs | undefined = globals.simpleTokenOverrides;
-    const explicitTokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
+    const themeTokenOverrides = React.useMemo(
+        () => normalizeTokenOverrides(globals.tokenOverrides),
+        [globals.tokenOverrides],
+    );
+    const explicitTokenOverrides = themeTokenOverrides[activeTheme];
     const generatedTokens = React.useMemo(
-        () => (simpleTokenOverrides != null ? generateTokensForTheme(simpleTokenOverrides, globals.theme) : undefined),
-        [simpleTokenOverrides, globals.theme],
+        () => (simpleTokenOverrides != null ? generateTokensForTheme(simpleTokenOverrides, activeTheme) : undefined),
+        [simpleTokenOverrides, activeTheme],
     );
     const tokenOverrides: Partial<TokenValues> = React.useMemo(
         () => ({ ...generatedTokens, ...explicitTokenOverrides }),
         [generatedTokens, explicitTokenOverrides],
     );
+    const [resolvedTokenValuesUpdate, setResolvedTokenValuesUpdate] = React.useState<TokenValuesUpdate>();
+    const emit = useChannel(
+        {
+            [TOKEN_VALUES_UPDATED]: (update: TokenValuesUpdate) => {
+                if (update.storyId === storyId && update.theme === activeTheme) {
+                    setResolvedTokenValuesUpdate(update);
+                }
+            },
+        },
+        [activeTheme, storyId],
+    );
+    const resolvedTokenValues: Partial<TokenValues> =
+        resolvedTokenValuesUpdate?.storyId === storyId && resolvedTokenValuesUpdate.theme === activeTheme
+            ? resolvedTokenValuesUpdate.values
+            : {};
+
+    React.useEffect(() => {
+        if (isStoryPrepared) {
+            emit(TOKEN_VALUES_REQUESTED, { storyId, theme: activeTheme });
+        }
+    }, [activeTheme, emit, isStoryPrepared, storyId]);
 
     const handleUpdateToken = React.useCallback(
         (name: TokenName, value: string | undefined) => {
@@ -245,9 +269,14 @@ export function TokensPanel() {
                 // An empty override restores the original CSS value instead of the generated value.
                 overrides[name] = value ?? "";
             }
-            updateGlobals({ tokenOverrides: overrides });
+            updateGlobals({
+                tokenOverrides: {
+                    ...themeTokenOverrides,
+                    [activeTheme]: overrides,
+                },
+            });
         },
-        [explicitTokenOverrides, generatedTokens, updateGlobals],
+        [activeTheme, explicitTokenOverrides, generatedTokens, themeTokenOverrides, updateGlobals],
     );
 
     const handleResetToken = React.useCallback(
@@ -272,6 +301,16 @@ export function TokensPanel() {
         },
         [simpleTokenOverrides, updateGlobals],
     );
+
+    const hasOverrides = Object.values(tokenOverrides).some(value => value !== undefined && value !== "");
+    const handleResetAllTokens = React.useCallback(() => {
+        updateGlobals({
+            tokenOverrides: {
+                ...themeTokenOverrides,
+                [activeTheme]: Object.fromEntries(Object.keys(generatedTokens ?? {}).map(name => [name, ""])),
+            },
+        });
+    }, [activeTheme, generatedTokens, themeTokenOverrides, updateGlobals]);
 
     if (!isStoryPrepared) {
         return (
@@ -308,7 +347,20 @@ export function TokensPanel() {
                 },
                 {
                     children: (
-                        <TokenTable>
+                        <TokenTable
+                            resetControl={
+                                <IconButton
+                                    ariaLabel={`Reset all ${activeTheme} theme tokens`}
+                                    disabled={!hasOverrides}
+                                    onClick={handleResetAllTokens}
+                                    padding="small"
+                                    size="small"
+                                    variant="ghost"
+                                >
+                                    <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
+                                </IconButton>
+                            }
+                        >
                             {TOKEN_GROUPS.map(group => (
                                 <TokenGroupSection key={group.label} group={group}>
                                     {group.tokenNames.map(name => (
@@ -318,6 +370,7 @@ export function TokensPanel() {
                                             onResetToken={handleResetToken}
                                             onUpdateToken={handleUpdateToken}
                                             overrideValue={tokenOverrides[name]}
+                                            resolvedValue={resolvedTokenValues[name]}
                                         />
                                     ))}
                                 </TokenGroupSection>
@@ -332,7 +385,7 @@ export function TokensPanel() {
     );
 }
 
-function TokenTable({ children }: React.PropsWithChildren) {
+function TokenTable({ children, resetControl }: React.PropsWithChildren<{ resetControl?: React.ReactNode }>) {
     return (
         <TableWrapper>
             <TokensTable>
@@ -340,7 +393,7 @@ function TokenTable({ children }: React.PropsWithChildren) {
                     <tr>
                         <th>Name</th>
                         <th>Control</th>
-                        <th aria-label="Reset" />
+                        <th aria-label="Reset">{resetControl}</th>
                     </tr>
                 </thead>
                 {children}
