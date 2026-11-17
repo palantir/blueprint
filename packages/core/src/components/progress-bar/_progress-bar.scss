@@ -1,10 +1,11 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 @import "common";
 
-$progress-bar-stripes-color: rgba($white, 0.2) !default;
+$progress-bar-stripes-color: color-mix(in srgb, var(--bp-palette-white) 20%, transparent) !default;
 
 $progress-bar-height: $pt-spacing * 2 !default;
 $progress-bar-stripes-size: $pt-spacing * 7.5 !default;
@@ -68,8 +69,8 @@ $progress-bar-gradient: linear-gradient(
   }
 }
 
-@each $intent, $color in $pt-intent-colors {
+@each $intent in map.keys($pt-intent-colors) {
   .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
-    background-color: $color;
+    background-color: var(--bp-intent-#{$intent}-rest);
   }
 }

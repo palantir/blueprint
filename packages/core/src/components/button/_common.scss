@@ -421,16 +421,8 @@ $button-dark-minimal-active-text-colors: (
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
     // Use srgb to avoid hue shift with near-neutral gray
-    background: color-mix(
-      in srgb,
-      var(--bp-intent-default-rest) 20%,
-      var(--bp-palette-black)
-    ); //$dark-progress-track-color;
-    stroke: color-mix(
-      in srgb,
-      var(--bp-intent-default-rest) 68%,
-      var(--bp-palette-white)
-    ); //$dark-progress-head-color;
+    background: color-mix(in srgb, var(--bp-intent-default-rest) 20%, var(--bp-palette-black));
+    stroke: color-mix(in srgb, var(--bp-intent-default-rest) 68%, var(--bp-palette-white));
   }
 }
 
