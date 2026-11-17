@@ -21,7 +21,10 @@ const storybookConfig: StorybookConfig = {
         options: {},
     },
 
-    stories: ["../packages/{core,datetime,labs,select,table}/src/**/*.stories.@(ts|tsx)"],
+    stories: [
+        "../packages/{core,datetime,labs,select,table}/src/**/*.stories.@(ts|tsx)",
+        "./tokens/**/*.stories.@(ts|tsx)",
+    ],
 
     async viteFinal(config) {
         return mergeConfig(config, {
