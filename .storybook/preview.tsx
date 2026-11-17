@@ -73,7 +73,10 @@ const preview: Preview = {
 
     initialGlobals: {
         theme: "light",
-        tokenOverrides: {},
+        tokenOverrides: {
+            dark: {},
+            light: {},
+        },
     },
 };
 
