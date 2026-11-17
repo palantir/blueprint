@@ -97,8 +97,9 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
     useEffect(
         function applyTokenOverrides() {
             const style = document.body.style;
+            const overrides = tokenOverrides ?? {};
             for (const name of TOKEN_NAMES) {
-                const override = tokenOverrides[name];
+                const override = overrides[name];
                 if (override != null && override !== "") {
                     style.setProperty(name, override);
                 } else {

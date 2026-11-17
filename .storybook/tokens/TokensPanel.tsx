@@ -28,6 +28,8 @@ import {
     type TokenValuesUpdate,
 } from "./tokens";
 
+const CSS_VARIABLE_REFERENCE_PATTERN = /var\(/i;
+
 const LoadingWrapper = styled.div({
     alignItems: "center",
     display: "flex",
@@ -119,11 +121,11 @@ function TokenRow({
 }: TokenRowProps) {
     const displayLabel = label ?? name;
     const editor = TOKEN_CONFIG[name];
-    // Color pickers need the preview's computed value to display saved CSS references without replacing them.
-    // The editor default keeps the control usable until the preview publishes its resolved values.
-    const effectiveCssValue =
-        (editor.type === "color" ? resolvedValue || overrideValue : overrideValue || resolvedValue) ||
-        editor.defaultCssValue;
+    const fallbackCssValue = resolvedValue || editor.defaultCssValue;
+    const cssValue = overrideValue || fallbackCssValue;
+    // Resolve CSS references for the picker without changing the saved override. Literal overrides take effect
+    // immediately, even before the preview publishes their computed value.
+    const effectiveCssValue = isCssVariableReference(cssValue) ? fallbackCssValue : cssValue;
     const inputErrorId = React.useId();
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
@@ -464,4 +466,8 @@ function IntentSeedRow({ canReset, family, inputError, onUpdate, resolvedValue, 
             resolvedValue={resolvedValue}
         />
     );
+}
+
+function isCssVariableReference(value: string | undefined): boolean {
+    return value != null && CSS_VARIABLE_REFERENCE_PATTERN.test(value);
 }
