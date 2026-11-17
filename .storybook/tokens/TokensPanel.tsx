@@ -11,20 +11,16 @@ import { IconButton, Loader, TabsView } from "storybook/internal/components";
 import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
-import {
-    generateTokens,
-    generateTokensForTheme,
-    type GeneratorInputs,
-    TOKEN_FAMILIES,
-    type TokenFamily,
-} from "./generateTokens";
+import { generateTokens, getFamilyTokenNames, TOKEN_FAMILIES, type TokenFamily } from "./generateTokens";
 import {
     type ColorTokenEditor,
+    deserializeTokenOverrides,
     getActiveTheme,
-    normalizeTokenOverrides,
     type RangeTokenEditor,
+    serializeTokenOverrides,
     TOKEN_CONFIG,
     TOKEN_GROUPS,
+    TOKEN_NAMES,
     TOKEN_VALUES_REQUESTED,
     TOKEN_VALUES_UPDATED,
     type TokenGroup,
@@ -102,6 +98,8 @@ const TokenGroupCount = styled.span(({ theme }) => ({
 }));
 
 interface TokenRowProps {
+    canReset?: boolean;
+    inputError?: string;
     label?: string;
     name: TokenName;
     onResetToken: (name: TokenName) => void;
@@ -110,12 +108,24 @@ interface TokenRowProps {
     resolvedValue?: string;
 }
 
-function TokenRow({ label, name, onResetToken, onUpdateToken, overrideValue, resolvedValue }: TokenRowProps) {
+function TokenRow({
+    canReset,
+    inputError,
+    label,
+    name,
+    onResetToken,
+    onUpdateToken,
+    overrideValue,
+    resolvedValue,
+}: TokenRowProps) {
     const displayLabel = label ?? name;
     const editor = TOKEN_CONFIG[name];
-    // Prefer the saved override, then the value computed in the active preview theme. The editor default keeps the
-    // control usable until the preview publishes its resolved values.
-    const effectiveCssValue = overrideValue || resolvedValue || editor.defaultCssValue;
+    // Color pickers need the preview's computed value to display saved CSS references without replacing them.
+    // The editor default keeps the control usable until the preview publishes its resolved values.
+    const effectiveCssValue =
+        (editor.type === "color" ? resolvedValue || overrideValue : overrideValue || resolvedValue) ||
+        editor.defaultCssValue;
+    const inputErrorId = React.useId();
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
         (value: string | undefined) => onUpdateToken(name, value),
@@ -128,16 +138,37 @@ function TokenRow({ label, name, onResetToken, onUpdateToken, overrideValue, res
                 <TokenNameLabel>{displayLabel}</TokenNameLabel>
             </td>
             <td>
-                {editor.type === "color" ? (
-                    <ColorTokenControl editor={editor} name={name} onChange={handleUpdate} value={effectiveCssValue} />
-                ) : (
-                    <RangeTokenControl editor={editor} name={name} onChange={handleUpdate} value={effectiveCssValue} />
-                )}
+                <div
+                    aria-describedby={inputError === undefined ? undefined : inputErrorId}
+                    aria-label={displayLabel}
+                    role="group"
+                >
+                    {editor.type === "color" ? (
+                        <ColorTokenControl
+                            editor={editor}
+                            name={name}
+                            onChange={handleUpdate}
+                            value={effectiveCssValue}
+                        />
+                    ) : (
+                        <RangeTokenControl
+                            editor={editor}
+                            name={name}
+                            onChange={handleUpdate}
+                            value={effectiveCssValue}
+                        />
+                    )}
+                    {inputError !== undefined && (
+                        <InputError id={inputErrorId} role="alert">
+                            {inputError}
+                        </InputError>
+                    )}
+                </div>
             </td>
             <td>
                 <IconButton
                     ariaLabel={`Reset ${displayLabel}`}
-                    disabled={!overrideValue}
+                    disabled={!(canReset ?? !!overrideValue)}
                     onClick={handleReset}
                     padding="small"
                     size="small"
@@ -222,22 +253,14 @@ export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
-    const [inputError, setInputError] = React.useState<string>();
+    const [inputErrors, setInputErrors] = React.useState<Partial<Record<TokenFamily, string>>>({});
+    const [controlResetCounts, setControlResetCounts] = React.useState<Partial<Record<TokenName, number>>>({});
     const activeTheme = getActiveTheme(globals.theme);
-    const simpleTokenOverrides: GeneratorInputs | undefined = globals.simpleTokenOverrides;
     const themeTokenOverrides = React.useMemo(
-        () => normalizeTokenOverrides(globals.tokenOverrides),
+        () => deserializeTokenOverrides(globals.tokenOverrides),
         [globals.tokenOverrides],
     );
-    const explicitTokenOverrides = themeTokenOverrides[activeTheme];
-    const generatedTokens = React.useMemo(
-        () => (simpleTokenOverrides != null ? generateTokensForTheme(simpleTokenOverrides, activeTheme) : undefined),
-        [simpleTokenOverrides, activeTheme],
-    );
-    const tokenOverrides: Partial<TokenValues> = React.useMemo(
-        () => ({ ...generatedTokens, ...explicitTokenOverrides }),
-        [generatedTokens, explicitTokenOverrides],
-    );
+    const tokenOverrides = themeTokenOverrides[activeTheme];
     const [resolvedTokenValuesUpdate, setResolvedTokenValuesUpdate] = React.useState<TokenValuesUpdate>();
     const emit = useChannel(
         {
@@ -260,23 +283,38 @@ export function TokensPanel() {
         }
     }, [activeTheme, emit, isStoryPrepared, storyId]);
 
+    const resetTokenControls = React.useCallback((names: TokenName[]) => {
+        // Storybook keeps local drafts even when a reset leaves the effective CSS color unchanged.
+        setControlResetCounts(counts => {
+            const nextCounts = { ...counts };
+            for (const name of names) {
+                nextCounts[name] = (counts[name] ?? 0) + 1;
+            }
+            return nextCounts;
+        });
+    }, []);
+
     const handleUpdateToken = React.useCallback(
         (name: TokenName, value: string | undefined) => {
-            const overrides: Partial<TokenValues> = { ...explicitTokenOverrides };
-            if (value === undefined && generatedTokens?.[name] === undefined) {
+            const family = TOKEN_FAMILIES.find(candidate => name === `--bp-intent-${candidate}-rest`);
+            if (family !== undefined) {
+                setInputErrors(errors => ({ ...errors, [family]: undefined }));
+            }
+            const overrides = { ...tokenOverrides };
+            if (value === undefined) {
                 delete overrides[name];
+                resetTokenControls([name]);
             } else {
-                // An empty override restores the original CSS value instead of the generated value.
-                overrides[name] = value ?? "";
+                overrides[name] = value;
             }
             updateGlobals({
-                tokenOverrides: {
+                tokenOverrides: serializeTokenOverrides({
                     ...themeTokenOverrides,
                     [activeTheme]: overrides,
-                },
+                }),
             });
         },
-        [activeTheme, explicitTokenOverrides, generatedTokens, themeTokenOverrides, updateGlobals],
+        [activeTheme, resetTokenControls, themeTokenOverrides, tokenOverrides, updateGlobals],
     );
 
     const handleResetToken = React.useCallback(
@@ -286,31 +324,41 @@ export function TokensPanel() {
 
     const handleUpdateFamily = React.useCallback(
         (family: TokenFamily, value: string | undefined) => {
-            if (value !== undefined && generateTokens({ [family]: { color: value } }) === undefined) {
-                setInputError(`Choose an opaque color for ${family}.`);
+            const generatedTokens = value === undefined ? undefined : generateTokens({ [family]: { color: value } });
+            if (value !== undefined && generatedTokens === undefined) {
+                setInputErrors(errors => ({ ...errors, [family]: `Choose an opaque color for ${family}.` }));
                 return;
             }
-            setInputError(undefined);
-            const inputs = { ...simpleTokenOverrides };
+            setInputErrors(errors => ({ ...errors, [family]: undefined }));
             if (value === undefined) {
-                delete inputs[family];
-            } else {
-                inputs[family] = { color: value };
+                resetTokenControls(getFamilyTokenNames(family));
             }
-            updateGlobals({ simpleTokenOverrides: inputs });
+            const overrides = { ...themeTokenOverrides };
+            for (const theme of ["dark", "light"] as const) {
+                const values = { ...overrides[theme], ...generatedTokens?.[theme] };
+                if (value === undefined) {
+                    for (const name of getFamilyTokenNames(family)) {
+                        delete values[name];
+                    }
+                }
+                overrides[theme] = values;
+            }
+            updateGlobals({ tokenOverrides: serializeTokenOverrides(overrides) });
         },
-        [simpleTokenOverrides, updateGlobals],
+        [resetTokenControls, themeTokenOverrides, updateGlobals],
     );
 
     const hasOverrides = Object.values(tokenOverrides).some(value => value !== undefined && value !== "");
     const handleResetAllTokens = React.useCallback(() => {
+        setInputErrors({});
+        resetTokenControls(TOKEN_NAMES);
         updateGlobals({
-            tokenOverrides: {
+            tokenOverrides: serializeTokenOverrides({
                 ...themeTokenOverrides,
-                [activeTheme]: Object.fromEntries(Object.keys(generatedTokens ?? {}).map(name => [name, ""])),
-            },
+                [activeTheme]: {},
+            }),
         });
-    }, [activeTheme, generatedTokens, themeTokenOverrides, updateGlobals]);
+    }, [activeTheme, resetTokenControls, themeTokenOverrides, updateGlobals]);
 
     if (!isStoryPrepared) {
         return (
@@ -326,21 +374,25 @@ export function TokensPanel() {
             tabs={[
                 {
                     children: (
-                        <>
-                            <TokenTable>
-                                <tbody>
-                                    {TOKEN_FAMILIES.map(family => (
-                                        <IntentSeedRow
-                                            key={family}
-                                            family={family}
-                                            onUpdate={handleUpdateFamily}
-                                            value={simpleTokenOverrides?.[family]?.color}
-                                        />
-                                    ))}
-                                </tbody>
-                            </TokenTable>
-                            {inputError !== undefined && <InputError role="alert">{inputError}</InputError>}
-                        </>
+                        <TokenTable>
+                            <tbody>
+                                {TOKEN_FAMILIES.map(family => (
+                                    <IntentSeedRow
+                                        key={`${family}:${controlResetCounts[`--bp-intent-${family}-rest`] ?? 0}`}
+                                        canReset={getFamilyTokenNames(family).some(
+                                            name =>
+                                                themeTokenOverrides.dark[name] !== undefined ||
+                                                themeTokenOverrides.light[name] !== undefined,
+                                        )}
+                                        family={family}
+                                        inputError={inputErrors[family]}
+                                        onUpdate={handleUpdateFamily}
+                                        resolvedValue={resolvedTokenValues[`--bp-intent-${family}-rest`]}
+                                        value={tokenOverrides[`--bp-intent-${family}-rest`]}
+                                    />
+                                ))}
+                            </tbody>
+                        </TokenTable>
                     ),
                     id: "simple",
                     title: "Simple",
@@ -365,7 +417,7 @@ export function TokensPanel() {
                                 <TokenGroupSection key={group.label} group={group}>
                                     {group.tokenNames.map(name => (
                                         <TokenRow
-                                            key={name}
+                                            key={`${name}:${controlResetCounts[name] ?? 0}`}
                                             name={name}
                                             onResetToken={handleResetToken}
                                             onUpdateToken={handleUpdateToken}
@@ -403,12 +455,15 @@ function TokenTable({ children, resetControl }: React.PropsWithChildren<{ resetC
 }
 
 interface IntentSeedRowProps {
+    canReset: boolean;
     family: TokenFamily;
+    inputError: string | undefined;
     onUpdate: (family: TokenFamily, value: string | undefined) => void;
+    resolvedValue: string | undefined;
     value: string | undefined;
 }
 
-function IntentSeedRow({ family, onUpdate, value }: IntentSeedRowProps) {
+function IntentSeedRow({ canReset, family, inputError, onUpdate, resolvedValue, value }: IntentSeedRowProps) {
     const handleReset = React.useCallback(() => onUpdate(family, undefined), [family, onUpdate]);
     const handleUpdate = React.useCallback(
         (_name: TokenName, color: string | undefined) => onUpdate(family, color),
@@ -417,11 +472,14 @@ function IntentSeedRow({ family, onUpdate, value }: IntentSeedRowProps) {
 
     return (
         <TokenRow
+            canReset={canReset}
+            inputError={inputError}
             label={family}
             name={`--bp-intent-${family}-rest`}
             onResetToken={handleReset}
             onUpdateToken={handleUpdate}
             overrideValue={value}
+            resolvedValue={resolvedValue}
         />
     );
 }

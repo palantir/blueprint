@@ -5,10 +5,9 @@
 import type { Decorator } from "@storybook/react-vite";
 import { addons, useCallback, useEffect, useMemo, useRef } from "storybook/preview-api";
 
-import { generateTokensForTheme, type GeneratorInputs } from "./generateTokens";
 import {
+    deserializeTokenOverrides,
     getActiveTheme,
-    normalizeTokenOverrides,
     TOKEN_CONFIG,
     TOKEN_NAMES,
     TOKEN_VALUES_REQUESTED,
@@ -29,13 +28,8 @@ interface PublishFrameIds {
 
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
     const activeTheme = getActiveTheme(globals.theme);
-    const simpleTokenOverrides: GeneratorInputs | undefined = globals.simpleTokenOverrides;
-    const generatedTokens = useMemo(
-        () => (simpleTokenOverrides != null ? generateTokensForTheme(simpleTokenOverrides, activeTheme) : undefined),
-        [simpleTokenOverrides, activeTheme],
-    );
     const themeTokenOverrides = useMemo(
-        () => normalizeTokenOverrides(globals.tokenOverrides),
+        () => deserializeTokenOverrides(globals.tokenOverrides),
         [globals.tokenOverrides],
     );
     const tokenOverrides = themeTokenOverrides[activeTheme];
@@ -103,10 +97,8 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
     useEffect(
         function applyTokenOverrides() {
             const style = document.body.style;
-            const overrides = { ...generatedTokens, ...tokenOverrides };
-
             for (const name of TOKEN_NAMES) {
-                const override = overrides[name];
+                const override = tokenOverrides[name];
                 if (override != null && override !== "") {
                     style.setProperty(name, override);
                 } else {
@@ -117,7 +109,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
             scheduleTokenValuesUpdate();
         },
-        [generatedTokens, id, scheduleTokenValuesUpdate, tokenOverrides],
+        [id, scheduleTokenValuesUpdate, tokenOverrides],
     );
 
     return <Story />;

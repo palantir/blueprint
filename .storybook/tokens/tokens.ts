@@ -156,18 +156,25 @@ export function getActiveTheme(theme: unknown): ThemeName {
     return theme === "dark" ? "dark" : "light";
 }
 
-export function normalizeTokenOverrides(value: unknown): ThemeTokenOverrides {
+export function deserializeTokenOverrides(value: unknown): ThemeTokenOverrides {
     if (isRecord(value) && (isRecord(value.dark) || isRecord(value.light))) {
         return {
-            dark: pickTokenOverrides(value.dark),
-            light: pickTokenOverrides(value.light),
+            dark: decodeTokenReferences(value.dark),
+            light: decodeTokenReferences(value.light),
         };
     }
 
-    const legacyOverrides = pickTokenOverrides(value);
+    const legacyOverrides = decodeTokenReferences(value);
     return {
         dark: { ...legacyOverrides },
         light: { ...legacyOverrides },
+    };
+}
+
+export function serializeTokenOverrides(value: ThemeTokenOverrides): ThemeTokenOverrides {
+    return {
+        dark: encodeTokenReferences(value.dark),
+        light: encodeTokenReferences(value.light),
     };
 }
 
@@ -217,7 +224,7 @@ function isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function pickTokenOverrides(value: unknown): Partial<TokenValues> {
+function decodeTokenReferences(value: unknown): Partial<TokenValues> {
     if (!isRecord(value)) {
         return {};
     }
@@ -226,10 +233,25 @@ function pickTokenOverrides(value: unknown): Partial<TokenValues> {
     for (const name of TOKEN_NAMES) {
         const tokenValue = value[name];
         if (typeof tokenValue === "string") {
-            overrides[name] = tokenValue;
+            overrides[name] = decodeTokenReference(tokenValue);
         }
     }
     return overrides;
+}
+
+function encodeTokenReferences(value: Partial<TokenValues>): Partial<TokenValues> {
+    return Object.fromEntries(
+        Object.entries(value).map(([name, tokenValue]) => [name, encodeTokenReference(tokenValue)]),
+    );
+}
+
+function decodeTokenReference(value: string): string {
+    return value.replace(/^ref(--[\w-]+)$/, "var($1)");
+}
+
+function encodeTokenReference(value: string | undefined): string | undefined {
+    // Storybook's URL globals only accept a restricted set of characters.
+    return value?.replace(/^var\(\s*(--[\w-]+)\s*\)$/, "ref$1");
 }
 
 function colorTokenEditor(defaultCssValue: string): ColorTokenEditor {
