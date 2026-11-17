@@ -7,10 +7,17 @@ import { ColorControl, RangeControl } from "@storybook/addon-docs/blocks";
 // React must be in scope here even though Blueprint's shared config uses the automatic runtime.
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root React devDependency.
 import React from "react";
-import { IconButton, Loader } from "storybook/internal/components";
+import { IconButton, Loader, TabsView } from "storybook/internal/components";
 import { useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
+import {
+    generateTokens,
+    generateTokensForTheme,
+    type GeneratorInputs,
+    TOKEN_FAMILIES,
+    type TokenFamily,
+} from "./generateTokens";
 import {
     type ColorTokenEditor,
     type RangeTokenEditor,
@@ -29,6 +36,7 @@ const LoadingWrapper = styled.div({
 });
 
 const TableWrapper = styled.div({ overflowX: "auto" });
+const InputError = styled.p(({ theme }) => ({ color: theme.color.negative, margin: "10px 15px" }));
 
 const TokensTable = styled.table(({ theme }) => ({
     borderCollapse: "collapse",
@@ -89,15 +97,16 @@ const TokenGroupCount = styled.span(({ theme }) => ({
 }));
 
 interface TokenRowProps {
+    label?: string;
     name: TokenName;
     onResetToken: (name: TokenName) => void;
     onUpdateToken: (name: TokenName, value: string | undefined) => void;
     overrideValue: string | undefined;
 }
 
-function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
+function TokenRow({ label, name, onResetToken, onUpdateToken, overrideValue }: TokenRowProps) {
+    const displayLabel = label ?? name;
     const editor = TOKEN_CONFIG[name];
-    const hasOverride = overrideValue !== undefined && overrideValue !== "";
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
         (value: string | undefined) => onUpdateToken(name, value),
@@ -107,7 +116,7 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
     return (
         <tr>
             <td>
-                <TokenNameLabel>{name}</TokenNameLabel>
+                <TokenNameLabel>{displayLabel}</TokenNameLabel>
             </td>
             <td>
                 {editor.type === "color" ? (
@@ -128,8 +137,8 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
             </td>
             <td>
                 <IconButton
-                    ariaLabel={`Reset ${name}`}
-                    disabled={!hasOverride}
+                    ariaLabel={`Reset ${displayLabel}`}
+                    disabled={!overrideValue}
                     onClick={handleReset}
                     padding="small"
                     size="small"
@@ -143,13 +152,11 @@ function TokenRow({ name, onResetToken, onUpdateToken, overrideValue }: TokenRow
 }
 
 interface TokenGroupSectionProps {
+    children: React.ReactNode;
     group: TokenGroup;
-    onResetToken: (name: TokenName) => void;
-    onUpdateToken: (name: TokenName, value: string | undefined) => void;
-    tokenOverrides: Partial<TokenValues>;
 }
 
-function TokenGroupSection({ group, onResetToken, onUpdateToken, tokenOverrides }: TokenGroupSectionProps) {
+function TokenGroupSection({ children, group }: TokenGroupSectionProps) {
     const [isExpanded, setIsExpanded] = React.useState(!group.initialCollapsed);
     const controlsId = React.useId();
     const handleToggle = React.useCallback(() => setIsExpanded(expanded => !expanded), []);
@@ -178,15 +185,7 @@ function TokenGroupSection({ group, onResetToken, onUpdateToken, tokenOverrides 
                 </tr>
             </tbody>
             <tbody hidden={!isExpanded} id={controlsId}>
-                {group.tokenNames.map(name => (
-                    <TokenRow
-                        key={name}
-                        name={name}
-                        onResetToken={onResetToken}
-                        onUpdateToken={onUpdateToken}
-                        overrideValue={tokenOverrides[name]}
-                    />
-                ))}
+                {children}
             </tbody>
         </>
     );
@@ -225,31 +224,53 @@ export function TokensPanel() {
     const [globals, updateGlobals] = useGlobals();
     const { storyId } = useStorybookState();
     const isStoryPrepared = useStoryPrepared(storyId);
+    const [inputError, setInputError] = React.useState<string>();
+    const simpleTokenOverrides: GeneratorInputs | undefined = globals.simpleTokenOverrides;
+    const explicitTokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
+    const generatedTokens = React.useMemo(
+        () => (simpleTokenOverrides != null ? generateTokensForTheme(simpleTokenOverrides, globals.theme) : undefined),
+        [simpleTokenOverrides, globals.theme],
+    );
     const tokenOverrides: Partial<TokenValues> = React.useMemo(
-        () => globals.tokenOverrides ?? {},
-        [globals.tokenOverrides],
+        () => ({ ...generatedTokens, ...explicitTokenOverrides }),
+        [generatedTokens, explicitTokenOverrides],
     );
 
     const handleUpdateToken = React.useCallback(
         (name: TokenName, value: string | undefined) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            if (value === undefined) {
+            const overrides: Partial<TokenValues> = { ...explicitTokenOverrides };
+            if (value === undefined && generatedTokens?.[name] === undefined) {
                 delete overrides[name];
             } else {
-                overrides[name] = value;
+                // An empty override restores the original CSS value instead of the generated value.
+                overrides[name] = value ?? "";
             }
             updateGlobals({ tokenOverrides: overrides });
         },
-        [tokenOverrides, updateGlobals],
+        [explicitTokenOverrides, generatedTokens, updateGlobals],
     );
 
     const handleResetToken = React.useCallback(
-        (name: TokenName) => {
-            const overrides: Partial<TokenValues> = { ...tokenOverrides };
-            delete overrides[name];
-            updateGlobals({ tokenOverrides: overrides });
+        (name: TokenName) => handleUpdateToken(name, undefined),
+        [handleUpdateToken],
+    );
+
+    const handleUpdateFamily = React.useCallback(
+        (family: TokenFamily, value: string | undefined) => {
+            if (value !== undefined && generateTokens({ [family]: { color: value } }) === undefined) {
+                setInputError(`Choose an opaque color for ${family}.`);
+                return;
+            }
+            setInputError(undefined);
+            const inputs = { ...simpleTokenOverrides };
+            if (value === undefined) {
+                delete inputs[family];
+            } else {
+                inputs[family] = { color: value };
+            }
+            updateGlobals({ simpleTokenOverrides: inputs });
         },
-        [tokenOverrides, updateGlobals],
+        [simpleTokenOverrides, updateGlobals],
     );
 
     if (!isStoryPrepared) {
@@ -261,6 +282,58 @@ export function TokensPanel() {
     }
 
     return (
+        <TabsView
+            defaultSelected="simple"
+            tabs={[
+                {
+                    children: (
+                        <>
+                            <TokenTable>
+                                <tbody>
+                                    {TOKEN_FAMILIES.map(family => (
+                                        <IntentSeedRow
+                                            key={family}
+                                            family={family}
+                                            onUpdate={handleUpdateFamily}
+                                            value={simpleTokenOverrides?.[family]?.color}
+                                        />
+                                    ))}
+                                </tbody>
+                            </TokenTable>
+                            {inputError !== undefined && <InputError role="alert">{inputError}</InputError>}
+                        </>
+                    ),
+                    id: "simple",
+                    title: "Simple",
+                },
+                {
+                    children: (
+                        <TokenTable>
+                            {TOKEN_GROUPS.map(group => (
+                                <TokenGroupSection key={group.label} group={group}>
+                                    {group.tokenNames.map(name => (
+                                        <TokenRow
+                                            key={name}
+                                            name={name}
+                                            onResetToken={handleResetToken}
+                                            onUpdateToken={handleUpdateToken}
+                                            overrideValue={tokenOverrides[name]}
+                                        />
+                                    ))}
+                                </TokenGroupSection>
+                            ))}
+                        </TokenTable>
+                    ),
+                    id: "advanced",
+                    title: "Advanced",
+                },
+            ]}
+        />
+    );
+}
+
+function TokenTable({ children }: React.PropsWithChildren) {
+    return (
         <TableWrapper>
             <TokensTable>
                 <thead>
@@ -270,16 +343,32 @@ export function TokensPanel() {
                         <th aria-label="Reset" />
                     </tr>
                 </thead>
-                {TOKEN_GROUPS.map(group => (
-                    <TokenGroupSection
-                        key={group.label}
-                        group={group}
-                        onResetToken={handleResetToken}
-                        onUpdateToken={handleUpdateToken}
-                        tokenOverrides={tokenOverrides}
-                    />
-                ))}
+                {children}
             </TokensTable>
         </TableWrapper>
+    );
+}
+
+interface IntentSeedRowProps {
+    family: TokenFamily;
+    onUpdate: (family: TokenFamily, value: string | undefined) => void;
+    value: string | undefined;
+}
+
+function IntentSeedRow({ family, onUpdate, value }: IntentSeedRowProps) {
+    const handleReset = React.useCallback(() => onUpdate(family, undefined), [family, onUpdate]);
+    const handleUpdate = React.useCallback(
+        (_name: TokenName, color: string | undefined) => onUpdate(family, color),
+        [family, onUpdate],
+    );
+
+    return (
+        <TokenRow
+            label={family}
+            name={`--bp-intent-${family}-rest`}
+            onResetToken={handleReset}
+            onUpdateToken={handleUpdate}
+            overrideValue={value}
+        />
     );
 }

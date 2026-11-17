@@ -42,6 +42,10 @@ export function generateTokens(inputs: GeneratorInputs): GeneratedTokens | undef
     return result;
 }
 
+export function generateTokensForTheme(inputs: GeneratorInputs, theme: unknown) {
+    return generateTokens(inputs)?.[theme === "dark" ? "dark" : "light"];
+}
+
 interface TokenAssignment {
     dark: string;
     light: string;

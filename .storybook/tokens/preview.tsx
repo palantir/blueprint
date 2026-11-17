@@ -3,14 +3,21 @@
  */
 
 import type { Decorator } from "@storybook/react-vite";
-import { useEffect, useRef } from "storybook/preview-api";
+import { useEffect, useMemo, useRef } from "storybook/preview-api";
 
+import { generateTokensForTheme, type GeneratorInputs } from "./generateTokens";
 import { TOKEN_NAMES, type TokenName, type TokenValues } from "./tokens";
 
 type InlineTokenValues = Record<TokenName, { priority: string; value: string }>;
 
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
     const tokenOverrides: Partial<TokenValues> | undefined = globals.tokenOverrides;
+    const simpleTokenOverrides: GeneratorInputs | undefined = globals.simpleTokenOverrides;
+    const theme = globals.theme;
+    const generatedTokens = useMemo(
+        () => (simpleTokenOverrides != null ? generateTokensForTheme(simpleTokenOverrides, theme) : undefined),
+        [simpleTokenOverrides, theme],
+    );
     const initialTokenValues = useRef<InlineTokenValues | undefined>(undefined);
 
     useEffect(
@@ -42,7 +49,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
     useEffect(
         function applyTokenOverrides() {
             const style = document.body.style;
-            const overrides = tokenOverrides ?? {};
+            const overrides = { ...generatedTokens, ...tokenOverrides };
 
             for (const name of TOKEN_NAMES) {
                 const override = overrides[name];
@@ -54,7 +61,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
                 }
             }
         },
-        [id, tokenOverrides],
+        [generatedTokens, id, tokenOverrides],
     );
 
     return <Story />;
