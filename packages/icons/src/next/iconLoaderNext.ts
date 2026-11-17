@@ -23,6 +23,9 @@ import { defaultNextIconPathsLoader, type NextIconPathsLoader } from "./pathsLoa
 
 export { IconVariant } from "./iconVariant";
 
+/** @deprecated Use {@link IconVariant} instead. */
+export type NextIconVariant = IconVariant;
+
 export interface NextIconLoaderOptions {
     /**
      * Custom loader function, or use the default dynamic import loader.
