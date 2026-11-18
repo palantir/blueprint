@@ -3,9 +3,9 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies -- Storybook uses the root Culori devDependency.
-import { formatHex, interpolate, parse } from "culori";
+import { formatHex, parse } from "culori";
 
-/** Ten hex colors ordered light to dark, with the exact normalized input at index 6. */
+/** Ten CSS colors ordered light to dark, with the exact normalized input at index 6. */
 export type Palette = readonly [string, string, string, string, string, string, string, string, string, string];
 
 /** Accepts opaque CSS seed colors; returns no palette for invalid or translucent colors. */
@@ -16,20 +16,18 @@ export function generatePalette(input: string): Palette | undefined {
     }
 
     const color = formatHex(seed);
-    const mixWhite = interpolate([color, "white"], "oklab");
-    const mixBlack = interpolate([color, "black"], "oklab");
 
     // Generate approximate colors with no contrast guarantee
     return [
-        formatHex(mixWhite(0.92)),
-        formatHex(mixWhite(0.81)),
-        formatHex(mixWhite(0.6)),
-        formatHex(mixWhite(0.37)),
-        formatHex(mixWhite(0.18)),
-        formatHex(mixWhite(0.06)),
+        `color-mix(in oklab, ${color}, white 92%)`,
+        `color-mix(in oklab, ${color}, white 81%)`,
+        `color-mix(in oklab, ${color}, white 60%)`,
+        `color-mix(in oklab, ${color}, white 37%)`,
+        `color-mix(in oklab, ${color}, white 18%)`,
+        `color-mix(in oklab, ${color}, white 6%)`,
         color,
-        formatHex(mixBlack(0.14)),
-        formatHex(mixBlack(0.24)),
-        formatHex(mixBlack(0.34)),
+        `color-mix(in oklab, ${color}, black 14%)`,
+        `color-mix(in oklab, ${color}, black 24%)`,
+        `color-mix(in oklab, ${color}, black 34%)`,
     ];
 }

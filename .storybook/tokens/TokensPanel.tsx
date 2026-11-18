@@ -11,13 +11,12 @@ import { IconButton, Loader, TabsView } from "storybook/internal/components";
 import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
-import { generateTokens, getFamilyTokenNames, TOKEN_FAMILIES, type TokenFamily } from "./generateTokens";
+import { generateTokens, type GeneratorInputs, TOKEN_FAMILIES, type TokenFamily } from "./generateTokens";
 import {
     type ColorTokenEditor,
-    deserializeTokenOverrides,
     getActiveTheme,
+    normalizeTokenOverrides,
     type RangeTokenEditor,
-    serializeTokenOverrides,
     TOKEN_CONFIG,
     TOKEN_GROUPS,
     TOKEN_VALUES_REQUESTED,
@@ -28,7 +27,7 @@ import {
     type TokenValuesUpdate,
 } from "./tokens";
 
-const CSS_VARIABLE_REFERENCE_PATTERN = /var\(/i;
+const CSS_COLOR_EXPRESSION_PATTERN = /(?:var|color-mix)\(/i;
 
 const LoadingWrapper = styled.div({
     alignItems: "center",
@@ -105,8 +104,8 @@ interface TokenRowProps {
     name: TokenName;
     onResetToken: (name: TokenName) => void;
     onUpdateToken: (name: TokenName, value: string | undefined) => void;
-    overrideValue: string | undefined;
     resolvedValue?: string;
+    value: string | undefined;
 }
 
 function TokenRow({
@@ -116,20 +115,21 @@ function TokenRow({
     name,
     onResetToken,
     onUpdateToken,
-    overrideValue,
     resolvedValue,
+    value,
 }: TokenRowProps) {
     const displayLabel = label ?? name;
     const editor = TOKEN_CONFIG[name];
-    const fallbackCssValue = resolvedValue || editor.defaultCssValue;
-    const cssValue = overrideValue || fallbackCssValue;
-    // Resolve CSS references for the picker without changing the saved override. Literal overrides take effect
+    const fallbackCssValue = resolvedValue ?? editor.defaultCssValue;
+    const cssValue = value ?? fallbackCssValue;
+    // Resolve CSS expressions for the picker without changing their saved or generated value. Literals take effect
     // immediately, even before the preview publishes their computed value.
-    const effectiveCssValue = isCssVariableReference(cssValue) ? fallbackCssValue : cssValue;
+    const effectiveCssValue =
+        cssValue !== undefined && CSS_COLOR_EXPRESSION_PATTERN.test(cssValue) ? fallbackCssValue : cssValue;
     const inputErrorId = React.useId();
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
-        (value: string | undefined) => onUpdateToken(name, value),
+        (updatedValue: string | undefined) => onUpdateToken(name, updatedValue),
         [name, onUpdateToken],
     );
 
@@ -169,7 +169,7 @@ function TokenRow({
             <td>
                 <IconButton
                     ariaLabel={`Reset ${displayLabel}`}
-                    disabled={!(canReset ?? !!overrideValue)}
+                    disabled={!(canReset ?? value !== undefined)}
                     onClick={handleReset}
                     padding="small"
                     size="small"
@@ -257,10 +257,16 @@ export function TokensPanel() {
     const [inputErrors, setInputErrors] = React.useState<Partial<Record<TokenFamily, string>>>({});
     const activeTheme = getActiveTheme(globals.theme);
     const themeTokenOverrides = React.useMemo(
-        () => deserializeTokenOverrides(globals.tokenOverrides),
+        () => normalizeTokenOverrides(globals.tokenOverrides),
         [globals.tokenOverrides],
     );
     const tokenOverrides = themeTokenOverrides[activeTheme];
+    const generatorInputs = globals.generatorInputs as GeneratorInputs | undefined;
+    const generatedTokens = React.useMemo(
+        () => (generatorInputs != null ? generateTokens(generatorInputs) : undefined),
+        [generatorInputs],
+    );
+    const generatedOverrides = generatedTokens?.[activeTheme];
     const [resolvedTokenValuesUpdate, setResolvedTokenValuesUpdate] = React.useState<TokenValuesUpdate>();
     const emit = useChannel(
         {
@@ -285,10 +291,6 @@ export function TokensPanel() {
 
     const handleUpdateToken = React.useCallback(
         (name: TokenName, value: string | undefined) => {
-            const family = TOKEN_FAMILIES.find(candidate => name === `--bp-intent-${candidate}-rest`);
-            if (family !== undefined) {
-                setInputErrors(errors => ({ ...errors, [family]: undefined }));
-            }
             const overrides = { ...tokenOverrides };
             if (value === undefined) {
                 delete overrides[name];
@@ -296,10 +298,10 @@ export function TokensPanel() {
                 overrides[name] = value;
             }
             updateGlobals({
-                tokenOverrides: serializeTokenOverrides({
+                tokenOverrides: {
                     ...themeTokenOverrides,
                     [activeTheme]: overrides,
-                }),
+                },
             });
         },
         [activeTheme, themeTokenOverrides, tokenOverrides, updateGlobals],
@@ -312,35 +314,29 @@ export function TokensPanel() {
 
     const handleUpdateFamily = React.useCallback(
         (family: TokenFamily, value: string | undefined) => {
-            const generatedTokens = value === undefined ? undefined : generateTokens({ [family]: { color: value } });
-            if (value !== undefined && generatedTokens === undefined) {
+            if (value !== undefined && generateTokens({ [family]: { color: value } }) === undefined) {
                 setInputErrors(errors => ({ ...errors, [family]: `Choose an opaque color for ${family}.` }));
                 return;
             }
             setInputErrors(errors => ({ ...errors, [family]: undefined }));
-            const overrides = { ...themeTokenOverrides };
-            for (const theme of ["dark", "light"] as const) {
-                const values = { ...overrides[theme], ...generatedTokens?.[theme] };
-                if (value === undefined) {
-                    for (const name of getFamilyTokenNames(family)) {
-                        delete values[name];
-                    }
-                }
-                overrides[theme] = values;
+            const inputs = { ...generatorInputs };
+            if (value === undefined) {
+                delete inputs[family];
+            } else {
+                inputs[family] = { color: value };
             }
-            updateGlobals({ tokenOverrides: serializeTokenOverrides(overrides) });
+            updateGlobals({ generatorInputs: inputs });
         },
-        [themeTokenOverrides, updateGlobals],
+        [generatorInputs, updateGlobals],
     );
 
     const hasOverrides = Object.values(tokenOverrides).some(value => value !== undefined && value !== "");
     const handleResetAllTokens = React.useCallback(() => {
-        setInputErrors({});
         updateGlobals({
-            tokenOverrides: serializeTokenOverrides({
+            tokenOverrides: {
                 ...themeTokenOverrides,
                 [activeTheme]: {},
-            }),
+            },
         });
     }, [activeTheme, themeTokenOverrides, updateGlobals]);
 
@@ -363,16 +359,10 @@ export function TokensPanel() {
                                 {TOKEN_FAMILIES.map(family => (
                                     <IntentSeedRow
                                         key={family}
-                                        canReset={getFamilyTokenNames(family).some(
-                                            name =>
-                                                themeTokenOverrides.dark[name] !== undefined ||
-                                                themeTokenOverrides.light[name] !== undefined,
-                                        )}
                                         family={family}
                                         inputError={inputErrors[family]}
                                         onUpdate={handleUpdateFamily}
-                                        resolvedValue={resolvedTokenValues[`--bp-intent-${family}-rest`]}
-                                        value={tokenOverrides[`--bp-intent-${family}-rest`]}
+                                        value={generatorInputs?.[family]?.color}
                                     />
                                 ))}
                             </tbody>
@@ -402,11 +392,12 @@ export function TokensPanel() {
                                     {group.tokenNames.map(name => (
                                         <TokenRow
                                             key={name}
+                                            canReset={tokenOverrides[name] !== undefined}
                                             name={name}
                                             onResetToken={handleResetToken}
                                             onUpdateToken={handleUpdateToken}
-                                            overrideValue={tokenOverrides[name]}
                                             resolvedValue={resolvedTokenValues[name]}
+                                            value={tokenOverrides[name] ?? generatedOverrides?.[name]}
                                         />
                                     ))}
                                 </TokenGroupSection>
@@ -439,15 +430,13 @@ function TokenTable({ children, resetControl }: React.PropsWithChildren<{ resetC
 }
 
 interface IntentSeedRowProps {
-    canReset: boolean;
     family: TokenFamily;
     inputError: string | undefined;
     onUpdate: (family: TokenFamily, value: string | undefined) => void;
-    resolvedValue: string | undefined;
     value: string | undefined;
 }
 
-function IntentSeedRow({ canReset, family, inputError, onUpdate, resolvedValue, value }: IntentSeedRowProps) {
+function IntentSeedRow({ family, inputError, onUpdate, value }: IntentSeedRowProps) {
     const handleReset = React.useCallback(() => onUpdate(family, undefined), [family, onUpdate]);
     const handleUpdate = React.useCallback(
         (_name: TokenName, color: string | undefined) => onUpdate(family, color),
@@ -456,18 +445,12 @@ function IntentSeedRow({ canReset, family, inputError, onUpdate, resolvedValue, 
 
     return (
         <TokenRow
-            canReset={canReset}
             inputError={inputError}
             label={family}
             name={`--bp-intent-${family}-rest`}
             onResetToken={handleReset}
             onUpdateToken={handleUpdate}
-            overrideValue={value}
-            resolvedValue={resolvedValue}
+            value={value}
         />
     );
-}
-
-function isCssVariableReference(value: string | undefined): boolean {
-    return value != null && CSS_VARIABLE_REFERENCE_PATTERN.test(value);
 }

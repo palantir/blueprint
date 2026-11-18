@@ -5,9 +5,10 @@
 import type { Decorator } from "@storybook/react-vite";
 import { addons, useCallback, useEffect, useMemo, useRef } from "storybook/preview-api";
 
+import { generateTokens } from "./generateTokens";
 import {
-    deserializeTokenOverrides,
     getActiveTheme,
+    normalizeTokenOverrides,
     TOKEN_CONFIG,
     TOKEN_NAMES,
     TOKEN_VALUES_REQUESTED,
@@ -29,10 +30,16 @@ interface PublishFrameIds {
 export const withTokens: Decorator = function WithTokens(Story, { globals, id }) {
     const activeTheme = getActiveTheme(globals.theme);
     const themeTokenOverrides = useMemo(
-        () => deserializeTokenOverrides(globals.tokenOverrides),
+        () => normalizeTokenOverrides(globals.tokenOverrides),
         [globals.tokenOverrides],
     );
     const tokenOverrides = themeTokenOverrides[activeTheme];
+    const generatorInputs = globals.generatorInputs;
+    const generatedTokens = useMemo(
+        () => (generatorInputs != null ? generateTokens(generatorInputs) : undefined),
+        [generatorInputs],
+    );
+    const generatedOverrides = generatedTokens?.[activeTheme];
     const initialTokenValues = useRef<InlineTokenValues | undefined>(undefined);
     const publishFrameIds = useRef<PublishFrameIds>({});
     const channel = addons.getChannel();
@@ -95,13 +102,13 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
     );
 
     useEffect(
-        function applyTokenOverrides() {
+        function applyTokenValues() {
             const style = document.body.style;
             const overrides = tokenOverrides ?? {};
             for (const name of TOKEN_NAMES) {
-                const override = overrides[name];
-                if (override != null && override !== "") {
-                    style.setProperty(name, override);
+                const value = overrides[name] ?? generatedOverrides?.[name];
+                if (value != null && value !== "") {
+                    style.setProperty(name, value);
                 } else {
                     const initialValue = initialTokenValues.current?.[name];
                     style.setProperty(name, initialValue?.value ?? "", initialValue?.priority);
@@ -110,7 +117,7 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
 
             scheduleTokenValuesUpdate();
         },
-        [id, scheduleTokenValuesUpdate, tokenOverrides],
+        [generatedOverrides, id, scheduleTokenValuesUpdate, tokenOverrides],
     );
 
     return <Story />;

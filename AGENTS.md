@@ -29,3 +29,5 @@
 - **Types**: Strict TypeScript, React 18 peer deps
 - **Components**: Follow existing patterns in packages/core/src/components/
 - **Styling**: SCSS in src/, compiled to lib/css/
+
+For Storybook theme-token changes, read [token ownership and visual verification](.storybook/tokens/README.md).

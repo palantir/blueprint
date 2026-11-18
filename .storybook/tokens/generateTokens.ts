@@ -42,60 +42,42 @@ export function generateTokens(inputs: GeneratorInputs): GeneratedTokens | undef
     return result;
 }
 
-export function generateTokensForTheme(inputs: GeneratorInputs, theme: unknown) {
-    return generateTokens(inputs)?.[theme === "dark" ? "dark" : "light"];
-}
-
-export function getFamilyTokenNames(family: TokenFamily): TokenName[] {
-    return getFamilyAssignmentDefinitions(family).map(({ name }) => name);
-}
-
-type PaletteShade = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | "foreground";
-
-interface TokenAssignmentDefinition {
-    dark: PaletteShade;
-    light: PaletteShade;
+interface TokenAssignment {
+    dark: string;
+    light: string;
     name: TokenName;
 }
 
-function getFamilyAssignments(family: TokenFamily, palette: Palette) {
+function getFamilyAssignments(family: TokenFamily, palette: Palette): TokenAssignment[] {
+    // Color used as the filled rest color
+    const base = palette[6];
     // Choose the higher-contrast foreground against the filled rest color.
     const foreground =
-        wcagContrast(palette[6], BLACK) >= wcagContrast(palette[6], WHITE)
-            ? "var(--bp-palette-black)"
-            : "var(--bp-palette-white)";
-    return getFamilyAssignmentDefinitions(family).map(({ dark, light, name }) => ({
-        dark: dark === "foreground" ? foreground : palette[dark],
-        light: light === "foreground" ? foreground : palette[light],
-        name,
-    }));
-}
-
-function getFamilyAssignmentDefinitions(family: TokenFamily): TokenAssignmentDefinition[] {
-    const textAssignments: TokenAssignmentDefinition[] =
+        wcagContrast(base, BLACK) >= wcagContrast(base, WHITE) ? "var(--bp-palette-black)" : "var(--bp-palette-white)";
+    const textAssignments: TokenAssignment[] =
         family === "default"
             ? [
                   // Hover and disabled text are derived from existing colors
-                  { dark: 0, light: 9, name: "--bp-typography-color-default-rest" },
-                  { dark: 1, light: 8, name: "--bp-typography-color-default-active" },
+                  { dark: palette[0], light: palette[9], name: "--bp-typography-color-default-rest" },
+                  { dark: palette[1], light: palette[8], name: "--bp-typography-color-default-active" },
               ]
             : [
-                  { dark: 3, light: 7, name: `--bp-typography-color-${family}-rest` },
-                  { dark: 3, light: 7, name: `--bp-typography-color-${family}-hover` },
-                  { dark: 2, light: 8, name: `--bp-typography-color-${family}-active` },
-                  { dark: 4, light: 4, name: `--bp-typography-color-${family}-disabled` },
+                  { dark: palette[3], light: palette[7], name: `--bp-typography-color-${family}-rest` },
+                  { dark: palette[3], light: palette[7], name: `--bp-typography-color-${family}-hover` },
+                  { dark: palette[2], light: palette[8], name: `--bp-typography-color-${family}-active` },
+                  { dark: palette[4], light: palette[4], name: `--bp-typography-color-${family}-disabled` },
               ];
-    const assignments: TokenAssignmentDefinition[] = [
-        { dark: "foreground", light: "foreground", name: `--bp-intent-${family}-foreground` },
-        { dark: 6, light: 6, name: `--bp-intent-${family}-rest` },
-        { dark: 7, light: 7, name: `--bp-intent-${family}-hover` },
-        { dark: 8, light: 8, name: `--bp-intent-${family}-active` },
-        { dark: 4, light: 4, name: `--bp-intent-${family}-disabled` },
+    const assignments: TokenAssignment[] = [
+        { dark: foreground, light: foreground, name: `--bp-intent-${family}-foreground` },
+        { dark: base, light: base, name: `--bp-intent-${family}-rest` },
+        { dark: palette[7], light: palette[7], name: `--bp-intent-${family}-hover` },
+        { dark: palette[8], light: palette[8], name: `--bp-intent-${family}-active` },
+        { dark: palette[4], light: palette[4], name: `--bp-intent-${family}-disabled` },
         ...textAssignments,
     ];
     if (family === "warning") {
         // Keep the warning Button on the generated filled shade instead of BP6's lighter recipe.
-        assignments.push({ dark: 6, light: 6, name: "--bp6-button-warning-rest" });
+        assignments.push({ dark: base, light: base, name: "--bp6-button-warning-rest" });
     }
     return assignments;
 }
