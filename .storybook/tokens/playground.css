@@ -1,0 +1,165 @@
+/* (c) Copyright 2026 Palantir Technologies Inc. All rights reserved. */
+
+.theme-playground {
+    background: var(--bp-surface-layer-default);
+    color: var(--bp-typography-color-default-rest);
+    font-family: var(--bp-typography-family-default);
+    min-height: 100vh;
+    padding: calc(var(--bp-surface-spacing) * 8);
+}
+
+.playground-gallery {
+    column-count: 3;
+    column-gap: calc(var(--bp-surface-spacing) * 6);
+    margin: 0 auto;
+    max-width: 1360px;
+}
+
+.playground-card {
+    break-inside: avoid;
+    margin-bottom: calc(var(--bp-surface-spacing) * 6);
+    min-width: 0;
+}
+
+.playground-buttons {
+    column-span: all;
+}
+
+.playground-matrix-scroll {
+    overflow-x: auto;
+}
+
+.playground-matrix {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+/* stylelint-disable-next-line selector-max-compound-selectors -- Match HTMLTable's dark-theme specificity. */
+.theme-playground table.playground-matrix tbody tr:first-child > :is(th, td) {
+    box-shadow: none;
+}
+
+.theme-playground table.playground-matrix th {
+    color: var(--bp-typography-color-muted);
+    font-size: var(--bp-typography-size-body-small);
+    font-weight: var(--bp-typography-weight-default);
+    text-align: left;
+}
+
+.theme-playground .playground-matrix tbody th,
+.theme-playground table.playground-matrix td {
+    padding: calc(var(--bp-surface-spacing) * 2);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.theme-playground .playground-matrix th:first-child {
+    padding-left: 0;
+}
+
+.theme-playground .playground-matrix td:last-child,
+.theme-playground .playground-matrix th:last-child {
+    padding-right: 0;
+}
+
+.playground-control-section,
+.playground-type-tones,
+.playground-type-intents {
+    border-top: 1px solid var(--bp-surface-border-color-default);
+    padding-top: calc(var(--bp-surface-spacing) * 4);
+}
+
+.playground-typography {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--bp-surface-spacing) * 4);
+    line-height: var(--bp-typography-line-height-large);
+}
+
+.playground-typography p,
+.playground-type-headings > :last-child {
+    margin-bottom: 0;
+}
+
+.theme-playground .playground-type-display {
+    color: var(--bp-typography-color-default-rest);
+    font-size: var(--bp-typography-size-heading-x-large);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+}
+
+.theme-playground .playground-type-heading {
+    color: var(--bp-typography-color-default-rest);
+    font-size: var(--bp-typography-size-heading-medium);
+    line-height: var(--bp-typography-line-height-default);
+}
+
+.playground-type-lead {
+    font-size: var(--bp-typography-size-body-large);
+}
+
+.playground-type-tones {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--bp-surface-spacing) * 3);
+}
+
+.playground-type-small {
+    font-size: var(--bp-typography-size-body-small);
+}
+
+.playground-type-muted {
+    color: var(--bp-typography-color-muted);
+}
+
+.playground-type-disabled {
+    color: var(--bp-typography-color-default-disabled);
+}
+
+.playground-type-link {
+    color: var(--bp-typography-color-primary-rest);
+}
+
+.playground-type-link:hover {
+    color: var(--bp-typography-color-primary-hover);
+}
+
+.playground-type-link:active {
+    color: var(--bp-typography-color-primary-active);
+}
+
+.playground-form > :last-child {
+    margin-bottom: 0;
+}
+
+@media (width <= 1150px) {
+    .playground-gallery {
+        column-count: 2;
+    }
+}
+
+@media (width <= 720px) {
+    .theme-playground {
+        padding: calc(var(--bp-surface-spacing) * 4);
+    }
+
+    .playground-gallery {
+        column-count: 1;
+    }
+}
+
+@media (width <= 600px) {
+    .playground-buttons .playground-matrix,
+    .playground-buttons tbody {
+        display: block;
+    }
+
+    .playground-buttons tr {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .playground-buttons th {
+        grid-column: 1 / -1;
+    }
+}
