@@ -75,7 +75,7 @@ table.#{$ns}-html-table {
 
   &.#{$ns}-html-table-striped {
     tbody tr:nth-child(odd) td {
-      background: rgba($gray3, 0.15);
+      background: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent);
     }
   }
 
@@ -121,7 +121,7 @@ table.#{$ns}-html-table {
   &.#{$ns}-interactive {
     tbody tr {
       &:hover td {
-        background-color: rgba($gray3, 0.3);
+        background-color: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent);
         cursor: pointer;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -130,7 +130,7 @@ table.#{$ns}-html-table {
       }
 
       &:active td {
-        background-color: rgba($gray3, 0.35);
+        background-color: color-mix(in srgb, var(--bp-palette-gray-3) 35%, transparent);
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           background-color: $pt-high-contrast-mode-active-background-color;
@@ -143,7 +143,7 @@ table.#{$ns}-html-table {
     /* stylelint-disable selector-max-compound-selectors */
     &.#{$ns}-html-table-striped {
       tbody tr:nth-child(odd) td {
-        background: rgba($gray1, 0.15);
+        background: color-mix(in srgb, var(--bp-palette-gray-1) 15%, transparent);
       }
     }
 
@@ -178,12 +178,12 @@ table.#{$ns}-html-table {
     &.#{$ns}-interactive {
       tbody tr {
         &:hover td {
-          background-color: rgba($gray1, 0.3);
+          background-color: color-mix(in srgb, var(--bp-palette-gray-1) 30%, transparent);
           cursor: pointer;
         }
 
         &:active td {
-          background-color: rgba($gray1, 0.4);
+          background-color: color-mix(in srgb, var(--bp-palette-gray-1) 40%, transparent);
         }
       }
     }

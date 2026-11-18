@@ -3,7 +3,7 @@
 
 @import "../../common/variables";
 
-$overlay-background-color: rgba($black, 0.7) !default;
+$overlay-background-color: color-mix(in srgb, var(--bp-palette-black) 70%, transparent) !default;
 
 // restricts scrolling of underlying content while the overlay is open
 body.#{$ns}-overlay-open {

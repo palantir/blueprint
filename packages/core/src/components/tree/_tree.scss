@@ -14,10 +14,10 @@ $tree-row-height-compact: $pt-spacing * 6 !default;
 $tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
 
 $tree-intent-icon-colors: (
-  "primary": $blue5,
-  "success": $green5,
-  "warning": $orange5,
-  "danger": $red5,
+  "primary": var(--bp-palette-blue-5),
+  "success": var(--bp-palette-green-5),
+  "warning": var(--bp-palette-orange-5),
+  "danger": var(--bp-palette-red-5),
 ) !default;
 
 .#{$ns}-tree {
@@ -61,11 +61,11 @@ $tree-intent-icon-colors: (
   width: 100%;
 
   &:hover {
-    background-color: rgba($gray3, 0.15);
+    background-color: color-mix(in srgb, var(--bp-palette-gray-3) 15%, transparent);
   }
 
   &:active {
-    background-color: rgba($gray3, 0.3);
+    background-color: color-mix(in srgb, var(--bp-palette-gray-3) 30%, transparent);
   }
 }
 
@@ -142,16 +142,16 @@ $tree-intent-icon-colors: (
 
   &,
   #{$icon-classes} {
-    color: $white;
+    color: var(--bp-palette-white);
   }
 
   .#{$ns}-tree-node-caret {
     &::before {
-      color: rgba($white, 0.7);
+      color: color-mix(in srgb, var(--bp-palette-white) 70%, transparent);
     }
 
     &:hover::before {
-      color: $white;
+      color: var(--bp-palette-white);
     }
   }
 }
@@ -173,7 +173,7 @@ $tree-intent-icon-colors: (
 .#{$ns}-dark {
   .#{$ns}-tree-node-content {
     &:hover {
-      background-color: rgba($gray1, 0.3);
+      background-color: color-mix(in srgb, var(--bp-palette-gray-1) 30%, transparent);
     }
   }
 
@@ -200,7 +200,7 @@ $tree-intent-icon-colors: (
       background-color: $pt-intent-primary;
 
       #{$icon-classes} {
-        color: $white;
+        color: var(--bp-palette-white);
       }
     }
   }
