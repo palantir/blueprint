@@ -27,8 +27,6 @@ import {
     type TokenValuesUpdate,
 } from "./tokens";
 
-const CSS_COLOR_EXPRESSION_PATTERN = /(?:var|color-mix)\(/i;
-
 const LoadingWrapper = styled.div({
     alignItems: "center",
     display: "flex",
@@ -104,8 +102,8 @@ interface TokenRowProps {
     name: TokenName;
     onResetToken: (name: TokenName) => void;
     onUpdateToken: (name: TokenName, value: string | undefined) => void;
+    overrideValue: string | undefined;
     resolvedValue?: string;
-    value: string | undefined;
 }
 
 function TokenRow({
@@ -115,21 +113,16 @@ function TokenRow({
     name,
     onResetToken,
     onUpdateToken,
+    overrideValue,
     resolvedValue,
-    value,
 }: TokenRowProps) {
     const displayLabel = label ?? name;
     const editor = TOKEN_CONFIG[name];
-    const fallbackCssValue = resolvedValue ?? editor.defaultCssValue;
-    const cssValue = value ?? fallbackCssValue;
-    // Resolve CSS expressions for the picker without changing their saved or generated value. Literals take effect
-    // immediately, even before the preview publishes their computed value.
-    const effectiveCssValue =
-        cssValue !== undefined && CSS_COLOR_EXPRESSION_PATTERN.test(cssValue) ? fallbackCssValue : cssValue;
+    const effectiveCssValue = overrideValue ?? resolvedValue ?? editor.defaultCssValue;
     const inputErrorId = React.useId();
     const handleReset = React.useCallback(() => onResetToken(name), [name, onResetToken]);
     const handleUpdate = React.useCallback(
-        (updatedValue: string | undefined) => onUpdateToken(name, updatedValue),
+        (nextOverrideValue: string | undefined) => onUpdateToken(name, nextOverrideValue),
         [name, onUpdateToken],
     );
 
@@ -169,7 +162,7 @@ function TokenRow({
             <td>
                 <IconButton
                     ariaLabel={`Reset ${displayLabel}`}
-                    disabled={!(canReset ?? value !== undefined)}
+                    disabled={!(canReset ?? overrideValue !== undefined)}
                     onClick={handleReset}
                     padding="small"
                     size="small"
@@ -262,11 +255,6 @@ export function TokensPanel() {
     );
     const tokenOverrides = themeTokenOverrides[activeTheme];
     const generatorInputs = globals.generatorInputs as GeneratorInputs | undefined;
-    const generatedTokens = React.useMemo(
-        () => (generatorInputs != null ? generateTokens(generatorInputs) : undefined),
-        [generatorInputs],
-    );
-    const generatedOverrides = generatedTokens?.[activeTheme];
     const [resolvedTokenValuesUpdate, setResolvedTokenValuesUpdate] = React.useState<TokenValuesUpdate>();
     const emit = useChannel(
         {
@@ -397,7 +385,7 @@ export function TokensPanel() {
                                             onResetToken={handleResetToken}
                                             onUpdateToken={handleUpdateToken}
                                             resolvedValue={resolvedTokenValues[name]}
-                                            value={tokenOverrides[name] ?? generatedOverrides?.[name]}
+                                            overrideValue={tokenOverrides[name]}
                                         />
                                     ))}
                                 </TokenGroupSection>
@@ -450,7 +438,7 @@ function IntentSeedRow({ family, inputError, onUpdate, value }: IntentSeedRowPro
             name={`--bp-intent-${family}-rest`}
             onResetToken={handleReset}
             onUpdateToken={handleUpdate}
-            value={value}
+            overrideValue={value}
         />
     );
 }
