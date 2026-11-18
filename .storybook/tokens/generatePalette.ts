@@ -17,7 +17,9 @@ export function generatePalette(input: string): Palette | undefined {
 
     const color = formatHex(seed);
 
-    // Generate approximate colors with no contrast guarantee
+    // Provisional mix percentages generate approximate shades with no contrast guarantee.
+    // The seed stays at index 6, so mixing very light seeds with white or very dark seeds
+    // with black can produce nearly identical shades.
     return [
         `color-mix(in oklab, ${color}, white 92%)`,
         `color-mix(in oklab, ${color}, white 81%)`,

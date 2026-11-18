@@ -102,13 +102,13 @@ export const withTokens: Decorator = function WithTokens(Story, { globals, id })
     );
 
     useEffect(
-        function applyTokenValues() {
+        function applyTokenOverrides() {
             const style = document.body.style;
             const overrides = tokenOverrides ?? {};
             for (const name of TOKEN_NAMES) {
-                const value = overrides[name] ?? generatedOverrides?.[name];
-                if (value != null && value !== "") {
-                    style.setProperty(name, value);
+                const override = overrides[name] ?? generatedOverrides?.[name];
+                if (override != null && override !== "") {
+                    style.setProperty(name, override);
                 } else {
                     const initialValue = initialTokenValues.current?.[name];
                     style.setProperty(name, initialValue?.value ?? "", initialValue?.priority);
