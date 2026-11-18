@@ -94,6 +94,34 @@ describe("<Select>", () => {
         expect(wrapper.find(PopoverNext)).toHaveLength(1);
     });
 
+    it("renders role='combobox' on the popover target while filterable and closed", () => {
+        // The query InputGroup is only mounted while the popover is open, so the target is the only
+        // element which can carry the combobox role in the default closed state.
+        const wrapper = select({ popoverProps: { usePortal: false } });
+        expect(findTargetElement(wrapper).getAttribute("role")).toBe("combobox");
+    });
+
+    it("renders role='combobox' on the popover target when filterable=false", () => {
+        const wrapper = select({ filterable: false, popoverProps: { usePortal: false } });
+        expect(findTargetElement(wrapper).getAttribute("role")).toBe("combobox");
+    });
+
+    it("keeps the combobox ARIA state attributes on the element which carries the role", () => {
+        // aria-expanded and aria-controls are not global attributes, so they are ignored by assistive
+        // technology unless the element they sit on has a role which supports them.
+        const wrapper = select({ popoverProps: { usePortal: false } });
+        expect(findTargetElement(wrapper).getAttribute("aria-expanded")).toBe("false");
+
+        findTargetButton(wrapper).simulate("click");
+        wrapper.update();
+
+        const target = findTargetElement(wrapper);
+        const listboxId = wrapper.find("[role='listbox']").hostNodes().getDOMNode().getAttribute("id");
+        expect(target.getAttribute("role")).toBe("combobox");
+        expect(target.getAttribute("aria-expanded")).toBe("true");
+        expect(target.getAttribute("aria-controls")).toBe(listboxId);
+    });
+
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
         expect(wrapper.find(PopoverNext).prop("disabled")).toBe(true);
@@ -267,6 +295,11 @@ describe("<Select>", () => {
 
     function findTargetButton(wrapper: ReactWrapper): ReactWrapper<HTMLAttributes> {
         return wrapper.find("[data-testid='target-button']").hostNodes();
+    }
+
+    // The wrapper element which Select renders around `children` via the Popover renderTarget API.
+    function findTargetElement(wrapper: ReactWrapper): Element {
+        return wrapper.find(`.${Classes.POPOVER_TARGET}`).hostNodes().getDOMNode();
     }
 
     // Mount a closed, non-filterable Select with an arbitrary target child (optionally wrapped in an
