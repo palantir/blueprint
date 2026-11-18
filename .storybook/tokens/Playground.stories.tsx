@@ -170,16 +170,13 @@ const Playground = () => {
                         We build products that make people <strong>better at their most important work</strong> — the
                         kind of work you read about on the <em>front page of the newspaper</em>, not just the technology
                         section. See{" "}
-                        <span className="playground-type-link">
-                            <Link
-                                color="inherit"
-                                href="https://blueprintjs.com/docs/#core/typography.running-text"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                running text
-                            </Link>
-                        </span>{" "}
+                        <Link
+                            href="https://blueprintjs.com/docs/#core/typography.running-text"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            running text
+                        </Link>{" "}
                         for inline <Code style={{ color: "var(--bp-typography-color-muted)" }}>code</Code> and paragraph
                         styles.
                     </p>
@@ -192,9 +189,16 @@ const Playground = () => {
                     </div>
                     <Flex className="playground-type-intents" flexWrap="wrap" gap={3}>
                         {INTENT_EXAMPLES.filter(({ intent }) => intent !== Intent.NONE).map(({ intent, label }) => (
-                            <span key={intent} style={{ color: `var(--bp-typography-color-${intent}-rest)` }}>
+                            <Link
+                                key={intent}
+                                color={intent}
+                                href="https://blueprintjs.com/docs/#core/components/link"
+                                target="_blank"
+                                rel="noreferrer"
+                                underline="hover"
+                            >
                                 {label}
-                            </span>
+                            </Link>
                         ))}
                     </Flex>
                 </Card>
