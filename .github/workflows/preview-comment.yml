@@ -26,37 +26,46 @@ jobs:
           set -euo pipefail
           repo=palantir/blueprint
 
-          # Anyone with write access can post a status, so take only the job
-          # number from it and confirm with CircleCI that the job really is a
-          # successful deploy-preview of this commit.
-          # CircleCI has linked statuses both by job number and, since Nov 2026,
-          # by workflow and job UUID; the latter is resolved to a job number.
+          # Anyone with write access can post a status, so take only the workflow
+          # and job UUIDs from it and confirm with CircleCI that the job really is
+          # a successful deploy-preview of this commit.
           uuid='[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
-          job=
-          if [[ "$SHA" =~ ^[0-9a-f]{40}$ ]]; then
-            if [[ "$TARGET_URL" =~ ^https://circleci\.com/gh/palantir/blueprint/([0-9]+)$ ]]; then
-              job="${BASH_REMATCH[1]}"
-            elif [[ "$TARGET_URL" =~ ^https://app\.circleci\.com/workflow/($uuid)/job/($uuid)$ ]]; then
-              job=$(
-                curl -fsS "https://circleci.com/api/v2/workflow/${BASH_REMATCH[1]}/job" \
-                  | jq -r --arg id "${BASH_REMATCH[2]}" '[.items[] | select(.id == $id and .project_slug == "gh/palantir/blueprint") | .job_number][0] // empty'
-              )
-            fi
-          fi
-          if ! [[ "$job" =~ ^[0-9]+$ ]]; then
+          if ! [[ "$SHA" =~ ^[0-9a-f]{40}$ ]] || \
+            ! [[ "$TARGET_URL" =~ ^https://app\.circleci\.com/workflow/($uuid)/job/($uuid)$ ]]; then
             echo "Unexpected status: sha '$SHA', target_url '$TARGET_URL'."
             exit 1
           fi
-          read -r name state revision < <(
-            curl -fsS "https://circleci.com/api/v1.1/project/gh/$repo/$job" \
-              | jq -r '[.workflows.job_name, .status, .vcs_revision] | @tsv'
-          )
-          if [ "$name" != deploy-preview ] || [ "$state" != success ] || [ "$revision" != "$SHA" ]; then
-            echo "CircleCI job $job is '$name' ($state) at $revision, not a successful deploy-preview of $SHA."
+          workflow_id="${BASH_REMATCH[1]}"
+          job_id="${BASH_REMATCH[2]}"
+
+          workflow=$(curl -fsS "https://circleci.com/api/v2/workflow/$workflow_id")
+          read -r workflow_project pipeline_id <<< "$(jq -r '[.project_slug, .pipeline_id] | @tsv' <<< "$workflow")"
+          if [ "$workflow_project" != gh/palantir/blueprint ] || ! [[ "$pipeline_id" =~ ^$uuid$ ]]; then
+            echo "CircleCI workflow $workflow_id does not belong to gh/palantir/blueprint."
             exit 1
           fi
 
-          artifacts=$(curl -fsS "https://circleci.com/api/v2/project/gh/$repo/$job/artifacts")
+          jobs=$(curl -fsS "https://circleci.com/api/v2/workflow/$workflow_id/job")
+          read -r name state job_project <<< "$(
+            jq -r --arg id "$job_id" '.items[] | select(.id == $id) | [.name, .status, .project_slug] | @tsv' <<< "$jobs"
+          )"
+          if [ "$name" != deploy-preview ] || [ "$state" != success ] || [ "$job_project" != gh/palantir/blueprint ]; then
+            echo "CircleCI job $job_id is '$name' ($state), not a successful Blueprint deploy-preview."
+            exit 1
+          fi
+
+          pipeline=$(curl -fsS "https://circleci.com/api/v2/pipeline/$pipeline_id")
+          read -r pipeline_project revision origin target <<< "$(
+            jq -r '[.project_slug, .vcs.revision, .vcs.origin_repository_url, .vcs.target_repository_url] | @tsv' \
+              <<< "$pipeline"
+          )"
+          if [ "$pipeline_project" != gh/palantir/blueprint ] || [ "$revision" != "$SHA" ] || \
+            [ "$origin" != https://github.com/palantir/blueprint ] || \
+            [ "$target" != https://github.com/palantir/blueprint ]; then
+            echo "CircleCI pipeline $pipeline_id is at $revision, not a Blueprint pipeline for $SHA."
+            exit 1
+          fi
+
           links=()
           for entry in \
             documentation=packages/docs-app/dist/index.html \
@@ -66,15 +75,15 @@ jobs:
             storybook=storybook-static/index.html; do
             label="${entry%%=*}"
             path="${entry#*=}"
-            url=$(jq -r --arg path "$path" '[.items[] | select(.path == $path) | .url][0] // empty' <<< "$artifacts")
-            if [[ "$url" =~ ^https://output\.circle-artifacts\.com/output/job/[0-9a-f-]+/artifacts/[0-9]+/${path//./\\.}$ ]]; then
+            url="https://output.circle-artifacts.com/output/job/$job_id/artifacts/0/$path"
+            if curl -fsS -o /dev/null "$url"; then
               links+=("<a href=\"$url\">$label</a>")
             else
-              echo "CircleCI job $job has no valid $path artifact; skipping $label."
+              echo "CircleCI job $job_id has no valid $path artifact; skipping $label."
             fi
           done
           if [ ${#links[@]} -eq 0 ]; then
-            echo "CircleCI job $job has no preview artifacts."
+            echo "CircleCI job $job_id has no preview artifacts."
             exit 1
           fi
 
