@@ -338,7 +338,7 @@ export function TokensPanel() {
 
     return (
         <TabsView
-            defaultSelected="simple"
+            defaultSelected="generate"
             tabs={[
                 {
                     children: (
@@ -356,8 +356,8 @@ export function TokensPanel() {
                             </tbody>
                         </TokenTable>
                     ),
-                    id: "simple",
-                    title: "Simple",
+                    id: "generate",
+                    title: "Generate",
                 },
                 {
                     children: (
@@ -392,8 +392,8 @@ export function TokensPanel() {
                             ))}
                         </TokenTable>
                     ),
-                    id: "advanced",
-                    title: "Advanced",
+                    id: "override",
+                    title: "Override",
                 },
             ]}
         />
