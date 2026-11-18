@@ -1,0 +1,1 @@
+import{I as r}from"./index-Bck4KEe_.js";import{I as s}from"./index-W58HgMhY.js";import{au as n,E as c}from"./iframe-6KWIKMhT.js";import"./preload-helper-PPVm8Dsz.js";function I(t,a){const o=n(t);return a===c.STANDARD?r[o]:s[o]}export{r as IconSvgPaths16,s as IconSvgPaths20,I as getIconPaths};

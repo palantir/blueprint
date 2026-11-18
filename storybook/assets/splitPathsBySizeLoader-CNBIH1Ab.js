@@ -1,0 +1,1 @@
+import{_ as e}from"./preload-helper-PPVm8Dsz.js";import{au as _,aC as s}from"./iframe-6KWIKMhT.js";const l=async(r,o)=>{const i=_(r);let t;return o===s.STANDARD?t=await e(()=>import("./index-BNPKbx7e.js").then(a=>a.I),[],import.meta.url):t=await e(()=>import("./index-CVc3l6_H.js").then(a=>a.I),[],import.meta.url),t[i]};export{l as splitPathsBySizeLoader};

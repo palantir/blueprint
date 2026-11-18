@@ -1,0 +1,1 @@
+import{r as e,j as r,an as s}from"./iframe-6KWIKMhT.js";const c=["M5.47 2.47a.75.75 0 0 1 1.06 0l5 5a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 1 1-1.06-1.06L9.94 8 5.47 3.53a.75.75 0 0 1 0-1.06"],i=e.forwardRef((a,n)=>r.jsx(s,{iconName:"chevron-right",ref:n,...a,children:c.map((o,t)=>r.jsx("path",{d:o},t))}));i.displayName="Blueprint6.Icon.Next.ChevronRightIcon";export{i as C};
