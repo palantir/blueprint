@@ -207,7 +207,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
                                     role="button"
                                     tabIndex={0}
                                     aria-pressed={isCollapsed}
-                                    aria-expanded={isCollapsed}
+                                    aria-expanded={!isCollapsed}
                                     aria-controls={sectionId}
                                     aria-label={isCollapsed ? "expand section" : "collapse section"}
                                     // no OnClick, click event triggers header below

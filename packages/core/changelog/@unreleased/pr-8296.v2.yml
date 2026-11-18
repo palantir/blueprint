@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: "Section: report the correct expanded state to assistive technology."
+  links:
+    - https://github.com/palantir/blueprint/pull/8296
