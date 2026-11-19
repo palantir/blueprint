@@ -149,8 +149,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       chromatic:
-        specifier: ^16.0.0
-        version: 16.0.0
+        specifier: ^18.14.5
+        version: 18.14.5
       culori:
         specifier: ^4.0.2
         version: 4.0.2
@@ -3809,16 +3809,20 @@ packages:
   chroma-js@2.6.0:
     resolution: {integrity: sha512-BLHvCB9s8Z1EV4ethr6xnkl/P2YRFOGqfgvuMG/MyCbZPrTA+NeiByY6XvgF0zP4/2deU2CXnWyMa3zu1LqQ3A==}
 
-  chromatic@16.0.0:
-    resolution: {integrity: sha512-O81RVGDXXoreNeG894hjaUx08xep+C/BA6aJNMZkwSjH7Lln8IweZekBpBEoQPNNpjmHyZvcTIwN/aGitdK53Q==}
+  chromatic@18.14.5:
+    resolution: {integrity: sha512-FKSNgph3UnlQ9adzpENaHzPsxOfaVFdurvudxoEVwXOWGHRZ58l4h5cfXMGXF5GzxmiJ08nK4cqYxjna2Eqe7w==}
+    engines: {node: '>=22.0.0'}
     hasBin: true
     peerDependencies:
       '@chromatic-com/cypress': ^0.*.* || ^1.0.0
       '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+      '@chromatic-com/vitest': ^0.*.* || ^1.0.0
     peerDependenciesMeta:
       '@chromatic-com/cypress':
         optional: true
       '@chromatic-com/playwright':
+        optional: true
+      '@chromatic-com/vitest':
         optional: true
 
   chrome-trace-event@1.0.4:
@@ -11307,7 +11311,9 @@ snapshots:
 
   chroma-js@2.6.0: {}
 
-  chromatic@16.0.0: {}
+  chromatic@18.14.5:
+    dependencies:
+      semver: 7.7.3
 
   chrome-trace-event@1.0.4: {}
 
