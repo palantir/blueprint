@@ -10,7 +10,7 @@ import { useArgs } from "storybook/preview-api";
 import { Home } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
-import { Colors } from "../../common";
+import { Classes, Colors } from "../../common";
 
 import { Tab } from "./tab";
 import { Tabs, type TabsProps } from "./tabs";
@@ -224,6 +224,30 @@ export const IconExample: Story = {
             <Tab id="tab2" title="Documents" icon="document" panel={<p>Documents panel content</p>} />
             <Tab id="tab3" title="Applications" icon="application" panel={<p>Applications panel content</p>} />
             <Tab id="tab4" title="Element icon" icon={<Home />} panel={<p>Element icon panel</p>} />
+        </Tabs>
+    ),
+};
+
+/**
+ * Custom tab list children can render an anchor element with tab styles.
+ */
+export const LinkExample: Story = {
+    name: "With Link",
+    render: args => (
+        <Tabs {...args} defaultSelectedTabId="selected" id="with-link">
+            <Tab id="default" title="Default tab" />
+            <a
+                aria-disabled={false}
+                aria-selected={false}
+                className={Classes.TAB}
+                data-tab-id="link"
+                href="#with-link"
+                role="tab"
+                tabIndex={-1}
+            >
+                Link tab
+            </a>
+            <Tab id="selected" title="Selected tab" />
         </Tabs>
     ),
 };
