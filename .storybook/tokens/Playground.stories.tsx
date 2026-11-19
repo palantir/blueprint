@@ -8,13 +8,13 @@ import { type ChangeEvent, type KeyboardEvent, useCallback, useState } from "rea
 
 import {
     Button,
+    ButtonVariant,
     Card,
     Checkbox,
     Code,
     FormGroup,
     H2,
     H3,
-    HTMLTable,
     InputGroup,
     Intent,
     Link,
@@ -37,7 +37,7 @@ const INTENT_EXAMPLES = [
     { intent: Intent.DANGER, label: "Danger" },
 ] as const;
 
-const BUTTON_VARIANTS = ["solid", "outlined", "minimal"] as const;
+const BUTTON_VARIANTS = [ButtonVariant.SOLID, ButtonVariant.OUTLINED, ButtonVariant.MINIMAL] as const;
 
 const Playground = () => {
     const [name, setName] = useState("");
@@ -73,7 +73,8 @@ const Playground = () => {
             <div className="playground-gallery">
                 <Card className="playground-card playground-buttons" compact={true}>
                     <div className="playground-matrix-scroll">
-                        <HTMLTable aria-label="Buttons by intent and variant" className="playground-matrix">
+                        {/* eslint-disable-next-line @blueprintjs/html-components -- Layout matrix without HTMLTable styling. */}
+                        <table aria-label="Buttons by intent and variant" className="playground-matrix">
                             <tbody>
                                 {INTENT_EXAMPLES.map(({ intent, label }) => (
                                     <tr key={intent}>
@@ -115,13 +116,14 @@ const Playground = () => {
                                     </tr>
                                 ))}
                             </tbody>
-                        </HTMLTable>
+                        </table>
                     </div>
                 </Card>
 
                 <Card className="playground-card" compact={true}>
                     <div className="playground-matrix-scroll">
-                        <HTMLTable aria-label="Tags by intent and variant" className="playground-matrix">
+                        {/* eslint-disable-next-line @blueprintjs/html-components -- Layout matrix without HTMLTable styling. */}
+                        <table aria-label="Tags by intent and variant" className="playground-matrix">
                             <tbody>
                                 {INTENT_EXAMPLES.map(({ intent, label }) => (
                                     <tr key={intent}>
@@ -149,7 +151,7 @@ const Playground = () => {
                                     </tr>
                                 ))}
                             </tbody>
-                        </HTMLTable>
+                        </table>
                     </div>
                 </Card>
                 <Card
