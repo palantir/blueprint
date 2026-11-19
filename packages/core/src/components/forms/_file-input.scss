@@ -54,7 +54,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
           oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
         0 0 0 1px
           oklch(from var(--bp-intent-primary-rest) calc(l - 0.074) calc(c - 0.018) h / 0.752),
-        inset 0 1px 1px oklch(from var(--bp-palette-black) l c h / 0.2);
+        inset 0 1px 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent);
 
       .#{$ns}-dark & {
         box-shadow:
@@ -62,8 +62,8 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
             oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752),
           0 0 0 1px
             oklch(from var(--bp-intent-primary-rest) calc(l + 0.224) calc(c - 0.053) h / 0.752),
-          inset 0 0 0 1px oklch(from var(--bp-palette-white) l c h / 0.2),
-          inset 0 -1px 1px 0 oklch(from var(--bp-palette-white) l c h / 0.3);
+          inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-white) 20%, transparent),
+          inset 0 -1px 1px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent);
       }
     }
   }
@@ -180,6 +180,6 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 /* stylelint-disable-next-line no-duplicate-selectors */
 .#{$ns}-file-upload-input::after {
   box-shadow:
-    inset 0 0 0 1px oklch(from var(--bp-palette-black) l c h / 0.2),
-    0 1px 2px oklch(from var(--bp-palette-black) l c h / 0.1);
+    inset 0 0 0 1px color-mix(in srgb, var(--bp-palette-black) 20%, transparent),
+    0 1px 2px color-mix(in srgb, var(--bp-palette-black) 10%, transparent);
 }

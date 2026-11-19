@@ -71,10 +71,14 @@ These are semi-transparent tints of each intent color, controlled by a shared op
 | `--bp-surface-layer-color-warning` | `intent.warning.rest` at 5% alpha |
 | `--bp-surface-layer-color-danger`  | `intent.danger.rest` at 5% alpha  |
 
-In browsers supporting relative color syntax, each layer-color reactively references the opacity token:
+In browsers supporting modern color syntax, each layer-color reactively references the opacity token:
 
 ```css
---bp-surface-layer-color-primary: oklch(from var(--bp-intent-primary-rest) l c h / var(--bp-surface-layer-opacity));
+--bp-surface-layer-color-primary: color-mix(
+    in srgb,
+    var(--bp-intent-primary-rest) calc(var(--bp-surface-layer-opacity) * 100%),
+    transparent
+);
 ```
 
 `--bp-surface-layer-opacity` acts as a shared control knob — changing it from `0.05` to `0.1` makes every layer-color denser at once.
@@ -120,7 +124,7 @@ border-radius: var(--bp-surface-border-radius); // 4px
 box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
         color-mix(in oklch, var(--bp-surface-border-color-strong) 90%, var(--bp-palette-black)),
-    0 1px 2px color-mix(in oklch, var(--bp-palette-black) 10%, transparent);
+    0 1px 2px color-mix(in srgb, var(--bp-palette-black) 10%, transparent);
 ```
 
 The button's box-shadow has two layers that use tokens differently:

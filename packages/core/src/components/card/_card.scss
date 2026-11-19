@@ -43,8 +43,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-1),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+      inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+      inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -59,8 +59,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-2),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+      inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+      inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -75,8 +75,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-3),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+      inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+      inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -91,8 +91,8 @@
   .#{$ns}-dark & {
     box-shadow:
       var(--bp-surface-shadow-4),
-      inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-      inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+      inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+      inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -113,8 +113,8 @@
     .#{$ns}-dark & {
       box-shadow:
         var(--bp-surface-shadow-3),
-        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+        inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+        inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent);
     }
   }
 
@@ -139,8 +139,8 @@
     .#{$ns}-dark & {
       box-shadow:
         var(--bp-surface-shadow-1),
-        inset 0 0 0.5px 0 oklch(from var(--bp-palette-white) l c h / 0.3),
-        inset 0 0.5px 0 0 oklch(from var(--bp-palette-white) l c h / 0.08);
+        inset 0 0 0.5px 0 color-mix(in srgb, var(--bp-palette-white) 30%, transparent),
+        inset 0 0.5px 0 0 color-mix(in srgb, var(--bp-palette-white) 8%, transparent);
     }
   }
 }

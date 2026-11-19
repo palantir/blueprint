@@ -62,7 +62,7 @@ Each token uses these standard DTCG properties:
 }
 ```
 
-Available derivation properties: `alpha`, `lightnessScale`, `chromaScale`, `lightnessOffset`, `chromaOffset`, `hueOffset`. These are applied during build to produce both a static hex fallback and a relative color syntax expression (`oklch(from ...)`).
+Available derivation properties: `alpha`, `lightnessScale`, `chromaScale`, `lightnessOffset`, `chromaOffset`, `hueOffset`. These are applied during build to produce both a static hex fallback and a dynamic color expression. Alpha-only derivations use `color-mix(in srgb, ..., transparent)`; channel adjustments use relative color syntax (`oklch(from ...)`) and include alpha there when needed.
 
 **`com.blueprint.role`** — assigns special build handling to a token. Currently one role exists:
 
@@ -82,7 +82,7 @@ Dark mode files in `tokens/themes/dark/` override base tokens by redefining `$va
 
 ### Browser Compatibility
 
-Some tokens use the CSS [relative color syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors) (`oklch(from ...)`) for deriving hover, active, and alpha-modified colors. This requires:
+Some tokens use CSS [`color-mix()`](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color-mix) for transparency and [relative color syntax](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors) (`oklch(from ...)`) for deriving hover and active colors. Relative color syntax requires:
 
 | Browser | Minimum Version |
 | ------- | --------------- |

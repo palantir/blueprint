@@ -1,8 +1,6 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-/* stylelint-disable alpha-value-notation */
-
 @import "../../common/variables";
 @import "../forms/common";
 @import "../tag/common";
@@ -125,29 +123,29 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
     &.#{$ns}-intent-primary {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-primary-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-primary-rest) l c h / 0.752),
+        inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-primary-rest) 75.2%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--bp-intent-primary-rest) 75.2%, transparent),
         $input-box-shadow-focus;
     }
 
     &.#{$ns}-intent-success {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-success-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-success-rest) l c h / 0.752),
+        inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-success-rest) 75.2%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--bp-intent-success-rest) 75.2%, transparent),
         $input-box-shadow-focus;
     }
 
     &.#{$ns}-intent-warning {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-warning-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-warning-rest) l c h / 0.752),
+        inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-warning-rest) 75.2%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--bp-intent-warning-rest) 75.2%, transparent),
         $input-box-shadow-focus;
     }
 
     &.#{$ns}-intent-danger {
       box-shadow:
-        inset 0 0 0 1px oklch(from var(--bp-intent-danger-rest) l c h / 0.752),
-        0 0 0 1px oklch(from var(--bp-intent-danger-rest) l c h / 0.752),
+        inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-danger-rest) 75.2%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--bp-intent-danger-rest) 75.2%, transparent),
         $input-box-shadow-focus;
     }
   }
@@ -172,29 +170,29 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
       &.#{$ns}-intent-primary {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-primary-hover) l c h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-primary-hover) l c h / 0.752),
+          inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-primary-hover) 75.2%, transparent),
+          0 0 0 1px color-mix(in srgb, var(--bp-intent-primary-hover) 75.2%, transparent),
           $pt-dark-input-box-shadow;
       }
 
       &.#{$ns}-intent-success {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-success-hover) l c h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-success-hover) l c h / 0.752),
+          inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-success-hover) 75.2%, transparent),
+          0 0 0 1px color-mix(in srgb, var(--bp-intent-success-hover) 75.2%, transparent),
           $pt-dark-input-box-shadow;
       }
 
       &.#{$ns}-intent-warning {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-warning-hover) l c h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-warning-hover) l c h / 0.752),
+          inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-warning-hover) 75.2%, transparent),
+          0 0 0 1px color-mix(in srgb, var(--bp-intent-warning-hover) 75.2%, transparent),
           $pt-dark-input-box-shadow;
       }
 
       &.#{$ns}-intent-danger {
         box-shadow:
-          inset 0 0 0 1px oklch(from var(--bp-intent-danger-hover) l c h / 0.752),
-          0 0 0 1px oklch(from var(--bp-intent-danger-hover) l c h / 0.752),
+          inset 0 0 0 1px color-mix(in srgb, var(--bp-intent-danger-hover) 75.2%, transparent),
+          0 0 0 1px color-mix(in srgb, var(--bp-intent-danger-hover) 75.2%, transparent),
           $pt-dark-input-box-shadow;
       }
     }
