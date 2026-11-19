@@ -330,6 +330,13 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             this.resetQuery();
         }
 
+        const { inputProps = {} } = this.props;
+        // Autofocus is enabled by default. Focus as the popover begins opening so keyboard input is not blocked by
+        // the transition duration. Prevent scrolling because the popover may not have reached its final position yet.
+        if (inputProps.autoFocus !== false) {
+            this.inputElement?.focus({ preventScroll: true });
+        }
+
         this.props.popoverProps?.onOpening?.(node);
     };
 
@@ -338,14 +345,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         if (this.queryList != null) {
             this.queryList.scrollActiveItemIntoView();
         }
-
-        this.requestAnimationFrame(() => {
-            const { inputProps = {} } = this.props;
-            // autofocus is enabled by default
-            if (inputProps.autoFocus !== false) {
-                this.inputElement?.focus();
-            }
-        });
 
         this.props.popoverProps?.onOpened?.(node);
     };
