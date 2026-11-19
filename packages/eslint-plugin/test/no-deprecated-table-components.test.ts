@@ -49,6 +49,38 @@ ruleTester.run("no-deprecated-table-components", noDeprecatedTableComponentsRule
                 },
             ],
         },
+        {
+            code: dedent`
+                import { Table2 } from "@blueprintjs/table";
+
+                return <Table2 numRows={10} />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: {
+                        deprecatedComponentName: "Table2",
+                        newComponentName: "Table",
+                    },
+                },
+            ],
+        },
+        {
+            code: dedent`
+                import { EditableCell2 } from "@blueprintjs/table";
+
+                return <EditableCell2 value="foo" />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: {
+                        deprecatedComponentName: "EditableCell2",
+                        newComponentName: "EditableCell",
+                    },
+                },
+            ],
+        },
     ],
     valid: [
         {
@@ -56,6 +88,20 @@ ruleTester.run("no-deprecated-table-components", noDeprecatedTableComponentsRule
                 import { JSONFormat } from "@blueprintjs/table";
 
                 return <JSONFormat />;
+            `,
+        },
+        {
+            code: dedent`
+                import { Table } from "@blueprintjs/table";
+
+                return <Table numRows={10} />;
+            `,
+        },
+        {
+            code: dedent`
+                import { EditableCell } from "@blueprintjs/table";
+
+                return <EditableCell value="foo" />;
             `,
         },
     ],
