@@ -74,6 +74,8 @@ $control-group-stack: (
   $focus: false,
   $outer-shadow-focus-width: 1px
 ) {
+  // color-mix() scales the input alpha; make it opaque first so 75.2% replaces,
+  // rather than compounds, the existing alpha.
   $opaque-color: color.change($color, $alpha: 1);
 
   @if $focus {
