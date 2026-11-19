@@ -21,6 +21,10 @@ import { Tag } from "@blueprintjs/core";
 The `<Tag>` component is a stateless wrapper around its children with support for an optional close button.
 It supports all valid `<span>` DOM attributes.
 
+When a tag is both interactive and removable, its content and remove button are separate keyboard controls.
+`onClick` and ARIA attributes apply to the tag action, while `onRemove` handles the remove button. The `ref`
+continues to reference the outer tag element.
+
 ## Props interface
 
 @interface TagProps
