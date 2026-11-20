@@ -1,0 +1,12 @@
+{
+    "$schema": "../../node_modules/turbo/schema.json",
+    "extends": ["//"],
+    // The icon scripts and some tests read SVGs from the repo-root resources/icons, outside this package.
+    "tasks": {
+        "compile": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"] },
+        "test": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"] },
+        "test:iso": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"] },
+        "test:typeCheck": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"] },
+        "test:vitest:run": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"] }
+    }
+}
