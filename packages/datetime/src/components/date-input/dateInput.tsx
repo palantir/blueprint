@@ -179,7 +179,8 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
 
             if (newDate === null) {
                 if (!isControlled && !didSubmitWithEnter) {
-                    // user clicked on current day in the calendar, so we should clear the input when uncontrolled
+                    // user cleared the calendar selection, so clear both the value and input when uncontrolled
+                    setValue(null);
                     setInputValue("");
                 }
                 onChange?.(null, isUserChange);
