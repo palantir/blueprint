@@ -14,8 +14,8 @@ for all borders with minimal duplication. See the bottom of this file.
   $border-bottom-default: 0 $border-width 0 $border-color;
   $inset-border-right-default: inset (-$border-width) 0 0 $border-color;
   $inset-border-bottom-default: inset 0 (-$border-width) 0 $border-color;
-  $inset-border-right-frozen: inset (-$frozen-border-width) 0 0 $border-color;
-  $inset-border-bottom-frozen: inset 0 (-$frozen-border-width) 0 $border-color;
+  $inset-border-right-frozen: inset calc($frozen-border-width * -1) 0 0 $border-color;
+  $inset-border-bottom-frozen: inset 0 calc($frozen-border-width * -1) 0 $border-color;
 
   .#{$ns}-table-container {
     box-shadow: 0 0 0 $border-width $border-color;

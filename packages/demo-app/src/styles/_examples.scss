@@ -14,7 +14,7 @@ $dark-intent-danger-text: $red5;
   align-items: center;
   display: flex;
   flex-direction: column;
-  padding: $pt-spacing * 2;
+  padding: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 2);
 }
 
 .examples-panel {
@@ -27,7 +27,7 @@ $dark-intent-danger-text: $red5;
   background-color: $light-gray2;
   display: flex;
   flex-direction: column;
-  padding: $pt-spacing * 2;
+  padding: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 2);
   width: 100%;
 
   &.#{$ns}-dark {
@@ -40,7 +40,7 @@ $dark-intent-danger-text: $red5;
   justify-content: space-evenly;
 
   > :not(:last-child) {
-    margin-right: $pt-spacing * 2;
+    margin-right: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 2);
   }
 }
 
@@ -48,7 +48,7 @@ $dark-intent-danger-text: $red5;
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin-bottom: $pt-spacing * 7.5;
+  margin-bottom: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 7.5);
 }
 
 .example-card {
@@ -60,7 +60,7 @@ $dark-intent-danger-text: $red5;
   flex-direction: column;
 
   > :not(:last-child) {
-    margin-bottom: $pt-spacing * 2;
+    margin-bottom: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 2);
   }
 }
 
@@ -69,7 +69,7 @@ $dark-intent-danger-text: $red5;
   flex-direction: column;
 
   > :not(:last-child) {
-    margin-bottom: $pt-spacing * 2;
+    margin-bottom: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 2);
   }
 }
 
@@ -134,7 +134,7 @@ $dark-intent-danger-text: $red5;
 }
 
 .#{$ns}-toast {
-  margin: ($pt-spacing * 2) 0;
+  margin: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 2) 0;
 }
 
 .box-example {
