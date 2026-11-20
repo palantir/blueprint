@@ -41,6 +41,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
+export const BlueGray: Story = { args: { seed: "#5f6b7c" } };
 export const White: Story = { args: { seed: "#ffffff" } };
 export const Black: Story = { args: { seed: "#000000" } };
 export const PaleCream: Story = { args: { seed: "#f8f4e8" } };
@@ -130,8 +131,8 @@ function ConsumerColorPreview({ seed, surface }: ConsumerColorArgs) {
             <div>
                 <H4>Palette placement</H4>
                 <p>
-                    Rest, hover, and selected all use entries from this palette. White (50) and black (950) keep both
-                    foreground options available.
+                    Rest, hover, and selected all use entries from this palette. The light and dark ends inherit the
+                    input's hue. Pure white, black, and gray inputs use a neutral scale.
                 </p>
                 <Flex flexWrap="wrap" gap={2}>
                     {ramp.map(stop => (
@@ -168,13 +169,15 @@ function ConsumerColorPreview({ seed, surface }: ConsumerColorArgs) {
                     {colors.seed.c < 1e-7 ? "neutral" : `${colors.seed.h?.toFixed(2)}°`}.
                 </p>
                 <p>
-                    Build the complete palette around white, the exact input, and black. Lightness interpolates between
-                    the anchors; chroma follows C₀ × (1 − t)^0.8, where t is lightness progress from the input toward an
-                    endpoint. Reduce chroma to fit sRGB, then check the final HEX values.
+                    Start with tinted endpoints at L 0.98 and 0.12. Very light or dark input can occupy an endpoint.
+                    Preserve the exact input and its hue; chroma follows C₀ × [0.25 + 0.75 × (1 − t)^0.8], where t is
+                    lightness progress toward L 1 or 0. Reduce chroma to fit sRGB, then check the final HEX values.
                 </p>
                 <p>
                     Search palette index pairs in both directions. If none work, retry with intermediate shades closer
-                    to rest. Palette spacing exponent used: {audit.paletteSpacingPower}.
+                    to rest. Extend endpoint lightness only when readability needs it; rest stays unchanged. Contrast
+                    against the surrounding surface can also require a wider range. Endpoint adjustments:{" "}
+                    {audit.endpointRange}. Palette spacing exponent: {audit.paletteSpacingPower}.
                 </p>
                 <div style={{ overflowX: "auto" }}>
                     <HTMLTable compact={true}>

@@ -1,3 +1,3 @@
-Hey! I’m trying a small variation on #8397: keep the user’s exact color as rest, place it where it fits in a full light-to-dark palette, and fill the gaps in OKLCH. Then pick hover and selected from that same palette, with contrast checks to keep the label readable. White and black stay at the ends, so very light or dark inputs still have text-color options.
+Hey! I’m trying a variation on #8397: keep the user’s exact color as rest and build a light-to-dark palette around it in OKLCH. The ends keep the color’s tint, and hover, selected, and label colors all come from that palette. Contrast checks adjust the range when needed.
 
-I’ve added a Storybook playground with editable colors and a few edge cases. I’m leaving Blueprint calibration for later—mainly want to see how this approach feels. Try **Theming → Consumer color proposal → Playground**, or the white/black examples, and let me know what you think!
+There’s a Storybook playground with blue-gray, white, black, and other examples to try. Blueprint calibration can come later—curious how this feels!

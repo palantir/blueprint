@@ -44,6 +44,7 @@ export interface ConsumerColors {
         direction: Direction;
         textContrast: Record<State, number>;
         paletteSpacingPower: number;
+        endpointRange: number;
         stateContrast: { restToHover: number; hoverToSelected: number };
         stateDistance: { restToHover: number; hoverToSelected: number };
         boundaryContrast: number | null;
@@ -61,13 +62,20 @@ export const consumerColorPolicy = {
     boundaryContrast: 3,
     chromaExponent: 0.8,
     darkerPreference: 0.015,
+    endpointChromaRetention: 0.25,
+    endpointLightnessRanges: [
+        [0.98, 0.12],
+        [0.985, 0.1],
+        [0.99, 0.08],
+        [0.995, 0.06],
+    ],
     paletteSpacingPowers: [1, 1.25, 1.5, 2],
     stateContrast: 1.15,
     stateDistance: 0.04,
     textContrast: 4.5,
 } as const;
 
-// Reserve the endpoints so even a nearly white or black seed retains both foreground options.
+// Normalized positions define spacing; the endpoints themselves inherit the seed's hue and chroma.
 const paletteTargets = [
     { lightness: 1, stop: 50 },
     ...Array.from({ length: 9 }, (_, index) => ({ lightness: 0.95 - index * 0.1, stop: (index + 1) * 100 })),
@@ -125,7 +133,9 @@ function colorAtLightness(seed: Oklch, lightness: number): string {
     const available = l < seed.l ? seed.l : 1 - seed.l;
     const remaining = available > 1e-10 ? Math.max(0, 1 - Math.abs(l - seed.l) / available) : 0;
     // A near-neutral seed should not acquire a vivid hue during generation.
-    const chroma = seed.c < 1e-7 ? 0 : seed.c * remaining ** consumerColorPolicy.chromaExponent;
+    const retention = consumerColorPolicy.endpointChromaRetention;
+    const chroma =
+        seed.c < 1e-7 ? 0 : seed.c * (retention + (1 - retention) * remaining ** consumerColorPolicy.chromaExponent);
     return mapToSrgb(l, chroma, seed.h ?? 0);
 }
 
@@ -141,35 +151,28 @@ function isVisibleOrderedStep(first: string, second: string, direction: Directio
 
 // -- Palette And State Search -------------------------------------------------
 
-function makeRamp(rest: string, seed: Oklch, spacingPower: number): PaletteStop[] {
-    const anchorIndex =
-        rest === "#ffffff"
-            ? 0
-            : rest === "#000000"
-              ? paletteTargets.length - 1
-              : paletteTargets.reduce((best, target, index) => {
-                    if (index === 0 || index === paletteTargets.length - 1) {
-                        return best;
-                    }
-                    return Math.abs(target.lightness - seed.l) < Math.abs(paletteTargets[best].lightness - seed.l)
-                        ? index
-                        : best;
-                }, 1);
+function makeRamp(rest: string, seed: Oklch, spacingPower: number, endpointRange: number): PaletteStop[] {
+    const [lightEnd, darkEnd] = consumerColorPolicy.endpointLightnessRanges[endpointRange];
+    const placementTargets = paletteTargets.map((target, index) => ({
+        ...target,
+        lightness: index === 0 ? lightEnd : index === paletteTargets.length - 1 ? darkEnd : target.lightness,
+    }));
+    const anchorIndex = placementTargets.reduce(
+        (best, target, index) =>
+            Math.abs(target.lightness - seed.l) < Math.abs(placementTargets[best].lightness - seed.l) ? index : best,
+        0,
+    );
     const anchorTarget = paletteTargets[anchorIndex].lightness;
     return paletteTargets.map(({ lightness: target, stop }, index) => {
         if (index === anchorIndex) {
             return { color: rest, isAnchor: true, stop };
         }
-        const endpoint = index < anchorIndex ? 1 : 0;
-        const progress = Math.abs(target - anchorTarget) / Math.abs(endpoint - anchorTarget);
+        const endpoint = index < anchorIndex ? lightEnd : darkEnd;
+        const endpointTarget = paletteTargets[index < anchorIndex ? 0 : paletteTargets.length - 1].lightness;
+        const progress = Math.abs(target - anchorTarget) / Math.abs(endpointTarget - anchorTarget);
         const lightness = seed.l + (endpoint - seed.l) * progress ** spacingPower;
         return {
-            color:
-                index === 0
-                    ? "#ffffff"
-                    : index === paletteTargets.length - 1
-                      ? "#000000"
-                      : colorAtLightness(seed, lightness),
+            color: colorAtLightness(seed, lightness),
             isAnchor: false,
             stop,
         };
@@ -232,30 +235,54 @@ export function generateConsumerColors(
     if (!rest || !surface || (options.foreground !== undefined && !lockedForeground)) {
         return { reason: "Use opaque #RGB or #RRGGBB colors.", status: "invalid-input" };
     }
-    const foreground =
-        lockedForeground ?? (wcagContrast(rest, "#ffffff") >= wcagContrast(rest, "#000000") ? "#ffffff" : "#000000");
-    if (wcagContrast(rest, foreground) < consumerColorPolicy.textContrast) {
+    if (lockedForeground && wcagContrast(rest, lockedForeground) < consumerColorPolicy.textContrast) {
         return { reason: "The locked label color fails 4.5:1 against the unchanged rest color.", status: "infeasible" };
     }
     const seed = readOklch(rest);
-    let selection: { ramp: PaletteStop[]; solid: StateSequence; spacingPower: number } | undefined;
-    for (const candidateSpacingPower of consumerColorPolicy.paletteSpacingPowers) {
-        const candidateRamp = makeRamp(rest, seed, candidateSpacingPower);
-        if (
-            !candidateRamp.every(
-                (stop, index) => index === 0 || readOklch(candidateRamp[index - 1].color).l > readOklch(stop.color).l,
-            )
-        ) {
-            continue;
+    let selection:
+        | { ramp: PaletteStop[]; solid: StateSequence; spacingPower: number; endpointRange: number }
+        | undefined;
+    for (
+        let candidateEndpointRange = 0;
+        candidateEndpointRange < consumerColorPolicy.endpointLightnessRanges.length;
+        candidateEndpointRange++
+    ) {
+        for (const candidateSpacingPower of consumerColorPolicy.paletteSpacingPowers) {
+            const candidateRamp = makeRamp(rest, seed, candidateSpacingPower, candidateEndpointRange);
+            if (
+                !candidateRamp.every(
+                    (stop, index) =>
+                        index === 0 || readOklch(candidateRamp[index - 1].color).l > readOklch(stop.color).l,
+                ) ||
+                !candidateRamp.some(stop => wcagContrast(stop.color, surface) >= consumerColorPolicy.textContrast)
+            ) {
+                continue;
+            }
+            const candidateForeground =
+                lockedForeground ??
+                [candidateRamp[0].color, candidateRamp[candidateRamp.length - 1].color].sort(
+                    (a, b) => wcagContrast(rest, b) - wcagContrast(rest, a),
+                )[0];
+            if (wcagContrast(rest, candidateForeground) < consumerColorPolicy.textContrast) {
+                continue;
+            }
+            const darker = selectStateSequence(candidateRamp, candidateForeground, "darker");
+            const lighter = selectStateSequence(candidateRamp, candidateForeground, "lighter");
+            const candidateStates =
+                darker && (!lighter || darker.distance <= lighter.distance + consumerColorPolicy.darkerPreference)
+                    ? darker
+                    : lighter;
+            if (candidateStates !== undefined) {
+                selection = {
+                    endpointRange: candidateEndpointRange,
+                    ramp: candidateRamp,
+                    solid: candidateStates,
+                    spacingPower: candidateSpacingPower,
+                };
+                break;
+            }
         }
-        const darker = selectStateSequence(candidateRamp, foreground, "darker");
-        const lighter = selectStateSequence(candidateRamp, foreground, "lighter");
-        const candidateStates =
-            darker && (!lighter || darker.distance <= lighter.distance + consumerColorPolicy.darkerPreference)
-                ? darker
-                : lighter;
-        if (candidateStates !== undefined) {
-            selection = { ramp: candidateRamp, solid: candidateStates, spacingPower: candidateSpacingPower };
+        if (selection !== undefined) {
             break;
         }
     }
@@ -265,7 +292,8 @@ export function generateConsumerColors(
             status: "infeasible",
         };
     }
-    const { ramp, solid, spacingPower } = selection;
+    const { ramp, solid, spacingPower, endpointRange } = selection;
+    const { foreground } = solid;
     const needsBoundary = [solid.rest, solid.hover, solid.selected].some(
         color => wcagContrast(color, surface) < consumerColorPolicy.boundaryContrast,
     );
@@ -273,7 +301,10 @@ export function generateConsumerColors(
     const text = selectPaletteColor(ramp, rest, surface, consumerColorPolicy.textContrast);
     const surfaceLightness = readOklch(surface).l;
     const subtleTarget = colorAtLightness(seed, surfaceLightness + (surfaceLightness > 0.5 ? -0.04 : 0.04));
-    const subtleBackground = selectPaletteColor(ramp, subtleTarget, surface, 1);
+    const readableBackgrounds = ramp.filter(background =>
+        ramp.some(stop => wcagContrast(stop.color, background.color) >= consumerColorPolicy.textContrast),
+    );
+    const subtleBackground = selectPaletteColor(readableBackgrounds, subtleTarget, surface, 1);
     const subtleForeground =
         subtleBackground === undefined
             ? undefined
@@ -285,6 +316,7 @@ export function generateConsumerColors(
         audit: {
             boundaryContrast: border ? wcagContrast(border, surface) : null,
             direction: solid.direction,
+            endpointRange,
             paletteSpacingPower: spacingPower,
             stateContrast: {
                 hoverToSelected: wcagContrast(solid.hover, solid.selected),

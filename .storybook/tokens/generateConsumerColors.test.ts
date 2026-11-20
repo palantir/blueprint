@@ -91,8 +91,8 @@ function audit(seed: string, surface: string) {
     assert(contrast(result.subtle.foreground, result.subtle.background) >= 4.5);
     assert.equal(ramp.length, 11);
     assert.equal(paletteColors.size, ramp.length);
-    assert.equal(ramp[0].color, "#ffffff");
-    assert.equal(ramp[ramp.length - 1].color, "#000000");
+    assert.equal(ramp[0].color === "#ffffff", seed === "#ffffff");
+    assert.equal(ramp[ramp.length - 1].color === "#000000", seed === "#000000");
     assert.equal(ramp.filter(stop => stop.isAnchor).length, 1);
     assert.equal(ramp.find(stop => stop.isAnchor)?.color, seed);
     for (let index = 1; index < ramp.length; index++) {
@@ -120,17 +120,35 @@ it("normalizes opaque HEX input and rejects unsupported values", () => {
     assert.equal(shorthand.solid.rest, "#aabbcc");
 });
 
-it("places rest by lightness while preserving both endpoints, including near-endpoint inputs", () => {
+it("places very light and dark inputs at the ends without adding white or black", () => {
     const examples = [
         ["#7961db", 500],
         ["#ffffff", 50],
         ["#000000", 950],
-        ["#fffffe", 100],
-        ["#000001", 900],
+        ["#fffffe", 50],
+        ["#000001", 950],
     ] as const;
     for (const [rest, stop] of examples) {
         const result = audit(rest, "#ffffff");
         assert.equal(result.ramp.find(value => value.isAnchor)?.stop, stop);
+    }
+});
+
+it("carries the seed's hue into tinted endpoints and keeps achromatic inputs neutral", () => {
+    const toOklch = converter("oklch");
+    for (const seed of ["#5f6b7c", "#7961db", "#a08060", "#cd4246"]) {
+        const result = audit(seed, "#ffffff");
+        const input = toOklch(seed);
+        assert(input?.h !== undefined);
+        for (const stop of [result.ramp[0], result.ramp[result.ramp.length - 1]]) {
+            const endpoint = toOklch(stop.color);
+            assert(endpoint?.h !== undefined && endpoint.c > 0.002);
+            const hueDifference = Math.abs(endpoint.h - input.h);
+            assert(Math.min(hueDifference, 360 - hueDifference) < 20);
+        }
+    }
+    for (const seed of ["#ffffff", "#000000", "#808080"]) {
+        audit(seed, "#ffffff");
     }
 });
 
@@ -142,11 +160,18 @@ it("returns a failure for incompatible locked text without silently replacing it
     assert.equal(result.solid.foreground, "#cccccc");
 });
 
+it("extends a tinted endpoint beyond a light rest when the surrounding surface needs more contrast", () => {
+    const result = audit("#f0fbd9", "#128502");
+    assert(result.audit.endpointRange > 0);
+    assert(result.ramp[0].color !== result.solid.rest);
+    assert(readOklab(result.ramp[0].color).l > readOklab(result.solid.rest).l);
+});
+
 it("adjusts the palette when a locked foreground needs closer steps, preserving its anchors", () => {
     const result = generateConsumerColors("#000000", { foreground: "#999999" });
     assert(result.status === "generated");
     assert(result.audit.paletteSpacingPower > 1);
-    assert.equal(result.ramp[0].color, "#ffffff");
+    assert.notEqual(result.ramp[0].color, "#ffffff");
     assert.equal(result.ramp[result.ramp.length - 1].color, "#000000");
     assert.equal(result.solid.rest, "#000000");
     for (const state of ["rest", "hover", "selected"] as const) {
