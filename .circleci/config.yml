@@ -110,7 +110,7 @@ jobs:
       - run: sudo corepack enable
       - restore-turbo-cache: { scope: compile }
       # Includes docs-data so its cache entry reaches downstream jobs (lint, dist) via the workspace.
-      - run: pnpm exec turbo run compile --concurrency=7
+      - run: pnpm exec turbo run compile
       - save-turbo-cache: { scope: compile }
       - persist_to_workspace:
           root: "."
@@ -193,7 +193,7 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - restore-turbo-cache: { scope: dist }
-      - run: pnpm exec turbo run dist --concurrency=7
+      - run: pnpm exec turbo run dist
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
