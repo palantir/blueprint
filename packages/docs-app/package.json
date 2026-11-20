@@ -16,16 +16,6 @@
         "test": "exit 0",
         "verify": "run-p dist lint"
     },
-    "nx": {
-        "targets": {
-            "bundle": {
-                "cache": false
-            },
-            "dist": {
-                "cache": false
-            }
-        }
-    },
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",

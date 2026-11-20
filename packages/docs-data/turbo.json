@@ -1,0 +1,11 @@
+{
+    "$schema": "../../node_modules/turbo/schema.json",
+    "extends": ["//"],
+    "tasks": {
+        "compile": { "cache": false },
+        "compile:docs": { "dependsOn": ["^compile"], "cache": false },
+        "compile:npm-data": { "dependsOn": ["^compile"], "cache": false },
+        "test": { "cache": false },
+        "test:vitest:run": { "cache": false }
+    }
+}

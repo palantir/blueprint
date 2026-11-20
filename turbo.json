@@ -1,0 +1,68 @@
+{
+    "$schema": "./node_modules/turbo/schema.json",
+    "ui": "stream",
+    "envMode": "loose",
+    "cacheMaxAge": "14d",
+    "globalDependencies": [
+        "config/**",
+        "eslint.config.js",
+        "vitest.config.mts",
+        "packages/eslint-config/**",
+        "packages/node-build-scripts/**",
+        "packages/webpack-build-scripts/**",
+        "!**/node_modules/**",
+        "!**/lib/**",
+        "!**/.turbo/**"
+    ],
+    "tasks": {
+        "compile": {
+            "dependsOn": ["^compile"],
+            "outputs": ["lib/**", "src/generated/**", "src/next/generated/**", "src/design-tokens/build/**"]
+        },
+        "dist": {
+            "dependsOn": ["compile", "^dist"],
+            "outputs": ["lib/**", "dist/**"],
+            "env": ["NODE_ENV"]
+        },
+        "dist:variables": {
+            "outputs": ["lib/**"]
+        },
+        "bundle": {
+            "dependsOn": ["^bundle"],
+            "outputs": ["dist/**"],
+            "env": ["NODE_ENV"]
+        },
+        "dev": {
+            "dependsOn": ["^compile", "^dist:variables"],
+            "cache": false,
+            "persistent": true
+        },
+        "test": {
+            "dependsOn": ["^compile"],
+            "outputs": []
+        },
+        "test:typeCheck": {
+            "dependsOn": ["compile"],
+            "outputs": []
+        },
+        "test:iso": {
+            "dependsOn": ["^compile"],
+            "outputs": []
+        },
+        "test:vitest:run": {
+            "dependsOn": ["^compile"],
+            "outputs": []
+        },
+        "lint": {
+            "dependsOn": ["^compile"],
+            "outputs": [],
+            "env": ["JUNIT_REPORT_PATH"]
+        },
+        "lint-fix": {
+            "cache": false
+        },
+        "clean": {
+            "cache": false
+        }
+    }
+}

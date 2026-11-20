@@ -19,6 +19,37 @@ aliases:
       - ~/.local/share/pnpm/store
     key: v1-pnpm-store-{{ checksum "pnpm-lock.yaml" }}
 
+  - &ci-environment
+    TURBO_TELEMETRY_DISABLED: "1"
+    DO_NOT_TRACK: "1"
+
+commands:
+  # Keys carry CIRCLE_NODE_INDEX because save_cache against an existing key is a silent no-op,
+  # so a key shared across parallel containers would only ever persist one container's results.
+  # Run after attach_workspace: the compile job's turbo cache for this revision arrives via the
+  # workspace, and this layers the job's own previous results on top.
+  restore-turbo-cache:
+    parameters:
+      scope: { type: string }
+    steps:
+      - restore_cache:
+          name: Restore turbo cache (<< parameters.scope >>)
+          keys:
+            - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Branch }}-{{ .Revision }}
+            - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Branch }}-
+            - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
+
+  save-turbo-cache:
+    parameters:
+      scope: { type: string }
+    steps:
+      - save_cache:
+          name: Save turbo cache (<< parameters.scope >>)
+          when: always
+          key: v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - .turbo/cache
+
 jobs:
   circle-all:
     resource_class: small
@@ -59,31 +90,37 @@ jobs:
   compile:
     docker: *docker-node-image
     resource_class: xlarge
+    environment: *ci-environment
     steps:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: pnpm compile --parallel=7 --exclude @blueprintjs/docs-data
+      - restore-turbo-cache: { scope: compile }
+      - run: pnpm exec turbo run compile --concurrency=7 --filter='!@blueprintjs/docs-data'
+      - save-turbo-cache: { scope: compile }
       - persist_to_workspace:
           root: "."
           paths:
+            - .turbo/cache
             - packages/*/lib
+            - packages/core/src/design-tokens/build
             - packages/icons/src/generated
             - packages/icons/src/next/generated
 
   compile-docs:
     docker: *docker-node-image
     resource_class: xlarge
+    environment: *ci-environment
     steps:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       # Library compilation is supplied by the current workflow's workspace.
       # The combined docs task fetches live npm metadata and must run uncached.
-      - run: pnpm nx compile @blueprintjs/docs-data --excludeTaskDependencies
+      - run: pnpm exec turbo run compile --filter=@blueprintjs/docs-data --only
       - run: mkdir -p ./reports
       - run: >-
-          pnpm nx test:vitest:run @blueprintjs/docs-data
+          pnpm --filter=@blueprintjs/docs-data run test:vitest:run
           --reporter=default --reporter=junit --outputFile=../../reports/docs-data.xml
       - store_test_results: { path: ./reports }
       - persist_to_workspace:
@@ -106,6 +143,7 @@ jobs:
     docker: *docker-node-image
     resource_class: large
     environment:
+      <<: *ci-environment
       JUNIT_REPORT_PATH: reports
       NODE_ENV: test
     steps:
@@ -113,10 +151,12 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
-      # types and lint rules should already be compiled since this job depends on the 'compile' job
+      # lint depends on ^compile; those tasks are cache hits from the compile job's turbo cache
+      - restore-turbo-cache: { scope: lint }
       - run:
-          command: pnpm lint
+          command: pnpm exec turbo run lint
           no_output_timeout: 20m
+      - save-turbo-cache: { scope: lint }
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
@@ -124,12 +164,15 @@ jobs:
     docker: *docker-node-image
     resource_class: xlarge
     environment:
+      <<: *ci-environment
       NODE_ENV: test
     steps:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: pnpm dist --parallel=7
+      - restore-turbo-cache: { scope: dist }
+      - run: pnpm exec turbo run dist --concurrency=7
+      - save-turbo-cache: { scope: dist }
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
@@ -141,6 +184,7 @@ jobs:
   test-node-libs:
     docker: *docker-node-image
     environment:
+      <<: *ci-environment
       JUNIT_REPORT_PATH: reports
     parallelism: 2
     steps:
@@ -148,25 +192,28 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports
+      - restore-turbo-cache: { scope: test-node-libs }
       - run:
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) pnpm nx test @blueprintjs/eslint-plugin ;; \
-            1) pnpm nx test @blueprintjs/stylelint-plugin ;; \
+            0) pnpm exec turbo run test --filter=@blueprintjs/eslint-plugin ;; \
+            1) pnpm exec turbo run test --filter=@blueprintjs/stylelint-plugin ;; \
             esac
           when: always
+      - save-turbo-cache: { scope: test-node-libs }
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
   type-check-icons:
     docker: *docker-node-image
     resource_class: xlarge
+    environment: *ci-environment
     steps:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       # Icons type checking needs generated sources and test helpers, so it can overlap library compilation.
-      - run: pnpm nx compile @blueprintjs/test-commons
+      - run: pnpm exec turbo run compile --filter=@blueprintjs/test-commons
       - run: pnpm --filter @blueprintjs/icons icons:verify
       - run: pnpm --filter @blueprintjs/icons generate-icon-src
       - run: pnpm --filter @blueprintjs/icons test:typeCheck
@@ -175,6 +222,7 @@ jobs:
     docker: *docker-node-image
     resource_class: xlarge
     environment:
+      <<: *ci-environment
       JUNIT_REPORT_PATH: reports
     parallelism: 6
     steps:
@@ -182,41 +230,49 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports
+      - restore-turbo-cache: { scope: test-react-18 }
       - run:
           # split vitest tests into containers because they can take up a lot of memory
           # Originally did this while tests were still running on Karma because running
           # them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
-          # Task dependencies are already compiled in this workflow's workspace.
+          # Task dependencies are cache hits from the compile job's turbo cache.
+          # Shard 3 runs vitest outside turbo (uncached) because turbo forwards `--` args to, and
+          # hashes them into, every task in the run including the dependency compiles.
           command: |
             case $CIRCLE_NODE_INDEX in
-            0) pnpm nx run-many -t test:typeCheck --exclude @blueprintjs/icons --excludeTaskDependencies ;;
-            1) pnpm nx test:vitest:run @blueprintjs/core ;;
-            2) pnpm nx test:vitest:run @blueprintjs/datetime ;;
+            0) pnpm exec turbo run test:typeCheck --filter='!@blueprintjs/icons' ;;
+            1) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/core ;;
+            2) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/datetime ;;
             3)
-              pnpm nx test:vitest:run @blueprintjs/icons \
+              pnpm exec turbo run compile --filter=@blueprintjs/icons --filter=@blueprintjs/labs &&
+              pnpm --filter=@blueprintjs/icons run test:vitest:run \
                 --reporter=default --reporter=junit --outputFile=../../reports/icons.xml &&
-              pnpm nx test @blueprintjs/labs --excludeTaskDependencies \
+              pnpm --filter=@blueprintjs/labs run test \
                 --reporter=default --reporter=junit --outputFile=../../reports/labs.xml
               ;;
-            4) pnpm nx test:vitest:run @blueprintjs/select ;;
-            5) pnpm nx test:vitest:run @blueprintjs/table ;;
+            4) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/select ;;
+            5) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/table ;;
             *) echo "Unexpected test shard: $CIRCLE_NODE_INDEX" >&2; exit 1 ;;
             esac
           when: always
+      - save-turbo-cache: { scope: test-react-18 }
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
   test-iso-react-18: &test-iso
     docker: *docker-node-image
     environment:
+      <<: *ci-environment
       JUNIT_REPORT_PATH: reports
     steps:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./reports
-      - run: pnpm nx run-many -t test:iso
+      - restore-turbo-cache: { scope: test-iso-react-18 }
+      - run: pnpm exec turbo run test:iso
+      - save-turbo-cache: { scope: test-iso-react-18 }
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 

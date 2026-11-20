@@ -12,9 +12,8 @@ node_modules
 npm-debug.log*
 lerna-debug.log
 
-# Nx
-.nx/cache
-.nx/workspace-data
+# Turborepo
+.turbo
 
 # pnpm
 # pnpm-lock.yaml should be committed
