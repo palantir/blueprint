@@ -187,6 +187,7 @@ export interface NumericInputProps extends InputSharedProps {
 
 export interface NumericInputState {
     currentImeInputInvalid: boolean;
+    prevLocaleProp?: string;
     prevMinProp?: number;
     prevMaxProp?: number;
     shouldSelectAfterUpdate: boolean;
@@ -250,6 +251,7 @@ export class NumericInput extends AbstractPureComponent<
 
     public static getDerivedStateFromProps(props: NumericInputProps, state: NumericInputState) {
         const nextState = {
+            prevLocaleProp: props.locale,
             prevMaxProp: props.max,
             prevMinProp: props.min,
         };
@@ -260,7 +262,15 @@ export class NumericInput extends AbstractPureComponent<
 
         // in controlled mode, use props.value
         // in uncontrolled mode, if state.value has not been assigned yet (upon initial mount), use props.defaultValue
-        const value = props.value?.toString() ?? state.value;
+        let value = props.value?.toString() ?? state.value;
+        if (
+            props.value == null &&
+            props.locale !== state.prevLocaleProp &&
+            isValueNumeric(value, state.prevLocaleProp)
+        ) {
+            // Parse uncontrolled input using its previous locale before displaying or clamping it in the new locale.
+            value = toLocaleString(Number(parseStringToStringNumber(value, state.prevLocaleProp)), props.locale);
+        }
         const stepMaxPrecision = NumericInput.getStepMaxPrecision(props);
 
         const sanitizedValue =
@@ -309,6 +319,7 @@ export class NumericInput extends AbstractPureComponent<
 
     public state: NumericInputState = {
         currentImeInputInvalid: false,
+        prevLocaleProp: this.props.locale,
         shouldSelectAfterUpdate: false,
         stepMaxPrecision: NumericInput.getStepMaxPrecision(this.props),
         value: getValueOrEmptyValue(this.props.value ?? this.props.defaultValue),
@@ -369,9 +380,12 @@ export class NumericInput extends AbstractPureComponent<
         const didValueChange = this.state.value !== prevState.value;
 
         if ((didBoundsChange && didValueChange) || (didLocaleChange && prevState.value !== NumericInput.VALUE_EMPTY)) {
-            // we clamped the value due to a bounds change, so we should fire the change callback
-            const valueToParse = didLocaleChange ? prevState.value : this.state.value;
-            const valueAsString = parseStringToStringNumber(valueToParse, prevProps.locale);
+            // An unchanged controlled value still belongs to the previous locale until the parent updates it.
+            const shouldConvertPreviousValue =
+                didLocaleChange && this.props.value != null && this.props.value === prevProps.value;
+            const valueToParse = shouldConvertPreviousValue ? prevState.value : this.state.value;
+            const localeToParse = shouldConvertPreviousValue ? prevProps.locale : this.props.locale;
+            const valueAsString = parseStringToStringNumber(valueToParse, localeToParse);
             const localizedValue = toLocaleString(+valueAsString, this.props.locale);
 
             this.props.onValueChange?.(+valueAsString, localizedValue, this.inputElement);
