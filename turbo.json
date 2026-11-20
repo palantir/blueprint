@@ -10,6 +10,11 @@
         "packages/eslint-config/**",
         "packages/node-build-scripts/**",
         "packages/webpack-build-scripts/**",
+        ".browserslistrc",
+        ".stylelintrc",
+        ".stylelintignore",
+        "packages/eslint-plugin/**",
+        "packages/stylelint-plugin/**",
         "!**/node_modules/**",
         "!**/lib/**",
         "!**/.turbo/**"
