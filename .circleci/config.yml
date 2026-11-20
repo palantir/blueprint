@@ -174,11 +174,11 @@ jobs:
       - run: sudo corepack enable
       - restore-turbo-cache: { scope: dist }
       - run: pnpm exec turbo run dist --concurrency=7
-      - save-turbo-cache: { scope: dist }
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
       - run: pnpm build-storybook
+      - save-turbo-cache: { scope: dist }
       - persist_to_workspace:
           root: "."
           paths: [storybook-static]

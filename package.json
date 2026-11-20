@@ -35,7 +35,8 @@
         "test": "turbo run test --continue",
         "verify": "npm-run-all -s compile dist -p test lint format-check",
         "storybook": "storybook dev -p 6006",
-        "build-storybook": "storybook build --stats-json",
+        "build-storybook": "turbo run //#build-storybook:uncached",
+        "build-storybook:uncached": "storybook build --stats-json",
         "chromatic": "chromatic",
         "prepare": "husky"
     },

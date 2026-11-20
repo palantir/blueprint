@@ -63,6 +63,19 @@
         },
         "clean": {
             "cache": false
+        },
+        "//#build-storybook:uncached": {
+            "dependsOn": [
+                "@blueprintjs/core#dist",
+                "@blueprintjs/datetime#dist",
+                "@blueprintjs/icons#dist",
+                "@blueprintjs/labs#dist",
+                "@blueprintjs/select#dist",
+                "@blueprintjs/table#dist"
+            ],
+            "inputs": [".storybook/**"],
+            "outputs": ["storybook-static/**"],
+            "env": ["NODE_ENV"]
         }
     }
 }
