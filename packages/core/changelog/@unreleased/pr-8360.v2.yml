@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: '[core] Use React.useId for stable Section ids'
+  links:
+    - https://github.com/palantir/blueprint/pull/8360
