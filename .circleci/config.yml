@@ -175,7 +175,7 @@ jobs:
       # lint depends on ^compile; those tasks are cache hits from the compile job's turbo cache
       - restore-turbo-cache: { scope: lint }
       - run:
-          command: pnpm exec turbo run lint
+          command: pnpm exec turbo run lint --continue
           no_output_timeout: 20m
       - save-turbo-cache: { scope: lint }
       - store_test_results: { path: ./reports }
@@ -261,7 +261,7 @@ jobs:
           # Avoid `--` args here: turbo forwards them to, and hashes them into, every task in the run.
           command: |
             case $CIRCLE_NODE_INDEX in
-            0) pnpm exec turbo run test:typeCheck --filter='!@blueprintjs/icons' ;;
+            0) pnpm exec turbo run test:typeCheck --continue --filter='!@blueprintjs/icons' ;;
             1) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/core ;;
             2) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/datetime ;;
             3)
@@ -289,7 +289,7 @@ jobs:
       - run: sudo corepack enable
       - run: mkdir ./reports
       - restore-turbo-cache: { scope: test-iso-react-18 }
-      - run: pnpm exec turbo run test:iso
+      - run: pnpm exec turbo run test:iso --continue
       - save-turbo-cache: { scope: test-iso-react-18 }
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
