@@ -227,10 +227,10 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       # Icons type checking needs generated sources and test helpers, so it can overlap library compilation.
-      - run: pnpm exec turbo run compile --filter=@blueprintjs/test-commons
-      - run: pnpm --filter @blueprintjs/icons icons:verify
-      - run: pnpm --filter @blueprintjs/icons generate-icon-src
-      - run: pnpm --filter @blueprintjs/icons test:typeCheck
+      # Runs icons:verify and generate-icon-src first (see packages/icons/turbo.json).
+      - restore-turbo-cache: { scope: type-check-icons }
+      - run: pnpm exec turbo run test:typeCheck --filter=@blueprintjs/icons
+      - save-turbo-cache: { scope: type-check-icons }
 
   test-react-18: &test-react
     docker: *docker-node-image
