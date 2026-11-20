@@ -131,17 +131,12 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # Library compiles are cache hits from the compile job's turbo cache. The documentalist output
-      # is cached; npm metadata (compile:npm-data) is always fetched fresh.
+      # docs-data is built (and cached) by the compile job; this only runs its tests.
       - restore-turbo-cache: { scope: compile-docs }
-      - run: pnpm exec turbo run compile test:vitest:run --filter=@blueprintjs/docs-data
+      - run: pnpm exec turbo run test:vitest:run --filter=@blueprintjs/docs-data
       - save-turbo-cache: { scope: compile-docs }
       - collect-vitest-reports
       - store_test_results: { path: ./reports }
-      - persist_to_workspace:
-          root: "."
-          paths:
-            - packages/docs-data/src/generated
 
   format-check:
     docker: *docker-node-image
@@ -353,7 +348,7 @@ workflows:
     unless: << pipeline.parameters.run-chromatic >>
     jobs:
       - circle-all:
-          requires: [dist, lint, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
+          requires: [dist, lint, compile-docs, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
       - checkout-code
       - clean-lockfile:
           requires: [checkout-code]
@@ -366,7 +361,7 @@ workflows:
       - compile-docs:
           requires: [compile]
       - dist:
-          requires: [compile, compile-docs]
+          requires: [compile]
       - test-node-libs:
           requires: [compile]
       - type-check-icons:
@@ -385,7 +380,7 @@ workflows:
       - store-packages:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
+          requires: [dist, lint, compile-docs, test-node-libs, type-check-icons, test-react-18, test-iso-react-18]
           filters:
             branches:
               only:
@@ -398,9 +393,7 @@ workflows:
       - checkout-code
       - compile:
           requires: [checkout-code]
-      - compile-docs:
-          requires: [compile]
       - dist:
-          requires: [compile, compile-docs]
+          requires: [compile]
       - chromatic:
           requires: [dist]
