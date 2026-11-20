@@ -28,16 +28,35 @@ commands:
   # so a key shared across parallel containers would only ever persist one container's results.
   # Run after attach_workspace: the compile job's turbo cache for this revision arrives via the
   # workspace, and this layers the job's own previous results on top.
+  # develop only ever restores develop caches; branches layer their own cache on top of develop's.
+  # Branches never restore other branches' caches, so caches don't snowball across PRs.
+  # Old entries are evicted by turbo itself (cacheMaxAge in turbo.json).
   restore-turbo-cache:
     parameters:
       scope: { type: string }
     steps:
-      - restore_cache:
-          name: Restore turbo cache (<< parameters.scope >>)
-          keys:
-            - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Branch }}-{{ .Revision }}
-            - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Branch }}-
-            - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
+      - when:
+          condition: { equal: [develop, << pipeline.git.branch >>] }
+          steps:
+            - restore_cache:
+                name: Restore turbo cache (<< parameters.scope >>)
+                keys:
+                  - v2-turbo-{{ arch }}-develop-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Revision }}
+                  - v2-turbo-{{ arch }}-develop-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
+      - unless:
+          condition: { equal: [develop, << pipeline.git.branch >>] }
+          steps:
+            - restore_cache:
+                name: Restore develop turbo cache (<< parameters.scope >>)
+                keys:
+                  - v2-turbo-{{ arch }}-develop-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
+            # restore_cache only restores the first matching key, so the branch cache is a second
+            # step unpacked on top of develop's.
+            - restore_cache:
+                name: Restore branch turbo cache (<< parameters.scope >>)
+                keys:
+                  - v2-turbo-{{ arch }}-pr-{{ .Branch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Revision }}
+                  - v2-turbo-{{ arch }}-pr-{{ .Branch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
 
   # Vitest writes JUnit to packages/<pkg>/reports/junit.xml (cached by turbo with the test task).
   collect-vitest-reports:
@@ -56,12 +75,24 @@ commands:
     parameters:
       scope: { type: string }
     steps:
-      - save_cache:
-          name: Save turbo cache (<< parameters.scope >>)
-          when: always
-          key: v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Branch }}-{{ .Revision }}
-          paths:
-            - .turbo/cache
+      - when:
+          condition: { equal: [develop, << pipeline.git.branch >>] }
+          steps:
+            - save_cache:
+                name: Save turbo cache (<< parameters.scope >>)
+                when: always
+                key: v2-turbo-{{ arch }}-develop-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Revision }}
+                paths:
+                  - .turbo/cache
+      - unless:
+          condition: { equal: [develop, << pipeline.git.branch >>] }
+          steps:
+            - save_cache:
+                name: Save turbo cache (<< parameters.scope >>)
+                when: always
+                key: v2-turbo-{{ arch }}-pr-{{ .Branch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Revision }}
+                paths:
+                  - .turbo/cache
 
 jobs:
   circle-all:
