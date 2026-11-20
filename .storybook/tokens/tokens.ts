@@ -26,6 +26,7 @@ const TOKEN_GROUP_CONFIG = [
     { initialCollapsed: true, label: "Palette", tokenPrefix: "--bp-palette-" },
     { initialCollapsed: false, label: "Intent", tokenPrefix: "--bp-intent-" },
     { initialCollapsed: true, label: "Typography", tokenPrefix: "--bp-typography-" },
+    { initialCollapsed: true, label: "Components", tokenPrefix: "--bp6-button-" },
 ] as const;
 
 export const TOKEN_VALUES_REQUESTED = "blueprint/tokens/values-requested";
