@@ -88,7 +88,7 @@ export const ContextMenuPopover = memo(function ContextMenuPopover(props: Contex
             // when offset changes, to force recomputing position.
             key={getPopoverKey(targetOffset)}
             hasBackdrop={true}
-            backdropProps={{ className: Classes.CONTEXT_MENU_BACKDROP }}
+            backdropProps={{ className: Classes.CONTEXT_MENU_BACKDROP, onContextMenu: cancelContextMenu }}
             animation="minimal"
             arrow={false}
             onInteraction={handleInteraction}
