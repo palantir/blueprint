@@ -23,13 +23,12 @@
     }
   }
 
-  a {
+  :where(a),
+  :where(a:hover) {
     color: $pt-link-color;
+  }
 
-    &:hover {
-      color: $pt-link-color;
-    }
-
+  a {
     #{$icon-classes} {
       color: inherit;
     }
@@ -104,13 +103,12 @@
     }
   }
 
-  a {
+  :where(a),
+  :where(a:hover) {
     color: $pt-dark-link-color;
+  }
 
-    &:hover {
-      color: $pt-dark-link-color;
-    }
-
+  a {
     #{$icon-classes} {
       color: inherit;
     }
