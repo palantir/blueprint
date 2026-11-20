@@ -115,9 +115,11 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # Library compilation is supplied by the current workflow's workspace.
-      # The combined docs task fetches live npm metadata and must run uncached.
-      - run: pnpm exec turbo run compile --filter=@blueprintjs/docs-data --only
+      # Library compiles are cache hits from the compile job's turbo cache. The documentalist output
+      # is cached; npm metadata (compile:npm-data) is always fetched fresh.
+      - restore-turbo-cache: { scope: compile-docs }
+      - run: pnpm exec turbo run compile --filter=@blueprintjs/docs-data
+      - save-turbo-cache: { scope: compile-docs }
       - run: mkdir -p ./reports
       - run: >-
           pnpm --filter=@blueprintjs/docs-data run test:vitest:run

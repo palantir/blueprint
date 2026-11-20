@@ -2,9 +2,22 @@
     "$schema": "../../node_modules/turbo/schema.json",
     "extends": ["//"],
     "tasks": {
-        "compile": { "cache": false },
+        // Cached on the repo sources documentalist reads. npm-data.json is excluded from outputs so a
+        // cache hit never replaces the copy fetched fresh by compile:npm-data.
+        "compile": {
+            "dependsOn": ["^compile", "compile:npm-data"],
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                "$TURBO_ROOT$/packages/*/src/**/*.{md,mdx,ts,tsx,scss}",
+                "$TURBO_ROOT$/packages/*/package.json",
+                // icons' generated sources are covered by the icons#compile hash (via ^compile)
+                "!$TURBO_ROOT$/packages/icons/src/**/generated/**"
+            ],
+            "outputs": ["src/generated/**", "!src/generated/npm-data.json"]
+        },
         "compile:docs": { "dependsOn": ["^compile"], "cache": false },
-        "compile:npm-data": { "dependsOn": ["^compile"], "cache": false },
+        // Fetches live npm metadata, so it must always run.
+        "compile:npm-data": { "cache": false },
         "test": { "cache": false },
         "test:vitest:run": { "cache": false }
     }
