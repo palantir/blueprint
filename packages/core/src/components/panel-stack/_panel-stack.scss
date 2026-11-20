@@ -15,7 +15,7 @@
   box-shadow: 0 1px $pt-divider-black;
   display: flex;
   flex-shrink: 0;
-  height: $pt-spacing * 7.5;
+  height: calc(var(--bp-surface-spacing) * 7.5);
   z-index: 1;
 
   .#{$ns}-dark & {
@@ -30,18 +30,18 @@
   }
 
   .#{$ns}-heading {
-    margin: 0 $pt-spacing;
+    margin: 0 var(--bp-surface-spacing);
   }
 }
 
 .#{$ns}-button.#{$ns}-panel-stack2-header-back {
-  margin-left: $pt-spacing;
+  margin-left: var(--bp-surface-spacing);
   padding-left: 0;
   white-space: nowrap;
 
   .#{$ns}-icon {
     // reduce margins around icon so it fits better in tight header
-    margin: 0 ($pt-spacing * 0.5);
+    margin: 0 calc(var(--bp-surface-spacing) * 0.5);
   }
 }
 

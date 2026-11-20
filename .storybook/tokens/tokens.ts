@@ -41,6 +41,12 @@ export const TOKEN_CONFIG = {
         toCssValue: value => `${value}px`,
         type: "range",
     }),
+    "--bp-surface-spacing": rangeTokenEditor({
+        control: { max: 12, min: 0, step: 1 },
+        toControlValue: value => Number.parseFloat(value),
+        toCssValue: value => `${value}px`,
+        type: "range",
+    }),
     "--bp-palette-black": colorTokenEditor(BLACK),
     "--bp-palette-white": colorTokenEditor(WHITE),
     "--bp-palette-dark-gray-1": colorTokenEditor(PALETTE_TOKENS["dark-gray"]["1"].$value),
