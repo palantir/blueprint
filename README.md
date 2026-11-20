@@ -72,7 +72,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 ## Development
 
 [pnpm](https://pnpm.io) manages third-party and inter-package dependencies in this monorepo.
-Builds are orchestrated via [Nx's task runner](https://nx.dev/getting-started/intro) and NPM scripts.
+Builds are orchestrated via [Turborepo](https://turborepo.com/docs) and NPM scripts. Task outputs are cached in `.turbo/cache`; run with `--force` to bypass the cache. Root scripts only accept turbo flags (e.g. `pnpm test --force`). Arguments after `--` are passed to every task in the run, including dependency builds, so to pass flags to a single tool run the script from its package directory instead (e.g. `cd packages/core && pnpm test:vitest:run --reporter=verbose`).
 [Lerna-Lite](https://github.com/lerna-lite/lerna-lite) is used to prepare releases.
 
 **Prerequisites**: Node.js v24.11+ (see version specified in `.nvmrc`), pnpm v10.x (see version specified in `package.json`)

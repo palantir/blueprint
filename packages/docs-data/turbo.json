@@ -1,0 +1,31 @@
+{
+    "$schema": "../../node_modules/turbo/schema.json",
+    "extends": ["//"],
+    "tasks": {
+        // npm-data.json is left out so a cache hit can't overwrite the fresh fetch.
+        "compile": {
+            "dependsOn": ["^compile", "compile:npm-data"],
+            "inputs": [
+                "$TURBO_DEFAULT$",
+                "$TURBO_ROOT$/packages/*/src/**/*.{md,mdx,ts,tsx,scss}",
+                "$TURBO_ROOT$/packages/*/src/**/tsconfig*.json",
+                "$TURBO_ROOT$/packages/*/package.json",
+                // already hashed via icons#compile
+                "!$TURBO_ROOT$/packages/icons/src/**/generated/**"
+            ],
+            "outputs": ["src/generated/**", "!src/generated/npm-data.json"]
+        },
+        "compile:docs": { "dependsOn": ["^compile"], "cache": false },
+        // Live npm data, never cached. The script imports @blueprintjs/core.
+        "compile:npm-data": { "dependsOn": ["^compile"], "cache": false },
+        // Tests load src/generated and read every package's .mdx.
+        "test": {
+            "dependsOn": ["compile"],
+            "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/*/src/**/*.mdx"]
+        },
+        "test:vitest:run": {
+            "dependsOn": ["compile"],
+            "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/*/src/**/*.mdx"]
+        }
+    }
+}

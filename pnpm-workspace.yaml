@@ -28,5 +28,4 @@ allowBuilds:
   core-js: false
   core-js-pure: false
   esbuild: false
-  nx: false
   ttf2woff2: false

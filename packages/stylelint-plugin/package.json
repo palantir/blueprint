@@ -22,7 +22,6 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
-        "@blueprintjs/stylelint-plugin": "workspace:^",
         "vitest": "catalog:",
         "postcss-scss": "^4.0.9",
         "stylelint": "~16.25.0",

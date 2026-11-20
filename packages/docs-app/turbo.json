@@ -1,0 +1,11 @@
+{
+    "$schema": "../../node_modules/turbo/schema.json",
+    "extends": ["//"],
+    "tasks": {
+        "bundle": { "cache": false },
+        "dist": {
+            // docs-data documents datetime2, which docs-app doesn't depend on
+            "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/datetime2/src/**"]
+        }
+    }
+}

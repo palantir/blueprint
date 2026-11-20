@@ -1,5 +1,5 @@
 {
-    "buildScriptName": "build-storybook",
+    "buildScriptName": "build-storybook:uncached",
     "autoAcceptChanges": "develop",
     "exitZeroOnChanges": true,
     "exitOnceUploaded": true
