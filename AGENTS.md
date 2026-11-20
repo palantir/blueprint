@@ -7,6 +7,7 @@
 - **Test single package**: `pnpm turbo run test:vitest:run --filter=@blueprintjs/core` or `cd packages/core && pnpm test:vitest:run`
 - **Distribute**: `pnpm dist`, `pnpm turbo run dist --filter=@blueprintjs/core` (single package)
 - **Lint**: `pnpm lint`, `pnpm lint-fix` (auto-fix), `pnpm turbo run lint --filter=@blueprintjs/core` (single package)
+- **Extra flags**: root scripts accept only turbo flags. Args after `--` reach every task in the run (including dependency compiles), so pass tool flags from the package directory: `cd packages/core && pnpm test:vitest:run --reporter=verbose`
 - **Format**: `pnpm format`, `pnpm format-check`
 - **Pre-commit hook**: `pnpm exec lint-staged` (via `.husky/pre-commit`)
 - **Verify all**: `pnpm verify` (compile + dist + test + lint + format-check)
