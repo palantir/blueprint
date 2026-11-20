@@ -130,7 +130,7 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # docs-data is built (and cached) by the compile job; this only runs its tests.
+      # The tests depend on docs-data's compile: a cache hit from the compile job, plus a fresh npm-data fetch.
       - restore-turbo-cache: { scope: compile-docs }
       - run: pnpm exec turbo run test:vitest:run --filter=@blueprintjs/docs-data
       - save-turbo-cache: { scope: compile-docs }
