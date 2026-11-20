@@ -29,6 +29,7 @@ Key surface tokens used throughout components:
 | `--bp-surface-spacing`                                  | `4px`                              | Base spacing unit. Components multiply this (e.g. `calc(var(--bp-surface-spacing) * 2)` for 8px padding). |
 | `--bp-surface-border-width`                             | `1px`                              | Consistent border width for all bordered elements.                                                        |
 | `--bp-surface-border-radius`                            | `4px`                              | Shared corner radius.                                                                                     |
+| `--bp-surface-border-color-muted`                       | `palette.black` at 10% alpha       | Low-contrast dividers and separators.                                                                     |
 | `--bp-surface-border-color-default`                     | `intent.default.rest` at 12% alpha | Subtle border for default states.                                                                         |
 | `--bp-surface-border-color-strong`                      | `intent.default.rest` at 25% alpha | More prominent border for outlined elements.                                                              |
 | `--bp-surface-shadow-0` through `--bp-surface-shadow-4` | Multi-layer box shadows            | Five elevation levels, from flat (0) to maximum depth (4).                                                |
