@@ -18,8 +18,8 @@
             "outputs": ["src/generated/**", "!src/generated/npm-data.json"]
         },
         "compile:docs": { "dependsOn": ["^compile"], "cache": false },
-        // Fetches live npm metadata, so it must always run.
-        "compile:npm-data": { "cache": false },
+        // Fetches live npm metadata, so it must always run. The script imports @blueprintjs/core, so it needs ^compile.
+        "compile:npm-data": { "dependsOn": ["^compile"], "cache": false },
         // Tests load src/index.js, which requires src/generated. navRoutes.test.ts checks every package's
         // .mdx pages against nav.json.
         "test": {
