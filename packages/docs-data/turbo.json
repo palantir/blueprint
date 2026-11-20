@@ -9,6 +9,8 @@
             "inputs": [
                 "$TURBO_DEFAULT$",
                 "$TURBO_ROOT$/packages/*/src/**/*.{md,mdx,ts,tsx,scss}",
+                // documentalist type-checks each package with its nearest tsconfig
+                "$TURBO_ROOT$/packages/*/src/**/tsconfig*.json",
                 "$TURBO_ROOT$/packages/*/package.json",
                 // icons' generated sources are covered by the icons#compile hash (via ^compile)
                 "!$TURBO_ROOT$/packages/icons/src/**/generated/**"
