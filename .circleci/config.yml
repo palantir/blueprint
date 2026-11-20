@@ -151,7 +151,19 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - restore_cache:
+          name: Restore prettier cache
+          keys:
+            - v1-prettier-{{ .Branch }}-{{ .Revision }}
+            - v1-prettier-{{ .Branch }}-
+            - v1-prettier-
       - run: pnpm format-check
+      - save_cache:
+          name: Save prettier cache
+          when: always
+          key: v1-prettier-{{ .Branch }}-{{ .Revision }}
+          paths:
+            - node_modules/.cache/prettier
 
   lint:
     docker: *docker-node-image
