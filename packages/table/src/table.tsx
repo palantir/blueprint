@@ -804,6 +804,13 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             if (newFocusedRegion != null) {
                 this.handleFocus(newFocusedRegion);
             }
+        } else if (
+            this.state.focusedRegion != null &&
+            this.state.focusedRegion.focusSelectionIndex !== 0 &&
+            isSelectionModeEnabled(this.props as TablePropsWithDefaults, RegionCardinality.FULL_TABLE)
+        ) {
+            // Preserve the focused coordinates, but associate them with the sole remaining selection.
+            this.handleFocus({ ...this.state.focusedRegion, focusSelectionIndex: 0 });
         }
     };
 

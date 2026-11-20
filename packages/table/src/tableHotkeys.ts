@@ -82,6 +82,9 @@ export class TableHotkeys {
             if (newFocusedRegion != null) {
                 this.tableHandlers.handleFocus(newFocusedRegion);
             }
+        } else if (this.state.focusedRegion != null && this.state.focusedRegion.focusSelectionIndex !== 0) {
+            // Preserve the focused coordinates, but associate them with the sole remaining selection.
+            this.tableHandlers.handleFocus({ ...this.state.focusedRegion, focusSelectionIndex: 0 });
         }
     };
 
