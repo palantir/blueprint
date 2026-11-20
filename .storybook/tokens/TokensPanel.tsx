@@ -11,7 +11,8 @@ import { IconButton, Loader, TabsView } from "storybook/internal/components";
 import { useChannel, useGlobals, useStorybookState, useStoryPrepared } from "storybook/manager-api";
 import { styled } from "storybook/theming";
 
-import { generateTokens, type GeneratorInputs, TOKEN_FAMILIES, type TokenFamily } from "./generateTokens";
+import { isValidColor } from "./generatePalette";
+import { type GeneratorInputs, TOKEN_FAMILIES, type TokenFamily } from "./generateTokens";
 import {
     type ColorTokenEditor,
     getActiveTheme,
@@ -302,7 +303,7 @@ export function TokensPanel() {
 
     const handleUpdateFamily = React.useCallback(
         (family: TokenFamily, value: string | undefined) => {
-            if (value !== undefined && generateTokens({ [family]: { color: value } }) === undefined) {
+            if (value !== undefined && !isValidColor(value)) {
                 setInputErrors(errors => ({ ...errors, [family]: `Choose an opaque color for ${family}.` }));
                 return;
             }
@@ -317,6 +318,12 @@ export function TokensPanel() {
         },
         [generatorInputs, updateGlobals],
     );
+
+    const hasGeneratorInputs = Object.keys(generatorInputs ?? {}).length > 0;
+    const handleResetAllFamilies = React.useCallback(() => {
+        setInputErrors({});
+        updateGlobals({ generatorInputs: {} });
+    }, [updateGlobals]);
 
     const hasOverrides = Object.values(tokenOverrides).some(value => value !== undefined && value !== "");
     const handleResetAllTokens = React.useCallback(() => {
@@ -342,7 +349,15 @@ export function TokensPanel() {
             tabs={[
                 {
                     children: (
-                        <TokenTable>
+                        <TokenTable
+                            resetControl={
+                                <ResetAllButton
+                                    ariaLabel="Reset all generator colors"
+                                    disabled={!hasGeneratorInputs}
+                                    onClick={handleResetAllFamilies}
+                                />
+                            }
+                        >
                             <tbody>
                                 {TOKEN_FAMILIES.map(family => (
                                     <IntentSeedRow
@@ -363,16 +378,11 @@ export function TokensPanel() {
                     children: (
                         <TokenTable
                             resetControl={
-                                <IconButton
+                                <ResetAllButton
                                     ariaLabel={`Reset all ${activeTheme} theme tokens`}
                                     disabled={!hasOverrides}
                                     onClick={handleResetAllTokens}
-                                    padding="small"
-                                    size="small"
-                                    variant="ghost"
-                                >
-                                    <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
-                                </IconButton>
+                                />
                             }
                         >
                             {TOKEN_GROUPS.map(group => (
@@ -414,6 +424,27 @@ function TokenTable({ children, resetControl }: React.PropsWithChildren<{ resetC
                 {children}
             </TokensTable>
         </TableWrapper>
+    );
+}
+
+interface ResetAllButtonProps {
+    ariaLabel: string;
+    disabled: boolean;
+    onClick: () => void;
+}
+
+function ResetAllButton({ ariaLabel, disabled, onClick }: ResetAllButtonProps) {
+    return (
+        <IconButton
+            ariaLabel={ariaLabel}
+            disabled={disabled}
+            onClick={onClick}
+            padding="small"
+            size="small"
+            variant="ghost"
+        >
+            <ResetGlyph aria-hidden={true}>↺</ResetGlyph>
+        </IconButton>
     );
 }
 
