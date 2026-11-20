@@ -2,6 +2,14 @@
     "surface": {
         "border-color": {
             "$type": "color",
+            "muted": {
+                "$value": "{palette.white}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "alpha": 0.1
+                    }
+                }
+            },
             "default": {
                 "$value": "{palette.white}",
                 "$extensions": {
