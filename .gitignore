@@ -29,6 +29,7 @@ dist/
 lib/
 generated/
 coverage/
+reports/
 /docs
 docs-static/**/*.d.ts
 

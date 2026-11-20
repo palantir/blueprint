@@ -39,7 +39,8 @@
         },
         "test": {
             "dependsOn": ["^compile"],
-            "outputs": []
+            "outputs": ["reports/**"],
+            "env": ["JUNIT_REPORT_PATH"]
         },
         "test:typeCheck": {
             "dependsOn": ["compile"],
@@ -51,7 +52,8 @@
         },
         "test:vitest:run": {
             "dependsOn": ["^compile"],
-            "outputs": []
+            "outputs": ["reports/**"],
+            "env": ["JUNIT_REPORT_PATH"]
         },
         "lint": {
             "dependsOn": ["^compile"],

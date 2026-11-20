@@ -39,6 +39,19 @@ commands:
             - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Branch }}-
             - v1-turbo-{{ arch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
 
+  # Vitest writes JUnit to packages/<pkg>/reports/junit.xml (cached by turbo with the test task).
+  collect-vitest-reports:
+    steps:
+      - run:
+          name: Collect vitest JUnit reports
+          when: always
+          command: |
+            mkdir -p reports
+            for f in packages/*/reports/junit.xml; do
+              [ -f "$f" ] && cp "$f" "reports/$(basename "$(dirname "$(dirname "$f")")").xml"
+            done
+            true
+
   save-turbo-cache:
     parameters:
       scope: { type: string }
@@ -110,7 +123,9 @@ jobs:
   compile-docs:
     docker: *docker-node-image
     resource_class: xlarge
-    environment: *ci-environment
+    environment:
+      <<: *ci-environment
+      JUNIT_REPORT_PATH: reports
     steps:
       - checkout
       - attach_workspace: { at: "." }
@@ -118,12 +133,9 @@ jobs:
       # Library compiles are cache hits from the compile job's turbo cache. The documentalist output
       # is cached; npm metadata (compile:npm-data) is always fetched fresh.
       - restore-turbo-cache: { scope: compile-docs }
-      - run: pnpm exec turbo run compile --filter=@blueprintjs/docs-data
+      - run: pnpm exec turbo run compile test:vitest:run --filter=@blueprintjs/docs-data
       - save-turbo-cache: { scope: compile-docs }
-      - run: mkdir -p ./reports
-      - run: >-
-          pnpm --filter=@blueprintjs/docs-data run test:vitest:run
-          --reporter=default --reporter=junit --outputFile=../../reports/docs-data.xml
+      - collect-vitest-reports
       - store_test_results: { path: ./reports }
       - persist_to_workspace:
           root: "."
@@ -239,19 +251,15 @@ jobs:
           # them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
           # Task dependencies are cache hits from the compile job's turbo cache.
-          # Shard 3 runs vitest outside turbo (uncached) because turbo forwards `--` args to, and
-          # hashes them into, every task in the run including the dependency compiles.
+          # Avoid `--` args here: turbo forwards them to, and hashes them into, every task in the run.
           command: |
             case $CIRCLE_NODE_INDEX in
             0) pnpm exec turbo run test:typeCheck --filter='!@blueprintjs/icons' ;;
             1) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/core ;;
             2) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/datetime ;;
             3)
-              pnpm exec turbo run compile --filter=@blueprintjs/icons --filter=@blueprintjs/labs &&
-              pnpm --filter=@blueprintjs/icons run test:vitest:run \
-                --reporter=default --reporter=junit --outputFile=../../reports/icons.xml &&
-              pnpm --filter=@blueprintjs/labs run test \
-                --reporter=default --reporter=junit --outputFile=../../reports/labs.xml
+              pnpm exec turbo run test:vitest:run --filter=@blueprintjs/icons &&
+              pnpm exec turbo run test --filter=@blueprintjs/labs
               ;;
             4) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/select ;;
             5) pnpm exec turbo run test:vitest:run --filter=@blueprintjs/table ;;
@@ -259,6 +267,7 @@ jobs:
             esac
           when: always
       - save-turbo-cache: { scope: test-react-18 }
+      - collect-vitest-reports
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 

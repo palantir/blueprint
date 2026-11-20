@@ -18,7 +18,8 @@
         "compile:docs": { "dependsOn": ["^compile"], "cache": false },
         // Fetches live npm metadata, so it must always run.
         "compile:npm-data": { "cache": false },
-        "test": { "cache": false },
-        "test:vitest:run": { "cache": false }
+        // navRoutes.test.ts checks every package's .mdx pages against nav.json
+        "test": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/*/src/**/*.mdx"] },
+        "test:vitest:run": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/*/src/**/*.mdx"] }
     }
 }
