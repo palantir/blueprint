@@ -25,7 +25,8 @@
             "env": ["NODE_ENV"]
         },
         "dist:variables": {
-            "outputs": ["lib/**"]
+            "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/colors/src/**"],
+            "outputs": ["lib/scss/**", "lib/less/**"]
         },
         "bundle": {
             "dependsOn": ["^bundle"],
