@@ -43,6 +43,9 @@ export class DragEvents {
 
     private isDragging: boolean = false;
 
+    // Callbacks may synchronously replace the target and cancel the event being dispatched.
+    private interactionVersion = 0;
+
     private lastCoordinates?: ClientCoordinates;
 
     public attach(element: HTMLElement, handler: DragHandler) {
@@ -61,6 +64,20 @@ export class DragEvents {
             this.element.removeEventListener("mousedown", this.handleMouseDown);
             this.detachDocumentEventListeners();
         }
+    }
+
+    /** Cancels the current gesture and any click waiting for a possible double-click. */
+    public cancel() {
+        this.interactionVersion++;
+        this.isActivated = false;
+        this.isDragging = false;
+        this.activationCoordinates = undefined;
+        this.lastCoordinates = undefined;
+        if (this.doubleClickTimeoutToken != null) {
+            window.clearTimeout(this.doubleClickTimeoutToken);
+            delete this.doubleClickTimeoutToken;
+        }
+        this.detachDocumentEventListeners();
     }
 
     private isValidDragHandler(handler: DragHandler) {
@@ -127,10 +144,11 @@ export class DragEvents {
 
     private handleMouseDown = (event: MouseEvent) => {
         this.initCoordinateData(event);
+        const interactionVersion = this.interactionVersion;
 
         if (this.handler != null && this.handler.onActivate != null) {
             const exitCode = this.handler.onActivate(event);
-            if (exitCode === false) {
+            if (exitCode === false || interactionVersion !== this.interactionVersion) {
                 return;
             }
         }
@@ -167,8 +185,11 @@ export class DragEvents {
             if (this.isDragging) {
                 const coords = this.updateCoordinateData(event);
                 if (coords !== undefined) {
+                    const interactionVersion = this.interactionVersion;
                     this.handler?.onDragMove?.(event, coords);
-                    this.handler?.onDragEnd?.(event, coords);
+                    if (interactionVersion === this.interactionVersion) {
+                        this.handler?.onDragEnd?.(event, coords);
+                    }
                 }
             } else if (this.isActivated) {
                 if (this.handler.onDoubleClick != null) {
