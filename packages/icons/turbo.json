@@ -1,7 +1,7 @@
 {
     "$schema": "../../node_modules/turbo/schema.json",
     "extends": ["//"],
-    // The icon scripts and some tests read SVGs from the repo-root resources/icons, outside this package.
+    // Icon scripts and tests read the repo-root resources/icons.
     "tasks": {
         "compile": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"] },
         "test": { "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"] },
@@ -11,7 +11,7 @@
             "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"],
             "outputs": ["src/generated/**", "src/next/generated/**"]
         },
-        // Only needs generated sources and test helpers, not a full compile, so CI can run it alongside compile.
+        // Needs only generated sources, so CI can run it alongside compile.
         "test:typeCheck": {
             "dependsOn": ["^compile", "icons:verify", "generate-icon-src"],
             "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/resources/icons/**"]

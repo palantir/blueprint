@@ -4,7 +4,7 @@
     "tasks": {
         "bundle": { "cache": false },
         "dist": {
-            // docs-data documents datetime2, which isn't a docs-app dependency, so its sources aren't otherwise hashed
+            // docs-data documents datetime2, which docs-app doesn't depend on
             "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/datetime2/src/**"]
         }
     }

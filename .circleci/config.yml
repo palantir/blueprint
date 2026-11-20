@@ -24,13 +24,8 @@ aliases:
     DO_NOT_TRACK: "1"
 
 commands:
-  # Keys carry CIRCLE_NODE_INDEX because save_cache against an existing key is a silent no-op,
-  # so a key shared across parallel containers would only ever persist one container's results.
-  # Run after attach_workspace: the compile job's turbo cache for this revision arrives via the
-  # workspace, and this layers the job's own previous results on top.
-  # develop only ever restores develop caches; branches layer their own cache on top of develop's.
-  # Branches never restore other branches' caches, so caches don't snowball across PRs.
-  # Old entries are evicted by turbo itself (cacheMaxAge in turbo.json).
+  # Keys include CIRCLE_NODE_INDEX because save_cache on an existing key is a silent no-op.
+  # develop never restores branch caches; branches layer their own cache over develop's.
   restore-turbo-cache:
     parameters:
       scope: { type: string }
@@ -50,15 +45,13 @@ commands:
                 name: Restore develop turbo cache (<< parameters.scope >>)
                 keys:
                   - v2-turbo-{{ arch }}-develop-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
-            # restore_cache only restores the first matching key, so the branch cache is a second
-            # step unpacked on top of develop's.
+            # restore_cache stops at the first match, so the branch cache needs its own step.
             - restore_cache:
                 name: Restore branch turbo cache (<< parameters.scope >>)
                 keys:
                   - v2-turbo-{{ arch }}-pr-{{ .Branch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-{{ .Revision }}
                   - v2-turbo-{{ arch }}-pr-{{ .Branch }}-<< parameters.scope >>-{{ .Environment.CIRCLE_NODE_INDEX }}-
 
-  # Vitest writes JUnit to packages/<pkg>/reports/junit.xml (cached by turbo with the test task).
   collect-vitest-reports:
     steps:
       - run:
@@ -140,7 +133,7 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - restore-turbo-cache: { scope: compile }
-      # Includes docs-data so its cache entry reaches downstream jobs (lint, dist) via the workspace.
+      # Includes docs-data so downstream jobs get its cache entry.
       - run: pnpm exec turbo run compile
       - save-turbo-cache: { scope: compile }
       - persist_to_workspace:
@@ -161,7 +154,6 @@ jobs:
       - checkout
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # The tests depend on docs-data's compile: a cache hit from the compile job, plus a fresh npm-data fetch.
       - restore-turbo-cache: { scope: compile-docs }
       - run: pnpm exec turbo run test:vitest:run --filter=@blueprintjs/docs-data
       - save-turbo-cache: { scope: compile-docs }
@@ -203,7 +195,6 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
-      # lint depends on ^compile; those tasks are cache hits from the compile job's turbo cache
       - restore-turbo-cache: { scope: lint }
       - run:
           command: pnpm exec turbo run lint --continue
@@ -265,7 +256,6 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       # Icons type checking needs generated sources and test helpers, so it can overlap library compilation.
-      # Runs icons:verify and generate-icon-src first (see packages/icons/turbo.json).
       - restore-turbo-cache: { scope: type-check-icons }
       - run: pnpm exec turbo run test:typeCheck --filter=@blueprintjs/icons
       - save-turbo-cache: { scope: type-check-icons }
@@ -288,8 +278,7 @@ jobs:
           # Originally did this while tests were still running on Karma because running
           # them in one container caused Karma to time out frequently
           # see https://github.com/palantir/blueprint/issues/3616
-          # Task dependencies are cache hits from the compile job's turbo cache.
-          # Avoid `--` args here: turbo forwards them to, and hashes them into, every task in the run.
+          # No `--` args: turbo forwards and hashes them into every task in the run.
           command: |
             case $CIRCLE_NODE_INDEX in
             0) pnpm exec turbo run test:typeCheck --continue --filter='!@blueprintjs/icons' ;;

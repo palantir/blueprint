@@ -13,7 +13,7 @@ export default defineConfig({
         include: ["src/**/*.test.{ts,tsx}"],
         exclude: ["lib/**", "node_modules/**", "src/isotest.test.ts"],
         setupFiles: "@blueprintjs/test-commons/vitest-setup-no-enzyme",
-        // CI JUnit report, written inside the package so turbo caches it as a test output
+        // Written inside the package so turbo caches it with the test task
         ...(process.env.JUNIT_REPORT_PATH && {
             outputFile: { junit: `${process.env.JUNIT_REPORT_PATH}/junit.xml` },
             reporters: ["default", "junit"],

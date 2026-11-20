@@ -2,26 +2,23 @@
     "$schema": "../../node_modules/turbo/schema.json",
     "extends": ["//"],
     "tasks": {
-        // Cached on the repo sources documentalist reads. npm-data.json is excluded from outputs so a
-        // cache hit never replaces the copy fetched fresh by compile:npm-data.
+        // npm-data.json is left out so a cache hit can't overwrite the fresh fetch.
         "compile": {
             "dependsOn": ["^compile", "compile:npm-data"],
             "inputs": [
                 "$TURBO_DEFAULT$",
                 "$TURBO_ROOT$/packages/*/src/**/*.{md,mdx,ts,tsx,scss}",
-                // documentalist type-checks each package with its nearest tsconfig
                 "$TURBO_ROOT$/packages/*/src/**/tsconfig*.json",
                 "$TURBO_ROOT$/packages/*/package.json",
-                // icons' generated sources are covered by the icons#compile hash (via ^compile)
+                // already hashed via icons#compile
                 "!$TURBO_ROOT$/packages/icons/src/**/generated/**"
             ],
             "outputs": ["src/generated/**", "!src/generated/npm-data.json"]
         },
         "compile:docs": { "dependsOn": ["^compile"], "cache": false },
-        // Fetches live npm metadata, so it must always run. The script imports @blueprintjs/core, so it needs ^compile.
+        // Live npm data, never cached. The script imports @blueprintjs/core.
         "compile:npm-data": { "dependsOn": ["^compile"], "cache": false },
-        // Tests load src/index.js, which requires src/generated. navRoutes.test.ts checks every package's
-        // .mdx pages against nav.json.
+        // Tests load src/generated and read every package's .mdx.
         "test": {
             "dependsOn": ["compile"],
             "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/*/src/**/*.mdx"]
