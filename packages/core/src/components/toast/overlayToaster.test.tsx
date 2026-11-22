@@ -292,6 +292,38 @@ describe("OverlayToaster", () => {
         });
     });
 
+    describe("with shouldReturnFocusOnClose set to true", () => {
+        let trigger: HTMLButtonElement;
+
+        beforeAll(async () => {
+            containerElement = document.createElement("div");
+            document.documentElement.appendChild(containerElement);
+            trigger = document.createElement("button");
+            containerElement.appendChild(trigger);
+            toaster = await OverlayToaster.create(
+                { autoFocus: true, shouldReturnFocusOnClose: true },
+                { container: containerElement, domRenderer },
+            );
+        });
+
+        afterAll(() => {
+            document.documentElement.removeChild(containerElement);
+        });
+
+        it("returns focus to the previously focused element", async () => {
+            trigger.focus();
+            toaster.show({ message: "focus returns" });
+            await waitFor(() => {
+                const toastElement = containerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
+                assert.isTrue(toastElement?.contains(document.activeElement));
+            });
+            toaster.clear();
+            await waitFor(() => {
+                assert.strictEqual(document.activeElement, trigger);
+            });
+        });
+    });
+
     describe("with empty array children", () => {
         beforeAll(async () => {
             containerElement = document.createElement("div");

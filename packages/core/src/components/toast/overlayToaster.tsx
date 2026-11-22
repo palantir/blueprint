@@ -79,6 +79,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
+        shouldReturnFocusOnClose: false,
         usePortal: true,
     };
 
@@ -269,7 +270,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || Children.count(this.props.children) > 0}
                 onClose={this.handleClose}
-                shouldReturnFocusOnClose={false}
+                shouldReturnFocusOnClose={this.props.shouldReturnFocusOnClose}
                 // $pt-transition-duration * 3 + $pt-transition-duration / 2
                 transitionDuration={350}
                 transitionName={Classes.TOAST}
