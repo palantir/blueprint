@@ -126,6 +126,9 @@ export interface EditableTextProps extends IntentProps, Props {
      */
     selectAllOnFocus?: boolean;
 
+    /** Native `title` attribute of the text content, shown as a tooltip on hover. */
+    title?: string;
+
     /**
      * The type of input that should be shown, when not `multiline`.
      */
@@ -232,7 +235,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     }
 
     public render() {
-        const { alwaysRenderInput, disabled, elementRef, fill, multiline, contentId } = this.props;
+        const { alwaysRenderInput, disabled, elementRef, fill, multiline, contentId, title } = this.props;
         const value = this.props.value ?? this.state.value;
         const hasValue = value != null && value !== "";
 
@@ -283,6 +286,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
                         className={Classes.EDITABLE_TEXT_CONTENT}
                         ref={this.refHandlers.content}
                         style={contentStyle}
+                        title={title}
                     >
                         {hasValue ? value : this.props.placeholder}
                     </span>
