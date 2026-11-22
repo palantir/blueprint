@@ -49,8 +49,9 @@ export interface OverlayToasterProps extends Props {
     children?: React.ReactNode;
 
     /**
-     * Whether focus should be returned to the previously focused element when all toasts are closed.
-     * Only has an effect when `autoFocus` is enabled or focus otherwise moves into the toaster.
+     * Whether focus should be returned to the element that was focused when the toaster opened,
+     * once all toasts are closed. Focus is restored regardless of where it is at that time, so this
+     * is most useful together with `autoFocus`.
      *
      * @default false
      */

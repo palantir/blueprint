@@ -322,6 +322,26 @@ describe("OverlayToaster", () => {
                 assert.strictEqual(document.activeElement, trigger);
             });
         });
+
+        it("keeps focus inside the toaster while other toasts remain", async () => {
+            trigger.focus();
+            const firstKey = toaster.show({ message: "first", timeout: 0 });
+            toaster.show({ message: "second", timeout: 0 });
+            await waitFor(() => {
+                const toastElement = containerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
+                assert.isTrue(toastElement?.contains(document.activeElement));
+            });
+            toaster.dismiss(firstKey);
+            await waitFor(() => {
+                assert.lengthOf(toaster.getToasts(), 1);
+            });
+            await new Promise(resolve => setTimeout(resolve, 500));
+            assert.notStrictEqual(document.activeElement, trigger);
+            toaster.clear();
+            await waitFor(() => {
+                assert.strictEqual(document.activeElement, trigger);
+            });
+        });
     });
 
     describe("with empty array children", () => {

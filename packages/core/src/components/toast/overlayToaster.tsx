@@ -153,6 +153,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
     private toastRefs: Record<string, React.RefObject<HTMLElement>> = {};
 
+    private lastActiveElement: Element | null = null;
+
     /** Compute a new collection of toast refs (usually after updating toasts) */
     private getToastRefs = (toasts: ToastOptions[]) => {
         return toasts.reduce<typeof this.toastRefs>((refs, toast) => {
@@ -207,6 +209,10 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
             this.dismissIfAtLimit();
         }
 
+        if (this.state.toasts.length === 0) {
+            this.lastActiveElement = document.activeElement;
+        }
+
         this.updateToastsInState(toasts => [options, ...toasts]);
     }
 
@@ -256,6 +262,17 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         return this.state.toasts;
     }
 
+    public componentDidUpdate(_prevProps: OverlayToasterProps, prevState: OverlayToasterState) {
+        if (
+            this.props.shouldReturnFocusOnClose &&
+            prevState.toasts.length > 0 &&
+            this.state.toasts.length === 0 &&
+            this.lastActiveElement instanceof HTMLElement
+        ) {
+            this.lastActiveElement.focus();
+        }
+    }
+
     public render() {
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
@@ -270,7 +287,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || Children.count(this.props.children) > 0}
                 onClose={this.handleClose}
-                shouldReturnFocusOnClose={this.props.shouldReturnFocusOnClose}
+                shouldReturnFocusOnClose={false}
                 // $pt-transition-duration * 3 + $pt-transition-duration / 2
                 transitionDuration={350}
                 transitionName={Classes.TOAST}
