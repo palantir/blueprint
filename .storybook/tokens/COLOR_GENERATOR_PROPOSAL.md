@@ -8,7 +8,7 @@ Greg’s preservation of existing colors and Ryan’s separate lightness/chroma 
 
 **Final shade = a sample of the shared template + a correction that fades away from the exact input.**
 
-This is approach 3: a standard template with an exact input anchor. Positions 0–9 have common starting lightness targets and a common chroma profile. The final positions are allowed to move to accommodate the input. They do not promise identical luminance across hues.
+A standard template with an exact input anchor. Positions 0–9 have common starting lightness targets and a common chroma profile. The final positions are allowed to move to accommodate the input. They do not promise identical luminance across hues.
 
 ## Follow the calculation
 
