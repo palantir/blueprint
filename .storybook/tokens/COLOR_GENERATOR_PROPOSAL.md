@@ -1,4 +1,4 @@
-Hey! I’m trying a variation on #8397: fit the user’s exact rest color into a shared 10-color palette, then use palette shades for hover and selected. In light mode, prefer darker states (lighter for very dark inputs); in dark mode, prefer lighter hover and darker selected. Try adjacent shades first, adjust the ramp before skipping, and flag direction exceptions when range or readability checks require them. The light end stays softly tinted, including for vivid yellow.
+A variation on #8397: fit the user’s exact rest color into a shared 10-color palette, then use palette shades for hover and selected. In light mode, prefer darker states (lighter for very dark inputs); in dark mode, prefer lighter hover and darker selected. Try adjacent shades first, adjust the ramp before skipping, and flag direction exceptions when range or readability checks require them. The light end stays softly tinted, including for vivid yellow.
 
 Greg’s preservation of existing colors and Ryan’s separate lightness/chroma curves inspired this. There’s a Storybook playground showing the starting template, final ramp, state colors, and contrast checks. Curious how this feels!
 
