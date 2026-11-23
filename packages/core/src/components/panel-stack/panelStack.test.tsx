@@ -324,3 +324,17 @@ describe("<PanelStack>", () => {
         return panelStackWrapper;
     }
 });
+
+describe("<PanelStack> typings", () => {
+    interface RequiredProps {
+        loading: boolean;
+    }
+    const RequiredPropsPanel: React.FC<PanelProps<RequiredProps>> = () => <div />;
+
+    it("accepts panels whose props have required fields", () => {
+        const initialPanel: Panel<RequiredProps> = { props: { loading: true }, renderPanel: RequiredPropsPanel };
+        // this would fail to compile if the `Panel` constraint were too strict
+        const element = <PanelStack initialPanel={initialPanel} />;
+        expect(element).toBeDefined();
+    });
+});
