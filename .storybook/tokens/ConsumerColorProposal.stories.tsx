@@ -377,9 +377,10 @@ function ConsumerColorPreview({ seed, surface, mode }: ConsumerColorArgs & { mod
                     Every label must meet 4.5:1. Each measured step above stays between{" "}
                     {consumerColorPolicy.stateContrast.min}:1 and {consumerColorPolicy.stateContrast.max}:1 fill
                     contrast, with OKLab distance of at least {consumerColorPolicy.stateDistance.min} and normally at
-                    most {consumerColorPolicy.stateDistance.max}. A larger distance allowance near black keeps small
-                    dark-state changes visible. State thresholds are design choices, not WCAG rules. Ten shades covering
-                    pale tints, soft states, and dark text require uneven spacing.
+                    most {consumerColorPolicy.stateDistance.max}. Near black, a stronger target and wider allowance make
+                    states easier to see; nearby palette shades can spread apart. Text readability still takes priority.
+                    State thresholds are design choices, not WCAG rules. Ten shades covering pale tints, soft states,
+                    and dark text require uneven spacing.
                 </p>
             </details>
         </Flex>

@@ -96,10 +96,17 @@ export const consumerColorPolicy = {
         [0.995, 0.06],
     ],
     lightChromaLimits: [0.02, 0.04, 0.07, 0.12, 0.18],
-    paletteSpacingBiases: [1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4, 6, 8, 12, 16, 24, 32],
+    paletteSpacingBiases: [0.75, 0.875, 1, 1.25, 1.5, 1.75, 2, 2.5, 3, 4, 6, 8, 12, 16, 24, 32],
     scoreWeights: { spacing: 1, states: 2, template: 1 },
     stateContrast: { max: 1.5, min: 1.08 },
-    stateDistance: { darkAllowance: 0.12, darkFalloff: 0.12, max: 0.1, min: 0.055, target: 0.075 },
+    stateDistance: {
+        darkAllowance: 0.12,
+        darkFalloff: 0.12,
+        darkTargetBoost: 0.2,
+        max: 0.1,
+        min: 0.055,
+        target: 0.075,
+    },
     templateChroma: [0.1, 0.18, 0.32, 0.55, 0.8, 1, 0.85, 0.65, 0.4, 0.25],
     templateLightness: [0.98, 0.94, 0.86, 0.76, 0.66, 0.56, 0.46, 0.35, 0.23, 0.12],
     textContrast: 4.5,
@@ -165,6 +172,16 @@ function mapToSrgb(lightness: number, chroma: number, hue: number): string {
     return formatHex({ ...color, c: low });
 }
 
+function stateDistanceTarget(first: string, second: string): number {
+    const lightness = Math.min(readOklch(first).l, readOklch(second).l);
+    const cutoff = Math.exp(-consumerColorPolicy.veryDarkLightness / consumerColorPolicy.stateDistance.darkFalloff);
+    const influence = Math.max(
+        0,
+        (Math.exp(-lightness / consumerColorPolicy.stateDistance.darkFalloff) - cutoff) / (1 - cutoff),
+    );
+    return consumerColorPolicy.stateDistance.target + consumerColorPolicy.stateDistance.darkTargetBoost * influence;
+}
+
 function isGentleOrderedStep(first: string, second: string, direction: Direction): boolean {
     const sign = direction === "darker" ? -1 : 1;
     const firstLightness = readOklch(first).l;
@@ -172,10 +189,14 @@ function isGentleOrderedStep(first: string, second: string, direction: Direction
     const contrast = wcagContrast(first, second);
     const distance = colorDistance(first, second);
     // Near black, a small visible RGB change occupies more OKLab distance.
-    const maximumDistance =
+    const maximumDistance = Math.max(
         consumerColorPolicy.stateDistance.max +
-        consumerColorPolicy.stateDistance.darkAllowance *
-            Math.exp(-Math.min(firstLightness, secondLightness) / consumerColorPolicy.stateDistance.darkFalloff);
+            consumerColorPolicy.stateDistance.darkAllowance *
+                Math.exp(-Math.min(firstLightness, secondLightness) / consumerColorPolicy.stateDistance.darkFalloff),
+        stateDistanceTarget(first, second) +
+            consumerColorPolicy.stateDistance.max -
+            consumerColorPolicy.stateDistance.target,
+    );
     return (
         contrast >= consumerColorPolicy.stateContrast.min &&
         contrast <= consumerColorPolicy.stateContrast.max &&
@@ -251,10 +272,9 @@ function makeRamp(
         const extent = endpoint.l - anchor.l;
         const position = (template[index].l - anchor.l) / extent;
         const bias = densitySide === "both" || index < anchorIndex === (densitySide === "lighter") ? spacingBias : 1;
-        const recovery = Math.max(
-            0,
-            (position - consumerColorPolicy.densityReach) / (1 - consumerColorPolicy.densityReach),
-        );
+        // Expanded dark-end steps recover immediately so the second state does not overshoot.
+        const reach = bias < 1 ? 0 : consumerColorPolicy.densityReach;
+        const recovery = Math.max(0, (position - reach) / (1 - reach));
         const progress = position / bias + (1 - 1 / bias) * recovery ** 2 * (3 - 2 * recovery);
         const referenceLightness = anchor.l + extent * progress;
         // Bound the correction slope so even a large anchor move cannot reverse the ramp.
@@ -323,8 +343,11 @@ function selectStateSequence(
                 continue;
             }
             const score =
-                Math.abs(colorDistance(rest.color, hover.color) - consumerColorPolicy.stateDistance.target) +
-                Math.abs(colorDistance(reference.color, selected.color) - consumerColorPolicy.stateDistance.target);
+                Math.abs(colorDistance(rest.color, hover.color) - stateDistanceTarget(rest.color, hover.color)) +
+                Math.abs(
+                    colorDistance(reference.color, selected.color) -
+                        stateDistanceTarget(reference.color, selected.color),
+                );
             if (sequence === undefined || score < sequence.score) {
                 sequence = {
                     directions,
@@ -402,6 +425,9 @@ function findPalette(
                 let groupSkippedSelection: PaletteSelection | undefined;
                 for (const locality of consumerColorPolicy.anchorLocalities) {
                     for (const spacingBias of consumerColorPolicy.paletteSpacingBiases) {
+                        if (spacingBias < 1 && seed.l > consumerColorPolicy.veryDarkLightness) {
+                            continue;
+                        }
                         for (const densitySide of directions.hover === directions.selected
                             ? [directions.hover]
                             : (["both", "lighter", "darker"] as const)) {

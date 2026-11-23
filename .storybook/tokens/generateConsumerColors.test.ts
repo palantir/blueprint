@@ -316,6 +316,36 @@ it("uses lighter hover and darker selected around rest in dark mode", () => {
     }
 });
 
+it("makes black and near-black states more visible while keeping adjacent palette entries", () => {
+    for (const seed of ["#000000", "#010101", "#080808"]) {
+        for (const mode of ["light", "dark"] as const) {
+            for (const surface of ["#ffffff", "#252a31"]) {
+                const result = audit(seed, surface, mode);
+                assert(result.audit.usesAdjacentStates);
+                assert.deepEqual(result.audit.directions, { hover: "lighter", selected: "lighter" });
+                assert(contrast(result.solid.rest, result.solid.hover) >= (seed === "#000000" ? 1.3 : 1.25));
+                assert(contrast(result.solid.hover, result.solid.selected) >= 1.35);
+            }
+        }
+    }
+});
+
+it("preserves established state colors outside the near-black adjustment", () => {
+    for (const [seed, hover, selected] of [
+        ["#7961db", "#644eb9", "#4e3c94"],
+        ["#2d72d2", "#225fb3", "#184b91"],
+        ["#5f6b7c", "#4c5665", "#38404c"],
+        ["#ffff00", "#e5e500", "#cccc00"],
+        ["#ffffff", "#ebebeb", "#d1d1d1"],
+    ]) {
+        for (const mode of ["light", "dark"] as const) {
+            const result = audit(seed, "#ffffff", mode);
+            assert.equal(result.solid.hover, hover);
+            assert.equal(result.solid.selected, selected);
+        }
+    }
+});
+
 it("reports direction exceptions at endpoints and when one label cannot stay readable", () => {
     for (const [seed, direction] of [
         ["#000000", "lighter"],
