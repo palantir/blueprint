@@ -344,6 +344,18 @@ describe("<QueryList>", () => {
     });
 
     describe("query", () => {
+        it("does not call createNewItemFromQuery on mount with an empty query", () => {
+            const createNewItemFromQuerySpy = sinon.spy();
+            shallow(
+                <QueryList<Film>
+                    {...testProps}
+                    createNewItemFromQuery={createNewItemFromQuerySpy}
+                    createNewItemRenderer={sinon.spy()}
+                />,
+            );
+            expect(createNewItemFromQuerySpy.notCalled).toBe(true);
+        });
+
         it("trims leading and trailing whitespace when creating new items", () => {
             let triggerInputQueryChange: ((e: any) => void) | undefined;
             const createNewItemFromQuerySpy = sinon.spy();

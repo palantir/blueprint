@@ -221,7 +221,12 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         this.listId = props.listId ?? Utils.uniqueId("bp-query-list");
 
         const { query = "" } = props;
-        const createNewItem = props.createNewItemFromQuery?.(query);
+        // don't invoke createNewItemFromQuery for an empty query, consistent with setQuery()
+        const trimmedQuery = query.trim();
+        const createNewItem =
+            props.createNewItemFromQuery != null && trimmedQuery !== ""
+                ? props.createNewItemFromQuery(trimmedQuery)
+                : undefined;
         const filteredItems = getFilteredItems(query, props);
 
         this.state = {
