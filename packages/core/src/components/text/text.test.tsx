@@ -120,6 +120,28 @@ describe("<Text>", () => {
                 expect(scrollWidth).not.toHaveBeenCalled();
             });
 
+            it("removes the measured title when the pointer leaves", () => {
+                render(<Text ellipsize={true}>Foo</Text>);
+                const element = screen.getByText("Foo");
+                mockOverflow(element, true);
+                fireEvent.mouseEnter(element);
+                expect(element).toHaveAttribute("title", "Foo");
+                fireEvent.mouseLeave(element);
+                expect(element).not.toHaveAttribute("title");
+            });
+
+            it("keeps the given title when the pointer leaves", () => {
+                render(
+                    <Text ellipsize={true} title="Test title">
+                        Foo
+                    </Text>,
+                );
+                const element = screen.getByTitle("Test title");
+                fireEvent.mouseEnter(element);
+                fireEvent.mouseLeave(element);
+                expect(element).toHaveAttribute("title", "Test title");
+            });
+
             it("calls the onMouseLeave prop", () => {
                 const onMouseLeave = vi.fn();
                 render(

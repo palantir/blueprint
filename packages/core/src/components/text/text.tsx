@@ -99,9 +99,13 @@ export const Text: React.FC<TextProps> = forwardRef<HTMLElement, TextProps>(
         const handleMouseLeave = useCallback(
             (event: React.MouseEvent<HTMLElement>) => {
                 isHoveredRef.current = false;
+                // the measured title is only needed while hovered, so drop it before it can go stale
+                if (title == null) {
+                    elementRef.current?.removeAttribute("title");
+                }
                 onMouseLeave?.(event);
             },
-            [onMouseLeave],
+            [onMouseLeave, title],
         );
 
         return createElement(
