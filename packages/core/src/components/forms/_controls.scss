@@ -41,6 +41,13 @@ $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
 $control-indicator-spacing: $pt-spacing * 2 !default;
 
+// Inline SVG icons (from resources/icons/next/outlined) embedded as data URIs and applied
+// with mask-image so the indicator color can be customized at runtime via background-color.
+// Embedding them here keeps these styles compilable without the `svg-icon()` custom Sass
+// function, which is only defined in the Blueprint monorepo build.
+$checkbox-check-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath d='M11.72 4.72a.75.75 0 1 1 1.06 1.06l-5.5 5.5a.75.75 0 0 1-1.06 0l-3-3a.75.75 0 1 1 1.06-1.06l2.47 2.47z'/%3e%3c/svg%3e") !default;
+$checkbox-minus-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath d='M11.5 7.25a.75.75 0 0 1 0 1.5h-7a.75.75 0 0 1 0-1.5z'/%3e%3c/svg%3e") !default;
+
 @mixin control-checked-colors($selector: ":checked") {
   input#{$selector} ~ .#{$ns}-control-indicator {
     background-color: $control-checked-background-color;
@@ -253,18 +260,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   }
 
   &.#{$ns}-checkbox {
-    @mixin indicator-mask($icon) {
+    @mixin indicator-mask($icon-mask) {
       &::before {
         // Use the embedded SVG as a mask so its color can be customized at runtime.
         background-color: $control-checked-foreground-color;
-        mask-image: svg-icon(
-          "next/outlined/#{$icon}.svg",
-          (
-            path: (
-              fill: $black,
-            ),
-          )
-        );
+        mask-image: $icon-mask;
         mask-position: center;
         mask-repeat: no-repeat;
         mask-size: contain;
@@ -279,11 +279,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     input:checked ~ .#{$ns}-control-indicator {
-      @include indicator-mask("check-small");
+      @include indicator-mask($checkbox-check-icon);
     }
 
     input:indeterminate ~ .#{$ns}-control-indicator {
-      @include indicator-mask("minus-small");
+      @include indicator-mask($checkbox-minus-icon);
     }
 
     input:disabled ~ .#{$ns}-control-indicator::before {

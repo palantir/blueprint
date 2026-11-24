@@ -99,14 +99,19 @@ The CSS namespace can be changed _at build time_ to produce a custom Blueprint b
 With this approach, you will import Blueprint's Sass sources from `/lib/scss/` instead of the CSS files from the
 `/lib/css/` folders.
 
-You must use [Dart Sass](https://sass-lang.com/dart-sass) and set up a few important bits of build configuration:
+You must use [Dart Sass](https://sass-lang.com/dart-sass) and set up one important bit of build configuration:
 
 1. Sass `loadPaths` must include the `node_modules` folder where `@blueprintjs` packages are installed
-2. A custom function implementation for `svg-icon()` must be defined
-3. You must copy the [resources/icons folder](https://github.com/palantir/blueprint/tree/develop/resources/icons) from the Blueprint repo into your project (in the future, this may not be required once Blueprint starts publishing these SVG files in a public NPM package).
+
+Blueprint's `.scss` sources compile with plain Dart Sass; no custom functions are required.
+If you additionally want to use the `svg-icon()` Sass function in your _own_ styles to inline SVG icons
+from the Blueprint icon set, you must also:
+
+1. Define a custom function implementation for `svg-icon()`
+2. Copy the [resources/icons folder](https://github.com/palantir/blueprint/tree/develop/resources/icons) from the Blueprint repo into your project (in the future, this may not be required once Blueprint starts publishing these SVG files in a public NPM package).
 
 The **@blueprintjs/node-build-scripts** package provides some utility functions to help with this. Here's a code example
-for a custom Sass compiler that can import Blueprint `.scss` sources:
+for a custom Sass compiler that can import Blueprint `.scss` sources and enables `svg-icon()`:
 
 ```js
 import { sassNodeModulesLoadPaths, sassSvgInlinerFactory } from "@blueprintjs/node-build-scripts";
