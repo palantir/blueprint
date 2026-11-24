@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { fireEvent, render } from "@testing-library/react";
 import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
@@ -916,6 +917,44 @@ describe("<DateRangeInput>", () => {
                 it("in start field", () => runTestFn(getStartInput, Boundary.START, getEndInput));
                 it("in end field", () => runTestFn(getEndInput, Boundary.END, getStartInput));
             }
+        });
+
+        describe("Typing a date which the custom parseDate rejects", () => {
+            // per the `parseDate` contract, returning `false` means the string is an invalid date
+            const STRICT_DATE_FORMAT: DateFormatProps = {
+                ...DATE_FORMAT,
+                parseDate: str => {
+                    const date = DATE_FORMAT.parseDate(str);
+                    return date instanceof Date && !isNaN(date.valueOf()) ? date : false;
+                },
+            };
+
+            it("calls onError with an invalid date and shows the invalid date message on blur", () => {
+                const onChange = vi.fn<(range: DateRange) => void>();
+                const onError = vi.fn<(range: DateRange) => void>();
+                const { container } = render(
+                    <DateRangeInput
+                        {...STRICT_DATE_FORMAT}
+                        defaultValue={DATE_RANGE}
+                        invalidDateMessage={INVALID_MESSAGE}
+                        onChange={onChange}
+                        onError={onError}
+                    />,
+                );
+                const endInput = container.querySelectorAll("input")[1];
+
+                fireEvent.focus(endInput);
+                fireEvent.change(endInput, { target: { value: INVALID_STR } });
+                expect(onChange).not.toHaveBeenCalled();
+                fireEvent.blur(endInput);
+
+                expect(onChange).not.toHaveBeenCalled();
+                expect(onError).toHaveBeenCalledOnce();
+                const [errorStart, errorEnd] = onError.mock.calls[0][0];
+                expect(errorStart).toEqual(START_DATE);
+                expect(errorEnd?.valueOf()).toBeNaN();
+                expect(endInput.value).toBe(INVALID_MESSAGE);
+            });
         });
 
         describe("Typing an overlapping date time", () => {
