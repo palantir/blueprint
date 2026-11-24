@@ -119,6 +119,14 @@ export interface SliderBaseProps extends Props, IntentProps {
      * @default false
      */
     vertical?: boolean;
+
+    /**
+     * Whether to programmatically set the slider's parent container to overflow: visible
+     * to prevent label clipping. This modifies the parent element's style directly.
+     *
+     * @default false
+     */
+    ensureParentOverflowVisible?: boolean;
 }
 
 export interface MultiSliderProps extends SliderBaseProps {
@@ -328,7 +336,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
     }
 
     private renderHandles() {
-        const { disabled, max, min, stepSize, vertical } = this.props;
+        const { disabled, max, min, stepSize, vertical, ensureParentOverflowVisible } = this.props;
         const handleProps = getSortedInteractiveHandleProps(this.props);
 
         if (handleProps.length === 0) {
@@ -358,6 +366,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
                 tickSizeRatio={this.state.tickSizeRatio}
                 value={value}
                 vertical={vertical!}
+                ensureParentOverflowVisible={ensureParentOverflowVisible}
             />
         ));
     }
