@@ -91,6 +91,46 @@ describe("<Text>", () => {
                 expect(element).not.toHaveAttribute("title");
             });
 
+            it("updates the title when children change while hovered", () => {
+                const { rerender } = render(<Text ellipsize={true}>A much longer label</Text>);
+                const element = screen.getByText("A much longer label");
+                mockOverflow(element, true);
+                fireEvent.mouseEnter(element);
+                expect(element).toHaveAttribute("title", "A much longer label");
+
+                mockOverflow(element, false);
+                rerender(<Text ellipsize={true}>Short</Text>);
+                expect(element).not.toHaveAttribute("title");
+
+                mockOverflow(element, true);
+                rerender(<Text ellipsize={true}>Another long label</Text>);
+                expect(element).toHaveAttribute("title", "Another long label");
+            });
+
+            it("does not measure when children change while not hovered", () => {
+                const { rerender } = render(<Text ellipsize={true}>Foo</Text>);
+                const element = screen.getByText("Foo");
+                mockOverflow(element, true);
+                fireEvent.mouseEnter(element);
+                fireEvent.mouseLeave(element);
+
+                const scrollWidth = vi.fn(() => 100);
+                Object.defineProperty(element, "scrollWidth", { configurable: true, get: scrollWidth });
+                rerender(<Text ellipsize={true}>Bar</Text>);
+                expect(scrollWidth).not.toHaveBeenCalled();
+            });
+
+            it("calls the onMouseLeave prop", () => {
+                const onMouseLeave = vi.fn();
+                render(
+                    <Text ellipsize={true} onMouseLeave={onMouseLeave}>
+                        Foo
+                    </Text>,
+                );
+                fireEvent.mouseLeave(screen.getByText("Foo"));
+                expect(onMouseLeave).toHaveBeenCalledTimes(1);
+            });
+
             it("does not add the title attribute when ellipsize is false", () => {
                 render(<Text>Foo</Text>);
                 const element = screen.getByText("Foo");
