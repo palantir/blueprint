@@ -16,9 +16,10 @@
 
 import type { Locale } from "date-fns";
 
-import type { DateRange } from "../../common";
+import type { DateRange, NonNullDateRange } from "../../common";
 
 export interface DateRangePickerState {
+    defaultTimeRange: NonNullDateRange;
     hoverValue?: DateRange;
     locale: Locale | undefined;
     value: DateRange;

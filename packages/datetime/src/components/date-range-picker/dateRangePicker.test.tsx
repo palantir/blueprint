@@ -1558,12 +1558,6 @@ describe("<DateRangePicker> partial-range time selection", () => {
             hour: 9,
             props: { allowSingleDayRange: false },
         },
-        {
-            description: "uses the displayed clamped end time",
-            expectedRange: [new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 10)],
-            hour: 9,
-            props: { timePickerProps: { defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 10) } },
-        },
     ])("$description", ({ expectedRange, hour, props }) => {
         const onChange = vi.fn<(range: DateRange) => void>();
         renderWithTestingLibrary(<DateRangePicker {...pickerProps} {...props} onChange={onChange} />);
@@ -1571,6 +1565,86 @@ describe("<DateRangePicker> partial-range time selection", () => {
         changeHour(0, hour);
 
         expect(onChange).toHaveBeenLastCalledWith(expectedRange);
+    });
+
+    it("preserves unfinished input and per-clock defaults through hover, default updates, and clearing", async () => {
+        const props: DateRangePickerProps = {
+            ...pickerProps,
+            shortcuts: [{ dateRange: [null, null], includeTime: true, label: "Clear" }],
+            timePickerProps: undefined,
+        };
+        const { rerender } = renderWithTestingLibrary(<DateRangePicker {...props} />);
+        const day = await screen.findByRole("gridcell", { name: "12" });
+        const hourInput = screen.getAllByLabelText("hours (24hr clock)")[1];
+        expect(hourInput).toHaveValue(0);
+
+        fireEvent.change(hourInput, { target: { value: "1" } });
+        fireEvent.mouseEnter(day);
+
+        expect(hourInput).toHaveValue(1);
+
+        rerender(<DateRangePicker {...props} timePickerProps={{ defaultValue: defaultTime }} />);
+
+        expect(hourInput).toHaveValue(1);
+
+        fireEvent.change(hourInput, { target: { value: "0" } });
+        fireEvent.click(screen.getByRole("menuitem", { name: "Clear" }));
+
+        expect(screen.getAllByLabelText("hours (24hr clock)")[0]).toHaveValue(17);
+        expect(screen.getAllByLabelText("hours (24hr clock)")[1]).toHaveValue(0);
+    });
+
+    it("uses newly shown clock defaults without retaining them after hiding the clocks", async () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        const dateOnlyProps: DateRangePickerProps = {
+            ...pickerProps,
+            defaultValue: undefined,
+            onChange,
+            timePickerProps: undefined,
+            timePrecision: undefined,
+        };
+        const { rerender } = renderWithTestingLibrary(<DateRangePicker {...dateOnlyProps} />);
+        expect(screen.queryAllByLabelText("hours (24hr clock)")).toHaveLength(0);
+
+        rerender(
+            <DateRangePicker
+                {...dateOnlyProps}
+                timePickerProps={{ defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 18) }}
+            />,
+        );
+        expect(screen.getAllByLabelText("hours (24hr clock)")[0]).toHaveValue(17);
+        expect(screen.getAllByLabelText("hours (24hr clock)")[1]).toHaveValue(17);
+
+        rerender(<DateRangePicker {...dateOnlyProps} />);
+        expect(screen.queryAllByLabelText("hours (24hr clock)")).toHaveLength(0);
+        fireEvent.click(await screen.findByRole("gridcell", { name: "10" }));
+
+        expect(onChange).toHaveBeenLastCalledWith([selectedDate, null]);
+    });
+
+    it("preserves the displayed clamped end time when the maximum time increases", () => {
+        const onChange = vi.fn<(range: DateRange) => void>();
+        const { rerender } = renderWithTestingLibrary(
+            <DateRangePicker
+                {...pickerProps}
+                onChange={onChange}
+                timePickerProps={{ defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 10) }}
+            />,
+        );
+        expect(screen.getAllByLabelText("hours (24hr clock)")[1]).toHaveValue(10);
+
+        rerender(
+            <DateRangePicker
+                {...pickerProps}
+                onChange={onChange}
+                timePickerProps={{ defaultValue: defaultTime, maxTime: new Date(2024, 0, 10, 18) }}
+            />,
+        );
+        expect(screen.getAllByLabelText("hours (24hr clock)")[1]).toHaveValue(10);
+
+        changeHour(0, 9);
+
+        expect(onChange).toHaveBeenLastCalledWith([new Date(2024, 0, 10, 9), new Date(2024, 0, 10, 10)]);
     });
 
     it.each<{
@@ -1624,15 +1698,30 @@ describe("<DateRangePicker> partial-range time selection", () => {
         ]);
     });
 
-    it("completes an end-only date using the displayed default start time", () => {
+    it("completes an end-only date only when time pickers are shown", () => {
         const onChange = vi.fn<(range: DateRange) => void>();
-        renderWithTestingLibrary(
+        const { rerender } = renderWithTestingLibrary(
             <DateRangePicker {...pickerProps} defaultValue={[null, defaultTime]} onChange={onChange} />,
         );
 
         changeHour(1, 18);
 
         expect(onChange).toHaveBeenLastCalledWith([defaultTime, new Date(2024, 0, 10, 18)]);
+
+        rerender(
+            <DateRangePicker
+                {...pickerProps}
+                defaultValue={multiDayRange}
+                key="date-only"
+                onChange={onChange}
+                timePickerProps={undefined}
+                timePrecision={undefined}
+            />,
+        );
+
+        fireEvent.click(screen.getByRole("gridcell", { name: "10" }));
+
+        expect(onChange).toHaveBeenLastCalledWith([null, multiDayRange[1]]);
     });
 
     it.each([
