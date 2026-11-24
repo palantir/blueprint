@@ -14,7 +14,7 @@
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 8.75);
+  right: $pt-spacing * 8.75;
   text-overflow: ellipsis;
   top: 0;
 }
@@ -26,7 +26,7 @@
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 2.5);
+  right: $pt-spacing * 2.5;
   text-overflow: ellipsis;
   top: 0;
 }
