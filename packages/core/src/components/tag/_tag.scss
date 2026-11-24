@@ -11,6 +11,10 @@
   &.#{$ns}-large,
   .#{$ns}-large & {
     @include pt-tag-large;
+
+    > .#{$ns}-tag-content {
+      @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+    }
   }
 
   @each $intent, $colors in $tag-intent-colors {
@@ -41,6 +45,18 @@
         }
       }
     }
+  }
+}
+
+.#{$ns}-tag-content {
+  @include pt-flex-container(row, var(--bp-surface-spacing));
+  align-items: center;
+  border-radius: inherit;
+  flex: 1 1 auto;
+  min-width: 0;
+
+  &:focus {
+    @include focus-outline(0);
   }
 }
 
