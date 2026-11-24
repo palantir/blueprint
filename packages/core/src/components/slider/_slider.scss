@@ -5,7 +5,7 @@
 @import "./common";
 
 $handle-size: $pt-icon-size-standard !default;
-$track-size: calc($handle-size - var(--bp-surface-spacing) * 2.5) !default;
+$track-size: $handle-size - ($pt-spacing * 2.5) !default;
 $label-offset: calc($handle-size + var(--bp-surface-spacing)) !default;
 
 $handle-border-shadow: 0 0 0 $button-border-width
