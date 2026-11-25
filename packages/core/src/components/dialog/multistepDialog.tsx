@@ -32,6 +32,12 @@ export type MultistepDialogNavPosition = typeof Position.TOP | typeof Position.L
 
 export interface MultistepDialogProps extends DialogProps {
     /**
+     * Selected step ID, for controlled usage.
+     * Providing this prop puts the dialog in controlled mode.
+     */
+    selectedStepId?: DialogStepId;
+
+    /**
      * Props for the back button.
      */
     backButtonProps?: DialogStepButtonProps;
@@ -119,11 +125,30 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
         showCloseButtonInFooter: false,
     };
 
+    public static getDerivedStateFromProps(props: MultistepDialogProps, state: MultistepDialogState) {
+        if (props.selectedStepId !== undefined) {
+            const selectedIndex = getDialogStepChildren(props).findIndex(
+                step => step.props.id === props.selectedStepId,
+            );
+            return {
+                lastViewedIndex: Math.max(state.lastViewedIndex, selectedIndex),
+                selectedIndex,
+            };
+        }
+        return null;
+    }
+
     public state: MultistepDialogState = this.getInitialIndexFromProps(this.props);
 
     public render() {
-        const { className, navigationPosition, showCloseButtonInFooter, isCloseButtonShown, ...otherProps } =
-            this.props;
+        const {
+            className,
+            navigationPosition,
+            selectedStepId: _selectedStepId,
+            showCloseButtonInFooter,
+            isCloseButtonShown,
+            ...otherProps
+        } = this.props;
 
         return (
             <Dialog
@@ -163,7 +188,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
     private renderLeftPanel() {
         return (
             <div className={Classes.MULTISTEP_DIALOG_LEFT_PANEL} role="tablist" aria-label="steps">
-                {this.getDialogStepChildren().filter(isDialogStepElement).map(this.renderDialogStep)}
+                {getDialogStepChildren(this.props).map(this.renderDialogStep)}
             </div>
         );
     }
@@ -201,8 +226,8 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
     };
 
     private maybeRenderRightPanel() {
-        const steps = this.getDialogStepChildren();
-        if (steps.length <= this.state.selectedIndex) {
+        const steps = getDialogStepChildren(this.props);
+        if (this.state.selectedIndex < 0 || steps.length <= this.state.selectedIndex) {
             return null;
         }
 
@@ -220,12 +245,13 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
         const maybeCloseButton = !showCloseButtonInFooter ? undefined : (
             <DialogStepButton text="Close" onClick={onClose} {...closeButtonProps} />
         );
+
         return <DialogFooter actions={this.renderButtons()}>{maybeCloseButton}</DialogFooter>;
     }
 
     private renderButtons() {
         const { selectedIndex } = this.state;
-        const steps = this.getDialogStepChildren();
+        const steps = getDialogStepChildren(this.props);
         const buttons = [];
 
         if (this.state.selectedIndex > 0) {
@@ -240,7 +266,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
             );
         }
 
-        if (selectedIndex === this.getDialogStepChildren().length - 1) {
+        if (selectedIndex === getDialogStepChildren(this.props).length - 1) {
             buttons.push(
                 <DialogStepButton intent="primary" key="final" text="Submit" {...this.props.finalButtonProps} />,
             );
@@ -263,28 +289,25 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
     private getDialogStepChangeHandler(index: number) {
         return (event: React.MouseEvent<HTMLElement>) => {
             if (this.props.onChange !== undefined) {
-                const steps = this.getDialogStepChildren();
-                const prevStepId = steps[this.state.selectedIndex].props.id;
+                const steps = getDialogStepChildren(this.props);
+                const prevStepId = steps[this.state.selectedIndex]?.props.id;
                 const newStepId = steps[index].props.id;
                 this.props.onChange(newStepId, prevStepId, event);
             }
-            this.setState({
-                lastViewedIndex: Math.max(this.state.lastViewedIndex, index),
-                selectedIndex: index,
-            });
+            if (this.props.selectedStepId === undefined) {
+                this.setState({
+                    lastViewedIndex: Math.max(this.state.lastViewedIndex, index),
+                    selectedIndex: index,
+                });
+            }
         };
-    }
-
-    /** Filters children to only `<DialogStep>`s */
-    private getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode } = this.props) {
-        return Children.toArray(props.children).filter(isDialogStepElement);
     }
 
     private getInitialIndexFromProps(props: MultistepDialogProps) {
         if (props.initialStepIndex !== undefined) {
             const boundedInitialIndex = Math.max(
                 0,
-                Math.min(props.initialStepIndex, this.getDialogStepChildren(props).length - 1),
+                Math.min(props.initialStepIndex, getDialogStepChildren(props).length - 1),
             );
             return {
                 lastViewedIndex: boundedInitialIndex,
@@ -297,6 +320,11 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
             };
         }
     }
+}
+
+/** Filters children to only `<DialogStep>`s */
+function getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode }) {
+    return Children.toArray(props.children).filter(isDialogStepElement);
 }
 
 function isDialogStepElement(child: any): child is DialogStepElement {
