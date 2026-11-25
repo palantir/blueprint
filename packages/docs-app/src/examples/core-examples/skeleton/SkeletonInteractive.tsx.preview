@@ -1,0 +1,4 @@
+<InputGroup className={Classes.SKELETON} disabled={true} placeholder="Disabled input" />
+<a className={Classes.SKELETON} href="#" tabIndex={-1}>
+    Link with tabIndex -1
+</a>
