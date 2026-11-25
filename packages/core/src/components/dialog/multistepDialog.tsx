@@ -170,10 +170,10 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
 
     private renderDialogStep = (step: DialogStepElement, index: number) => {
         const stepNumber = index + 1;
-        const hasBeenViewed = this.state.lastViewedIndex >= index;
+        const lastNavigableIndex = this.getLastNavigableIndex();
+        const hasBeenViewed = lastNavigableIndex >= index;
         const currentlySelected = this.state.selectedIndex === index;
-        const handleClickDialogStep =
-            index > this.state.lastViewedIndex ? undefined : this.getDialogStepChangeHandler(index);
+        const handleClickDialogStep = index > lastNavigableIndex ? undefined : this.getDialogStepChangeHandler(index);
         return (
             <div
                 className={classNames(Classes.DIALOG_STEP_CONTAINER, {
@@ -273,6 +273,22 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
                 selectedIndex: index,
             });
         };
+    }
+
+    /**
+     * Returns the index of the furthest step that can be reached via the step list. A previously viewed step is
+     * only reachable if every step between the selected step and it has an enabled "Next" button.
+     */
+    private getLastNavigableIndex() {
+        const { lastViewedIndex, selectedIndex } = this.state;
+        const steps = this.getDialogStepChildren();
+        for (let index = selectedIndex; index < lastViewedIndex; index++) {
+            const nextButtonProps = steps[index]?.props.nextButtonProps ?? this.props.nextButtonProps;
+            if (nextButtonProps?.disabled) {
+                return index;
+            }
+        }
+        return lastViewedIndex;
     }
 
     /** Filters children to only `<DialogStep>`s */
