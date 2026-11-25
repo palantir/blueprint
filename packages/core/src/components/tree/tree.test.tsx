@@ -32,6 +32,11 @@ describe("<Tree>", () => {
         expect(screen.getByText("Node")).toBeInTheDocument();
     });
 
+    it("renders each node id as a data attribute", () => {
+        render(<Tree contents={[{ id: "folder", label: "Node" }]} />);
+        expect(screen.getByText("Node").closest("li")).toHaveAttribute("data-node-id", "folder");
+    });
+
     it("handles undefined input well", () => {
         const { container } = render(<Tree contents={undefined as any} />);
         expect(container.querySelector(`.${Classes.TREE}`)).toBeInTheDocument();
