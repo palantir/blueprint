@@ -209,6 +209,20 @@ describe("<QueryList>", () => {
             filmQueryList.setProps({ createNewItemPosition: "first" });
             expect(filmQueryList.find(Menu).children().children().first().is("article")).toBeTruthy();
         });
+
+        it("allowCreateNewItemEmptyQuery affects rendering strategy of create new item", () => {
+            const props: QueryListProps<Film> = {
+                ...testProps,
+                createNewItemFromQuery: sinon.spy(),
+                createNewItemRenderer: () => <article />,
+                items: TOP_100_FILMS.slice(0, 4),
+                query: "",
+            };
+            const filmQueryList: FilmQueryListWrapper = mount(<QueryList<Film> {...props} />);
+            expect(filmQueryList.find(Menu).children().children().last().is("article")).toBeFalsy();
+            filmQueryList.setProps({ allowCreateNewItemEmptyQuery: true });
+            expect(filmQueryList.find(Menu).children().children().last().is("article")).toBeTruthy();
+        });
     });
 
     describe("scrolling", () => {
