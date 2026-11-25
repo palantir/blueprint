@@ -24,7 +24,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         canEscapeKeyClose,
         captureDismiss = false,
         content,
-        enforceFocus = true,
+        enforceFocus,
         floatingData,
         handleMouseEnter,
         handleMouseLeave,
@@ -102,6 +102,12 @@ export function PopoverPopup(props: PopoverPopupProps) {
 
     const defaultAutoFocus = isHoverInteractionKind ? false : undefined;
 
+    // A hover popover should not take keyboard focus: the user pointed at or tabbed to the
+    // trigger, they did not ask to go inside. Keeping focus enforcement on means tabbing past
+    // the trigger pulls focus off the element the user was heading for, which closes the
+    // popover and leaves focus on nothing. Consumers can still pass enforceFocus explicitly.
+    const defaultEnforceFocus = isHoverInteractionKind ? false : undefined;
+
     // Override shouldReturnFocusOnClose based on interaction type:
     // - Hover interactions: always false (focus should stay on trigger per WCAG)
     // - ESC keypress: always true (keyboard users need focus returned)
@@ -121,7 +127,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
             canEscapeKeyClose={canEscapeKeyClose}
             canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
             childRef={transitionContainerElement}
-            enforceFocus={enforceFocus}
+            enforceFocus={enforceFocus ?? defaultEnforceFocus}
             hasBackdrop={hasBackdrop}
             isOpen={floatingData.isOpen}
             lazy={lazy}

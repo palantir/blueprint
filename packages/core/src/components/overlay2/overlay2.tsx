@@ -147,7 +147,12 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             // Overlay2 is guaranteed to be mounted here
             const isFocusOutsideModal = !container.contains(activeElement);
             if (isFocusOutsideModal) {
-                getRef(startFocusTrapElement)?.focus({ preventScroll: true });
+                // Focus the overlay's own content element rather than the empty div we render
+                // just before it. That div sits outside the popover, so consumers such as
+                // PopoverNext read focus landing there as the user having moved away, and close
+                // the overlay in response to a focus move we made ourselves.
+                const overlayContent = container.querySelector<HTMLElement>(`.${Classes.OVERLAY_CONTENT}`);
+                (overlayContent ?? getRef(startFocusTrapElement))?.focus({ preventScroll: true });
                 setIsAutoFocusing(false);
             }
         });
