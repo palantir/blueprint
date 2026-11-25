@@ -283,11 +283,12 @@ export class NumericInput extends AbstractPureComponent<
     // Value Helpers
     // =============
     private static getStepMaxPrecision(props: Omit<HTMLInputProps, "size"> & NumericInputProps) {
-        if (props.minorStepSize != null) {
-            return Utils.countDecimalPlaces(props.minorStepSize);
-        } else {
-            return Utils.countDecimalPlaces(props.stepSize!);
-        }
+        // use the largest number of decimal places among all step sizes, so that incrementing by any of them
+        // (e.g. `stepSize={0.25}` with the default `minorStepSize={0.1}`) is never rounded away
+        const stepSizes = [props.stepSize, props.minorStepSize, props.majorStepSize].filter(
+            (stepSize): stepSize is number => stepSize != null,
+        );
+        return Math.max(0, ...stepSizes.map(Utils.countDecimalPlaces));
     }
 
     private static roundAndClampValue(

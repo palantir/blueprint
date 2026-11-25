@@ -141,9 +141,8 @@ class NumericInputExample extends React.Component<{}, NumericInputExampleState> 
 
 ### Numeric precision
 
-**NumericInput** determines its maximum precision by looking at both the `minorStepSize` and `stepSize` props.
-If `minorStepSize` is non-null, the number of decimal places in that value will be the maximum precision.
-Otherwise, the component will count the decimal places in `stepSize`.
+**NumericInput** determines its maximum precision by looking at the `stepSize`, `minorStepSize`, and `majorStepSize`
+props. The largest number of decimal places among the non-null step sizes will be the maximum precision.
 
 Configuring these props allows you to expand or constrain the precision of the input. For example, to limit
 the input to only integers, you can set `minorStepSize={null}` and allow the default `stepSize` of `1` to take

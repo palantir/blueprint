@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: 'NumericInput: infer the value precision from minorStepSize, stepSize and majorStepSize, so stepping keeps the precision of the step in use'
+  links:
+  - https://github.com/palantir/blueprint/pull/8315
