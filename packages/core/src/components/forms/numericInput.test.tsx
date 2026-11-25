@@ -24,6 +24,9 @@ import * as Errors from "../../common/errors";
 
 import { NumericInput, type NumericInputProps } from "./numericInput";
 
+const getIncrementButton = () => screen.getByLabelText<HTMLButtonElement>("increment", { selector: "button" });
+const getDecrementButton = () => screen.getByLabelText<HTMLButtonElement>("decrement", { selector: "button" });
+
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
         it("renders the buttons on the right by default", () => {
@@ -37,12 +40,22 @@ describe("<NumericInput>", () => {
             expect(buttonGroup).toHaveClass(Classes.BUTTON_GROUP);
         });
 
+        it("removes the step buttons from the accessibility tree and tab order", () => {
+            render(<NumericInput />);
+
+            expect(getIncrementButton()).toHaveAttribute("aria-hidden", "true");
+            expect(getIncrementButton()).toHaveAttribute("tabindex", "-1");
+            expect(getDecrementButton()).toHaveAttribute("aria-hidden", "true");
+            expect(getDecrementButton()).toHaveAttribute("tabindex", "-1");
+            expect(screen.queryAllByRole("button")).toHaveLength(0);
+        });
+
         it("has a stepSize of 1 by default", async () => {
             const user = userEvent.setup();
             const onValueChangeSpy = vi.fn();
             render(<NumericInput onValueChange={onValueChangeSpy} />);
             // Click increment from 0 should yield 1 (stepSize=1)
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             expect(onValueChangeSpy).toHaveBeenCalledWith(1, "1", expect.anything());
         });
 
@@ -52,7 +65,7 @@ describe("<NumericInput>", () => {
             render(<NumericInput onValueChange={onValueChangeSpy} />);
             // Alt+click increment from 0 should yield 0.1 (minorStepSize=0.1)
             await user.keyboard("{Alt>}");
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             await user.keyboard("{/Alt}");
             expect(onValueChangeSpy).toHaveBeenCalledWith(0.1, "0.1", expect.anything());
         });
@@ -63,7 +76,7 @@ describe("<NumericInput>", () => {
             render(<NumericInput onValueChange={onValueChangeSpy} />);
             // Shift+click increment from 0 should yield 10 (majorStepSize=10)
             await user.keyboard("{Shift>}");
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             await user.keyboard("{/Shift}");
             expect(onValueChangeSpy).toHaveBeenCalledWith(10, "10", expect.anything());
         });
@@ -76,7 +89,7 @@ describe("<NumericInput>", () => {
         it("increments the value from 0 if the field is empty", async () => {
             const user = userEvent.setup();
             render(<NumericInput />);
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             expect(screen.getByRole("spinbutton")).toHaveValue("1");
         });
 
@@ -169,7 +182,7 @@ describe("<NumericInput>", () => {
             const onValueChangeSpy = vi.fn();
             render(<NumericInput onValueChange={onValueChangeSpy} />);
 
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
 
             const inputElement = screen.getByRole("spinbutton");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(1, "1", inputElement);
@@ -181,14 +194,25 @@ describe("<NumericInput>", () => {
             render(<ControlledNumericInput onButtonClick={onButtonClickSpy} />);
 
             // incrementing from 0
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             expect(onButtonClickSpy).toHaveBeenCalledExactlyOnceWith(1, "1");
 
             onButtonClickSpy.mockClear();
 
             // decrementing from 1 now
-            await user.click(screen.getByRole("button", { name: "decrement" }));
+            await user.click(getDecrementButton());
             expect(onButtonClickSpy).toHaveBeenCalledExactlyOnceWith(0, "0");
+        });
+
+        it("focuses the input when a step button is clicked", async () => {
+            const user = userEvent.setup();
+            render(<NumericInput />);
+
+            const input = screen.getByRole("spinbutton");
+            await user.click(getIncrementButton());
+
+            expect(input).toHaveFocus();
+            expect(input).toHaveValue("1");
         });
     });
 
@@ -425,11 +449,11 @@ describe("<NumericInput>", () => {
         // fireEvent.keyDown is used intentionally here because user.type on a button with Space
         // triggers the native button click behavior in addition to keyDown, causing a double increment
         const simulateIncrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
-            fireEvent.keyDown(screen.getByRole("button", { name: "increment" }), { ...mockEvent, key: " " });
+            fireEvent.keyDown(getIncrementButton(), { ...mockEvent, key: " " });
         };
 
         const simulateDecrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
-            fireEvent.keyDown(screen.getByRole("button", { name: "decrement" }), { ...mockEvent, key: " " });
+            fireEvent.keyDown(getDecrementButton(), { ...mockEvent, key: " " });
         };
 
         runInteractionSuite("Press 'SPACE'", "Press 'SPACE'", simulateIncrement, simulateDecrement);
@@ -439,14 +463,14 @@ describe("<NumericInput>", () => {
         // fireEvent is used intentionally here because user.type on a button with Enter
         // triggers the native button click behavior in addition to keyDown, causing a double increment
         const simulateIncrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
-            const button = screen.getByRole("button", { name: "increment" });
+            const button = getIncrementButton();
             const event = { ...mockEvent, key: "Enter" };
             fireEvent.keyDown(button, event);
             fireEvent.keyUp(button, event);
         };
 
         const simulateDecrement = (_user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
-            const button = screen.getByRole("button", { name: "decrement" });
+            const button = getDecrementButton();
             const event = { ...mockEvent, key: "Enter" };
             fireEvent.keyDown(button, event);
             fireEvent.keyUp(button, event);
@@ -458,13 +482,13 @@ describe("<NumericInput>", () => {
     describe("Mouse interactions", () => {
         const simulateIncrement = async (user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
             await holdModifiers(user, mockEvent);
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             await releaseModifiers(user, mockEvent);
         };
 
         const simulateDecrement = async (user: UserEventInstance, mockEvent?: Record<string, unknown>) => {
             await holdModifiers(user, mockEvent);
-            await user.click(screen.getByRole("button", { name: "decrement" }));
+            await user.click(getDecrementButton());
             await releaseModifiers(user, mockEvent);
         };
 
@@ -480,7 +504,7 @@ describe("<NumericInput>", () => {
             it("enforces no minimum bound", async () => {
                 const user = userEvent.setup();
                 render(<ControlledNumericInput />);
-                const decrementButton = screen.getByRole("button", { name: "decrement" });
+                const decrementButton = getDecrementButton();
                 await user.keyboard("{Shift>}");
                 await user.click(decrementButton);
                 await user.click(decrementButton);
@@ -491,7 +515,7 @@ describe("<NumericInput>", () => {
             it("enforces no maximum bound", async () => {
                 const user = userEvent.setup();
                 render(<ControlledNumericInput />);
-                const incrementButton = screen.getByRole("button", { name: "increment" });
+                const incrementButton = getIncrementButton();
                 await user.keyboard("{Shift>}");
                 await user.click(incrementButton);
                 await user.click(incrementButton);
@@ -518,7 +542,7 @@ describe("<NumericInput>", () => {
             it("decrements the value as usual if it is above the minimum", async () => {
                 const user = userEvent.setup();
                 render(<ControlledNumericInput min={0} />);
-                await user.click(screen.getByRole("button", { name: "decrement" }));
+                await user.click(getDecrementButton());
                 expect(screen.getByRole("spinbutton")).toHaveValue("0");
             });
 
@@ -526,7 +550,7 @@ describe("<NumericInput>", () => {
                 const user = userEvent.setup();
                 const MIN_VALUE = -0.5;
                 render(<ControlledNumericInput min={MIN_VALUE} />);
-                await user.click(screen.getByRole("button", { name: "decrement" }));
+                await user.click(getDecrementButton());
                 expect(screen.getByRole("spinbutton")).toHaveValue(MIN_VALUE.toString());
             });
 
@@ -535,7 +559,7 @@ describe("<NumericInput>", () => {
                 const MIN_VALUE = -0.05;
                 render(<ControlledNumericInput min={MIN_VALUE} />);
                 await user.keyboard("{Alt>}");
-                await user.click(screen.getByRole("button", { name: "decrement" }));
+                await user.click(getDecrementButton());
                 await user.keyboard("{/Alt}");
                 expect(screen.getByRole("spinbutton")).toHaveValue(MIN_VALUE.toString());
             });
@@ -545,7 +569,7 @@ describe("<NumericInput>", () => {
                 const MIN_VALUE = -5;
                 render(<ControlledNumericInput min={MIN_VALUE} />);
                 await user.keyboard("{Shift>}");
-                await user.click(screen.getByRole("button", { name: "decrement" }));
+                await user.click(getDecrementButton());
                 await user.keyboard("{/Shift}");
                 expect(screen.getByRole("spinbutton")).toHaveValue(MIN_VALUE.toString());
             });
@@ -573,7 +597,7 @@ describe("<NumericInput>", () => {
             it("increments the value as usual if it is above the minimum", async () => {
                 const user = userEvent.setup();
                 render(<ControlledNumericInput max={0} />);
-                await user.click(screen.getByRole("button", { name: "increment" }));
+                await user.click(getIncrementButton());
                 const inputElement = screen.getByRole("spinbutton");
                 expect(inputElement).toHaveValue("0");
             });
@@ -582,7 +606,7 @@ describe("<NumericInput>", () => {
                 const user = userEvent.setup();
                 const MAX_VALUE = 0.5;
                 render(<ControlledNumericInput max={MAX_VALUE} />);
-                await user.click(screen.getByRole("button", { name: "increment" }));
+                await user.click(getIncrementButton());
                 const inputElement = screen.getByRole("spinbutton");
                 expect(inputElement).toHaveValue(MAX_VALUE.toString());
             });
@@ -592,7 +616,7 @@ describe("<NumericInput>", () => {
                 const MAX_VALUE = 0.05;
                 render(<ControlledNumericInput max={MAX_VALUE} />);
                 await user.keyboard("{Alt>}");
-                await user.click(screen.getByRole("button", { name: "increment" }));
+                await user.click(getIncrementButton());
                 await user.keyboard("{/Alt}");
                 const inputElement = screen.getByRole("spinbutton");
                 expect(inputElement).toHaveValue(MAX_VALUE.toString());
@@ -603,7 +627,7 @@ describe("<NumericInput>", () => {
                 const MAX_VALUE = 5;
                 render(<ControlledNumericInput max={MAX_VALUE} />);
                 await user.keyboard("{Shift>}");
-                await user.click(screen.getByRole("button", { name: "increment" }));
+                await user.click(getIncrementButton());
                 await user.keyboard("{/Shift}");
                 const inputElement = screen.getByRole("spinbutton");
                 expect(inputElement).toHaveValue(MAX_VALUE.toString());
@@ -633,7 +657,7 @@ describe("<NumericInput>", () => {
                 const user = userEvent.setup();
                 const onValueChangeSpy = vi.fn();
                 render(<ControlledNumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
-                const incrementButton = screen.getByRole("button", { name: "increment" });
+                const incrementButton = getIncrementButton();
                 await user.click(incrementButton);
                 await user.click(incrementButton);
                 await user.click(incrementButton);
@@ -749,7 +773,7 @@ describe("<NumericInput>", () => {
             const user = userEvent.setup();
             render(<ControlledNumericInput value={"<invalid>"} />);
             expect(screen.getByRole("spinbutton")).toHaveValue("<invalid>");
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             expect(screen.getByRole("spinbutton")).toHaveValue("");
         });
 
@@ -757,7 +781,7 @@ describe("<NumericInput>", () => {
             const user = userEvent.setup();
             render(<ControlledNumericInput value={"<invalid>"} />);
             expect(screen.getByRole("spinbutton")).toHaveValue("<invalid>");
-            await user.click(screen.getByRole("button", { name: "decrement" }));
+            await user.click(getDecrementButton());
             expect(screen.getByRole("spinbutton")).toHaveValue("");
         });
     });
@@ -775,7 +799,7 @@ describe("<NumericInput>", () => {
             const onValueChangeSpy = vi.fn();
             const { rerender } = render(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
 
             const inputElement = screen.getByRole("spinbutton");
             expect(inputElement).toHaveValue("10");
@@ -875,7 +899,7 @@ describe("<NumericInput>", () => {
             await user.type(screen.getByRole("spinbutton"), nextValue);
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(nextValueNumber, nextValue, expect.anything());
 
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(
                 valueNumberAfterIncrement,
                 valueAfterIncrement,
@@ -895,7 +919,7 @@ describe("<NumericInput>", () => {
             await user.type(screen.getByRole("spinbutton"), nextValue);
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(nextValueNumber, nextValue, expect.anything());
 
-            await user.click(screen.getByRole("button", { name: "decrement" }));
+            await user.click(getDecrementButton());
             expect(onValueChangeSpy).toHaveBeenLastCalledWith(
                 valueNumberAfterDecrement,
                 valueAfterDecrement,
@@ -907,28 +931,28 @@ describe("<NumericInput>", () => {
     describe("Other", () => {
         it("disables the increment button when the value is greater than or equal to max", () => {
             render(<NumericInput value={100} max={100} />);
-            expect(screen.getByRole("button", { name: "decrement" })).not.toBeDisabled();
-            expect(screen.getByRole("button", { name: "increment" })).toBeDisabled();
+            expect(getDecrementButton()).not.toBeDisabled();
+            expect(getIncrementButton()).toBeDisabled();
         });
 
         it("disables the decrement button when the value is less than or equal to min", () => {
             render(<NumericInput value={-10} min={-10} />);
-            expect(screen.getByRole("button", { name: "decrement" })).toBeDisabled();
-            expect(screen.getByRole("button", { name: "increment" })).not.toBeDisabled();
+            expect(getDecrementButton()).toBeDisabled();
+            expect(getIncrementButton()).not.toBeDisabled();
         });
 
         it("disables the input field and buttons when disabled is true", () => {
             render(<NumericInput disabled={true} />);
             expect(screen.getByRole("spinbutton")).toBeDisabled();
-            expect(screen.getByRole("button", { name: "decrement" })).toBeDisabled();
-            expect(screen.getByRole("button", { name: "increment" })).toBeDisabled();
+            expect(getDecrementButton()).toBeDisabled();
+            expect(getIncrementButton()).toBeDisabled();
         });
 
         it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
             render(<NumericInput readOnly={true} />);
             expect(screen.getByRole("spinbutton")).toHaveAttribute("readonly");
-            expect(screen.getByRole("button", { name: "decrement" })).toBeDisabled();
-            expect(screen.getByRole("button", { name: "increment" })).toBeDisabled();
+            expect(getDecrementButton()).toBeDisabled();
+            expect(getIncrementButton()).toBeDisabled();
         });
 
         it("shows a left icon if provided", () => {
@@ -980,7 +1004,7 @@ describe("<NumericInput>", () => {
             const user = userEvent.setup();
             const consoleWarn = vi.spyOn(console, "warn").mockImplementation(vi.fn());
             render(<ControlledNumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
-            const incrementButton = screen.getByRole("button", { name: "increment" });
+            const incrementButton = getIncrementButton();
 
             await user.click(incrementButton);
             expect(screen.getByRole("spinbutton")).toHaveValue("0.1");
@@ -1038,7 +1062,7 @@ describe("<NumericInput>", () => {
 
             // excess digits should truncate to max precision
             await user.keyboard("{Alt>}");
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             await user.keyboard("{/Alt}");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.001, "0.001", expect.anything());
             onValueChangeSpy.mockClear();
@@ -1054,7 +1078,7 @@ describe("<NumericInput>", () => {
                 />,
             );
             await user.keyboard("{Alt>}");
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             await user.keyboard("{/Alt}");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.0002, "0.0002", expect.anything());
             onValueChangeSpy.mockClear();
@@ -1070,7 +1094,7 @@ describe("<NumericInput>", () => {
                 />,
             );
             await user.keyboard("{Alt>}");
-            await user.click(screen.getByRole("button", { name: "increment" }));
+            await user.click(getIncrementButton());
             await user.keyboard("{/Alt}");
             expect(onValueChangeSpy).toHaveBeenCalledExactlyOnceWith(0.1, "0.1", expect.anything());
             onValueChangeSpy.mockClear();
@@ -1083,8 +1107,8 @@ describe("<NumericInput>", () => {
             const onButtonClickSpy = vi.fn();
             render(<NumericInput disabled={true} onValueChange={onValueChangeSpy} onButtonClick={onButtonClickSpy} />);
 
-            const incrementButton = screen.getByRole("button", { name: "increment" });
-            const decrementButton = screen.getByRole("button", { name: "decrement" });
+            const incrementButton = getIncrementButton();
+            const decrementButton = getDecrementButton();
 
             await user.click(incrementButton);
             await user.keyboard("{Alt>}");

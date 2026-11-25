@@ -436,19 +436,23 @@ export class NumericInput extends AbstractPureComponent<
         return (
             <ButtonGroup className={Classes.FIXED} key="button-group" vertical={true}>
                 <Button
+                    aria-hidden={true}
                     aria-label="increment"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isIncrementDisabled}
                     icon={<ChevronUpIcon />}
                     intent={intent}
+                    tabIndex={-1}
                     {...this.incrementButtonHandlers}
                 />
                 <Button
+                    aria-hidden={true}
                     aria-label="decrement"
                     aria-controls={this.numericInputId}
                     disabled={disabled || isDecrementDisabled}
                     icon={<ChevronDownIcon />}
                     intent={intent}
+                    tabIndex={-1}
                     {...this.decrementButtonHandlers}
                 />
             </ButtonGroup>
@@ -507,6 +511,9 @@ export class NumericInput extends AbstractPureComponent<
                 }
             },
             onMouseDown: evt => {
+                evt.preventDefault();
+                this.inputElement?.focus({ preventScroll: true });
+
                 if (!this.props.disabled) {
                     this.handleButtonClick(evt, direction);
                     this.startContinuousChange();
