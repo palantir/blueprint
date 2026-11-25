@@ -204,7 +204,15 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         }
 
         const { selectedShortcutIndex } = this.state;
-        const { allowSingleDayRange, maxDate = MAX_DATE, minDate = MIN_DATE, timePrecision } = this.props;
+        const {
+            allowSingleDayRange,
+            maxDate = MAX_DATE,
+            minDate = MIN_DATE,
+            timePickerProps,
+            timePrecision,
+        } = this.props;
+        // Time can be enabled either by `timePrecision` or by `timePickerProps.precision`.
+        const shortcutTimePrecision = timePrecision ?? timePickerProps?.precision;
         return [
             <DatePickerShortcutMenu
                 key="shortcuts"
@@ -214,7 +222,7 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
                 onShortcutClick={this.handleShortcutClick}
                 selectedShortcutIndex={selectedShortcutIndex}
                 shortcuts={shortcuts}
-                timePrecision={timePrecision}
+                timePrecision={shortcutTimePrecision}
             />,
             <Divider key="div" />,
         ];
