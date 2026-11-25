@@ -1,0 +1,2324 @@
+<div id="orange-lab">
+    <header class="lab-header">
+        <div>
+            <h2>Orange playground</h2>
+            <p>Tune warning orange. Compare it with danger and the rest of the palette.</p>
+        </div>
+        <button type="button" class="lab-button" id="save-candidate">Save candidate</button>
+    </header>
+    <div class="lab-layout">
+        <aside class="lab-controls" aria-label="Color properties">
+            <section>
+                <h3>Your orange</h3>
+                <label class="lab-field"
+                    >Starting color<select data-key="preset">
+                        <option value="proposal">Proposed orange · #B45B00</option>
+                        <option value="ryan">Ryan’s 500 anchor</option>
+                        <option value="bp3">Current BP6 Orange 3</option>
+                        <option value="bp5">Current BP6 Orange 5</option>
+                        <option value="bright">Earlier bright trial</option>
+                        <option value="hue62">Earlier less-red trial</option>
+                        <option value="custom">Custom</option>
+                    </select></label
+                >
+                <div class="lab-hex-row">
+                    <label class="lab-field"
+                        >Hex<input
+                            id="hex-input"
+                            type="text"
+                            spellcheck="false"
+                            maxlength="7"
+                            aria-describedby="hex-error"
+                            value="#B45B00" /></label
+                    ><input id="color-input" type="color" aria-label="Choose an orange color" value="#b45b00" />
+                </div>
+                <span class="lab-error" id="hex-error" role="status"></span>
+                <div class="lab-slider">
+                    <label for="h-range">Hue <span>color direction</span></label
+                    ><input
+                        data-key="h"
+                        id="h-number"
+                        type="number"
+                        min="0"
+                        max="360"
+                        step="0.1"
+                        aria-label="Hue in degrees"
+                    /><input data-key="h" id="h-range" type="range" min="0" max="360" step="0.1" />
+                </div>
+                <div class="lab-slider">
+                    <label for="l-range">Lightness <span>0–100%</span></label
+                    ><input
+                        data-key="l"
+                        data-scale="100"
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        aria-label="Lightness percent"
+                    /><input data-key="l" data-scale="100" id="l-range" type="range" min="0" max="100" step="0.1" />
+                </div>
+                <div class="lab-slider">
+                    <label for="c-range">Chroma <span>color strength</span></label
+                    ><input data-key="c" type="number" min="0" max="0.4" step="0.001" aria-label="Chroma" /><input
+                        data-key="c"
+                        id="c-range"
+                        type="range"
+                        min="0"
+                        max="0.4"
+                        step="0.001"
+                    />
+                </div>
+                <label class="lab-check"><input data-key="lock" type="checkbox" />Keep white-text contrast</label>
+                <div class="lab-target">
+                    <label for="target-input">Contrast target</label
+                    ><input data-key="target" id="target-input" type="number" min="1" max="21" step="0.1" /><span
+                        >:1</span
+                    >
+                </div>
+                <p class="lab-note" id="lock-note"></p>
+                <p class="lab-note" id="gamut-note"></p>
+                <p class="lab-note">Ctrl+Z / ⌘Z to undo. Add Shift to redo.</p>
+                <p class="lab-note" id="history-status" role="status" hidden></p>
+            </section>
+            <details class="lab-details" open>
+                <summary>Ramp & interaction states</summary>
+                <div class="lab-slider">
+                    <label for="step-range">Step size <span>lightness change · selected preview</span></label
+                    ><input
+                        data-key="step"
+                        data-scale="100"
+                        type="number"
+                        min="1"
+                        max="15"
+                        step="0.5"
+                        aria-label="State lightness step percent"
+                    /><input
+                        data-key="step"
+                        data-scale="100"
+                        id="step-range"
+                        type="range"
+                        min="1"
+                        max="15"
+                        step="0.5"
+                    />
+                </div>
+                <div class="lab-slider">
+                    <label for="shift-range">Dark-end hue shift <span>degrees · shade 800 preview</span></label
+                    ><input
+                        data-key="shift"
+                        type="number"
+                        min="-45"
+                        max="45"
+                        step="1"
+                        aria-label="Dark-end hue shift degrees"
+                    /><input data-key="shift" id="shift-range" type="range" min="-45" max="45" step="1" />
+                </div>
+                <div class="lab-slider">
+                    <label for="tint-range">Light tint strength <span>% chroma · shade 100 preview</span></label
+                    ><input
+                        data-key="tint"
+                        data-scale="100"
+                        type="number"
+                        min="0"
+                        max="50"
+                        step="1"
+                        aria-label="Light tint chroma percent"
+                    /><input data-key="tint" data-scale="100" id="tint-range" type="range" min="0" max="50" step="1" />
+                </div>
+                <p class="lab-note">
+                    Rest is 500. Light surfaces: hover 600, selected 700. Dark surfaces: hover 400, selected 600.
+                </p>
+                <p class="lab-note">
+                    Only orange changes unless “Regenerate from orange” is selected. Generated ramps use the same hex
+                    values on light and dark surfaces.
+                </p>
+            </details>
+            <details class="lab-details">
+                <summary>Preview</summary>
+                <label class="lab-field"
+                    >Other colors<select data-key="comparison">
+                        <option value="next">Keep Blueprint Next fixed</option>
+                        <option value="bp6">Keep current BP6 fixed</option>
+                        <option value="linked">Regenerate from orange</option>
+                    </select></label
+                >
+                <label class="lab-field"
+                    >BP6 preview rest<select data-key="bp6Rest">
+                        <option value="3">Orange 3 · intent / graphics</option>
+                        <option value="5">Orange 5 · bright fill reference</option>
+                    </select></label
+                >
+                <label class="lab-field"
+                    >Surface<select data-key="surface">
+                        <option value="#FFFFFF">White</option>
+                        <option value="#F6F7F9">BP6 Light Gray 5</option>
+                        <option value="#1C2127">BP6 Dark Gray 1</option>
+                        <option value="#2F343C">BP6 Dark Gray 3</option>
+                    </select></label
+                >
+                <label class="lab-field"
+                    >Solid labels<select data-key="labels">
+                        <option value="white">White</option>
+                        <option value="dark">Blueprint dark</option>
+                        <option value="auto">Best of white / dark</option>
+                    </select></label
+                >
+                <label class="lab-field"
+                    >Text, icons & borders<select data-key="roles">
+                        <option value="readable">Choose readable ramp shades</option>
+                        <option value="rest">Use rest color everywhere</option>
+                    </select></label
+                >
+                <label class="lab-check"><input data-key="grayscale" type="checkbox" />Preview in grayscale</label>
+            </details>
+            <details class="lab-details">
+                <summary>Progress bar</summary>
+                <label class="lab-field"
+                    >Pattern<select data-key="stripes">
+                        <option value="none">Solid fill</option>
+                        <option value="white">Blueprint white stripes</option>
+                        <option value="dark">Dark zebra stripes</option>
+                    </select></label
+                >
+                <div class="lab-slider">
+                    <label for="progress-range">Progress <span>% complete</span></label
+                    ><input
+                        data-key="progress"
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="1"
+                        aria-label="Progress percent"
+                    /><input data-key="progress" id="progress-range" type="range" min="0" max="100" step="1" />
+                </div>
+                <p class="lab-note">
+                    Stripe contrast is reported separately. A pattern still needs review at the displayed size.
+                </p>
+            </details>
+            <section id="saved-section" hidden>
+                <h3>Saved candidates</h3>
+                <div id="saved-list"></div>
+            </section>
+            <button class="lab-button" type="button" id="copy-recipe">Copy current recipe</button>
+            <p class="lab-note" id="copy-status" role="status"></p>
+            <textarea id="recipe-output" aria-label="Current recipe to copy" readonly hidden></textarea>
+        </aside>
+        <main class="lab-main">
+            <div class="lab-state-toolbar">
+                <div>
+                    <h3>Inspect a state</h3>
+                    <span class="lab-note" id="mode-label"></span>
+                </div>
+                <div class="lab-segmented" aria-label="Preview state">
+                    <button type="button" data-state="rest">Rest</button
+                    ><button type="button" data-state="hover">Hover</button
+                    ><button type="button" data-state="selected">Selected</button>
+                </div>
+            </div>
+            <div class="lab-comparison" id="comparison-summary" aria-live="polite"></div>
+            <section class="lab-ramp-comparison" aria-label="BP6 orange, your orange, Ryan's orange and red ramps">
+                <h3>BP6, your orange, Ryan’s & red</h3>
+                <p class="lab-note">
+                    Sliders tune your orange. Ryan’s and BP6’s palettes stay fixed. Ryan uses his dark-mode colors on
+                    dark surfaces; BP6 keeps its original hex values.
+                </p>
+                <div id="comparison-ramps" class="lab-ramps"></div>
+                <div id="dark-comparison" class="lab-dark-comparison" aria-live="polite"></div>
+            </section>
+            <div class="lab-tabs" role="tablist" aria-label="Playground views">
+                <button
+                    type="button"
+                    role="tab"
+                    id="components-tab"
+                    aria-controls="components-panel"
+                    data-tab="components"
+                >
+                    Components</button
+                ><button type="button" role="tab" id="palette-tab" aria-controls="palette-panel" data-tab="palette">
+                    All colors</button
+                ><button type="button" role="tab" id="contrast-tab" aria-controls="contrast-panel" data-tab="contrast">
+                    Contrast checks
+                </button>
+            </div>
+            <section id="components-panel" role="tabpanel" aria-labelledby="components-tab">
+                <p class="lab-note lab-panel-note">
+                    Your orange and Ryan’s share preview roles and state steps. BP6 uses 3→2→1 or 5→4→3, chosen at left.
+                    Label color follows your setting. These compare palettes in shared previews, not exact production
+                    component styles.
+                </p>
+                <div id="component-gallery" class="lab-gallery"></div>
+            </section>
+            <section id="palette-panel" role="tabpanel" aria-labelledby="palette-tab" hidden>
+                <p class="lab-note lab-panel-note" id="palette-caption"></p>
+                <p class="lab-note lab-panel-note">
+                    Values are measured from the displayed colors; your orange also shows its settings. Step size shows
+                    the next two darker lightness changes; hue shift compares rest with the darkest shade; tint strength
+                    compares the lightest shade’s chroma with rest. Near-black hue is sensitive to rounding.
+                </p>
+                <div id="palette-inspector" class="lab-inspector" aria-live="polite"></div>
+                <div id="all-ramps"></div>
+                <h3 class="lab-subheading">Neutral reference · current BP6</h3>
+                <div id="neutral-ramp" class="lab-neutral"></div>
+            </section>
+            <section id="contrast-panel" role="tabpanel" aria-labelledby="contrast-tab" hidden>
+                <p class="lab-note lab-panel-note">
+                    Normal text: 4.5:1. Essential graphics / identifying boundaries: 3:1. State-to-state color
+                    differences do not have a universal contrast requirement.
+                </p>
+                <div class="lab-table-wrap">
+                    <table class="lab-table">
+                        <thead>
+                            <tr>
+                                <th>Pair</th>
+                                <th>Primary</th>
+                                <th>Success</th>
+                                <th>BP6 orange</th>
+                                <th>Your orange</th>
+                                <th>Ryan’s orange</th>
+                                <th>Danger</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contrast-table"></tbody>
+                    </table>
+                </div>
+                <p class="lab-note lab-panel-note">
+                    Checks use the displayed sRGB hex colors and composite transparent layers over the selected surface.
+                    Grayscale is a viewing aid; it does not change these measurements. A passing pair is not a full
+                    component accessibility audit.
+                </p>
+            </section>
+            <details class="lab-details lab-method">
+                <summary>How this playground calculates colors</summary>
+                <div>
+                    <p>
+                        Hue, lightness and chroma edit orange’s center color. The contrast lock solves lightness for the
+                        chosen white-text ratio. If a color is outside sRGB, chroma is reduced while keeping its
+                        lightness and hue direction.
+                    </p>
+                    <p>
+                        The ten-step trial ramp keeps the center at 500. Step size controls the nearby 400/600/700
+                        shades; the rest extends to light and dark tinted endpoints. Hover and selected always come from
+                        this displayed ramp.
+                    </p>
+                    <p>
+                        “Regenerate from orange” keeps each BP6 family’s hue, matches its center luminance to orange,
+                        and shares orange’s relative lightness spacing and chroma profile. Neutral grays stay fixed.
+                        This is an experimental model inspired by Ryan, not a reproduction of his quadratic recipe or
+                        CIECAM02 dark-mode compensation.
+                    </p>
+                    <p>
+                        Fixed BP6 and Blueprint Next references come from develop commit <code>75a8495</code>. Next is a
+                        repository snapshot, which can differ from the PDF. The Ryan preset loads his orange anchor; it
+                        does not claim to reproduce his entire ramp.
+                    </p>
+                    <p>
+                        The separate Ryan’s orange comparison uses the exact published light and dark orange hex values
+                        from his recipe’s reproduction checkpoints. Both oranges share this playground’s role and state
+                        assignments, so this comparison isolates the palette; it does not reproduce all of Ryan’s
+                        production semantic tokens.
+                    </p>
+                    <p>
+                        BP6 orange uses its six published colors, ordered 6→1 from light to dark. It is not stretched
+                        into a ten-step scale. The comparison initially picks its nearest lightness shade; click a BP6
+                        shade to inspect it directly. The BP6 preview rest control chooses 3→2→1 or 5→4→3 in both modes.
+                        Current BP6 components also use color adjustments and dark warning labels; this shared preview
+                        does not reproduce those production styles.
+                    </p>
+                    <p>
+                        Hex edits preserve the entered color and release the contrast lock. Saved candidates stay in
+                        this conversation when host persistence is available.
+                    </p>
+                </div>
+            </details>
+        </main>
+    </div>
+</div>
+<style>
+    #orange-lab {
+        --lab-bg: light-dark(#fff, #1c2127);
+        --lab-panel: light-dark(#f6f7f9, #252a31);
+        --lab-text: light-dark(#1c2127, #f6f7f9);
+        --lab-muted: light-dark(#5f6b7c, #abb3bf);
+        --lab-border: light-dark(#d3d8de, #404854);
+        --lab-focus: light-dark(#215db0, #8abbff);
+        color: var(--lab-text);
+        background: var(--lab-bg);
+        font:
+            14px/1.45 -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            sans-serif;
+    }
+    #orange-lab * {
+        box-sizing: border-box;
+    }
+    #orange-lab [hidden] {
+        display: none !important;
+    }
+    #orange-lab h2,
+    #orange-lab h3,
+    #orange-lab p {
+        margin: 0;
+    }
+    #orange-lab h2 {
+        font-size: 22px;
+        line-height: 1.25;
+        font-weight: 600;
+    }
+    #orange-lab h3 {
+        font-size: 14px;
+        font-weight: 600;
+    }
+    #orange-lab .lab-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 0 20px;
+        border-bottom: 1px solid var(--lab-border);
+    }
+    #orange-lab .lab-header p {
+        margin-top: 5px;
+        color: var(--lab-muted);
+    }
+    #orange-lab .lab-layout {
+        display: grid;
+        grid-template-columns: 235px minmax(0, 1fr);
+    }
+    #orange-lab .lab-controls {
+        padding: 20px 20px 12px 0;
+        border-right: 1px solid var(--lab-border);
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        min-width: 0;
+    }
+    #orange-lab .lab-controls section {
+        display: grid;
+        gap: 12px;
+        align-content: start;
+    }
+    #orange-lab .lab-main {
+        min-width: 0;
+        padding: 20px 0 12px 22px;
+    }
+    #orange-lab input,
+    #orange-lab select,
+    #orange-lab button,
+    #orange-lab textarea {
+        font: inherit;
+    }
+    #orange-lab button {
+        color: var(--lab-text);
+    }
+    #orange-lab button,
+    #orange-lab summary,
+    #orange-lab select {
+        cursor: default;
+    }
+    #orange-lab .lab-button {
+        background: var(--lab-panel);
+        border: 1px solid var(--lab-border);
+        border-radius: 3px;
+        padding: 6px 10px;
+        min-height: 32px;
+        white-space: nowrap;
+    }
+    #orange-lab .lab-button:hover {
+        border-color: var(--lab-muted);
+    }
+    #orange-lab :focus-visible {
+        outline: 2px solid var(--lab-focus);
+        outline-offset: 2px;
+    }
+    #orange-lab .lab-controls input:not([type="range"]):not([type="checkbox"]):not([type="color"]),
+    #orange-lab select,
+    #orange-lab textarea {
+        min-width: 0;
+        width: 100%;
+        color: var(--lab-text);
+        background: var(--lab-bg);
+        border: 1px solid var(--lab-border);
+        border-radius: 3px;
+        min-height: 32px;
+        padding: 5px 7px;
+    }
+    #orange-lab input:disabled {
+        opacity: 0.55;
+    }
+    #orange-lab input[type="range"] {
+        width: 100%;
+        min-width: 0;
+        accent-color: var(--lab-focus);
+        height: 18px;
+        margin: 0;
+    }
+    #orange-lab input[data-color-preview] {
+        appearance: none;
+        height: 26px;
+        background: transparent;
+    }
+    #orange-lab input[data-color-preview]::-webkit-slider-runnable-track {
+        height: 14px;
+        border-radius: 7px;
+        background: var(--slider-gradient);
+    }
+    #orange-lab input[data-color-preview]::-moz-range-track {
+        height: 14px;
+        border-radius: 7px;
+        background: var(--slider-gradient);
+    }
+    #orange-lab input[data-color-preview]::-webkit-slider-thumb {
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        margin-top: -3px;
+        border: 2px solid #fff;
+        outline: 1px solid #5f6b7c;
+        border-radius: 50%;
+        background: var(--slider-color);
+    }
+    #orange-lab input[data-color-preview]::-moz-range-thumb {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #fff;
+        outline: 1px solid #5f6b7c;
+        border-radius: 50%;
+        background: var(--slider-color);
+    }
+    #orange-lab input[data-color-preview]:disabled {
+        opacity: 1;
+        cursor: not-allowed;
+    }
+    #orange-lab input[data-color-preview]:disabled::-webkit-slider-thumb {
+        border-color: #abb3bf;
+    }
+    #orange-lab input[data-color-preview]:disabled::-moz-range-thumb {
+        border-color: #abb3bf;
+    }
+    #orange-lab input[type="checkbox"] {
+        accent-color: var(--lab-focus);
+    }
+    #orange-lab .lab-field {
+        display: grid;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    #orange-lab .lab-field select,
+    #orange-lab .lab-field input {
+        font-size: 13px;
+        font-weight: 400;
+    }
+    #orange-lab .lab-hex-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 40px;
+        gap: 8px;
+        align-items: end;
+    }
+    #orange-lab input[type="color"] {
+        width: 40px;
+        height: 32px;
+        padding: 2px;
+        border: 1px solid var(--lab-border);
+        background: var(--lab-bg);
+        border-radius: 3px;
+    }
+    #orange-lab .lab-slider {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 65px;
+        gap: 7px 8px;
+        align-items: center;
+    }
+    #orange-lab .lab-slider label {
+        font-size: 13px;
+    }
+    #orange-lab .lab-slider label span {
+        display: block;
+        font-size: 11px;
+        color: var(--lab-muted);
+    }
+    #orange-lab .lab-slider input[type="range"] {
+        grid-column: 1/-1;
+    }
+    #orange-lab .lab-slider input[type="number"] {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+        font-size: 12px;
+    }
+    #orange-lab .lab-check {
+        display: flex;
+        gap: 7px;
+        align-items: center;
+        font-size: 13px;
+    }
+    #orange-lab .lab-target {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 58px 15px;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+    }
+    #orange-lab .lab-note {
+        color: var(--lab-muted);
+        font-size: 12px;
+        line-height: 1.5;
+    }
+    #orange-lab .lab-error {
+        color: light-dark(#ac2f33, #ffa1a4);
+        font-size: 12px;
+    }
+    #orange-lab .lab-error:empty {
+        display: none;
+    }
+    #orange-lab .lab-details {
+        border-top: 1px solid var(--lab-border);
+        padding-top: 12px;
+    }
+    #orange-lab .lab-details summary {
+        font-weight: 500;
+        font-size: 13px;
+    }
+    #orange-lab .lab-details[open] > :not(summary) {
+        margin-top: 13px;
+    }
+    #orange-lab .lab-details > div {
+        display: grid;
+        gap: 10px;
+    }
+    #orange-lab .lab-state-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    #orange-lab .lab-segmented {
+        display: inline-flex;
+        border: 1px solid var(--lab-border);
+        border-radius: 3px;
+    }
+    #orange-lab .lab-segmented button {
+        background: none;
+        border: 0;
+        padding: 6px 10px;
+        min-height: 32px;
+        font-size: 12px;
+    }
+    #orange-lab .lab-segmented button[aria-pressed="true"] {
+        background: var(--lab-text);
+        color: var(--lab-bg);
+    }
+    #orange-lab .lab-comparison {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 12px;
+        padding: 18px 0;
+    }
+    #orange-lab .lab-compare-color {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+    }
+    #orange-lab .lab-compare-color .lab-chip {
+        width: 44px;
+        height: 44px;
+        border-radius: 3px;
+        flex-shrink: 0;
+    }
+    #orange-lab .lab-compare-color strong {
+        display: block;
+        font-size: 13px;
+        font-weight: 500;
+    }
+    #orange-lab .lab-compare-color small {
+        display: block;
+        color: var(--lab-muted);
+        font-size: 11px;
+    }
+    #orange-lab .lab-distance {
+        grid-column: 1/-1;
+        color: var(--lab-muted);
+        font-size: 12px;
+    }
+    #orange-lab .lab-ramp-comparison {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+    #orange-lab .lab-dark-comparison {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 6px 10px;
+    }
+    #orange-lab .lab-dark-swatch {
+        min-height: 82px;
+        padding: 10px;
+        border-radius: 3px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 12px;
+    }
+    #orange-lab .lab-dark-swatch small {
+        font-size: 11px;
+    }
+    #orange-lab .lab-dark-comparison .lab-note {
+        grid-column: 1/-1;
+    }
+    #orange-lab .lab-tabs {
+        display: flex;
+        gap: 20px;
+        border-bottom: 1px solid var(--lab-border);
+    }
+    #orange-lab .lab-tabs button {
+        background: none;
+        border: 0;
+        padding: 9px 0;
+        font-size: 13px;
+        border-bottom: 2px solid transparent;
+    }
+    #orange-lab .lab-tabs button[aria-selected="true"] {
+        border-bottom-color: var(--lab-text);
+        font-weight: 600;
+    }
+    #orange-lab .lab-panel-note {
+        padding: 12px 0;
+    }
+    #orange-lab .lab-gallery {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 14px;
+        padding: 16px;
+        background: var(--surface);
+        color: var(--ink);
+        border: 1px solid var(--edge);
+        border-radius: 3px;
+    }
+    #orange-lab .lab-gallery.lab-grayscale,
+    #orange-lab .lab-ramps.lab-grayscale {
+        filter: grayscale(1);
+    }
+    #orange-lab .intent-column {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        min-width: 0;
+        font-size: 12px;
+    }
+    #orange-lab .intent-name {
+        font-weight: 600;
+        font-size: 13px;
+    }
+    #orange-lab .intent-hex {
+        font-size: 11px;
+        color: var(--muted-ink);
+    }
+    #orange-lab .sample-label {
+        color: var(--muted-ink);
+        font-size: 11px;
+        margin-top: 7px;
+    }
+    #orange-lab .sample-solid,
+    #orange-lab .sample-outline {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-height: 30px;
+        padding: 5px 7px;
+        border-radius: 3px;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+    #orange-lab .sample-solid {
+        background: var(--fill);
+        color: var(--label);
+        border: 0;
+    }
+    #orange-lab .sample-outline {
+        background: transparent;
+        color: var(--role-text);
+        border: 1px solid var(--outline);
+    }
+    #orange-lab .sample-minimal {
+        color: var(--role-text);
+        padding: 5px;
+        text-align: center;
+    }
+    #orange-lab .sample-tag {
+        display: inline-flex;
+        align-self: flex-start;
+        align-items: center;
+        gap: 4px;
+        padding: 2px 7px;
+        border-radius: 3px;
+        background: var(--fill);
+        color: var(--label);
+    }
+    #orange-lab .sample-callout {
+        padding: 9px;
+        background: var(--tint);
+        color: var(--tint-text);
+        border-radius: 3px;
+    }
+    #orange-lab .sample-callout strong {
+        font-weight: 600;
+        display: block;
+        margin-bottom: 3px;
+    }
+    #orange-lab .sample-toast {
+        padding: 8px;
+        background: var(--fill);
+        color: var(--label);
+        border-radius: 3px;
+        display: flex;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    #orange-lab .sample-menu {
+        background: var(--tint);
+        color: var(--tint-text);
+        padding: 6px;
+        border-radius: 2px;
+    }
+    #orange-lab .sample-input {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        height: 30px;
+        border: 1px solid var(--role-border);
+        background: var(--surface);
+        color: var(--ink);
+        border-radius: 3px;
+        padding: 5px 7px;
+        font-size: 12px;
+    }
+    #orange-lab .sample-helper {
+        font-size: 11px;
+        color: var(--role-text);
+    }
+    #orange-lab .sample-progress {
+        height: 8px;
+        background: var(--track);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    #orange-lab .sample-meter {
+        height: 100%;
+        width: var(--progress);
+        border-radius: inherit;
+        background-color: var(--fill);
+        background-image: var(--pattern);
+    }
+    #orange-lab .sample-icons {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        color: var(--role-icon);
+        min-height: 26px;
+    }
+    #orange-lab .sample-spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid var(--track);
+        border-top-color: var(--fill);
+        border-right-color: var(--fill);
+        border-radius: 50%;
+    }
+    #orange-lab .sample-cell {
+        background: var(--tint);
+        color: var(--tint-text);
+        padding: 6px;
+        border-bottom: 1px solid var(--edge);
+    }
+    #orange-lab .lab-ramps {
+        display: grid;
+        gap: 14px;
+    }
+    #orange-lab .ramp-name {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 12px;
+    }
+    #orange-lab .ramp-name span {
+        color: var(--lab-muted);
+        font-size: 11px;
+    }
+    #orange-lab .ramp-properties {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+        gap: 8px 16px;
+        margin: 8px 0 0;
+        font-size: 12px;
+    }
+    #orange-lab .ramp-properties dt {
+        font-weight: 500;
+    }
+    #orange-lab .ramp-properties dd {
+        margin: 2px 0 0;
+        color: var(--lab-muted);
+    }
+    #orange-lab .ramp-properties small {
+        display: block;
+        font-size: 11px;
+    }
+    #orange-lab .ramp-swatches {
+        display: flex;
+        width: 100%;
+    }
+    #orange-lab .ramp-swatches button {
+        flex: 1 1 0;
+        min-width: 0;
+        height: 42px;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        font-size: 11px;
+        font-variant-numeric: tabular-nums;
+    }
+    #orange-lab .ramp-swatches button[aria-pressed="true"] {
+        outline: 2px solid var(--lab-focus);
+        outline-offset: 2px;
+        position: relative;
+    }
+    #orange-lab .lab-inspector {
+        min-height: 62px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        font-size: 12px;
+    }
+    #orange-lab .lab-inspector .lab-chip {
+        width: 40px;
+        height: 40px;
+        flex-shrink: 0;
+        border-radius: 3px;
+    }
+    #orange-lab .lab-inspector p {
+        color: var(--lab-muted);
+    }
+    #orange-lab .lab-neutral {
+        display: grid;
+        grid-template-columns: repeat(17, minmax(0, 1fr));
+        margin-top: 8px;
+    }
+    #orange-lab .lab-neutral span {
+        height: 28px;
+    }
+    #orange-lab .lab-subheading {
+        margin-top: 22px;
+    }
+    #orange-lab .lab-table-wrap {
+        overflow: auto;
+    }
+    #orange-lab .lab-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        text-align: left;
+    }
+    #orange-lab .lab-table th {
+        font-weight: 500;
+    }
+    #orange-lab .lab-table td,
+    #orange-lab .lab-table th {
+        border-bottom: 1px solid var(--lab-border);
+        padding: 10px 7px;
+        vertical-align: top;
+    }
+    #orange-lab .lab-table td:not(:first-child) {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+    #orange-lab .check-pass {
+        color: light-dark(#165a36, #72ca9b);
+    }
+    #orange-lab .check-fail {
+        color: light-dark(#ac2f33, #ffa1a4);
+    }
+    #orange-lab .lab-table small {
+        display: block;
+        font-size: 11px;
+        margin-top: 2px;
+    }
+    #orange-lab .lab-method {
+        margin-top: 24px;
+    }
+    #orange-lab .lab-method p {
+        color: var(--lab-muted);
+        font-size: 12px;
+        line-height: 1.55;
+    }
+    #orange-lab .saved-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-bottom: 6px;
+    }
+    #orange-lab .saved-item button:first-child {
+        flex: 1;
+        display: flex;
+        gap: 7px;
+        align-items: center;
+        text-align: left;
+    }
+    #orange-lab .saved-item .saved-dot {
+        width: 15px;
+        height: 15px;
+        border-radius: 2px;
+    }
+    #orange-lab .saved-item button:last-child {
+        font-size: 11px;
+        padding: 5px;
+    }
+    #orange-lab #recipe-output {
+        height: 180px;
+        font:
+            11px/1.5 ui-monospace,
+            monospace;
+    }
+    @media (max-width: 850px) {
+        #orange-lab .lab-layout {
+            grid-template-columns: 205px minmax(0, 1fr);
+        }
+        #orange-lab .lab-controls {
+            padding-right: 14px;
+        }
+        #orange-lab .lab-main {
+            padding-left: 14px;
+        }
+        #orange-lab .lab-gallery {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+    @media (max-width: 600px) {
+        #orange-lab .lab-layout {
+            grid-template-columns: minmax(0, 1fr);
+        }
+        #orange-lab .lab-controls {
+            border-right: 0;
+            border-bottom: 1px solid var(--lab-border);
+            padding: 16px 0;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+        #orange-lab .lab-controls > section:first-child,
+        #orange-lab .lab-controls > details:first-of-type {
+            grid-column: 1/-1;
+        }
+        #orange-lab .lab-main {
+            padding: 18px 0 0;
+        }
+        #orange-lab .lab-header {
+            align-items: flex-start;
+        }
+        #orange-lab h2 {
+            font-size: 20px;
+        }
+        #orange-lab .lab-header p {
+            font-size: 12px;
+        }
+        #orange-lab .lab-header > .lab-button {
+            font-size: 12px;
+            padding: 5px 7px;
+        }
+        #orange-lab .lab-comparison {
+            gap: 10px;
+        }
+        #orange-lab .lab-compare-color .lab-chip {
+            width: 32px;
+            height: 32px;
+        }
+        #orange-lab .lab-tabs {
+            gap: 16px;
+        }
+        #orange-lab .lab-gallery {
+            padding: 12px;
+            gap: 16px;
+        }
+    }
+    @media (pointer: coarse) {
+        #orange-lab button,
+        #orange-lab select {
+            min-height: 44px;
+        }
+        #orange-lab input:not([type="range"]):not([type="checkbox"]),
+        #orange-lab select {
+            font-size: 16px !important;
+        }
+    }
+    @media (max-width: 600px) {
+        #orange-lab .lab-dark-comparison {
+            grid-template-columns: minmax(0, 1fr);
+        }
+    }
+</style>
+<script>
+    (() => {
+        const root = document.getElementById("orange-lab");
+        const $ = s => root.querySelector(s),
+            $$ = s => Array.from(root.querySelectorAll(s));
+        const BP6 = {
+            blue: ["#184a90", "#215db0", "#2d72d2", "#4c90f0", "#8abbff", "#99c4ff"],
+            green: ["#165a36", "#1c6e42", "#238551", "#32a467", "#72ca9b", "#7cd7a2"],
+            orange: ["#77450d", "#935610", "#c87619", "#ec9a3c", "#fbb360", "#f5c186"],
+            red: ["#8e292c", "#ac2f33", "#cd4246", "#e76a6e", "#fa999c", "#ffa1a4"],
+            vermilion: ["#96290d", "#b83211", "#d33d17", "#eb6847", "#ff9980"],
+            rose: ["#a82255", "#c22762", "#db2c6f", "#f5498b", "#ff66a1"],
+            violet: ["#5c255c", "#7c327c", "#9d3f9d", "#bd6bbd", "#d69fd6"],
+            indigo: ["#5642a6", "#634dbf", "#7961db", "#9881f3", "#bdadff"],
+            cerulean: ["#0c5174", "#0f6894", "#147eb3", "#3fa6da", "#68c1ee"],
+            turquoise: ["#004d46", "#007067", "#00a396", "#13c9ba", "#7ae1d8"],
+            forest: ["#1d7324", "#238c2c", "#29a634", "#43bf4d", "#62d96b"],
+            lime: ["#43501b", "#5a701a", "#8eb125", "#b6d94c", "#d4f17e"],
+            gold: ["#5c4405", "#866103", "#d1980b", "#f0b726", "#fbd065"],
+            sepia: ["#5e4123", "#7a542e", "#946638", "#af855a", "#d0b090"],
+        };
+        const NEXT_LIGHT = {
+            orange: [
+                "#fcdbcb",
+                "#f8b695",
+                "#eb9265",
+                "#d77139",
+                "#bd5200",
+                "#9e3600",
+                "#782300",
+                "#531200",
+                "#2f0300",
+                "#0b0100",
+            ],
+            blue: [
+                "#d1e5ff",
+                "#a3caff",
+                "#7aaef9",
+                "#5591e8",
+                "#3475d0",
+                "#1759b1",
+                "#003f8d",
+                "#002864",
+                "#001338",
+                "#00030d",
+            ],
+            green: [
+                "#d2eed9",
+                "#a0dab0",
+                "#70c48a",
+                "#42ab69",
+                "#00904b",
+                "#007431",
+                "#00571e",
+                "#003a0e",
+                "#001f03",
+                "#000501",
+            ],
+            red: [
+                "#fed8d5",
+                "#fcb0ac",
+                "#ef8b87",
+                "#db6866",
+                "#c14849",
+                "#a22b30",
+                "#7e111c",
+                "#58010c",
+                "#310004",
+                "#0b0101",
+            ],
+            vermilion: [
+                "#ffdad0",
+                "#fcb3a1",
+                "#ef8e77",
+                "#db6c52",
+                "#c14c31",
+                "#a22f13",
+                "#7e1700",
+                "#580400",
+                "#310100",
+                "#0b0100",
+            ],
+            rose: [
+                "#fed8e0",
+                "#faafc1",
+                "#ed89a3",
+                "#d86687",
+                "#be466c",
+                "#9f2953",
+                "#7c0f3b",
+                "#560025",
+                "#300011",
+                "#0b0103",
+            ],
+            violet: [
+                "#f3d9f2",
+                "#e7b3e5",
+                "#d590d4",
+                "#bf6ebe",
+                "#a550a5",
+                "#883588",
+                "#691e69",
+                "#480c49",
+                "#270327",
+                "#080108",
+            ],
+            indigo: [
+                "#e1dfff",
+                "#c4bfff",
+                "#a99ff6",
+                "#8f80e4",
+                "#7563cc",
+                "#5c48ad",
+                "#443089",
+                "#2c1b61",
+                "#160b37",
+                "#03020d",
+            ],
+            cerulean: [
+                "#d2ebff",
+                "#9ed2fc",
+                "#6eb8f0",
+                "#3f9cdd",
+                "#0080c4",
+                "#0064a6",
+                "#004981",
+                "#002f5b",
+                "#001733",
+                "#00040c",
+            ],
+            turquoise: [
+                "#d3eee9",
+                "#a1d8cf",
+                "#71c0b5",
+                "#42a79b",
+                "#018c80",
+                "#007065",
+                "#00544b",
+                "#003831",
+                "#001d19",
+                "#000504",
+            ],
+            forest: [
+                "#d2ebd1",
+                "#a4d7a3",
+                "#79c079",
+                "#52a853",
+                "#2c8d32",
+                "#007113",
+                "#005500",
+                "#003900",
+                "#001e00",
+                "#000500",
+            ],
+            lime: [
+                "#dde8cc",
+                "#bcd197",
+                "#9db967",
+                "#809f3a",
+                "#658400",
+                "#4c6900",
+                "#364d00",
+                "#223300",
+                "#0f1a00",
+                "#020400",
+            ],
+            gold: [
+                "#f1e1cc",
+                "#e2c397",
+                "#cea566",
+                "#b8883a",
+                "#9e6c00",
+                "#825200",
+                "#613b00",
+                "#422500",
+                "#241000",
+                "#070300",
+            ],
+            sepia: [
+                "#f8dfcc",
+                "#f0bd97",
+                "#e09c66",
+                "#cb7c39",
+                "#b15f00",
+                "#934400",
+                "#6f3000",
+                "#4c1c00",
+                "#2b0a00",
+                "#090200",
+            ],
+        };
+        const NEXT_DARK = {
+            orange: [
+                "#f7d1bf",
+                "#eca480",
+                "#d77b4c",
+                "#bb571e",
+                "#9a3700",
+                "#771c00",
+                "#520c00",
+                "#300200",
+                "#140000",
+                "#010000",
+            ],
+            blue: [
+                "#c5ddfb",
+                "#8dbaf7",
+                "#5d98eb",
+                "#3476d3",
+                "#0a58b4",
+                "#003b8f",
+                "#002369",
+                "#001041",
+                "#00031c",
+                "#000002",
+            ],
+            green: [
+                "#c6e8cf",
+                "#8acd9e",
+                "#51b173",
+                "#0f924f",
+                "#007331",
+                "#005619",
+                "#003909",
+                "#002001",
+                "#000b00",
+                "#000100",
+            ],
+            red: [
+                "#f9ceca",
+                "#f09e9a",
+                "#db7370",
+                "#bf4d4d",
+                "#9e2c31",
+                "#7b0f1a",
+                "#560009",
+                "#330002",
+                "#150000",
+                "#020000",
+            ],
+            vermilion: [
+                "#fad0c5",
+                "#f1a18e",
+                "#db775f",
+                "#bf5239",
+                "#9e3119",
+                "#7b1400",
+                "#560000",
+                "#330000",
+                "#150000",
+                "#010000",
+            ],
+            rose: [
+                "#f9ced7",
+                "#ef9cb1",
+                "#da718d",
+                "#bd4a6e",
+                "#9c2951",
+                "#790a39",
+                "#550022",
+                "#320010",
+                "#140004",
+                "#020000",
+            ],
+            violet: [
+                "#edcfec",
+                "#daa0d9",
+                "#c278c2",
+                "#a552a6",
+                "#873288",
+                "#671768",
+                "#470349",
+                "#29002b",
+                "#0f0010",
+                "#010001",
+            ],
+            indigo: [
+                "#d8d6fb",
+                "#b4aef7",
+                "#9488e7",
+                "#7764ce",
+                "#5b45b0",
+                "#422a8b",
+                "#2b1465",
+                "#17053f",
+                "#06011b",
+                "#000002",
+            ],
+            cerulean: [
+                "#c6e4fc",
+                "#87c4f4",
+                "#4ca4e2",
+                "#0083c8",
+                "#0064a7",
+                "#004786",
+                "#002d5f",
+                "#00173a",
+                "#000619",
+                "#000002",
+            ],
+            turquoise: [
+                "#c7e8e2",
+                "#8bcbc1",
+                "#51ada1",
+                "#038f83",
+                "#007065",
+                "#005349",
+                "#003730",
+                "#001e19",
+                "#000907",
+                "#000100",
+            ],
+            forest: [
+                "#c6e4c6",
+                "#8fc98f",
+                "#5eac60",
+                "#318f38",
+                "#007017",
+                "#005200",
+                "#003700",
+                "#001f00",
+                "#000a00",
+                "#000100",
+            ],
+            lime: [
+                "#d3e0c0",
+                "#abc282",
+                "#87a44d",
+                "#67861b",
+                "#4b6700",
+                "#334b00",
+                "#1f3100",
+                "#0e1a00",
+                "#030700",
+                "#000000",
+            ],
+            gold: [
+                "#ead8c0",
+                "#d5b382",
+                "#ba8f4d",
+                "#9e6f1d",
+                "#7f5100",
+                "#613700",
+                "#412200",
+                "#251000",
+                "#0d0300",
+                "#010000",
+            ],
+            sepia: [
+                "#f3d6c0",
+                "#e4ac82",
+                "#cd864d",
+                "#b0631d",
+                "#904400",
+                "#6f2a00",
+                "#4b1900",
+                "#2c0900",
+                "#110100",
+                "#010000",
+            ],
+        };
+        const NEUTRALS = [
+            "#FFFFFF",
+            "#F6F7F9",
+            "#EDEFF2",
+            "#E5E8EB",
+            "#DCE0E5",
+            "#D3D8DE",
+            "#C5CBD3",
+            "#ABB3BF",
+            "#8F99A8",
+            "#738091",
+            "#5F6B7C",
+            "#404854",
+            "#383E47",
+            "#2F343C",
+            "#252A31",
+            "#1C2127",
+            "#111418",
+        ];
+        const NAMES = {
+            blue: "Primary",
+            green: "Success",
+            orange: "Warning",
+            ryanOrange: "Ryan’s orange",
+            bp6Orange: "BP6 orange",
+            red: "Danger",
+        };
+        const ICONS = {
+            blue: "info",
+            green: "circle-check",
+            orange: "triangle-alert",
+            ryanOrange: "triangle-alert",
+            bp6Orange: "triangle-alert",
+            red: "circle-x",
+        };
+        const CORE = ["blue", "green", "orange", "red"],
+            FAMILIES = ["orange", "red", "blue", "green", ...Object.keys(BP6).filter(k => !CORE.includes(k))];
+        const PREVIEW_FAMILIES = ["blue", "green", "bp6Orange", "orange", "ryanOrange", "red"],
+            PALETTE_FAMILIES = ["bp6Orange", "orange", "ryanOrange", ...FAMILIES.slice(1)];
+        const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+        const lerp = (a, b, t) => a + (b - a) * t;
+        const linear = v => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+        const encoded = v => (v <= 0.0031308 ? 12.92 * v : 1.055 * Math.pow(v, 1 / 2.4) - 0.055);
+        const luminance = rgb => 0.2126 * linear(rgb[0]) + 0.7152 * linear(rgb[1]) + 0.0722 * linear(rgb[2]);
+        function fromRgb(rgb) {
+            const q = rgb.map(v => Math.round(clamp(v) * 255) / 255),
+                [r, g, b] = q.map(linear);
+            const ll = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b),
+                mm = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b),
+                ss = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+            const l = 0.2104542553 * ll + 0.793617785 * mm - 0.0040720468 * ss,
+                a = 1.9779984951 * ll - 2.428592205 * mm + 0.4505937099 * ss,
+                bb = 0.0259040371 * ll + 0.7827717662 * mm - 0.808675766 * ss;
+            const c = Math.hypot(a, bb),
+                h = c < 1e-7 ? 0 : ((Math.atan2(bb, a) * 180) / Math.PI + 360) % 360;
+            return {
+                rgb: q,
+                hex:
+                    "#" +
+                    q
+                        .map(v =>
+                            Math.round(v * 255)
+                                .toString(16)
+                                .padStart(2, "0"),
+                        )
+                        .join("")
+                        .toUpperCase(),
+                l,
+                c: c < 1e-7 ? 0 : c,
+                h,
+                y: luminance(q),
+                a,
+                bb,
+            };
+        }
+        function fromHex(value) {
+            let hex = String(value).trim().replace(/^#/, "");
+            if (/^[0-9a-f]{3}$/i.test(hex))
+                hex = hex
+                    .split("")
+                    .map(v => v + v)
+                    .join("");
+            if (!/^[0-9a-f]{6}$/i.test(hex)) return null;
+            return fromRgb([0, 2, 4].map(i => parseInt(hex.slice(i, i + 2), 16) / 255));
+        }
+        function rawRgb(l, c, h) {
+            const a = c * Math.cos((h * Math.PI) / 180),
+                b = c * Math.sin((h * Math.PI) / 180);
+            const ll = (l + 0.3963377774 * a + 0.2158037573 * b) ** 3,
+                mm = (l - 0.1055613458 * a - 0.0638541728 * b) ** 3,
+                ss = (l - 0.0894841775 * a - 1.291485548 * b) ** 3;
+            return [
+                4.0767416621 * ll - 3.3077115913 * mm + 0.2309699292 * ss,
+                -1.2684380046 * ll + 2.6097574011 * mm - 0.3413193965 * ss,
+                -0.0041960863 * ll - 0.7034186147 * mm + 1.707614701 * ss,
+            ].map(encoded);
+        }
+        const fits = rgb => rgb.every(v => Number.isFinite(v) && v >= -1e-8 && v <= 1 + 1e-8);
+        function mapped(l, c, h) {
+            l = clamp(l);
+            c = clamp(c, 0, 0.4);
+            if (l === 0) return fromHex("#000000");
+            if (l === 1) return fromHex("#FFFFFF");
+            let rgb = rawRgb(l, c, h);
+            if (fits(rgb)) return fromRgb(rgb);
+            let low = 0,
+                high = c;
+            for (let i = 0; i < 25; i++) {
+                const mid = (low + high) / 2;
+                fits(rawRgb(l, mid, h)) ? (low = mid) : (high = mid);
+            }
+            return fromRgb(rawRgb(l, low, h));
+        }
+        const contrast = (a, b) => (Math.max(a.y, b.y) + 0.05) / (Math.min(a.y, b.y) + 0.05);
+        const WHITE = fromHex("#FFFFFF"),
+            DARK = fromHex("#111418");
+        function composite(a, b, alpha) {
+            const rgb = a.rgb.map((v, i) => lerp(b.rgb[i], v, alpha));
+            return fromRgb(rgb);
+        }
+        function solveY(y, c, h) {
+            let low = 0,
+                high = 1,
+                best = fromHex("#000000"),
+                error = Math.abs(y);
+            for (let i = 0; i < 32; i++) {
+                const l = (low + high) / 2,
+                    col = mapped(l, c, h),
+                    e = Math.abs(col.y - y);
+                if (col.y <= y + 1e-12 && e < error) {
+                    best = col;
+                    error = e;
+                }
+                col.y <= y ? (low = l) : (high = l);
+            }
+            return best;
+        }
+        const distance = (a, b) => 100 * Math.hypot(a.l - b.l, a.a - b.a, a.bb - b.bb);
+        const hueGap = (a, b) => (a.c < 0.005 || b.c < 0.005 ? null : Math.abs(((a.h - b.h + 540) % 360) - 180));
+        const baseline = fromHex("#B45B00");
+        const defaults = {
+            preset: "proposal",
+            h: baseline.h,
+            l: baseline.l,
+            c: baseline.c,
+            lock: false,
+            target: 4.8,
+            comparison: "next",
+            bp6Rest: "3",
+            surface: "#FFFFFF",
+            labels: "white",
+            roles: "readable",
+            grayscale: false,
+            step: 0.09,
+            shift: 0,
+            tint: 0.28,
+            stripes: "none",
+            progress: 65,
+            preview: "rest",
+            tab: "components",
+            compareStep: 6,
+        };
+        let state = { ...defaults },
+            saved = [],
+            inspected = { family: "orange", index: 4 },
+            bp6Inspected = null,
+            model = null,
+            frame = 0;
+        const undoHistory = [],
+            redoHistory = [];
+        let pendingEdit = null;
+        function historySnapshot() {
+            const { tab, preview, compareStep, ...settings } = state;
+            return { settings, saved: JSON.parse(JSON.stringify(saved)) };
+        }
+        function rememberChange(before) {
+            if (JSON.stringify(before) === JSON.stringify(historySnapshot())) return;
+            undoHistory.push(before);
+            if (undoHistory.length > 40) undoHistory.shift();
+            redoHistory.length = 0;
+            $("#history-status").hidden = true;
+        }
+        function travelHistory(redo) {
+            if (pendingEdit) {
+                rememberChange(pendingEdit);
+                pendingEdit = null;
+            }
+            const source = redo ? redoHistory : undoHistory,
+                destination = redo ? undoHistory : redoHistory;
+            if (!source.length) return false;
+            destination.push(historySnapshot());
+            const entry = source.pop();
+            state = cleanSettings({ ...state, ...entry.settings });
+            saved = JSON.parse(JSON.stringify(entry.saved));
+            render(true);
+            persist();
+            $("#history-status").hidden = false;
+            $("#history-status").textContent = redo ? "Change restored." : "Change undone.";
+            return true;
+        }
+        function cleanSettings(input) {
+            const next = { ...defaults };
+            for (const key of Object.keys(defaults)) {
+                if (typeof input?.[key] === typeof defaults[key]) next[key] = input[key];
+            }
+            for (const [key, min, max] of [
+                ["h", 0, 360],
+                ["l", 0, 1],
+                ["c", 0, 0.4],
+                ["target", 1, 21],
+                ["step", 0.01, 0.15],
+                ["shift", -45, 45],
+                ["tint", 0, 0.5],
+                ["progress", 0, 100],
+                ["compareStep", 0, 9],
+            ])
+                next[key] = Number.isFinite(next[key]) ? clamp(next[key], min, max) : defaults[key];
+            next.compareStep = Math.round(next.compareStep);
+            for (const [key, values] of Object.entries({
+                preset: ["proposal", "ryan", "bp3", "bp5", "bright", "hue62", "custom"],
+                comparison: ["next", "bp6", "linked"],
+                bp6Rest: ["3", "5"],
+                surface: ["#FFFFFF", "#F6F7F9", "#1C2127", "#2F343C"],
+                labels: ["white", "dark", "auto"],
+                roles: ["readable", "rest"],
+                stripes: ["none", "white", "dark"],
+                preview: ["rest", "hover", "selected"],
+                tab: ["components", "palette", "contrast"],
+            }))
+                if (!values.includes(next[key])) next[key] = defaults[key];
+            return next;
+        }
+        function orangeAnchor(settings = state) {
+            return settings.lock
+                ? solveY(1.05 / settings.target - 0.05, settings.c, settings.h)
+                : mapped(settings.l, settings.c, settings.h);
+        }
+        function trialRamp(base, orange, family, settings = state) {
+            const upper = Math.max(0.94, orange.l),
+                lower = Math.min(0.12, orange.l),
+                up = Math.min(settings.step, (upper - orange.l) / 3),
+                down = Math.min(settings.step, (orange.l - lower) / 3);
+            const lights = [
+                upper,
+                lerp(upper, orange.l + 2 * up, 0.5),
+                orange.l + 2 * up,
+                orange.l + up,
+                orange.l,
+                orange.l - down,
+                orange.l - 2 * down,
+                lerp(orange.l - 2 * down, lower, 1 / 3),
+                lerp(orange.l - 2 * down, lower, 2 / 3),
+                lower,
+            ];
+            const strengths = [
+                settings.tint,
+                lerp(settings.tint, 1, 0.26),
+                lerp(settings.tint, 1, 0.54),
+                0.85,
+                1,
+                1,
+                0.9,
+                0.68,
+                0.38,
+                0.15,
+            ];
+            return lights.map((light, i) => {
+                if (i === 4) return base;
+                const l =
+                    family === "orange"
+                        ? light
+                        : light >= orange.l
+                          ? base.l + ((light - orange.l) / Math.max(1e-8, 1 - orange.l)) * (1 - base.l)
+                          : (base.l * light) / Math.max(1e-8, orange.l);
+                return mapped(
+                    l,
+                    base.c * strengths[i],
+                    base.h + (family === "orange" ? settings.shift * Math.max(0, (i - 4) / 5) : 0),
+                );
+            });
+        }
+        function buildModel() {
+            const orange = orangeAnchor(),
+                surface = fromHex(state.surface),
+                dark = surface.y < 0.1;
+            const ramps = {},
+                indices = {},
+                stepLabels = {};
+            for (const family of FAMILIES) {
+                if (family === "orange" || state.comparison === "linked") {
+                    const base = family === "orange" ? orange : solveY(orange.y, orange.c, fromHex(BP6[family][2]).h);
+                    ramps[family] = trialRamp(base, orange, family);
+                    indices[family] = { rest: 4, hover: dark ? 3 : 5, selected: dark ? 5 : 6 };
+                    stepLabels[family] = ramps[family].map((_, i) => (i + 1) * 100);
+                } else if (state.comparison === "next") {
+                    ramps[family] = (dark ? NEXT_DARK : NEXT_LIGHT)[family].map(fromHex);
+                    indices[family] = { rest: 4, hover: dark ? 3 : 5, selected: dark ? 5 : 6 };
+                    stepLabels[family] = ramps[family].map((_, i) => (i + 1) * 100);
+                } else {
+                    ramps[family] = BP6[family].map(fromHex).reverse();
+                    const n = ramps[family].length;
+                    indices[family] = { rest: n - 3, hover: n - 2, selected: n - 1 };
+                    stepLabels[family] = ramps[family].map((_, i) => n - i);
+                }
+            }
+            ramps.ryanOrange = (dark ? NEXT_DARK : NEXT_LIGHT).orange.map(fromHex);
+            indices.ryanOrange = { rest: 4, hover: dark ? 3 : 5, selected: dark ? 5 : 6 };
+            stepLabels.ryanOrange = ramps.ryanOrange.map((_, i) => (i + 1) * 100);
+            ramps.bp6Orange = BP6.orange.map(fromHex).reverse();
+            const bp6Rest = ramps.bp6Orange.length - Number(state.bp6Rest);
+            indices.bp6Orange = { rest: bp6Rest, hover: bp6Rest + 1, selected: bp6Rest + 2 };
+            stepLabels.bp6Orange = ramps.bp6Orange.map((_, i) => ramps.bp6Orange.length - i);
+            const track = composite(dark ? DARK : fromHex("#5F6B7C"), surface, dark ? 0.5 : 0.2);
+            const view = { orange, surface, dark, ramps, indices, stepLabels, track, families: {} };
+            for (const family of PREVIEW_FAMILIES) {
+                const ramp = ramps[family],
+                    states = Object.fromEntries(["rest", "hover", "selected"].map(k => [k, ramp[indices[family][k]]]));
+                const fill = states[state.preview];
+                const minWhite = Math.min(...Object.values(states).map(c => contrast(c, WHITE))),
+                    minDark = Math.min(...Object.values(states).map(c => contrast(c, DARK)));
+                const label =
+                    state.labels === "white"
+                        ? WHITE
+                        : state.labels === "dark"
+                          ? DARK
+                          : minWhite >= minDark
+                            ? WHITE
+                            : DARK;
+                const choose = (bg, minimum) => {
+                    if (state.roles === "rest") return states.rest;
+                    const eligible = ramp.filter(c => contrast(c, bg) >= minimum);
+                    return (
+                        eligible.sort((a, b) => distance(a, states.rest) - distance(b, states.rest))[0] ||
+                        (contrast(WHITE, bg) > contrast(DARK, bg) ? WHITE : DARK)
+                    );
+                };
+                const tint = composite(states.rest, surface, dark ? 0.2 : 0.1),
+                    text = choose(surface, 4.5),
+                    border = choose(surface, 3),
+                    tintText = choose(tint, 4.5),
+                    stripe =
+                        state.stripes === "none"
+                            ? null
+                            : composite(
+                                  state.stripes === "white" ? WHITE : DARK,
+                                  fill,
+                                  state.stripes === "white" ? 0.2 : 0.55,
+                              );
+                view.families[family] = { ramp, states, fill, label, tint, text, border, tintText, stripe };
+            }
+            return view;
+        }
+        const fmt = n => Number(n).toFixed(2),
+            title = s => s.charAt(0).toUpperCase() + s.slice(1);
+        function updateSliderColors() {
+            for (const key of ["h", "l", "c", "step", "shift", "tint"]) {
+                const el = $(`#${key}-range`),
+                    scale = Number(el.dataset.scale || 1),
+                    min = Number(el.min) / scale,
+                    max = Number(el.max) / scale;
+                const current = key === "l" && state.lock ? model.orange.l : state[key],
+                    position = (current - min) / (max - min);
+                const sample = value => {
+                    const settings = { ...state, [key]: value };
+                    if (key === "l") return mapped(value, state.c, state.h);
+                    if (key === "h" || key === "c") return orangeAnchor(settings);
+                    return trialRamp(model.orange, model.orange, "orange", settings)[
+                        key === "step" ? model.indices.orange.selected : key === "shift" ? 7 : 0
+                    ];
+                };
+                const stops = [...Array.from({ length: 61 }, (_, i) => i / 60), position]
+                    .sort((a, b) => a - b)
+                    .map(
+                        t =>
+                            `${sample(lerp(min, max, t)).hex} calc(${(t * 100).toFixed(3)}% + ${(10 - 20 * t).toFixed(3)}px)`,
+                    );
+                const currentColor = key === "l" && state.lock ? model.orange : sample(current);
+                el.dataset.colorPreview = "";
+                el.style.setProperty("--slider-gradient", `linear-gradient(to right, ${stops.join(",")})`);
+                el.style.setProperty("--slider-color", currentColor.hex);
+                el.setAttribute(
+                    "aria-valuetext",
+                    `${Number((current * scale).toFixed(3))}${key === "h" || key === "shift" ? " degrees" : scale === 100 ? " percent" : ""}, ${currentColor.hex}`,
+                );
+            }
+        }
+        function updateControls(force = false) {
+            for (const el of $$("[data-key]")) {
+                const key = el.dataset.key,
+                    scale = Number(el.dataset.scale || 1);
+                if (el.type === "checkbox") el.checked = state[key];
+                else if (force || document.activeElement !== el || el.type === "range" || el.tagName === "SELECT") {
+                    const value = key === "l" && state.lock ? model.orange.l : state[key];
+                    el.value = typeof value === "number" ? Number((value * scale).toFixed(key === "c" ? 3 : 1)) : value;
+                }
+                if (key === "l") el.disabled = state.lock;
+                if (key === "target") el.disabled = !state.lock;
+            }
+            updateSliderColors();
+            if (force || document.activeElement !== $("#hex-input")) $("#hex-input").value = model.orange.hex;
+            $("#color-input").value = model.orange.hex.toLowerCase();
+            $("#lock-note").textContent = state.lock
+                ? "Lightness adjusts to meet the white-text target. Turn this off to edit lightness directly."
+                : "Lightness is free. Hex edits keep the entered color.";
+            const reduced = state.c - model.orange.c;
+            $("#gamut-note").textContent =
+                reduced > 0.002
+                    ? `Display limit: chroma reduced from ${state.c.toFixed(3)} to ${model.orange.c.toFixed(3)}. Hue is preserved as closely as 8-bit color allows.`
+                    : `Displayed OKLCH: ${(model.orange.l * 100).toFixed(1)}% · ${model.orange.c.toFixed(3)} · ${model.orange.h.toFixed(1)}°`;
+            for (const el of $$("[data-state]"))
+                el.setAttribute("aria-pressed", String(el.dataset.state === state.preview));
+            for (const el of $$("[data-tab]")) {
+                const active = el.dataset.tab === state.tab;
+                el.setAttribute("aria-selected", String(active));
+                el.tabIndex = active ? 0 : -1;
+                $(`#${el.dataset.tab}-panel`).hidden = !active;
+            }
+            $("#mode-label").textContent =
+                `${model.dark ? "Dark" : "Light"} surface · ${state.comparison === "linked" ? "colors follow orange" : state.comparison === "next" ? "other colors: Next snapshot" : "other colors: current BP6"}`;
+        }
+        function renderSummary() {
+            const orange = model.families.orange,
+                red = model.families.red,
+                gap = hueGap(orange.fill, red.fill);
+            $("#comparison-summary").innerHTML =
+                [
+                    ["orange", orange],
+                    ["red", red],
+                ]
+                    .map(
+                        ([name, item]) =>
+                            `<div class="lab-compare-color"><span class="lab-chip" style="background:${item.fill.hex}"></span><div><strong>${NAMES[name]} · ${item.fill.hex}</strong><small>Label contrast ${fmt(contrast(item.fill, item.label))}:1 · hue ${item.fill.c < 0.005 ? "neutral" : item.fill.h.toFixed(1) + "°"}</small></div></div>`,
+                    )
+                    .join("") +
+                `<div class="lab-distance">Orange ↔ red: ΔEOK ×100 = ${distance(orange.fill, red.fill).toFixed(1)}${gap === null ? "" : ` · hue gap ${gap.toFixed(1)}°`}. Larger distance means further apart; it is not an accessibility pass score.</div>`;
+        }
+        function renderRampComparison() {
+            const orange = model.ramps.orange[state.compareStep],
+                ryan = model.ramps.ryanOrange[state.compareStep],
+                redRamp = model.ramps.red;
+            const nearest = (ramp, color) =>
+                ramp.reduce((best, c, i) => (Math.abs(c.l - color.l) < Math.abs(ramp[best].l - color.l) ? i : best), 0);
+            const redIndex = state.comparison === "bp6" ? nearest(redRamp, orange) : state.compareStep,
+                red = redRamp[redIndex];
+            const bp6Index = bp6Inspected ?? nearest(model.ramps.bp6Orange, orange),
+                bp6 = model.ramps.bp6Orange[bp6Index];
+            $("#comparison-ramps").innerHTML = ["bp6Orange", "orange", "ryanOrange", "red"]
+                .map(
+                    family =>
+                        `<div><div class="ramp-name">${family === "orange" ? "Your orange · editable" : family === "ryanOrange" ? `Ryan’s orange · fixed ${model.dark ? "dark" : "light"} palette` : family === "bp6Orange" ? "BP6 orange · fixed original 6→1" : `Danger red · ${state.comparison === "linked" ? "generated" : state.comparison === "next" ? "Next reference" : "BP6 reference"}`}</div><div class="ramp-swatches">${model.ramps[
+                            family
+                        ]
+                            .map((c, i) => {
+                                const pick =
+                                        family !== "red" || state.comparison !== "bp6"
+                                            ? i
+                                            : nearest(model.ramps.orange, c),
+                                    selected =
+                                        family === "bp6Orange"
+                                            ? bp6Index
+                                            : family === "red"
+                                              ? redIndex
+                                              : state.compareStep;
+                                return `<button type="button" ${family === "bp6Orange" ? `data-compare-bp6="${i}"` : `data-compare-step="${pick}"`} aria-label="Compare ${NAMES[family]} ${model.stepLabels[family][i]}, ${c.hex}" aria-pressed="${i === selected}" style="background:${c.hex};color:${contrast(c, WHITE) > contrast(c, DARK) ? WHITE.hex : DARK.hex}">${model.stepLabels[family][i]}</button>`;
+                            })
+                            .join("")}</div></div>`,
+                )
+                .join("");
+            $("#dark-comparison").innerHTML =
+                [
+                    [bp6, "BP6 orange", model.stepLabels.bp6Orange[bp6Index]],
+                    [orange, "Your orange", model.stepLabels.orange[state.compareStep]],
+                    [ryan, "Ryan’s orange", model.stepLabels.ryanOrange[state.compareStep]],
+                    [red, "Red", model.stepLabels.red[redIndex]],
+                ]
+                    .map(
+                        ([c, name, step]) =>
+                            `<div><div class="lab-dark-swatch" style="background:${c.hex};color:${contrast(c, WHITE) > contrast(c, DARK) ? WHITE.hex : DARK.hex}"><span>${name} ${step} · ${c.hex}</span><small>L ${(c.l * 100).toFixed(1)}% · C ${c.c.toFixed(3)} · H ${c.c < 0.005 ? "neutral" : c.h.toFixed(1) + "°"}</small></div>${[
+                                [WHITE, "White text", 4.5],
+                                [DARK, "Dark text", 4.5],
+                                [model.surface, "On surface", 3],
+                            ]
+                                .map(([bg, label, target]) => {
+                                    const ratio = contrast(c, bg);
+                                    return `<p class="lab-note">${label}: <span class="${ratio >= target ? "check-pass" : "check-fail"}">${fmt(ratio)}:1 · ${ratio >= target ? "meets" : "below"} ${target}:1</span></p>`;
+                                })
+                                .join(
+                                    "",
+                                )}${name === "Red" ? "" : `<p class="lab-note">From red: ΔEOK ×100 ${distance(c, red).toFixed(1)}${hueGap(c, red) === null ? "" : ` · hue gap ${hueGap(c, red).toFixed(1)}°`}</p>`}</div>`,
+                    )
+                    .join("") +
+                `<p class="lab-note">BP6 orange: ${bp6Inspected === null ? "nearest lightness match" : "manually selected shade"}. BP6’s 1–6 labels differ from the ten-step ramps. Select a ten-step shade to rematch. Larger ΔE means further apart; there is no accessibility pass threshold between colors.</p>`;
+            $("#comparison-ramps").classList.toggle("lab-grayscale", state.grayscale);
+            $("#dark-comparison").style.filter = state.grayscale ? "grayscale(1)" : "";
+        }
+        function renderComponents() {
+            const surface = model.surface.hex,
+                ink = model.dark ? "#F6F7F9" : "#1C2127",
+                muted = model.dark ? "#ABB3BF" : "#5F6B7C",
+                edge = model.dark ? "#404854" : "#D3D8DE";
+            const gallery = $("#component-gallery");
+            gallery.classList.toggle("lab-grayscale", state.grayscale);
+            gallery.style.cssText = `--surface:${surface};--ink:${ink};--muted-ink:${muted};--edge:${edge}`;
+            gallery.innerHTML = PREVIEW_FAMILIES.map(family => {
+                const f = model.families[family],
+                    intent = ["ryanOrange", "bp6Orange"].includes(family) ? "Warning" : NAMES[family],
+                    pattern =
+                        state.stripes === "none"
+                            ? "none"
+                            : state.stripes === "white"
+                              ? "repeating-linear-gradient(-45deg, rgb(255 255 255 / 20%) 0 4px, transparent 4px 8px)"
+                              : "repeating-linear-gradient(-45deg, rgb(17 20 24 / 55%) 0 2px, transparent 2px 8px)";
+                const icon = `<i data-lucide="${ICONS[family]}" aria-hidden="true"></i>`;
+                return `<div class="intent-column" style="--fill:${f.fill.hex};--label:${f.label.hex};--role-text:${f.text.hex};--role-icon:${f.border.hex};--role-border:${f.border.hex};--outline:${composite(f.text, model.surface, 0.6).hex};--tint:${f.tint.hex};--tint-text:${f.tintText.hex};--track:${model.track.hex};--progress:${state.progress}%;--pattern:${pattern}">
+      <span class="intent-name">${family === "orange" ? "Your orange" : NAMES[family]}</span><span class="intent-hex">${f.fill.hex}${family === "bp6Orange" ? ` · ${model.stepLabels.bp6Orange[model.indices.bp6Orange[state.preview]]}` : ""}</span>
+      <span class="sample-label">Solid button</span><button class="sample-solid" type="button" data-demo-select="${family}" aria-pressed="${state.preview === "selected"}">${intent}</button>
+      <span class="sample-label">Outlined / minimal</span><span class="sample-outline">${intent}</span><span class="sample-minimal">${intent}</span>
+      <span class="sample-label">Tag</span><span class="sample-tag">${intent}</span>
+      <span class="sample-label">Callout</span><div class="sample-callout"><strong>${intent}</strong>Review changes.</div>
+      <span class="sample-label">Toast</span><div class="sample-toast">${icon}<span>Changes pending</span></div>
+      <span class="sample-label">Menu item</span><div class="sample-menu">Review changes</div>
+      <span class="sample-label">Input / helper text</span><input class="sample-input" aria-label="${NAMES[family]} input preview" value="Value" readonly><span class="sample-helper">Check this value</span>
+      <span class="sample-label">Progress</span><div class="sample-progress" role="progressbar" aria-label="${NAMES[family]} progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${state.progress}"><div class="sample-meter"></div></div>
+      <span class="sample-label">Icon / spinner</span><div class="sample-icons">${icon}<span class="sample-spinner" role="img" aria-label="${NAMES[family]} spinner color"></span></div>
+      <span class="sample-label">Table cell</span><div class="sample-cell">Needs review</div>
+    </div>`;
+            }).join("");
+            if (window.lucide) window.lucide.createIcons({ attrs: { width: 16, height: 16, "stroke-width": 2 } });
+        }
+        function renderPalette() {
+            const source =
+                state.comparison === "linked"
+                    ? "All 14 generated chromatic ramps follow orange."
+                    : state.comparison === "next"
+                      ? "Orange is editable; other families use Blueprint Next references."
+                      : "Orange is editable; other families use BP6 references (including shade 6 where published).";
+            $("#palette-caption").textContent =
+                source +
+                " The separate Ryan and BP6 orange references stay fixed. Click any shade to inspect it. Colors run light to dark.";
+            const host = $("#all-ramps");
+            host.className = "lab-ramps" + (state.grayscale ? " lab-grayscale" : "");
+            host.innerHTML = PALETTE_FAMILIES.map(family => {
+                const ramp = model.ramps[family],
+                    labels = model.stepLabels[family],
+                    restIndex = model.indices[family].rest,
+                    rest = ramp[restIndex],
+                    last = ramp.at(-1),
+                    own = family === "orange";
+                const steps = [0, 1].map(offset =>
+                    Number((100 * (ramp[restIndex + offset].l - ramp[restIndex + offset + 1].l)).toFixed(1)),
+                );
+                const stepPath = `${labels[restIndex]}→${labels[restIndex + 1]} / ${labels[restIndex + 1]}→${labels[restIndex + 2]}`;
+                const hueShift = ((last.h - rest.h + 540) % 360) - 180,
+                    hueText =
+                        rest.c < 0.005 || last.c < 0.005
+                            ? "No clear hue"
+                            : `${hueShift >= 0 ? "+" : ""}${Number(hueShift.toFixed(1))}°`;
+                const tintText =
+                    rest.c < 0.005 ? "No clear chroma ratio" : `${Number(((ramp[0].c / rest.c) * 100).toFixed(1))}%`;
+                return `<div><div class="ramp-name">${["ryanOrange", "bp6Orange"].includes(family) ? NAMES[family] : title(family)}<span>${!["ryanOrange", "bp6Orange"].includes(family) && (own || state.comparison === "linked") ? "trial ramp" : "fixed reference"}</span></div><div class="ramp-swatches">${ramp.map((c, i) => `<button type="button" data-inspect="${family}:${i}" aria-label="${["ryanOrange", "bp6Orange"].includes(family) ? NAMES[family] : family} ${labels[i]}, ${c.hex}" aria-pressed="${inspected.family === family && inspected.index === i}" style="background:${c.hex};color:${contrast(c, WHITE) > contrast(c, DARK) ? WHITE.hex : DARK.hex}">${labels[i]}</button>`).join("")}</div>
+        <dl class="ramp-properties">
+          <div><dt>Step size</dt><dd>${own ? `${Number((state.step * 100).toFixed(1))} L points · setting` : `${steps.join(" / ")} L points`}<small>${stepPath}${own ? `: ${steps.join(" / ")} shown` : ""}</small></dd></div>
+          <div><dt>Dark-end hue shift</dt><dd>${own ? `${state.shift}° · setting` : hueText}<small>${labels[restIndex]}→${labels.at(-1)}${own ? `: ${hueText} shown` : ""}</small></dd></div>
+          <div><dt>Light tint strength</dt><dd>${own ? `${Number((state.tint * 100).toFixed(1))}% · setting` : tintText}<small>${labels[0]} / ${labels[restIndex]} chroma${own ? `: ${tintText} shown` : ""}</small></dd></div>
+        </dl></div>`;
+            }).join("");
+            if (!model.ramps[inspected.family]) inspected = { family: "orange", index: 4 };
+            inspected.index = Math.min(inspected.index, model.ramps[inspected.family].length - 1);
+            const c = model.ramps[inspected.family][inspected.index];
+            $("#palette-inspector").innerHTML =
+                `<span class="lab-chip" style="background:${c.hex}"></span><div><strong>${["ryanOrange", "bp6Orange"].includes(inspected.family) ? NAMES[inspected.family] : title(inspected.family)} ${model.stepLabels[inspected.family][inspected.index]} · ${c.hex}</strong><p>L ${(c.l * 100).toFixed(1)}% · C ${c.c.toFixed(3)} · H ${c.c < 0.005 ? "neutral" : c.h.toFixed(1) + "°"}</p><p>White ${fmt(contrast(c, WHITE))}:1 · dark ${fmt(contrast(c, DARK))}:1 · surface ${fmt(contrast(c, model.surface))}:1</p></div><button type="button" class="lab-button" id="use-inspected">Use as orange anchor</button>`;
+            $("#neutral-ramp").innerHTML = NEUTRALS.map(
+                hex =>
+                    `<span style="background:${hex}" data-tooltip="${hex}" role="img" aria-label="Neutral ${hex}"></span>`,
+            ).join("");
+        }
+        function renderContrast() {
+            const rows = [
+                ["Solid label · rest", f => contrast(f.states.rest, f.label), 4.5],
+                ["Solid label · hover", f => contrast(f.states.hover, f.label), 4.5],
+                ["Solid label · selected", f => contrast(f.states.selected, f.label), 4.5],
+                ["Colored text on surface", f => contrast(f.text, model.surface), 4.5],
+                ["Callout text on tint", f => contrast(f.tintText, f.tint), 4.5],
+                ["Input border on surface", f => contrast(f.border, model.surface), 3],
+                ["Icon on surface", f => contrast(f.border, model.surface), 3],
+                ["Progress / spinner fill on track", f => contrast(f.fill, model.track), 3],
+                ["Progress / spinner fill on surface", f => contrast(f.fill, model.surface), 3],
+            ];
+            $("#contrast-table").innerHTML =
+                rows
+                    .map(
+                        ([label, calc, target]) =>
+                            `<tr><th scope="row">${label}</th>${PREVIEW_FAMILIES.map(name => {
+                                const ratio = calc(model.families[name]),
+                                    pass = ratio >= target;
+                                return `<td class="${pass ? "check-pass" : "check-fail"}">${fmt(ratio)}:1<small>${pass ? "Meets" : "Below"} ${target}:1</small></td>`;
+                            }).join("")}</tr>`,
+                    )
+                    .join("") +
+                (state.stripes === "none"
+                    ? ""
+                    : `<tr><th scope="row">Stripe on track<br><small>Pair only; review pattern</small></th>${PREVIEW_FAMILIES.map(name => `<td>${fmt(contrast(model.families[name].stripe, model.track))}:1</td>`).join("")}</tr>`);
+        }
+        function renderSaved() {
+            $("#saved-section").hidden = saved.length === 0;
+            $("#saved-list").innerHTML = saved
+                .map(
+                    (item, i) =>
+                        `<div class="saved-item"><button type="button" class="lab-button" data-restore="${i}"><span class="saved-dot" style="background:${item.hex}"></span>${item.hex}</button><button class="lab-button" type="button" data-remove="${i}" aria-label="Remove saved ${item.hex}">Remove</button></div>`,
+                )
+                .join("");
+        }
+        function render(force = false) {
+            model = buildModel();
+            updateControls(force);
+            renderSummary();
+            renderRampComparison();
+            renderComponents();
+            renderPalette();
+            renderContrast();
+            renderSaved();
+        }
+        function schedule() {
+            if (frame) return;
+            frame = requestAnimationFrame(() => {
+                frame = 0;
+                render();
+            });
+        }
+        function persist() {
+            if (window.openai?.setWidgetState)
+                window.openai
+                    .setWidgetState({
+                        modelContent: {
+                            schema: "orange-lab-v1",
+                            rampSettingsRevision: 1,
+                            settings: state,
+                            saved: saved.slice(0, 6),
+                            hex: model?.orange.hex,
+                        },
+                        privateContent: { inspected, bp6Inspected },
+                    })
+                    .catch(() => {});
+        }
+        function setHex(value, preset = "custom", remember = true) {
+            const c = fromHex(value);
+            if (!c) {
+                $("#hex-error").textContent = "Enter a 3- or 6-digit hex color.";
+                return false;
+            }
+            const before = historySnapshot();
+            $("#hex-error").textContent = "";
+            state = { ...state, h: c.c < 0.005 ? state.h : c.h, l: c.l, c: c.c, lock: false, preset };
+            if (remember) rememberChange(before);
+            render();
+            persist();
+            return true;
+        }
+        function loadPreset(preset) {
+            const hex = {
+                proposal: "#B45B00",
+                ryan: "#BD5200",
+                bp3: "#C87619",
+                bp5: "#FBB360",
+                bright: "#F29F40",
+                hue62: "#A96000",
+            }[preset];
+            if (hex) setHex(hex, preset);
+            else {
+                const before = historySnapshot();
+                state.preset = "custom";
+                rememberChange(before);
+            }
+        }
+        root.addEventListener("input", event => {
+            const el = event.target;
+            if (!el.matches("[data-key]") || el.tagName === "SELECT" || el.type === "checkbox") return;
+            const key = el.dataset.key;
+            if (el.value === "") return;
+            const value = Number(el.value) / Number(el.dataset.scale || 1);
+            if (!Number.isFinite(value)) return;
+            pendingEdit ??= historySnapshot();
+            state = cleanSettings({ ...state, [key]: value });
+            if (["h", "l", "c"].includes(key)) state.preset = "custom";
+            schedule();
+        });
+        root.addEventListener("change", event => {
+            const el = event.target;
+            if (el.id === "hex-input" || el.id === "color-input") {
+                setHex(el.value);
+                return;
+            }
+            if (!el.matches("[data-key]")) return;
+            const key = el.dataset.key;
+            if (key === "preset") {
+                loadPreset(el.value);
+                return;
+            }
+            const before = pendingEdit || historySnapshot();
+            pendingEdit = null;
+            if (key === "lock" && !el.checked) state.l = model.orange.l;
+            state = cleanSettings({
+                ...state,
+                [key]:
+                    el.type === "checkbox"
+                        ? el.checked
+                        : el.tagName === "SELECT"
+                          ? el.value
+                          : Number(el.value) / Number(el.dataset.scale || 1),
+            });
+            rememberChange(before);
+            render();
+            persist();
+        });
+        $("#hex-input").addEventListener("keydown", event => {
+            if (event.key === "Enter") setHex(event.target.value);
+        });
+        root.addEventListener("click", async event => {
+            const button = event.target.closest("button");
+            if (!button) return;
+            const before = historySnapshot();
+            const focused = document.activeElement === button;
+            const focusAttribute = [
+                "data-compare-step",
+                "data-compare-bp6",
+                "data-inspect",
+                "data-demo-select",
+                "data-restore",
+                "data-remove",
+            ].find(name => button.hasAttribute(name));
+            const focusSelector = button.id
+                ? `#${CSS.escape(button.id)}`
+                : focusAttribute
+                  ? `[${focusAttribute}="${CSS.escape(button.getAttribute(focusAttribute))}"]`
+                  : null;
+            const focusIndex = focusSelector ? $$(focusSelector).indexOf(button) : 0;
+            if (button.dataset.tab) {
+                state.tab = button.dataset.tab;
+                render();
+                persist();
+            } else if (button.dataset.state) {
+                state.preview = button.dataset.state;
+                render();
+                persist();
+            } else if (button.dataset.compareStep !== undefined) {
+                state.compareStep = Number(button.dataset.compareStep);
+                bp6Inspected = null;
+                renderRampComparison();
+                persist();
+            } else if (button.dataset.compareBp6 !== undefined) {
+                bp6Inspected = Number(button.dataset.compareBp6);
+                renderRampComparison();
+                persist();
+            } else if (button.dataset.demoSelect) {
+                state.preview = state.preview === "selected" ? "rest" : "selected";
+                render();
+                persist();
+            } else if (button.dataset.inspect) {
+                const [family, index] = button.dataset.inspect.split(":");
+                inspected = { family, index: Number(index) };
+                renderPalette();
+                persist();
+            } else if (button.id === "use-inspected")
+                setHex(model.ramps[inspected.family][inspected.index].hex, "custom", false);
+            else if (button.id === "save-candidate") {
+                saved.unshift({ hex: model.orange.hex, settings: { ...state } });
+                saved = saved.slice(0, 6);
+                renderSaved();
+                persist();
+            } else if (button.dataset.restore !== undefined) {
+                state = cleanSettings(saved[Number(button.dataset.restore)].settings);
+                render();
+                persist();
+            } else if (button.dataset.remove !== undefined) {
+                saved.splice(Number(button.dataset.remove), 1);
+                renderSaved();
+                persist();
+            } else if (button.id === "copy-recipe") {
+                const recipe = {
+                    orange: model.orange.hex,
+                    oklch: { l: model.orange.l, c: model.orange.c, h: model.orange.h },
+                    states: Object.fromEntries(
+                        Object.entries(model.families.orange.states).map(([k, v]) => [k, v.hex]),
+                    ),
+                    ramp: model.ramps.orange.map((c, i) => ({ step: (i + 1) * 100, hex: c.hex })),
+                    settings: state,
+                    model: "Hue-preserving trial; not Ryan recipe/CIECAM02",
+                    referenceCommit: "75a8495a8c5654cc5bf6c93c08dc1778cb5a0098",
+                };
+                const text = JSON.stringify(recipe, null, 2);
+                try {
+                    await navigator.clipboard.writeText(text);
+                    $("#copy-status").textContent = "Recipe copied.";
+                } catch {
+                    $("#recipe-output").hidden = false;
+                    $("#recipe-output").value = text;
+                    $("#recipe-output").focus();
+                    $("#recipe-output").select();
+                    $("#copy-status").textContent = "Recipe selected. Press Command+C or Control+C to copy.";
+                }
+            }
+            if (button.id !== "copy-recipe") rememberChange(before);
+            if (focused && !button.isConnected && focusSelector) {
+                const matches = $$(focusSelector),
+                    replacement =
+                        matches[Math.min(focusIndex, matches.length - 1)] ||
+                        (focusAttribute === "data-remove" ? $$("[data-remove]").at(-1) || $("#save-candidate") : null);
+                replacement?.focus({ preventScroll: true });
+            }
+        });
+        document.addEventListener("keydown", event => {
+            const key = event.key.toLowerCase();
+            if (
+                !(event.ctrlKey || event.metaKey) ||
+                event.altKey ||
+                !["z", "y"].includes(key) ||
+                (key === "y" && !event.ctrlKey)
+            )
+                return;
+            const active = document.activeElement;
+            if (!root.contains(active) && active !== document.body) return;
+            if (active === $("#hex-input") && fromHex(active.value)?.hex !== model.orange.hex) return;
+            const attribute = [
+                "data-compare-step",
+                "data-compare-bp6",
+                "data-inspect",
+                "data-demo-select",
+                "data-restore",
+                "data-remove",
+            ].find(name => active.hasAttribute(name));
+            const selector = active.id
+                    ? `#${CSS.escape(active.id)}`
+                    : attribute
+                      ? `[${attribute}="${CSS.escape(active.getAttribute(attribute))}"]`
+                      : null,
+                index = selector ? $$(selector).indexOf(active) : 0;
+            if (travelHistory(key === "y" || event.shiftKey)) {
+                event.preventDefault();
+                if (!active.isConnected) {
+                    const matches = selector ? $$(selector) : [];
+                    (matches[Math.min(index, matches.length - 1)] || $("#save-candidate")).focus({
+                        preventScroll: true,
+                    });
+                }
+            }
+        });
+        $(".lab-tabs").addEventListener("keydown", event => {
+            const tabs = $$("[data-tab]"),
+                i = tabs.indexOf(document.activeElement);
+            if (i < 0 || !["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+            event.preventDefault();
+            const next =
+                event.key === "Home" ? 0 : event.key === "End" ? 2 : (i + (event.key === "ArrowRight" ? 1 : 2)) % 3;
+            state.tab = tabs[next].dataset.tab;
+            render();
+            tabs[next].focus();
+            persist();
+        });
+        function restore(value) {
+            if (value?.modelContent?.schema !== "orange-lab-v1") return;
+            state = cleanSettings({
+                ...value.modelContent.settings,
+                ...(value.modelContent.rampSettingsRevision === 1 ? {} : { step: defaults.step, tint: defaults.tint }),
+            });
+            saved = Array.isArray(value.modelContent.saved)
+                ? value.modelContent.saved
+                      .slice(0, 6)
+                      .filter(x => fromHex(x.hex) && x.settings)
+                      .map(x => ({ hex: fromHex(x.hex).hex, settings: cleanSettings(x.settings) }))
+                : [];
+            const pick = value.privateContent?.inspected;
+            if (pick && PALETTE_FAMILIES.includes(pick.family) && Number.isInteger(pick.index) && pick.index >= 0)
+                inspected = pick;
+            const bp6Pick = value.privateContent?.bp6Inspected;
+            bp6Inspected = Number.isInteger(bp6Pick) && bp6Pick >= 0 && bp6Pick < BP6.orange.length ? bp6Pick : null;
+        }
+        restore(window.openai?.widgetState);
+        window.addEventListener("openai:set_globals", event => {
+            if (event.detail?.globals?.widgetState) {
+                restore(event.detail.globals.widgetState);
+                render();
+            }
+        });
+        root.__lab = {
+            fromHex,
+            mapped,
+            rawRgb,
+            contrast,
+            composite,
+            distance,
+            solveY,
+            getState: () => ({ ...state }),
+            getModel: () => model,
+            setSettings: values => {
+                state = cleanSettings({ ...state, ...values });
+                render();
+            },
+        };
+        render();
+    })();
+</script>
