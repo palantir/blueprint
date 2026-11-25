@@ -16,7 +16,24 @@
 
 import type { BasePlacement, Placement } from "@popperjs/core";
 
-export { placements as PopperPlacements } from "@popperjs/core";
+/** Full set of Popper placements. Declared locally so bundlers do not need a named `placements` re-export from `@popperjs/core`. */
+export const PopperPlacements = [
+    "auto-start",
+    "auto",
+    "auto-end",
+    "top-start",
+    "top",
+    "top-end",
+    "right-start",
+    "right",
+    "right-end",
+    "bottom-end",
+    "bottom",
+    "bottom-start",
+    "left-end",
+    "left",
+    "left-start",
+] as Placement[];
 
 // Popper placement utils
 // ======================
