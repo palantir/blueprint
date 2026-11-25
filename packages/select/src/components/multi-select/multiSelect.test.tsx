@@ -74,6 +74,25 @@ describe("<MultiSelect>", () => {
         expect(input.getDOMNode<HTMLInputElement>().placeholder).toBe(placeholder);
     });
 
+    describe("accessibility", () => {
+        it("input aria-activedescendant tracks the active item", () => {
+            const wrapper = multiselect();
+            expect(wrapper.find("input").prop("aria-activedescendant")).toBe(wrapper.find("a").at(0).prop("id"));
+            wrapper.find("input").simulate("keydown", { key: "ArrowDown" });
+            expect(wrapper.find("input").prop("aria-activedescendant")).toBe(wrapper.find("a").at(1).prop("id"));
+        });
+
+        it("input aria-controls references the listbox", () => {
+            const wrapper = multiselect();
+            const listbox = wrapper.find(`ul[role="listbox"]`);
+            expect(wrapper.find("input").prop("aria-controls")).toBe(listbox.prop("id"));
+        });
+
+        it("listbox is not a live region", () => {
+            expect(multiselect().find(`ul[role="listbox"]`).prop("aria-live")).toBe("off");
+        });
+    });
+
     it("tagRenderer can return JSX", () => {
         const wrapper = multiselect({
             selectedItems: [TOP_100_FILMS[0]],

@@ -109,6 +109,10 @@ describe("<Select>", () => {
         expect(handlers.itemRenderer.callCount).toBe(100);
     });
 
+    it("listbox is not a live region", () => {
+        expect(select().find(`ul[role="listbox"]`).prop("aria-live")).toBe("off");
+    });
+
     it("inputProps value and onChange are ignored", () => {
         const inputProps = { onChange: sinon.spy(), value: "nailed it" };
         // @ts-expect-error - value and onChange are now omitted from the props type

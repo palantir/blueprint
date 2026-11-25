@@ -144,7 +144,8 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             <QueryList<T>
                 {...restProps}
                 listId={this.listboxId}
-                menuProps={{ "aria-label": "selectable options", ...menuProps }}
+                // options are announced via aria-activedescendant, not the popover's live region
+                menuProps={{ "aria-label": "selectable options", "aria-live": "off", ...menuProps }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
