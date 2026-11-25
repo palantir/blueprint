@@ -160,7 +160,9 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         return (
             <QueryList<T>
                 {...restProps}
-                menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
+                listId={this.listboxId}
+                // options are announced via aria-activedescendant, not the popover's live region
+                menuProps={{ "aria-label": "selectable options", "aria-live": "off", ...menuProps }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
@@ -256,6 +258,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
             return (
                 <InputGroup
+                    aria-activedescendant={isOpen ? listProps.activeItemId : undefined}
                     aria-controls={this.listboxId}
                     autoComplete={autoComplete}
                     disabled={disabled}

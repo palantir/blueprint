@@ -189,6 +189,27 @@ describe("Suggest", () => {
         }
     });
 
+    describe("accessibility", () => {
+        it("input aria-activedescendant tracks the active item while open", () => {
+            const wrapper = suggest({ popoverProps: { usePortal: false } });
+            expect(wrapper.find("input").prop("aria-activedescendant")).toBeUndefined();
+            simulateFocus(wrapper);
+            expect(wrapper.find("input").prop("aria-activedescendant")).toBe(wrapper.find("a").at(0).prop("id"));
+            simulateKeyDown(wrapper, "ArrowDown");
+            expect(wrapper.find("input").prop("aria-activedescendant")).toBe(wrapper.find("a").at(1).prop("id"));
+        });
+
+        it("input aria-controls references the listbox", () => {
+            const wrapper = suggest();
+            const listbox = wrapper.find(`ul[role="listbox"]`);
+            expect(wrapper.find("input").prop("aria-controls")).toBe(listbox.prop("id"));
+        });
+
+        it("listbox is not a live region", () => {
+            expect(suggest().find(`ul[role="listbox"]`).prop("aria-live")).toBe("off");
+        });
+    });
+
     describe("closeOnSelect", () => {
         it("clicking an item closes the popover if closeOnSelect=true", () => {
             const ITEM_INDEX = 4;

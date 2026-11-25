@@ -200,11 +200,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         return (
             <QueryList<T>
                 {...restProps}
+                listId={this.listboxId}
                 menuProps={{
                     "aria-label": "selectable options",
+                    // options are announced via aria-activedescendant, not the popover's live region
+                    "aria-live": "off",
                     ...menuProps,
                     "aria-multiselectable": true,
-                    id: this.listboxId,
                 }}
                 onItemSelect={this.handleItemSelect}
                 onQueryChange={this.handleQueryChange}
@@ -326,6 +328,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
         // add our own inputProps.className so that we can reference it in event handlers
         const inputProps: HTMLInputProps = {
+            "aria-activedescendant": this.state.isOpen ? listProps.activeItemId : undefined,
+            "aria-controls": this.listboxId,
             ...tagInputProps.inputProps,
             className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
         };
