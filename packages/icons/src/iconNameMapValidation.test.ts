@@ -11,11 +11,11 @@ describe("validateIconNameMap", () => {
     const legacyIconNames = new Set(["current"]);
     const nextIconNames = new Set(["next"]);
 
-    it("allows historical legacy keys which no longer have SVGs", () => {
+    it("rejects keys which are not current legacy icon names", () => {
         const iconNameMap = { current: "next", historical: "next" };
 
-        expect(validateIconNameMap(JSON.stringify(iconNameMap), iconNameMap, legacyIconNames, nextIconNames)).toEqual(
-            [],
+        expect(validateIconNameMap(JSON.stringify(iconNameMap), iconNameMap, legacyIconNames, nextIconNames)).toContain(
+            'icons-name-map.json has entry for unknown legacy icon "historical"',
         );
     });
 
@@ -25,11 +25,11 @@ describe("validateIconNameMap", () => {
         );
     });
 
-    it("still requires historical keys to target a current next icon", () => {
-        const iconNameMap = { current: "next", historical: "removed" };
+    it("requires mappings to target a current next icon", () => {
+        const iconNameMap = { current: "removed" };
 
         expect(validateIconNameMap(JSON.stringify(iconNameMap), iconNameMap, legacyIconNames, nextIconNames)).toContain(
-            'icons-name-map.json maps "historical" to "removed", which is not a next icon (no resources/icons/next/outlined/removed.svg)',
+            'icons-name-map.json maps "current" to "removed", which is not a next icon (no resources/icons/next/outlined/removed.svg)',
         );
     });
 });

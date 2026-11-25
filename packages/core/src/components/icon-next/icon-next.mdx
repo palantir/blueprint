@@ -70,37 +70,51 @@ import { IconNextNames, IconSize } from "@blueprintjs/icons/next";
 
 ### Migrating dynamic icon names
 
-`IconNext` itself accepts next-generation icon names and does not implicitly reinterpret legacy names. For
-dynamic values that may already use either naming scheme, normalize the value with `iconNameToIconNextName`.
-This helper uses **next-first** precedence, which makes it safe to apply broadly to mixed or already-migrated
-values:
+`IconNext` itself accepts next-generation icon names and does not implicitly reinterpret legacy names. For typed
+values that may already use either naming scheme, normalize the value with `iconNameToIconNextName`. This helper
+uses **next-first** precedence, which makes it safe to apply broadly to mixed or already-migrated values:
 
 ```tsx
 import { IconNext } from "@blueprintjs/core";
-import { iconNameToIconNextName } from "@blueprintjs/icons/next";
+import { type IconName, type IconNextName, iconNameToIconNextName } from "@blueprintjs/icons/next";
 
-const nextIconName = iconNameToIconNextName(savedIconName);
+function MigratedIcon({ savedIconName }: { savedIconName: IconName | IconNextName }) {
+    const nextIconName = iconNameToIconNextName(savedIconName);
 
-return nextIconName === undefined ? null : <IconNext icon={nextIconName} />;
+    return <IconNext icon={nextIconName} />;
+}
 ```
 
 ```ts
 iconNameToIconNextName("house"); // "house" (already a next name)
 iconNameToIconNextName("home"); // "house" (renamed legacy icon)
 iconNameToIconNextName("user"); // "user" (ambiguous name; next meaning wins)
-iconNameToIconNextName("unknown"); // undefined
 ```
 
 When the source is known to contain legacy names, use `legacyIconNameToIconNextName` instead. It always
-interprets its input using the legacy mapping, including names that also exist in the next set:
+interprets its input using the legacy mapping, including names that also exist in the next set. To preserve
+whether the legacy icon looked filled or outlined, resolve its variant from the original name before rendering
+the converted icon:
 
-```ts
-import { legacyIconNameToIconNextName } from "@blueprintjs/icons/next";
+```tsx
+import { IconNext } from "@blueprintjs/core";
+import { getLegacyIconVariant, type IconName, legacyIconNameToIconNextName } from "@blueprintjs/icons/next";
 
-legacyIconNameToIconNextName("home"); // "house"
-legacyIconNameToIconNextName("user"); // "user-circle" (legacy meaning wins)
-legacyIconNameToIconNextName("house"); // undefined (not a legacy name)
+function MigratedLegacyIcon({ storedLegacyIconName }: { storedLegacyIconName: IconName }) {
+    const mappedNextIconName = legacyIconNameToIconNextName(storedLegacyIconName);
+    const variant = getLegacyIconVariant(storedLegacyIconName);
+
+    return <IconNext icon={mappedNextIconName} variant={variant} />;
+}
 ```
+
+The original name matters because some filled and outlined legacy icons map to the same next icon. For example,
+both `"star"` (filled) and `"star-empty"` (outlined) map to the next `"star"` icon. Legacy icons without a
+compatible next filled variant use the outlined variant.
+
+Do not apply `getLegacyIconVariant` indiscriminately to data which mixes legacy and next icon names. Names shared
+by both sets do not encode which set they came from, so mixed data requires explicit provenance or a persisted
+variant to resolve that ambiguity.
 
 Custom sizes are supported. The following React element:
 
