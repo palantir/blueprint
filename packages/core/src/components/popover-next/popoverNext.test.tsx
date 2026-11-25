@@ -451,6 +451,43 @@ describe("<PopoverNext>", () => {
                 expect(targetButton).not.toBe(document.activeElement);
             });
         });
+
+        it("does not trap focus inside a hover popover", async () => {
+            const { container } = render(
+                <>
+                    <PopoverNext content="content" interactionKind="hover" usePortal={false}>
+                        <Button text="target" />
+                    </PopoverNext>
+                    <Button text="after" />
+                </>,
+            );
+
+            screen.getByRole("button", { name: "target" }).focus();
+
+            const overlay = container.querySelector(`.${Classes.OVERLAY}`);
+            await waitFor(() => expect(overlay).toHaveClass(Classes.OVERLAY_OPEN));
+
+            // A hover popover must not pull keyboard focus in, so it renders no focusable
+            // placeholders around its content for focus to land on.
+            expect(container.querySelector(`.${Classes.OVERLAY_START_FOCUS_TRAP}`)).not.toBeInTheDocument();
+            expect(container.querySelector(`.${Classes.OVERLAY_END_FOCUS_TRAP}`)).not.toBeInTheDocument();
+        });
+
+        it("moves focus onto the popover content, not an empty placeholder, with autoFocus={true}", async () => {
+            const user = userEvent.setup();
+            render(
+                <PopoverNext autoFocus={true} content="content" usePortal={false}>
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+
+            await user.click(screen.getByRole("button", { name: "target" }));
+
+            // Landing on an empty placeholder beside the content reads as "focus left the
+            // popover" to the close-on-blur check, which closes the popover again right away.
+            await waitFor(() => expect(document.activeElement).toHaveClass(Classes.OVERLAY_CONTENT));
+            expect(screen.getByText("content")).toBeInTheDocument();
+        });
     });
 
     describe("openOnTargetFocus", () => {
@@ -507,7 +544,7 @@ describe("<PopoverNext>", () => {
 
             it("opens popover on target focus when interactionKind is HOVER", async () => {
                 render(
-                    <PopoverNext content="content" interactionKind="hover" enforceFocus={false}>
+                    <PopoverNext content="content" interactionKind="hover">
                         <Button text="target" />
                     </PopoverNext>,
                 );
@@ -523,7 +560,7 @@ describe("<PopoverNext>", () => {
 
             it("opens popover on target focus when interactionKind is HOVER_TARGET_ONLY", async () => {
                 render(
-                    <PopoverNext content="content" interactionKind="hover-target" enforceFocus={false}>
+                    <PopoverNext content="content" interactionKind="hover-target">
                         <Button text="target" />
                     </PopoverNext>,
                 );
