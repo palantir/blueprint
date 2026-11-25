@@ -75,6 +75,16 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
     collapseProps?: SectionCollapseProps;
 
     /**
+     * Whether this section should have visual borders.
+     *
+     * Set this to `false` to remove the header border and section card dividers.
+     * When `false`, the gap between the title and body is also reduced to 15px.
+     *
+     * @default true
+     */
+    bordered?: boolean;
+
+    /**
      * Whether this section should use compact styles.
      *
      * @default false
@@ -129,6 +139,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
  */
 export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     const {
+        bordered = true,
         children,
         className,
         collapseProps,
@@ -166,6 +177,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     return (
         <Card
             className={classNames(className, Classes.SECTION, {
+                [Classes.SECTION_BORDERED]: bordered,
                 [Classes.COMPACT]: compact,
                 [Classes.SECTION_COLLAPSED]: (collapsible && isCollapsed) || Utils.isReactNodeEmpty(children),
             })}
