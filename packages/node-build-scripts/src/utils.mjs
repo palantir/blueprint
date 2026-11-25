@@ -16,9 +16,9 @@
 
 // @ts-check
 
+import { existsSync, readFileSync } from "node:fs";
 import { basename, dirname, join, resolve } from "node:path";
 import { cwd, env } from "node:process";
-import { packageUpSync } from "package-up";
 
 /**
  * @param {string} dirName name of directory containing XML file.
@@ -39,19 +39,39 @@ export function junitReportPath(dirName, fileName = basename(cwd())) {
 }
 
 /**
- * WARNING: this function only works inside the palantir/blueprint monorepo. It is currently broken for
- * consumers who use @blueprintjs/node-build-scripts as an NPM dependency.
+ * Finds the workspace root containing the current package. For standalone packages,
+ * falls back to the closest directory containing a package.json file.
  *
- * @see https://github.com/palantir/blueprint/issues/5295
- * @see https://github.com/palantir/blueprint/issues/4942
- *
- * @returns the root directory of this Blueprint monorepo
+ * @param {string} startDir directory to start searching from
+ * @returns the root directory of the current workspace or package
  */
-export function getRootDir() {
-    const manifestFilePath = packageUpSync({ cwd: import.meta.dirname });
-    if (manifestFilePath === undefined) {
-        return undefined;
+export function getRootDir(startDir = cwd()) {
+    let currentDir = resolve(startDir);
+    let closestPackageDir;
+
+    while (true) {
+        const manifestFilePath = join(currentDir, "package.json");
+        if (existsSync(manifestFilePath)) {
+            closestPackageDir ??= currentDir;
+
+            try {
+                const manifest = JSON.parse(readFileSync(manifestFilePath, "utf8"));
+                if (manifest.workspaces !== undefined) {
+                    return currentDir;
+                }
+            } catch {
+                // Ignore malformed manifests here; the package manager will report them separately.
+            }
+        }
+
+        if (existsSync(join(currentDir, "pnpm-workspace.yaml"))) {
+            return currentDir;
+        }
+
+        const parentDir = dirname(currentDir);
+        if (parentDir === currentDir) {
+            return closestPackageDir;
+        }
+        currentDir = parentDir;
     }
-    const nodeModuleScriptsDir = dirname(manifestFilePath);
-    return resolve(nodeModuleScriptsDir, "..", "..");
 }
