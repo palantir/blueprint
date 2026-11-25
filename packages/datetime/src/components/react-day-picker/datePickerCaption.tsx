@@ -134,7 +134,12 @@ export const DatePickerCaption = (props: CaptionProps) => {
     const availableMonthOptions = allMonthOptions.slice(startMonth, endMonth);
     const displayedMonthText = allMonths[displayMonth];
 
-    const monthSelectRightOffset = useMonthSelectRightOffset(monthSelectElement, containerElement, displayedMonthText);
+    const monthSelectRightOffset = useMonthSelectRightOffset(
+        monthSelectElement,
+        containerElement,
+        displayedMonthText,
+        `${startMonth}-${endMonth}`,
+    );
     const monthSelect = (
         <HTMLSelect
             aria-label={labels.labelMonthDropdown()}
