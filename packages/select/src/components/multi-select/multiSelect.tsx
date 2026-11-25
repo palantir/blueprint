@@ -110,7 +110,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     selectedItems: T[];
 
     /**
-     * Props to pass to the [TagInput component](##core/components/tag-input).
+     * Props to pass to the [TagInput component](#core/components/tag-input).
      *
      * Some properties are unavailable:
      * - `tagInputProps.inputValue`: use `query` instead
