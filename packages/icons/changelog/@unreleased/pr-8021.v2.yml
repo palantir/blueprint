@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: Add align-top and align-bottom icons
+  links:
+  - https://github.com/palantir/blueprint/pull/8021
