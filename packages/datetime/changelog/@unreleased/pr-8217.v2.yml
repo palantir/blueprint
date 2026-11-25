@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: Support custom timezone options in TimezoneSelect
+  links:
+  - https://github.com/palantir/blueprint/pull/8217
