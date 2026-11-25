@@ -413,7 +413,8 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
 
     private getNewHandleValues(newValue: number, oldIndex: number) {
         const handleProps = getSortedInteractiveHandleProps(this.props);
-        const oldValues = handleProps.map(handle => handle.value);
+        // Bounds may change during a drag, including for handles that are not moving.
+        const oldValues = handleProps.map(handle => Utils.clamp(handle.value, this.props.min!, this.props.max!));
         const newValues = oldValues.slice();
         newValues[oldIndex] = newValue;
         newValues.sort((left, right) => left - right);
