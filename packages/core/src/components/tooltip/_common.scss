@@ -7,5 +7,5 @@ $tooltip-text-color: var(--bp-palette-light-gray-5) !default;
 $dark-tooltip-background-color: var(--bp-palette-light-gray-3) !default;
 $dark-tooltip-text-color: var(--bp-palette-dark-gray-5) !default;
 
-$tooltip-padding-vertical: $pt-spacing * 2 !default;
-$tooltip-padding-horizontal: $pt-spacing * 3 !default;
+$tooltip-padding-vertical: calc(var(--bp-surface-spacing) * 2) !default;
+$tooltip-padding-horizontal: calc(var(--bp-surface-spacing) * 3) !default;
