@@ -134,6 +134,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
                         [Classes.MULTISTEP_DIALOG_NAV_RIGHT]: navigationPosition === "right",
                         [Classes.MULTISTEP_DIALOG_NAV_TOP]: navigationPosition === "top",
                     },
+                    Classes.MULTISTEP_DIALOG,
                     className,
                 )}
                 style={this.getDialogStyle()}
