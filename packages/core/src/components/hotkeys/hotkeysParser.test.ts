@@ -132,6 +132,39 @@ describe("HotkeysParser", () => {
             verifyCombos(tests);
         });
 
+        it("handles named keys listed in the docs", () => {
+            const tests = [] as ComboTest[];
+            tests.push(
+                makeComboTest("backspace", { code: "Backspace", key: "Backspace" }),
+                makeComboTest("tab", { code: "Tab", key: "Tab" }),
+                makeComboTest("enter", { code: "Enter", key: "Enter" }),
+                makeComboTest("capslock", { code: "CapsLock", key: "CapsLock" }),
+                makeComboTest("esc", { code: "Escape", key: "Escape" }),
+                makeComboTest("pageup", { code: "PageUp", key: "PageUp" }),
+                makeComboTest("pagedown", { code: "PageDown", key: "PageDown" }),
+                makeComboTest("end", { code: "End", key: "End" }),
+                makeComboTest("home", { code: "Home", key: "Home" }),
+                makeComboTest("ins", { code: "Insert", key: "Insert" }),
+                makeComboTest("shift + ins", { code: "Insert", key: "Insert", shiftKey: true }),
+                makeComboTest("del", { code: "Delete", key: "Delete" }),
+            );
+            // don't verify the strings because getKeyComboString() returns the canonical
+            // names (e.g. `escape`, `insert`) rather than the aliases used in the docs
+            verifyCombos(tests, false);
+        });
+
+        it("handles function keys regardless of case", () => {
+            const tests = [] as ComboTest[];
+            for (let i = 1; i <= 12; i++) {
+                tests.push(
+                    makeComboTest(`f${i}`, { code: `F${i}`, key: `F${i}` }),
+                    makeComboTest(`F${i}`, { code: `F${i}`, key: `F${i}` }),
+                    makeComboTest(`shift + F${i}`, { code: `F${i}`, key: `F${i}`, shiftKey: true }),
+                );
+            }
+            verifyCombos(tests, false);
+        });
+
         it("handles alt modifier key", () => {
             const tests = [] as ComboTest[];
             tests.push(makeComboTest("alt + a", { altKey: true, code: "KeyA", key: "a" }));
@@ -230,6 +263,7 @@ describe("HotkeysParser", () => {
             expect(comboMatches(parseKeyCombo("win + F"), parseKeyCombo("meta + f"))).to.be.true;
             // regression test for https://github.com/palantir/blueprint/issues/6471
             expect(comboMatches(parseKeyCombo("esc"), parseKeyCombo("escape"))).to.be.true;
+            expect(comboMatches(parseKeyCombo("ins"), parseKeyCombo("insert"))).to.be.true;
         });
     });
 

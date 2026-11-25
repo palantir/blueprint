@@ -49,6 +49,7 @@ export const CONFIG_ALIASES: KeyMap = {
     del: "delete",
     esc: "escape",
     escape: "escape",
+    ins: "insert",
     minus: "-",
     mod: isMac(undefined) ? "meta" : "ctrl",
     option: "alt",
