@@ -16,20 +16,28 @@ export function generatePalette(input: string): Palette | undefined {
     }
 
     const color = formatHex(seed);
+    // Lightness moves toward white (l + (1 - l) * amount) or black (l * (1 - amount)), matching an
+    // OKLab mix. Chroma is scaled separately: soft tints near white, the seed's full chroma at rest,
+    // and muted darks.
+    const lighter = (amount: number, chroma: number) =>
+        `oklch(from ${color} calc(l + (1 - l) * ${amount}) calc(c * ${chroma}) h)`;
+    const darker = (amount: number, chroma: number) =>
+        `oklch(from ${color} calc(l * (1 - ${amount})) calc(c * ${chroma}) h)`;
 
-    // Provisional mix percentages generate approximate shades with no contrast guarantee.
-    // The seed stays at index 6, so mixing very light seeds with white or very dark seeds
-    // with black can produce nearly identical shades.
+    // Amounts are least-squares fits to the consumer color generator proposal's light-mode ramps,
+    // aligned at the seed; index 0 has no proposal counterpart and stays just lighter than index 1.
+    // No contrast guarantee. The seed stays at index 6, so very light or very dark seeds can
+    // produce nearly identical shades.
     return [
-        `color-mix(in oklab, ${color}, white 92%)`,
-        `color-mix(in oklab, ${color}, white 81%)`,
-        `color-mix(in oklab, ${color}, white 60%)`,
-        `color-mix(in oklab, ${color}, white 37%)`,
-        `color-mix(in oklab, ${color}, white 18%)`,
-        `color-mix(in oklab, ${color}, white 6%)`,
+        lighter(0.98, 0.04),
+        lighter(0.96, 0.08),
+        lighter(0.86, 0.17),
+        lighter(0.66, 0.33),
+        lighter(0.42, 0.57),
+        lighter(0.21, 0.81),
         color,
-        `color-mix(in oklab, ${color}, black 14%)`,
-        `color-mix(in oklab, ${color}, black 24%)`,
-        `color-mix(in oklab, ${color}, black 34%)`,
+        darker(0.13, 0.89),
+        darker(0.27, 0.75),
+        darker(0.49, 0.51),
     ];
 }
