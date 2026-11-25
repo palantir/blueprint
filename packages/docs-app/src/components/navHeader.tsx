@@ -110,7 +110,7 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
                         intent = "primary";
                     }
                 } else {
-                    href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
+                    href = major(v) === major(currentVersion) ? "/docs" : `/docs/versions/${major(v)}`;
                 }
                 return <MenuItem href={href} intent={intent} key={v} text={v} />;
             });
