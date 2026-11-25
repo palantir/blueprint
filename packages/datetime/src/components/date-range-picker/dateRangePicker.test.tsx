@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
+import { render as rtlRender, screen, within } from "@testing-library/react";
 import { addDays, format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
 
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";
-import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import {
+    afterAll,
+    afterEach,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -1491,6 +1501,95 @@ describe("<DateRangePicker>", () => {
         /* eslint-enable sort-keys */
         return harness;
     }
+});
+
+describe("<DateRangePicker> caption dropdowns when the displayed month is out of bounds", () => {
+    const minDate = new Date(2010, Months.JANUARY, 1);
+    const maxDate = new Date(2020, Months.DECEMBER, 31);
+
+    let consoleError: MockInstance<typeof console.error>;
+    beforeEach(() => {
+        consoleError = vi.spyOn(console, "error").mockImplementation(vi.fn());
+    });
+    afterEach(() => consoleError.mockRestore());
+
+    it("should show a year before minDate's year as a disabled option in non-contiguous calendars", () => {
+        rtlRender(
+            <DateRangePicker
+                contiguousCalendarMonths={false}
+                locale={enUSLocale}
+                maxDate={maxDate}
+                minDate={minDate}
+                value={[new Date(2005, Months.MARCH, 3), new Date(2005, Months.JUNE, 10)]}
+            />,
+        );
+        const yearSelects = screen.getAllByRole("combobox", { name: "Year:" });
+        expect(yearSelects).toHaveLength(2);
+        for (const yearSelect of yearSelects) {
+            expect(yearSelect).toHaveDisplayValue("2005");
+            expect(within(yearSelect).getByRole("option", { name: "2005" })).toBeDisabled();
+            expect(within(yearSelect).getAllByRole("option")[0]).toHaveTextContent("2005");
+        }
+        expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_VALUE_INVALID);
+    });
+
+    it("should list a year after maxDate's year only once in non-contiguous calendars", () => {
+        const createPicker = () => (
+            <DateRangePicker
+                contiguousCalendarMonths={false}
+                locale={enUSLocale}
+                maxDate={maxDate}
+                minDate={minDate}
+                value={[new Date(2030, Months.MARCH, 3), new Date(2030, Months.JUNE, 10)]}
+            />
+        );
+        const { rerender } = rtlRender(createPicker());
+        rerender(createPicker());
+        const yearSelects = screen.getAllByRole("combobox", { name: "Year:" });
+        expect(yearSelects).toHaveLength(2);
+        for (const yearSelect of yearSelects) {
+            expect(yearSelect).toHaveDisplayValue("2030");
+            expect(within(yearSelect).getAllByRole("option", { name: "2030" })).toHaveLength(1);
+            expect(within(yearSelect).getAllByRole("option").at(-1)).toHaveTextContent("2030");
+        }
+        expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_VALUE_INVALID);
+    });
+
+    it("should show a month before minDate's month as a disabled option in non-contiguous calendars", () => {
+        rtlRender(
+            <DateRangePicker
+                contiguousCalendarMonths={false}
+                locale={enUSLocale}
+                maxDate={maxDate}
+                minDate={new Date(2010, Months.JUNE, 1)}
+                value={[new Date(2010, Months.MARCH, 3), new Date(2010, Months.MARCH, 10)]}
+            />,
+        );
+        const [leftMonthSelect, rightMonthSelect] = screen.getAllByRole("combobox", { name: "Month:" });
+        expect(leftMonthSelect).toHaveDisplayValue("March");
+        expect(within(leftMonthSelect).getByRole("option", { name: "March" })).toBeDisabled();
+        expect(rightMonthSelect).toHaveDisplayValue("April");
+        expect(within(rightMonthSelect).getByRole("option", { name: "April" })).toBeDisabled();
+        expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_VALUE_INVALID);
+    });
+
+    it("should show a month after maxDate's month as a disabled option in non-contiguous calendars", () => {
+        rtlRender(
+            <DateRangePicker
+                contiguousCalendarMonths={false}
+                locale={enUSLocale}
+                maxDate={new Date(2020, Months.JUNE, 30)}
+                minDate={minDate}
+                value={[new Date(2020, Months.JULY, 3), new Date(2020, Months.JULY, 10)]}
+            />,
+        );
+        const [leftMonthSelect, rightMonthSelect] = screen.getAllByRole("combobox", { name: "Month:" });
+        expect(leftMonthSelect).toHaveDisplayValue("July");
+        expect(within(leftMonthSelect).getByRole("option", { name: "July" })).toBeDisabled();
+        expect(rightMonthSelect).toHaveDisplayValue("August");
+        expect(within(rightMonthSelect).getByRole("option", { name: "August" })).toBeDisabled();
+        expect(consoleError).toHaveBeenCalledExactlyOnceWith(Errors.DATERANGEPICKER_VALUE_INVALID);
+    });
 });
 
 function renderMonthName(monthIndex: number) {
