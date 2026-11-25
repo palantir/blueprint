@@ -308,8 +308,13 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
-        const target = event?.target as HTMLElement;
-        const menuItem = target?.closest(`.${CoreClasses.MENU_ITEM}`);
+        const target = event?.target as HTMLElement | undefined;
+        // When selection is triggered via keyboard (Enter), event.target is the input element,
+        // not the menu item. Fall back to looking up the active menu item in the document so
+        // that `shouldDismissPopover={false}` is respected in both click and keyboard flows.
+        const menuItem =
+            target?.closest(`.${CoreClasses.MENU_ITEM}`) ??
+            (target?.ownerDocument ?? document).querySelector(`.${CoreClasses.MENU_ITEM}.${CoreClasses.ACTIVE}`);
         const menuItemDismiss = menuItem?.matches(`.${CoreClasses.POPOVER_DISMISS}`);
         const shouldDismiss = menuItemDismiss ?? true;
 
