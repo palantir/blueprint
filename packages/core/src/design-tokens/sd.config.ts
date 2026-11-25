@@ -140,7 +140,7 @@ type BuildPlan = {
 // -- Constants ----------------------------------------------------------------
 
 /** CSS `@supports` query for relative color syntax, used for progressive enhancement. */
-const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l c h))";
+const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from red l c h))";
 
 /** Base token sources in dependency order, from raw values to higher-level semantic tokens. */
 const BASE_TOKEN_SOURCES = [
