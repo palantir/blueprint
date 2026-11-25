@@ -21,6 +21,7 @@ import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blu
 import { type DocsCompleteData, type HeadingNode, npmData, type PageNode, SECTIONS } from "@blueprintjs/docs-data";
 import {
     Banner,
+    CopyPageMarkdownButton,
     Documentation,
     type DocumentationProps,
     NavMenuItem,
@@ -143,15 +144,18 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         return <NavMenuItem {...props} />;
     };
 
-    private renderPageActions = (page: { sourcePath: string }) => {
+    private renderPageActions = (page: { sourceMarkdown?: string; sourcePath: string }) => {
         return (
-            <AnchorButton
-                href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
-                icon="edit"
-                target="_blank"
-                text="Edit this page"
-                variant="minimal"
-            />
+            <>
+                <CopyPageMarkdownButton sourceMarkdown={page.sourceMarkdown} />
+                <AnchorButton
+                    href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
+                    icon="edit"
+                    target="_blank"
+                    text="Edit this page"
+                    variant="minimal"
+                />
+            </>
         );
     };
 
