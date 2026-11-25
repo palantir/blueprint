@@ -226,11 +226,13 @@ $dark-menu-item-intent-colors: (
   background-color: $menu-item-color-hover;
   color: inherit;
   cursor: pointer;
+  font-weight: bold;
   text-decoration: none;
 }
 
 @mixin dark-menu-item-hover() {
   color: inherit;
+  font-weight: bold;
 
   // need to override typography styles here
   .#{$ns}-menu-item-icon,
