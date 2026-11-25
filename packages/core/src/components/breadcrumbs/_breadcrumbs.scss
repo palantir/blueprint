@@ -4,6 +4,13 @@
 @import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 
+// Inline SVG icons (from resources/icons/next/outlined) embedded as data URIs and applied
+// with mask-image so their color can be customized at runtime via background-color.
+// Embedding them here keeps these styles compilable without the `svg-icon()` custom Sass
+// function, which is only defined in the Blueprint monorepo build.
+$chevron-right-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath d='M5.47 2.47a.75.75 0 0 1 1.06 0l5 5a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 1 1-1.06-1.06L9.94 8 5.47 3.53a.75.75 0 0 1 0-1.06'/%3e%3c/svg%3e") !default;
+$dots-three-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath d='M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m-5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3'/%3e%3c/svg%3e") !default;
+
 .#{$ns}-breadcrumbs {
   align-items: center;
   cursor: default;
@@ -21,18 +28,15 @@
     display: flex;
 
     &::after {
-      background: svg-icon(
-        "next/outlined/chevron-right.svg",
-        (
-          path: (
-            fill: $pt-icon-color,
-          ),
-        )
-      );
+      background-color: $pt-icon-color;
       content: "";
       display: block;
       height: $pt-icon-size-standard;
       margin: 0 $pt-spacing;
+      mask-image: $chevron-right-icon;
+      mask-position: center;
+      mask-repeat: no-repeat;
+      mask-size: contain;
       width: $pt-icon-size-standard;
     }
 
@@ -91,18 +95,14 @@
   vertical-align: text-bottom;
 
   &::before {
-    background: svg-icon(
-        "next/outlined/dots-three.svg",
-        (
-          path: (
-            fill: $pt-icon-color,
-          ),
-        )
-      )
-      center no-repeat;
+    background-color: $pt-icon-color;
     content: "";
     display: block;
     height: $pt-icon-size-standard;
+    mask-image: $dots-three-icon;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
     width: $pt-icon-size-standard;
   }
 
@@ -120,14 +120,7 @@
   }
 
   .#{$ns}-breadcrumbs > li::after {
-    background: svg-icon(
-      "next/outlined/chevron-right.svg",
-      (
-        path: (
-          fill: $pt-dark-icon-color,
-        ),
-      )
-    );
+    background-color: $pt-dark-icon-color;
     color: $pt-dark-icon-color;
   }
 
@@ -143,15 +136,7 @@
     background: color-mix(in srgb, var(--bp-palette-gray-3) 20%, transparent);
 
     &::before {
-      background: svg-icon(
-          "next/outlined/dots-three.svg",
-          (
-            path: (
-              fill: $pt-dark-icon-color,
-            ),
-          )
-        )
-        center no-repeat;
+      background-color: $pt-dark-icon-color;
     }
 
     &:hover {

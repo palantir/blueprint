@@ -273,6 +273,9 @@ importers:
       react-test-renderer:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      sass:
+        specifier: ^1.93.2
+        version: 1.93.2
       style-dictionary:
         specifier: ^5.0.3
         version: 5.1.3
