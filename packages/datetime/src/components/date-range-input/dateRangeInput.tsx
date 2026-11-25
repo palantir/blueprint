@@ -38,6 +38,7 @@ import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 import { DateRangePicker } from "../date-range-picker/dateRangePicker";
 import {
+    INVALID_DATE,
     INVALID_DATE_MESSAGE,
     LOCALE,
     MAX_DATE,
@@ -1022,7 +1023,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
             newDate = getDateFnsParser(format, locale)(dateString);
         }
 
-        return newDate === false ? getTodayAtMidnight() : newDate;
+        return newDate === false ? INVALID_DATE : newDate;
     };
 
     // called on date hover & selection
