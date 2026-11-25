@@ -36,6 +36,7 @@ export * from "./compoundTagExamples";
 export * from "./compoundTagPlaygroundExample";
 export { ContextMenuExample } from "./contextMenuExample";
 export { ContextMenuPopoverExample } from "./contextMenuPopoverExample";
+export * from "./controlCardCodeExamples";
 export { ControlCardListExample } from "./controlCardListExample";
 export * from "./controlGroupExample";
 export * from "./dialogExample";

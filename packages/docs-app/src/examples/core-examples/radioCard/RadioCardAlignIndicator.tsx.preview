@@ -1,0 +1,7 @@
+<RadioGroup
+    selectedValue={selectedValue}
+    onChange={event => setSelectedValue(event.currentTarget.value)}
+>
+    <RadioCard alignIndicator="start" label="Start-aligned" value="start" />
+    <RadioCard alignIndicator="end" label="End-aligned" value="end" />
+</RadioGroup>
