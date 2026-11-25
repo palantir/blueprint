@@ -57,19 +57,36 @@ export const Text: React.FC<TextProps> = forwardRef<HTMLElement, TextProps>(
     ({ children, tagName = "div", title, className, ellipsize = false, ...htmlProps }, forwardedRef) => {
         const contentMeasuringRef = useRef<HTMLElement>();
         const textRef = useMemo(() => mergeRefs(contentMeasuringRef, forwardedRef), [forwardedRef]);
-        const [textContent, setTextContent] = useState<string>("");
-        const [isContentOverflowing, setIsContentOverflowing] = useState<boolean>();
+        // Auto title when ellipsized content overflows. `undefined` means no auto title.
+        const [overflowTitle, setOverflowTitle] = useState<string | undefined>(undefined);
+        const overflowTitleRef = useRef(overflowTitle);
+        overflowTitleRef.current = overflowTitle;
 
         // try to be conservative about running this effect, since querying scrollWidth causes the browser to reflow / recalculate styles,
         // which can be very expensive for long lists (for example, in long Menus)
         useIsomorphicLayoutEffect(() => {
-            if (contentMeasuringRef.current?.textContent != null) {
-                setIsContentOverflowing(
-                    ellipsize! && contentMeasuringRef.current.scrollWidth > contentMeasuringRef.current.clientWidth,
-                );
-                setTextContent(contentMeasuringRef.current.textContent);
+            const element = contentMeasuringRef.current;
+            if (element == null) {
+                return;
             }
-        }, [contentMeasuringRef, children, ellipsize]);
+            // Explicit title prop wins; drop any auto title so we don't fight the caller.
+            if (title !== undefined) {
+                if (overflowTitleRef.current !== undefined) {
+                    overflowTitleRef.current = undefined;
+                    setOverflowTitle(undefined);
+                }
+                return;
+            }
+            const isOverflowing = Boolean(ellipsize && element.scrollWidth > element.clientWidth);
+            const next = isOverflowing ? element.textContent || undefined : undefined;
+            // Only setState when the derived title actually changes. Always updating from this
+            // layout effect can nest past React 19's update-depth limit when many Text nodes
+            // measure in one commit, or when children identity changes re-run the effect.
+            if (next !== overflowTitleRef.current) {
+                overflowTitleRef.current = next;
+                setOverflowTitle(next);
+            }
+        }, [children, ellipsize, title]);
 
         return createElement(
             tagName,
@@ -82,7 +99,7 @@ export const Text: React.FC<TextProps> = forwardRef<HTMLElement, TextProps>(
                     className,
                 ),
                 ref: textRef,
-                title: title ?? (isContentOverflowing ? textContent : undefined),
+                title: title ?? overflowTitle,
             },
             children,
         );
