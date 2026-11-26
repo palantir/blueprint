@@ -65,6 +65,11 @@ describe("<EditableText>", () => {
         expect(span).toBeInTheDocument();
     });
 
+    it("passes a title to the underlying span", () => {
+        render(<EditableText defaultValue="alphabet" title="full text" />);
+        expect(screen.getByText("alphabet")).toHaveAttribute("title", "full text");
+    });
+
     it("fills the container without enabling multiline editing", async () => {
         const user = userEvent.setup();
         const confirmSpy = vi.fn();
