@@ -56,6 +56,18 @@ describe("<Alert>", () => {
         document.body.removeChild(container);
     });
 
+    it("should apply portalClassName to the portal", () => {
+        render(<Alert isOpen={true} portalClassName="custom-portal" />);
+
+        expect(screen.getByRole("alertdialog").closest(".custom-portal")).toBeInTheDocument();
+    });
+
+    it("should render inline when usePortal is false", () => {
+        const { container } = render(<Alert isOpen={true} usePortal={false} />);
+
+        expect(container).toContainElement(screen.getByRole("alertdialog"));
+    });
+
     it("should not render icon by default", () => {
         render(<Alert isOpen={true} />);
         const dialog = screen.getByRole("alertdialog");

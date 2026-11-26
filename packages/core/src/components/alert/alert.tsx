@@ -109,6 +109,20 @@ export interface AlertProps extends OverlayLifecycleProps, Props {
     portalContainer?: HTMLElement;
 
     /**
+     * Space-delimited string of class names applied to the portal element, when `usePortal` is `true`.
+     */
+    portalClassName?: string;
+
+    /**
+     * Whether the alert should be wrapped in a portal.
+     *
+     * **`usePortal={false}` is not recommended. Only for use in rare circumstances.**
+     *
+     * @default true
+     */
+    usePortal?: boolean;
+
+    /**
      * Handler invoked when the alert is canceled. Alerts can be **canceled** in the following ways:
      * - clicking the cancel button (if `cancelButtonText` is defined)
      * - pressing the escape key (if `canEscapeKeyCancel` is enabled)
