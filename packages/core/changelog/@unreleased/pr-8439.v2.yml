@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: Render `Tree` node `id` as a `data-node-id` attribute
-  links:
-  - https://github.com/palantir/blueprint/pull/8439
