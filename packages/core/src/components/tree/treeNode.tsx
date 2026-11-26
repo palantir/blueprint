@@ -56,7 +56,7 @@ export class TreeNode<T = {}> extends Component<TreeNodeProps<T>> {
     }
 
     public render() {
-        const { children, className, disabled, icon, isExpanded, isSelected, label } = this.props;
+        const { children, className, disabled, icon, id, isExpanded, isSelected, label } = this.props;
         const classes = classNames(
             Classes.TREE_NODE,
             {
@@ -84,7 +84,7 @@ export class TreeNode<T = {}> extends Component<TreeNodeProps<T>> {
                   };
 
         return (
-            <li className={classes}>
+            <li className={classes} data-node-id={id}>
                 <div className={contentClasses} ref={this.handleContentRef} {...eventHandlers}>
                     {this.maybeRenderCaret()}
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} aria-hidden={true} tabIndex={-1} />
