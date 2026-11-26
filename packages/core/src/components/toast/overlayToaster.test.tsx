@@ -292,6 +292,58 @@ describe("OverlayToaster", () => {
         });
     });
 
+    describe("with shouldReturnFocusOnClose set to true", () => {
+        let trigger: HTMLButtonElement;
+
+        beforeAll(async () => {
+            containerElement = document.createElement("div");
+            document.documentElement.appendChild(containerElement);
+            trigger = document.createElement("button");
+            containerElement.appendChild(trigger);
+            toaster = await OverlayToaster.create(
+                { autoFocus: true, shouldReturnFocusOnClose: true },
+                { container: containerElement, domRenderer },
+            );
+        });
+
+        afterAll(() => {
+            document.documentElement.removeChild(containerElement);
+        });
+
+        it("returns focus to the previously focused element", async () => {
+            trigger.focus();
+            toaster.show({ message: "focus returns" });
+            await waitFor(() => {
+                const toastElement = containerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
+                assert.isTrue(toastElement?.contains(document.activeElement));
+            });
+            toaster.clear();
+            await waitFor(() => {
+                assert.strictEqual(document.activeElement, trigger);
+            });
+        });
+
+        it("keeps focus inside the toaster while other toasts remain", async () => {
+            trigger.focus();
+            const firstKey = toaster.show({ message: "first", timeout: 0 });
+            toaster.show({ message: "second", timeout: 0 });
+            await waitFor(() => {
+                const toastElement = containerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
+                assert.isTrue(toastElement?.contains(document.activeElement));
+            });
+            toaster.dismiss(firstKey);
+            await waitFor(() => {
+                assert.lengthOf(toaster.getToasts(), 1);
+            });
+            await new Promise(resolve => setTimeout(resolve, 500));
+            assert.notStrictEqual(document.activeElement, trigger);
+            toaster.clear();
+            await waitFor(() => {
+                assert.strictEqual(document.activeElement, trigger);
+            });
+        });
+    });
+
     describe("with empty array children", () => {
         beforeAll(async () => {
             containerElement = document.createElement("div");

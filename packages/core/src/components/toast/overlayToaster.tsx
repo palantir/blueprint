@@ -79,6 +79,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
+        shouldReturnFocusOnClose: false,
         usePortal: true,
     };
 
@@ -152,6 +153,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
     private toastRefs: Record<string, React.RefObject<HTMLElement>> = {};
 
+    private lastActiveElement: Element | null = null;
+
     /** Compute a new collection of toast refs (usually after updating toasts) */
     private getToastRefs = (toasts: ToastOptions[]) => {
         return toasts.reduce<typeof this.toastRefs>((refs, toast) => {
@@ -206,6 +209,10 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
             this.dismissIfAtLimit();
         }
 
+        if (this.state.toasts.length === 0) {
+            this.lastActiveElement = document.activeElement;
+        }
+
         this.updateToastsInState(toasts => [options, ...toasts]);
     }
 
@@ -253,6 +260,17 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
     public getToasts() {
         return this.state.toasts;
+    }
+
+    public componentDidUpdate(_prevProps: OverlayToasterProps, prevState: OverlayToasterState) {
+        if (
+            this.props.shouldReturnFocusOnClose &&
+            prevState.toasts.length > 0 &&
+            this.state.toasts.length === 0 &&
+            this.lastActiveElement instanceof HTMLElement
+        ) {
+            this.lastActiveElement.focus();
+        }
     }
 
     public render() {
