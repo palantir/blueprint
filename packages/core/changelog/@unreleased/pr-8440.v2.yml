@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: Add `usePortal` and `portalClassName` props to `Alert`
-  links:
-  - https://github.com/palantir/blueprint/pull/8440
