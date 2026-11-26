@@ -116,7 +116,7 @@ export interface AlertProps extends OverlayLifecycleProps, Props {
     /**
      * Whether the alert should be wrapped in a portal.
      *
-     * **Not recommended. Only for use in rare circumstances.**
+     * **`usePortal={false}` is not recommended. Only for use in rare circumstances.**
      *
      * @default true
      */
