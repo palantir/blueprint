@@ -106,6 +106,12 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
         it("clicking item resets state when resetOnSelect=true", () => {
             const wrapper = render({
                 ...testProps,
+                // `query` is controlled, so the parent must accept the reset emitted through
+                // `onQueryChange` and pass it back through the `query` prop for it to take effect
+                onQueryChange: (query: string) => {
+                    testProps.onQueryChange(query);
+                    wrapper.setProps({ query });
+                },
                 query: "19",
                 resetOnQuery: false,
                 resetOnSelect: true,
@@ -281,6 +287,9 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
 
             const EXISTING_FILM_TITLE = TOP_100_FILMS[0].title;
             findInput(wrapper).simulate("change", { target: { value: EXISTING_FILM_TITLE } });
+            // a controlled parent accepts the change and echoes it back through the `query` prop
+            wrapper.setProps({ query: EXISTING_FILM_TITLE });
+            wrapper.update();
 
             expect(findCreateItem(wrapper)).toHaveLength(0);
         });
