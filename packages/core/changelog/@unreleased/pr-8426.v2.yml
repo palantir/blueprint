@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: Add `title` prop to `EditableText`
-  links:
-  - https://github.com/palantir/blueprint/pull/8426
