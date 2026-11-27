@@ -32,7 +32,7 @@ import {
 } from "@blueprintjs/core";
 
 import { Classes, DateUtils, Errors, TimezoneNameUtils, TimezoneUtils } from "../../common";
-import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
+import { getDefaultDateFnsFormat, getTimePrecision } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import { DatePicker } from "../date-picker/datePicker";
@@ -81,12 +81,12 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
         rightElement,
         reverseMonthAndYearMenus = false,
         showTimezoneSelect,
-        timePrecision,
         timezone: controlledTimezone,
         value,
         ...datePickerProps
     } = props;
 
+    const timePrecision = getTimePrecision(props);
     const locale = useDateFnsLocale(localeOrCode, dateFnsLocaleLoader);
     const placeholder = getPlaceholder(props);
     const formatDateString = useDateFormatter(props, locale);

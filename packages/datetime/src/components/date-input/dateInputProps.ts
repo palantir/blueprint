@@ -142,7 +142,8 @@ export interface DateInputProps
 
     /**
      * Whether to show the timezone select dropdown on the right side of the input.
-     * If `timePrecision` is undefined, this will always be false.
+     * The dropdown is hidden unless time selection is enabled through `timePrecision`
+     * or a non-empty `timePickerProps` object.
      *
      * @default false
      */
