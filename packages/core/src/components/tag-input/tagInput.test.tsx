@@ -15,6 +15,7 @@
  */
 
 import { waitFor } from "@testing-library/dom";
+import { render, screen } from "@testing-library/react";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import { act } from "react";
 
@@ -276,6 +277,12 @@ describe("<TagInput>", () => {
     });
 
     describe("onRemove", () => {
+        it("names each remove button after its tag value", () => {
+            render(<TagInput values={["Aircraft", "Airline"]} />);
+            expect(screen.getByRole("button", { name: "Remove tag Aircraft" })).toBeInTheDocument();
+            expect(screen.getByRole("button", { name: "Remove tag Airline" })).toBeInTheDocument();
+        });
+
         it("pressing backspace focuses last item", () => {
             const onRemove = vi.fn();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);

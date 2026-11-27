@@ -58,15 +58,33 @@ describe("<Tag>", () => {
 
     it("renders close button when onRemove is a function", () => {
         render(<Tag onRemove={vi.fn()}>Hello</Tag>);
-        const closeButton = screen.getByRole("button", { name: "Remove tag" });
+        const closeButton = screen.getByRole("button", { name: "Remove tag Hello" });
         expect(closeButton).toHaveClass(Classes.TAG_REMOVE);
+    });
+
+    it("names the close button after the tag content", () => {
+        render(
+            <>
+                <Tag onRemove={vi.fn()}>London</Tag>
+                <Tag onRemove={vi.fn()}>
+                    <strong>New</strong> York
+                </Tag>
+            </>,
+        );
+        expect(screen.getByRole("button", { name: "Remove tag London" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Remove tag New York" })).toBeInTheDocument();
+    });
+
+    it("falls back to a generic close button name when the tag has no content", () => {
+        render(<Tag onRemove={vi.fn()} />);
+        expect(screen.getByRole("button", { name: "Remove tag" })).toBeInTheDocument();
     });
 
     it("clicking close button triggers onRemove", async () => {
         const user = userEvent.setup();
         const handleRemove = vi.fn();
         render(<Tag onRemove={handleRemove}>Hello</Tag>);
-        const closeButton = screen.getByRole("button", { name: "Remove tag" });
+        const closeButton = screen.getByRole("button", { name: "Remove tag Hello" });
         await user.click(closeButton);
         expect(handleRemove).toHaveBeenCalledOnce();
     });
@@ -107,12 +125,13 @@ describe("<Tag>", () => {
             onRemove: handleRemove,
         };
         render(<Tag {...tagProps}>Hello</Tag>);
-        await user.click(screen.getByRole("button", { name: "Remove tag" }));
+        await user.click(screen.getByRole("button", { name: "Remove tag Hello" }));
         expect(handleRemove).toHaveBeenCalledOnce();
         expect(handleRemove).toHaveBeenCalledWith(
             expect.anything(),
             expect.objectContaining({ [DATA_ATTR_FOO]: tagProps[DATA_ATTR_FOO] }),
         );
+        expect(handleRemove.mock.calls[0][1]).not.toHaveProperty("labelIds");
     });
 
     it("supports ref objects", () => {
