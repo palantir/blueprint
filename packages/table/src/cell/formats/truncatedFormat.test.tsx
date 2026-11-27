@@ -140,6 +140,17 @@ describe("<TruncatedFormat>", () => {
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
+    it("supports forwarding popoverProps to PopoverNext", () => {
+        const { container } = render(
+            <TruncatedFormat
+                popoverProps={{ className: "custom-popover-class" }}
+                showPopover={TruncatedPopoverMode.ALWAYS}
+            />,
+        );
+        const comp = new ElementHarness(container);
+        expect(comp.find(".custom-popover-class").element).to.exist;
+    });
+
     it("does not show popover if text is not truncated by default", () => {
         const str = `Richard Dawkins`;
         const { container } = render(<TruncatedFormat>{str}</TruncatedFormat>);
