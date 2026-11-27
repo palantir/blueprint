@@ -2,6 +2,7 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+import { FloatingNode, FloatingTree, useFloatingNodeId, useFloatingTree } from "@floating-ui/react";
 import { Children, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
@@ -26,6 +27,18 @@ export interface PopoverNextRef {
 }
 
 export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
+    const tree = useFloatingTree();
+    // Safe polygons must know about nested popovers, including portaled submenus.
+    return tree == null ? (
+        <FloatingTree>
+            <PopoverNextImpl {...props} ref={ref} />
+        </FloatingTree>
+    ) : (
+        <PopoverNextImpl {...props} ref={ref} />
+    );
+});
+
+const PopoverNextImpl = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
     const {
         animation = POPOVER_NEXT_DEFAULT_ANIMATION,
         autoUpdateOptions,
@@ -38,6 +51,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         hasBackdrop = false,
         hoverCloseDelay = 300,
         hoverOpenDelay = 150,
+        hoverSafePolygon = false,
         interactionKind = PopoverInteractionKind.CLICK,
         isOpen,
         matchTargetWidth = false,
@@ -104,6 +118,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const lostFocusOnSamePage = useRef(true);
     const targetRef = useRef<HTMLElement>(null);
     const timeoutIds = useRef<number[]>([]);
+    const nodeId = useFloatingNodeId();
 
     const isControlled = isOpen !== undefined;
     const isContentEmpty = content == null || Utils.isEmptyString(content);
@@ -113,6 +128,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const isHoverInteractionKind =
         interactionKind === PopoverInteractionKind.HOVER ||
         interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY;
+    const useHoverSafePolygon = hoverSafePolygon && interactionKind === PopoverInteractionKind.HOVER;
 
     const middleware = useMemo(() => {
         const defaultMiddleware: MiddlewareConfig = {
@@ -143,10 +159,14 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const floatingData = usePopover({
         autoUpdateOptions,
         disabled,
+        hoverCloseDelay,
+        hoverOpenDelay,
+        hoverSafePolygon: useHoverSafePolygon,
         isControlled,
         isHoverInteractionKind,
         isOpen: computedIsOpen,
         middleware,
+        nodeId,
         onOpenChange: (nextOpen, event) => {
             // Use setOpenState logic which handles both controlled and uncontrolled components
             setOpenState(nextOpen, event as unknown as React.SyntheticEvent<HTMLElement>);
@@ -227,6 +247,11 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
 
     const handleMouseLeave = useCallback(
         (event: React.MouseEvent<HTMLElement>) => {
+            // Floating UI handles pointer movement when the safe polygon is enabled.
+            // Focus/blur still use the existing handlers to preserve keyboard behavior.
+            if (useHoverSafePolygon && event.type === "mouseleave") {
+                return;
+            }
             isMouseInTargetOrPopover.current = false;
 
             event.persist();
@@ -237,11 +262,14 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                 setOpenState(false, event, hoverCloseDelay);
             });
         },
-        [hoverCloseDelay, setOpenState, setTimeout],
+        [hoverCloseDelay, setOpenState, setTimeout, useHoverSafePolygon],
     );
 
     const handleMouseEnter = useCallback(
         (event: React.MouseEvent<HTMLElement>) => {
+            if (useHoverSafePolygon && event.type === "mouseenter") {
+                return;
+            }
             isMouseInTargetOrPopover.current = true;
 
             // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
@@ -267,6 +295,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
             openOnTargetFocus,
             setOpenState,
             usePortal,
+            useHoverSafePolygon,
         ],
     );
 
@@ -373,7 +402,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     }, [computedIsOpen, disabled, floatingData, isContentEmpty, isOpen, setOpenState, updateDarkParent]);
 
     return (
-        <>
+        <FloatingNode id={nodeId}>
             <PopoverTarget
                 floatingData={floatingData}
                 handleMouseEnter={handleMouseEnter}
@@ -407,11 +436,12 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
                     {...props}
                 />
             )}
-        </>
+        </FloatingNode>
     );
 });
 
 PopoverNext.displayName = `${DISPLAYNAME_PREFIX}.PopoverNext`;
+PopoverNextImpl.displayName = `${DISPLAYNAME_PREFIX}.PopoverNextImpl`;
 
 function isEscapeKeypressEvent(e?: Event) {
     return e instanceof KeyboardEvent && e.key === "Escape";

@@ -278,6 +278,9 @@ The supported values are:
     - **Opens when:** the target is clicked, or when Enter or Shift key are pressed while target is focused
     - **Closes when:** the target is clicked
 
+For `HOVER` interactions, set `hoverSafePolygon={true}` to keep the popover open while the pointer moves diagonally
+from its target toward the popover. This is enabled by default for **MenuItem** submenus.
+
 The following example demonstrates the various interaction kinds (note: these PopoverNext contain
 [MenuItem](#core/components/menu.menu-item)s with `shouldDismissPopover={false}`, for clarity):
 
