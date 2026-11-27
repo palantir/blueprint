@@ -60,7 +60,9 @@ export class Draggable extends PureComponent<DraggableProps> {
 
     private events = new DragEvents();
 
-    private targetRef = this.props.targetRef ?? createRef<HTMLElement>();
+    private targetRef = createRef<HTMLElement>();
+
+    private eventTarget: HTMLElement | null = null;
 
     public render() {
         const onlyChild = Children.only(this.props.children);
@@ -77,20 +79,35 @@ export class Draggable extends PureComponent<DraggableProps> {
         const didEventHandlerPropsChange = !CoreUtils.shallowCompareKeys(prevProps, this.props, {
             include: REATTACH_PROPS_KEYS,
         });
-        if (didEventHandlerPropsChange && isValidTarget(this.targetRef.current)) {
-            this.events.attach(this.targetRef.current, this.props);
+        if (didEventHandlerPropsChange || this.getTarget() !== this.eventTarget) {
+            this.attachEventHandlers();
         }
     }
 
     public componentDidMount() {
-        if (isValidTarget(this.targetRef.current)) {
-            this.events.attach(this.targetRef.current, this.props);
-        }
+        this.attachEventHandlers();
     }
 
     public componentWillUnmount() {
-        if (isValidTarget(this.targetRef.current)) {
-            this.events?.detach();
+        this.events.cancel();
+        this.events.detach();
+    }
+
+    private getTarget() {
+        const target = (this.props.targetRef ?? this.targetRef).current;
+        return isValidTarget(target) ? target : null;
+    }
+
+    private attachEventHandlers() {
+        const target = this.getTarget();
+        if (target !== this.eventTarget) {
+            this.events.cancel();
+        }
+        this.eventTarget = target;
+        if (this.eventTarget === null) {
+            this.events.detach();
+        } else {
+            this.events.attach(this.eventTarget, this.props);
         }
     }
 }
