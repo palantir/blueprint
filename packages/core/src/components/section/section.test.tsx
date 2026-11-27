@@ -63,8 +63,8 @@ describe("<Section>", () => {
                     <SectionCard>is open</SectionCard>
                 </Section>,
             );
-            const button = screen.getByRole("button", { name: "collapse section" });
-            expect(button).toHaveAttribute("aria-expanded", "false");
+            const button = screen.getByRole("button", { name: "collapse section Test" });
+            expect(button).toHaveAttribute("aria-expanded", "true");
             expect(screen.getByText("is open")).toBeVisible();
         });
 
@@ -74,8 +74,8 @@ describe("<Section>", () => {
                     <SectionCard>is open</SectionCard>
                 </Section>,
             );
-            const button = screen.getByRole("button", { name: "collapse section" });
-            expect(button).toHaveAttribute("aria-expanded", "false");
+            const button = screen.getByRole("button", { name: "collapse section Test" });
+            expect(button).toHaveAttribute("aria-expanded", "true");
             expect(screen.getByText("is open")).toBeVisible();
         });
 
@@ -85,8 +85,8 @@ describe("<Section>", () => {
                     <SectionCard>is closed</SectionCard>
                 </Section>,
             );
-            const button = screen.getByRole("button", { name: "expand section" });
-            expect(button).toHaveAttribute("aria-expanded", "true");
+            const button = screen.getByRole("button", { name: "expand section Test" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
             expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
@@ -98,8 +98,8 @@ describe("<Section>", () => {
                     <SectionCard>is open</SectionCard>
                 </Section>,
             );
-            const button = screen.getByRole("button", { name: "collapse section" });
-            expect(button).toHaveAttribute("aria-expanded", "false");
+            const button = screen.getByRole("button", { name: "collapse section Test" });
+            expect(button).toHaveAttribute("aria-expanded", "true");
             expect(screen.getByText("is open")).toBeVisible();
         });
 
@@ -109,8 +109,8 @@ describe("<Section>", () => {
                     <SectionCard>is closed</SectionCard>
                 </Section>,
             );
-            const button = screen.getByRole("button", { name: "expand section" });
-            expect(button).toHaveAttribute("aria-expanded", "true");
+            const button = screen.getByRole("button", { name: "expand section Test" });
+            expect(button).toHaveAttribute("aria-expanded", "false");
             expect(screen.queryByText("is closed")).not.toBeInTheDocument();
         });
     });
