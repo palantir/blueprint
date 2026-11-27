@@ -62,6 +62,23 @@ function App() {
 }
 ```
 
+## Opening the dialog programmatically
+
+Besides the <kbd>?</kbd> key, you can open the hotkeys dialog from your own UI, such as a menu item, by dispatching
+the `OPEN_DIALOG` action to the context. The component which does this must be a descendant of **HotkeysProvider**
+or **BlueprintProvider**.
+
+```tsx
+import { Button, HotkeysContext } from "@blueprintjs/core";
+import { useContext } from "react";
+
+function ShowHotkeysButton() {
+    const [, dispatch] = useContext(HotkeysContext);
+
+    return <Button text="Keyboard shortcuts" onClick={() => dispatch({ type: "OPEN_DIALOG" })} />;
+}
+```
+
 ## Advanced usage
 
 **HotkeysProvider** should not be nested, except in special cases. If you have a rendering boundary within your application
