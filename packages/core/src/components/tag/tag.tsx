@@ -150,7 +150,7 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
                 </Text>
             )}
             <Icon icon={endIcon ?? rightIcon} />
-            {isRemovable && <TagRemoveButton {...props} labelIds={hasContent ? [contentId] : []} />}
+            {isRemovable && <TagRemoveButton {...props} contentIds={hasContent ? contentId : ""} />}
         </span>
     );
 });

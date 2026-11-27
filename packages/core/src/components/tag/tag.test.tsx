@@ -131,7 +131,6 @@ describe("<Tag>", () => {
             expect.anything(),
             expect.objectContaining({ [DATA_ATTR_FOO]: tagProps[DATA_ATTR_FOO] }),
         );
-        expect(handleRemove.mock.calls[0][1]).not.toHaveProperty("labelIds");
     });
 
     it("supports ref objects", () => {

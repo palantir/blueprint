@@ -26,13 +26,13 @@ import type { TagProps } from "./tag";
 
 export type TagRemoveButtonProps = (CompoundTagProps | TagProps) & {
     /**
-     * Ids of the elements holding the tag's text. The button's accessible name becomes "Remove tag"
+     * Space-separated IDs of the elements holding the tag's text. The button's accessible name becomes "Remove tag"
      * followed by that text, e.g. "Remove tag London". When empty, the name is just "Remove tag".
      */
-    labelIds: readonly string[];
+    contentIds: string;
 };
 
-export const TagRemoveButton = ({ labelIds, ...props }: TagRemoveButtonProps) => {
+export const TagRemoveButton = ({ contentIds, ...props }: TagRemoveButtonProps) => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { className, large, onRemove, size, tabIndex } = props;
     const buttonId = useId();
@@ -47,7 +47,7 @@ export const TagRemoveButton = ({ labelIds, ...props }: TagRemoveButtonProps) =>
         <button
             id={buttonId}
             aria-label="Remove tag"
-            aria-labelledby={labelIds.length > 0 ? [buttonId, ...labelIds].join(" ") : undefined}
+            aria-labelledby={contentIds ? `${buttonId} ${contentIds}` : undefined}
             type="button"
             className={Classes.TAG_REMOVE}
             onClick={handleRemoveClick}

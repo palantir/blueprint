@@ -80,7 +80,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = forwardRef((props, ref) =
     const hasRightContent = !isReactNodeEmpty(children);
     const leftContentId = useId();
     const rightContentId = useId();
-    const labelIds = [...(hasLeftContent ? [leftContentId] : []), ...(hasRightContent ? [rightContentId] : [])];
+    const contentIds = [hasLeftContent && leftContentId, hasRightContent && rightContentId].filter(Boolean).join(" ");
 
     const tagClasses = classNames(
         Classes.TAG,
@@ -120,7 +120,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = forwardRef((props, ref) =
                     </Text>
                 )}
                 <Icon icon={endIcon ?? rightIcon} />
-                {isRemovable && <TagRemoveButton {...props} labelIds={labelIds} />}
+                {isRemovable && <TagRemoveButton {...props} contentIds={contentIds} />}
             </span>
         </span>
     );
