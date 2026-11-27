@@ -70,10 +70,12 @@ export interface HeaderProps extends LockableLayout, ReorderableProps, Selectabl
     isResizable?: boolean;
 
     /**
-     * Whether the resize handle at the given index is focusable and keyboard-operable. The table renders
-     * headers in several overlapping quadrants and passes this so only the visible copy of each handle is.
+     * The index of the first resize handle that is focusable and keyboard-operable. Handles before it are not,
+     * and none are when this is `undefined`. The table renders headers in several overlapping quadrants and
+     * passes this so only the visible copy of each handle is. It's a value rather than a callback so that the
+     * header re-renders when it changes, for example when the number of frozen columns or rows changes.
      */
-    isResizeHandleKeyboardResizable: (index: number) => boolean;
+    firstKeyboardResizableIndex: number | undefined;
 
     /**
      * Locates the row/column/cell given a mouse event.
@@ -408,7 +410,10 @@ export class Header extends Component<InternalHeaderProps, HeaderState> {
                 targetRef={cellTargetRef}
             >
                 <Resizable
-                    isKeyboardResizable={this.props.isResizeHandleKeyboardResizable(index)}
+                    isKeyboardResizable={
+                        this.props.firstKeyboardResizableIndex !== undefined &&
+                        index >= this.props.firstKeyboardResizableIndex
+                    }
                     isResizable={this.props.isResizable}
                     maxSize={this.props.maxSize}
                     minSize={this.props.minSize}

@@ -853,7 +853,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly: boolean = false,
-        isResizeHandleKeyboardResizable: (index: number) => boolean,
+        firstKeyboardResizableIndex: number | undefined,
     ) => {
         const { focusedRegion, selectedRegions, viewportRect } = this.state;
         const {
@@ -920,7 +920,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.FULL_COLUMNS)}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
-                    isResizeHandleKeyboardResizable={isResizeHandleKeyboardResizable}
+                    firstKeyboardResizableIndex={firstKeyboardResizableIndex}
                     columnIndexStart={columnIndexStart}
                     columnIndexEnd={columnIndexEnd}
                 >
@@ -937,7 +937,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly: boolean = false,
-        isResizeHandleKeyboardResizable: (index: number) => boolean,
+        firstKeyboardResizableIndex: number | undefined,
     ) => {
         const { focusedRegion, selectedRegions, viewportRect } = this.state;
         const {
@@ -1005,7 +1005,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     rowHeaderCellRenderer={rowHeaderCellRenderer}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
-                    isResizeHandleKeyboardResizable={isResizeHandleKeyboardResizable}
+                    firstKeyboardResizableIndex={firstKeyboardResizableIndex}
                     rowIndexStart={rowIndexStart}
                     rowIndexEnd={rowIndexEnd}
                 />

@@ -1014,6 +1014,31 @@ describe("<Table>", () => {
                         TOP_LEFT: "not drawn",
                     });
                 });
+
+                it("moves focus to the TOP_LEFT copies when the column and row become frozen after mounting", () => {
+                    const { container, rerender } = render(
+                        <Table enableRowHeader={true} numRows={2} numFrozenColumns={0} numFrozenRows={0}>
+                            {columns}
+                        </Table>,
+                    );
+                    rerender(
+                        <Table enableRowHeader={true} numRows={2} numFrozenColumns={1} numFrozenRows={1}>
+                            {columns}
+                        </Table>,
+                    );
+                    expect(getResizeHandleCopies(container, { headerName: "Title" })).to.deep.equal({
+                        LEFT: "covered",
+                        MAIN: "covered",
+                        TOP: "covered",
+                        TOP_LEFT: "focusable",
+                    });
+                    expect(getResizeHandleCopies(container, { headerName: "1" })).to.deep.equal({
+                        LEFT: "covered",
+                        MAIN: "covered",
+                        TOP: "covered",
+                        TOP_LEFT: "focusable",
+                    });
+                });
             });
 
             it("resizes the column without moving the focused cell", () => {
