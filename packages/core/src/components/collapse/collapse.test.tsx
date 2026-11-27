@@ -51,6 +51,11 @@ describe("<Collapse>", () => {
         expect(collapseBody).toHaveStyle({ transform: "translateY(0)" });
     });
 
+    it("should forward id to the root element", () => {
+        const { container } = render(<Collapse id="collapse-id" />);
+        expect(container.firstElementChild).toHaveAttribute("id", "collapse-id");
+    });
+
     it("should support custom intrinsic elements", () => {
         const { container } = render(
             <Collapse component="article">

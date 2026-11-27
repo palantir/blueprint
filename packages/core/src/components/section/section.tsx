@@ -163,6 +163,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     const sectionId = uniqueId("section");
     const sectionTitleId = title ? uniqueId("section-title") : undefined;
     const collapseButtonId = uniqueId("section-collapse-button");
+    const collapseContentId = uniqueId("section-collapse-content");
 
     return (
         <Card
@@ -209,7 +210,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
                                     tabIndex={0}
                                     id={collapseButtonId}
                                     aria-expanded={!isCollapsed}
-                                    aria-controls={sectionId}
+                                    aria-controls={collapseContentId}
                                     aria-label={isCollapsed ? "expand section" : "collapse section"}
                                     aria-labelledby={`${collapseButtonId} ${sectionTitleId}`}
                                     // no OnClick, click event triggers header below
@@ -225,7 +226,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
             )}
 
             {collapsible ? (
-                <Collapse {...collapseProps} isOpen={!isCollapsed}>
+                <Collapse {...collapseProps} id={collapseContentId} isOpen={!isCollapsed}>
                     {children}
                 </Collapse>
             ) : (

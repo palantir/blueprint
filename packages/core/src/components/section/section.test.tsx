@@ -56,6 +56,24 @@ describe("<Section>", () => {
         expect(title.tagName.toLowerCase()).toBe("h5");
     });
 
+    it("points the collapse button at the collapsible content, even when collapsed", () => {
+        const { rerender } = render(
+            <Section collapsible={true} collapseProps={{ isOpen: false }} title="Flights">
+                <SectionCard>content</SectionCard>
+            </Section>,
+        );
+        const getControlled = () => document.getElementById(screen.getByRole("button").getAttribute("aria-controls")!);
+        expect(getControlled()).toHaveClass(Classes.COLLAPSE);
+
+        rerender(
+            <Section collapsible={true} collapseProps={{ isOpen: true }} title="Flights">
+                <SectionCard>content</SectionCard>
+            </Section>,
+        );
+        expect(getControlled()).toContainElement(screen.getByText("content"));
+        expect(getControlled()).not.toContainElement(screen.getByRole("button"));
+    });
+
     describe("uncontrolled collapse mode", () => {
         it("collapsible is open when defaultIsOpen={undefined}", () => {
             render(

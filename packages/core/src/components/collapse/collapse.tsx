@@ -33,6 +33,12 @@ export interface CollapseProps extends Props {
     component?: React.ElementType;
 
     /**
+     * HTML id of the root element. Lets a toggle reference this element via `aria-controls`,
+     * since the root stays mounted while the children are unmounted.
+     */
+    id?: string;
+
+    /**
      * Whether the component is open or closed.
      *
      * @default false
@@ -112,6 +118,7 @@ export const Collapse: React.FC<CollapseProps> = ({
     children,
     className,
     component = "div",
+    id,
     isOpen = false,
     keepChildrenMounted = false,
     transitionDuration = 200,
@@ -249,6 +256,7 @@ export const Collapse: React.FC<CollapseProps> = ({
         component,
         {
             className: classNames(Classes.COLLAPSE, className),
+            id,
             style: containerStyle,
         },
         <div
