@@ -1,0 +1,70 @@
+#!/bin/bash
+
+# Builds Storybook from the current commit and publishes it to https://blueprintjs.com/storybook/.
+# Replaces only storybook/ on the gh-pages branch; the landing page, the docs,
+# and the archived docs under docs/versions/ are left untouched.
+
+set -e
+set -o pipefail
+
+remote="${REMOTE:-origin}"
+root="$(git rev-parse --show-toplevel)"
+build_dir="$root/storybook-static"
+
+remote_url="$(git -C "$root" remote get-url "$remote")"
+if [[ "$remote_url" != *palantir/blueprint* ]]; then
+    echo "Remote '$remote' ($remote_url) is not palantir/blueprint. Set REMOTE to the palantir/blueprint remote."
+    exit 1
+fi
+
+# The build must match the commit named in the gh-pages commit message.
+if [ -n "$(git -C "$root" status --porcelain)" ]; then
+    echo "Working tree has uncommitted changes; commit or stash them first."
+    git -C "$root" status --short
+    exit 1
+fi
+
+cd "$root"
+pnpm compile
+pnpm dist
+pnpm build-storybook
+
+source_sha="$(git -C "$root" rev-parse --short HEAD)"
+worktree="$(mktemp -d)"
+cleanup() {
+    git -C "$root" worktree remove --force "$worktree" 2>/dev/null || true
+    rm -rf "$worktree"
+}
+trap cleanup EXIT
+
+git -C "$root" fetch "$remote" gh-pages
+git -C "$root" worktree add --detach "$worktree" "$remote/gh-pages"
+cd "$worktree"
+
+rm -rf storybook
+mkdir storybook
+# Copy the directory's contents ("/."), so nothing gets nested as storybook/storybook-static.
+cp -R "$build_dir/." storybook/
+git add -A -- storybook
+
+if [ -n "$(git status --porcelain -- . ':!storybook')" ]; then
+    echo "Unexpected changes outside storybook/; aborting without pushing."
+    git status --short -- . ':!storybook'
+    exit 1
+fi
+
+if git diff --cached --quiet; then
+    echo "Storybook on gh-pages is already up to date."
+    exit 0
+fi
+
+git diff --cached --stat | tail -1
+read -r -p "Push this Storybook build (from $source_sha) to $remote/gh-pages? [y/N] " answer
+if [ "$answer" != "y" ]; then
+    echo "Aborted; nothing was pushed."
+    exit 1
+fi
+
+git commit -q -m "Deploy Storybook from $source_sha"
+git push "$remote" HEAD:gh-pages
+echo "Pushed. https://blueprintjs.com/storybook/ updates once GitHub Pages rebuilds."
