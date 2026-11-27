@@ -15,12 +15,12 @@
  */
 
 import classNames from "classnames";
-import { addDays, format } from "date-fns";
+import { addDays, format, isSameMinute, isSameSecond } from "date-fns";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
 import { Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 
-import { Classes, type DateRange, DateUtils, Errors, TimePrecision } from "../../common";
+import { Classes, type DateRange, DateUtils, Errors, type NonNullDateRange, TimePrecision } from "../../common";
 import { dayPickerClassNameOverrides } from "../../common/classes";
 import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
@@ -60,6 +60,8 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
     };
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
+
+    private pendingSelection?: { selectedRange: DateRange; value: DateRange };
 
     // these will get merged with the user's own
     private modifiers: DayModifiers = {
@@ -105,9 +107,11 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         super(props);
         const value = getInitialValue(props);
         const time: DateRange = value;
+        const defaultTime = getDefaultTime(props);
         const initialMonth = getInitialMonth(props, value);
         this.initialMonthAndYear = new MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
         this.state = {
+            defaultTimeRange: [defaultTime, defaultTime],
             hoverValue: NULL_RANGE,
             locale: undefined,
             selectedShortcutIndex:
@@ -153,6 +157,11 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         super.componentDidUpdate(prevProps);
 
         const isControlled = prevProps.value !== undefined && this.props.value !== undefined;
+        const pendingSelection = this.pendingSelection;
+        const isPendingSelection =
+            pendingSelection != null &&
+            this.props.value != null &&
+            pendingSelection.value.every((date, index) => date?.getTime() === this.props.value![index]?.getTime());
 
         if (prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths) {
             const initialMonth = getInitialMonth(this.props, getInitialValue(this.props));
@@ -162,13 +171,31 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         if (
             isControlled &&
             (!DateUtils.areRangesEqual(prevProps.value!, this.props.value!) ||
-                prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths)
+                prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths ||
+                isPendingSelection)
         ) {
-            this.setState({ value: this.props.value ?? NULL_RANGE });
+            this.pendingSelection = undefined;
+            const value = isPendingSelection ? pendingSelection!.selectedRange : (this.props.value ?? NULL_RANGE);
+            if (value !== this.state.value) {
+                this.setState({ value });
+            }
         }
 
         if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
             this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
+        }
+
+        const timePickerProps = this.getTimePickerProps();
+        if (timePickerProps != null && this.getTimePickerProps(prevProps) == null) {
+            const defaultTime = getDefaultTime(this.props);
+            this.setState({ defaultTimeRange: [defaultTime, defaultTime] });
+        } else if (
+            timePickerProps != null &&
+            (prevProps.timePickerProps?.minTime !== timePickerProps.minTime ||
+                prevProps.timePickerProps?.maxTime !== timePickerProps.maxTime)
+        ) {
+            const previousTimeRange = this.getDisplayedTimeRange(this.state.time, prevProps);
+            this.setState({ time: this.getDisplayedTimeRange(previousTimeRange) });
         }
     }
 
@@ -221,14 +248,15 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
     }
 
     private maybeRenderTimePickers(isShowingOneMonth: boolean) {
-        // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
-        const { timePickerProps, timePrecision = timePickerProps?.precision } = this.props;
-        if (timePrecision == null && timePickerProps === DateRangePicker.defaultProps.timePickerProps) {
+        const timePickerProps = this.getTimePickerProps();
+        if (timePickerProps == null) {
             return null;
         }
 
+        const timeRange = this.getDisplayedTimeRange();
+        const { timePrecision = timePickerProps.precision } = this.props;
         const isLongTimePicker =
-            timePickerProps?.useAmPm ||
+            timePickerProps.useAmPm ||
             timePrecision === TimePrecision.SECOND ||
             timePrecision === TimePrecision.MILLISECOND;
 
@@ -238,18 +266,8 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
                     [Classes.DATERANGEPICKER3_TIMEPICKERS_STACKED]: isShowingOneMonth && isLongTimePicker,
                 })}
             >
-                <TimePicker
-                    precision={timePrecision}
-                    {...timePickerProps}
-                    onChange={this.handleTimeChangeLeftCalendar}
-                    value={this.state.time[0]}
-                />
-                <TimePicker
-                    precision={timePrecision}
-                    {...timePickerProps}
-                    onChange={this.handleTimeChangeRightCalendar}
-                    value={this.state.time[1]}
-                />
+                <TimePicker {...timePickerProps} onChange={this.handleTimeChangeLeftCalendar} value={timeRange[0]} />
+                <TimePicker {...timePickerProps} onChange={this.handleTimeChangeRightCalendar} value={timeRange[1]} />
             </div>
         );
     }
@@ -261,14 +279,27 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         const newValue = DateUtils.getDateTime(
             value[dateIndex] != null ? DateUtils.clone(value[dateIndex]!) : this.getDefaultDate(dateIndex),
             newTime,
-        );
+        )!;
         const newDateRange: DateRange = [value[0], value[1]];
-        newDateRange[dateIndex] = newValue;
+        const isPartialSingleDayRange = this.props.allowSingleDayRange && (value[0] == null) !== (value[1] == null);
+        if (!isPartialSingleDayRange || value[dateIndex] != null) {
+            newDateRange[dateIndex] = newValue;
+        }
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
 
-        this.props.onChange?.(newDateRange);
-        this.setState({ time: newTimeRange, value: newDateRange });
+        const displayedTimeRange = this.getDisplayedTimeRange();
+        displayedTimeRange[dateIndex] = newTime;
+        const completedRange = isPartialSingleDayRange
+            ? this.getCompletedRange(newDateRange, displayedTimeRange)
+            : newDateRange;
+
+        this.pendingSelection = { selectedRange: newDateRange, value: completedRange };
+        this.props.onChange?.(completedRange);
+        this.setState({
+            time: completedRange === newDateRange ? newTimeRange : completedRange,
+            value: newDateRange,
+        });
     };
 
     // When a user sets the time value before choosing a date, we need to pick a date for them
@@ -419,20 +450,88 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         this.props.onShortcutChange?.(shortcut, selectedShortcutIndex);
     };
 
-    private updateSelectedRange = (selectedRange: DateRange, selectedTimeRange: DateRange = this.state.time) => {
-        selectedRange[0] = DateUtils.getDateTime(selectedRange[0], selectedTimeRange[0]);
-        selectedRange[1] = DateUtils.getDateTime(selectedRange[1], selectedTimeRange[1]);
+    private updateSelectedRange = (selectedRange: DateRange, selectedTimeRange?: DateRange) => {
+        const timeRange = selectedTimeRange ?? this.state.time;
+        const dateRange: DateRange = [
+            DateUtils.getDateTime(selectedRange[0], timeRange[0]),
+            DateUtils.getDateTime(selectedRange[1], timeRange[1]),
+        ];
+        const nextRange = dateRange.every((date, index) => date?.getTime() === this.state.value[index]?.getTime())
+            ? this.state.value
+            : dateRange;
+        const completedRange = this.getCompletedRange(nextRange, selectedTimeRange ?? this.getDisplayedTimeRange());
+        this.pendingSelection = { selectedRange: nextRange, value: completedRange };
 
         if (this.props.value == null) {
             // uncontrolled range selection
-            this.setState({ time: selectedTimeRange, value: selectedRange });
+            const nextTimeRange = completedRange === nextRange ? timeRange : completedRange;
+            const defaultTime = getDefaultTime(this.props);
+            this.setState({
+                defaultTimeRange: [
+                    nextTimeRange[0] == null && this.state.time[0] != null
+                        ? defaultTime
+                        : this.state.defaultTimeRange[0],
+                    nextTimeRange[1] == null && this.state.time[1] != null
+                        ? defaultTime
+                        : this.state.defaultTimeRange[1],
+                ],
+                time: nextTimeRange,
+                value: nextRange,
+            });
         }
-        this.props.onChange?.(selectedRange);
+        this.props.onChange?.(completedRange);
     };
+
+    private getTimePickerProps(props = this.props): DateRangePickerProps["timePickerProps"] {
+        const { timePickerProps, timePrecision = timePickerProps?.precision } = props;
+        if (timePrecision == null && timePickerProps === DateRangePicker.defaultProps.timePickerProps) {
+            return undefined;
+        }
+        return { precision: timePrecision, ...timePickerProps };
+    }
+
+    private getDisplayedTimeRange(timeRange = this.state.time, props = this.props): NonNullDateRange {
+        const minTime = props.timePickerProps?.minTime ?? TimePicker.defaultProps.minTime!;
+        const maxTime = props.timePickerProps?.maxTime ?? TimePicker.defaultProps.maxTime!;
+        return [
+            DateUtils.getTimeInRange(timeRange[0] ?? this.state.defaultTimeRange[0], minTime, maxTime),
+            DateUtils.getTimeInRange(timeRange[1] ?? this.state.defaultTimeRange[1], minTime, maxTime),
+        ];
+    }
+
+    private getCompletedRange(selectedRange: DateRange, timeRange: DateRange): DateRange {
+        const timePickerProps = this.getTimePickerProps();
+        if (
+            !this.props.allowSingleDayRange ||
+            (selectedRange[0] == null) === (selectedRange[1] == null) ||
+            timePickerProps == null
+        ) {
+            return selectedRange;
+        }
+
+        const displayedTimeRange = this.getDisplayedTimeRange();
+        const startTime = timeRange[0] ?? displayedTimeRange[0];
+        const endTime = timeRange[1] ?? displayedTimeRange[1];
+        const selectedDate = selectedRange[0] ?? selectedRange[1]!;
+        const start = DateUtils.getDateTime(selectedDate, startTime)!;
+        const end = DateUtils.getDateTime(selectedDate, endTime)!;
+        const precision = timePickerProps.precision;
+        const isSameDisplayedTime =
+            precision === TimePrecision.MILLISECOND
+                ? DateUtils.isSameTime(start, end)
+                : precision === TimePrecision.SECOND
+                  ? isSameSecond(start, end)
+                  : isSameMinute(start, end);
+        return start < end && !isSameDisplayedTime ? [start, end] : selectedRange;
+    }
 }
 
 function getIsSingleMonthOnly(props: DateRangePickerProps): boolean {
     return props.singleMonthOnly || DateUtils.isSameMonth(props.minDate!, props.maxDate!);
+}
+
+function getDefaultTime(props: DateRangePickerProps): Date {
+    return props.timePickerProps?.defaultValue ?? props.timePickerProps?.minTime ?? TimePicker.defaultProps.minTime!;
 }
 
 function getInitialValue(props: DateRangePickerProps): DateRange {
