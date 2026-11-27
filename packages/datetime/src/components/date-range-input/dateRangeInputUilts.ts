@@ -2,19 +2,18 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-const DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
-const WEEK_IN_MILLIS = 7 * DAY_IN_MILLIS;
-
 export function getTodayAtMidnight() {
     return new Date(new Date().setHours(0, 0, 0, 0));
 }
 
 export function shiftDateByDays(date: Date, days: number): Date {
-    return new Date(date.valueOf() + days * DAY_IN_MILLIS);
+    const shiftedDate = new Date(date.valueOf());
+    shiftedDate.setDate(shiftedDate.getDate() + days);
+    return shiftedDate;
 }
 
 export function shiftDateByWeeks(date: Date, weeks: number): Date {
-    return new Date(date.valueOf() + weeks * WEEK_IN_MILLIS);
+    return shiftDateByDays(date, weeks * 7);
 }
 
 export function shiftDateByArrowKey(date: Date, key: string): Date {
