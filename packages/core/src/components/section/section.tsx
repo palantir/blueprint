@@ -173,6 +173,7 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
             })}
             elevation={elevation}
             ref={ref}
+            role={title ? "group" : undefined}
             aria-labelledby={sectionTitleId}
             {...htmlProps}
             id={sectionId}

@@ -44,6 +44,23 @@ describe("<Section>", () => {
         expect(title.tagName.toLowerCase()).toBe("h6");
     });
 
+    it("names the section group after its title", () => {
+        render(<Section title="Flights" />);
+        expect(screen.getByRole("group", { name: "Flights" })).toBeInTheDocument();
+    });
+
+    it("does not add a role or label without a title", () => {
+        const { container } = render(<Section />);
+        expect(container.firstElementChild).not.toHaveAttribute("role");
+        expect(container.firstElementChild).not.toHaveAttribute("aria-labelledby");
+    });
+
+    it("supports overriding the section role", () => {
+        render(<Section role="region" title="Flights" />);
+        expect(screen.getByRole("region", { name: "Flights" })).toBeInTheDocument();
+        expect(screen.queryByRole("group")).not.toBeInTheDocument();
+    });
+
     it("renders optional sub-title element", () => {
         render(<Section title="title" subtitle="subtitle" />);
         const subtitle = screen.getByText("subtitle");
