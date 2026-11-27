@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
@@ -76,6 +76,11 @@ export const CompoundTag: React.FC<CompoundTagProps> = forwardRef((props, ref) =
     } = props;
 
     const isRemovable = Utils.isFunction(onRemove);
+    const hasLeftContent = !isReactNodeEmpty(leftContent);
+    const hasRightContent = !isReactNodeEmpty(children);
+    const leftContentId = useId();
+    const rightContentId = useId();
+    const contentIds = [hasLeftContent && leftContentId, hasRightContent && rightContentId].filter(Boolean).join(" ");
 
     const tagClasses = classNames(
         Classes.TAG,
@@ -96,18 +101,26 @@ export const CompoundTag: React.FC<CompoundTagProps> = forwardRef((props, ref) =
         <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={ref}>
             <span className={Classes.COMPOUND_TAG_LEFT}>
                 <Icon icon={icon} />
-                <Text className={classNames(Classes.COMPOUND_TAG_LEFT_CONTENT, Classes.FILL)} tagName="span">
+                <Text
+                    className={classNames(Classes.COMPOUND_TAG_LEFT_CONTENT, Classes.FILL)}
+                    id={hasLeftContent ? leftContentId : undefined}
+                    tagName="span"
+                >
                     {leftContent}
                 </Text>
             </span>
             <span className={Classes.COMPOUND_TAG_RIGHT}>
-                {!isReactNodeEmpty(children) && (
-                    <Text className={classNames(Classes.COMPOUND_TAG_RIGHT_CONTENT, Classes.FILL)} tagName="span">
+                {hasRightContent && (
+                    <Text
+                        className={classNames(Classes.COMPOUND_TAG_RIGHT_CONTENT, Classes.FILL)}
+                        id={rightContentId}
+                        tagName="span"
+                    >
                         {children}
                     </Text>
                 )}
                 <Icon icon={endIcon ?? rightIcon} />
-                {isRemovable && <TagRemoveButton {...props} />}
+                {isRemovable && <TagRemoveButton {...props} contentIds={contentIds} />}
             </span>
         </span>
     );

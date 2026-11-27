@@ -63,8 +63,17 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        const closeButton = screen.getByRole("button", { name: "Remove tag" });
+        const closeButton = screen.getByRole("button", { name: "Remove tag Hello World" });
         expect(closeButton).toHaveClass(Classes.TAG_REMOVE);
+    });
+
+    it("names the close button after the left content when there is no right content", () => {
+        render(
+            <CompoundTag onRemove={vi.fn()} leftContent="Hello">
+                {null}
+            </CompoundTag>,
+        );
+        expect(screen.getByRole("button", { name: "Remove tag Hello" })).toBeInTheDocument();
     });
 
     it("clicking close button triggers onRemove", async () => {
@@ -75,7 +84,7 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        await user.click(screen.getByRole("button", { name: "Remove tag" }));
+        await user.click(screen.getByRole("button", { name: "Remove tag Hello World" }));
         expect(handleRemove).toHaveBeenCalledOnce();
     });
 
@@ -106,7 +115,7 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        await user.click(screen.getByRole("button", { name: "Remove tag" }));
+        await user.click(screen.getByRole("button", { name: "Remove tag Hello World" }));
         expect(handleRemove).toHaveBeenCalledOnce();
         expect(handleRemove).toHaveBeenCalledWith(
             expect.anything(),

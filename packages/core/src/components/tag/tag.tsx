@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { forwardRef } from "react";
+import { forwardRef, useId } from "react";
 
 import type { IconName } from "@blueprintjs/icons";
 
@@ -113,6 +113,8 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
     } = props;
 
     const isRemovable = Utils.isFunction(onRemove);
+    const hasContent = !isReactNodeEmpty(children);
+    const contentId = useId();
     const isInteractive = interactive ?? htmlProps.onClick != null;
 
     const [active, interactiveProps] = useInteractiveAttributes(isInteractive, props, ref, {
@@ -142,13 +144,13 @@ export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
             role={isInteractive ? "button" : undefined}
         >
             <Icon icon={icon} />
-            {!isReactNodeEmpty(children) && (
-                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
+            {hasContent && (
+                <Text className={Classes.FILL} ellipsize={!multiline} id={contentId} tagName="span" title={htmlTitle}>
                     {children}
                 </Text>
             )}
             <Icon icon={endIcon ?? rightIcon} />
-            {isRemovable && <TagRemoveButton {...props} />}
+            {isRemovable && <TagRemoveButton {...props} contentIds={hasContent ? contentId : ""} />}
         </span>
     );
 });

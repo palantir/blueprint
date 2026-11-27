@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useCallback } from "react";
+import { useCallback, useId } from "react";
 
 import { IconSize } from "@blueprintjs/icons";
 import { XSmallIcon } from "@blueprintjs/icons/next";
@@ -24,11 +24,18 @@ import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import type { CompoundTagProps } from "./compoundTag";
 import type { TagProps } from "./tag";
 
-export type TagRemoveButtonProps = CompoundTagProps | TagProps;
+export type TagRemoveButtonProps = (CompoundTagProps | TagProps) & {
+    /**
+     * Space-separated IDs of the elements holding the tag's text. The button's accessible name becomes "Remove tag"
+     * followed by that text, e.g. "Remove tag London". When empty, the name is just "Remove tag".
+     */
+    contentIds: string;
+};
 
-export const TagRemoveButton = (props: TagRemoveButtonProps) => {
+export const TagRemoveButton = ({ contentIds, ...props }: TagRemoveButtonProps) => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { className, large, onRemove, size, tabIndex } = props;
+    const buttonId = useId();
     const isLarge = large || size === "large" || className?.includes(Classes.LARGE);
     const handleRemoveClick = useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,7 +45,9 @@ export const TagRemoveButton = (props: TagRemoveButtonProps) => {
     );
     return (
         <button
+            id={buttonId}
             aria-label="Remove tag"
+            aria-labelledby={contentIds ? `${buttonId} ${contentIds}` : undefined}
             type="button"
             className={Classes.TAG_REMOVE}
             onClick={handleRemoveClick}
