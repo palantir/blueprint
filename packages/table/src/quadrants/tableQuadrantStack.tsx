@@ -419,6 +419,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
         const maybeLeftQuadrant = shouldRenderLeftQuadrants ? (
             <TableQuadrant
                 {...baseProps}
+                onScroll={this.handleLeftQuadrantScroll}
                 quadrantRef={this.quadrantRefHandlers[QuadrantType.LEFT].quadrant}
                 quadrantType={QuadrantType.LEFT}
                 columnHeaderCellRenderer={this.renderLeftQuadrantColumnHeader}
@@ -453,8 +454,11 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
                     rowHeaderCellRenderer={this.renderMainQuadrantRowHeader}
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.MAIN].scrollContainer}
                 />
+                {/* Put frozen resize handles before scrolling handles in the tab order. */}
+                {maybeTopLeftQuadrant}
                 <TableQuadrant
                     {...baseProps}
+                    onScroll={this.handleTopQuadrantScroll}
                     quadrantRef={this.quadrantRefHandlers[QuadrantType.TOP].quadrant}
                     quadrantType={QuadrantType.TOP}
                     columnHeaderCellRenderer={this.renderTopQuadrantColumnHeader}
@@ -463,7 +467,6 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
                     scrollContainerRef={this.quadrantRefHandlers[QuadrantType.TOP].scrollContainer}
                 />
                 {maybeLeftQuadrant}
-                {maybeTopLeftQuadrant}
             </div>
         );
     }
@@ -658,6 +661,24 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
 
     // Scrolling
     // ---------
+
+    private handleTopQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
+        this.handleHeaderQuadrantScroll("scrollLeft", event.currentTarget.scrollLeft);
+    };
+
+    private handleLeftQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
+        this.handleHeaderQuadrantScroll("scrollTop", event.currentTarget.scrollTop);
+    };
+
+    private handleHeaderQuadrantScroll = (scrollKey: "scrollLeft" | "scrollTop", offset: number) => {
+        // Focusing a resize handle can scroll its header quadrant independently. Forward that
+        // movement to MAIN, whose scroll handler updates the table and synchronizes the headers.
+        // Ignore the events produced by our own header synchronization to avoid a feedback loop.
+        if (offset !== this.cache.getScrollOffset(scrollKey)) {
+            this.wasMainQuadrantScrollTriggeredByWheelEvent = false;
+            this.maybeSetQuadrantScrollOffset(QuadrantType.MAIN, scrollKey, offset);
+        }
+    };
 
     private handleMainQuadrantScroll = (event: React.UIEvent<HTMLElement>) => {
         if (this.wasMainQuadrantScrollTriggeredByWheelEvent) {

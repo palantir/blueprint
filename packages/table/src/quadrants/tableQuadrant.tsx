@@ -66,9 +66,9 @@ export interface TableQuadrantProps extends Props {
     enableRowHeader?: boolean;
 
     /**
-     * An optional callback invoked when the quadrant is scrolled via the scrollbar OR the trackpad/mouse wheel.
-     * This callback really only makes sense for the MAIN quadrant, because that's the only quadrant whose
-     * scrollbar is visible. Other quadrants should simply provide an `onWheel` callback.
+     * An optional callback invoked when the quadrant is scrolled, including by focusing a descendant.
+     * MAIN uses this for scrollbar and trackpad/mouse wheel scrolling; TOP and LEFT use it to forward
+     * focus-induced scrolling to MAIN.
      */
     onScroll?: React.EventHandler<React.UIEvent<HTMLDivElement>>;
 

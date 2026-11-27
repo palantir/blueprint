@@ -965,6 +965,16 @@ describe("<Table>", () => {
                     );
                 }
 
+                it("puts the frozen handles before scrolling handles in the tab order", () => {
+                    const { getAllByRole } = renderFrozenTable();
+                    expect(getAllByRole("separator").map(handle => handle.getAttribute("aria-label"))).to.deep.equal([
+                        "Resize column Title",
+                        "Resize row 1",
+                        "Resize column Model Type",
+                        "Resize row 2",
+                    ]);
+                });
+
                 it("makes the TOP_LEFT copy of the frozen column's handle focusable and covers the other three", () => {
                     const { container } = renderFrozenTable();
                     expect(getResizeHandleCopies(container, { headerName: "Title" })).to.deep.equal({

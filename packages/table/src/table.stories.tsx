@@ -29,8 +29,8 @@ const meta: Meta<typeof Table> = {
     args: {
         enableColumnResizing: true,
         enableRowResizing: true,
-        numFrozenColumns: 1,
-        numFrozenRows: 1,
+        numFrozenColumns: 0,
+        numFrozenRows: 0,
         numRows: 30,
     },
 } satisfies Meta<typeof Table>;
@@ -39,7 +39,6 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-/** Scroll the table: the first column and first row stay in place. */
 export const Default: Story = {
     render: function TableStory(args) {
         return (
@@ -52,4 +51,13 @@ export const Default: Story = {
             </div>
         );
     },
+};
+
+/** Scroll the table: the first column and first row stay in place. */
+export const FrozenColumnsAndRows: Story = {
+    args: {
+        numFrozenColumns: 1,
+        numFrozenRows: 1,
+    },
+    render: Default.render,
 };
