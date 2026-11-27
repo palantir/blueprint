@@ -116,8 +116,15 @@ $reorder-handle-width: calc(var(--bp-surface-spacing, #{$pt-spacing}) * 5.5) !de
   z-index: $pt-z-index-overlay;
 
   &:hover,
+  &:focus-visible,
   &.#{$ns}-table-dragging {
     opacity: 1;
+  }
+
+  // the visible handle bar is the focus indicator; the global outline would render as
+  // stray lines on either side of this narrow target
+  &:focus {
+    outline: none;
   }
 
   &.#{$ns}-table-resize-vertical {

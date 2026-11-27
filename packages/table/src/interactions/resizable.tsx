@@ -36,6 +36,12 @@ export interface ResizableProps extends Props, LockableLayout {
     isResizable?: boolean;
 
     /**
+     * Whether the resize handle is focusable, keyboard-operable, and exposed as a separator to
+     * assistive technology.
+     */
+    isKeyboardResizable: boolean;
+
+    /**
      * The optional maximum width of the column.
      */
     maxSize?: number;
@@ -75,6 +81,11 @@ export interface ResizableProps extends Props, LockableLayout {
      * The initial dimensional size.
      */
     size: number;
+
+    /**
+     * Accessible name for the keyboard-operable resize handle, e.g. "Resize column Title".
+     */
+    resizeHandleAriaLabel?: string;
 }
 
 export interface ResizeableState {
@@ -127,7 +138,24 @@ export class Resizable extends AbstractPureComponent<ResizableProps, ResizeableS
     }
 
     private renderResizeHandle() {
-        const { onLayoutLock, onDoubleClick, orientation } = this.props;
+        const {
+            isKeyboardResizable,
+            maxSize,
+            minSize,
+            onLayoutLock,
+            onDoubleClick,
+            orientation,
+            resizeHandleAriaLabel,
+        } = this.props;
+        const keyboardProps = isKeyboardResizable
+            ? {
+                  ariaLabel: resizeHandleAriaLabel,
+                  maxSize,
+                  minSize,
+                  onKeyboardResize: this.onKeyboardResize,
+                  size: this.state.size,
+              }
+            : {};
 
         return (
             <ResizeHandle
@@ -137,6 +165,7 @@ export class Resizable extends AbstractPureComponent<ResizableProps, ResizeableS
                 onResizeEnd={this.onResizeEnd}
                 onResizeMove={this.onResizeMove}
                 orientation={orientation}
+                {...keyboardProps}
             />
         );
     }
@@ -150,6 +179,13 @@ export class Resizable extends AbstractPureComponent<ResizableProps, ResizeableS
         // reset "unclamped" size on end
         this.setState({ unclampedSize: this.state.size });
         this.props.onResizeEnd?.(this.state.size);
+    };
+
+    private onKeyboardResize = (requestedSize: number) => {
+        // each key press is a complete resize, so commit it right away, as at the end of a drag
+        const size = Utils.clamp(requestedSize, this.props.minSize, this.props.maxSize);
+        this.setState({ size, unclampedSize: size });
+        this.props.onResizeEnd?.(size);
     };
 
     /**

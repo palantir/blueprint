@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { mount } from "enzyme";
 import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
@@ -620,6 +620,63 @@ describe("TableQuadrantStack", () => {
             assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
             assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
             assertScrollPositionEquals(topLeftScrollContainer, 0, 0);
+        });
+
+        it("forwards TOP scrolling to the body without changing its vertical offset", () => {
+            mainScrollContainer.scrollTop = SCROLL_OFFSET_Y;
+            fireEvent.scroll(mainScrollContainer);
+            onScroll.resetHistory();
+
+            topScrollContainer.scrollLeft = SCROLL_OFFSET_X;
+            fireEvent.scroll(topScrollContainer);
+
+            assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+            fireEvent.scroll(mainScrollContainer);
+            assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+            assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+            expect(onScroll.calledOnce).to.be.true;
+            expect(onScroll.firstCall.args[0].target).to.equal(mainScrollContainer);
+        });
+
+        it("forwards LEFT scrolling to the body without changing its horizontal offset", () => {
+            mainScrollContainer.scrollLeft = SCROLL_OFFSET_X;
+            fireEvent.scroll(mainScrollContainer);
+            onScroll.resetHistory();
+
+            leftScrollContainer.scrollTop = SCROLL_OFFSET_Y;
+            fireEvent.scroll(leftScrollContainer);
+
+            assertScrollPositionEquals(mainScrollContainer, SCROLL_OFFSET_X, SCROLL_OFFSET_Y);
+            fireEvent.scroll(mainScrollContainer);
+            assertScrollPositionEquals(leftScrollContainer, 0, SCROLL_OFFSET_Y);
+            assertScrollPositionEquals(topScrollContainer, SCROLL_OFFSET_X, 0);
+            expect(onScroll.calledOnce).to.be.true;
+            expect(onScroll.firstCall.args[0].target).to.equal(mainScrollContainer);
+        });
+
+        it("does not forward scroll events caused by synchronizing the headers", () => {
+            mainScrollContainer.scrollLeft = SCROLL_OFFSET_X;
+            mainScrollContainer.scrollTop = SCROLL_OFFSET_Y;
+            fireEvent.scroll(mainScrollContainer);
+            const setScrollLeft = sinon.spy();
+            const setScrollTop = sinon.spy();
+            Object.defineProperty(mainScrollContainer, "scrollLeft", {
+                configurable: true,
+                get: () => SCROLL_OFFSET_X,
+                set: setScrollLeft,
+            });
+            Object.defineProperty(mainScrollContainer, "scrollTop", {
+                configurable: true,
+                get: () => SCROLL_OFFSET_Y,
+                set: setScrollTop,
+            });
+
+            fireEvent.scroll(topScrollContainer);
+            fireEvent.scroll(leftScrollContainer);
+
+            expect(setScrollLeft.called).to.be.false;
+            expect(setScrollTop.called).to.be.false;
+            expect(onScroll.calledOnce).to.be.true;
         });
 
         it("syncs quadrant scroll offsets when mouse-wheeling in the main quadrant", () => {
