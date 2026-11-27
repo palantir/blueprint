@@ -64,6 +64,22 @@ describe("<QueryList>", () => {
             expect(wrapper.find("ul.foo")).toHaveLength(1);
             expect(testProps.itemRenderer.callCount).toBe(20);
         });
+
+        it("enter selects the active item when query is empty, since initialContent is ignored", () => {
+            const wrapper = mount(
+                <QueryList<Film>
+                    {...testProps}
+                    initialContent={null}
+                    itemListRenderer={itemListRenderer}
+                    renderer={({ handleKeyDown, handleKeyUp }) => (
+                        <input onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} />
+                    )}
+                />,
+            );
+            wrapper.find("input").simulate("keydown", { key: "Enter" }).simulate("keyup", { key: "Enter" });
+            expect(testProps.onItemSelect.calledOnceWith(testProps.items[0])).toBe(true);
+            wrapper.unmount();
+        });
     });
 
     describe("filtering", () => {

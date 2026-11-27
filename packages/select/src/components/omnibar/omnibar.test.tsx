@@ -15,9 +15,11 @@
  */
 
 import { mount } from "enzyme";
+import sinon from "sinon";
 
-import { describe } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
+import { type Film, renderFilm, TOP_100_FILMS } from "../../__examples__";
 import { selectComponentSuite } from "../select/selectComponentTestUtils";
 
 import { Omnibar } from "./omnibar";
@@ -25,4 +27,20 @@ import { Omnibar } from "./omnibar";
 describe("<Omnibar>", () => {
     // must have query to show any items
     selectComponentSuite(props => mount(<Omnibar {...props} isOpen={true} overlayProps={{ usePortal: false }} />));
+
+    it("does not select a hidden item on Enter when query is empty", () => {
+        const onItemSelect = sinon.spy();
+        const wrapper = mount(
+            <Omnibar<Film>
+                isOpen={true}
+                itemRenderer={renderFilm}
+                items={TOP_100_FILMS}
+                onItemSelect={onItemSelect}
+                overlayProps={{ usePortal: false }}
+            />,
+        );
+        wrapper.find("input").simulate("keydown", { key: "Enter" }).simulate("keyup", { key: "Enter" });
+        expect(onItemSelect.called).toBe(false);
+        wrapper.unmount();
+    });
 });
