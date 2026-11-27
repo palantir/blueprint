@@ -7,10 +7,11 @@ import type { TSESLint } from "@typescript-eslint/utils";
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const tableComponentsMigrationMapping = {
-    // listed in packages/table/src/deprecatedAliases.ts
     ColumnHeaderCell2: "ColumnHeaderCell",
+    EditableCell2: "EditableCell",
     JSONFormat2: "JSONFormat",
     RowHeaderCell2: "RowHeaderCell",
+    Table2: "Table",
     TruncatedFormat2: "TruncatedFormat",
 };
 
