@@ -843,7 +843,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
      * MAIN is the bottom layer: TOP covers its column headers and LEFT covers its row headers, so none are
      * focusable.
      */
-    private getMainQuadrantFirstKeyboardResizableIndex = () => undefined;
+    private getMainQuadrantFirstKeyboardResizableIndex = (): undefined => undefined;
 
     /**
      * TOP's column headers are topmost from the first column that isn't frozen. LEFT and TOP_LEFT cover the
@@ -855,10 +855,10 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
      * TOP's row headers only show the frozen rows, under the menu. Row headers render only with `enableRowHeader`,
      * which always renders LEFT and TOP_LEFT, so those quadrants cover every one of them and none are focusable.
      */
-    private getTopQuadrantRowFirstKeyboardResizableIndex = () => undefined;
+    private getTopQuadrantRowFirstKeyboardResizableIndex = (): undefined => undefined;
 
     /** LEFT's column headers only show frozen columns, which TOP_LEFT covers, so none are focusable. */
-    private getLeftQuadrantColumnFirstKeyboardResizableIndex = () => undefined;
+    private getLeftQuadrantColumnFirstKeyboardResizableIndex = (): undefined => undefined;
 
     /** LEFT's row headers are topmost from the first row that isn't frozen. TOP_LEFT covers the frozen ones. */
     private getLeftQuadrantRowFirstKeyboardResizableIndex = () => this.props.numFrozenRows;
