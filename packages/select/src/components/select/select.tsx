@@ -242,8 +242,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                     ...targetProps,
                     "aria-disabled": disabled,
                     "aria-expanded": isOpen,
-                    // When filterable, the InputGroup inside is the combobox; this trigger is just a button
-                    // When not filterable, this trigger is the combobox
                     ...(filterable ? { "aria-haspopup": "listbox" } : {}),
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps?.className, {
@@ -258,7 +256,10 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                     ),
                     onKeyUp: this.withPopoverTargetPropsHandler("keyup", isOpen ? handleKeyUp : undefined),
                     ref,
-                    role: filterable ? undefined : "combobox",
+                    // This trigger is always the combobox, matching MultiSelect. When filterable, the query
+                    // InputGroup only exists while the popover is open, so leaving the role off here would
+                    // strand "aria-expanded", "aria-controls" and "aria-disabled" on a roleless element.
+                    role: "combobox",
                 },
                 this.props.children,
             );
