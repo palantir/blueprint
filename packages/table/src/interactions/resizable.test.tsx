@@ -52,6 +52,7 @@ describe("Resizable", () => {
 
         const wrapper = mount<ResizableProps, ResizeableState>(
             <Resizable
+                isKeyboardResizable={true}
                 maxSize={150}
                 minSize={50}
                 size={100}
@@ -76,6 +77,7 @@ describe("Resizable", () => {
 
         const { container } = render(
             <Resizable
+                isKeyboardResizable={true}
                 maxSize={150}
                 minSize={50}
                 size={100}
@@ -103,6 +105,7 @@ describe("Resizable", () => {
 
         const { container } = render(
             <Resizable
+                isKeyboardResizable={true}
                 maxSize={150}
                 minSize={50}
                 onDoubleClick={onDoubleClick}
@@ -145,5 +148,75 @@ describe("Resizable", () => {
         expect(onSizeChanged.called).to.be.false;
         expect(onResizeEnd.called).to.be.false;
         expect(onDoubleClick.called).to.be.true;
+    });
+
+    describe("keyboard resizing", () => {
+        it("exposes the handle as a focusable separator", () => {
+            const { getByRole } = renderKeyboardResizable({ maxSize: 200, minSize: 50 });
+            const handle = getByRole("separator", { name: "Resize column Title" });
+            expect(handle.tabIndex).to.equal(0);
+            expect(handle.getAttribute("aria-orientation")).to.equal("vertical");
+            expect(handle.getAttribute("aria-valuenow")).to.equal("100");
+            expect(handle.getAttribute("aria-valuemin")).to.equal("50");
+            expect(handle.getAttribute("aria-valuemax")).to.equal("200");
+        });
+
+        it("resizes a column handle by 10px with ArrowLeft and ArrowRight, and ignores ArrowUp and ArrowDown", () => {
+            const { getByRole, onResizeEnd } = renderKeyboardResizable();
+            const handle = getByRole("separator");
+            fireEvent.keyDown(handle, { key: "ArrowLeft" });
+            fireEvent.keyDown(handle, { key: "ArrowRight" });
+            fireEvent.keyDown(handle, { key: "ArrowUp" });
+            fireEvent.keyDown(handle, { key: "ArrowDown" });
+            expect(onResizeEnd.args).to.deep.equal([[90], [100]]);
+        });
+
+        it("resizes a row handle by 10px with ArrowUp and ArrowDown, and ignores ArrowLeft and ArrowRight", () => {
+            const { getByRole, onResizeEnd } = renderKeyboardResizable({ orientation: Orientation.HORIZONTAL });
+            const handle = getByRole("separator");
+            expect(handle.getAttribute("aria-orientation")).to.equal("horizontal");
+            fireEvent.keyDown(handle, { key: "ArrowDown" });
+            fireEvent.keyDown(handle, { key: "ArrowUp" });
+            fireEvent.keyDown(handle, { key: "ArrowLeft" });
+            fireEvent.keyDown(handle, { key: "ArrowRight" });
+            expect(onResizeEnd.args).to.deep.equal([[110], [100]]);
+        });
+
+        it("stops at the minimum and maximum sizes", () => {
+            const { getByRole, onResizeEnd } = renderKeyboardResizable({ maxSize: 110, minSize: 100, size: 105 });
+            const handle = getByRole("separator");
+            fireEvent.keyDown(handle, { key: "ArrowLeft" }); // 95, stopped at 100
+            fireEvent.keyDown(handle, { key: "ArrowRight" }); // 110
+            fireEvent.keyDown(handle, { key: "ArrowRight" }); // 120, stopped at 110
+            expect(onResizeEnd.args).to.deep.equal([[100], [110], [110]]);
+        });
+
+        /** Renders a 100px column-style (vertical) resizable whose handle is keyboard operable. */
+        function renderKeyboardResizable({
+            orientation = Orientation.VERTICAL,
+            size = 100,
+            ...props
+        }: {
+            maxSize?: number;
+            minSize?: number;
+            orientation?: Orientation;
+            size?: number;
+        } = {}) {
+            const onResizeEnd = sinon.spy();
+            const result = render(
+                <Resizable
+                    isKeyboardResizable={true}
+                    onLayoutLock={sinon.spy()}
+                    onResizeEnd={onResizeEnd}
+                    orientation={orientation}
+                    resizeHandleAriaLabel="Resize column Title"
+                    size={size}
+                    {...props}
+                >
+                    <ResizableDiv />
+                </Resizable>,
+            );
+            return { ...result, onResizeEnd };
+        }
     });
 });

@@ -170,7 +170,8 @@ interface TableQuadrantStackProps extends Props {
         refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
-        showFrozenColumnsOnly?: boolean,
+        showFrozenColumnsOnly: boolean,
+        isResizeHandleKeyboardResizable: (index: number) => boolean,
     ) => React.JSX.Element | undefined;
 
     /**
@@ -186,7 +187,8 @@ interface TableQuadrantStackProps extends Props {
         refHandler: React.Ref<HTMLDivElement>,
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
-        showFrozenRowsOnly?: boolean,
+        showFrozenRowsOnly: boolean,
+        isResizeHandleKeyboardResizable: (index: number) => boolean,
     ) => React.JSX.Element | undefined;
 
     renderScrollIndicatorOverlay?: (
@@ -526,7 +528,13 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
+        return this.props.columnHeaderRenderer?.(
+            refHandler,
+            resizeHandler,
+            reorderingHandler,
+            showFrozenColumnsOnly,
+            this.isMainQuadrantResizeHandleKeyboardResizable,
+        );
     };
 
     private renderTopQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
@@ -538,7 +546,13 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
+        return this.props.columnHeaderRenderer?.(
+            refHandler,
+            resizeHandler,
+            reorderingHandler,
+            showFrozenColumnsOnly,
+            this.isTopQuadrantColumnResizeHandleKeyboardResizable,
+        );
     };
 
     private renderLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
@@ -550,7 +564,13 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
+        return this.props.columnHeaderRenderer?.(
+            refHandler,
+            resizeHandler,
+            reorderingHandler,
+            showFrozenColumnsOnly,
+            this.isLeftQuadrantColumnResizeHandleKeyboardResizable,
+        );
     };
 
     private renderTopLeftQuadrantColumnHeader = (showFrozenColumnsOnly: boolean) => {
@@ -562,7 +582,13 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             return undefined;
         }
 
-        return this.props.columnHeaderRenderer?.(refHandler, resizeHandler, reorderingHandler, showFrozenColumnsOnly);
+        return this.props.columnHeaderRenderer?.(
+            refHandler,
+            resizeHandler,
+            reorderingHandler,
+            showFrozenColumnsOnly,
+            this.isTopLeftQuadrantResizeHandleKeyboardResizable,
+        );
     };
 
     // Row header
@@ -578,6 +604,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             this.handleRowResizeGuideMain,
             this.handleRowsReordering,
             showFrozenRowsOnly,
+            this.isMainQuadrantResizeHandleKeyboardResizable,
         );
     };
 
@@ -592,6 +619,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             this.handleRowResizeGuideTop,
             this.handleRowsReordering,
             showFrozenRowsOnly,
+            this.isTopQuadrantRowResizeHandleKeyboardResizable,
         );
     };
 
@@ -606,6 +634,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             this.handleRowResizeGuideLeft,
             this.handleRowsReordering,
             showFrozenRowsOnly,
+            this.isLeftQuadrantRowResizeHandleKeyboardResizable,
         );
     };
 
@@ -620,6 +649,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
             this.handleRowResizeGuideTopLeft,
             this.handleRowsReordering,
             showFrozenRowsOnly,
+            this.isTopLeftQuadrantResizeHandleKeyboardResizable,
         );
     };
 
@@ -779,6 +809,39 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
         const adjustedGuides = this.adjustHorizontalGuides(horizontalGuides, quadrantType);
         this.props.handleRowResizeGuide?.(adjustedGuides);
     };
+
+    // Keyboard resizing
+    // -----------------
+
+    // Every quadrant draws its own copy of the headers, and only the topmost copy of each resize handle
+    // should be focusable. Quadrants stack MAIN < TOP < LEFT < TOP_LEFT (`$table-quadrant-z-index-*` in
+    // _quadrants.scss). TOP_LEFT draws the frozen column and row headers, so it covers those copies in
+    // TOP and LEFT.
+
+    /** MAIN is the bottom layer: TOP covers its column headers and LEFT covers its row headers. */
+    private isMainQuadrantResizeHandleKeyboardResizable = () => false;
+
+    /**
+     * TOP's column headers are topmost, except the frozen columns, which LEFT and TOP_LEFT cover. Frozen
+     * columns always make those quadrants render.
+     */
+    private isTopQuadrantColumnResizeHandleKeyboardResizable = (columnIndex: number) =>
+        columnIndex >= this.props.numFrozenColumns;
+
+    /**
+     * TOP's row headers only show the frozen rows, under the menu. Row headers render only with `enableRowHeader`,
+     * which always renders LEFT and TOP_LEFT, so those quadrants cover every one of them.
+     */
+    private isTopQuadrantRowResizeHandleKeyboardResizable = () => false;
+
+    /** LEFT's column headers only show frozen columns, which TOP_LEFT covers. */
+    private isLeftQuadrantColumnResizeHandleKeyboardResizable = () => false;
+
+    /** LEFT's row headers are topmost, except the frozen rows, which TOP_LEFT covers. */
+    private isLeftQuadrantRowResizeHandleKeyboardResizable = (rowIndex: number) => rowIndex >= this.props.numFrozenRows;
+
+    /** TOP_LEFT is the top layer, so nothing covers its column or row headers. */
+    private isTopLeftQuadrantResizeHandleKeyboardResizable = () => true;
 
     // Reordering
     // ----------

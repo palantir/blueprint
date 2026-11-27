@@ -70,6 +70,12 @@ export interface HeaderProps extends LockableLayout, ReorderableProps, Selectabl
     isResizable?: boolean;
 
     /**
+     * Whether the resize handle at the given index is focusable and keyboard-operable. The table renders
+     * headers in several overlapping quadrants and passes this so only the visible copy of each handle is.
+     */
+    isResizeHandleKeyboardResizable: (index: number) => boolean;
+
+    /**
      * Locates the row/column/cell given a mouse event.
      */
     locator: Locator;
@@ -382,6 +388,7 @@ export class Header extends Component<InternalHeaderProps, HeaderState> {
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
         const modifiedHandleResizeEnd = (size: number) => this.props.handleResizeEnd(index, size);
         const modifiedHandleResizeHandleDoubleClick = () => this.props.handleResizeDoubleClick?.(index);
+        const resizeHandleAriaLabel = `Resize ${this.isColumnHeader() ? "column" : "row"} ${cell.props.name ?? index + 1}`;
 
         const baseChildren = (
             <DragSelectable
@@ -401,6 +408,7 @@ export class Header extends Component<InternalHeaderProps, HeaderState> {
                 targetRef={cellTargetRef}
             >
                 <Resizable
+                    isKeyboardResizable={this.props.isResizeHandleKeyboardResizable(index)}
                     isResizable={this.props.isResizable}
                     maxSize={this.props.maxSize}
                     minSize={this.props.minSize}
@@ -412,6 +420,7 @@ export class Header extends Component<InternalHeaderProps, HeaderState> {
                     // eslint-disable-next-line react/jsx-no-bind
                     onSizeChanged={modifiedHandleSizeChanged}
                     orientation={this.props.resizeOrientation}
+                    resizeHandleAriaLabel={resizeHandleAriaLabel}
                     size={this.props.getCellSize(index)}
                 >
                     {cloneElement(cell, cellProps)}

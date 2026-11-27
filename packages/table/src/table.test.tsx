@@ -25,7 +25,7 @@ import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { CellType, expectCellLoading } from "./cell/cellTestUtils";
-import { type CellCoordinates, type FocusedCellCoordinates } from "./common/cellTypes";
+import { type CellCoordinates, type FocusedCellCoordinates, FocusMode } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import * as Errors from "./common/errors";
 import type { ColumnIndices, RowIndices } from "./common/grid";
@@ -886,6 +886,177 @@ describe("<Table>", () => {
 
             expect(columnWidth, "column resizes correctly").to.be.at.least(EXPECTED_COLUMN_WIDTH);
             expect(quadrantWidth, "quadrant resizes correctly").to.be.at.least(expectedQuadrantWidth);
+        });
+
+        describe("with the keyboard", () => {
+            // Each quadrant draws its own copy of the headers it shows, so a header's resize handle can exist in
+            // several stacked quadrants (MAIN < TOP < LEFT < TOP_LEFT). Only the copy on top is visible, and only
+            // that copy should be focusable; the copies underneath are covered.
+            const columns = [
+                <Column key="title" name="Title" cellRenderer={() => <Cell>Example</Cell>} />,
+                <Column key="model" name="Model Type" cellRenderer={() => <Cell>Example</Cell>} />,
+            ];
+
+            describe("with no frozen columns or rows", () => {
+                it("makes the TOP copy of a column handle focusable and covers the MAIN copy", () => {
+                    const { container } = render(
+                        <Table numRows={2} numFrozenColumns={0} numFrozenRows={0}>
+                            {columns}
+                        </Table>,
+                    );
+                    expect(getResizeHandleCopies(container, { headerName: "Title" })).to.deep.equal({
+                        LEFT: "not drawn",
+                        MAIN: "covered",
+                        TOP: "focusable",
+                        TOP_LEFT: "not drawn",
+                    });
+                });
+
+                it("with row headers enabled, makes the LEFT copy of a row handle focusable and covers the MAIN copy", () => {
+                    const { container } = render(
+                        <Table enableRowHeader={true} numRows={2} numFrozenColumns={0} numFrozenRows={0}>
+                            {columns}
+                        </Table>,
+                    );
+                    expect(getResizeHandleCopies(container, { headerName: "1" })).to.deep.equal({
+                        LEFT: "focusable",
+                        MAIN: "covered",
+                        TOP: "not drawn",
+                        TOP_LEFT: "not drawn",
+                    });
+                });
+
+                it("with row headers disabled, LEFT does not render, so the TOP copy of a column handle stays focusable", () => {
+                    const { container } = render(
+                        <Table enableRowHeader={false} numRows={2} numFrozenColumns={0} numFrozenRows={0}>
+                            {columns}
+                        </Table>,
+                    );
+                    expect(getResizeHandleCopies(container, { headerName: "Title" })).to.deep.equal({
+                        LEFT: "not drawn",
+                        MAIN: "covered",
+                        TOP: "focusable",
+                        TOP_LEFT: "not drawn",
+                    });
+                    expect(
+                        container.querySelectorAll(`.${Classes.TABLE_RESIZE_HORIZONTAL}`),
+                        "no row headers, so no row handles",
+                    ).to.have.length(0);
+                });
+            });
+
+            // The quadrant on top at each spot of this table, and the headers it draws there:
+            //
+            //                  frozen column           other columns
+            //               ┌───────────────────────┬──────────────────────┐
+            //   column      │ TOP_LEFT              │ TOP                  │
+            //   headers and │ column "Title"        │ column "Model Type"  │
+            //   frozen row  │ row "1"               │                      │
+            //               ├───────────────────────┼──────────────────────┤
+            //   other rows  │ LEFT                  │ MAIN                 │
+            //               │ row "2"               │                      │
+            //               └───────────────────────┴──────────────────────┘
+            describe("with frozen columns and rows", () => {
+                function renderFrozenTable() {
+                    return render(
+                        <Table enableRowHeader={true} numRows={2} numFrozenColumns={1} numFrozenRows={1}>
+                            {columns}
+                        </Table>,
+                    );
+                }
+
+                it("makes the TOP_LEFT copy of the frozen column's handle focusable and covers the other three", () => {
+                    const { container } = renderFrozenTable();
+                    expect(getResizeHandleCopies(container, { headerName: "Title" })).to.deep.equal({
+                        LEFT: "covered",
+                        MAIN: "covered",
+                        TOP: "covered",
+                        TOP_LEFT: "focusable",
+                    });
+                });
+
+                it("makes the TOP_LEFT copy of the frozen row's handle focusable and covers the other three", () => {
+                    const { container } = renderFrozenTable();
+                    expect(getResizeHandleCopies(container, { headerName: "1" })).to.deep.equal({
+                        LEFT: "covered",
+                        MAIN: "covered",
+                        TOP: "covered",
+                        TOP_LEFT: "focusable",
+                    });
+                });
+
+                it("keeps the TOP copy of a column that is not frozen focusable, since TOP_LEFT spans only the frozen column", () => {
+                    const { container } = renderFrozenTable();
+                    expect(getResizeHandleCopies(container, { headerName: "Model Type" })).to.deep.equal({
+                        LEFT: "not drawn",
+                        MAIN: "covered",
+                        TOP: "focusable",
+                        TOP_LEFT: "not drawn",
+                    });
+                });
+
+                it("keeps the LEFT copy of a row that is not frozen focusable, since TOP_LEFT spans only the frozen row", () => {
+                    const { container } = renderFrozenTable();
+                    expect(getResizeHandleCopies(container, { headerName: "2" })).to.deep.equal({
+                        LEFT: "focusable",
+                        MAIN: "covered",
+                        TOP: "not drawn",
+                        TOP_LEFT: "not drawn",
+                    });
+                });
+            });
+
+            it("resizes the column without moving the focused cell", () => {
+                const onColumnWidthChanged = sinon.spy();
+                const onFocusedRegion = sinon.spy();
+                const { container, getByRole } = render(
+                    <Table
+                        numRows={2}
+                        columnWidths={[120, 120]}
+                        focusMode={FocusMode.CELL}
+                        focusedRegion={{ col: 0, focusSelectionIndex: 0, row: 0, type: FocusMode.CELL }}
+                        onColumnWidthChanged={onColumnWidthChanged}
+                        onFocusedRegion={onFocusedRegion}
+                    >
+                        {columns}
+                    </Table>,
+                );
+                fireEvent.keyDown(getByRole("separator", { name: "Resize column Title" }), { key: "ArrowRight" });
+                expect(onColumnWidthChanged.calledOnceWith(0, 130)).to.be.true;
+                expect(onFocusedRegion.called).to.be.false;
+
+                // control: the same key on the table itself does move the focused cell
+                fireEvent.keyDown(container.querySelector(`.${Classes.TABLE_CONTAINER}`)!, { key: "ArrowRight" });
+                expect(onFocusedRegion.called).to.be.true;
+            });
+
+            const QUADRANT_NAMES = {
+                [Classes.TABLE_QUADRANT_MAIN]: "MAIN",
+                [Classes.TABLE_QUADRANT_TOP]: "TOP",
+                [Classes.TABLE_QUADRANT_LEFT]: "LEFT",
+                [Classes.TABLE_QUADRANT_TOP_LEFT]: "TOP_LEFT",
+            };
+
+            /**
+             * Maps every quadrant to its copy of the resize handle for the header named `headerName`: "focusable"
+             * (the visible copy), "covered" (drawn under another quadrant), or "not drawn" (the quadrant does not
+             * show that header, or does not render at all).
+             */
+            function getResizeHandleCopies(container: HTMLElement, { headerName }: { headerName: string }) {
+                const handles = Array.from(
+                    container.querySelectorAll<HTMLElement>(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`),
+                ).filter(handle => handle.closest(`.${Classes.TABLE_HEADER}`)?.textContent === headerName);
+                return Object.fromEntries(
+                    Object.entries(QUADRANT_NAMES).map(([quadrantClass, quadrantName]) => {
+                        const handle = handles.find(candidate =>
+                            candidate.closest(`.${Classes.TABLE_QUADRANT}`)?.classList.contains(quadrantClass),
+                        );
+                        const copy =
+                            handle === undefined ? "not drawn" : handle.tabIndex === 0 ? "focusable" : "covered";
+                        return [quadrantName, copy];
+                    }),
+                );
+            }
         });
 
         function mountTable(tableProps: Partial<TableProps> = {}) {

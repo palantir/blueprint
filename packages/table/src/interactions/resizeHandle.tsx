@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { PureComponent } from "react";
+import { type KeyboardEvent, PureComponent } from "react";
 
 import type { Props } from "@blueprintjs/core";
 
@@ -60,7 +60,42 @@ export interface ResizeHandleProps extends Props, LockableLayout {
      * An enum value to indicate the orientation of the resize handle.
      */
     orientation: Orientation;
+
+    /**
+     * Accessible name for the handle, e.g. "Resize column Title".
+     */
+    ariaLabel?: string;
+
+    /**
+     * The current size in pixels of the resized element, exposed as `aria-valuenow`
+     * and used as the base for keyboard resizing.
+     */
+    size?: number;
+
+    /**
+     * The minimum size in pixels, exposed as `aria-valuemin`.
+     */
+    minSize?: number;
+
+    /**
+     * The maximum size in pixels, exposed as `aria-valuemax`.
+     */
+    maxSize?: number;
+
+    /**
+     * A callback that is called when the user resizes via the keyboard while the handle is focused.
+     * When provided, the handle becomes a focusable separator.
+     *
+     * @param size is the requested (unclamped) size
+     */
+    onKeyboardResize?: (size: number) => void;
 }
+
+/**
+ * The number of pixels an arrow key press grows or shrinks the resized element by. The WAI-ARIA window
+ * splitter pattern does not specify a step, so this is an arbitrary value.
+ */
+const RESIZE_HANDLE_KEYBOARD_STEP = 10;
 
 export interface ResizeHandleState {
     /**
@@ -75,7 +110,17 @@ export class ResizeHandle extends PureComponent<ResizeHandleProps, ResizeHandleS
     };
 
     public render() {
-        const { onResizeMove, onResizeEnd, onDoubleClick, orientation } = this.props;
+        const {
+            ariaLabel,
+            maxSize,
+            minSize,
+            onKeyboardResize,
+            onResizeMove,
+            onResizeEnd,
+            onDoubleClick,
+            orientation,
+            size,
+        } = this.props;
         if (onResizeMove == null && onResizeEnd == null && onDoubleClick == null) {
             return undefined;
         }
@@ -94,6 +139,20 @@ export class ResizeHandle extends PureComponent<ResizeHandleProps, ResizeHandleS
             [Classes.TABLE_DRAGGING]: this.state.isDragging,
         });
 
+        const separatorProps =
+            onKeyboardResize == null
+                ? {}
+                : ({
+                      "aria-label": ariaLabel,
+                      "aria-orientation": orientation === Orientation.VERTICAL ? "vertical" : "horizontal",
+                      "aria-valuemax": maxSize,
+                      "aria-valuemin": minSize,
+                      "aria-valuenow": size,
+                      onKeyDown: this.handleKeyDown,
+                      role: "separator",
+                      tabIndex: 0,
+                  } as const);
+
         return (
             <Draggable
                 onActivate={this.handleActivate}
@@ -103,11 +162,50 @@ export class ResizeHandle extends PureComponent<ResizeHandleProps, ResizeHandleS
                 onDragMove={this.handleDragMove}
                 // N.B. no need to specify targetRef since the child is a native DOM element that accepts ref injection
             >
-                <div className={targetClasses}>
+                <div className={targetClasses} {...separatorProps}>
                     <div className={handleClasses} />
                 </div>
             </Draggable>
         );
+    }
+
+    /**
+     * Arrow keys follow the WAI-ARIA window splitter pattern:
+     * https://www.w3.org/WAI/ARIA/apg/patterns/windowsplitter/#keyboardinteraction
+     */
+    private handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+        const targetSize = this.getKeyboardTargetSize(event.key);
+        if (targetSize === undefined) {
+            return;
+        }
+        this.props.onKeyboardResize?.(targetSize);
+        // keep handled keys from reaching the table's own keyboard navigation
+        event.preventDefault();
+        event.stopPropagation();
+    };
+
+    /**
+     * Maps a key to the size it requests, or `undefined` if the key does not resize.
+     * Column handles (VERTICAL) use ArrowLeft/ArrowRight; row handles (HORIZONTAL) use ArrowUp/ArrowDown.
+     */
+    private getKeyboardTargetSize(key: string): number | undefined {
+        const { orientation, size } = this.props;
+        if (size === undefined) {
+            return undefined;
+        }
+        const isVertical = orientation === Orientation.VERTICAL;
+        switch (key) {
+            case "ArrowLeft":
+                return isVertical ? size - RESIZE_HANDLE_KEYBOARD_STEP : undefined;
+            case "ArrowRight":
+                return isVertical ? size + RESIZE_HANDLE_KEYBOARD_STEP : undefined;
+            case "ArrowUp":
+                return isVertical ? undefined : size - RESIZE_HANDLE_KEYBOARD_STEP;
+            case "ArrowDown":
+                return isVertical ? undefined : size + RESIZE_HANDLE_KEYBOARD_STEP;
+            default:
+                return undefined;
+        }
     }
 
     private handleActivate = (event: MouseEvent) => {
