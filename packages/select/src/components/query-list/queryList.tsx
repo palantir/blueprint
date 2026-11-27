@@ -571,7 +571,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
         const { onKeyUp } = this.props;
-        const { activeItem } = this.state;
+        const { activeItem, filteredItems } = this.state;
 
         if (event.key === "Enter" && this.isEnterKeyPressed) {
             // We handle ENTER in keyup here to play nice with the Button component's keyboard
@@ -582,7 +582,13 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             if (activeItem == null || isCreateNewItem(activeItem)) {
                 this.handleItemCreate(this.state.query, event);
             } else {
-                this.handleItemSelect(activeItem, event);
+                const activeIndex = this.getActiveIndex();
+                if (
+                    activeIndex < 0 ||
+                    !isItemDisabled(filteredItems[activeIndex], activeIndex, this.props.itemDisabled)
+                ) {
+                    this.handleItemSelect(activeItem, event);
+                }
             }
             this.isEnterKeyPressed = false;
         }
