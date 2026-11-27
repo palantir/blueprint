@@ -25,12 +25,12 @@ import type { Panel } from "./panelTypes";
 import { PanelView } from "./panelView";
 
 /** @deprecated Use `PanelStackProps` instead */
-export type PanelStack2Props<T extends Panel<object>> = PanelStackProps<T>;
+export type PanelStack2Props<T extends Panel<any>> = PanelStackProps<T>;
 
 /**
  * @template T type union of all possible panels in this stack
  */
-export interface PanelStackProps<T extends Panel<object>> extends Props {
+export interface PanelStackProps<T extends Panel<any>> extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
@@ -78,7 +78,7 @@ interface PanelStackComponent {
     /**
      * @template T type union of all possible panels in this stack
      */
-    <T extends Panel<object>>(props: PanelStackProps<T>): React.JSX.Element | null;
+    <T extends Panel<any>>(props: PanelStackProps<T>): React.JSX.Element | null;
     displayName: string;
 }
 
@@ -93,7 +93,7 @@ interface PanelNodeEntry {
  * @see https://blueprintjs.com/docs/#core/components/panel-stack
  * @template T type union of all possible panels in this stack
  */
-export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: PanelStackProps<T>) => {
+export const PanelStack: PanelStackComponent = <T extends Panel<any>>(props: PanelStackProps<T>) => {
     const {
         initialPanel,
         onClose,

@@ -22,7 +22,7 @@ import { Text } from "../text/text";
 
 import type { Panel, PanelProps } from "./panelTypes";
 
-export interface PanelViewProps<T extends Panel<object>> {
+export interface PanelViewProps<T extends Panel<any>> {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
      * the `closePanel()` injected prop method.
@@ -49,11 +49,11 @@ export interface PanelViewProps<T extends Panel<object>> {
 }
 
 interface PanelViewComponent {
-    <T extends Panel<object>>(props: PanelViewProps<T>): React.JSX.Element | null;
+    <T extends Panel<any>>(props: PanelViewProps<T>): React.JSX.Element | null;
     displayName: string;
 }
 
-export const PanelView: PanelViewComponent = <T extends Panel<object>>({
+export const PanelView: PanelViewComponent = <T extends Panel<any>>({
     panel,
     onClose,
     onOpen,
