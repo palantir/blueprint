@@ -186,6 +186,18 @@ describe("<MultiSelect>", () => {
         containerElement.remove();
     });
 
+    it("keeps popover open when query is cleared with custom target", () => {
+        const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
+        const wrapper = multiselect({ customTarget, popoverProps: { usePortal: false }, query: undefined });
+
+        findTargetButton(wrapper).simulate("click");
+        wrapper.find("input").simulate("change", { target: { value: "a" } });
+        wrapper.find("input").simulate("change", { target: { value: "" } });
+
+        expect(wrapper.find(PopoverNext).prop("isOpen")).toBe(true);
+        wrapper.unmount();
+    });
+
     function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <MultiSelect<Film> {...defaultProps} {...handlers} {...props}>
