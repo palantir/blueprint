@@ -80,6 +80,7 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
         popoverRef,
         rightElement,
         reverseMonthAndYearMenus = false,
+        selectAllOnFocus = false,
         showTimezoneSelect,
         timePrecision,
         timezone: controlledTimezone,
@@ -159,6 +160,12 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
             setInputValue(formattedDateString);
         }
     }, [isControlled, isInputFocused, formattedDateString]);
+
+    useEffect(() => {
+        if (selectAllOnFocus && isInputFocused) {
+            inputRef.current?.select();
+        }
+    }, [selectAllOnFocus, isInputFocused]);
 
     // Popover contents (date picker)
     // ------------------------------------------------------------------------

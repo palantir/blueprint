@@ -221,6 +221,30 @@ describe("<DateInput>", () => {
         });
     });
 
+    describe("selectAllOnFocus", () => {
+        it("should not select the input text on focus by default", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} defaultValue={VALUE} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+
+            const input = containerElement.querySelector("input")!;
+            expect(input.selectionStart).toBe(input.selectionEnd);
+        });
+
+        it("should select the input text on focus when enabled", () => {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} defaultValue={VALUE} selectAllOnFocus={true} />, {
+                attachTo: containerElement,
+            });
+            focusInput(wrapper);
+
+            const input = containerElement.querySelector("input")!;
+            expect(input.value).not.toBe("");
+            expect(input.selectionStart).toBe(0);
+            expect(input.selectionEnd).toBe(input.value.length);
+        });
+    });
+
     describe("uncontrolled usage", () => {
         const DEFAULT_PROPS_UNCONTROLLED = {
             ...DEFAULT_PROPS,
