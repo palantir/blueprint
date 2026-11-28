@@ -113,6 +113,7 @@ export const FormGroup: React.FC<FormGroupProps> = props => {
         },
         className,
     );
+    const maybeSubLabel = subLabel && <div className={Classes.FORM_GROUP_SUB_LABEL}>{subLabel}</div>;
 
     return (
         <div className={classes} style={style} {...htmlProps}>
@@ -121,8 +122,9 @@ export const FormGroup: React.FC<FormGroupProps> = props => {
                     {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
                 </label>
             )}
-            {subLabel && <div className={Classes.FORM_GROUP_SUB_LABEL}>{subLabel}</div>}
+            {!inline && maybeSubLabel}
             <div className={classNames(Classes.FORM_CONTENT, contentClassName)}>
+                {inline && maybeSubLabel}
                 {children}
                 {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
             </div>

@@ -68,6 +68,18 @@ describe("<FormGroup>", () => {
         expect(label).toContainElement(labelInfo);
     });
 
+    it("renders subLabel inside form content when inline", () => {
+        render(<FormGroup inline={true} label="label" subLabel="Sub label" />);
+        const subLabel = screen.getByText("Sub label");
+        expect(subLabel.parentElement).toHaveClass(Classes.FORM_CONTENT);
+    });
+
+    it("renders subLabel above form content when not inline", () => {
+        render(<FormGroup label="label" subLabel="Sub label" />);
+        const subLabel = screen.getByText("Sub label");
+        expect(subLabel.nextElementSibling).toHaveClass(Classes.FORM_CONTENT);
+    });
+
     it("renders helperText", () => {
         render(<FormGroup helperText="Help me out" />);
         const helper = screen.getByText("Help me out");
