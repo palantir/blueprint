@@ -449,6 +449,33 @@ describe("<Overlay2>", () => {
             }
         });
 
+        it("should return focus inside a shadow root when mounted open", async () => {
+            const host = document.body.appendChild(document.createElement("div"));
+            const shadowRoot = host.attachShadow({ mode: "open" });
+            const container = shadowRoot.appendChild(document.createElement("div"));
+            const renderOverlay = (isOpen?: boolean) => (
+                <>
+                    <button>Open</button>
+                    {isOpen !== undefined && (
+                        <Overlay2 transitionDuration={0} isOpen={isOpen} lazy={false} usePortal={false}>
+                            <input type="text" />
+                        </Overlay2>
+                    )}
+                </>
+            );
+            const { rerender, unmount } = renderWithOverlaysProvider(renderOverlay(), { container });
+            const button = shadowRoot.querySelector("button")!;
+            button.focus();
+
+            rerender(renderOverlay(true));
+            await waitFor(() => expect(shadowRoot.activeElement).not.to.equal(button));
+            rerender(renderOverlay(false));
+            await waitFor(() => expect(shadowRoot.activeElement).to.equal(button));
+
+            unmount();
+            host.remove();
+        });
+
         it("should return focus to overlay if enforceFocus=true", async () => {
             const buttonRef = createRef<HTMLButtonElement>();
             const inputRef = createRef<HTMLInputElement>();
