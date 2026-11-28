@@ -1185,6 +1185,15 @@ describe("<DateRangePicker>", () => {
             assertSelectedDays(10);
         });
 
+        it("should clear the active shortcut when a day is clicked", () => {
+            const { clickShortcut, left, wrapper } = render();
+
+            clickShortcut();
+            left.clickDay(1);
+
+            expect(wrapper.state("selectedShortcutIndex")).toBe(-1);
+        });
+
         it("should select values from shortcuts", () => {
             const { wrapper } = render().clickShortcut();
 
