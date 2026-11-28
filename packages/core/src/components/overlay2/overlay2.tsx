@@ -22,6 +22,7 @@ import {
     useEffect,
     useId,
     useImperativeHandle,
+    useInsertionEffect,
     useMemo,
     useRef,
     useState,
@@ -113,6 +114,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
     const [hasEverOpened, setHasEverOpened] = useState(false);
     const [shouldFocusOnContainerMount, setShouldFocusOnContainerMount] = useState(false);
     const lastActiveElementBeforeOpened = useRef<Element>(null);
+    const activeElementBeforeCommit = useRef<Element>(null);
 
     /** Ref for container element, containing all children and the backdrop */
     const containerElement = useRef<HTMLDivElement>(null);
@@ -306,7 +308,12 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             }
         }
 
-        setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
+        const overlayElement = getRef(containerElement);
+        const activeElement = getActiveElement(overlayElement);
+        setRef(
+            lastActiveElementBeforeOpened,
+            overlayElement?.contains(activeElement) ? getRef(activeElementBeforeCommit) : activeElement,
+        );
     }, [autoFocus, bringFocusInsideOverlay, getLastOpened, openOverlay]);
 
     const overlayWillClose = useCallback(() => {
@@ -329,6 +336,12 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             }
         }
     }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown, id]);
+
+    useInsertionEffect(() => {
+        if (isOpen) {
+            setRef(activeElementBeforeCommit, getActiveElement(getRef(containerElement)));
+        }
+    }, [isOpen]);
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
     useEffect(() => {

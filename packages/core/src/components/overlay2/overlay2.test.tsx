@@ -423,6 +423,59 @@ describe("<Overlay2>", () => {
             await waitFor(() => expect(document.activeElement).to.equal(document.querySelector("input")));
         });
 
+        it("should return focus on every close when it has an autoFocus child", async () => {
+            function TestOverlay() {
+                const [isOpen, setIsOpen] = useState(false);
+                return (
+                    <>
+                        <button onClick={() => setIsOpen(true)}>Open</button>
+                        <Overlay2 transitionDuration={0} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                            <input autoFocus={true} type="text" />
+                        </Overlay2>
+                    </>
+                );
+            }
+            const user = userEvent.setup();
+            renderWithOverlaysProvider(<TestOverlay />);
+            const button = screen.getByRole("button", { name: "Open" });
+
+            for (let i = 0; i < 2; i++) {
+                await user.click(button);
+                await waitFor(() => expect(document.activeElement).to.equal(screen.getByRole("textbox")));
+
+                await user.keyboard("{Escape}");
+                await waitFor(() => expect(screen.queryByRole("textbox")).to.be.null);
+                await waitFor(() => expect(document.activeElement).to.equal(button));
+            }
+        });
+
+        it("should return focus inside a shadow root when mounted open", async () => {
+            const host = document.body.appendChild(document.createElement("div"));
+            const shadowRoot = host.attachShadow({ mode: "open" });
+            const container = shadowRoot.appendChild(document.createElement("div"));
+            const renderOverlay = (isOpen?: boolean) => (
+                <>
+                    <button>Open</button>
+                    {isOpen !== undefined && (
+                        <Overlay2 transitionDuration={0} isOpen={isOpen} lazy={false} usePortal={false}>
+                            <input type="text" />
+                        </Overlay2>
+                    )}
+                </>
+            );
+            const { rerender, unmount } = renderWithOverlaysProvider(renderOverlay(), { container });
+            const button = shadowRoot.querySelector("button")!;
+            button.focus();
+
+            rerender(renderOverlay(true));
+            await waitFor(() => expect(shadowRoot.activeElement).not.to.equal(button));
+            rerender(renderOverlay(false));
+            await waitFor(() => expect(shadowRoot.activeElement).to.equal(button));
+
+            unmount();
+            host.remove();
+        });
+
         it("should return focus to overlay if enforceFocus=true", async () => {
             const buttonRef = createRef<HTMLButtonElement>();
             const inputRef = createRef<HTMLInputElement>();
