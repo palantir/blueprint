@@ -581,10 +581,12 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             // instead process ENTER on keydown, then Button would click itself on keyup and
             // the Select popover would re-open.
             event.preventDefault();
-            if (activeItem == null || isCreateNewItem(activeItem)) {
-                this.handleItemCreate(this.state.query, event);
-            } else if (!isShowingInitialContent) {
-                this.handleItemSelect(activeItem, event);
+            if (!isShowingInitialContent) {
+                if (activeItem == null || isCreateNewItem(activeItem)) {
+                    this.handleItemCreate(this.state.query, event);
+                } else {
+                    this.handleItemSelect(activeItem, event);
+                }
             }
             this.isEnterKeyPressed = false;
         }
