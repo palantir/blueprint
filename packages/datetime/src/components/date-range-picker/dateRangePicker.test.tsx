@@ -986,6 +986,16 @@ describe("<DateRangePicker>", () => {
             expect(wrapper.state("selectedShortcutIndex") === selectedShortcut).toBe(true);
         });
 
+        it("should keep the controlled shortcut active when a day is clicked", () => {
+            const { left, wrapper } = render({ selectedShortcutIndex: 0 });
+
+            left.clickDay(1);
+            expect(wrapper.state("selectedShortcutIndex")).toBe(0);
+
+            wrapper.setProps({ selectedShortcutIndex: -1 });
+            expect(wrapper.state("selectedShortcutIndex")).toBe(-1);
+        });
+
         it("should call onShortcutChangeSpy on selecting a shortcut ", () => {
             const selectedShortcut = 1;
             const onShortcutChangeSpy = vi.fn();
@@ -1183,6 +1193,15 @@ describe("<DateRangePicker>", () => {
             });
             left.clickDay(10).clickDay(10);
             assertSelectedDays(10);
+        });
+
+        it("should clear the active shortcut when a day is clicked", () => {
+            const { clickShortcut, left, wrapper } = render();
+
+            clickShortcut();
+            left.clickDay(1);
+
+            expect(wrapper.state("selectedShortcutIndex")).toBe(-1);
         });
 
         it("should select values from shortcuts", () => {

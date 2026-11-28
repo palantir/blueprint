@@ -400,6 +400,10 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         this.setState({ hoverValue: nextValue });
         this.props.onHoverChange?.(nextValue, selectedDay, boundary);
         this.updateSelectedRange(nextValue);
+
+        if (this.props.selectedShortcutIndex === undefined) {
+            this.setState({ selectedShortcutIndex: -1 });
+        }
     };
 
     private handleShortcutClick = (shortcut: DateRangeShortcut, selectedShortcutIndex: number) => {
