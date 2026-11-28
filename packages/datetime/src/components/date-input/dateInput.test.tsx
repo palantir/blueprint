@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { intlFormat, parseISO } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
@@ -218,6 +220,32 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             wrapper.find(InputGroup).find("input").simulate("keydown", { key: "Escape" });
             assertPopoverIsOpen(wrapper, false);
+        });
+    });
+
+    describe("selectAllOnFocus", () => {
+        it("should not select the input text on focus by default", async () => {
+            const user = userEvent.setup();
+            render(<DateInput {...DEFAULT_PROPS} defaultValue={VALUE} />);
+            const input = screen.getByRole<HTMLInputElement>("combobox");
+
+            await user.click(input);
+
+            expect(document.activeElement).toBe(input);
+            expect(input.selectionStart).toBe(input.selectionEnd);
+        });
+
+        it("should select the input text on focus when enabled", async () => {
+            const user = userEvent.setup();
+            render(<DateInput {...DEFAULT_PROPS} defaultValue={VALUE} selectAllOnFocus={true} />);
+            const input = screen.getByRole<HTMLInputElement>("combobox");
+
+            await user.click(input);
+
+            expect(document.activeElement).toBe(input);
+            expect(input.value).not.toBe("");
+            expect(input.selectionStart).toBe(0);
+            expect(input.selectionEnd).toBe(input.value.length);
         });
     });
 

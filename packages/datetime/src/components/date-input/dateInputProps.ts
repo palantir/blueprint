@@ -124,6 +124,13 @@ export interface DateInputProps
     rightElement?: React.JSX.Element;
 
     /**
+     * Whether the entire text field should be selected on focus.
+     *
+     * @default false
+     */
+    selectAllOnFocus?: boolean;
+
+    /**
      * Whether shortcuts to quickly select a date are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
