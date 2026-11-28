@@ -86,7 +86,7 @@ export type { OverlayInstance } from "./overlay2/overlayInstance";
 export { Text, type TextProps } from "./text/text";
 // eslint-disable-next-line @typescript-eslint/no-deprecated
 export { PanelStack, type PanelStackProps, PanelStack2, type PanelStack2Props } from "./panel-stack/panelStack";
-export type { Panel, PanelProps } from "./panel-stack/panelTypes";
+export type { Panel, PanelActions, PanelProps } from "./panel-stack/panelTypes";
 // eslint-disable-next-line @typescript-eslint/no-deprecated
 export { Popover } from "./popover/popover";
 export { PopoverAnimation, PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
