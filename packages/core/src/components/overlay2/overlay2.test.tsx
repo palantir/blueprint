@@ -423,6 +423,32 @@ describe("<Overlay2>", () => {
             await waitFor(() => expect(document.activeElement).to.equal(document.querySelector("input")));
         });
 
+        it("should return focus on every close when it has an autoFocus child", async () => {
+            function TestOverlay() {
+                const [isOpen, setIsOpen] = useState(false);
+                return (
+                    <>
+                        <button onClick={() => setIsOpen(true)}>Open</button>
+                        <Overlay2 transitionDuration={0} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+                            <input autoFocus={true} type="text" />
+                        </Overlay2>
+                    </>
+                );
+            }
+            const user = userEvent.setup();
+            renderWithOverlaysProvider(<TestOverlay />);
+            const button = screen.getByRole("button", { name: "Open" });
+
+            for (let i = 0; i < 2; i++) {
+                await user.click(button);
+                await waitFor(() => expect(document.activeElement).to.equal(screen.getByRole("textbox")));
+
+                await user.keyboard("{Escape}");
+                await waitFor(() => expect(screen.queryByRole("textbox")).to.be.null);
+                await waitFor(() => expect(document.activeElement).to.equal(button));
+            }
+        });
+
         it("should return focus to overlay if enforceFocus=true", async () => {
             const buttonRef = createRef<HTMLButtonElement>();
             const inputRef = createRef<HTMLInputElement>();

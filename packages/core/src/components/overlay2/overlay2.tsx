@@ -22,6 +22,7 @@ import {
     useEffect,
     useId,
     useImperativeHandle,
+    useInsertionEffect,
     useMemo,
     useRef,
     useState,
@@ -305,8 +306,6 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                 setShouldFocusOnContainerMount(true);
             }
         }
-
-        setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
     }, [autoFocus, bringFocusInsideOverlay, getLastOpened, openOverlay]);
 
     const overlayWillClose = useCallback(() => {
@@ -329,6 +328,12 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             }
         }
     }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown, id]);
+
+    useInsertionEffect(() => {
+        if (isOpen) {
+            setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
+        }
+    }, [isOpen]);
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
     useEffect(() => {
