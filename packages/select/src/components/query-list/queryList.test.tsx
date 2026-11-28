@@ -52,6 +52,24 @@ describe("<QueryList>", () => {
             wrapper.setProps({ items: newItems });
             expect(wrapper.state("filteredItems")).toEqual(newItems);
         });
+
+        it("enter does not create an item when query is empty and initialContent is shown", () => {
+            const wrapper = mount(
+                <QueryList<Film>
+                    {...testProps}
+                    createNewItemFromQuery={() => TOP_100_FILMS[0]}
+                    createNewItemRenderer={() => <div />}
+                    initialContent={null}
+                    items={[]}
+                    renderer={({ handleKeyDown, handleKeyUp }) => (
+                        <input onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} />
+                    )}
+                />,
+            );
+            wrapper.find("input").simulate("keydown", { key: "Enter" }).simulate("keyup", { key: "Enter" });
+            expect(testProps.onItemSelect.called).toBe(false);
+            wrapper.unmount();
+        });
     });
 
     describe("itemListRenderer", () => {
@@ -63,6 +81,22 @@ describe("<QueryList>", () => {
             const wrapper = shallow(<QueryList<Film> {...testProps} itemListRenderer={itemListRenderer} />);
             expect(wrapper.find("ul.foo")).toHaveLength(1);
             expect(testProps.itemRenderer.callCount).toBe(20);
+        });
+
+        it("enter selects the active item when query is empty, since initialContent is ignored", () => {
+            const wrapper = mount(
+                <QueryList<Film>
+                    {...testProps}
+                    initialContent={null}
+                    itemListRenderer={itemListRenderer}
+                    renderer={({ handleKeyDown, handleKeyUp }) => (
+                        <input onKeyDown={handleKeyDown} onKeyUp={handleKeyUp} />
+                    )}
+                />,
+            );
+            wrapper.find("input").simulate("keydown", { key: "Enter" }).simulate("keyup", { key: "Enter" });
+            expect(testProps.onItemSelect.calledOnceWith(testProps.items[0])).toBe(true);
+            wrapper.unmount();
         });
     });
 

@@ -570,8 +570,10 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLElement>) => {
-        const { onKeyUp } = this.props;
-        const { activeItem } = this.state;
+        const { initialContent, itemListRenderer, onKeyUp } = this.props;
+        const { activeItem, query } = this.state;
+        const isShowingInitialContent =
+            itemListRenderer === undefined && initialContent !== undefined && query.length === 0;
 
         if (event.key === "Enter" && this.isEnterKeyPressed) {
             // We handle ENTER in keyup here to play nice with the Button component's keyboard
@@ -579,10 +581,12 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             // instead process ENTER on keydown, then Button would click itself on keyup and
             // the Select popover would re-open.
             event.preventDefault();
-            if (activeItem == null || isCreateNewItem(activeItem)) {
-                this.handleItemCreate(this.state.query, event);
-            } else {
-                this.handleItemSelect(activeItem, event);
+            if (!isShowingInitialContent) {
+                if (activeItem == null || isCreateNewItem(activeItem)) {
+                    this.handleItemCreate(this.state.query, event);
+                } else {
+                    this.handleItemSelect(activeItem, event);
+                }
             }
             this.isEnterKeyPressed = false;
         }
